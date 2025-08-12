@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697F1B23241
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158CBB233F6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B892E1890ED8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E40E170B57
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408A52E3B06;
-	Tue, 12 Aug 2025 18:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4D92EE5E8;
+	Tue, 12 Aug 2025 18:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcajHh4s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2r4pxkjq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE05018FC91;
-	Tue, 12 Aug 2025 18:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDAC273D6B;
+	Tue, 12 Aug 2025 18:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022189; cv=none; b=Qgy806JOPA1oLhQidgNZ2TqXscHBdJyK1WUUuvKk8nFOcv83Uaram7MBsU+YTVZ7Z1UglhJCCyGBfpLol/NgBo5CeFVVf5qfXKfNVuJquTq3P/oXI5rkHVUqD7nCaau58W7yKTgxy29idoVgPm5+OqW+QVI1YARjwpuDbnhpbZg=
+	t=1755023453; cv=none; b=dWNe+jXnGMZj/c+KJeOgXBoDGoQj0lLNPQptH9qt84yEw8gsZ8oQ35iMBdK4bi0tCTRp69OWJTk427P+dr+MnKm9ZlrD9Bv76GIMTSB2w7bSRiCDnSjzvBs3H4TzZ89sFGqVNalbXxvL2Jy6cx4So5ettGSE/6vKD4DAP0+D9+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022189; c=relaxed/simple;
-	bh=+BrtKp+bgRv3zdGwkISEESW1sIOGnyyLGkhk80mKDzY=;
+	s=arc-20240116; t=1755023453; c=relaxed/simple;
+	bh=YQbca+1WtXh1RxmhYP6tLQD9vynGk+GIdkYkscFTn4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qtchhaybn0BXNwIibKG/D9wlesO0d2QZUWFiV13InokSD7bLTT/u8Ijc6C0bgoPtRTYSdnzUaEv4uxAJj5hxg6TRynsEmVnipjE54iAwCd0tka8XnVmX3NuvT/N3aXYSsXY4juSHMdvKo1ZmnNwWsQkjzmgflVyq4kZ+BO/agmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcajHh4s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171BAC4CEF0;
-	Tue, 12 Aug 2025 18:09:47 +0000 (UTC)
+	 MIME-Version; b=RweH2oWupDeal5RjdeT+uEI1EVqttoXey5OP7MiXQ7diGvLbtFTFsx5G730a5NeWN7tGUo1siSHth/Pk1ix4kUoNhcfVtoEd7LlbLcYoBNhO5edaGHGwvpNQHZKtu4iob65I1M2xc92xS19nn4Ei33vW6dsLFfAaiIyiJvMszW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2r4pxkjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EACEC4CEF0;
+	Tue, 12 Aug 2025 18:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022188;
-	bh=+BrtKp+bgRv3zdGwkISEESW1sIOGnyyLGkhk80mKDzY=;
+	s=korg; t=1755023453;
+	bh=YQbca+1WtXh1RxmhYP6tLQD9vynGk+GIdkYkscFTn4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcajHh4sklEu/3PPwlnowsgZ/HO4inMr2sIc3efUeOANikK8llTZqLnl8SBbJdvvL
-	 x1qxZK3zaaZwEpIZ/wcp7sFThB1sS/Gkc4wX+CMc07KQtooJhULeghExIklLeLV8/w
-	 IT7AbeLrl8jO5ua7N6Uo0gA0xm9BzWWgVEbsgHfA=
+	b=2r4pxkjqkqufaeQi9YhioqYJ2I69y48YhquI5L2vHNNd8PDKaK5Ira2ocCmzukC4x
+	 M8OrcjiKQoD/eEvdmMf7IeQkUjOiTQ/yPnoTUdQwps3/a96jBo09YE9oHcdlGlDwaR
+	 ACMvFDg2wkN5afPA3x01IW5alaoi8X3CYAi9GXY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/369] wifi: rtl818x: Kill URBs before clearing tx status queue
+Subject: [PATCH 6.16 084/627] arm64: dts: imx8mp-venice-gw74xx: update name of M2SKT_WDIS2# gpio
 Date: Tue, 12 Aug 2025 19:26:19 +0200
-Message-ID: <20250812173017.870753181@linuxfoundation.org>
+Message-ID: <20250812173422.500682190@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
+[ Upstream commit 26a6a9cde64a890997708007d9de25809970eac9 ]
 
-In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
-b_tx_status.queue. This change prevents callbacks from using already freed
-skb due to anchor was not killed before freeing such skb.
+The GW74xx D revision has added a M2SKT_WDIS2# GPIO which routes to the
+W_DISABLE2# pin of the M.2 socket. Update the gpio name for consistency.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000080
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
- Call Trace:
-  <IRQ>
-  rtl8187_tx_cb+0x116/0x150 [rtl8187]
-  __usb_hcd_giveback_urb+0x9d/0x120
-  usb_giveback_urb_bh+0xbb/0x140
-  process_one_work+0x19b/0x3c0
-  bh_worker+0x1a7/0x210
-  tasklet_action+0x10/0x30
-  handle_softirqs+0xf0/0x340
-  __irq_exit_rcu+0xcd/0xf0
-  common_interrupt+0x85/0xa0
-  </IRQ>
-
-Tested on RTL8187BvE device.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
+Fixes: 6a5d95b06d93 ("arm64: dts: imx8mp-venice-gw74xx: add M2SKT_GPIO10 gpio configuration")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 220ac5bdf279..8a57d6c72335 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev, bool suspend)
- 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
- 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
+index 568d24265ddf..12de7cf1e853 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
+@@ -301,7 +301,7 @@ &gpio2 {
+ &gpio3 {
+ 	gpio-line-names =
+ 		"", "", "", "", "", "", "m2_rst", "",
+-		"", "", "", "", "", "", "m2_gpio10", "",
++		"", "", "", "", "", "", "m2_wdis2#", "",
+ 		"", "", "", "", "", "", "", "",
+ 		"", "", "", "", "", "", "", "";
+ };
+@@ -310,7 +310,7 @@ &gpio4 {
+ 	gpio-line-names =
+ 		"", "", "m2_off#", "", "", "", "", "",
+ 		"", "", "", "", "", "", "", "",
+-		"", "", "m2_wdis#", "", "", "", "", "",
++		"", "", "m2_wdis1#", "", "", "", "", "",
+ 		"", "", "", "", "", "", "", "rs485_en";
+ };
  
-+	usb_kill_anchored_urbs(&priv->anchored);
-+
- 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
- 		dev_kfree_skb_any(skb);
- 
--	usb_kill_anchored_urbs(&priv->anchored);
- 	mutex_unlock(&priv->conf_mutex);
- 
- 	if (!priv->is_rtl8187b)
+@@ -811,14 +811,14 @@ pinctrl_hog: hoggrp {
+ 			MX8MP_IOMUXC_GPIO1_IO09__GPIO1_IO09	0x40000040 /* DIO0 */
+ 			MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11	0x40000040 /* DIO1 */
+ 			MX8MP_IOMUXC_SAI1_RXD0__GPIO4_IO02	0x40000040 /* M2SKT_OFF# */
+-			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18	0x40000150 /* M2SKT_WDIS# */
++			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18	0x40000150 /* M2SKT_WDIS1# */
+ 			MX8MP_IOMUXC_SD1_DATA4__GPIO2_IO06	0x40000040 /* M2SKT_PIN20 */
+ 			MX8MP_IOMUXC_SD1_STROBE__GPIO2_IO11	0x40000040 /* M2SKT_PIN22 */
+ 			MX8MP_IOMUXC_SD2_CLK__GPIO2_IO13	0x40000150 /* PCIE1_WDIS# */
+ 			MX8MP_IOMUXC_SD2_CMD__GPIO2_IO14	0x40000150 /* PCIE3_WDIS# */
+ 			MX8MP_IOMUXC_SD2_DATA3__GPIO2_IO18	0x40000150 /* PCIE2_WDIS# */
+ 			MX8MP_IOMUXC_NAND_DATA00__GPIO3_IO06	0x40000040 /* M2SKT_RST# */
+-			MX8MP_IOMUXC_NAND_DQS__GPIO3_IO14	0x40000040 /* M2SKT_GPIO10 */
++			MX8MP_IOMUXC_NAND_DQS__GPIO3_IO14	0x40000150 /* M2KST_WDIS2# */
+ 			MX8MP_IOMUXC_SAI3_TXD__GPIO5_IO01	0x40000104 /* UART_TERM */
+ 			MX8MP_IOMUXC_SAI3_TXFS__GPIO4_IO31	0x40000104 /* UART_RS485 */
+ 			MX8MP_IOMUXC_SAI3_TXC__GPIO5_IO00	0x40000104 /* UART_HALF */
 -- 
 2.39.5
 
