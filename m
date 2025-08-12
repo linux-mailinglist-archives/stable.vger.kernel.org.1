@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-168764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24D1B236A6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B73A7B236A8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53ACB1B65A5B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:01:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D99D1B65FC4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47882FFDD0;
-	Tue, 12 Aug 2025 19:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34C2279DB6;
+	Tue, 12 Aug 2025 19:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3sMrJiX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5wVnCwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638BC2FFDC0;
-	Tue, 12 Aug 2025 19:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F388260583;
+	Tue, 12 Aug 2025 19:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025254; cv=none; b=knp1BbGEjf6xuvC35eSVO0Gh0XcZqNE+c94iHWx7lNyXIsnaMQ5xAx8bXyzXVi+RmnMEzypdm/Y681olsisu38SrJDjK5vViwJoGHVYBRa5/Lv8tvR1J3Pv5naxm+ADXeP8r9iEPc+X2hZoOuUPd89fmh24hHGqIcPc4ewOf4WY=
+	t=1755025260; cv=none; b=FwaytK0aen13oej0yHCTmJmryZ8IhMhaGI6vue4KuR24za4HvAYvsTGQ+izO2kNpfAOK7THCPhzMa4WlJTn4Iq4c3dHxljX8kiZok2q+ffFB9e5X+QZOLPfTyk1fFeahAwjx2Aagfr1wE/zZ9WvNWcVGslR2lamqBJWAMq8QLBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025254; c=relaxed/simple;
-	bh=kDF9DPiemkJl9t6x2T7eDGX2kL4ULaOtBRlWJ8Hq97w=;
+	s=arc-20240116; t=1755025260; c=relaxed/simple;
+	bh=vgxOTPGjYhIjAt+bA/jXQshiV62ZosDi4279YuaBN3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6RHwPC4DmFAuFmRcMCS4r5c0og7k/CFGVnDOl1urHNJAClsDgy7FYfiILq08bLCHoRe18+KLMYflzHRn1NbrHnncFH5xWHEcCJeYttDNNysoh6EpjLfeqK8AAlVeOwZJcurAFfA/+juARyLrC1CrKsNhFEno26R0VZDo/eTVWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3sMrJiX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1575C4CEF8;
-	Tue, 12 Aug 2025 19:00:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S5HNoyEwmH/Fm3WV2+5up+8qSnb2BnnXehjUKr9Ep6qft4pgih22rAMyPGQEJ185YdDsUPJZ6AyhjHNb6l4D8sTEX6rvDWYrFu64TKYUdX857gJcpqc4VJqM69LThSQZ3A9zxtpxyLMKAjJK7shIpQr4+mSz6rQAsDGRGXeStO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5wVnCwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094B9C4CEF6;
+	Tue, 12 Aug 2025 19:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025254;
-	bh=kDF9DPiemkJl9t6x2T7eDGX2kL4ULaOtBRlWJ8Hq97w=;
+	s=korg; t=1755025260;
+	bh=vgxOTPGjYhIjAt+bA/jXQshiV62ZosDi4279YuaBN3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3sMrJiXWXYBPG2bMz+zHCHUuE4bRWOArOmGm7SaN0DWlKNB4xX9Dj7/IkmTeTW21
-	 ZvReI+X6O/GZZdlIosaHOoaJ0Hfvjn8IpeXtmhPUX5PCP0BedMo1+Vu6OfN8ZBiKK6
-	 SWfSPGXlDITszYXOloJeX/miy5Af1RLmex3i9cZQ=
+	b=W5wVnCwrphjibtLIqJFrG6DnAUtZtI5wXFJh5lPbi5t/G3NJIC62S8n0w7qo+OcPP
+	 N++RoG4wbJLtXAH/vnZERfapZnuMIL/nqwyyaGXPzfg9rCZja1ojoLDEtJznIxSKVz
+	 +sJ0UVZMbjhRfN2GSdEv/IvJ2+YvsoybmPfdFnlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Baoquan He <bhe@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Patryk Kowalczyk <patryk@kowalczyk.ws>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Hugh Dickins <hughd@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 615/627] mm: swap: move nr_swap_pages counter decrement from folio_alloc_swap() to swap_range_alloc()
-Date: Tue, 12 Aug 2025 19:35:10 +0200
-Message-ID: <20250812173455.279781084@linuxfoundation.org>
+Subject: [PATCH 6.16 616/627] mm: shmem: fix the shmem large folio allocation for the i915 driver
+Date: Tue, 12 Aug 2025 19:35:11 +0200
+Message-ID: <20250812173455.316542796@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -62,65 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-commit 4f78252da887ee7e9d1875dd6e07d9baa936c04f upstream.
+commit 8d58d65621118fdca3ed6a0b3d658ba7e0e5153c upstream.
 
-Patch series "Some randome fixes and cleanups to swapfile".
+After commit acd7ccb284b8 ("mm: shmem: add large folio support for
+tmpfs"), we extend the 'huge=' option to allow any sized large folios for
+tmpfs, which means tmpfs will allow getting a highest order hint based on
+the size of write() and fallocate() paths, and then will try each
+allowable large order.
 
-Patch 0-3 are some random fixes.  Patch 4 is a cleanup.  More details can
-be found in respective patches.
+However, when the i915 driver allocates shmem memory, it doesn't provide
+hint information about the size of the large folio to be allocated,
+resulting in the inability to allocate PMD-sized shmem, which in turn
+affects GPU performance.
 
+Patryk added:
 
-This patch (of 4):
+: In my tests, the performance drop ranges from a few percent up to 13%
+: in Unigine Superposition under heavy memory usage on the CPU Core Ultra
+: 155H with the Xe 128 EU GPU.  Other users have reported performance
+: impact up to 30% on certain workloads.  Please find more in the
+: regressions reports:
+: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14645
+: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13845
+:
+: I believe the change should be backported to all active kernel branches
+: after version 6.12.
 
-When folio_alloc_swap() encounters a failure in either
-mem_cgroup_try_charge_swap() or add_to_swap_cache(), nr_swap_pages counter
-is not decremented for allocated entry.  However, the following
-put_swap_folio() will increase nr_swap_pages counter unpairly and lead to
-an imbalance.
+To fix this issue, we can use the inode's size as a write size hint in
+shmem_read_folio_gfp() to help allocate PMD-sized large folios.
 
-Move nr_swap_pages decrement from folio_alloc_swap() to swap_range_alloc()
-to pair the nr_swap_pages counting.
-
-Link: https://lkml.kernel.org/r/20250522122554.12209-1-shikemeng@huaweicloud.com
-Link: https://lkml.kernel.org/r/20250522122554.12209-2-shikemeng@huaweicloud.com
-Fixes: 0ff67f990bd4 ("mm, swap: remove swap slot cache")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
+Link: https://lkml.kernel.org/r/f7e64e99a3a87a8144cc6b2f1dddf7a89c12ce44.1753926601.git.baolin.wang@linux.alibaba.com
+Fixes: acd7ccb284b8 ("mm: shmem: add large folio support for tmpfs")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Tested-by: Patryk Kowalczyk <patryk@kowalczyk.ws>
+Suggested-by: Hugh Dickins <hughd@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/shmem.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1115,6 +1115,7 @@ static void swap_range_alloc(struct swap
- 		if (vm_swap_full())
- 			schedule_work(&si->reclaim_work);
- 	}
-+	atomic_long_sub(nr_entries, &nr_swap_pages);
- }
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5928,8 +5928,8 @@ struct folio *shmem_read_folio_gfp(struc
+ 	struct folio *folio;
+ 	int error;
  
- static void swap_range_free(struct swap_info_struct *si, unsigned long offset,
-@@ -1313,7 +1314,6 @@ int folio_alloc_swap(struct folio *folio
- 	if (add_to_swap_cache(folio, entry, gfp | __GFP_NOMEMALLOC, NULL))
- 		goto out_free;
+-	error = shmem_get_folio_gfp(inode, index, 0, &folio, SGP_CACHE,
+-				    gfp, NULL, NULL);
++	error = shmem_get_folio_gfp(inode, index, i_size_read(inode),
++				    &folio, SGP_CACHE, gfp, NULL, NULL);
+ 	if (error)
+ 		return ERR_PTR(error);
  
--	atomic_long_sub(size, &nr_swap_pages);
- 	return 0;
- 
- out_free:
 
 
 
