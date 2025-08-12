@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0B3B2349B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68358B22F99
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44E31887639
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74A333A8A42
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB612FD1A2;
-	Tue, 12 Aug 2025 18:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2460C2FD1CE;
+	Tue, 12 Aug 2025 17:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maUngckA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6QiWc6F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4332FE565;
-	Tue, 12 Aug 2025 18:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63392F7461;
+	Tue, 12 Aug 2025 17:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023850; cv=none; b=CCDG4d+Qgw03zMVCD8+/AVe15o4vSUF1pw6IK/VDUtIWcFUUZ8qCda1k5jRL163JReHnQF4gLOo01m6WGlpRTHqzKwITq4zVIB1/CpD4j0Om0AzgvDwRp36eeWBKoWCyLVsYfeLhvA/pvz1WxOXt8spey8c19Ds0nJDkZXFD9Hg=
+	t=1755020522; cv=none; b=tNQPplsM8BWsROAQxsEFNmqf1jVNuzGuGbvUCcwIlSFAKI9QQoIPZDD7yclG+bEziuY12ViTbBs22GjkR7UoLt3UF1D4ap1/m4Kt4yK7CLLouEad9OjperE4cqOc3bjfZ2kxpqGJl5K+9MKO7th0N6UpxNCtQM6md6lfY/DpKBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023850; c=relaxed/simple;
-	bh=mKk/YAvKf9kz9NXfYTYQOIU9iY+ciXxXuSEUnGNB0v0=;
+	s=arc-20240116; t=1755020522; c=relaxed/simple;
+	bh=Y2rjdLqFeWXr5jwcFZmmIBt/jVnjstyjof4gz+cKLDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZOErlzuIX/uDULUJ4GU8ZkAqhz1QPn5ecPtgnefJ9EJR5R1+NU8oVRCIho6XGzgy4KpuwUy5a46tiHM+trAyBTjNp+88M39ZhLOqxwNQeY/guBLjVG65hupHbGQAMGo4Lpl1581EgoPDXI/XdDyb3jOeFXZOhYOvDORXLACE4ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maUngckA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B58C4CEF0;
-	Tue, 12 Aug 2025 18:37:29 +0000 (UTC)
+	 MIME-Version; b=leReUqLbSpYBTHsZUtBr3yiwmIB9M3bKik0bsFkv7xLRRqBglaeW/IbvCTaOrdPaS7kdy2b0A5eT8FgkCZpQiXdJ7rL1oT1IOSJYa8xlF1T1zo5ecuVnBUU/klwI0LJ7Ue2hOM1vswik/OnFfQEqUxGInWk0yvW2qIHGj2joaZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6QiWc6F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369A0C4CEF6;
+	Tue, 12 Aug 2025 17:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023849;
-	bh=mKk/YAvKf9kz9NXfYTYQOIU9iY+ciXxXuSEUnGNB0v0=;
+	s=korg; t=1755020522;
+	bh=Y2rjdLqFeWXr5jwcFZmmIBt/jVnjstyjof4gz+cKLDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maUngckALr0JX/1B1sQB4wPLq2gGesvlsvclZGgrhRlB/dU7cRycmk4NF6w4HyQzu
-	 GSaS+/xYx+IJTDVCz/rBqxIipd9K9HS7B5UPZcWDtx4s4bIK539X8OyD1DqMSzG0E4
-	 CYK2xpLeJRPP3zjPvs7U9M/mi2+xIUkNldq5C+9E=
+	b=L6QiWc6FD15cMMH+ATS+YYTMmeNSvs96GU4H2Ex1R5H0ywF/h5yVqmXgznrADeEvn
+	 4z7CRpOTpEWmbTxMezqeIkNQ+KgqpGeluHiTKO9nKEk5PfmGP3TVWdT+Ab3cGgs7fu
+	 UBJyVddzJAFcIJFppw5S+7UAskut2rfazXjbcrfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 199/627] sched/deadline: Less agressive dl_server handling
+Subject: [PATCH 6.1 106/253] wifi: ath11k: clear initialized flag for deinit-ed srng lists
 Date: Tue, 12 Aug 2025 19:28:14 +0200
-Message-ID: <20250812173426.853672780@linuxfoundation.org>
+Message-ID: <20250812172953.236067360@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit cccb45d7c4295bbfeba616582d0249f2d21e6df5 ]
+[ Upstream commit a5b46aa7cf5f05c213316a018e49a8e086efd98e ]
 
-Chris reported that commit 5f6bd380c7bd ("sched/rt: Remove default
-bandwidth control") caused a significant dip in his favourite
-benchmark of the day. Simply disabling dl_server cured things.
+In a number of cases we see kernel panics on resume due
+to ath11k kernel page fault, which happens under the
+following circumstances:
 
-His workload hammers the 0->1, 1->0 transitions, and the
-dl_server_{start,stop}() overhead kills it -- fairly obviously a bad
-idea in hind sight and all that.
+1) First ath11k_hal_dump_srng_stats() call
 
-Change things around to only disable the dl_server when there has not
-been a fair task around for a whole period. Since the default period
-is 1 second, this ensures the benchmark never trips this, overhead
-gone.
+ Last interrupt received for each group:
+ ath11k_pci 0000:01:00.0: group_id 0 22511ms before
+ ath11k_pci 0000:01:00.0: group_id 1 14440788ms before
+ [..]
+ ath11k_pci 0000:01:00.0: failed to receive control response completion, polling..
+ ath11k_pci 0000:01:00.0: Service connect timeout
+ ath11k_pci 0000:01:00.0: failed to connect to HTT: -110
+ ath11k_pci 0000:01:00.0: failed to start core: -110
+ ath11k_pci 0000:01:00.0: firmware crashed: MHI_CB_EE_RDDM
+ ath11k_pci 0000:01:00.0: already resetting count 2
+ ath11k_pci 0000:01:00.0: failed to wait wlan mode request (mode 4): -110
+ ath11k_pci 0000:01:00.0: qmi failed to send wlan mode off: -110
+ ath11k_pci 0000:01:00.0: failed to reconfigure driver on crash recovery
+ [..]
 
-Fixes: 557a6bfc662c ("sched/fair: Add trivial fair server")
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://lkml.kernel.org/r/20250702121158.465086194@infradead.org
+2) At this point reconfiguration fails (we have 2 resets) and
+  ath11k_core_reconfigure_on_crash() calls ath11k_hal_srng_deinit()
+  which destroys srng lists.  However, it does not reset per-list
+  ->initialized flag.
+
+3) Second ath11k_hal_dump_srng_stats() call sees stale ->initialized
+  flag and attempts to dump srng stats:
+
+ Last interrupt received for each group:
+ ath11k_pci 0000:01:00.0: group_id 0 66785ms before
+ ath11k_pci 0000:01:00.0: group_id 1 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 2 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 3 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 4 14780845ms before
+ ath11k_pci 0000:01:00.0: group_id 5 14780845ms before
+ ath11k_pci 0000:01:00.0: group_id 6 14485062ms before
+ ath11k_pci 0000:01:00.0: group_id 7 66814ms before
+ ath11k_pci 0000:01:00.0: group_id 8 68997ms before
+ ath11k_pci 0000:01:00.0: group_id 9 67588ms before
+ ath11k_pci 0000:01:00.0: group_id 10 69511ms before
+ BUG: unable to handle page fault for address: ffffa007404eb010
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 100000067 P4D 100000067 PUD 10022d067 PMD 100b01067 PTE 0
+ Oops: 0000 [#1] PREEMPT SMP NOPTI
+ RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
+ Call Trace:
+ <TASK>
+ ? __die_body+0xae/0xb0
+ ? page_fault_oops+0x381/0x3e0
+ ? exc_page_fault+0x69/0xa0
+ ? asm_exc_page_fault+0x22/0x30
+ ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:6cea 4)]
+ ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
+ worker_thread+0x389/0x930
+ kthread+0x149/0x170
+
+Clear per-list ->initialized flag in ath11k_hal_srng_deinit().
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Fixes: 5118935b1bc2 ("ath11k: dump SRNG stats during FW assert")
+Link: https://patch.msgid.link/20250612084551.702803-1-senozhatsky@chromium.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h   |  1 +
- kernel/sched/deadline.c | 25 ++++++++++++++++++++++---
- kernel/sched/fair.c     |  9 ---------
- 3 files changed, 23 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index aa9c5be7a632..ae75562cca59 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -701,6 +701,7 @@ struct sched_dl_entity {
- 	unsigned int			dl_defer	  : 1;
- 	unsigned int			dl_defer_armed	  : 1;
- 	unsigned int			dl_defer_running  : 1;
-+	unsigned int			dl_server_idle    : 1;
- 
- 	/*
- 	 * Bandwidth enforcement timer. Each -deadline task has its
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 89019a140826..094134c9b135 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1215,6 +1215,8 @@ static void __push_dl_task(struct rq *rq, struct rq_flags *rf)
- /* a defer timer will not be reset if the runtime consumed was < dl_server_min_res */
- static const u64 dl_server_min_res = 1 * NSEC_PER_MSEC;
- 
-+static bool dl_server_stopped(struct sched_dl_entity *dl_se);
-+
- static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_dl_entity *dl_se)
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index a5028efbdd2e..ec64fbf9aa82 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1314,6 +1314,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
+ void ath11k_hal_srng_deinit(struct ath11k_base *ab)
  {
- 	struct rq *rq = rq_of_dl_se(dl_se);
-@@ -1234,6 +1236,7 @@ static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_
- 
- 		if (!dl_se->server_has_tasks(dl_se)) {
- 			replenish_dl_entity(dl_se);
-+			dl_server_stopped(dl_se);
- 			return HRTIMER_NORESTART;
- 		}
- 
-@@ -1639,8 +1642,10 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
- void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec)
- {
- 	/* 0 runtime = fair server disabled */
--	if (dl_se->dl_runtime)
-+	if (dl_se->dl_runtime) {
-+		dl_se->dl_server_idle = 0;
- 		update_curr_dl_se(dl_se->rq, dl_se, delta_exec);
-+	}
- }
- 
- void dl_server_start(struct sched_dl_entity *dl_se)
-@@ -1663,7 +1668,7 @@ void dl_server_start(struct sched_dl_entity *dl_se)
- 		setup_new_dl_entity(dl_se);
- 	}
- 
--	if (!dl_se->dl_runtime)
-+	if (!dl_se->dl_runtime || dl_se->dl_server_active)
- 		return;
- 
- 	dl_se->dl_server_active = 1;
-@@ -1684,6 +1689,20 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
- 	dl_se->dl_server_active = 0;
- }
- 
-+static bool dl_server_stopped(struct sched_dl_entity *dl_se)
-+{
-+	if (!dl_se->dl_server_active)
-+		return false;
+ 	struct ath11k_hal *hal = &ab->hal;
++	int i;
 +
-+	if (dl_se->dl_server_idle) {
-+		dl_server_stop(dl_se);
-+		return true;
-+	}
-+
-+	dl_se->dl_server_idle = 1;
-+	return false;
-+}
-+
- void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
- 		    dl_server_has_tasks_f has_tasks,
- 		    dl_server_pick_f pick_task)
-@@ -2435,7 +2454,7 @@ static struct task_struct *__pick_task_dl(struct rq *rq)
- 	if (dl_server(dl_se)) {
- 		p = dl_se->server_pick_task(dl_se);
- 		if (!p) {
--			if (dl_server_active(dl_se)) {
-+			if (!dl_server_stopped(dl_se)) {
- 				dl_se->dl_yielded = 1;
- 				update_curr_dl_se(rq, dl_se, 0);
- 			}
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7a14da5396fb..3ab8d4765edd 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5889,7 +5889,6 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(cfs_rq->tg);
- 	struct sched_entity *se;
- 	long queued_delta, runnable_delta, idle_delta, dequeue = 1;
--	long rq_h_nr_queued = rq->cfs.h_nr_queued;
++	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
++		ab->hal.srng_list[i].initialized = 0;
  
- 	raw_spin_lock(&cfs_b->lock);
- 	/* This will start the period timer if necessary */
-@@ -5973,10 +5972,6 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
- 
- 	/* At this point se is NULL and we are at root level*/
- 	sub_nr_running(rq, queued_delta);
--
--	/* Stop the fair server if throttling resulted in no runnable tasks */
--	if (rq_h_nr_queued && !rq->cfs.h_nr_queued)
--		dl_server_stop(&rq->fair_server);
- done:
- 	/*
- 	 * Note: distribution will already see us throttled via the
-@@ -7070,7 +7065,6 @@ static void set_next_buddy(struct sched_entity *se);
- static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- {
- 	bool was_sched_idle = sched_idle_rq(rq);
--	int rq_h_nr_queued = rq->cfs.h_nr_queued;
- 	bool task_sleep = flags & DEQUEUE_SLEEP;
- 	bool task_delayed = flags & DEQUEUE_DELAYED;
- 	struct task_struct *p = NULL;
-@@ -7154,9 +7148,6 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 
- 	sub_nr_running(rq, h_nr_queued);
- 
--	if (rq_h_nr_queued && !rq->cfs.h_nr_queued)
--		dl_server_stop(&rq->fair_server);
--
- 	/* balance early to pull high priority tasks */
- 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
- 		rq->next_balance = jiffies;
+ 	ath11k_hal_unregister_srng_key(ab);
+ 	ath11k_hal_free_cont_rdp(ab);
 -- 
 2.39.5
 
