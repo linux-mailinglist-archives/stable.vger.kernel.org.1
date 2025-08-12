@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35B9B232A4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D73BB23093
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FCE3B1F73
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75601189C0B0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9F42FE563;
-	Tue, 12 Aug 2025 18:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1A1268C73;
+	Tue, 12 Aug 2025 17:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLVQpXhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2zYL/lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0202FDC35;
-	Tue, 12 Aug 2025 18:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F092DE1E2;
+	Tue, 12 Aug 2025 17:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022463; cv=none; b=cwrvplSkkvPgEF07AnI490zVqA5yWtbZPbibVfEWqHFOjeDE/jxSUFDf92ijWm3SVbmgWBj3FP+1ZjqhQ+xneLP7J6zYwXo9HHZN4PBcTGD6fU45SpO2oqZgKRNYBuc7fdhrOTE0q5sOQhdl2ccaJhHEgQqLupf0d3/4m3gVHY0=
+	t=1755021165; cv=none; b=s6rFWsxfXkHG1tXao1Wu+Q4mi5HhfxmeyKSmzHQr4rBj48BXTmH09Df047cEmSuwUCqUzdFtAEZCaSQrN1MQKi5HSv/pqQFHMmTwK5g9rxnNV8+ZsA8QD75cSdOb9t+6gLbbSIT+RvS0fGbKjWwWXmITir4qvwLJdd8IBVWXXOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022463; c=relaxed/simple;
-	bh=hu86ZwqOG2IwpXOo8j3pIkXFZC2Z6HpDh6CrF1ccMG8=;
+	s=arc-20240116; t=1755021165; c=relaxed/simple;
+	bh=2sj3xJ+3uTvZ9DnCzRWIN1YB7vHKs858EnuxJcSAOTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hglFhCeKnNoM9dCRsTH+Y+NfN0JzmRh5v+M2v01dFFxFeTlGTIpSbYJTdFXaQk8dLF5d8pAY8u0BJ/ZkZs5J3ec7bDYNeQuItwdnqBz6Xm21JffUfzvUl2R0uVE39QSXQ2HBEI/lVLFPojDjLH60m3mGvvCQ6WwboUp30n8GtEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLVQpXhq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2A1C4CEF0;
-	Tue, 12 Aug 2025 18:14:22 +0000 (UTC)
+	 MIME-Version; b=f1YuxLrmdm9L0vqwARB6oZdjNbMfV+ZuyuKJwGZefS4ODMKEqeX0WxoA8ZxJn8ZQ/fb8JBbNPwKr+0vk759A9zT2esH999wA9DtKpoydDmHdTqZbnlztNXUJoTM9PYqdNrQaPXY4J0J47A08vTpqHHg6sGHeL/obfS4JpHDO5IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2zYL/lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2029EC4CEF1;
+	Tue, 12 Aug 2025 17:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022463;
-	bh=hu86ZwqOG2IwpXOo8j3pIkXFZC2Z6HpDh6CrF1ccMG8=;
+	s=korg; t=1755021165;
+	bh=2sj3xJ+3uTvZ9DnCzRWIN1YB7vHKs858EnuxJcSAOTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLVQpXhqd0w2HHcGU9SVXmS0CL8A7oQFOveo119KM/D1oOeHAsh16VWY8kiSWfAmB
-	 0Iz2p30d+N5gFZpf7Ak2jmhjY4UkYanmh7ew6pgnCL80OXLPBeBHnCAfe0Z8tgW/kA
-	 5m5R5r8d69zMxNwSpwdake6nqANYYm/lpShNP6C0=
+	b=D2zYL/lfxi9/GVpO14zXTRpTAMMEiSLoMl+8HhXIvwnspr6qoO17l5k/UA18VE+xf
+	 XM73M1/i7Hlzm579+aRiz0vDevwPTPZMAeS+HjbpPrgAvvrqmlPiD8BMqFMXnH8z9U
+	 VVgzaYXs6R14+4vxsHUBoxGHq3Kfm5C07GAtdQbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Cowgill <james.cowgill@blaize.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 162/369] media: v4l2-ctrls: Fix H264 SEPARATE_COLOUR_PLANE check
-Date: Tue, 12 Aug 2025 19:27:39 +0200
-Message-ID: <20250812173020.862098680@linuxfoundation.org>
+Subject: [PATCH 6.6 072/262] netfilter: nf_tables: adjust lockdep assertions handling
+Date: Tue, 12 Aug 2025 19:27:40 +0200
+Message-ID: <20250812172956.088464028@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Cowgill <james.cowgill@blaize.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 803b9eabc649c778986449eb0596e5ffeb7a8aed ]
+[ Upstream commit 8df1b40de76979bb8e975201d07b71103d5de820 ]
 
-The `separate_colour_plane_flag` element is only present in the SPS if
-`chroma_format_idc == 3`, so the corresponding flag should be disabled
-whenever that is not the case and not just on profiles where
-`chroma_format_idc` is not present.
+It's needed to check the return value of lockdep_commit_lock_is_held(),
+otherwise there's no point in this assertion as it doesn't print any
+debug information on itself.
 
-Fixes: b32e48503df0 ("media: controls: Validate H264 stateless controls")
-Signed-off-by: James Cowgill <james.cowgill@blaize.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
+
+Fixes: b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
+Reported-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index eeab6a5eb7ba..675642af8601 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -897,12 +897,12 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index c9582f008983..4ffb5ef79ca1 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3775,7 +3775,7 @@ void nf_tables_rule_destroy(const struct nft_ctx *ctx, struct nft_rule *rule)
+ /* can only be used if rule is no longer visible to dumps */
+ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *rule)
+ {
+-	lockdep_commit_lock_is_held(ctx->net);
++	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
  
- 			p_h264_sps->flags &=
- 				~V4L2_H264_SPS_FLAG_QPPRIME_Y_ZERO_TRANSFORM_BYPASS;
--
--			if (p_h264_sps->chroma_format_idc < 3)
--				p_h264_sps->flags &=
--					~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
- 		}
+ 	nft_rule_expr_deactivate(ctx, rule, NFT_TRANS_RELEASE);
+ 	nf_tables_rule_destroy(ctx, rule);
+@@ -5571,7 +5571,7 @@ void nf_tables_deactivate_set(const struct nft_ctx *ctx, struct nft_set *set,
+ 			      struct nft_set_binding *binding,
+ 			      enum nft_trans_phase phase)
+ {
+-	lockdep_commit_lock_is_held(ctx->net);
++	WARN_ON_ONCE(!lockdep_commit_lock_is_held(ctx->net));
  
-+		if (p_h264_sps->chroma_format_idc < 3)
-+			p_h264_sps->flags &=
-+				~V4L2_H264_SPS_FLAG_SEPARATE_COLOUR_PLANE;
-+
- 		if (p_h264_sps->flags & V4L2_H264_SPS_FLAG_FRAME_MBS_ONLY)
- 			p_h264_sps->flags &=
- 				~V4L2_H264_SPS_FLAG_MB_ADAPTIVE_FRAME_FIELD;
+ 	switch (phase) {
+ 	case NFT_TRANS_PREPARE_ERROR:
 -- 
 2.39.5
 
