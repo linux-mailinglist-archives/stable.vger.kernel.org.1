@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36622B233CD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A883FB231BE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48E8166E0D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 935203B1453
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB082ECE93;
-	Tue, 12 Aug 2025 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4402E285E;
+	Tue, 12 Aug 2025 18:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MG+Ij709"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Te/LvzTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EF52E7BD4;
-	Tue, 12 Aug 2025 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10291A9F89;
+	Tue, 12 Aug 2025 18:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023311; cv=none; b=LIx86QN1s2vDfjoOcJhjsRkJEjECdY89Vck8rn2DFrBSpOk6Lm7vFDk2RZeO5RrZnAZ3UVLl/Nw6lBgSPBhXjhaDY3HJ0PWwqy4yXiGLfWnOBqKLOypHseTlpx37LsAyjv59jAGAeX29bFcPXAB6jYm64f09hmAwNm0O58BdFIM=
+	t=1755021992; cv=none; b=c+iJoBNhc4KuRpyb0BFRqC9sPisA2kcrKa8ehNX6HcnYnIDTTzKrc+dIHWe1NPT1sQG/Grj+NjNjAvjWyaIQeXTx4EqnLwl3K6FjS4IaiH4vqeolOmJy7k57krRCTiKjuDdV60EBo1BQl6/eRo6/OlarocDsOx8QMqEBRRhSFYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023311; c=relaxed/simple;
-	bh=egO3W3RjRfPAn/kF0xl0GpBtlamzQIjWzG7LT5Uxj78=;
+	s=arc-20240116; t=1755021992; c=relaxed/simple;
+	bh=QDbcvkNTbEh+PqOHpzzQy25Rk9H644/VkRYnsN4Sgg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8fVwt0yGtCCNHRn+hXBdzFAoWKuBb5vpF3FfcS3QX5ncdH7nu3Dv7yVtJyTLbEjKZCU/sVu+KRxhUuC+c/wyEctUhyKuSIhO0MIj1BSclpqlB4XokEJGSqug1vLGt2J8IpvdEns/knbk8E2meERkCEhYgdlGr1v7NQ3RPUKA9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MG+Ij709; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C21C4CEF1;
-	Tue, 12 Aug 2025 18:28:30 +0000 (UTC)
+	 MIME-Version; b=aYFFnoQTIxOCpIlwM35ao+vomn7RgIpAAodq2+sEbDwE/2i+C9NQ5YWwskVXM01HjJl7F+rZRESNV1Y+Dmgm4Zq4XeJe10GO6EN1Mn6VsFnsShzCRgoXhe1bdE/07iH88rlHwo0z+Dy8NZtU3yNTgEwywZ7822eWYNG5fEMiYg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Te/LvzTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305ECC4CEF0;
+	Tue, 12 Aug 2025 18:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023311;
-	bh=egO3W3RjRfPAn/kF0xl0GpBtlamzQIjWzG7LT5Uxj78=;
+	s=korg; t=1755021992;
+	bh=QDbcvkNTbEh+PqOHpzzQy25Rk9H644/VkRYnsN4Sgg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MG+Ij709qsTcCrMYdxNYtbODKONOh9nqz2tFgbzBdpds4iN5ivxkeIUkW23cU2itI
-	 HQkJRcOO2eQZyjTrl8PYkER5BMeqw+y6/9OvDQPriiAH2tAGxCWqWr+7GUSVd92ay6
-	 OIDjo4PYNLDKBd49Cqme7E7ot9mqB5Z9OMwIl/dU=
+	b=Te/LvzTtw2NizpQJQauOzpdosFkxzJNQymPdcpHyQGhbTdc9GI0BJOMS3O5C98xPR
+	 eUPUpX8Q8L2YQydxODBbn0qC0fE5gfPesMpjhiwa+qor+e3TUs0H9EwKKWOAkwc1sT
+	 UMuUND+1pP+4BCRFvwwQPAWex5ypXHWFkMgnS70g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Sun YangKai <sunk67188@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 025/627] btrfs: remove partial support for lowest level from btrfs_search_forward()
+Subject: [PATCH 6.12 023/369] soc: qcom: QMI encoding/decoding for big endian
 Date: Tue, 12 Aug 2025 19:25:20 +0200
-Message-ID: <20250812173420.273345413@linuxfoundation.org>
+Message-ID: <20250812173015.613189823@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sun YangKai <sunk67188@gmail.com>
+From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 
-[ Upstream commit 27260dd1904bb409cf84709928ba9bc5506fbe8e ]
+[ Upstream commit 3ced38da5f7de4c260f9eaa86fc805827953243a ]
 
-Commit 323ac95bce44 ("Btrfs: don't read leaf blocks containing only
-checksums during truncate") changed the condition from `level == 0` to
-`level == path->lowest_level`, while its original purpose was just to do
-some leaf node handling (calling btrfs_item_key_to_cpu()) and skip some
-code that doesn't fit leaf nodes.
+The QMI_DATA_LEN type may have different sizes. Taking the element's
+address of that type and interpret it as a smaller sized ones works fine
+for little endian platforms but not for big endian ones. Instead use
+temporary variables of smaller sized types and cast them correctly to
+support big endian platforms.
 
-After changing the condition, the code path:
-
-1. Also handles the non-leaf nodes when path->lowest_level is nonzero,
-   which is wrong. However btrfs_search_forward() is never called with a
-   nonzero path->lowest_level, which makes this bug not found before.
-
-2. Makes the later if block with the same condition, which was originally
-   used to handle non-leaf node (calling btrfs_node_key_to_cpu()) when
-   lowest_level is not zero, dead code.
-
-Since btrfs_search_forward() is never called for a path with a
-lowest_level different from zero, just completely remove the partial
-support for a non-zero lowest_level, simplifying a bit the code, and
-assert that lowest_level is zero at the start of the function.
-
-Suggested-by: Qu Wenruo <wqu@suse.com>
-Fixes: 323ac95bce44 ("Btrfs: don't read leaf blocks containing only checksums during truncate")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Sun YangKai <sunk67188@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+Fixes: 9b8a11e82615 ("soc: qcom: Introduce QMI encoder/decoder")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250522143530.3623809-2-alexander.wilhelm@westermo.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/soc/qcom/qmi_encdec.c | 46 +++++++++++++++++++++++++++++------
+ 1 file changed, 38 insertions(+), 8 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index a2e7979372cc..648531fe0900 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -4585,16 +4585,13 @@ int btrfs_del_items(struct btrfs_trans_handle *trans, struct btrfs_root *root,
+diff --git a/drivers/soc/qcom/qmi_encdec.c b/drivers/soc/qcom/qmi_encdec.c
+index bb09eff85cff..dafe0a4c202e 100644
+--- a/drivers/soc/qcom/qmi_encdec.c
++++ b/drivers/soc/qcom/qmi_encdec.c
+@@ -304,6 +304,8 @@ static int qmi_encode(const struct qmi_elem_info *ei_array, void *out_buf,
+ 	const void *buf_src;
+ 	int encode_tlv = 0;
+ 	int rc;
++	u8 val8;
++	u16 val16;
  
- /*
-  * A helper function to walk down the tree starting at min_key, and looking
-- * for nodes or leaves that are have a minimum transaction id.
-+ * for leaves that have a minimum transaction id.
-  * This is used by the btree defrag code, and tree logging
-  *
-  * This does not cow, but it does stuff the starting key it finds back
-  * into min_key, so you can call btrfs_search_slot with cow=1 on the
-  * key and get a writable path.
-  *
-- * This honors path->lowest_level to prevent descent past a given level
-- * of the tree.
-- *
-  * min_trans indicates the oldest transaction that you are interested
-  * in walking through.  Any nodes or leaves older than min_trans are
-  * skipped over (without reading them).
-@@ -4615,6 +4612,7 @@ int btrfs_search_forward(struct btrfs_root *root, struct btrfs_key *min_key,
- 	int keep_locks = path->keep_locks;
+ 	if (!ei_array)
+ 		return 0;
+@@ -338,7 +340,6 @@ static int qmi_encode(const struct qmi_elem_info *ei_array, void *out_buf,
+ 			break;
  
- 	ASSERT(!path->nowait);
-+	ASSERT(path->lowest_level == 0);
- 	path->keep_locks = 1;
- again:
- 	cur = btrfs_read_lock_root_node(root);
-@@ -4636,8 +4634,8 @@ int btrfs_search_forward(struct btrfs_root *root, struct btrfs_key *min_key,
- 			goto out;
- 		}
- 
--		/* at the lowest level, we're done, setup the path and exit */
--		if (level == path->lowest_level) {
-+		/* At level 0 we're done, setup the path and exit. */
-+		if (level == 0) {
- 			if (slot >= nritems)
- 				goto find_next_key;
- 			ret = 0;
-@@ -4678,12 +4676,6 @@ int btrfs_search_forward(struct btrfs_root *root, struct btrfs_key *min_key,
- 				goto out;
+ 		case QMI_DATA_LEN:
+-			memcpy(&data_len_value, buf_src, temp_ei->elem_size);
+ 			data_len_sz = temp_ei->elem_size == sizeof(u8) ?
+ 					sizeof(u8) : sizeof(u16);
+ 			/* Check to avoid out of range buffer access */
+@@ -348,8 +349,17 @@ static int qmi_encode(const struct qmi_elem_info *ei_array, void *out_buf,
+ 				       __func__);
+ 				return -ETOOSMALL;
  			}
- 		}
--		if (level == path->lowest_level) {
--			ret = 0;
--			/* Save our key for returning back. */
--			btrfs_node_key_to_cpu(cur, min_key, slot);
--			goto out;
--		}
- 		cur = btrfs_read_node_slot(cur, slot);
- 		if (IS_ERR(cur)) {
- 			ret = PTR_ERR(cur);
-@@ -4699,7 +4691,7 @@ int btrfs_search_forward(struct btrfs_root *root, struct btrfs_key *min_key,
- out:
- 	path->keep_locks = keep_locks;
- 	if (ret == 0)
--		btrfs_unlock_up_safe(path, path->lowest_level + 1);
-+		btrfs_unlock_up_safe(path, 1);
- 	return ret;
- }
+-			rc = qmi_encode_basic_elem(buf_dst, &data_len_value,
+-						   1, data_len_sz);
++			if (data_len_sz == sizeof(u8)) {
++				val8 = *(u8 *)buf_src;
++				data_len_value = (u32)val8;
++				rc = qmi_encode_basic_elem(buf_dst, &val8,
++							   1, data_len_sz);
++			} else {
++				val16 = *(u16 *)buf_src;
++				data_len_value = (u32)le16_to_cpu(val16);
++				rc = qmi_encode_basic_elem(buf_dst, &val16,
++							   1, data_len_sz);
++			}
+ 			UPDATE_ENCODE_VARIABLES(temp_ei, buf_dst,
+ 						encoded_bytes, tlv_len,
+ 						encode_tlv, rc);
+@@ -523,14 +533,23 @@ static int qmi_decode_string_elem(const struct qmi_elem_info *ei_array,
+ 	u32 string_len = 0;
+ 	u32 string_len_sz = 0;
+ 	const struct qmi_elem_info *temp_ei = ei_array;
++	u8 val8;
++	u16 val16;
  
+ 	if (dec_level == 1) {
+ 		string_len = tlv_len;
+ 	} else {
+ 		string_len_sz = temp_ei->elem_len <= U8_MAX ?
+ 				sizeof(u8) : sizeof(u16);
+-		rc = qmi_decode_basic_elem(&string_len, buf_src,
+-					   1, string_len_sz);
++		if (string_len_sz == sizeof(u8)) {
++			rc = qmi_decode_basic_elem(&val8, buf_src,
++						   1, string_len_sz);
++			string_len = (u32)val8;
++		} else {
++			rc = qmi_decode_basic_elem(&val16, buf_src,
++						   1, string_len_sz);
++			string_len = (u32)val16;
++		}
+ 		decoded_bytes += rc;
+ 	}
+ 
+@@ -604,6 +623,9 @@ static int qmi_decode(const struct qmi_elem_info *ei_array, void *out_c_struct,
+ 	u32 decoded_bytes = 0;
+ 	const void *buf_src = in_buf;
+ 	int rc;
++	u8 val8;
++	u16 val16;
++	u32 val32;
+ 
+ 	while (decoded_bytes < in_buf_len) {
+ 		if (dec_level >= 2 && temp_ei->data_type == QMI_EOTI)
+@@ -642,9 +664,17 @@ static int qmi_decode(const struct qmi_elem_info *ei_array, void *out_c_struct,
+ 		if (temp_ei->data_type == QMI_DATA_LEN) {
+ 			data_len_sz = temp_ei->elem_size == sizeof(u8) ?
+ 					sizeof(u8) : sizeof(u16);
+-			rc = qmi_decode_basic_elem(&data_len_value, buf_src,
+-						   1, data_len_sz);
+-			memcpy(buf_dst, &data_len_value, sizeof(u32));
++			if (data_len_sz == sizeof(u8)) {
++				rc = qmi_decode_basic_elem(&val8, buf_src,
++							   1, data_len_sz);
++				data_len_value = (u32)val8;
++			} else {
++				rc = qmi_decode_basic_elem(&val16, buf_src,
++							   1, data_len_sz);
++				data_len_value = (u32)val16;
++			}
++			val32 = cpu_to_le32(data_len_value);
++			memcpy(buf_dst, &val32, sizeof(u32));
+ 			temp_ei = temp_ei + 1;
+ 			buf_dst = out_c_struct + temp_ei->offset;
+ 			tlv_len -= data_len_sz;
 -- 
 2.39.5
 
