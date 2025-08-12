@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F9BB231F3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9D7B233D8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E6C53A984C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A713D2A04E4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD192F83CB;
-	Tue, 12 Aug 2025 18:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB082FD1C2;
+	Tue, 12 Aug 2025 18:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zi5vuUml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYXjkQyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0169305E08;
-	Tue, 12 Aug 2025 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1AE2ECE93;
+	Tue, 12 Aug 2025 18:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022073; cv=none; b=NCnH2tqD4Shs42qUTgKz4ZZ/oRN2Hj1fOP6ymhBcvllayM7MPqL2ADlYZg/BLNG0ngPzrAgx2LxxASKPQTdO4OC+n3YUVuP+MSTUo5lQ0vIv4gHNi7BezFFqJwJhWwEyBJWQJjwkxrlTdJyQyUyc70pSiyuRvVHDH/LDLViMNJs=
+	t=1755023338; cv=none; b=DV1hgLcBOLRdCVaBUYAG1f7tIHe8BienjqHlSAOk8BOpZk0Ss3LAFCtwhFJITglHOU1QUJeh5s+iiKgy+gASNN4YQRrxdglOnYqO+Fli0FAfiewoyLZJZJQxrx5sVse/Cj1pCPnkdHxwT7LtsDw8E3nV9rj+hoBAp4ea2pN9mQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022073; c=relaxed/simple;
-	bh=UqbvJlmbpW5sxJjsg+rwPoTZvV7/Tyo45dj4br+ziG8=;
+	s=arc-20240116; t=1755023338; c=relaxed/simple;
+	bh=z6m9ZIOzYYcchvqk75LXOmLpkPLFsXyC9FVpMXRfZ5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YG9UX6zQdcknTJ2siOJqu1THnqySPjvoS+zuNdtaNEz25Vn8xRS/Akhc4N2b9lm88dwgjlbcYqkXQw4DQNM9uTDZ1jXYV10vCU/Aj5ksqu8SofJ+Ih7kuvUtR5C88owu1w2AMtpMk2b2zqFrQbejmzVtuiae/gXnZlsAfGlIxAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zi5vuUml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D039C4CEF0;
-	Tue, 12 Aug 2025 18:07:52 +0000 (UTC)
+	 MIME-Version; b=pkLRG2UtvYZfyhcI1P4+coc/hiSSJusFwaDadtWi2dFXDYCyU7dOR0mcqxdFPuZG0sjqE2W/ogAt5qc46QwU/D4DjWJj2Y/wfGGvOt9FWt0uoo7F8b+QDY+qbg0BtyPuBUO4m9DrVT/D/IFsUmAuDb83CgVggTy/+ZsI/4Rmd1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYXjkQyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FCEC4CEF6;
+	Tue, 12 Aug 2025 18:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022072;
-	bh=UqbvJlmbpW5sxJjsg+rwPoTZvV7/Tyo45dj4br+ziG8=;
+	s=korg; t=1755023338;
+	bh=z6m9ZIOzYYcchvqk75LXOmLpkPLFsXyC9FVpMXRfZ5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zi5vuUmlBUhxkGv2kHm6wEOP6/3KsX6MDruU1ukIbLiQIo+h7svvTHdqxZa7UfPl/
-	 4E2jlLXbT+CylEE+VaHrAvNXXVQ0+qxhboU6u0vsGhOtsleTjp8przfQM8i60NtryP
-	 YuKxQGjBuSymdJKHdBOeN0O6BSvJ5MqLCEQLWPvc=
+	b=JYXjkQyKMqxhRHbSAZEmZl2s3j+0yUnw734J1wPXlNL1t9jP8I0OPsbsY63Z3vR88
+	 sbEqukG9kvH2uF044zO4JPERC5yvDvxrWqix9ML/mrYHpHH+vgFGEgRitLcN6s2Gec
+	 YNZPyBjTyVaId5f6o19JAKLzr66oqsnfT1DoM9ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Albin=20T=C3=B6rnqvist?= <albin.tornqvist@codiax.se>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/369] arm: dts: ti: omap: Fixup pinheader typo
+Subject: [PATCH 6.16 050/627] ARM: dts: vfxxx: Correctly use two tuples for timer address
 Date: Tue, 12 Aug 2025 19:25:45 +0200
-Message-ID: <20250812173016.570506228@linuxfoundation.org>
+Message-ID: <20250812173421.235004211@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Törnqvist <albin.tornqvist@codiax.se>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a3a4be32b69c99fc20a66e0de83b91f8c882bf4c ]
+[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
 
-This commit fixes a typo introduced in commit
-ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names").
-gpio0_7 is located on the P9 header on the BBB.
-This was verified with a BeagleBone Black by toggling the pin and
-checking with a multimeter that it corresponds to pin 42 on the P9
-header.
+Address and size-cells are 1 and the ftm timer node takes two address
+spaces in "reg" property, so this should be in two <> tuples.  Change
+has no functional impact, but original code is confusing/less readable.
 
-Signed-off-by: Albin Törnqvist <albin.tornqvist@codiax.se>
-Link: https://lore.kernel.org/r/20250624114839.1465115-2-albin.tornqvist@codiax.se
-Fixes: ee368a10d0df ("ARM: dts: am335x-boneblack.dts: unique gpio-line-names")
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-boneblack.dts | 2 +-
+ arch/arm/boot/dts/nxp/vf/vfxxx.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-index 16b567e3cb47..b4fdcf9c02b5 100644
---- a/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-+++ b/arch/arm/boot/dts/ti/omap/am335x-boneblack.dts
-@@ -35,7 +35,7 @@ &gpio0 {
- 		"P9_18 [spi0_d1]",
- 		"P9_17 [spi0_cs0]",
- 		"[mmc0_cd]",
--		"P8_42A [ecappwm0]",
-+		"P9_42A [ecappwm0]",
- 		"P8_35 [lcd d12]",
- 		"P8_33 [lcd d13]",
- 		"P8_31 [lcd d14]",
+diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+index 597f20be82f1..62e555bf6a71 100644
+--- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
++++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+@@ -603,7 +603,7 @@ usbmisc1: usb@400b4800 {
+ 
+ 			ftm: ftm@400b8000 {
+ 				compatible = "fsl,ftm-timer";
+-				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
++				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
+ 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clock-names = "ftm-evt", "ftm-src",
+ 					"ftm-evt-counter-en", "ftm-src-counter-en";
 -- 
 2.39.5
 
