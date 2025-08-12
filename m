@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1972AB232CD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0A8B23424
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E431B2A2209
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D93D7AC83E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FA92DFA3E;
-	Tue, 12 Aug 2025 18:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F08F2F5481;
+	Tue, 12 Aug 2025 18:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QH/sPQ9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLS0d5Yv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3181A61FFE;
-	Tue, 12 Aug 2025 18:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7082FA0CD;
+	Tue, 12 Aug 2025 18:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022635; cv=none; b=sbFmBcIY+cCmCDttnfwvxmYmY7c4RTwxVZNnih1VOFHF8CkTGbWb0xLpfOGx1naJW1GF9f4zPgZPwb5IwyqDrQGQGpots6PSye3ewcxQLpW/sR7/keouzhaM3ItOAImRMOpj0/BZ+8uhEhMbVH1KmaSj0OGJmNOZfCgYsHHqpno=
+	t=1755023788; cv=none; b=lmEv0bd7rOtSvED3fi8jcyC8vE6KMkBwF5J/i6JJGlxXODp74lex/50d7wA7lWdKHe4CqXiGTUaYblS/9JCyEDQSTO5bUH7AM74m/D51uEq/8oWhw19F6dWj36eR9dute6oqLdoqB8OIp6CthDJ8lrZJtsQaIVVFtMGhcPoNIfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022635; c=relaxed/simple;
-	bh=2NhMcA2h85UBndp3Y++bCgW6paMTRe5ORL7XLP6EcfY=;
+	s=arc-20240116; t=1755023788; c=relaxed/simple;
+	bh=WLHwEpyUMgQdpUBOL4yoFVAm3VGk0cMdjSRAhRdbThs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU5Eiy9jm3BhfcelkiueUPKNLYYyjZjSvuq9z6GLdTZk4jJjdF9PdPLUPsVy7k+3pVV/U77lVIr3NAWjb9eli9dfzZUxrmLOexPHOcEmk16Skwo8fJyugXjNfowKhbKVETD2xtgwXroMVe6iQwW4EvMfl2+JuYS7rYCFTgrm9qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QH/sPQ9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDDDC4CEF0;
-	Tue, 12 Aug 2025 18:17:14 +0000 (UTC)
+	 MIME-Version; b=fg/6LErUub7/2QRl8FcHOBuht3jt9tvEbWSzYIcoN2uFo1WKSSlO8zEj7hVA/JkNw7Ka6mEBNLdZP2xaldFLQgly2qpcphiF4yybQfWIRUZnpJoRHy8b83n8FDoagd6V/A8JhXZHncGa9xHDXSwjYj6GXHAX7E1GB0sSCw3jkXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLS0d5Yv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899F2C4CEF0;
+	Tue, 12 Aug 2025 18:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022634;
-	bh=2NhMcA2h85UBndp3Y++bCgW6paMTRe5ORL7XLP6EcfY=;
+	s=korg; t=1755023788;
+	bh=WLHwEpyUMgQdpUBOL4yoFVAm3VGk0cMdjSRAhRdbThs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QH/sPQ9R9qOAmQnwxfJ7ckXQUOEthQzEAduEDWLk40S0JC9QCiuotNuOQVo8YVIWY
-	 g9klZDE+wh9WrpinNWtH6dUPrBaqwRMhaYtlfCIczdT+BMy4asoeMNDtzPsGHtrnn+
-	 ZO5iwS7GdEdPWPX6sUo1jIyuvXdVhd7coRGyd/dI=
+	b=tLS0d5Yvz/ya29tCzonwOb/HPWfEEhYvzH5Hi71IIkFMfDw3NAm3zaO46mnLI8Fx6
+	 3qCrGkvaGw8X7aaOKxRZXHqCPz4qYPzjDlR5cRmBReivQv8I/+ssFkMq3Buboxaewh
+	 4ybo0c6JCC5mjKJcfjbFeGptkMvDlmuhIznknwKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/369] perf sched: Fix memory leaks in perf sched map
+Subject: [PATCH 6.16 182/627] m68k: Dont unregister boot console needlessly
 Date: Tue, 12 Aug 2025 19:27:57 +0200
-Message-ID: <20250812173021.546168110@linuxfoundation.org>
+Message-ID: <20250812173426.202931474@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit dc3a80c98884d86389b3b572c50ccc7f502cd41b ]
+[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
 
-It maintains per-cpu pointers for the current thread but it doesn't
-release the refcounts.
+When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
+generate console output. That will continue to work even after
+debug_cons_nputs() becomes unavailable so there's no need to
+unregister the boot console.
 
-Fixes: 5e895278697c014e ("perf sched: Move curr_thread initialization to perf_sched__map()")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-4-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Take the opportunity to remove a repeated MACH_IS_* test. Use the
+actual .write method (instead of a wrapper) and test that pointer
+instead. This means adding an unused parameter to debug_cons_nputs() for
+consistency with the struct console API.
+
+early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
+head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
+depend on the latter, to obviate some ifdef conditionals.
+
+Cc: Daniel Palmer <daniel@0x0f.com>
+Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ arch/m68k/Kconfig.debug         |  2 +-
+ arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
+ arch/m68k/kernel/head.S         |  8 +++----
+ 3 files changed, 19 insertions(+), 33 deletions(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index c55388b36ac5..cd15c0cba9b2 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -1639,6 +1639,7 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
- 	const char *color = PERF_COLOR_NORMAL;
- 	char stimestamp[32];
- 	const char *str;
-+	int ret = -1;
+diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
+index 30638a6e8edc..d036f903864c 100644
+--- a/arch/m68k/Kconfig.debug
++++ b/arch/m68k/Kconfig.debug
+@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
  
- 	BUG_ON(this_cpu.cpu >= MAX_CPUS || this_cpu.cpu < 0);
+ config EARLY_PRINTK
+ 	bool "Early printk"
+-	depends on !(SUN3 || M68000 || COLDFIRE)
++	depends on MMU_MOTOROLA
+ 	help
+ 	  Write kernel log output directly to a serial port.
+ 	  Where implemented, output goes to the framebuffer as well.
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index f11ef9f1f56f..521cbb8a150c 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -16,25 +16,10 @@
+ #include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
  
-@@ -1669,17 +1670,20 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
- 	sched_in = map__findnew_thread(sched, machine, -1, next_pid);
- 	sched_out = map__findnew_thread(sched, machine, -1, prev_pid);
- 	if (sched_in == NULL || sched_out == NULL)
--		return -1;
-+		goto out;
- 
- 	tr = thread__get_runtime(sched_in);
--	if (tr == NULL) {
--		thread__put(sched_in);
--		return -1;
--	}
-+	if (tr == NULL)
-+		goto out;
-+
-+	thread__put(sched->curr_thread[this_cpu.cpu]);
-+	thread__put(sched->curr_out_thread[this_cpu.cpu]);
- 
- 	sched->curr_thread[this_cpu.cpu] = thread__get(sched_in);
- 	sched->curr_out_thread[this_cpu.cpu] = thread__get(sched_out);
- 
-+	ret = 0;
-+
- 	str = thread__comm_str(sched_in);
- 	new_shortname = 0;
- 	if (!tr->shortname[0]) {
-@@ -1774,12 +1778,10 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
- 	color_fprintf(stdout, color, "\n");
- 
- out:
--	if (sched->map.task_name)
--		thread__put(sched_out);
+-asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
 -
-+	thread__put(sched_out);
- 	thread__put(sched_in);
+-static void __ref debug_cons_write(struct console *c,
+-				   const char *s, unsigned n)
+-{
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME147)
+-		mvme147_scc_write(c, s, n);
+-	else if (MACH_IS_MVME16x)
+-		mvme16x_cons_write(c, s, n);
+-	else
+-		debug_cons_nputs(s, n);
+-#endif
+-}
++asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
  
--	return 0;
-+	return ret;
+ static struct console early_console_instance = {
+ 	.name  = "debug",
+-	.write = debug_cons_write,
+ 	.flags = CON_PRINTBUFFER | CON_BOOT,
+ 	.index = -1
+ };
+@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
+ 	if (early_console || buf)
+ 		return 0;
+ 
++	if (MACH_IS_MVME147)
++		early_console_instance.write = mvme147_scc_write;
++	else if (MACH_IS_MVME16x)
++		early_console_instance.write = mvme16x_cons_write;
++	else
++		early_console_instance.write = debug_cons_nputs;
+ 	early_console = &early_console_instance;
+ 	register_console(early_console);
+ 
+@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
  }
+ early_param("earlyprintk", setup_early_printk);
  
- static int process_sched_switch_event(const struct perf_tool *tool,
-@@ -3546,10 +3548,10 @@ static int perf_sched__map(struct perf_sched *sched)
+-/*
+- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
+- * after init sections are discarded (for platforms that use it).
+- */
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-
+ static int __init unregister_early_console(void)
+ {
+-	if (!early_console || MACH_IS_MVME16x)
+-		return 0;
++	/*
++	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
++	 * called after init sections are discarded (for platforms that use it).
++	 */
++	if (early_console && early_console->write == debug_cons_nputs)
++		return unregister_console(early_console);
  
- 	sched->curr_out_thread = calloc(MAX_CPUS, sizeof(*(sched->curr_out_thread)));
- 	if (!sched->curr_out_thread)
--		return rc;
-+		goto out_free_curr_thread;
- 
- 	if (setup_cpus_switch_event(sched))
--		goto out_free_curr_thread;
-+		goto out_free_curr_out_thread;
- 
- 	if (setup_map_cpus(sched))
- 		goto out_free_cpus_switch_event;
-@@ -3580,7 +3582,14 @@ static int perf_sched__map(struct perf_sched *sched)
- out_free_cpus_switch_event:
- 	free_cpus_switch_event(sched);
- 
-+out_free_curr_out_thread:
-+	for (int i = 0; i < MAX_CPUS; i++)
-+		thread__put(sched->curr_out_thread[i]);
-+	zfree(&sched->curr_out_thread);
-+
- out_free_curr_thread:
-+	for (int i = 0; i < MAX_CPUS; i++)
-+		thread__put(sched->curr_thread[i]);
- 	zfree(&sched->curr_thread);
- 	return rc;
+-	return unregister_console(early_console);
++	return 0;
  }
+ late_initcall(unregister_early_console);
+-
+-#endif
+diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
+index 852255cf60de..ba22bc2f3d6d 100644
+--- a/arch/m68k/kernel/head.S
++++ b/arch/m68k/kernel/head.S
+@@ -3263,8 +3263,8 @@ func_return	putn
+  *	turns around and calls the internal routines.  This routine
+  *	is used by the boot console.
+  *
+- *	The calling parameters are:
+- *		void debug_cons_nputs(const char *str, unsigned length)
++ *	The function signature is -
++ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
+  *
+  *	This routine does NOT understand variable arguments only
+  *	simple strings!
+@@ -3273,8 +3273,8 @@ ENTRY(debug_cons_nputs)
+ 	moveml	%d0/%d1/%a0,%sp@-
+ 	movew	%sr,%sp@-
+ 	ori	#0x0700,%sr
+-	movel	%sp@(18),%a0		/* fetch parameter */
+-	movel	%sp@(22),%d1		/* fetch parameter */
++	movel	%sp@(22),%a0		/* char *s */
++	movel	%sp@(26),%d1		/* unsigned int n */
+ 	jra	2f
+ 1:
+ #ifdef CONSOLE_DEBUG
 -- 
 2.39.5
 
