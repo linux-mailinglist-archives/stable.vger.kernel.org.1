@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-167560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0D7B230B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF72FB2318E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E580F686C9E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0305F7AB087
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983FD2FAC02;
-	Tue, 12 Aug 2025 17:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F952FE575;
+	Tue, 12 Aug 2025 18:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSWLrMSc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdCVJzI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F6D2D5C76;
-	Tue, 12 Aug 2025 17:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349C92F745E;
+	Tue, 12 Aug 2025 18:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021227; cv=none; b=uGVtOMvWNq6EflLoQ4e4158sp+oBHAqz134O7QQheiu3mvaLcZ5e/8sbbzQy7HDuL+p2/qdP0/ZJzMVhTgxv4ISr1cnGa1Dq8ydAsBor4RUp7QytK1AS9/c97B9wXa4aM/n6WvBv+IpVQtWIZ3llIkhYsgqWUElx/kZ+emfjGnI=
+	t=1755021924; cv=none; b=Tp5bihN2kwuYEWDR236IoSDFaybiTSr5evwxm12H1+we+hL0Ye7q/CtRUSfjFIMb5ZtZy34GJkBybWGFJRSCar/OOc3Ykaqks38omO65XFMuJos/QlJkdCMvv08+QmhFbcBrOHdb0CLI6tEA+GI6p08lMQFeftpis+0/3x3/dGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021227; c=relaxed/simple;
-	bh=ztdnRo9YLcW/x6vdtODEJcI5JMFavSUzovJSfrpEar0=;
+	s=arc-20240116; t=1755021924; c=relaxed/simple;
+	bh=B1LUs22AAF9ZXm49kRSDiFiv1eUx8eGuA03xx+75f4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u94iGw4q7TATUhUaUzKncugHFxSgl2+MCNNChEsLilvnKs6WlCn4cGAMiXiKXN+WryMUfK5+hEitBtTGJM1VqXMhgtxF7NC3oxHyDkUU7C7359M6TUm5nPMjhiIdJfWiIG0FgAn/QOYDyPxGZ7Qn/9ubN8DyIgH+1YlZ/dEb8QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSWLrMSc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7866C4CEF1;
-	Tue, 12 Aug 2025 17:53:46 +0000 (UTC)
+	 MIME-Version; b=UonDFQRdouOrKplxvtWumF/U8LtP0ssyg2k4QPH2cwxUQ7QUbCKroOqEHfp67a79JffNZ7lVo6FFETsTnjt7g0aSfPvW/RxoDmPhgRRlArz1YLQKVubnbZGV8uUnqjTThqSa90v/xErkptm9iZVbFUb7kJGzBfnze/CWkgAISGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdCVJzI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2B6C4CEF0;
+	Tue, 12 Aug 2025 18:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021227;
-	bh=ztdnRo9YLcW/x6vdtODEJcI5JMFavSUzovJSfrpEar0=;
+	s=korg; t=1755021924;
+	bh=B1LUs22AAF9ZXm49kRSDiFiv1eUx8eGuA03xx+75f4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSWLrMSccqYtEHKmgJAhkirbmr37w734s1XlpHbjT17Arj26xHy1o4YwPwnCDpakZ
-	 FmkB0wPzAMGCVeu3RpEMYN1NFSb23d3zjoTJbH4BVG1Bn/Gsk/ck+ZKtG8ZggyRWcK
-	 Vqan4k5LJF7lwH8fLrb3BznseSkb1nxDL9oL0LCI=
+	b=ZdCVJzI10BvaEFSq7ZuXWxRHhewPtUDGlqrDNEUQBVB/QUOw5UkxZt85xaP+WlBM3
+	 j5DlvvkEHDoDtvDDOHKAhp/LUB83Qg4YUbGAd2c59WlVFLEQr4KRfDB5MLfGXr2aT0
+	 Rt6fVlb912DzSbCIyKuSccUGVixP5P4PQq8rvx80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 232/253] pptp: fix pptp_xmit() error path
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH 6.6 232/262] perf/core: Exit early on perf_mmap() fail
 Date: Tue, 12 Aug 2025 19:30:20 +0200
-Message-ID: <20250812172958.700455606@linuxfoundation.org>
+Message-ID: <20250812173003.036805141@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit ae633388cae349886f1a3cfb27aa092854b24c1b ]
+commit 07091aade394f690e7b655578140ef84d0e8d7b0 upstream.
 
-I accidentally added a bug in pptp_xmit() that syzbot caught for us.
+When perf_mmap() fails to allocate a buffer, it still invokes the
+event_mapped() callback of the related event. On X86 this might increase
+the perf_rdpmc_allowed reference counter. But nothing undoes this as
+perf_mmap_close() is never called in this case, which causes another
+reference count leak.
 
-Only call ip_rt_put() if a route has been allocated.
+Return early on failure to prevent that.
 
-BUG: unable to handle page fault for address: ffffffffffffffdb
-PGD df3b067 P4D df3b067 PUD df3d067 PMD 0
-Oops: Oops: 0002 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 6346 Comm: syz.0.336 Not tainted 6.16.0-next-20250804-syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:arch_atomic_add_return arch/x86/include/asm/atomic.h:85 [inline]
-RIP: 0010:raw_atomic_sub_return_release include/linux/atomic/atomic-arch-fallback.h:846 [inline]
-RIP: 0010:atomic_sub_return_release include/linux/atomic/atomic-instrumented.h:327 [inline]
-RIP: 0010:__rcuref_put include/linux/rcuref.h:109 [inline]
-RIP: 0010:rcuref_put+0x172/0x210 include/linux/rcuref.h:173
-Call Trace:
- <TASK>
- dst_release+0x24/0x1b0 net/core/dst.c:167
- ip_rt_put include/net/route.h:285 [inline]
- pptp_xmit+0x14b/0x1a90 drivers/net/ppp/pptp.c:267
- __ppp_channel_push+0xf2/0x1c0 drivers/net/ppp/ppp_generic.c:2166
- ppp_channel_push+0x123/0x660 drivers/net/ppp/ppp_generic.c:2198
- ppp_write+0x2b0/0x400 drivers/net/ppp/ppp_generic.c:544
- vfs_write+0x27b/0xb30 fs/read_write.c:684
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: de9c4861fb42 ("pptp: ensure minimal skb length in pptp_xmit()")
-Reported-by: syzbot+27d7cfbc93457e472e00@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/689095a5.050a0220.1fc43d.0009.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250807142146.2877060-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1e0fb9ec679c ("perf/core: Add pmu callbacks to track event mapping and unmapping")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ppp/pptp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/events/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index 951dac268adb..bf011bbb6105 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -159,17 +159,17 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 	int len;
- 	unsigned char *data;
- 	__u32 seq_recv;
--	struct rtable *rt = NULL;
-+	struct rtable *rt;
- 	struct net_device *tdev;
- 	struct iphdr  *iph;
- 	int    max_headroom;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6718,6 +6718,9 @@ aux_unlock:
+ 		mutex_unlock(aux_mutex);
+ 	mutex_unlock(&event->mmap_mutex);
  
- 	if (sk_pppox(po)->sk_state & PPPOX_DEAD)
--		goto tx_error;
-+		goto tx_drop;
- 
- 	rt = pptp_route_output(po, &fl4);
- 	if (IS_ERR(rt))
--		goto tx_error;
-+		goto tx_drop;
- 
- 	tdev = rt->dst.dev;
- 
-@@ -265,6 +265,7 @@ static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 
- tx_error:
- 	ip_rt_put(rt);
-+tx_drop:
- 	kfree_skb(skb);
- 	return 1;
- }
--- 
-2.39.5
-
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Since pinned accounting is per vm we cannot allow fork() to copy our
+ 	 * vma.
 
 
 
