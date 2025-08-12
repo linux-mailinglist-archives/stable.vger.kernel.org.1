@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-168201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8040B23402
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBF3B2320D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:13:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C4231A2250B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 073001AA5FBA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612852FD1A2;
-	Tue, 12 Aug 2025 18:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6BA280037;
+	Tue, 12 Aug 2025 18:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGpykUz4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rh1v0Q8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D476BB5B;
-	Tue, 12 Aug 2025 18:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA8F2D97BF;
+	Tue, 12 Aug 2025 18:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023386; cv=none; b=GDiymHrtUMLy1iyehh6itZbXnL+69AIBwkZ0oBxN2FlLeXSkUkyKX0/FEFf5IMiIwUtH47phitr+J2Rp/bXY8h19WKSxNGWoxIleHDhaQUMPoc+lU4brYrGyb9OvctSqwf0uGwkLRNIJm25ZBHFTQB9Vt4NYqra9vrhMX+EB32w=
+	t=1755022039; cv=none; b=jfUqz/CXLoVOthRsF6lgS+tM3K/p5pI+tg+d0lNjofK4BJeK1Ynb+Ikmr5/6KXxODLYlVr6T5lCitCPn2ABFeUMjX9b9rg5olfsP9SUjb1iSmj4BkqbcGfjpeVMAybh1neVPN3QKh5iJV+o9kUfNGEXa5PCGQpybUBP+bNSajUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023386; c=relaxed/simple;
-	bh=EznXsfCJZh+y9395wBjrBDI10+r8QC8COSPGobHgLPg=;
+	s=arc-20240116; t=1755022039; c=relaxed/simple;
+	bh=dZurd/66WjPN6fXwFfQYY25O5f3mCXyL3YVUQKHDjq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hh12KBfASA3n0NsYH8gMuvA1X6ZQ9r6jPxO1t7DUltp8tSn1hMZy+fGzNORzBt8jkRqOcP02LExZrO2hO8qSap6CivHJIlfxLzKhe6BzJ6c/HlmyekooU+VRXdIO3oAKKeezwXZE4clfMIsdjY/7M1ns9WYy19oy3naUFyVKmhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGpykUz4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71536C4CEF0;
-	Tue, 12 Aug 2025 18:29:45 +0000 (UTC)
+	 MIME-Version; b=PO9D5J4m0i5G5/jNzP3jeUOFaf++JQDRyP0ENbC8GrCnCMUO5a0V7CJpKAQr/FL+Pa4fWdpfiETei9Rlss2HVXQSlrnljgBkJSmjXMkghyaTCeeDdkugaboBJSf4vhkYKq65DKf9l/DCrrS8SWLfkfs674q45nbgFek2+zHQQSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh1v0Q8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC43C4CEF0;
+	Tue, 12 Aug 2025 18:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023385;
-	bh=EznXsfCJZh+y9395wBjrBDI10+r8QC8COSPGobHgLPg=;
+	s=korg; t=1755022038;
+	bh=dZurd/66WjPN6fXwFfQYY25O5f3mCXyL3YVUQKHDjq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGpykUz4H7O+EFZMS/5F/88AGDG1z2OIUr2EfaBVUk43DWxz63ydFe/0nHZM6/b6w
-	 RDzHzZe49O+cTQNUjs+y8yOjhe1bagTR4tvmXgytfIpku1NwmzKCheUh99qUzc3vQf
-	 jcT3maqMs+mWLcKOkZ7s2ohP7cQxid+siaWLzMCQ=
+	b=Rh1v0Q8J2C3u35++ndNRXZLI15n8s09Vv+/F7qPZXH3e1OSiqMig/AWjQTOYalpYF
+	 tEZRKZkkfj1DkmRfgZmf2MvuTfXUvoe+FgWJi915G7VWlfn5zrXP7314TwLQtXNtZl
+	 0K+lf2aC/URTLQ7AS4+BTBgRrqQk086rdOTnu4Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Seungjin Bae <eeodqql09@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 031/627] ASOC: rockchip: fix capture stream handling in rockchip_sai_xfer_stop
-Date: Tue, 12 Aug 2025 19:25:26 +0200
-Message-ID: <20250812173420.511793054@linuxfoundation.org>
+Subject: [PATCH 6.12 030/369] usb: host: xhci-plat: fix incorrect type for of_match variable in xhci_plat_probe()
+Date: Tue, 12 Aug 2025 19:25:27 +0200
+Message-ID: <20250812173015.886910667@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 5dc302d00807b8916992dd25a7a22b78d07dcd03 ]
+[ Upstream commit d9e496a9fb4021a9e6b11e7ba221a41a2597ac27 ]
 
-Correcting the capture stream handling which was incorrectly setting
-playback=true for capture streams.
+The variable `of_match` was incorrectly declared as a `bool`.
+It is assigned the return value of of_match_device(), which is a pointer of
+type `const struct of_device_id *`.
 
-The original code mistakenly set playback=true for capture streams,
-causing incorrect behavior.
-
-Fixes: cc78d1eaabad ("ASoC: rockchip: add Serial Audio Interface (SAI) driver")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Tested-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Acked-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Link: https://patch.msgid.link/c374aae92c177aaf42c0f1371eccdbc7e9615786.1749201126.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 16b7e0cccb243 ("USB: xhci-plat: fix legacy PHY double init")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20250619055746.176112-2-eeodqql09@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/rockchip/rockchip_sai.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/usb/host/xhci-plat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/rockchip/rockchip_sai.c b/sound/soc/rockchip/rockchip_sai.c
-index 602f1ddfad00..916af63f1c2c 100644
---- a/sound/soc/rockchip/rockchip_sai.c
-+++ b/sound/soc/rockchip/rockchip_sai.c
-@@ -378,19 +378,9 @@ static void rockchip_sai_xfer_start(struct rk_sai_dev *sai, int stream)
- static void rockchip_sai_xfer_stop(struct rk_sai_dev *sai, int stream)
- {
- 	unsigned int msk = 0, val = 0, clr = 0;
--	bool playback;
--	bool capture;
--
--	if (stream < 0) {
--		playback = true;
--		capture = true;
--	} else if (stream == SNDRV_PCM_STREAM_PLAYBACK) {
--		playback = true;
--		capture = false;
--	} else {
--		playback = true;
--		capture = false;
--	}
-+	bool capture = stream == SNDRV_PCM_STREAM_CAPTURE || stream < 0;
-+	bool playback = stream == SNDRV_PCM_STREAM_PLAYBACK || stream < 0;
-+	/* could be <= 0 but we don't want to depend on enum values */
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 3a9bdf916755..8cf278a40bd9 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -152,7 +152,7 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 	int			ret;
+ 	int			irq;
+ 	struct xhci_plat_priv	*priv = NULL;
+-	bool			of_match;
++	const struct of_device_id *of_match;
  
- 	if (playback) {
- 		msk |= SAI_XFER_TXS_MASK;
+ 	if (usb_disabled())
+ 		return -ENODEV;
 -- 
 2.39.5
 
