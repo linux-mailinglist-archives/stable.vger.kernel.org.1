@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2298B234EC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5F7B23197
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A545E5862D0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93033174BDC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F235F2FDC4F;
-	Tue, 12 Aug 2025 18:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9021B2FE584;
+	Tue, 12 Aug 2025 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zd1SEmza"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaAVVYMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0912F4A0A;
-	Tue, 12 Aug 2025 18:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF922FDC22;
+	Tue, 12 Aug 2025 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024210; cv=none; b=Q+pZM/aTmhpg8cXoA0YsjFR+sJAKB1piEGup1zJNiDRKjVlMj2gRAyqd/MVoFi/t9X9f6Q5Hk5EmL3SzgeHpUqEWfuOO6wQDFWXcETYF1H+7ni/zqrfq5xv27/jBKDC5edBM63Mym0a5VG7NqxMldAKAegjRGFBtVU6g4/eafM4=
+	t=1755021745; cv=none; b=fWS56fCYgeIpW6flQJSGGRCcpKT+pCEqdArPzxZY1eVzfmgFBe19B/OGcv1lG+kBmR0krJEiTdk0tdQAolA7+9+0nak1azl4vqFNt5oQ5+Ar0rU7sd7O7/d4NRHvnL3H3uMM1sLkGIncMpkf7sUnOpOFLPOx/4dtmZsgNPjlrWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024210; c=relaxed/simple;
-	bh=awJDRcdCgaTe8R30AvBtaxYs5t0z9rZbXtbpC5BGPCY=;
+	s=arc-20240116; t=1755021745; c=relaxed/simple;
+	bh=mNh84vIhVZNLZG79sVnEYqyYeY8ZF1MqtMY543e+RX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0JsodAzO1joovlE1IQRHGBxMmisbu213IQbOwdTScdqsHqylYXmbIRrJ8LNIviNv5VG85qsQq+hZr1SAI77ysgzdtB/8VmDBI3ey5zgbp1XOujjPGdmmjS30mMOHwI70Lj93QhHtEyQDN1VoSqc1iBAjHXb57CDoANu57daT+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zd1SEmza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A030C4CEF0;
-	Tue, 12 Aug 2025 18:43:29 +0000 (UTC)
+	 MIME-Version; b=o4vtQ9gT9UYamrIR6O33zAJG9HEQ/fD3dz/IlfwuQyvTZq7obJQVS09vtjZUWBCVuDcPlirUzJ1L3ReiZwwvc0CfotGtFC/z7J1EzTriOHDmtzeudiZksLxQeIc0uPhAJ83VRCpric4jlF+/6Nvy0ibtl+gPJrF8GWBdLNxEjxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaAVVYMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97E6C4CEF0;
+	Tue, 12 Aug 2025 18:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024210;
-	bh=awJDRcdCgaTe8R30AvBtaxYs5t0z9rZbXtbpC5BGPCY=;
+	s=korg; t=1755021745;
+	bh=mNh84vIhVZNLZG79sVnEYqyYeY8ZF1MqtMY543e+RX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zd1SEmzalIyUUW01jiFGsvri7swCeUUB8rfXQrAtLqQRcBCf+hRdvVxKRv3w662hG
-	 GmdrRI5aQrRpVkrEwmpDCKVcUl+t0oC1zycRyWn2tP1wkIet4DkECELTdAoKy7xuD8
-	 sZm0YiSFGR8AI7IqGUdGOkZsfdgNm44BEWIj31HA=
+	b=jaAVVYMskI8RmyaugxyfedfIq0vhV1/8Z/e1AfRKSIFdsJOnvsZbH5/TMUEaHMKhJ
+	 rxGVYIMGH0TNAo2216/MOisQHQGHwHYCFsWMZoQEUAli60kIivSTJArLldMi89z9nk
+	 nnKE1tn+7KkFIQCy0NasOoaka7Xt28OF7obHHCgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Trond Myklebust <trondmy@hammerspace.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 305/627] crypto: s390/hmac - Fix counter in export state
+Subject: [PATCH 6.6 212/262] sunrpc: fix client side handling of tls alerts
 Date: Tue, 12 Aug 2025 19:30:00 +0200
-Message-ID: <20250812173430.915737575@linuxfoundation.org>
+Message-ID: <20250812173002.176008982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 1b39bc4a703a63a22c08232015540adfb31f22ba ]
+[ Upstream commit cc5d59081fa26506d02de2127ab822f40d88bc5a ]
 
-The hmac export state needs to be one block-size bigger to account
-for the ipad.
+A security exploit was discovered in NFS over TLS in tls_alert_recv
+due to its assumption that there is valid data in the msghdr's
+iterator's kvec.
 
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Fixes: 08811169ac01 ("crypto: s390/hmac - Use API partial block handling")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Instead, this patch proposes the rework how control messages are
+setup and used by sock_recvmsg().
+
+If no control message structure is setup, kTLS layer will read and
+process TLS data record types. As soon as it encounters a TLS control
+message, it would return an error. At that point, NFS can setup a kvec
+backed control buffer and read in the control message such as a TLS
+alert. Scott found that a msg iterator can advance the kvec pointer
+as a part of the copy process thus we need to revert the iterator
+before calling into the tls_alert_recv.
+
+Fixes: dea034b963c8 ("SUNRPC: Capture CMSG metadata on client-side receive")
+Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
+Suggested-by: Scott Mayhew <smayhew@redhat.com>
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Link: https://lore.kernel.org/r/20250731180058.4669-3-okorniev@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/crypto/hmac_s390.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/sunrpc/xprtsock.c | 40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/arch/s390/crypto/hmac_s390.c b/arch/s390/crypto/hmac_s390.c
-index 93a1098d9f8d..58444da9b004 100644
---- a/arch/s390/crypto/hmac_s390.c
-+++ b/arch/s390/crypto/hmac_s390.c
-@@ -290,6 +290,7 @@ static int s390_hmac_export(struct shash_desc *desc, void *out)
- 	struct s390_kmac_sha2_ctx *ctx = shash_desc_ctx(desc);
- 	unsigned int bs = crypto_shash_blocksize(desc->tfm);
- 	unsigned int ds = bs / 2;
-+	u64 lo = ctx->buflen[0];
- 	union {
- 		u8 *u8;
- 		u64 *u64;
-@@ -301,9 +302,10 @@ static int s390_hmac_export(struct shash_desc *desc, void *out)
- 	else
- 		memcpy(p.u8, ctx->param, ds);
- 	p.u8 += ds;
--	put_unaligned(ctx->buflen[0], p.u64++);
-+	lo += bs;
-+	put_unaligned(lo, p.u64++);
- 	if (ds == SHA512_DIGEST_SIZE)
--		put_unaligned(ctx->buflen[1], p.u64);
-+		put_unaligned(ctx->buflen[1] + (lo < bs), p.u64);
- 	return err;
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index f90d84492bbe..99bb3e762af4 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -358,7 +358,7 @@ xs_alloc_sparse_pages(struct xdr_buf *buf, size_t want, gfp_t gfp)
+ 
+ static int
+ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
+-		     struct cmsghdr *cmsg, int ret)
++		     unsigned int *msg_flags, struct cmsghdr *cmsg, int ret)
+ {
+ 	u8 content_type = tls_get_record_type(sock->sk, cmsg);
+ 	u8 level, description;
+@@ -371,7 +371,7 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
+ 		 * record, even though there might be more frames
+ 		 * waiting to be decrypted.
+ 		 */
+-		msg->msg_flags &= ~MSG_EOR;
++		*msg_flags &= ~MSG_EOR;
+ 		break;
+ 	case TLS_RECORD_TYPE_ALERT:
+ 		tls_alert_recv(sock->sk, msg, &level, &description);
+@@ -386,19 +386,33 @@ xs_sock_process_cmsg(struct socket *sock, struct msghdr *msg,
  }
  
-@@ -316,14 +318,16 @@ static int s390_hmac_import(struct shash_desc *desc, const void *in)
- 		const u8 *u8;
- 		const u64 *u64;
- 	} p = { .u8 = in };
-+	u64 lo;
- 	int err;
+ static int
+-xs_sock_recv_cmsg(struct socket *sock, struct msghdr *msg, int flags)
++xs_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags, int flags)
+ {
+ 	union {
+ 		struct cmsghdr	cmsg;
+ 		u8		buf[CMSG_SPACE(sizeof(u8))];
+ 	} u;
++	u8 alert[2];
++	struct kvec alert_kvec = {
++		.iov_base = alert,
++		.iov_len = sizeof(alert),
++	};
++	struct msghdr msg = {
++		.msg_flags = *msg_flags,
++		.msg_control = &u,
++		.msg_controllen = sizeof(u),
++	};
+ 	int ret;
  
- 	err = s390_hmac_sha2_init(desc);
- 	memcpy(ctx->param, p.u8, ds);
- 	p.u8 += ds;
--	ctx->buflen[0] = get_unaligned(p.u64++);
-+	lo = get_unaligned(p.u64++);
-+	ctx->buflen[0] = lo - bs;
- 	if (ds == SHA512_DIGEST_SIZE)
--		ctx->buflen[1] = get_unaligned(p.u64);
-+		ctx->buflen[1] = get_unaligned(p.u64) - (lo < bs);
- 	if (ctx->buflen[0] | ctx->buflen[1])
- 		ctx->gr0.ikp = 1;
- 	return err;
+-	msg->msg_control = &u;
+-	msg->msg_controllen = sizeof(u);
+-	ret = sock_recvmsg(sock, msg, flags);
+-	if (msg->msg_controllen != sizeof(u))
+-		ret = xs_sock_process_cmsg(sock, msg, &u.cmsg, ret);
++	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
++		      alert_kvec.iov_len);
++	ret = sock_recvmsg(sock, &msg, flags);
++	if (ret > 0 &&
++	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
++		iov_iter_revert(&msg.msg_iter, ret);
++		ret = xs_sock_process_cmsg(sock, &msg, msg_flags, &u.cmsg,
++					   -EAGAIN);
++	}
+ 	return ret;
+ }
+ 
+@@ -408,7 +422,13 @@ xs_sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags, size_t seek)
+ 	ssize_t ret;
+ 	if (seek != 0)
+ 		iov_iter_advance(&msg->msg_iter, seek);
+-	ret = xs_sock_recv_cmsg(sock, msg, flags);
++	ret = sock_recvmsg(sock, msg, flags);
++	/* Handle TLS inband control message lazily */
++	if (msg->msg_flags & MSG_CTRUNC) {
++		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
++		if (ret == 0 || ret == -EIO)
++			ret = xs_sock_recv_cmsg(sock, &msg->msg_flags, flags);
++	}
+ 	return ret > 0 ? ret + seek : ret;
+ }
+ 
+@@ -434,7 +454,7 @@ xs_read_discard(struct socket *sock, struct msghdr *msg, int flags,
+ 		size_t count)
+ {
+ 	iov_iter_discard(&msg->msg_iter, ITER_DEST, count);
+-	return xs_sock_recv_cmsg(sock, msg, flags);
++	return xs_sock_recvmsg(sock, msg, flags, 0);
+ }
+ 
+ #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
 -- 
 2.39.5
 
