@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BB2B232B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C90B23459
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A5543B4930
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88EF81A222DD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6442FF151;
-	Tue, 12 Aug 2025 18:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB292FD1A2;
+	Tue, 12 Aug 2025 18:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iIaopv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUhrYmJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCC52FF140;
-	Tue, 12 Aug 2025 18:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7512F5481;
+	Tue, 12 Aug 2025 18:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022514; cv=none; b=JIQsSvKMyJkZ2sV5jImD1pofglSUGynezCnHMqj6jQz5lXwvP/1FtN6kkqJGUrkaQ4ZIfu4r1ANHBSGJaWDxPtUMwSJTUFf5eFmhlEQa9LB+fxeE6463WF/1CsqSu1PkQWM0ZD+FqBTd86CLYwvAKgAEAGEWSJVfSdcoxf8ipks=
+	t=1755023659; cv=none; b=CuPcv26S8MgkY+4n/N+oxBo5sVvSUQsazwXYc96cWNzOkRMxAqAuMmaHen9WJdJC0q3AcEzdgdr69/eChKKacDwvERcNCmauL6VmDn2wuYONlILlcE1g7EAYMINNyw+TXsmbgAHohPWmFEaj2EkvAFVADORJ1rOr8qmg2gaIHxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022514; c=relaxed/simple;
-	bh=6bnIt055m9ci9T9VLN9FqSK5qTviPH70pnSog6PTCTk=;
+	s=arc-20240116; t=1755023659; c=relaxed/simple;
+	bh=pvIyUsUIkp+9/E/I78AOzndEqdrfZOjJkdBQ3XpkMTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQR3gHWhmFtq0oh7gAqURlJyJIvp3WSWOZx6HM5LbZidgV1/jPIkskKRqaAURVcIHVIiYPfXTELcjxvWV/Xgxkcou+qEDaZm6wp4f9BoiVTrYOvFycem1vfokVtMsGcEuO1DlFxiUAgjp/TB8zr2Nch4Q1ncuzpjC+uBp2aafYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iIaopv+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D41BC4CEF0;
-	Tue, 12 Aug 2025 18:15:13 +0000 (UTC)
+	 MIME-Version; b=VLwVm49Y99+VnnoHqXQHLHZzJ0EQoBqs8Az4190UUqwVfmJbGV4tVWOvAXJGc37tMIJna6h/mgt73tboaDMbyRVml0JYPM9q5lcCPFAvJ4HpK/Bb5xuCcGPSahPV7fl2FfvPy110D3U/ZZHErSa265wWSaNsb9qU0isnWLPhx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUhrYmJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF725C4CEF0;
+	Tue, 12 Aug 2025 18:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022513;
-	bh=6bnIt055m9ci9T9VLN9FqSK5qTviPH70pnSog6PTCTk=;
+	s=korg; t=1755023659;
+	bh=pvIyUsUIkp+9/E/I78AOzndEqdrfZOjJkdBQ3XpkMTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iIaopv+0IlAztXGjdObA64RfQ9930l8pf0nH7gZBwxy47CworbIV/QKlOrfUWJri
-	 oYT1Oko9ib+Zdfth4NTJk1m6g3WL/t+g4nunTg9dbjjCi6hksxGT8+akIFFGnCAJFg
-	 4UMdm/wrOFOo0u7Bn4/cXn9/nrL0mxeThkcrYbLM=
+	b=BUhrYmJMO8kwJ3slWvQ1MIT3j54SS8+SaLlE5vlkiUIzK2LGTZHIZwv6663qvbQSz
+	 yFezDupF9+likTk1d9JHKf5QQ+hAW0+uPnxspOLwG6dge36oUj2YoFgHUIliQzE8pe
+	 jLKhejbWPNvQH+i8/JaCilfHHcJ9nJAWEqFBc5o0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/369] stmmac: xsk: fix negative overflow of budget in zerocopy mode
+Subject: [PATCH 6.16 145/627] selftests/bpf: fix signedness bug in redir_partial()
 Date: Tue, 12 Aug 2025 19:27:20 +0200
-Message-ID: <20250812173020.152362988@linuxfoundation.org>
+Message-ID: <20250812173424.811965924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Fushuai Wang <wangfushuai@baidu.com>
 
-[ Upstream commit 2764ab51d5f0e8c7d3b7043af426b1883e3bde1d ]
+[ Upstream commit 6a4bd31f680a1d1cf06492fe6dc4f08da09769e6 ]
 
-A negative overflow can happen when the budget number of descs are
-consumed. as long as the budget is decreased to zero, it will again go
-into while (budget-- > 0) statement and get decreased by one, so the
-overflow issue can happen. It will lead to returning true whereas the
-expected value should be false.
+When xsend() returns -1 (error), the check 'n < sizeof(buf)' incorrectly
+treats it as success due to unsigned promotion. Explicitly check for -1
+first.
 
-In this case where all the budget is used up, it means zc function
-should return false to let the poll run again because normally we
-might have more data to process. Without this patch, zc function would
-return true instead.
-
-Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Link: https://patch.msgid.link/20250723142327.85187-2-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a4b7193d8efd ("selftests/bpf: Add sockmap test for redirecting partial skb data")
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Link: https://lore.kernel.org/r/20250612084208.27722-1-wangfushuai@baidu.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/sockmap_listen.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 36328298dc9b..058cd9e9fd71 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2500,7 +2500,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
+index 1d98eee7a2c3..f1bdccc7e4e7 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
+@@ -924,6 +924,8 @@ static void redir_partial(int family, int sotype, int sock_map, int parser_map)
+ 		goto close;
  
- 	budget = min(budget, stmmac_tx_avail(priv, queue));
+ 	n = xsend(c1, buf, sizeof(buf), 0);
++	if (n == -1)
++		goto close;
+ 	if (n < sizeof(buf))
+ 		FAIL("incomplete write");
  
--	while (budget-- > 0) {
-+	for (; budget > 0; budget--) {
- 		struct stmmac_metadata_request meta_req;
- 		struct xsk_tx_metadata *meta = NULL;
- 		dma_addr_t dma_addr;
 -- 
 2.39.5
 
