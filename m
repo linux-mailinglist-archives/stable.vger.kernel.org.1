@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B8AB232E1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC781B234B8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AEE41AA7585
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27FF0625880
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9BC2FA0DF;
-	Tue, 12 Aug 2025 18:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8D62FD1AD;
+	Tue, 12 Aug 2025 18:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igI6KsRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSqmpA9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4B82F5E;
-	Tue, 12 Aug 2025 18:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE40121ABD0;
+	Tue, 12 Aug 2025 18:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022665; cv=none; b=odREEwnMDgdiXzyxanTtAMpmO4p8WHllJZ/4SSZklKHMTixGbd/WNQlcpULZK4u2ZInEUvuM9BriuQeeClcBCC59IAt3iUdT9xxhGPWBROSAc+71YrLG7yqLHMk2V2nBgkmEbBVTHcfWsnCxVQ7aZxlvMYyCAWwW/YWkfTHldfE=
+	t=1755023936; cv=none; b=UBrATD7fm++tqH7cFsMES7Fw2MD/BAbkn1fRXRAoyXhrIJKqHm/CHd0JHafOxOwd70y7lMixZpVBje4FfIFd9agNdjiwNdnB/fLiIDvTuNMUJ5qKtTnIxx3O0gXgdoSvh2lCsfpT1xHe8MeOTb4OOvXwufFzC+VdKxEfg2m8QA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022665; c=relaxed/simple;
-	bh=sGugAO7oRNjXEs3T/MHg8DdzGOzOl6u00SpZIeMh1ls=;
+	s=arc-20240116; t=1755023936; c=relaxed/simple;
+	bh=/O6oJBelGsbXIyKuz4NbLe0Etn0iiNPGlHdD37dZXoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UF6brpdGOeHHNk46uK12CModjfveY2JzHpi2amKUsBUztCI5I5kPPOazBa7O5kl6BldmsiLjzPPTi08QZmjj0sUrLWnBYqMfGp5T0d/u32NoTY144fSa5B9C01t0tPWv2HgpXyHxwqt7YucLA/p/IZmz5zo8lK8AvHnZg/olgng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igI6KsRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A4AC4CEF0;
-	Tue, 12 Aug 2025 18:17:44 +0000 (UTC)
+	 MIME-Version; b=kAPHcHtl6wktmWBvWYqW+KGXZDw/x9wNH1qrGrP+03zRBNlH8ftW3sGI+CZvZyJly5fUL8vEvhcSnfmPJEaklQ+qw1oD8Op+74JIc02f0dhGKDFlSP5ls24sFeR1zqxle5cRbDkEPUg0mJH+4+KBo/AhvXuusMidbbmRy460HUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSqmpA9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3E7C4CEF0;
+	Tue, 12 Aug 2025 18:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022664;
-	bh=sGugAO7oRNjXEs3T/MHg8DdzGOzOl6u00SpZIeMh1ls=;
+	s=korg; t=1755023936;
+	bh=/O6oJBelGsbXIyKuz4NbLe0Etn0iiNPGlHdD37dZXoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igI6KsRrgHtkQa66fSbJd/JzRcJOHTDcqK2wLR6NwTizpurMM7JEA4GQM9PN909tm
-	 HX8G+U+IyUpfY3YR1eqOFupqZESZfgljfIG2Y5Q8fimYmCRF2+4wopTfg/70+XW0jv
-	 Ew1Cd3f1V/4OIYNiVRXHszFDjthprNewqoYD3wck=
+	b=xSqmpA9h81H5NM6rEAHLOr4KnsOjjx8u2fclig3QV9KXL+h52RvQ085WTJwdMPqg6
+	 lL99pBbw+CYbirmXW/Umz+nuHXRZhK8oVU9ijNFVkmV748KWMZ0X3abV77RNfMSPRW
+	 dZbvNM0ov3neCMAoIh7tWl7WNqRrjK8CtirvuLiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/369] fbdev: imxfb: Check fb_add_videomode to prevent null-ptr-deref
+Subject: [PATCH 6.16 225/627] wifi: mac80211: use RCU-safe iteration in ieee80211_csa_finish
 Date: Tue, 12 Aug 2025 19:28:40 +0200
-Message-ID: <20250812173023.148140454@linuxfoundation.org>
+Message-ID: <20250812173427.845472547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
 
-[ Upstream commit da11e6a30e0bb8e911288bdc443b3dc8f6a7cac7 ]
+[ Upstream commit 9975aeebe2908cdd552ee59607754755459fad52 ]
 
-fb_add_videomode() can fail with -ENOMEM when its internal kmalloc() cannot
-allocate a struct fb_modelist.  If that happens, the modelist stays empty but
-the driver continues to register.  Add a check for its return value to prevent
-poteintial null-ptr-deref, which is similar to the commit 17186f1f90d3 ("fbdev:
-Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var").
+The ieee80211_csa_finish() function currently uses for_each_sdata_link()
+to iterate over links of sdata. However, this macro internally uses
+wiphy_dereference(), which expects the wiphy->mtx lock to be held.
+When ieee80211_csa_finish() is invoked under an RCU read-side critical
+section (e.g., under rcu_read_lock()), this leads to a warning from the
+RCU debugging framework.
 
-Fixes: 1b6c79361ba5 ("video: imxfb: Add DT support")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+  WARNING: suspicious RCU usage
+  net/mac80211/cfg.c:3830 suspicious rcu_dereference_protected() usage!
+
+This warning is triggered because wiphy_dereference() is not safe to use
+without holding the wiphy mutex, and it is being used in an RCU context
+without the required locking.
+
+Fix this by introducing and using a new macro, for_each_sdata_link_rcu(),
+which performs RCU-safe iteration over sdata links using
+list_for_each_entry_rcu() and rcu_dereference(). This ensures that the
+link pointers are accessed safely under RCU and eliminates the warning.
+
+Fixes: f600832794c9 ("wifi: mac80211: restructure tx profile retrieval for MLO MBSSID")
+Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250711033846.40455-1-maharaja.kennadyrajan@oss.qualcomm.com
+[unindent like the non-RCU macro]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imxfb.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c         |  2 +-
+ net/mac80211/ieee80211_i.h | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
-index ff343e4ed35b..c0bdfb10f681 100644
---- a/drivers/video/fbdev/imxfb.c
-+++ b/drivers/video/fbdev/imxfb.c
-@@ -1007,8 +1007,13 @@ static int imxfb_probe(struct platform_device *pdev)
- 	info->fix.smem_start = fbi->map_dma;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index bc64c1b83a6e..18ad7ab1bb8c 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3760,7 +3760,7 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id)
+ 		 */
+ 		struct ieee80211_link_data *iter;
  
- 	INIT_LIST_HEAD(&info->modelist);
--	for (i = 0; i < fbi->num_modes; i++)
--		fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+	for (i = 0; i < fbi->num_modes; i++) {
-+		ret = fb_add_videomode(&fbi->mode[i].mode, &info->modelist);
-+		if (ret) {
-+			dev_err(&pdev->dev, "Failed to add videomode\n");
-+			goto failed_cmap;
-+		}
-+	}
+-		for_each_sdata_link(local, iter) {
++		for_each_sdata_link_rcu(local, iter) {
+ 			if (iter->sdata == sdata ||
+ 			    rcu_access_pointer(iter->conf->tx_bss_conf) != tx_bss_conf)
+ 				continue;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 30809f0b35f7..f71d9eeb8abc 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1226,6 +1226,21 @@ struct ieee80211_sub_if_data *vif_to_sdata(struct ieee80211_vif *p)
+ 	if ((_link = wiphy_dereference((_local)->hw.wiphy,		\
+ 				       ___sdata->link[___link_id])))
  
- 	/*
- 	 * This makes sure that our colour bitfield
++/*
++ * for_each_sdata_link_rcu() must be used under RCU read lock.
++ */
++#define for_each_sdata_link_rcu(_local, _link)						\
++	/* outer loop just to define the variables ... */				\
++	for (struct ieee80211_sub_if_data *___sdata = NULL;				\
++	     !___sdata;									\
++	     ___sdata = (void *)~0 /* always stop */)					\
++	list_for_each_entry_rcu(___sdata, &(_local)->interfaces, list)			\
++	if (ieee80211_sdata_running(___sdata))						\
++	for (int ___link_id = 0;							\
++	     ___link_id < ARRAY_SIZE((___sdata)->link);					\
++	     ___link_id++)								\
++	if ((_link = rcu_dereference((___sdata)->link[___link_id])))
++
+ #define for_each_link_data(sdata, __link)					\
+ 	struct ieee80211_sub_if_data *__sdata = sdata;				\
+ 	for (int __link_id = 0;							\
 -- 
 2.39.5
 
