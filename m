@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C031B2323A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF891B22FAA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE06B7AF814
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A177188C63C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8972FFDC4;
-	Tue, 12 Aug 2025 18:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51052FDC3F;
+	Tue, 12 Aug 2025 17:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYaUaLrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgWubKDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269442FF17B;
-	Tue, 12 Aug 2025 18:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CC52FDC25;
+	Tue, 12 Aug 2025 17:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022473; cv=none; b=ILZI7vp3ofmoWTn0kV0BGpoKhbBm8mkzBxyZnNW5TAAwjnn1CWgwodoXfDwL8UMKXUdRFB8a68dRduXqduRd5KUQ2Mf6P/PCKKe9HaozbF84y7E0ao4Sjdas4UfVvJ9qDNKzeeqv0vatgL9w6s+QK+AC9JyCxZlhe8khXEV/GOI=
+	t=1755020411; cv=none; b=a1F5TxtqMOabMf/tiC8jh/MAR/+EXo3/p8KRJfVRmClXAEZ6vH0skiEHpjBMsV1r9HnNIsuDbyAiM63vzkRaNgyjGIRt2Qtlli3+qfY05MXQSVomOJ9/ggx2oCitLchD9e7Is2JeeH0D0b9VWTH19zUKe5vR1Nf8wnZG5eZTONE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022473; c=relaxed/simple;
-	bh=Q6qV85uo+04zpwjM7s4tCk8jhGnd6io7ZW4QrotE+FU=;
+	s=arc-20240116; t=1755020411; c=relaxed/simple;
+	bh=stBtWMfdzY8dAn6zhIn0f1OYTGWBfesdL+odJ4YLRt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpcYi9e7N3PYxP1WWIIAIEibXW+AUdbahtK5KcfT6YQLe7DucSJQChPe4l7cTz3Gxt732wU3Ot8Mcv/HTJcrM/3fkLDXgY9yrBK7dm2hN3pyRwugXgXq9uPRc9ZhHf8R9m3gYwKqZ7UoHVhLXoCuGQTTB+oCgSP6WHl9BrnHx3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYaUaLrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7E1C4CEF6;
-	Tue, 12 Aug 2025 18:14:32 +0000 (UTC)
+	 MIME-Version; b=JOl7LTOE4PrV4GWFSeH5KdbyIcE/NiZPpd02I0NPcFV8A0jo+yPNbc2ug6uuM9Z1L5qI+drgNRAAaGilVV2JUcY0aIGryLRK0p1xhaDeOr5Jkf5tcnb995alcvldwAHCW+bWvB+sbL+66frmZldBTPclHKIZ6o9wjc6qBZiOPQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgWubKDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FBEC4CEF6;
+	Tue, 12 Aug 2025 17:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022473;
-	bh=Q6qV85uo+04zpwjM7s4tCk8jhGnd6io7ZW4QrotE+FU=;
+	s=korg; t=1755020411;
+	bh=stBtWMfdzY8dAn6zhIn0f1OYTGWBfesdL+odJ4YLRt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYaUaLrfrGEiJBEnFDqjlLIwaQEwoPdVd+CiLuV0mLWi9sNh4V6mQYtCEYxeaXcGj
-	 k9pMEQQ7UDQpw8zxvMlE5O43e/k8DhtOvVN4WEisR2UxMpP9Lx715UKDuykFWJBN5o
-	 ZGT6oM7iCpAvrZisYiO/+BNx7o0n7mFzpGssCcB4=
+	b=zgWubKDCW132PJfGPs4Xo58iUPnDPGPPKtm+XeXBC/EwUI6MVVrkx/phjrFuFfXQF
+	 bdfbFrG0igedEYNssHSc9uqf1TUG2MWFYPe+QU8vmkYDDYWG473fToS1SiG9bgjLyv
+	 Ua+5ct+iCkb6ai7R8HgXj+v0Lz85HCpm/mf3cdpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/369] power: supply: max14577: Handle NULL pdata when CONFIG_OF is not set
+Subject: [PATCH 6.1 074/253] ARM: dts: vfxxx: Correctly use two tuples for timer address
 Date: Tue, 12 Aug 2025 19:27:42 +0200
-Message-ID: <20250812173020.981352478@linuxfoundation.org>
+Message-ID: <20250812172951.883182825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 2937f5d2e24eefef8cb126244caec7fe3307f724 ]
+[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
 
-When the kernel is not configured  CONFIG_OF, the max14577_charger_dt_init
-function returns NULL. Fix the max14577_charger_probe functionby returning
--ENODATA instead of potentially passing a NULL pointer to PTR_ERR.
+Address and size-cells are 1 and the ftm timer node takes two address
+spaces in "reg" property, so this should be in two <> tuples.  Change
+has no functional impact, but original code is confusing/less readable.
 
-This fixes the below smatch warning:
-max14577_charger_probe() warn: passing zero to 'PTR_ERR'
-
-Fixes: e30110e9c96f ("charger: max14577: Configure battery-dependent settings from DTS and sysfs")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250519061601.8755-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max14577_charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/vfxxx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/max14577_charger.c b/drivers/power/supply/max14577_charger.c
-index b28c04157709..90d40b35256f 100644
---- a/drivers/power/supply/max14577_charger.c
-+++ b/drivers/power/supply/max14577_charger.c
-@@ -501,7 +501,7 @@ static struct max14577_charger_platform_data *max14577_charger_dt_init(
- static struct max14577_charger_platform_data *max14577_charger_dt_init(
- 		struct platform_device *pdev)
- {
--	return NULL;
-+	return ERR_PTR(-ENODATA);
- }
- #endif /* CONFIG_OF */
+diff --git a/arch/arm/boot/dts/vfxxx.dtsi b/arch/arm/boot/dts/vfxxx.dtsi
+index d53f9c9db8bf..eb7973fb4713 100644
+--- a/arch/arm/boot/dts/vfxxx.dtsi
++++ b/arch/arm/boot/dts/vfxxx.dtsi
+@@ -617,7 +617,7 @@ usbmisc1: usb@400b4800 {
  
-@@ -572,7 +572,7 @@ static int max14577_charger_probe(struct platform_device *pdev)
- 	chg->max14577 = max14577;
- 
- 	chg->pdata = max14577_charger_dt_init(pdev);
--	if (IS_ERR_OR_NULL(chg->pdata))
-+	if (IS_ERR(chg->pdata))
- 		return PTR_ERR(chg->pdata);
- 
- 	ret = max14577_charger_reg_init(chg);
+ 			ftm: ftm@400b8000 {
+ 				compatible = "fsl,ftm-timer";
+-				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
++				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
+ 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clock-names = "ftm-evt", "ftm-src",
+ 					"ftm-evt-counter-en", "ftm-src-counter-en";
 -- 
 2.39.5
 
