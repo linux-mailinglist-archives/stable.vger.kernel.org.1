@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-168449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743D6B23533
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99620B23334
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 926D93B6382
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D70B73B8877
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141BB2FDC33;
-	Tue, 12 Aug 2025 18:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C272ED17F;
+	Tue, 12 Aug 2025 18:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtmOG4ME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arn9u+NQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE92413AA2F;
-	Tue, 12 Aug 2025 18:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CC51EBFE0;
+	Tue, 12 Aug 2025 18:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024207; cv=none; b=E6IFxONWH2ieXSI8Y8SIZimA3UGiJZyYXxxQNtWv68bYUIixkWjJblgJCWL/ModNYRYyf5NuAXEHnDz1K6KUM+UyifYhrvD6iZ4vpkhNZ5SmBYzvlheiYQSeLNVqGkB/4aAJeH61lm1PoezxR8YJtPRxf7ZJRfp6p9HugovpHx0=
+	t=1755022933; cv=none; b=Z9IC9YAT6Y4nGxuvgkBNnHl9qhd+wSqof7dkJdWwOo3X8q4z1rrJqI+cd+D6onnPs0YvCZfuwl2fjislP4Q/oyQ3XdbxeaZ/kzcKGKcZKZetHDwn0IqXNEmYY4o9GPt1c6f75F7HRl5xNP2dV3ijdWQ6HBZtJ/0pLqZKTwbet9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024207; c=relaxed/simple;
-	bh=A77roLRuJPvb6NJ23ib6jFOSRlTAj9XE8mzYw3KzFOk=;
+	s=arc-20240116; t=1755022933; c=relaxed/simple;
+	bh=ZfvkUjwweqRK5hSxxSMQuuHZhRhRTwSGbApszr3xbbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUOAg6lW/SwWwnJPTW8+S2RLF0IKZO+3eN+JGMY8omURUDsFEa/zRAbuYSn6lZqgu9u3j3CsqMwJr+BWA+9/U1o0qmsi2coVgN08uNmz4zFzEhzRAqIWWQ1MvwKkQiK5YQfLLUjn8P3DyN0mzKoLnv2ohFJv6gK5E6PtjNaR0RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtmOG4ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC699C4CEF0;
-	Tue, 12 Aug 2025 18:43:26 +0000 (UTC)
+	 MIME-Version; b=SFDstEiqiZ618zOzQDYH0rsiu/Ko2WRHc5NVJZfSgLhDQweqL13lmTM1u3R8tMdXyX8oiDwTAnWzq7MGOJeSnN8tfA2KMnsV1/m59bSaFrXvOl4JP7XjGGguiCV4+zIda5JcdOII+IH6TQ6tU6mFZaDK5NE/8STb8W0vKJaFIZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arn9u+NQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6AEC4CEF0;
+	Tue, 12 Aug 2025 18:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024207;
-	bh=A77roLRuJPvb6NJ23ib6jFOSRlTAj9XE8mzYw3KzFOk=;
+	s=korg; t=1755022933;
+	bh=ZfvkUjwweqRK5hSxxSMQuuHZhRhRTwSGbApszr3xbbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtmOG4MEVAIFN5X/2ZRfly72X/Q/AxK1pbovp39pKjZs+wGBy1PHjYMQdkIq8grW7
-	 hcmEccPcYNn1DL4KdsQJHy6aw5JwNeGRNbGj+c0DcABnOHeb44PfccPo1kFRiVfoe3
-	 xUSLND0iH8rQRL2rDoU4qDzjV7wmwRwAfV2czKq0=
+	b=arn9u+NQKX1tV7A0liumgDoypIYDdjMLSnyNQux6I2NgqlJEGmR97sR4SjKqnOObu
+	 kdYnOA5Akxxg41ecevGtVXMydJ/5z9bHZ/iF8EW/7hpC7xko3PMv7a29xujnhZ6LZJ
+	 zZOKIH7VsRgBle/NH/WydycQ9EVZ7dPol+Mty6YY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com,
+	Takamitsu Iwai <takamitz@amazon.co.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 304/627] crypto: marvell/cesa - Fix engine load inaccuracy
+Subject: [PATCH 6.12 302/369] net/sched: taprio: enforce minimum value for picos_per_byte
 Date: Tue, 12 Aug 2025 19:29:59 +0200
-Message-ID: <20250812173430.877640314@linuxfoundation.org>
+Message-ID: <20250812173028.092183552@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Takamitsu Iwai <takamitz@amazon.co.jp>
 
-[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
+[ Upstream commit ae8508b25def57982493c48694ef135973bfabe0 ]
 
-If an error occurs during queueing the engine load will never be
-decremented.  Fix this by moving the engine load adjustment into
-the cleanup function.
+Syzbot reported a WARNING in taprio_get_start_time().
 
-Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+When link speed is 470,589 or greater, q->picos_per_byte becomes too
+small, causing length_to_duration(q, ETH_ZLEN) to return zero.
+
+This zero value leads to validation failures in fill_sched_entry() and
+parse_taprio_schedule(), allowing arbitrary values to be assigned to
+entry->interval and cycle_time. As a result, sched->cycle can become zero.
+
+Since SPEED_800000 is the largest defined speed in
+include/uapi/linux/ethtool.h, this issue can occur in realistic scenarios.
+
+To ensure length_to_duration() returns a non-zero value for minimum-sized
+Ethernet frames (ETH_ZLEN = 60), picos_per_byte must be at least 17
+(60 * 17 > PSEC_PER_NSEC which is 1000).
+
+This patch enforces a minimum value of 17 for picos_per_byte when the
+calculated value would be lower, and adds a warning message to inform
+users that scheduling accuracy may be affected at very high link speeds.
+
+Fixes: fb66df20a720 ("net/sched: taprio: extend minimum interval restriction to entire cycle too")
+Reported-by: syzbot+398e1ee4ca2cac05fddb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=398e1ee4ca2cac05fddb
+Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
+Link: https://patch.msgid.link/20250728173149.45585-1-takamitz@amazon.co.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/cipher.c | 4 +++-
- drivers/crypto/marvell/cesa/hash.c   | 5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ net/sched/sch_taprio.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
-index 48c5c8ea8c43..3fe0fd9226cf 100644
---- a/drivers/crypto/marvell/cesa/cipher.c
-+++ b/drivers/crypto/marvell/cesa/cipher.c
-@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
- static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 3142715d7e41..1620f0fd78ce 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -43,6 +43,11 @@ static struct static_key_false taprio_have_working_mqprio;
+ #define TAPRIO_SUPPORTED_FLAGS \
+ 	(TCA_TAPRIO_ATTR_FLAG_TXTIME_ASSIST | TCA_TAPRIO_ATTR_FLAG_FULL_OFFLOAD)
+ #define TAPRIO_FLAGS_INVALID U32_MAX
++/* Minimum value for picos_per_byte to ensure non-zero duration
++ * for minimum-sized Ethernet frames (ETH_ZLEN = 60).
++ * 60 * 17 > PSEC_PER_NSEC (1000)
++ */
++#define TAPRIO_PICOS_PER_BYTE_MIN 17
+ 
+ struct sched_entry {
+ 	/* Durations between this GCL entry and the GCL entry where the
+@@ -1284,7 +1289,8 @@ static void taprio_start_sched(struct Qdisc *sch,
+ }
+ 
+ static void taprio_set_picos_per_byte(struct net_device *dev,
+-				      struct taprio_sched *q)
++				      struct taprio_sched *q,
++				      struct netlink_ext_ack *extack)
  {
- 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
+ 	struct ethtool_link_ksettings ecmd;
+ 	int speed = SPEED_10;
+@@ -1300,6 +1306,15 @@ static void taprio_set_picos_per_byte(struct net_device *dev,
  
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_skcipher_dma_cleanup(req);
-+
-+	atomic_sub(req->cryptlen, &engine->load);
- }
+ skip:
+ 	picos_per_byte = (USEC_PER_SEC * 8) / speed;
++	if (picos_per_byte < TAPRIO_PICOS_PER_BYTE_MIN) {
++		if (!extack)
++			pr_warn("Link speed %d is too high. Schedule may be inaccurate.\n",
++				speed);
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "Link speed %d is too high. Schedule may be inaccurate.",
++				       speed);
++		picos_per_byte = TAPRIO_PICOS_PER_BYTE_MIN;
++	}
  
- static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
-@@ -212,7 +215,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
- 	struct mv_cesa_engine *engine = creq->base.engine;
- 	unsigned int ivsize;
+ 	atomic64_set(&q->picos_per_byte, picos_per_byte);
+ 	netdev_dbg(dev, "taprio: set %s's picos_per_byte to: %lld, linkspeed: %d\n",
+@@ -1324,7 +1339,7 @@ static int taprio_dev_notifier(struct notifier_block *nb, unsigned long event,
+ 		if (dev != qdisc_dev(q->root))
+ 			continue;
  
--	atomic_sub(skreq->cryptlen, &engine->load);
- 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
+-		taprio_set_picos_per_byte(dev, q);
++		taprio_set_picos_per_byte(dev, q, NULL);
  
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index 6815eddc9068..e339ce7ad533 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -110,9 +110,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
- static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
- {
- 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
-+	struct mv_cesa_engine *engine = creq->base.engine;
+ 		stab = rtnl_dereference(q->root->stab);
  
- 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
- 		mv_cesa_ahash_dma_cleanup(req);
-+
-+	atomic_sub(req->nbytes, &engine->load);
- }
+@@ -1848,7 +1863,7 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->flags = taprio_flags;
  
- static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
-@@ -395,8 +398,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
- 			}
- 		}
- 	}
--
--	atomic_sub(ahashreq->nbytes, &engine->load);
- }
+ 	/* Needed for length_to_duration() during netlink attribute parsing */
+-	taprio_set_picos_per_byte(dev, q);
++	taprio_set_picos_per_byte(dev, q, extack);
  
- static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
+ 	err = taprio_parse_mqprio_opt(dev, mqprio, extack, q->flags);
+ 	if (err < 0)
 -- 
 2.39.5
 
