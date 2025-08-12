@@ -1,136 +1,122 @@
-Return-Path: <stable+bounces-167091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E9AB21A4C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 03:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E36B21A6F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 03:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1C9680F69
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 01:41:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB520682B07
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 01:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379EC2D8382;
-	Tue, 12 Aug 2025 01:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9542DBF5C;
+	Tue, 12 Aug 2025 01:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FY+8bIM4"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uDzzi4Sq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0309278E42;
-	Tue, 12 Aug 2025 01:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284C32D780C;
+	Tue, 12 Aug 2025 01:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754962915; cv=none; b=Uhll5OqiOlAllI+k2WV33Y3zpJfL7zwKUNOVo/eQOErW/tqY/vj37XZ4iwepFIfCEFvU+fWwTHoNiqW8TaChice/Fhu5WlNl0BReLosrhRXgtNeGnB5bn5wiEnc0iFzYehKI7C+vnX6e3RYurk8NNjQrepKbsLJtVb+3/HAIOe0=
+	t=1754963800; cv=none; b=O//hTwa6uwMRPLwrEt3FqDi+EbzIGL/PXfP1TK43NO/H9OqOMtIy7r843qWKyWsz33FJ6OEoaVKNFAniz0gSVvrgSV//lFLgDSJR6YyPGdBtQ6ouN0Ptf8W2SHfZLa24ten93FObsxRsS+pMK5nMEmA3uxWL1zXF9bcqfSJgzZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754962915; c=relaxed/simple;
-	bh=rOgYXPbOuMb7HER27UokJxfXGzUuXfjQMC12hj/ITbY=;
-	h=Date:To:From:Subject:Message-Id; b=ljwRwUxX2DdmgVqYBF2dwXilCcs3e6mp6O/kmL+39CyQvrVR8dCKN0vUwKFaA1L7+JJaGdF8tc9CcOPsXjDtxzj8mSvDkbWIh28QqayULB15xWb88bvSA2vdAd/sCK1+SHkSdKc7ySeM6cGpw1vuaTmlXauS1ZREsRAAPJVGe+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FY+8bIM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C5FC4CEF5;
-	Tue, 12 Aug 2025 01:41:54 +0000 (UTC)
+	s=arc-20240116; t=1754963800; c=relaxed/simple;
+	bh=hBSK0PX+81rnA9LuOdB2E4A8PLVyJnCl/SZJxlw7J/k=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=PZEGWrEFxKj53eNbba6wnWEGRVNYiMqKvo/uoxnYhnD91q119iT7B6NvH5Qn/YwPMfEnpZIOUGu3+TWKEmG65X3g515eFSe8NFuzl4M4fMZw/DWdPXKVqmm2R72HzxI55XSJFGLQPLCi+OSCJMCvcDfiR93gx7HRkz5HhE93rRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uDzzi4Sq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C58AC4CEED;
+	Tue, 12 Aug 2025 01:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1754962914;
-	bh=rOgYXPbOuMb7HER27UokJxfXGzUuXfjQMC12hj/ITbY=;
-	h=Date:To:From:Subject:From;
-	b=FY+8bIM432uN1ylRwAGQxKgQL0TWIIPWNLQo9WuEqxI2+dPT2tIDeEvSEtYRdhVfo
-	 5UBeVVSoFiCsblSeDi6HCU0nZLo93PL7Cw/5S/kGn6NXbLSE7JIumFXb9XytnU3R9M
-	 LgAQGpVB/Wn4n/7N0pC8GycksZ2bWn/zjGmm69Ko=
-Date: Mon, 11 Aug 2025 18:41:53 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,ekffu200098@gmail.com,akpm@linux-foundation.org
+	s=korg; t=1754963796;
+	bh=hBSK0PX+81rnA9LuOdB2E4A8PLVyJnCl/SZJxlw7J/k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uDzzi4Sq54eB+bbub4G2BGLTrMaAicSK/MW8JNXopL5x7Kr80Dnosw4CTZX4m+qEH
+	 lPxTDc06DtH4JEmUnm6uRfJoGU5c2eSXz+4iTpVUiUfRlWKp0qQZ4Ghf4GPkcjx9yK
+	 e5XlbT8QjnxeGWGNdXv94N4B+EIYlSdg+lkFp0PU=
+Date: Mon, 11 Aug 2025 18:56:35 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-fix-commit_ops_filters-by-using-correct-nth-function.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250812014154.51C5FC4CEF5@smtp.kernel.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>, linux-mm@kvack.org, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH V3] init: Handle bootloader identifier in kernel
+ parameters
+Message-Id: <20250811185635.f51ddda72f36bc0c2ba20600@linux-foundation.org>
+In-Reply-To: <20250721101343.3283480-1-chenhuacai@loongson.cn>
+References: <20250721101343.3283480-1-chenhuacai@loongson.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 21 Jul 2025 18:13:43 +0800 Huacai Chen <chenhuacai@loongson.cn> wrote:
 
-The patch titled
-     Subject: mm/damon/core: fix commit_ops_filters by using correct nth function
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-fix-commit_ops_filters-by-using-correct-nth-function.patch
+> BootLoader (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
+> /boot/vmlinuz-x.y.z" to kernel parameters. But these identifiers are not
+> recognized by the kernel itself so will be passed to user space. However
+> user space init program also doesn't recognized it.
+> 
+> KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
+> some architectures.
+> 
+> We cannot change BootLoader's behavior, because this behavior exists for
+> many years, and there are already user space programs search BOOT_IMAGE=
+> in /proc/cmdline to obtain the kernel image locations:
+> 
+> https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
+> (search getBootOptions)
+> https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
+> (search getKernelReleaseWithBootOption)
+> 
+> So the the best way is handle (ignore) it by the kernel itself, which
+> can avoid such boot warnings (if we use something like init=/bin/bash,
+> bootloader identifier can even cause a crash):
+> 
+> Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
+> Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
+> 
+> Cc: stable@vger.kernel.org
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-fix-commit_ops_filters-by-using-correct-nth-function.patch
+I think I'll keep this in -next until 6.18-rc1 - I suspect any issues
+here will take a while to discover.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -545,6 +545,12 @@ static int __init unknown_bootoption(char *param, char *val,
+>  				     const char *unused, void *arg)
+>  {
+>  	size_t len = strlen(param);
+> +	/*
+> +	 * Well-known bootloader identifiers:
+> +	 * 1. LILO/Grub pass "BOOT_IMAGE=...";
+> +	 * 2. kexec/kdump (kexec-tools) pass "kexec".
+> +	 */
+> +	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
+>  
+>  	/* Handle params aliased to sysctls */
+>  	if (sysctl_is_alias(param))
+> @@ -552,6 +558,12 @@ static int __init unknown_bootoption(char *param, char *val,
+>  
+>  	repair_env_string(param, val);
+>  
+> +	/* Handle bootloader identifier */
+> +	for (int i = 0; bootloader[i]; i++) {
+> +		if (!strncmp(param, bootloader[i], strlen(bootloader[i])))
+> +			return 0;
+> +	}
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+We have str_has_prefix().
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Subject: mm/damon/core: fix commit_ops_filters by using correct nth function
-Date: Sun, 10 Aug 2025 21:42:01 +0900
-
-damos_commit_ops_filters() incorrectly uses damos_nth_filter() which
-iterates core_filters.  As a result, performing a commit unintentionally
-corrupts ops_filters.
-
-Add damos_nth_ops_filter() which iterates ops_filters.  Use this function
-to fix issues caused by wrong iteration.
-
-Link: https://lkml.kernel.org/r/20250810124201.15743-1-ekffu200098@gmail.com
-Fixes: 3607cc590f18 ("mm/damon/core: support committing ops_filters") # 6.15.x
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/core.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
---- a/mm/damon/core.c~mm-damon-core-fix-commit_ops_filters-by-using-correct-nth-function
-+++ a/mm/damon/core.c
-@@ -845,6 +845,18 @@ static struct damos_filter *damos_nth_fi
- 	return NULL;
- }
- 
-+static struct damos_filter *damos_nth_ops_filter(int n, struct damos *s)
-+{
-+	struct damos_filter *filter;
-+	int i = 0;
-+
-+	damos_for_each_ops_filter(filter, s) {
-+		if (i++ == n)
-+			return filter;
-+	}
-+	return NULL;
-+}
-+
- static void damos_commit_filter_arg(
- 		struct damos_filter *dst, struct damos_filter *src)
- {
-@@ -908,7 +920,7 @@ static int damos_commit_ops_filters(stru
- 	int i = 0, j = 0;
- 
- 	damos_for_each_ops_filter_safe(dst_filter, next, dst) {
--		src_filter = damos_nth_filter(i++, src);
-+		src_filter = damos_nth_ops_filter(i++, src);
- 		if (src_filter)
- 			damos_commit_filter(dst_filter, src_filter);
- 		else
-_
-
-Patches currently in -mm which might be from ekffu200098@gmail.com are
-
-mm-damon-core-fix-commit_ops_filters-by-using-correct-nth-function.patch
-mm-damon-update-expired-description-of-damos_action.patch
-docs-mm-damon-design-fix-typo-s-sz_trtied-sz_tried.patch
-
+And strstarts()!  Both of which are awfully similar and both of which
+lamely do two passes across a string.
 
