@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702BCB230B7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C78B22FB1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D28FA3B2253
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29CBE18986B1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47FC2D5C76;
-	Tue, 12 Aug 2025 17:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69BC2FD1D1;
+	Tue, 12 Aug 2025 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VUICbDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyZXm53R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737162DE1E2;
-	Tue, 12 Aug 2025 17:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B942F7461;
+	Tue, 12 Aug 2025 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021254; cv=none; b=BNO7/ykJBSiyrd45V/JhccLVzJtK467cWOwfVoXy8wYUzOdsJgwV7w3oqtQz0RQSJBpz1MZb7fF7rgOJHTsIVM2Z2HcpQbCATHE5Kc8HEtRalwj+1ECusfS+wddfVi+1jZ0sjCpS54LsrNsyGBiFn1E2PRBJUgrapsoTPCkBeFE=
+	t=1755020449; cv=none; b=fvLoO2A4L1wJGvLo5y/WKKjHe4+5yILJMcyt0s5SQrUNcjZ0cfymsMNh3+YFZXrimnzQEbRRTiSPPNhbORUo+2ZqR84g4js9yWb2jhjFZtYO9Rvj37JZoOEnupP9/uv1CYBome9OEUx2rE8Osz9RvAC6VB7a4FU3GSLwP7Xojhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021254; c=relaxed/simple;
-	bh=wVZpyChry8ANaZRQHgmGyVXz3pYB7TirvEimm5+eQJA=;
+	s=arc-20240116; t=1755020449; c=relaxed/simple;
+	bh=JT7h8eNsV6ao0mb7ReXRhTWkWAcgg85YqqCceDYI3wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5pBExLz25hBWZ6CqPfiHAucEcQ90/rFhVfm+Kzyp/6JN/ig9kV24+qhRh/p/erWmPUZdYn+Txtj9qwxUBValRuiNya/DHZHmmMFY8kWgNYkA8o40SrGkUd5bdIQaCUHpNEliadk9IvcV2sttS/bEliIAhdxdzzy6ykrmwohl50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VUICbDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7957C4CEF0;
-	Tue, 12 Aug 2025 17:54:13 +0000 (UTC)
+	 MIME-Version; b=FjatYufs+chRNNe0YPZytHBzD/jIWzuAIzYFRdsqg9ZYav4T8FWLgHYATbsiKushxGbNMx0KpWKlfr8qmKi5t9pM210K7hnLIdmHDn5txZBCbKXKUXS9crdFgY/ARf/yzYF+SWbPGB/Nc6s2kY0Nb9HGqOAwqV8Y+m6t9fO5ayo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pyZXm53R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93739C4CEF0;
+	Tue, 12 Aug 2025 17:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021254;
-	bh=wVZpyChry8ANaZRQHgmGyVXz3pYB7TirvEimm5+eQJA=;
+	s=korg; t=1755020449;
+	bh=JT7h8eNsV6ao0mb7ReXRhTWkWAcgg85YqqCceDYI3wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VUICbDTH92Ce4Ge0UOZzGh25ZUqnLKkjMITyqRFw3Gs9vXoMYQyU3hL+e4jAvHkk
-	 79WIlMBPSOXsXOZWAgnEFVn/EiP0YN9ewufOaqfVlX+PIWhVcqcio4O0mF5+mSYFXL
-	 LHa9NkdxrSy9b1bpb4AZnmmTBFjYCBbTuxmgW92c=
+	b=pyZXm53R2wzgyDt6IXubXJzMxozna8L6QxlQI3uQ7h4gaTaiEbjF2cciGQsLzkVoO
+	 pZIF2RJF4yJqYDnVmsLtRPZT4NWqU9p8LKWDn9sgRnzli7MDCFmOj/HeUaHbNSlzJZ
+	 XjsbmhHG5yZTCeLWHAIS8hCGGL0kIcfLnaAF34tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/262] wifi: mac80211: Do not schedule stopped TXQs
+Subject: [PATCH 6.1 084/253] soc/tegra: cbb: Clear ERR_FORCE register with ERR_STATUS
 Date: Tue, 12 Aug 2025 19:27:52 +0200
-Message-ID: <20250812172956.620250683@linuxfoundation.org>
+Message-ID: <20250812172952.315645454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit 11e3e22fa533f5d7cf04e32343b05a27eda3c7a5 ]
+[ Upstream commit a0647bca8966db04b79af72851ebd04224a4da40 ]
 
-Ignore TXQs with the flag IEEE80211_TXQ_STOP when scheduling a queue.
+When error is injected with the ERR_FORCE register, then this register
+is not auto cleared on clearing the ERR_STATUS register. This causes
+repeated interrupts on error injection. To fix, set the ERR_FORCE to
+zero along with clearing the ERR_STATUS register after handling error.
 
-The flag is only set after all fragments have been dequeued and won't
-allow dequeueing other frames as long as the flag is set.
-
-For drivers using ieee80211_txq_schedule_start() this prevents an
-loop trying to push the queued frames while IEEE80211_TXQ_STOP is set:
-
-After setting IEEE80211_TXQ_STOP the driver will call
-ieee80211_return_txq(). Which calls __ieee80211_schedule_txq(), detects
-that there sill are frames in the queue and immediately restarts the
-stopped TXQ. Which can't dequeue any frame and thus starts over the loop.
-
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
-Link: https://patch.msgid.link/20250717162547.94582-2-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soc/tegra/cbb/tegra234-cbb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index ec5469add68a..bdf7c7ca5654 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4099,7 +4099,9 @@ void __ieee80211_schedule_txq(struct ieee80211_hw *hw,
+diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
+index f33d094e5ea6..5813c55222ca 100644
+--- a/drivers/soc/tegra/cbb/tegra234-cbb.c
++++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
+@@ -189,6 +189,8 @@ static void tegra234_cbb_error_clear(struct tegra_cbb *cbb)
+ {
+ 	struct tegra234_cbb *priv = to_tegra234_cbb(cbb);
  
- 	spin_lock_bh(&local->active_txq_lock[txq->ac]);
- 
--	has_queue = force || txq_has_queue(txq);
-+	has_queue = force ||
-+		    (!test_bit(IEEE80211_TXQ_STOP, &txqi->flags) &&
-+		     txq_has_queue(txq));
- 	if (list_empty(&txqi->schedule_order) &&
- 	    (has_queue || ieee80211_txq_keep_active(txqi))) {
- 		/* If airtime accounting is active, always enqueue STAs at the
++	writel(0, priv->mon + FABRIC_MN_MASTER_ERR_FORCE_0);
++
+ 	writel(0x3f, priv->mon + FABRIC_MN_MASTER_ERR_STATUS_0);
+ 	dsb(sy);
+ }
 -- 
 2.39.5
 
