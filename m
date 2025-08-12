@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-168132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF62B23399
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F34FB2350D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2AB83B81A8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE9C7B48DB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D69A2FE584;
-	Tue, 12 Aug 2025 18:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BB62FAC06;
+	Tue, 12 Aug 2025 18:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAsxBHcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMYzFLCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4CF2FE582;
-	Tue, 12 Aug 2025 18:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E5B1A01BF;
+	Tue, 12 Aug 2025 18:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023154; cv=none; b=HM0C4UOLB7rpOF0XSnbY7n6edKhoNaMgaeLA1qU3Ccw7ddqH/xV3gGUdyA8kgI9BtmRNPkFMs0L052uPxLr0Qpvu8j6paBUi9W74HY/WT9y1DvzSi85DYg6b4K2iFPu5gD3VZUCAsGBAWyY4HqitNopWcCM36sLMCaCo4wPqGTM=
+	t=1755024421; cv=none; b=TtXXF5BFyye7rbrEVRYsO/pA1yYdvFYjvtESl910AQCu57xMSAU4fpRZR52Lulcv7ZPubNVV1/su+8osmB48cv7CUMaNd39wkvvdv0j5dntvJkG8wzuFIlbM01LBtbc9J8JMhBdU2ZOfp8BJmTV4oNbpuXXd3roEvL6/wmKRFu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023154; c=relaxed/simple;
-	bh=mjsI0hx7uExcF4lO3JJL8kL4aR2VDsV6pyY7q/lNKHo=;
+	s=arc-20240116; t=1755024421; c=relaxed/simple;
+	bh=8luc7iki7RHMIEwnht+Esm8VWSB6hL8cKO/6NkSgaJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKW30xIIN9dRt/TIgVRtTQ3A4s/knrEWPJV5s5rXCwAFkMq7tB8Q7AQWsA8eLD3Tcz0fm/5qPEC6bzg4mXXHJSQtCzx1rIA6j515pUvd/juVcxcQjmAFr+wSt4N+kkIAfmjMno5sG/WUr9PNT83YM7Tc0XwLRYUEEevelAV1R8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAsxBHcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D83C4CEF0;
-	Tue, 12 Aug 2025 18:25:53 +0000 (UTC)
+	 MIME-Version; b=ohTgNX9CMPrXzLee60b0dxshaMywn+TKZS40A69chcYnb5kdn/Uq7S2ubtBhREvt9kWpljxz7pjvSWU/swPcSDkKomIEosjPHYfavn/tIuOE1ZyzSKVZc8jMdh+iYBlmpARcMFU8HRgDOuiSYpM30FWlmcpuHdUBEkrlUw5mfko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMYzFLCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24BEC4CEF0;
+	Tue, 12 Aug 2025 18:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023154;
-	bh=mjsI0hx7uExcF4lO3JJL8kL4aR2VDsV6pyY7q/lNKHo=;
+	s=korg; t=1755024421;
+	bh=8luc7iki7RHMIEwnht+Esm8VWSB6hL8cKO/6NkSgaJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAsxBHcff8GCegPgEI6jo2BSqlL2Zn92NT/0XE4jc08URNJcAojmi5vEVYKHHc56o
-	 uqsdsC95VvfzbtDqabMx8eH+Op1T8jBltCG9dzo/xOR9Uh8T2QHM6YRgGkp5IpPKZB
-	 36n/64u+voU6rVCLI98z7Gp7qvbUfMjfkj9q9yqE=
+	b=rMYzFLCpZqT5FF5Kx6a8v5uqLq01S3cSeBOrFemdT6Hv6pPyh9GCf/e+94OMCL1IG
+	 UzbrHEE6AvlUiwnLfQAI612Ou7Jvvx8MQqWXmj/rSTvgdMwzrtk2Tf292IH0YwhyxU
+	 FM9i2/tkX7FokQ5qizgFEYOQsiFesutaxOLDNTDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sjoerd Simons <sjoerd@collabora.com>,
-	Julien Massot <julien.massot@collabora.com>,
-	Jai Luthra <jai.luthra@linux.dev>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 366/369] media: ti: j721e-csi2rx: fix list_del corruption
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 368/627] crypto: inside-secure - Fix `dma_unmap_sg()` nents value
 Date: Tue, 12 Aug 2025 19:31:03 +0200
-Message-ID: <20250812173030.453355107@linuxfoundation.org>
+Message-ID: <20250812173433.311624177@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Massot <julien.massot@collabora.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit ae42c6fe531425ef2f47e82f96851427d24bbf6b upstream.
+[ Upstream commit cb7fa6b6fc71e0c801e271aa498e2f19e6df2931 ]
 
-If ti_csi2rx_start_dma() fails in ti_csi2rx_dma_callback(), the buffer is
-marked done with VB2_BUF_STATE_ERROR but is not removed from the DMA queue.
-This causes the same buffer to be retried in the next iteration, resulting
-in a double list_del() and eventual list corruption.
+The `dma_unmap_sg()` functions should be called with the same nents as the
+`dma_map_sg()`, not the value the map function returned.
 
-Fix this by removing the buffer from the queue before calling
-vb2_buffer_done() on error.
-
-This resolves a crash due to list_del corruption:
-[   37.811243] j721e-csi2rx 30102000.ticsi2rx: Failed to queue the next buffer for DMA
-[   37.832187]  slab kmalloc-2k start ffff00000255b000 pointer offset 1064 size 2048
-[   37.839761] list_del corruption. next->prev should be ffff00000255bc28, but was ffff00000255d428. (next=ffff00000255b428)
-[   37.850799] ------------[ cut here ]------------
-[   37.855424] kernel BUG at lib/list_debug.c:65!
-[   37.859876] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[   37.866061] Modules linked in: i2c_dev usb_f_rndis u_ether libcomposite dwc3 udc_core usb_common aes_ce_blk aes_ce_cipher ghash_ce gf128mul sha1_ce cpufreq_dt dwc3_am62 phy_gmii_sel sa2ul
-[   37.882830] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.16.0-rc3+ #28 VOLUNTARY
-[   37.890851] Hardware name: Bosch STLA-GSRV2-B0 (DT)
-[   37.895737] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   37.902703] pc : __list_del_entry_valid_or_report+0xdc/0x114
-[   37.908390] lr : __list_del_entry_valid_or_report+0xdc/0x114
-[   37.914059] sp : ffff800080003db0
-[   37.917375] x29: ffff800080003db0 x28: 0000000000000007 x27: ffff800080e50000
-[   37.924521] x26: 0000000000000000 x25: ffff0000016abb50 x24: dead000000000122
-[   37.931666] x23: ffff0000016abb78 x22: ffff0000016ab080 x21: ffff800080003de0
-[   37.938810] x20: ffff00000255bc00 x19: ffff00000255b800 x18: 000000000000000a
-[   37.945956] x17: 20747562202c3832 x16: 6362353532303030 x15: 0720072007200720
-[   37.953101] x14: 0720072007200720 x13: 0720072007200720 x12: 00000000ffffffea
-[   37.960248] x11: ffff800080003b18 x10: 00000000ffffefff x9 : ffff800080f5b568
-[   37.967396] x8 : ffff800080f5b5c0 x7 : 0000000000017fe8 x6 : c0000000ffffefff
-[   37.974542] x5 : ffff00000fea6688 x4 : 0000000000000000 x3 : 0000000000000000
-[   37.981686] x2 : 0000000000000000 x1 : ffff800080ef2b40 x0 : 000000000000006d
-[   37.988832] Call trace:
-[   37.991281]  __list_del_entry_valid_or_report+0xdc/0x114 (P)
-[   37.996959]  ti_csi2rx_dma_callback+0x84/0x1c4
-[   38.001419]  udma_vchan_complete+0x1e0/0x344
-[   38.005705]  tasklet_action_common+0x118/0x310
-[   38.010163]  tasklet_action+0x30/0x3c
-[   38.013832]  handle_softirqs+0x10c/0x2e0
-[   38.017761]  __do_softirq+0x14/0x20
-[   38.021256]  ____do_softirq+0x10/0x20
-[   38.024931]  call_on_irq_stack+0x24/0x60
-[   38.028873]  do_softirq_own_stack+0x1c/0x40
-[   38.033064]  __irq_exit_rcu+0x130/0x15c
-[   38.036909]  irq_exit_rcu+0x10/0x20
-[   38.040403]  el1_interrupt+0x38/0x60
-[   38.043987]  el1h_64_irq_handler+0x18/0x24
-[   38.048091]  el1h_64_irq+0x6c/0x70
-[   38.051501]  default_idle_call+0x34/0xe0 (P)
-[   38.055783]  do_idle+0x1f8/0x250
-[   38.059021]  cpu_startup_entry+0x34/0x3c
-[   38.062951]  rest_init+0xb4/0xc0
-[   38.066186]  console_on_rootfs+0x0/0x6c
-[   38.070031]  __primary_switched+0x88/0x90
-[   38.074059] Code: b00037e0 91378000 f9400462 97e9bf49 (d4210000)
-[   38.080168] ---[ end trace 0000000000000000 ]---
-[   38.084795] Kernel panic - not syncing: Oops - BUG: Fatal exception in interrupt
-[   38.092197] SMP: stopping secondary CPUs
-[   38.096139] Kernel Offset: disabled
-[   38.099631] CPU features: 0x0000,00002000,02000801,0400420b
-[   38.105202] Memory Limit: none
-[   38.108260] ---[ end Kernel panic - not syncing: Oops - BUG: Fatal exception in interrupt ]---
-
-Fixes: b4a3d877dc92 ("media: ti: Add CSI2RX support for J721E")
-Cc: stable@vger.kernel.org
-Suggested-by: Sjoerd Simons <sjoerd@collabora.com>
-Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
-Signed-off-by: Julien Massot <julien.massot@collabora.com>
-Reviewed-by: Jai Luthra <jai.luthra@linux.dev>
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c957f8b3e2e5 ("crypto: inside-secure - avoid unmapping DMA memory that was not mapped")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/inside-secure/safexcel_hash.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-+++ b/drivers/media/platform/ti/j721e-csi2rx/j721e-csi2rx.c
-@@ -619,6 +619,7 @@ static void ti_csi2rx_dma_callback(void
+diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
+index d2b632193beb..5baf4bd2fcee 100644
+--- a/drivers/crypto/inside-secure/safexcel_hash.c
++++ b/drivers/crypto/inside-secure/safexcel_hash.c
+@@ -249,7 +249,9 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv,
+ 	safexcel_complete(priv, ring);
  
- 		if (ti_csi2rx_start_dma(csi, buf)) {
- 			dev_err(csi->dev, "Failed to queue the next buffer for DMA\n");
-+			list_del(&buf->list);
- 			vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_ERROR);
- 		} else {
- 			list_move_tail(&buf->list, &dma->submitted);
+ 	if (sreq->nents) {
+-		dma_unmap_sg(priv->dev, areq->src, sreq->nents, DMA_TO_DEVICE);
++		dma_unmap_sg(priv->dev, areq->src,
++			     sg_nents_for_len(areq->src, areq->nbytes),
++			     DMA_TO_DEVICE);
+ 		sreq->nents = 0;
+ 	}
+ 
+@@ -497,7 +499,9 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
+ 			 DMA_FROM_DEVICE);
+ unmap_sg:
+ 	if (req->nents) {
+-		dma_unmap_sg(priv->dev, areq->src, req->nents, DMA_TO_DEVICE);
++		dma_unmap_sg(priv->dev, areq->src,
++			     sg_nents_for_len(areq->src, areq->nbytes),
++			     DMA_TO_DEVICE);
+ 		req->nents = 0;
+ 	}
+ cdesc_rollback:
+-- 
+2.39.5
+
 
 
 
