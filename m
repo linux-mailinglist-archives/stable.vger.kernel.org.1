@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-167464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9786B2303E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99333B22F66
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A373D1AA1152
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A62F1A25691
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA512F8BE6;
-	Tue, 12 Aug 2025 17:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634262FE582;
+	Tue, 12 Aug 2025 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+tRAlbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acrn5Fr5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1B9279915;
-	Tue, 12 Aug 2025 17:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1D32FE57F;
+	Tue, 12 Aug 2025 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020904; cv=none; b=BjTxeINjEIkcFhDcULFpeyZeWT9KHXAeLnhuD5hjEJZKMh7A7OEpEAHcWqOmVVCB/o60DbkhMwUZNdDwoWMFbAuS5qoNldpUrA37muWXbJ9+lDLh4vha9aPW9oUgFhfmzY4dYNFSNVU17dPQWT6xhTcb8hnCd6QQjmOSdS8Fy7I=
+	t=1755020271; cv=none; b=K3M9iV2HenJOE83kIfYUXcWyS/eC7H2KOdM5ch8ukkIXXJEm4mTmXt7JbEkF5hlsmnP73d30kHefMug7YdhT71nQdoF+OG3ioM2YEtdQBt/kuYN/FqOrCTjNy7FmhkX5ne4PK2uMUm2c9Wt5XkUjZQTquxxRbuGAvhEW0AkZEFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020904; c=relaxed/simple;
-	bh=pAeF+QRDasdJ95a2GLNkOll13Wd0NWayxM34l1AJeOc=;
+	s=arc-20240116; t=1755020271; c=relaxed/simple;
+	bh=fhpysE4mw2RKahjtN/x5tiMNibloNVKVVwMJmHnZkKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z47d5BKpElXtxKh/PqnR/NW9xxm+JsolspI2DKw6WozF7S1saapFqNtvvKHXEoXO6GEjQiBg1yidc1flfPg7YhJ5HKk0FhQfio1rO73roxP5/9FAxx0GuwsEM/T9C/pZ1OxZBnhjU6SoMjBA4q1wCcjuKJiVPPLVIXq68K9o3Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+tRAlbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB0CC4CEF1;
-	Tue, 12 Aug 2025 17:48:23 +0000 (UTC)
+	 MIME-Version; b=tK/SkCR8wrXN0Cp9Uzm7yJtbaBXsD5w8/n86VCYaG+euvaCJEPcNo7nZuwocWG9bnbZ/p/9yZ1wWPOgkhn/T35hbo+WnvRSfeYfBuBoKRyGXUngUwBzTtXYWDMqxn9WmcVMPVKGq3BASGk1oQwjwhgxBdl6wbVBmSaEUkmlErOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acrn5Fr5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93240C4CEF0;
+	Tue, 12 Aug 2025 17:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020904;
-	bh=pAeF+QRDasdJ95a2GLNkOll13Wd0NWayxM34l1AJeOc=;
+	s=korg; t=1755020271;
+	bh=fhpysE4mw2RKahjtN/x5tiMNibloNVKVVwMJmHnZkKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+tRAlbb8DwqgASMSf0EBpjnWbF7Lj1+kuSpn1PfzT9jWmpOnpsuuGZ7RjAGRz6yx
-	 jTRHuLb4gAZHoE5YXZS5/8m5mGVhWwmVXFli9Npox8n3E6MzX6o6BPbWVcl7C+7JCa
-	 w6U5/eW3YeaFmte3OP7U8z8fmtIu5RjAypqlhPWc=
+	b=acrn5Fr58/sE3xUCPOioNQtCdHyxkcawnXkjkcYtM0/pCn8rp3Jg8LWCXj9kP5HyX
+	 24hVizuPOn1ovWyW5mc8S4IBf79WgxXmev2nSZ0Rtcw9maqq4fGYK5aKIE14KMqXPU
+	 +nNmJU4FC9N9VQe+A/Tn0QKxmCf/rBYKXiZ2BUl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sivan Zohar-Kotzer <sivany32@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/262] powercap: dtpm_cpu: Fix NULL pointer dereference in get_pd_power_uw()
+	Dawid Rezler <dawidrezler.patches@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 031/253] ALSA: hda/realtek - Add mute LED support for HP Pavilion 15-eg0xxx
 Date: Tue, 12 Aug 2025 19:26:59 +0200
-Message-ID: <20250812172954.292789058@linuxfoundation.org>
+Message-ID: <20250812172950.057748202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sivan Zohar-Kotzer <sivany32@gmail.com>
+From: Dawid Rezler <dawidrezler.patches@gmail.com>
 
-[ Upstream commit 46dc57406887dd02565cb264224194a6776d882b ]
+commit 9744ede7099e8a69c04aa23fbea44c15bc390c04 upstream.
 
-The get_pd_power_uw() function can crash with a NULL pointer dereference
-when em_cpu_get() returns NULL. This occurs when a CPU becomes impossible
-during runtime, causing get_cpu_device() to return NULL, which propagates
-through em_cpu_get() and leads to a crash when em_span_cpus() dereferences
-the NULL pointer.
+The mute LED on the HP Pavilion Laptop 15-eg0xxx,
+which uses the ALC287 codec, didn't work.
+This patch fixes the issue by enabling the ALC287_FIXUP_HP_GPIO_LED quirk.
 
-Add a NULL check after em_cpu_get() and return 0 if unavailable,
-matching the existing fallback behavior in __dtpm_cpu_setup().
+Tested on a physical device, the LED now works as intended.
 
-Fixes: eb82bace8931 ("powercap/drivers/dtpm: Scale the power with the load")
-Signed-off-by: Sivan Zohar-Kotzer <sivany32@gmail.com>
-Link: https://patch.msgid.link/20250701221355.96916-1-sivany32@gmail.com
-[ rjw: Drop an excess empty code line ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dawid Rezler <dawidrezler.patches@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250720154907.80815-2-dawidrezler.patches@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/dtpm_cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-index ae7ee611978b..99a82060ead9 100644
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -93,6 +93,8 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
- 	int i;
- 
- 	pd = em_cpu_get(dtpm_cpu->cpu);
-+	if (!pd)
-+		return 0;
- 
- 	pd_mask = em_span_cpus(pd);
- 
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9947,6 +9947,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x87cc, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
