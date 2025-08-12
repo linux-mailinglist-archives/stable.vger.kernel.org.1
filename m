@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2FAB22F82
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39856B23014
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19DA8683473
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59FE8564AB7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BC32FDC4B;
-	Tue, 12 Aug 2025 17:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B6F2F7477;
+	Tue, 12 Aug 2025 17:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKffyath"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6onUuvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D778B2FD1D1;
-	Tue, 12 Aug 2025 17:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D7026B2C8;
+	Tue, 12 Aug 2025 17:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020376; cv=none; b=RLLFxYZ2cIRq4BsZy946mcFk9/x8nau6dZCdjkTV9SfDlOAR0zHT37OhTDLoeQ44OAEqqiJ7hVRElBKu1oNUQXLQChcXyig+twPVmXsJ6msTpG+X0DWq1KcaS6TP6gWxCg2TuqCdZ8vq2Jx0zkA0PAiZ3nMtKtbOIySvmgxyLiM=
+	t=1755020823; cv=none; b=AVa2STqAZzqSSALU9tMwLGV/a3E3hl2MgL6UQUTIfKrb9J4UqUI06CB+2VbBqbOPiFaO3QJGZlOPPitP+GTG2C+PA/Qc7uWuDAHXh6IZNtA/20mnuKhdOlF5eTMYcK6fyM/OlWZOLHxvgEgLj6EAdT0xYTJ/fYI+IYbPRZf2PZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020376; c=relaxed/simple;
-	bh=9ow/K/v1D3qmSDHmxI+cBWPag5+JoJloppZ/cyZpz3U=;
+	s=arc-20240116; t=1755020823; c=relaxed/simple;
+	bh=lzUf0sZovgzPYs5mO8ex6IhF2EVSlYfV68/7nacj3EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdFAY8WxR33x3JpCwgHgxypA0da/6glXzi98EpMOhXOVx6BoIXSpaDgZgA5LthbFK8ORgBYqQUudINkyZepePolWgtaUT3Sg62Hfd4d6flBCXaBQKt3rOStXUyAtMo+fodOByDX9DbqsjxraZnPNTr2/z+Z8aLoTPgwr0lq8+NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKffyath; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F951C4CEF0;
-	Tue, 12 Aug 2025 17:39:36 +0000 (UTC)
+	 MIME-Version; b=OeCfBzrJoQLBXaK+az7/lbWrO0wOzdSI+1in7yICOdYcUl1480yUjmiuhFwfkfRjDT6HEas1UQZ5nakzZPqKgLhd7pFKfZGf8x8w9hEQDdrLd34fX5+kcGtSkA3nHFTKV09HE+z+iJNDzMwlbtAss8cNdQ8QF96YygEQLzsWGGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6onUuvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC15C4CEF0;
+	Tue, 12 Aug 2025 17:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020376;
-	bh=9ow/K/v1D3qmSDHmxI+cBWPag5+JoJloppZ/cyZpz3U=;
+	s=korg; t=1755020823;
+	bh=lzUf0sZovgzPYs5mO8ex6IhF2EVSlYfV68/7nacj3EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKffyatho4Oxughprn4zIrfjlkFYnKBZ06+ayYsDp/SSzglgd7tbgug2YwDqpQGUd
-	 8wfjTRqDICOPvvnQjprl9mUXe2a5WsFe4wpDYeplEfCjNAyno0h6nG9B5BhRJ6qKQb
-	 /uQV2Cks3NOzigD6UXk6MejxbPEYMehIkdYvMoqI=
+	b=l6onUuvKpSGlcmjnTrtuMyhguI+TAnUJ5rcj4YM3C6M2xxUZdjWtaIlBEIfv3QUNw
+	 kIF3ygv6fJZ3kh/G7j3mQNVHLjA2gmRftGCzE2bc2BBrHxrjvVDvq22C3m/KrMen6C
+	 nf0/iytsHDtbsxLcVib22Wp6nH0tMZqu3z175mTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/253] can: dev: can_restart(): move debug message and stats after successful restart
+Subject: [PATCH 6.6 020/262] arm64: dts: qcom: sdm845: Expand IMEM region
 Date: Tue, 12 Aug 2025 19:26:48 +0200
-Message-ID: <20250812172949.572339095@linuxfoundation.org>
+Message-ID: <20250812172953.833712335@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit f0e0c809c0be05fe865b9ac128ef3ee35c276021 ]
+[ Upstream commit 81a4a7de3d4031e77b5796479ef21aefb0862807 ]
 
-Move the debug message "restarted" and the CAN restart stats_after_
-the successful restart of the CAN device, because the restart may
-fail.
+We need more than what is currently described, expand the region to its
+actual boundaries.
 
-While there update the error message from printing the error number to
-printing symbolic error names.
-
-Link: https://lore.kernel.org/all/20231005-can-dev-fix-can-restart-v2-4-91b5c1fd922c@pengutronix.de
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-[mkl: mention stats in subject and description, too]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: c1f3f9797c1f ("can: netlink: can_changelink(): fix NULL pointer deref of struct can_priv::do_set_mode")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: 948f6161c6ab ("arm64: dts: qcom: sdm845: Add IMEM and PIL info region")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250523-topic-ipa_mem_dts-v1-2-f7aa94fac1ab@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/dev/dev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 42c486d1fd10b..78e3ea180d767 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -147,15 +147,15 @@ static void can_restart(struct net_device *dev)
- 		netif_rx(skb);
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 4ea693a07585..64ea9d73d970 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4989,18 +4989,18 @@ spmi_bus: spmi@c440000 {
+ 			#interrupt-cells = <4>;
+ 		};
  
--	netdev_dbg(dev, "restarted\n");
--	priv->can_stats.restarts++;
--
- 	/* Now restart the device */
- 	netif_carrier_on(dev);
- 	err = priv->do_set_mode(dev, CAN_MODE_START);
- 	if (err) {
--		netdev_err(dev, "Error %d during restart", err);
-+		netdev_err(dev, "Restart failed, error %pe\n", ERR_PTR(err));
- 		netif_carrier_off(dev);
-+	} else {
-+		netdev_dbg(dev, "Restarted\n");
-+		priv->can_stats.restarts++;
- 	}
- }
+-		sram@146bf000 {
++		sram@14680000 {
+ 			compatible = "qcom,sdm845-imem", "syscon", "simple-mfd";
+-			reg = <0 0x146bf000 0 0x1000>;
++			reg = <0 0x14680000 0 0x40000>;
+ 
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 
+-			ranges = <0 0 0x146bf000 0x1000>;
++			ranges = <0 0 0x14680000 0x40000>;
+ 
+-			pil-reloc@94c {
++			pil-reloc@3f94c {
+ 				compatible = "qcom,pil-reloc-info";
+-				reg = <0x94c 0xc8>;
++				reg = <0x3f94c 0xc8>;
+ 			};
+ 		};
  
 -- 
 2.39.5
