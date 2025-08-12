@@ -1,117 +1,89 @@
-Return-Path: <stable+bounces-167123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641E7B224B3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 12:36:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3568B224EB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 12:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CECB3AF5D2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 10:36:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650BA172ED7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 10:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0A82EBB90;
-	Tue, 12 Aug 2025 10:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BED12ECD31;
+	Tue, 12 Aug 2025 10:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLLLPtQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C50oBxhg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA80311C27;
-	Tue, 12 Aug 2025 10:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8B62ECD27
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 10:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754995012; cv=none; b=RTLqOlGJr4rq5gpuX0Q0NDHU4AxpbT2l9RCctPV4LbqKi8nfdEFLZLfsotQ5gw3V3qgvVSXRdkjYTWRlnrSNf9eG9ymUkPRnwVGYfU52BMk5qUPTmz5zstopZK8HvDaLqBX1woc64+OO/6G0KVr00uiZLXTxP8UABwcIa7hOI74=
+	t=1754995659; cv=none; b=k5nMIC4l7f33SuTPOK1nLEPp+3EnfEkebz7unmaiTY2j4zxbB+tbkIw/4hXb5+heOpLnmyE3DyTegMLmJ4jKVC6heYS9VA317wXZy6WOD0czl/sMleILcjSaVzMVp33CJID14L+fCGuUWekJ1UzXac0cQFID6wC/ssJiFlgEKQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754995012; c=relaxed/simple;
-	bh=OFretCNfXEy+7WAgxha0BEDu5axRqDUYgdbF/L5SJLs=;
+	s=arc-20240116; t=1754995659; c=relaxed/simple;
+	bh=KVmqIaJgFdWr5BRwfonjDt+J+FlnGBzcS92isBnBYwY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WCimSX8iLredBuuwcJDrzRwfPck5J6nZkKxKLWzx4K8M5xICdnvHo9gWSUkpMoh6KH0v/phFkpG2/2nT5gdzXZrpgo+yMDjgV/EE+pz2q3UHAYcP3eVKKZvJm8+EggXojlrM6YcMW7g5Pc10UxAfBjTsT+/Ww++Fr03cWsj83Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLLLPtQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35911C4CEF0;
-	Tue, 12 Aug 2025 10:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754995011;
-	bh=OFretCNfXEy+7WAgxha0BEDu5axRqDUYgdbF/L5SJLs=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=KAsvigaPvRx/gNsVneA45NSGh53QuWI7OB35CT0j0GftfFRifSQOhjhSgjm6aB32/OsQlt6cQTpW+Rx7O/8GFx6n1ahNSC3q2sauE+63kvVWZGkFHN+rMbJpgkkRDvC+cSrW+YSwLXiOEycwpLCt7v82/YAa0SO587D8dw54MNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C50oBxhg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C752EC4CEF0;
+	Tue, 12 Aug 2025 10:47:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1754995658;
+	bh=KVmqIaJgFdWr5BRwfonjDt+J+FlnGBzcS92isBnBYwY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZLLLPtQvD1Abvx9U5zycPlODfxhKkHb41FkrJX3gQS9u5RQf00n+3/AG5aq4A5FXY
-	 svplmQ3op5e5aJn2SsJWdpu/KMaLDRMYVcwGjiL8uGaeMDoPl103btLwY/6JhC+kyI
-	 mlVws48ItOLX6GX168HCIxgzuOaFz007pZM6xT4RyKxc3bWbeNr3v54Vje8WXdY3vi
-	 YGBtcb56KPRVJbSgIbVYEUpExCrxWNFWojt1K5Kl5JK65eTPwS975v9NXSj2knKziP
-	 w+AUCMgqmEAU8d9F6pLOgbefoOIqv94vKp3WFWjejhXg7jGAOToZC4DvygenEPqz6L
-	 aismFdpQSw8TA==
-Date: Tue, 12 Aug 2025 12:36:48 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, 
-	nicolas.frattaroli@collabora.com, Heiko Stuebner <heiko@sntech.de>
-Subject: Re: Patch "pwm: rockchip: Round period/duty down on apply, up on
- get" has been added to the 6.16-stable tree
-Message-ID: <tjogt2ovj4afxo3lz7ydwsqtk4b52gjvga47es6x3ogdbfopyb@weiw3effavjh>
-References: <20250808223033.1417018-1-sashal@kernel.org>
- <c5s7efnva5gluplw65g6qqxjqpmcgprgtm6tsajkbdqibe73lb@lw5afb6b725i>
- <2025081236-moneyless-enigmatic-891b@gregkh>
+	b=C50oBxhg8P3ipmyOwJJ9croZKdFpfQhDBSt//gTRJzPolK0KUvncrV/x8rP2kRsNq
+	 t//daL7mparMp4wCvZXoVp6u0+jVXLeoOB/TGUlBTs+Epio5RNnRRWMeq4MIPymXbM
+	 S79ujYNe1fO3bG1vGZGEj/obm/p7PybFvkz4u50U=
+Date: Tue, 12 Aug 2025 12:47:30 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: stable@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: Re: [PATCH 6.12 1/6] drm/i915/ddi: change intel_ddi_init_{dp,
+ hdmi}_connector() return type
+Message-ID: <2025081201-recent-observer-a8cc@gregkh>
+References: <e53d47b06b3ba07b4add2c6930ddafba91a49b41.1754302552.git.senozhatsky@chromium.org>
+ <qtx56p35nqiuds6hvhi5d2rfl2hdh7xir7qjvoduw2n7hkyj34@4hq75a4bh23i>
+ <4r4r7x4b63f6366ep5ijnve6ru5m5xv65puarv3kwrsv47t7er@xuk6hsipfe3u>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fdxsqeksetlwy3w6"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025081236-moneyless-enigmatic-891b@gregkh>
+In-Reply-To: <4r4r7x4b63f6366ep5ijnve6ru5m5xv65puarv3kwrsv47t7er@xuk6hsipfe3u>
 
+On Tue, Aug 12, 2025 at 03:35:54PM +0900, Sergey Senozhatsky wrote:
+> On (25/08/05 11:11), Sergey Senozhatsky wrote:
+> > On (25/08/04 19:16), Sergey Senozhatsky wrote:
+> > > From: Jani Nikula <jani.nikula@intel.com>
+> > > 
+> > > [ Upstream commit e1980a977686d46dbf45687f7750f1c50d1d6cf8 ]
+> > > 
+> > > The caller doesn't actually need the returned struct intel_connector;
+> > > it's stored in the ->attached_connector of intel_dp and
+> > > intel_hdmi. Switch to returning an int with 0 for success and negative
+> > > errors codes to be able to indicate success even when we don't have a
+> > > connector.
+> > > 
+> > > Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+> > > Tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> > > Link: https://patchwork.freedesktop.org/patch/msgid/8ef7fe838231919e85eaead640c51ad3e4550d27.1735568047.git.jani.nikula@intel.com
+> > > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> > 
+> > Just for the record, this series fixes multiple NULL-ptr derefs
+> > in i915 code, which are observed in the wild.
 
---fdxsqeksetlwy3w6
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: Patch "pwm: rockchip: Round period/duty down on apply, up on
- get" has been added to the 6.16-stable tree
-MIME-Version: 1.0
+Note, if you need/want some CVE ids for these, please ask at
+cve@kernel.org.
 
-Hello Greg,
+I'll go queue these up now, thanks.
 
-On Tue, Aug 12, 2025 at 10:53:11AM +0200, Greg KH wrote:
-> On Sat, Aug 09, 2025 at 11:45:23AM +0200, Uwe Kleine-K=F6nig wrote:
-> > while the new code makes the driver match the PWM rules now, I'd be
-> > conservative and not backport that patch because while I consider it a
-> > (very minor) fix that's a change in behaviour and maybe people depend on
-> > that old behaviour. So let's not break our user's workflows and reserve
-> > that for a major release. Please drop this patch from your queue.
->=20
-> Now dropped, but note, any behavior change is ok for ANY kernel version
-> as we guarantee they all work the same :)
-
-Your statement makes no sense, I guess you missed to add a "don't".
-Otherwise I'd like to know who "we" is :-)
-
-> So good luck with your users in the 6.17 release...
-
-Yeah, thanks. I still like reducing the changes in stable that have
-little benefit and the potential to subtly break workflows. I don't like
-that potential breakage for 6.17 either, but there it's better
-justifiable and that's the only way to get the improvement in at all.
-
-Best regards
-Uwe
-
---fdxsqeksetlwy3w6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmibGT0ACgkQj4D7WH0S
-/k6Pmwf/TIdg/OTpD/yvxFOq2cBfoOf0dOp3RcVaqut1waVKjayKeSy43LFtDpBM
-FzikjXJ9pYQ1eMHQRTNCAjfPJ2uJD4pii1EigVQeROPeUDRJDkKqbIKbA7m40XQw
-caDTx54C7OE0kZRuU4x4JlF9bV6TQNVDUbaf0RX2VTM8hguL6p7FN0nnhpk0Nuxi
-A9xEe5DfF3kTGm0zCM93nDiwFVWhWqXEU7ESE3LyPro6M7GL1aXU1kGJApQp3ZbD
-VqD4zQtJ143Ax4pHAWNThGcH/7+Zj9dP37fXG8PZzaAXN5UEo2Meh+gBPdJNf8Ic
-J1lvKFAGOMMdgOYF/L7QG+x9jimv9g==
-=S0IP
------END PGP SIGNATURE-----
-
---fdxsqeksetlwy3w6--
+greg k-h
 
