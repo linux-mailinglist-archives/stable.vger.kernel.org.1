@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-168232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2419AB2340D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025C4B22F43
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:37:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00992A5A77
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5A616B60F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E562F4A0A;
-	Tue, 12 Aug 2025 18:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B862FA0FD;
+	Tue, 12 Aug 2025 17:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJyupcq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LORZUxf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D4D284B3A;
-	Tue, 12 Aug 2025 18:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2B62F7461;
+	Tue, 12 Aug 2025 17:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023490; cv=none; b=aUrLlDJSHcAeGIVkBqRkx0QrWFpAptkrjYcvYDqZalm5Zh2CfuMc1aKmL1WrGpF9T0W1sAMtVUQus4x5nXBWn5nS+9qDst52JGS2ccjltFVjIEOc+jOFQ0p5ByOhr2yRlqGKbybJGfE797Tr9ziDXJg4PMbExGXNmPAO1peC+EU=
+	t=1755020203; cv=none; b=Kt1RHZX0aD16/NgZXUKh7JGeFEA57l8yNEaMDZHCBSD5Nd9zEUW7qUECwvJliYN2gSl+4/Xv+/kTUtrcPOakSN6q8RYyCYOypeRtXphd/2bBFil31H6l4+MPKzzHG9+qM0yoEzr/H1WIoX3Xygozvm0xe3/Nrcg9fy/PZRnUL+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023490; c=relaxed/simple;
-	bh=lKfHec4W9BMNcUb6Yy2XVNwnpvnPOYkjyMi+GAFmVYo=;
+	s=arc-20240116; t=1755020203; c=relaxed/simple;
+	bh=Xw/TTScHZBaqigtqYhTlI4gsDMPcwIJh0T2I8F4o+Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pclDl/Ex5P9eOJnYC+fSwhU0qcIuwZjOnJOM3NuGEliiluSOz+fgkDUAArvAwWohVewzjEKmaR53S2359QXdjKRGMc3pXQy+UNd/k8WJb5W35EPKKLbPtAIkjq7hC+INbg7HP6CoU2V/f6hMyVmmSobUBc9HyOALTua5zchhu4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJyupcq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BB8C4CEF6;
-	Tue, 12 Aug 2025 18:31:30 +0000 (UTC)
+	 MIME-Version; b=pln9J4YfY4ydiW130g34YzUf98K8hGONjJguvleh2955mnIO+mJNM36HnTlcbH4vc1ZvBFIEbZILac4MFcCzqZ0fPFg7Z1q8nAYEqBiCAkrfwwvrn5nxWwSmwzwmMB5WMH9cjRJNDJ3ErtSCGLe2N4E5tl6+2mLjUzlwaMZR3wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LORZUxf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D3EC4CEF0;
+	Tue, 12 Aug 2025 17:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023490;
-	bh=lKfHec4W9BMNcUb6Yy2XVNwnpvnPOYkjyMi+GAFmVYo=;
+	s=korg; t=1755020202;
+	bh=Xw/TTScHZBaqigtqYhTlI4gsDMPcwIJh0T2I8F4o+Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJyupcq3edIKpq351rnsTiYG6ewtQ+BN/+f5OZrn5fXizva+qoFa5FcdFfNlmDzTJ
-	 ZQo9DbnJbBIiDT46d26K67ySGRnMhJDt6RjE3aipII8bx4x+8rOvunuSEfV1VrF1J5
-	 FTlu4ch0NrggfYL28JbEFNHRndXJVDaGovAdf7d4=
+	b=2LORZUxfHAGzdMwUq9zocdn/H0B9+ZTy823+QQYjDG/sFvz8IHKUvn75gUhhWFvGl
+	 wTojZKyXYC/bSc7QBoocQAsgEy1EUs0qeF74LKxJaUmLSK7ldoRRN1tsM0g+vadaVW
+	 Bvv/yPgb+QyXPdfXu9GepwKj2V+Nyz2YYb6YjROc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 094/627] arm64: dts: ti: k3-am62p-verdin: fix PWM_3_DSI GPIO direction
+Subject: [PATCH 6.1 001/253] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
 Date: Tue, 12 Aug 2025 19:26:29 +0200
-Message-ID: <20250812173422.885736442@linuxfoundation.org>
+Message-ID: <20250812172948.742901165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parth Pancholi <parth.pancholi@toradex.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-[ Upstream commit b1a8daa7cf2650637f6cca6aaf014bee89672120 ]
+commit f4a8f561d08e39f7833d4a278ebfb12a41eef15f upstream.
 
-PWM_3_DSI is used as the HDMI Hot-Plug Detect (HPD) GPIO for the Verdin
-DSI-to-HDMI adapter. After the commit 33bab9d84e52 ("arm64: dts: ti:
-k3-am62p: fix pinctrl settings"), the pin was incorrectly set as output
-without RXACTIVE, breaking HPD detection and display functionality.
-The issue was previously hidden and worked by chance before the mentioned
-pinctrl fix.
+When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
+hard irq context, but the input_event() takes a spin_lock, which isn't
+allowed there as it is converted to a rt_spin_lock().
 
-Fix the pinmux configuration to correctly set PWM_3_DSI GPIO as an input.
+[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
+...
+[ 4054.290195]  __might_resched+0x13c/0x1f4
+[ 4054.290209]  rt_spin_lock+0x54/0x11c
+[ 4054.290219]  input_event+0x48/0x80
+[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
+[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
+[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
+[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
+[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
+[ 4054.290297]  handle_irq_desc+0x40/0x58
+[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
+[ 4054.290316]  gic_handle_irq+0x44/0xcc
 
-Fixes: 87f95ea316ac ("arm64: dts: ti: Add Toradex Verdin AM62P")
-Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20250703084534.1649594-1-parth105105@gmail.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
+be threaded, it seems there's no point in requesting the timer isr to
+run in hard irq context.
+
+Relax the hrtimer not to use the hard context.
+
+Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[ adjusted context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/keyboard/gpio_keys.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
-index 85c001aef7e3..24b233de2bf4 100644
---- a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
-@@ -426,7 +426,7 @@ AM62PX_IOPAD(0x00f4, PIN_INPUT, 7) /* (Y20) VOUT0_DATA15.GPIO0_60 */ /* WIFI_SPI
- 	/* Verdin PWM_3_DSI as GPIO */
- 	pinctrl_pwm3_dsi_gpio: main-gpio1-16-default-pins {
- 		pinctrl-single,pins = <
--			AM62PX_IOPAD(0x01b8, PIN_OUTPUT, 7) /* (E20) SPI0_CS1.GPIO1_16 */ /* SODIMM 19 */
-+			AM62PX_IOPAD(0x01b8, PIN_INPUT, 7) /* (E20) SPI0_CS1.GPIO1_16 */ /* SODIMM 19 */
- 		>;
- 	};
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -495,7 +495,7 @@ static irqreturn_t gpio_keys_irq_isr(int
+ 	if (bdata->release_delay)
+ 		hrtimer_start(&bdata->release_timer,
+ 			      ms_to_ktime(bdata->release_delay),
+-			      HRTIMER_MODE_REL_HARD);
++			      HRTIMER_MODE_REL);
+ out:
+ 	spin_unlock_irqrestore(&bdata->lock, flags);
+ 	return IRQ_HANDLED;
+@@ -635,7 +635,7 @@ static int gpio_keys_setup_key(struct pl
  
--- 
-2.39.5
-
+ 		bdata->release_delay = button->debounce_interval;
+ 		hrtimer_init(&bdata->release_timer,
+-			     CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
++			     CLOCK_REALTIME, HRTIMER_MODE_REL);
+ 		bdata->release_timer.function = gpio_keys_irq_timer;
+ 
+ 		isr = gpio_keys_irq_isr;
 
 
 
