@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B9EB232DB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF3BB23107
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 249B02A286D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDD971AA30EB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC28B2F4A02;
-	Tue, 12 Aug 2025 18:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648152FE562;
+	Tue, 12 Aug 2025 17:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGPLHMQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITxxbiel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D3F2DFA3E;
-	Tue, 12 Aug 2025 18:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131372FE566;
+	Tue, 12 Aug 2025 17:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022651; cv=none; b=mXTU82hTDBsPD1L2GIfoChpZEZFXvrYtDmdw+jmBqmln0PvT6rmBbx4DHNNEmqNjEhCrAITGDLZQrmE6gPk8lWjLWCvIQVivit4VBrNRbEilqOeEHcw/e1YQNXuUrPUuECsbRuOaHiDmUX5JGoU32eMpcKuXoQ4PvpxxRfe/6pw=
+	t=1755021523; cv=none; b=uck3DL/7CPXAY5HYeb0Fseb0fKN30igpWe7kutJB+g1Ao4lMlwpyRQfWrznDyRilR1fV4N/i78/DMgneP//kK+ytbsCl6eQBJ/4qte7jCZp+mm9I8F3aVyVhTuO1sCrrD1lk6e2mv5h5w0mlEqAaQevYPmJsrEuHxUD0j8gLfdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022651; c=relaxed/simple;
-	bh=IguVgSroqIDBfp0Q0498E4hd+aLzvVPXiYbRyMl0MYQ=;
+	s=arc-20240116; t=1755021523; c=relaxed/simple;
+	bh=CUn8dc7wpZD3pvXI/b97ngh+f1uuRlr0y8uUkB91eY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nmNgiQzG6yOQJjFOkeZffsqRvJlLaVSgSvGJ9VcskIYAJXOsDGjwE508h5/CLySW8WgYEoFemSZSx4wbEdirVC9eH0tELTwtiHDzifNgmYt5uSfZP9U7nzhl0aLNX8SMGft840t1DGpBe5M5BdQoxNJTXJqyF78xF3zV7x86fDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGPLHMQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EC9C4CEF0;
-	Tue, 12 Aug 2025 18:17:30 +0000 (UTC)
+	 MIME-Version; b=Eum+mOQEbFZdgST1vZkPiYZ9Z6ndWTNMwZJi0I4AfycOsMzXYOnkYIjk5sSBtQiSKRLkR1cC/D4VbBpy0G98phr4UAXEZMXVSODgFYCGRMki4KTm0V7DAuJIIpyfJzB2K7TfF2MXNYtANRbXNY0zYBHHt23wfljjRI9+krb8jBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITxxbiel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CC1C4CEFA;
+	Tue, 12 Aug 2025 17:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022651;
-	bh=IguVgSroqIDBfp0Q0498E4hd+aLzvVPXiYbRyMl0MYQ=;
+	s=korg; t=1755021522;
+	bh=CUn8dc7wpZD3pvXI/b97ngh+f1uuRlr0y8uUkB91eY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGPLHMQR8FWFDKL1Q2bZT4a0bD02Ox9ZysZCzQ/DoWauRrrJCPaZm3b97gNL4GbFz
-	 3tzQ1tu2QDY9YbjCEHih5831uO+12w7qmxBw2dknq+FQnsCEmRr9ZU/l47cN9O5PP+
-	 9ctglesc++yfF1QIFATnohurjnwqXLvZXexelc24=
+	b=ITxxbieludTeChOHHufOHjCKGM7O+h+NqDU0m7TmtgwprfpQnd24oBdJpJ9Orv7AR
+	 wOuVZl1LxJdai8/B4P25pEELnUa1yjQ01550ZpdofqgGLCH9mrGVkT5scPIPCXEgA2
+	 v2gsTYACrs9q9oEtfDfVMh4dyEurDTFogXXJ/Llc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 211/369] soundwire: stream: restore params when prepare ports fail
+Subject: [PATCH 6.6 120/262] fanotify: sanitize handle_type values when reporting fid
 Date: Tue, 12 Aug 2025 19:28:28 +0200
-Message-ID: <20250812173022.696183863@linuxfoundation.org>
+Message-ID: <20250812172958.220082391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit dba7d9dbfdc4389361ff3a910e767d3cfca22587 ]
+[ Upstream commit 8631e01c2c5d1fe6705bcc0d733a0b7a17d3daac ]
 
-The bus->params should be restored if the stream is failed to prepare.
-The issue exists since beginning. The Fixes tag just indicates the
-first commit that the commit can be applied to.
+Unlike file_handle, type and len of struct fanotify_fh are u8.
+Traditionally, filesystem return handle_type < 0xff, but there
+is no enforecement for that in vfs.
 
-Fixes: 17ed5bef49f4 ("soundwire: add missing newlines in dynamic debug logs")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20250626060952.405996-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Add a sanity check in fanotify to avoid truncating handle_type
+if its value is > 0xff.
+
+Fixes: 7cdafe6cc4a6 ("exportfs: check for error return value from exportfs_encode_*()")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250627104835.184495-1-amir73il@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/stream.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/notify/fanotify/fanotify.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
-index 7aa4900dcf31..6c1e3aed8162 100644
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -1414,7 +1414,7 @@ static int _sdw_prepare_stream(struct sdw_stream_runtime *stream,
- 		if (ret < 0) {
- 			dev_err(bus->dev, "Prepare port(s) failed ret = %d\n",
- 				ret);
--			return ret;
-+			goto restore_params;
- 		}
- 	}
+diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
+index 9dac7f6e72d2..723ff9cad9ed 100644
+--- a/fs/notify/fanotify/fanotify.c
++++ b/fs/notify/fanotify/fanotify.c
+@@ -445,7 +445,13 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
+ 	dwords = fh_len >> 2;
+ 	type = exportfs_encode_fid(inode, buf, &dwords);
+ 	err = -EINVAL;
+-	if (type <= 0 || type == FILEID_INVALID || fh_len != dwords << 2)
++	/*
++	 * Unlike file_handle, type and len of struct fanotify_fh are u8.
++	 * Traditionally, filesystem return handle_type < 0xff, but there
++	 * is no enforecement for that in vfs.
++	 */
++	BUILD_BUG_ON(MAX_HANDLE_SZ > 0xff || FILEID_INVALID > 0xff);
++	if (type <= 0 || type >= FILEID_INVALID || fh_len != dwords << 2)
+ 		goto out_err;
  
+ 	fh->type = type;
 -- 
 2.39.5
 
