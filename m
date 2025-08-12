@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF92FB234F4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C5BB23108
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73991188532A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D7481A20B94
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772C62FE571;
-	Tue, 12 Aug 2025 18:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D08E2FE564;
+	Tue, 12 Aug 2025 17:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FioOQRq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBM4ZdTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364532E9EDE;
-	Tue, 12 Aug 2025 18:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8102F8BE7;
+	Tue, 12 Aug 2025 17:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024083; cv=none; b=d0mK/PyszFSN+yvl4ZrBAmt9EgcHIWbnnmLSUYxCGHJsk6mMyciGXQ4Wj/JF+OPDSi95ES05ZUlRywFqh50zUcXjt9URUf8i3eoppp1/CjQQbVCZ3n4B6PdQQh9urj2i6r1cFx8zhqex9CB+9kRItaBmFwnj3hgP2ciAcqHXlO4=
+	t=1755021530; cv=none; b=QwQiZSP9tlyawClOeDxZOPpypsCWjKxkQj6KmpzUMWkEzAxrnNsAjmvP4hmmyoE/8tRsngu5kYEcUgD5M0psAr4Cpk/r8rg5d2BWKPnGOlCCps/r6ziEOwj0D3C7oyDRu1ce2EmlXkHAwPpt4tYcBIHjl84CrSavksFkJvBJ0G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024083; c=relaxed/simple;
-	bh=QLGKUq3UaOclg+gRxcqi0UmcvguF+taFouN4D97ugzg=;
+	s=arc-20240116; t=1755021530; c=relaxed/simple;
+	bh=3kmqdrUTqw+UJ+cCmm+MZhfEQe4c0hUr4f9lsOzSVq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pucDZSBBHb+4dEhv0X4HT8v2nsYPl4IbM4SCwiRv2t8HAUma6LovotVTZqiRNDic7of3TyaCDQn+jV4ge1OPzYnuueF77gGEhpfWqNixNer5shtJHcGKNVJuzdJ3Tsax6ro3iKSNQVArvU1j9LqGzrxpFexC0wPosmClFV0Qyik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FioOQRq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB39C4CEF0;
-	Tue, 12 Aug 2025 18:41:22 +0000 (UTC)
+	 MIME-Version; b=CyFW+Ycqf4ToAlVaO8VvIe3s0IXgoBlMrT95ObQJf85OAdTvqMaco+s+nmXGMjtNdpB3AkdzOVT0u/eenAfDsrIgVYrEapUFHLV5CklR8T88UYx1gJNoBMNg99988d2o7MMGn451QBNxhdSQ8FN3xPXYrR3ZWY56JHnASCmnPLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBM4ZdTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D5EC4CEF1;
+	Tue, 12 Aug 2025 17:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024083;
-	bh=QLGKUq3UaOclg+gRxcqi0UmcvguF+taFouN4D97ugzg=;
+	s=korg; t=1755021529;
+	bh=3kmqdrUTqw+UJ+cCmm+MZhfEQe4c0hUr4f9lsOzSVq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FioOQRq3PGRwZ/pk7zzSiNhySXC7p1gDo58rSQBMdu9PdeovRcYR+jgGzywREVN0Z
-	 Wevx25XVPYrkLu8/7ONuJcbv3dK8CEhGDCsz6MwXkEnfHvM7ADV7yDZ5TtFGkoQeUX
-	 BsiUys1gVQ4xVRiEY5NXi/XI2DdFF/hggbXL8ViU=
+	b=oBM4ZdTIr9dTP6fg5rQYhHRgQKZUS8VHv1J/Pujuz5ZzQ2IPnlUPglc1qnUllb/mF
+	 FHeQUcuKUETKn1Vxgcg0sj1be/3QjvOwLbrlbBz7s3D2R5wtCFnHkCGv0QA+lBCX4s
+	 D7/Thh6R1XRHmSCDayeqq6Qp24RPOz+BWSWiEW54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 241/627] wifi: ath12k: fix endianness handling while accessing wmi service bit
+Subject: [PATCH 6.6 148/262] dmaengine: nbpfaxi: Add missing check after DMA map
 Date: Tue, 12 Aug 2025 19:28:56 +0200
-Message-ID: <20250812173428.466998248@linuxfoundation.org>
+Message-ID: <20250812172959.400465380@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 8f1a078842d4af4877fb686f3907788024d0d1b7 ]
+[ Upstream commit c6ee78fc8f3e653bec427cfd06fec7877ee782bd ]
 
-Currently there is no endian conversion in ath12k_wmi_tlv_services_parser()
-so the service bit parsing will be incorrect on a big endian platform and
-to fix this by using appropriate endian conversion.
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00217-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: 342527f35338 ("wifi: ath12k: Add support to parse new WMI event for 6 GHz regulatory")
-Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250717173539.2523396-2-tamizh.raja@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250707075752.28674-2-fourier.thomas@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/dma/nbpfaxi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index e19803bfba75..745d017c5aa8 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -7491,7 +7491,7 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
- 					  void *data)
- {
- 	const struct wmi_service_available_event *ev;
--	u32 *wmi_ext2_service_bitmap;
-+	__le32 *wmi_ext2_service_bitmap;
- 	int i, j;
- 	u16 expected_len;
+diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
+index a361f8c29cd3..69c80d933903 100644
+--- a/drivers/dma/nbpfaxi.c
++++ b/drivers/dma/nbpfaxi.c
+@@ -711,6 +711,9 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 		list_add_tail(&ldesc->node, &lhead);
+ 		ldesc->hwdesc_dma_addr = dma_map_single(dchan->device->dev,
+ 					hwdesc, sizeof(*hwdesc), DMA_TO_DEVICE);
++		if (dma_mapping_error(dchan->device->dev,
++				      ldesc->hwdesc_dma_addr))
++			goto unmap_error;
  
-@@ -7523,12 +7523,12 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
- 			   ev->wmi_service_segment_bitmap[3]);
- 		break;
- 	case WMI_TAG_ARRAY_UINT32:
--		wmi_ext2_service_bitmap = (u32 *)ptr;
-+		wmi_ext2_service_bitmap = (__le32 *)ptr;
- 		for (i = 0, j = WMI_MAX_EXT_SERVICE;
- 		     i < WMI_SERVICE_SEGMENT_BM_SIZE32 && j < WMI_MAX_EXT2_SERVICE;
- 		     i++) {
- 			do {
--				if (wmi_ext2_service_bitmap[i] &
-+				if (__le32_to_cpu(wmi_ext2_service_bitmap[i]) &
- 				    BIT(j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32))
- 					set_bit(j, ab->wmi_ab.svc_map);
- 			} while (++j % WMI_AVAIL_SERVICE_BITS_IN_SIZE32);
-@@ -7536,8 +7536,10 @@ static int ath12k_wmi_tlv_services_parser(struct ath12k_base *ab,
+ 		dev_dbg(dev, "%s(): mapped 0x%p to %pad\n", __func__,
+ 			hwdesc, &ldesc->hwdesc_dma_addr);
+@@ -737,6 +740,16 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 	spin_unlock_irq(&chan->lock);
  
- 		ath12k_dbg(ab, ATH12K_DBG_WMI,
- 			   "wmi_ext2_service_bitmap 0x%04x 0x%04x 0x%04x 0x%04x",
--			   wmi_ext2_service_bitmap[0], wmi_ext2_service_bitmap[1],
--			   wmi_ext2_service_bitmap[2], wmi_ext2_service_bitmap[3]);
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[0]),
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[1]),
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[2]),
-+			   __le32_to_cpu(wmi_ext2_service_bitmap[3]));
- 		break;
- 	}
- 	return 0;
+ 	return ARRAY_SIZE(dpage->desc);
++
++unmap_error:
++	while (i--) {
++		ldesc--; hwdesc--;
++
++		dma_unmap_single(dchan->device->dev, ldesc->hwdesc_dma_addr,
++				 sizeof(hwdesc), DMA_TO_DEVICE);
++	}
++
++	return -ENOMEM;
+ }
+ 
+ static void nbpf_desc_put(struct nbpf_desc *desc)
 -- 
 2.39.5
 
