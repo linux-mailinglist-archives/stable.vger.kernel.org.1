@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A6FB23217
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:13:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781E4B23404
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84F0717C60D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1C41A24247
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E03118FC91;
-	Tue, 12 Aug 2025 18:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6650E2FE580;
+	Tue, 12 Aug 2025 18:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4Fe1vlC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amFRAaHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3C81C8621;
-	Tue, 12 Aug 2025 18:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2364B2FE57A;
+	Tue, 12 Aug 2025 18:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022107; cv=none; b=WSRbmUTE5/0QCvL66qxSaA1lPVLLzf3Cz6niBKcgkbM78RduC34Rbe2Jgpu+FhGvWA0I6Vw/bmbWHQyxYY5ylUQ3F+z2icUqQcLWH8A29M52Ynty9yc1ss8jZ58kcPqsEUyVKg1wmcht5X4q+eeOiwphM8AbnnMvaFm0cNzShoE=
+	t=1755023396; cv=none; b=AfHoA7i65/lpcUjvGZmvE7zIOSJSExF/DsS55qEHkdpCYx/txe8Yhzl9CmDHDEe4L96w0r90RNCMt4plYSZNaE7QaUCVmro1o9SAGfKogd+LTn1qND+l/z93qZ3oZsOfZu826AYcsmvAT1IqG+oQbjusCom2/y1yX4Zrxb5lpsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022107; c=relaxed/simple;
-	bh=ckCacWJfVj7BxSUxVIvFDOXWaGgvlGVrlN7Km3A+Zos=;
+	s=arc-20240116; t=1755023396; c=relaxed/simple;
+	bh=1v8tLvJg1xGQcNkUsZaaZbeaiWB2Y7bVQ5ItcvvlC1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBzRQZtj1QV5l+a0LNFKv7M/n92jrxASSTn3pT4Br7nWpRVNrsk/NUZiPDkbJS7aI3KFBjnPoAVWZ8aqoP6XZe1qeOqCCbLihyVzTk7iSSMsDjw3e6uy/v+49Qz7fzksVbaszPztsX4xWaO8ZyDoxNf+dZruV2Qos4cJev4fC2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4Fe1vlC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5E4C4CEF6;
-	Tue, 12 Aug 2025 18:08:26 +0000 (UTC)
+	 MIME-Version; b=Eu0x6g1l2OqVrvRwwRX6mrRLMLjFNrmPq5yWyd2FqvPApYl6IgeUIo6RegaCGr2PJMvq6TUdmJdrTDOcOGqOgnFSvfN4lgXTESeWy7pqwzUxCytURhgL6VLgZnRtO+aoY4CzhhfkPp0+VcUp1SUDyyKifumE3niqJmlXGHV7Yyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amFRAaHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA97C4CEF0;
+	Tue, 12 Aug 2025 18:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022107;
-	bh=ckCacWJfVj7BxSUxVIvFDOXWaGgvlGVrlN7Km3A+Zos=;
+	s=korg; t=1755023396;
+	bh=1v8tLvJg1xGQcNkUsZaaZbeaiWB2Y7bVQ5ItcvvlC1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4Fe1vlCc46AsWYTuDw/VckGVA9ninBfapx+/JmavYI4WKY4KBebG+0ikPwN0leGZ
-	 dgAbS27LAece1AxWjSTCCz8FzC1W/AjGyWgg7kVjQebB0dxEE5Qdw5YIOwS/doaQE6
-	 TvDTGJhbwC5AMhOx2rWUHrytkij7T6vESdbrp93c=
+	b=amFRAaHaSSNS9DX1SWE+3hd069Jpk+AXMkBT7KG9wmsoUGpr7kwSpdoBuKbM7vpoE
+	 Ufw6Ig+eKiQHRUAt+mFfJq3MW3d/CCnrJSvh9xxnFAYlfv42p3+jXG2Z+VH6KRFbm9
+	 jqeQu+FDYfcaqMCol7lJLYwOF7jBqpKWTkyV29m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/369] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
-Date: Tue, 12 Aug 2025 19:25:54 +0200
-Message-ID: <20250812173016.908543576@linuxfoundation.org>
+Subject: [PATCH 6.16 060/627] firmware: arm_scmi: Fix up turbo frequencies selection
+Date: Tue, 12 Aug 2025 19:25:55 +0200
+Message-ID: <20250812173421.610240805@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
+[ Upstream commit ad28fc31dd702871764e9294d4f2314ad78d24a9 ]
 
-In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
-accordance with the target frequency to ensure delivering adequate
-performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
-indication that the desired performance level is actually equal to the
-floor one.  This may cause it to choose a performance point way above
-the desired level.
+Sustained frequency when greater than or equal to 4Ghz on 64-bit devices
+currently result in marking all frequencies as turbo. Address the turbo
+frequency selection bug by fixing the truncation.
 
-Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
-actually sets HWP_DESIRED_PERF in accordance with the target performance
-value.
-
-Address this by adjusting intel_cpufreq_update_pstate() to pass
-target_pstate as both the minimum and the desired performance levels
-to intel_cpufreq_hwp_update().
-
-Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
+Fixes: a897575e79d7 ("firmware: arm_scmi: Add support for marking certain frequencies as turbo")
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Message-Id: <20250514214719.203607-1-quic_sibis@quicinc.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_scmi/perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 54e7310454cc..b86372aa341d 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -3128,8 +3128,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
- 		int max_pstate = policy->strict_target ?
- 					target_pstate : cpu->max_perf_ratio;
+diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
+index c7e5a34b254b..683fd9b85c5c 100644
+--- a/drivers/firmware/arm_scmi/perf.c
++++ b/drivers/firmware/arm_scmi/perf.c
+@@ -892,7 +892,7 @@ static int scmi_dvfs_device_opps_add(const struct scmi_protocol_handle *ph,
+ 			freq = dom->opp[idx].indicative_freq * dom->mult_factor;
  
--		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
--					 fast_switch);
-+		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
-+					 target_pstate, fast_switch);
- 	} else if (target_pstate != old_pstate) {
- 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
- 	}
+ 		/* All OPPs above the sustained frequency are treated as turbo */
+-		data.turbo = freq > dom->sustained_freq_khz * 1000;
++		data.turbo = freq > dom->sustained_freq_khz * 1000UL;
+ 
+ 		data.level = dom->opp[idx].perf;
+ 		data.freq = freq;
 -- 
 2.39.5
 
