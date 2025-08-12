@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A90B23512
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B85B23330
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D815188DA30
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7091775F1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781852FDC55;
-	Tue, 12 Aug 2025 18:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A682DFA3E;
+	Tue, 12 Aug 2025 18:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1v5KGJhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VArWYTUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C7F2FE565;
-	Tue, 12 Aug 2025 18:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984BF1EBFE0;
+	Tue, 12 Aug 2025 18:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024214; cv=none; b=Kf5dbZA+SsmK6ez4bNJU/Ttc25k2OrzSh3kgWdPANyHczWDwNGddTKWpA2gQ6pz5FqeEX3BK1UaEO+ZaifnyocURF6hPblyYBA89gvZmIKFqfL3Cp4Ju3dkyq2T+Bsq6qiRjcbqzLJj/Qa6yCMRXLQPo91fAc2ePf9eulc1mnXE=
+	t=1755022940; cv=none; b=aZyEO3hX4YJ1rR8Lbp1bEwJNwbils4WzNJr+KUybg4m9VlLMK0ra2sDRi9cg0XM1tbk5nVxOAYmSpo85oQSx9pciwxruYZ8nnmocF7Ah0QWAh7Bq5gOEAOsSYHbTa+mlULkgRo5NkzrDVaoeHz9iOmFvCCiCH6tPT/hV12ohW0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024214; c=relaxed/simple;
-	bh=ySC0bqdLGaYc18z01G6yxCVWHVmwpAd6vXP2CigQdCA=;
+	s=arc-20240116; t=1755022940; c=relaxed/simple;
+	bh=l5PEFLqZABTvPwPnB5Ke9bjvvmx4uREpI8CiYE3b+Lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/ZV6fmymiSJO6bvMl2nc5JoDPCCp/cY0XVc1fzZfHP9ogvDOJuCKrgCtLBiuZBTsjlMvkAHO3HHoQAgGQOqZYSSQSMgIV3M3YIXiUN1gdiJKxM6s11I9qnpa+YjQ18c79aW5AQ7NbtqkPWSv+OFKtq3000BtCT5oDP6Y1ZgSPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1v5KGJhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7864EC4CEF0;
-	Tue, 12 Aug 2025 18:43:33 +0000 (UTC)
+	 MIME-Version; b=YPZxmOeRi6mMxJH7Pq4HJlfJ+KP/rPrNCRRuJ0MsiUyVXGhzzwPHcc/aaplnieirZ6WiMjbqgbZqfYcC2kUX9j+nV4HQp2skLW6RpbLbx9WFeKNfH6OwhEoQa0G+wG4Uaq6lUo4RnxCqQPk/Ljmju1h5w8NXbI6SsQ6UQGg3RT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VArWYTUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A19C4CEF0;
+	Tue, 12 Aug 2025 18:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024214;
-	bh=ySC0bqdLGaYc18z01G6yxCVWHVmwpAd6vXP2CigQdCA=;
+	s=korg; t=1755022940;
+	bh=l5PEFLqZABTvPwPnB5Ke9bjvvmx4uREpI8CiYE3b+Lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1v5KGJhLRtTpjmb8yZzG/rDaU51XeGmHzeiAlXEGp+fZTEpadPwboXvijhM0wiaE2
-	 v9GLRlSPO6gAUxir5HuXPwcKKjbbL+07lZ0blndassgxHY8RXqyEyjkLZhZn+QXQXq
-	 iGXnfwORbJ9iCNCf2sIcWVwn1I5ziajYDh/TBX8Q=
+	b=VArWYTUYw3BiEkill6iBhvTKQkT/hUfYlyGBGBo0IYCxb0sMagiR9EyClnECiG4A4
+	 f+0nAT/6XVr7suPZBwqPB5U5aHdCCzNjmTr4BRGrD65TJ0wP4qwQS+2mg+6LSkYcuK
+	 cUxd6euYSftBAR89LE4N89XBt+XtQoVflV0+Igy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hogan Wang <hogan.wang@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 306/627] crypto: s390/sha3 - Use cpu byte-order when exporting
+Subject: [PATCH 6.12 304/369] x86/irq: Plug vector setup race
 Date: Tue, 12 Aug 2025 19:30:01 +0200
-Message-ID: <20250812173430.952570226@linuxfoundation.org>
+Message-ID: <20250812173028.167851479@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +62,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 73c2437109c3eab274258a6430ae5dafac1ef43e ]
+[ Upstream commit ce0b5eedcb753697d43f61dd2e27d68eb5d3150f ]
 
-The sha3 partial hash on s390 is in little-endian just like the
-final hash.  However the generic implementation produces native
-or big-endian partial hashes.
+Hogan reported a vector setup race, which overwrites the interrupt
+descriptor in the per CPU vector array resulting in a disfunctional device.
 
-Make s390 sha3 conform to that by doing the byte-swap on export
-and import.
+CPU0				CPU1
+				interrupt is raised in APIC IRR
+				but not handled
+  free_irq()
+    per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
 
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Fixes: 6f90ba706551 ("crypto: s390/sha3 - Use API partial block handling")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  request_irq()			common_interrupt()
+  				  d = this_cpu_read(vector_irq[vector]);
+
+    per_cpu(vector_irq, CPU1)[vector] = desc;
+
+    				  if (d == VECTOR_SHUTDOWN)
+				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
+
+free_irq() cannot observe the pending vector in the CPU1 APIC as there is
+no way to query the remote CPUs APIC IRR.
+
+This requires that request_irq() uses the same vector/CPU as the one which
+was freed, but this also can be triggered by a spurious interrupt.
+
+Interestingly enough this problem managed to be hidden for more than a
+decade.
+
+Prevent this by reevaluating vector_irq under the vector lock, which is
+held by the interrupt activation code when vector_irq is updated.
+
+To avoid ifdeffery or IS_ENABLED() nonsense, move the
+[un]lock_vector_lock() declarations out under the
+CONFIG_IRQ_DOMAIN_HIERARCHY guard as it's only provided when
+CONFIG_X86_LOCAL_APIC=y.
+
+The current CONFIG_IRQ_DOMAIN_HIERARCHY guard is selected by
+CONFIG_X86_LOCAL_APIC, but can also be selected by other parts of the
+Kconfig system, which makes 32-bit UP builds with CONFIG_X86_LOCAL_APIC=n
+fail.
+
+Can we just get rid of this !APIC nonsense once and forever?
+
+Fixes: 9345005f4eed ("x86/irq: Fix do_IRQ() interrupt warning for cpu hotplug retriggered irqs")
+Reported-by: Hogan Wang <hogan.wang@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Hogan Wang <hogan.wang@huawei.com>
+Link: https://lore.kernel.org/all/draft-87ikjhrhhh.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/crypto/sha.h           |  3 +++
- arch/s390/crypto/sha3_256_s390.c | 24 +++++++++++++++++-------
- arch/s390/crypto/sha3_512_s390.c | 25 +++++++++++++++++--------
- 3 files changed, 37 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/hw_irq.h | 12 ++++---
+ arch/x86/kernel/irq.c         | 63 ++++++++++++++++++++++++++---------
+ 2 files changed, 55 insertions(+), 20 deletions(-)
 
-diff --git a/arch/s390/crypto/sha.h b/arch/s390/crypto/sha.h
-index d757ccbce2b4..cadb4b13622a 100644
---- a/arch/s390/crypto/sha.h
-+++ b/arch/s390/crypto/sha.h
-@@ -27,6 +27,9 @@ struct s390_sha_ctx {
- 			u64 state[SHA512_DIGEST_SIZE / sizeof(u64)];
- 			u64 count_hi;
- 		} sha512;
-+		struct {
-+			__le64 state[SHA3_STATE_SIZE / sizeof(u64)];
-+		} sha3;
- 	};
- 	int func;		/* KIMD function to use */
- 	bool first_message_part;
-diff --git a/arch/s390/crypto/sha3_256_s390.c b/arch/s390/crypto/sha3_256_s390.c
-index 4a7731ac6bcd..03bb4f4bab70 100644
---- a/arch/s390/crypto/sha3_256_s390.c
-+++ b/arch/s390/crypto/sha3_256_s390.c
-@@ -35,23 +35,33 @@ static int sha3_256_init(struct shash_desc *desc)
- static int sha3_256_export(struct shash_desc *desc, void *out)
- {
- 	struct s390_sha_ctx *sctx = shash_desc_ctx(desc);
--	struct sha3_state *octx = out;
-+	union {
-+		u8 *u8;
-+		u64 *u64;
-+	} p = { .u8 = out };
-+	int i;
+diff --git a/arch/x86/include/asm/hw_irq.h b/arch/x86/include/asm/hw_irq.h
+index edebf1020e04..6bb3d9a86abe 100644
+--- a/arch/x86/include/asm/hw_irq.h
++++ b/arch/x86/include/asm/hw_irq.h
+@@ -92,8 +92,6 @@ struct irq_cfg {
  
- 	if (sctx->first_message_part) {
--		memset(sctx->state, 0, sizeof(sctx->state));
--		sctx->first_message_part = 0;
-+		memset(out, 0, SHA3_STATE_SIZE);
-+		return 0;
- 	}
--	memcpy(octx->st, sctx->state, sizeof(octx->st));
-+	for (i = 0; i < SHA3_STATE_SIZE / 8; i++)
-+		put_unaligned(le64_to_cpu(sctx->sha3.state[i]), p.u64++);
- 	return 0;
+ extern struct irq_cfg *irq_cfg(unsigned int irq);
+ extern struct irq_cfg *irqd_cfg(struct irq_data *irq_data);
+-extern void lock_vector_lock(void);
+-extern void unlock_vector_lock(void);
+ #ifdef CONFIG_SMP
+ extern void vector_schedule_cleanup(struct irq_cfg *);
+ extern void irq_complete_move(struct irq_cfg *cfg);
+@@ -101,12 +99,16 @@ extern void irq_complete_move(struct irq_cfg *cfg);
+ static inline void vector_schedule_cleanup(struct irq_cfg *c) { }
+ static inline void irq_complete_move(struct irq_cfg *c) { }
+ #endif
+-
+ extern void apic_ack_edge(struct irq_data *data);
+-#else	/*  CONFIG_IRQ_DOMAIN_HIERARCHY */
++#endif /* CONFIG_IRQ_DOMAIN_HIERARCHY */
++
++#ifdef CONFIG_X86_LOCAL_APIC
++extern void lock_vector_lock(void);
++extern void unlock_vector_lock(void);
++#else
+ static inline void lock_vector_lock(void) {}
+ static inline void unlock_vector_lock(void) {}
+-#endif	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
++#endif
+ 
+ /* Statistics */
+ extern atomic_t irq_err_count;
+diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
+index 85fa2db38dc4..9400730e538e 100644
+--- a/arch/x86/kernel/irq.c
++++ b/arch/x86/kernel/irq.c
+@@ -251,26 +251,59 @@ static __always_inline void handle_irq(struct irq_desc *desc,
+ 		__handle_irq(desc, regs);
  }
  
- static int sha3_256_import(struct shash_desc *desc, const void *in)
+-static __always_inline int call_irq_handler(int vector, struct pt_regs *regs)
++static struct irq_desc *reevaluate_vector(int vector)
  {
- 	struct s390_sha_ctx *sctx = shash_desc_ctx(desc);
--	const struct sha3_state *ictx = in;
--
-+	union {
-+		const u8 *u8;
-+		const u64 *u64;
-+	} p = { .u8 = in };
-+	int i;
+-	struct irq_desc *desc;
+-	int ret = 0;
++	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
 +
-+	for (i = 0; i < SHA3_STATE_SIZE / 8; i++)
-+		sctx->sha3.state[i] = cpu_to_le64(get_unaligned(p.u64++));
- 	sctx->count = 0;
--	memcpy(sctx->state, ictx->st, sizeof(ictx->st));
- 	sctx->first_message_part = 0;
- 	sctx->func = CPACF_KIMD_SHA3_256;
++	if (!IS_ERR_OR_NULL(desc))
++		return desc;
++
++	if (desc == VECTOR_UNUSED)
++		pr_emerg_ratelimited("No irq handler for %d.%u\n", smp_processor_id(), vector);
++	else
++		__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
++	return NULL;
++}
++
++static __always_inline bool call_irq_handler(int vector, struct pt_regs *regs)
++{
++	struct irq_desc *desc = __this_cpu_read(vector_irq[vector]);
  
-diff --git a/arch/s390/crypto/sha3_512_s390.c b/arch/s390/crypto/sha3_512_s390.c
-index 018f02fff444..a5c9690eecb1 100644
---- a/arch/s390/crypto/sha3_512_s390.c
-+++ b/arch/s390/crypto/sha3_512_s390.c
-@@ -34,24 +34,33 @@ static int sha3_512_init(struct shash_desc *desc)
- static int sha3_512_export(struct shash_desc *desc, void *out)
- {
- 	struct s390_sha_ctx *sctx = shash_desc_ctx(desc);
--	struct sha3_state *octx = out;
--
-+	union {
-+		u8 *u8;
-+		u64 *u64;
-+	} p = { .u8 = out };
-+	int i;
- 
- 	if (sctx->first_message_part) {
--		memset(sctx->state, 0, sizeof(sctx->state));
--		sctx->first_message_part = 0;
-+		memset(out, 0, SHA3_STATE_SIZE);
-+		return 0;
+-	desc = __this_cpu_read(vector_irq[vector]);
+ 	if (likely(!IS_ERR_OR_NULL(desc))) {
+ 		handle_irq(desc, regs);
+-	} else {
+-		ret = -EINVAL;
+-		if (desc == VECTOR_UNUSED) {
+-			pr_emerg_ratelimited("%s: %d.%u No irq handler for vector\n",
+-					     __func__, smp_processor_id(),
+-					     vector);
+-		} else {
+-			__this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
+-		}
++		return true;
  	}
--	memcpy(octx->st, sctx->state, sizeof(octx->st));
-+	for (i = 0; i < SHA3_STATE_SIZE / 8; i++)
-+		put_unaligned(le64_to_cpu(sctx->sha3.state[i]), p.u64++);
- 	return 0;
+ 
+-	return ret;
++	/*
++	 * Reevaluate with vector_lock held to prevent a race against
++	 * request_irq() setting up the vector:
++	 *
++	 * CPU0				CPU1
++	 *				interrupt is raised in APIC IRR
++	 *				but not handled
++	 * free_irq()
++	 *   per_cpu(vector_irq, CPU1)[vector] = VECTOR_SHUTDOWN;
++	 *
++	 * request_irq()		common_interrupt()
++	 *				  d = this_cpu_read(vector_irq[vector]);
++	 *
++	 * per_cpu(vector_irq, CPU1)[vector] = desc;
++	 *
++	 *				  if (d == VECTOR_SHUTDOWN)
++	 *				    this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
++	 *
++	 * This requires that the same vector on the same target CPU is
++	 * handed out or that a spurious interrupt hits that CPU/vector.
++	 */
++	lock_vector_lock();
++	desc = reevaluate_vector(vector);
++	unlock_vector_lock();
++
++	if (!desc)
++		return false;
++
++	handle_irq(desc, regs);
++	return true;
  }
  
- static int sha3_512_import(struct shash_desc *desc, const void *in)
- {
- 	struct s390_sha_ctx *sctx = shash_desc_ctx(desc);
--	const struct sha3_state *ictx = in;
--
-+	union {
-+		const u8 *u8;
-+		const u64 *u64;
-+	} p = { .u8 = in };
-+	int i;
-+
-+	for (i = 0; i < SHA3_STATE_SIZE / 8; i++)
-+		sctx->sha3.state[i] = cpu_to_le64(get_unaligned(p.u64++));
- 	sctx->count = 0;
--	memcpy(sctx->state, ictx->st, sizeof(ictx->st));
- 	sctx->first_message_part = 0;
- 	sctx->func = CPACF_KIMD_SHA3_512;
+ /*
+@@ -284,7 +317,7 @@ DEFINE_IDTENTRY_IRQ(common_interrupt)
+ 	/* entry code tells RCU that we're not quiescent.  Check it. */
+ 	RCU_LOCKDEP_WARN(!rcu_is_watching(), "IRQ failed to wake up RCU");
  
+-	if (unlikely(call_irq_handler(vector, regs)))
++	if (unlikely(!call_irq_handler(vector, regs)))
+ 		apic_eoi();
+ 
+ 	set_irq_regs(old_regs);
 -- 
 2.39.5
 
