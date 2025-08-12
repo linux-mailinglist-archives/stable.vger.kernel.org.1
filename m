@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259D8B23363
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CAEB23500
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 296D91659C0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E8416AF36
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CB42ED17F;
-	Tue, 12 Aug 2025 18:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1352FE597;
+	Tue, 12 Aug 2025 18:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVpmsweE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntQyua18"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CEA3F9D2;
-	Tue, 12 Aug 2025 18:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3CF1A01BF;
+	Tue, 12 Aug 2025 18:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023060; cv=none; b=KlGl2iIXrBOV6bzngZUmE413ohCtSDdEb76cbhE5MFHfpYtSSMZcqEfEUTzunmYAwvorF8r5ZyzfXoR5Dih5RzNWLhDVwaQ6tVZ81wU9i677u/giPNpqS36leHq+jQuxxY6SNMMwUQDTTTP0Q1ZF7l5Uzn6Xb1RW/nC4GpVtAU8=
+	t=1755024332; cv=none; b=mvHqrGutKCoLKnz3CHrNNW+O6iD27owq01p7Qw90aABCMyxWJ708e7l1t4jwckxyEpIgjCNVePWNttDCZUooFEWZW6h5Kzi2hwKp8+KfgD7Ebq+nBGVN+00By1uRcG0hz2zcIFy0gSEuXsCS2ArFjVixTxFPs+OCZYF/8JAQamc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023060; c=relaxed/simple;
-	bh=N4TaGXRC7u9xrAB0iSAN1Bl8URYQ4SgfhTZg8xqnTho=;
+	s=arc-20240116; t=1755024332; c=relaxed/simple;
+	bh=nrRYlKDvx86c760nMQFLmCQZMctpKac1C8VbEwzDfkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfmaKho28iFV/8txumrOAsRUnPWcs5QTYgB1an2+7DlkNQWaiOSsKwhiE6RUkjAO3CkYm2jvWfN4xh7T0ENWHkQAJEfHsTZoncK4sRVLj+8UZfn2SgaAzD6ZL6+X06dPpc0hZratLdTyLImR5FA5AnEO5el5nEuImOFJpRaUHuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVpmsweE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C29C4CEF0;
-	Tue, 12 Aug 2025 18:24:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NFBCmzpGRx/f+Wjocj8dfuQ/NgzUp1HyehaFeEC3sc0y+XLgHvrJzq6PLa2Ji5Yye8p8u1IvqnOtjGzKDOn+cGyWpGyl8vW84fUOhXctM0yvMXgn6uzlXhnPo/LVzy4b0nyjSnYxWVcWGDtLDwS3TBLkCIa4Q6G+Ry5olGcW1AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntQyua18; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57601C4CEF0;
+	Tue, 12 Aug 2025 18:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023058;
-	bh=N4TaGXRC7u9xrAB0iSAN1Bl8URYQ4SgfhTZg8xqnTho=;
+	s=korg; t=1755024331;
+	bh=nrRYlKDvx86c760nMQFLmCQZMctpKac1C8VbEwzDfkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVpmsweELko/0YIwk1yZyflDM2v/aIURDSWNktKFxFQ+QeKOgAnj3qAXwRQH1Z4g9
-	 cXYu57+tE0gIZYf6VqF95YS9A+Ddr44B0XCnwPxIXdpbe9WrdPH8P9Uq+N7cN7CKom
-	 JKFTN6FprS3oHiGf8zs5R7AykMjpz3LCNDjCfTGM=
+	b=ntQyua18oWMWLM5lJYltrONv7AStHQtBGWpCr3PXQtURwmU1MRzlO1YURillAoVg5
+	 1w9ykO8T5NTlDZV5p4IStgnKS92l6HnM1toomOQfJQKLRN7yxMUjKokWX7inA3FQY9
+	 j59wnjPjzesw6uCTdIwdArNGMzl0EpnWEv0xwh+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 337/369] drm/i915/hdmi: add error handling in g4x_hdmi_init()
-Date: Tue, 12 Aug 2025 19:30:34 +0200
-Message-ID: <20250812173029.379913410@linuxfoundation.org>
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 340/627] clk: clk-axi-clkgen: fix fpfd_max frequency for zynq
+Date: Tue, 12 Aug 2025 19:30:35 +0200
+Message-ID: <20250812173432.219331581@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,128 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit 7603ba81225c815d2ceb4ad52f13e8df4b9d03cc upstream.
+[ Upstream commit ce8a9096699500e2c5bca09dde27b16edda5f636 ]
 
-Handle encoder and connector init failures in g4x_hdmi_init(). This is
-similar to g4x_dp_init().
+The fpfd_max frequency should be set to 450 MHz instead of 300 MHz.
+Well, it actually depends on the platform speed grade but we are being
+conservative for ultrascale so let's be consistent. In a following
+change we will set these limits at runtime.
 
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Closes: https://lore.kernel.org/r/20241031105145.2140590-1-senozhatsky@chromium.org
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/cafae7bf1f9ffb8f6a1d7a508cd2ce7dcf06fef7.1735568047.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20250519-dev-axi-clkgen-limits-v6-1-bc4b3b61d1d4@analog.com
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/g4x_hdmi.c |   35 +++++++++++++++++++++-----------
- drivers/gpu/drm/i915/display/g4x_hdmi.h |    5 ++--
- 2 files changed, 26 insertions(+), 14 deletions(-)
+ drivers/clk/clk-axi-clkgen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/g4x_hdmi.c
-+++ b/drivers/gpu/drm/i915/display/g4x_hdmi.c
-@@ -683,7 +683,7 @@ static bool assert_hdmi_port_valid(struc
- 			 "Platform does not support HDMI %c\n", port_name(port));
- }
+diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
+index 934e53a96ddd..00bf799964c6 100644
+--- a/drivers/clk/clk-axi-clkgen.c
++++ b/drivers/clk/clk-axi-clkgen.c
+@@ -118,7 +118,7 @@ static const struct axi_clkgen_limits axi_clkgen_zynqmp_default_limits = {
  
--void g4x_hdmi_init(struct drm_i915_private *dev_priv,
-+bool g4x_hdmi_init(struct drm_i915_private *dev_priv,
- 		   i915_reg_t hdmi_reg, enum port port)
- {
- 	struct intel_display *display = &dev_priv->display;
-@@ -693,10 +693,10 @@ void g4x_hdmi_init(struct drm_i915_priva
- 	struct intel_connector *intel_connector;
- 
- 	if (!assert_port_valid(dev_priv, port))
--		return;
-+		return false;
- 
- 	if (!assert_hdmi_port_valid(dev_priv, port))
--		return;
-+		return false;
- 
- 	devdata = intel_bios_encoder_data_lookup(display, port);
- 
-@@ -707,15 +707,13 @@ void g4x_hdmi_init(struct drm_i915_priva
- 
- 	dig_port = kzalloc(sizeof(*dig_port), GFP_KERNEL);
- 	if (!dig_port)
--		return;
-+		return false;
- 
- 	dig_port->aux_ch = AUX_CH_NONE;
- 
- 	intel_connector = intel_connector_alloc();
--	if (!intel_connector) {
--		kfree(dig_port);
--		return;
--	}
-+	if (!intel_connector)
-+		goto err_connector_alloc;
- 
- 	intel_encoder = &dig_port->base;
- 
-@@ -723,9 +721,10 @@ void g4x_hdmi_init(struct drm_i915_priva
- 
- 	mutex_init(&dig_port->hdcp_mutex);
- 
--	drm_encoder_init(&dev_priv->drm, &intel_encoder->base,
--			 &intel_hdmi_enc_funcs, DRM_MODE_ENCODER_TMDS,
--			 "HDMI %c", port_name(port));
-+	if (drm_encoder_init(&dev_priv->drm, &intel_encoder->base,
-+			     &intel_hdmi_enc_funcs, DRM_MODE_ENCODER_TMDS,
-+			     "HDMI %c", port_name(port)))
-+		goto err_encoder_init;
- 
- 	intel_encoder->hotplug = intel_hdmi_hotplug;
- 	intel_encoder->compute_config = g4x_hdmi_compute_config;
-@@ -788,5 +787,17 @@ void g4x_hdmi_init(struct drm_i915_priva
- 
- 	intel_infoframe_init(dig_port);
- 
--	intel_hdmi_init_connector(dig_port, intel_connector);
-+	if (!intel_hdmi_init_connector(dig_port, intel_connector))
-+		goto err_init_connector;
-+
-+	return true;
-+
-+err_init_connector:
-+	drm_encoder_cleanup(&intel_encoder->base);
-+err_encoder_init:
-+	kfree(intel_connector);
-+err_connector_alloc:
-+	kfree(dig_port);
-+
-+	return false;
- }
---- a/drivers/gpu/drm/i915/display/g4x_hdmi.h
-+++ b/drivers/gpu/drm/i915/display/g4x_hdmi.h
-@@ -16,14 +16,15 @@ struct drm_connector;
- struct drm_i915_private;
- 
- #ifdef I915
--void g4x_hdmi_init(struct drm_i915_private *dev_priv,
-+bool g4x_hdmi_init(struct drm_i915_private *dev_priv,
- 		   i915_reg_t hdmi_reg, enum port port);
- int g4x_hdmi_connector_atomic_check(struct drm_connector *connector,
- 				    struct drm_atomic_state *state);
- #else
--static inline void g4x_hdmi_init(struct drm_i915_private *dev_priv,
-+static inline bool g4x_hdmi_init(struct drm_i915_private *dev_priv,
- 				 i915_reg_t hdmi_reg, int port)
- {
-+	return false;
- }
- static inline int g4x_hdmi_connector_atomic_check(struct drm_connector *connector,
- 						  struct drm_atomic_state *state)
+ static const struct axi_clkgen_limits axi_clkgen_zynq_default_limits = {
+ 	.fpfd_min = 10000,
+-	.fpfd_max = 300000,
++	.fpfd_max = 450000,
+ 	.fvco_min = 600000,
+ 	.fvco_max = 1200000,
+ };
+-- 
+2.39.5
+
 
 
 
