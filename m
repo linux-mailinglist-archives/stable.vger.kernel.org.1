@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50083B22F71
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BA4B23278
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C399682CE4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29233AE3D0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407902FE569;
-	Tue, 12 Aug 2025 17:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751092D46B3;
+	Tue, 12 Aug 2025 18:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c11U/vMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xj0Cw5/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF24A2FF149;
-	Tue, 12 Aug 2025 17:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3252F1C8621;
+	Tue, 12 Aug 2025 18:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020320; cv=none; b=s3gNZeGSoJRvzjRxJkxp27np2tqZ47bekIHgPYIFVgySmF93UpD9lf0vVtgAVWACpdO2dUDlFSMWhDSv/xuKgzCQ9EOEqaAgHSBcrS7aER6KHO5ovm3pi9oS9WzMZP+nSG0taZDeOLaEgNQm++HntqNeNSi4qERkfKxhTyKqioE=
+	t=1755022377; cv=none; b=NXlrUVEaQLSUV6YIuHtZRspU1BpyQf/TJYJ2QfUexIyfysyu1+xclvzJB9WDey8RG+b1yPI7+TdplHFNcy2RfeUngtsFUMC4l89nJ8vg2uKAoDNvt0VVEFW3UCfWHR5HTmqbIIUHwPSLGSQgTZWrB8OvLGyVuSMpegZwbVa1Sog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020320; c=relaxed/simple;
-	bh=uY9h/W6rlk56RRA848ZbZm54ex/9mzBZCcFnLqyOCiM=;
+	s=arc-20240116; t=1755022377; c=relaxed/simple;
+	bh=3J80/BW7Nb46ty2s98eItm9llRyVJA2RQHEHufEBmOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRoOhMG+K6BrGkUSTBpPtzzSC2kM6oVaOkcMYG1EZ9P/kuKdLQOjynTp496x5iPCPXg+/1/490TLdbB7rlWDAIXnRflQ9jNYq+m8i7p3X5pBTevUBmhaG84929ydVldoQLGJ9c0JfoZRqDA0VDL4q8e7o+Mhs/ZA+pNd3OmRzmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c11U/vMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A08C4CEF0;
-	Tue, 12 Aug 2025 17:38:38 +0000 (UTC)
+	 MIME-Version; b=DePPPRO5+i1W8o58EpzLUvXdpgFjz1UV4HacAIIEY9E9tJvrupGIgCRSGeDo3j51sUZuv36HQECSJMpcTrAmiumRWZUWmu7plEhk32qm23LYNztME6UX2Pbq9H2Lt5r74xyjC1KVEySZPomJKlAtmlyJlnSyGAHlq48mPxrV1Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xj0Cw5/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96297C4CEF0;
+	Tue, 12 Aug 2025 18:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020319;
-	bh=uY9h/W6rlk56RRA848ZbZm54ex/9mzBZCcFnLqyOCiM=;
+	s=korg; t=1755022377;
+	bh=3J80/BW7Nb46ty2s98eItm9llRyVJA2RQHEHufEBmOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c11U/vMQNFSB3ycE1Jv+Hv3yGRPmmTjIyhOBOpY/HlYtIlHw/f+dqMKLtfGr+wqIN
-	 c4XfuCswzt1O164hWeh4nA2ZrgPd+v+Ig9MvuFKV/TpcOLsi1sbOJvULQn50TOI6Nh
-	 fXoQ1efbHuS8UVy9iGILaXpYHxCoNoNc5xSKWbQg=
+	b=xj0Cw5/S04RLqTLlezydYENZdJZ/ymO/DjYXhkB9kSVmOka/CTPvjp6g98ZO/+f3L
+	 pAd7g280edd6541AgWHgmwSrtZIPmFczGe0b3EspwFzFSZitngcEXkfVt6IqMtYVbL
+	 H7U/cObGDKV6BZn3Q3qKxJQrULtBnR0UPGT+5hwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Stephane Grosjean <stephane.grosjean@hms-networks.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/253] usb: typec: tcpm: allow switching to mode accessory to mux properly
+Subject: [PATCH 6.12 136/369] can: peak_usb: fix USB FD devices potential malfunction
 Date: Tue, 12 Aug 2025 19:27:13 +0200
-Message-ID: <20250812172950.654123266@linuxfoundation.org>
+Message-ID: <20250812173019.884940040@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Stephane Grosjean <stephane.grosjean@hms-networks.com>
 
-commit 8a50da849151e7e12b43c1d8fe7ad302223aef6b upstream.
+[ Upstream commit 788199b73b6efe4ee2ade4d7457b50bb45493488 ]
 
-The funciton tcpm_acc_attach is not setting the proper state when
-calling tcpm_set_role. The function tcpm_set_role is currently only
-handling TYPEC_STATE_USB. For the tcpm_acc_attach to switch into other
-modal states tcpm_set_role needs to be extended by an extra state
-parameter. This patch is handling the proper state change when calling
-tcpm_acc_attach.
+The latest firmware versions of USB CAN FD interfaces export the EP numbers
+to be used to dialog with the device via the "type" field of a response to
+a vendor request structure, particularly when its value is greater than or
+equal to 2.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404-ml-topic-tcpm-v1-3-b99f44badce8@pengutronix.de
-Stable-dep-of: bec15191d523 ("usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach")
+Correct the driver's test of this field.
+
+Fixes: 4f232482467a ("can: peak_usb: include support for a new MCU")
+Signed-off-by: Stephane Grosjean <stephane.grosjean@hms-networks.com>
+Link: https://patch.msgid.link/20250724081550.11694-1-stephane.grosjean@free.fr
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+[mkl: rephrase commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1032,7 +1032,7 @@ static int tcpm_set_attached_state(struc
- 				     port->data_role);
- }
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+index 4d85b29a17b7..ebefc274b50a 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+@@ -49,7 +49,7 @@ struct __packed pcan_ufd_fw_info {
+ 	__le32	ser_no;		/* S/N */
+ 	__le32	flags;		/* special functions */
  
--static int tcpm_set_roles(struct tcpm_port *port, bool attached,
-+static int tcpm_set_roles(struct tcpm_port *port, bool attached, int state,
- 			  enum typec_role role, enum typec_data_role data)
- {
- 	enum typec_orientation orientation;
-@@ -1069,7 +1069,7 @@ static int tcpm_set_roles(struct tcpm_po
+-	/* extended data when type == PCAN_USBFD_TYPE_EXT */
++	/* extended data when type >= PCAN_USBFD_TYPE_EXT */
+ 	u8	cmd_out_ep;	/* ep for cmd */
+ 	u8	cmd_in_ep;	/* ep for replies */
+ 	u8	data_out_ep[2];	/* ep for CANx TX */
+@@ -982,10 +982,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 			dev->can.ctrlmode |= CAN_CTRLMODE_FD_NON_ISO;
  		}
- 	}
  
--	ret = tcpm_mux_set(port, TYPEC_STATE_USB, usb_role, orientation);
-+	ret = tcpm_mux_set(port, state, usb_role, orientation);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3686,7 +3686,8 @@ static int tcpm_src_attach(struct tcpm_p
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SOURCE, tcpm_data_role_for_source(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3844,7 +3845,8 @@ static int tcpm_snk_attach(struct tcpm_p
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SINK, tcpm_data_role_for_sink(port));
-+	ret = tcpm_set_roles(port, true, TYPEC_STATE_USB,
-+			     TYPEC_SINK, tcpm_data_role_for_sink(port));
- 	if (ret < 0)
- 		return ret;
- 
-@@ -3868,6 +3870,7 @@ static int tcpm_acc_attach(struct tcpm_p
- 	int ret;
- 	enum typec_role role;
- 	enum typec_data_role data;
-+	int state = TYPEC_STATE_USB;
- 
- 	if (port->attached)
- 		return 0;
-@@ -3876,7 +3879,13 @@ static int tcpm_acc_attach(struct tcpm_p
- 	data = tcpm_port_is_sink(port) ? tcpm_data_role_for_sink(port)
- 				       : tcpm_data_role_for_source(port);
- 
--	ret = tcpm_set_roles(port, true, role, data);
-+	if (tcpm_port_is_audio(port))
-+		state = TYPEC_MODE_AUDIO;
-+
-+	if (tcpm_port_is_debug(port))
-+		state = TYPEC_MODE_DEBUG;
-+
-+	ret = tcpm_set_roles(port, true, state, role, data);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -4556,7 +4565,7 @@ static void run_state_machine(struct tcp
+-		/* if vendor rsp is of type 2, then it contains EP numbers to
+-		 * use for cmds pipes. If not, then default EP should be used.
++		/* if vendor rsp type is greater than or equal to 2, then it
++		 * contains EP numbers to use for cmds pipes. If not, then
++		 * default EP should be used.
  		 */
- 		tcpm_set_vconn(port, false);
- 		tcpm_set_vbus(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SOURCE,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SOURCE,
- 			       tcpm_data_role_for_source(port));
- 		/*
- 		 * If tcpc fails to notify vbus off, TCPM will wait for PD_T_SAFE_0V +
-@@ -4588,7 +4597,7 @@ static void run_state_machine(struct tcp
- 		tcpm_set_vconn(port, false);
- 		if (port->pd_capable)
- 			tcpm_set_charge(port, false);
--		tcpm_set_roles(port, port->self_powered, TYPEC_SINK,
-+		tcpm_set_roles(port, port->self_powered, TYPEC_STATE_USB, TYPEC_SINK,
- 			       tcpm_data_role_for_sink(port));
- 		/*
- 		 * VBUS may or may not toggle, depending on the adapter.
-@@ -4693,10 +4702,10 @@ static void run_state_machine(struct tcp
- 	case DR_SWAP_CHANGE_DR:
- 		tcpm_unregister_altmodes(port);
- 		if (port->data_role == TYPEC_HOST)
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_DEVICE);
- 		else
--			tcpm_set_roles(port, true, port->pwr_role,
-+			tcpm_set_roles(port, true, TYPEC_STATE_USB, port->pwr_role,
- 				       TYPEC_HOST);
- 		tcpm_ams_finish(port);
- 		tcpm_set_state(port, ready_state(port), 0);
+-		if (fw_info->type != cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++		if (le16_to_cpu(fw_info->type) < PCAN_USBFD_TYPE_EXT) {
+ 			fw_info->cmd_out_ep = PCAN_USBPRO_EP_CMDOUT;
+ 			fw_info->cmd_in_ep = PCAN_USBPRO_EP_CMDIN;
+ 		}
+@@ -1018,11 +1019,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 	dev->can_channel_id =
+ 		le32_to_cpu(pdev->usb_if->fw_info.dev_id[dev->ctrl_idx]);
+ 
+-	/* if vendor rsp is of type 2, then it contains EP numbers to
+-	 * use for data pipes. If not, then statically defined EP are used
+-	 * (see peak_usb_create_dev()).
++	/* if vendor rsp type is greater than or equal to 2, then it contains EP
++	 * numbers to use for data pipes. If not, then statically defined EP are
++	 * used (see peak_usb_create_dev()).
+ 	 */
+-	if (fw_info->type == cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++	if (le16_to_cpu(fw_info->type) >= PCAN_USBFD_TYPE_EXT) {
+ 		dev->ep_msg_in = fw_info->data_in_ep;
+ 		dev->ep_msg_out = fw_info->data_out_ep[dev->ctrl_idx];
+ 	}
+-- 
+2.39.5
+
 
 
 
