@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-168128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35607B23394
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7407DB23591
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28A701A22B7E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 379A23A4D71
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8962FDC4F;
-	Tue, 12 Aug 2025 18:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29232C21D4;
+	Tue, 12 Aug 2025 18:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzOlKX8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9GRzfrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E89C3F9D2;
-	Tue, 12 Aug 2025 18:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B083F1A9F89;
+	Tue, 12 Aug 2025 18:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023141; cv=none; b=Cux80/ASEMuYKAqF3yR55hK948Yw8lgr2yCDRI4Nil1A6/y2qwP47ZLP6MmAoKT/WPQzNd1icVBbZj4luSl1o/ZYG3mRkNYFU845v9+p9MomJK5M0mP8efPPXHZ3DPMZbpg27RhT2sdAzmjd+H3osL9so+TN3TnZiYP3j280YR0=
+	t=1755024377; cv=none; b=YAZCAT9myStiNPUfNDldxK5+nxfvAybHkSGy8eFUELOjq+f0uweqHxiMBy6E0Qpm1Dw67CRCFmnfBKOuy3bLgMdrVBvToKqxPl3Tzsi0Ceav5MgD4ieCeywcilayfJnBWALTZRcxe2deLgBbtLsf+gliPCLZ//bU/UQjhvNg5yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023141; c=relaxed/simple;
-	bh=OnA49B/0UoEK7Ft9OxXswvuujCEJXyVYD1iZp82k7gM=;
+	s=arc-20240116; t=1755024377; c=relaxed/simple;
+	bh=zCuzxk7dWQF9ImV14BsJnCSSZillaAlOgyK2ZVn8aMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOkrsBYyoA2G5nXqAxpZ5KPyYMljpvb+r93bLDjlu3XY9kNaAmhcBq3OQ/VjxpuOYupmEfTEi3a7F738TJWYLkBk6TwpBoRumozbRK8rIH0dWfjvKzz39Mo2tACQoP0EAIyywvrAeIyG74FJpCzrsTXG7OaKcNRenVtED3x0//8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzOlKX8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4371C4CEF0;
-	Tue, 12 Aug 2025 18:25:40 +0000 (UTC)
+	 MIME-Version; b=e0R50v0ni+jO2jZHhuoa3UdvAm26+rgB/MxnHc9/ugV6cAU9cn/2PjmNSAzcQRCjL/EcwyHUbai4iRIvFN4q2HAeWQtZdlRTlWwCVPoOX+BLIgODLkkwk95X7uy3OIQ7I9LhLs26RUfIARE3wN9NNn5Dgk8lf/CUNp5TbZONzOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9GRzfrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C238C4CEF0;
+	Tue, 12 Aug 2025 18:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023141;
-	bh=OnA49B/0UoEK7Ft9OxXswvuujCEJXyVYD1iZp82k7gM=;
+	s=korg; t=1755024377;
+	bh=zCuzxk7dWQF9ImV14BsJnCSSZillaAlOgyK2ZVn8aMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AzOlKX8KDXX+HXtX4qsrrleHKkgAr0qZBuayEYmFtdS5a3pZdzHeWA/X688hJr6mY
-	 Jfr+hz0TbL5InXghyhbBBxOYs9iUZ6ftniHlHMu0kQCGcf8jZNo9BLevFzz099X3j6
-	 aTUBIX1FkH3O72c8cLdw+4/pY0BIWgo8e6xFDYg8=
+	b=B9GRzfrhLWudXLDegpeDvQ0YapJZSkof1vwcP4NmENy4V3Mrx8hz1KBWLs2T97VhD
+	 Kh6Xhjyv/MRucl443O73RFwM8Qp8KNGZ91ah4sPPkg8fXj00dKuR2wupnxOx92XRRU
+	 OmMarzm0K8mVYzo6REhh1XhCu7T8Go9y6/Igwz0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 354/369] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
+	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 356/627] mtd: spi-nor: spansion: Fixup params->set_4byte_addr_mode for SEMPER
 Date: Tue, 12 Aug 2025 19:30:51 +0200
-Message-ID: <20250812173030.008825691@linuxfoundation.org>
+Message-ID: <20250812173432.834187968@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 upstream.
+[ Upstream commit a45ab839f52f3f00ac3dae18a50e902efd216de2 ]
 
-During communication with Focusrite Scarlett Gen 2/3/4 USB audio
-interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
-snd_usb_ctl_msg() which can cause initialisation and control
-operations to fail intermittently.
+Infineon SEMPER flash family does not support E9h opcode as Exit 4-byte
+mode (EX4B). Therefore, params->set_4byte_addr_mode is not determined by
+BFPT parse. Fixup it up by introducing vendor specific EX4B opcode (B8h)
+and function.
 
-This patch adds up to 5 retries in scarlett2_usb(), with a delay
-starting at 5ms and doubling each time. This follows the same approach
-as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
-("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
-which resolved similar -EPROTO issues during device initialisation,
-and is the same approach as in fcp.c:fcp_usb().
-
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
-Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c87c9b11c53ce ("mtd: spi-nor: spansion: Determine current address mode")
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Acked-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250612074427.22263-1-Takahiro.Kuwano@infineon.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/spi-nor/spansion.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -2329,6 +2329,8 @@ static int scarlett2_usb(
- 	struct scarlett2_usb_packet *req, *resp = NULL;
- 	size_t req_buf_size = struct_size(req, data, req_size);
- 	size_t resp_buf_size = struct_size(resp, data, resp_size);
-+	int retries = 0;
-+	const int max_retries = 5;
- 	int err;
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index bf08dbf5e742..b9f156c0f8bc 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -17,6 +17,7 @@
  
- 	req = kmalloc(req_buf_size, GFP_KERNEL);
-@@ -2352,10 +2354,15 @@ static int scarlett2_usb(
- 	if (req_size)
- 		memcpy(req->data, req_data, req_size);
+ #define SPINOR_OP_CLSR		0x30	/* Clear status register 1 */
+ #define SPINOR_OP_CLPEF		0x82	/* Clear program/erase failure flags */
++#define SPINOR_OP_CYPRESS_EX4B	0xB8	/* Exit 4-byte address mode */
+ #define SPINOR_OP_CYPRESS_DIE_ERASE		0x61	/* Chip (die) erase */
+ #define SPINOR_OP_RD_ANY_REG			0x65	/* Read any register */
+ #define SPINOR_OP_WR_ANY_REG			0x71	/* Write any register */
+@@ -58,6 +59,13 @@
+ 		   SPI_MEM_OP_DUMMY(ndummy, 0),				\
+ 		   SPI_MEM_OP_DATA_IN(1, buf, 0))
  
-+retry:
- 	err = scarlett2_usb_tx(dev, private->bInterfaceNumber,
- 			       req, req_buf_size);
++#define CYPRESS_NOR_EN4B_EX4B_OP(enable)				\
++	SPI_MEM_OP(SPI_MEM_OP_CMD(enable ? SPINOR_OP_EN4B :		\
++					   SPINOR_OP_CYPRESS_EX4B, 0),	\
++		   SPI_MEM_OP_NO_ADDR,					\
++		   SPI_MEM_OP_NO_DUMMY,					\
++		   SPI_MEM_OP_NO_DATA)
++
+ #define SPANSION_OP(opcode)						\
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(opcode, 0),				\
+ 		   SPI_MEM_OP_NO_ADDR,					\
+@@ -356,6 +364,20 @@ static int cypress_nor_quad_enable_volatile(struct spi_nor *nor)
+ 	return 0;
+ }
  
- 	if (err != req_buf_size) {
-+		if (err == -EPROTO && ++retries <= max_retries) {
-+			msleep(5 * (1 << (retries - 1)));
-+			goto retry;
-+		}
- 		usb_audio_err(
- 			mixer->chip,
- 			"%s USB request result cmd %x was %d\n",
++static int cypress_nor_set_4byte_addr_mode(struct spi_nor *nor, bool enable)
++{
++	int ret;
++	struct spi_mem_op op = CYPRESS_NOR_EN4B_EX4B_OP(enable);
++
++	spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
++
++	ret = spi_mem_exec_op(nor->spimem, &op);
++	if (ret)
++		dev_dbg(nor->dev, "error %d setting 4-byte mode\n", ret);
++
++	return ret;
++}
++
+ /**
+  * cypress_nor_determine_addr_mode_by_sr1() - Determine current address mode
+  *                                            (3 or 4-byte) by querying status
+@@ -526,6 +548,9 @@ s25fs256t_post_bfpt_fixup(struct spi_nor *nor,
+ 	struct spi_mem_op op;
+ 	int ret;
+ 
++	/* Assign 4-byte address mode method that is not determined in BFPT */
++	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
++
+ 	ret = cypress_nor_set_addr_mode_nbytes(nor);
+ 	if (ret)
+ 		return ret;
+@@ -591,6 +616,9 @@ s25hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ {
+ 	int ret;
+ 
++	/* Assign 4-byte address mode method that is not determined in BFPT */
++	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
++
+ 	ret = cypress_nor_set_addr_mode_nbytes(nor);
+ 	if (ret)
+ 		return ret;
+@@ -718,6 +746,9 @@ static int s28hx_t_post_bfpt_fixup(struct spi_nor *nor,
+ 				   const struct sfdp_parameter_header *bfpt_header,
+ 				   const struct sfdp_bfpt *bfpt)
+ {
++	/* Assign 4-byte address mode method that is not determined in BFPT */
++	nor->params->set_4byte_addr_mode = cypress_nor_set_4byte_addr_mode;
++
+ 	return cypress_nor_set_addr_mode_nbytes(nor);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
