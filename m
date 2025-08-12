@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5CEB2322C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FE1B2341C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F08F5188F81F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFA773AAC55
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3E52FA0DB;
-	Tue, 12 Aug 2025 18:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7343126529E;
+	Tue, 12 Aug 2025 18:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyALh9yb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xznsroPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFFC2F83A1;
-	Tue, 12 Aug 2025 18:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FC76BB5B;
+	Tue, 12 Aug 2025 18:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022103; cv=none; b=mHWkTF6qc5F7ZILx0rG21DVFwNm5q8khDyE8B97GKsOIYp1e5epketJAogY5zk2nh0yyMaDZt7OAigtwQJABx/PazyE0UunrOv8WSXexMluBobDSyBCGapYT6PBmEiD+j6c/gOCXgcW53KkftPrUuvf/OyEfxJMfcDY7QmS85B0=
+	t=1755023515; cv=none; b=tNhM5Goh4XooCiB5Loj1N/rJfvkKai1I1Nkducd1PbUFAl+wbjY4PpDS1/Hh8dWfZpn/8wbMKYskpzW4lh+lVwGHcA1Tq2DanafBCHCg+AAS+H64/rmyAhZ/z0UzbvQhqE4wkK/iFlki5zPCb+Cec0MwcbpC5QDRMeoDuJ+HaUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022103; c=relaxed/simple;
-	bh=VLe2cEJAypHycOhsa6Q029BvGChAWKnFSuHHdoXNpyQ=;
+	s=arc-20240116; t=1755023515; c=relaxed/simple;
+	bh=4/0GI8UwVxhTxLIg7b8LMPXfHIbT9Hf77jYfjs0QlBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rvala1N+D2EoQfANh+ngjgmgYxAI65rmK+yZj68RFs8HJcORMDwOlPNTrtzLwrdtDppHcuAVTnMnIfAKuI1+r9HRrlE1Dh/2WXeZzvCCj7nwPYxradbIScIBaxkkcRQ/jG8cYXKvjB+9zx1BFaIWq5a/3v8TaW7krV3vq3UuYFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyALh9yb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F6BC4CEF6;
-	Tue, 12 Aug 2025 18:08:23 +0000 (UTC)
+	 MIME-Version; b=abnmlz146q0Qq1Js/+qTCi+1Q9zqH2HIHe9T5RHUbwpCue4GUNJaBizjOe/Sdx5nD/KKaAJfmlMGoEclLRx2q7IAylSK5DttOf7uTEckFDRvjSc6viMPSYkB8COpoYYlw+E4QdvNfe6cgHizuzzZ60sc8RTYllTAvllO5HoEaR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xznsroPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48229C4CEF0;
+	Tue, 12 Aug 2025 18:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022103;
-	bh=VLe2cEJAypHycOhsa6Q029BvGChAWKnFSuHHdoXNpyQ=;
+	s=korg; t=1755023514;
+	bh=4/0GI8UwVxhTxLIg7b8LMPXfHIbT9Hf77jYfjs0QlBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyALh9ybQKM2gOtssYVTGn1H45fJ1DPtUeJi2SLl7TExyP/vEmmvQ49Sid4759czA
-	 88TMdj4CQw9n0UKa9WjYWmYrjsyjVWBa+UxIiP3S2nX4kTwzgAFf4SyaXCG2QxMJKr
-	 Pn62iomJIFmmG5xfR8Hlsg4Go3+p3j6co/O82z/s=
+	b=xznsroPJrElMGtQOFoC9SwsNJmpK7UpEpexJjGJCDT+0fpT4BHjlk6NsL8WHlZ1bd
+	 UVs7T6afb+C5jRg/kJ0mVnp17RwvWFVb0l8UXwI1w+vF3sqQEElNhan2O8AHAc38ZJ
+	 jOQFqwHB4Xiy/EWvxnMgsKyBNV8OnqlNgZMmTiik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	pls <pleasurefish@126.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/369] PM / devfreq: Fix a index typo in trans_stat
-Date: Tue, 12 Aug 2025 19:25:53 +0200
-Message-ID: <20250812173016.870589509@linuxfoundation.org>
+Subject: [PATCH 6.16 059/627] cpufreq: armada-8k: make both cpu masks static
+Date: Tue, 12 Aug 2025 19:25:54 +0200
+Message-ID: <20250812173421.575065759@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chanwoo Choi <cw00.choi@samsung.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 78c5845fbbf6aaeb9959c5fbaee5cc53ef5f38c2 ]
+[ Upstream commit b1b41bc072baf7301b1ae95fe417de09a5ad47e2 ]
 
-Fixes: 4920ee6dcfaf ("PM / devfreq: Convert to use sysfs_emit_at() API")
-Signed-off-by: pls <pleasurefish@126.com>
-Link: https://patchwork.kernel.org/project/linux-pm/patch/20250515143100.17849-1-chanwoo@kernel.org/
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+An earlier patch marked one of the two CPU masks as 'static' to reduce stack
+usage, but if CONFIG_NR_CPUS is large enough, the function still produces
+a warning for compile testing:
+
+drivers/cpufreq/armada-8k-cpufreq.c: In function 'armada_8k_cpufreq_init':
+drivers/cpufreq/armada-8k-cpufreq.c:203:1: error: the frame size of 1416 bytes is larger than 1408 bytes [-Werror=frame-larger-than=]
+
+Normally this should be done using alloc_cpumask_var(), but since the
+driver already has a static mask and the probe function is not called
+concurrently, use the same trick for both.
+
+Fixes: 1ffec650d07f ("cpufreq: armada-8k: Avoid excessive stack usage")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/devfreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/armada-8k-cpufreq.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-index 713e6e52cca1..0d9f3d3282ec 100644
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -1739,7 +1739,7 @@ static ssize_t trans_stat_show(struct device *dev,
- 	for (i = 0; i < max_state; i++) {
- 		if (len >= PAGE_SIZE - 1)
- 			break;
--		if (df->freq_table[2] == df->previous_freq)
-+		if (df->freq_table[i] == df->previous_freq)
- 			len += sysfs_emit_at(buf, len, "*");
- 		else
- 			len += sysfs_emit_at(buf, len, " ");
+diff --git a/drivers/cpufreq/armada-8k-cpufreq.c b/drivers/cpufreq/armada-8k-cpufreq.c
+index 5a3545bd0d8d..006f4c554dd7 100644
+--- a/drivers/cpufreq/armada-8k-cpufreq.c
++++ b/drivers/cpufreq/armada-8k-cpufreq.c
+@@ -132,7 +132,7 @@ static int __init armada_8k_cpufreq_init(void)
+ 	int ret = 0, opps_index = 0, cpu, nb_cpus;
+ 	struct freq_table *freq_tables;
+ 	struct device_node *node;
+-	static struct cpumask cpus;
++	static struct cpumask cpus, shared_cpus;
+ 
+ 	node = of_find_matching_node_and_match(NULL, armada_8k_cpufreq_of_match,
+ 					       NULL);
+@@ -154,7 +154,6 @@ static int __init armada_8k_cpufreq_init(void)
+ 	 * divisions of it).
+ 	 */
+ 	for_each_cpu(cpu, &cpus) {
+-		struct cpumask shared_cpus;
+ 		struct device *cpu_dev;
+ 		struct clk *clk;
+ 
 -- 
 2.39.5
 
