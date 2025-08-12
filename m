@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3046B233C6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7C5B231FB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D832A6B0A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEF4D3ABADD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B77F2FD1A2;
-	Tue, 12 Aug 2025 18:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCB620409A;
+	Tue, 12 Aug 2025 18:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDKNHs/5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpEWUtWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F6C2F5481;
-	Tue, 12 Aug 2025 18:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1B9282E1;
+	Tue, 12 Aug 2025 18:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023280; cv=none; b=XU2fxzu0v6wcsr8WiiyIxMHtmpU4ppU0qAMO6qpE38slCDcJIIpAy0UHO4Mbyy5RacZ8ajQKFD5Dd+K/LtL2gJu0hNOhKHbgO3HgFAtCVitcE4YMa+2ojTcNnU2ciYjSzCDn+VnAg9IMreolXBciGG92tofZX22V8LRZDhBU4JE=
+	t=1755022114; cv=none; b=lRv8nCw7Eri5Tl3DR+nPAme+1awmbdrS2BP4lioc9Lt+l4RpntvAXU+6oCp0TiXdVW2vs8C+lmI6CG4a2R2I3u0lrcEYcU27R0QOV5fTncBd86jNqF06LSd0dZtrSnqSW2BaZInXH//ca5TPVsZJufB4yvJ3FNKGPkJelaqgTQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023280; c=relaxed/simple;
-	bh=KOHEX7E0uxTCm6JMgowXt+58IPFDwwaZ5jcQGtpy5KE=;
+	s=arc-20240116; t=1755022114; c=relaxed/simple;
+	bh=bk/kpa124vFg+bdNeSPjwWDZykP7tzQe9qWJqCX/p5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C1H9h1e8btlBH3R5E21lQ3f9Z3SfDNdOiQ31yWCOpU1LCn8viB767vgehTclMK5BFhPyES3ovJQxEwIZHLyYXCMpIqITklRF7HhBy0gSoCVHdOGGiSLj2BgMOuT51MK6Sq0miO82vYC++adCs8SzzMizwndam8U8fBZbgnBXEeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDKNHs/5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC29C4CEF0;
-	Tue, 12 Aug 2025 18:27:59 +0000 (UTC)
+	 MIME-Version; b=Bp2GUWlEyMxuJjjdChPDMWvHfUqy2UXwk47wJussdA3yraAMW1Rnh2NaZEtb5AcOt/WNLcERgvraVDd5VO8kZyAiUmNdo0h+tr76IoTX3AQsNLeb1DwMuuBQo6IS8rcObj82Jitg3Hz3R8Sw0CrhShyxH0cDF7pZnhOsR/GacOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpEWUtWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDFAC4CEF6;
+	Tue, 12 Aug 2025 18:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023280;
-	bh=KOHEX7E0uxTCm6JMgowXt+58IPFDwwaZ5jcQGtpy5KE=;
+	s=korg; t=1755022114;
+	bh=bk/kpa124vFg+bdNeSPjwWDZykP7tzQe9qWJqCX/p5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDKNHs/5Qf4wWifHVAGFjN6ngfq/RZHv7Ep6MMA8Zzf7mVtO7C4SZGwXqBRvUybfq
-	 Zg3oCmkbVI7QXlr/OOsRGqFUs7tYQSWefwJikK1gP8xRAXIr9LEnjWo6EvJiHG1NM5
-	 iF3UtnceuH5NHTCV9Jvxyl5i2JMIJqmKthIFFk68=
+	b=SpEWUtWkApLW98AOvkcoRKRgFoMEQ+PU65OemnMQJy/p4Xod+/8fuoUGQj4XejKxT
+	 b5l184iHvoyPaihDVRqUK8fSOjl9HDfh+teQLR/sNdi0EESjr4Mu/o+fYrpL2qJYgx
+	 eL20pV3fpFMqN4jG7hn0fjZjSyVuKY8epbtIstWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
+	Wadim Egorov <w.egorov@phytec.de>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 034/627] ASoC: ops: dynamically allocate struct snd_ctl_elem_value
+Subject: [PATCH 6.12 032/369] arm64: dts: ti: k3-am642-phyboard-electra: Fix PRU-ICSSG Ethernet ports
 Date: Tue, 12 Aug 2025 19:25:29 +0200
-Message-ID: <20250812173420.622722414@linuxfoundation.org>
+Message-ID: <20250812173015.961334054@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Wadim Egorov <w.egorov@phytec.de>
 
-[ Upstream commit 7e10d7242ea8a5947878880b912ffa5806520705 ]
+[ Upstream commit 945e48a39c957924bc84d1a6c137da039e13855b ]
 
-This structure is really too larget to be allocated on the stack:
+For the ICSSG PHYs to operate correctly, a 25 MHz reference clock must
+be supplied on CLKOUT0. Previously, our bootloader configured this
+clock, which is why the PRU Ethernet ports appeared to work, but the
+change never made it into the device tree.
 
-sound/soc/soc-ops.c:435:5: error: stack frame size (1296) exceeds limit (1280) in 'snd_soc_limit_volume' [-Werror,-Wframe-larger-than]
+Add clock properties to make EXT_REFCLK1.CLKOUT0 output a 25MHz clock.
 
-Change the function to dynamically allocate it instead.
-
-There is probably a better way to do it since only two integer fields
-inside of that structure are actually used, but this is the simplest
-rework for the moment.
-
-Fixes: 783db6851c18 ("ASoC: ops: Enforce platform maximum on initial value")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250610093057.2643233-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+Fixes: 87adfd1ab03a ("arm64: dts: ti: am642-phyboard-electra: Add PRU-ICSSG nodes")
+Link: https://lore.kernel.org/r/20250521053339.1751844-1-w.egorov@phytec.de
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index 8d4dd11c9aef..a629e0eacb20 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -399,28 +399,32 @@ EXPORT_SYMBOL_GPL(snd_soc_put_volsw_sx);
- static int snd_soc_clip_to_platform_max(struct snd_kcontrol *kctl)
- {
- 	struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
--	struct snd_ctl_elem_value uctl;
-+	struct snd_ctl_elem_value *uctl;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts
+index 60285d736e07..78df1b43a633 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-rdk.dts
+@@ -319,6 +319,8 @@ AM64X_IOPAD(0x0040, PIN_OUTPUT, 7)	/* (U21) GPMC0_AD1.GPIO0_16 */
+ &icssg0_mdio {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&icssg0_mdio_pins_default &clkout0_pins_default>;
++	assigned-clocks = <&k3_clks 157 123>;
++	assigned-clock-parents = <&k3_clks 157 125>;
+ 	status = "okay";
  
- 	if (!mc->platform_max)
- 		return 0;
- 
--	ret = kctl->get(kctl, &uctl);
-+	uctl = kzalloc(sizeof(*uctl), GFP_KERNEL);
-+	if (!uctl)
-+		return -ENOMEM;
-+
-+	ret = kctl->get(kctl, uctl);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
--	if (uctl.value.integer.value[0] > mc->platform_max)
--		uctl.value.integer.value[0] = mc->platform_max;
-+	if (uctl->value.integer.value[0] > mc->platform_max)
-+		uctl->value.integer.value[0] = mc->platform_max;
- 
- 	if (snd_soc_volsw_is_stereo(mc) &&
--	    uctl.value.integer.value[1] > mc->platform_max)
--		uctl.value.integer.value[1] = mc->platform_max;
-+	    uctl->value.integer.value[1] > mc->platform_max)
-+		uctl->value.integer.value[1] = mc->platform_max;
- 
--	ret = kctl->put(kctl, &uctl);
--	if (ret < 0)
--		return ret;
-+	ret = kctl->put(kctl, uctl);
- 
--	return 0;
-+out:
-+	kfree(uctl);
-+	return ret;
- }
- 
- /**
+ 	icssg0_phy1: ethernet-phy@1 {
 -- 
 2.39.5
 
