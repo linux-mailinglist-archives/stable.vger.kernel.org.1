@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FBCB231CD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B27EB23390
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 296433A1D57
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A3E7B2392
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C2E2FAC06;
-	Tue, 12 Aug 2025 18:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37192FF140;
+	Tue, 12 Aug 2025 18:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuEoSkHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8rUgHNb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AC22EAB97;
-	Tue, 12 Aug 2025 18:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ADF1DF27F;
+	Tue, 12 Aug 2025 18:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021999; cv=none; b=cOvoV8SxAZJqUFFMK9kgCKB7THTvdWRu3rvJuun9W7JEDdGDUULkB/0kJrxgU/WbwcnUl22rOAJEiVQu/sNADgj8IukKkjocJV242C/k/uVOYARIdqniocWwYUP4WWs0AzBXLMMFjIU27qsAEBSASNBEX/lOTXmwvt8orBxmCAg=
+	t=1755023375; cv=none; b=aOcw5uW8pX835O1jiP2w4854Xgl4xUOTNEyquEz6rOlboWneNe+8VGK1qyBuSE9AjDi7JIGaPRbPJecXj7V/v1BudIQn+veKrM+l4Z3cD3fa33DF0TsqZCAkfXvu/2W1hN/lDI7aQYEOpKqhmnFnWeZNjyn5rTmmJUYioy60xFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021999; c=relaxed/simple;
-	bh=rRH3NviaOZXznGqrDwscPqiWR45jdL+3mqlXtkKszWI=;
+	s=arc-20240116; t=1755023375; c=relaxed/simple;
+	bh=6+fpmnFOYIjY9Hf3lYkrKnn5ChUXzPIit59gUB5MPhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aC3bPMSKiLlW8Z516MiE7wxLiZ0lOD3fkVgSZUBTUqy1iLyvxMNM1Av3nwcsabpNQCvSsV3GTP6as8Qx1wd/GoNreXTxWybnhaX+bgU6kD+rAydiwzyYkBqBMWvkjCGUPX6W9Lnr7AMWZDJ9jt/+tGRCPe1UKAkkl3j4dRsnfCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuEoSkHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC7FC4CEF8;
-	Tue, 12 Aug 2025 18:06:38 +0000 (UTC)
+	 MIME-Version; b=oheROVulV2H4xptSc2emHWtR6PDy6XjaLmU9sv/f0FvustF7MPrSysW/a62Lr7fQOLN4mwEF9K2BFAYpNgKthBOgEPLgLdY/1uLqPoJGZZNh8bzZMap0vmYrgEk4Rj9F0bkC27MPXWB2A/MvJFxyM5+B1vnvmNUnIyg7FS7FRFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8rUgHNb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392C8C4CEF0;
+	Tue, 12 Aug 2025 18:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021999;
-	bh=rRH3NviaOZXznGqrDwscPqiWR45jdL+3mqlXtkKszWI=;
+	s=korg; t=1755023375;
+	bh=6+fpmnFOYIjY9Hf3lYkrKnn5ChUXzPIit59gUB5MPhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuEoSkHFD6iROu8bH32Ce9NOHj4w67Qe8x+TAqCoNQD925ZvN1ChFrJ0HTm4dgnX3
-	 HO7DvZZDC2c0lgngygcJYhqzAPOI5TobC2qSG+sJS+6mE6RQ5TIT/ASf5+yso4xEdz
-	 fOOgNDC2HvdDxxctlbOnAtSJY8fJaOevhmJOSh6A=
+	b=d8rUgHNb2+LI4Z+EoX6OZ+2JSWZioyPLAb5v+bPb5NO7o58Wrmxj8Sq4dmwBNFY1b
+	 qkQLxusIgnmZb2UwdRGh/Eyu3nmNCGlQ3T35EmXrlUazl13NIqTP8Tbe+nAKGRewKZ
+	 ivGTIAng88Dk4WdQPORXck61Nni/BH9KTqGXlB+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	"Bo Liu (OpenAnolis)" <liubo03@inspur.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/369] arm64: dts: qcom: sc7180: Expand IMEM region
-Date: Tue, 12 Aug 2025 19:25:22 +0200
-Message-ID: <20250812173015.687379212@linuxfoundation.org>
+Subject: [PATCH 6.16 028/627] erofs: fix build error with CONFIG_EROFS_FS_ZIP_ACCEL=y
+Date: Tue, 12 Aug 2025 19:25:23 +0200
+Message-ID: <20250812173420.398660113@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Bo Liu (OpenAnolis) <liubo03@inspur.com>
 
-[ Upstream commit 965e28cad4739b11f1bc58c0a9935e025938bb1f ]
+[ Upstream commit 5e0bf36fd156b8d9b09f8481ee6daa6cdba1b064 ]
 
-We need more than what is currently described, expand the region to its
-actual boundaries.
+fix build err:
+ ld.lld: error: undefined symbol: crypto_req_done
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_decompress) in archive vmlinux.a
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_decompress) in archive vmlinux.a
 
-Fixes: ede638c42c82 ("arm64: dts: qcom: sc7180: Add IMEM and pil info regions")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250523-topic-ipa_mem_dts-v1-3-f7aa94fac1ab@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+ ld.lld: error: undefined symbol: crypto_acomp_decompress
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_decompress) in archive vmlinux.a
+
+ ld.lld: error: undefined symbol: crypto_alloc_acomp
+   referenced by decompressor_crypto.c
+       fs/erofs/decompressor_crypto.o:(z_erofs_crypto_enable_engine) in archive vmlinux.a
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202507161032.QholMPtn-lkp@intel.com/
+Fixes: b4a29efc5146 ("erofs: support DEFLATE decompression by using Intel QAT")
+Signed-off-by: Bo Liu (OpenAnolis) <liubo03@inspur.com>
+Link: https://lore.kernel.org/r/20250718033039.3609-1-liubo03@inspur.com
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/erofs/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index 249b257fc6a7..6ae5ca00c718 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -3524,18 +3524,18 @@ spmi_bus: spmi@c440000 {
- 			#interrupt-cells = <4>;
- 		};
- 
--		sram@146aa000 {
-+		sram@14680000 {
- 			compatible = "qcom,sc7180-imem", "syscon", "simple-mfd";
--			reg = <0 0x146aa000 0 0x2000>;
-+			reg = <0 0x14680000 0 0x2e000>;
- 
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 
--			ranges = <0 0 0x146aa000 0x2000>;
-+			ranges = <0 0 0x14680000 0x2e000>;
- 
--			pil-reloc@94c {
-+			pil-reloc@2a94c {
- 				compatible = "qcom,pil-reloc-info";
--				reg = <0x94c 0xc8>;
-+				reg = <0x2a94c 0xc8>;
- 			};
- 		};
- 
+diff --git a/fs/erofs/Kconfig b/fs/erofs/Kconfig
+index 6beeb7063871..7b26efc271ee 100644
+--- a/fs/erofs/Kconfig
++++ b/fs/erofs/Kconfig
+@@ -147,6 +147,8 @@ config EROFS_FS_ZIP_ZSTD
+ config EROFS_FS_ZIP_ACCEL
+ 	bool "EROFS hardware decompression support"
+ 	depends on EROFS_FS_ZIP
++	select CRYPTO
++	select CRYPTO_DEFLATE
+ 	help
+ 	  Saying Y here includes hardware accelerator support for reading
+ 	  EROFS file systems containing compressed data.  It gives better
 -- 
 2.39.5
 
