@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4609BB233DE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84828B23212
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0E771AA74E1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE71583DCC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CC22FD1DC;
-	Tue, 12 Aug 2025 18:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9270B2FF145;
+	Tue, 12 Aug 2025 18:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQmVjaHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+n26OG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35052FAC02;
-	Tue, 12 Aug 2025 18:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDFA2FE59D;
+	Tue, 12 Aug 2025 18:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023328; cv=none; b=CvGndkCiNhIdlPAxu1gZ7a3xmHd9x1rObiN3CsgvWxoczIfYLMn06TmZRQDT7mB/aPgZn8Nts/KBiEAig2PTRvkd5EkpjkgmiWgROGkx9n677A+qivRZDxaAGc+Hw+lB2JvuRPkde4CMBvB1Mj84aPgpWquxfVj3Y3CiojBYQZE=
+	t=1755022066; cv=none; b=F8zuZLk+bx9u2+vjx7FmYd4QFcRoRKWBlIe4bQKuCJ9qpu5LPacdz9iZSihvFKCt9LpPCVPjVvOP5rV7wwG5DE8jttmIBZTYxjJmczE6SGad+a9fxbpIYQVvX7/OavVgYRoYFyO3vCiiJGp1ZADNaWKrsDeR+slfgrdkPnV3WbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023328; c=relaxed/simple;
-	bh=y4ZIxUVCjrL6fYhMNPkn54DOsoK72K6npRbR83i+fmc=;
+	s=arc-20240116; t=1755022066; c=relaxed/simple;
+	bh=gxxnXWf12Dq1Fr7xqZGsdQXjSLPQOvXyleLzdexluXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGr/9fJNbG2+YcCju4bdh8QcCD8/5T3hKQtQT431+D/lQpsAUZtqTbidqjSWF2v/p9Ub45/4iE7CAK0Xaz35IwDcTE4iZXvq424qaogjJROgCQhMRUy+/zN0jK32ViWNzXxOa5WmTJ+3BCEB8KLpRjdVccpY/n5xso/V7BtuQAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQmVjaHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9556C4CEF0;
-	Tue, 12 Aug 2025 18:28:47 +0000 (UTC)
+	 MIME-Version; b=ibd9Y1GifahftoktD7bxwc0M+VB6Dtx3VIhDDkYgJZqp+mqkAvlUVw32bFEabJn7sLTaAuPo/4ei8X1qpHJyk1OmAstph8TqGAa03r/cCf+zI0MgGtE/xNFKmxLrmQUixfgmkUw2xURvpTHBWwzZxb2Il7cv+HezWkTfajjco+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+n26OG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06DFC4CEF0;
+	Tue, 12 Aug 2025 18:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023328;
-	bh=y4ZIxUVCjrL6fYhMNPkn54DOsoK72K6npRbR83i+fmc=;
+	s=korg; t=1755022066;
+	bh=gxxnXWf12Dq1Fr7xqZGsdQXjSLPQOvXyleLzdexluXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQmVjaHEjUWbOpCxvcs/+nFZV3P5n0j8I6Wbloc0UKPNjnE6L//n8WmHx6c68TX2A
-	 L3VvC2kPgXSy2lWDuGxzKObjn0qSUgFO/Bq5yScZD/4a+Jd9vMKhYOGKvtAIoLvD2P
-	 Z6UqMvciRKDC82fhblrQF1Qm2UvfrPjgpLBZnHzk=
+	b=o+n26OG5gkMhgSzz8VpYqPV33gUsh5rz4ZQCuBVt7mdQi4LzHraD/YIkOiaHj0uO7
+	 SA2dmdlSC88pX59UPkeVrXHG7+kQcu+ylAarNfYPVMSne/JyuKWTNReNxRgoA1j1qc
+	 ID1HNoeA8PKi7zgHKUahV09bWSnJVOgdti6lSn6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijuan Gao <lijuan.gao@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sivan Zohar-Kotzer <sivany32@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 047/627] arm64: dts: qcom: sa8775p: Correct the interrupt for remoteproc
-Date: Tue, 12 Aug 2025 19:25:42 +0200
-Message-ID: <20250812173421.126514670@linuxfoundation.org>
+Subject: [PATCH 6.12 046/369] powercap: dtpm_cpu: Fix NULL pointer dereference in get_pd_power_uw()
+Date: Tue, 12 Aug 2025 19:25:43 +0200
+Message-ID: <20250812173016.493727291@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijuan Gao <lijuan.gao@oss.qualcomm.com>
+From: Sivan Zohar-Kotzer <sivany32@gmail.com>
 
-[ Upstream commit 7bd7209e9cb11c8864e601d915008da088476f0c ]
+[ Upstream commit 46dc57406887dd02565cb264224194a6776d882b ]
 
-Fix the incorrect IRQ numbers for ready and handover on sa8775p.
-The correct values are as follows:
+The get_pd_power_uw() function can crash with a NULL pointer dereference
+when em_cpu_get() returns NULL. This occurs when a CPU becomes impossible
+during runtime, causing get_cpu_device() to return NULL, which propagates
+through em_cpu_get() and leads to a crash when em_span_cpus() dereferences
+the NULL pointer.
 
-Fatal interrupt - 0
-Ready interrupt - 1
-Handover interrupt - 2
-Stop acknowledge interrupt - 3
+Add a NULL check after em_cpu_get() and return 0 if unavailable,
+matching the existing fallback behavior in __dtpm_cpu_setup().
 
-Fixes: df54dcb34ff2e ("arm64: dts: qcom: sa8775p: add ADSP, CDSP and GPDSP nodes")
-Signed-off-by: Lijuan Gao <lijuan.gao@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250612-correct_interrupt_for_remoteproc-v1-2-490ee6d92a1b@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: eb82bace8931 ("powercap/drivers/dtpm: Scale the power with the load")
+Signed-off-by: Sivan Zohar-Kotzer <sivany32@gmail.com>
+Link: https://patch.msgid.link/20250701221355.96916-1-sivany32@gmail.com
+[ rjw: Drop an excess empty code line ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/powercap/dtpm_cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-index 45f536633f64..f682a53e83e5 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -5571,8 +5571,8 @@ remoteproc_gpdsp0: remoteproc@20c00000 {
+diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+index 6b6f51b21550..99390ec1481f 100644
+--- a/drivers/powercap/dtpm_cpu.c
++++ b/drivers/powercap/dtpm_cpu.c
+@@ -96,6 +96,8 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
+ 	int i;
  
- 			interrupts-extended = <&intc GIC_SPI 768 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_gpdsp0_in 0 0>,
--					      <&smp2p_gpdsp0_in 2 0>,
- 					      <&smp2p_gpdsp0_in 1 0>,
-+					      <&smp2p_gpdsp0_in 2 0>,
- 					      <&smp2p_gpdsp0_in 3 0>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -5614,8 +5614,8 @@ remoteproc_gpdsp1: remoteproc@21c00000 {
+ 	pd = em_cpu_get(dtpm_cpu->cpu);
++	if (!pd)
++		return 0;
  
- 			interrupts-extended = <&intc GIC_SPI 624 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_gpdsp1_in 0 0>,
--					      <&smp2p_gpdsp1_in 2 0>,
- 					      <&smp2p_gpdsp1_in 1 0>,
-+					      <&smp2p_gpdsp1_in 2 0>,
- 					      <&smp2p_gpdsp1_in 3 0>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -5755,8 +5755,8 @@ remoteproc_cdsp0: remoteproc@26300000 {
+ 	pd_mask = em_span_cpus(pd);
  
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp0_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp0_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp0_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp0_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp0_in 3 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -5887,8 +5887,8 @@ remoteproc_cdsp1: remoteproc@2a300000 {
- 
- 			interrupts-extended = <&intc GIC_SPI 798 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp1_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_cdsp1_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp1_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_cdsp1_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp1_in 3 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "wdog", "fatal", "ready",
- 					  "handover", "stop-ack";
-@@ -6043,8 +6043,8 @@ remoteproc_adsp: remoteproc@30000000 {
- 
- 			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
--					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "wdog", "fatal", "ready", "handover",
- 					  "stop-ack";
 -- 
 2.39.5
 
