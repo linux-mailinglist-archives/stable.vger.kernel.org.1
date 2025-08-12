@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42221B22F44
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:37:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B709B23026
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6B9E1A219CA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:37:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F60C188CCBB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCE42F7461;
-	Tue, 12 Aug 2025 17:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0518B2E4248;
+	Tue, 12 Aug 2025 17:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks6N4Rem"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLa7l9g5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF952FABE3;
-	Tue, 12 Aug 2025 17:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5055221FAC;
+	Tue, 12 Aug 2025 17:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020231; cv=none; b=Vbx159mUfLPrAxw7tG4F6PWVS/CTnLsTjqw+vbJ6HqI7V/yVGfut9NRJNGCTvZk8y9i5NRn0mz8pDxRwRe+bztbtX6widQo37jaA/Poox/gGEBpAexRI5I2sdgqrSxiCzKAzc1FPHDJdK/hYmwtThKxEd/SPzDjpXnLGMsl2w9o=
+	t=1755020807; cv=none; b=Hdu7JC0glUEJfvpjmsyLpg8SPpxGx20tBZgz5APhuZognJUWuF6j+FkhIJwhY+sXxFCPw9mTHJYp6dzuJ4vnIMh3PLVpqVjACxjCX5gzw7J4KQIUQtbwEVPfSLvR7snoOcldNe1Sa0WtxqNmB0ZvJ7yyD9gbhbxlDsXQ1A6aXxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020231; c=relaxed/simple;
-	bh=vg2MetJ7lqjpaVmLceQFRRLD6lgpLYpszhftZyLHhdw=;
+	s=arc-20240116; t=1755020807; c=relaxed/simple;
+	bh=HrVVUOfbCN1ngHPj3ieZ5H1gkoJVxIOl5hy97Fnw3Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TU9+PR/k6B3Uc4bVm7+C7+ZjlUIT1T1ZF0pb5m6OjTOjaTOICC2zfCP9DUxN7AvcC/StrGEkc5EpGHm7cNqG8Yp1lvxZKVqiummql/nNYnE6d/SwDCu0KzUyHyQO1NtBKVIVUx+ws1H5lwORBaEHG0ypgpwhmzgePsaymDp4sks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks6N4Rem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C19C4CEF1;
-	Tue, 12 Aug 2025 17:37:09 +0000 (UTC)
+	 MIME-Version; b=a7mm296tcHM46I3WQ4WeOCq3n1M0o5hJzkGtzNtv9lwQnyw1P7IWByAiTjUA6DdRiJTNd93umJ9dp2VCbcCqXV4++OycPOj+kgCOTKUIXsjN6yHjLvCc7FEXE+uWhfuyDwZUwmD9p3gPshassCrvrA33UObaF3Of/Nf0HntEP3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLa7l9g5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCAC1C4CEF0;
+	Tue, 12 Aug 2025 17:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020230;
-	bh=vg2MetJ7lqjpaVmLceQFRRLD6lgpLYpszhftZyLHhdw=;
+	s=korg; t=1755020807;
+	bh=HrVVUOfbCN1ngHPj3ieZ5H1gkoJVxIOl5hy97Fnw3Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ks6N4RemTriIPiSFWzSHbEhy47g0gtPuRd2OsZ9TeWsVvHpG8v0rOdrgpEpIjPxcJ
-	 itZ6kHFrSjPZi6FjaFrvMxdY8yyK6uxGtp8XU0iq2eKn80rL35bKgOxSxkZvUlO4dq
-	 Wz8LmMpq+XWvOLaNUSwAdsV5R/7TKNSoW08MyV2U=
+	b=PLa7l9g5WgrG5ecH/RmKwIov7fVAu5TCfdSq9PuK1j4EhzxdEqw6QfN5twn3d9dD2
+	 1eI222dnTz9GvEL3+nvR5M+FtwEhDWgPEUDNOOgTBWXSUEyUNAecgr/Zg3dJHzTRhM
+	 JfNxYqJpKrbPTWXTeYoRVTCEgYFsgOJKpWcceFOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Xiang Mei <xmei5@asu.edu>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/253] net/sched: sch_qfq: Avoid triggering might_sleep in atomic context in qfq_delete_class
+Subject: [PATCH 6.6 018/262] selftests: Fix errno checking in syscall_user_dispatch test
 Date: Tue, 12 Aug 2025 19:26:46 +0200
-Message-ID: <20250812172949.484505142@linuxfoundation.org>
+Message-ID: <20250812172953.753408537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Dmitry Vyukov <dvyukov@google.com>
 
-[ Upstream commit cf074eca0065bc5142e6004ae236bb35a2687fdf ]
+[ Upstream commit b89732c8c8357487185f260a723a060b3476144e ]
 
-might_sleep could be trigger in the atomic context in qfq_delete_class.
+Successful syscalls don't change errno, so checking errno is wrong
+to ensure that a syscall has failed. For example for the following
+sequence:
 
-qfq_destroy_class was moved into atomic context locked
-by sch_tree_lock to avoid a race condition bug on
-qfq_aggregate. However, might_sleep could be triggered by
-qfq_destroy_class, which introduced sleeping in atomic context (path:
-qfq_destroy_class->qdisc_put->__qdisc_destroy->lockdep_unregister_key
-->might_sleep).
+	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
+	EXPECT_EQ(EINVAL, errno);
+	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
+	EXPECT_EQ(EINVAL, errno);
 
-Considering the race is on the qfq_aggregate objects, keeping
-qfq_rm_from_agg in the lock but moving the left part out can solve
-this issue.
+only the first syscall may fail and set errno, but the second may succeed
+and keep errno intact, and the check will falsely pass.
+Or if errno happened to be EINVAL before, even the first check may falsely
+pass.
 
-Fixes: 5e28d5a3f774 ("net/sched: sch_qfq: Fix race condition on qfq_aggregate")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/4a04e0cc-a64b-44e7-9213-2880ed641d77@sabinyo.mountain
-Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250717230128.159766-1-xmei5@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Also use EXPECT/ASSERT consistently. Currently there is an inconsistent mix
+without obvious reasons for usage of one or another.
+
+Fixes: 179ef035992e ("selftests: Add kselftest for syscall user dispatch")
+Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/af6a04dbfef9af8570f5bab43e3ef1416b62699a.1747839857.git.dvyukov@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ .../syscall_user_dispatch/sud_test.c          | 50 +++++++++----------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index f2692c9173f79..2f2863ae18ad5 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -540,9 +540,6 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 
- static void qfq_destroy_class(struct Qdisc *sch, struct qfq_class *cl)
- {
--	struct qfq_sched *q = qdisc_priv(sch);
--
--	qfq_rm_from_agg(q, cl);
- 	gen_kill_estimator(&cl->rate_est);
- 	qdisc_put(cl->qdisc);
- 	kfree(cl);
-@@ -561,10 +558,11 @@ static int qfq_delete_class(struct Qdisc *sch, unsigned long arg,
- 
- 	qdisc_purge_queue(cl->qdisc);
- 	qdisc_class_hash_remove(&q->clhash, &cl->common);
--	qfq_destroy_class(sch, cl);
-+	qfq_rm_from_agg(q, cl);
- 
- 	sch_tree_unlock(sch);
- 
-+	qfq_destroy_class(sch, cl);
- 	return 0;
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+index d975a6767329..48cf01aeec3e 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+@@ -79,6 +79,21 @@ TEST_SIGNAL(dispatch_trigger_sigsys, SIGSYS)
+ 	}
  }
  
-@@ -1505,6 +1503,7 @@ static void qfq_destroy_qdisc(struct Qdisc *sch)
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry_safe(cl, next, &q->clhash.hash[i],
- 					  common.hnode) {
-+			qfq_rm_from_agg(q, cl);
- 			qfq_destroy_class(sch, cl);
- 		}
- 	}
++static void prctl_valid(struct __test_metadata *_metadata,
++			unsigned long op, unsigned long off,
++			unsigned long size, void *sel)
++{
++	EXPECT_EQ(0, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
++}
++
++static void prctl_invalid(struct __test_metadata *_metadata,
++			  unsigned long op, unsigned long off,
++			  unsigned long size, void *sel, int err)
++{
++	EXPECT_EQ(-1, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
++	EXPECT_EQ(err, errno);
++}
++
+ TEST(bad_prctl_param)
+ {
+ 	char sel = SYSCALL_DISPATCH_FILTER_ALLOW;
+@@ -86,57 +101,42 @@ TEST(bad_prctl_param)
+ 
+ 	/* Invalid op */
+ 	op = -1;
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0, 0, &sel);
+-	ASSERT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0, 0, &sel, EINVAL);
+ 
+ 	/* PR_SYS_DISPATCH_OFF */
+ 	op = PR_SYS_DISPATCH_OFF;
+ 
+ 	/* offset != 0 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, 0);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x1, 0x0, 0, EINVAL);
+ 
+ 	/* len != 0 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x0, 0xff, 0, EINVAL);
+ 
+ 	/* sel != NULL */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x0, 0x0, &sel, EINVAL);
+ 
+ 	/* Valid parameter */
+-	errno = 0;
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, 0x0);
+-	EXPECT_EQ(0, errno);
++	prctl_valid(_metadata, op, 0x0, 0x0, 0x0);
+ 
+ 	/* PR_SYS_DISPATCH_ON */
+ 	op = PR_SYS_DISPATCH_ON;
+ 
+ 	/* Dispatcher region is bad (offset > 0 && len == 0) */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, -1L, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x1, 0x0, &sel, EINVAL);
++	prctl_invalid(_metadata, op, -1L, 0x0, &sel, EINVAL);
+ 
+ 	/* Invalid selector */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x1, (void *) -1);
+-	ASSERT_EQ(EFAULT, errno);
++	prctl_invalid(_metadata, op, 0x0, 0x1, (void *) -1, EFAULT);
+ 
+ 	/*
+ 	 * Dispatcher range overflows unsigned long
+ 	 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, 1, -1L, &sel);
+-	ASSERT_EQ(EINVAL, errno) {
+-		TH_LOG("Should reject bad syscall range");
+-	}
++	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, 1, -1L, &sel, EINVAL);
+ 
+ 	/*
+ 	 * Allowed range overflows usigned long
+ 	 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel);
+-	ASSERT_EQ(EINVAL, errno) {
+-		TH_LOG("Should reject bad syscall range");
+-	}
++	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel, EINVAL);
+ }
+ 
+ /*
 -- 
 2.39.5
 
