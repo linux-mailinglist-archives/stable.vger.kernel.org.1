@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025C4B22F43
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:37:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B353FB23231
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5A616B60F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:36:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50D1516CC94
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B862FA0FD;
-	Tue, 12 Aug 2025 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBB0280037;
+	Tue, 12 Aug 2025 18:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LORZUxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="az99JpJ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2B62F7461;
-	Tue, 12 Aug 2025 17:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC82305E08;
+	Tue, 12 Aug 2025 18:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020203; cv=none; b=Kt1RHZX0aD16/NgZXUKh7JGeFEA57l8yNEaMDZHCBSD5Nd9zEUW7qUECwvJliYN2gSl+4/Xv+/kTUtrcPOakSN6q8RYyCYOypeRtXphd/2bBFil31H6l4+MPKzzHG9+qM0yoEzr/H1WIoX3Xygozvm0xe3/Nrcg9fy/PZRnUL+A=
+	t=1755022225; cv=none; b=mvc5vTVI1wIoL7U7QAJfBvEUK26vm0xRc2zBsHEpOvfLDgF1DxnxfkD/9vnkNjDKAivCfCOQahd+im9iJxj1mDXxlpU1DyZeciyNBtsMwVeISO5cRPOxry6U8TdBMJi2TtiTVqUw1QbPq4MQC8xCZYtdQa1JjoBcZH98Hp+FhkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020203; c=relaxed/simple;
-	bh=Xw/TTScHZBaqigtqYhTlI4gsDMPcwIJh0T2I8F4o+Fg=;
+	s=arc-20240116; t=1755022225; c=relaxed/simple;
+	bh=A7Ali4ztDuqXAX2CXDkGynw49zXo07irer7cTQAUhhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pln9J4YfY4ydiW130g34YzUf98K8hGONjJguvleh2955mnIO+mJNM36HnTlcbH4vc1ZvBFIEbZILac4MFcCzqZ0fPFg7Z1q8nAYEqBiCAkrfwwvrn5nxWwSmwzwmMB5WMH9cjRJNDJ3ErtSCGLe2N4E5tl6+2mLjUzlwaMZR3wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LORZUxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D3EC4CEF0;
-	Tue, 12 Aug 2025 17:36:42 +0000 (UTC)
+	 MIME-Version; b=mZAx46VLn8lFYJqfNfDbIfsCoTu8BbJMVHLDEUWTMEIb/qQ6+7Aspi/bPhQIWW41xWAn29XI+CS42AZJgJmF8xykCRk7nOs91/MuejYswLfSelRDVJe6AYdbF5cz7nkfJwjP1WBHo4lbNhG3zdd9kcJyJ87JPcKSwXH65DFIkgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=az99JpJ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EF5C4CEF0;
+	Tue, 12 Aug 2025 18:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020202;
-	bh=Xw/TTScHZBaqigtqYhTlI4gsDMPcwIJh0T2I8F4o+Fg=;
+	s=korg; t=1755022225;
+	bh=A7Ali4ztDuqXAX2CXDkGynw49zXo07irer7cTQAUhhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2LORZUxfHAGzdMwUq9zocdn/H0B9+ZTy823+QQYjDG/sFvz8IHKUvn75gUhhWFvGl
-	 wTojZKyXYC/bSc7QBoocQAsgEy1EUs0qeF74LKxJaUmLSK7ldoRRN1tsM0g+vadaVW
-	 Bvv/yPgb+QyXPdfXu9GepwKj2V+Nyz2YYb6YjROc=
+	b=az99JpJ/taORXIc0MEFwfZmxyBMDdgxbOnMdHLwW/1D4CbeeEn3bRbDkudHu+Eedd
+	 i2ZxC8YgnbaATQydBpcHNadU9u4Z5I52EwRbUgDJfXchRrWO9DG0fh40VIx6Hg//CI
+	 n/57+biKxQ0t0NmADUeU8+bnGkKsJTt5Pb+QOiVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Gatien Chevallier <gatien.chevallier@foss.st.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/253] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
+Subject: [PATCH 6.12 092/369] drm/msm/dpu: Fill in min_prefill_lines for SC8180X
 Date: Tue, 12 Aug 2025 19:26:29 +0200
-Message-ID: <20250812172948.742901165@linuxfoundation.org>
+Message-ID: <20250812173018.244474496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-commit f4a8f561d08e39f7833d4a278ebfb12a41eef15f upstream.
+[ Upstream commit 5136acc40afc0261802e5cb01b04f871bf6d876b ]
 
-When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
-hard irq context, but the input_event() takes a spin_lock, which isn't
-allowed there as it is converted to a rt_spin_lock().
+Based on the downstream release, predictably same value as for SM8150.
 
-[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
-...
-[ 4054.290195]  __might_resched+0x13c/0x1f4
-[ 4054.290209]  rt_spin_lock+0x54/0x11c
-[ 4054.290219]  input_event+0x48/0x80
-[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
-[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
-[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
-[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
-[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
-[ 4054.290297]  handle_irq_desc+0x40/0x58
-[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
-[ 4054.290316]  gic_handle_irq+0x44/0xcc
-
-Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
-be threaded, it seems there's no point in requesting the timer isr to
-run in hard irq context.
-
-Relax the hrtimer not to use the hard context.
-
-Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-[ adjusted context ]
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: f3af2d6ee9ab ("drm/msm/dpu: Add SC8180x to hw catalog")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/657794/
+Link: https://lore.kernel.org/r/20250610-topic-dpu_8180_mpl-v1-1-f480cd22f11c@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/gpio_keys.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/keyboard/gpio_keys.c
-+++ b/drivers/input/keyboard/gpio_keys.c
-@@ -495,7 +495,7 @@ static irqreturn_t gpio_keys_irq_isr(int
- 	if (bdata->release_delay)
- 		hrtimer_start(&bdata->release_timer,
- 			      ms_to_ktime(bdata->release_delay),
--			      HRTIMER_MODE_REL_HARD);
-+			      HRTIMER_MODE_REL);
- out:
- 	spin_unlock_irqrestore(&bdata->lock, flags);
- 	return IRQ_HANDLED;
-@@ -635,7 +635,7 @@ static int gpio_keys_setup_key(struct pl
- 
- 		bdata->release_delay = button->debounce_interval;
- 		hrtimer_init(&bdata->release_timer,
--			     CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
-+			     CLOCK_REALTIME, HRTIMER_MODE_REL);
- 		bdata->release_timer.function = gpio_keys_irq_timer;
- 
- 		isr = gpio_keys_irq_isr;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index 485c3041c801..67f0694a2f10 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -383,6 +383,7 @@ static const struct dpu_perf_cfg sc8180x_perf_data = {
+ 	.min_core_ib = 2400000,
+ 	.min_llcc_ib = 800000,
+ 	.min_dram_ib = 800000,
++	.min_prefill_lines = 24,
+ 	.danger_lut_tbl = {0xf, 0xffff, 0x0},
+ 	.safe_lut_tbl = {0xfff0, 0xf000, 0xffff},
+ 	.qos_lut_tbl = {
+-- 
+2.39.5
+
 
 
 
