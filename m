@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-168207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFA0B233F7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039E4B23256
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55A01680DA9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56231881E27
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4CB284B3A;
-	Tue, 12 Aug 2025 18:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9DC1EF38C;
+	Tue, 12 Aug 2025 18:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHfXIPdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwl8je+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1512FE565;
-	Tue, 12 Aug 2025 18:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B75305E08;
+	Tue, 12 Aug 2025 18:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023406; cv=none; b=i40hnb22u9aQj97IDDEAqRmo2H9y+GJ/3dDBAP8O/WgA5CMc2Y4UnkOOEiEEZ/sEL6KO+iL98IzWLpwLmRaaqlS9LD1EY2Q1n7KIs9pnr/H5Jk0RAEoxrLMw4swxhSo0XAfp/8vYeclRBJBgClYuoy00gRv+IYjMpQVOAEXaWJo=
+	t=1755022259; cv=none; b=mqMlEzuRgtyvpxjCDdvdnz9a2zKd/igcQYkwhsckk2jqYS4VaE3sJ9xDSa8PQesarPPz2cXe4HQsoSnbZAGZYYonTSJClFy0MuCdr+RVSIsAfJXDUwvvnhWuOvuqFNAYqGhqtUpUvFvY+28je6vDWcIxFN2FYVIsyngwnplvn1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023406; c=relaxed/simple;
-	bh=RsEQn4O4En6YBdxWlaEYC3Td9QrckSWrcFmVfB1oHSY=;
+	s=arc-20240116; t=1755022259; c=relaxed/simple;
+	bh=4XnLaStQsnKoyxKsrP6G1ikUAIYS9GWH548CRu+rg2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdZstb7XywK8Ze+C4x8lnKrmlTIFO+3FWWAuEV9uP0oPwaEzMxrfc8ZlEekdi8SDLE0jd2Vs1Ao2+LmwhmFpEgvC5GIQERAV7RUx4BbwTrB7phQIVT5pAj2/kArXgIuQ+2lucXB9UU76YZLfEkn2AAhuZr5dvUZdAs0aoPrBCU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHfXIPdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF483C4CEF0;
-	Tue, 12 Aug 2025 18:30:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c+1myiSJ6fNmH6JwqtddDCCJ13wWeb9QXVNcGCLqclutWlfwk2VuGa6MoG3M1TVu6E7VL1tFD6v2Adc51Rq3TyEqD+dvIWTIH8C7LF5YT2MiuLXcxvjT+sZFVuVkJ2So5NnPH8SQh7MsSbO40JX7wv9DoQ9byK04O3WwHOLUDTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwl8je+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532F5C4CEF0;
+	Tue, 12 Aug 2025 18:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023406;
-	bh=RsEQn4O4En6YBdxWlaEYC3Td9QrckSWrcFmVfB1oHSY=;
+	s=korg; t=1755022258;
+	bh=4XnLaStQsnKoyxKsrP6G1ikUAIYS9GWH548CRu+rg2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHfXIPdA8KvOqQ6sCfQszVlpQ9A7nXcbVpgMTTg4R3104spHcijguU5yODf21pa8q
-	 xuAcZj6gXZHUFvGIo80CR0LmBfh9SGWpWzDRvYlBqZfKV4R0slAMmwuAYFJjzwJwrC
-	 lx0oZU4mNpgkierhkfBj4QW48r/J2gLAU95CItTQ=
+	b=gwl8je+1iL1Jb/ok/muhbPvlgo8agKPrCLkpNKV2ZJKwIv8msjQMi1e5EWRDZku7x
+	 j1s469ELl8V+gtXIHlJM2zbGcZR2MSlKsnwkb47IT3eau38X9kMhsns1qsN20qvUSD
+	 hUVq7QO0QIN4yqjlaGrRmiKST1o+Z8ZjtDHevU8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 071/627] mei: vsc: Run event callback from a workqueue
+Subject: [PATCH 6.12 069/369] drm/panfrost: Fix panfrost device variable name in devfreq
 Date: Tue, 12 Aug 2025 19:26:06 +0200
-Message-ID: <20250812173422.014924922@linuxfoundation.org>
+Message-ID: <20250812173017.369801357@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,126 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Adrián Larumbe <adrian.larumbe@collabora.com>
 
-[ Upstream commit de88b02c94db7f3c115eb5bfdc1ec444934f277a ]
+[ Upstream commit 6048f5587614bb4919c54966913452c1a0a43138 ]
 
-The event_notify callback in some cases calls vsc_tp_xfer(), which checks
-tp->assert_cnt and waits for it through the tp->xfer_wait wait-queue.
+Commit 64111a0e22a9 ("drm/panfrost: Fix incorrect updating of current
+device frequency") was a Panfrost port of a similar fix in Panthor.
 
-And tp->assert_cnt is increased and the tp->xfer_wait queue is woken o
-from the interrupt handler.
+Fix the Panfrost device pointer variable name so that it follows
+Panfrost naming conventions.
 
-So the interrupt handler which is running the event callback is waiting for
-itself to signal that it can continue.
-
-This happens to work because the event callback runs from the threaded
-ISR handler and while that is running the hard ISR handler will still
-get called a second / third time for further interrupts and it is the hard
-ISR handler which does the atomic_inc() and wake_up() calls.
-
-But having the threaded ISR handler wait for its own interrupt to trigger
-again is not how a threaded ISR handler is supposed to be used.
-
-Move the running of the event callback from a threaded interrupt handler
-to a workqueue since a threaded ISR should not wait for events from its
-own interrupt.
-
-This is a preparation patch for moving the atomic_inc() and wake_up() calls
-to the threaded ISR handler, which is necessary to fix a locking issue.
-
-Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250623085052.12347-9-hansg@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Fixes: 64111a0e22a9 ("drm/panfrost: Fix incorrect updating of current device frequency")
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://lore.kernel.org/r/20250520174634.353267-6-adrian.larumbe@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/vsc-tp.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/panfrost/panfrost_devfreq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
-index d0450c80316c..b654ea59f305 100644
---- a/drivers/misc/mei/vsc-tp.c
-+++ b/drivers/misc/mei/vsc-tp.c
-@@ -18,6 +18,7 @@
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
- #include <linux/types.h>
-+#include <linux/workqueue.h>
- 
- #include "vsc-tp.h"
- 
-@@ -76,6 +77,7 @@ struct vsc_tp {
- 
- 	atomic_t assert_cnt;
- 	wait_queue_head_t xfer_wait;
-+	struct work_struct event_work;
- 
- 	vsc_tp_event_cb_t event_notify;
- 	void *event_notify_context;
-@@ -105,19 +107,19 @@ static irqreturn_t vsc_tp_isr(int irq, void *data)
- 
- 	wake_up(&tp->xfer_wait);
- 
--	return IRQ_WAKE_THREAD;
-+	schedule_work(&tp->event_work);
-+
-+	return IRQ_HANDLED;
- }
- 
--static irqreturn_t vsc_tp_thread_isr(int irq, void *data)
-+static void vsc_tp_event_work(struct work_struct *work)
+diff --git a/drivers/gpu/drm/panfrost/panfrost_devfreq.c b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
+index 3385fd3ef41a..5d0dce10336b 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_devfreq.c
++++ b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
+@@ -29,7 +29,7 @@ static void panfrost_devfreq_update_utilization(struct panfrost_devfreq *pfdevfr
+ static int panfrost_devfreq_target(struct device *dev, unsigned long *freq,
+ 				   u32 flags)
  {
--	struct vsc_tp *tp = data;
-+	struct vsc_tp *tp = container_of(work, struct vsc_tp, event_work);
+-	struct panfrost_device *ptdev = dev_get_drvdata(dev);
++	struct panfrost_device *pfdev = dev_get_drvdata(dev);
+ 	struct dev_pm_opp *opp;
+ 	int err;
  
- 	guard(mutex)(&tp->event_notify_mutex);
+@@ -40,7 +40,7 @@ static int panfrost_devfreq_target(struct device *dev, unsigned long *freq,
  
- 	if (tp->event_notify)
- 		tp->event_notify(tp->event_notify_context);
--
--	return IRQ_HANDLED;
- }
+ 	err = dev_pm_opp_set_rate(dev, *freq);
+ 	if (!err)
+-		ptdev->pfdevfreq.current_frequency = *freq;
++		pfdev->pfdevfreq.current_frequency = *freq;
  
- /* wakeup firmware and wait for response */
-@@ -495,7 +497,7 @@ static int vsc_tp_probe(struct spi_device *spi)
- 	tp->spi = spi;
- 
- 	irq_set_status_flags(spi->irq, IRQ_DISABLE_UNLAZY);
--	ret = request_threaded_irq(spi->irq, vsc_tp_isr, vsc_tp_thread_isr,
-+	ret = request_threaded_irq(spi->irq, vsc_tp_isr, NULL,
- 				   IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
- 				   dev_name(dev), tp);
- 	if (ret)
-@@ -503,6 +505,7 @@ static int vsc_tp_probe(struct spi_device *spi)
- 
- 	mutex_init(&tp->mutex);
- 	mutex_init(&tp->event_notify_mutex);
-+	INIT_WORK(&tp->event_work, vsc_tp_event_work);
- 
- 	/* only one child acpi device */
- 	ret = acpi_dev_for_each_child(ACPI_COMPANION(dev),
-@@ -527,6 +530,7 @@ static int vsc_tp_probe(struct spi_device *spi)
- err_destroy_lock:
- 	free_irq(spi->irq, tp);
- 
-+	cancel_work_sync(&tp->event_work);
- 	mutex_destroy(&tp->event_notify_mutex);
- 	mutex_destroy(&tp->mutex);
- 
-@@ -541,6 +545,7 @@ static void vsc_tp_remove(struct spi_device *spi)
- 
- 	free_irq(spi->irq, tp);
- 
-+	cancel_work_sync(&tp->event_work);
- 	mutex_destroy(&tp->event_notify_mutex);
- 	mutex_destroy(&tp->mutex);
+ 	return err;
  }
 -- 
 2.39.5
