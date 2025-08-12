@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78F4B234D8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED171B22FE1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E368682A95
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C319056411B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEB92FE560;
-	Tue, 12 Aug 2025 18:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56382FE562;
+	Tue, 12 Aug 2025 17:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vi6J2M4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2yydyes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB976BB5B;
-	Tue, 12 Aug 2025 18:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26AC2FE560;
+	Tue, 12 Aug 2025 17:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024009; cv=none; b=R+fRF9e0gi3wrHukPh/4cqV3XxF4GdYjP5t6TE5WsS/xSzQggNl88XJ+2C8ehUw5AWW4ckP1M4yZ2YlQCA9B4E0/bDIZcFzvcwrPTTbrs98hjC3nKrgN9keA22bZLAZAI9C/xZxntWuFDfR8UNgCyVGExp6vKeTAx/BvIxuEvoE=
+	t=1755020660; cv=none; b=Q1Bwy6SC5DELBS81o32BNRFu5B1+TcwMtLkTA/bYwMV4+4TKQhABd3Ka21RkFg5Fx2gQiW7NO20xQqQOA3nHMoDnk96EHYqXpGOaDmeAZXfDxgkdDNIyvjyUOgIcjD4AOx3hFfxMf4fESaK0qlRoikxdab/H4QDVqNATFyAzwQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024009; c=relaxed/simple;
-	bh=XV8CwznsuAm8xsKaGekypuv5wlYTUJW9F7EMYB5yRzM=;
+	s=arc-20240116; t=1755020660; c=relaxed/simple;
+	bh=xDQYv72VHvARUg3xYrakhXjl2LIF6EwUCUk6LEYN0AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gdanw5YOsknYo15HBkk488dPpaW5bcRDrBpfj6WdN88jqUozttLMORoLMz03Z98gO7duIXI+1I6+8RGUF2lhzaLWKNbuzyKn/Jc7zoZGrUGsgQbD9WGlGh7oHswsPkWqNAMudApy9bQcNXFTHyGFQtKHOYuArIr1MtWtVKMzii4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vi6J2M4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18478C4CEF0;
-	Tue, 12 Aug 2025 18:40:08 +0000 (UTC)
+	 MIME-Version; b=KjTr1D6TwFouVJ3pOvgYjmMB2bl0pXv9gFPr2lmgIadPz4nyczbE9mzZvRKWpuYEWiCV1DBFf1JIKp9TephVMUMuDNKt3e6QDrP6C0oTnkEVMrgzCOCtbbKjjZ8VREcrYncuaRUpFK3rvUgmyEFzzbA7qPtHXXLW8Pbh6TF6pyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2yydyes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27719C4CEF0;
+	Tue, 12 Aug 2025 17:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024009;
-	bh=XV8CwznsuAm8xsKaGekypuv5wlYTUJW9F7EMYB5yRzM=;
+	s=korg; t=1755020660;
+	bh=xDQYv72VHvARUg3xYrakhXjl2LIF6EwUCUk6LEYN0AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vi6J2M4gx6fByFqMSyviLQF2l91tZlSrGoSoa59kD8xJUfrqEwwYgzyo/MtPALF2E
-	 YFpCNwWDtXlEX86L/KpsWBAwnzNoPZdyO04PcdXZ1UnEDATGkmvl4GqE2zOmFu6l4+
-	 8qmYbz33cdmqK3pB7SxfaoQZ2b/LdWwPmZmuefZE=
+	b=r2yydyesel4BchiIpy/HDU/7RGVfUrH2eEEkWm3BadOClK1RiljxC63Mu58ixskAt
+	 FlAP9uusULSqq+5llzZi/ftltY68Zc1NOLyhxTWXH/De7XxPO4efDtskrZhNexwD6k
+	 chLS4ZAJLxA5RZRjaU/CXpDCh+aOhRoTrOJyDdpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 239/627] wifi: mac80211: Check 802.11 encaps offloading in ieee80211_tx_h_select_key()
+Subject: [PATCH 6.1 146/253] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
 Date: Tue, 12 Aug 2025 19:28:54 +0200
-Message-ID: <20250812173428.393755501@linuxfoundation.org>
+Message-ID: <20250812172954.916632938@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 4037c468d1b3c508d69e6df0ef47fdee3d440e39 ]
+[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
 
-With 802.11 encapsulation offloading, ieee80211_tx_h_select_key() is
-called on 802.3 frames. In that case do not try to use skb data as
-valid 802.11 headers.
+In the cpcap_usb_detect() function, the power_supply_get_by_name()
+function may return `NULL` instead of an error pointer.
+To prevent potential null pointer dereferences, Added a null check.
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/1af4b5b903a5fca5ebe67333d5854f93b2be5abe.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/power/supply/cpcap-charger.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 04f4d574401f..73304a5cf6fc 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -612,6 +612,12 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
- 	else
- 		tx->key = NULL;
+diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
+index be9764541d52..05a3f4b208a4 100644
+--- a/drivers/power/supply/cpcap-charger.c
++++ b/drivers/power/supply/cpcap-charger.c
+@@ -689,9 +689,8 @@ static void cpcap_usb_detect(struct work_struct *work)
+ 		struct power_supply *battery;
  
-+	if (info->flags & IEEE80211_TX_CTL_HW_80211_ENCAP) {
-+		if (tx->key && tx->key->flags & KEY_FLAG_UPLOADED_TO_HARDWARE)
-+			info->control.hw_key = &tx->key->conf;
-+		return TX_CONTINUE;
-+	}
-+
- 	if (tx->key) {
- 		bool skip_hw = false;
+ 		battery = power_supply_get_by_name("battery");
+-		if (IS_ERR_OR_NULL(battery)) {
+-			dev_err(ddata->dev, "battery power_supply not available %li\n",
+-					PTR_ERR(battery));
++		if (!battery) {
++			dev_err(ddata->dev, "battery power_supply not available\n");
+ 			return;
+ 		}
  
 -- 
 2.39.5
