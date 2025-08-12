@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-167416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D524B22FEC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8DDB22FEE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78A137B05C6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:18 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C9984E2D0B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE882C15B5;
-	Tue, 12 Aug 2025 17:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E2C1F09AD;
+	Tue, 12 Aug 2025 17:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvjkk9S3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trflfNPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37A12E4248;
-	Tue, 12 Aug 2025 17:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0456A221FAC;
+	Tue, 12 Aug 2025 17:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020746; cv=none; b=BwnpYRtrKYCCVsgwX+rfz8+WWzISMcKEZVI0sT7S71q7OGa8g9O2P0cCs9N8eXT8pmwdzOtb+Ndb5Dw9Xn4m9vLP4Rt03NItmkG1xi6RKp0ncHUpHoBPFjPN8Fi4+SkZuUTdXr91F1XPma3X+k51ggYuuMzT8vTPW9W1pEG9GAw=
+	t=1755020753; cv=none; b=O2eQTmaq8R/x23btRoTARtDxfy3doc3lFJykxXwYydU3Xesgpo3VLG7ckKvQzUfRUldD5nb7BqSWsTEOB+guHohNCTTzCpSrydcTR8AdWpRbhUugwQxV6YjKajxEJR+uxObVZ+oDQYXKboYloKhqH6IRWcmuMMUQSOwosw4Pzyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020746; c=relaxed/simple;
-	bh=do2l3Oxe2SideZJtP9GZOPr5cO1owpNnaRW0wPOtRJ0=;
+	s=arc-20240116; t=1755020753; c=relaxed/simple;
+	bh=UAafxf2msfNueEgSa1mzdq9hBfoLrz6ACDp2P5SvIZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3iau9tXOgbw+po8E/Djnwz1U+TvWAlBXbkNBClrqMq4ugoDqDKE0Kxt2N4pamYEKHsBXtcRFoo8btiw7BgIPW84DfhWbz3ccmSAp+QbErQmhdJDbUtWo5ZvLhKVc3F7+qo4es4B4hZ8cHeERxGJWNlKVO+Euy6kCsZlMVkmbNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvjkk9S3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD06C4CEF0;
-	Tue, 12 Aug 2025 17:45:45 +0000 (UTC)
+	 MIME-Version; b=illpjXOqSVDlDUDEbHzQkvs9ArcTOVeXomZGGrSIfvJTX0BWnsXJevs3IuOgp9usHKhqFq61VomnN+iTo3dBuZJLVRvwpIpDU9dJcoXa2gsGv1ljq4irYeWxhGPJOTQ3JviY1OAP+DZejYuhjP6fWdKM6OY7lrhqXfS/90IXhlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trflfNPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D01C4CEF0;
+	Tue, 12 Aug 2025 17:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020746;
-	bh=do2l3Oxe2SideZJtP9GZOPr5cO1owpNnaRW0wPOtRJ0=;
+	s=korg; t=1755020752;
+	bh=UAafxf2msfNueEgSa1mzdq9hBfoLrz6ACDp2P5SvIZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvjkk9S3ygIj61ihjboG31k8Gy5LcwIna7wnLp6m5GVuxWJrmUofc1SLqfTS+a7i2
-	 VYm62uTnJZSUGvKdN+uP6CckCgk12ewVXIVmXgFB7k4L8neKiuImOz8HTIEBFTcrLy
-	 mvdgig4tIdaYp+v6IiH3HGzxNIT9zxX3rUrVGR3w=
+	b=trflfNPCGYidVXvEulmOAj15OMTQxQ9t4rPDojm76bRbRG0JWkvjKy2vvQ7AXu/cI
+	 WK9ngiEJM9M5OWMSkVXGbEU2c/RPHQtAfWnp5L+TsZ2D3Hl9H0mF8vLS0/dK9zn0hg
+	 7KJzpFUulYRmVWwgKx3KcMpyvyHhEFchpasGAlzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thomas Fourier <fourier.thomas@gmail.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/253] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:29:09 +0200
-Message-ID: <20250812172955.568708270@linuxfoundation.org>
+Subject: [PATCH 6.1 162/253] scsi: elx: efct: Fix dma_unmap_sg() nents value
+Date: Tue, 12 Aug 2025 19:29:10 +0200
+Message-ID: <20250812172955.610049359@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
 References: <20250812172948.675299901@linuxfoundation.org>
@@ -68,44 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
+[ Upstream commit 3a988d0b65d7d1713ce7596eae288a293f3b938e ]
 
 The dma_unmap_sg() functions should be called with the same nents as the
 dma_map_sg(), not the value the map function returned.
 
-Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
+Fixes: 692e5d73a811 ("scsi: elx: efct: LIO backend interface routines")
 Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
+Link: https://lore.kernel.org/r/20250627114117.188480-2-fourier.thomas@gmail.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/scsi/elx/efct/efct_lio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-index 8a0e28aec928..0ecad398ed3d 100644
---- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
-+++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
-@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
- 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
+diff --git a/drivers/scsi/elx/efct/efct_lio.c b/drivers/scsi/elx/efct/efct_lio.c
+index be4b5c1ee32d..150d059e51ac 100644
+--- a/drivers/scsi/elx/efct/efct_lio.c
++++ b/drivers/scsi/elx/efct/efct_lio.c
+@@ -396,7 +396,7 @@ efct_lio_sg_unmap(struct efct_io *io)
+ 		return;
  
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- 	return err;
+ 	dma_unmap_sg(&io->efct->pci->dev, cmd->t_data_sg,
+-		     ocp->seg_map_cnt, cmd->data_direction);
++		     cmd->t_data_nents, cmd->data_direction);
+ 	ocp->seg_map_cnt = 0;
  }
-@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
- 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
  
- 	if (dma_map)
--		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
-+		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
-+			     DMA_BIDIRECTIONAL);
- 
- free_mem:
- 	if (token && dma_map) {
 -- 
 2.39.5
 
