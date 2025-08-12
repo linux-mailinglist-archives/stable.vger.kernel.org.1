@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5C7B23541
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731F1B2314E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2191B3A9C7F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCCEA6E0480
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5E2FE565;
-	Tue, 12 Aug 2025 18:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AA72FFDEE;
+	Tue, 12 Aug 2025 18:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3xh/mGZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh8kdSWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821B72FD1A4;
-	Tue, 12 Aug 2025 18:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1302FFDEA;
+	Tue, 12 Aug 2025 18:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024245; cv=none; b=Ch/JcIeWZJpesAJFE9qB5K6IHi/4byFSrT/K7myfYGSBau7xMAi5o5OEJhwXyw0WUR57xsBAMYnmpPvETNHK41yKfRkgYEKBDkM9rDgn/mzgkWo3T1szGxZ3wXNYzp3OoK5AYSZB6VAzqmwLN5WyrzHBbM7XspXKB5DqwKaGnNo=
+	t=1755021638; cv=none; b=KDrV7EEwPooq/63Hn/Os5QpmYADj+jLhkGP7VrBskrPNTJ013Kwh03SRaXOvZOqcmN4eN8OBjG6M0iGOLsNRPNzXnLwt41OEYgzHiEkWQTlH6ILgP1mWEa9Nz9px/9vToD8v+cfQK+ngsD5voB/CHv9TsqPk1OXF/tmwNDQmpN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024245; c=relaxed/simple;
-	bh=qMZaYGrNeVlBp7vuAx3fyC19oBhg8gw62eFUzNYwZcI=;
+	s=arc-20240116; t=1755021638; c=relaxed/simple;
+	bh=SOxXczzZ8jskg17MhiVaZxZtlqVpETJ2GMWAIV3GRFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5C3XBeGzIed51eZ5O1IEOzW8FBSKCdgJGOH8ju0Q9vAvS0f0FpSIggQPy4oZNY5/KG66qY40Gb9Es4AaiKVR2BJ6m0/22O8Q/99lNneWFf3aTE+Ck5Xu78lCfwBn7PoPk9NUvo5KVpcu+MYCr+UAZsHe2rYIZkmyLFNfOHeQA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3xh/mGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3694C4CEF0;
-	Tue, 12 Aug 2025 18:44:04 +0000 (UTC)
+	 MIME-Version; b=CKs/P2kycfTlDAFQ9RZ8tCZr4+CsT8+g98A5AzHF5PKlmHKzuQ0PyFOQeA02Mc+MzdbLbdI+9AIinbEVaia2iR/gt/PuHswFIxst3OlC35eFXC/Mi01Qef7qTn7ELc0q4YXXpR/H3WPFqmrbUeJlu3v0y5ORWFZDJG+n8EBprqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh8kdSWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F00C4CEF0;
+	Tue, 12 Aug 2025 18:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024245;
-	bh=qMZaYGrNeVlBp7vuAx3fyC19oBhg8gw62eFUzNYwZcI=;
+	s=korg; t=1755021638;
+	bh=SOxXczzZ8jskg17MhiVaZxZtlqVpETJ2GMWAIV3GRFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3xh/mGZGTxOKou0El2QvIWIVWuTiC1AW5Hz9i2ZOKyrctCERpyz9DIMIgLrOfFlN
-	 SCQnjyPoqBTOLbiKmh11e9wKciwrGTtPoecE3hUBv2tGd8j++JljlP7Z0Tljt/syem
-	 G73O3M0+aJz6BrHB6PoXd1dghCL56yJqcpBNC5ns=
+	b=gh8kdSWTWZl6CRtwvrnrhr/IL3+/eKzdO+QHWw8OomVyDVyLz+Pfl1Tp9PFIIbQn2
+	 POrn8g0TSYkWSQWNNZHRs/T0SVUGlaOPVM0cSVNlYsu7LBt9ZRi07cXPlVApwMkFAb
+	 1FotP3wNszgWd2uaqBFqMzeRPU3hZlx4uL5ORW/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 273/627] netfilter: xt_nfacct: dont assume acct name is null-terminated
+Subject: [PATCH 6.6 180/262] f2fs: fix to trigger foreground gc during f2fs_map_blocks() in lfs mode
 Date: Tue, 12 Aug 2025 19:29:28 +0200
-Message-ID: <20250812173429.700489819@linuxfoundation.org>
+Message-ID: <20250812173000.791523008@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit bf58e667af7d96c8eb9411f926a0a0955f41ce21 ]
+[ Upstream commit 1005a3ca28e90c7a64fa43023f866b960a60f791 ]
 
-BUG: KASAN: slab-out-of-bounds in .. lib/vsprintf.c:721
-Read of size 1 at addr ffff88801eac95c8 by task syz-executor183/5851
-[..]
- string+0x231/0x2b0 lib/vsprintf.c:721
- vsnprintf+0x739/0xf00 lib/vsprintf.c:2874
- [..]
- nfacct_mt_checkentry+0xd2/0xe0 net/netfilter/xt_nfacct.c:41
- xt_check_match+0x3d1/0xab0 net/netfilter/x_tables.c:523
+w/ "mode=lfs" mount option, generic/299 will cause system panic as below:
 
-nfnl_acct_find_get() handles non-null input, but the error
-printk relied on its presence.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:2835!
+Call Trace:
+ <TASK>
+ f2fs_allocate_data_block+0x6f4/0xc50
+ f2fs_map_blocks+0x970/0x1550
+ f2fs_iomap_begin+0xb2/0x1e0
+ iomap_iter+0x1d6/0x430
+ __iomap_dio_rw+0x208/0x9a0
+ f2fs_file_write_iter+0x6b3/0xfa0
+ aio_write+0x15d/0x2e0
+ io_submit_one+0x55e/0xab0
+ __x64_sys_io_submit+0xa5/0x230
+ do_syscall_64+0x84/0x2f0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0010:new_curseg+0x70f/0x720
 
-Reported-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ff165b9251e4d295690
-Tested-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
-Fixes: ceb98d03eac5 ("netfilter: xtables: add nfacct match to support extended accounting")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The root cause of we run out-of-space is: in f2fs_map_blocks(), f2fs may
+trigger foreground gc only if it allocates any physical block, it will be
+a little bit later when there is multiple threads writing data w/
+aio/dio/bufio method in parallel, since we always use OPU in lfs mode, so
+f2fs_map_blocks() does block allocations aggressively.
+
+In order to fix this issue, let's give a chance to trigger foreground
+gc in prior to block allocation in f2fs_map_blocks().
+
+Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_nfacct.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/data.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_nfacct.c b/net/netfilter/xt_nfacct.c
-index 7c6bf1c16813..0ca1cdfc4095 100644
---- a/net/netfilter/xt_nfacct.c
-+++ b/net/netfilter/xt_nfacct.c
-@@ -38,8 +38,8 @@ nfacct_mt_checkentry(const struct xt_mtchk_param *par)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 942f358126e6..d37104aa847a 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1552,8 +1552,11 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
+ 	end = pgofs + maxblocks;
  
- 	nfacct = nfnl_acct_find_get(par->net, info->name);
- 	if (nfacct == NULL) {
--		pr_info_ratelimited("accounting object `%s' does not exists\n",
--				    info->name);
-+		pr_info_ratelimited("accounting object `%.*s' does not exist\n",
-+				    NFACCT_NAME_MAX, info->name);
- 		return -ENOENT;
- 	}
- 	info->nfacct = nfacct;
+ next_dnode:
+-	if (map->m_may_create)
++	if (map->m_may_create) {
++		if (f2fs_lfs_mode(sbi))
++			f2fs_balance_fs(sbi, true);
+ 		f2fs_map_lock(sbi, flag);
++	}
+ 
+ 	/* When reading holes, we need its node page */
+ 	set_new_dnode(&dn, inode, NULL, NULL, 0);
 -- 
 2.39.5
 
