@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC7DB23306
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1BDB234C4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CC633B31BD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF513165AD5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA9A2F745D;
-	Tue, 12 Aug 2025 18:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B952FE571;
+	Tue, 12 Aug 2025 18:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9wwid3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szKXuEh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FDE2F4A02;
-	Tue, 12 Aug 2025 18:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B386BB5B;
+	Tue, 12 Aug 2025 18:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022779; cv=none; b=o8X5MA4Yj5xy4F8E6PooXXu3gO4NoAj4TtOO/TOjX+hXOUsSnxS8pafW0Ttbf4wu/B4QtdBEq7hOeYC7cIBu9BS/c3dSD6A0T1I831Rx6QOGHV/QyVCzhLnnSNNULVyHkyQMonFP+wWVEn72ebiHT++xXj2v60jGS+SyT2MkEY8=
+	t=1755024050; cv=none; b=dkUuB+GufwKqbT+92Eg7j3OcryonMdfQlFAR05tCahABjUJIS7QW/wPI56q3iAGBgvQsPKvX9Kz7vi6oD7bc8t33q/uqwa8bqqHh4c4YlaghTruTjmAfFBAi1Xq2vT8mDsdQ8fKokWvL8u4821v2pq8vV9TjzZ5ER2x7qFdy+fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022779; c=relaxed/simple;
-	bh=oCUy0ozktDghoFdMyshbzamuRdVWJsoBcYXSnDDhpV4=;
+	s=arc-20240116; t=1755024050; c=relaxed/simple;
+	bh=6YVjzW/+tayNmLpugoOSwJ/+h9ZvHCPdW0udQMyxlzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anYcTuw1/Y7TvlQRpLSmdIieOysAcb5FwPJT95ojFbNpWS7axM76oyAhhh7b2JcUci+1wsrZWbz5yaszmVF0GjPY/Q5nFVZ5p9rKvNTL9I5hSHp16WS/hqif12fW+C9/Dz0t9w1sjcCGKfYGtFaJ9FmiJZlpNI0ypzHvz2Kj3FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9wwid3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D589DC4CEF6;
-	Tue, 12 Aug 2025 18:19:35 +0000 (UTC)
+	 MIME-Version; b=B4xvJwakG3zyntaX9TucQWJjjZ9HZmCIs3qoD9fk9FH11yEHp4qMLEaL3qDTKT72XAmxh1vBUw0cLX6L7zS2CUvDA+mgQRguKPxK85yYZ7tYxzl3L4AP25uTkXBeDlVXyvGjcBWO2pKcYIk1mVO7dh/8aly42uq65MF8IsCTaJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szKXuEh2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C8EC4CEF0;
+	Tue, 12 Aug 2025 18:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022776;
-	bh=oCUy0ozktDghoFdMyshbzamuRdVWJsoBcYXSnDDhpV4=;
+	s=korg; t=1755024050;
+	bh=6YVjzW/+tayNmLpugoOSwJ/+h9ZvHCPdW0udQMyxlzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9wwid3AyLVk2MYyci71+kAc3nsVzftzjPQeILx1NCfsgsAYlH8iPzf9Ff+YYmpvO
-	 CHcu+zX+DPg0qk4jR+y9euoz5BStHASSIpx4XlYceKjwStiVM8b4TWXOKxoWkvVFRK
-	 O3ySj4ffq2CSvXjk1NZqp45d2YfvHlp604yX1RNo=
+	b=szKXuEh2d8x/XfWMt25WPiCJGaVytKOB9fZagCySOxkg24X0qNmpldBUWWCPDUYWg
+	 lmTlF2B9NmeVtaHmM8mXOgC8uu+IfVHmMNI7JHvjFCm6feffsRK02JLky25DJpSvKX
+	 wq6kOflWgfs8aZSITXr4CwMrDiD/snj8czXJUKOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Kiran K <kiran.k@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 256/369] f2fs: fix to avoid UAF in f2fs_sync_inode_meta()
+Subject: [PATCH 6.16 258/627] Bluetooth: btintel: Define a macro for Intel Reset vendor command
 Date: Tue, 12 Aug 2025 19:29:13 +0200
-Message-ID: <20250812173024.388351731@linuxfoundation.org>
+Message-ID: <20250812173429.130826524@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,237 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Kiran K <kiran.k@intel.com>
 
-[ Upstream commit 7c30d79930132466f5be7d0b57add14d1a016bda ]
+[ Upstream commit 15843c7fdba65568704245fd3ea2aa3aa2d50825 ]
 
-syzbot reported an UAF issue as below: [1] [2]
+Use macro for Intel Reset command (0xfc01) instead of hard coded value.
 
-[1] https://syzkaller.appspot.com/text?tag=CrashReport&x=16594c60580000
-
-==================================================================
-BUG: KASAN: use-after-free in __list_del_entry_valid+0xa6/0x130 lib/list_debug.c:62
-Read of size 8 at addr ffff888100567dc8 by task kworker/u4:0/8
-
-CPU: 1 PID: 8 Comm: kworker/u4:0 Tainted: G        W          6.1.129-syzkaller-00017-g642656a36791 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Workqueue: writeback wb_workfn (flush-7:0)
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x151/0x1b7 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:316 [inline]
- print_report+0x158/0x4e0 mm/kasan/report.c:427
- kasan_report+0x13c/0x170 mm/kasan/report.c:531
- __asan_report_load8_noabort+0x14/0x20 mm/kasan/report_generic.c:351
- __list_del_entry_valid+0xa6/0x130 lib/list_debug.c:62
- __list_del_entry include/linux/list.h:134 [inline]
- list_del_init include/linux/list.h:206 [inline]
- f2fs_inode_synced+0x100/0x2e0 fs/f2fs/super.c:1553
- f2fs_update_inode+0x72/0x1c40 fs/f2fs/inode.c:588
- f2fs_update_inode_page+0x135/0x170 fs/f2fs/inode.c:706
- f2fs_write_inode+0x416/0x790 fs/f2fs/inode.c:734
- write_inode fs/fs-writeback.c:1460 [inline]
- __writeback_single_inode+0x4cf/0xb80 fs/fs-writeback.c:1677
- writeback_sb_inodes+0xb32/0x1910 fs/fs-writeback.c:1903
- __writeback_inodes_wb+0x118/0x3f0 fs/fs-writeback.c:1974
- wb_writeback+0x3da/0xa00 fs/fs-writeback.c:2081
- wb_check_background_flush fs/fs-writeback.c:2151 [inline]
- wb_do_writeback fs/fs-writeback.c:2239 [inline]
- wb_workfn+0xbba/0x1030 fs/fs-writeback.c:2266
- process_one_work+0x73d/0xcb0 kernel/workqueue.c:2299
- worker_thread+0xa60/0x1260 kernel/workqueue.c:2446
- kthread+0x26d/0x300 kernel/kthread.c:386
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
- </TASK>
-
-Allocated by task 298:
- kasan_save_stack mm/kasan/common.c:45 [inline]
- kasan_set_track+0x4b/0x70 mm/kasan/common.c:52
- kasan_save_alloc_info+0x1f/0x30 mm/kasan/generic.c:505
- __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:333
- kasan_slab_alloc include/linux/kasan.h:202 [inline]
- slab_post_alloc_hook+0x53/0x2c0 mm/slab.h:768
- slab_alloc_node mm/slub.c:3421 [inline]
- slab_alloc mm/slub.c:3431 [inline]
- __kmem_cache_alloc_lru mm/slub.c:3438 [inline]
- kmem_cache_alloc_lru+0x102/0x270 mm/slub.c:3454
- alloc_inode_sb include/linux/fs.h:3255 [inline]
- f2fs_alloc_inode+0x2d/0x350 fs/f2fs/super.c:1437
- alloc_inode fs/inode.c:261 [inline]
- iget_locked+0x18c/0x7e0 fs/inode.c:1373
- f2fs_iget+0x55/0x4ca0 fs/f2fs/inode.c:486
- f2fs_lookup+0x3c1/0xb50 fs/f2fs/namei.c:484
- __lookup_slow+0x2b9/0x3e0 fs/namei.c:1689
- lookup_slow+0x5a/0x80 fs/namei.c:1706
- walk_component+0x2e7/0x410 fs/namei.c:1997
- lookup_last fs/namei.c:2454 [inline]
- path_lookupat+0x16d/0x450 fs/namei.c:2478
- filename_lookup+0x251/0x600 fs/namei.c:2507
- vfs_statx+0x107/0x4b0 fs/stat.c:229
- vfs_fstatat fs/stat.c:267 [inline]
- vfs_lstat include/linux/fs.h:3434 [inline]
- __do_sys_newlstat fs/stat.c:423 [inline]
- __se_sys_newlstat+0xda/0x7c0 fs/stat.c:417
- __x64_sys_newlstat+0x5b/0x70 fs/stat.c:417
- x64_sys_call+0x52/0x9a0 arch/x86/include/generated/asm/syscalls_64.h:7
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x3b/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x68/0xd2
-
-Freed by task 0:
- kasan_save_stack mm/kasan/common.c:45 [inline]
- kasan_set_track+0x4b/0x70 mm/kasan/common.c:52
- kasan_save_free_info+0x2b/0x40 mm/kasan/generic.c:516
- ____kasan_slab_free+0x131/0x180 mm/kasan/common.c:241
- __kasan_slab_free+0x11/0x20 mm/kasan/common.c:249
- kasan_slab_free include/linux/kasan.h:178 [inline]
- slab_free_hook mm/slub.c:1745 [inline]
- slab_free_freelist_hook mm/slub.c:1771 [inline]
- slab_free mm/slub.c:3686 [inline]
- kmem_cache_free+0x291/0x560 mm/slub.c:3711
- f2fs_free_inode+0x24/0x30 fs/f2fs/super.c:1584
- i_callback+0x4b/0x70 fs/inode.c:250
- rcu_do_batch+0x552/0xbe0 kernel/rcu/tree.c:2297
- rcu_core+0x502/0xf40 kernel/rcu/tree.c:2557
- rcu_core_si+0x9/0x10 kernel/rcu/tree.c:2574
- handle_softirqs+0x1db/0x650 kernel/softirq.c:624
- __do_softirq kernel/softirq.c:662 [inline]
- invoke_softirq kernel/softirq.c:479 [inline]
- __irq_exit_rcu+0x52/0xf0 kernel/softirq.c:711
- irq_exit_rcu+0x9/0x10 kernel/softirq.c:723
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1118 [inline]
- sysvec_apic_timer_interrupt+0xa9/0xc0 arch/x86/kernel/apic/apic.c:1118
- asm_sysvec_apic_timer_interrupt+0x1b/0x20 arch/x86/include/asm/idtentry.h:691
-
-Last potentially related work creation:
- kasan_save_stack+0x3b/0x60 mm/kasan/common.c:45
- __kasan_record_aux_stack+0xb4/0xc0 mm/kasan/generic.c:486
- kasan_record_aux_stack_noalloc+0xb/0x10 mm/kasan/generic.c:496
- __call_rcu_common kernel/rcu/tree.c:2807 [inline]
- call_rcu+0xdc/0x10f0 kernel/rcu/tree.c:2926
- destroy_inode fs/inode.c:316 [inline]
- evict+0x87d/0x930 fs/inode.c:720
- iput_final fs/inode.c:1834 [inline]
- iput+0x616/0x690 fs/inode.c:1860
- do_unlinkat+0x4e1/0x920 fs/namei.c:4396
- __do_sys_unlink fs/namei.c:4437 [inline]
- __se_sys_unlink fs/namei.c:4435 [inline]
- __x64_sys_unlink+0x49/0x50 fs/namei.c:4435
- x64_sys_call+0x289/0x9a0 arch/x86/include/generated/asm/syscalls_64.h:88
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x3b/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x68/0xd2
-
-The buggy address belongs to the object at ffff888100567a10
- which belongs to the cache f2fs_inode_cache of size 1360
-The buggy address is located 952 bytes inside of
- 1360-byte region [ffff888100567a10, ffff888100567f60)
-
-The buggy address belongs to the physical page:
-page:ffffea0004015800 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x100560
-head:ffffea0004015800 order:3 compound_mapcount:0 compound_pincount:0
-flags: 0x4000000000010200(slab|head|zone=1)
-raw: 4000000000010200 0000000000000000 dead000000000122 ffff8881002c4d80
-raw: 0000000000000000 0000000080160016 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 3, migratetype Reclaimable, gfp_mask 0xd2050(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC|__GFP_RECLAIMABLE), pid 298, tgid 298 (syz-executor330), ts 26489303743, free_ts 0
- set_page_owner include/linux/page_owner.h:33 [inline]
- post_alloc_hook+0x213/0x220 mm/page_alloc.c:2637
- prep_new_page+0x1b/0x110 mm/page_alloc.c:2644
- get_page_from_freelist+0x3a98/0x3b10 mm/page_alloc.c:4539
- __alloc_pages+0x234/0x610 mm/page_alloc.c:5837
- alloc_slab_page+0x6c/0xf0 include/linux/gfp.h:-1
- allocate_slab mm/slub.c:1962 [inline]
- new_slab+0x90/0x3e0 mm/slub.c:2015
- ___slab_alloc+0x6f9/0xb80 mm/slub.c:3203
- __slab_alloc+0x5d/0xa0 mm/slub.c:3302
- slab_alloc_node mm/slub.c:3387 [inline]
- slab_alloc mm/slub.c:3431 [inline]
- __kmem_cache_alloc_lru mm/slub.c:3438 [inline]
- kmem_cache_alloc_lru+0x149/0x270 mm/slub.c:3454
- alloc_inode_sb include/linux/fs.h:3255 [inline]
- f2fs_alloc_inode+0x2d/0x350 fs/f2fs/super.c:1437
- alloc_inode fs/inode.c:261 [inline]
- iget_locked+0x18c/0x7e0 fs/inode.c:1373
- f2fs_iget+0x55/0x4ca0 fs/f2fs/inode.c:486
- f2fs_fill_super+0x5360/0x6dc0 fs/f2fs/super.c:4488
- mount_bdev+0x282/0x3b0 fs/super.c:1445
- f2fs_mount+0x34/0x40 fs/f2fs/super.c:4743
- legacy_get_tree+0xf1/0x190 fs/fs_context.c:632
-page_owner free stack trace missing
-
-Memory state around the buggy address:
- ffff888100567c80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888100567d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->ffff888100567d80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                              ^
- ffff888100567e00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff888100567e80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-==================================================================
-
-[2] https://syzkaller.appspot.com/text?tag=CrashLog&x=13654c60580000
-
-[   24.675720][   T28] audit: type=1400 audit(1745327318.732:72): avc:  denied  { write } for  pid=298 comm="syz-executor399" name="/" dev="loop0" ino=3 scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=dir permissive=1
-[   24.705426][  T296] ------------[ cut here ]------------
-[   24.706608][   T28] audit: type=1400 audit(1745327318.732:73): avc:  denied  { remove_name } for  pid=298 comm="syz-executor399" name="file0" dev="loop0" ino=4 scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=dir permissive=1
-[   24.711550][  T296] WARNING: CPU: 0 PID: 296 at fs/f2fs/inode.c:847 f2fs_evict_inode+0x1262/0x1540
-[   24.734141][   T28] audit: type=1400 audit(1745327318.732:74): avc:  denied  { rename } for  pid=298 comm="syz-executor399" name="file0" dev="loop0" ino=4 scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=dir permissive=1
-[   24.742969][  T296] Modules linked in:
-[   24.765201][   T28] audit: type=1400 audit(1745327318.732:75): avc:  denied  { add_name } for  pid=298 comm="syz-executor399" name="bus" scontext=root:sysadm_r:sysadm_t tcontext=system_u:object_r:unlabeled_t tclass=dir permissive=1
-[   24.768847][  T296] CPU: 0 PID: 296 Comm: syz-executor399 Not tainted 6.1.129-syzkaller-00017-g642656a36791 #0
-[   24.799506][  T296] Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-[   24.809401][  T296] RIP: 0010:f2fs_evict_inode+0x1262/0x1540
-[   24.815018][  T296] Code: 34 70 4a ff eb 0d e8 2d 70 4a ff 4d 89 e5 4c 8b 64 24 18 48 8b 5c 24 28 4c 89 e7 e8 78 38 03 00 e9 84 fc ff ff e8 0e 70 4a ff <0f> 0b 4c 89 f7 be 08 00 00 00 e8 7f 21 92 ff f0 41 80 0e 04 e9 61
-[   24.834584][  T296] RSP: 0018:ffffc90000db7a40 EFLAGS: 00010293
-[   24.840465][  T296] RAX: ffffffff822aca42 RBX: 0000000000000002 RCX: ffff888110948000
-[   24.848291][  T296] RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-[   24.856064][  T296] RBP: ffffc90000db7bb0 R08: ffffffff822ac6a8 R09: ffffed10200b005d
-[   24.864073][  T296] R10: 0000000000000000 R11: dffffc0000000001 R12: ffff888100580000
-[   24.871812][  T296] R13: dffffc0000000000 R14: ffff88810fef4078 R15: 1ffff920001b6f5c
-
-The root cause is w/ a fuzzed image, f2fs may missed to clear FI_DIRTY_INODE
-flag for target inode, after f2fs_evict_inode(), the inode is still linked in
-sbi->inode_list[DIRTY_META] global list, once it triggers checkpoint,
-f2fs_sync_inode_meta() may access the released inode.
-
-In f2fs_evict_inode(), let's always call f2fs_inode_synced() to clear
-FI_DIRTY_INODE flag and drop inode from global dirty list to avoid this
-UAF issue.
-
-Fixes: 0f18b462b2e5 ("f2fs: flush inode metadata when checkpoint is doing")
-Closes: https://syzkaller.appspot.com/bug?extid=849174b2efaf0d8be6ba
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 69b3d3acf3db ("Bluetooth: btintel_pcie: Make driver wait for alive interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btintel.c      |  4 ++--
+ drivers/bluetooth/btintel.h      |  2 ++
+ drivers/bluetooth/btintel_pcie.c | 12 ++++++------
+ drivers/bluetooth/btusb.c        |  8 ++++----
+ drivers/bluetooth/hci_intel.c    | 10 +++++-----
+ 5 files changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 06688b9957c8..a603a17e089c 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -918,8 +918,12 @@ void f2fs_evict_inode(struct inode *inode)
- 	if (likely(!f2fs_cp_error(sbi) &&
- 				!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
- 		f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE));
--	else
--		f2fs_inode_synced(inode);
-+
-+	/*
-+	 * anyway, it needs to remove the inode from sbi->inode_list[DIRTY_META]
-+	 * list to avoid UAF in f2fs_sync_inode_meta() during checkpoint.
-+	 */
-+	f2fs_inode_synced(inode);
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 06016ac3965c..6aceecf5a13d 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -889,7 +889,7 @@ int btintel_send_intel_reset(struct hci_dev *hdev, u32 boot_param)
  
- 	/* for the case f2fs_new_inode() was failed, .i_ino is zero, skip it */
- 	if (inode->i_ino)
+ 	params.boot_param = cpu_to_le32(boot_param);
+ 
+-	skb = __hci_cmd_sync(hdev, 0xfc01, sizeof(params), &params,
++	skb = __hci_cmd_sync(hdev, BTINTEL_HCI_OP_RESET, sizeof(params), &params,
+ 			     HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "Failed to send Intel Reset command");
+@@ -1287,7 +1287,7 @@ static void btintel_reset_to_bootloader(struct hci_dev *hdev)
+ 	params.boot_option = 0x00;
+ 	params.boot_param = cpu_to_le32(0x00000000);
+ 
+-	skb = __hci_cmd_sync(hdev, 0xfc01, sizeof(params),
++	skb = __hci_cmd_sync(hdev, BTINTEL_HCI_OP_RESET, sizeof(params),
+ 			     &params, HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+ 		bt_dev_err(hdev, "FW download error recovery failed (%ld)",
+diff --git a/drivers/bluetooth/btintel.h b/drivers/bluetooth/btintel.h
+index 1d12c4113c66..431998049e68 100644
+--- a/drivers/bluetooth/btintel.h
++++ b/drivers/bluetooth/btintel.h
+@@ -52,6 +52,8 @@ struct intel_tlv {
+ 	u8 val[];
+ } __packed;
+ 
++#define BTINTEL_HCI_OP_RESET	0xfc01
++
+ #define BTINTEL_CNVI_BLAZARI		0x900
+ #define BTINTEL_CNVI_BLAZARIW		0x901
+ #define BTINTEL_CNVI_GAP		0x910
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index f4e3fb54fe76..1638be0921a3 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -1955,12 +1955,12 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
+ 			struct hci_command_hdr *cmd = (void *)skb->data;
+ 			__u16 opcode = le16_to_cpu(cmd->opcode);
+ 
+-			/* When the 0xfc01 command is issued to boot into
+-			 * the operational firmware, it will actually not
+-			 * send a command complete event. To keep the flow
++			/* When the BTINTEL_HCI_OP_RESET command is issued to
++			 * boot into the operational firmware, it will actually
++			 * not send a command complete event. To keep the flow
+ 			 * control working inject that event here.
+ 			 */
+-			if (opcode == 0xfc01)
++			if (opcode == BTINTEL_HCI_OP_RESET)
+ 				btintel_pcie_inject_cmd_complete(hdev, opcode);
+ 		}
+ 		/* Firmware raises alive interrupt on HCI_OP_RESET */
+@@ -1995,10 +1995,10 @@ static int btintel_pcie_send_frame(struct hci_dev *hdev,
+ 	}
+ 
+ 	if (type == BTINTEL_PCIE_HCI_CMD_PKT &&
+-	    (opcode == HCI_OP_RESET || opcode == 0xfc01)) {
++	    (opcode == HCI_OP_RESET || opcode == BTINTEL_HCI_OP_RESET)) {
+ 		old_ctxt = data->alive_intr_ctxt;
+ 		data->alive_intr_ctxt =
+-			(opcode == 0xfc01 ? BTINTEL_PCIE_INTEL_HCI_RESET1 :
++			(opcode == BTINTEL_HCI_OP_RESET ? BTINTEL_PCIE_INTEL_HCI_RESET1 :
+ 				BTINTEL_PCIE_HCI_RESET);
+ 		bt_dev_dbg(data->hdev, "sent cmd: 0x%4.4x alive context changed: %s  ->  %s",
+ 			   opcode, btintel_pcie_alivectxt_state2str(old_ctxt),
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index db27d28e8a7e..66fd84fbbd22 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2594,12 +2594,12 @@ static int btusb_send_frame_intel(struct hci_dev *hdev, struct sk_buff *skb)
+ 			else
+ 				urb = alloc_ctrl_urb(hdev, skb);
+ 
+-			/* When the 0xfc01 command is issued to boot into
+-			 * the operational firmware, it will actually not
+-			 * send a command complete event. To keep the flow
++			/* When the BTINTEL_HCI_OP_RESET command is issued to
++			 * boot into the operational firmware, it will actually
++			 * not send a command complete event. To keep the flow
+ 			 * control working inject that event here.
+ 			 */
+-			if (opcode == 0xfc01)
++			if (opcode == BTINTEL_HCI_OP_RESET)
+ 				inject_cmd_complete(hdev, opcode);
+ 		} else {
+ 			urb = alloc_ctrl_urb(hdev, skb);
+diff --git a/drivers/bluetooth/hci_intel.c b/drivers/bluetooth/hci_intel.c
+index d22fbb7f9fc5..9b353c3d6442 100644
+--- a/drivers/bluetooth/hci_intel.c
++++ b/drivers/bluetooth/hci_intel.c
+@@ -1029,12 +1029,12 @@ static struct sk_buff *intel_dequeue(struct hci_uart *hu)
+ 		struct hci_command_hdr *cmd = (void *)skb->data;
+ 		__u16 opcode = le16_to_cpu(cmd->opcode);
+ 
+-		/* When the 0xfc01 command is issued to boot into
+-		 * the operational firmware, it will actually not
+-		 * send a command complete event. To keep the flow
+-		 * control working inject that event here.
++		/* When the BTINTEL_HCI_OP_RESET command is issued to boot into
++		 * the operational firmware, it will actually not send a command
++		 * complete event. To keep the flow control working inject that
++		 * event here.
+ 		 */
+-		if (opcode == 0xfc01)
++		if (opcode == BTINTEL_HCI_OP_RESET)
+ 			inject_cmd_complete(hu->hdev, opcode);
+ 	}
+ 
 -- 
 2.39.5
 
