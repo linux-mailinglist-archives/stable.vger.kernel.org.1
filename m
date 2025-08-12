@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A28EB23432
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA24B2325C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 301D1189B34B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3D7817D9E2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242DC2ECE93;
-	Tue, 12 Aug 2025 18:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3106C1EBFE0;
+	Tue, 12 Aug 2025 18:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ43neWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrd1a5Wp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ABD191F98;
-	Tue, 12 Aug 2025 18:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AB63F9D2;
+	Tue, 12 Aug 2025 18:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023521; cv=none; b=hVvo4j0SOZGKULPa6w5xR18T0N62UcQj73Y2KscU4wSsBlYA+jIU1g+yQAw0MGcGI5SrvJDUACBVVC4pkeevFgzTjz4MOpsf4rLZqikN7JVZuKRor4/z/f6wRNIeWwCC9lBgwHXgAWmn8wPN/tRybynqHkgxH+ApEM7oMbRxsRk=
+	t=1755022357; cv=none; b=d6LeX+an5aUm0I1AnZEfLZHvJ72pRIEq3GDD4hhfSzGR4iNr9wYz3pEEEwdryxz6iBUUXa8h7NEf9xDS1HL2l9PtPVYw+/RfNaqFryVKsSPexTtpoNQp4ahVY5LPoospD4PnQ03Q/KX2PO84PwJO4KprB4FXZJIvh3eI6d0Iva0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023521; c=relaxed/simple;
-	bh=3DBAJFTsUohV2XsA1LvEqGhKuaRHoYFp/p4ZztGii4U=;
+	s=arc-20240116; t=1755022357; c=relaxed/simple;
+	bh=8Ib3wOASbtgv7DeW+1YXgPvcjyF1jpIc+pImcMkWqEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MylXgRtO8PuFB7MWZJ9HiI1eh7Hz0JL8VThfv27HPP+YIT69lQv/Ruqm6PPgf+RMk2F/iOHnrHIUf2fHC2gKkmwLVvcwsuoNo7lo0mNdlZwfT80skXDIYDdeJRmfjJ8OijbVl3+7KPEmr6biG3tGPxxlZ1IJKAY//b6nlSk9wAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ43neWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC8DC4CEF0;
-	Tue, 12 Aug 2025 18:32:01 +0000 (UTC)
+	 MIME-Version; b=JDvz3yrm3k+jhzEyUYybwHleUBRGLmXdZ+3yeLZdbImMBFBrpPcP/xtf5dLmwDMzUuZtMkP2/8TZjF+3vTpmNWdmjpS7XFFFbapdbOBDzKKvPVii/09KAe0fTEH1DwI37n9+taPsPoBRlY9JYJ1/yDB5DMNDgKR+Lgr0wpdL3sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrd1a5Wp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528D0C4CEF0;
+	Tue, 12 Aug 2025 18:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023521;
-	bh=3DBAJFTsUohV2XsA1LvEqGhKuaRHoYFp/p4ZztGii4U=;
+	s=korg; t=1755022356;
+	bh=8Ib3wOASbtgv7DeW+1YXgPvcjyF1jpIc+pImcMkWqEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZ43neWC4GhkpMviDeD15EVW+K9bQELQog+ei+jXdh+Wm6PSvsXQqIXweNM+i9WsU
-	 Un9pSQ3Ahzbfd/QTcxdD2aiIWbWdjadutaI7okhzBMLubPuKz6xeKTOoXNWOmK34Sz
-	 ZW1XXSYLUIo1PwPfMFhR8XzqpC9SAv5IIOqDLjBw=
+	b=jrd1a5WpkkKtnZEYu40em6fWP81B71vw12ZLfFKOQOLhZ9stBFCB2AmkuVIslDrGK
+	 NvmeV+zRG/N5OY3GD2fv4naUxq+fBFKyQsntsAu4wY6JPuKssKNYiI6NOqXrBaAYax
+	 i1oV7wB5KHU/+jUC5zsvQeiYNU35M8tC3vZ9TMo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 105/627] arm64: dts: rockchip: Fix pinctrl node names for RK3528
-Date: Tue, 12 Aug 2025 19:26:40 +0200
-Message-ID: <20250812173423.310638929@linuxfoundation.org>
+Subject: [PATCH 6.12 104/369] net_sched: act_ctinfo: use atomic64_t for three counters
+Date: Tue, 12 Aug 2025 19:26:41 +0200
+Message-ID: <20250812173018.686928607@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f2792bf1c7a54ef23fb3a84286b66f427bfc4853 ]
+[ Upstream commit d300335b4e18672913dd792ff9f49e6cccf41d26 ]
 
-Following warnings can be observed with CHECK_DTBS=y for the RK3528:
+Commit 21c167aa0ba9 ("net/sched: act_ctinfo: use percpu stats")
+missed that stats_dscp_set, stats_dscp_error and stats_cpmark_set
+might be written (and read) locklessly.
 
-  rk3528-pinctrl.dtsi:101.36-105.5: Warning (node_name_chars_strict):
-    /pinctrl/fephy/fephym0-led_dpx: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:108.38-112.5: Warning (node_name_chars_strict):
-    /pinctrl/fephy/fephym0-led_link: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:115.36-119.5: Warning (node_name_chars_strict):
-    /pinctrl/fephy/fephym0-led_spd: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:122.36-126.5: Warning (node_name_chars_strict):
-   /pinctrl/fephy/fephym1-led_dpx: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:129.38-133.5: Warning (node_name_chars_strict):
-    /pinctrl/fephy/fephym1-led_link: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:136.36-140.5: Warning (node_name_chars_strict):
-    /pinctrl/fephy/fephym1-led_spd: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:782.32-790.5: Warning (node_name_chars_strict):
-    /pinctrl/rgmii/rgmii-rx_bus2: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:793.32-801.5: Warning (node_name_chars_strict):
-    /pinctrl/rgmii/rgmii-tx_bus2: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:804.36-810.5: Warning (node_name_chars_strict):
-    /pinctrl/rgmii/rgmii-rgmii_clk: Character '_' not recommended in node name
-  rk3528-pinctrl.dtsi:813.36-823.5: Warning (node_name_chars_strict):
-    /pinctrl/rgmii/rgmii-rgmii_bus: Character '_' not recommended in node name
+Use atomic64_t for these three fields, I doubt act_ctinfo is used
+heavily on big SMP hosts anyway.
 
-Rename the affected nodes to fix these warnings.
-
-Fixes: a31fad19ae39 ("arm64: dts: rockchip: Add pinctrl and gpio nodes for RK3528")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20250621113859.2146400-1-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 24ec483cec98 ("net: sched: Introduce act_ctinfo action")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Pedro Tammela <pctammela@mojatatu.com>
+Link: https://patch.msgid.link/20250709090204.797558-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3528-pinctrl.dtsi     | 20 +++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ include/net/tc_act/tc_ctinfo.h |  6 +++---
+ net/sched/act_ctinfo.c         | 19 +++++++++++--------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi b/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi
-index ea051362fb26..59b75c91bbb7 100644
---- a/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3528-pinctrl.dtsi
-@@ -98,42 +98,42 @@ eth_pins: eth-pins {
+diff --git a/include/net/tc_act/tc_ctinfo.h b/include/net/tc_act/tc_ctinfo.h
+index f071c1d70a25..a04bcac7adf4 100644
+--- a/include/net/tc_act/tc_ctinfo.h
++++ b/include/net/tc_act/tc_ctinfo.h
+@@ -18,9 +18,9 @@ struct tcf_ctinfo_params {
+ struct tcf_ctinfo {
+ 	struct tc_action common;
+ 	struct tcf_ctinfo_params __rcu *params;
+-	u64 stats_dscp_set;
+-	u64 stats_dscp_error;
+-	u64 stats_cpmark_set;
++	atomic64_t stats_dscp_set;
++	atomic64_t stats_dscp_error;
++	atomic64_t stats_cpmark_set;
+ };
  
- 	fephy {
- 		/omit-if-no-ref/
--		fephym0_led_dpx: fephym0-led_dpx {
-+		fephym0_led_dpx: fephym0-led-dpx {
- 			rockchip,pins =
- 				/* fephy_led_dpx_m0 */
- 				<4 RK_PB5 2 &pcfg_pull_none>;
- 		};
+ enum {
+diff --git a/net/sched/act_ctinfo.c b/net/sched/act_ctinfo.c
+index 5dd41a012110..ae571bfe84c7 100644
+--- a/net/sched/act_ctinfo.c
++++ b/net/sched/act_ctinfo.c
+@@ -44,9 +44,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
+ 				ipv4_change_dsfield(ip_hdr(skb),
+ 						    INET_ECN_MASK,
+ 						    newdscp);
+-				ca->stats_dscp_set++;
++				atomic64_inc(&ca->stats_dscp_set);
+ 			} else {
+-				ca->stats_dscp_error++;
++				atomic64_inc(&ca->stats_dscp_error);
+ 			}
+ 		}
+ 		break;
+@@ -57,9 +57,9 @@ static void tcf_ctinfo_dscp_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
+ 				ipv6_change_dsfield(ipv6_hdr(skb),
+ 						    INET_ECN_MASK,
+ 						    newdscp);
+-				ca->stats_dscp_set++;
++				atomic64_inc(&ca->stats_dscp_set);
+ 			} else {
+-				ca->stats_dscp_error++;
++				atomic64_inc(&ca->stats_dscp_error);
+ 			}
+ 		}
+ 		break;
+@@ -72,7 +72,7 @@ static void tcf_ctinfo_cpmark_set(struct nf_conn *ct, struct tcf_ctinfo *ca,
+ 				  struct tcf_ctinfo_params *cp,
+ 				  struct sk_buff *skb)
+ {
+-	ca->stats_cpmark_set++;
++	atomic64_inc(&ca->stats_cpmark_set);
+ 	skb->mark = READ_ONCE(ct->mark) & cp->cpmarkmask;
+ }
  
- 		/omit-if-no-ref/
--		fephym0_led_link: fephym0-led_link {
-+		fephym0_led_link: fephym0-led-link {
- 			rockchip,pins =
- 				/* fephy_led_link_m0 */
- 				<4 RK_PC0 2 &pcfg_pull_none>;
- 		};
+@@ -323,15 +323,18 @@ static int tcf_ctinfo_dump(struct sk_buff *skb, struct tc_action *a,
+ 	}
  
- 		/omit-if-no-ref/
--		fephym0_led_spd: fephym0-led_spd {
-+		fephym0_led_spd: fephym0-led-spd {
- 			rockchip,pins =
- 				/* fephy_led_spd_m0 */
- 				<4 RK_PB7 2 &pcfg_pull_none>;
- 		};
+ 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_SET,
+-			      ci->stats_dscp_set, TCA_CTINFO_PAD))
++			      atomic64_read(&ci->stats_dscp_set),
++			      TCA_CTINFO_PAD))
+ 		goto nla_put_failure;
  
- 		/omit-if-no-ref/
--		fephym1_led_dpx: fephym1-led_dpx {
-+		fephym1_led_dpx: fephym1-led-dpx {
- 			rockchip,pins =
- 				/* fephy_led_dpx_m1 */
- 				<2 RK_PA4 5 &pcfg_pull_none>;
- 		};
+ 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_DSCP_ERROR,
+-			      ci->stats_dscp_error, TCA_CTINFO_PAD))
++			      atomic64_read(&ci->stats_dscp_error),
++			      TCA_CTINFO_PAD))
+ 		goto nla_put_failure;
  
- 		/omit-if-no-ref/
--		fephym1_led_link: fephym1-led_link {
-+		fephym1_led_link: fephym1-led-link {
- 			rockchip,pins =
- 				/* fephy_led_link_m1 */
- 				<2 RK_PA6 5 &pcfg_pull_none>;
- 		};
+ 	if (nla_put_u64_64bit(skb, TCA_CTINFO_STATS_CPMARK_SET,
+-			      ci->stats_cpmark_set, TCA_CTINFO_PAD))
++			      atomic64_read(&ci->stats_cpmark_set),
++			      TCA_CTINFO_PAD))
+ 		goto nla_put_failure;
  
- 		/omit-if-no-ref/
--		fephym1_led_spd: fephym1-led_spd {
-+		fephym1_led_spd: fephym1-led-spd {
- 			rockchip,pins =
- 				/* fephy_led_spd_m1 */
- 				<2 RK_PA5 5 &pcfg_pull_none>;
-@@ -779,7 +779,7 @@ rgmii_miim: rgmii-miim {
- 		};
- 
- 		/omit-if-no-ref/
--		rgmii_rx_bus2: rgmii-rx_bus2 {
-+		rgmii_rx_bus2: rgmii-rx-bus2 {
- 			rockchip,pins =
- 				/* rgmii_rxd0 */
- 				<3 RK_PA3 2 &pcfg_pull_none>,
-@@ -790,7 +790,7 @@ rgmii_rx_bus2: rgmii-rx_bus2 {
- 		};
- 
- 		/omit-if-no-ref/
--		rgmii_tx_bus2: rgmii-tx_bus2 {
-+		rgmii_tx_bus2: rgmii-tx-bus2 {
- 			rockchip,pins =
- 				/* rgmii_txd0 */
- 				<3 RK_PA1 2 &pcfg_pull_none_drv_level_2>,
-@@ -801,7 +801,7 @@ rgmii_tx_bus2: rgmii-tx_bus2 {
- 		};
- 
- 		/omit-if-no-ref/
--		rgmii_rgmii_clk: rgmii-rgmii_clk {
-+		rgmii_rgmii_clk: rgmii-rgmii-clk {
- 			rockchip,pins =
- 				/* rgmii_rxclk */
- 				<3 RK_PA5 2 &pcfg_pull_none>,
-@@ -810,7 +810,7 @@ rgmii_rgmii_clk: rgmii-rgmii_clk {
- 		};
- 
- 		/omit-if-no-ref/
--		rgmii_rgmii_bus: rgmii-rgmii_bus {
-+		rgmii_rgmii_bus: rgmii-rgmii-bus {
- 			rockchip,pins =
- 				/* rgmii_rxd2 */
- 				<3 RK_PA7 2 &pcfg_pull_none>,
+ 	spin_unlock_bh(&ci->tcf_lock);
 -- 
 2.39.5
 
