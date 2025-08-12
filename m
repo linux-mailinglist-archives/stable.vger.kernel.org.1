@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-167642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F2CB23111
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6A8B22FE2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FE868787E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53CC918856D3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B383D2FA0DB;
-	Tue, 12 Aug 2025 17:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559A62FD1D6;
+	Tue, 12 Aug 2025 17:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cd5vHOcM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztglrwV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722AF2F8BF1;
-	Tue, 12 Aug 2025 17:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141102F83CB;
+	Tue, 12 Aug 2025 17:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021502; cv=none; b=ThL5QAPzaEQLITfe0QH+9Fh4K6sziU2TbLDHbAT57r2Mek434boqMs6l5RU+Ak2ZjFsWUTlZOYmRQnb/XohS8q6e3SHnlbLSCGIVLqOhezvbxPuBAi6C2eWITFnlsV+ycsLMoVWQmC7nksTrNWW0o0tRoQ0GyCkN1eR4jQAEnNk=
+	t=1755020644; cv=none; b=QjUvo3wFYPYH215szL2Pk+GcYdRy3BW1EfsYFEhfJ/WYPD0TvqLPOyNMXnVdVXJ5qz8u73xe3oP8fHKvT+QTwhuaio0wCSn0DzNTqfwQiWR3Za+P3D8jKqYF5DXe5a9NsFDh51bG0dZg/Kv0u21C4iWhWt/9h/b3YTzMuN5YRmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021502; c=relaxed/simple;
-	bh=vCj+aaJeuR99wM/3gTZmhjv+fz8P5fYlyCsH4rRVzOE=;
+	s=arc-20240116; t=1755020644; c=relaxed/simple;
+	bh=a3VZ7kUA8MoC5BzGXZbf4G6Nc1vjTls092jg/Zwq4Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fB89u9dMVP3UpqT2jPP9Kejd7Sct01c9LHsschqMBjm4b5+cEs3IgF7XkL/5tHY5XE0bRF3E4U/tMULI+mARona8LIyZnlVxYT5j4LAycQhgYop0v7qBLxWc/O2niOiY/bU95x1Hh5v4pPNiInHqqJg700gQNpcNciJhingOujs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cd5vHOcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90129C4CEF0;
-	Tue, 12 Aug 2025 17:58:21 +0000 (UTC)
+	 MIME-Version; b=Tg3Q95s2fTQg4GJoqLULvUULQFrFEEx6CpI3N/22hC/BNlgiiZkC43PFiqKT08fPXlFgoL9tS21OsIt8tIcF+fcWEzeFXTbnLU2bytntVBRZeilyVH/SXfBWSs+namIpcNnC2wSDLl9AMxfEiFZZbFi6bdA+ukMBGjZ0XgKMiSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztglrwV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C16C4CEF1;
+	Tue, 12 Aug 2025 17:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021502;
-	bh=vCj+aaJeuR99wM/3gTZmhjv+fz8P5fYlyCsH4rRVzOE=;
+	s=korg; t=1755020643;
+	bh=a3VZ7kUA8MoC5BzGXZbf4G6Nc1vjTls092jg/Zwq4Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cd5vHOcMv+Ny+uAQw3EzWmIFZKibuc3TOZ5INPBHcTQkSme85RFfqCzLjmrom14Ec
-	 v8wxaIu84kBduO0Rg9f+b0nVWid6Lw9VVr/PAm5BWfGtYRid79iILsgM5AQmH61GGX
-	 23AXwdlh11x99pi6A2F6E47a+UA/dXF2VT8BgSIA=
+	b=ztglrwV97L9oEI7kJ9xiL6wp9JHgUoB013ytFuLsn7Kqya3iDpzCB3gLr6NdPPSN1
+	 9Om6JyNM/tlbafaZtJBnrjO/+dqPksIQXLZwhoQd4gPCYjwjzYX4dOmINv/6p2Kdgk
+	 /nzONs3WAbVa5bYXuMWU5hZVAJ9id4YTjmwtEs1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/262] hwrng: mtk - handle devm_pm_runtime_enable errors
+Subject: [PATCH 6.1 141/253] crypto: marvell/cesa - Fix engine load inaccuracy
 Date: Tue, 12 Aug 2025 19:28:49 +0200
-Message-ID: <20250812172959.102652803@linuxfoundation.org>
+Message-ID: <20250812172954.692089840@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 522a242a18adc5c63a24836715dbeec4dc3faee1 ]
+[ Upstream commit 442134ab30e75b7229c4bfc1ac5641d245cffe27 ]
 
-Although unlikely, devm_pm_runtime_enable() call might fail, so handle
-the return value.
+If an error occurs during queueing the engine load will never be
+decremented.  Fix this by moving the engine load adjustment into
+the cleanup function.
 
-Fixes: 78cb66caa6ab ("hwrng: mtk - Use devm_pm_runtime_enable")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Fixes: bf8f91e71192 ("crypto: marvell - Add load balancing between engines")
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/mtk-rng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/marvell/cesa/cipher.c | 4 +++-
+ drivers/crypto/marvell/cesa/hash.c   | 5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/hw_random/mtk-rng.c b/drivers/char/hw_random/mtk-rng.c
-index 1e3048f2bb38..6c4e40d0365f 100644
---- a/drivers/char/hw_random/mtk-rng.c
-+++ b/drivers/char/hw_random/mtk-rng.c
-@@ -142,7 +142,9 @@ static int mtk_rng_probe(struct platform_device *pdev)
- 	dev_set_drvdata(&pdev->dev, priv);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
--	devm_pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		return ret;
+diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
+index 3876e3ce822f..eabed9d977df 100644
+--- a/drivers/crypto/marvell/cesa/cipher.c
++++ b/drivers/crypto/marvell/cesa/cipher.c
+@@ -75,9 +75,12 @@ mv_cesa_skcipher_dma_cleanup(struct skcipher_request *req)
+ static inline void mv_cesa_skcipher_cleanup(struct skcipher_request *req)
+ {
+ 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
  
- 	dev_info(&pdev->dev, "registered RNG driver\n");
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_skcipher_dma_cleanup(req);
++
++	atomic_sub(req->cryptlen, &engine->load);
+ }
  
+ static void mv_cesa_skcipher_std_step(struct skcipher_request *req)
+@@ -212,7 +215,6 @@ mv_cesa_skcipher_complete(struct crypto_async_request *req)
+ 	struct mv_cesa_engine *engine = creq->base.engine;
+ 	unsigned int ivsize;
+ 
+-	atomic_sub(skreq->cryptlen, &engine->load);
+ 	ivsize = crypto_skcipher_ivsize(crypto_skcipher_reqtfm(skreq));
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ) {
+diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
+index 72b0f863dee0..66ebe26e59cb 100644
+--- a/drivers/crypto/marvell/cesa/hash.c
++++ b/drivers/crypto/marvell/cesa/hash.c
+@@ -110,9 +110,12 @@ static inline void mv_cesa_ahash_dma_cleanup(struct ahash_request *req)
+ static inline void mv_cesa_ahash_cleanup(struct ahash_request *req)
+ {
+ 	struct mv_cesa_ahash_req *creq = ahash_request_ctx(req);
++	struct mv_cesa_engine *engine = creq->base.engine;
+ 
+ 	if (mv_cesa_req_get_type(&creq->base) == CESA_DMA_REQ)
+ 		mv_cesa_ahash_dma_cleanup(req);
++
++	atomic_sub(req->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_last_cleanup(struct ahash_request *req)
+@@ -395,8 +398,6 @@ static void mv_cesa_ahash_complete(struct crypto_async_request *req)
+ 			}
+ 		}
+ 	}
+-
+-	atomic_sub(ahashreq->nbytes, &engine->load);
+ }
+ 
+ static void mv_cesa_ahash_prepare(struct crypto_async_request *req,
 -- 
 2.39.5
 
