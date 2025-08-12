@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8B1B236E4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:05:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08035B236B2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A14684DD7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14D432A1AFF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5547123182D;
-	Tue, 12 Aug 2025 19:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E0427604E;
+	Tue, 12 Aug 2025 19:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0AiZVbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzT896mg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149641A3029;
-	Tue, 12 Aug 2025 19:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F12C1C1AAA;
+	Tue, 12 Aug 2025 19:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025412; cv=none; b=s40008hoybsLzegltl0dOgJ6HYimz1DIBblJDcW+maSgvtTZ3O+NNgAqnzK6oMsD+28ULfAbrTIbrmZUYjkupb44f3124SRAyB4BF1C6nrgOb/VeumfxWj6i253H683gOYTgdiPjXWXbmljYMRUby4JjQgY0S1hAjvorOuQmNks=
+	t=1755025439; cv=none; b=GgPGa+SJGFoPamPjYxKiHXmtp+ZdKDDTW+aFXkSjrPNgX/1fTWTKjUxQsP6xoP4E97wgbyK7W1/R7YgQZJ/HswMu0tGWCFZ28yfzR5MVzaHW5fsfxun+MM+v69vhnv8glJEJUilHe9/o9lZWAaFr3HnWJSsiF1KRIOK0+aduc3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025412; c=relaxed/simple;
-	bh=Z4DC/ehNY3A79vbmUm7viPfoBbzBGZTVWTevpoLZDrM=;
+	s=arc-20240116; t=1755025439; c=relaxed/simple;
+	bh=i15njEBIMFrLRN69e/zLVYSQHZ9u97oTY8nUbTtCZKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hS231NpNL9FuEx4HmVx0mv+JZwAJ5d1IJni/CX9OVphnD0Ea5ygk1KuJaBZnlqGEKbDlssgHtIC5exe9yE4FU0qX+bLfdehuhk6DqnDS6zJBMN8Lq6GoeQdE0Tzs6E+A0NPjmYPrqYvoSEC/QAsVc1JRRUCMDUxwsgV6bXzNdPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0AiZVbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779EEC4CEF0;
-	Tue, 12 Aug 2025 19:03:31 +0000 (UTC)
+	 MIME-Version; b=dGaJMDsSQ+2MlySfhp2lYSvShBWh18opL4tzNsBzHYDHx9hpneyLEwWLfcswjx9m1+viLsdRgEJBP1UtGTZnXXVK+NhF/Km6pQVj/aEecDA6Cy8eUMpQwB4xgqAqcorhVJ0n3yKOMDPdBTNISJriclW3X18TrYd6371X7JFvOq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzT896mg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AF3C4CEF0;
+	Tue, 12 Aug 2025 19:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025412;
-	bh=Z4DC/ehNY3A79vbmUm7viPfoBbzBGZTVWTevpoLZDrM=;
+	s=korg; t=1755025439;
+	bh=i15njEBIMFrLRN69e/zLVYSQHZ9u97oTY8nUbTtCZKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0AiZVbF2qOuwaAMiHC3n53yeR8R2KZ2D4fXcP54rsV2oNmaymd05fLy2qOnbNfe8
-	 WdJkUAVAYgoo5HDZdOscUG6F1iPjohDO8tGaSqHgwZobSL7+uYhBamG7+9EkQcwE4K
-	 uGws8v7dB2MGFcY4GekYomBBevA45/fWE1+2Ehho=
+	b=QzT896mgC0HNIAS0jHx8+//jbyOMdSakprCueOY7eKHa8d2lABScnT3f23QdZIWbT
+	 2KKZ6mjh3yO82d5eAqz4ZC1GWGVDOc1bbbRs086FWsAs3GvPRySvRZe9mGWuCkD4iw
+	 bCFaRUDyHDGNBjZafHkBn0IhRUvgG1XgzhcN4Bjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jackie Dong <xy-jackie@139.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 006/480] ALSA: hda/realtek: Support mute LED for Yoga with ALC287
-Date: Tue, 12 Aug 2025 19:43:34 +0200
-Message-ID: <20250812174357.570319983@linuxfoundation.org>
+Subject: [PATCH 6.15 007/480] ASoC: Intel: fix SND_SOC_SOF dependencies
+Date: Tue, 12 Aug 2025 19:43:35 +0200
+Message-ID: <20250812174357.612076309@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,39 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jackie Dong <xy-jackie@139.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4722727373533b53489b66d3436b50ac156f23bf ]
+[ Upstream commit e837b59f8b411b5baf5e3de7a5aea10b1c545a63 ]
 
-Support mute LED on keyboard for Lenovo Yoga series products with
-Realtek ALC287 chipset.
+It is currently possible to configure a kernel with all Intel SoC
+configs as loadable modules, but the board config as built-in. This
+causes a link failure in the reference to the snd_soc_sof.ko module:
 
-Tested on Lenovo Slim Pro 7 14APH8.
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_hw_params':
+sof_rt5682.c:(.text+0x1f9): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sof_rt5682.c:(.text+0x234): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_codec_init':
+sof_rt5682.c:(.text+0x3e0): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cs42l42.o: in function `sof_cs42l42_hw_params':
+sof_cs42l42.c:(.text+0x2a): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_nau8825.o: in function `sof_nau8825_hw_params':
+sof_nau8825.c:(.text+0x7f): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_da7219.o: in function `da7219_codec_init':
+sof_da7219.c:(.text+0xbf): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_maxim_common.o: in function `max_98373_hw_params':
+sof_maxim_common.c:(.text+0x6f9): undefined reference to `sof_dai_get_tdm_slots'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1015_hw_params':
+sof_realtek_common.c:(.text+0x54c): undefined reference to `sof_dai_get_bclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1308_hw_params':
+sof_realtek_common.c:(.text+0x702): undefined reference to `sof_dai_get_mclk'
+x86_64-linux-ld: sound/soc/intel/boards/sof_cirrus_common.o: in function `cs35l41_hw_params':
+sof_cirrus_common.c:(.text+0x2f): undefined reference to `sof_dai_get_bclk'
 
-[ slight comment cleanup by tiwai ]
+Add an optional dependency on SND_SOC_SOF_INTEL_COMMON, to ensure that whenever
+the SOF support is in a loadable module, none of the board code can be built-in.
 
-Signed-off-by: Jackie Dong <xy-jackie@139.com>
-Link: https://patch.msgid.link/20250714094655.4657-1-xy-jackie@139.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This may be be a little heavy-handed, but I also don't see a reason why one would
+want the boards to be built-in but not the SoC, so it shouldn't actually cause
+any usability problems.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250709145626.64125-1-arnd@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/intel/boards/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3c93d2135717..bf36e84d260b 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7497,6 +7497,9 @@ static void alc287_fixup_yoga9_14iap7_bass_spk_pin(struct hda_codec *codec,
- 	};
- 	struct alc_spec *spec = codec->spec;
+diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
+index 4db7931ba561..4a9324232936 100644
+--- a/sound/soc/intel/boards/Kconfig
++++ b/sound/soc/intel/boards/Kconfig
+@@ -11,7 +11,7 @@ menuconfig SND_SOC_INTEL_MACH
+ 	 kernel: saying N will just cause the configurator to skip all
+ 	 the questions about Intel ASoC machine drivers.
  
-+	/* Support Audio mute LED and Mic mute LED on keyboard */
-+	hda_fixup_ideapad_acpi(codec, fix, action);
-+
- 	switch (action) {
- 	case HDA_FIXUP_ACT_PRE_PROBE:
- 		snd_hda_apply_pincfgs(codec, pincfgs);
+-if SND_SOC_INTEL_MACH
++if SND_SOC_INTEL_MACH && (SND_SOC_SOF_INTEL_COMMON || !SND_SOC_SOF_INTEL_COMMON)
+ 
+ config SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
+ 	bool "Use more user friendly long card names"
 -- 
 2.39.5
 
