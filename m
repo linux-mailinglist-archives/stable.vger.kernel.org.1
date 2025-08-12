@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2548B232CB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CE8B22FA1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E682A583EDB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C80A04E1CE3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353722D8363;
-	Tue, 12 Aug 2025 18:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB7686331;
+	Tue, 12 Aug 2025 17:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrDvhGLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZpaS0Nj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87BB2F5E;
-	Tue, 12 Aug 2025 18:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8BF2FABF0;
+	Tue, 12 Aug 2025 17:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022622; cv=none; b=nShjKgBkaC7NuLrV5Llq2Nuwyj5gYXM+HM/O+bBJmYm3BrFWFwxud2evLV7yiJRgQx8ZPysPe4eNhWmToApQesnUvwr8uqc9csVlBMLhShZ7tRQLFBgsM2ULYE7zRCu2VglGjg8Yvjn5vO9hOu+zyqowoe6H5z1uYt+4RkvuBnA=
+	t=1755020569; cv=none; b=O5bEUJM/Uy4eYWedlPovgoTpJ3dHVlwZ9PyZVSIiwnP+TrHxQilAyFRvfPtKxhP7BvEAfACMGn3V2Hfp3GgfHuypfN6vArk8Z0LHgCJH1RappiX+9FHWX7zXJw2K43xnXFHD0ibHu9ukvvlQ3Ez4AOk+DPLyH7INSWiP8Uz5ueA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022622; c=relaxed/simple;
-	bh=ttZmpxW7LtnJwe1cjkPtnLA6wFwb0wSMpValMHPl7sw=;
+	s=arc-20240116; t=1755020569; c=relaxed/simple;
+	bh=dCZlz1CZ47mzCm3hklDVWIJ4cFjRW9IIbW0962rq2U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIe9Lx1BWslInAh7J5QVGG5r66W3ltzsJdSrXd3hwWK8R0QxWMWWhaV1Ifmh6W1FFfpRr21GCMOWfRQCMQRe1nqizvp2VdIP98AZqHgK/TXahhPsejvo56RQeKqr3MNktJmVWflwg1Gj1wJc/uFEhRTxxcbjCrbDvjryDYBXOLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrDvhGLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5576CC4CEF0;
-	Tue, 12 Aug 2025 18:17:01 +0000 (UTC)
+	 MIME-Version; b=SZwms5QhhkhZa0L4wwNol5q4CWyQuQ08uJyfF7IX552VOTsniGUZClhTm3oSyq3CIuALHEz4Lt/3ids2Z/DFvsTqUdfor01F55Ec5lVdVMNaP0I1GD9BAfqyjDymg+ySiiLXKYMHf6IQviIbP3Fxqy+M9LlCP0GbdSc9zCPmHjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZpaS0Nj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6158BC4CEF0;
+	Tue, 12 Aug 2025 17:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022621;
-	bh=ttZmpxW7LtnJwe1cjkPtnLA6wFwb0wSMpValMHPl7sw=;
+	s=korg; t=1755020568;
+	bh=dCZlz1CZ47mzCm3hklDVWIJ4cFjRW9IIbW0962rq2U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrDvhGLbzqb1wuBQrKhsf2NEE16kt57na1TdOPT80DUj0z5NlihrONqYRf0Zweb01
-	 ea+bczonRarQq6Edm8wa/JaZF2kucnN4Po0AmmznOPvZR1sDxpexszKUlqg1DvALTi
-	 Lttlubwgsmq3lzz9MaCVuAZ9pD5XmaQ90eoqqojY=
+	b=VZpaS0NjEO+yo0UhwAdO6MYI1VQe30uh7wWqbJQLh9lVzu4QTLPH44edTmlezFgJ4
+	 5isIgCOmsi7l3IFhSkHatmDyhaNdmCM6kt4GJxRN8C4tdRpOwsG2QnT/31Yk3cfDAq
+	 JxGXN2jwSEZ17ji2wddsj96/mwIBahVcpPNnOos4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Abinash Singh <abinashsinghlalotra@gmail.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 208/369] crypto: keembay - Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:28:25 +0200
-Message-ID: <20250812173022.585640330@linuxfoundation.org>
+Subject: [PATCH 6.1 118/253] xen/gntdev: remove struct gntdev_copy_batch from stack
+Date: Tue, 12 Aug 2025 19:28:26 +0200
+Message-ID: <20250812172953.732557825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 01951a7dc5ac1a37e5fb7d86ea7eb2dfbf96e8b6 ]
+[ Upstream commit 70045cf6593cbf0740956ea9b7b4269142c6ee38 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+When compiling the kernel with LLVM, the following warning was issued:
 
-Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  drivers/xen/gntdev.c:991: warning: stack frame size (1160) exceeds
+  limit (1024) in function 'gntdev_ioctl'
+
+The main reason is struct gntdev_copy_batch which is located on the
+stack and has a size of nearly 1kb.
+
+For performance reasons it shouldn't by just dynamically allocated
+instead, so allocate a new instance when needed and instead of freeing
+it put it into a list of free structs anchored in struct gntdev_priv.
+
+Fixes: a4cdb556cae0 ("xen/gntdev: add ioctl for grant copy")
+Reported-by: Abinash Singh <abinashsinghlalotra@gmail.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250703073259.17356-1-jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/xen/gntdev-common.h |  4 +++
+ drivers/xen/gntdev.c        | 71 ++++++++++++++++++++++++++-----------
+ 2 files changed, 54 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-index e54c79890d44..fdeca861933c 100644
---- a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-+++ b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
-@@ -68,6 +68,7 @@ struct ocs_hcu_ctx {
-  * @sg_data_total:  Total data in the SG list at any time.
-  * @sg_data_offset: Offset into the data of the current individual SG node.
-  * @sg_dma_nents:   Number of sg entries mapped in dma_list.
-+ * @nents:          Number of entries in the scatterlist.
-  */
- struct ocs_hcu_rctx {
- 	struct ocs_hcu_dev	*hcu_dev;
-@@ -91,6 +92,7 @@ struct ocs_hcu_rctx {
- 	unsigned int		sg_data_total;
- 	unsigned int		sg_data_offset;
- 	unsigned int		sg_dma_nents;
-+	unsigned int		nents;
- };
+diff --git a/drivers/xen/gntdev-common.h b/drivers/xen/gntdev-common.h
+index 9c286b2a1900..ac8ce3179ba2 100644
+--- a/drivers/xen/gntdev-common.h
++++ b/drivers/xen/gntdev-common.h
+@@ -26,6 +26,10 @@ struct gntdev_priv {
+ 	/* lock protects maps and freeable_maps. */
+ 	struct mutex lock;
  
- /**
-@@ -199,7 +201,7 @@ static void kmb_ocs_hcu_dma_cleanup(struct ahash_request *req,
++	/* Free instances of struct gntdev_copy_batch. */
++	struct gntdev_copy_batch *batch;
++	struct mutex batch_lock;
++
+ #ifdef CONFIG_XEN_GRANT_DMA_ALLOC
+ 	/* Device for which DMA memory is allocated. */
+ 	struct device *dma_dev;
+diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
+index 4d9a3050de6a..de8a36502aa2 100644
+--- a/drivers/xen/gntdev.c
++++ b/drivers/xen/gntdev.c
+@@ -56,6 +56,18 @@ MODULE_AUTHOR("Derek G. Murray <Derek.Murray@cl.cam.ac.uk>, "
+ 	      "Gerd Hoffmann <kraxel@redhat.com>");
+ MODULE_DESCRIPTION("User-space granted page access driver");
  
- 	/* Unmap req->src (if mapped). */
- 	if (rctx->sg_dma_nents) {
--		dma_unmap_sg(dev, req->src, rctx->sg_dma_nents, DMA_TO_DEVICE);
-+		dma_unmap_sg(dev, req->src, rctx->nents, DMA_TO_DEVICE);
- 		rctx->sg_dma_nents = 0;
++#define GNTDEV_COPY_BATCH 16
++
++struct gntdev_copy_batch {
++	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
++	struct page *pages[GNTDEV_COPY_BATCH];
++	s16 __user *status[GNTDEV_COPY_BATCH];
++	unsigned int nr_ops;
++	unsigned int nr_pages;
++	bool writeable;
++	struct gntdev_copy_batch *next;
++};
++
+ static unsigned int limit = 64*1024;
+ module_param(limit, uint, 0644);
+ MODULE_PARM_DESC(limit,
+@@ -584,6 +596,8 @@ static int gntdev_open(struct inode *inode, struct file *flip)
+ 	INIT_LIST_HEAD(&priv->maps);
+ 	mutex_init(&priv->lock);
+ 
++	mutex_init(&priv->batch_lock);
++
+ #ifdef CONFIG_XEN_GNTDEV_DMABUF
+ 	priv->dmabuf_priv = gntdev_dmabuf_init(flip);
+ 	if (IS_ERR(priv->dmabuf_priv)) {
+@@ -608,6 +622,7 @@ static int gntdev_release(struct inode *inode, struct file *flip)
+ {
+ 	struct gntdev_priv *priv = flip->private_data;
+ 	struct gntdev_grant_map *map;
++	struct gntdev_copy_batch *batch;
+ 
+ 	pr_debug("priv %p\n", priv);
+ 
+@@ -620,6 +635,14 @@ static int gntdev_release(struct inode *inode, struct file *flip)
  	}
+ 	mutex_unlock(&priv->lock);
  
-@@ -260,6 +262,10 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
- 			rc = -ENOMEM;
- 			goto cleanup;
++	mutex_lock(&priv->batch_lock);
++	while (priv->batch) {
++		batch = priv->batch;
++		priv->batch = batch->next;
++		kfree(batch);
++	}
++	mutex_unlock(&priv->batch_lock);
++
+ #ifdef CONFIG_XEN_GNTDEV_DMABUF
+ 	gntdev_dmabuf_fini(priv->dmabuf_priv);
+ #endif
+@@ -785,17 +808,6 @@ static long gntdev_ioctl_notify(struct gntdev_priv *priv, void __user *u)
+ 	return rc;
+ }
+ 
+-#define GNTDEV_COPY_BATCH 16
+-
+-struct gntdev_copy_batch {
+-	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
+-	struct page *pages[GNTDEV_COPY_BATCH];
+-	s16 __user *status[GNTDEV_COPY_BATCH];
+-	unsigned int nr_ops;
+-	unsigned int nr_pages;
+-	bool writeable;
+-};
+-
+ static int gntdev_get_page(struct gntdev_copy_batch *batch, void __user *virt,
+ 				unsigned long *gfn)
+ {
+@@ -953,36 +965,53 @@ static int gntdev_grant_copy_seg(struct gntdev_copy_batch *batch,
+ static long gntdev_ioctl_grant_copy(struct gntdev_priv *priv, void __user *u)
+ {
+ 	struct ioctl_gntdev_grant_copy copy;
+-	struct gntdev_copy_batch batch;
++	struct gntdev_copy_batch *batch;
+ 	unsigned int i;
+ 	int ret = 0;
+ 
+ 	if (copy_from_user(&copy, u, sizeof(copy)))
+ 		return -EFAULT;
+ 
+-	batch.nr_ops = 0;
+-	batch.nr_pages = 0;
++	mutex_lock(&priv->batch_lock);
++	if (!priv->batch) {
++		batch = kmalloc(sizeof(*batch), GFP_KERNEL);
++	} else {
++		batch = priv->batch;
++		priv->batch = batch->next;
++	}
++	mutex_unlock(&priv->batch_lock);
++	if (!batch)
++		return -ENOMEM;
++
++	batch->nr_ops = 0;
++	batch->nr_pages = 0;
+ 
+ 	for (i = 0; i < copy.count; i++) {
+ 		struct gntdev_grant_copy_segment seg;
+ 
+ 		if (copy_from_user(&seg, &copy.segments[i], sizeof(seg))) {
+ 			ret = -EFAULT;
++			gntdev_put_pages(batch);
+ 			goto out;
  		}
+ 
+-		ret = gntdev_grant_copy_seg(&batch, &seg, &copy.segments[i].status);
+-		if (ret < 0)
++		ret = gntdev_grant_copy_seg(batch, &seg, &copy.segments[i].status);
++		if (ret < 0) {
++			gntdev_put_pages(batch);
+ 			goto out;
++		}
+ 
+ 		cond_resched();
+ 	}
+-	if (batch.nr_ops)
+-		ret = gntdev_copy(&batch);
+-	return ret;
++	if (batch->nr_ops)
++		ret = gntdev_copy(batch);
 +
-+		/* Save the value of nents to pass to dma_unmap_sg. */
-+		rctx->nents = nents;
-+
- 		/*
- 		 * The value returned by dma_map_sg() can be < nents; so update
- 		 * nents accordingly.
++ out:
++	mutex_lock(&priv->batch_lock);
++	batch->next = priv->batch;
++	priv->batch = batch;
++	mutex_unlock(&priv->batch_lock);
+ 
+-  out:
+-	gntdev_put_pages(&batch);
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
