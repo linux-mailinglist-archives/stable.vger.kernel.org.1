@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F468B22FFF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3965B22F40
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615146865D5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19AD262765C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613A72FDC3F;
-	Tue, 12 Aug 2025 17:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF062FD1D1;
+	Tue, 12 Aug 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvDLO70T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmdIE1sc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD5D2F7477;
-	Tue, 12 Aug 2025 17:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7092F83CB;
+	Tue, 12 Aug 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020726; cv=none; b=vCSIo4vpHOrT8wfNzxJziNA87zYGCUHfStCI9rS7MzeInEg1O8oTWv7Y15/1zim3FirMi/xvVAi5i/jSWrdV7ikV5r4sHYWeQLhEXlYkj3UseuKQWykNCRR+jLRssLprlo/75RLzkS32BwhsFXLlBaEASOrPg8f0UJ+C5BbYZ+Q=
+	t=1755020242; cv=none; b=r5c/vHezlitS027AMWwUvcNVnfbORR/LXYWVCIDYvpkCLHCy9cZ1eGttNlk2pK/n5iZksSCyjrMPmikidhqLKccarRcpRE/6+IyeecfBgCJGIfygYIt6hfDY7Rd4aHxCpdiWpyN8MeMfhRbzjYxE1UqA64qob9qWaFZUCggqLfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020726; c=relaxed/simple;
-	bh=Nry74kgnB2/3B9SF6dyuKjnLtZajoVFgXDLg1yCVX00=;
+	s=arc-20240116; t=1755020242; c=relaxed/simple;
+	bh=3VgTp6HSQMThG9jLFd4iC3ZJv2VEjMG0iJXBRKulCj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRezDnkAZThqxKAMGqkmseNFgNsOwKOa19oZRuLgUHbQ6hqR+7y2yC1ED+eqmVT6eyNM5naQ/NM6d36nGt+2xk+gqpPaVXnk314h7aeZ9Kc+JcQ9krwq5ACvesUgC8vIf1gH+9SKdDr+YJIGfgNXQSoSq+N2j9vUGA8Gaw+ASWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvDLO70T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF0AC4CEF0;
-	Tue, 12 Aug 2025 17:45:25 +0000 (UTC)
+	 MIME-Version; b=FRJolDa8i2U5ZjYQYVzYek9RwLk1F9SB0NIPfqijBrXRoLul7HsFNGAq5M0aOjiHT9V1qS52ZA6JKYhULVvlDtnro/1G1Up/WECnGb/0RbaEgGbXAoh+rKV7uIOzepAFZB5frgorAZeXVdK0XcucbvvvQaIOLJu03iVDnDUoRMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmdIE1sc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0033EC4CEF0;
+	Tue, 12 Aug 2025 17:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020726;
-	bh=Nry74kgnB2/3B9SF6dyuKjnLtZajoVFgXDLg1yCVX00=;
+	s=korg; t=1755020242;
+	bh=3VgTp6HSQMThG9jLFd4iC3ZJv2VEjMG0iJXBRKulCj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvDLO70T7+Ie1Plfyb97wV11l3pOcEWiflSReARSvsx+FUuj0a+ZbLIaFZDkkpBhs
-	 gImYexZAMXBO46/Eie6X7C38mjXJ1wc7OdSrzKW5y35U9pZuc7oVGGEh58mTVabxw2
-	 mEKLtUYfHEZOc67WHPRiKH+uOZKLOXYcAY/axodA=
+	b=DmdIE1scFhRF2YNEWm+sFMcYZSHTSP2cQHNlq2/4mqQwCfhn9tWPXj8m7+oiLYjCS
+	 2qDa2HK15KET95oyHqfqZbcjdhE52Kv4lQispO4ODModsN5wZFyrBxlx+5BY0YlL3Z
+	 I8n1Pdyhj3TTH7gigu2k4MNd7IYEywUdWIgLvKxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
+	Xilin Wu <sophon@radxa.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/262] ASoC: Intel: fix SND_SOC_SOF dependencies
+Subject: [PATCH 6.1 004/253] interconnect: qcom: sc7280: Add missing num_links to xm_pcie3_1 node
 Date: Tue, 12 Aug 2025 19:26:32 +0200
-Message-ID: <20250812172953.156628177@linuxfoundation.org>
+Message-ID: <20250812172948.871641649@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Xilin Wu <sophon@radxa.com>
 
-[ Upstream commit e837b59f8b411b5baf5e3de7a5aea10b1c545a63 ]
+[ Upstream commit 886a94f008dd1a1702ee66dd035c266f70fd9e90 ]
 
-It is currently possible to configure a kernel with all Intel SoC
-configs as loadable modules, but the board config as built-in. This
-causes a link failure in the reference to the snd_soc_sof.ko module:
+This allows adding interconnect paths for PCIe 1 in device tree later.
 
-x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_hw_params':
-sof_rt5682.c:(.text+0x1f9): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sof_rt5682.c:(.text+0x234): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_rt5682.o: in function `sof_rt5682_codec_init':
-sof_rt5682.c:(.text+0x3e0): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_cs42l42.o: in function `sof_cs42l42_hw_params':
-sof_cs42l42.c:(.text+0x2a): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_nau8825.o: in function `sof_nau8825_hw_params':
-sof_nau8825.c:(.text+0x7f): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_da7219.o: in function `da7219_codec_init':
-sof_da7219.c:(.text+0xbf): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_maxim_common.o: in function `max_98373_hw_params':
-sof_maxim_common.c:(.text+0x6f9): undefined reference to `sof_dai_get_tdm_slots'
-x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1015_hw_params':
-sof_realtek_common.c:(.text+0x54c): undefined reference to `sof_dai_get_bclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_realtek_common.o: in function `rt1308_hw_params':
-sof_realtek_common.c:(.text+0x702): undefined reference to `sof_dai_get_mclk'
-x86_64-linux-ld: sound/soc/intel/boards/sof_cirrus_common.o: in function `cs35l41_hw_params':
-sof_cirrus_common.c:(.text+0x2f): undefined reference to `sof_dai_get_bclk'
-
-Add an optional dependency on SND_SOC_SOF_INTEL_COMMON, to ensure that whenever
-the SOF support is in a loadable module, none of the board code can be built-in.
-
-This may be be a little heavy-handed, but I also don't see a reason why one would
-want the boards to be built-in but not the SoC, so it shouldn't actually cause
-any usability problems.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250709145626.64125-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 46bdcac533cc ("interconnect: qcom: Add SC7280 interconnect provider driver")
+Signed-off-by: Xilin Wu <sophon@radxa.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250613-sc7280-icc-pcie1-fix-v1-1-0b09813e3b09@radxa.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/interconnect/qcom/sc7280.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/boards/Kconfig b/sound/soc/intel/boards/Kconfig
-index 0ae6eecc8851..033be4d3e02d 100644
---- a/sound/soc/intel/boards/Kconfig
-+++ b/sound/soc/intel/boards/Kconfig
-@@ -11,7 +11,7 @@ menuconfig SND_SOC_INTEL_MACH
- 	 kernel: saying N will just cause the configurator to skip all
- 	 the questions about Intel ASoC machine drivers.
+diff --git a/drivers/interconnect/qcom/sc7280.c b/drivers/interconnect/qcom/sc7280.c
+index 3c39edd21b6ca..79794d8fd711f 100644
+--- a/drivers/interconnect/qcom/sc7280.c
++++ b/drivers/interconnect/qcom/sc7280.c
+@@ -164,6 +164,7 @@ static struct qcom_icc_node xm_pcie3_1 = {
+ 	.id = SC7280_MASTER_PCIE_1,
+ 	.channels = 1,
+ 	.buswidth = 8,
++	.num_links = 1,
+ 	.links = { SC7280_SLAVE_ANOC_PCIE_GEM_NOC },
+ };
  
--if SND_SOC_INTEL_MACH
-+if SND_SOC_INTEL_MACH && (SND_SOC_SOF_INTEL_COMMON || !SND_SOC_SOF_INTEL_COMMON)
- 
- config SND_SOC_INTEL_USER_FRIENDLY_LONG_NAMES
- 	bool "Use more user friendly long card names"
 -- 
 2.39.5
 
