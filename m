@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392EEB23277
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A63FB22F70
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 585703B9117
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72B876841F1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7382882CE;
-	Tue, 12 Aug 2025 18:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5324D2FDC20;
+	Tue, 12 Aug 2025 17:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4933rIF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1LUMSoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC93C2F5E;
-	Tue, 12 Aug 2025 18:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10615268C73;
+	Tue, 12 Aug 2025 17:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022373; cv=none; b=R5md+nDj8Iv+BjVKvUJlYF+fbSG0a7cH036lI2uuAhpGKGGn67cQ25Gc/ppokPM8bwGHYO6x1pEvNOniBkFspuOo8jVIqcygp3bCtgheb4Fb5KB0hLKInMubZ48hoxbIo7/EM0/4WGB0I3TaLV6qHWvQhwWjob2jYB90u2zZwW0=
+	t=1755020316; cv=none; b=CotW1EUZNM/YSPbESIapYWuHZr+OyVAJB6tdgxKwCONCMzJgKvD9XSA8KUywVIKUSwCq2xmAFscGg8Aqju1oWYmC3TR/MJxhOl7YirkJeZwRhusw4nhF60U0oGx0eONLmsNjXBd5+JYqWNm+H4lFq2cGbcTvOcZbriCpCmd5JBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022373; c=relaxed/simple;
-	bh=2sYpUym9xdXu5yr4NAZeaU1Db7Rn+d5ecZOP7ivHzUs=;
+	s=arc-20240116; t=1755020316; c=relaxed/simple;
+	bh=YsmeIY4Zk7wH65b31WwKDrPR20uOkBuL4d0fZJ9hwSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+UMQb4AFOEhBeX/QiS4jKYAf997YcCdFE/cYvX6CtkT9Cgyt6cxTGTJ9oVGNCRy9Fr1l7WPh20lqYlj/jATdsOHx6/gnwn0ECOqpXhA5PIL57ib53raVJwPNgoosxGgQmyDHGm7pNo6MJSI0sC2V1/MvuQ7dRi8ydfUUBACb00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4933rIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393A6C4CEF0;
-	Tue, 12 Aug 2025 18:12:53 +0000 (UTC)
+	 MIME-Version; b=lZGJXSsxXpAa7YK6N9cjB50jByi/aAyvQrLXAK4lD4yRGhU8uETNr6kTeOHYIgBhGV+3SUIsp7oiBVPGIwZgu84Ulo+5iLXa3HyQsrN/iF/wjjh3diBgfvGB9BQ9VFOuE/CF2LDxwb380qnf6acoOZpxVNIfpvL5nMkYELWWK/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1LUMSoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4216CC4CEF0;
+	Tue, 12 Aug 2025 17:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022373;
-	bh=2sYpUym9xdXu5yr4NAZeaU1Db7Rn+d5ecZOP7ivHzUs=;
+	s=korg; t=1755020315;
+	bh=YsmeIY4Zk7wH65b31WwKDrPR20uOkBuL4d0fZJ9hwSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4933rIFnDDDwOc/8c5Ic0XP5/JufdMQo9Um2LWSc8yjr1iFj0yGGUP88i/qNnUbs
-	 vPS1Y4BaDCQ93Cj22ybd5eV8jmA1SZZK9Jy4HisGQqZJaeC26mQHQQGp1I9Nk65hhS
-	 wQdZ35Bm5lXij20liwxGSYEn9aHb3wuAjnwMT/CY=
+	b=J1LUMSoSJ1+xtkYyPDZPoXP74B7Hx0k9JKEMZjLELU3uDiXHJsotngLdwcwS9ok5U
+	 g/BvEWDh92OCLfieT2geOcKUmf5GWbAhiiQ2Y8joMMt1G/GrjsneebZd2/zFO9kdU5
+	 cAho/YeAJv5trcF/mJWAg0YceAujZfXif1Z6SI9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nimrod Oren <noren@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/369] selftests: drv-net: Fix remote command checking in require_cmd()
+Subject: [PATCH 6.1 044/253] usb: typec: tcpm: allow to use sink in accessory mode
 Date: Tue, 12 Aug 2025 19:27:12 +0200
-Message-ID: <20250812173019.846463227@linuxfoundation.org>
+Message-ID: <20250812172950.612259432@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit b4d52c698210ae1a3ceb487b189701bc70551a48 ]
+commit 64843d0ba96d3eae297025562111d57585273366 upstream.
 
-The require_cmd() method was checking for command availability locally
-even when remote=True was specified, due to a missing host parameter.
+Since the function tcpm_acc_attach is not setting the data and role for
+for the sink case we extend it to check for it first.
 
-Fix by passing host=self.remote when checking remote command
-availability, ensuring commands are verified on the correct host.
-
-Fixes: f1e68a1a4a40 ("selftests: drv-net: add require_XYZ() helpers for validating env")
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250723135454.649342-2-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250404-ml-topic-tcpm-v1-1-b99f44badce8@pengutronix.de
+Stable-dep-of: bec15191d523 ("usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/drivers/net/lib/py/env.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index 1ea9bb695e94..3f35faca6559 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -224,7 +224,7 @@ class NetDrvEpEnv:
-             if not self._require_cmd(comm, "local"):
-                 raise KsftSkipEx("Test requires command: " + comm)
-         if remote:
--            if not self._require_cmd(comm, "remote"):
-+            if not self._require_cmd(comm, "remote", host=self.remote):
-                 raise KsftSkipEx("Test requires (remote) command: " + comm)
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3866,12 +3866,17 @@ static void tcpm_snk_detach(struct tcpm_
+ static int tcpm_acc_attach(struct tcpm_port *port)
+ {
+ 	int ret;
++	enum typec_role role;
++	enum typec_data_role data;
  
-     def wait_hw_stats_settle(self):
--- 
-2.39.5
-
+ 	if (port->attached)
+ 		return 0;
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_SOURCE,
+-			     tcpm_data_role_for_source(port));
++	role = tcpm_port_is_sink(port) ? TYPEC_SINK : TYPEC_SOURCE;
++	data = tcpm_port_is_sink(port) ? tcpm_data_role_for_sink(port)
++				       : tcpm_data_role_for_source(port);
++
++	ret = tcpm_set_roles(port, true, role, data);
+ 	if (ret < 0)
+ 		return ret;
+ 
 
 
 
