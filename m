@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-167226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651D6B22D5D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2E3B22D76
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0E0D1889EED
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:21:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 445B768121A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 16:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B5523D7D4;
-	Tue, 12 Aug 2025 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8252F83B0;
+	Tue, 12 Aug 2025 16:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hb2wSkW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsvoTzXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DED2D12E7
-	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9C52EA490
+	for <stable@vger.kernel.org>; Tue, 12 Aug 2025 16:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755015661; cv=none; b=tkD4en7JTrDO/AS3jauhWczxjZcHKRy4UPXQAOMU0XNAsiwt8Z63PPLxt+r/tHc34peZY30Yrkv/g/B11PugBchifIPsPqCvmajWtCpScPRCrblsXzcNFC1zCsuMQuBs2JXPMEZgg65oa5YRSReCIwvC+lY3YICI/I6LA58a0qg=
+	t=1755015664; cv=none; b=U06BDqyQ28nTXymKUcd6yxGPUzo3v6xXoMeczRxAmsj2mg4YV8Ryh+TrlO93mmQO7d85ilqq69NK0rlaUgDp8soUuyB/foKB3Xok2Q68c1BNaXybklSrEiH7L1HUjY2xoTdB4+uWUr+mQmKWm2RNmNXmU7pJco20C7eU5AJHIwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755015661; c=relaxed/simple;
-	bh=VboflWeu/CRKGciNJm358folZIrxx/vqPXEI6l81el4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q1XD8tJ14cHMS2NIcU27R0xK2ztEuwHOHcS0zV9yadCQWlxtSpFRQl9BtEAGUNiDPNIsoyGgMJuIMbHcC7uzu/WHqPl2thqbLpgE6OsugbRufEj/yhHht+A2/2m8jE/eNBFEDPKYZzC3/3dT70a/eF8vZi5KfCzWrA/RHKJdREY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hb2wSkW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315BAC4CEF1;
-	Tue, 12 Aug 2025 16:20:59 +0000 (UTC)
+	s=arc-20240116; t=1755015664; c=relaxed/simple;
+	bh=+EYmRfY76dhlxPP3qydrc0J0y8ePnBin+JPEkt9R1T4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qNCREKykv0t2ixUhd+HRAmNWGzGyhccvz/cM1Ewjfwk5c1cHlDXVnnXDcTeSDR90cHA7u8+Y+QDnp85VWc33BfwjU0samTJk8cq+xQqmjeNSKGypXKmkdY58BkZNWOowoTt4gJ2pxhhvUFpOCjccOB8W3C0gnK+A+MBe3nmfHIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsvoTzXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A49C4CEF7;
+	Tue, 12 Aug 2025 16:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755015660;
-	bh=VboflWeu/CRKGciNJm358folZIrxx/vqPXEI6l81el4=;
+	s=korg; t=1755015663;
+	bh=+EYmRfY76dhlxPP3qydrc0J0y8ePnBin+JPEkt9R1T4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Hb2wSkW5dXbycC2YOj4Nzw3GSdRgPPKVtr4TGKnl8r2BwRHDA+4fOYQmsKwzbFWeW
-	 cQT7yqSk4mn80IiOoYMfuw6J3vwm5FhiSJXuMbGh3bK6/VVBLaRA2/PoYSv20hSS7G
-	 UveE6u0avfn7Jl9HGobpyo679Csc0BqU1zK9bKmg=
-Subject: FAILED: patch "[PATCH] HID: magicmouse: avoid setting up battery timer when not" failed to apply to 6.12-stable tree
+	b=rsvoTzXFdqzwyH6+xIDDns9fV/icjkvIH8pGesKPoaB+4c8emjsU74Xlcnr+zUIzX
+	 uaMqd3bBXQNpe0ToCh1IrGTvntkaSH4JKrReXqpA4/dH4ZUpKCFI4ShA7vr9A3QGjp
+	 0jwVV1ksLcgNCvgfhWziQtNVnlZjrXVrBWMCNipU=
+Subject: FAILED: patch "[PATCH] HID: magicmouse: avoid setting up battery timer when not" failed to apply to 6.15-stable tree
 To: gargaditya08@live.com,jkosina@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Tue, 12 Aug 2025 18:20:44 +0200
-Message-ID: <2025081244-swimsuit-darkening-ba01@gregkh>
+Message-ID: <2025081244-result-from-825c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9bdc30e35cbc1aa78ccf01040354209f1e11ca22
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081244-swimsuit-darkening-ba01@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081244-result-from-825c@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
 Possible dependencies:
 
