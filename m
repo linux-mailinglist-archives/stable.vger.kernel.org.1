@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-167293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41956B22F78
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C530CB2327A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17BB566142
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B251B60196
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91982FF14F;
-	Tue, 12 Aug 2025 17:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36A72DE1E2;
+	Tue, 12 Aug 2025 18:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+eSjL3k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jI/2OuNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957E1268C73;
-	Tue, 12 Aug 2025 17:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903BD2F5E;
+	Tue, 12 Aug 2025 18:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020326; cv=none; b=FlKTpCtWNHcTKf4a2Ztr6jK6CjAGrZKABpGXPT8OW3LhkBrlCKwXO5hL7jXpJmmGutgOZhGibbnhJW1ls1hfVQaKEybnSytCcErQ7l1oaQb+T5idODdTFBpQxs7jFmW0BPdxtWyy9/koGkOCSOqDl56w+s11cR7cJ2xmPl76SOY=
+	t=1755022404; cv=none; b=bqexPuE4xgbbLF0hTalqYDaH02wk3JhSEc3tPuZ9autbisMgeNe/etpqm4MgVAFa2/Wi2Sd6eeKFsDghAiOrN+TNizZhlNtXrn5UMWYsIdqp9anjvnqAA+S1NQ1gcS963f9J/nQBfXiAT0V1Him7wby2/QAe69qw0AEf6PBK4/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020326; c=relaxed/simple;
-	bh=XoHGWCgWC7UIkVXxCOnsQH5O7BieycocfWOYazIX/RI=;
+	s=arc-20240116; t=1755022404; c=relaxed/simple;
+	bh=CwIUVh10GfU4+R65VJ36y8RSj/8qXOMjQkT+igzzE8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPVnet6rGyZLHeplpQEulPnWBTSnw0xSUR/L3Z9yElc9lZji0z3bPlUwdzSSamtlw+xym9BGdCnj+zkZDiNFuHoNpxSfgVaenTkKXjzOc5Gz4MQQTbv1NOzAz9AFkAju2+5+HOpE0np8FYTCjCgP22FkeWsHgdZsxC63VoXJ3p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+eSjL3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0596CC4CEF0;
-	Tue, 12 Aug 2025 17:38:45 +0000 (UTC)
+	 MIME-Version; b=YqWMUbo3j/u9VEE5ihHIRevBP3uHxabUlqnMjafP0JOraCbri1r5OX1KmpizTWXHV3WiMdKDNM0ESvTKCAZ0gWVRkJghFnPEsuyj0GMnBQo0FLlit+UZDK04eFbT+dUeSrJVrDK0bkXG4B0KGTbeTYVqih7BkiNFH86DAg4mpSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jI/2OuNM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E59CC4CEF1;
+	Tue, 12 Aug 2025 18:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020326;
-	bh=XoHGWCgWC7UIkVXxCOnsQH5O7BieycocfWOYazIX/RI=;
+	s=korg; t=1755022404;
+	bh=CwIUVh10GfU4+R65VJ36y8RSj/8qXOMjQkT+igzzE8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+eSjL3k4MtaZuxTDeYeh6eoE8FleqmnH1ZaorrSHYwTrlu6sNWdeTwxbDSlfTf9N
-	 p5oYH/KpADg/Gj4jhInNXuCYf0SsKYJcSTuZNBogUeqf583NonP0Pzw4wl9JSWeYDR
-	 PW7KKDeBH0v+qVVKIPdFy4kcDsCzlA0RiG4OuFWg=
+	b=jI/2OuNMwuhsJXlNP2y/5/sJTINfi5zGj3cEko2P523SdbmvRrXF6D/hqdDWhTjKC
+	 ScdhUUzEqwEpjzVnXFE79jG0fwZyXAvmRXWs8bq6EjppPPxY3uCQlk7Anei1eafdjR
+	 fLScFrlmsgcaDk/lCHq45+JZcNKXd8XnHafphgzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Zhivich <mzhivich@akamai.com>
-Subject: [PATCH 6.1 047/253] x86/bugs: Fix use of possibly uninit value in amd_check_tsa_microcode()
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 138/369] can: kvaser_usb: Assign netdev.dev_port based on device channel index
 Date: Tue, 12 Aug 2025 19:27:15 +0200
-Message-ID: <20250812172950.738265660@linuxfoundation.org>
+Message-ID: <20250812173019.968185313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Zhivich <mzhivich@akamai.com>
+From: Jimmy Assarsson <extja@kvaser.com>
 
-For kernels compiled with CONFIG_INIT_STACK_NONE=y, the value of __reserved
-field in zen_patch_rev union on the stack may be garbage.  If so, it will
-prevent correct microcode check when consulting p.ucode_rev, resulting in
-incorrect mitigation selection.
+[ Upstream commit c151b06a087a61c7a1790b75ee2f1d6edb6a8a45 ]
 
-This is a stable-only fix.
+Assign netdev.dev_port based on the device channel index, to indicate the
+port number of the network device.
+While this driver already uses netdev.dev_id for that purpose, dev_port is
+more appropriate. However, retain dev_id to avoid potential regressions.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Michael Zhivich <mzhivich@akamai.com>
-Fixes: d12145e8454f ("x86/bugs: Add a Transient Scheduler Attacks mitigation")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3e66d0138c05 ("can: populate netdev::dev_id for udev discrimination")
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20250725123452.41-4-extja@kvaser.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v3:
-- separate "fixes" tag for each stable
-
- arch/x86/kernel/cpu/amd.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -563,6 +563,8 @@ static bool amd_check_tsa_microcode(void
- 	p.model		= c->x86_model;
- 	p.ext_model	= c->x86_model >> 4;
- 	p.stepping	= c->x86_stepping;
-+	/* reserved bits are expected to be 0 in test below */
-+	p.__reserved	= 0;
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 7d12776ab63e..8bd7e800af8f 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -851,6 +851,7 @@ static int kvaser_usb_init_one(struct kvaser_usb *dev, int channel)
+ 	netdev->ethtool_ops = &kvaser_usb_ethtool_ops;
+ 	SET_NETDEV_DEV(netdev, &dev->intf->dev);
+ 	netdev->dev_id = channel;
++	netdev->dev_port = channel;
  
- 	if (c->x86 == 0x19) {
- 		switch (p.ucode_rev >> 8) {
+ 	dev->nets[channel] = priv;
+ 
+-- 
+2.39.5
+
 
 
 
