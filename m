@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CE8B2319A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BF6B23088
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65EC217536B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 069615672B8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69602FDC5D;
-	Tue, 12 Aug 2025 18:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFC52FAC02;
+	Tue, 12 Aug 2025 17:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dijQFAU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYd058Zw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810422F5E;
-	Tue, 12 Aug 2025 18:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9DF2DE1E2;
+	Tue, 12 Aug 2025 17:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021755; cv=none; b=fVGqf46rC83pp5z4YSroOtRLC4eJt/y1Gzm+cXI1ntjK/hGTsoY1+PepbP7GTeym0bcKQK//Q7BaWHSk65Ocb5dzWZxTKD2SLo0r72YsHCyqq73iLjhn+kT2RN616uop63SA6eVkIreJhtF/tYRE8l5NRBQ+wIO6O3fBI52GcEM=
+	t=1755021169; cv=none; b=U1faoNtbyCF6vZ5LMtqLbuTEeqE7uNH0BmzX7uHdUIHTlhQZl7FnvbOq5mL5jLNDcm1d/7WS47P4wWeGilhp6iilKgPsy8kNo4mq5clOoMyuW/ZCZHrT9kkNxwUSI3+8HIMPNVmQ1EWMSHpcAu/0CLJ1gUs7TbbwW+epZtx/eiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021755; c=relaxed/simple;
-	bh=oxWGq7Ofg//f3GGhrYrIMB4c4mq3/Yi52Dr0lDVL8yw=;
+	s=arc-20240116; t=1755021169; c=relaxed/simple;
+	bh=E54oIxuIe/mpVmqJjpyq2C799XGVE39/SR+Mf/+pkok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fe4ZXrnDIKqeYi+WeUD3pVjZz0b3pAFvc2gH7JPam3pj1CtyRPs74iDAiXmoLfHMCRHD9hWcE2LToE0LbqiPYgrxWvMP/1r55qj1V5RuhnmEtXXS+nxlbtYYzNsXnL6jK7ej1CRL/9ahqi2hNZovn69UJtRSsYfG/fx9D4/wHEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dijQFAU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55B3C4CEF0;
-	Tue, 12 Aug 2025 18:02:34 +0000 (UTC)
+	 MIME-Version; b=BWhk62EytkZVtMsxt6IK2RZ5/GhatsVvnBzFfl5j84pp9nzM3OwCQ9xXYGYNkMXUjnK1STzPfQeEjjbbKam+TE2T/k8FYkW5Tbdd8QzpqKBgXQchyLHnhUXdK8ynqBfr/+jehQPjBFw/MhoXPkw/EiuqXjYsd3BhKLniVFH24wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYd058Zw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF02C4CEF0;
+	Tue, 12 Aug 2025 17:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021755;
-	bh=oxWGq7Ofg//f3GGhrYrIMB4c4mq3/Yi52Dr0lDVL8yw=;
+	s=korg; t=1755021168;
+	bh=E54oIxuIe/mpVmqJjpyq2C799XGVE39/SR+Mf/+pkok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dijQFAU4LZrAk0npnCKYnZ1te2QG9xzGbUPHQB06njXPU40b6bDGE5GRLhvxDFay
-	 HA5zblostoxtrxTZzPBerg5jPZGNHJqP+qPKwngSNkEVHa0bkZFUosvqXZcKnQ5/a6
-	 Hh0Dbwkx7f7c+sJU+66mrLXlwGuvsKLsnHbVT16g=
+	b=JYd058ZwdEkUbOK5AoJksWdrOuKNvAHiiW9K1blFlpbgCvefYP8VS7pqbEaUJLBYT
+	 9CoVqLohwcAQmxyKJiLDpfQefSLjDfLhNTEe0hFk66XC0li1pOHzUyDBkZWRDdoJU9
+	 zQGCryM4PmGzef/ZadQRaXCfx5bVo9YZ6WW506uQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	zhangjian <zhangjian496@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/262] irqchip: Build IMX_MU_MSI only on ARM
+Subject: [PATCH 6.1 215/253] NFS: Fix filehandle bounds checking in nfs_fh_to_dentry()
 Date: Tue, 12 Aug 2025 19:30:03 +0200
-Message-ID: <20250812173002.303825135@linuxfoundation.org>
+Message-ID: <20250812172957.985448388@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3b6a18f0da8720d612d8a682ea5c55870da068e0 ]
+[ Upstream commit ef93a685e01a281b5e2a25ce4e3428cf9371a205 ]
 
-Compile-testing IMX_MU_MSI on x86 without PCI_MSI support results in a
-build failure:
+The function needs to check the minimal filehandle length before it can
+access the embedded filehandle.
 
-drivers/gpio/gpio-sprd.c:8:
-include/linux/gpio/driver.h:41:33: error: field 'msiinfo' has incomplete type
-drivers/iommu/iommufd/viommu.c:4:
-include/linux/msi.h:528:33: error: field 'alloc_info' has incomplete type
-
-Tighten the dependency further to only allow compile testing on Arm.
-This could be refined further to allow certain x86 configs.
-
-This was submitted before to address a different build failure, which was
-fixed differently, but the problem has now returned in a different form.
-
-Fixes: 70afdab904d2d1e6 ("irqchip: Add IMX MU MSI controller driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250805160952.4006075-1-arnd@kernel.org
-Link: https://lore.kernel.org/all/20221215164109.761427-1-arnd@kernel.org/
+Reported-by: zhangjian <zhangjian496@huawei.com>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/export.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
-index e7b736800dd0..4ff91df76947 100644
---- a/drivers/irqchip/Kconfig
-+++ b/drivers/irqchip/Kconfig
-@@ -483,6 +483,7 @@ config IMX_MU_MSI
- 	tristate "i.MX MU used as MSI controller"
- 	depends on OF && HAS_IOMEM
- 	depends on ARCH_MXC || COMPILE_TEST
-+	depends on ARM || ARM64
- 	default m if ARCH_MXC
- 	select IRQ_DOMAIN
- 	select IRQ_DOMAIN_HIERARCHY
+diff --git a/fs/nfs/export.c b/fs/nfs/export.c
+index 9fe9586a51b7..aacf6220ab44 100644
+--- a/fs/nfs/export.c
++++ b/fs/nfs/export.c
+@@ -66,14 +66,21 @@ nfs_fh_to_dentry(struct super_block *sb, struct fid *fid,
+ {
+ 	struct nfs_fattr *fattr = NULL;
+ 	struct nfs_fh *server_fh = nfs_exp_embedfh(fid->raw);
+-	size_t fh_size = offsetof(struct nfs_fh, data) + server_fh->size;
++	size_t fh_size = offsetof(struct nfs_fh, data);
+ 	const struct nfs_rpc_ops *rpc_ops;
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+-	int len = EMBED_FH_OFF + XDR_QUADLEN(fh_size);
++	int len = EMBED_FH_OFF;
+ 	u32 *p = fid->raw;
+ 	int ret;
+ 
++	/* Initial check of bounds */
++	if (fh_len < len + XDR_QUADLEN(fh_size) ||
++	    fh_len > XDR_QUADLEN(NFS_MAXFHSIZE))
++		return NULL;
++	/* Calculate embedded filehandle size */
++	fh_size += server_fh->size;
++	len += XDR_QUADLEN(fh_size);
+ 	/* NULL translates to ESTALE */
+ 	if (fh_len < len || fh_type != len)
+ 		return NULL;
 -- 
 2.39.5
 
