@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DD5B232E3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A5FB2349C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C97D2A55E9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE83017D619
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699632EAB97;
-	Tue, 12 Aug 2025 18:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556C42FFDE6;
+	Tue, 12 Aug 2025 18:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrOgxzic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DW0+zNfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191A0280037;
-	Tue, 12 Aug 2025 18:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A5F2FFDE2;
+	Tue, 12 Aug 2025 18:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022682; cv=none; b=HPw2+WL0rLFHhAX/p2Hs9rS375+44YbSvlzKZ8LBa7o/UHSH6NZDoriGKx884jRORNC1fglHgtPZ2LbSG7f4afcuZ2Lqr4xSJJoEtXsZl7ItMvHd8HHlZqGY3vGaUmkFASieVITiEEcYUA32kSvdemapmKo0MjJUls8TLkss6Yc=
+	t=1755023954; cv=none; b=Hwv5AxmxmsMqoOjjLfcqp2+HymduGVEzacPcSmjMWrx1V3ePBEmJrxnvZY1dysyoIRpzo5OBV3cN9Y45Nop6CpdL0aBT6RvjpCX13fu4osRdMAbLggwqlJjXL155kQcjX63ku+1idRFelJGZrIZ0PzBxSqr7kxpVqz0u5RjGv2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022682; c=relaxed/simple;
-	bh=q2HYOIx8WYGMS3KyYcGcxCLgC9ELia8iyWhoh1/ziUw=;
+	s=arc-20240116; t=1755023954; c=relaxed/simple;
+	bh=UeNVcIGmarNEPVrbIeCoNzxP/qSHyYSbSDSzg1buTW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFwlcXa3wGfQHU3rH5lVwXJL0p6sN8lWhWQ2ccIu444PyP2rwfYGBj3MeY9aEY/igM9IqGRiLNXtfcqAhuHhsVdcEyuBTPTbB31ZmPK0JX+e96jX1Ouk+otxjmt2fcREuXubvDGCGTsoN86qnsvfTr/iAuF5rPLkbF6WW/qcU6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrOgxzic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720F8C4CEF0;
-	Tue, 12 Aug 2025 18:18:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=evnzuW0Ph+WerVLFcQgvt2/Y6tu3KCowWojg2oL2Z46viIJAkaYW9I5nfsHXVc7jG/C/RRhT9ErIN3BJwk9qoXF5jVSDpVzRJPKfFFQqnJNxERxTT2VzoBuNqcKTM1QLnSN7aDKrA8re44QRUuDd8zQhTZ0CalWp0h+mcdT76w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DW0+zNfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D93FC4CEF0;
+	Tue, 12 Aug 2025 18:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022681;
-	bh=q2HYOIx8WYGMS3KyYcGcxCLgC9ELia8iyWhoh1/ziUw=;
+	s=korg; t=1755023953;
+	bh=UeNVcIGmarNEPVrbIeCoNzxP/qSHyYSbSDSzg1buTW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrOgxzic0oJxzWz3YdtZKQEfOFGisVbxjjeGenQivoNKu2tnzm8spJZ+LbDG0Gm2j
-	 ayfN4wZpC2jm5g/iFrCqk0+Pbd8HW3aGRT1ZDYqpKSeQU3TeG4ezGwEqaifqo9QLiT
-	 Nv8xD+uv6TnA0qlx0E0k1kovqAcTOxCVcewIhsX8=
+	b=DW0+zNfPoBhjyMtR6a+aQPLMdU8XskJHQ22rB275ZJ3t61G0Eq/uNhIeIM8PqnrhJ
+	 NuUGgRijhllQlCB0r0HzlkN5BDOXusNaFIVypTiMJWdH1N0jixR0tkAgqygOnlOX0R
+	 aZUuKhfbKaBJoA1RIetA/gD+qAY/B3Q1RDgrewyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Laguna <lukasz.laguna@intel.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jiadong Zhu <Jiadong.Zhu@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/369] drm/xe/vf: Disable CSC support on VF
+Subject: [PATCH 6.16 230/627] drm/amdgpu/gfx10: fix kiq locking in KCQ reset
 Date: Tue, 12 Aug 2025 19:28:45 +0200
-Message-ID: <20250812173023.338176089@linuxfoundation.org>
+Message-ID: <20250812173428.043795504@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f62408efc8669b82541295a4611494c8c8c52684 ]
+[ Upstream commit a4b2ba8f631d3e44b30b9b46ee290fbfe608b7d0 ]
 
-CSC is not accessible by VF drivers, so disable its support flag on VF
-to prevent further initialization attempts.
+The ring test needs to be inside the lock.
 
-Fixes: e02cea83d32d ("drm/xe/gsc: add Battlemage support")
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://lore.kernel.org/r/20250729123437.5933-1-lukasz.laguna@intel.com
-(cherry picked from commit 552dbba1caaf0cb40ce961806d757615e26ec668)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 097af47d3cfb ("drm/amdgpu/gfx10: wait for reset done before remap")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Jiadong Zhu <Jiadong.Zhu@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index 82da51a6616a..2e1d6d248d2e 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -549,6 +549,7 @@ static void update_device_info(struct xe_device *xe)
- 	/* disable features that are not available/applicable to VFs */
- 	if (IS_SRIOV_VF(xe)) {
- 		xe->info.probe_display = 0;
-+		xe->info.has_heci_cscfi = 0;
- 		xe->info.has_heci_gscfi = 0;
- 		xe->info.skip_guc_pc = 1;
- 		xe->info.skip_pcode = 1;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index e7df0487eaae..961d5e0af052 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -9617,9 +9617,8 @@ static int gfx_v10_0_reset_kcq(struct amdgpu_ring *ring,
+ 	kiq->pmf->kiq_unmap_queues(kiq_ring, ring, RESET_QUEUES,
+ 				   0, 0);
+ 	amdgpu_ring_commit(kiq_ring);
+-	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+-
+ 	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	if (r)
+ 		return r;
+ 
+@@ -9655,9 +9654,8 @@ static int gfx_v10_0_reset_kcq(struct amdgpu_ring *ring,
+ 	}
+ 	kiq->pmf->kiq_map_queues(kiq_ring, ring);
+ 	amdgpu_ring_commit(kiq_ring);
+-	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+-
+ 	r = amdgpu_ring_test_ring(kiq_ring);
++	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ 	if (r)
+ 		return r;
+ 
 -- 
 2.39.5
 
