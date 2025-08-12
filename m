@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E340B23005
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA64DB23101
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496B06823CB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFB7684C67
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030242FE574;
-	Tue, 12 Aug 2025 17:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E3C2F8BF1;
+	Tue, 12 Aug 2025 17:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YevOG2OR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddfIhix/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52FA2FE566;
-	Tue, 12 Aug 2025 17:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C56B2F8BE7;
+	Tue, 12 Aug 2025 17:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020762; cv=none; b=XihCv2D59gs/Cx5Z3O9oA5RCVsCwnh/Pz14M9RBLoLAL/LbToop0sHBx/S8k7Fws+18M5CVJGKZ9SnHTkhf5UxWodMRVP/szWH2dtZAbQ9nSVxecD0Pl4mHbwfyziQCB24RnTCNSwsRNVjW/mlyNuBrVOQ8t95+NgikkrLnuZyE=
+	t=1755021478; cv=none; b=NT4CFnhGdzC630nX3WpVIlOuUpXbPncQVFAq4yq8f2Ucbn2mw5qS7oEVfRlWNVl4/SvnlTIu71YsKJmJRGx/zhCm8JcU5YK5GuPrOP9r8+5TVWB3U2DYWAO5DPN2KkLdsRQkt8ISMopGpwkI65qiM2b626geS7gbOG6Y5vA2B4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020762; c=relaxed/simple;
-	bh=HZ2IF553qSUflvw9YeMKMc/zTknU4EnPr3xgtRkYdA0=;
+	s=arc-20240116; t=1755021478; c=relaxed/simple;
+	bh=IvgzlJDA5pgYW1tAdj0odjNo7PEYvWU1SItyPtu4jWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgV6EcSsTKPf04qVRdWFaXbR3MXS2uAAk1A87kmsmSpBoxQ22d5TkUGAZuDwibNgMB/rCiFscTbZ2h8DkWsrDuw1equUB8mjdOgTAk9M8kEleitIFqpWwo+QXkoebJjJOOn7VYJQS8898+i/uS23DRalAwU0Qa5ipfudSQtG5q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YevOG2OR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD580C4CEF0;
-	Tue, 12 Aug 2025 17:46:01 +0000 (UTC)
+	 MIME-Version; b=SzoT1Ivm8QHJlF5tPiuL78A8uN21zsL2xwmu/iLJEjxL/gCdjB2PFjtmduVsxCdJVxfLvVMVNcjFNx1d3BdmAmb51n1JEnvS8MCgPpjthQp4tEK+Lq88yOtvwJ9Yu2PA/gdz/+1R9FVSedYf4KJ1itkS+672gp+7To/lHeCz0aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddfIhix/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362FEC4CEF0;
+	Tue, 12 Aug 2025 17:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020762;
-	bh=HZ2IF553qSUflvw9YeMKMc/zTknU4EnPr3xgtRkYdA0=;
+	s=korg; t=1755021477;
+	bh=IvgzlJDA5pgYW1tAdj0odjNo7PEYvWU1SItyPtu4jWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YevOG2ORCvEvIEXwqr8cjIbkW8oqoE1ZvtPE1SWuw78WBfoVQm4ZyZEsSgfgJyNCf
-	 B07AgAgeJUEnVlDmuesWrAs9i4izStCpXHjSrlo0wGhKKWoFq0iz04lMNadrvSEiPd
-	 j2g+Y5MqHKXPb4iOedEuUNWOePkaPT4cHOuN/xrE=
+	b=ddfIhix/Qr9kKnWAVz/qrhF7JMwX7OH8Po+3HPeTb4SERY0sg8A5IkmsctAkP4Ndw
+	 2aR4bdl45Zop4/PunbUgoMzfBTqw2GBKaD1fIZ0WCo0KDyeMHOb2ABoRJl9PJyFdcK
+	 k4zeCbRHWXQQM3t0WnTiO6h9Q+QECV1EzbLMvKS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/253] ipv6: prevent infinite loop in rt6_nlmsg_size()
+Subject: [PATCH 6.6 135/262] clk: sunxi-ng: v3s: Fix de clock definition
 Date: Tue, 12 Aug 2025 19:28:43 +0200
-Message-ID: <20250812172954.440104304@linuxfoundation.org>
+Message-ID: <20250812172958.848144309@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-[ Upstream commit 54e6fe9dd3b0e7c481c2228782c9494d653546da ]
+[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
 
-While testing prior patch, I was able to trigger
-an infinite loop in rt6_nlmsg_size() in the following place:
+The de clock is marked with CLK_SET_RATE_PARENT, which is really not
+necessary (as confirmed from experimentation) and significantly
+restricts flexibility for other clocks using the same parent.
 
-list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
-			fib6_siblings) {
-	rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
-}
+In addition the source selection (parent) field is marked as using
+2 bits, when it the documentation reports that it uses 3.
 
-This is because fib6_del_route() and fib6_add_rt2node()
-uses list_del_rcu(), which can confuse rcu readers,
-because they might no longer see the head of the list.
+Fix both issues in the de clock definition.
 
-Restart the loop if f6i->fib6_nsiblings is zero.
-
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250725140725.3626540-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c |  4 ++--
- net/ipv6/route.c   | 34 ++++++++++++++++++----------------
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index b6a7cbd6bee0..bc70380eb437 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1241,7 +1241,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 							 &rt->fib6_siblings,
- 							 fib6_siblings)
- 					sibling->fib6_nsiblings--;
--				rt->fib6_nsiblings = 0;
-+				WRITE_ONCE(rt->fib6_nsiblings, 0);
- 				list_del_rcu(&rt->fib6_siblings);
- 				rt6_multipath_rebalance(next_sibling);
- 				return err;
-@@ -1954,7 +1954,7 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
- 		list_for_each_entry_safe(sibling, next_sibling,
- 					 &rt->fib6_siblings, fib6_siblings)
- 			sibling->fib6_nsiblings--;
--		rt->fib6_nsiblings = 0;
-+		WRITE_ONCE(rt->fib6_nsiblings, 0);
- 		list_del_rcu(&rt->fib6_siblings);
- 		rt6_multipath_rebalance(next_sibling);
- 	}
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 4e6b833dc40b..201a0ef51a6d 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5580,32 +5580,34 @@ static int rt6_nh_nlmsg_size(struct fib6_nh *nh, void *arg)
+diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+index f3ce8664b288..b05553faed6d 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
++++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+@@ -347,8 +347,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
  
- static size_t rt6_nlmsg_size(struct fib6_info *f6i)
- {
-+	struct fib6_info *sibling;
-+	struct fib6_nh *nh;
- 	int nexthop_len;
+ static const char * const de_parents[] = { "pll-video", "pll-periph0" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+-				 0x104, 0, 4, 24, 2, BIT(31),
+-				 CLK_SET_RATE_PARENT);
++				 0x104, 0, 4, 24, 3, BIT(31), 0);
  
- 	if (f6i->nh) {
- 		nexthop_len = nla_total_size(4); /* RTA_NH_ID */
- 		nexthop_for_each_fib6_nh(f6i->nh, rt6_nh_nlmsg_size,
- 					 &nexthop_len);
--	} else {
--		struct fib6_nh *nh = f6i->fib6_nh;
--		struct fib6_info *sibling;
--
--		nexthop_len = 0;
--		if (f6i->fib6_nsiblings) {
--			rt6_nh_nlmsg_size(nh, &nexthop_len);
--
--			rcu_read_lock();
-+		goto common;
-+	}
- 
--			list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
--						fib6_siblings) {
--				rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
--			}
-+	rcu_read_lock();
-+retry:
-+	nh = f6i->fib6_nh;
-+	nexthop_len = 0;
-+	if (READ_ONCE(f6i->fib6_nsiblings)) {
-+		rt6_nh_nlmsg_size(nh, &nexthop_len);
- 
--			rcu_read_unlock();
-+		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
-+					fib6_siblings) {
-+			rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
-+			if (!READ_ONCE(f6i->fib6_nsiblings))
-+				goto retry;
- 		}
--		nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
- 	}
--
-+	rcu_read_unlock();
-+	nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
-+common:
- 	return NLMSG_ALIGN(sizeof(struct rtmsg))
- 	       + nla_total_size(16) /* RTA_SRC */
- 	       + nla_total_size(16) /* RTA_DST */
+ static const char * const tcon_parents[] = { "pll-video" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
 -- 
 2.39.5
 
