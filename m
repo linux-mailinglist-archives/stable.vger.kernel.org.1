@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-167422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69E3B2300A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:47:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DD5B232E3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99DCD685A76
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:46:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C97D2A55E9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC7E2FDC5B;
-	Tue, 12 Aug 2025 17:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699632EAB97;
+	Tue, 12 Aug 2025 18:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUs8MuW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrOgxzic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C1221FAC;
-	Tue, 12 Aug 2025 17:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191A0280037;
+	Tue, 12 Aug 2025 18:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020766; cv=none; b=LbvZeY7KD2noSOZ4k+S3D06be60iJEo/lRcsKYFI2P5EvEQ4OJ1U40bRk8gK/mmcBWKoIcUrJnOl+2SEa1SlYug3cSLU/4l0+G0YgqbXzebKuj5ZyhIdZPgaaiFoNCsLTyp30HmZbQFq5+wZs2Mlj2mrU9qBPiQeMzqRRW0wVmk=
+	t=1755022682; cv=none; b=HPw2+WL0rLFHhAX/p2Hs9rS375+44YbSvlzKZ8LBa7o/UHSH6NZDoriGKx884jRORNC1fglHgtPZ2LbSG7f4afcuZ2Lqr4xSJJoEtXsZl7ItMvHd8HHlZqGY3vGaUmkFASieVITiEEcYUA32kSvdemapmKo0MjJUls8TLkss6Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020766; c=relaxed/simple;
-	bh=PJapiJ2ZGadMXmQOkF1O94k8huJoXw8sryTXQ+gTND4=;
+	s=arc-20240116; t=1755022682; c=relaxed/simple;
+	bh=q2HYOIx8WYGMS3KyYcGcxCLgC9ELia8iyWhoh1/ziUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jI9gohLdd2fp88ytq1/nOOtS/Eq1wOp7ZTMO8NgoGCSwEc4MJ9Pd20TyWpB3R8Snd01wRzItOCcw1EUEvtIkfk3x9H/0d7RqvwmDjFdS/MdN25twXIFsGLWXYBDpWvppaBqfcLfdCV1ynC1doGoxs/0Ufp2re3hKjXzaxJ10ihE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUs8MuW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052E2C4CEF7;
-	Tue, 12 Aug 2025 17:46:04 +0000 (UTC)
+	 MIME-Version; b=SFwlcXa3wGfQHU3rH5lVwXJL0p6sN8lWhWQ2ccIu444PyP2rwfYGBj3MeY9aEY/igM9IqGRiLNXtfcqAhuHhsVdcEyuBTPTbB31ZmPK0JX+e96jX1Ouk+otxjmt2fcREuXubvDGCGTsoN86qnsvfTr/iAuF5rPLkbF6WW/qcU6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrOgxzic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720F8C4CEF0;
+	Tue, 12 Aug 2025 18:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020765;
-	bh=PJapiJ2ZGadMXmQOkF1O94k8huJoXw8sryTXQ+gTND4=;
+	s=korg; t=1755022681;
+	bh=q2HYOIx8WYGMS3KyYcGcxCLgC9ELia8iyWhoh1/ziUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUs8MuW5gBJNq493Ll6djr957UC7B6m8i1ogCWP2zotwzWPrhEJZtbdRcPOEr6wD7
-	 hgvWo3nbIJKgul943hTO2kDZ1NxWfnv83NFZR+dRMy1Xm1qcJindQk3YvmgNBE1xSQ
-	 uYxym+YzuzwgvpkqBvzEn8x0MYLaYLvKcTaVXQco=
+	b=xrOgxzic0oJxzWz3YdtZKQEfOFGisVbxjjeGenQivoNKu2tnzm8spJZ+LbDG0Gm2j
+	 ayfN4wZpC2jm5g/iFrCqk0+Pbd8HW3aGRT1ZDYqpKSeQU3TeG4ezGwEqaifqo9QLiT
+	 Nv8xD+uv6TnA0qlx0E0k1kovqAcTOxCVcewIhsX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lukasz Laguna <lukasz.laguna@intel.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/253] ipv6: fix possible infinite loop in fib6_info_uses_dev()
-Date: Tue, 12 Aug 2025 19:28:44 +0200
-Message-ID: <20250812172954.480822808@linuxfoundation.org>
+Subject: [PATCH 6.12 228/369] drm/xe/vf: Disable CSC support on VF
+Date: Tue, 12 Aug 2025 19:28:45 +0200
+Message-ID: <20250812173023.338176089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lukasz Laguna <lukasz.laguna@intel.com>
 
-[ Upstream commit f8d8ce1b515a0a6af72b30502670a406cfb75073 ]
+[ Upstream commit f62408efc8669b82541295a4611494c8c8c52684 ]
 
-fib6_info_uses_dev() seems to rely on RCU without an explicit
-protection.
+CSC is not accessible by VF drivers, so disable its support flag on VF
+to prevent further initialization attempts.
 
-Like the prior fix in rt6_nlmsg_size(),
-we need to make sure fib6_del_route() or fib6_add_rt2node()
-have not removed the anchor from the list, or we risk an infinite loop.
-
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250725140725.3626540-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e02cea83d32d ("drm/xe/gsc: add Battlemage support")
+Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Link: https://lore.kernel.org/r/20250729123437.5933-1-lukasz.laguna@intel.com
+(cherry picked from commit 552dbba1caaf0cb40ce961806d757615e26ec668)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/xe/xe_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 201a0ef51a6d..061a7a524e5e 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5868,16 +5868,21 @@ static bool fib6_info_uses_dev(const struct fib6_info *f6i,
- 	if (f6i->fib6_nh->fib_nh_dev == dev)
- 		return true;
- 
--	if (f6i->fib6_nsiblings) {
--		struct fib6_info *sibling, *next_sibling;
-+	if (READ_ONCE(f6i->fib6_nsiblings)) {
-+		const struct fib6_info *sibling;
- 
--		list_for_each_entry_safe(sibling, next_sibling,
--					 &f6i->fib6_siblings, fib6_siblings) {
--			if (sibling->fib6_nh->fib_nh_dev == dev)
-+		rcu_read_lock();
-+		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
-+					fib6_siblings) {
-+			if (sibling->fib6_nh->fib_nh_dev == dev) {
-+				rcu_read_unlock();
- 				return true;
-+			}
-+			if (!READ_ONCE(f6i->fib6_nsiblings))
-+				break;
- 		}
-+		rcu_read_unlock();
- 	}
--
- 	return false;
- }
- 
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 82da51a6616a..2e1d6d248d2e 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -549,6 +549,7 @@ static void update_device_info(struct xe_device *xe)
+ 	/* disable features that are not available/applicable to VFs */
+ 	if (IS_SRIOV_VF(xe)) {
+ 		xe->info.probe_display = 0;
++		xe->info.has_heci_cscfi = 0;
+ 		xe->info.has_heci_gscfi = 0;
+ 		xe->info.skip_guc_pc = 1;
+ 		xe->info.skip_pcode = 1;
 -- 
 2.39.5
 
