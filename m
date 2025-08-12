@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B26B2314A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF793B23296
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96950163522
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE5EE7B5CE9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC48E2FF17B;
-	Tue, 12 Aug 2025 18:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D734C2F659A;
+	Tue, 12 Aug 2025 18:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLooiEKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlNQj4m6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0C32FE578;
-	Tue, 12 Aug 2025 18:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A24A2EAB97;
+	Tue, 12 Aug 2025 18:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021607; cv=none; b=PyTc+4V0xfvgdC46ktS8wrxUEjfpUmn8bRBPHUeDzBXlEtGclssDC7a2FdU2Arl1FNxR/D3L1hToo5SPCkGpFJ8Imx/kkes8serLrUzpgY8SgJ5u0GsnF3qGxSf4eVcEwIyOn+Tfs6xD3pxnpZ68Cnlp9JB9wRX/wlhG5DNaJmc=
+	t=1755022800; cv=none; b=lu/Q/qty3EWkWMAxTqC3+VWK8+QBQXX8xOYXvZGgb6eMOPl0+lCyD/5qRBzfe+IlI6sXw3zczXLUF67XvZzcGZYo73uTxUs04Dr6PZILiv84LMv+S1ZdP4/ZUZasJIQE0riB1bEPDugUjvOpyjt1Tsps/Vbu4vtbrVO7Jt+yGpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021607; c=relaxed/simple;
-	bh=736TgbcN3pQWETnL0dMUug4RF3OlTU5G20S7QaBmHX8=;
+	s=arc-20240116; t=1755022800; c=relaxed/simple;
+	bh=fV+CeBIwKplhQIGryD3Px3jeeiaEKLq7tVaEun6DvY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LokzDTYxAZoStAO7kbHEshAZfudPe32cG2WSk7X8utYAAihl8gvo1z6VnFUWHd1vk19stVEpfJhP18XJDiaKsHX16/TqvHYlfjRg0/jtscOLAFvt8wMhTLzuif/M3lIcisyCY9ZfRxcui1NCCI2wFLnRSDWYG+iecM5Fz5iqEn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLooiEKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF1DC4CEF7;
-	Tue, 12 Aug 2025 18:00:06 +0000 (UTC)
+	 MIME-Version; b=Eldi5MoQennDgdLVey7XwFfTR7KDhEGkRWJbOGQdZqEyTwA+g/sljCdfFrOBFYZ05c2Uhf5VxsitmN+ULjNEG4VQKmvEueSqbAqJqMRWpbBxU4Ytinz2Q+wBczSmovvtUMRsVJVuXcJN1Lij65nXSu5isxG0Hs6FtVluuxegwag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlNQj4m6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF18C4CEF6;
+	Tue, 12 Aug 2025 18:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021607;
-	bh=736TgbcN3pQWETnL0dMUug4RF3OlTU5G20S7QaBmHX8=;
+	s=korg; t=1755022800;
+	bh=fV+CeBIwKplhQIGryD3Px3jeeiaEKLq7tVaEun6DvY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLooiEKzFy/eoVnGe+My1s2zniQSHnyZ8ngs9uD74Dp11srlRio4qULay7euwRjsu
-	 izGlhOFU5NsBJZXZvJ2EGaj7acpH7zMI+CXi70cLbSO2W6ChCeOyeK4hIlq5dwaUed
-	 GQxv6jr12KO4F9MH0pCIKtiti0sW6A0M0D1EuwDI=
+	b=XlNQj4m6NPSJi8R1Eetn1t15ALpQnoOdKnlVOzN68xWU3vTCfDuejA0miS2UtRrLF
+	 fVrB5GBhrbC+jG1BUlB81TtKCt0qfkQJZ7NrSKernv8mix2Yo6pppwcwpb3x1tW28F
+	 74FLzeKDD3/SmDko2xxxfjfp8Fj7S475lFKophC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Abinash Singh <abinashsinghlalotra@gmail.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Zhengxu Zhang <zhengxu.zhang@unisoc.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/262] f2fs: fix KMSAN uninit-value in extent_info usage
+Subject: [PATCH 6.12 263/369] exfat: fdatasync flag should be same like generic_write_sync()
 Date: Tue, 12 Aug 2025 19:29:20 +0200
-Message-ID: <20250812173000.430033723@linuxfoundation.org>
+Message-ID: <20250812173024.657704254@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abinash Singh <abinashlalotra@gmail.com>
+From: Zhengxu Zhang <zhengxu.zhang@unisoc.com>
 
-[ Upstream commit 154467f4ad033473e5c903a03e7b9bca7df9a0fa ]
+[ Upstream commit 2f2d42a17b5a6711378d39df74f1f69a831c5d4e ]
 
-KMSAN reported a use of uninitialized value in `__is_extent_mergeable()`
- and `__is_back_mergeable()` via the read extent tree path.
+Test: androbench by default setting, use 64GB sdcard.
+ the random write speed:
+	without this patch 3.5MB/s
+	with this patch 7MB/s
 
-The root cause is that `get_read_extent_info()` only initializes three
-fields (`fofs`, `blk`, `len`) of `struct extent_info`, leaving the
-remaining fields uninitialized. This leads to undefined behavior
-when those fields are accessed later, especially during
-extent merging.
+After patch "11a347fb6cef", the random write speed decreased significantly.
+the .write_iter() interface had been modified, and check the differences
+with generic_file_write_iter(), when calling generic_write_sync() and
+exfat_file_write_iter() to call vfs_fsync_range(), the fdatasync flag is
+wrong, and make not use the fdatasync mode, and make random write speed
+decreased. So use generic_write_sync() instead of vfs_fsync_range().
 
-Fix it by zero-initializing the `extent_info` struct before population.
-
-Reported-by: syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b8c1d60e95df65e827d4
-Fixes: 94afd6d6e525 ("f2fs: extent cache: support unaligned extent")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Abinash Singh <abinashsinghlalotra@gmail.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
+Signed-off-by: Zhengxu Zhang <zhengxu.zhang@unisoc.com>
+Acked-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/file.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index bfa2d89dc9ea..6a77581106a9 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -382,7 +382,7 @@ void f2fs_init_read_extent_tree(struct inode *inode, struct page *ipage)
- 	struct f2fs_extent *i_ext = &F2FS_INODE(ipage)->i_ext;
- 	struct extent_tree *et;
- 	struct extent_node *en;
--	struct extent_info ei;
-+	struct extent_info ei = {0};
+diff --git a/fs/exfat/file.c b/fs/exfat/file.c
+index 841a5b18e3df..7ac5126aa4f1 100644
+--- a/fs/exfat/file.c
++++ b/fs/exfat/file.c
+@@ -623,9 +623,8 @@ static ssize_t exfat_file_write_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	if (pos > valid_size)
+ 		pos = valid_size;
  
- 	if (!__may_extent_tree(inode, EX_READ)) {
- 		/* drop largest read extent */
+-	if (iocb_is_dsync(iocb) && iocb->ki_pos > pos) {
+-		ssize_t err = vfs_fsync_range(file, pos, iocb->ki_pos - 1,
+-				iocb->ki_flags & IOCB_SYNC);
++	if (iocb->ki_pos > pos) {
++		ssize_t err = generic_write_sync(iocb, iocb->ki_pos - pos);
+ 		if (err < 0)
+ 			return err;
+ 	}
 -- 
 2.39.5
 
