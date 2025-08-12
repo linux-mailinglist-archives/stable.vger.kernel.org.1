@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-167973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC6FB232CF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C6B234A6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1DAF189AE8E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002412A61AB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853C12ED17F;
-	Tue, 12 Aug 2025 18:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A537D2FE598;
+	Tue, 12 Aug 2025 18:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnY7QBma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8iQBrwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4477E2F5E;
-	Tue, 12 Aug 2025 18:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609362FD1AD;
+	Tue, 12 Aug 2025 18:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022615; cv=none; b=i7/7Xkh0vZT1rzE96s5HBhA9XrnEzIVgTanB3LEaFg3rt7FUnarvg3o1dg6LRZAOJl2gLSzelYvASZiW/u56pF+Dp/8F+HqiLw1eiuavta30gSK82A46b4+ax3ykK3XctV3qgwcJ3gv4YaZDYZ1CGUXt9UyAIB4K9k5Fs+KmKTU=
+	t=1755023992; cv=none; b=j1QRm5P3RMhZbGsGRkTbAa27DwkvvJUeldAm21rJBXjAovzKWpvzrefPXZ2B2K6ZO30vrLxGbgI4kbXu7DCPQ0ttQE9CCBsgk4RsUa39V7SW2rL700yVcWIXOQy7OjOlMz2Ezi90yPWqVNBNX+KpBI7BKT3D06OFCAkTSqHXnPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022615; c=relaxed/simple;
-	bh=fWVFWZwb3lQwvV2oqX8rZ3ddouDjf5vsRbjlfXOWk88=;
+	s=arc-20240116; t=1755023992; c=relaxed/simple;
+	bh=NDVw7GgWqO/wyQlYjIhIUVxMdrRZYJYXuXBTRcRu9Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLZd9e0Dj3C1/Ca5UTURob8qJVZeehfA5B3uVeXVfufbOK+a23omSBROBp1prGgpZ7qkxeHFWzMnKsLslhZ0iR4xJDPdPzIJNjVFSYD2eDzcSZpAgP2uKjSTwMPscSlD5PvRazfUEO1r+yrTAjJkacLskyhJ/DQMXajqKqs69xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnY7QBma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5B9C4CEF0;
-	Tue, 12 Aug 2025 18:16:54 +0000 (UTC)
+	 MIME-Version; b=hUQPGWs98zIcbe9PlrqBDQSRyOE2BwkPY6hx7P+6aC3isLE7SuCGUh42Kwek3iQHWh43fy7+fkARs1+NEDxmGu6cc2Iy068pI1L5jw+FmKmwIb0YdO7NBoXDfFAOHROhmDDS0jNNN9bAbnUJgx4gESxbWE786+VIiDTiVSRunDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8iQBrwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE702C4CEF0;
+	Tue, 12 Aug 2025 18:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022615;
-	bh=fWVFWZwb3lQwvV2oqX8rZ3ddouDjf5vsRbjlfXOWk88=;
+	s=korg; t=1755023992;
+	bh=NDVw7GgWqO/wyQlYjIhIUVxMdrRZYJYXuXBTRcRu9Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YnY7QBmaWGol+1QvwuEbj3ac3JEc2+1EZrY4agNre9634E49MnZMWZzzPcC6l07gt
-	 WEppc4JBUupny9z/ttVRCz0F5Dw6jgBjVE1+bib7aoS41Kcre0E2Td2uaw6gmDPzVv
-	 nILgUyAAbWyTis5//9rVJFl420Wm0HGtPXk7Q4ns=
+	b=G8iQBrwKN7B3znMNTmUH1Ge3k8PlWPnLNSkhjlAu1dD/XAgoQPzYR0QSvMxSK3x5Y
+	 Y/1Gp7R22swWONGwglHc7EvJHHVAXFLdDIbZSwydZDkMGUt8PGgqrUV8kMiJ0Wozhl
+	 R5tjVhkU5JrTzC+FwY1qGLM/bvSl9MfufD2oggP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrice Vilchez <Patrice.Vilchez@microchip.com>,
-	Varshini Rajendran <varshini.rajendran@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 206/369] clk: at91: sam9x7: update pll clk ranges
+Subject: [PATCH 6.16 208/627] iommu/amd: Enable PASID and ATS capabilities in the correct order
 Date: Tue, 12 Aug 2025 19:28:23 +0200
-Message-ID: <20250812173022.516042051@linuxfoundation.org>
+Message-ID: <20250812173427.194086906@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varshini Rajendran <varshini.rajendran@microchip.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-[ Upstream commit c7f7ddbd27d55fa552a7269b7bae539adc2a3d46 ]
+[ Upstream commit c694bc8b612ddd0dd70e122a00f39cb1e2e6927f ]
 
-Update the min, max ranges of the PLL clocks according to the latest
-datasheet to be coherent in the driver. This patch solves the issues in
-configuring the clocks related to peripherals with the desired frequency
-within the range.
+Per the PCIe spec, behavior of the PASID capability is undefined if the
+value of the PASID Enable bit changes while the Enable bit of the
+function's ATS control register is Set. Unfortunately,
+pdev_enable_caps() does exactly that by ordering enabling ATS for the
+device before enabling PASID.
 
-Fixes: 33013b43e271 ("clk: at91: sam9x7: add sam9x7 pmc driver")
-Suggested-by: Patrice Vilchez <Patrice.Vilchez@microchip.com>
-Signed-off-by: Varshini Rajendran <varshini.rajendran@microchip.com>
-Link: https://lore.kernel.org/r/20250714093512.29944-1-varshini.rajendran@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jerry Snitselaar <jsnitsel@redhat.com>
+Fixes: eda8c2860ab679 ("iommu/amd: Enable device ATS/PASID/PRI capabilities independently")
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250703155433.6221-1-eahariha@linux.microsoft.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/sam9x7.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/iommu/amd/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/at91/sam9x7.c b/drivers/clk/at91/sam9x7.c
-index cbb8b220f16b..ffab32b047a0 100644
---- a/drivers/clk/at91/sam9x7.c
-+++ b/drivers/clk/at91/sam9x7.c
-@@ -61,44 +61,44 @@ static const struct clk_master_layout sam9x7_master_layout = {
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 3117d99cf83d..8b8d3e843743 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -634,8 +634,8 @@ static inline void pdev_disable_cap_pasid(struct pci_dev *pdev)
  
- /* Fractional PLL core output range. */
- static const struct clk_range plla_core_outputs[] = {
--	{ .min = 375000000, .max = 1600000000 },
-+	{ .min = 800000000, .max = 1600000000 },
- };
+ static void pdev_enable_caps(struct pci_dev *pdev)
+ {
+-	pdev_enable_cap_ats(pdev);
+ 	pdev_enable_cap_pasid(pdev);
++	pdev_enable_cap_ats(pdev);
+ 	pdev_enable_cap_pri(pdev);
+ }
  
- static const struct clk_range upll_core_outputs[] = {
--	{ .min = 600000000, .max = 1200000000 },
-+	{ .min = 600000000, .max = 960000000 },
- };
- 
- static const struct clk_range lvdspll_core_outputs[] = {
--	{ .min = 400000000, .max = 800000000 },
-+	{ .min = 600000000, .max = 1200000000 },
- };
- 
- static const struct clk_range audiopll_core_outputs[] = {
--	{ .min = 400000000, .max = 800000000 },
-+	{ .min = 600000000, .max = 1200000000 },
- };
- 
- static const struct clk_range plladiv2_core_outputs[] = {
--	{ .min = 375000000, .max = 1600000000 },
-+	{ .min = 800000000, .max = 1600000000 },
- };
- 
- /* Fractional PLL output range. */
- static const struct clk_range plla_outputs[] = {
--	{ .min = 732421, .max = 800000000 },
-+	{ .min = 400000000, .max = 800000000 },
- };
- 
- static const struct clk_range upll_outputs[] = {
--	{ .min = 300000000, .max = 600000000 },
-+	{ .min = 300000000, .max = 480000000 },
- };
- 
- static const struct clk_range lvdspll_outputs[] = {
--	{ .min = 10000000, .max = 800000000 },
-+	{ .min = 175000000, .max = 550000000 },
- };
- 
- static const struct clk_range audiopll_outputs[] = {
--	{ .min = 10000000, .max = 800000000 },
-+	{ .min = 0, .max = 300000000 },
- };
- 
- static const struct clk_range plladiv2_outputs[] = {
--	{ .min = 366210, .max = 400000000 },
-+	{ .min = 200000000, .max = 400000000 },
- };
- 
- /* PLL characteristics. */
 -- 
 2.39.5
 
