@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB8FB23000
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A140FB23440
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95413684359
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C71433BFA3D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149FC221FAC;
-	Tue, 12 Aug 2025 17:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BD52EF652;
+	Tue, 12 Aug 2025 18:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPO+aXU8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJsSeSrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58C21F09AD;
-	Tue, 12 Aug 2025 17:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CDC1A9F9B;
+	Tue, 12 Aug 2025 18:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020739; cv=none; b=U+fzCERy8FC2MpnqJ5evjNB3Ulf2V0i0QpuN++RNoS/M5/UktPcbRqS8D3QU503hbIrn3G103XwFQ7xKDKEsJ5zuVIiTVT4h+yU3fcik+uV0/1lfNHOCc87VRPm0sYPDITDhDPASHc0aBW8ixD+IVGgxBJdneE0cWnemh1zWOPc=
+	t=1755023618; cv=none; b=uqS+DcyKCR0CHXc1UniuT2nr0vjJ+k7Va1TV7uJVjTd8vPMwz85H+whqXmHdDwrIQ2thIEO2dhS0VFVrKIRlGsAX+UHmbqPQjf/WAiWgIjm9VfENRVngvpxuavJi6uYNHDXgAmtiacsO8rCGqVCA9kW8sGWsSUHFb09Rz6JAGI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020739; c=relaxed/simple;
-	bh=JM0wL9Rc7407qGPtfa0nSYDs1uQiWwtHXdryIIAhidY=;
+	s=arc-20240116; t=1755023618; c=relaxed/simple;
+	bh=rkUKkzbN8L06LCkp8YV7GHNz+umQGXOL3ozMjOGixDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ji3LM5pqG4U/Sm5RzDrrl/dWLsEzzq0v8phqkG0YavwKPaWetntxvMjeZyfx+JF5eNpwIkOzbQsNkNh8HE7oIy5xSzzyBsDgmsBw/gnWwgQpuGuIGODsG4rBigFKlCnDKweuSKC40TFG9/AP/x5Ev5flhmypF77BYNBFg9TCrFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPO+aXU8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35114C4CEF6;
-	Tue, 12 Aug 2025 17:45:39 +0000 (UTC)
+	 MIME-Version; b=hxxcvi5YkNSBgF4pf0XCRU66pStr1Iykvu3qzmBUZkG9iPTEbJ1eU4hdYx2YMX9cT35nsOKhCgHjE6xmqzJ77ghV9ww2Ja/Dl0U3vbwCqTJys0txIURzghEzBUgL9JULEGqY6UllwYEgVwGUrx7w44THPBT8QWA9EmHHQyDj1uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJsSeSrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FB9C4CEF0;
+	Tue, 12 Aug 2025 18:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020739;
-	bh=JM0wL9Rc7407qGPtfa0nSYDs1uQiWwtHXdryIIAhidY=;
+	s=korg; t=1755023618;
+	bh=rkUKkzbN8L06LCkp8YV7GHNz+umQGXOL3ozMjOGixDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPO+aXU8Qij7awGAd/YJXot/7go23fZjEA2rDe0YpfA8i8RIEPyjGR8AOktiA8yJN
-	 CjIXQXCOWem2mA6ozPyJv6XP+X829ikp+bpxXL32foeBcL5YkhEMWoyumGB5AR+cC6
-	 MABziyEARgPx1I2QuRNul2OcM9jbLzPRwNodvC3Y=
+	b=hJsSeSrAo/b/vuce5HEi/HkOwndaVuB3SXVKR2ibXISyvyVeGh8fM1SbdJzss8xmX
+	 TgtGZ0dTYdSD03L6mR1KPURU6Xuy8ffbb2Y1QEYAhkeCBj+xcua6muVZQZuBwBHXBq
+	 3EZWGRhQAX9pv7rSQAl5nFu6l2trZrMeEkBilcik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Guy Briggs <rgb@redhat.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Patrick Delaunay <patrick.delaunay@foss.st.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/262] audit,module: restore audit logging in load failure case
+Subject: [PATCH 6.16 099/627] arm64: dts: st: fix timer used for ticks
 Date: Tue, 12 Aug 2025 19:26:34 +0200
-Message-ID: <20250812172953.240871419@linuxfoundation.org>
+Message-ID: <20250812173423.079055841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Guy Briggs <rgb@redhat.com>
+From: Patrick Delaunay <patrick.delaunay@foss.st.com>
 
-[ Upstream commit ae1ae11fb277f1335d6bcd4935ba0ea985af3c32 ]
+[ Upstream commit 9ec406ac4b7de3e8040a503429d1a5d389bfdaf6 ]
 
-The move of the module sanity check to earlier skipped the audit logging
-call in the case of failure and to a place where the previously used
-context is unavailable.
+Remove always-on on generic ARM timer as the clock source provided by
+STGEN is deactivated in low power mode, STOP1 by example.
 
-Add an audit logging call for the module loading failure case and get
-the module name when possible.
-
-Link: https://issues.redhat.com/browse/RHEL-52839
-Fixes: 02da2cbab452 ("module: move check_modinfo() early to early_mod_check()")
-Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 5d30d03aaf78 ("arm64: dts: st: introduce stm32mp25 SoCs family")
+Signed-off-by: Patrick Delaunay <patrick.delaunay@foss.st.com>
+Link: https://lore.kernel.org/r/20250515151238.1.I85271ddb811a7cf73532fec90de7281cb24ce260@changeid
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/audit.h | 9 ++++-----
- kernel/audit.h        | 2 +-
- kernel/auditsc.c      | 2 +-
- kernel/module/main.c  | 6 ++++--
- 4 files changed, 10 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/st/stm32mp251.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index 51b1b7054a23..335e1ba5a232 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -416,7 +416,7 @@ extern int __audit_log_bprm_fcaps(struct linux_binprm *bprm,
- extern void __audit_log_capset(const struct cred *new, const struct cred *old);
- extern void __audit_mmap_fd(int fd, int flags);
- extern void __audit_openat2_how(struct open_how *how);
--extern void __audit_log_kern_module(char *name);
-+extern void __audit_log_kern_module(const char *name);
- extern void __audit_fanotify(u32 response, struct fanotify_response_info_audit_rule *friar);
- extern void __audit_tk_injoffset(struct timespec64 offset);
- extern void __audit_ntp_log(const struct audit_ntp_data *ad);
-@@ -518,7 +518,7 @@ static inline void audit_openat2_how(struct open_how *how)
- 		__audit_openat2_how(how);
- }
+diff --git a/arch/arm64/boot/dts/st/stm32mp251.dtsi b/arch/arm64/boot/dts/st/stm32mp251.dtsi
+index 8d87865850a7..74c5f85b800f 100644
+--- a/arch/arm64/boot/dts/st/stm32mp251.dtsi
++++ b/arch/arm64/boot/dts/st/stm32mp251.dtsi
+@@ -150,7 +150,7 @@ timer {
+ 			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
+ 			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>,
+ 			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_LOW)>;
+-		always-on;
++		arm,no-tick-in-suspend;
+ 	};
  
--static inline void audit_log_kern_module(char *name)
-+static inline void audit_log_kern_module(const char *name)
- {
- 	if (!audit_dummy_context())
- 		__audit_log_kern_module(name);
-@@ -676,9 +676,8 @@ static inline void audit_mmap_fd(int fd, int flags)
- static inline void audit_openat2_how(struct open_how *how)
- { }
- 
--static inline void audit_log_kern_module(char *name)
--{
--}
-+static inline void audit_log_kern_module(const char *name)
-+{ }
- 
- static inline void audit_fanotify(u32 response, struct fanotify_response_info_audit_rule *friar)
- { }
-diff --git a/kernel/audit.h b/kernel/audit.h
-index a60d2840559e..5156ecd35457 100644
---- a/kernel/audit.h
-+++ b/kernel/audit.h
-@@ -199,7 +199,7 @@ struct audit_context {
- 			int			argc;
- 		} execve;
- 		struct {
--			char			*name;
-+			const char		*name;
- 		} module;
- 		struct {
- 			struct audit_ntp_data	ntp_data;
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 6f0d6fb6523f..d48830c7e4be 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -2870,7 +2870,7 @@ void __audit_openat2_how(struct open_how *how)
- 	context->type = AUDIT_OPENAT2;
- }
- 
--void __audit_log_kern_module(char *name)
-+void __audit_log_kern_module(const char *name)
- {
- 	struct audit_context *context = audit_context();
- 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index b00e31721a73..9711ad14825b 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -2876,7 +2876,7 @@ static int load_module(struct load_info *info, const char __user *uargs,
- 
- 	module_allocated = true;
- 
--	audit_log_kern_module(mod->name);
-+	audit_log_kern_module(info->name);
- 
- 	/* Reserve our place in the list. */
- 	err = add_unformed_module(mod);
-@@ -3034,8 +3034,10 @@ static int load_module(struct load_info *info, const char __user *uargs,
- 	 * failures once the proper module was allocated and
- 	 * before that.
- 	 */
--	if (!module_allocated)
-+	if (!module_allocated) {
-+		audit_log_kern_module(info->name ? info->name : "?");
- 		mod_stat_bump_becoming(info, flags);
-+	}
- 	free_copy(info, flags);
- 	return err;
- }
+ 	soc@0 {
 -- 
 2.39.5
 
