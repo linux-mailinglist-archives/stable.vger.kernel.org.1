@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC48DB232A3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E505CB230BB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96328582ACB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62AE15670B5
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E40C2F83B5;
-	Tue, 12 Aug 2025 18:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801532FDC57;
+	Tue, 12 Aug 2025 17:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWMwu4Tx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYZq4heH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1602E285E;
-	Tue, 12 Aug 2025 18:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA7A2D5C76;
+	Tue, 12 Aug 2025 17:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022541; cv=none; b=sWxgnfsv2MxY41pumVI+cahNZ1MwpI3HkD3xSAghMNC66zcBOKw+U9ia8h3dsmuR5FMvS5UZadMqZ96cGvUH6tfBg7We2lvRPDnoxrd9olX42eat+gVybHELAioNebhk3Jay4gOlTLlQWj4/6YV05eWXMo5MK9yYLJMBxozfN2c=
+	t=1755021322; cv=none; b=gOq28oP9IHh/VlAgIWjL8xyCSg7Rilx08F78DmNb+ID60R+rUV3jIJot1bVlAZ///IjZApvmvKuVoUVyTUBs+kt2HrdMt+NBKLfEO00LPlMWSmv2Iqt2yFcqxPdqR2sLODlrGLdWM35yIcGMEPQMeP76WlloB2WmB52HQ/feROo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022541; c=relaxed/simple;
-	bh=nkLQBrVWsLE6kLQq5idVa2D1EM5vi/ShpWaxeKexYjo=;
+	s=arc-20240116; t=1755021322; c=relaxed/simple;
+	bh=a4w22/OK6UiITn7sqrrZcw1tEkWh0EnBJLWpaM/e00Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spinLUW7CxXayMbdPhQaf3VYZ67+O0ackUfJWcOfUi6atRBzVjV0szxNniSAcoLf/sKyCBeFGagQks/A/U96Kdfh1igbHXcL7LCAJo2ymyfvnBbQ9tEcrL/zbUl6rNNlwP28lZp6xUNJM9qFgoyie9BqdR9RGG9nVzFQQz8TseQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWMwu4Tx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A810C4CEF0;
-	Tue, 12 Aug 2025 18:15:40 +0000 (UTC)
+	 MIME-Version; b=PUDoHy8hRw1isLtT2UWxiD/FQPw9mKwYKWgpAbTP0CYqSDUTvXPoPEa8g0JZ6DG0swqXz9wagOKfe33OQhGC9G3jdi92M6uE3bFYW941oHzh/tXMWQVKhjVU+BgdA6NjU2MxnZh8EWF2hPMd62hD0vVY01hkx42EGZlfT6/UYxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYZq4heH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A2AC4CEF1;
+	Tue, 12 Aug 2025 17:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022541;
-	bh=nkLQBrVWsLE6kLQq5idVa2D1EM5vi/ShpWaxeKexYjo=;
+	s=korg; t=1755021322;
+	bh=a4w22/OK6UiITn7sqrrZcw1tEkWh0EnBJLWpaM/e00Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWMwu4TxUBwG00+s/4IZQeVSy5KtZXed6nNi4nJrZ/FNAhyyM0tlKD7F4Kn0qHGSV
-	 KVA406hLC/JmJKI1fS6aKXx0HiQZ1eRK0S/9CtXtiOKbjNHWFfGHO1/5vqVnJt9Jzx
-	 qPYbt/cen1MAqedomd6IKHNDK19PrQ+LR0rj5C4k=
+	b=mYZq4heHbanvBu8wV3nasutMuH2gvMw/XdmmSMpCrP+4hA9iGzDhQoP2IZFoGsYIz
+	 Y9D6WX8KqtU6+HfdaB4ALuBcmK3D9k7EtB5GWuGJ7fOJ9uWWNJI4Cg7W6HU/vDDKPA
+	 LepDjtaKPKgCTi0P3OH55b2hQYA/55CBdM/ICf24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Pratik R. Sampat" <prsampat@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Stephane Grosjean <stephane.grosjean@hms-networks.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/369] crypto: ccp - Fix locking on alloc failure handling
+Subject: [PATCH 6.6 095/262] can: peak_usb: fix USB FD devices potential malfunction
 Date: Tue, 12 Aug 2025 19:28:03 +0200
-Message-ID: <20250812173021.768508221@linuxfoundation.org>
+Message-ID: <20250812172957.113914453@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kardashevskiy <aik@amd.com>
+From: Stephane Grosjean <stephane.grosjean@hms-networks.com>
 
-[ Upstream commit b4abeccb8d39db7d9b51cb0098d6458760b30a75 ]
+[ Upstream commit 788199b73b6efe4ee2ade4d7457b50bb45493488 ]
 
-The __snp_alloc_firmware_pages() helper allocates pages in the firmware
-state (alloc + rmpupdate). In case of failed rmpupdate, it tries
-reclaiming pages with already changed state. This requires calling
-the PSP firmware and since there is sev_cmd_mutex to guard such calls,
-the helper takes a "locked" parameter so specify if the lock needs to
-be held.
+The latest firmware versions of USB CAN FD interfaces export the EP numbers
+to be used to dialog with the device via the "type" field of a response to
+a vendor request structure, particularly when its value is greater than or
+equal to 2.
 
-Most calls happen from snp_alloc_firmware_page() which executes without
-the lock. However
+Correct the driver's test of this field.
 
-commit 24512afa4336 ("crypto: ccp: Handle the legacy TMR allocation when SNP is enabled")
-
-switched sev_fw_alloc() from alloc_pages() (which does not call the PSP) to
-__snp_alloc_firmware_pages() (which does) but did not account for the fact
-that sev_fw_alloc() is called from __sev_platform_init_locked()
-(via __sev_platform_init_handle_tmr()) and executes with the lock held.
-
-Add a "locked" parameter to __snp_alloc_firmware_pages().
-Make sev_fw_alloc() use the new parameter to prevent potential deadlock in
-rmp_mark_pages_firmware() if rmpupdate() failed.
-
-Fixes: 24512afa4336 ("crypto: ccp: Handle the legacy TMR allocation when SNP is enabled")
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Pratik R. Sampat <prsampat@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 4f232482467a ("can: peak_usb: include support for a new MCU")
+Signed-off-by: Stephane Grosjean <stephane.grosjean@hms-networks.com>
+Link: https://patch.msgid.link/20250724081550.11694-1-stephane.grosjean@free.fr
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+[mkl: rephrase commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sev-dev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/can/usb/peak_usb/pcan_usb_fd.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index af018afd9cd7..4d072c084d7b 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -424,7 +424,7 @@ static int rmp_mark_pages_firmware(unsigned long paddr, unsigned int npages, boo
- 	return rc;
- }
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+index 4d85b29a17b7..ebefc274b50a 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_fd.c
+@@ -49,7 +49,7 @@ struct __packed pcan_ufd_fw_info {
+ 	__le32	ser_no;		/* S/N */
+ 	__le32	flags;		/* special functions */
  
--static struct page *__snp_alloc_firmware_pages(gfp_t gfp_mask, int order)
-+static struct page *__snp_alloc_firmware_pages(gfp_t gfp_mask, int order, bool locked)
- {
- 	unsigned long npages = 1ul << order, paddr;
- 	struct sev_device *sev;
-@@ -443,7 +443,7 @@ static struct page *__snp_alloc_firmware_pages(gfp_t gfp_mask, int order)
- 		return page;
+-	/* extended data when type == PCAN_USBFD_TYPE_EXT */
++	/* extended data when type >= PCAN_USBFD_TYPE_EXT */
+ 	u8	cmd_out_ep;	/* ep for cmd */
+ 	u8	cmd_in_ep;	/* ep for replies */
+ 	u8	data_out_ep[2];	/* ep for CANx TX */
+@@ -982,10 +982,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 			dev->can.ctrlmode |= CAN_CTRLMODE_FD_NON_ISO;
+ 		}
  
- 	paddr = __pa((unsigned long)page_address(page));
--	if (rmp_mark_pages_firmware(paddr, npages, false))
-+	if (rmp_mark_pages_firmware(paddr, npages, locked))
- 		return NULL;
+-		/* if vendor rsp is of type 2, then it contains EP numbers to
+-		 * use for cmds pipes. If not, then default EP should be used.
++		/* if vendor rsp type is greater than or equal to 2, then it
++		 * contains EP numbers to use for cmds pipes. If not, then
++		 * default EP should be used.
+ 		 */
+-		if (fw_info->type != cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++		if (le16_to_cpu(fw_info->type) < PCAN_USBFD_TYPE_EXT) {
+ 			fw_info->cmd_out_ep = PCAN_USBPRO_EP_CMDOUT;
+ 			fw_info->cmd_in_ep = PCAN_USBPRO_EP_CMDIN;
+ 		}
+@@ -1018,11 +1019,11 @@ static int pcan_usb_fd_init(struct peak_usb_device *dev)
+ 	dev->can_channel_id =
+ 		le32_to_cpu(pdev->usb_if->fw_info.dev_id[dev->ctrl_idx]);
  
- 	return page;
-@@ -453,7 +453,7 @@ void *snp_alloc_firmware_page(gfp_t gfp_mask)
- {
- 	struct page *page;
- 
--	page = __snp_alloc_firmware_pages(gfp_mask, 0);
-+	page = __snp_alloc_firmware_pages(gfp_mask, 0, false);
- 
- 	return page ? page_address(page) : NULL;
- }
-@@ -488,7 +488,7 @@ static void *sev_fw_alloc(unsigned long len)
- {
- 	struct page *page;
- 
--	page = __snp_alloc_firmware_pages(GFP_KERNEL, get_order(len));
-+	page = __snp_alloc_firmware_pages(GFP_KERNEL, get_order(len), true);
- 	if (!page)
- 		return NULL;
- 
+-	/* if vendor rsp is of type 2, then it contains EP numbers to
+-	 * use for data pipes. If not, then statically defined EP are used
+-	 * (see peak_usb_create_dev()).
++	/* if vendor rsp type is greater than or equal to 2, then it contains EP
++	 * numbers to use for data pipes. If not, then statically defined EP are
++	 * used (see peak_usb_create_dev()).
+ 	 */
+-	if (fw_info->type == cpu_to_le16(PCAN_USBFD_TYPE_EXT)) {
++	if (le16_to_cpu(fw_info->type) >= PCAN_USBFD_TYPE_EXT) {
+ 		dev->ep_msg_in = fw_info->data_in_ep;
+ 		dev->ep_msg_out = fw_info->data_out_ep[dev->ctrl_idx];
+ 	}
 -- 
 2.39.5
 
