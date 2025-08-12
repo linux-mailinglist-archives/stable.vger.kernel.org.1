@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-168081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC7CB23358
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47041B23091
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63D871AA2D63
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60475623A18
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2348E2F659A;
-	Tue, 12 Aug 2025 18:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340B62F8BE7;
+	Tue, 12 Aug 2025 17:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHY1SmH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ip0XlSO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE47D2DFA3E;
-	Tue, 12 Aug 2025 18:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D29268C73;
+	Tue, 12 Aug 2025 17:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022979; cv=none; b=P1vpQt2LOPGtWB6LxC/fJuB7UdrsPZ/2p71kf522dtp9fEzZpeIUiO2oFoPCCGE/RLDwMlVUFVSj2uuvpyebN8GUjStGjUzJPxTv4TE4XGysMtZnBxcb9MbMZCAhjsctWu81BsLh7NLkgaRzwdjDpWkTRFdjuhIzkHxipavKq30=
+	t=1755021156; cv=none; b=PEDXb9wJnkZhFBVowmo5PRB8Sn8o64W2RbKaeUR3+u99yjmlpVBXqhnqdxRYJydg1wk18yNdVBgYxF6Wk7N6UPpAtBP6o0XcEzSr1lsjnBKfJLSawRIL6mU6uq0kuBXvV/BvmKtG7/eF935qfTMF2HhtcVwaTg3/Zl3SS6KnTHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022979; c=relaxed/simple;
-	bh=AGtTlN+aU4nGXQd1Q/+GH+65gJwO0HSk+6jf7Bcpgm4=;
+	s=arc-20240116; t=1755021156; c=relaxed/simple;
+	bh=I2A+J2rtVX9xnfyrBdAvFcoRj3mlTCmVgoYaZNeLOVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q50lc3m0btx5SVrcIudOZhVSBcdp8NeWzmb0iPuJW7Btneo3ldvHwiqHXzXB+Y+GKPpaNpppmnti+wpGSOR6f9+vwzQa4JP9DU8fmSVTeeQOQ7VXPPbHofKNua3SAJdmqChg4iAX1QtlPcjvpCYWfkt6eBNjuCsDzzmq4RnungU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHY1SmH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C496C4CEF6;
-	Tue, 12 Aug 2025 18:22:59 +0000 (UTC)
+	 MIME-Version; b=EH7y04Nqin0SmuW1RqiBLjnQv1fgE8mO7h0IdtgfMwoN756eFrGyuNlOkVGRHU4zNmXPYvpYx+dSjesQMecM6hQkIcvP3NBFEa6BUxuirJvXeQVCbQmYWINwgWHSFdE63ST8Aulcme04I1ve73k22NSjYXURGJYYXcGSiopDWXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ip0XlSO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65744C4CEF0;
+	Tue, 12 Aug 2025 17:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022979;
-	bh=AGtTlN+aU4nGXQd1Q/+GH+65gJwO0HSk+6jf7Bcpgm4=;
+	s=korg; t=1755021155;
+	bh=I2A+J2rtVX9xnfyrBdAvFcoRj3mlTCmVgoYaZNeLOVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHY1SmH3xG5gBML88Xn7meNKhDdVkGwOfmxQNqaqhoRGgnCw/a6US2vb+9YCdfMIP
-	 kb+bXq8yPlCy25Budj6hNAeS7coJcZ2+AcxjZw4S0LBIgCFcvQEBp4ofUD7SvrJ420
-	 Yab+uoeQFOgRjdnad7Z1GmQns6v6kEtsDwd9S5Tg=
+	b=Ip0XlSO/PVFJsczJPEZd1M9lD6KjdeA6P5UlfyqJqMvlt0Q5rSsnAEkFMtMakKaQD
+	 rduU7kEyZNjWB8axkdgNf26qzm9ZdovShzY/ZRZQBGFrNeKNWcyIM3QAjtdl+/jvcp
+	 YWlmbGY2GXq/6/K6HDeb8/9g0nnKsHWEOahQkINY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/369] smb: server: let recv_done() consistently call put_recvmsg/smb_direct_disconnect_rdma_connection
+Subject: [PATCH 6.1 222/253] ipv6: reject malicious packets in ipv6_gso_segment()
 Date: Tue, 12 Aug 2025 19:30:10 +0200
-Message-ID: <20250812173028.498893050@linuxfoundation.org>
+Message-ID: <20250812172958.283655332@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,106 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cfe76fdbb9729c650f3505d9cfb2f70ddda2dbdc ]
+[ Upstream commit d45cf1e7d7180256e17c9ce88e32e8061a7887fe ]
 
-We should call put_recvmsg() before smb_direct_disconnect_rdma_connection()
-in order to call it before waking up the callers.
+syzbot was able to craft a packet with very long IPv6 extension headers
+leading to an overflow of skb->transport_header.
 
-In all error cases we should call smb_direct_disconnect_rdma_connection()
-in order to avoid stale connections.
+This 16bit field has a limited range.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Add skb_reset_transport_header_careful() helper and use it
+from ipv6_gso_segment()
+
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+WARNING: CPU: 0 PID: 5871 at ./include/linux/skbuff.h:3032 ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Modules linked in:
+CPU: 0 UID: 0 PID: 5871 Comm: syz-executor211 Not tainted 6.16.0-rc6-syzkaller-g7abc678e3084 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+ RIP: 0010:skb_reset_transport_header include/linux/skbuff.h:3032 [inline]
+ RIP: 0010:ipv6_gso_segment+0x15e2/0x21e0 net/ipv6/ip6_offload.c:151
+Call Trace:
+ <TASK>
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  nsh_gso_segment+0x54a/0xe10 net/nsh/nsh.c:110
+  skb_mac_gso_segment+0x31c/0x640 net/core/gso.c:53
+  __skb_gso_segment+0x342/0x510 net/core/gso.c:124
+  skb_gso_segment include/net/gso.h:83 [inline]
+  validate_xmit_skb+0x857/0x11b0 net/core/dev.c:3950
+  validate_xmit_skb_list+0x84/0x120 net/core/dev.c:4000
+  sch_direct_xmit+0xd3/0x4b0 net/sched/sch_generic.c:329
+  __dev_xmit_skb net/core/dev.c:4102 [inline]
+  __dev_queue_xmit+0x17b6/0x3a70 net/core/dev.c:4679
+
+Fixes: d1da932ed4ec ("ipv6: Separate ipv6 offload support")
+Reported-by: syzbot+af43e647fd835acc02df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/688a1a05.050a0220.5d226.0008.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250730131738.3385939-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ include/linux/skbuff.h | 23 +++++++++++++++++++++++
+ net/ipv6/ip6_offload.c |  4 +++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 3bb6cb9dceae..b5e9fd9369e9 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -520,13 +520,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	t = recvmsg->transport;
- 
- 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
-+		put_recvmsg(t, recvmsg);
- 		if (wc->status != IB_WC_WR_FLUSH_ERR) {
- 			pr_err("Recv error. status='%s (%d)' opcode=%d\n",
- 			       ib_wc_status_msg(wc->status), wc->status,
- 			       wc->opcode);
- 			smb_direct_disconnect_rdma_connection(t);
- 		}
--		put_recvmsg(t, recvmsg);
- 		return;
- 	}
- 
-@@ -541,6 +541,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
- 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
- 			put_recvmsg(t, recvmsg);
-+			smb_direct_disconnect_rdma_connection(t);
- 			return;
- 		}
- 		t->negotiation_requested = true;
-@@ -548,7 +549,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		t->status = SMB_DIRECT_CS_CONNECTED;
- 		enqueue_reassembly(t, recvmsg, 0);
- 		wake_up_interruptible(&t->wait_status);
--		break;
-+		return;
- 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
- 		struct smb_direct_data_transfer *data_transfer =
- 			(struct smb_direct_data_transfer *)recvmsg->packet;
-@@ -558,6 +559,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (wc->byte_len <
- 		    offsetof(struct smb_direct_data_transfer, padding)) {
- 			put_recvmsg(t, recvmsg);
-+			smb_direct_disconnect_rdma_connection(t);
- 			return;
- 		}
- 
-@@ -566,6 +568,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
- 			    (u64)data_length) {
- 				put_recvmsg(t, recvmsg);
-+				smb_direct_disconnect_rdma_connection(t);
- 				return;
- 			}
- 
-@@ -608,11 +611,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
- 			mod_delayed_work(smb_direct_wq,
- 					 &t->post_recv_credits_work, 0);
--		break;
-+		return;
- 	}
--	default:
--		break;
- 	}
-+
-+	/*
-+	 * This is an internal error!
-+	 */
-+	WARN_ON_ONCE(recvmsg->type != SMB_DIRECT_MSG_DATA_TRANSFER);
-+	put_recvmsg(t, recvmsg);
-+	smb_direct_disconnect_rdma_connection(t);
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 2b5466204888..8014a335414e 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -2850,6 +2850,29 @@ static inline void skb_reset_transport_header(struct sk_buff *skb)
+ 	skb->transport_header = skb->data - skb->head;
  }
  
- static int smb_direct_post_recv(struct smb_direct_transport *t,
++/**
++ * skb_reset_transport_header_careful - conditionally reset transport header
++ * @skb: buffer to alter
++ *
++ * Hardened version of skb_reset_transport_header().
++ *
++ * Returns: true if the operation was a success.
++ */
++static inline bool __must_check
++skb_reset_transport_header_careful(struct sk_buff *skb)
++{
++	long offset = skb->data - skb->head;
++
++	if (unlikely(offset != (typeof(skb->transport_header))offset))
++		return false;
++
++	if (unlikely(offset == (typeof(skb->transport_header))~0U))
++		return false;
++
++	skb->transport_header = offset;
++	return true;
++}
++
+ static inline void skb_set_transport_header(struct sk_buff *skb,
+ 					    const int offset)
+ {
+diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
+index 3ee345672849..171a5c1afefe 100644
+--- a/net/ipv6/ip6_offload.c
++++ b/net/ipv6/ip6_offload.c
+@@ -134,7 +134,9 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
+ 
+ 	ops = rcu_dereference(inet6_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment)) {
+-		skb_reset_transport_header(skb);
++		if (!skb_reset_transport_header_careful(skb))
++			goto out;
++
+ 		segs = ops->callbacks.gso_segment(skb, features);
+ 		if (!segs)
+ 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
 -- 
 2.39.5
 
