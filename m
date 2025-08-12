@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00065B23207
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E0EB233D9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 897E617824E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75323AC666
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132002FAC11;
-	Tue, 12 Aug 2025 18:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EF92FDC57;
+	Tue, 12 Aug 2025 18:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwFf7dp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="De+1kRgP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64E12FA0DB;
-	Tue, 12 Aug 2025 18:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7BD2FD1DC;
+	Tue, 12 Aug 2025 18:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022045; cv=none; b=lwDN3/KSV2dU7MLTKsaxJaDzDVBqRonicgY4LzMix8VpvKfV0VboaSfMRW8oTmfUX0fKnepya5fGfmLXtuxo9ae7CnoXhpf1Y9c0oESPrW/+nyGTnnPfew6DPyo4bYk7LUIGdnvBT/tCoKm5qEZQLx194X3Fw3hMy/080QDo+T4=
+	t=1755023314; cv=none; b=OBL6wbiU6RLuJ+t5EO5m34d70/S4uJnrLtf6b9b5FjyEWamndz85+UOXlluLxdWR05aTvLS9bsoTd6cs8zJQuycIbRS1fOOF3O0xUMnupbnUJ/IqvC18/OB3yFO7nDMPcYmih0lJCaxoWrFMJNmRNvbURmUo7qGO9xKgMsCjupU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022045; c=relaxed/simple;
-	bh=FE12ykrhB2ClcI0y9q5hqcgJLvS29rzUND5C8JkaUrY=;
+	s=arc-20240116; t=1755023314; c=relaxed/simple;
+	bh=8J2S3UnJnh1yzqKQVhr5P6UjSPW7bV822bU9hIoyNyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lhHxvlSADTmMezDz4IbFmLRUmqRIMMM+8lYsK/Ih8U2JCzlki7XkAlbV93lU/cbppkRCxgFaVlCvQvWKxL08YivU2ZNW33Z9RBrghwCZ4BzXrpRAHJ2MHYfhFiiyoY9cGIYKH007BUg3bqlgjo4XXCWvtZsPa/z+8zoLsR1N57M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwFf7dp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C140C4CEF0;
-	Tue, 12 Aug 2025 18:07:25 +0000 (UTC)
+	 MIME-Version; b=NDP43v4Yt8y9TJiBIFzvFMkMrWRA2nsAMzG2SMgyhBWxAAJ+H4R3K95KCLrZyEVzi7CvEHaYhBiXsnVGRA6eG1WlHrEZpfXSNOgRFaLc7ySm7Wl30IhAC1PKgPh/uEJHfnHStEC4QUwuGOjbK8IhhjTjNkvNMjUZ8WsgfeMxrg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=De+1kRgP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F42C4CEF7;
+	Tue, 12 Aug 2025 18:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022045;
-	bh=FE12ykrhB2ClcI0y9q5hqcgJLvS29rzUND5C8JkaUrY=;
+	s=korg; t=1755023314;
+	bh=8J2S3UnJnh1yzqKQVhr5P6UjSPW7bV822bU9hIoyNyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IwFf7dp/juYVP70e6R80DVYq930ZhN7k3x3aEA+MqNbvhI/T6PCvfG7yzL28rJNSs
-	 et8yh/oJaFH9/x8B9ZIYWYS6dxhRtdES8Q56fzROBE95tNss0zX0eHDhayIDQE5KGv
-	 rR6QDeeSo7pQQ4rj3QxifZxln7uR9EdbaagOMjqA=
+	b=De+1kRgPVOQkRqhhYxLojj9d77nmLMhVv2xYflIIrY4uveddzcjtyubuhtIG9qzOE
+	 Yw/8BgJ5y83YG347m+tmtKQtOQcoN8vw8TW53hgLMhPYOuo+W1hlz/wes8IwWH8hcI
+	 r/OGz+9Xeq0MjQlDhYZaSXCnWGVQH9/L3wUiuAsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20Le=20Goffic?= <clement.legoffic@foss.st.com>,
-	kernel test robot <lkp@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/369] spi: stm32: Check for cfg availability in stm32_spi_probe
-Date: Tue, 12 Aug 2025 19:25:37 +0200
-Message-ID: <20250812173016.267724811@linuxfoundation.org>
+Subject: [PATCH 6.16 043/627] arm64: dts: qcom: sdm845: Expand IMEM region
+Date: Tue, 12 Aug 2025 19:25:38 +0200
+Message-ID: <20250812173420.979378664@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Le Goffic <clement.legoffic@foss.st.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 21f1c800f6620e43f31dfd76709dbac8ebaa5a16 ]
+[ Upstream commit 81a4a7de3d4031e77b5796479ef21aefb0862807 ]
 
-The stm32_spi_probe function now includes a check to ensure that the
-pointer returned by of_device_get_match_data is not NULL before
-accessing its members. This resolves a warning where a potential NULL
-pointer dereference could occur when accessing cfg->has_device_mode.
+We need more than what is currently described, expand the region to its
+actual boundaries.
 
-Before accessing the 'has_device_mode' member, we verify that 'cfg' is
-not NULL. If 'cfg' is NULL, an error message is logged.
-
-This change ensures that the driver does not attempt to access
-configuration data if it is not available, thus preventing a potential
-system crash due to a NULL pointer dereference.
-
-Signed-off-by: Clément Le Goffic <clement.legoffic@foss.st.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310191831.MLwx1c6x-lkp@intel.com/
-Fixes: fee681646fc8 ("spi: stm32: disable device mode with st,stm32f4-spi compatible")
-Link: https://patch.msgid.link/20250616-spi-upstream-v1-2-7e8593f3f75d@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: 948f6161c6ab ("arm64: dts: qcom: sdm845: Add IMEM and PIL info region")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250523-topic-ipa_mem_dts-v1-2-f7aa94fac1ab@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index fc72a89fb3a7..3b1b810f33bf 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -2069,9 +2069,15 @@ static int stm32_spi_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	struct reset_control *rst;
- 	struct device_node *np = pdev->dev.of_node;
-+	const struct stm32_spi_cfg *cfg;
- 	bool device_mode;
- 	int ret;
--	const struct stm32_spi_cfg *cfg = of_device_get_match_data(&pdev->dev);
-+
-+	cfg = of_device_get_match_data(&pdev->dev);
-+	if (!cfg) {
-+		dev_err(&pdev->dev, "Failed to get match data for platform\n");
-+		return -ENODEV;
-+	}
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 3bc8471c658b..6ee97cfecc70 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -5081,18 +5081,18 @@ spmi_bus: spmi@c440000 {
+ 			#interrupt-cells = <4>;
+ 		};
  
- 	device_mode = of_property_read_bool(np, "spi-slave");
- 	if (!cfg->has_device_mode && device_mode) {
+-		sram@146bf000 {
++		sram@14680000 {
+ 			compatible = "qcom,sdm845-imem", "syscon", "simple-mfd";
+-			reg = <0 0x146bf000 0 0x1000>;
++			reg = <0 0x14680000 0 0x40000>;
+ 
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 
+-			ranges = <0 0 0x146bf000 0x1000>;
++			ranges = <0 0 0x14680000 0x40000>;
+ 
+-			pil-reloc@94c {
++			pil-reloc@3f94c {
+ 				compatible = "qcom,pil-reloc-info";
+-				reg = <0x94c 0xc8>;
++				reg = <0x3f94c 0xc8>;
+ 			};
+ 		};
+ 
 -- 
 2.39.5
 
