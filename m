@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB95DB23104
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6684B234D3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 795005671DF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF0FC68110C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDA32FDC2F;
-	Tue, 12 Aug 2025 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E312FFDEE;
+	Tue, 12 Aug 2025 18:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m02Iip6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6BdA5dr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEDC2FAC02;
-	Tue, 12 Aug 2025 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295C12FF17D;
+	Tue, 12 Aug 2025 18:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021488; cv=none; b=MaO8d3e4EzkHBekwUdd9iaWvTbeKekq5R4DewI/e4wW51eon6POF+o8mCTfZK7robViO0IgxeB/o7XAX8Af0+YOFuIIMD0kzvaKdaGnCs5jkME+kCl82Y44lYMty4Ov+7C+PqU3kHorx1O3REaXI1znBchA/bEoshONAe8VEMFo=
+	t=1755023957; cv=none; b=O9l+0TARGYjcYM0C6AxPZTQPFtwxWuR200o1GPHYgIJY8fthy0NL8qvO05dTeHjRkhYj7nBQO803bj7KNPwF6zRZIhPeq4Cyrqdsyl/jjPpVcMJjz1j+V6XYy2SCNfGfgXbaDg3SLwFaANj9xruVqAhNL3wP1Jo7iCC/hPjRL7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021488; c=relaxed/simple;
-	bh=HnqV6fWkbcTphMIiToW9ApFLMVIkNirX0P3tTL/RXeo=;
+	s=arc-20240116; t=1755023957; c=relaxed/simple;
+	bh=VaatFkSbL0679VAI+K0ss96AyWLeXuhjVtfYL/Rq8Aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tvp3xgTNATOEZTOMEqvAygJmVTZXih+QnPtpoAdzFvEKxo6mC24lAHgAvJavPGJ/Ho9L+VJkEEg8FA8/eNqYxSoKHmZvZI2/PdK3BLnVLyFXdo6k2Kp62AGGG7x/eMzjU0OvhQuMEyz8/6RgYZm8mAywLe30h+m+G1PdWm8RM+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m02Iip6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EEAC4CEF0;
-	Tue, 12 Aug 2025 17:58:07 +0000 (UTC)
+	 MIME-Version; b=Ce3QhQzJ44uV2m38292UNKKK7GQw7m7x9RyHJfYph9U1oOteWsalxGxgNe7Gt+MAUk3j5c+9ZS3WKDmnvO6eC8Z8l/M/ziZvIG2HjIUMyfgWOdvpyB1BbaTFTJHbH9GjTC19nCQTcSyt0ojww2EpdPKKO0yIXnByFNe1QmU7uC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6BdA5dr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A877C4CEF0;
+	Tue, 12 Aug 2025 18:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021487;
-	bh=HnqV6fWkbcTphMIiToW9ApFLMVIkNirX0P3tTL/RXeo=;
+	s=korg; t=1755023957;
+	bh=VaatFkSbL0679VAI+K0ss96AyWLeXuhjVtfYL/Rq8Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m02Iip6pVOisRPFGEFTwV+dGp+wlIyUC1DjgJYwYhWx5zFv4s7pZHld4Rsq8u2sKH
-	 arAgebuLwEJO9sv7IxJlzjKgVVj6RaYJpT2FKiBXffQWco2/iw3fMJnmbGAC9oIRYT
-	 oJ8KX1Xe5TgIYnMHUOKxmL/LBKTdaEL50EW68zkU=
+	b=k6BdA5drs3TcHIp+n3DyOizhyTxKMUZZCjECwey6cfjujBIgragGfrcWR01aWe53q
+	 v6I9q2mQB0i00eytszCHzOq0mvSua6eWGRtxTsqFxhcAFfCQiElIo0SE497mYIu08Z
+	 tM1WHzROI8G/3sGkaFKJgE0fKlRZ/GZ1aWKhKQmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/262] scsi: elx: efct: Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:28:45 +0200
-Message-ID: <20250812172958.931094333@linuxfoundation.org>
+Subject: [PATCH 6.16 231/627] selftests/bpf: fix implementation of smp_mb()
+Date: Tue, 12 Aug 2025 19:28:46 +0200
+Message-ID: <20250812173428.085233647@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 3a988d0b65d7d1713ce7596eae288a293f3b938e ]
+[ Upstream commit 0769857a07b4451a1dc1c3ad1f1c86a6f4ce136a ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+As BPF doesn't include any barrier instructions, smp_mb() is implemented
+by doing a dummy value returning atomic operation. Such an operation
+acts a full barrier as enforced by LKMM and also by the work in progress
+BPF memory model.
 
-Fixes: 692e5d73a811 ("scsi: elx: efct: LIO backend interface routines")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627114117.188480-2-fourier.thomas@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+If the returned value is not used, clang[1] can optimize the value
+returning atomic instruction in to a normal atomic instruction which
+provides no ordering guarantees.
+
+Mark the variable as volatile so the above optimization is never
+performed and smp_mb() works as expected.
+
+[1] https://godbolt.org/z/qzze7bG6z
+
+Fixes: 88d706ba7cc5 ("selftests/bpf: Introduce arena spin lock")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20250710175434.18829-2-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/elx/efct/efct_lio.c | 2 +-
+ tools/testing/selftests/bpf/bpf_atomic.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/elx/efct/efct_lio.c b/drivers/scsi/elx/efct/efct_lio.c
-index a982b9cf9870..49d7fe150684 100644
---- a/drivers/scsi/elx/efct/efct_lio.c
-+++ b/drivers/scsi/elx/efct/efct_lio.c
-@@ -382,7 +382,7 @@ efct_lio_sg_unmap(struct efct_io *io)
- 		return;
+diff --git a/tools/testing/selftests/bpf/bpf_atomic.h b/tools/testing/selftests/bpf/bpf_atomic.h
+index a9674e544322..c550e5711967 100644
+--- a/tools/testing/selftests/bpf/bpf_atomic.h
++++ b/tools/testing/selftests/bpf/bpf_atomic.h
+@@ -61,7 +61,7 @@ extern bool CONFIG_X86_64 __kconfig __weak;
  
- 	dma_unmap_sg(&io->efct->pci->dev, cmd->t_data_sg,
--		     ocp->seg_map_cnt, cmd->data_direction);
-+		     cmd->t_data_nents, cmd->data_direction);
- 	ocp->seg_map_cnt = 0;
- }
+ #define smp_mb()                                 \
+ 	({                                       \
+-		unsigned long __val;             \
++		volatile unsigned long __val;    \
+ 		__sync_fetch_and_add(&__val, 0); \
+ 	})
  
 -- 
 2.39.5
