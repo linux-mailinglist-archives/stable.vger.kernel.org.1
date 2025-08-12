@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-168935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207FDB23763
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:11:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60857B2373A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6AE6E4902
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:10:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3393D1890806
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BF12F83B4;
-	Tue, 12 Aug 2025 19:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52BF2FE588;
+	Tue, 12 Aug 2025 19:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iCNr76J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsqYkVjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346D7279DB6;
-	Tue, 12 Aug 2025 19:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6483F2DA779;
+	Tue, 12 Aug 2025 19:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025827; cv=none; b=rOPowgvdp3bNcIT7BCfj5uDMGjlg6+QDnUJGN+4m7E9gL9Xr7R1WDbDgyFssV234yGiMsy/qZHw924YSgno++Ruc76b65OreMkx9lYSLxx3V8XgveV6eAuH/vsxFx7GGsiYtMud0qkBb3S+cn8zhuvSswrw/XhVMqxHMdNG4e2g=
+	t=1755025707; cv=none; b=Oy3/+UqubhCN05vgYQK0vj0ZowTEzMKXoFt/HTSj8IUxB6L6cGd8hTNrcbDmcbM0gijzz3bSuLTsfuEvtt60c3dK0OWgh4qVXErOIvGmA9K1lxvxz6cK7joIcywd0mNMC+T//KT77PysjOcAvkkI79kCFwN5BZs5WWdYYlJvQAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025827; c=relaxed/simple;
-	bh=L+gquhZjVb7mLpVWiW6pMhzcv4njPE/P7LUbNgvdn5w=;
+	s=arc-20240116; t=1755025707; c=relaxed/simple;
+	bh=v/VLXAHmDgsWRAmqCNlOz+1CIHBT9lvWWAccaCQhuio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRjC99fgWmML5tpPOF5cJnFfCMsc7t+VG8qVlhtrtD6ov15hnwUapRHjZLuXokV6CNOxw9AvvanyBj4kigFhwxTFxLIVaelCGHf/SQeZY3L0LJ7u4r9H43y2KegBhdnOnYi7+TkemZh9Pu7GFe6O/OGMVuK/N0scrmmQ2W5hsCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iCNr76J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FFEC4CEF0;
-	Tue, 12 Aug 2025 19:10:26 +0000 (UTC)
+	 MIME-Version; b=mj48ep6d8QfGB3quwdyHtngPQaGLevLS2chMIQTcHEHSe3clIoPqplES94ZvM2P9q8ds6I2MMraMXyCzgW7KNgfeEAwnfR7E8sCbUSmmUfOhDJssyL/FjvIDySm6n8cK1ob91GaFiEgO8qqAam69B84HE9Ml719uXFPz8UfuCvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsqYkVjP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C758FC4CEF0;
+	Tue, 12 Aug 2025 19:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025827;
-	bh=L+gquhZjVb7mLpVWiW6pMhzcv4njPE/P7LUbNgvdn5w=;
+	s=korg; t=1755025707;
+	bh=v/VLXAHmDgsWRAmqCNlOz+1CIHBT9lvWWAccaCQhuio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0iCNr76J2uV2F0WWAsCFD9MonAyjOnI8RTe0rnF1MX9YodWpJDefAMXsZelgLJ1R6
-	 N2dq3FYK12sXze+4+1jSAYeh53SNMMuWssrvSY6GzDASNI/3QG8gjoouSX3GpHb5vS
-	 MAFvIRwq/I1IFXAqQy7q59WewFNFI78teYB0FECk=
+	b=zsqYkVjPR1N50+QBTCRwA+qCcZH9pLspAo+Pd6i+nhJUsQC1TEljKaF4dXmU8tdHa
+	 lEK5Pf1YtAdcT58ISMq31LYaxZFav2CXD6FEVutNZJuAnx+ShiDwhx6/xJGgxAS2WT
+	 EYvQnfi5pGyvGOZFSh0JmW7vzn8FBuK6tUx2y588=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mangesh Gadre <Mangesh.Gadre@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 112/480] slub: Fix a documentation build error for krealloc()
-Date: Tue, 12 Aug 2025 19:45:20 +0200
-Message-ID: <20250812174402.108585009@linuxfoundation.org>
+Subject: [PATCH 6.15 113/480] drm/amdgpu: Remove nbiov7.9 replay count reporting
+Date: Tue, 12 Aug 2025 19:45:21 +0200
+Message-ID: <20250812174402.155805399@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,51 +68,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Corbet <corbet@lwn.net>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit e8a45f198e3ae2434108f815bc28f37f6fe6742b ]
+[ Upstream commit 0f566f0e9c614aa3d95082246f5b8c9e8a09c8b3 ]
 
-The kerneldoc comment for krealloc() contains an unmarked literal block,
-leading to these warnings in the docs build:
+Direct pcie replay count reporting is not available on nbio v7.9.
+Reporting is done through firmware.
 
-  ./mm/slub.c:4936: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
-  ./mm/slub.c:4936: ERROR: Undefined substitution referenced: "--------". [docutils]
-
-Mark up and indent the block properly to bring a bit of peace to our build
-logs.
-
-Fixes: 489a744e5fb1 (mm: krealloc: clarify valid usage of __GFP_ZERO)
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://patch.msgid.link/20250611155916.2579160-6-willy@infradead.org
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Acked-by: Mangesh Gadre <Mangesh.Gadre@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Fixes: 50709d18f4a6 ("drm/amdgpu: Add pci replay count to nbio v7.9")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index be8b09e09d30..5c73b956615f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4929,12 +4929,12 @@ __do_krealloc(const void *p, size_t new_size, gfp_t flags)
-  * When slub_debug_orig_size() is off, krealloc() only knows about the bucket
-  * size of an allocation (but not the exact size it was allocated with) and
-  * hence implements the following semantics for shrinking and growing buffers
-- * with __GFP_ZERO.
-+ * with __GFP_ZERO::
-  *
-- *         new             bucket
-- * 0       size             size
-- * |--------|----------------|
-- * |  keep  |      zero      |
-+ *           new             bucket
-+ *   0       size             size
-+ *   |--------|----------------|
-+ *   |  keep  |      zero      |
-  *
-  * Otherwise, the original allocation size 'orig_size' could be used to
-  * precisely clear the requested size, and the new size will also be stored
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+index f23cb79110d6..3a78d035e128 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+@@ -31,9 +31,6 @@
+ 
+ #define NPS_MODE_MASK 0x000000FFL
+ 
+-/* Core 0 Port 0 counter */
+-#define smnPCIEP_NAK_COUNTER 0x1A340218
+-
+ static void nbio_v7_9_remap_hdp_registers(struct amdgpu_device *adev)
+ {
+ 	WREG32_SOC15(NBIO, 0, regBIF_BX0_REMAP_HDP_MEM_FLUSH_CNTL,
+@@ -463,22 +460,6 @@ static void nbio_v7_9_init_registers(struct amdgpu_device *adev)
+ 	}
+ }
+ 
+-static u64 nbio_v7_9_get_pcie_replay_count(struct amdgpu_device *adev)
+-{
+-	u32 val, nak_r, nak_g;
+-
+-	if (adev->flags & AMD_IS_APU)
+-		return 0;
+-
+-	/* Get the number of NAKs received and generated */
+-	val = RREG32_PCIE(smnPCIEP_NAK_COUNTER);
+-	nak_r = val & 0xFFFF;
+-	nak_g = val >> 16;
+-
+-	/* Add the total number of NAKs, i.e the number of replays */
+-	return (nak_r + nak_g);
+-}
+-
+ #define MMIO_REG_HOLE_OFFSET 0x1A000
+ 
+ static void nbio_v7_9_set_reg_remap(struct amdgpu_device *adev)
+@@ -520,7 +501,6 @@ const struct amdgpu_nbio_funcs nbio_v7_9_funcs = {
+ 	.get_memory_partition_mode = nbio_v7_9_get_memory_partition_mode,
+ 	.is_nps_switch_requested = nbio_v7_9_is_nps_switch_requested,
+ 	.init_registers = nbio_v7_9_init_registers,
+-	.get_pcie_replay_count = nbio_v7_9_get_pcie_replay_count,
+ 	.set_reg_remap = nbio_v7_9_set_reg_remap,
+ };
+ 
 -- 
 2.39.5
 
