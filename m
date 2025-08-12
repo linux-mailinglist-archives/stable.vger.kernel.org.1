@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6A1B234DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EECAB2313B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4481B68250D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:40:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EDF81882C94
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824FB2FE579;
-	Tue, 12 Aug 2025 18:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B57A2FF14A;
+	Tue, 12 Aug 2025 17:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l68D6i0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxqpcwTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5D92FD1C2;
-	Tue, 12 Aug 2025 18:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7C42FE56E;
+	Tue, 12 Aug 2025 17:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023999; cv=none; b=I38f19CijJ+rGu9ml/o/2nz+aRWrvsKWon+EtatpRhVL7yXqcP4OrV7yJlB1QCS2o30NRxhairPGj2E1Prw6MeXKumDScHGwJUQJlINv8zhre5yfGmXAzBnbWku6/ToQsYXYK7TpMXFJiDOUbp1BP0lE4O0onmc1hV8p+XfI5+A=
+	t=1755021569; cv=none; b=hrDl4QD1AITOOL0ycpFQN3nt+iPxnIT0pukJcJ0l4VtAaibbQsDJi3upNIDmN7zWVVqm8mrVSyuOuAXhEIipEQz+udroxLtYkr0JHjPdGYoCfBx7KxVk03TPEc4BJdDu5sAjlJC4EBI/dOqxQfexg2wGLuvXGQrbhMrEF9ZBjlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023999; c=relaxed/simple;
-	bh=ntSV+iBeg2VgZo+Dyti6oMO7KAY6RI+8QO58Z6BiVy4=;
+	s=arc-20240116; t=1755021569; c=relaxed/simple;
+	bh=5sxSClECgfCIJBf3gYAcGkPMmbArLrFolvnLdz2ErD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GSlpoGf32iu2Qt8XSy/SZ++NZDNqSFNaCrPZ2CkmzB7c9clOXwqcw2gntvS9pPDk3M8NmbXOJT23V4nq8yu4bnOa7DZi9rcRVi9wdHiCh7akqDN0NE8dQ/bZ8aHNe+UUPbhV88mJOoKvfsHebTdcAVJRnv1abT9h5grueweBF1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l68D6i0j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEBAC4CEF0;
-	Tue, 12 Aug 2025 18:39:58 +0000 (UTC)
+	 MIME-Version; b=f4GajdrtoRELFY1e7jKFF56tg0/EfUCpJGhzFoh3SRmlJxDButXSjQXDJlYiBA8X+Tdo3YCO/4YYqdMQ82MZ/pNxFyVupkxhHTqw5/cDCBKkNt/hhq+NVcx41EAIi+96S9miUyK/P99TjnkP8q1BEP8jZBWQfPJolZGAGu7QcG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxqpcwTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A272EC4CEF0;
+	Tue, 12 Aug 2025 17:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023999;
-	bh=ntSV+iBeg2VgZo+Dyti6oMO7KAY6RI+8QO58Z6BiVy4=;
+	s=korg; t=1755021569;
+	bh=5sxSClECgfCIJBf3gYAcGkPMmbArLrFolvnLdz2ErD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l68D6i0jJiSnyjpVQpKjOcnRw4EHIv+u2Q4ctQXaZhfij62WBl3iNEvsEfHF7NBwn
-	 q6igy31BELoO/uzlh6GzMvv8kH/hJzBMrAjpWmEer/mSwl+vD6z5dzrmHYWbA9yHCh
-	 c25yI/zSPJKD3fnB8LAO/4SpL7D+a3e3Eeh3UkzM=
+	b=lxqpcwTQym1BDHxND9OhftxX6MFbM116/Ala1EWY+Y8BbnYpcPTTpXI6XhWW7nBvR
+	 lAqKRsgSPuZcEwMWxtKrQGeFALGByXAegE777MVDf25lcnSCGCaj3x214dGB/ZB3nx
+	 jLKT7XqAcszyqyQGor0AlCFc2g9zcmWkinnOuf90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Andrew Davis <afd@ti.com>,
-	Lee Jones <lee@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 210/627] leds: lp8860: Check return value of devm_mutex_init()
+Subject: [PATCH 6.6 117/262] crypto: arm/aes-neonbs - work around gcc-15 warning
 Date: Tue, 12 Aug 2025 19:28:25 +0200
-Message-ID: <20250812173427.270499846@linuxfoundation.org>
+Message-ID: <20250812172958.092464918@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3b07bb900af7f43f13f9ff398b4c6ca1dee217cd ]
+[ Upstream commit d5fa96dc5590915f060fee3209143313e4f5b03b ]
 
-devm_mutex_init() can fail. With CONFIG_DEBUG_MUTEXES=y the mutex will be
-marked as unusable and trigger errors on usage.
+I get a very rare -Wstringop-overread warning with gcc-15 for one function
+in aesbs_ctr_encrypt():
 
-Add the missed check.
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:212:1446: error: '__builtin_memcpy' offset [17, 2147483647] is out of the bounds [0, 16] of object 'buf' with type 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds=]
+  212 |                         src = dst = memcpy(buf + sizeof(buf) - bytes,
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:218:17: error: 'aesbs_ctr_encrypt' reading 1 byte from a region of size 0 [-Werror=stringop-overread]
+  218 |                 aesbs_ctr_encrypt(dst, src, ctx->rk, ctx->rounds, bytes, walk.iv);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 2 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 3 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 6 of type 'u8[0]' {aka 'unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:36:17: note: in a call to function 'aesbs_ctr_encrypt'
+   36 | asmlinkage void aesbs_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
 
-Fixes: 87a59548af95 ("leds: lp8860: Use new mutex guards to cleanup function exits")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Acked-by: Andrew Davis <afd@ti.com>
-Acked-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250617-must_check-devm_mutex_init-v7-2-d9e449f4d224@weissschuh.net
+This could happen in theory if walk.nbytes is larger than INT_MAX and gets
+converted to a negative local variable.
+
+Keep the type unsigned like the orignal nbytes to be sure there is no
+integer overflow.
+
+Fixes: c8bf850e991a ("crypto: arm/aes-neonbs-ctr - deal with non-multiples of AES block size")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp8860.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/crypto/aes-neonbs-glue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-lp8860.c b/drivers/leds/leds-lp8860.c
-index 52b97c9f2a03..0962c00c215a 100644
---- a/drivers/leds/leds-lp8860.c
-+++ b/drivers/leds/leds-lp8860.c
-@@ -307,7 +307,9 @@ static int lp8860_probe(struct i2c_client *client)
- 	led->client = client;
- 	led->led_dev.brightness_set_blocking = lp8860_brightness_set;
+diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
+index 0ca94b90bc4e..ba98daeb119c 100644
+--- a/arch/arm/crypto/aes-neonbs-glue.c
++++ b/arch/arm/crypto/aes-neonbs-glue.c
+@@ -245,7 +245,7 @@ static int ctr_encrypt(struct skcipher_request *req)
+ 	while (walk.nbytes > 0) {
+ 		const u8 *src = walk.src.virt.addr;
+ 		u8 *dst = walk.dst.virt.addr;
+-		int bytes = walk.nbytes;
++		unsigned int bytes = walk.nbytes;
  
--	devm_mutex_init(&client->dev, &led->lock);
-+	ret = devm_mutex_init(&client->dev, &led->lock);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret, "Failed to initialize lock\n");
- 
- 	led->regmap = devm_regmap_init_i2c(client, &lp8860_regmap_config);
- 	if (IS_ERR(led->regmap)) {
+ 		if (unlikely(bytes < AES_BLOCK_SIZE))
+ 			src = dst = memcpy(buf + sizeof(buf) - bytes,
 -- 
 2.39.5
 
