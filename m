@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-168066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CA9B2334F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FFAB2350F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CD761A2451F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:22:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F942188A075
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80252F7449;
-	Tue, 12 Aug 2025 18:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E83B2FDC4F;
+	Tue, 12 Aug 2025 18:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnMIzXhZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dz4voz4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C5F2DFA3E;
-	Tue, 12 Aug 2025 18:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81E22F291B;
+	Tue, 12 Aug 2025 18:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022923; cv=none; b=BI8ZleyRQch4zLoUhRcSTONgZhOv3bqZ6gEX4UQkL2k4CmPYim+JvqaE9QTOTUjzP06MDtQ5OpHPyb9xrj6OPeG1iGLhESCBv+m4bfyI2JgnluSa+zX/cCryMJgRhfnEOyPfElbADeCoBzYm9VVgVUmRYIoaU6EXAGfLxkIwvbs=
+	t=1755024196; cv=none; b=k8/DR2MxeKzWdaMZ6ZdFMrXlmztRE18HIDLhjc9JTf0PzVeRb1VgMBKZYTJ2QA65SiT4xaxb7lf71e61IlCi3MW1Xi05JnYNPpTZvkBJ7EKsiebIEnvz6Ydqq3hKlxVOj689MlplsaQfy/nKHPlUx7u0oCcVdwCOwPfeFG5nHvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022923; c=relaxed/simple;
-	bh=VIDNyFxpEQWxcq6ctNCzsPeYKM+wkq/IhIk3rKZKuEw=;
+	s=arc-20240116; t=1755024196; c=relaxed/simple;
+	bh=GOURYElt9+bhJ1pfDapgWx46mHp1q4et6vrW1jLD/GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/WpS2k5FSduHuI7autRu63PoKdpsrnVsS0nzcEqXTcxWewvv36lb5OFfBFhpJmgHsAob6OcX2rV56A0pWb5ty+YO3ba6V6M5buFoSndtooz/tAsVXejvn7ke+Xz8XcX7MSPhla9dubBVjsOPSIl4Oz5qB/XjO/VXMViRYehNSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnMIzXhZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06947C4CEF0;
-	Tue, 12 Aug 2025 18:22:02 +0000 (UTC)
+	 MIME-Version; b=LaBnsmlvXYDZJy4/BmEBrU+PSSgydnVjoVpIS0PLrU1HKBUg3XsZ13QukPbOxsV84Y6R7XMaV7YILSX6L2q/SMLlkf7QfnvPVSLMfe32BztqLjHqCIkvizRec1ROr8mVOW+wEWX2yxYyV3rS+qc+O2Zqx+qXn1DJazWp0wT/Dxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dz4voz4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47726C4CEF0;
+	Tue, 12 Aug 2025 18:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022923;
-	bh=VIDNyFxpEQWxcq6ctNCzsPeYKM+wkq/IhIk3rKZKuEw=;
+	s=korg; t=1755024196;
+	bh=GOURYElt9+bhJ1pfDapgWx46mHp1q4et6vrW1jLD/GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnMIzXhZ0P9gaEPNLVxOTjvtewzP3hBrGO8ddg0YlA481yViMI6/+Llu850KJFvPA
-	 18u7ppUCic5WEuYmC12s2dVm59irbN6n4qpG8PRtfHZtBoshsj/wZblgBeN/y/OwEH
-	 jOWOsqkkY9nkZ8cuw5de9f685cfqVzx+rT1VpbVQ=
+	b=dz4voz4HsBK2RYNtzuN/No5VeVbmqFcmptN8rdbhRkOjBNhCPorHBTJBeZuOG1rkS
+	 jqhe6T5zylBnR67j9p7F2IXsLssfYPbU/j/WLUIw9c1rn6wlpmNAuFB+Qj95nONWzC
+	 gZ2SMF1yyQGcCq8NtBmXbFhE7NW8Mg2pkU0Tst7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Corentin LABBE <clabbe.montjoie@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 300/369] net: mdio: mdio-bcm-unimac: Correct rate fallback logic
+Subject: [PATCH 6.16 302/627] crypto: sun8i-ce - fix nents passed to dma_unmap_sg()
 Date: Tue, 12 Aug 2025 19:29:57 +0200
-Message-ID: <20250812173028.016381186@linuxfoundation.org>
+Message-ID: <20250812173430.790893091@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit a81649a4efd382497bf3d34a623360263adc6993 ]
+[ Upstream commit b6cd3cfb5afe49952f8f6be947aeeca9ba0faebb ]
 
-When the parent clock is a gated clock which has multiple parents, the
-clock provider (clk-scmi typically) might return a rate of 0 since there
-is not one of those particular parent clocks that should be chosen for
-returning a rate. Prior to ee975351cf0c ("net: mdio: mdio-bcm-unimac:
-Manage clock around I/O accesses"), we would not always be passing a
-clock reference depending upon how mdio-bcm-unimac was instantiated. In
-that case, we would take the fallback path where the rate is hard coded
-to 250MHz.
+In sun8i_ce_cipher_unprepare(), dma_unmap_sg() is incorrectly called with
+the number of entries returned by dma_map_sg(), rather than using the
+original number of entries passed when mapping the scatterlist.
 
-Make sure that we still fallback to using a fixed rate for the divider
-calculation, otherwise we simply ignore the desired MDIO bus clock
-frequency which can prevent us from interfacing with Ethernet PHYs
-properly.
+To fix this, stash the original number of entries passed to dma_map_sg()
+in the request context.
 
-Fixes: ee975351cf0c ("net: mdio: mdio-bcm-unimac: Manage clock around I/O accesses")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250730202533.3463529-1-florian.fainelli@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0605fa0f7826 ("crypto: sun8i-ce - split into prepare/run/unprepare")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Acked-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-bcm-unimac.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
-index b7bc70586ee0..369540b43ada 100644
---- a/drivers/net/mdio/mdio-bcm-unimac.c
-+++ b/drivers/net/mdio/mdio-bcm-unimac.c
-@@ -209,10 +209,9 @@ static int unimac_mdio_clk_set(struct unimac_mdio_priv *priv)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+index f9cf00d690e2..7cd3b13f3bdc 100644
+--- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
++++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+@@ -278,8 +278,8 @@ static int sun8i_ce_cipher_prepare(struct crypto_engine *engine, void *async_req
+ 	}
  
--	if (!priv->clk)
-+	rate = clk_get_rate(priv->clk);
-+	if (!rate)
- 		rate = 250000000;
--	else
--		rate = clk_get_rate(priv->clk);
+ 	chan->timeout = areq->cryptlen;
+-	rctx->nr_sgs = nr_sgs;
+-	rctx->nr_sgd = nr_sgd;
++	rctx->nr_sgs = ns;
++	rctx->nr_sgd = nd;
+ 	return 0;
  
- 	div = (rate / (2 * priv->clk_freq)) - 1;
- 	if (div & ~MDIO_CLK_DIV_MASK) {
+ theend_sgs:
 -- 
 2.39.5
 
