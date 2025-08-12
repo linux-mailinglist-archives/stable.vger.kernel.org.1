@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-168531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4733BB23580
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A002EB231D7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA4501881FAC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46B611897245
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8CA2FD1B2;
-	Tue, 12 Aug 2025 18:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550CF2FE595;
+	Tue, 12 Aug 2025 18:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ec145GWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3wjnWUN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAFE2CA9;
-	Tue, 12 Aug 2025 18:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE02BEC2F;
+	Tue, 12 Aug 2025 18:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024482; cv=none; b=PClV0N7/em3AZPsRi14kf14pp2Uy0lanF3I/1gZyC8T/SnSgzSpCrwLuZrax3v/51l2XU0h8GT6YvxBtX/71vWZgFfvt6Ck7yPKnHwkDGT2kuTnaSBSnkEMkuoLYtU3iiZw8qED5tWHElCqIdC4wOw3yDbSm4lzlrinAu+E2mA8=
+	t=1755021941; cv=none; b=YFD6B7SZkRfWJYx54RjMZHGZyAQoiOhJ7ZS6kZ+Nvj8d5PLExdrKBuqjElZpSuXcLCCdS8OCWzMiQpGy8LbCbGYD/iex/w5w+w967wHJlKt6C+BCL+XdW6NqelvklNt/uhC2zAesppkyf19haYw07dgRdi1B3vaJGG7Aw/fDYhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024482; c=relaxed/simple;
-	bh=GShw35fQMbTg4q1zsnpv4yFsOkL+KIajbkS8tJljswk=;
+	s=arc-20240116; t=1755021941; c=relaxed/simple;
+	bh=6XQPgq4ntDbXdCxCK1P+lTImIEVC9zQmls9I5pXfSnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCI5OViw0qM5i9HH/y/EcRTGh+ytKKwqawMBXD5Sk3InbpwDGb2NySsaju0m9hm+DfqjLQhDsMlr8l7W0oEKTzqsfrkSKrg/JKqvvb7GObamk/AybA9KgloI/7EvmOEd55AA3jyfrfpqyxPk+33YFau3ce/odlZu5MhXMxcMWWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ec145GWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF7DC4CEF0;
-	Tue, 12 Aug 2025 18:48:01 +0000 (UTC)
+	 MIME-Version; b=kVBwGfpXztN1Upz4Er9WXvhgUEPYO7eWmWIWHHX26rovajp2YfsKrs6MTxrzloCPhzyP3CZQX05Jy173n4ZJwVqJfKvhe3cys7WRJnpCyq792G4eXAcfmXyc91ogU4I124bnHvl6IpVYyP4AlPic591Qro5YGEJ5TfRfiSjcQA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3wjnWUN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77987C4CEF0;
+	Tue, 12 Aug 2025 18:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024482;
-	bh=GShw35fQMbTg4q1zsnpv4yFsOkL+KIajbkS8tJljswk=;
+	s=korg; t=1755021940;
+	bh=6XQPgq4ntDbXdCxCK1P+lTImIEVC9zQmls9I5pXfSnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ec145GWVJex6v4QTyu5eS3vLq11s4XbyuN4kHNOApsJVc5T1WJO9BbU8PVJx6biTz
-	 y8uNi0hO2MQE4avWNyy1LJJsScfAn7M9oj9L/YAAHGg2X09nM/M2BjMeiwrQpFBRYS
-	 yoi382WXThhHwXFUn+rOlAADXHVPUYhgbF/SNKYQ=
+	b=m3wjnWUNAcOfLortOE9TTRYND4xdDVB9JiOaiqG96FQ9qAVmvrCn7JW8mQkD5dm8U
+	 HvWuAgHciHIzQlulHtVckinY9j/AGOYD2Uynoqhmqrn4a8cv2/UgDxecroiORgRO13
+	 jg3hDvqT5vy9yqVzQFX1W1LWwcEzb8vHQN3Pqtn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 353/627] gitignore: allow .pylintrc to be tracked
-Date: Tue, 12 Aug 2025 19:30:48 +0200
-Message-ID: <20250812173432.718427838@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Bill Wendling <morbo@google.com>,
+	Jerome Glisse <jglisse@redhat.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 261/262] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
+Date: Tue, 12 Aug 2025 19:30:49 +0200
+Message-ID: <20250812173004.245064336@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +67,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 38d573a624a54ccde1384ead8af0780fe4005c2b ]
+commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 upstream.
 
-The .pylintrc file was introduced by commit 02df8e3b333c ("docs: add a
-.pylintrc file with sys path for docs scripts") to provide Python path
-configuration for documentation scripts. However, the generic ".*" rule
-in .gitignore causes this tracked file to be ignored, leading to warnings
-during kernel builds.
+When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
+clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
 
-Add !.pylintrc to the exception list to explicitly allow this
-configuration file to be tracked by git, consistent with other
-development tool configuration files like .clang-format and .rustfmt.toml.
+  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
 
-This resolves the build warning:
-  .pylintrc: warning: ignored by one of the .gitignore files
+Fix this by moving the function to the respective existing ifdeffery
+for its the only user.
 
-Fixes: 02df8e3b333c ("docs: add a .pylintrc file with sys path for docs scripts")
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/1A357750FF71847E+20250623071933.311947-1-wangyuli@uniontech.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+See also:
+
+  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
+
+Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
+Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Jerome Glisse <jglisse@redhat.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .gitignore | 1 +
- 1 file changed, 1 insertion(+)
+ mm/hmm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/.gitignore b/.gitignore
-index bf5ee6e01cd4..929054df5212 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -114,6 +114,7 @@ modules.order
- !.gitignore
- !.kunitconfig
- !.mailmap
-+!.pylintrc
- !.rustfmt.toml
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -173,6 +173,7 @@ static inline unsigned long hmm_pfn_flag
+ 	return order << HMM_PFN_ORDER_SHIFT;
+ }
  
- #
--- 
-2.39.5
-
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static inline unsigned long pmd_to_hmm_pfn_flags(struct hmm_range *range,
+ 						 pmd_t pmd)
+ {
+@@ -183,7 +184,6 @@ static inline unsigned long pmd_to_hmm_p
+ 	       hmm_pfn_flags_order(PMD_SHIFT - PAGE_SHIFT);
+ }
+ 
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
+ 			      unsigned long end, unsigned long hmm_pfns[],
+ 			      pmd_t pmd)
 
 
 
