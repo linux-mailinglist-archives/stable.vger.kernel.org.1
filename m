@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-167840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD5CB23214
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C572B23401
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E2A33AFA41
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89AE83B643A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C520918FC91;
-	Tue, 12 Aug 2025 18:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8C226529E;
+	Tue, 12 Aug 2025 18:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXkeGb+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cE55Q85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AB6305E08;
-	Tue, 12 Aug 2025 18:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C061188715;
+	Tue, 12 Aug 2025 18:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022168; cv=none; b=sPOLrWb7lAHTW/rRs1ayXE1K7i2Z4nmS2EfU7x0VKJ7ozNXoygI7GMWwypNRl/5m8FpOBz4vDu+vXU4uNhD/sMG4eW1Df+OodIWdF0I+5OxG0xI0WmmLeU3L7EU1uxe9uaUkQxvNn4vFu/V/S4OPkpCq55HpwwvEVsr64w/Vzn0=
+	t=1755023430; cv=none; b=rpwIOqwyfLlAA1OqEbGtOYRPw+BbvU4wDnrOMeu//0Ry59wBYLy65jYji69nupfOpXu4xdfUhBNgBt4Wf6p3mmsnyBg6dicxG4p6YXa+QDIzRfv/Ze/EtrSKs/Kt2tLKPc9VOfiYdCW8UydJGBGKtvUVpokvrlO+jdJ/F7qSDRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022168; c=relaxed/simple;
-	bh=lUdhMejhLIlVurUYQ8SOtv/tDBBPjDrmcdJhKHz0FmE=;
+	s=arc-20240116; t=1755023430; c=relaxed/simple;
+	bh=JCZtA4APqgvrQpQHMv/waPp3qT/D51lWvNUea4ngXC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/H2zHmszNvzzJVaGjSHdfNKXhCiDpBeK3jbgoc8zoYPswI0Lv/30Dh9jWoG5QZG5NtSJRerBtoLIPi3553dQMMma6I30EUie8kQ97BjRgE4UHL8IKprURTqBgnfI8lVnor0MswGU3gyHvGYVRElw07UmhyaPSz9hrgExxbaQv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXkeGb+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E19C4CEF0;
-	Tue, 12 Aug 2025 18:09:27 +0000 (UTC)
+	 MIME-Version; b=IF/95PiqsgQZcBBulNb8g9tUcVwYh9KOu20pb3hwmlJILDFISqddFRCo4OVTV9h/8gK2Ql/FzDAydD3w88Ukh0sMj7J2BK7Mwken8oE1/KT5AQQF+wkWiNzCh3m4T3u6qmAoFQJGXAyFSHLURF/dn9eLd0SGmHJJGGisGLOXf6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cE55Q85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63510C4CEF0;
+	Tue, 12 Aug 2025 18:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022168;
-	bh=lUdhMejhLIlVurUYQ8SOtv/tDBBPjDrmcdJhKHz0FmE=;
+	s=korg; t=1755023429;
+	bh=JCZtA4APqgvrQpQHMv/waPp3qT/D51lWvNUea4ngXC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXkeGb+/4owvhaFSTiic4RJlZILLWmTgEokvYJgrrOO9Xpe84SX4J+1+ehv2lBfOE
-	 8A2lpPX97263JlNRCHJ3fz3gYE9yWHmHwb1330hSQplm3FFjKhMmkGVl6hn95Qkrkw
-	 QQzmBDp+bHMIdfB6XI/14fpnXEX241aKHWDcWr1Q=
+	b=0cE55Q85beafNMaqQq0l2WQSBojkvM1jb5M9ndlEmvpTi6w2wfke6mog23TDELdAF
+	 g3mZG8NjvosZY+dszYmE7sZO4t/pzkvZnVIIKj9PgLuMqXnXI2/g5hOm0gdeYnF4wI
+	 lWpEn+RNnlcm9Zn/08scpotfA1xT8iaVoWQUhapk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/369] drm/vmwgfx: Fix Host-Backed userspace on Guest-Backed kernel
+Subject: [PATCH 6.16 078/627] ASoC: SDCA: Add missing default in switch in entity_pde_event()
 Date: Tue, 12 Aug 2025 19:26:13 +0200
-Message-ID: <20250812173017.643812770@linuxfoundation.org>
+Message-ID: <20250812173422.277631370@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 7872997c048e989c7689c2995d230fdca7798000 ]
+[ Upstream commit 2ed526bf04a6d81592b314f81e7719a14048f732 ]
 
-Running 3D applications with SVGA_FORCE_HOST_BACKED=1 or using an
-ancient version of mesa was broken because the buffer was pinned in
-VMW_BO_DOMAIN_SYS and could not be moved to VMW_BO_DOMAIN_MOB during
-validation.
+The current code should be safe as the PDE widget only registers for the
+two events handled in the switch statement. However, it is causing a
+smatch warning and also is a little fragile to future code changes, add
+a default case to avoid the warning and make the code more robust.
 
-The compat_shader buffer should not pinned.
-
-Fixes: 668b206601c5 ("drm/vmwgfx: Stop using raw ttm_buffer_object's")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://lore.kernel.org/r/20250429203427.1742331-1-ian.forbes@broadcom.com
+Fixes: 2c8b3a8e6aa8 ("ASoC: SDCA: Create DAPM widgets and routes from DisCo")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Link: https://patch.msgid.link/20250624122844.2761627-3-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sdca/sdca_asoc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-index 7fb1c88bcc47..69dfe69ce0f8 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -896,7 +896,7 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
- 		.busy_domain = VMW_BO_DOMAIN_SYS,
- 		.bo_type = ttm_bo_type_device,
- 		.size = size,
--		.pin = true,
-+		.pin = false,
- 		.keep_resv = true,
- 	};
+diff --git a/sound/soc/sdca/sdca_asoc.c b/sound/soc/sdca/sdca_asoc.c
+index 7bc8f6069f3d..e96e696cb107 100644
+--- a/sound/soc/sdca/sdca_asoc.c
++++ b/sound/soc/sdca/sdca_asoc.c
+@@ -397,6 +397,8 @@ static int entity_pde_event(struct snd_soc_dapm_widget *widget,
+ 		from = widget->off_val;
+ 		to = widget->on_val;
+ 		break;
++	default:
++		return 0;
+ 	}
  
+ 	for (i = 0; i < entity->pde.num_max_delay; i++) {
 -- 
 2.39.5
 
