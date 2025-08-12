@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E462B231A4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB020B23403
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E9257B285F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29C2F1A23B3D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B14280037;
-	Tue, 12 Aug 2025 18:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCA72EE5E8;
+	Tue, 12 Aug 2025 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viYG4Del"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cl7st0Wr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C2C1A9F89;
-	Tue, 12 Aug 2025 18:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A236BB5B;
+	Tue, 12 Aug 2025 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021983; cv=none; b=E9pNIadA4TriUyp7MDb64V+RE87JHB5XfZTJHUfoZUbbtn9+3BC6c4NVb/tgxWjMtW7xB6dhjIHKaZHrzia2sz8dIyOz0d/u4QaqwQfl9nWGkbht6KElhmlkw3tAa09oEzFtxospHoYcdNRNBmlF0sNOQ7gELEWptl6G6gxnHc0=
+	t=1755023392; cv=none; b=odZyaiVXAo5uLmKZlwpQGIp7O+MQrUxQR6B7sHrcggoVzsS+M8gRaSBMi9daeSTAmf7H7SoyA971fXDDrHmm+E59rTSRCJXeBO7P+UcKrOwDZjHI0H95BLXTw2j0U+8CIvg3XOxkflF487dedLykA6GixazFaPkTK06mS8ihXa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021983; c=relaxed/simple;
-	bh=WkZUahXpg5rGq1XYMXAm3FtzKzFB2kHqquKc9/TN76M=;
+	s=arc-20240116; t=1755023392; c=relaxed/simple;
+	bh=ly/6PH/maR4jPs6pT4G8dVvYQFoGIC7M3Dti6QsGVRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUniX8pVWGiZ4T92Jr8Gv9rT+kM78PQ+73s9W3gGSqgH0gqYTAU679Bms47jS4J4gcGmJo5bCPHL0BpObsF4EOqjK7m2szrKw3W86OVOWWqkxtNTWoVbtzjlbcHqN6OIdboHThSUT/+pyw0yDB5zsABmdjP3BAOXU/IkNHKKl20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viYG4Del; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5973BC4CEF0;
-	Tue, 12 Aug 2025 18:06:22 +0000 (UTC)
+	 MIME-Version; b=bhqFGwx9wmcZ5SnCzzPPcb+JFzXc+qmj7Znon21BfazlPNeIPhBe6goyegNyqLxP1Gb8st0XCnxPb1+/uI/Hn9VLS/PwOGZ8ewwBIPUciagcQIMKEBE0fAxeNuxmE9xB+tYKtcx2bfCyrnd1DaR/5Sf6wtgnf99vxyX7Lcc43Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cl7st0Wr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072B7C4CEF0;
+	Tue, 12 Aug 2025 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021982;
-	bh=WkZUahXpg5rGq1XYMXAm3FtzKzFB2kHqquKc9/TN76M=;
+	s=korg; t=1755023392;
+	bh=ly/6PH/maR4jPs6pT4G8dVvYQFoGIC7M3Dti6QsGVRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viYG4DelODNPKddWlwf4O9Ed9+DR7wS7pw7Fmm+jzq6WYXJr09QqqdMNZvb33KcRh
-	 Z2ED+SwTaYYwJGAQyYvKpj5ivQiIoSZFwS4rt2RV7n1l62CpVSVTwImxeU3zZH+wTx
-	 ZkQN29YxhC25QcFKL8OXeZrn1xLsVthjJUil/r8A=
+	b=cl7st0WrcUTW3+fDNoIlFk3sLdrYTzLM8T//ljGE7I52GkwxddTEGoQTJGER0BowX
+	 WTckGuQFxe7KX+b6x9+NMIZ6Q+lpjIjExthla0reegCbPOsGLaOAZBBFKyaqVR82tg
+	 Su4LLbkWR2IGtg20VVWjALvYCGec2pi+2c0sOkHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/369] ASoC: mediatek: use reserved memory or enable buffer pre-allocation
-Date: Tue, 12 Aug 2025 19:25:17 +0200
-Message-ID: <20250812173015.501128905@linuxfoundation.org>
+Subject: [PATCH 6.16 023/627] block: sanitize chunk_sectors for atomic write limits
+Date: Tue, 12 Aug 2025 19:25:18 +0200
+Message-ID: <20250812173420.200703183@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,176 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit ec4a10ca4a68ec97f12f4d17d7abb74db34987db ]
+[ Upstream commit 1de67e8e28fc47d71ee06ffa0185da549b378ffb ]
 
-In commit 32c9c06adb5b ("ASoC: mediatek: disable buffer pre-allocation")
-buffer pre-allocation was disabled to accommodate newer platforms that
-have a limited reserved memory region for the audio frontend.
+Currently we just ensure that a non-zero value in chunk_sectors aligns
+with any atomic write boundary, as the blk boundary functionality uses
+both these values.
 
-Turns out disabling pre-allocation across the board impacts platforms
-that don't have this reserved memory region. Buffer allocation failures
-have been observed on MT8173 and MT8183 based Chromebooks under low
-memory conditions, which results in no audio playback for the user.
+However it is also improper to have atomic write unit max > chunk_sectors
+(for non-zero chunk_sectors), as this would lead to splitting of atomic
+write bios (which is disallowed).
 
-Since some MediaTek platforms already have dedicated reserved memory
-pools for the audio frontend, the plan is to enable this for all of
-them. This requires device tree changes. As a fallback, reinstate the
-original policy of pre-allocating audio buffers at probe time of the
-reserved memory pool cannot be found or used.
+Sanitize atomic write unit max against chunk_sectors to avoid any
+potential problems.
 
-This patch covers the MT8173, MT8183, MT8186 and MT8192 platforms for
-now, the reason being that existing MediaTek platform drivers that
-supported reserved memory were all platforms that mainly supported
-ChromeOS, and is also the set of devices that I can verify.
-
-Fixes: 32c9c06adb5b ("ASoC: mediatek: disable buffer pre-allocation")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://patch.msgid.link/20250612074901.4023253-7-wenst@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d00eea91deaf3 ("block: Add extra checks in blk_validate_atomic_write_limits()")
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250711105258.3135198-3-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/common/mtk-afe-platform-driver.c | 4 +++-
- sound/soc/mediatek/common/mtk-base-afe.h            | 1 +
- sound/soc/mediatek/mt8173/mt8173-afe-pcm.c          | 7 +++++++
- sound/soc/mediatek/mt8183/mt8183-afe-pcm.c          | 7 +++++++
- sound/soc/mediatek/mt8186/mt8186-afe-pcm.c          | 7 +++++++
- sound/soc/mediatek/mt8192/mt8192-afe-pcm.c          | 7 +++++++
- 6 files changed, 32 insertions(+), 1 deletion(-)
+ block/blk-settings.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/mediatek/common/mtk-afe-platform-driver.c b/sound/soc/mediatek/common/mtk-afe-platform-driver.c
-index 6b6330583941..70fd05d5ff48 100644
---- a/sound/soc/mediatek/common/mtk-afe-platform-driver.c
-+++ b/sound/soc/mediatek/common/mtk-afe-platform-driver.c
-@@ -120,7 +120,9 @@ int mtk_afe_pcm_new(struct snd_soc_component *component,
- 	struct mtk_base_afe *afe = snd_soc_component_get_drvdata(component);
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index a000daafbfb4..3425ae1b1f01 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -181,6 +181,8 @@ static void blk_atomic_writes_update_limits(struct queue_limits *lim)
+ static void blk_validate_atomic_write_limits(struct queue_limits *lim)
+ {
+ 	unsigned int boundary_sectors;
++	unsigned int atomic_write_hw_max_sectors =
++			lim->atomic_write_hw_max >> SECTOR_SHIFT;
  
- 	size = afe->mtk_afe_hardware->buffer_bytes_max;
--	snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV, afe->dev, 0, size);
-+	snd_pcm_set_managed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV, afe->dev,
-+				       afe->preallocate_buffers ? size : 0,
-+				       size);
+ 	if (!(lim->features & BLK_FEAT_ATOMIC_WRITES))
+ 		goto unsupported;
+@@ -202,6 +204,10 @@ static void blk_validate_atomic_write_limits(struct queue_limits *lim)
+ 			 lim->atomic_write_hw_max))
+ 		goto unsupported;
  
- 	return 0;
- }
-diff --git a/sound/soc/mediatek/common/mtk-base-afe.h b/sound/soc/mediatek/common/mtk-base-afe.h
-index f51578b6c50a..a406f2e3e7a8 100644
---- a/sound/soc/mediatek/common/mtk-base-afe.h
-+++ b/sound/soc/mediatek/common/mtk-base-afe.h
-@@ -117,6 +117,7 @@ struct mtk_base_afe {
- 	struct mtk_base_afe_irq *irqs;
- 	int irqs_size;
- 	int memif_32bit_supported;
-+	bool preallocate_buffers;
- 
- 	struct list_head sub_dais;
- 	struct snd_soc_dai_driver *dai_drivers;
-diff --git a/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c b/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
-index 03250273ea9c..47a88edf78ca 100644
---- a/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8173/mt8173-afe-pcm.c
-@@ -13,6 +13,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/dma-mapping.h>
- #include <linux/pm_runtime.h>
- #include <sound/soc.h>
-@@ -1070,6 +1071,12 @@ static int mt8173_afe_pcm_dev_probe(struct platform_device *pdev)
- 
- 	afe->dev = &pdev->dev;
- 
-+	ret = of_reserved_mem_device_init(&pdev->dev);
-+	if (ret) {
-+		dev_info(&pdev->dev, "no reserved memory found, pre-allocating buffers instead\n");
-+		afe->preallocate_buffers = true;
-+	}
++	if (WARN_ON_ONCE(lim->chunk_sectors &&
++			atomic_write_hw_max_sectors > lim->chunk_sectors))
++		goto unsupported;
 +
- 	irq_id = platform_get_irq(pdev, 0);
- 	if (irq_id <= 0)
- 		return irq_id < 0 ? irq_id : -ENXIO;
-diff --git a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-index 3f377ba4ad53..501ea9d92aea 100644
---- a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-@@ -10,6 +10,7 @@
- #include <linux/mfd/syscon.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
+ 	boundary_sectors = lim->atomic_write_hw_boundary >> SECTOR_SHIFT;
  
-@@ -1094,6 +1095,12 @@ static int mt8183_afe_pcm_dev_probe(struct platform_device *pdev)
- 	afe->dev = &pdev->dev;
- 	dev = afe->dev;
- 
-+	ret = of_reserved_mem_device_init(dev);
-+	if (ret) {
-+		dev_info(dev, "no reserved memory found, pre-allocating buffers instead\n");
-+		afe->preallocate_buffers = true;
-+	}
-+
- 	/* initial audio related clock */
- 	ret = mt8183_init_clock(afe);
- 	if (ret) {
-diff --git a/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c b/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c
-index bafbef96a42d..e6d3caf8b6fc 100644
---- a/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-afe-pcm.c
-@@ -10,6 +10,7 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <sound/soc.h>
-@@ -2835,6 +2836,12 @@ static int mt8186_afe_pcm_dev_probe(struct platform_device *pdev)
- 	afe_priv = afe->platform_priv;
- 	afe->dev = &pdev->dev;
- 
-+	ret = of_reserved_mem_device_init(dev);
-+	if (ret) {
-+		dev_info(dev, "no reserved memory found, pre-allocating buffers instead\n");
-+		afe->preallocate_buffers = true;
-+	}
-+
- 	afe->base_addr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(afe->base_addr))
- 		return PTR_ERR(afe->base_addr);
-diff --git a/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c b/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c
-index 9b502f4cd6ea..69ed34495d0f 100644
---- a/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8192/mt8192-afe-pcm.c
-@@ -12,6 +12,7 @@
- #include <linux/mfd/syscon.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
-+#include <linux/of_reserved_mem.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
- #include <sound/soc.h>
-@@ -2180,6 +2181,12 @@ static int mt8192_afe_pcm_dev_probe(struct platform_device *pdev)
- 	afe->dev = &pdev->dev;
- 	dev = afe->dev;
- 
-+	ret = of_reserved_mem_device_init(dev);
-+	if (ret) {
-+		dev_info(dev, "no reserved memory found, pre-allocating buffers instead\n");
-+		afe->preallocate_buffers = true;
-+	}
-+
- 	/* init audio related clock */
- 	ret = mt8192_init_clock(afe);
- 	if (ret) {
+ 	if (boundary_sectors) {
 -- 
 2.39.5
 
