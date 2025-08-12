@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA32B22FD2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EABB232AB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 528B316BC31
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6AA2A0EE3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249262FDC2B;
-	Tue, 12 Aug 2025 17:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2F12ED17F;
+	Tue, 12 Aug 2025 18:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCoyp3HX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKGYMZHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B7E86331;
-	Tue, 12 Aug 2025 17:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D62B61FFE;
+	Tue, 12 Aug 2025 18:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020619; cv=none; b=Dzx1P2TumRUvAiMOYIMPAAQArVmEWu959KcRry1SArzjKfZMGKXvHU/toOZDbpvYE0TGVyGgFubZvk8Px5MIpkuhDGyBN1vvWJiS1C2pT1mesShrp2dH6PQJmarxn7KrYlSmGxsbu3Jm67ksBienk4DgT/2BQ0VEQAVemn9AKkE=
+	t=1755022558; cv=none; b=B7NX9dKD67bv1oQpGH+aN9YHceIDChebkkNKBxdDT42No6dPGjvWx92jeGPb2argAVkWiICjVE0hFj41TZPEt9a8R8xmgRPGlFK2yBK180rGekqBrS5f/iDajr9bW8Jk26w5uZQHKOkfd5K1Q9bLaoZDHJCROaztOsI6CW7Pttg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020619; c=relaxed/simple;
-	bh=Rs8TUxt9qidyt74vPvSKejA6TXtCWJk8Qn/lTijG9tE=;
+	s=arc-20240116; t=1755022558; c=relaxed/simple;
+	bh=iYqNi5jNYihHh/RWySoqUJzGdtnuWTpt8DEXfkCAobk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqC81nsF4mRzJDiGZ7C7NMTlg624cMI/p0Y0ILZ9K1WwRMop40YqSgvm31aIZtpXUL0qbrV0ozXW0hfHhrsr6wwBi0A6bYOYpc70RNF5VteMJA7drv9t3HAfpzqZhiFc8Hqy41nvfHL85g0TNRLgbVRkdXVbS/IFph1/yoXu9dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCoyp3HX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E79C4CEF0;
-	Tue, 12 Aug 2025 17:43:39 +0000 (UTC)
+	 MIME-Version; b=hlHjYjAWgiFey+3XFdPhJQ8ecYC8rTbLkLvSVC2RrvRwvKhZtfGz7+5krH84DtX9DG12nqXabcc6r3fjGtwzi0b5TbPS2q3G9N+0QGnYvloR8oMUQAWGowZhS/KmWeUDSJMHyVQQULdT88QFA6OBXcVsuPPYvwaeQi7ymnv6t4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKGYMZHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A126AC4CEF0;
+	Tue, 12 Aug 2025 18:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020619;
-	bh=Rs8TUxt9qidyt74vPvSKejA6TXtCWJk8Qn/lTijG9tE=;
+	s=korg; t=1755022558;
+	bh=iYqNi5jNYihHh/RWySoqUJzGdtnuWTpt8DEXfkCAobk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCoyp3HXvyYS7g+hdR/cXvH3zw649d2AsMqg30AfrDF0Dj7S8Q1opa0drkabGXoD8
-	 gy8iC2H2a5ZVhyXVQUnAwgZCRuoJuX7EF1bmujmwlO73ybv6TxnAzhcl2V699Igqa9
-	 5j3TZG16sv1ZJ5kKOTNR9X2qi1rVLZjS8PhghkGQ=
+	b=nKGYMZHQLklJ1xpIWlYKMjlOVKwdYZjXPdP0yerg63EHcMKkVXUqAQBKZHfXKis1r
+	 V7p9intCL9N2kPYlLWgBWX9LDF9uu1u7qGzlZDb2di/WD4bca2kT5SS0QbUgdxBM1A
+	 Z31M7DZ5/en7m8LlmWPGBZ6tpP6kYUaqgIjLG+Os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/253] net: ipv6: ip6mr: Fix in/out netdev to pass to the FORWARD chain
+Subject: [PATCH 6.12 191/369] RDMA/hns: Drop GFP_NOWARN
 Date: Tue, 12 Aug 2025 19:28:08 +0200
-Message-ID: <20250812172952.984679840@linuxfoundation.org>
+Message-ID: <20250812173021.950884922@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 3365afd3abda5f6a54f4a822dad5c9314e94c3fc ]
+[ Upstream commit 5338abb299f0cd764edf78a7e71a0b746af35030 ]
 
-The netfilter hook is invoked with skb->dev for input netdevice, and
-vif_dev for output netdevice. However at the point of invocation, skb->dev
-is already set to vif_dev, and MR-forwarded packets are reported with
-in=out:
+GFP_NOWARN silences all warnings on dma_alloc_coherent() failure,
+which might otherwise help with troubleshooting.
 
- # ip6tables -A FORWARD -j LOG --log-prefix '[forw]'
- # cd tools/testing/selftests/net/forwarding
- # ./router_multicast.sh
- # dmesg | fgrep '[forw]'
- [ 1670.248245] [forw]IN=v5 OUT=v5 [...]
-
-For reference, IPv4 MR code shows in and out as appropriate.
-Fix by caching skb->dev and using the updated value for output netdev.
-
-Fixes: 7bc570c8b4f7 ("[IPV6] MROUTE: Support multicast forwarding.")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/3141ae8386fbe13fef4b793faa75e6bae58d798a.1750113335.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250703113905.3597124-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6mr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 138f6aee70af..06f66531628f 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -2045,6 +2045,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 			  struct sk_buff *skb, int vifi)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index ca0798224e56..3d479c63b117 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -249,15 +249,12 @@ int hns_roce_calc_hem_mhop(struct hns_roce_dev *hr_dev,
+ }
+ 
+ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
+-					       unsigned long hem_alloc_size,
+-					       gfp_t gfp_mask)
++					       unsigned long hem_alloc_size)
  {
- 	struct vif_device *vif = &mrt->vif_table[vifi];
-+	struct net_device *indev = skb->dev;
- 	struct net_device *vif_dev;
- 	struct ipv6hdr *ipv6h;
- 	struct dst_entry *dst;
-@@ -2107,7 +2108,7 @@ static int ip6mr_forward2(struct net *net, struct mr_table *mrt,
- 	IP6CB(skb)->flags |= IP6SKB_FORWARDED;
+ 	struct hns_roce_hem *hem;
+ 	int order;
+ 	void *buf;
  
- 	return NF_HOOK(NFPROTO_IPV6, NF_INET_FORWARD,
--		       net, NULL, skb, skb->dev, vif_dev,
-+		       net, NULL, skb, indev, skb->dev,
- 		       ip6mr_forward2_finish);
+-	WARN_ON(gfp_mask & __GFP_HIGHMEM);
+-
+ 	order = get_order(hem_alloc_size);
+ 	if (PAGE_SIZE << order != hem_alloc_size) {
+ 		dev_err(hr_dev->dev, "invalid hem_alloc_size: %lu!\n",
+@@ -265,13 +262,12 @@ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
+ 		return NULL;
+ 	}
  
- out_free:
+-	hem = kmalloc(sizeof(*hem),
+-		      gfp_mask & ~(__GFP_HIGHMEM | __GFP_NOWARN));
++	hem = kmalloc(sizeof(*hem), GFP_KERNEL);
+ 	if (!hem)
+ 		return NULL;
+ 
+ 	buf = dma_alloc_coherent(hr_dev->dev, hem_alloc_size,
+-				 &hem->dma, gfp_mask);
++				 &hem->dma, GFP_KERNEL);
+ 	if (!buf)
+ 		goto fail;
+ 
+@@ -378,7 +374,6 @@ static int alloc_mhop_hem(struct hns_roce_dev *hr_dev,
+ {
+ 	u32 bt_size = mhop->bt_chunk_size;
+ 	struct device *dev = hr_dev->dev;
+-	gfp_t flag;
+ 	u64 bt_ba;
+ 	u32 size;
+ 	int ret;
+@@ -417,8 +412,7 @@ static int alloc_mhop_hem(struct hns_roce_dev *hr_dev,
+ 	 * alloc bt space chunk for MTT/CQE.
+ 	 */
+ 	size = table->type < HEM_TYPE_MTT ? mhop->buf_chunk_size : bt_size;
+-	flag = GFP_KERNEL | __GFP_NOWARN;
+-	table->hem[index->buf] = hns_roce_alloc_hem(hr_dev, size, flag);
++	table->hem[index->buf] = hns_roce_alloc_hem(hr_dev, size);
+ 	if (!table->hem[index->buf]) {
+ 		ret = -ENOMEM;
+ 		goto err_alloc_hem;
+@@ -546,9 +540,7 @@ int hns_roce_table_get(struct hns_roce_dev *hr_dev,
+ 		goto out;
+ 	}
+ 
+-	table->hem[i] = hns_roce_alloc_hem(hr_dev,
+-				       table->table_chunk_size,
+-				       GFP_KERNEL | __GFP_NOWARN);
++	table->hem[i] = hns_roce_alloc_hem(hr_dev, table->table_chunk_size);
+ 	if (!table->hem[i]) {
+ 		ret = -ENOMEM;
+ 		goto out;
 -- 
 2.39.5
 
