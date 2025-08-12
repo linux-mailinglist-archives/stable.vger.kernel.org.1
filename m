@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102A5B231AF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFD8B23368
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27DA66E13A1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A13716CE1F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDB22E7BD4;
-	Tue, 12 Aug 2025 18:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D192DFA3E;
+	Tue, 12 Aug 2025 18:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWDnKugi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF2vOf0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5A72F5E;
-	Tue, 12 Aug 2025 18:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D1C3F9D2;
+	Tue, 12 Aug 2025 18:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021873; cv=none; b=bU0YnYsDdHs1u9pYYtjN5O8XoauYw9+2nTtJPPWNTvof6W5NlzSOJ0feHg0y2ArK3Ofp4EQElnlCANVMmPb6+623le5E1pvczOYJykWzn+ciuVpqbZue0rSFKd+mxhf8SuK+9P0MtyypwDsw0a3KJtA1Rg1oKPccb1Ojcx8yh5s=
+	t=1755023073; cv=none; b=T+oIMhz+vaIegQ3sDBYzDaviKM1wwkRcNlgrdDqw+UImxLX1ZnjpzVPC0iZIrDax2QxG95oIGfjDJIz5wgVzxjMCxPu5L1+tBBBgw+/v3FPVdM4Ol47kVtye3WCg1q6QzlVjU+CJbXMku9Tkwsba8FhH2rS5dAoMK/HMmsbG33E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021873; c=relaxed/simple;
-	bh=1CEmesvveaDn/BdtPnNyelFhwzBU9urvi+xctiIYGeo=;
+	s=arc-20240116; t=1755023073; c=relaxed/simple;
+	bh=75owiL9EmQhgF4W9zgUIpcDNj6NOs47WtXrambJrAOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSm3GjmfyoSTBuVYbhNBOemXp7Cjpm13NlTJAk8NEkvq7QTEJFWi0uhbeTLhtiOWYpkmZgwee5GQVTfCsbOVHaSSMzYIu8QBSUmRjkQdECj18jw71mFXkfq8uD0PWrx9VRhKu3ep9as5QB9toek8Lcvjc0k6MhFX5Mo0waVMeg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWDnKugi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDE8C4CEF0;
-	Tue, 12 Aug 2025 18:04:32 +0000 (UTC)
+	 MIME-Version; b=EcMCSASzSS8AY6aiIwK4XxVPtYQiLNl8TaauvLXSN8DyFefdZF9zy0Rc6kn9jdYKkuepGkiQUtrzTYXANkYHrb32m/yMO3hjsIqqQ6J3+6o8szvp1BRRAjC0ZB03OkTTsycjEMkbpesrVpVHO89J65mTCGf+s1OFBqFYpaBCrpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wF2vOf0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073F9C4CEF0;
+	Tue, 12 Aug 2025 18:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021873;
-	bh=1CEmesvveaDn/BdtPnNyelFhwzBU9urvi+xctiIYGeo=;
+	s=korg; t=1755023072;
+	bh=75owiL9EmQhgF4W9zgUIpcDNj6NOs47WtXrambJrAOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWDnKugi0quJ0GLB86p2DUC3ISn+ohZO4Z/UV/Giuk+0ykSSVzU0747KpBFq2qxo6
-	 aAGs2y5uMtTcVkqhfXasKATOEq0Gj1zLEtGcPiLW31qjmKhNHIaoT8taPHts0PrxU5
-	 4GYsLQ1uu+EVKHOLR5mDk+CS1rjGnsjEWXr2vbJc=
+	b=wF2vOf0f5iMykuOHVtBIqR/dyhEMvT6fV2zsivXe7EpaBFLyAyNpDYIX288DVhcZb
+	 a+CkQmoZY+zTMJpwBws3iycEwcrYn/VRM7eg2NRZAvpJaM86/CoCnyAzYwIpYXC45g
+	 vaxwYv+bEIj1MlnJa5YobhP4MrdRO7ffYUSDG3qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Abhijeet Dharmapurikar <quic_adharmap@quicinc.com>,
-	Chen Ridong <chenridong@huawei.com>
-Subject: [PATCH 6.6 250/262] freezer,sched: Do not restore saved_state of a thawed task
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.12 341/369] ksmbd: fix null pointer dereference error in generate_encryptionkey
 Date: Tue, 12 Aug 2025 19:30:38 +0200
-Message-ID: <20250812173003.799461995@linuxfoundation.org>
+Message-ID: <20250812173029.527210090@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elliot Berman <quic_eberman@quicinc.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 23ab79e8e469e2605beec2e3ccb40d19c68dd2e0 upstream.
+commit 9b493ab6f35178afd8d619800df9071992f715de upstream.
 
-It is possible for a task to be thawed multiple times when mixing the
-*legacy* cgroup freezer and system-wide freezer. To do this, freeze the
-cgroup, do system-wide freeze/thaw, then thaw the cgroup. When this
-happens, then a stale saved_state can be written to the task's state
-and cause task to hang indefinitely. Fix this by only trying to thaw
-tasks that are actually frozen.
+If client send two session setups with krb5 authenticate to ksmbd,
+null pointer dereference error in generate_encryptionkey could happen.
+sess->Preauth_HashValue is set to NULL if session is valid.
+So this patch skip generate encryption key if session is valid.
 
-This change also has the marginal benefit avoiding unnecessary
-wake_up_state(p, TASK_FROZEN) if we know the task is already thawed.
-There is not possibility of time-of-compare/time-of-use race when we skip
-the wake_up_state because entering/exiting TASK_FROZEN is guarded by
-freezer_lock.
-
-Fixes: 8f0eed4a78a8 ("freezer,sched: Use saved_state to reduce some spurious wakeups")
-Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Abhijeet Dharmapurikar <quic_adharmap@quicinc.com>
-Link: https://lore.kernel.org/r/20231120-freezer-state-multiple-thaws-v1-1-f2e1dd7ce5a2@quicinc.com
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27654
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/freezer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/kernel/freezer.c
-+++ b/kernel/freezer.c
-@@ -201,7 +201,7 @@ void __thaw_task(struct task_struct *p)
- 	if (WARN_ON_ONCE(freezing(p)))
- 		goto unlock;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1619,11 +1619,24 @@ static int krb5_authenticate(struct ksmb
  
--	if (task_call_func(p, __restore_freezer_state, NULL))
-+	if (!frozen(p) || task_call_func(p, __restore_freezer_state, NULL))
- 		goto unlock;
+ 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
  
- 	wake_up_state(p, TASK_FROZEN);
+-	if ((conn->sign || server_conf.enforced_signing) ||
++	/*
++	 * If session state is SMB2_SESSION_VALID, We can assume
++	 * that it is reauthentication. And the user/password
++	 * has been verified, so return it here.
++	 */
++	if (sess->state == SMB2_SESSION_VALID) {
++		if (conn->binding)
++			goto binding_session;
++		return 0;
++	}
++
++	if ((rsp->SessionFlags != SMB2_SESSION_FLAG_IS_GUEST_LE &&
++	    (conn->sign || server_conf.enforced_signing)) ||
+ 	    (req->SecurityMode & SMB2_NEGOTIATE_SIGNING_REQUIRED))
+ 		sess->sign = true;
+ 
+-	if (smb3_encryption_negotiated(conn)) {
++	if (smb3_encryption_negotiated(conn) &&
++	    !(req->Flags & SMB2_SESSION_REQ_FLAG_BINDING)) {
+ 		retval = conn->ops->generate_encryptionkey(conn, sess);
+ 		if (retval) {
+ 			ksmbd_debug(SMB,
+@@ -1636,6 +1649,7 @@ static int krb5_authenticate(struct ksmb
+ 		sess->sign = false;
+ 	}
+ 
++binding_session:
+ 	if (conn->dialect >= SMB30_PROT_ID) {
+ 		chann = lookup_chann_list(sess, conn);
+ 		if (!chann) {
 
 
 
