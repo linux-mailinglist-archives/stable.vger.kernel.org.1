@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4BCB230E4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC6FB232CF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA941892008
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1DAF189AE8E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DFE2FA0DB;
-	Tue, 12 Aug 2025 17:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853C12ED17F;
+	Tue, 12 Aug 2025 18:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0rIMQRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnY7QBma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E604268C73;
-	Tue, 12 Aug 2025 17:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4477E2F5E;
+	Tue, 12 Aug 2025 18:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021419; cv=none; b=Sqiz2w1DBDBV2LfrVBtOQfqpdnfCkNtwErpGLdYskqTu+xKOgL9pvdtHpINFSVPhvLFPOXz+uI3zkRfO4ssPvBq+3tvrCeVorVx74bHN4TvLID7lSemXq4rJfosFUMQkKvYiFt4Y3lRs3bYHoNGsss6GUYn7nv27oVHjzsFB4i8=
+	t=1755022615; cv=none; b=i7/7Xkh0vZT1rzE96s5HBhA9XrnEzIVgTanB3LEaFg3rt7FUnarvg3o1dg6LRZAOJl2gLSzelYvASZiW/u56pF+Dp/8F+HqiLw1eiuavta30gSK82A46b4+ax3ykK3XctV3qgwcJ3gv4YaZDYZ1CGUXt9UyAIB4K9k5Fs+KmKTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021419; c=relaxed/simple;
-	bh=g6L+DA5fOu7lZwevuJ1V9HPbpTIw11DuBkBcH02zN1Y=;
+	s=arc-20240116; t=1755022615; c=relaxed/simple;
+	bh=fWVFWZwb3lQwvV2oqX8rZ3ddouDjf5vsRbjlfXOWk88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snoru4KUOA8X7i6bAqyLuGMRXNEZFozmsV3tLG7nR6x12IkRGwEaUDMkExeEwz5c4b//FXG33v+XXzGMZrdSGNJi8aURQ8swPOk2eYQuZvXgqZpyNs/Grgd9CCUfiy5CEHG8bCXmfDMyhq/gea1XUif4kDxC654d8tlh/4lKpS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0rIMQRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C7EC4CEF0;
-	Tue, 12 Aug 2025 17:56:58 +0000 (UTC)
+	 MIME-Version; b=KLZd9e0Dj3C1/Ca5UTURob8qJVZeehfA5B3uVeXVfufbOK+a23omSBROBp1prGgpZ7qkxeHFWzMnKsLslhZ0iR4xJDPdPzIJNjVFSYD2eDzcSZpAgP2uKjSTwMPscSlD5PvRazfUEO1r+yrTAjJkacLskyhJ/DQMXajqKqs69xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnY7QBma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5B9C4CEF0;
+	Tue, 12 Aug 2025 18:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021419;
-	bh=g6L+DA5fOu7lZwevuJ1V9HPbpTIw11DuBkBcH02zN1Y=;
+	s=korg; t=1755022615;
+	bh=fWVFWZwb3lQwvV2oqX8rZ3ddouDjf5vsRbjlfXOWk88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0rIMQRktirpijaY6geLFAAJxb9J1HtFz3Ivu4LE9Mx6G/gqAwEtSk0AdGqKT5UZS
-	 6IDcU2XtBeSFLXVjpwzX5gQVuAml+DkN877/JwQK8PeBwZcFnT/01beYTwbQNT0EBJ
-	 WMChq7Di4wKtfZzsSgmkS4bcebH1BR9MEXQSXfyw=
+	b=YnY7QBmaWGol+1QvwuEbj3ac3JEc2+1EZrY4agNre9634E49MnZMWZzzPcC6l07gt
+	 WEppc4JBUupny9z/ttVRCz0F5Dw6jgBjVE1+bib7aoS41Kcre0E2Td2uaw6gmDPzVv
+	 nILgUyAAbWyTis5//9rVJFl420Wm0HGtPXk7Q4ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Patrice Vilchez <Patrice.Vilchez@microchip.com>,
+	Varshini Rajendran <varshini.rajendran@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/262] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
+Subject: [PATCH 6.12 206/369] clk: at91: sam9x7: update pll clk ranges
 Date: Tue, 12 Aug 2025 19:28:23 +0200
-Message-ID: <20250812172957.999143201@linuxfoundation.org>
+Message-ID: <20250812173022.516042051@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Varshini Rajendran <varshini.rajendran@microchip.com>
 
-[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
+[ Upstream commit c7f7ddbd27d55fa552a7269b7bae539adc2a3d46 ]
 
-In the cpcap_usb_detect() function, the power_supply_get_by_name()
-function may return `NULL` instead of an error pointer.
-To prevent potential null pointer dereferences, Added a null check.
+Update the min, max ranges of the PLL clocks according to the latest
+datasheet to be coherent in the driver. This patch solves the issues in
+configuring the clocks related to peripherals with the desired frequency
+within the range.
 
-Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 33013b43e271 ("clk: at91: sam9x7: add sam9x7 pmc driver")
+Suggested-by: Patrice Vilchez <Patrice.Vilchez@microchip.com>
+Signed-off-by: Varshini Rajendran <varshini.rajendran@microchip.com>
+Link: https://lore.kernel.org/r/20250714093512.29944-1-varshini.rajendran@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/cpcap-charger.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clk/at91/sam9x7.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
-index be9764541d52..05a3f4b208a4 100644
---- a/drivers/power/supply/cpcap-charger.c
-+++ b/drivers/power/supply/cpcap-charger.c
-@@ -689,9 +689,8 @@ static void cpcap_usb_detect(struct work_struct *work)
- 		struct power_supply *battery;
+diff --git a/drivers/clk/at91/sam9x7.c b/drivers/clk/at91/sam9x7.c
+index cbb8b220f16b..ffab32b047a0 100644
+--- a/drivers/clk/at91/sam9x7.c
++++ b/drivers/clk/at91/sam9x7.c
+@@ -61,44 +61,44 @@ static const struct clk_master_layout sam9x7_master_layout = {
  
- 		battery = power_supply_get_by_name("battery");
--		if (IS_ERR_OR_NULL(battery)) {
--			dev_err(ddata->dev, "battery power_supply not available %li\n",
--					PTR_ERR(battery));
-+		if (!battery) {
-+			dev_err(ddata->dev, "battery power_supply not available\n");
- 			return;
- 		}
+ /* Fractional PLL core output range. */
+ static const struct clk_range plla_core_outputs[] = {
+-	{ .min = 375000000, .max = 1600000000 },
++	{ .min = 800000000, .max = 1600000000 },
+ };
  
+ static const struct clk_range upll_core_outputs[] = {
+-	{ .min = 600000000, .max = 1200000000 },
++	{ .min = 600000000, .max = 960000000 },
+ };
+ 
+ static const struct clk_range lvdspll_core_outputs[] = {
+-	{ .min = 400000000, .max = 800000000 },
++	{ .min = 600000000, .max = 1200000000 },
+ };
+ 
+ static const struct clk_range audiopll_core_outputs[] = {
+-	{ .min = 400000000, .max = 800000000 },
++	{ .min = 600000000, .max = 1200000000 },
+ };
+ 
+ static const struct clk_range plladiv2_core_outputs[] = {
+-	{ .min = 375000000, .max = 1600000000 },
++	{ .min = 800000000, .max = 1600000000 },
+ };
+ 
+ /* Fractional PLL output range. */
+ static const struct clk_range plla_outputs[] = {
+-	{ .min = 732421, .max = 800000000 },
++	{ .min = 400000000, .max = 800000000 },
+ };
+ 
+ static const struct clk_range upll_outputs[] = {
+-	{ .min = 300000000, .max = 600000000 },
++	{ .min = 300000000, .max = 480000000 },
+ };
+ 
+ static const struct clk_range lvdspll_outputs[] = {
+-	{ .min = 10000000, .max = 800000000 },
++	{ .min = 175000000, .max = 550000000 },
+ };
+ 
+ static const struct clk_range audiopll_outputs[] = {
+-	{ .min = 10000000, .max = 800000000 },
++	{ .min = 0, .max = 300000000 },
+ };
+ 
+ static const struct clk_range plladiv2_outputs[] = {
+-	{ .min = 366210, .max = 400000000 },
++	{ .min = 200000000, .max = 400000000 },
+ };
+ 
+ /* PLL characteristics. */
 -- 
 2.39.5
 
