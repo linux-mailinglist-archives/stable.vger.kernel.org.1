@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-169066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4D3B237FD
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:18:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E665AB237F4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 416313B064F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:17:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04148581807
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CFE26B0AE;
-	Tue, 12 Aug 2025 19:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88573223DFF;
+	Tue, 12 Aug 2025 19:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L57jo2Yc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChBe6DXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AB620E023;
-	Tue, 12 Aug 2025 19:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BF620E023;
+	Tue, 12 Aug 2025 19:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026262; cv=none; b=Q/b1mwWrKXSYBJe3cTtOZzccBXemKgoQcVUtqk3UVXyzK+SjyMeJ2y4BdC9sYMg+h16Bxv3fdxyqNayeDGfzbcCFX7OZQnoAjn+m/27LssWStpfFmQx3d8lqzoj8890R+ViF874z1Gtz8VDuIqcW8qsPLjtaKoHrgWqnUqa98f8=
+	t=1755026269; cv=none; b=n9Vqk9wfKkK5vIF7HkJrq01z1sQBlRCuKocScO0QOTw5Xvo4ClMB0aPMGwFNVe3PPqcpKCkeT2KhgibTlgTL+tJHIV+zECRxwIT9hI2vzJiWdlQ88PIvJ+IjIBQF24vE1GXEwIOHiOh64lxUXL1OEr/qAzAnUBnO8j8bYWjg7tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026262; c=relaxed/simple;
-	bh=kcr4WfbjVxDmSnaa7rFQ9NuFdefWVu/EMRUQpxjLW3o=;
+	s=arc-20240116; t=1755026269; c=relaxed/simple;
+	bh=UfaIQjQzWhFloHAUtFrn7rW3M2pVlKIoejMRwjRay3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhyLnuMkagsVx6C9IJDd6yxFOnYuJzya+AifZt7DyHOk6Ss3E1cyDdvF4NCMheMXoa7mDNnM3JX2fs8vCYuyCak0Xe3SpHi3DaOkZ6XralS/bGjnajSumqk7Sw/5hJ/du5i7xFYesED6TljZHVXwRBj2pc4kZCawNobwuINeQoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L57jo2Yc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA37C4CEF0;
-	Tue, 12 Aug 2025 19:17:41 +0000 (UTC)
+	 MIME-Version; b=G/JO9LjEn48bz8jj7P8Anzl3dEKNsHBTjGTB43kQQSva2/4pK7Lx4G17JfF3gP+RM2LzZIWIui0qfReJlNLBFm7Jxt/HmfoPaa+YX5kyMJ2336A2afjogb5ecFlFxP256q7ZHNw/TqT19GaxaAmdpa4oJdwu8dgvFwZcO304eM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChBe6DXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB6AC4CEF0;
+	Tue, 12 Aug 2025 19:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026262;
-	bh=kcr4WfbjVxDmSnaa7rFQ9NuFdefWVu/EMRUQpxjLW3o=;
+	s=korg; t=1755026268;
+	bh=UfaIQjQzWhFloHAUtFrn7rW3M2pVlKIoejMRwjRay3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L57jo2YcNZsqFuOW138VE1r2hNlTgeOPUv3N2x8PfgCsjJ2t++Llx2u+r+uqJ32DR
-	 JaLDTPtI/Rsb/4jZwNII3Nfa7dOXMWXjjf/6jOTbF+Zc99oMahA/IcpWHf8gbkDpTm
-	 KS72WrCENXYpXj/JxKbR6/7RRYITm9twCMUB4hE8=
+	b=ChBe6DXknbA+IMvsG/jzbR6p35AKihST6I/lXTMEOE1/kAc5cOBaWGtMmN/VfJOac
+	 g/aCgVjIBAxU/XeJc4Cw+2jNTFoiKBfaf/By2OFV3bSAYJtoM+EPFgK3+WOgIlPSiI
+	 7zPiN5Ne4nB8H2htVb+TcC8cAgxkg1KUT0SL4WYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thomas Fourier <fourier.thomas@gmail.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 285/480] scsi: mvsas: Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:48:13 +0200
-Message-ID: <20250812174409.186893519@linuxfoundation.org>
+Subject: [PATCH 6.15 286/480] scsi: isci: Fix dma_unmap_sg() nents value
+Date: Tue, 12 Aug 2025 19:48:14 +0200
+Message-ID: <20250812174409.226999547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -68,42 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 0141618727bc929fe868153d21797f10ce5bef3f ]
+[ Upstream commit 063bec4444d54e5f35d11949c5c90eaa1ff84c11 ]
 
 The dma_unmap_sg() functions should be called with the same nents as the
 dma_map_sg(), not the value the map function returned.
 
-Fixes: b5762948263d ("[SCSI] mvsas: Add Marvell 6440 SAS/SATA driver")
+Fixes: ddcc7e347a89 ("isci: fix dma_unmap_sg usage")
 Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250627134822.234813-2-fourier.thomas@gmail.com
+Link: https://lore.kernel.org/r/20250627142451.241713-2-fourier.thomas@gmail.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mvsas/mv_sas.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/isci/request.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
-index 52ac10226cb0..3f12096528b1 100644
---- a/drivers/scsi/mvsas/mv_sas.c
-+++ b/drivers/scsi/mvsas/mv_sas.c
-@@ -818,7 +818,7 @@ static int mvs_task_prep(struct sas_task *task, struct mvs_info *mvi, int is_tmf
- 	dev_printk(KERN_ERR, mvi->dev, "mvsas prep failed[%d]!\n", rc);
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (n_elem)
--			dma_unmap_sg(mvi->dev, task->scatter, n_elem,
-+			dma_unmap_sg(mvi->dev, task->scatter, task->num_scatter,
- 				     task->data_dir);
- prep_out:
- 	return rc;
-@@ -864,7 +864,7 @@ static void mvs_slot_task_free(struct mvs_info *mvi, struct sas_task *task,
- 	if (!sas_protocol_ata(task->task_proto))
- 		if (slot->n_elem)
- 			dma_unmap_sg(mvi->dev, task->scatter,
--				     slot->n_elem, task->data_dir);
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index 355a0bc0828e..bb89a2e33eb4 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -2904,7 +2904,7 @@ static void isci_request_io_request_complete(struct isci_host *ihost,
+ 					 task->total_xfer_len, task->data_dir);
+ 		else  /* unmap the sgl dma addresses */
+ 			dma_unmap_sg(&ihost->pdev->dev, task->scatter,
+-				     request->num_sg_entries, task->data_dir);
 +				     task->num_scatter, task->data_dir);
- 
- 	switch (task->task_proto) {
- 	case SAS_PROTOCOL_SMP:
+ 		break;
+ 	case SAS_PROTOCOL_SMP: {
+ 		struct scatterlist *sg = &task->smp_task.smp_req;
 -- 
 2.39.5
 
