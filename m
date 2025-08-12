@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FE1B2341C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A6FB23217
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFA773AAC55
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:31:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84F0717C60D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7343126529E;
-	Tue, 12 Aug 2025 18:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E03118FC91;
+	Tue, 12 Aug 2025 18:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xznsroPJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4Fe1vlC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FC76BB5B;
-	Tue, 12 Aug 2025 18:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3C81C8621;
+	Tue, 12 Aug 2025 18:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023515; cv=none; b=tNhM5Goh4XooCiB5Loj1N/rJfvkKai1I1Nkducd1PbUFAl+wbjY4PpDS1/Hh8dWfZpn/8wbMKYskpzW4lh+lVwGHcA1Tq2DanafBCHCg+AAS+H64/rmyAhZ/z0UzbvQhqE4wkK/iFlki5zPCb+Cec0MwcbpC5QDRMeoDuJ+HaUs=
+	t=1755022107; cv=none; b=WSRbmUTE5/0QCvL66qxSaA1lPVLLzf3Cz6niBKcgkbM78RduC34Rbe2Jgpu+FhGvWA0I6Vw/bmbWHQyxYY5ylUQ3F+z2icUqQcLWH8A29M52Ynty9yc1ss8jZ58kcPqsEUyVKg1wmcht5X4q+eeOiwphM8AbnnMvaFm0cNzShoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023515; c=relaxed/simple;
-	bh=4/0GI8UwVxhTxLIg7b8LMPXfHIbT9Hf77jYfjs0QlBI=;
+	s=arc-20240116; t=1755022107; c=relaxed/simple;
+	bh=ckCacWJfVj7BxSUxVIvFDOXWaGgvlGVrlN7Km3A+Zos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abnmlz146q0Qq1Js/+qTCi+1Q9zqH2HIHe9T5RHUbwpCue4GUNJaBizjOe/Sdx5nD/KKaAJfmlMGoEclLRx2q7IAylSK5DttOf7uTEckFDRvjSc6viMPSYkB8COpoYYlw+E4QdvNfe6cgHizuzzZ60sc8RTYllTAvllO5HoEaR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xznsroPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48229C4CEF0;
-	Tue, 12 Aug 2025 18:31:54 +0000 (UTC)
+	 MIME-Version; b=hBzRQZtj1QV5l+a0LNFKv7M/n92jrxASSTn3pT4Br7nWpRVNrsk/NUZiPDkbJS7aI3KFBjnPoAVWZ8aqoP6XZe1qeOqCCbLihyVzTk7iSSMsDjw3e6uy/v+49Qz7fzksVbaszPztsX4xWaO8ZyDoxNf+dZruV2Qos4cJev4fC2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4Fe1vlC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5E4C4CEF6;
+	Tue, 12 Aug 2025 18:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023514;
-	bh=4/0GI8UwVxhTxLIg7b8LMPXfHIbT9Hf77jYfjs0QlBI=;
+	s=korg; t=1755022107;
+	bh=ckCacWJfVj7BxSUxVIvFDOXWaGgvlGVrlN7Km3A+Zos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xznsroPJrElMGtQOFoC9SwsNJmpK7UpEpexJjGJCDT+0fpT4BHjlk6NsL8WHlZ1bd
-	 UVs7T6afb+C5jRg/kJ0mVnp17RwvWFVb0l8UXwI1w+vF3sqQEElNhan2O8AHAc38ZJ
-	 jOQFqwHB4Xiy/EWvxnMgsKyBNV8OnqlNgZMmTiik=
+	b=A4Fe1vlCc46AsWYTuDw/VckGVA9ninBfapx+/JmavYI4WKY4KBebG+0ikPwN0leGZ
+	 dgAbS27LAece1AxWjSTCCz8FzC1W/AjGyWgg7kVjQebB0dxEE5Qdw5YIOwS/doaQE6
+	 TvDTGJhbwC5AMhOx2rWUHrytkij7T6vESdbrp93c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 059/627] cpufreq: armada-8k: make both cpu masks static
+Subject: [PATCH 6.12 057/369] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
 Date: Tue, 12 Aug 2025 19:25:54 +0200
-Message-ID: <20250812173421.575065759@linuxfoundation.org>
+Message-ID: <20250812173016.908543576@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit b1b41bc072baf7301b1ae95fe417de09a5ad47e2 ]
+[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
 
-An earlier patch marked one of the two CPU masks as 'static' to reduce stack
-usage, but if CONFIG_NR_CPUS is large enough, the function still produces
-a warning for compile testing:
+In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
+accordance with the target frequency to ensure delivering adequate
+performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
+indication that the desired performance level is actually equal to the
+floor one.  This may cause it to choose a performance point way above
+the desired level.
 
-drivers/cpufreq/armada-8k-cpufreq.c: In function 'armada_8k_cpufreq_init':
-drivers/cpufreq/armada-8k-cpufreq.c:203:1: error: the frame size of 1416 bytes is larger than 1408 bytes [-Werror=frame-larger-than=]
+Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
+actually sets HWP_DESIRED_PERF in accordance with the target performance
+value.
 
-Normally this should be done using alloc_cpumask_var(), but since the
-driver already has a static mask and the probe function is not called
-concurrently, use the same trick for both.
+Address this by adjusting intel_cpufreq_update_pstate() to pass
+target_pstate as both the minimum and the desired performance levels
+to intel_cpufreq_hwp_update().
 
-Fixes: 1ffec650d07f ("cpufreq: armada-8k: Avoid excessive stack usage")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/armada-8k-cpufreq.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/armada-8k-cpufreq.c b/drivers/cpufreq/armada-8k-cpufreq.c
-index 5a3545bd0d8d..006f4c554dd7 100644
---- a/drivers/cpufreq/armada-8k-cpufreq.c
-+++ b/drivers/cpufreq/armada-8k-cpufreq.c
-@@ -132,7 +132,7 @@ static int __init armada_8k_cpufreq_init(void)
- 	int ret = 0, opps_index = 0, cpu, nb_cpus;
- 	struct freq_table *freq_tables;
- 	struct device_node *node;
--	static struct cpumask cpus;
-+	static struct cpumask cpus, shared_cpus;
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 54e7310454cc..b86372aa341d 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -3128,8 +3128,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
+ 		int max_pstate = policy->strict_target ?
+ 					target_pstate : cpu->max_perf_ratio;
  
- 	node = of_find_matching_node_and_match(NULL, armada_8k_cpufreq_of_match,
- 					       NULL);
-@@ -154,7 +154,6 @@ static int __init armada_8k_cpufreq_init(void)
- 	 * divisions of it).
- 	 */
- 	for_each_cpu(cpu, &cpus) {
--		struct cpumask shared_cpus;
- 		struct device *cpu_dev;
- 		struct clk *clk;
- 
+-		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
+-					 fast_switch);
++		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
++					 target_pstate, fast_switch);
+ 	} else if (target_pstate != old_pstate) {
+ 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
+ 	}
 -- 
 2.39.5
 
