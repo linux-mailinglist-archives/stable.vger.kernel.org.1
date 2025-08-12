@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC79DB22FA4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF00B2348D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB1B2561833
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:41:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 510213A9BCE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B60F2FDC2E;
-	Tue, 12 Aug 2025 17:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8812FA0CD;
+	Tue, 12 Aug 2025 18:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3Bvy9jy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvJbX1nh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2162F7461;
-	Tue, 12 Aug 2025 17:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2261DB92A;
+	Tue, 12 Aug 2025 18:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020509; cv=none; b=F8nkJsstQfJAg1GFjbwqZBezjIWmcxHZsZbPXYEFI/of5MXsbE2Gr52CnmX7aAsGBMozNbZNlkeLZUDf1gx3NiOekobd1TKYzFIBm57KKAb1fYgUrKWCKViLTFzD/heNKljuzGhYYVt+Qf0yaTCGwLkANUipFp+J61CXkpIkXbY=
+	t=1755023833; cv=none; b=HOoiWTPQhVFc7J3nIF2+I/DaeXH25sQa1Y+RPwp++3Nyq0GGDSdNcmJDxYl0o+7D4kJoJkPcA+FueAMCsRENIhQDpidSceRDlmkhhjQF4fQw2EGHH3PuP+sdiYXbGYNCvmfFyTrKWnrLXk8GrfrbUQGYGgNYq0UBFSPyR/nfA6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020509; c=relaxed/simple;
-	bh=2lvVSbBl9zeETbX/soFjQS1QwYujwjN7/7zojo4SPZw=;
+	s=arc-20240116; t=1755023833; c=relaxed/simple;
+	bh=7rRsp/MaK7pxdV1GmqlvLt6KZusJGJgUV1JVsYgaDG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBqlqQcKRLkxPoJqu63u9m/n07UR6EQUOa3wLInY+ADIas+Tu6UXChVrtmlSReWvifh7rNcy/gca1QQdHD+3aPE9/AlmP6IaFJJVsaBqWwEgUl0xHFBliRIl8SkIl9t51NQwVhtJq6fzoDL43pHE3QMVO+TFChH8JYff98cSoT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3Bvy9jy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497F3C4CEF1;
-	Tue, 12 Aug 2025 17:41:48 +0000 (UTC)
+	 MIME-Version; b=IaAzVchNCE8ff33wxYU3WeUaP/54xdHE3EN+DsQ4MvDwxBh3sw54yamiDdlMxwoswDWkQZ3FCufHCaFQ1oxVl1feBQrnxpMcoi95smJxIKeHrLZkNOXHMv+rQcpr0Fro/pGrNaf2Bebtm3JV0bxu/np0IRMBFc24zaJQEVWHj4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvJbX1nh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DA6C4CEF0;
+	Tue, 12 Aug 2025 18:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020508;
-	bh=2lvVSbBl9zeETbX/soFjQS1QwYujwjN7/7zojo4SPZw=;
+	s=korg; t=1755023832;
+	bh=7rRsp/MaK7pxdV1GmqlvLt6KZusJGJgUV1JVsYgaDG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f3Bvy9jyrK1cdmwOnvAzBbfWD+MxWcpQxYQQWOfX6vRdrfFIeQiaw5f7m+xV25RZ7
-	 hXGSGaZ3T5B5NeVaBfyV4TKixdnQ7h/hX6AVdPgr03EiPT/dkMat1Q2U+Rtekc9ik1
-	 8Zx4SZBwuNHSR7eOspV+ObmxYgjErgp8X55BCaWw=
+	b=IvJbX1nhI0m+kSFqwYQ8zJBYnElDPu4XxqQ8h83/ZmooiCiOD9jNPejo7unjq0LT5
+	 gHAjn/Hj+Y+jaJ/LK8qitf4zSoXx0MoZJPnINSsF5XoYZtBZ9uJzHkt8MTM4dkWSyo
+	 mgCpiGw4jxlNSOC0B6N0t8i9c9gz7/l+suu7jALo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/253] caif: reduce stack size, again
+Subject: [PATCH 6.16 195/627] arm64: fix unnecessary rebuilding when CONFIG_DEBUG_EFI=y
 Date: Tue, 12 Aug 2025 19:28:10 +0200
-Message-ID: <20250812172953.067176297@linuxfoundation.org>
+Message-ID: <20250812173426.684536217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,361 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit b630c781bcf6ff87657146661816d0d30a902139 ]
+[ Upstream commit 344b6580472451390d070c65c27f59716a1deecb ]
 
-I tried to fix the stack usage in this function a couple of years ago,
-but there is still a problem with the latest gcc versions in some
-configurations:
+When CONFIG_DEBUG_EFI is enabled, some objects are needlessly rebuilt.
 
-net/caif/cfctrl.c:553:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+[Steps to reproduce]
 
-Reduce this once again, with a separate cfctrl_link_setup() function that
-holds the bulk of all the local variables. It also turns out that the
-param[] array that takes up a large portion of the stack is write-only
-and can be left out here.
+  Enable CONFIG_DEBUG_EFI and run 'make' twice in a clean source tree.
+  On the second run, arch/arm64/kernel/head.o is rebuilt even though
+  no files have changed.
 
-Fixes: ce6289661b14 ("caif: reduce stack size with KASAN")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620112244.3425554-1-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  $ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- clean
+  $ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+     [ snip ]
+  $ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+    CALL    scripts/checksyscalls.sh
+    AS      arch/arm64/kernel/head.o
+    AR      arch/arm64/kernel/built-in.a
+    AR      arch/arm64/built-in.a
+    AR      built-in.a
+     [ snip ]
+
+The issue is caused by the use of the $(realpath ...) function.
+
+At the time arch/arm64/kernel/Makefile is parsed on the first run,
+$(objtree)/vmlinux does not exist. As a result,
+$(realpath $(objtree)/vmlinux) expands to an empty string.
+
+On the second run of Make, $(objtree)/vmlinux already exists, so
+$(realpath $(objtree)/vmlinux) expands to the absolute path of vmlinux.
+However, this change in the command line causes arch/arm64/kernel/head.o
+to be rebuilt.
+
+To address this issue, use $(abspath ...) instead, which does not require
+the file to exist. While $(abspath ...) does not resolve symlinks, this
+should be fine from a debugging perspective.
+
+The GNU Make manual [1] clearly explains the difference between the two:
+
+  $(realpath names...)
+    For each file name in names return the canonical absolute name.
+    A canonical name does not contain any . or .. components, nor any
+    repeated path separators (/) or symlinks. In case of a failure the
+    empty string is returned. Consult the realpath(3) documentation for
+    a list of possible failure causes.
+
+  $(abspath namees...)
+    For each file name in names return an absolute name that does not
+    contain any . or .. components, nor any repeated path separators (/).
+    Note that, in contrast to realpath function, abspath does not resolve
+    symlinks and does not require the file names to refer to an existing
+    file or directory. Use the wildcard function to test for existence.
+
+The same problem exists in drivers/firmware/efi/libstub/Makefile.zboot.
+On the first run of Make, $(obj)/vmlinuz.efi.elf does not exist when the
+Makefile is parsed, so -DZBOOT_EFI_PATH is set to an empty string.
+Replace $(realpath ...) with $(abspath ...) there as well.
+
+[1]: https://www.gnu.org/software/make/manual/make.html#File-Name-Functions
+
+Fixes: 757b435aaabe ("efi: arm64: Add vmlinux debug link to the Image binary")
+Fixes: a050910972bb ("efi/libstub: implement generic EFI zboot")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250625125555.2504734-1-masahiroy@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/caif/cfctrl.c | 294 +++++++++++++++++++++++-----------------------
- 1 file changed, 144 insertions(+), 150 deletions(-)
+ arch/arm64/kernel/Makefile                  | 2 +-
+ drivers/firmware/efi/libstub/Makefile.zboot | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
-index 8480684f2762..10eeace2278b 100644
---- a/net/caif/cfctrl.c
-+++ b/net/caif/cfctrl.c
-@@ -351,17 +351,154 @@ int cfctrl_cancel_req(struct cflayer *layr, struct cflayer *adap_layer)
- 	return found;
- }
+diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
+index a2faf0049dab..76f32e424065 100644
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -80,7 +80,7 @@ obj-y					+= head.o
+ always-$(KBUILD_BUILTIN)		+= vmlinux.lds
  
-+static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp)
-+{
-+	u8 len;
-+	u8 linkid = 0;
-+	enum cfctrl_srv serv;
-+	enum cfctrl_srv servtype;
-+	u8 endpoint;
-+	u8 physlinkid;
-+	u8 prio;
-+	u8 tmp;
-+	u8 *cp;
-+	int i;
-+	struct cfctrl_link_param linkparam;
-+	struct cfctrl_request_info rsp, *req;
-+
-+	memset(&linkparam, 0, sizeof(linkparam));
-+
-+	tmp = cfpkt_extr_head_u8(pkt);
-+
-+	serv = tmp & CFCTRL_SRV_MASK;
-+	linkparam.linktype = serv;
-+
-+	servtype = tmp >> 4;
-+	linkparam.chtype = servtype;
-+
-+	tmp = cfpkt_extr_head_u8(pkt);
-+	physlinkid = tmp & 0x07;
-+	prio = tmp >> 3;
-+
-+	linkparam.priority = prio;
-+	linkparam.phyid = physlinkid;
-+	endpoint = cfpkt_extr_head_u8(pkt);
-+	linkparam.endpoint = endpoint & 0x03;
-+
-+	switch (serv) {
-+	case CFCTRL_SRV_VEI:
-+	case CFCTRL_SRV_DBG:
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		break;
-+	case CFCTRL_SRV_VIDEO:
-+		tmp = cfpkt_extr_head_u8(pkt);
-+		linkparam.u.video.connid = tmp;
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		break;
-+
-+	case CFCTRL_SRV_DATAGRAM:
-+		linkparam.u.datagram.connid = cfpkt_extr_head_u32(pkt);
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		break;
-+	case CFCTRL_SRV_RFM:
-+		/* Construct a frame, convert
-+		 * DatagramConnectionID
-+		 * to network format long and copy it out...
-+		 */
-+		linkparam.u.rfm.connid = cfpkt_extr_head_u32(pkt);
-+		cp = (u8 *) linkparam.u.rfm.volume;
-+		for (tmp = cfpkt_extr_head_u8(pkt);
-+		     cfpkt_more(pkt) && tmp != '\0';
-+		     tmp = cfpkt_extr_head_u8(pkt))
-+			*cp++ = tmp;
-+		*cp = '\0';
-+
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+
-+		break;
-+	case CFCTRL_SRV_UTIL:
-+		/* Construct a frame, convert
-+		 * DatagramConnectionID
-+		 * to network format long and copy it out...
-+		 */
-+		/* Fifosize KB */
-+		linkparam.u.utility.fifosize_kb = cfpkt_extr_head_u16(pkt);
-+		/* Fifosize bufs */
-+		linkparam.u.utility.fifosize_bufs = cfpkt_extr_head_u16(pkt);
-+		/* name */
-+		cp = (u8 *) linkparam.u.utility.name;
-+		caif_assert(sizeof(linkparam.u.utility.name)
-+			     >= UTILITY_NAME_LENGTH);
-+		for (i = 0; i < UTILITY_NAME_LENGTH && cfpkt_more(pkt); i++) {
-+			tmp = cfpkt_extr_head_u8(pkt);
-+			*cp++ = tmp;
-+		}
-+		/* Length */
-+		len = cfpkt_extr_head_u8(pkt);
-+		linkparam.u.utility.paramlen = len;
-+		/* Param Data */
-+		cp = linkparam.u.utility.params;
-+		while (cfpkt_more(pkt) && len--) {
-+			tmp = cfpkt_extr_head_u8(pkt);
-+			*cp++ = tmp;
-+		}
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		/* Length */
-+		len = cfpkt_extr_head_u8(pkt);
-+		/* Param Data */
-+		cfpkt_extr_head(pkt, NULL, len);
-+		break;
-+	default:
-+		pr_warn("Request setup, invalid type (%d)\n", serv);
-+		return -1;
-+	}
-+
-+	rsp.cmd = CFCTRL_CMD_LINK_SETUP;
-+	rsp.param = linkparam;
-+	spin_lock_bh(&cfctrl->info_list_lock);
-+	req = cfctrl_remove_req(cfctrl, &rsp);
-+
-+	if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
-+		cfpkt_erroneous(pkt)) {
-+		pr_err("Invalid O/E bit or parse error "
-+				"on CAIF control channel\n");
-+		cfctrl->res.reject_rsp(cfctrl->serv.layer.up, 0,
-+				       req ? req->client_layer : NULL);
-+	} else {
-+		cfctrl->res.linksetup_rsp(cfctrl->serv.layer.up, linkid,
-+					  serv, physlinkid,
-+					  req ?  req->client_layer : NULL);
-+	}
-+
-+	kfree(req);
-+
-+	spin_unlock_bh(&cfctrl->info_list_lock);
-+
-+	return 0;
-+}
-+
- static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
- {
- 	u8 cmdrsp;
- 	u8 cmd;
--	int ret = -1;
--	u8 len;
--	u8 param[255];
-+	int ret = 0;
- 	u8 linkid = 0;
- 	struct cfctrl *cfctrl = container_obj(layer);
--	struct cfctrl_request_info rsp, *req;
--
+ ifeq ($(CONFIG_DEBUG_EFI),y)
+-AFLAGS_head.o += -DVMLINUX_PATH="\"$(realpath $(objtree)/vmlinux)\""
++AFLAGS_head.o += -DVMLINUX_PATH="\"$(abspath vmlinux)\""
+ endif
  
- 	cmdrsp = cfpkt_extr_head_u8(pkt);
- 	cmd = cmdrsp & CFCTRL_CMD_MASK;
-@@ -374,150 +511,7 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ # for cleaning
+diff --git a/drivers/firmware/efi/libstub/Makefile.zboot b/drivers/firmware/efi/libstub/Makefile.zboot
+index 92e3c73502ba..832deee36e48 100644
+--- a/drivers/firmware/efi/libstub/Makefile.zboot
++++ b/drivers/firmware/efi/libstub/Makefile.zboot
+@@ -36,7 +36,7 @@ aflags-zboot-header-$(EFI_ZBOOT_FORWARD_CFI) := \
+ 		-DPE_DLL_CHAR_EX=IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT
  
- 	switch (cmd) {
- 	case CFCTRL_CMD_LINK_SETUP:
--		{
--			enum cfctrl_srv serv;
--			enum cfctrl_srv servtype;
--			u8 endpoint;
--			u8 physlinkid;
--			u8 prio;
--			u8 tmp;
--			u8 *cp;
--			int i;
--			struct cfctrl_link_param linkparam;
--			memset(&linkparam, 0, sizeof(linkparam));
--
--			tmp = cfpkt_extr_head_u8(pkt);
--
--			serv = tmp & CFCTRL_SRV_MASK;
--			linkparam.linktype = serv;
--
--			servtype = tmp >> 4;
--			linkparam.chtype = servtype;
--
--			tmp = cfpkt_extr_head_u8(pkt);
--			physlinkid = tmp & 0x07;
--			prio = tmp >> 3;
--
--			linkparam.priority = prio;
--			linkparam.phyid = physlinkid;
--			endpoint = cfpkt_extr_head_u8(pkt);
--			linkparam.endpoint = endpoint & 0x03;
--
--			switch (serv) {
--			case CFCTRL_SRV_VEI:
--			case CFCTRL_SRV_DBG:
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				break;
--			case CFCTRL_SRV_VIDEO:
--				tmp = cfpkt_extr_head_u8(pkt);
--				linkparam.u.video.connid = tmp;
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				break;
--
--			case CFCTRL_SRV_DATAGRAM:
--				linkparam.u.datagram.connid =
--				    cfpkt_extr_head_u32(pkt);
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				break;
--			case CFCTRL_SRV_RFM:
--				/* Construct a frame, convert
--				 * DatagramConnectionID
--				 * to network format long and copy it out...
--				 */
--				linkparam.u.rfm.connid =
--				    cfpkt_extr_head_u32(pkt);
--				cp = (u8 *) linkparam.u.rfm.volume;
--				for (tmp = cfpkt_extr_head_u8(pkt);
--				     cfpkt_more(pkt) && tmp != '\0';
--				     tmp = cfpkt_extr_head_u8(pkt))
--					*cp++ = tmp;
--				*cp = '\0';
--
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--
--				break;
--			case CFCTRL_SRV_UTIL:
--				/* Construct a frame, convert
--				 * DatagramConnectionID
--				 * to network format long and copy it out...
--				 */
--				/* Fifosize KB */
--				linkparam.u.utility.fifosize_kb =
--				    cfpkt_extr_head_u16(pkt);
--				/* Fifosize bufs */
--				linkparam.u.utility.fifosize_bufs =
--				    cfpkt_extr_head_u16(pkt);
--				/* name */
--				cp = (u8 *) linkparam.u.utility.name;
--				caif_assert(sizeof(linkparam.u.utility.name)
--					     >= UTILITY_NAME_LENGTH);
--				for (i = 0;
--				     i < UTILITY_NAME_LENGTH
--				     && cfpkt_more(pkt); i++) {
--					tmp = cfpkt_extr_head_u8(pkt);
--					*cp++ = tmp;
--				}
--				/* Length */
--				len = cfpkt_extr_head_u8(pkt);
--				linkparam.u.utility.paramlen = len;
--				/* Param Data */
--				cp = linkparam.u.utility.params;
--				while (cfpkt_more(pkt) && len--) {
--					tmp = cfpkt_extr_head_u8(pkt);
--					*cp++ = tmp;
--				}
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				/* Length */
--				len = cfpkt_extr_head_u8(pkt);
--				/* Param Data */
--				cfpkt_extr_head(pkt, &param, len);
--				break;
--			default:
--				pr_warn("Request setup, invalid type (%d)\n",
--					serv);
--				goto error;
--			}
--
--			rsp.cmd = cmd;
--			rsp.param = linkparam;
--			spin_lock_bh(&cfctrl->info_list_lock);
--			req = cfctrl_remove_req(cfctrl, &rsp);
--
--			if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
--				cfpkt_erroneous(pkt)) {
--				pr_err("Invalid O/E bit or parse error "
--						"on CAIF control channel\n");
--				cfctrl->res.reject_rsp(cfctrl->serv.layer.up,
--						       0,
--						       req ? req->client_layer
--						       : NULL);
--			} else {
--				cfctrl->res.linksetup_rsp(cfctrl->serv.
--							  layer.up, linkid,
--							  serv, physlinkid,
--							  req ? req->
--							  client_layer : NULL);
--			}
--
--			kfree(req);
--
--			spin_unlock_bh(&cfctrl->info_list_lock);
--		}
-+		ret = cfctrl_link_setup(cfctrl, pkt, cmdrsp);
- 		break;
- 	case CFCTRL_CMD_LINK_DESTROY:
- 		linkid = cfpkt_extr_head_u8(pkt);
-@@ -544,9 +538,9 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
- 		break;
- 	default:
- 		pr_err("Unrecognized Control Frame\n");
-+		ret = -1;
- 		goto error;
- 	}
--	ret = 0;
- error:
- 	cfpkt_destroy(pkt);
- 	return ret;
+ AFLAGS_zboot-header.o += -DMACHINE_TYPE=IMAGE_FILE_MACHINE_$(EFI_ZBOOT_MACH_TYPE) \
+-			 -DZBOOT_EFI_PATH="\"$(realpath $(obj)/vmlinuz.efi.elf)\"" \
++			 -DZBOOT_EFI_PATH="\"$(abspath $(obj)/vmlinuz.efi.elf)\"" \
+ 			 -DZBOOT_SIZE_LEN=$(zboot-size-len-y) \
+ 			 -DCOMP_TYPE="\"$(comp-type-y)\"" \
+ 			 $(aflags-zboot-header-y)
 -- 
 2.39.5
 
