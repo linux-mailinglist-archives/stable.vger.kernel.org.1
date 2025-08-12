@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EECAB2313B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2548B232CB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EDF81882C94
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E682A583EDB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B57A2FF14A;
-	Tue, 12 Aug 2025 17:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353722D8363;
+	Tue, 12 Aug 2025 18:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxqpcwTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrDvhGLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7C42FE56E;
-	Tue, 12 Aug 2025 17:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87BB2F5E;
+	Tue, 12 Aug 2025 18:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021569; cv=none; b=hrDl4QD1AITOOL0ycpFQN3nt+iPxnIT0pukJcJ0l4VtAaibbQsDJi3upNIDmN7zWVVqm8mrVSyuOuAXhEIipEQz+udroxLtYkr0JHjPdGYoCfBx7KxVk03TPEc4BJdDu5sAjlJC4EBI/dOqxQfexg2wGLuvXGQrbhMrEF9ZBjlw=
+	t=1755022622; cv=none; b=nShjKgBkaC7NuLrV5Llq2Nuwyj5gYXM+HM/O+bBJmYm3BrFWFwxud2evLV7yiJRgQx8ZPysPe4eNhWmToApQesnUvwr8uqc9csVlBMLhShZ7tRQLFBgsM2ULYE7zRCu2VglGjg8Yvjn5vO9hOu+zyqowoe6H5z1uYt+4RkvuBnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021569; c=relaxed/simple;
-	bh=5sxSClECgfCIJBf3gYAcGkPMmbArLrFolvnLdz2ErD0=;
+	s=arc-20240116; t=1755022622; c=relaxed/simple;
+	bh=ttZmpxW7LtnJwe1cjkPtnLA6wFwb0wSMpValMHPl7sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4GajdrtoRELFY1e7jKFF56tg0/EfUCpJGhzFoh3SRmlJxDButXSjQXDJlYiBA8X+Tdo3YCO/4YYqdMQ82MZ/pNxFyVupkxhHTqw5/cDCBKkNt/hhq+NVcx41EAIi+96S9miUyK/P99TjnkP8q1BEP8jZBWQfPJolZGAGu7QcG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxqpcwTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A272EC4CEF0;
-	Tue, 12 Aug 2025 17:59:28 +0000 (UTC)
+	 MIME-Version; b=DIe9Lx1BWslInAh7J5QVGG5r66W3ltzsJdSrXd3hwWK8R0QxWMWWhaV1Ifmh6W1FFfpRr21GCMOWfRQCMQRe1nqizvp2VdIP98AZqHgK/TXahhPsejvo56RQeKqr3MNktJmVWflwg1Gj1wJc/uFEhRTxxcbjCrbDvjryDYBXOLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrDvhGLb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5576CC4CEF0;
+	Tue, 12 Aug 2025 18:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021569;
-	bh=5sxSClECgfCIJBf3gYAcGkPMmbArLrFolvnLdz2ErD0=;
+	s=korg; t=1755022621;
+	bh=ttZmpxW7LtnJwe1cjkPtnLA6wFwb0wSMpValMHPl7sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxqpcwTQym1BDHxND9OhftxX6MFbM116/Ala1EWY+Y8BbnYpcPTTpXI6XhWW7nBvR
-	 lAqKRsgSPuZcEwMWxtKrQGeFALGByXAegE777MVDf25lcnSCGCaj3x214dGB/ZB3nx
-	 jLKT7XqAcszyqyQGor0AlCFc2g9zcmWkinnOuf90=
+	b=vrDvhGLbzqb1wuBQrKhsf2NEE16kt57na1TdOPT80DUj0z5NlihrONqYRf0Zweb01
+	 ea+bczonRarQq6Edm8wa/JaZF2kucnN4Po0AmmznOPvZR1sDxpexszKUlqg1DvALTi
+	 Lttlubwgsmq3lzz9MaCVuAZ9pD5XmaQ90eoqqojY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/262] crypto: arm/aes-neonbs - work around gcc-15 warning
+Subject: [PATCH 6.12 208/369] crypto: keembay - Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:28:25 +0200
-Message-ID: <20250812172958.092464918@linuxfoundation.org>
+Message-ID: <20250812173022.585640330@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit d5fa96dc5590915f060fee3209143313e4f5b03b ]
+[ Upstream commit 01951a7dc5ac1a37e5fb7d86ea7eb2dfbf96e8b6 ]
 
-I get a very rare -Wstringop-overread warning with gcc-15 for one function
-in aesbs_ctr_encrypt():
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
-arch/arm/crypto/aes-neonbs-glue.c:212:1446: error: '__builtin_memcpy' offset [17, 2147483647] is out of the bounds [0, 16] of object 'buf' with type 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds=]
-  212 |                         src = dst = memcpy(buf + sizeof(buf) - bytes,
-arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
-arch/arm/crypto/aes-neonbs-glue.c:218:17: error: 'aesbs_ctr_encrypt' reading 1 byte from a region of size 0 [-Werror=stringop-overread]
-  218 |                 aesbs_ctr_encrypt(dst, src, ctx->rk, ctx->rounds, bytes, walk.iv);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 2 of type 'const u8[0]' {aka 'const unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 3 of type 'const u8[0]' {aka 'const unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 6 of type 'u8[0]' {aka 'unsigned char[]'}
-arch/arm/crypto/aes-neonbs-glue.c:36:17: note: in a call to function 'aesbs_ctr_encrypt'
-   36 | asmlinkage void aesbs_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
-
-This could happen in theory if walk.nbytes is larger than INT_MAX and gets
-converted to a negative local variable.
-
-Keep the type unsigned like the orignal nbytes to be sure there is no
-integer overflow.
-
-Fixes: c8bf850e991a ("crypto: arm/aes-neonbs-ctr - deal with non-multiples of AES block size")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/crypto/aes-neonbs-glue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
-index 0ca94b90bc4e..ba98daeb119c 100644
---- a/arch/arm/crypto/aes-neonbs-glue.c
-+++ b/arch/arm/crypto/aes-neonbs-glue.c
-@@ -245,7 +245,7 @@ static int ctr_encrypt(struct skcipher_request *req)
- 	while (walk.nbytes > 0) {
- 		const u8 *src = walk.src.virt.addr;
- 		u8 *dst = walk.dst.virt.addr;
--		int bytes = walk.nbytes;
-+		unsigned int bytes = walk.nbytes;
+diff --git a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
+index e54c79890d44..fdeca861933c 100644
+--- a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
++++ b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
+@@ -68,6 +68,7 @@ struct ocs_hcu_ctx {
+  * @sg_data_total:  Total data in the SG list at any time.
+  * @sg_data_offset: Offset into the data of the current individual SG node.
+  * @sg_dma_nents:   Number of sg entries mapped in dma_list.
++ * @nents:          Number of entries in the scatterlist.
+  */
+ struct ocs_hcu_rctx {
+ 	struct ocs_hcu_dev	*hcu_dev;
+@@ -91,6 +92,7 @@ struct ocs_hcu_rctx {
+ 	unsigned int		sg_data_total;
+ 	unsigned int		sg_data_offset;
+ 	unsigned int		sg_dma_nents;
++	unsigned int		nents;
+ };
  
- 		if (unlikely(bytes < AES_BLOCK_SIZE))
- 			src = dst = memcpy(buf + sizeof(buf) - bytes,
+ /**
+@@ -199,7 +201,7 @@ static void kmb_ocs_hcu_dma_cleanup(struct ahash_request *req,
+ 
+ 	/* Unmap req->src (if mapped). */
+ 	if (rctx->sg_dma_nents) {
+-		dma_unmap_sg(dev, req->src, rctx->sg_dma_nents, DMA_TO_DEVICE);
++		dma_unmap_sg(dev, req->src, rctx->nents, DMA_TO_DEVICE);
+ 		rctx->sg_dma_nents = 0;
+ 	}
+ 
+@@ -260,6 +262,10 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
+ 			rc = -ENOMEM;
+ 			goto cleanup;
+ 		}
++
++		/* Save the value of nents to pass to dma_unmap_sg. */
++		rctx->nents = nents;
++
+ 		/*
+ 		 * The value returned by dma_map_sg() can be < nents; so update
+ 		 * nents accordingly.
 -- 
 2.39.5
 
