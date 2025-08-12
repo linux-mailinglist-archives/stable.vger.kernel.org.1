@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA507B2319E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF45FB233B4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 253CB7B2418
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567526E202F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F242FDC25;
-	Tue, 12 Aug 2025 18:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE722FAC1E;
+	Tue, 12 Aug 2025 18:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2BCgebQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ae0krAZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9822DCF46;
-	Tue, 12 Aug 2025 18:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0887721ABD0;
+	Tue, 12 Aug 2025 18:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021963; cv=none; b=qXvzPtnSy7aoht1CtTQPqgqXOu3+yS2HkXVrmamJ6XCuIRB6nlE/djgiizMWufbe5cR2MtHIzDn67hx5jfwI7In3mGntJTqlMu0WAKxiE5Lo+MpJ2204ULs/HpF1u5LssTpMgJi/FuniPatT5/edLO8uDxEgzEH7zDMbaBlRJGY=
+	t=1755023222; cv=none; b=puaAuTbp/uSnYq40Mo+m6aeIw46LMYGyoZvpiiuR7ZnmZ2YDCLyVgyyaY6ZcBg4ORQSYArHJA7rkm9BRDMqVyIqPEYvHOys0QtvxBEIBlF/trvXJNZIWflDXObA6IwCB1en9PeGpuL0q+AwQCzDozwUAYKVALCvjPLeYZxCC1bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021963; c=relaxed/simple;
-	bh=Qb2psTkQ0zwNviEP8a1e73ULydlZuNjJx4iwJH26faU=;
+	s=arc-20240116; t=1755023222; c=relaxed/simple;
+	bh=tj1XpLZ/1ZlN1h7DUBKboco6JqCTm+mVLF+NLDDxnFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFXW1mMbcRcNV6avR/+AhTUBq1XWEIQtZtTSx86serbYt92ibqNWwNSk40kI6UBx02bpaYhP31ib7eBfbC7AyuDDmITvrqcXxB9lGQ0hW4PJD+3D+rV9uXu8BachlDwaTRW+d17RegtmtHD6A4ibegL7JE8Gp3NL6y4vp46q59I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2BCgebQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034CAC4CEF0;
-	Tue, 12 Aug 2025 18:06:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JbPwVY/yBTDJHQ6RDNv/EAzGgf9Nvo/T2a1p7eGGoQdiDMN8utUpw/m73X13tObcsv/uLtjHiiAuR8yBewmZYlQbYHnxIMHiTQbgpdLIQhJQ/gAPnPhF6JuGNoV/utp191gobPeVW0Fcf9IiV4trO1eHplpa+20V9N43XV8iil8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ae0krAZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DF3C4CEF0;
+	Tue, 12 Aug 2025 18:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021963;
-	bh=Qb2psTkQ0zwNviEP8a1e73ULydlZuNjJx4iwJH26faU=;
+	s=korg; t=1755023221;
+	bh=tj1XpLZ/1ZlN1h7DUBKboco6JqCTm+mVLF+NLDDxnFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2BCgebQMYzN5/QOWP0vqPLL4ew5/33fhVCT5Ys5iiCo6Fh6CoAMSpG2OHjd/2AGv
-	 dbd5nefT15DTltENpinW2leHBmXIDc+OxS2NORqIwS3/lvIdJPA/FRHAXSRNRkSaPK
-	 hoL8I4ppg9w5qIFfdYk9Ez1n62SYv29lyVQMujKc=
+	b=Ae0krAZzyphOjRyt81nqlF244qi7k6P8nnvFvSXPR5N4eQqkJOwsF5zzOeOOc1rRX
+	 5SSjmZvt3DP2FWvw/wJ2q0yJSLEfyNXCRsnxOttG87tqRKwWgTKfUC0xWUJBaBhIh2
+	 QR4HttTqlhjkiotZ0m++j8oKfTybupwBsE9ar5P8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a91fcdbd2698f99db8f4@syzkaller.appspotmail.com,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	=?UTF-8?q?Jannik=20Gl=C3=BCckert?= <jannik.glueckert@gmail.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/369] Revert "fs/ntfs3: Replace inode_trylock with inode_lock"
+Subject: [PATCH 6.16 017/627] kunit/fortify: Add back "volatile" for sizeof() constants
 Date: Tue, 12 Aug 2025 19:25:12 +0200
-Message-ID: <20250812173015.314756218@linuxfoundation.org>
+Message-ID: <20250812173419.974702088@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit a49f0abd8959048af18c6c690b065eb0d65b2d21 ]
+[ Upstream commit 10299c07c94aa0997fa43523b53301e713a6415d ]
 
-This reverts commit 69505fe98f198ee813898cbcaf6770949636430b.
+It seems the Clang can see through OPTIMIZER_HIDE_VAR when the constant
+is coming from sizeof. Adding "volatile" back to these variables solves
+this false positive without reintroducing the issues that originally led
+to switching to OPTIMIZER_HIDE_VAR in the first place[1].
 
-Initially, conditional lock acquisition was removed to fix an xfstest bug
-that was observed during internal testing. The deadlock reported by syzbot
-is resolved by reintroducing conditional acquisition. The xfstest bug no
-longer occurs on kernel version 6.16-rc1 during internal testing. I
-assume that changes in other modules may have contributed to this.
-
-Fixes: 69505fe98f19 ("fs/ntfs3: Replace inode_trylock with inode_lock")
-Reported-by: syzbot+a91fcdbd2698f99db8f4@syzkaller.appspotmail.com
-Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2075 [1]
+Cc: Jannik Glückert <jannik.glueckert@gmail.com>
+Suggested-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: 6ee149f61bcc ("kunit/fortify: Replace "volatile" with OPTIMIZER_HIDE_VAR()")
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250628234034.work.800-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ lib/tests/fortify_kunit.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index 748c4be912db..902dc8ba878e 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -392,7 +392,10 @@ static int ntfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- 		}
+diff --git a/lib/tests/fortify_kunit.c b/lib/tests/fortify_kunit.c
+index 29ffc62a71e3..fc9c76f026d6 100644
+--- a/lib/tests/fortify_kunit.c
++++ b/lib/tests/fortify_kunit.c
+@@ -1003,8 +1003,8 @@ static void fortify_test_memcmp(struct kunit *test)
+ {
+ 	char one[] = "My mind is going ...";
+ 	char two[] = "My mind is going ... I can feel it.";
+-	size_t one_len = sizeof(one) - 1;
+-	size_t two_len = sizeof(two) - 1;
++	volatile size_t one_len = sizeof(one) - 1;
++	volatile size_t two_len = sizeof(two) - 1;
  
- 		if (ni->i_valid < to) {
--			inode_lock(inode);
-+			if (!inode_trylock(inode)) {
-+				err = -EAGAIN;
-+				goto out;
-+			}
- 			err = ntfs_extend_initialized_size(file, ni,
- 							   ni->i_valid, to);
- 			inode_unlock(inode);
+ 	OPTIMIZER_HIDE_VAR(one_len);
+ 	OPTIMIZER_HIDE_VAR(two_len);
 -- 
 2.39.5
 
