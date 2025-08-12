@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC213B23180
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CC2B2307A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E280172668
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8CB566813
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F0B2F83CB;
-	Tue, 12 Aug 2025 18:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3242F8BE7;
+	Tue, 12 Aug 2025 17:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaabmPki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvfS+mFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1321C8621;
-	Tue, 12 Aug 2025 18:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293E1268C73;
+	Tue, 12 Aug 2025 17:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021694; cv=none; b=Z9fU364ZxDpM3PfJ0hYUGbbiz1PRyZYqP6wLjK3sK/OM1/92RtkIiX42pUk9JGx6lOCsDaR6w1LZIkATxqVKxmPagt4yydqUYfRmeqs7kXV8j+xnERrPj2q4enviP+d9AACgt476d5g3Kyt/1qgvuyB1E7bIqoODc000ZdZ727w=
+	t=1755021118; cv=none; b=fSbNjTmHbBGmNQZZQO5EcL1jiKmzW/apCIUUWGVQGv869l5qbPoi45DyUNCOvh4bMm2xXBVeESA/wM6d4LFMOqN9MVf/LCcZBarV8DMEZFNfqqS0hjAb0tRHH7QiETIJ49fpjY1PmmcHJ10kc5kuV3KIz9sX4Ryd3TUgZz4IweY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021694; c=relaxed/simple;
-	bh=WQzn+u5HlIIaYxmoBov+wYSg1UUafnoMp9feVJMbpg4=;
+	s=arc-20240116; t=1755021118; c=relaxed/simple;
+	bh=XT6kuFWE4yXWZx2yPPjNDiD71k2QS75QQ6IKmNeWaOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=peUNaZ6RsEd1Bg5rkdeBNTNFPrRMBKlp7TSSKEOFH6WjO9IFZBheMFXxO3qQWtT+IPWfQCZgAeXtakM/oVsYr93kReneTJM18LGBjUPn0r5F3LlrCX6MCxbu0B2QElTiwx4qPpykE3HdeK2NsiubRIqWfS9T6AVOe56JDZ5thiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaabmPki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FB0C4CEF0;
-	Tue, 12 Aug 2025 18:01:33 +0000 (UTC)
+	 MIME-Version; b=jlGs90Yf0uqSDc25zcdY7Px33xL2LbC83D52nR2D2WqTRSjCAeGNx7LlQb44JNQDZCe0wQgEmb5WHmp7Cw14D3t0RZm+3ZXgXmDsruIRHk1UAthcZVdP9PTKuhFPx5A90Ava456oDNN3I6njET7MRfdFV097+uRmVz9QrcfL1T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvfS+mFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A115C4CEF0;
+	Tue, 12 Aug 2025 17:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021694;
-	bh=WQzn+u5HlIIaYxmoBov+wYSg1UUafnoMp9feVJMbpg4=;
+	s=korg; t=1755021118;
+	bh=XT6kuFWE4yXWZx2yPPjNDiD71k2QS75QQ6IKmNeWaOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HaabmPkiFX4iikGQcTVmAQyC/pIX5DszDW99PCiotB/AWztkPCeNjcM0VE0IACMm7
-	 orBB2dLORqEaH3WPfsiTt90Z5+O2Dlr7yJmOGIxyrBubDSaX16nirZFFuzSYz3PQLZ
-	 9rpFN7qt1bwLfnGI1AYyOdkJqMDFQyayKiZxtkoo=
+	b=jvfS+mFnw8ezWudlj/fJzkUb+1imoUXOlUXxZI0Pb2/itpDaAQUSqC7+WDoD2eQdl
+	 dEbOl39xYRcFgM6gDh/xn2cKpy4uu9qUthk5jfFBN4ixpo+SrkmkQSHnXks+jbHHgI
+	 HFV7R/9/pHjuNG2vEzRRRHDHkGC9QtvUDi0moh30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@meta.com>,
-	Beata Michalska <beata.michalska@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/262] sched/psi: Fix psi_seq initialization
+Subject: [PATCH 6.1 190/253] rtc: pcf8563: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:38 +0200
-Message-ID: <20250812173001.221535001@linuxfoundation.org>
+Message-ID: <20250812172956.881406831@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 99b773d720aeea1ef2170dce5fcfa80649e26b78 ]
+[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
 
-With the seqcount moved out of the group into a global psi_seq,
-re-initializing the seqcount on group creation is causing seqcount
-corruption.
+When pcf8563_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-Fixes: 570c8efd5eb7 ("sched/psi: Optimize psi_group_change() cpu_clock() usage")
-Reported-by: Chris Mason <clm@meta.com>
-Suggested-by: Beata Michalska <beata.michalska@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/psi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/rtc/rtc-pcf8563.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 837b065749ce..08a9a9f909d5 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -172,7 +172,7 @@ struct psi_group psi_system = {
- 	.pcpu = &system_group_pcpu,
- };
+diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
+index 11fa9788558b..dd27acae137c 100644
+--- a/drivers/rtc/rtc-pcf8563.c
++++ b/drivers/rtc/rtc-pcf8563.c
+@@ -386,7 +386,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
--static DEFINE_PER_CPU(seqcount_t, psi_seq);
-+static DEFINE_PER_CPU(seqcount_t, psi_seq) = SEQCNT_ZERO(psi_seq);
+-	return 0;
++	return clkout_rates[0];
+ }
  
- static inline void psi_write_begin(int cpu)
- {
-@@ -200,11 +200,7 @@ static void poll_timer_fn(struct timer_list *t);
- 
- static void group_init(struct psi_group *group)
- {
--	int cpu;
--
- 	group->enabled = true;
--	for_each_possible_cpu(cpu)
--		seqcount_init(per_cpu_ptr(&psi_seq, cpu));
- 	group->avg_last_update = sched_clock();
- 	group->avg_next_update = group->avg_last_update + psi_period;
- 	mutex_init(&group->avgs_lock);
+ static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
