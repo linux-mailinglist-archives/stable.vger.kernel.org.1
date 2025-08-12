@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-169079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D3BB2380D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A1DB237DF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D61A16E2C3A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:18:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05AB21B66726
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389672E7F3B;
-	Tue, 12 Aug 2025 19:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D348C20E023;
+	Tue, 12 Aug 2025 19:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnnhKrbG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBSgbb4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB56A21A43B;
-	Tue, 12 Aug 2025 19:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939A2217F35;
+	Tue, 12 Aug 2025 19:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026307; cv=none; b=fZ4FBqOWqdaD4NSAtLOwu3wgLuteRCHGl/pSQ1mH4ehyuXy0PVAXPII1LBc8U3Sgm9fq9qWtoY9UO5//e2Op7nECgNHrnnU0TdgojX1T7Qs6VCoMWcE3r4ozRFbDlqgRZd1nSjDjMqeUcsUKjP5gJWrntWzQxJvxe4ftcWilVRk=
+	t=1755026196; cv=none; b=hx/33fPAal2AgkfO7j/3pZq3fJ4H5bu/btJG1i0/tNwUf0ebG1Cmg7igIx6F36Qep8VxyQQdLdJsI2eGL3sCV6kQ//y9WCBBVAOjj0TiIAoxo/aeHH39crwKoxgigTO61kc/R1m5Q6FJqYvmwysSKg1mLxL6Ypq4EpZlfvlQTtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026307; c=relaxed/simple;
-	bh=ckoRhhawJE8ZAWKR6yd8jwPaKo6YO1VQB9gPpiwX5+U=;
+	s=arc-20240116; t=1755026196; c=relaxed/simple;
+	bh=uC6dvvLxb0w7ElDRudKt3Fa0hSIrrq16aU7FEvsdijY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rc68HalMLCYkfEiMHQmZMFF5dErjzr+w0/8voxao8cTp6V5o375kTR8JI8wRH6pRpl6ZS6S/dRm8MGZA4oWpkBV1NJwKG1Fjx8qQ41pxOSyduQfnE8/M+4rgthwb/zEzVaT8YHQGPEvurmD94hFIKSP2KVhCa4B+r+pQhv+KjWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnnhKrbG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0BDC4CEF7;
-	Tue, 12 Aug 2025 19:18:26 +0000 (UTC)
+	 MIME-Version; b=o59dkDd7zHK1e/SzBtuQzIlUDIvhUyG1FDpZ4h31LZiafKukIbhl9nzhVB+XZ5pL72v7zGQLkJD6suRZo/IoUoVUlIxIDLxslN3hlvrIVzBTPj9e/BRZxAK0539Mgnx4g6e1eKZ6+Efg3/aXm/v8AwE9QEPjeNQ9+IugBkQGum8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBSgbb4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F45C4CEF0;
+	Tue, 12 Aug 2025 19:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026306;
-	bh=ckoRhhawJE8ZAWKR6yd8jwPaKo6YO1VQB9gPpiwX5+U=;
+	s=korg; t=1755026196;
+	bh=uC6dvvLxb0w7ElDRudKt3Fa0hSIrrq16aU7FEvsdijY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnnhKrbGi+Izk2B7uoQ9UlF6q3xsDONPberxdXxPggCeTlCd3R5CkGNjnjYqQUjRJ
-	 oPBzW+DVuV8e4P4nbNIK0eRbqLcfjOb0OfF4P12RvrOblPZtzxKgyZ3BQRk31g43CZ
-	 MUfmcnHIHhrEWlLIwDwh0wByUCHoPKCAo6d/EbkM=
+	b=fBSgbb4XWj8DHCt+ZNqe77IyjGikIgrg5khI0l6psV0uz9KGqWdEAR7i0AffD96ll
+	 R4vskcQwi806eUkEpCd8tIic2xrO17YiIpRJZODttmslAHuZ3E7kvXjP6UULKDUVOh
+	 5tSPXmNAllQINp+2vBHzvIkFDbqOqV4HMs5z/9KQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Junxian Huang <huangjunxian6@hisilicon.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 265/480] RDMA/hns: Fix double destruction of rsv_qp
-Date: Tue, 12 Aug 2025 19:47:53 +0200
-Message-ID: <20250812174408.369630498@linuxfoundation.org>
+Subject: [PATCH 6.15 266/480] RDMA/hns: Fix HW configurations not cleared in error flow
+Date: Tue, 12 Aug 2025 19:47:54 +0200
+Message-ID: <20250812174408.409595109@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -69,133 +69,45 @@ Content-Transfer-Encoding: 8bit
 
 From: wenglianfa <wenglianfa@huawei.com>
 
-[ Upstream commit c6957b95ecc5b63c5a4bb4ecc28af326cf8f6dc8 ]
+[ Upstream commit 998b41cb20b02c4e28ac558e4e7f8609d659ec05 ]
 
-rsv_qp may be double destroyed in error flow, first in free_mr_init(),
-and then in hns_roce_exit(). Fix it by moving the free_mr_init() call
-into hns_roce_v2_init().
+hns_roce_clear_extdb_list_info() will eventually do some HW
+configurations through FW, and they need to be cleared by
+calling hns_roce_function_clear() when the initialization
+fails.
 
-list_del corruption, ffff589732eb9b50->next is LIST_POISON1 (dead000000000100)
-WARNING: CPU: 8 PID: 1047115 at lib/list_debug.c:53 __list_del_entry_valid+0x148/0x240
-...
-Call trace:
- __list_del_entry_valid+0x148/0x240
- hns_roce_qp_remove+0x4c/0x3f0 [hns_roce_hw_v2]
- hns_roce_v2_destroy_qp_common+0x1dc/0x5f4 [hns_roce_hw_v2]
- hns_roce_v2_destroy_qp+0x22c/0x46c [hns_roce_hw_v2]
- free_mr_exit+0x6c/0x120 [hns_roce_hw_v2]
- hns_roce_v2_exit+0x170/0x200 [hns_roce_hw_v2]
- hns_roce_exit+0x118/0x350 [hns_roce_hw_v2]
- __hns_roce_hw_v2_init_instance+0x1c8/0x304 [hns_roce_hw_v2]
- hns_roce_hw_v2_reset_notify_init+0x170/0x21c [hns_roce_hw_v2]
- hns_roce_hw_v2_reset_notify+0x6c/0x190 [hns_roce_hw_v2]
- hclge_notify_roce_client+0x6c/0x160 [hclge]
- hclge_reset_rebuild+0x150/0x5c0 [hclge]
- hclge_reset+0x10c/0x140 [hclge]
- hclge_reset_subtask+0x80/0x104 [hclge]
- hclge_reset_service_task+0x168/0x3ac [hclge]
- hclge_service_task+0x50/0x100 [hclge]
- process_one_work+0x250/0x9a0
- worker_thread+0x324/0x990
- kthread+0x190/0x210
- ret_from_fork+0x10/0x18
-
-Fixes: fd8489294dd2 ("RDMA/hns: Fix Use-After-Free of rsv_qp on HIP08")
+Fixes: 7e78dd816e45 ("RDMA/hns: Clear extended doorbell info before using")
 Signed-off-by: wenglianfa <wenglianfa@huawei.com>
 Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250703113905.3597124-2-huangjunxian6@hisilicon.com
+Link: https://patch.msgid.link/20250703113905.3597124-3-huangjunxian6@hisilicon.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 25 +++++++++++-----------
- drivers/infiniband/hw/hns/hns_roce_main.c  |  6 +++---
- 2 files changed, 16 insertions(+), 15 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index bbf6e1983704..126990bf74b4 100644
+index 126990bf74b4..217c252fc722 100644
 --- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
 +++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -2971,14 +2971,22 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
- {
- 	int ret;
- 
-+	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08) {
-+		ret = free_mr_init(hr_dev);
-+		if (ret) {
-+			dev_err(hr_dev->dev, "failed to init free mr!\n");
-+			return ret;
-+		}
-+	}
-+
- 	/* The hns ROCEE requires the extdb info to be cleared before using */
- 	ret = hns_roce_clear_extdb_list_info(hr_dev);
- 	if (ret)
--		return ret;
-+		goto err_clear_extdb_failed;
+@@ -2986,7 +2986,7 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
  
  	ret = get_hem_table(hr_dev);
  	if (ret)
--		return ret;
-+		goto err_clear_extdb_failed;
+-		goto err_clear_extdb_failed;
++		goto err_get_hem_table_failed;
  
  	if (hr_dev->is_vf)
  		return 0;
-@@ -2993,6 +3001,9 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
+@@ -3001,6 +3001,8 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
  
  err_llm_init_failed:
  	put_hem_table(hr_dev);
-+err_clear_extdb_failed:
-+	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08)
-+		free_mr_exit(hr_dev);
- 
- 	return ret;
- }
-@@ -7027,21 +7038,11 @@ static int __hns_roce_hw_v2_init_instance(struct hnae3_handle *handle)
- 		goto error_failed_roce_init;
- 	}
- 
--	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08) {
--		ret = free_mr_init(hr_dev);
--		if (ret) {
--			dev_err(hr_dev->dev, "failed to init free mr!\n");
--			goto error_failed_free_mr_init;
--		}
--	}
- 
- 	handle->priv = hr_dev;
- 
- 	return 0;
- 
--error_failed_free_mr_init:
--	hns_roce_exit(hr_dev);
--
- error_failed_roce_init:
- 	kfree(hr_dev->priv);
- 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index e7a497cc125c..623610b3e2ec 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -965,6 +965,9 @@ static int hns_roce_setup_hca(struct hns_roce_dev *hr_dev)
- 
- 	spin_lock_init(&hr_dev->sm_lock);
- 
-+	INIT_LIST_HEAD(&hr_dev->qp_list);
-+	spin_lock_init(&hr_dev->qp_list_lock);
-+
- 	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
- 	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB) {
- 		INIT_LIST_HEAD(&hr_dev->pgdir_list);
-@@ -1132,9 +1135,6 @@ int hns_roce_init(struct hns_roce_dev *hr_dev)
- 		}
- 	}
- 
--	INIT_LIST_HEAD(&hr_dev->qp_list);
--	spin_lock_init(&hr_dev->qp_list_lock);
--
- 	ret = hns_roce_register_device(hr_dev);
- 	if (ret)
- 		goto error_failed_register_device;
++err_get_hem_table_failed:
++	hns_roce_function_clear(hr_dev);
+ err_clear_extdb_failed:
+ 	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08)
+ 		free_mr_exit(hr_dev);
 -- 
 2.39.5
 
