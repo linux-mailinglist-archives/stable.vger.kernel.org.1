@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-167701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644CAB2316F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7AEB23051
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D71281883EB5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:03:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1444A682149
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ED5BA27;
-	Tue, 12 Aug 2025 18:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95342F7449;
+	Tue, 12 Aug 2025 17:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMgN2+Zm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHVajOWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F93E2080C0;
-	Tue, 12 Aug 2025 18:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B3C279915;
+	Tue, 12 Aug 2025 17:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021704; cv=none; b=fd8tmZmkyJs25Mvl6oDreZVW93TeXeSKqQzNRo3qN4e1XXKRL5ipqhIwlxGoE6BlulU5nUKALbV5bsBkRliIm1AAaEGrKwdmRvy48Yi7yJZ7f0XpWb/9BmoKtMs5cX4uAElX/KrUlCIvv1goWOp71A7Q4Gfq8wAPPAb/M5+uG+Q=
+	t=1755021024; cv=none; b=CmUmDLxkqBy4nuRlEi0f5mOQ04p/DfRD+GW8oeXv2pR6ypN0BjjN1zZLMUHiaq7CYPI5tvpvVUAIHqQxu8i5MNDLcQE1p4VNX2XjsA0GF5L2XYft0kZHr7mlKyhSkp+HGkfPk6CjrNl542sbs7bKYHDqDwMd38ORayI6Bgc07Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021704; c=relaxed/simple;
-	bh=GbGK+9HrE0ny58NHLmx0IOz2DhHIevVrMDOiYPF0LfE=;
+	s=arc-20240116; t=1755021024; c=relaxed/simple;
+	bh=Je0FYIalwXPjRn6QNWJ+DhfFYG82/uBeqrJv/dMbeR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5py6AyNiv0Nzn30Fu7YeVimu7YmimUhewkNeaieTE9N5DNrYIJjJTHIGbkmhYxaVGQz0mYtWLB5/JgfGIe/IzobvJ2MmhY+suilL0D9jjS+OXjnosCnSiX3/LSZTPYIF0bEgb9XkfpOaVegyD1KscRjgGbHfC01dWsv8sFMYn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMgN2+Zm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B107EC4CEF0;
-	Tue, 12 Aug 2025 18:01:43 +0000 (UTC)
+	 MIME-Version; b=J0zfKbttX0QPQTZcfX/SPVh4wErTuPVS+faFIk1HJTCxFSe/ngcexH8f84OgMaB3Iz8r1wyrHSTLJcdyyxTNc2dbISP6J4qvEvPQ6fdF9eEkoOhdVrfJnJ5lwqQ3ivoV0w0U2QGA3cwAGGrqZzqepakSe/TCTDI4RZ5ai4pwHf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHVajOWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FD2C4CEF1;
+	Tue, 12 Aug 2025 17:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021704;
-	bh=GbGK+9HrE0ny58NHLmx0IOz2DhHIevVrMDOiYPF0LfE=;
+	s=korg; t=1755021024;
+	bh=Je0FYIalwXPjRn6QNWJ+DhfFYG82/uBeqrJv/dMbeR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMgN2+ZmPYOaRP+dm7WTHHswpNPhEj7mdrxb+klHdgp7ww5ueCmkqkAtHoYshYMU5
-	 g+3qKRHK8ArRQtQlAnsHoTRS468kudFeldZCY+Vd3UQiHhXa0r8cgqPcrDf2WxUTl3
-	 UpdLIqRPWvZrtGo+Y256WU3mmXopf4Ptxb8buKNI=
+	b=NHVajOWNYF2RfBHSnqYLRzP+5ZY3axyMSqmJNRLlpsgAQvdolPXd008Bo0+pJrYm0
+	 PyGaVPCUSTnznrNerl0TMTfO3e7MRJ9Gn6YGFpS+q/fQjEWMBFSFdMYnWXTfZoBUks
+	 h0zEub7SVqbUCpaHbsnlxoP5Ja/toScJel7dNCxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Tomas Henzl <thenzl@redhat.com>,
+	Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/262] NFS: Fixup allocation flags for nfsiods __GFP_NORETRY
+Subject: [PATCH 6.1 201/253] scsi: mpt3sas: Fix a fw_event memory leak
 Date: Tue, 12 Aug 2025 19:29:49 +0200
-Message-ID: <20250812173001.719538935@linuxfoundation.org>
+Message-ID: <20250812172957.360908281@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Tomas Henzl <thenzl@redhat.com>
 
-[ Upstream commit 99765233ab42bf7a4950377ad7894dce8a5c0e60 ]
+[ Upstream commit 3e90b38781e3bdd651edaf789585687611638862 ]
 
-If the NFS client is doing writeback from a workqueue context, avoid using
-__GFP_NORETRY for allocations if the task has set PF_MEMALLOC_NOIO or
-PF_MEMALLOC_NOFS.  The combination of these flags makes memory allocation
-failures much more likely.
+In _mpt3sas_fw_work() the fw_event reference is removed, it should also
+be freed in all cases.
 
-We've seen those allocation failures show up when the loopback driver is
-doing writeback from a workqueue to a file on NFS, where memory allocation
-failure results in errors or corruption within the loopback device's
-filesystem.
-
-Suggested-by: Trond Myklebust <trondmy@kernel.org>
-Fixes: 0bae835b63c5 ("NFS: Avoid writeback threads getting stuck in mempool_alloc()")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/f83ac1155a4bc670f2663959a7a068571e06afd9.1752111622.git.bcodding@redhat.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 4318c7347847 ("scsi: mpt3sas: Handle NVMe PCIe device related events generated from firmware.")
+Signed-off-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://lore.kernel.org/r/20250723153018.50518-1-thenzl@redhat.com
+Acked-by: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index c29ad2e1d416..8870c72416ac 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -613,9 +613,12 @@ nfs_write_match_verf(const struct nfs_writeverf *verf,
- 
- static inline gfp_t nfs_io_gfp_mask(void)
- {
--	if (current->flags & PF_WQ_WORKER)
--		return GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
--	return GFP_KERNEL;
-+	gfp_t ret = current_gfp_context(GFP_KERNEL);
-+
-+	/* For workers __GFP_NORETRY only with __GFP_IO or __GFP_FS */
-+	if ((current->flags & PF_WQ_WORKER) && ret == GFP_KERNEL)
-+		ret |= __GFP_NORETRY | __GFP_NOWARN;
-+	return ret;
- }
- 
- /*
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+index 31768da482a5..b5b77b82d69f 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -10819,8 +10819,7 @@ _mpt3sas_fw_work(struct MPT3SAS_ADAPTER *ioc, struct fw_event_work *fw_event)
+ 		break;
+ 	case MPI2_EVENT_PCIE_TOPOLOGY_CHANGE_LIST:
+ 		_scsih_pcie_topology_change_event(ioc, fw_event);
+-		ioc->current_event = NULL;
+-		return;
++		break;
+ 	}
+ out:
+ 	fw_event_work_put(fw_event);
 -- 
 2.39.5
 
