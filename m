@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-168469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592B3B23549
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:49:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3174EB2309A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82B2F3A1CAC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18DE1566C0D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31E42FD1AD;
-	Tue, 12 Aug 2025 18:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9610B2FD1D7;
+	Tue, 12 Aug 2025 17:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha9ZiGQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2LVkEj7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB0C2FD1A4;
-	Tue, 12 Aug 2025 18:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5508A2DE1E2;
+	Tue, 12 Aug 2025 17:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024276; cv=none; b=aFNLm5p2JQLGxzxw4HcADUkJKqhO26NIaE4DNJS9cTIRqVKgNZ06O3y9pa0oG8CLmJljIPtswargptB7lxqn6KBHojuI3jugu1LDfDlX7sGv92m2mBlaLJEDY0Q7hqVrNHksk5WeCzYkYkf4bkML1SdTREs9Dk8y90PbyZf31Sk=
+	t=1755021244; cv=none; b=p+IV8SD4ypW8SV5tKYXFDIZQXbw2F7CvoYiUBFMctsoHGQMQgjmGL6DrQ8NeYUGHMuJqjjpI/+t3AZg90n5g3yXIe+Dlxljrg6s86bM+8jEGnSz7pYOpYoHzLUXf1pyGm1T52fvfRifkXPpaSphKuZ8jrx2gSsgIQFCJClS8mAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024276; c=relaxed/simple;
-	bh=8VkicDYJKB9IxIU9Wa573aeisnqQRQL3DOkEZfauy6I=;
+	s=arc-20240116; t=1755021244; c=relaxed/simple;
+	bh=Q4iNIx5fO3wqdTP/N7ky7yQ7fgqefLAb/iFipwSUUx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fuz6ItOrrTLjOAySqBzilQqSzsviCoz3PIRtoZfCaxHvLaTT6Xu/En05KnxsWktmxmYwrj53mW8RjJfkzq6vV4JoL/lvA0mJK5YtnAS2UowKt4auleM9PsS6+496MkAgMoUzJc+g5BupuxvmpufSO3Br+TVGvEmhi+NkZFeOeRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha9ZiGQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B39C4CEF0;
-	Tue, 12 Aug 2025 18:44:35 +0000 (UTC)
+	 MIME-Version; b=X4x08EsTNdZ8wIcsRODZQs/6uGX4V9si4cPLIWBoly0uJHh4zGkyPQP/7Ak5VZNNfQPDtyvi82BuaQhqpbmx8oODeiW/7LRzHwzmWha4I01WS8P9fUrbyMWDTFGDgu3/nQxeeT/5ONFaz1S/oDgTGgBuGU78bUlfzvWDH6/Spwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2LVkEj7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A7AC4CEF0;
+	Tue, 12 Aug 2025 17:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024276;
-	bh=8VkicDYJKB9IxIU9Wa573aeisnqQRQL3DOkEZfauy6I=;
+	s=korg; t=1755021244;
+	bh=Q4iNIx5fO3wqdTP/N7ky7yQ7fgqefLAb/iFipwSUUx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ha9ZiGQ5IycSSVlCyWXcFkAaRsmJxocS6BtIn1Srd+z2MA98ahRE64o7xozWh8HMn
-	 2rORRuXvJZCEEA6FammgjDuqyNOiFj5qzyRB1uihkZT8Q54TtqAcLBTsa4D3+wKPr2
-	 mut3994Z8J9RPlbNLg7/UDoQSFAKlhTUlnFsvJ3A=
+	b=w2LVkEj7iQ5Mo0LlVnt8fwDiv7fRIRep3VSfMDOEByudRoHs9c0PLzlrX4FejQhlZ
+	 JOYz6OgQMzvgPBkWN8M8AOwoSxOLx5hSoKcgRRVAqP79L4Qio/eJq5SeHRs/Iz1UVY
+	 NLsx7HlxWJdvw1gVI4NGfLdhsYQBLQteM23P1dMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 326/627] PCI: endpoint: pci-epf-vntb: Return -ENOENT if pci_epc_get_next_free_bar() fails
-Date: Tue, 12 Aug 2025 19:30:21 +0200
-Message-ID: <20250812173431.695599599@linuxfoundation.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: [PATCH 6.1 234/253] perf/core: Exit early on perf_mmap() fail
+Date: Tue, 12 Aug 2025 19:30:22 +0200
+Message-ID: <20250812172958.786080936@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 7ea488cce73263231662e426639dd3e836537068 ]
+commit 07091aade394f690e7b655578140ef84d0e8d7b0 upstream.
 
-According the function documentation of epf_ntb_init_epc_bar(), the
-function should return an error code on error. However, it returns -1 when
-no BAR is available i.e., when pci_epc_get_next_free_bar() fails.
+When perf_mmap() fails to allocate a buffer, it still invokes the
+event_mapped() callback of the related event. On X86 this might increase
+the perf_rdpmc_allowed reference counter. But nothing undoes this as
+perf_mmap_close() is never called in this case, which causes another
+reference count leak.
 
-Return -ENOENT instead.
+Return early on failure to prevent that.
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-[mani: changed err code to -ENOENT]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250603-pci-vntb-bar-mapping-v2-1-fc685a22ad28@baylibre.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1e0fb9ec679c ("perf/core: Add pmu callbacks to track event mapping and unmapping")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index e4da3fdb0007..30c6c563335a 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -680,7 +680,7 @@ static int epf_ntb_init_epc_bar(struct epf_ntb *ntb)
- 		barno = pci_epc_get_next_free_bar(epc_features, barno);
- 		if (barno < 0) {
- 			dev_err(dev, "Fail to get NTB function BAR\n");
--			return barno;
-+			return -ENOENT;
- 		}
- 		ntb->epf_ntb_bar[bar] = barno;
- 	}
--- 
-2.39.5
-
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6504,6 +6504,9 @@ aux_unlock:
+ 		mutex_unlock(aux_mutex);
+ 	mutex_unlock(&event->mmap_mutex);
+ 
++	if (ret)
++		return ret;
++
+ 	/*
+ 	 * Since pinned accounting is per vm we cannot allow fork() to copy our
+ 	 * vma.
 
 
 
