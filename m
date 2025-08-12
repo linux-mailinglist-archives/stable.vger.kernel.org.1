@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9D7B233D8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57801B23213
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A713D2A04E4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAFCD566A95
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB082FD1C2;
-	Tue, 12 Aug 2025 18:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C3E2FE563;
+	Tue, 12 Aug 2025 18:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYXjkQyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rXcfa8UX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1AE2ECE93;
-	Tue, 12 Aug 2025 18:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BAA1C84C7;
+	Tue, 12 Aug 2025 18:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023338; cv=none; b=DV1hgLcBOLRdCVaBUYAG1f7tIHe8BienjqHlSAOk8BOpZk0Ss3LAFCtwhFJITglHOU1QUJeh5s+iiKgy+gASNN4YQRrxdglOnYqO+Fli0FAfiewoyLZJZJQxrx5sVse/Cj1pCPnkdHxwT7LtsDw8E3nV9rj+hoBAp4ea2pN9mQU=
+	t=1755022080; cv=none; b=emCYSfoy4UCdCbswN2nLIN0Y6i2l/WL8D/lqGhm87e2VMTki/sjeNDvutQSOeyThtJntOSMkS/1/XLng078CyBxDbuhCo+Ohn7X6gXfSHdtNd6plWRQ2ef4ydacDL7wA1ka03WbaiuFacX132Lx5M1NcTyDPxRNePvCkJieqau8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023338; c=relaxed/simple;
-	bh=z6m9ZIOzYYcchvqk75LXOmLpkPLFsXyC9FVpMXRfZ5c=;
+	s=arc-20240116; t=1755022080; c=relaxed/simple;
+	bh=lYcpEMqoWEoEp2Ou7Z67CsI7/DjmVQ9lskya7zCBz4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkLRG2UtvYZfyhcI1P4+coc/hiSSJusFwaDadtWi2dFXDYCyU7dOR0mcqxdFPuZG0sjqE2W/ogAt5qc46QwU/D4DjWJj2Y/wfGGvOt9FWt0uoo7F8b+QDY+qbg0BtyPuBUO4m9DrVT/D/IFsUmAuDb83CgVggTy/+ZsI/4Rmd1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYXjkQyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FCEC4CEF6;
-	Tue, 12 Aug 2025 18:28:57 +0000 (UTC)
+	 MIME-Version; b=tyFDpIoe4fdQTgJU32B2BfllisrxVulLRKZq0kv+4AkWvGXxd99CgsYxo9m2g/kcaLedzl2XJygoo5pzkzm2WQhn8/QHvkZEuX5dt4rUzvpemOAlJ9cu5JUilv62r9CsWMXm5E8BnapXTGLE1YyW5yxU29DepkwoG19R0Az6hDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXcfa8UX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54040C4CEF0;
+	Tue, 12 Aug 2025 18:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023338;
-	bh=z6m9ZIOzYYcchvqk75LXOmLpkPLFsXyC9FVpMXRfZ5c=;
+	s=korg; t=1755022079;
+	bh=lYcpEMqoWEoEp2Ou7Z67CsI7/DjmVQ9lskya7zCBz4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYXjkQyKMqxhRHbSAZEmZl2s3j+0yUnw734J1wPXlNL1t9jP8I0OPsbsY63Z3vR88
-	 sbEqukG9kvH2uF044zO4JPERC5yvDvxrWqix9ML/mrYHpHH+vgFGEgRitLcN6s2Gec
-	 YNZPyBjTyVaId5f6o19JAKLzr66oqsnfT1DoM9ks=
+	b=rXcfa8UXP8XS/kr1BiSi5y0AncJ/vGj52UKivl3fJZgaB9lUh27Y3lcfMkxKWmyK+
+	 jc7OEF1wJcrD873KIpsFEugBOtgM+YlaIzcSNGW3mPokbV+fsaFr+ImNqSlU9vx99j
+	 4JENz648VkO/SDAw5Y6e97MTBIKbY57v+rq8T42U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 050/627] ARM: dts: vfxxx: Correctly use two tuples for timer address
-Date: Tue, 12 Aug 2025 19:25:45 +0200
-Message-ID: <20250812173421.235004211@linuxfoundation.org>
+Subject: [PATCH 6.12 049/369] soc/tegra: cbb: Clear ERR_FORCE register with ERR_STATUS
+Date: Tue, 12 Aug 2025 19:25:46 +0200
+Message-ID: <20250812173016.608609974@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
+[ Upstream commit a0647bca8966db04b79af72851ebd04224a4da40 ]
 
-Address and size-cells are 1 and the ftm timer node takes two address
-spaces in "reg" property, so this should be in two <> tuples.  Change
-has no functional impact, but original code is confusing/less readable.
+When error is injected with the ERR_FORCE register, then this register
+is not auto cleared on clearing the ERR_STATUS register. This causes
+repeated interrupts on error injection. To fix, set the ERR_FORCE to
+zero along with clearing the ERR_STATUS register after handling error.
 
-Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/vf/vfxxx.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/tegra/cbb/tegra234-cbb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-index 597f20be82f1..62e555bf6a71 100644
---- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-+++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
-@@ -603,7 +603,7 @@ usbmisc1: usb@400b4800 {
+diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
+index 5cf0e8c34164..e8cc46874c72 100644
+--- a/drivers/soc/tegra/cbb/tegra234-cbb.c
++++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
+@@ -185,6 +185,8 @@ static void tegra234_cbb_error_clear(struct tegra_cbb *cbb)
+ {
+ 	struct tegra234_cbb *priv = to_tegra234_cbb(cbb);
  
- 			ftm: ftm@400b8000 {
- 				compatible = "fsl,ftm-timer";
--				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
-+				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
- 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
- 				clock-names = "ftm-evt", "ftm-src",
- 					"ftm-evt-counter-en", "ftm-src-counter-en";
++	writel(0, priv->mon + FABRIC_MN_MASTER_ERR_FORCE_0);
++
+ 	writel(0x3f, priv->mon + FABRIC_MN_MASTER_ERR_STATUS_0);
+ 	dsb(sy);
+ }
 -- 
 2.39.5
 
