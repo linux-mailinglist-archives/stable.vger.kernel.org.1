@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-167743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB99B231DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:10:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C25B2335B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE15E16A099
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2556169270
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D862FE57B;
-	Tue, 12 Aug 2025 18:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1682E7BD4;
+	Tue, 12 Aug 2025 18:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKy4dzlD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mVDqcHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B592DE6E9;
-	Tue, 12 Aug 2025 18:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0A71EBFE0;
+	Tue, 12 Aug 2025 18:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021843; cv=none; b=vFoPj35nSjnOKPY1K60TCUrjM5ABYuhNb9VTu0dajzNTxRNZ0Ved+BEVahy37EfhvNAIZrIbHy+kkYDWIh51pOeJIQumVVaOzbMlLgQ9h8xrkC4jY956qnMe9YfPRvfv/6psigeIfuFKhe7ZoTCzW7XYappRKCvglIyyzy55Ipg=
+	t=1755023042; cv=none; b=AX6zSD7h7ZUCeOgen3zPLvR+HKS4pJfMcOi8CzyI0TQyDYndhm9CGrUV4EDFgIForVYT4Jr1BNESIdrqq8jJXaI9hKz+hAVZWDSlYbUYJcheJ1cBtciqjsoM+E34TYhopPDEe8OUHnMGyrvQNpIShQQPhYjNRZGOF5l2uFe+iJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021843; c=relaxed/simple;
-	bh=cti562yJVxveqlAVPWqF/CUbNzv4vI9E1twdKHxSeNU=;
+	s=arc-20240116; t=1755023042; c=relaxed/simple;
+	bh=qEUnqEwr9QPWDGpv1m2lR1LVBNwpPPTG6rec6G/0A/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTxUd3UeEnYJuIqu8tnzc6o8P39QuzccHouj86SBgFei/kHhylwawLsbd8ztxiA0utxEYIpWH/Ct60iNy7m4tNHqAI3wxLfC3LWIZwM5RUoVRPZs0K/Nef5c/0wBbc5vJaFXsgF+kC6C9NmvH39w76Po/Vpx2oj1F+R5Jfqfllo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKy4dzlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77300C4CEF7;
-	Tue, 12 Aug 2025 18:04:02 +0000 (UTC)
+	 MIME-Version; b=M6xT+B6PU1BnXxI3INn3cKusYsl2wfzErtOQ35vPEEKQ1PO6xHfcQua9XkEckJlyEiK3GzDBkaYO4rtr7hXHn2HhzKLtQL0Q0KxgkRoOJVFBvk2Znba/KzpRaVMl+rrt2sPC6wOIYQCl6/Mp/eVhG6ULHsCJP0WBVi/iH1kAcBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mVDqcHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0D5C4CEF7;
+	Tue, 12 Aug 2025 18:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021843;
-	bh=cti562yJVxveqlAVPWqF/CUbNzv4vI9E1twdKHxSeNU=;
+	s=korg; t=1755023042;
+	bh=qEUnqEwr9QPWDGpv1m2lR1LVBNwpPPTG6rec6G/0A/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKy4dzlDnPmPkc8CCaQQXlXodcZdtFFzPVrHLQJBBph6WlVAS6diRM69iUUZ7/DL5
-	 YsfbdB5sBukAbIwc0KdNfypHH0wixL/5la2PT3CzdZE8W5ELhUaI+yNFD+OMf2BB8x
-	 nfSbFvcYPa3T9l2EZ9fTcfO4zfn+fql5kGrCNDmA=
+	b=2mVDqcHuBg/tx3qepeM62lb+t1jnkrhRDfBs64FQZ0aFvpCu2a44tg4nn4ACcQ23M
+	 QeIF1ngsOHaNVCVbYYJ3rIRuJ7SwZ5K1hFWxhIEcqnSvbSAA4Bl4DF+tJ3vS3LlMo6
+	 Dl6Ad3kTWsObQeysJvqeitfok5vGqexVa4+R819g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 242/262] USB: serial: option: add Foxconn T99W709
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Yifei Liu <yifei.l.liu@oracle.com>
+Subject: [PATCH 6.12 333/369] selftests/bpf: Add a test for arena range tree algorithm
 Date: Tue, 12 Aug 2025 19:30:30 +0200
-Message-ID: <20250812173003.456138205@linuxfoundation.org>
+Message-ID: <20250812173029.234535275@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-commit ad1244e1ce18f8c1a5ebad8074bfcf10eacb0311 upstream.
+commit e58358afa84e8e271a296459d35d1715c7572013 upstream.
 
-T99W709 is designed based on MTK T300(5G redcap) chip. There are
-7 serial ports to be enumerated: AP_LOG, GNSS, AP_META, AT,
-MD_META, NPT, DBG. RSVD(5) for ADB port.
+Add a test that verifies specific behavior of arena range tree
+algorithm and adjust existing big_alloc1 test due to use
+of global data in arena.
 
-test evidence as below:
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e15f Rev=00.01
-S:  Manufacturer=MediaTek Inc.
-S:  Product=USB DATA CARD
-S:  SerialNumber=355511220000399
-C:  #Ifs=10 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-I:  If#=0x6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x8 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-I:  If#=0x9 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/bpf/20241108025616.17625-3-alexei.starovoitov@gmail.com
+Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/bpf/progs/verifier_arena_large.c |  110 ++++++++++++++-
+ 1 file changed, 108 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2346,6 +2346,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
- 	  .driver_info = RSVD(5) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe167, 0xff),                     /* Foxconn T99W640 MBIM */
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+--- a/tools/testing/selftests/bpf/progs/verifier_arena_large.c
++++ b/tools/testing/selftests/bpf/progs/verifier_arena_large.c
+@@ -29,12 +29,12 @@ int big_alloc1(void *ctx)
+ 	if (!page1)
+ 		return 1;
+ 	*page1 = 1;
+-	page2 = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE,
++	page2 = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE * 2,
+ 				      1, NUMA_NO_NODE, 0);
+ 	if (!page2)
+ 		return 2;
+ 	*page2 = 2;
+-	no_page = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE,
++	no_page = bpf_arena_alloc_pages(&arena, base + ARENA_SIZE - PAGE_SIZE,
+ 					1, NUMA_NO_NODE, 0);
+ 	if (no_page)
+ 		return 3;
+@@ -66,4 +66,110 @@ int big_alloc1(void *ctx)
+ #endif
+ 	return 0;
+ }
++
++#if defined(__BPF_FEATURE_ADDR_SPACE_CAST)
++#define PAGE_CNT 100
++__u8 __arena * __arena page[PAGE_CNT]; /* occupies the first page */
++__u8 __arena *base;
++
++/*
++ * Check that arena's range_tree algorithm allocates pages sequentially
++ * on the first pass and then fills in all gaps on the second pass.
++ */
++__noinline int alloc_pages(int page_cnt, int pages_atonce, bool first_pass,
++		int max_idx, int step)
++{
++	__u8 __arena *pg;
++	int i, pg_idx;
++
++	for (i = 0; i < page_cnt; i++) {
++		pg = bpf_arena_alloc_pages(&arena, NULL, pages_atonce,
++					   NUMA_NO_NODE, 0);
++		if (!pg)
++			return step;
++		pg_idx = (pg - base) / PAGE_SIZE;
++		if (first_pass) {
++			/* Pages must be allocated sequentially */
++			if (pg_idx != i)
++				return step + 100;
++		} else {
++			/* Allocator must fill into gaps */
++			if (pg_idx >= max_idx || (pg_idx & 1))
++				return step + 200;
++		}
++		*pg = pg_idx;
++		page[pg_idx] = pg;
++		cond_break;
++	}
++	return 0;
++}
++
++//SEC("syscall")
++//__success __retval(0)
++int big_alloc2(void *ctx)
++{
++	__u8 __arena *pg;
++	int i, err;
++
++	base = bpf_arena_alloc_pages(&arena, NULL, 1, NUMA_NO_NODE, 0);
++	if (!base)
++		return 1;
++	bpf_arena_free_pages(&arena, (void __arena *)base, 1);
++
++	err = alloc_pages(PAGE_CNT, 1, true, PAGE_CNT, 2);
++	if (err)
++		return err;
++
++	/* Clear all even pages */
++	for (i = 0; i < PAGE_CNT; i += 2) {
++		pg = page[i];
++		if (*pg != i)
++			return 3;
++		bpf_arena_free_pages(&arena, (void __arena *)pg, 1);
++		page[i] = NULL;
++		cond_break;
++	}
++
++	/* Allocate into freed gaps */
++	err = alloc_pages(PAGE_CNT / 2, 1, false, PAGE_CNT, 4);
++	if (err)
++		return err;
++
++	/* Free pairs of pages */
++	for (i = 0; i < PAGE_CNT; i += 4) {
++		pg = page[i];
++		if (*pg != i)
++			return 5;
++		bpf_arena_free_pages(&arena, (void __arena *)pg, 2);
++		page[i] = NULL;
++		page[i + 1] = NULL;
++		cond_break;
++	}
++
++	/* Allocate 2 pages at a time into freed gaps */
++	err = alloc_pages(PAGE_CNT / 4, 2, false, PAGE_CNT, 6);
++	if (err)
++		return err;
++
++	/* Check pages without freeing */
++	for (i = 0; i < PAGE_CNT; i += 2) {
++		pg = page[i];
++		if (*pg != i)
++			return 7;
++		cond_break;
++	}
++
++	pg = bpf_arena_alloc_pages(&arena, NULL, 1, NUMA_NO_NODE, 0);
++
++	if (!pg)
++		return 8;
++	/*
++	 * The first PAGE_CNT pages are occupied. The new page
++	 * must be above.
++	 */
++	if ((pg - base) / PAGE_SIZE < PAGE_CNT)
++		return 9;
++	return 0;
++}
++#endif
+ char _license[] SEC("license") = "GPL";
 
 
 
