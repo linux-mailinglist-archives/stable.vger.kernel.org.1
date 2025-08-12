@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E1EB2363D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:59:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AF9B2364E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30B225A01DE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:57:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE91E189C6FE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B88E2FDC53;
-	Tue, 12 Aug 2025 18:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A2D2FE571;
+	Tue, 12 Aug 2025 18:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOmG+SPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T84t0iKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5BE2CA9;
-	Tue, 12 Aug 2025 18:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98CA2FE598;
+	Tue, 12 Aug 2025 18:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025048; cv=none; b=il7WJx1T1/nN0y/Ijot1mdpUm28tY10h94V3fAei2d44ss98b4uBT5RQbYKjpA/GDO9qh0CC3kY3fSHkIubsA1BYkzYNCZVy/Oa95VFRz9dL2cTKIXS3iFEQc6abDOxBqCowF5nEPcHGZOKSnnRqJHlE0WS+ZzZZiOAo+ZBSYW8=
+	t=1755025072; cv=none; b=lB4WuKss81+Kx72hp39Z3KccuFlwdUJt8rs9oHvYxrQnEX+Z7H6r1NOkrBE5S6Sng2yUmQ1MHchjcB3ofMp9RLcAaly1mSoB7ESb6BIZD1dryQMoFKI9GsA4XYS4V8QoGmMydUm0d+11w9sNfJItVaRat2JwTdmx6D+efQ5I19o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025048; c=relaxed/simple;
-	bh=kFBYCLJ4nsrAr6czstJj7N0POiGsUbkavERGNGU5E2o=;
+	s=arc-20240116; t=1755025072; c=relaxed/simple;
+	bh=xEIiGCFV9/Np2b6FYhlNU7Poyh9fBM3uNRBnfRa6yCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuzQTtXnhGJnWTAGsM40cIqkVCKyy1VponVXqaWMkcYUVIvtBcwaAcLc/PWn+xA7/llC6YBOUePwFRhlUParbQHR0AKdBX70OmlYRQ+xG7jKpO7dmli9xoYvHOSU7nGCtGKFdC2n1KzyDKEuK+DDBmsKkUqY7qAaPAFR+TOL0jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOmG+SPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5493C4CEF0;
-	Tue, 12 Aug 2025 18:57:26 +0000 (UTC)
+	 MIME-Version; b=niTF6LlDnCMuxSyE3K1MWuI6omMu2WCZhJXviCZ5m7FQzb9wke7SJ9aw00fPCjgopzhFY73BmwghC74RLwyUVwozaI4uLd+0SUdpc1S/WUZcFMP19zV/RwBa9YqIBFqwsBQDDR0iSooeMwDzZvjIhrlN62KSraAui4Yw0aJkYyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T84t0iKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198DEC4CEF0;
+	Tue, 12 Aug 2025 18:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025047;
-	bh=kFBYCLJ4nsrAr6czstJj7N0POiGsUbkavERGNGU5E2o=;
+	s=korg; t=1755025071;
+	bh=xEIiGCFV9/Np2b6FYhlNU7Poyh9fBM3uNRBnfRa6yCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOmG+SPGBo8MYwrWqTcnXP/yejsHw/7cZeNHY6Qlqse00fkFWXQI/XA/vyhgwWPX2
-	 JyAJ18Y8KGC4toAM50Qow1miYTFX1Jvf7LZp9oSfrmJ1MAWPYS4jr/OT30PbpHNgr8
-	 4L5dUQqrlHsz6xVr5FpN8txP5UpRq5ngFGTS0xJs=
+	b=T84t0iKxH1deBVI7dKjrzUQfnXRu1n41LUcF/zJilqfK9j2zw+bhFcHpPLNmJ39MR
+	 XUA0kXCmGxXWQKtsDHN4CcV4A+QQaaVNvx9SRDugaeC6zjE1L3SuaStHN/+DvfDg01
+	 m1r1+JL3YwvGyEyuQ+L1l25tZ8uqnx2mUfPpuTtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baojun Xu <baojun.xu@ti.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 527/627] ASoC: tas2781: Fix the wrong step for TLV on tas2781
-Date: Tue, 12 Aug 2025 19:33:42 +0200
-Message-ID: <20250812173451.953554163@linuxfoundation.org>
+Subject: [PATCH 6.16 528/627] spi: cs42l43: Property entry should be a null-terminated array
+Date: Tue, 12 Aug 2025 19:33:43 +0200
+Message-ID: <20250812173451.991573535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -66,34 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baojun Xu <baojun.xu@ti.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit 9843cf7b6fd6f938c16fde51e86dd0e3ddbefb12 ]
+[ Upstream commit ffcfd071eec7973e58c4ffff7da4cb0e9ca7b667 ]
 
-The step for TLV on tas2781, should be 50 (-0.5dB).
+The software node does not specify a count of property entries, so the
+array must be null-terminated.
 
-Fixes: 678f38eba1f2 ("ASoC: tas2781: Add Header file for tas2781 driver")
-Signed-off-by: Baojun Xu <baojun.xu@ti.com>
-Link: https://patch.msgid.link/20250801021618.64627-1-baojun.xu@ti.com
+When unterminated, this can lead to a fault in the downstream cs35l56
+amplifier driver, because the node parse walks off the end of the
+array into unknown memory.
+
+Fixes: 0ca645ab5b15 ("spi: cs42l43: Add speaker id support to the bridge configuration")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220371
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250731160109.1547131-1-simont@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/tas2781-tlv.h | 2 +-
+ drivers/spi/spi-cs42l43.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/sound/tas2781-tlv.h b/include/sound/tas2781-tlv.h
-index d87263e43fdb..ef9b9f19d212 100644
---- a/include/sound/tas2781-tlv.h
-+++ b/include/sound/tas2781-tlv.h
-@@ -15,7 +15,7 @@
- #ifndef __TAS2781_TLV_H__
- #define __TAS2781_TLV_H__
+diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
+index b28a840b3b04..14307dd800b7 100644
+--- a/drivers/spi/spi-cs42l43.c
++++ b/drivers/spi/spi-cs42l43.c
+@@ -295,7 +295,7 @@ static struct spi_board_info *cs42l43_create_bridge_amp(struct cs42l43_spi *priv
+ 	struct spi_board_info *info;
  
--static const __maybe_unused DECLARE_TLV_DB_SCALE(dvc_tlv, -10000, 100, 0);
-+static const __maybe_unused DECLARE_TLV_DB_SCALE(dvc_tlv, -10000, 50, 0);
- static const __maybe_unused DECLARE_TLV_DB_SCALE(amp_vol_tlv, 1100, 50, 0);
+ 	if (spkid >= 0) {
+-		props = devm_kmalloc(priv->dev, sizeof(*props), GFP_KERNEL);
++		props = devm_kcalloc(priv->dev, 2, sizeof(*props), GFP_KERNEL);
+ 		if (!props)
+ 			return NULL;
  
- #endif
 -- 
 2.39.5
 
