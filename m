@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0A0B232A0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CDFFB23074
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DF29582503
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0A51AA1D1B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831792F90CC;
-	Tue, 12 Aug 2025 18:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AB12FE569;
+	Tue, 12 Aug 2025 17:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAE5TGGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJgw3K+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DC41B87F2;
-	Tue, 12 Aug 2025 18:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5598A2FE566;
+	Tue, 12 Aug 2025 17:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022524; cv=none; b=RtrnJeAX9N3EQsPi9jfdinbMygsMQ+TlsAWWNWFpwQMn3Tem3C667cyXtDgcOQGQacEI+QLCySVUTtFhObjNiR8NBGEHrBYoLJEtvn6Bub8JsOmDWGKuqAaZqqUl4B7czeyfJ1jrx26UnJKuR6wJ7slMMVS3QhvePPHgWz1m9QM=
+	t=1755021054; cv=none; b=odlza/pP0yWD126XR4ma3e6HiBmZfvvLbaGr69WT/5F0bmS7aX6nrTkeCxnC1ucz5k+dqhj/gzLR5YEX/EP7Fx2IIRs5XFHbTotIAf3BfUoc2jmXkmdo5gwnsOwSfj/v7/HO+YkaoQX/D+DAeGfJcjttsAsC5OC8qJOZmySGxAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022524; c=relaxed/simple;
-	bh=AmBClzfGANhArvV7tvg6MxY8CThhbIH3EB+gbkUwqGA=;
+	s=arc-20240116; t=1755021054; c=relaxed/simple;
+	bh=8RGnf/qBeRb7tUAB2tTNKFc3yPYARdjjlOuvXz8i6/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZdhYBHNkzt2GJpHds2m+TuP4hNZiuQOH3ZmyAi0MIa6l3VuMQF/cG+k3g6ZFvk4J3tQzUi+GEU+0apYuMtHY5hJlax/re0zP3Px9d4LZ7FvXGP8xX5uKHNJdHujkIInqZQIixyBrDsLgGlksrWShZazF3+DU4Cdpc41GuyrGLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAE5TGGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8E1C4CEF0;
-	Tue, 12 Aug 2025 18:15:23 +0000 (UTC)
+	 MIME-Version; b=CxIe2uLNfK5sfHVmJNAO0L5HTDdT3+6ehzn72CJw26xaNG4DGp98U2wLSX8Zk9U7v858O861/YeVHRIyGmsCkkLByarJLmLGy2w1uxdpnnP+ni0dw36veaWKU20FDnz5M7KtthLq136xy4addds4nH9ODvh/iEywDNa2bVrb0pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJgw3K+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E12C4CEF1;
+	Tue, 12 Aug 2025 17:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022524;
-	bh=AmBClzfGANhArvV7tvg6MxY8CThhbIH3EB+gbkUwqGA=;
+	s=korg; t=1755021054;
+	bh=8RGnf/qBeRb7tUAB2tTNKFc3yPYARdjjlOuvXz8i6/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAE5TGGMQw03PIMuiEX5NX4nGw5rMlB/Hvk9+wpi64f5ahNtEXFgrrI35sb7cS/yT
-	 rUMOnsCvOeZBmbIj7z4WYUPXa0kK862HvRjDw7t2GALcBKO5xe2O9R10Xxwuwi/oha
-	 Wuxaam7ROHrxadDBfuykrC8dHPkLyYC3687JNTxU=
+	b=XJgw3K+nzzhJa1rZPqVLLBa5NFDvdC2/5lgUBOOkPcvqUBcb6AfCdGuPT64zwWbGC
+	 P0Zne0uQDOUw40r0LevGumxN3ZCWosFJCgEsbFzc9HVreDeuSsz1l0NLVhYWQflXjO
+	 WFhyy8MTnee3sn4tEwQuOfgXGCYMhdQET/EljSq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/369] ipv6: prevent infinite loop in rt6_nlmsg_size()
+Subject: [PATCH 6.6 055/262] caif: reduce stack size, again
 Date: Tue, 12 Aug 2025 19:27:23 +0200
-Message-ID: <20250812173020.277962872@linuxfoundation.org>
+Message-ID: <20250812172955.321966340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,361 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 54e6fe9dd3b0e7c481c2228782c9494d653546da ]
+[ Upstream commit b630c781bcf6ff87657146661816d0d30a902139 ]
 
-While testing prior patch, I was able to trigger
-an infinite loop in rt6_nlmsg_size() in the following place:
+I tried to fix the stack usage in this function a couple of years ago,
+but there is still a problem with the latest gcc versions in some
+configurations:
 
-list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
-			fib6_siblings) {
-	rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
-}
+net/caif/cfctrl.c:553:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
 
-This is because fib6_del_route() and fib6_add_rt2node()
-uses list_del_rcu(), which can confuse rcu readers,
-because they might no longer see the head of the list.
+Reduce this once again, with a separate cfctrl_link_setup() function that
+holds the bulk of all the local variables. It also turns out that the
+param[] array that takes up a large portion of the stack is write-only
+and can be left out here.
 
-Restart the loop if f6i->fib6_nsiblings is zero.
-
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250725140725.3626540-3-edumazet@google.com
+Fixes: ce6289661b14 ("caif: reduce stack size with KASAN")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250620112244.3425554-1-arnd@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c |  4 ++--
- net/ipv6/route.c   | 34 ++++++++++++++++++----------------
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ net/caif/cfctrl.c | 294 +++++++++++++++++++++++-----------------------
+ 1 file changed, 144 insertions(+), 150 deletions(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 9a1c59275a10..c53303e89390 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1251,7 +1251,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 							 &rt->fib6_siblings,
- 							 fib6_siblings)
- 					sibling->fib6_nsiblings--;
--				rt->fib6_nsiblings = 0;
-+				WRITE_ONCE(rt->fib6_nsiblings, 0);
- 				list_del_rcu(&rt->fib6_siblings);
- 				rt6_multipath_rebalance(next_sibling);
- 				return err;
-@@ -1969,7 +1969,7 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
- 		list_for_each_entry_safe(sibling, next_sibling,
- 					 &rt->fib6_siblings, fib6_siblings)
- 			sibling->fib6_nsiblings--;
--		rt->fib6_nsiblings = 0;
-+		WRITE_ONCE(rt->fib6_nsiblings, 0);
- 		list_del_rcu(&rt->fib6_siblings);
- 		rt6_multipath_rebalance(next_sibling);
- 	}
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index d9ab070e78e0..f1e64c1cc49b 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5587,32 +5587,34 @@ static int rt6_nh_nlmsg_size(struct fib6_nh *nh, void *arg)
+diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
+index 8480684f2762..10eeace2278b 100644
+--- a/net/caif/cfctrl.c
++++ b/net/caif/cfctrl.c
+@@ -351,17 +351,154 @@ int cfctrl_cancel_req(struct cflayer *layr, struct cflayer *adap_layer)
+ 	return found;
+ }
  
- static size_t rt6_nlmsg_size(struct fib6_info *f6i)
- {
-+	struct fib6_info *sibling;
-+	struct fib6_nh *nh;
- 	int nexthop_len;
- 
- 	if (f6i->nh) {
- 		nexthop_len = nla_total_size(4); /* RTA_NH_ID */
- 		nexthop_for_each_fib6_nh(f6i->nh, rt6_nh_nlmsg_size,
- 					 &nexthop_len);
--	} else {
--		struct fib6_nh *nh = f6i->fib6_nh;
--		struct fib6_info *sibling;
--
--		nexthop_len = 0;
--		if (f6i->fib6_nsiblings) {
--			rt6_nh_nlmsg_size(nh, &nexthop_len);
--
--			rcu_read_lock();
-+		goto common;
++static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp)
++{
++	u8 len;
++	u8 linkid = 0;
++	enum cfctrl_srv serv;
++	enum cfctrl_srv servtype;
++	u8 endpoint;
++	u8 physlinkid;
++	u8 prio;
++	u8 tmp;
++	u8 *cp;
++	int i;
++	struct cfctrl_link_param linkparam;
++	struct cfctrl_request_info rsp, *req;
++
++	memset(&linkparam, 0, sizeof(linkparam));
++
++	tmp = cfpkt_extr_head_u8(pkt);
++
++	serv = tmp & CFCTRL_SRV_MASK;
++	linkparam.linktype = serv;
++
++	servtype = tmp >> 4;
++	linkparam.chtype = servtype;
++
++	tmp = cfpkt_extr_head_u8(pkt);
++	physlinkid = tmp & 0x07;
++	prio = tmp >> 3;
++
++	linkparam.priority = prio;
++	linkparam.phyid = physlinkid;
++	endpoint = cfpkt_extr_head_u8(pkt);
++	linkparam.endpoint = endpoint & 0x03;
++
++	switch (serv) {
++	case CFCTRL_SRV_VEI:
++	case CFCTRL_SRV_DBG:
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		break;
++	case CFCTRL_SRV_VIDEO:
++		tmp = cfpkt_extr_head_u8(pkt);
++		linkparam.u.video.connid = tmp;
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		break;
++
++	case CFCTRL_SRV_DATAGRAM:
++		linkparam.u.datagram.connid = cfpkt_extr_head_u32(pkt);
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		break;
++	case CFCTRL_SRV_RFM:
++		/* Construct a frame, convert
++		 * DatagramConnectionID
++		 * to network format long and copy it out...
++		 */
++		linkparam.u.rfm.connid = cfpkt_extr_head_u32(pkt);
++		cp = (u8 *) linkparam.u.rfm.volume;
++		for (tmp = cfpkt_extr_head_u8(pkt);
++		     cfpkt_more(pkt) && tmp != '\0';
++		     tmp = cfpkt_extr_head_u8(pkt))
++			*cp++ = tmp;
++		*cp = '\0';
++
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++
++		break;
++	case CFCTRL_SRV_UTIL:
++		/* Construct a frame, convert
++		 * DatagramConnectionID
++		 * to network format long and copy it out...
++		 */
++		/* Fifosize KB */
++		linkparam.u.utility.fifosize_kb = cfpkt_extr_head_u16(pkt);
++		/* Fifosize bufs */
++		linkparam.u.utility.fifosize_bufs = cfpkt_extr_head_u16(pkt);
++		/* name */
++		cp = (u8 *) linkparam.u.utility.name;
++		caif_assert(sizeof(linkparam.u.utility.name)
++			     >= UTILITY_NAME_LENGTH);
++		for (i = 0; i < UTILITY_NAME_LENGTH && cfpkt_more(pkt); i++) {
++			tmp = cfpkt_extr_head_u8(pkt);
++			*cp++ = tmp;
++		}
++		/* Length */
++		len = cfpkt_extr_head_u8(pkt);
++		linkparam.u.utility.paramlen = len;
++		/* Param Data */
++		cp = linkparam.u.utility.params;
++		while (cfpkt_more(pkt) && len--) {
++			tmp = cfpkt_extr_head_u8(pkt);
++			*cp++ = tmp;
++		}
++		if (CFCTRL_ERR_BIT & cmdrsp)
++			break;
++		/* Link ID */
++		linkid = cfpkt_extr_head_u8(pkt);
++		/* Length */
++		len = cfpkt_extr_head_u8(pkt);
++		/* Param Data */
++		cfpkt_extr_head(pkt, NULL, len);
++		break;
++	default:
++		pr_warn("Request setup, invalid type (%d)\n", serv);
++		return -1;
 +	}
- 
--			list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
--						fib6_siblings) {
--				rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
--			}
-+	rcu_read_lock();
-+retry:
-+	nh = f6i->fib6_nh;
-+	nexthop_len = 0;
-+	if (READ_ONCE(f6i->fib6_nsiblings)) {
-+		rt6_nh_nlmsg_size(nh, &nexthop_len);
- 
--			rcu_read_unlock();
-+		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
-+					fib6_siblings) {
-+			rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
-+			if (!READ_ONCE(f6i->fib6_nsiblings))
-+				goto retry;
- 		}
--		nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
- 	}
++
++	rsp.cmd = CFCTRL_CMD_LINK_SETUP;
++	rsp.param = linkparam;
++	spin_lock_bh(&cfctrl->info_list_lock);
++	req = cfctrl_remove_req(cfctrl, &rsp);
++
++	if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
++		cfpkt_erroneous(pkt)) {
++		pr_err("Invalid O/E bit or parse error "
++				"on CAIF control channel\n");
++		cfctrl->res.reject_rsp(cfctrl->serv.layer.up, 0,
++				       req ? req->client_layer : NULL);
++	} else {
++		cfctrl->res.linksetup_rsp(cfctrl->serv.layer.up, linkid,
++					  serv, physlinkid,
++					  req ?  req->client_layer : NULL);
++	}
++
++	kfree(req);
++
++	spin_unlock_bh(&cfctrl->info_list_lock);
++
++	return 0;
++}
++
+ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ {
+ 	u8 cmdrsp;
+ 	u8 cmd;
+-	int ret = -1;
+-	u8 len;
+-	u8 param[255];
++	int ret = 0;
+ 	u8 linkid = 0;
+ 	struct cfctrl *cfctrl = container_obj(layer);
+-	struct cfctrl_request_info rsp, *req;
 -
-+	rcu_read_unlock();
-+	nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
-+common:
- 	return NLMSG_ALIGN(sizeof(struct rtmsg))
- 	       + nla_total_size(16) /* RTA_SRC */
- 	       + nla_total_size(16) /* RTA_DST */
+ 
+ 	cmdrsp = cfpkt_extr_head_u8(pkt);
+ 	cmd = cmdrsp & CFCTRL_CMD_MASK;
+@@ -374,150 +511,7 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ 
+ 	switch (cmd) {
+ 	case CFCTRL_CMD_LINK_SETUP:
+-		{
+-			enum cfctrl_srv serv;
+-			enum cfctrl_srv servtype;
+-			u8 endpoint;
+-			u8 physlinkid;
+-			u8 prio;
+-			u8 tmp;
+-			u8 *cp;
+-			int i;
+-			struct cfctrl_link_param linkparam;
+-			memset(&linkparam, 0, sizeof(linkparam));
+-
+-			tmp = cfpkt_extr_head_u8(pkt);
+-
+-			serv = tmp & CFCTRL_SRV_MASK;
+-			linkparam.linktype = serv;
+-
+-			servtype = tmp >> 4;
+-			linkparam.chtype = servtype;
+-
+-			tmp = cfpkt_extr_head_u8(pkt);
+-			physlinkid = tmp & 0x07;
+-			prio = tmp >> 3;
+-
+-			linkparam.priority = prio;
+-			linkparam.phyid = physlinkid;
+-			endpoint = cfpkt_extr_head_u8(pkt);
+-			linkparam.endpoint = endpoint & 0x03;
+-
+-			switch (serv) {
+-			case CFCTRL_SRV_VEI:
+-			case CFCTRL_SRV_DBG:
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				break;
+-			case CFCTRL_SRV_VIDEO:
+-				tmp = cfpkt_extr_head_u8(pkt);
+-				linkparam.u.video.connid = tmp;
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				break;
+-
+-			case CFCTRL_SRV_DATAGRAM:
+-				linkparam.u.datagram.connid =
+-				    cfpkt_extr_head_u32(pkt);
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				break;
+-			case CFCTRL_SRV_RFM:
+-				/* Construct a frame, convert
+-				 * DatagramConnectionID
+-				 * to network format long and copy it out...
+-				 */
+-				linkparam.u.rfm.connid =
+-				    cfpkt_extr_head_u32(pkt);
+-				cp = (u8 *) linkparam.u.rfm.volume;
+-				for (tmp = cfpkt_extr_head_u8(pkt);
+-				     cfpkt_more(pkt) && tmp != '\0';
+-				     tmp = cfpkt_extr_head_u8(pkt))
+-					*cp++ = tmp;
+-				*cp = '\0';
+-
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-
+-				break;
+-			case CFCTRL_SRV_UTIL:
+-				/* Construct a frame, convert
+-				 * DatagramConnectionID
+-				 * to network format long and copy it out...
+-				 */
+-				/* Fifosize KB */
+-				linkparam.u.utility.fifosize_kb =
+-				    cfpkt_extr_head_u16(pkt);
+-				/* Fifosize bufs */
+-				linkparam.u.utility.fifosize_bufs =
+-				    cfpkt_extr_head_u16(pkt);
+-				/* name */
+-				cp = (u8 *) linkparam.u.utility.name;
+-				caif_assert(sizeof(linkparam.u.utility.name)
+-					     >= UTILITY_NAME_LENGTH);
+-				for (i = 0;
+-				     i < UTILITY_NAME_LENGTH
+-				     && cfpkt_more(pkt); i++) {
+-					tmp = cfpkt_extr_head_u8(pkt);
+-					*cp++ = tmp;
+-				}
+-				/* Length */
+-				len = cfpkt_extr_head_u8(pkt);
+-				linkparam.u.utility.paramlen = len;
+-				/* Param Data */
+-				cp = linkparam.u.utility.params;
+-				while (cfpkt_more(pkt) && len--) {
+-					tmp = cfpkt_extr_head_u8(pkt);
+-					*cp++ = tmp;
+-				}
+-				if (CFCTRL_ERR_BIT & cmdrsp)
+-					break;
+-				/* Link ID */
+-				linkid = cfpkt_extr_head_u8(pkt);
+-				/* Length */
+-				len = cfpkt_extr_head_u8(pkt);
+-				/* Param Data */
+-				cfpkt_extr_head(pkt, &param, len);
+-				break;
+-			default:
+-				pr_warn("Request setup, invalid type (%d)\n",
+-					serv);
+-				goto error;
+-			}
+-
+-			rsp.cmd = cmd;
+-			rsp.param = linkparam;
+-			spin_lock_bh(&cfctrl->info_list_lock);
+-			req = cfctrl_remove_req(cfctrl, &rsp);
+-
+-			if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
+-				cfpkt_erroneous(pkt)) {
+-				pr_err("Invalid O/E bit or parse error "
+-						"on CAIF control channel\n");
+-				cfctrl->res.reject_rsp(cfctrl->serv.layer.up,
+-						       0,
+-						       req ? req->client_layer
+-						       : NULL);
+-			} else {
+-				cfctrl->res.linksetup_rsp(cfctrl->serv.
+-							  layer.up, linkid,
+-							  serv, physlinkid,
+-							  req ? req->
+-							  client_layer : NULL);
+-			}
+-
+-			kfree(req);
+-
+-			spin_unlock_bh(&cfctrl->info_list_lock);
+-		}
++		ret = cfctrl_link_setup(cfctrl, pkt, cmdrsp);
+ 		break;
+ 	case CFCTRL_CMD_LINK_DESTROY:
+ 		linkid = cfpkt_extr_head_u8(pkt);
+@@ -544,9 +538,9 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ 		break;
+ 	default:
+ 		pr_err("Unrecognized Control Frame\n");
++		ret = -1;
+ 		goto error;
+ 	}
+-	ret = 0;
+ error:
+ 	cfpkt_destroy(pkt);
+ 	return ret;
 -- 
 2.39.5
 
