@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9D5B23545
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F96B231EA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B9E03B105F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C33173916
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BF92FD1A4;
-	Tue, 12 Aug 2025 18:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A629C280037;
+	Tue, 12 Aug 2025 18:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8xLvlGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGHbYxoH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B232F4A0A;
-	Tue, 12 Aug 2025 18:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657F32FE571;
+	Tue, 12 Aug 2025 18:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024266; cv=none; b=UAjSi22LME1JvyeX6+wj+MW7TQCzqJKH19C+/UNsMSVK6mcMNYHg8v/gAcgpw6a4lCKDKCgykV90k6CYGLc7KR/eBYRtgOj90PxmxPIk12gdEhsx1O7VPg3rXdbdLQUs/tnjnnVpgdPSa5yUtusTdrjS56pLg5R5YRG74FIp9gs=
+	t=1755021917; cv=none; b=QDZVEOuR2QROF8W2Dv6Gsj0XSjqLgjmsFcugcgnbScPABfQXyrZTp4IhchMrfGuSdJuM2pQhZR7vhVABhRZU3dpNPzTKt1pDWjvvZUQzrPitCL+fnPEaEQUq9npgwWr1lv/s93kJt4UZHYJUfp77ziOl9MbSJweg0RXS5H2rAVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024266; c=relaxed/simple;
-	bh=2w5TGnYDvWnJJtDTurhE6ycpxJt9Gzsaz8Ydpltfm6U=;
+	s=arc-20240116; t=1755021917; c=relaxed/simple;
+	bh=0y2FR6YA5Dpj0ja4hO4ugpVRdw5RxY0xuBFp4hEF+cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=siQtxvZYvSy93U2ANz4UIaAbqDq7+k7Z8DYcm54P20oIN3ZR9/+NdbDFx8OWOVwhMrgPEXf35VPP3ZzKOaHEo93Rq99bgiRgDfvvTeXPoPZLQpKbuiSyfvSTdM4Z3YqxYlNpMWTBvqYVYQjMl7HRFFK1WkbzditmVJRMCWmaLNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8xLvlGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64689C4CEF0;
-	Tue, 12 Aug 2025 18:44:25 +0000 (UTC)
+	 MIME-Version; b=R8liV+Dh7VyerKnp9f2x1Avdq7X6ghFfemLr2hffMc2W1ViNz+BJ8jptmk75/s9DcM0bba99TmXJR+O7nHFjTboLmJt4QVTIBsQelR7GA6CcCl14FFH5ZWwC1yWZB8G4R1AaLqmVOe3advGNfTMjEc+J2bXbNyzfkRNoBubiA8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGHbYxoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C981DC4CEF0;
+	Tue, 12 Aug 2025 18:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024265;
-	bh=2w5TGnYDvWnJJtDTurhE6ycpxJt9Gzsaz8Ydpltfm6U=;
+	s=korg; t=1755021917;
+	bh=0y2FR6YA5Dpj0ja4hO4ugpVRdw5RxY0xuBFp4hEF+cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8xLvlGJmbOZFzR0vUjvWEmkeMjUWjAzHzZLONPdGwXKW1y0gkTbSTxpU8D6Ww2r2
-	 7uM8J7GY7tq1HOUkKqcDTXsvqut/Sj9B/DgsLA8Oub6BqFoQ4+aE3cFghHYR15JshY
-	 bMFuPxXpgbHCbviJHbsqzHmdUorkldNdwfVJhrRc=
+	b=nGHbYxoHCzWXiVJxnP68kL8mGGBqBUDzcRRz86jfERCccoLYoPPCPqF1S2wSZmCN9
+	 opPDj9Hv+WNNR+XTFO8cfDoRxP4TqmoMHVcPsq0tkHSmIJf86B5hJ/Pe5DktbS9iHX
+	 HX1hP3g5061kv876sJAZkOVtyCV8gPAE+Sj045RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 323/627] crypto: ahash - Add support for drivers with no fallback
+	Scott Mayhew <smayhew@redhat.com>,
+	Trond Myklebust <trondmy@hammerspace.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 230/262] sunrpc: fix handling of server side tls alerts
 Date: Tue, 12 Aug 2025 19:30:18 +0200
-Message-ID: <20250812173431.583297700@linuxfoundation.org>
+Message-ID: <20250812173002.954442181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit 4ccd065a69df163cd9fe0dd8e0f609f1eeb4723d ]
+commit bee47cb026e762841f3faece47b51f985e215edb upstream.
 
-Some drivers cannot have a fallback, e.g., because the key is held
-in hardware.  Allow these to be used with ahash by adding the bit
-CRYPTO_ALG_NO_FALLBACK.
+Scott Mayhew discovered a security exploit in NFS over TLS in
+tls_alert_recv() due to its assumption it can read data from
+the msg iterator's kvec..
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Tested-by: Harald Freudenberger <freude@linux.ibm.com>
-Stable-dep-of: 1e2b7fcd3f07 ("crypto: ahash - Stop legacy tfms from using the set_virt fallback path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kTLS implementation splits TLS non-data record payload between
+the control message buffer (which includes the type such as TLS
+aler or TLS cipher change) and the rest of the payload (say TLS
+alert's level/description) which goes into the msg payload buffer.
+
+This patch proposes to rework how control messages are setup and
+used by sock_recvmsg().
+
+If no control message structure is setup, kTLS layer will read and
+process TLS data record types. As soon as it encounters a TLS control
+message, it would return an error. At that point, NFS can setup a
+kvec backed msg buffer and read in the control message such as a
+TLS alert. Msg iterator can advance the kvec pointer as a part of
+the copy process thus we need to revert the iterator before calling
+into the tls_alert_recv.
+
+Reported-by: Scott Mayhew <smayhew@redhat.com>
+Fixes: 5e052dda121e ("SUNRPC: Recognize control messages in server-side TCP socket code")
+Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/ahash.c         | 10 +++++++++-
- include/linux/crypto.h |  3 +++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ net/sunrpc/svcsock.c |   43 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/crypto/ahash.c b/crypto/ahash.c
-index bc84a07c924c..3878b4da3cfd 100644
---- a/crypto/ahash.c
-+++ b/crypto/ahash.c
-@@ -347,6 +347,9 @@ static int ahash_do_req_chain(struct ahash_request *req,
- 	if (crypto_ahash_statesize(tfm) > HASH_MAX_STATESIZE)
- 		return -ENOSYS;
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -257,20 +257,47 @@ svc_tcp_sock_process_cmsg(struct socket
+ }
  
-+	if (!crypto_ahash_need_fallback(tfm))
-+		return -ENOSYS;
+ static int
+-svc_tcp_sock_recv_cmsg(struct svc_sock *svsk, struct msghdr *msg)
++svc_tcp_sock_recv_cmsg(struct socket *sock, unsigned int *msg_flags)
+ {
+ 	union {
+ 		struct cmsghdr	cmsg;
+ 		u8		buf[CMSG_SPACE(sizeof(u8))];
+ 	} u;
+-	struct socket *sock = svsk->sk_sock;
++	u8 alert[2];
++	struct kvec alert_kvec = {
++		.iov_base = alert,
++		.iov_len = sizeof(alert),
++	};
++	struct msghdr msg = {
++		.msg_flags = *msg_flags,
++		.msg_control = &u,
++		.msg_controllen = sizeof(u),
++	};
++	int ret;
 +
- 	{
- 		u8 state[HASH_MAX_STATESIZE];
- 
-@@ -954,6 +957,10 @@ static int ahash_prepare_alg(struct ahash_alg *alg)
- 	    base->cra_reqsize > MAX_SYNC_HASH_REQSIZE)
- 		return -EINVAL;
- 
-+	if (base->cra_flags & CRYPTO_ALG_NEED_FALLBACK &&
-+	    base->cra_flags & CRYPTO_ALG_NO_FALLBACK)
-+		return -EINVAL;
++	iov_iter_kvec(&msg.msg_iter, ITER_DEST, &alert_kvec, 1,
++		      alert_kvec.iov_len);
++	ret = sock_recvmsg(sock, &msg, MSG_DONTWAIT);
++	if (ret > 0 &&
++	    tls_get_record_type(sock->sk, &u.cmsg) == TLS_RECORD_TYPE_ALERT) {
++		iov_iter_revert(&msg.msg_iter, ret);
++		ret = svc_tcp_sock_process_cmsg(sock, &msg, &u.cmsg, -EAGAIN);
++	}
++	return ret;
++}
 +
- 	err = hash_prepare_alg(&alg->halg);
- 	if (err)
- 		return err;
-@@ -962,7 +969,8 @@ static int ahash_prepare_alg(struct ahash_alg *alg)
- 	base->cra_flags |= CRYPTO_ALG_TYPE_AHASH;
++static int
++svc_tcp_sock_recvmsg(struct svc_sock *svsk, struct msghdr *msg)
++{
+ 	int ret;
++	struct socket *sock = svsk->sk_sock;
  
- 	if ((base->cra_flags ^ CRYPTO_ALG_REQ_VIRT) &
--	    (CRYPTO_ALG_ASYNC | CRYPTO_ALG_REQ_VIRT))
-+	    (CRYPTO_ALG_ASYNC | CRYPTO_ALG_REQ_VIRT) &&
-+	    !(base->cra_flags & CRYPTO_ALG_NO_FALLBACK))
- 		base->cra_flags |= CRYPTO_ALG_NEED_FALLBACK;
+-	msg->msg_control = &u;
+-	msg->msg_controllen = sizeof(u);
+ 	ret = sock_recvmsg(sock, msg, MSG_DONTWAIT);
+-	if (unlikely(msg->msg_controllen != sizeof(u)))
+-		ret = svc_tcp_sock_process_cmsg(sock, msg, &u.cmsg, ret);
++	if (msg->msg_flags & MSG_CTRUNC) {
++		msg->msg_flags &= ~(MSG_CTRUNC | MSG_EOR);
++		if (ret == 0 || ret == -EIO)
++			ret = svc_tcp_sock_recv_cmsg(sock, &msg->msg_flags);
++	}
+ 	return ret;
+ }
  
- 	if (!alg->setkey)
-diff --git a/include/linux/crypto.h b/include/linux/crypto.h
-index b50f1954d1bb..a2137e19be7d 100644
---- a/include/linux/crypto.h
-+++ b/include/linux/crypto.h
-@@ -136,6 +136,9 @@
- /* Set if the algorithm supports virtual addresses. */
- #define CRYPTO_ALG_REQ_VIRT		0x00040000
+@@ -321,7 +348,7 @@ static ssize_t svc_tcp_read_msg(struct s
+ 		iov_iter_advance(&msg.msg_iter, seek);
+ 		buflen -= seek;
+ 	}
+-	len = svc_tcp_sock_recv_cmsg(svsk, &msg);
++	len = svc_tcp_sock_recvmsg(svsk, &msg);
+ 	if (len > 0)
+ 		svc_flush_bvec(bvec, len, seek);
  
-+/* Set if the algorithm cannot have a fallback (e.g., phmac). */
-+#define CRYPTO_ALG_NO_FALLBACK		0x00080000
-+
- /* The high bits 0xff000000 are reserved for type-specific flags. */
- 
- /*
--- 
-2.39.5
-
+@@ -1019,7 +1046,7 @@ static ssize_t svc_tcp_read_marker(struc
+ 		iov.iov_base = ((char *)&svsk->sk_marker) + svsk->sk_tcplen;
+ 		iov.iov_len  = want;
+ 		iov_iter_kvec(&msg.msg_iter, ITER_DEST, &iov, 1, want);
+-		len = svc_tcp_sock_recv_cmsg(svsk, &msg);
++		len = svc_tcp_sock_recvmsg(svsk, &msg);
+ 		if (len < 0)
+ 			return len;
+ 		svsk->sk_tcplen += len;
 
 
 
