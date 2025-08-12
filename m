@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB88BB233CC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DFAB23208
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FADC3BB8D3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A842F3ADEEE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2252B2FD1DA;
-	Tue, 12 Aug 2025 18:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510F4305E08;
+	Tue, 12 Aug 2025 18:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dedox2yQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tn3Pip8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA47C2FAC02;
-	Tue, 12 Aug 2025 18:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E66F3F9D2;
+	Tue, 12 Aug 2025 18:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023290; cv=none; b=uuHZwdHveGPebM85gGf9RUlrMK3uAvLTehBvXc2WCOIBlYiZ/LN68k6RNaux1B8q7wL7i8fxLOFTjvi1Dfw+QBUCJR+qnHlra/CNCJEtg/bpcqyPn7JOzM5aiJCPl+jCVctGgDntYJu97Z+M/QPqxoFFHnzzlzv/J6zUcEZqt30=
+	t=1755022145; cv=none; b=Wdgp5YgRGMtIOmcHvp1C2E9m3lpkbmmMg9wvT0c0NE1Wf7PL67/0R3g4K8tIrCQpc8Llld3JLrrgVL2qpbXhqCDEpqJd1DTF5ki+OhhzwzVmHkwDZTDqslTBkkeUKdtsniqHnRaAsLhyeo79AdrRvfngnZ59NAMsbEzbYh7mgvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023290; c=relaxed/simple;
-	bh=qQjEu7JTvNc5XT9soXb0DSCuwaup1dfEIb0Wu+fkeMc=;
+	s=arc-20240116; t=1755022145; c=relaxed/simple;
+	bh=FxKhPgxBBAR1zWQem+Xc14DblQkHF3gMB8PpAwiMIzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDFkzcPACY0uYr4QIOpigzHSCOP6UPEeqker0rNomtd93iA19IFkN4+lWp/EAvk/E37eIn0SZPL4n9ihrQc5r95+Sl7S+qnBOp3tIrM9KocirtcY6bHmC8Qphne/IL/yHlh18fPFQrlGNATElZ7/rNg6H6fwAMWuft6crip5koo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dedox2yQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A434C4CEF0;
-	Tue, 12 Aug 2025 18:28:09 +0000 (UTC)
+	 MIME-Version; b=NBRbJJ5v8jXnkydhpPRioCv0GPWZ548Z3bXzs3l1+/jGBeto7iax8wL3i8dC6mLZOSUmdWQrzVHk9Qk/ndcRqLPgmCCeazippqdOVbQG1O6oijhSGNZ7pyEpKu6pAjAG1e7ukMas6f+4SHHIx1Kj5YmeLDMwXPBtEYzkDteO24Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tn3Pip8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713E3C4CEF6;
+	Tue, 12 Aug 2025 18:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023290;
-	bh=qQjEu7JTvNc5XT9soXb0DSCuwaup1dfEIb0Wu+fkeMc=;
+	s=korg; t=1755022144;
+	bh=FxKhPgxBBAR1zWQem+Xc14DblQkHF3gMB8PpAwiMIzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dedox2yQk7F6jleBA9J0x87cwZMZgdn+2PWQZtPx+BGtpGEJPqAky5ipMFgirwfHr
-	 Uy17igKXMEOuWTyIeidLwI6Mv7KIXBkAmANN0XTvYsMvm38s6wiPuaT5Ees7+xc1As
-	 kirukEK5YUZYyEzrU6GyMaPkLTSKR60cwjZTxBXQ=
+	b=Tn3Pip8CXgB2bHFxF9V9OhfEywYtVazoM54HyH5Yba/OHHGsE05Oa4j/EveESn/J5
+	 1IAMzFPLzXCOal3IwWYHwX9GS7cK3k8YtC4Tk0rJ31rEUVPQ0U1cH3K2mHxeU2i51a
+	 fdoKOIeDjWWDKMitOI82pZmDOHiOSfgtvSEU0zAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 037/627] ASoC: mediatek: mt8183-afe-pcm: Support >32 bit DMA addresses
+Subject: [PATCH 6.12 035/369] firmware: arm_scmi: Fix up turbo frequencies selection
 Date: Tue, 12 Aug 2025 19:25:32 +0200
-Message-ID: <20250812173420.737070496@linuxfoundation.org>
+Message-ID: <20250812173016.072494320@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-[ Upstream commit 9e7bc5cb8d089d9799e17a9ac99c5da9b13b02e3 ]
+[ Upstream commit ad28fc31dd702871764e9294d4f2314ad78d24a9 ]
 
-The AFE DMA hardware supports up to 34 bits for DMA addresses. This is
-missing from the driver and prevents reserved memory regions from
-working properly when the allocated region is above the 4GB line.
+Sustained frequency when greater than or equal to 4Ghz on 64-bit devices
+currently result in marking all frequencies as turbo. Address the turbo
+frequency selection bug by fixing the truncation.
 
-Fill in the related register offsets for each DAI, and also set the
-DMA mask. Also fill in the LSB end register offsets for completeness.
-
-Fixes: a94aec035a12 ("ASoC: mediatek: mt8183: add platform driver")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://patch.msgid.link/20250612074901.4023253-8-wenst@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a897575e79d7 ("firmware: arm_scmi: Add support for marking certain frequencies as turbo")
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Message-Id: <20250514214719.203607-1-quic_sibis@quicinc.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8183/mt8183-afe-pcm.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/firmware/arm_scmi/perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-index 9b6b45c646e6..7383184097a4 100644
---- a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-@@ -6,6 +6,7 @@
- // Author: KaiChieh Chuang <kaichieh.chuang@mediatek.com>
+diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
+index c7e5a34b254b..683fd9b85c5c 100644
+--- a/drivers/firmware/arm_scmi/perf.c
++++ b/drivers/firmware/arm_scmi/perf.c
+@@ -892,7 +892,7 @@ static int scmi_dvfs_device_opps_add(const struct scmi_protocol_handle *ph,
+ 			freq = dom->opp[idx].indicative_freq * dom->mult_factor;
  
- #include <linux/delay.h>
-+#include <linux/dma-mapping.h>
- #include <linux/module.h>
- #include <linux/mfd/syscon.h>
- #include <linux/of.h>
-@@ -432,6 +433,9 @@ static const struct snd_soc_component_driver mt8183_afe_pcm_dai_component = {
- 		.reg_ofs_base = AFE_##_id##_BASE,	\
- 		.reg_ofs_cur = AFE_##_id##_CUR,		\
- 		.reg_ofs_end = AFE_##_id##_END,		\
-+		.reg_ofs_base_msb = AFE_##_id##_BASE_MSB,	\
-+		.reg_ofs_cur_msb = AFE_##_id##_CUR_MSB,		\
-+		.reg_ofs_end_msb = AFE_##_id##_END_MSB,		\
- 		.fs_reg = (_fs_reg),			\
- 		.fs_shift = _id##_MODE_SFT,		\
- 		.fs_maskbit = _id##_MODE_MASK,		\
-@@ -463,11 +467,17 @@ static const struct snd_soc_component_driver mt8183_afe_pcm_dai_component = {
- #define AFE_VUL12_BASE		AFE_VUL_D2_BASE
- #define AFE_VUL12_CUR		AFE_VUL_D2_CUR
- #define AFE_VUL12_END		AFE_VUL_D2_END
-+#define AFE_VUL12_BASE_MSB	AFE_VUL_D2_BASE_MSB
-+#define AFE_VUL12_CUR_MSB	AFE_VUL_D2_CUR_MSB
-+#define AFE_VUL12_END_MSB	AFE_VUL_D2_END_MSB
- #define AWB2_HD_ALIGN_SFT	AWB2_ALIGN_SFT
- #define VUL12_DATA_SFT		VUL12_MONO_SFT
- #define AFE_HDMI_BASE		AFE_HDMI_OUT_BASE
- #define AFE_HDMI_CUR		AFE_HDMI_OUT_CUR
- #define AFE_HDMI_END		AFE_HDMI_OUT_END
-+#define AFE_HDMI_BASE_MSB	AFE_HDMI_OUT_BASE_MSB
-+#define AFE_HDMI_CUR_MSB	AFE_HDMI_OUT_CUR_MSB
-+#define AFE_HDMI_END_MSB	AFE_HDMI_OUT_END_MSB
+ 		/* All OPPs above the sustained frequency are treated as turbo */
+-		data.turbo = freq > dom->sustained_freq_khz * 1000;
++		data.turbo = freq > dom->sustained_freq_khz * 1000UL;
  
- static const struct mtk_base_memif_data memif_data[MT8183_MEMIF_NUM] = {
- 	MT8183_MEMIF(DL1, AFE_DAC_CON1, AFE_DAC_CON1),
-@@ -764,6 +774,10 @@ static int mt8183_afe_pcm_dev_probe(struct platform_device *pdev)
- 	struct reset_control *rstc;
- 	int i, irq_id, ret;
- 
-+	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(34));
-+	if (ret)
-+		return ret;
-+
- 	afe = devm_kzalloc(&pdev->dev, sizeof(*afe), GFP_KERNEL);
- 	if (!afe)
- 		return -ENOMEM;
+ 		data.level = dom->opp[idx].perf;
+ 		data.freq = freq;
 -- 
 2.39.5
 
