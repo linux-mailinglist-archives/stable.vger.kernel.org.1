@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE71FB230CA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C89B23572
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63D94188C835
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B07C4680022
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494752FA0DB;
-	Tue, 12 Aug 2025 17:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97EA2FF157;
+	Tue, 12 Aug 2025 18:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zdofvasz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eaxm20bl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D722D5C76;
-	Tue, 12 Aug 2025 17:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765282FAC06;
+	Tue, 12 Aug 2025 18:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021312; cv=none; b=oxPey1b4+9UALtjfpJEAT+GONLyQh3rmdDMYXzV7Kw3x5ImGUiF/CVqIWwfoBcvDBzu7ExXxP5Ac7i+rZLoHO6PIwIvWXQpccfIPXHsjoXqT30Blbhxvg+qFPl0VVlF6wtectuRoExuhxeU1tjNC9ZQaCs9uFkue928zrxdydHk=
+	t=1755024328; cv=none; b=PckhNjB3qZ07y0vKpG6+UP/9czsBfcWHjUNC9SmKw7dTkvtbFknRyI2a/1ul60yqzOTuAYgGq5fQtV2EzIwJHGS4n/3OJ8+BDIZmpAkL11Agu/5VHN8z1CLmM0jfHMN1c0FCNmygo42q4HPe3o+1MyJYDbI3nsqtwslw6fvWpY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021312; c=relaxed/simple;
-	bh=41kz+xapXVWncwHSjSvbspbDSvphzDqtjI3ZhwIYIX4=;
+	s=arc-20240116; t=1755024328; c=relaxed/simple;
+	bh=h8KVtH2id83X7SZZfTQTdNk24zgdwH5OfuujWhZmSsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAaG9gFZWcfnU1tQf3s/vVhDEeWD4dys/eJi9WzyWBz54P9eHtk4t7RnufPhyR62OPF5RQnk85qcV/9/AX1F9lKhe+jFbeRLfqgPqPIvcCZmSg7//ipxqytqq4xuw2w0VSxvtHnpuZAOUNoExOnx4axjXEXdkbk/io7qa+KXRkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zdofvasz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6967BC4CEF7;
-	Tue, 12 Aug 2025 17:55:11 +0000 (UTC)
+	 MIME-Version; b=BZ7nIsIrbz2aQNEhn1NC5IynQX3cGx0xrnbZVx1Q4oUQApRvzlomXTKHpd+5mQy9AeER7muvbdtkcm6RI2zHv52n7BcK5DYuAd18Jn6hkX8B92fYO98n9mq1mMeRBDfPMQHFrvuNvGELA1fOKv9ASxpxQGLS7SEQUIenfr3l2aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eaxm20bl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E59C4CEF1;
+	Tue, 12 Aug 2025 18:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021311;
-	bh=41kz+xapXVWncwHSjSvbspbDSvphzDqtjI3ZhwIYIX4=;
+	s=korg; t=1755024328;
+	bh=h8KVtH2id83X7SZZfTQTdNk24zgdwH5OfuujWhZmSsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdofvaszNahiln45nOhbv8Eo7p4RRFFQIZ/vOz/7yd6DkH8tZBv4YZyj++duq05G6
-	 4o35iOVGZopjpxEiHXh8Bhj0CuFVkZeaQlwdHNYyGxQW2Pw6GboZ4EIYn3SnMnaSVL
-	 JQNBnVz8VTeTeZi38AlLcBXmh/qsgLt1Vc44SKNM=
+	b=Eaxm20blZ2NY8QNC9qm9Myxobzw8FMDCU0rfn8BEi8wy9lfYW8gIMaXDYI+OeKqfY
+	 o3MczjLGsYbjVe4TMNoMIk2qknQlVvthZpEARM3b68WWFN+aotG0usiy9T7rbQKkfA
+	 htIRzeH8OFOluzVJBqcae17/MsmIyf1WqIHd/KJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armando Budianto <sprite@gnuweeb.org>,
-	Simon Horman <horms@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Subject: [PATCH 6.1 246/253] net: usbnet: Fix the wrong netif_carrier_on() call
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 339/627] fanotify: sanitize handle_type values when reporting fid
 Date: Tue, 12 Aug 2025 19:30:34 +0200
-Message-ID: <20250812172959.330266948@linuxfoundation.org>
+Message-ID: <20250812173432.180251137@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ammar Faizi <ammarfaizi2@gnuweeb.org>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 8466d393700f9ccef68134d3349f4e0a087679b9 upstream.
+[ Upstream commit 8631e01c2c5d1fe6705bcc0d733a0b7a17d3daac ]
 
-The commit referenced in the Fixes tag causes usbnet to malfunction
-(identified via git bisect). Post-commit, my external RJ45 LAN cable
-fails to connect. Linus also reported the same issue after pulling that
-commit.
+Unlike file_handle, type and len of struct fanotify_fh are u8.
+Traditionally, filesystem return handle_type < 0xff, but there
+is no enforecement for that in vfs.
 
-The code has a logic error: netif_carrier_on() is only called when the
-link is already on. Fix this by moving the netif_carrier_on() call
-outside the if-statement entirely. This ensures it is always called
-when EVENT_LINK_CARRIER_ON is set and properly clears it regardless
-of the link state.
+Add a sanity check in fanotify to avoid truncating handle_type
+if its value is > 0xff.
 
-Cc: stable@vger.kernel.org
-Cc: Armando Budianto <sprite@gnuweeb.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/all/CAHk-=wjqL4uF0MG_c8+xHX1Vv8==sPYQrtzbdA3kzi96284nuQ@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/CAHk-=wjKh8X4PT_mU1kD4GQrbjivMfPn-_hXa6han_BTDcXddw@mail.gmail.com
-Closes: https://lore.kernel.org/netdev/0752dee6-43d6-4e1f-81d2-4248142cccd2@gnuweeb.org
-Fixes: 0d9cfc9b8cb1 ("net: usbnet: Avoid potential RCU stall on LINK_CHANGE event")
-Signed-off-by: Ammar Faizi <ammarfaizi2@gnuweeb.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7cdafe6cc4a6 ("exportfs: check for error return value from exportfs_encode_*()")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250627104835.184495-1-amir73il@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/notify/fanotify/fanotify.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1115,6 +1115,9 @@ static void __handle_link_change(struct
- 	if (!test_bit(EVENT_DEV_OPEN, &dev->flags))
- 		return;
+diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
+index 3083643b864b..bfe884d624e7 100644
+--- a/fs/notify/fanotify/fanotify.c
++++ b/fs/notify/fanotify/fanotify.c
+@@ -454,7 +454,13 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
+ 	dwords = fh_len >> 2;
+ 	type = exportfs_encode_fid(inode, buf, &dwords);
+ 	err = -EINVAL;
+-	if (type <= 0 || type == FILEID_INVALID || fh_len != dwords << 2)
++	/*
++	 * Unlike file_handle, type and len of struct fanotify_fh are u8.
++	 * Traditionally, filesystem return handle_type < 0xff, but there
++	 * is no enforecement for that in vfs.
++	 */
++	BUILD_BUG_ON(MAX_HANDLE_SZ > 0xff || FILEID_INVALID > 0xff);
++	if (type <= 0 || type >= FILEID_INVALID || fh_len != dwords << 2)
+ 		goto out_err;
  
-+	if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+		netif_carrier_on(dev->net);
-+
- 	if (!netif_carrier_ok(dev->net)) {
- 		/* kill URBs for reading packets to save bus bandwidth */
- 		unlink_urbs(dev, &dev->rxq);
-@@ -1124,9 +1127,6 @@ static void __handle_link_change(struct
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
--		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
--			netif_carrier_on(dev->net);
--
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
+ 	fh->type = type;
+-- 
+2.39.5
+
 
 
 
