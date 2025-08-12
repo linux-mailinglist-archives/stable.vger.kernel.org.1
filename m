@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-168124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58963B23384
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:29:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2FBB23098
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F221A1B61F14
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:25:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE7B174C8D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A1421ABD0;
-	Tue, 12 Aug 2025 18:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586152FDC20;
+	Tue, 12 Aug 2025 17:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeo8SnhS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b99fRsdw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DB061FFE;
-	Tue, 12 Aug 2025 18:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179F8221FAC;
+	Tue, 12 Aug 2025 17:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023127; cv=none; b=GOXLFzBTWh/q4z32at59TKTTw2h2/dtBYdGhr2Mvjy0tSdkHTUvMp1EN+CG2Yu3Ci3XTjl44lG4cA3B1a9WVyWxxJq+PKg1LGvjRIaG5Y6coc5NSpUPdEadAScD2GL9d5lZ33YDhh4RfA56+RUv8AHeQJ3xFeIr13v6Ijlwysnw=
+	t=1755021234; cv=none; b=Kc+BErdA55j2hlYmeZkGg8bzwodzwJ7Ugqb8qKxPlZ/1PAp219/0y54OGz9J+IvoeObw/Iqmfklh4iKCDp85xk/5RawCRThShTwgUUEqSIMpSFVjdybarMk0YDnfKTqFSm8Jxb30aGURo4oeH3RD67+WICt+5oTCwcaWwkoQxrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023127; c=relaxed/simple;
-	bh=qrGC9OvP6cVTx8Fk9mWItJtEh6BsvWcubu6Qey0r0L8=;
+	s=arc-20240116; t=1755021234; c=relaxed/simple;
+	bh=jMabyCC+3J+0Rm2epn1ZzXtK1Soj5Nu+RGJlmvwyPtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xmyovd6Y3RBtWR9lxwRBcUkRP58TvxZHOzLtE+APRa72aGzuyLDbbwuq1kiBbZOH99cBbSiGeF82m4k7kW3HunEZOudcFRmnITrUxy3amfFbmyTToXp9f3uMEzPRNpDdHV+EJOkcc8CH7195uYQucVQMpDs9Q7x/HGKIUanRHAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeo8SnhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C291EC4CEF0;
-	Tue, 12 Aug 2025 18:25:26 +0000 (UTC)
+	 MIME-Version; b=ouCYcNainAFsrnaMHt3AKz5aEJD/qlvnt4y4WPmZEi7eUVx+aBI7zlr5zbkfOZPDDxcimAGg8mBOBoBvDKOT8yDqaSMhAhpTKFiy1xq+FeSoby0U6h5mH+WrkQ4y2/CEoNv2dWiO4lQn2xjk24GmJedgNGnCHClyG/UCGdyx93E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b99fRsdw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF39C4CEF0;
+	Tue, 12 Aug 2025 17:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023127;
-	bh=qrGC9OvP6cVTx8Fk9mWItJtEh6BsvWcubu6Qey0r0L8=;
+	s=korg; t=1755021234;
+	bh=jMabyCC+3J+0Rm2epn1ZzXtK1Soj5Nu+RGJlmvwyPtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yeo8SnhSoFBHMeAy8atA/SeIhjGt/OqLj+D3MDRZu85fBwd9K6Hn+VJd2ay/C1kxG
-	 Di6NKLwyU1LqnSUkthVJxG5SytKwAqBqFwIN9FZ/mIleCLjPBxFldRvxYsf20WW5/c
-	 +U4JX8ATpmeMtbfd147vCia18lVgjrvH56znYqBc=
+	b=b99fRsdwvN3qaxlGXpP0Vr8BrMjHikioaA8BXOfSNSsEmoWwzPtM0IH+6FHolYfZm
+	 6WatBkInzxVnEqyFi8Wg9MD+tlLafCtjJeAAA4yabkd05huiGhWTn+sZexzIvI3CYs
+	 kDEL7UbbmWTZ5Fdh/k9j5sx4V8FfkyZg0XlYWpUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: [PATCH 6.12 324/369] perf/core: Dont leak AUX buffer refcount on allocation failure
+Subject: [PATCH 6.1 233/253] perf/core: Dont leak AUX buffer refcount on allocation failure
 Date: Tue, 12 Aug 2025 19:30:21 +0200
-Message-ID: <20250812173028.904840412@linuxfoundation.org>
+Message-ID: <20250812172958.743385730@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,7 +84,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -6713,9 +6713,7 @@ static int perf_mmap(struct file *file,
+@@ -6381,9 +6381,7 @@ static int perf_mmap(struct file *file,
  			goto unlock;
  		}
  
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		goto accounting;
  	}
  
-@@ -6817,8 +6815,10 @@ accounting:
+@@ -6485,8 +6483,10 @@ accounting:
  	} else {
  		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
  				   event->attr.aux_watermark, flags);
@@ -106,7 +106,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
  
  unlock:
-@@ -6828,6 +6828,7 @@ unlock:
+@@ -6496,6 +6496,7 @@ unlock:
  
  		atomic_inc(&event->mmap_count);
  	} else if (rb) {
