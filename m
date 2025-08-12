@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-168049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E94B23336
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373EAB22FF8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C5801892F6D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BFD35663D0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573282868AF;
-	Tue, 12 Aug 2025 18:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9057C2FD1D7;
+	Tue, 12 Aug 2025 17:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icfPuEpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHaneRBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167471EBFE0;
-	Tue, 12 Aug 2025 18:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1592C15B5;
+	Tue, 12 Aug 2025 17:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022871; cv=none; b=cLW7sCfTIHhM5JOFyiccJSOXyJlyCbXoYYWNGEwbLjSUm47t+Hz3Nz3HyEIua06CU2r7yINWSrla5f+WzWK88gE7pQtEOkbBKRTi6DLzHsh8RShWDUD5YabyMnbyHxZ5TdJXCMLDUk6O0YGTGJf+ZGSXQwxzSKPxpc3WQ/kH+4I=
+	t=1755020736; cv=none; b=tVOAjm1CyWOpHpVlXA+Sj4vYO71D6V+mlvNG4C0rooC+BROxMwjwrGMnhCzZ069Ty5pSWkseKADGwSVeBwezVxaWXUo2udBHWIh5i64UxsHxP/++H0q0lvKji/BNrBzgT4NDI8Hhm5NRysj3g4+YGEQHC8CJ9EFZD+hnbqJ3c8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022871; c=relaxed/simple;
-	bh=x+ZcKecv9focak/tnSEbHHbdYGdLGw9D9U2FAx4LfQI=;
+	s=arc-20240116; t=1755020736; c=relaxed/simple;
+	bh=F3YXmUH83JMMlFOCFWsMZaNC5bpc9QEtR3j8hnrFRjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbL3BoIMR4SCfz/0RiJWwAyAJgsbaZA6qPjY70kHCbwb8gRnZ4GPhkGziZOKtxiC2QWcB3g8QqdJidZo18uIFRA9fteFtcUCJ82dVkv239EocC2v4mMyKtcvqv9jSfN8GCI/4gaexpGdz8iA971k7WjqntwKkWCIImWIXRnaErw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icfPuEpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79233C4CEF0;
-	Tue, 12 Aug 2025 18:21:10 +0000 (UTC)
+	 MIME-Version; b=m1gg5Wjri1tYhErI6nrUFTduF9P6ZqphbabyU/guHBlQRK4KX0uJaUnBdrCcSHSCt/UCKH0pc/Zmfewbmy6judG22e9wz4I0/bxMDvQwcfC5nxijuQQzLEbqDYRyDtEtraUxmSXHOzQgSyTJfUu/mERt9uRYsNW2JahS8c5huTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHaneRBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BFBC4CEF0;
+	Tue, 12 Aug 2025 17:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022871;
-	bh=x+ZcKecv9focak/tnSEbHHbdYGdLGw9D9U2FAx4LfQI=;
+	s=korg; t=1755020736;
+	bh=F3YXmUH83JMMlFOCFWsMZaNC5bpc9QEtR3j8hnrFRjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icfPuEpV/rqN5WwW8dKR8dEruyuGfve+R2MjtyBaoBBiGrBwcCI3y7v42se5moM0F
-	 ma+TtAdUPF1uueO9H31T+awRiHgsa3IexY7UZGNaw83Iu7avvzR0UoLcLcBHsh7up+
-	 4MODVwU9ITPau07Fk7EQy2T3NPLiki/w/fm0Qb20=
+	b=yHaneRBHUiU48CX/vN5qMHsD/m5tgxv41d0Xhlf5zpYrmVZsv0dZW5fJXTC+pWHtt
+	 ngPfz3sgwcZ/efhxZR8Ae1Q0ye4nqp8/F5Z4XdyslaBfgXbX5HnluTxjTL+brm2kfj
+	 wjoVyBwiWWJMn0efI9/kfKXncg5KGuvZ4gcXG6vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Abinash Singh <abinashsinghlalotra@gmail.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/369] f2fs: fix KMSAN uninit-value in extent_info usage
+Subject: [PATCH 6.1 160/253] clk: sunxi-ng: v3s: Fix de clock definition
 Date: Tue, 12 Aug 2025 19:29:08 +0200
-Message-ID: <20250812173024.204067616@linuxfoundation.org>
+Message-ID: <20250812172955.526564038@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abinash Singh <abinashlalotra@gmail.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-[ Upstream commit 154467f4ad033473e5c903a03e7b9bca7df9a0fa ]
+[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
 
-KMSAN reported a use of uninitialized value in `__is_extent_mergeable()`
- and `__is_back_mergeable()` via the read extent tree path.
+The de clock is marked with CLK_SET_RATE_PARENT, which is really not
+necessary (as confirmed from experimentation) and significantly
+restricts flexibility for other clocks using the same parent.
 
-The root cause is that `get_read_extent_info()` only initializes three
-fields (`fofs`, `blk`, `len`) of `struct extent_info`, leaving the
-remaining fields uninitialized. This leads to undefined behavior
-when those fields are accessed later, especially during
-extent merging.
+In addition the source selection (parent) field is marked as using
+2 bits, when it the documentation reports that it uses 3.
 
-Fix it by zero-initializing the `extent_info` struct before population.
+Fix both issues in the de clock definition.
 
-Reported-by: syzbot+b8c1d60e95df65e827d4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b8c1d60e95df65e827d4
-Fixes: 94afd6d6e525 ("f2fs: extent cache: support unaligned extent")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Abinash Singh <abinashsinghlalotra@gmail.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index fb09c8e9bc57..2ccc86875099 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -381,7 +381,7 @@ void f2fs_init_read_extent_tree(struct inode *inode, struct page *ipage)
- 	struct f2fs_extent *i_ext = &F2FS_INODE(ipage)->i_ext;
- 	struct extent_tree *et;
- 	struct extent_node *en;
--	struct extent_info ei;
-+	struct extent_info ei = {0};
+diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+index fbb3529f0d3e..8263beac203b 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
++++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
+@@ -347,8 +347,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
  
- 	if (!__may_extent_tree(inode, EX_READ)) {
- 		/* drop largest read extent */
+ static const char * const de_parents[] = { "pll-video", "pll-periph0" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+-				 0x104, 0, 4, 24, 2, BIT(31),
+-				 CLK_SET_RATE_PARENT);
++				 0x104, 0, 4, 24, 3, BIT(31), 0);
+ 
+ static const char * const tcon_parents[] = { "pll-video" };
+ static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
 -- 
 2.39.5
 
