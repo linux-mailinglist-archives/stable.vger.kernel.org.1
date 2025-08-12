@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-168654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D82B235D0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:54:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CE7B235F3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EDB2586C41
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:54:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4F5CE4E4C67
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BA12FABFC;
-	Tue, 12 Aug 2025 18:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5455D2FF152;
+	Tue, 12 Aug 2025 18:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fmH7jA/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVMGZVyp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E7B6BB5B;
-	Tue, 12 Aug 2025 18:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EDE2FD1C2;
+	Tue, 12 Aug 2025 18:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024892; cv=none; b=UFhPOkG9hG/DgFyHtvV7l/x1zn7EPoSOpWLSEIkwQZwX9NDPzExSVEDjOeRt2a/gAy76LQlnGoLqMx44PXfYl+9JCgUK/dN5XcP7j947Zv7ozL6/P0br2/HuBr7AHbgl7JX58rJl28SlhALZsu3h2zJYrcKndzuvN9wsOvokFWA=
+	t=1755024930; cv=none; b=F8OiVlvSanE0xmEkvWEs7zNi6sZHBM47tvhwlK6mmXEPkjxRyfXZ4wLHVLVCEGeHp/rAkB+JPw5Y2SQLS71kdzCl3ZW4uxC5SIt3G38MfdzFvDiUUQfOucWkQZCaVR5WU+5E1qisGEQ8ATl6iQ1zYz4zDUpvVYmx7QYdHLFXuzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024892; c=relaxed/simple;
-	bh=TYtnF/pCU3jaV8273pN1LGVIVuI5GHOrnpscrSPNRsA=;
+	s=arc-20240116; t=1755024930; c=relaxed/simple;
+	bh=VOHNxtXjo9WHXj9oXv1AsVsEPHdiMx2NqcLcgxyQViY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0HOxqh6+SavHFMeDuABUlhbobJpOCRIRfIV3FVeM3BalIGyy/fzfuuEJY9WddOpxVY19g25zvd6Fu26nP3cxnAQujaJGyUGhkMdMnNnlMSD66/mfEJWFPYCSwv0MYxrigHl8DSeu+meExscWRNwM8iGQrOuSWNpQbUS1T6Kk8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fmH7jA/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A883C4CEF0;
-	Tue, 12 Aug 2025 18:54:51 +0000 (UTC)
+	 MIME-Version; b=BAs0BHqRJPLW9IT7mY05LVmokPIwPQAi/Il+Uz7mdnd05/xx5xjAE2lPGvjLMe0iTeREgaX9WC5QJ0vO7FsEkBXORyosqdvrtb3RlBGcODjXzPt9D+tSF0dSyz16o4FytXimsBKaBYI0rEGwfs4xV0UBqRFFIYr+8Qcwu/NfQso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVMGZVyp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E96C4CEF0;
+	Tue, 12 Aug 2025 18:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024892;
-	bh=TYtnF/pCU3jaV8273pN1LGVIVuI5GHOrnpscrSPNRsA=;
+	s=korg; t=1755024929;
+	bh=VOHNxtXjo9WHXj9oXv1AsVsEPHdiMx2NqcLcgxyQViY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fmH7jA/cK9EZ/RKLOb3W/mVQTGQarsvJZByOZ3OPfrHli4xh29WTNHhGfCTMw2SG
-	 WGMhK6EtSxHc9qAVCpAz8TFJ8GXAVeAgi5/6XV4BTRzEamsarGRHNWMwfNqwHAjl74
-	 XI2wwm4vigIcZb3jSJt3pK8R6okYdF5AAiV0erHA=
+	b=gVMGZVypWhKEKBp8NfIBTWEfgy2vypcnychYaV3Ph0IAgrvtSz77tbQ94LbjsCxlP
+	 XPr5RNMC2dth3sZOGT+hfs60xxT9YJ8PVUhlEBmukwB0HDJHsd/W1ADVCpqLhl7izx
+	 nnXZa1Q55zKrBi1OcHFc5dmUZOqAsdFMU80emRCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Williamson <alex.williamson@redhat.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>,
 	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 490/627] vfio: Fix unbalanced vfio_df_close call in no-iommu mode
-Date: Tue, 12 Aug 2025 19:33:05 +0200
-Message-ID: <20250812173445.063948290@linuxfoundation.org>
+Subject: [PATCH 6.16 491/627] vfio: Prevent open_count decrement to negative
+Date: Tue, 12 Aug 2025 19:33:06 +0200
+Message-ID: <20250812173445.262903733@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -69,65 +70,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Jacob Pan <jacob.pan@linux.microsoft.com>
 
-[ Upstream commit b25e271b377999191b12f0afbe1861edcf57e3fe ]
+[ Upstream commit 982ddd59ed97dc7e63efd97ed50273ffb817bd41 ]
 
-For devices with no-iommu enabled in IOMMUFD VFIO compat mode, the group open
-path skips vfio_df_open(), leaving open_count at 0. This causes a warning in
-vfio_assert_device_open(device) when vfio_df_close() is called during group
-close.
+When vfio_df_close() is called with open_count=0, it triggers a warning in
+vfio_assert_device_open() but still decrements open_count to -1. This allows
+a subsequent open to incorrectly pass the open_count == 0 check, leading to
+unintended behavior, such as setting df->access_granted = true.
 
-The correct behavior is to skip only the IOMMUFD bind in the device open path
-for no-iommu devices. Commit 6086efe73498 omitted vfio_df_open(), which was
-too broad. This patch restores the previous behavior, ensuring
-the vfio_df_open is called in the group open path.
+For example, running an IOMMUFD compat no-IOMMU device with VFIO tests
+(https://github.com/awilliam/tests/blob/master/vfio-noiommu-pci-device-open.c)
+results in a warning and a failed VFIO_GROUP_GET_DEVICE_FD ioctl on the first
+run, but the second run succeeds incorrectly.
 
-Fixes: 6086efe73498 ("vfio-iommufd: Move noiommu compat validation out of vfio_iommufd_bind()")
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
+Add checks to avoid decrementing open_count below zero.
+
+Fixes: 05f37e1c03b6 ("vfio: Pass struct vfio_device_file * to vfio_device_open/close()")
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20250618234618.1910456-1-jacob.pan@linux.microsoft.com
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250618234618.1910456-2-jacob.pan@linux.microsoft.com
 Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/group.c   | 7 +++----
- drivers/vfio/iommufd.c | 4 ++++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/vfio/vfio_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-index c321d442f0da..c376a6279de0 100644
---- a/drivers/vfio/group.c
-+++ b/drivers/vfio/group.c
-@@ -192,11 +192,10 @@ static int vfio_df_group_open(struct vfio_device_file *df)
- 		 * implies they expected translation to exist
- 		 */
- 		if (!capable(CAP_SYS_RAWIO) ||
--		    vfio_iommufd_device_has_compat_ioas(device, df->iommufd))
-+		    vfio_iommufd_device_has_compat_ioas(device, df->iommufd)) {
- 			ret = -EPERM;
--		else
--			ret = 0;
--		goto out_put_kvm;
-+			goto out_put_kvm;
-+		}
- 	}
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 1fd261efc582..5046cae05222 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -583,7 +583,8 @@ void vfio_df_close(struct vfio_device_file *df)
  
- 	ret = vfio_df_open(df);
-diff --git a/drivers/vfio/iommufd.c b/drivers/vfio/iommufd.c
-index c8c3a2d53f86..a38d262c6028 100644
---- a/drivers/vfio/iommufd.c
-+++ b/drivers/vfio/iommufd.c
-@@ -25,6 +25,10 @@ int vfio_df_iommufd_bind(struct vfio_device_file *df)
+ 	lockdep_assert_held(&device->dev_set->lock);
  
- 	lockdep_assert_held(&vdev->dev_set->lock);
- 
-+	/* Returns 0 to permit device opening under noiommu mode */
-+	if (vfio_device_is_noiommu(vdev))
-+		return 0;
-+
- 	return vdev->ops->bind_iommufd(vdev, ictx, &df->devid);
- }
- 
+-	vfio_assert_device_open(device);
++	if (!vfio_assert_device_open(device))
++		return;
+ 	if (device->open_count == 1)
+ 		vfio_df_device_last_close(df);
+ 	device->open_count--;
 -- 
 2.39.5
 
