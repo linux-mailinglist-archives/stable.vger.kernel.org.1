@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-168095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEECB2336B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E4AB230BC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20BF41AA7811
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3EB168735C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232F3280037;
-	Tue, 12 Aug 2025 18:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D85E2FDC20;
+	Tue, 12 Aug 2025 17:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuhBPHYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWiaxjwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A3E2E7BD4;
-	Tue, 12 Aug 2025 18:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9402DE1E2;
+	Tue, 12 Aug 2025 17:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023027; cv=none; b=Yk5KC8zmWmwLdcC74fZehEALLEbi7HgWYeqJz/W7/P8BqjvhkRDu55sL6BzEZ/Av/blCnyZM+3r4DrsUe87lb6+V5iwlZPc3WqmOs6Q3vqZZtwYgEs3dLkYOTNdVK4SDZoWJhGENlLnlfQ0/x8PruS9+wxLIVrGHg2Yl2wF4NYo=
+	t=1755021271; cv=none; b=hqrfM9cC3nkfg4PWjDgeBFy7ISrO5iptwtFf/3j56GKhwoWil3XzAQGUe/Gqk/N1yyF1QkLj6ZDa+SXdPi9P+Z5PtX7TeUd0XwsDA19oDY2WHhooEmnD+RITo6ZFjE8YCf4qzlmcpU5DDYAcCgI5YmRSi5UL1OmfaGbXOAM2GHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023027; c=relaxed/simple;
-	bh=WW8n3AN53Q8PjOEncfCWbR4mMpJOWD41alg48nHginQ=;
+	s=arc-20240116; t=1755021271; c=relaxed/simple;
+	bh=tv2kMlPB1unzEKw2b6QSXiKutxmEu5YFj1oQWdgV8zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MekqzFOBnOpz4DWE4F/JbDEKeoX6tVOF0QIDglEdpsumlm8+DWioKjiybziBUiqHdAmM3PDshs4xUk8RNRqKVpe7ZjFhmegNnQPndooSdNnQOjgPrdsN4ESuyMFnSpZS29hF0B2UDdGrltCKEZhz0xXR0MUPVYAUos0UD5UhiTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuhBPHYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42997C4CEF7;
-	Tue, 12 Aug 2025 18:23:47 +0000 (UTC)
+	 MIME-Version; b=hNOjMtipVA2mqECA/GDaWq2nmE1xUEmGYp8035C6EpvQTwWjekGQ4S46fI9yvQdddErGYGvYs+PfiDmNtTNVHUakm6aGEudHUGZN8jP57qmYMocXSIHYLc1BbZJPrLjrhE27pCKXSfhjrbklfq3R1zVqsT9nyGnzpuiunPKVzb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWiaxjwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C914C4CEF0;
+	Tue, 12 Aug 2025 17:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023027;
-	bh=WW8n3AN53Q8PjOEncfCWbR4mMpJOWD41alg48nHginQ=;
+	s=korg; t=1755021270;
+	bh=tv2kMlPB1unzEKw2b6QSXiKutxmEu5YFj1oQWdgV8zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZuhBPHYsRUrEy3ONeqvPX0Qm1owPelBlO51Srr+1fjybBEIlZz97LVe90SfX5gMCe
-	 ghE4l1VBP4k+nljO6pPzFHHyW9y26/95ipCjQXadDlKXdacECqnu75TSkaszWGR3ma
-	 MOoBh350Ue3zHHVX/Tnsk9ZzcWHHqu5IkjcB7vDU=
+	b=wWiaxjwg/nC7AH5mGavBlhHzA1JIRe1wcaqPEUSuAXuvOvjwfCde/btR5QK5DC5LT
+	 SWfA/Q7TApU5qrZOPEDaR/XrVLZc7ln6ySOj7k4KibzJdrzEv9tuRUFlLS6Qy3W4k2
+	 zNNGUCuDFHzt/M1qDhLscvTqoybb6GwD7pQHvLbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Budimir Markovic <markovicbudimir@gmail.com>,
 	Stefano Garzarella <sgarzare@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 329/369] vsock: Do not allow binding to VMADDR_PORT_ANY
+Subject: [PATCH 6.1 238/253] vsock: Do not allow binding to VMADDR_PORT_ANY
 Date: Tue, 12 Aug 2025 19:30:26 +0200
-Message-ID: <20250812173029.089176088@linuxfoundation.org>
+Message-ID: <20250812172958.964282391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,7 +93,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
-@@ -689,7 +689,8 @@ static int __vsock_bind_connectible(stru
+@@ -686,7 +686,8 @@ static int __vsock_bind_connectible(stru
  		unsigned int i;
  
  		for (i = 0; i < MAX_PORT_RETRIES; i++) {
