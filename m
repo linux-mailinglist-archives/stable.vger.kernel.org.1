@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D4BB22FB2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6D6B23301
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A1007A9B9E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:42:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD60C3A2855
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965BA2FDC36;
-	Tue, 12 Aug 2025 17:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CC22DFA3E;
+	Tue, 12 Aug 2025 18:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgTRVuu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBYzSua3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540722FD1CE;
-	Tue, 12 Aug 2025 17:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8022ED17F;
+	Tue, 12 Aug 2025 18:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020600; cv=none; b=D9GKtXLw3oCbRE6wvohFTH0g59h/+l2lgDW/vX7vEYJxh4TtgS26VzqI27pyjZUGF1mmI+3dVx3ZK1ukWzbq7wsh0df69MffsGkXc1ed5VbULkoegv/kWPLLK3cuj631Cns2z58xoX4K6wCUMWiZO4l5eFzdxdidSC+61wQ48z8=
+	t=1755022760; cv=none; b=dnXsCfuYBFgjO8u2TmFm9HkQWYfD7j7amxw5IcAvCxoJA5KGunh8hhf07907+UV/vhE0y+v369wMh+HIATkZXqcDGV06Lw8be6FN9JLdkmm7iJSJm2ZDpd7aVponVksLoAIPSo+PvzGLRQafIIWjTLAINfJL2yRE2jXta6vXfXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020600; c=relaxed/simple;
-	bh=t0EuXFfEHT2n9N+LXtDP+7nNg1XSxUMTihMeJ0hn1zU=;
+	s=arc-20240116; t=1755022760; c=relaxed/simple;
+	bh=3GfW2osKhIGUguN8gIQltDbWdv3uxJ6Q6UvFsM4VoKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jo+Ml3Vv6a2uSReqPAOfZC7sKytpiMkP42yYZPQLzkAq0cKDBUCrjWgN7WYrcpMONBNa01TebNY/j65LG8X6goCXVbnELQjImXPNs8BbjY7u6IsiLvYX7+rFNq8B0n4fADJCep5ZNI2jBuTBHN7I8/hW75DZ3jMIv5iRh/giFbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgTRVuu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E03C4CEF0;
-	Tue, 12 Aug 2025 17:43:19 +0000 (UTC)
+	 MIME-Version; b=vEIZE4DcVkUaabaoytYHWr7dtJmEFFhDYbHhhfUnn3lrhZEGad6OtkXUIr8Sdw3dqTvB6gsexQ/3dOMsZO9dky/gukJXhr8xzKxnwVzl+Hx6OvsGQ75RIRn96k4HWBU+N4cxOjIFZsbFdhTtFjGbCEnKDSvzPrr+mC5H1I/owCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBYzSua3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E5BC4CEF6;
+	Tue, 12 Aug 2025 18:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020600;
-	bh=t0EuXFfEHT2n9N+LXtDP+7nNg1XSxUMTihMeJ0hn1zU=;
+	s=korg; t=1755022759;
+	bh=3GfW2osKhIGUguN8gIQltDbWdv3uxJ6Q6UvFsM4VoKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zgTRVuu7wzzeMHHqMBz/eH0ZMkvXYwzY9TGMCWQxLZf+oVxJVRhWMlJybetbbu8MO
-	 nYjMFwhbHfV6UfXd+1cLNfcCYRYsVzMnxLAwxRMn0j2tofLQ1rSbgLpywRJwy9sJ2v
-	 uJ1DNSRg8siEI8pIs4w24dYUj4GKPn/X05KRKYPI=
+	b=dBYzSua3eWImiroMdOe9qWZ5MRNbudp/mtVnQelwSVc1q7zJfgTHRk+boavhqK/AR
+	 IXTIjZ0Xv/fGDTuK6c1hDj49t8XJVEDehAFIezERTaykuOE9xRpQhfJkcnbshR2poV
+	 8Mm6gw/scM9MLENP/H4jD04vu362R07cW8nLmP3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/253] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 6.12 217/369] dmaengine: nbpfaxi: Add missing check after DMA map
 Date: Tue, 12 Aug 2025 19:28:34 +0200
-Message-ID: <20250812172954.059719890@linuxfoundation.org>
+Message-ID: <20250812173022.911829731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 754fe848b3b297fc85ec24cd959bad22b6df8cb8 ]
+[ Upstream commit c6ee78fc8f3e653bec427cfd06fec7877ee782bd ]
 
-This reverts commit 0937cb5f345c ("Revert "wifi: mac80211: Update
-skb's control block key in ieee80211_tx_dequeue()"").
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-This commit broke TX with 802.11 encapsulation HW offloading, now that
-this is fixed, reapply it.
-
-Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/66b8fc39fb0194fa06c9ca7eeb6ffe0118dcb3ec.1752765971.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250707075752.28674-2-fourier.thomas@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/nbpfaxi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index e35a755b353b..e6cf5ab928a6 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3807,6 +3807,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
-+	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
+index 5f5d6242427e..2fa6e90643d5 100644
+--- a/drivers/dma/nbpfaxi.c
++++ b/drivers/dma/nbpfaxi.c
+@@ -711,6 +711,9 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 		list_add_tail(&ldesc->node, &lhead);
+ 		ldesc->hwdesc_dma_addr = dma_map_single(dchan->device->dev,
+ 					hwdesc, sizeof(*hwdesc), DMA_TO_DEVICE);
++		if (dma_mapping_error(dchan->device->dev,
++				      ldesc->hwdesc_dma_addr))
++			goto unmap_error;
+ 
+ 		dev_dbg(dev, "%s(): mapped 0x%p to %pad\n", __func__,
+ 			hwdesc, &ldesc->hwdesc_dma_addr);
+@@ -737,6 +740,16 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
+ 	spin_unlock_irq(&chan->lock);
+ 
+ 	return ARRAY_SIZE(dpage->desc);
++
++unmap_error:
++	while (i--) {
++		ldesc--; hwdesc--;
++
++		dma_unmap_single(dchan->device->dev, ldesc->hwdesc_dma_addr,
++				 sizeof(hwdesc), DMA_TO_DEVICE);
++	}
++
++	return -ENOMEM;
+ }
+ 
+ static void nbpf_desc_put(struct nbpf_desc *desc)
 -- 
 2.39.5
 
