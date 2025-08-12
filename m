@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-167261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93ACEB22F3A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:37:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D78B2341D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B07B7A7299
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:35:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D987716B987
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E7F2FD1D1;
-	Tue, 12 Aug 2025 17:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D011F2EAB97;
+	Tue, 12 Aug 2025 18:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9nGJx6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpijITnG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6562F7461;
-	Tue, 12 Aug 2025 17:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6EF1EF38C;
+	Tue, 12 Aug 2025 18:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020224; cv=none; b=TOqq/FkLbO0PMHAqfJx1hRToFkkzt+PN0V5QGFJQTua58VfAJOhhI39RfvRWxkdsj/PUoM0Un8fCLA5yAAFz9uANg/ltGbv4dJalgf/SAWQnMc/VCnu3QWUH8HeyXUYYxd8XAdo38CSCj2ki/oB1Auc30qA3PSPYGUMuSRiXkGo=
+	t=1755023535; cv=none; b=X4n7/4WAcerloD2ildm/t/9O2Xf+wUiymx1f1b8YAHFNnIij5rseSqjWRE5GMFzkjiocDVT+7OebYKCHJr5r20XwNB25ajCsi8Mcrf2E7vG7NZqTY50rVHwcyz8Koi5dLUao2xhBVTwDJRGQAM6SG6AaxFR4LMxT7PXZ4b5IV4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020224; c=relaxed/simple;
-	bh=WzVBrozgtd7aoSZBndOvdHZ/kyypxhEs2opxOl2dS4c=;
+	s=arc-20240116; t=1755023535; c=relaxed/simple;
+	bh=qgQBW8R8EAfgE/1RcjTzVuwXTDUs8aqH2kKxVI8aSdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoXvbl/oSoszFrk/XcAggH++YdqLnDWJZ0yvGFp5nC0pCTQGj08e1oiTG2obG3KZI5sWONqknvfQS7PYrlP8CFqxgLaI5ViOlm2wU05wXh66VmIf1R7XWRbV2ad7zel9HfsWtIkrKdQJJqGaPRgaGjYdzquBcpOZAvwqnbbiK1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9nGJx6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7D8C4CEF1;
-	Tue, 12 Aug 2025 17:37:03 +0000 (UTC)
+	 MIME-Version; b=Z4PkqnTqxwQRvlSDVzCnQ7WtUCuG1CXYVlZ2VsgSkye06ql39P1ClR+jLRYUkaVsoAAd/UsvVb6aPz8QAYknCfPlblirqAKH8rbkxG8ubFYZjI56Lrj99u4EMtXpdOBrkzc/l6RjDsi4FdGauiYFTOsGG/hEeBBNCZ2y2kaenAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpijITnG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AE9C4CEF1;
+	Tue, 12 Aug 2025 18:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020223;
-	bh=WzVBrozgtd7aoSZBndOvdHZ/kyypxhEs2opxOl2dS4c=;
+	s=korg; t=1755023535;
+	bh=qgQBW8R8EAfgE/1RcjTzVuwXTDUs8aqH2kKxVI8aSdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9nGJx6Zk9quhnD2z+qMZlZQmKLo03LRZCUxMIqkK5TY0DJAvnx65PVq+z7JitiE/
-	 pRKSlDHYh47alyyGk4BGAOPTbNBFsxrqSxNPJyYh1BuKS6vDL0cqRoPDZbCsR4JPHA
-	 P1UjfeorMVHINuWfKeHotDcyH2+JcXIwCsU1/m2s=
+	b=tpijITnGoaWktRd6sE5hc/JF3tMSzs81WQEk82gy/+R7CmzilYv1HFxCib0eGDfn1
+	 jcnazAM2gWTPoXLF83lxca2eArQKDxHXbIBaQJVoyRQlte3dX1LH5SUZ6LY5cgKKy9
+	 7dxcMZRXSNw5IuCT908ITHwN7hv163fjeebubjEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/253] i40e: When removing VF MAC filters, only check PF-set MAC
+Subject: [PATCH 6.16 109/627] cpufreq: Initialize cpufreq-based frequency-invariance later
 Date: Tue, 12 Aug 2025 19:26:44 +0200
-Message-ID: <20250812172949.399860323@linuxfoundation.org>
+Message-ID: <20250812173423.459382063@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 5a0df02999dbe838c3feed54b1d59e9445f68b89 ]
+[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
 
-When the PF is processing an Admin Queue message to delete a VF's MACs
-from the MAC filter, we currently check if the PF set the MAC and if
-the VF is trusted.
+The cpufreq-based invariance is enabled in cpufreq_register_driver(),
+but never disabled after registration fails. Move the invariance
+initialization to where all other initializations have been successfully
+done to solve this problem.
 
-This results in undesirable behaviour, where if a trusted VF with a
-PF-set MAC sets itself down (which sends an AQ message to delete the
-VF's MAC filters) then the VF MAC is erased from the interface.
-
-This results in the VF losing its PF-set MAC which should not happen.
-
-There is no need to check for trust at all, because an untrusted VF
-cannot change its own MAC. The only check needed is whether the PF set
-the MAC. If the PF set the MAC, then don't erase the MAC on link-down.
-
-Resolve this by changing the deletion check only for PF-set MAC.
-
-(the out-of-tree driver has also intentionally removed the check for VF
-trust here with OOT driver version 2.26.8, this changes the Linux kernel
-driver behaviour and comment to match the OOT driver behaviour)
-
-Fixes: ea2a1cfc3b201 ("i40e: Fix VF MAC filter removal")
-Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/cpufreq.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 7f8899a0ae80d..7cfcb16c30911 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3076,10 +3076,10 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
- 		const u8 *addr = al->list[i].addr;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index d7426e1d8bdd..189e2166ddef 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2944,15 +2944,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	cpufreq_driver = driver_data;
+ 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
  
- 		/* Allow to delete VF primary MAC only if it was not set
--		 * administratively by PF or if VF is trusted.
-+		 * administratively by PF.
- 		 */
- 		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
--			if (i40e_can_vf_change_mac(vf))
-+			if (!vf->pf_set_mac)
- 				was_unimac_deleted = true;
- 			else
- 				continue;
+-	/*
+-	 * Mark support for the scheduler's frequency invariance engine for
+-	 * drivers that implement target(), target_index() or fast_switch().
+-	 */
+-	if (!cpufreq_driver->setpolicy) {
+-		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
+-		pr_debug("supports frequency invariance");
+-	}
+-
+ 	if (driver_data->setpolicy)
+ 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
+ 
+@@ -2983,6 +2974,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
+ 	hp_online = ret;
+ 	ret = 0;
+ 
++	/*
++	 * Mark support for the scheduler's frequency invariance engine for
++	 * drivers that implement target(), target_index() or fast_switch().
++	 */
++	if (!cpufreq_driver->setpolicy) {
++		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
++		pr_debug("supports frequency invariance");
++	}
++
+ 	pr_debug("driver %s up and running\n", driver_data->name);
+ 	goto out;
+ 
 -- 
 2.39.5
 
