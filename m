@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1EFB23452
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B20EB23287
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E85F16E7F2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91307686F5A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80E32FD1A2;
-	Tue, 12 Aug 2025 18:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C432E285E;
+	Tue, 12 Aug 2025 18:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gaCBGfo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtuYceHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A5B2F5481;
-	Tue, 12 Aug 2025 18:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65691257435;
+	Tue, 12 Aug 2025 18:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023686; cv=none; b=ogtemryvaDW67fY8JPMdf2sgXorCSvaDNT6uv2WW5BoFByDAgv+9KSYSxKzvfuOFCDsFZ8+e1YakBmxI0CHcIL7Z+01GneQakwlRDE0syyBYwFI4Hs8w6INrxL6qBucLhv4JlOZG/UWWGJgEPp7Oj+p7dcwR4Tp1TG4LZuQMu10=
+	t=1755022418; cv=none; b=fNKb1zfqOHQHZR/SpgznXxEQ0v69YyOe2xNWJhzgJSmzdcVs6vN7q0++1sythogZNILwbZzr0Z2Bv72ndPiglQL9PeW/aYzdaIuv4/Qqd8YunAmn710VbBNaUWzyDFXOXdDwNMi6apGSVRADG5BYR9MHj6hFV1wUaO5xYe4DOPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023686; c=relaxed/simple;
-	bh=T39/9jqDhUqVUtwEXKs+R/UpGNWJdIuJ9K+88Gk6r8k=;
+	s=arc-20240116; t=1755022418; c=relaxed/simple;
+	bh=C+YRNBvv8CCpn7sxIbhFPot9oiAfDy67OlfJmW7SeyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXBlsj391oK3IKZ7noM5fRJdXTg4M6IJhzDvDF6cm0vDkf7uQjgbrPJO6dBbHLl2KaHZo7SAqT2ZMWPXOcOrsdAfpyvLTqLaEvCbD74KPGJLOQ5KmENOWDFhksSQkK13vF+RClP7CVglkuo9jvYAE3BirUdFHjuDv07d5TA6td0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gaCBGfo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056D1C4CEF0;
-	Tue, 12 Aug 2025 18:34:45 +0000 (UTC)
+	 MIME-Version; b=QBhiRp5Q8WlYeITZgbiR4PR/UEfHigt714VUBXGIV7+07esJU4mokFzLf3dwdQtScUQUQT07ZdTCdul7cZpO/NAC50G68xu2FCtjzg+8w9o4cxr5LGt7vj2u+coRUTn4h2Qs71o5zRDZM212qHgt/8RVAFg5vqEKNXxJdXxo4BI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtuYceHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE254C4CEF1;
+	Tue, 12 Aug 2025 18:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023686;
-	bh=T39/9jqDhUqVUtwEXKs+R/UpGNWJdIuJ9K+88Gk6r8k=;
+	s=korg; t=1755022418;
+	bh=C+YRNBvv8CCpn7sxIbhFPot9oiAfDy67OlfJmW7SeyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gaCBGfoBrXQzNhylT72FiklAZeKqtoXAfl5AOP/Ki+GUk1R3ymIx9tOl4ztSHuQM
-	 rYjn6w39Hw86shIUNVIfROY9KHTQz36YwzrFjL/StDOzZGcUYKgRTowpkjt3UFip0d
-	 oFd5cOe9nGzU8B14XEDmbdwouBzmanrfB8FraY50=
+	b=RtuYceHe5h05xtZ/Dn0YAPo7eZ83++Afv2mWd2osb52GrJvs7f9HwPklnIL98khXj
+	 8+3Yjpk3Y32oqWRX47cPdHRpnRN9KnbNouwixlmj/t3NDBDxxyZkYdmVp07hxd2nz+
+	 pxfLVDntK9Qtf4oek/ZRj1fo+K+R1onD72LZXQT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Xu Kuohai <xukuohai@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 152/627] drm/amdgpu/sdma: handle paging queues in amdgpu_sdma_reset_engine()
+Subject: [PATCH 6.12 150/369] bpf, arm64: Fix fp initialization for exception boundary
 Date: Tue, 12 Aug 2025 19:27:27 +0200
-Message-ID: <20250812173425.072719788@linuxfoundation.org>
+Message-ID: <20250812173020.423546105@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit 9a9e87d15297ce72507178e93cbb773510c061cd ]
+[ Upstream commit b114fcee766d5101eada1aca7bb5fd0a86c89b35 ]
 
-Need to properly start and stop paging queues if they are present.
+In the ARM64 BPF JIT when prog->aux->exception_boundary is set for a BPF
+program, find_used_callee_regs() is not called because for a program
+acting as exception boundary, all callee saved registers are saved.
+find_used_callee_regs() sets `ctx->fp_used = true;` when it sees FP
+being used in any of the instructions.
 
-This is not an issue today since we don't support a paging queue
-on any chips with queue reset.
+For programs acting as exception boundary, ctx->fp_used remains false
+even if frame pointer is used by the program and therefore, FP is not
+set-up for such programs in the prologue. This can cause the kernel to
+crash due to a pagefault.
 
-Fixes: b22659d5d352 ("drm/amdgpu: switch amdgpu_sdma_reset_engine to use the new sdma function pointers")
-Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix it by setting ctx->fp_used = true for exception boundary programs as
+fp is always saved in such programs.
+
+Fixes: 5d4fa9ec5643 ("bpf, arm64: Avoid blindly saving/restoring all callee-saved registers")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Xu Kuohai <xukuohai@huawei.com>
+Link: https://lore.kernel.org/bpf/20250722133410.54161-2-puranjay@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-index 9b54a1ece447..f7decf533bae 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-@@ -597,8 +597,11 @@ int amdgpu_sdma_reset_engine(struct amdgpu_device *adev, uint32_t instance_id)
- 		page_sched_stopped = true;
- 	}
- 
--	if (sdma_instance->funcs->stop_kernel_queue)
-+	if (sdma_instance->funcs->stop_kernel_queue) {
- 		sdma_instance->funcs->stop_kernel_queue(gfx_ring);
-+		if (adev->sdma.has_page_queue)
-+			sdma_instance->funcs->stop_kernel_queue(page_ring);
-+	}
- 
- 	/* Perform the SDMA reset for the specified instance */
- 	ret = amdgpu_sdma_soft_reset(adev, instance_id);
-@@ -607,8 +610,11 @@ int amdgpu_sdma_reset_engine(struct amdgpu_device *adev, uint32_t instance_id)
- 		goto exit;
- 	}
- 
--	if (sdma_instance->funcs->start_kernel_queue)
-+	if (sdma_instance->funcs->start_kernel_queue) {
- 		sdma_instance->funcs->start_kernel_queue(gfx_ring);
-+		if (adev->sdma.has_page_queue)
-+			sdma_instance->funcs->start_kernel_queue(page_ring);
-+	}
- 
- exit:
- 	/* Restart the scheduler's work queue for the GFX and page rings
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 515c411c2c83..5553508c3644 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -399,6 +399,7 @@ static void push_callee_regs(struct jit_ctx *ctx)
+ 		emit(A64_PUSH(A64_R(23), A64_R(24), A64_SP), ctx);
+ 		emit(A64_PUSH(A64_R(25), A64_R(26), A64_SP), ctx);
+ 		emit(A64_PUSH(A64_R(27), A64_R(28), A64_SP), ctx);
++		ctx->fp_used = true;
+ 	} else {
+ 		find_used_callee_regs(ctx);
+ 		for (i = 0; i + 1 < ctx->nr_used_callee_reg; i += 2) {
 -- 
 2.39.5
 
