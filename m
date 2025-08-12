@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15655B23132
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:02:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19CEB232FE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AADE1881D60
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:00:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC4EB3B1682
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EC530AABE;
-	Tue, 12 Aug 2025 17:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB3C2ED17F;
+	Tue, 12 Aug 2025 18:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eEdMDt3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVQ6LvKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9D9309DD9;
-	Tue, 12 Aug 2025 17:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C95B280037;
+	Tue, 12 Aug 2025 18:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021555; cv=none; b=DwXfRWGp/OKjrsLNlfEopVXnf84HEC48QsYdkJvg8LfsaJUuI2Q/2mkEyPdK2ixlhj0vRb/775Ji5gYt9eXkGDEwZHmAESZL1/SR2IRwSiUi1cwazo0Q9LgAJJsaciyUXs6YTrXl2X6amge/DBBbGQoAa0WSkYHE0RlaksXLrms=
+	t=1755022753; cv=none; b=Uu8FiCpF2juDe0m+VgM/6vf0/LPXPHVzMbZd9cCHBwn9SI7NqYMa2hezLCSskAjjDly6A7c8xN9ZdBDXWCsk9a7cPQnvb/rtsVRfwOEDzL6wrfPXUiV37P6p23dSEVOVqoq3wgtAo0AxUZ0mHMLpzW9G1R1wzqCHF+w7m9KRy4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021555; c=relaxed/simple;
-	bh=bfKGXnutuVSxoaNVZY+pIKDHj6fwbsaoFledfE2BNCo=;
+	s=arc-20240116; t=1755022753; c=relaxed/simple;
+	bh=E1YH72JdSV3SO6GE0lsS8doXhhybQTJyyllvUfziIu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYr7CvLxRr8LGaKV8HQKoeUEtblzwsFpkE0ikqt8k0Z9/lavn9nz//RZtg4f+R+I7qm6WuYdKdGtgIJPD1egTHbqB+Su3jC39nm+0V56Y8crNjInzmgIsTkwV9+6OR5cIphuKFkDcaj3HrOcxy4MyvMBMxkxYz9OvUUO0qrQ2m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eEdMDt3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A085C2BC9E;
-	Tue, 12 Aug 2025 17:59:14 +0000 (UTC)
+	 MIME-Version; b=cz1k4+L3SDOCxhQECsClG3u6qXS4NtYBp88c5JTuZe4kZnYhS6hLhC6FzHwx3/Fdr6gh8/q8dl8nLtecGVj/2Er+gqwTrL0IoxDIi86w6MiE5bhtaJjAOUSFoouxRTjUJo7y+zY8134icthWcurXh8EVXULupYRgOmcdmPCCtB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVQ6LvKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68596C4CEF6;
+	Tue, 12 Aug 2025 18:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021555;
-	bh=bfKGXnutuVSxoaNVZY+pIKDHj6fwbsaoFledfE2BNCo=;
+	s=korg; t=1755022752;
+	bh=E1YH72JdSV3SO6GE0lsS8doXhhybQTJyyllvUfziIu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eEdMDt3NIrgZHfe5RzJGvCFVKOAxb7nZpzw/8kTewVoMKHMIO1y4ut6RrEtHgb88
-	 H2b24sYPd3LRyxtwqyV7IAh3K+Gex3D+GPeu5uBF5q7spcWisReBIV2JKbgjaQdSo9
-	 g3yRJScyhX/jIZOTHFohrjBJ+huFLduDqtrZNtKw=
+	b=iVQ6LvKm1V9HTKwJipWnIgzFc87WCCiXeLRNvxU7bRo4p8TsLEIhrWSNSn4FkWJVM
+	 oSxOSNVku3w8MNi4YawAHD+1rKMJRmhhFdamCaD+YMoUexUVbdddNkR+jOVWxO7Oj5
+	 zzT5auX9kNkmPRswQzbFFBBX9W+h8hd+KxOhy6Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Mike Marshall <hubcap@omnibond.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/262] perf tools: Fix use-after-free in help_unknown_cmd()
-Date: Tue, 12 Aug 2025 19:28:31 +0200
-Message-ID: <20250812172958.344696432@linuxfoundation.org>
+Subject: [PATCH 6.12 215/369] fs/orangefs: Allow 2 more characters in do_c_string()
+Date: Tue, 12 Aug 2025 19:28:32 +0200
+Message-ID: <20250812173022.840323268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1fdf938168c4d26fa279d4f204768690d1f9c4ae ]
+[ Upstream commit 2138e89cb066b40386b1d9ddd61253347d356474 ]
 
-Currently perf aborts when it finds an invalid command.  I guess it
-depends on the environment as I have some custom commands in the path.
+The do_k_string() and do_c_string() functions do essentially the same
+thing which is they add a string and a comma onto the end of an existing
+string.  At the end, the caller will overwrite the last comma with a
+newline.  Later, in orangefs_kernel_debug_init(), we add a newline to
+the string.
 
-  $ perf bad-command
-  perf: 'bad-command' is not a perf-command. See 'perf --help'.
-  Aborted (core dumped)
+The change to do_k_string() is just cosmetic.  I moved the "- 1" to
+the other side of the comparison and made it "+ 1".  This has no
+effect on runtime, I just wanted the functions to match each other
+and the rest of the file.
 
-It's because the exclude_cmds() in libsubcmd has a use-after-free when
-it removes some entries.  After copying one to another entry, it keeps
-the pointer in the both position.  And the next copy operation will free
-the later one but it's the same entry in the previous one.
+However in do_c_string(), I removed the "- 2" which allows us to print
+two extra characters.  I noticed this issue while reviewing the code
+and I doubt affects anything in real life.  My guess is that this was
+double counting the comma and the newline.  The "+ 1" accounts for
+the newline, and the caller will delete the final comma which ensures
+there is enough space for the newline.
 
-For example, let's say cmds = { A, B, C, D, E } and excludes = { B, E }.
+Removing the "- 2" lets us print 2 more characters, but mainly it makes
+the code more consistent and understandable for reviewers.
 
-  ci  cj  ei   cmds-name  excludes
-  -----------+--------------------
-   0   0   0 |     A         B       :    cmp < 0, ci == cj
-   1   1   0 |     B         B       :    cmp == 0
-   2   1   1 |     C         E       :    cmp < 0, ci != cj
-
-At this point, it frees cmds->names[1] and cmds->names[1] is assigned to
-cmds->names[2].
-
-   3   2   1 |     D         E       :    cmp < 0, ci != cj
-
-Now it frees cmds->names[2] but it's the same as cmds->names[1].  So
-accessing cmds->names[1] will be invalid.
-
-This makes the subcmd tests succeed.
-
-  $ perf test subcmd
-   69: libsubcmd help tests                                            :
-   69.1: Load subcmd names                                             : Ok
-   69.2: Uniquify subcmd names                                         : Ok
-   69.3: Exclude duplicate subcmd names                                : Ok
-
-Fixes: 4b96679170c6 ("libsubcmd: Avoid SEGV/use-after-free when commands aren't excluded")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250701201027.1171561-3-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 44f4641073f1 ("orangefs: clean up debugfs globals")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/subcmd/help.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/orangefs/orangefs-debugfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 8561b0f01a24..9ef569492560 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -9,6 +9,7 @@
- #include <sys/stat.h>
- #include <unistd.h>
- #include <dirent.h>
-+#include <assert.h>
- #include "subcmd-util.h"
- #include "help.h"
- #include "exec-cmd.h"
-@@ -82,10 +83,11 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 				ci++;
- 				cj++;
- 			} else {
--				zfree(&cmds->names[cj]);
--				cmds->names[cj++] = cmds->names[ci++];
-+				cmds->names[cj++] = cmds->names[ci];
-+				cmds->names[ci++] = NULL;
- 			}
- 		} else if (cmp == 0) {
-+			zfree(&cmds->names[ci]);
- 			ci++;
- 			ei++;
- 		} else if (cmp > 0) {
-@@ -94,12 +96,12 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
- 	}
- 	if (ci != cj) {
- 		while (ci < cmds->cnt) {
--			zfree(&cmds->names[cj]);
--			cmds->names[cj++] = cmds->names[ci++];
-+			cmds->names[cj++] = cmds->names[ci];
-+			cmds->names[ci++] = NULL;
- 		}
- 	}
- 	for (ci = cj; ci < cmds->cnt; ci++)
--		zfree(&cmds->names[ci]);
-+		assert(cmds->names[ci] == NULL);
- 	cmds->cnt = cj;
- }
+diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
+index fa41db088488..b57140ebfad0 100644
+--- a/fs/orangefs/orangefs-debugfs.c
++++ b/fs/orangefs/orangefs-debugfs.c
+@@ -728,8 +728,8 @@ static void do_k_string(void *k_mask, int index)
  
+ 	if (*mask & s_kmod_keyword_mask_map[index].mask_val) {
+ 		if ((strlen(kernel_debug_string) +
+-		     strlen(s_kmod_keyword_mask_map[index].keyword))
+-			< ORANGEFS_MAX_DEBUG_STRING_LEN - 1) {
++		     strlen(s_kmod_keyword_mask_map[index].keyword) + 1)
++			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
+ 				strcat(kernel_debug_string,
+ 				       s_kmod_keyword_mask_map[index].keyword);
+ 				strcat(kernel_debug_string, ",");
+@@ -756,7 +756,7 @@ static void do_c_string(void *c_mask, int index)
+ 	    (mask->mask2 & cdm_array[index].mask2)) {
+ 		if ((strlen(client_debug_string) +
+ 		     strlen(cdm_array[index].keyword) + 1)
+-			< ORANGEFS_MAX_DEBUG_STRING_LEN - 2) {
++			< ORANGEFS_MAX_DEBUG_STRING_LEN) {
+ 				strcat(client_debug_string,
+ 				       cdm_array[index].keyword);
+ 				strcat(client_debug_string, ",");
 -- 
 2.39.5
 
