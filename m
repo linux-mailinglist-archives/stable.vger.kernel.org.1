@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-167549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6FEB2308E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93E0B23371
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D0492A6680
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89C551B60334
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583C32FDC2F;
-	Tue, 12 Aug 2025 17:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7FE2F291B;
+	Tue, 12 Aug 2025 18:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5Uj61DD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3WyPeAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B6F2E4248;
-	Tue, 12 Aug 2025 17:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A113F9D2;
+	Tue, 12 Aug 2025 18:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021190; cv=none; b=RjYFvjTbZeo2XX1dlcUploGJngfpS3KHbZkY0H2dsSp9UlztGcIt5zm0Kw19RyySBePeFZBoDYD3SznuIsmfNp0hBptdiGoAyGQSd4JLhDPLkV8qNEiOPSmhh29eeptgIKC5o5KG8CVyOpcJpYh0os8mJh8YuK1Pn4sHIfILBrY=
+	t=1755023055; cv=none; b=Afaorm68SHRQ96QFS/ArqU/ua5P0haOoTFPEKg49qjwZMCyHgS8Yl9LPLZ+rfWisk24CpWeixY8AwmvAUo/lgsMMazXduHdVMNGLEUAQtkmeT4p8brwD5eh4HsVmvNn3oVW7fHt2ZueEuX45C3U0mR8y+khaBT5/G1ULFrDRgFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021190; c=relaxed/simple;
-	bh=q5bkG3wX0UWsX7my4jMgjleXM5wdItAHPDgWzDjPcB8=;
+	s=arc-20240116; t=1755023055; c=relaxed/simple;
+	bh=bmLUoJo3qUmcFz7gcTTZhPs7xfjk+ZFwHGTc1/+bozQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBqLcuvo5AxoEznsGzXHbB3n4tZMQravLZ1DsCRB0HygGFPcOxah638LIxa56bycgpUgsW23DgFz7RpYR5AqQlidiqp8sQTkp8aeq9AwrHd+ka97PqRwjR7kAoENvARpxFFP7h6/4D328CCXYasuNZ+Uk1x0+cZWeMz7T4UE3ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5Uj61DD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCA0C4CEF0;
-	Tue, 12 Aug 2025 17:53:09 +0000 (UTC)
+	 MIME-Version; b=dBf7QlKCE0i3bG/poDVdchmStJ/brtoYMup+kORvfw54GbaOqMbXROauS5T3UMQm7Zm4Ff0fi8xiY6fyPDkReHgo9q3yAtM8gkT4+n2adSi2a7jhUIIgvfwvyJ1mnGb7K6kSb1jG0Wfe1hYA6yb7okYcQzr3TfRk1r1F6HPpUc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3WyPeAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374AFC4CEF0;
+	Tue, 12 Aug 2025 18:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021189;
-	bh=q5bkG3wX0UWsX7my4jMgjleXM5wdItAHPDgWzDjPcB8=;
+	s=korg; t=1755023055;
+	bh=bmLUoJo3qUmcFz7gcTTZhPs7xfjk+ZFwHGTc1/+bozQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U5Uj61DDpoRFYwhAkJpRZil93Ksux50r0hP3f2+8JtKJ/RJsHkXmpWWuXIqTSFTV8
-	 38EfhkADOs4Iuf46D990xbJzqe1q8Fqe/TAEQ+SjtmJJ59MktQaZYPaWlPmOsf6M5j
-	 nurtL4o04vOEPLq8okjwZZHeECvZpw0B99l/KQOs=
+	b=H3WyPeAARqQs4q3lr8PAKXCurTN47e342KrrbH7CDZjTHeFQSA3d+gyWVvRlLr2eJ
+	 5M27xMGCcTsYa/DEvkOynebApbMOQ4YDWIkJRuWaKPhbKsHGoWemE2c4pX28y7DmSp
+	 y6NqzAbxgVrCDFIWGmVOYs5H5Uoe9fh7eGRWTY2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Steve French <smfrench@gmail.com>,
 	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
 	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org,
 	Stefan Metzmacher <metze@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 227/253] smb: server: remove separate empty_recvmsg_queue
-Date: Tue, 12 Aug 2025 19:30:15 +0200
-Message-ID: <20250812172958.488737027@linuxfoundation.org>
+Subject: [PATCH 6.12 319/369] smb: client: let recv_done() avoid touching data_transfer after cleanup/move
+Date: Tue, 12 Aug 2025 19:30:16 +0200
+Message-ID: <20250812173028.721934716@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,171 +67,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 01027a62b508c48c762096f347de925eedcbd008 ]
+[ Upstream commit 24eff17887cb45c25a427e662dda352973c5c171 ]
 
-There's no need to maintain two lists, we can just
-have a single list of receive buffers, which are free to use.
+Calling enqueue_reassembly() and wake_up_interruptible(&info->wait_reassembly_queue)
+or put_receive_buffer() means the response/data_transfer pointer might
+get re-used by another thread, which means these should be
+the last operations before calling return.
 
 Cc: Steve French <smfrench@gmail.com>
 Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
 Cc: linux-cifs@vger.kernel.org
 Cc: samba-technical@lists.samba.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
 Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 60 +++++-----------------------------
- 1 file changed, 8 insertions(+), 52 deletions(-)
+ fs/smb/client/smbdirect.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 7b6639949c25..0a6fedac59f0 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -128,9 +128,6 @@ struct smb_direct_transport {
- 	spinlock_t		recvmsg_queue_lock;
- 	struct list_head	recvmsg_queue;
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index d26b8cef82d6..47f2a6cc1c0c 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -479,10 +479,6 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		data_transfer = smbd_response_payload(response);
+ 		data_length = le32_to_cpu(data_transfer->data_length);
  
--	spinlock_t		empty_recvmsg_queue_lock;
--	struct list_head	empty_recvmsg_queue;
+-		/*
+-		 * If this is a packet with data playload place the data in
+-		 * reassembly queue and wake up the reading thread
+-		 */
+ 		if (data_length) {
+ 			if (info->full_packet_received)
+ 				response->first_segment = true;
+@@ -491,16 +487,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 				info->full_packet_received = false;
+ 			else
+ 				info->full_packet_received = true;
 -
- 	int			send_credit_target;
- 	atomic_t		send_credits;
- 	spinlock_t		lock_new_recv_credits;
-@@ -274,32 +271,6 @@ static void put_recvmsg(struct smb_direct_transport *t,
- 	spin_unlock(&t->recvmsg_queue_lock);
- }
+-			enqueue_reassembly(
+-				info,
+-				response,
+-				data_length);
+-		} else
+-			put_receive_buffer(info, response);
+-
+-		if (data_length)
+-			wake_up_interruptible(&info->wait_reassembly_queue);
++		}
  
--static struct
--smb_direct_recvmsg *get_empty_recvmsg(struct smb_direct_transport *t)
--{
--	struct smb_direct_recvmsg *recvmsg = NULL;
--
--	spin_lock(&t->empty_recvmsg_queue_lock);
--	if (!list_empty(&t->empty_recvmsg_queue)) {
--		recvmsg = list_first_entry(&t->empty_recvmsg_queue,
--					   struct smb_direct_recvmsg, list);
--		list_del(&recvmsg->list);
--	}
--	spin_unlock(&t->empty_recvmsg_queue_lock);
--	return recvmsg;
--}
--
--static void put_empty_recvmsg(struct smb_direct_transport *t,
--			      struct smb_direct_recvmsg *recvmsg)
--{
--	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
--			    recvmsg->sge.length, DMA_FROM_DEVICE);
--
--	spin_lock(&t->empty_recvmsg_queue_lock);
--	list_add_tail(&recvmsg->list, &t->empty_recvmsg_queue);
--	spin_unlock(&t->empty_recvmsg_queue_lock);
--}
--
- static void enqueue_reassembly(struct smb_direct_transport *t,
- 			       struct smb_direct_recvmsg *recvmsg,
- 			       int data_length)
-@@ -384,9 +355,6 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
- 	spin_lock_init(&t->recvmsg_queue_lock);
- 	INIT_LIST_HEAD(&t->recvmsg_queue);
- 
--	spin_lock_init(&t->empty_recvmsg_queue_lock);
--	INIT_LIST_HEAD(&t->empty_recvmsg_queue);
--
- 	init_waitqueue_head(&t->wait_send_pending);
- 	atomic_set(&t->send_pending, 0);
- 
-@@ -548,7 +516,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			       wc->opcode);
- 			smb_direct_disconnect_rdma_connection(t);
+ 		atomic_dec(&info->receive_credits);
+ 		info->receive_credit_target =
+@@ -528,6 +515,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			info->keep_alive_requested = KEEP_ALIVE_PENDING;
  		}
--		put_empty_recvmsg(t, recvmsg);
-+		put_recvmsg(t, recvmsg);
+ 
++		/*
++		 * If this is a packet with data playload place the data in
++		 * reassembly queue and wake up the reading thread
++		 */
++		if (data_length) {
++			enqueue_reassembly(info, response, data_length);
++			wake_up_interruptible(&info->wait_reassembly_queue);
++		} else
++			put_receive_buffer(info, response);
++
  		return;
  	}
  
-@@ -562,7 +530,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 	switch (recvmsg->type) {
- 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
- 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
--			put_empty_recvmsg(t, recvmsg);
-+			put_recvmsg(t, recvmsg);
- 			return;
- 		}
- 		t->negotiation_requested = true;
-@@ -579,7 +547,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 
- 		if (wc->byte_len <
- 		    offsetof(struct smb_direct_data_transfer, padding)) {
--			put_empty_recvmsg(t, recvmsg);
-+			put_recvmsg(t, recvmsg);
- 			return;
- 		}
- 
-@@ -587,7 +555,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 		if (data_length) {
- 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
- 			    (u64)data_length) {
--				put_empty_recvmsg(t, recvmsg);
-+				put_recvmsg(t, recvmsg);
- 				return;
- 			}
- 
-@@ -607,7 +575,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
- 			avail_recvmsg_count = t->count_avail_recvmsg;
- 			spin_unlock(&t->receive_credit_lock);
- 		} else {
--			put_empty_recvmsg(t, recvmsg);
-+			put_recvmsg(t, recvmsg);
- 
- 			spin_lock(&t->receive_credit_lock);
- 			receive_credits = --(t->recv_credits);
-@@ -805,7 +773,6 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
- 	struct smb_direct_recvmsg *recvmsg;
- 	int receive_credits, credits = 0;
- 	int ret;
--	int use_free = 1;
- 
- 	spin_lock(&t->receive_credit_lock);
- 	receive_credits = t->recv_credits;
-@@ -813,18 +780,9 @@ static void smb_direct_post_recv_credits(struct work_struct *work)
- 
- 	if (receive_credits < t->recv_credit_target) {
- 		while (true) {
--			if (use_free)
--				recvmsg = get_free_recvmsg(t);
--			else
--				recvmsg = get_empty_recvmsg(t);
--			if (!recvmsg) {
--				if (use_free) {
--					use_free = 0;
--					continue;
--				} else {
--					break;
--				}
--			}
-+			recvmsg = get_free_recvmsg(t);
-+			if (!recvmsg)
-+				break;
- 
- 			recvmsg->type = SMB_DIRECT_MSG_DATA_TRANSFER;
- 			recvmsg->first_segment = false;
-@@ -1800,8 +1758,6 @@ static void smb_direct_destroy_pools(struct smb_direct_transport *t)
- 
- 	while ((recvmsg = get_free_recvmsg(t)))
- 		mempool_free(recvmsg, t->recvmsg_mempool);
--	while ((recvmsg = get_empty_recvmsg(t)))
--		mempool_free(recvmsg, t->recvmsg_mempool);
- 
- 	mempool_destroy(t->recvmsg_mempool);
- 	t->recvmsg_mempool = NULL;
 -- 
 2.39.5
 
