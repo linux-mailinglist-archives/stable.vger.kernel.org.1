@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720AFB230DB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D740B232C4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 864CC1886260
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B4118980D7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4F52FABFF;
-	Tue, 12 Aug 2025 17:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F2E2FE58A;
+	Tue, 12 Aug 2025 18:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qaRzlOLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aj3yVVHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE662F7449;
-	Tue, 12 Aug 2025 17:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D102FE584;
+	Tue, 12 Aug 2025 18:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021376; cv=none; b=WUcX8pMxwVTRAFT/yBEYc8upLoZTge2MvW20IclB0LFmsKkwAE237vNr4n5moLgBmuyq6srYedvfkSO0jvUBLJUql58z2vha+mJ/LGyfq53QBwJv5NA4lhx/QM/AdYWirM+h+G5H/Y+SkzHcJQdANOPiFocWMhgEGKKe0JCzz5s=
+	t=1755022577; cv=none; b=gH3vIc4dIhIZ+2+So/GfJfJHkw+L/IifEoG85fTgrlptAR26tzAyHg7rZ+aw03rXWbfSkYzLS+pHq2ERCa9bSUXcvajXNuDrwm/VRK+bgMsyEj6Eff4Iv7bCrtzaYFRlQ9hBaNUVEr3M6wUL5cfW7omME2f7cpTPy5tZ7fJpyBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021376; c=relaxed/simple;
-	bh=lXjllhNP1DKn5dJQPpxADpyOxs8EM0c9Ejy49MJqXVA=;
+	s=arc-20240116; t=1755022577; c=relaxed/simple;
+	bh=vGYP7GUg6dtQwzR4ewCN4tnLBVbKvieyoumxmkdtCzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRxA55am0o77LDRczCIPCKjx6RIT6WCJzWlg2A4V2szhKl4gKU297JB0LcbBVqUa841cM7bjjgRZ6h8mUBdOsLRiWnWzXIYJhP+4gw0Rb4AFE3ekpBDfs/z7zbd/XNJdgPAZCtNw1QvV+PtrxzJLV76SBSdROKYJaWFMpUGNh4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qaRzlOLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C20CC4CEF1;
-	Tue, 12 Aug 2025 17:56:15 +0000 (UTC)
+	 MIME-Version; b=UUTkfPRayYB0zPJJrnH7liBLKsvz9Ts1hBORjLPXOW020Da9XdCF5dWjPjK6xVO3Mz9nUv+JE4/Gd1cajSbaYNzyV++mjuLWkYOPEgA589IFJ5OTlnITyVtx0cjDuBrgnJT773kpufm92ip1Hon5Eol8VgCZzP9pxhZNS830eug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aj3yVVHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDA3C4CEF7;
+	Tue, 12 Aug 2025 18:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021376;
-	bh=lXjllhNP1DKn5dJQPpxADpyOxs8EM0c9Ejy49MJqXVA=;
+	s=korg; t=1755022576;
+	bh=vGYP7GUg6dtQwzR4ewCN4tnLBVbKvieyoumxmkdtCzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qaRzlOLDtzdDFcM/sS+lBEklOIP07W2AD3ECMBcGNEjUyJI5QzjgPRY9w7WRQcgQE
-	 lMsv1wj0aATEQB85J+VCX88FNdB75QYdUyHRt/UcaFx7ZvQKuhn7Z/l87VpJ5TBBbh
-	 if4cRR3cT+ahFiTUdw06hCEF0/ZQIckNphay/7wA=
+	b=Aj3yVVHS8SvJ4JM3dfstz310Qr/xzvwjDZWAuH094awdI1A/G1GmQvmNvDzRDXnFb
+	 0cX+2wMr89CRycUEqvJm5T/ggOP9hkF92fBnFKu3xC4NoVDmImVQEbgjKJzhIjkkSJ
+	 386ZnWbq/EpQYoH9vlZrJtGUFDqbNIP4AeFUBOfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/262] ipv6: fix possible infinite loop in fib6_info_uses_dev()
+Subject: [PATCH 6.12 195/369] pinmux: fix race causing mux_owner NULL with active mux_usecount
 Date: Tue, 12 Aug 2025 19:28:12 +0200
-Message-ID: <20250812172957.519239924@linuxfoundation.org>
+Message-ID: <20250812173022.097497076@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-[ Upstream commit f8d8ce1b515a0a6af72b30502670a406cfb75073 ]
+[ Upstream commit 0b075c011032f88d1cfde3b45d6dcf08b44140eb ]
 
-fib6_info_uses_dev() seems to rely on RCU without an explicit
-protection.
+commit 5a3e85c3c397 ("pinmux: Use sequential access to access
+desc->pinmux data") tried to address the issue when two client of the
+same gpio calls pinctrl_select_state() for the same functionality, was
+resulting in NULL pointer issue while accessing desc->mux_owner.
+However, issue was not completely fixed due to the way it was handled
+and it can still result in the same NULL pointer.
 
-Like the prior fix in rt6_nlmsg_size(),
-we need to make sure fib6_del_route() or fib6_add_rt2node()
-have not removed the anchor from the list, or we risk an infinite loop.
+The issue occurs due to the following interleaving:
 
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250725140725.3626540-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+     cpu0 (process A)                   cpu1 (process B)
+
+      pin_request() {                   pin_free() {
+
+                                         mutex_lock()
+                                         desc->mux_usecount--; //becomes 0
+                                         ..
+                                         mutex_unlock()
+
+  mutex_lock(desc->mux)
+  desc->mux_usecount++; // becomes 1
+  desc->mux_owner = owner;
+  mutex_unlock(desc->mux)
+
+                                         mutex_lock(desc->mux)
+                                         desc->mux_owner = NULL;
+                                         mutex_unlock(desc->mux)
+
+This sequence leads to a state where the pin appears to be in use
+(`mux_usecount == 1`) but has no owner (`mux_owner == NULL`), which can
+cause NULL pointer on next pin_request on the same pin.
+
+Ensure that updates to mux_usecount and mux_owner are performed
+atomically under the same lock. Only clear mux_owner when mux_usecount
+reaches zero and no new owner has been assigned.
+
+Fixes: 5a3e85c3c397 ("pinmux: Use sequential access to access desc->pinmux data")
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Link: https://lore.kernel.org/20250708-pinmux-race-fix-v2-1-8ae9e8a0d1a1@oss.qualcomm.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/pinctrl/pinmux.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 41d358dd58c0..f180b7bc9f57 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5865,16 +5865,21 @@ static bool fib6_info_uses_dev(const struct fib6_info *f6i,
- 	if (f6i->fib6_nh->fib_nh_dev == dev)
- 		return true;
- 
--	if (f6i->fib6_nsiblings) {
--		struct fib6_info *sibling, *next_sibling;
-+	if (READ_ONCE(f6i->fib6_nsiblings)) {
-+		const struct fib6_info *sibling;
- 
--		list_for_each_entry_safe(sibling, next_sibling,
--					 &f6i->fib6_siblings, fib6_siblings) {
--			if (sibling->fib6_nh->fib_nh_dev == dev)
-+		rcu_read_lock();
-+		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
-+					fib6_siblings) {
-+			if (sibling->fib6_nh->fib_nh_dev == dev) {
-+				rcu_read_unlock();
- 				return true;
-+			}
-+			if (!READ_ONCE(f6i->fib6_nsiblings))
-+				break;
+diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
+index 0743190da59e..2c31e7f2a27a 100644
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -236,18 +236,7 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
+ 			if (desc->mux_usecount)
+ 				return NULL;
  		}
-+		rcu_read_unlock();
- 	}
+-	}
 -
- 	return false;
- }
+-	/*
+-	 * If there is no kind of request function for the pin we just assume
+-	 * we got it by default and proceed.
+-	 */
+-	if (gpio_range && ops->gpio_disable_free)
+-		ops->gpio_disable_free(pctldev, gpio_range, pin);
+-	else if (ops->free)
+-		ops->free(pctldev, pin);
  
+-	scoped_guard(mutex, &desc->mux_lock) {
+ 		if (gpio_range) {
+ 			owner = desc->gpio_owner;
+ 			desc->gpio_owner = NULL;
+@@ -258,6 +247,15 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
+ 		}
+ 	}
+ 
++	/*
++	 * If there is no kind of request function for the pin we just assume
++	 * we got it by default and proceed.
++	 */
++	if (gpio_range && ops->gpio_disable_free)
++		ops->gpio_disable_free(pctldev, gpio_range, pin);
++	else if (ops->free)
++		ops->free(pctldev, pin);
++
+ 	module_put(pctldev->owner);
+ 
+ 	return owner;
 -- 
 2.39.5
 
