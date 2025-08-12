@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-168690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D111B23631
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:58:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E1EB2363D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A385881E2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:57:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30B225A01DE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8F32FFDCB;
-	Tue, 12 Aug 2025 18:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B88E2FDC53;
+	Tue, 12 Aug 2025 18:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbjTU0bw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOmG+SPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1246C2FF14D;
-	Tue, 12 Aug 2025 18:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5BE2CA9;
+	Tue, 12 Aug 2025 18:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025011; cv=none; b=LTrOF4s2O02ya41zJrb0v/NFFrYDMhILU5s4OtBP+qsSk6aCoLL3qXYyz0rDHatXUL4KZhF7z/uf57c/qu+MGpcym38dEXuGw22gGUpOo+b4tVtNQualN0LggxqA1xaMpy6J7DYeAydX16LHPRwnLRQFtxJ2lBkJT4Bu3XQ3W80=
+	t=1755025048; cv=none; b=il7WJx1T1/nN0y/Ijot1mdpUm28tY10h94V3fAei2d44ss98b4uBT5RQbYKjpA/GDO9qh0CC3kY3fSHkIubsA1BYkzYNCZVy/Oa95VFRz9dL2cTKIXS3iFEQc6abDOxBqCowF5nEPcHGZOKSnnRqJHlE0WS+ZzZZiOAo+ZBSYW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025011; c=relaxed/simple;
-	bh=BEySytcCpf++PackOwRVJhWefsYbqXBi21vJgLJMcY8=;
+	s=arc-20240116; t=1755025048; c=relaxed/simple;
+	bh=kFBYCLJ4nsrAr6czstJj7N0POiGsUbkavERGNGU5E2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0wpDte7UN9Oyc0yfR+AWxLSjVexPWtnUTkWFXXMVNpwRxISucse9yjuxjJvM1iVqTnWfSy9Sfdh4FieItIvqYYwDycyxm/I1+lHu8E7XgrRTiKhTIxderoFcIgmAVj1fEkzoh1ygGi9+7wt8XnJLtzUrJ9v1VC7N2miMA0tswI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbjTU0bw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CE6C4CEF1;
-	Tue, 12 Aug 2025 18:56:50 +0000 (UTC)
+	 MIME-Version; b=KuzQTtXnhGJnWTAGsM40cIqkVCKyy1VponVXqaWMkcYUVIvtBcwaAcLc/PWn+xA7/llC6YBOUePwFRhlUParbQHR0AKdBX70OmlYRQ+xG7jKpO7dmli9xoYvHOSU7nGCtGKFdC2n1KzyDKEuK+DDBmsKkUqY7qAaPAFR+TOL0jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOmG+SPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5493C4CEF0;
+	Tue, 12 Aug 2025 18:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025010;
-	bh=BEySytcCpf++PackOwRVJhWefsYbqXBi21vJgLJMcY8=;
+	s=korg; t=1755025047;
+	bh=kFBYCLJ4nsrAr6czstJj7N0POiGsUbkavERGNGU5E2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbjTU0bwyomajn+IWXN2Qn3Ea3IAqBqTvMFjLXfOkSSmbftRW7oT1m1A2n99xeBge
-	 ALBJ+OP8YL983rssr7HX+Mcs/zaYCMaPt9+/71O/F5sA77YXwBGNlT93/P/TIwc52N
-	 NrbUqoS5wfw3+DcEC0S86fSHGYKhlpNkp8cxEy8o=
+	b=oOmG+SPGBo8MYwrWqTcnXP/yejsHw/7cZeNHY6Qlqse00fkFWXQI/XA/vyhgwWPX2
+	 JyAJ18Y8KGC4toAM50Qow1miYTFX1Jvf7LZp9oSfrmJ1MAWPYS4jr/OT30PbpHNgr8
+	 4L5dUQqrlHsz6xVr5FpN8txP5UpRq5ngFGTS0xJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Baojun Xu <baojun.xu@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 526/627] block: ensure discard_granularity is zero when discard is not supported
-Date: Tue, 12 Aug 2025 19:33:41 +0200
-Message-ID: <20250812173451.915212834@linuxfoundation.org>
+Subject: [PATCH 6.16 527/627] ASoC: tas2781: Fix the wrong step for TLV on tas2781
+Date: Tue, 12 Aug 2025 19:33:42 +0200
+Message-ID: <20250812173451.953554163@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -67,58 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Baojun Xu <baojun.xu@ti.com>
 
-[ Upstream commit fad6551fcf537375702b9af012508156a16a1ff7 ]
+[ Upstream commit 9843cf7b6fd6f938c16fde51e86dd0e3ddbefb12 ]
 
-Documentation/ABI/stable/sysfs-block states:
+The step for TLV on tas2781, should be 50 (-0.5dB).
 
-  What: /sys/block/<disk>/queue/discard_granularity
-  [...]
-  A discard_granularity of 0 means that the device does not support
-  discard functionality.
-
-but this got broken when sorting out the block limits updates.  Fix this
-by setting the discard_granularity limit to zero when the combined
-max_discard_sectors is zero.
-
-Fixes: 3c407dc723bb ("block: default the discard granularity to sector size")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20250731152228.873923-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 678f38eba1f2 ("ASoC: tas2781: Add Header file for tas2781 driver")
+Signed-off-by: Baojun Xu <baojun.xu@ti.com>
+Link: https://patch.msgid.link/20250801021618.64627-1-baojun.xu@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ include/sound/tas2781-tlv.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 3425ae1b1f01..1a82980d52e9 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -342,12 +342,19 @@ int blk_validate_limits(struct queue_limits *lim)
- 	lim->max_discard_sectors =
- 		min(lim->max_hw_discard_sectors, lim->max_user_discard_sectors);
+diff --git a/include/sound/tas2781-tlv.h b/include/sound/tas2781-tlv.h
+index d87263e43fdb..ef9b9f19d212 100644
+--- a/include/sound/tas2781-tlv.h
++++ b/include/sound/tas2781-tlv.h
+@@ -15,7 +15,7 @@
+ #ifndef __TAS2781_TLV_H__
+ #define __TAS2781_TLV_H__
  
-+	/*
-+	 * When discard is not supported, discard_granularity should be reported
-+	 * as 0 to userspace.
-+	 */
-+	if (lim->max_discard_sectors)
-+		lim->discard_granularity =
-+			max(lim->discard_granularity, lim->physical_block_size);
-+	else
-+		lim->discard_granularity = 0;
-+
- 	if (!lim->max_discard_segments)
- 		lim->max_discard_segments = 1;
+-static const __maybe_unused DECLARE_TLV_DB_SCALE(dvc_tlv, -10000, 100, 0);
++static const __maybe_unused DECLARE_TLV_DB_SCALE(dvc_tlv, -10000, 50, 0);
+ static const __maybe_unused DECLARE_TLV_DB_SCALE(amp_vol_tlv, 1100, 50, 0);
  
--	if (lim->discard_granularity < lim->physical_block_size)
--		lim->discard_granularity = lim->physical_block_size;
--
- 	/*
- 	 * By default there is no limit on the segment boundary alignment,
- 	 * but if there is one it can't be smaller than the page size as
+ #endif
 -- 
 2.39.5
 
