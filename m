@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550DDB23064
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA89B23281
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95E51686069
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6BB11AA6BD0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAD42F8BE7;
-	Tue, 12 Aug 2025 17:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BB22FAC11;
+	Tue, 12 Aug 2025 18:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpmxr//r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK223nog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6405268C73;
-	Tue, 12 Aug 2025 17:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AC02FA0DB;
+	Tue, 12 Aug 2025 18:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021112; cv=none; b=MbEl8fGLhWzsFAdKBOwVDd671Yh3DaDzslyqchy+pOr5G6fqbp08hG9/H9t+B8A9X/7SqlyLJQSB3Oc/uGUrleSoSYvH7XMdJlJfI/2f+zddVLoN+Roa/08lWNKe4Br8uitlG6lT7AqePMmgggZvM37ZuICBmNNTq6kjPPM5D2A=
+	t=1755022432; cv=none; b=Oegljb0QGztOPa0caRV6LxuYgd0lt1PJJrw8fb29MzUha0G4QTFpj0QP4oDrlxn+q8wcB9SaUp5rCgRn6N/YxqwuQgwElDvyM4UNQ+KrYslG+OU2xw09+1ZCxLrPa/+V9C9Ih5fs5c9SdX+M37MrUydEA3jfhSwERxoqeC13hag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021112; c=relaxed/simple;
-	bh=TxE9UeQhmfJyFG0uhkZqseaCQaDbdPs6yOyK5wOcIgI=;
+	s=arc-20240116; t=1755022432; c=relaxed/simple;
+	bh=wvyhIixYiMFHZ8yqRPwU0OtKn3FCoatEldOMfgBOQCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gv5BrvYvL0Mz97thNdJxyOyQ5Yq7pdqY/+MTzoOBJcyq6cAUbvRnznMuh96oLiJxEX7Kd82HZFVlPj3Ef4eeC0uBx0Khbkvm0QFFdSYyNCMpa2vyoc99+Lv1uFJArkXdt2qkhH6b9t72TX8+oH3knsfJq22an6ZiojJ/m3k88bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpmxr//r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530E5C4CEF0;
-	Tue, 12 Aug 2025 17:51:51 +0000 (UTC)
+	 MIME-Version; b=uEFwNZIxh8RdSiiH0svN8oRT+loQc2ZNKxWXS/4ArXOi5ztn96/ilTZJRSqlC1Kv32v92PrG7yOnkIRi23Af3+CH7yQhquDWC9QQTDh32HxgCx/NhgC8TPb+2En0j2NTnMeRtsqwUhuCLQ/U7W56BXeoBP113+z1oiRWNSQVOkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK223nog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABD7C4CEF1;
+	Tue, 12 Aug 2025 18:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021111;
-	bh=TxE9UeQhmfJyFG0uhkZqseaCQaDbdPs6yOyK5wOcIgI=;
+	s=korg; t=1755022432;
+	bh=wvyhIixYiMFHZ8yqRPwU0OtKn3FCoatEldOMfgBOQCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpmxr//r5MM9eEQk7rt6wHV2KBC5RHBSRseC+LIe7oNDrXr8f7e0tgVDQhyfHe4M5
-	 ExV9bDRsTRu+HCrMFDzRXA2ASDVuPp9kw5MW3MCX85iECqfHIO27hrDCdrZMv2ofeo
-	 VduhIJTqmCJwX37kg+v4y0ClMHN9PjcqHnNGsNfk=
+	b=iK223nogrGUXpM5see66d/wthxmZ6NYrMnq8FVsSSdRuorOjQBZFrW2ZE8Z2TMNk3
+	 cYpMDVjOG40ZcLBW/8Ai1U+hmYsGnm89YnJ2tigaV/7nH+S6LNUxPsgoDulgEFmyA+
+	 whSwe8Ys9ACGwV77dSUer4V7zS5ULYpi9eteKvyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/262] net: dst: annotate data-races around dst->input
+Subject: [PATCH 6.12 154/369] clk: renesas: rzv2h: Fix missing CLK_SET_RATE_PARENT flag for ddiv clocks
 Date: Tue, 12 Aug 2025 19:27:31 +0200
-Message-ID: <20250812172955.670642353@linuxfoundation.org>
+Message-ID: <20250812173020.569853552@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit f1c5fd34891a1c242885f48c2e4dc52df180f311 ]
+[ Upstream commit 715676d8418062f54d746451294ccce9786c1734 ]
 
-dst_dev_put() can overwrite dst->input while other
-cpus might read this field (for instance from dst_input())
+Commit bc4d25fdfadf ("clk: renesas: rzv2h: Add support for dynamic
+switching divider clocks") missed setting the `CLK_SET_RATE_PARENT`
+flag when registering ddiv clocks.
 
-Add READ_ONCE()/WRITE_ONCE() annotations to suppress
-potential issues.
+Without this flag, rate changes to the divider clock do not propagate
+to its parent, potentially resulting in incorrect clock configurations.
 
-We will likely need full RCU protection later.
+Fix this by setting `CLK_SET_RATE_PARENT` in the clock init data.
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250630121934.3399505-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bc4d25fdfadfa ("clk: renesas: rzv2h: Add support for dynamic switching divider clocks")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250609140341.235919-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h      | 2 +-
- include/net/lwtunnel.h | 4 ++--
- net/core/dst.c         | 2 +-
- net/ipv4/route.c       | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/clk/renesas/rzv2h-cpg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 16b7b99b5f30..ef7f88f01881 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -474,7 +474,7 @@ INDIRECT_CALLABLE_DECLARE(int ip_local_deliver(struct sk_buff *));
- /* Input packet from network to transport.  */
- static inline int dst_input(struct sk_buff *skb)
- {
--	return INDIRECT_CALL_INET(skb_dst(skb)->input,
-+	return INDIRECT_CALL_INET(READ_ONCE(skb_dst(skb)->input),
- 				  ip6_input, ip_local_deliver, skb);
- }
+diff --git a/drivers/clk/renesas/rzv2h-cpg.c b/drivers/clk/renesas/rzv2h-cpg.c
+index b524a9d33610..5f8116e39e22 100644
+--- a/drivers/clk/renesas/rzv2h-cpg.c
++++ b/drivers/clk/renesas/rzv2h-cpg.c
+@@ -312,6 +312,7 @@ rzv2h_cpg_ddiv_clk_register(const struct cpg_core_clk *core,
+ 	init.ops = &rzv2h_ddiv_clk_divider_ops;
+ 	init.parent_names = &parent_name;
+ 	init.num_parents = 1;
++	init.flags = CLK_SET_RATE_PARENT;
  
-diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
-index 53bd2d02a4f0..a4632a64daae 100644
---- a/include/net/lwtunnel.h
-+++ b/include/net/lwtunnel.h
-@@ -142,8 +142,8 @@ static inline void lwtunnel_set_redirect(struct dst_entry *dst)
- 		dst->output = lwtunnel_output;
- 	}
- 	if (lwtunnel_input_redirect(dst->lwtstate)) {
--		dst->lwtstate->orig_input = dst->input;
--		dst->input = lwtunnel_input;
-+		dst->lwtstate->orig_input = READ_ONCE(dst->input);
-+		WRITE_ONCE(dst->input, lwtunnel_input);
- 	}
- }
- #else
-diff --git a/net/core/dst.c b/net/core/dst.c
-index aad197e761cb..def3dbbd37e3 100644
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -150,7 +150,7 @@ void dst_dev_put(struct dst_entry *dst)
- 	dst->obsolete = DST_OBSOLETE_DEAD;
- 	if (dst->ops->ifdown)
- 		dst->ops->ifdown(dst, dev);
--	dst->input = dst_discard;
-+	WRITE_ONCE(dst->input, dst_discard);
- 	dst->output = dst_discard_out;
- 	dst->dev = blackhole_netdev;
- 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 8ee1ad2d8c13..f8538507ce3f 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1699,7 +1699,7 @@ struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt)
- 		else if (rt->rt_gw_family == AF_INET6)
- 			new_rt->rt_gw6 = rt->rt_gw6;
- 
--		new_rt->dst.input = rt->dst.input;
-+		new_rt->dst.input = READ_ONCE(rt->dst.input);
- 		new_rt->dst.output = rt->dst.output;
- 		new_rt->dst.error = rt->dst.error;
- 		new_rt->dst.lastuse = jiffies;
+ 	ddiv->priv = priv;
+ 	ddiv->mon = cfg_ddiv.monbit;
 -- 
 2.39.5
 
