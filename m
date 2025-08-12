@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1E3B23320
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5C7B23541
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67530188F318
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2191B3A9C7F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394472DBF5E;
-	Tue, 12 Aug 2025 18:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5E2FE565;
+	Tue, 12 Aug 2025 18:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPQgXfx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3xh/mGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2E5282E1;
-	Tue, 12 Aug 2025 18:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821B72FD1A4;
+	Tue, 12 Aug 2025 18:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022828; cv=none; b=jZ2naCyoo9lIvsonoUq+dlqYuuQ5vyLUDdbEHCWxvb9DHCyH8rBYQ4QdfQHy5fc2xo+ovxJun6Tw6w8P9vUVuGtU6XzgZk+ZvoPZcBRoKOOVzc+ZmcTaczn5LhGMKCGlxtZg+5HZjkPwjnTCeHU4bD5hjkLucSTQECq7amiYrfc=
+	t=1755024245; cv=none; b=Ch/JcIeWZJpesAJFE9qB5K6IHi/4byFSrT/K7myfYGSBau7xMAi5o5OEJhwXyw0WUR57xsBAMYnmpPvETNHK41yKfRkgYEKBDkM9rDgn/mzgkWo3T1szGxZ3wXNYzp3OoK5AYSZB6VAzqmwLN5WyrzHBbM7XspXKB5DqwKaGnNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022828; c=relaxed/simple;
-	bh=8i72Y1iUdkpra6poWdSJ2wuM4PSxcMtJVIJzAS/8wJo=;
+	s=arc-20240116; t=1755024245; c=relaxed/simple;
+	bh=qMZaYGrNeVlBp7vuAx3fyC19oBhg8gw62eFUzNYwZcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHkKp43LWTasRkR9R8zjbmDJkpVCK9E3kAnl9kBdr/p6tlJ099St8UnHvKkEgvteAHp6Kaf29BKjxgqkz46tIgDqG7wc2L61D6YxNydZSvrvUWX8xU/ajIgoS3P4t6rwZhJrfA4ipb1/7ZQGAFvCyl5W77zrDLC6/gBbhEZ0cmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPQgXfx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1392AC4CEF6;
-	Tue, 12 Aug 2025 18:20:26 +0000 (UTC)
+	 MIME-Version; b=E5C3XBeGzIed51eZ5O1IEOzW8FBSKCdgJGOH8ju0Q9vAvS0f0FpSIggQPy4oZNY5/KG66qY40Gb9Es4AaiKVR2BJ6m0/22O8Q/99lNneWFf3aTE+Ck5Xu78lCfwBn7PoPk9NUvo5KVpcu+MYCr+UAZsHe2rYIZkmyLFNfOHeQA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3xh/mGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3694C4CEF0;
+	Tue, 12 Aug 2025 18:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022827;
-	bh=8i72Y1iUdkpra6poWdSJ2wuM4PSxcMtJVIJzAS/8wJo=;
+	s=korg; t=1755024245;
+	bh=qMZaYGrNeVlBp7vuAx3fyC19oBhg8gw62eFUzNYwZcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sPQgXfx2B6Q6jkW6AEmQ8t0pFONVmWSDJqK/x5qCZOjBtpcsZjGjaQOTEXVKi/l1X
-	 nwohdcuRHy2lmYJJ8b9lbr5CNo87gyyWhk4Y879DYXnovrCdFIfYAllV/3ghgxKBeR
-	 FoK5X74G1857II1/mzxa02kCBdeR20IROgX+grG8=
+	b=R3xh/mGZGTxOKou0El2QvIWIVWuTiC1AW5Hz9i2ZOKyrctCERpyz9DIMIgLrOfFlN
+	 SCQnjyPoqBTOLbiKmh11e9wKciwrGTtPoecE3hUBv2tGd8j++JljlP7Z0Tljt/syem
+	 G73O3M0+aJz6BrHB6PoXd1dghCL56yJqcpBNC5ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/369] scsi: Revert "scsi: iscsi: Fix HW conn removal use after free"
-Date: Tue, 12 Aug 2025 19:29:27 +0200
-Message-ID: <20250812173024.913645280@linuxfoundation.org>
+Subject: [PATCH 6.16 273/627] netfilter: xt_nfacct: dont assume acct name is null-terminated
+Date: Tue, 12 Aug 2025 19:29:28 +0200
+Message-ID: <20250812173429.700489819@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 7bdc68921481c19cd8c85ddf805a834211c19e61 ]
+[ Upstream commit bf58e667af7d96c8eb9411f926a0a0955f41ce21 ]
 
-This reverts commit c577ab7ba5f3bf9062db8a58b6e89d4fe370447e.
+BUG: KASAN: slab-out-of-bounds in .. lib/vsprintf.c:721
+Read of size 1 at addr ffff88801eac95c8 by task syz-executor183/5851
+[..]
+ string+0x231/0x2b0 lib/vsprintf.c:721
+ vsnprintf+0x739/0xf00 lib/vsprintf.c:2874
+ [..]
+ nfacct_mt_checkentry+0xd2/0xe0 net/netfilter/xt_nfacct.c:41
+ xt_check_match+0x3d1/0xab0 net/netfilter/x_tables.c:523
 
-The invocation of iscsi_put_conn() in iscsi_iter_destory_conn_fn() is
-used to free the initial reference counter of iscsi_cls_conn.  For
-non-qla4xxx cases, the ->destroy_conn() callback (e.g.,
-iscsi_conn_teardown) will call iscsi_remove_conn() and iscsi_put_conn()
-to remove the connection from the children list of session and free the
-connection at last.  However for qla4xxx, it is not the case. The
-->destroy_conn() callback of qla4xxx will keep the connection in the
-session conn_list and doesn't use iscsi_put_conn() to free the initial
-reference counter. Therefore, it seems necessary to keep the
-iscsi_put_conn() in the iscsi_iter_destroy_conn_fn(), otherwise, there
-will be memory leak problem.
+nfnl_acct_find_get() handles non-null input, but the error
+printk relied on its presence.
 
-Link: https://lore.kernel.org/all/88334658-072b-4b90-a949-9c74ef93cfd1@huawei.com/
-Fixes: c577ab7ba5f3 ("scsi: iscsi: Fix HW conn removal use after free")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Link: https://lore.kernel.org/r/20250715073926.3529456-1-lilingfeng3@huawei.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ff165b9251e4d295690
+Tested-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Fixes: ceb98d03eac5 ("netfilter: xtables: add nfacct match to support extended accounting")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/xt_nfacct.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 7a5bebf5b096..7528bb7c06bb 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -2170,6 +2170,8 @@ static int iscsi_iter_destroy_conn_fn(struct device *dev, void *data)
- 		return 0;
+diff --git a/net/netfilter/xt_nfacct.c b/net/netfilter/xt_nfacct.c
+index 7c6bf1c16813..0ca1cdfc4095 100644
+--- a/net/netfilter/xt_nfacct.c
++++ b/net/netfilter/xt_nfacct.c
+@@ -38,8 +38,8 @@ nfacct_mt_checkentry(const struct xt_mtchk_param *par)
  
- 	iscsi_remove_conn(iscsi_dev_to_conn(dev));
-+	iscsi_put_conn(iscsi_dev_to_conn(dev));
-+
- 	return 0;
- }
- 
+ 	nfacct = nfnl_acct_find_get(par->net, info->name);
+ 	if (nfacct == NULL) {
+-		pr_info_ratelimited("accounting object `%s' does not exists\n",
+-				    info->name);
++		pr_info_ratelimited("accounting object `%.*s' does not exist\n",
++				    NFACCT_NAME_MAX, info->name);
+ 		return -ENOENT;
+ 	}
+ 	info->nfacct = nfacct;
 -- 
 2.39.5
 
