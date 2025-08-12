@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7489EB23430
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:37:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBEDB22F9D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 580C016D5B8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5231889306
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EF761FFE;
-	Tue, 12 Aug 2025 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC882F7477;
+	Tue, 12 Aug 2025 17:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nThE1rWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwIuXUMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961842F4A0A;
-	Tue, 12 Aug 2025 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E112FDC36;
+	Tue, 12 Aug 2025 17:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023580; cv=none; b=L2U7s1O9QzsiCAscSr3civxGowHIfhYagEsa+oiblJDOaQYkFlGeHxrYv0LCCRrFjbdpRVojAIlKVeziNcBl90U6k8LNi09faXEL1Efuhh2DIGLjmoFh3hqh++2Qu2qzTQcPmK8MzcUIrf0SCQvkUh3SgNvldlBOFUIrWi8ZGig=
+	t=1755020371; cv=none; b=Nnic2eRdVZJnxFj4vvGSvwMA4Z6gmlCjlPrueq07Hq1s8ZUNYa3qULolwmQmEpBg7hjzP3dd68pSSsjdpptft2YWVSW0DPBNvxsxsnSLCDWM6nINsr+xRaHSnm4Y2ReN9KbcVofMkHqwbikP7XWHvn53eicN00b8GnLAAgLMoOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023580; c=relaxed/simple;
-	bh=LzN5ZhvXbBOXLr1/++jrUNaXp4Uv3qE3D5M4URBns/4=;
+	s=arc-20240116; t=1755020371; c=relaxed/simple;
+	bh=JvA8HAgGOE03s6/zjgbVQVRJIOQmtabco0lVZzHkCl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyH+xV9TD3KQPuS0EXlZdpuv74FNnZ4YOvzka0dlhn7i8Hg7zIU9I2896LGl/BIXB1kPe2s29w7T+Ipm+aTrii3isAUgxtjEnRcekLbaYGq0FSwIIZweiyXRUP1Y9ss2IlEVSykZMoSM/hUejd7WTxuilAx89BVWJNPTdLVhJSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nThE1rWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3061C4CEF0;
-	Tue, 12 Aug 2025 18:32:59 +0000 (UTC)
+	 MIME-Version; b=g25wYhOFonbgHpG2mmG1nyFsSiKCaCOR3yPqdJQ8Pd2kudluocE5/RfHR1JOUxrHACmlYBWmRDbD4ZTnrHoy+m1wEbEThX3vpE2ZSaMPgj1y2NvQy+luG8oQ326WhBeffGlsztEVo2paMDnpeW1IHf8CzXZolTJthEag/Jguusw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwIuXUMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A0AC4CEF0;
+	Tue, 12 Aug 2025 17:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023580;
-	bh=LzN5ZhvXbBOXLr1/++jrUNaXp4Uv3qE3D5M4URBns/4=;
+	s=korg; t=1755020370;
+	bh=JvA8HAgGOE03s6/zjgbVQVRJIOQmtabco0lVZzHkCl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nThE1rWFwncp0uH4D8um3gR9z3Wiv2FwkNnhFxkPorbQ9kO9gjl0k/c3nkIQDfNrw
-	 ZIPavSTWKfHIUhjPJpYLBp8k5IvxdR8QyQHVtY0Mnnv5fawoPaBhh+O0EM8MzMIyI1
-	 XmSeQ2vVSAljBKHBhD7CF5d9M1ntPCWurNtUGTmY=
+	b=gwIuXUMVjZ8/v6mV1Sj8AOXhxudjzQyImE6M61jgHnAmuxrIdjpYQjO7/6m12Bf4D
+	 YiAy5JfQa7/+JlIK40AJcarg4oxmOnqxztFj3LKdtqG3JUKtREuJcQ5ePWVMV/xueX
+	 dCITzfNDZ/CgEGHTqbczcDfUioZIjA382MPg5Y6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 121/627] interconnect: qcom: qcs615: Drop IP0 interconnects
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 028/253] i2c: tegra: Fix reset error handling with ACPI
 Date: Tue, 12 Aug 2025 19:26:56 +0200
-Message-ID: <20250812173423.926141939@linuxfoundation.org>
+Message-ID: <20250812172949.929745632@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit cbabc73e85be9e706a5051c9416de4a8d391cf57 ]
+commit 56344e241c543f17e8102fa13466ad5c3e7dc9ff upstream.
 
-In the same spirit as e.g. Commit b136d257ee0b ("interconnect: qcom:
-sc8280xp: Drop IP0 interconnects"), drop the resources that should be
-taken care of through the clk-rpmh driver.
+The acpi_evaluate_object() returns an ACPI error code and not
+Linux one. For the some platforms the err will have positive code
+which may be interpreted incorrectly. Use device_reset() for
+reset control which handles it correctly.
 
-Fixes: 77d79677b04b ("interconnect: qcom: add QCS615 interconnect provider driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250627-topic-qcs615_icc_ipa-v1-2-dc47596cde69@oss.qualcomm.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bd2fdedbf2ba ("i2c: tegra: Add the ACPI support")
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Cc: <stable@vger.kernel.org> # v5.17+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250710131206.2316-2-akhilrajeev@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/qcs615.c | 42 ------------------------------
- 1 file changed, 42 deletions(-)
+ drivers/i2c/busses/i2c-tegra.c |   24 +-----------------------
+ 1 file changed, 1 insertion(+), 23 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/qcs615.c b/drivers/interconnect/qcom/qcs615.c
-index 7e59e91ce886..0549cfcbac64 100644
---- a/drivers/interconnect/qcom/qcs615.c
-+++ b/drivers/interconnect/qcom/qcs615.c
-@@ -342,15 +342,6 @@ static struct qcom_icc_node qnm_snoc_sf = {
- 	.links = { QCS615_SLAVE_LLCC },
- };
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -623,7 +623,6 @@ static int tegra_i2c_wait_for_config_loa
+ static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
+ {
+ 	u32 val, clk_divisor, clk_multiplier, tsu_thd, tlow, thigh, non_hs_mode;
+-	acpi_handle handle = ACPI_HANDLE(i2c_dev->dev);
+ 	struct i2c_timings *t = &i2c_dev->timings;
+ 	int err;
  
--static struct qcom_icc_node ipa_core_master = {
--	.name = "ipa_core_master",
--	.id = QCS615_MASTER_IPA_CORE,
--	.channels = 1,
--	.buswidth = 8,
--	.num_links = 1,
--	.links = { QCS615_SLAVE_IPA_CORE },
--};
+@@ -635,11 +634,7 @@ static int tegra_i2c_init(struct tegra_i
+ 	 * emit a noisy warning on error, which won't stay unnoticed and
+ 	 * won't hose machine entirely.
+ 	 */
+-	if (handle)
+-		err = acpi_evaluate_object(handle, "_RST", NULL, NULL);
+-	else
+-		err = reset_control_reset(i2c_dev->rst);
 -
- static struct qcom_icc_node llcc_mc = {
- 	.name = "llcc_mc",
- 	.id = QCS615_MASTER_LLCC,
-@@ -942,14 +933,6 @@ static struct qcom_icc_node srvc_gemnoc = {
- 	.num_links = 0,
- };
++	err = device_reset(i2c_dev->dev);
+ 	WARN_ON_ONCE(err);
  
--static struct qcom_icc_node ipa_core_slave = {
--	.name = "ipa_core_slave",
--	.id = QCS615_SLAVE_IPA_CORE,
--	.channels = 1,
--	.buswidth = 8,
--	.num_links = 0,
--};
--
- static struct qcom_icc_node ebi = {
- 	.name = "ebi",
- 	.id = QCS615_SLAVE_EBI1,
-@@ -1113,12 +1096,6 @@ static struct qcom_icc_bcm bcm_cn1 = {
- 		   &qhs_sdc1, &qhs_sdc2 },
- };
+ 	if (IS_DVC(i2c_dev))
+@@ -1696,19 +1691,6 @@ static void tegra_i2c_parse_dt(struct te
+ 		i2c_dev->is_vi = true;
+ }
  
--static struct qcom_icc_bcm bcm_ip0 = {
--	.name = "IP0",
--	.num_nodes = 1,
--	.nodes = { &ipa_core_slave },
--};
+-static int tegra_i2c_init_reset(struct tegra_i2c_dev *i2c_dev)
+-{
+-	if (ACPI_HANDLE(i2c_dev->dev))
+-		return 0;
 -
- static struct qcom_icc_bcm bcm_mc0 = {
- 	.name = "MC0",
- 	.keepalive = true,
-@@ -1260,7 +1237,6 @@ static struct qcom_icc_bcm * const aggre1_noc_bcms[] = {
- 	&bcm_qup0,
- 	&bcm_sn3,
- 	&bcm_sn14,
--	&bcm_ip0,
- };
+-	i2c_dev->rst = devm_reset_control_get_exclusive(i2c_dev->dev, "i2c");
+-	if (IS_ERR(i2c_dev->rst))
+-		return dev_err_probe(i2c_dev->dev, PTR_ERR(i2c_dev->rst),
+-				      "failed to get reset control\n");
+-
+-	return 0;
+-}
+-
+ static int tegra_i2c_init_clocks(struct tegra_i2c_dev *i2c_dev)
+ {
+ 	int err;
+@@ -1818,10 +1800,6 @@ static int tegra_i2c_probe(struct platfo
  
- static struct qcom_icc_node * const aggre1_noc_nodes[] = {
-@@ -1411,22 +1387,6 @@ static const struct qcom_icc_desc qcs615_gem_noc = {
- 	.num_bcms = ARRAY_SIZE(gem_noc_bcms),
- };
+ 	tegra_i2c_parse_dt(i2c_dev);
  
--static struct qcom_icc_bcm * const ipa_virt_bcms[] = {
--	&bcm_ip0,
--};
+-	err = tegra_i2c_init_reset(i2c_dev);
+-	if (err)
+-		return err;
 -
--static struct qcom_icc_node * const ipa_virt_nodes[] = {
--	[MASTER_IPA_CORE] = &ipa_core_master,
--	[SLAVE_IPA_CORE] = &ipa_core_slave,
--};
--
--static const struct qcom_icc_desc qcs615_ipa_virt = {
--	.nodes = ipa_virt_nodes,
--	.num_nodes = ARRAY_SIZE(ipa_virt_nodes),
--	.bcms = ipa_virt_bcms,
--	.num_bcms = ARRAY_SIZE(ipa_virt_bcms),
--};
--
- static struct qcom_icc_bcm * const mc_virt_bcms[] = {
- 	&bcm_acv,
- 	&bcm_mc0,
-@@ -1525,8 +1485,6 @@ static const struct of_device_id qnoc_of_match[] = {
- 	  .data = &qcs615_dc_noc},
- 	{ .compatible = "qcom,qcs615-gem-noc",
- 	  .data = &qcs615_gem_noc},
--	{ .compatible = "qcom,qcs615-ipa-virt",
--	  .data = &qcs615_ipa_virt},
- 	{ .compatible = "qcom,qcs615-mc-virt",
- 	  .data = &qcs615_mc_virt},
- 	{ .compatible = "qcom,qcs615-mmss-noc",
--- 
-2.39.5
-
+ 	err = tegra_i2c_init_clocks(i2c_dev);
+ 	if (err)
+ 		return err;
 
 
 
