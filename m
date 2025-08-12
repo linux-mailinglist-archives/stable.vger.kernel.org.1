@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D835B232E9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE9CB234C0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 797963B77B1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB039189DDB7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F062F745D;
-	Tue, 12 Aug 2025 18:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5682FDC4F;
+	Tue, 12 Aug 2025 18:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8R/73P2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAOFHFHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B762E3B06;
-	Tue, 12 Aug 2025 18:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2989421ABD0;
+	Tue, 12 Aug 2025 18:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022668; cv=none; b=jcGLmSbao9RKGKsZlmTV8/L0+1i68DeUSl+njLOHaZQJPs3njLBuFdjTo68Pl1mYRm4ppQXAf5XV9pTmfUyNl+zy7xS/yci97cY5vOHpAJqjPb0ePvj9h4sGRItqylycT8ojpMmAxipT/JLCbOpLOTfqidonfzIvirqc0ffSiRU=
+	t=1755023940; cv=none; b=UpLBXKpUAokj1dL8mLnyvlx7tvPdJ8GT5keah1RC6nBEE2T+jA3RbIAOZPo4VzC6chpstNkfWmcLaWk7kv6BWqo5tyWycK/J2qDQvpGd4DeoOjkqrFXriSWuixLEoe5rjkZNLH0bYLB7Pd3aScQ2WhxHmFma9pvVTrFhE9VX5WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022668; c=relaxed/simple;
-	bh=o6RIn0a4l6LcvnDg1ReMHMM3xuAEgQN1jrn8dMUiVFI=;
+	s=arc-20240116; t=1755023940; c=relaxed/simple;
+	bh=VJKB2iGsR3dpZMG8s0/1/5waHzn34++2Hp7enbyex8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5nJU8SA5yL3XnqkHg7OVzvlm/ZVBf5TYbxdJU6IoIombCGnxDiXxNrbV0wD+82Up4HsWelPKuBWA/WYdh8mOEKTXIoR+KCkzIuNQbGchfwzCsKbFSzqd8xTuM1wTI/ZhG+AZsnndOPmsmgayJpr/bakOZVUnszYxERJ5EIKvxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8R/73P2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE135C4CEF7;
-	Tue, 12 Aug 2025 18:17:47 +0000 (UTC)
+	 MIME-Version; b=QCZfwbeX0dkYPVmoaAmRbavdrxom2slPZN+403PvD3kQRiIedTkPErznswRsqUyH62AKZoI0OQK4lrmoabuPrJdw7JSkmK7Y7DoGCZ8WUIffRfKLpd4a8ajEbtTNSFNqEkt/HOG9o2pml6775TuaclDy9DM8It6/5IxY1T/b2Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAOFHFHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A314C4CEF0;
+	Tue, 12 Aug 2025 18:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022668;
-	bh=o6RIn0a4l6LcvnDg1ReMHMM3xuAEgQN1jrn8dMUiVFI=;
+	s=korg; t=1755023940;
+	bh=VJKB2iGsR3dpZMG8s0/1/5waHzn34++2Hp7enbyex8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8R/73P2zdyHRWZ48oz8R57r9t7IWfBSuv2aN6Mv9+crkt3vBYF0VRto7zgDhp/il
-	 Xt3IBLPDzc5HDJWv0EhcnERdHkVQldUMWDRJVlhxrfcOEJsdLbA5GIE1cHVhSAiRFg
-	 zjxsU+o4LMp6V4ZBS+NE1xjpfE8+6ZCG19qDEbEE=
+	b=nAOFHFHBL/iJHzKj3RlyG5O3HLCBChKewin9tnxr0r6z+8Ch+zFxJ8n3c2o1qH1SQ
+	 siGxusIZRpC767LAWBfjY8KlKFEckGZtaITDWgxqf/Sbg9dtTzl0DzgKCAK/aoFvHp
+	 NnrMer+U8rHwQRoPxXc4ZDzzUcowK7zFxGOA8jzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yu <zheng.yu@northwestern.edu>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/369] jfs: fix metapage reference count leak in dbAllocCtl
+Subject: [PATCH 6.16 226/627] wifi: ath12k: Use HTT_TCL_METADATA_VER_V1 in FTM mode
 Date: Tue, 12 Aug 2025 19:28:41 +0200
-Message-ID: <20250812173023.183925080@linuxfoundation.org>
+Message-ID: <20250812173427.883487869@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yu <zheng.yu@northwestern.edu>
+From: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
 
-[ Upstream commit 856db37592021e9155384094e331e2d4589f28b1 ]
+[ Upstream commit 66b3ebc77d23d6574a965bdbfe41de8aeb7f384e ]
 
-In dbAllocCtl(), read_metapage() increases the reference count of the
-metapage. However, when dp->tree.budmin < 0, the function returns -EIO
-without calling release_metapage() to decrease the reference count,
-leading to a memory leak.
+Currently host sends HTT_TCL_METADATA_VER_V2 to the firmware
+regardless of the operating mode (Mission or FTM).
 
-Add release_metapage(mp) before the error return to properly manage
-the metapage reference count and prevent the leak.
+Firmware expects additional software information (like peer ID, vdev
+ID, and link ID) in Tx packets when HTT_TCL_METADATA_VER_V2 is set.
+However, in FTM (Factory Test Mode) mode, no vdev is created on the
+host side (this is expected). As a result, the firmware fails to find
+the expected vdev during packet processing and ends up dropping
+packets.
 
-Fixes: a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ("jfs: fix shift-out-of-bounds in dbSplit")
+To fix this, send HTT_TCL_METADATA_VER_V1 in FTM mode because FTM
+mode doesn't support HTT_TCL_METADATA_VER_V2.
 
-Signed-off-by: Zheng Yu <zheng.yu@northwestern.edu>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
+
+Fixes: 5d964966bd3f ("wifi: ath12k: Update HTT_TCL_METADATA version and bit mask definitions")
+Signed-off-by: Aaradhana Sahu <aaradhana.sahu@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250711035420.1509029-1-aaradhana.sahu@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp.h    | 1 +
+ drivers/net/wireless/ath/ath12k/dp_tx.c | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 35e063c9f3a4..5a877261c3fe 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1809,8 +1809,10 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
- 			return -EIO;
- 		dp = (struct dmap *) mp->data;
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index a353333f83b6..2f0718edabd2 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -469,6 +469,7 @@ enum htt_h2t_msg_type {
+ };
  
--		if (dp->tree.budmin < 0)
-+		if (dp->tree.budmin < 0) {
-+			release_metapage(mp);
- 			return -EIO;
-+		}
+ #define HTT_VER_REQ_INFO_MSG_ID		GENMASK(7, 0)
++#define HTT_OPTION_TCL_METADATA_VER_V1	1
+ #define HTT_OPTION_TCL_METADATA_VER_V2	2
+ #define HTT_OPTION_TAG			GENMASK(7, 0)
+ #define HTT_OPTION_LEN			GENMASK(15, 8)
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index 075912eacfaa..7470731eb830 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -1182,6 +1182,7 @@ int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab)
+ 	struct sk_buff *skb;
+ 	struct htt_ver_req_cmd *cmd;
+ 	int len = sizeof(*cmd);
++	u32 metadata_version;
+ 	int ret;
  
- 		/* try to allocate the blocks.
- 		 */
+ 	init_completion(&dp->htt_tgt_version_received);
+@@ -1194,12 +1195,14 @@ int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab)
+ 	cmd = (struct htt_ver_req_cmd *)skb->data;
+ 	cmd->ver_reg_info = le32_encode_bits(HTT_H2T_MSG_TYPE_VERSION_REQ,
+ 					     HTT_OPTION_TAG);
++	metadata_version = ath12k_ftm_mode ? HTT_OPTION_TCL_METADATA_VER_V1 :
++			   HTT_OPTION_TCL_METADATA_VER_V2;
+ 
+ 	cmd->tcl_metadata_version = le32_encode_bits(HTT_TAG_TCL_METADATA_VERSION,
+ 						     HTT_OPTION_TAG) |
+ 				    le32_encode_bits(HTT_TCL_METADATA_VER_SZ,
+ 						     HTT_OPTION_LEN) |
+-				    le32_encode_bits(HTT_OPTION_TCL_METADATA_VER_V2,
++				    le32_encode_bits(metadata_version,
+ 						     HTT_OPTION_VALUE);
+ 
+ 	ret = ath12k_htc_send(&ab->htc, dp->eid, skb);
 -- 
 2.39.5
 
