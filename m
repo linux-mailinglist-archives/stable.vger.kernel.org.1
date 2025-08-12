@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E371CB2327C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE0EB23422
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E99BF3ABA10
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D29561E49
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1401EBFE0;
-	Tue, 12 Aug 2025 18:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D8C2FD1A2;
+	Tue, 12 Aug 2025 18:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myIS9cFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CF6fCSS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB75257435;
-	Tue, 12 Aug 2025 18:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8312D2F4A0A;
+	Tue, 12 Aug 2025 18:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022394; cv=none; b=MldGZxkesX4tlaxbtmQrK4GAU6v71KxNrFTYxpmjIK27TA8LkL6ogwv5ekGzaYpq+D6xZYilLf+95NRP/nNUwA7jU7VjN4JzXQkyXJEKpvRm8i6FY8J+W6CArzUViKMtaoShFkKqWr1ftLClU+WbMCG/gLW4XIjsntY84Nv/cGg=
+	t=1755023542; cv=none; b=USGXdfH9k2J+7iDz1mdH2Q82U3y6TJuVccUTxXEa9Vw92j+AaQocmxkaeT8t8E26DuP1x7asaF958xGJXve/8W/5da7hdLmCmONgRXs1c24HU/y66XeYRGLnazWy9eXJtdMNjm8owlYcG5O3s+Vsclep1tNqDUUW9ge6WNEWOks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022394; c=relaxed/simple;
-	bh=oldVOwLQMxt4sTQHzDNMcivcAI/s3JsXOlobsF30xcs=;
+	s=arc-20240116; t=1755023542; c=relaxed/simple;
+	bh=Hq+3MPcyeoA8DKrLphVrU5aSCzNOKRa14cYJoSiMoA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rITk8mtIU/z4bUddU70IFB9hbShlcLaOX6HV1mGsml/hONXaKEctT657v2zI3dDs01c25x3qrzYSiFmoW7TVIZE89k0soIGWJeC7gglmRxCAWlZdyUEa18Ke15w3nztoU2aZmSZgBfXJBJC8ZlFL4XT2epjLyZX+iUmSp18wwHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myIS9cFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF95EC4CEF6;
-	Tue, 12 Aug 2025 18:13:13 +0000 (UTC)
+	 MIME-Version; b=cB7Hi4DI400ekTgZP7C91iH4kmTMs29Z/XF8Uqp385VG+oD0XYJmsfYpEeDPNfNp8tWumtg89awqZG62mRr5uGyMwfWoFdkSs9HcqVlPiL/HbthCIvlVUPHfrdaxiAESAeQ+JZYx7l+RkTb/SHIulqh9G+mzZg4kbnp+V7dowU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CF6fCSS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C78C4CEF6;
+	Tue, 12 Aug 2025 18:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022394;
-	bh=oldVOwLQMxt4sTQHzDNMcivcAI/s3JsXOlobsF30xcs=;
+	s=korg; t=1755023542;
+	bh=Hq+3MPcyeoA8DKrLphVrU5aSCzNOKRa14cYJoSiMoA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myIS9cFqDHpOAVVD+BiMYm3f/YWs21XQlTS2sveLUqzNK90PfrbwurOlBjOY+V8/i
-	 RfKZ4nKu1u/gNZXu0SwsQKvY2DuJkZ/WUyJsIm/+fY4kBOWF5CGM1K6T1FpaX4tGKX
-	 0SefjhXc+sROTvOBlAv9/ltKDfngytD5HvAnJ6Eg=
+	b=2CF6fCSSidpLrocF9Mtoo9Cv6QZCr2/TDdhBMqeeeUrc9HKVKlHYuHzKUasXehR9s
+	 Q/JBlGwNrhWeyhc3iLNRArIjujge5dh22M5SUDVF+5LJX2tjKY4agR2MLFKWVmb+sk
+	 +XbcEz5uLh8JotnbTJLRYwasEOM6NSIaA2AA8LeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/369] wifi: rtl8xxxu: Fix RX skb size for aggregation disabled
+Subject: [PATCH 6.16 111/627] arm64: dts: rockchip: Fix UART DMA support for RK3528
 Date: Tue, 12 Aug 2025 19:26:46 +0200
-Message-ID: <20250812173018.877058302@linuxfoundation.org>
+Message-ID: <20250812173423.534508943@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaistra <martin.kaistra@linutronix.de>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit d76a1abcf57734d2bcd4a7ec051617edd4513d7f ]
+[ Upstream commit ae019f0bdfbef3e0671e7b954321e92fc24c7e54 ]
 
-Commit 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for
-phystats") increased the skb size when aggregation is enabled but decreased
-it for the aggregation disabled case.
+Trying to use UART2 DMA for Bluetooth on ArmSoM Sige1 result in tx
+timeout when using dma-names = "tx", "rx" as required by the dt-binding:
 
-As a result, if a frame near the maximum size is received,
-rtl8xxxu_rx_complete() is called with status -EOVERFLOW and then the
-driver starts to malfunction and no further communication is possible.
+  Bluetooth: hci0: command 0x0c03 tx timeout
+  Bluetooth: hci0: BCM: Reset failed (-110)
 
-Restore the skb size in the aggregation disabled case.
+Change the dmas order to fix UART DMA support on RK3528.
 
-Fixes: 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for phystats")
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250709121522.1992366-1-martin.kaistra@linutronix.de
+With this fixed Bluetooth can be loaded using DMA on ArmSoM Sige1:
+
+  Bluetooth: hci0: BCM: chip id 159
+  Bluetooth: hci0: BCM: features 0x0f
+  Bluetooth: hci0: BCM4362A2
+  Bluetooth: hci0: BCM4362A2 (000.017.017) build 0000
+  Bluetooth: hci0: BCM4362A2 'brcm/BCM4362A2.hcd' Patch
+  Bluetooth: hci0: BCM: features 0x0f
+  Bluetooth: hci0: BCM43752A2 UART 37.4MHz Ampak AP6398 sLNA iLNA CL1 [Version: 1091.1173]
+  Bluetooth: hci0: BCM4362A2 (000.017.017) build 1173
+
+Fixes: ab6fcb58aedf ("arm64: dts: rockchip: Add UART DMA support for RK3528")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20250709210831.3170458-1-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3528.dtsi | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 569856ca677f..c6f69d87c38d 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -6617,7 +6617,7 @@ static int rtl8xxxu_submit_rx_urb(struct rtl8xxxu_priv *priv,
- 		skb_size = fops->rx_agg_buf_size;
- 		skb_size += (rx_desc_sz + sizeof(struct rtl8723au_phy_stats));
- 	} else {
--		skb_size = IEEE80211_MAX_FRAME_LEN;
-+		skb_size = IEEE80211_MAX_FRAME_LEN + rx_desc_sz;
- 	}
- 
- 	skb = __netdev_alloc_skb(NULL, skb_size, GFP_KERNEL);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3528.dtsi b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+index d1c72b52aa4e..7f78409cb558 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3528.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3528.dtsi
+@@ -445,7 +445,7 @@ uart0: serial@ff9f0000 {
+ 			clocks = <&cru SCLK_UART0>, <&cru PCLK_UART0>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 8>, <&dmac 9>;
++			dmas = <&dmac 9>, <&dmac 8>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
+@@ -457,7 +457,7 @@ uart1: serial@ff9f8000 {
+ 			clocks = <&cru SCLK_UART1>, <&cru PCLK_UART1>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 10>, <&dmac 11>;
++			dmas = <&dmac 11>, <&dmac 10>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
+@@ -469,7 +469,7 @@ uart2: serial@ffa00000 {
+ 			clocks = <&cru SCLK_UART2>, <&cru PCLK_UART2>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 12>, <&dmac 13>;
++			dmas = <&dmac 13>, <&dmac 12>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
+@@ -481,7 +481,7 @@ uart3: serial@ffa08000 {
+ 			clocks = <&cru SCLK_UART3>, <&cru PCLK_UART3>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 14>, <&dmac 15>;
++			dmas = <&dmac 15>, <&dmac 14>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
+@@ -493,7 +493,7 @@ uart4: serial@ffa10000 {
+ 			clocks = <&cru SCLK_UART4>, <&cru PCLK_UART4>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 16>, <&dmac 17>;
++			dmas = <&dmac 17>, <&dmac 16>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
+@@ -505,7 +505,7 @@ uart5: serial@ffa18000 {
+ 			clocks = <&cru SCLK_UART5>, <&cru PCLK_UART5>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 45 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 18>, <&dmac 19>;
++			dmas = <&dmac 19>, <&dmac 18>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
+@@ -517,7 +517,7 @@ uart6: serial@ffa20000 {
+ 			clocks = <&cru SCLK_UART6>, <&cru PCLK_UART6>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 20>, <&dmac 21>;
++			dmas = <&dmac 21>, <&dmac 20>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
+@@ -529,7 +529,7 @@ uart7: serial@ffa28000 {
+ 			clocks = <&cru SCLK_UART7>, <&cru PCLK_UART7>;
+ 			clock-names = "baudclk", "apb_pclk";
+ 			interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
+-			dmas = <&dmac 22>, <&dmac 23>;
++			dmas = <&dmac 23>, <&dmac 22>;
+ 			reg-io-width = <4>;
+ 			reg-shift = <2>;
+ 			status = "disabled";
 -- 
 2.39.5
 
