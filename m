@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-168256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFACB2342A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C8FB22F64
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FA201699F1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F16027A8513
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FC02F5481;
-	Tue, 12 Aug 2025 18:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FA82FDC5C;
+	Tue, 12 Aug 2025 17:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeOtqXAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kh250Hpp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73B42ECE93;
-	Tue, 12 Aug 2025 18:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF8F2FDC51;
+	Tue, 12 Aug 2025 17:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023563; cv=none; b=KYkjjtLA0vJHIGVMMRYaW7N1JQp7yLLKqvmLX28EFM8BAhArcdJe5trEMTTTtyiqBNnO2ArTazthfofakeJb5zQdPH4L0znxsclejD7NMEVZKZUOLbm00zPkj3rbJmmsd/ARV/Gh95TW65iA4f/qaIkpLn/XK99UNQd4XE4OGM0=
+	t=1755020337; cv=none; b=L+Vf4mSrdNNsL8iCSa0PXeVRslaqh/Cxt1l9ym2Kuze6JwiwNUB51yIDLPegLT2HmmfDQDxQBc4Y3uWNhKeNLzFZYAr9C7LiSANkoo8SV08Mq7PQ8U5kTXjWVvOaAu+qBsBRyCIfnSBfxOMsFWeCX3hWTIXKpFsjjH7mxTY9Wjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023563; c=relaxed/simple;
-	bh=b/3HdGOXCm8LsMGICslh74doxhZMtmAiLVyNXj5l4LU=;
+	s=arc-20240116; t=1755020337; c=relaxed/simple;
+	bh=x4d/JvC/+0b3j6Ti1bla6K0GAz8OpJ/howDdd83rWQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2lLav/03tywAi0yQHDswtkADMMTcnSoTClPtrB+acZAu2huUbLltXpKHTB+cTLHmq3QSyM8tqSBj7IZdMNpu2ObRVSrV/N6x0AK2xAwD/6r0n/8iPcaEaqcJ14Ozeekjb7fNym+VjFbTyPxXeUGg/4ywgvnB6M9+5e16K1x8p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeOtqXAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58E6C4CEF1;
-	Tue, 12 Aug 2025 18:32:42 +0000 (UTC)
+	 MIME-Version; b=V+HuYXSwT6zfwrBKlTbbIw62I/tpN7nNvT/H0JpOx8eRYA6sGobggP6x4TGy2Jw23Ev2nlXtMuSxoF2jGAXlg3AyM59w+oJMe11FYQwPO8tdl7oeSCNoj7TTJiWiCuf3je+zYWZCSwXRtQHjIusRX9V3C69pai2hlIJ0NNDT2O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kh250Hpp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6F5C4CEF0;
+	Tue, 12 Aug 2025 17:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023563;
-	bh=b/3HdGOXCm8LsMGICslh74doxhZMtmAiLVyNXj5l4LU=;
+	s=korg; t=1755020337;
+	bh=x4d/JvC/+0b3j6Ti1bla6K0GAz8OpJ/howDdd83rWQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeOtqXAiIlTjzMuORSqVMZMp0V219YVsSVhd+ZKCwps3mAYnD07X6Q+yGj6Ac4d/2
-	 xuNm85zraoO9PEF6nqEzjBrMXmPhkhZVNFh8cRAnFuaa4FZzAMEHXonNBQ1F6/8ts6
-	 QujSoIr+FBHsjRf0S2FCGUkiinSXH7AvsjG8mSgk=
+	b=kh250HppU9dk0Q0CeP02E/xyT6zQdCejL/gjSUUgGIiQvERj4dH2jyhLgelByAJua
+	 67toYpvW1435WkduZBM/deusTnQECA4EDH57Iuvy3L3b5AoOU4aeysei/igZRcEEci
+	 5TE0bTZTbXBGeaVba2aezTCCs0C2sSZRyCcNqnqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Johan Hovold <johan@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 116/627] driver core: auxiliary bus: fix OF node leak
+Subject: [PATCH 6.1 023/253] net: hns3: fix concurrent setting vlan filter issue
 Date: Tue, 12 Aug 2025 19:26:51 +0200
-Message-ID: <20250812173423.731562621@linuxfoundation.org>
+Message-ID: <20250812172949.708876322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 6beb4ec0f9fdff4c4c6eb8ed8654fe8396c2b6e0 ]
+[ Upstream commit 4555f8f8b6aa46940f55feb6a07704c2935b6d6e ]
 
-Make sure to drop the OF node reference taken when creating an auxiliary
-device using auxiliary_device_create() when the device is later
-released.
+The vport->req_vlan_fltr_en may be changed concurrently by function
+hclge_sync_vlan_fltr_state() called in periodic work task and
+function hclge_enable_vport_vlan_filter() called by user configuration.
+It may cause the user configuration inoperative. Fixes it by protect
+the vport->req_vlan_fltr by vport_lock.
 
-Fixes: eaa0d30216c1 ("driver core: auxiliary bus: add device creation helpers")
-Cc: Jerome Brunet <jbrunet@baylibre.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20250708084654.15145-1-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ba306627f59 ("net: hns3: add support for modify VLAN filter state")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250722125423.1270673-2-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/auxiliary.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 36 +++++++++++--------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/base/auxiliary.c b/drivers/base/auxiliary.c
-index dba7c8e13a53..6bdefebf3609 100644
---- a/drivers/base/auxiliary.c
-+++ b/drivers/base/auxiliary.c
-@@ -399,6 +399,7 @@ static void auxiliary_device_release(struct device *dev)
- {
- 	struct auxiliary_device *auxdev = to_auxiliary_dev(dev);
- 
-+	of_node_put(dev->of_node);
- 	kfree(auxdev);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index ed1b49a360165..c509c1e12109f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -9599,33 +9599,36 @@ static bool hclge_need_enable_vport_vlan_filter(struct hclge_vport *vport)
+ 	return false;
  }
  
-@@ -435,6 +436,7 @@ struct auxiliary_device *auxiliary_device_create(struct device *dev,
+-int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
++static int __hclge_enable_vport_vlan_filter(struct hclge_vport *vport,
++					    bool request_en)
+ {
+-	struct hclge_dev *hdev = vport->back;
+ 	bool need_en;
+ 	int ret;
  
- 	ret = auxiliary_device_init(auxdev);
- 	if (ret) {
-+		of_node_put(auxdev->dev.of_node);
- 		kfree(auxdev);
- 		return NULL;
+-	mutex_lock(&hdev->vport_lock);
+-
+-	vport->req_vlan_fltr_en = request_en;
+-
+ 	need_en = hclge_need_enable_vport_vlan_filter(vport);
+-	if (need_en == vport->cur_vlan_fltr_en) {
+-		mutex_unlock(&hdev->vport_lock);
++	if (need_en == vport->cur_vlan_fltr_en)
+ 		return 0;
+-	}
+ 
+ 	ret = hclge_set_vport_vlan_filter(vport, need_en);
+-	if (ret) {
+-		mutex_unlock(&hdev->vport_lock);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	vport->cur_vlan_fltr_en = need_en;
+ 
++	return 0;
++}
++
++int hclge_enable_vport_vlan_filter(struct hclge_vport *vport, bool request_en)
++{
++	struct hclge_dev *hdev = vport->back;
++	int ret;
++
++	mutex_lock(&hdev->vport_lock);
++	vport->req_vlan_fltr_en = request_en;
++	ret = __hclge_enable_vport_vlan_filter(vport, request_en);
+ 	mutex_unlock(&hdev->vport_lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int hclge_enable_vlan_filter(struct hnae3_handle *handle, bool enable)
+@@ -10646,16 +10649,19 @@ static void hclge_sync_vlan_fltr_state(struct hclge_dev *hdev)
+ 					&vport->state))
+ 			continue;
+ 
+-		ret = hclge_enable_vport_vlan_filter(vport,
+-						     vport->req_vlan_fltr_en);
++		mutex_lock(&hdev->vport_lock);
++		ret = __hclge_enable_vport_vlan_filter(vport,
++						       vport->req_vlan_fltr_en);
+ 		if (ret) {
+ 			dev_err(&hdev->pdev->dev,
+ 				"failed to sync vlan filter state for vport%u, ret = %d\n",
+ 				vport->vport_id, ret);
+ 			set_bit(HCLGE_VPORT_STATE_VLAN_FLTR_CHANGE,
+ 				&vport->state);
++			mutex_unlock(&hdev->vport_lock);
+ 			return;
+ 		}
++		mutex_unlock(&hdev->vport_lock);
  	}
+ }
+ 
 -- 
 2.39.5
 
