@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-167548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C483CB2309F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D1FB23299
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28C0A6849A6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825D21B614AF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6489B2FAC02;
-	Tue, 12 Aug 2025 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A4A2FE588;
+	Tue, 12 Aug 2025 18:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UluOo2I9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkkT9az2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A5F26B2C8;
-	Tue, 12 Aug 2025 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6672D46B3;
+	Tue, 12 Aug 2025 18:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021187; cv=none; b=qV1SuzhAeuzUDaweCZGkEeOYsIOtU83xW9Y+t6Txh640utxk09j0mPZ3ueH/15jpWpqYQYK/vYgnCqq1/fSLRdmYuA0lFfnQwqpOrQliNM62xz0msVZetqs99gyJEwhg5q2AwiDZOZK0Jg6F4kcvzoOu0PvWiJ3/vpPiQJOjz+o=
+	t=1755022476; cv=none; b=R3KomCVfkGaGgTEEymdImh8ExP6Brjw+K3GJOkWNPJiFDA7+y72dj0ruGBsB57Td5aePVI+1ebQCVHfTrs+JwGuhqxJbrR/hXGKnbtj76vylQLvZ6ZJWDrnGGV1F0+adWNNplIyMyqm2UoMqqoHElxVRexo+WuhoVLmWwvCj0VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021187; c=relaxed/simple;
-	bh=QSQaeNFYnvGW8muqOS8df1VgXjPKOgW3kEfimg/EbOE=;
+	s=arc-20240116; t=1755022476; c=relaxed/simple;
+	bh=EpPuwK2f8GTaOKCBzE7TB5H7vvMsnTaY0+M7YAJvWYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUytePcHnDSp8DkhIeoFMCE7GQG8ijGAena27KH+0DA+UV+c0HFLOAIgvTB/vz2E3vYeaLtsNDMkMw1+iFJNwhZgk6RiKA/rBNx2WCr4I5iu/ee+gSt9ktmkF5WvBoD8Za9V/YrCPUvOJOpEuVJpr7QLDfHPmBqtGPis4rt6DtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UluOo2I9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D0BC4CEF0;
-	Tue, 12 Aug 2025 17:53:06 +0000 (UTC)
+	 MIME-Version; b=psE5vqt9CqwC5dS6DNhHyDQ15g15tgry+zrfUvG8YJWXifqY+TIv0nZ1Teu8mZ8X+mMJg+trvCZnp59G9u6kNBgJ4aot605ROjjgDMV13L0w6zXsVLwbXJ3RTCnPNjmGFjwpRuohgOT57bYEpEs4Bry6UqfPWOR8NEkuqvRTBxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkkT9az2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B11BC4CEF0;
+	Tue, 12 Aug 2025 18:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021187;
-	bh=QSQaeNFYnvGW8muqOS8df1VgXjPKOgW3kEfimg/EbOE=;
+	s=korg; t=1755022476;
+	bh=EpPuwK2f8GTaOKCBzE7TB5H7vvMsnTaY0+M7YAJvWYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UluOo2I9NzEQ26mZFHG41k6Zx4OGPHerXmgzNklOUytfzw+DO1GLpfOoAyj/sLhq3
-	 bYjjgsPhh3yIY4sINC7OPvaoWPYhMupFjRqp4ZY16jF+Cl4rruyJag+ZCCLhvj4MEs
-	 O81B7aipq7fjOOrBMTa0xMLfldboatriTUkMihiI=
+	b=HkkT9az2g2Z3WvUXLR3v5ru0WilFNxGWXVXsmEyN0c2PXomZgROKTjV5t9brh7i5H
+	 q6uFR5pZFLL40Od5inoCB7XI/fJ8cUNFhlHrax0NoHAjVG2yYtGpUOhM4NKxJzTpwZ
+	 tseh9z6hBGPqU3zmQYa4M3HQUrQD5edPPSKZfCzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/262] net/sched: Restrict conditions for adding duplicating netems to qdisc tree
+Subject: [PATCH 6.12 166/369] crypto: arm/aes-neonbs - work around gcc-15 warning
 Date: Tue, 12 Aug 2025 19:27:43 +0200
-Message-ID: <20250812172956.224706748@linuxfoundation.org>
+Message-ID: <20250812173021.017223953@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Liu <will@willsroot.io>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit ec8e0e3d7adef940cdf9475e2352c0680189d14e ]
+[ Upstream commit d5fa96dc5590915f060fee3209143313e4f5b03b ]
 
-netem_enqueue's duplication prevention logic breaks when a netem
-resides in a qdisc tree with other netems - this can lead to a
-soft lockup and OOM loop in netem_dequeue, as seen in [1].
-Ensure that a duplicating netem cannot exist in a tree with other
-netems.
+I get a very rare -Wstringop-overread warning with gcc-15 for one function
+in aesbs_ctr_encrypt():
 
-Previous approaches suggested in discussions in chronological order:
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:212:1446: error: '__builtin_memcpy' offset [17, 2147483647] is out of the bounds [0, 16] of object 'buf' with type 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds=]
+  212 |                         src = dst = memcpy(buf + sizeof(buf) - bytes,
+arch/arm/crypto/aes-neonbs-glue.c: In function 'ctr_encrypt':
+arch/arm/crypto/aes-neonbs-glue.c:218:17: error: 'aesbs_ctr_encrypt' reading 1 byte from a region of size 0 [-Werror=stringop-overread]
+  218 |                 aesbs_ctr_encrypt(dst, src, ctx->rk, ctx->rounds, bytes, walk.iv);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 2 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 3 of type 'const u8[0]' {aka 'const unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:218:17: note: referencing argument 6 of type 'u8[0]' {aka 'unsigned char[]'}
+arch/arm/crypto/aes-neonbs-glue.c:36:17: note: in a call to function 'aesbs_ctr_encrypt'
+   36 | asmlinkage void aesbs_ctr_encrypt(u8 out[], u8 const in[], u8 const rk[],
 
-1) Track duplication status or ttl in the sk_buff struct. Considered
-too specific a use case to extend such a struct, though this would
-be a resilient fix and address other previous and potential future
-DOS bugs like the one described in loopy fun [2].
+This could happen in theory if walk.nbytes is larger than INT_MAX and gets
+converted to a negative local variable.
 
-2) Restrict netem_enqueue recursion depth like in act_mirred with a
-per cpu variable. However, netem_dequeue can call enqueue on its
-child, and the depth restriction could be bypassed if the child is a
-netem.
+Keep the type unsigned like the orignal nbytes to be sure there is no
+integer overflow.
 
-3) Use the same approach as in 2, but add metadata in netem_skb_cb
-to handle the netem_dequeue case and track a packet's involvement
-in duplication. This is an overly complex approach, and Jamal
-notes that the skb cb can be overwritten to circumvent this
-safeguard.
-
-4) Prevent the addition of a netem to a qdisc tree if its ancestral
-path contains a netem. However, filters and actions can cause a
-packet to change paths when re-enqueued to the root from netem
-duplication, leading us to the current solution: prevent a
-duplicating netem from inhabiting the same tree as other netems.
-
-[1] https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
-[2] https://lwn.net/Articles/719297/
-
-Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
-Reported-by: William Liu <will@willsroot.io>
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Signed-off-by: William Liu <will@willsroot.io>
-Signed-off-by: Savino Dicanosa <savy@syst3mfailure.io>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20250708164141.875402-1-will@willsroot.io
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c8bf850e991a ("crypto: arm/aes-neonbs-ctr - deal with non-multiples of AES block size")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ arch/arm/crypto/aes-neonbs-glue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 447d3e836a24..0ad231e94e14 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -972,6 +972,41 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- 	return 0;
- }
+diff --git a/arch/arm/crypto/aes-neonbs-glue.c b/arch/arm/crypto/aes-neonbs-glue.c
+index f6be80b5938b..2fad3a0c0563 100644
+--- a/arch/arm/crypto/aes-neonbs-glue.c
++++ b/arch/arm/crypto/aes-neonbs-glue.c
+@@ -232,7 +232,7 @@ static int ctr_encrypt(struct skcipher_request *req)
+ 	while (walk.nbytes > 0) {
+ 		const u8 *src = walk.src.virt.addr;
+ 		u8 *dst = walk.dst.virt.addr;
+-		int bytes = walk.nbytes;
++		unsigned int bytes = walk.nbytes;
  
-+static const struct Qdisc_class_ops netem_class_ops;
-+
-+static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct Qdisc *root, *q;
-+	unsigned int i;
-+
-+	root = qdisc_root_sleeping(sch);
-+
-+	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
-+		if (duplicates ||
-+		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
-+			goto err;
-+	}
-+
-+	if (!qdisc_dev(root))
-+		return 0;
-+
-+	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
-+		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
-+			if (duplicates ||
-+			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
-+				goto err;
-+		}
-+	}
-+
-+	return 0;
-+
-+err:
-+	NL_SET_ERR_MSG(extack,
-+		       "netem: cannot mix duplicating netems with other netems in tree");
-+	return -EINVAL;
-+}
-+
- /* Parse netlink message to set options */
- static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			struct netlink_ext_ack *extack)
-@@ -1030,6 +1065,11 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	q->gap = qopt->gap;
- 	q->counter = 0;
- 	q->loss = qopt->loss;
-+
-+	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
-+	if (ret)
-+		goto unlock;
-+
- 	q->duplicate = qopt->duplicate;
- 
- 	/* for compatibility with earlier versions.
+ 		if (unlikely(bytes < AES_BLOCK_SIZE))
+ 			src = dst = memcpy(buf + sizeof(buf) - bytes,
 -- 
 2.39.5
 
