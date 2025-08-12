@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-168039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26181B23318
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A11B23035
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECA69171FA9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 838D16835F8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D1326A0EB;
-	Tue, 12 Aug 2025 18:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3689F2FABE3;
+	Tue, 12 Aug 2025 17:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gb62gLXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXHrGVXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0603A6BB5B;
-	Tue, 12 Aug 2025 18:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7541221FAC;
+	Tue, 12 Aug 2025 17:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022838; cv=none; b=czxsahkLQpHL0T+2iKvLqcyqUEzdZFoZ5lIR/+y3SkuEPeBYruIReN3BelHJa/kO20RvyXmakhxxSwmgrYJAP9YRXdlHxE9L/QSDObIbg5a/+rjAnQCkNHSgP3R8eDERDrieee2DRz+U+uUQpg8Xtww3sOwGnaUFz10q/uA3mGU=
+	t=1755020887; cv=none; b=fY9vvsSc6BB+OGASFnF8K+jMRIOwkpEkRAJdpqRceqMisBwPRTlvKCppVWDXF/5g1LEEzpJDIqMni/ATc8v7Sgyq3lbDzkkGKEBbVhDp5nR48vLxV8Ub8p5lqHpeKQpFf8xJQcwOhlRFywaRMceu42fGKqhMiYnf0waCFlKPUDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022838; c=relaxed/simple;
-	bh=IOtoA3qcHhtfcBZCESWCO8ZhsUcKrRvPWl11LqAD3R0=;
+	s=arc-20240116; t=1755020887; c=relaxed/simple;
+	bh=OT7QXgIYVZJwKIw5NI7TOe/NRA5ne18HD/miGD27FaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKH3fxbb95LbDHvI+s7bw0cwqP0cQrO/4JWa4qQm0E9CfDCWLSqfimnhP36vluRgZhy51bmIyTbE9TuZpqnNROeyx3WcgbEOdtrMDQRqfGt6/ioDEYvzEeOefR+otsP6vYqVvXhS6zkX3qs5PQdyRXmg1H6Ar7oU1VTQcilQu1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gb62gLXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C45C4CEF1;
-	Tue, 12 Aug 2025 18:20:37 +0000 (UTC)
+	 MIME-Version; b=DIlEbe6AByV//iQasD9uzOWSbwlBMyt/YeR/2go54Mw8ptPEC6rJmHQPwAYYua31UqmKrn7Ygz6FeNr1HyY2Au1szIyRiLrfxzProxoPsk9odVX04a5ElhRIciqy510SIbgBTfUNiUMG+RobJ/KI/uvWGhIj3OHYFIFOVkq4r08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXHrGVXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59093C4CEF0;
+	Tue, 12 Aug 2025 17:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022837;
-	bh=IOtoA3qcHhtfcBZCESWCO8ZhsUcKrRvPWl11LqAD3R0=;
+	s=korg; t=1755020886;
+	bh=OT7QXgIYVZJwKIw5NI7TOe/NRA5ne18HD/miGD27FaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gb62gLXquQnyczYh720eotu4aI84FX1vf6M0LeCi7AmHO3Tx7+SMv+9d32xL2UenW
-	 6du6qP/qs0LmYqSTqrX8O6TowJO0tzTZFO2rUZ3UtNj6aAbY+Kz7auUOFlxHRQnf3N
-	 TiCtA0qfJ4/MZ3vBXXq1oFMDXoRpnRekiPvmCt90=
+	b=xXHrGVXDvDowOC8B9eqW9T3cYWoEG7vyJJiR7WXZY6O3aTkWLB15ENQUCuTfK3ysX
+	 9AqU4MTEBs7oN1dSO8uvg8RfQVbNj8WJprCo9I0trfpUDHg2eFmO4iYpec/ZAXoHSw
+	 HetOU2AvnOdWlchheHWGEYVsbYdaT8LYE7JtYNX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 273/369] kconfig: qconf: fix ConfigList::updateListAllforAll()
+Subject: [PATCH 6.1 182/253] bpf: Check flow_dissector ctx accesses are aligned
 Date: Tue, 12 Aug 2025 19:29:30 +0200
-Message-ID: <20250812173025.244480681@linuxfoundation.org>
+Message-ID: <20250812172956.517375278@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 721bfe583c52ba1ea74b3736a31a9dcfe6dd6d95 ]
+[ Upstream commit ead3d7b2b6afa5ee7958620c4329982a7d9c2b78 ]
 
-ConfigList::updateListForAll() and ConfigList::updateListAllforAll()
-are identical.
+flow_dissector_is_valid_access doesn't check that the context access is
+aligned. As a consequence, an unaligned access within one of the exposed
+field is considered valid and later rejected by
+flow_dissector_convert_ctx_access when we try to convert it.
 
-Commit f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All)
-to ConfigList class") was a misconversion.
+The later rejection is problematic because it's reported as a verifier
+bug with a kernel warning and doesn't point to the right instruction in
+verifier logs.
 
-Fixes: f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All) to ConfigList class")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Reported-by: syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ccac90e482b2a81d74aa
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/cc1b036be484c99be45eddf48bd78cc6f72839b1.1754039605.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/qconf.cc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/filter.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
-index e260cab1c2af..4b375abda772 100644
---- a/scripts/kconfig/qconf.cc
-+++ b/scripts/kconfig/qconf.cc
-@@ -481,7 +481,7 @@ void ConfigList::updateListAllForAll()
- 	while (it.hasNext()) {
- 		ConfigList *list = it.next();
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 4c806ce62739..cd0c28e94979 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -9270,6 +9270,9 @@ static bool flow_dissector_is_valid_access(int off, int size,
+ 	if (off < 0 || off >= sizeof(struct __sk_buff))
+ 		return false;
  
--		list->updateList();
-+		list->updateListAll();
- 	}
- }
++	if (off % size != 0)
++		return false;
++
+ 	if (type == BPF_WRITE)
+ 		return false;
  
 -- 
 2.39.5
