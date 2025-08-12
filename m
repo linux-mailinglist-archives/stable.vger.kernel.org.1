@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-167781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40958B231F6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69295B233B3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD6AC174D08
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D6462A7F34
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA612FE560;
-	Tue, 12 Aug 2025 18:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B467721ABD0;
+	Tue, 12 Aug 2025 18:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpRVo/gT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQGAEC4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C5E2F745E;
-	Tue, 12 Aug 2025 18:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A386BB5B;
+	Tue, 12 Aug 2025 18:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021970; cv=none; b=fsuyYTAfNUhdWfeuXi3WYiVCV90Pv7RsLfDvhpoBKmvDKSoxfIOHaTQRfTn4qZTwdyiEgQOgAfaXS3ZklgRbkHWmj/xs5yZuXoSkR2eu7GbQyJ49RszDaCVst6CW297091R2MdvG3mzIO8xAieBErBZJO7OkGYTsp5tFR4oWA/Y=
+	t=1755023228; cv=none; b=JMgmZS/ix0pWjgLvoq9euGkviL9CICty24Uach9wl2SeTbpksQBUd9CvdGz7uuHUfIqJhCPHh133Y+yZqyHKuS7dojyD5uH9P0tGDV8qbN0O8dU+ZY5TQJaYwjxm5y9klNKY1tDc6g7+oFnO+COEaHD5MrNPH2Pp8bzHxPN01YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021970; c=relaxed/simple;
-	bh=BLaq/T29CoPxFdy40K1Xxaeb5p7zK5DU/UB1bAL4a8s=;
+	s=arc-20240116; t=1755023228; c=relaxed/simple;
+	bh=9k0i24K2HM8mkulCgeBurjpVmZkBQLsmW7XpFcOP0Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pd9GF1brE9ryJxoFRaYe3oGH3LVKPUxYR2e3VsH8VHp/+6RPu+vffeKrL5GIZAtVXjfmI0igZ1/WADtCvtWW05WOGzHkzEOf3VUGnAwEIVDgXfPr4yruOxCU186xZqM62faY6etPfQ3BAUBwU92ab1t4cjMYkyzDXe76WAtVdLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpRVo/gT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40039C4CEF6;
-	Tue, 12 Aug 2025 18:06:09 +0000 (UTC)
+	 MIME-Version; b=mcPlKK2oEz9oSdrekFpU6+oBvRn7wRAV6Zw/YzEhHhAmPodVPVueemIl4KQCZ/tIYMODqY2gB0N89Z69O2BxO+uP+uq6b0C2bncIHLSlFDSWZLoP1y4JX6owIB8tPMipzXjM5ICWlcVi+ArmmHqmmj56rc1O/3w2jYAitxaICw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQGAEC4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFECBC4CEF0;
+	Tue, 12 Aug 2025 18:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021969;
-	bh=BLaq/T29CoPxFdy40K1Xxaeb5p7zK5DU/UB1bAL4a8s=;
+	s=korg; t=1755023228;
+	bh=9k0i24K2HM8mkulCgeBurjpVmZkBQLsmW7XpFcOP0Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MpRVo/gTp2nnuD9YxJtr2PLUl76ko0N7/Ow0bQgsP1z/X43k74AcZb7U/MioOHbcs
-	 gF3oK5rPV5QrwzTPjTcA0LFCn6AxyfJSDgMBvFHhSxUqf88wYrGgpYtoygaGu3mPog
-	 NgLOWf10JElmEHTf+y02Dvn+1KPeigJqNeM50XHg=
+	b=oQGAEC4OYRYWVwAS0Xo2APbBp6VwqCo/89KzdqhrmXnCApdbUkPy2l8VCJnxFFBmj
+	 F76Va78GTZwKheb4ozTRACLFC37RWvkNTj4AaxAlr9S2OAOP6SxKp9iG6OQlgy8Zs+
+	 S/VLsiDPPdIxnJ3WIRAzaavZqcoMLoudGbt3XpxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Ming Lei <ming.lei@redhat.com>,
 	Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	io-uring@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/369] io_uring: fix breakage in EXPERT menu
+Subject: [PATCH 6.16 019/627] ublk: validate ublk server pid
 Date: Tue, 12 Aug 2025 19:25:14 +0200
-Message-ID: <20250812173015.390331886@linuxfoundation.org>
+Message-ID: <20250812173420.051129007@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit d1fbe1ebf4a12cabd7945335d5e47718cb2bef99 ]
+[ Upstream commit c2c8089f325ed703fd5123b39e2dece1dd605904 ]
 
-Add a dependency for IO_URING for the GCOV_PROFILE_URING symbol.
+ublk server pid(the `tgid` of the process opening the ublk device) is stored
+in `ublk_device->ublksrv_tgid`. This `tgid` is then checked against the
+`ublksrv_pid` in `ublk_ctrl_start_dev` and `ublk_ctrl_end_recovery`.
 
-Without this patch the EXPERT config menu ends with
-"Enable IO uring support" and the menu prompts for
-GCOV_PROFILE_URING and IO_URING_MOCK_FILE are not subordinate to it.
-This causes all of the EXPERT Kconfig options that follow
-GCOV_PROFILE_URING to be display in the "upper" menu (General setup),
-just following the EXPERT menu.
+This ensures that correct ublk server pid is stored in device info.
 
-Fixes: 1802656ef890 ("io_uring: add GCOV_PROFILE_URING Kconfig option")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: io-uring@vger.kernel.org
-Link: https://lore.kernel.org/r/20250720010456.2945344-1-rdunlap@infradead.org
+Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250713143415.2857561-2-ming.lei@redhat.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index d3755b2264bd..45990792cb4a 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1741,7 +1741,7 @@ config IO_URING
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 2492c11defcc..3e60558bf525 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -218,6 +218,7 @@ struct ublk_device {
+ 	unsigned int		nr_privileged_daemon;
+ 	struct mutex cancel_mutex;
+ 	bool canceling;
++	pid_t 	ublksrv_tgid;
+ };
  
- config GCOV_PROFILE_URING
- 	bool "Enable GCOV profiling on the io_uring subsystem"
--	depends on GCOV_KERNEL
-+	depends on IO_URING && GCOV_KERNEL
- 	help
- 	  Enable GCOV profiling on the io_uring subsystem, to facilitate
- 	  code coverage testing.
+ /* header of ublk_params */
+@@ -1517,6 +1518,7 @@ static int ublk_ch_open(struct inode *inode, struct file *filp)
+ 	if (test_and_set_bit(UB_STATE_OPEN, &ub->state))
+ 		return -EBUSY;
+ 	filp->private_data = ub;
++	ub->ublksrv_tgid = current->tgid;
+ 	return 0;
+ }
+ 
+@@ -1531,6 +1533,7 @@ static void ublk_reset_ch_dev(struct ublk_device *ub)
+ 	ub->mm = NULL;
+ 	ub->nr_queues_ready = 0;
+ 	ub->nr_privileged_daemon = 0;
++	ub->ublksrv_tgid = -1;
+ }
+ 
+ static struct gendisk *ublk_get_disk(struct ublk_device *ub)
+@@ -2732,6 +2735,9 @@ static int ublk_ctrl_start_dev(struct ublk_device *ub,
+ 	if (wait_for_completion_interruptible(&ub->completion) != 0)
+ 		return -EINTR;
+ 
++	if (ub->ublksrv_tgid != ublksrv_pid)
++		return -EINVAL;
++
+ 	mutex_lock(&ub->mutex);
+ 	if (ub->dev_info.state == UBLK_S_DEV_LIVE ||
+ 	    test_bit(UB_STATE_USED, &ub->state)) {
+@@ -3232,6 +3238,9 @@ static int ublk_ctrl_end_recovery(struct ublk_device *ub,
+ 	pr_devel("%s: All FETCH_REQs received, dev id %d\n", __func__,
+ 		 header->dev_id);
+ 
++	if (ub->ublksrv_tgid != ublksrv_pid)
++		return -EINVAL;
++
+ 	mutex_lock(&ub->mutex);
+ 	if (ublk_nosrv_should_stop_dev(ub))
+ 		goto out_unlock;
 -- 
 2.39.5
 
