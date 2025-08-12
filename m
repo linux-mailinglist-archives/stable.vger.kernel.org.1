@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-168436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41EEB23523
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26181B23318
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7908C6E62B0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECA69171FA9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCB92FF14D;
-	Tue, 12 Aug 2025 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D1326A0EB;
+	Tue, 12 Aug 2025 18:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTDC34o+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gb62gLXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27C52FE57E;
-	Tue, 12 Aug 2025 18:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0603A6BB5B;
+	Tue, 12 Aug 2025 18:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024163; cv=none; b=kuxBRqzbcqVjmO9zg0SeCrf8tTFXTFeGMDF+eJcejBj1nav/v+j0T7v8DPdOL/+SWk+Dfq7En0GAelUQ31VZEevtsnHBzbILMDne6iDp+hiDQfTOhAyznFKLEDExf2Uubz7lU8TDw9u4FQE8EKcpTXs/1FIZiyGjk1vvbRv/ZK8=
+	t=1755022838; cv=none; b=czxsahkLQpHL0T+2iKvLqcyqUEzdZFoZ5lIR/+y3SkuEPeBYruIReN3BelHJa/kO20RvyXmakhxxSwmgrYJAP9YRXdlHxE9L/QSDObIbg5a/+rjAnQCkNHSgP3R8eDERDrieee2DRz+U+uUQpg8Xtww3sOwGnaUFz10q/uA3mGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024163; c=relaxed/simple;
-	bh=lfQcjPaNQfDNEx2cdYpPZem0Yp6vRxtpZ8QJJxm8YxY=;
+	s=arc-20240116; t=1755022838; c=relaxed/simple;
+	bh=IOtoA3qcHhtfcBZCESWCO8ZhsUcKrRvPWl11LqAD3R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bx8Y6HC6IuAbsB20vDSZPo9iVx0LnxbtFOJPXLc42nMktAzck3AEBLSqVoOFwLT+LMJBKEH+tyPnJ82FtuahbLiwPcRuzI7e4Ujw0f2NY+sYv2DeBNnPNgDFJEa/x8379zfHYEN10c1CJL+9T0W+rK/+Jhv0UkVJUf8xigqO25U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTDC34o+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3735AC4CEF0;
-	Tue, 12 Aug 2025 18:42:41 +0000 (UTC)
+	 MIME-Version; b=JKH3fxbb95LbDHvI+s7bw0cwqP0cQrO/4JWa4qQm0E9CfDCWLSqfimnhP36vluRgZhy51bmIyTbE9TuZpqnNROeyx3WcgbEOdtrMDQRqfGt6/ioDEYvzEeOefR+otsP6vYqVvXhS6zkX3qs5PQdyRXmg1H6Ar7oU1VTQcilQu1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gb62gLXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C45C4CEF1;
+	Tue, 12 Aug 2025 18:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024162;
-	bh=lfQcjPaNQfDNEx2cdYpPZem0Yp6vRxtpZ8QJJxm8YxY=;
+	s=korg; t=1755022837;
+	bh=IOtoA3qcHhtfcBZCESWCO8ZhsUcKrRvPWl11LqAD3R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTDC34o+srLW4ubmrSgEDRE4kTCFO+K0CF8WPMufnctU3llaQdXLxZxbI/9kF8t6f
-	 Xn3IotES/B787jrPSViPf4cBvOYoi0DYvZTlXFOFRCSvoOsap/Pe5fw16ccCU1ROs8
-	 Kv1mmkZNOMoeRnHtEHQDdLWb2us9RTiuM/G1BO9A=
+	b=gb62gLXquQnyczYh720eotu4aI84FX1vf6M0LeCi7AmHO3Tx7+SMv+9d32xL2UenW
+	 6du6qP/qs0LmYqSTqrX8O6TowJO0tzTZFO2rUZ3UtNj6aAbY+Kz7auUOFlxHRQnf3N
+	 TiCtA0qfJ4/MZ3vBXXq1oFMDXoRpnRekiPvmCt90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Chen <yiche@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 275/627] selftests: netfilter: ipvs.sh: Explicity disable rp_filter on interface tunl0
+Subject: [PATCH 6.12 273/369] kconfig: qconf: fix ConfigList::updateListAllforAll()
 Date: Tue, 12 Aug 2025 19:29:30 +0200
-Message-ID: <20250812173429.772268828@linuxfoundation.org>
+Message-ID: <20250812173025.244480681@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Chen <yiche@redhat.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 8b4a1a46e84a17f5d6fde5c506cc6bb141a24772 ]
+[ Upstream commit 721bfe583c52ba1ea74b3736a31a9dcfe6dd6d95 ]
 
-Although setup_ns() set net.ipv4.conf.default.rp_filter=0,
-loading certain module such as ipip will automatically create a tunl0 interface
-in all netns including new created ones. In the script, this is before than
-default.rp_filter=0 applied, as a result tunl0.rp_filter remains set to 1
-which causes the test report FAIL when ipip module is preloaded.
+ConfigList::updateListForAll() and ConfigList::updateListAllforAll()
+are identical.
 
-Before fix:
-Testing DR mode...
-Testing NAT mode...
-Testing Tunnel mode...
-ipvs.sh: FAIL
+Commit f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All)
+to ConfigList class") was a misconversion.
 
-After fix:
-Testing DR mode...
-Testing NAT mode...
-Testing Tunnel mode...
-ipvs.sh: PASS
-
-Fixes: 7c8b89ec506e ("selftests: netfilter: remove rp_filter configuration")
-Signed-off-by: Yi Chen <yiche@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: f9b918fae678 ("kconfig: qconf: move ConfigView::updateList(All) to ConfigList class")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/netfilter/ipvs.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/kconfig/qconf.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/ipvs.sh b/tools/testing/selftests/net/netfilter/ipvs.sh
-index 6af2ea3ad6b8..9c9d5b38ab71 100755
---- a/tools/testing/selftests/net/netfilter/ipvs.sh
-+++ b/tools/testing/selftests/net/netfilter/ipvs.sh
-@@ -151,7 +151,7 @@ test_nat() {
- test_tun() {
- 	ip netns exec "${ns0}" ip route add "${vip_v4}" via "${gip_v4}" dev br0
+diff --git a/scripts/kconfig/qconf.cc b/scripts/kconfig/qconf.cc
+index e260cab1c2af..4b375abda772 100644
+--- a/scripts/kconfig/qconf.cc
++++ b/scripts/kconfig/qconf.cc
+@@ -481,7 +481,7 @@ void ConfigList::updateListAllForAll()
+ 	while (it.hasNext()) {
+ 		ConfigList *list = it.next();
  
--	ip netns exec "${ns1}" modprobe -q ipip
-+	modprobe -q ipip
- 	ip netns exec "${ns1}" ip link set tunl0 up
- 	ip netns exec "${ns1}" sysctl -qw net.ipv4.ip_forward=0
- 	ip netns exec "${ns1}" sysctl -qw net.ipv4.conf.all.send_redirects=0
-@@ -160,10 +160,10 @@ test_tun() {
- 	ip netns exec "${ns1}" ipvsadm -a -i -t "${vip_v4}:${port}" -r ${rip_v4}:${port}
- 	ip netns exec "${ns1}" ip addr add ${vip_v4}/32 dev lo:1
+-		list->updateList();
++		list->updateListAll();
+ 	}
+ }
  
--	ip netns exec "${ns2}" modprobe -q ipip
- 	ip netns exec "${ns2}" ip link set tunl0 up
- 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_ignore=1
- 	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.all.arp_announce=2
-+	ip netns exec "${ns2}" sysctl -qw net.ipv4.conf.tunl0.rp_filter=0
- 	ip netns exec "${ns2}" ip addr add "${vip_v4}/32" dev lo:1
- 
- 	test_service
 -- 
 2.39.5
 
