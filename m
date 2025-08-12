@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B74BB2301C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BED62B2342D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFA16620DA9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E1F623101
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EEBA2F7477;
-	Tue, 12 Aug 2025 17:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6422FAC02;
+	Tue, 12 Aug 2025 18:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2TgHyDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6cFDbRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD9126B2C8;
-	Tue, 12 Aug 2025 17:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDE2191F98;
+	Tue, 12 Aug 2025 18:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020836; cv=none; b=m8IllBaIQcY+CF3tkj7eZgstSyGC39kT3zAWSEUlj9D/94oW7/Oc6SZr18yJhg2aA+Cd6YKnHqG/T4XudWBI3pVAXPVN/MmNaJIvKgisOv0x/ab5OuhxjH/GSaAhDXg344i2diBxHIDuhUuZVFYCUrWgMtmAEnLGc18J0a2JW10=
+	t=1755023560; cv=none; b=eA5m7d0rmOyjHszyxN5SjQ41nxNXZzmMdTUWCvFxo7LrG6QmVa+Mr92CSAQh0adCpEFVnpdjVrrnQaZwG41tZ5Yr2xrdeL3x0rcCUnTeP96Y+hp+xoCo6X/RViibucUGm+m0KzwDL8E3aRmR51Xcyh6Z67pcOlDXZDiDqu/ue/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020836; c=relaxed/simple;
-	bh=njtHPMTphjS0wkGI5Eud7j3yBfci+G5ZIlYZSFNrhC0=;
+	s=arc-20240116; t=1755023560; c=relaxed/simple;
+	bh=S9VKdWS5dVrfIKKcryMfpzhdlNYnsqGImzVgJREaLCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=seZ9Qz35iFKL2Mj83MiRJ6FFdkKXyGHFnnmtE+lj9Ldr3IpPrdMmABFU/3LcIDOh2R1MLv+OQLaAgrt/5y1W0KhY0tTLq+jIbdFehPTM5XJQWd27jXhWDg3SW/Wc7Zv+tzJIZ/DjTV5NPa8VPxi5sZLvmGMHE4NyX63MSb9RDIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2TgHyDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D00AC4CEF0;
-	Tue, 12 Aug 2025 17:47:15 +0000 (UTC)
+	 MIME-Version; b=W84nj3rFBcGrRftjCMBZSonN9nDZ3pj6q5CvKQ0JCh7WVArpwTgxcbNyZzTrtUqLK1ZLmyFGPgnVi/OdDmZL6ImRrcbaJmHdBg++ID9hipnPGo8iFhjzjzybnVX4Ep/VvQcL804nL4J2PLCjXJYH4ooxxCUsT3tntsfij+k91/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6cFDbRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A5CC4CEF0;
+	Tue, 12 Aug 2025 18:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020836;
-	bh=njtHPMTphjS0wkGI5Eud7j3yBfci+G5ZIlYZSFNrhC0=;
+	s=korg; t=1755023559;
+	bh=S9VKdWS5dVrfIKKcryMfpzhdlNYnsqGImzVgJREaLCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X2TgHyDvuQJ6/0CdMEedBn19ZHJzUC5w2ntXmDmLAPRVjbmNwET9QIEREJ/2KjPxm
-	 9s2kF7YxGbtJYz7mXKlog4lxdtR3/JPaoBXph9ciiuXkFyij4JHXyUHZO6P7aFNrUz
-	 2KkmB5zlKQFR0EBwmMznhoQcu+HrV9GIZ7flWH2Y=
+	b=j6cFDbRL2q2eyQVXmpVOfphRU8GcwPCgR6z21QJVcv0mRtMgbC0WzSQ3srVmHkn4A
+	 5q9RaxRNbo2rck6yoKPI/XL0reH0w0uLXT+XIJqXk4Som6z5KU2nlOg2aIUDxCseFn
+	 8B8lC5z535X4xc4DtNdTzwjcAIhZJZSVWMN8s7H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	greybus-dev@lists.linaro.org,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/262] arm64: dts: qcom: msm8976: Make blsp_dma controlled-remotely
+Subject: [PATCH 6.16 115/627] staging: greybus: gbphy: fix up const issue with the match callback
 Date: Tue, 12 Aug 2025 19:26:50 +0200
-Message-ID: <20250812172953.916919196@linuxfoundation.org>
+Message-ID: <20250812173423.685629795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 76270a18dbdf0bb50615f1b29d2cae8d683da01e ]
+[ Upstream commit ce32eff1cf3ae8ac2596171dd0af1657634c83eb ]
 
-The blsp_dma controller is shared between the different subsystems,
-which is why it is already initialized by the firmware. We should not
-reinitialize it from Linux to avoid potential other users of the DMA
-engine to misbehave.
+gbphy_dev_match_id() should be taking a const pointer, as the pointer
+passed to it from the container_of() call was const to start with (it
+was accidentally cast away with the call.)  Fix this all up by correctly
+marking the pointer types.
 
-In mainline this can be described using the "qcom,controlled-remotely"
-property. In the downstream/vendor kernel from Qualcomm there is an
-opposite "qcom,managed-locally" property. This property is *not* set
-for the qcom,sps-dma@7884000 and qcom,sps-dma@7ac4000 [1] so adding
-"qcom,controlled-remotely" upstream matches the behavior of the
-downstream/vendor kernel.
-
-Adding this fixes booting Longcheer L9360.
-
-[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.3.7.c26/arch/arm/boot/dts/qcom/msm8976.dtsi#L1149-1163
-
-Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Link: https://lore.kernel.org/r/20250615-bqx5plus-v2-1-72b45c84237d@apitzsch.eu
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Alex Elder <elder@kernel.org>
+Cc: greybus-dev@lists.linaro.org
+Fixes: d69d80484598 ("driver core: have match() callback in struct bus_type take a const *")
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/2025070115-reoccupy-showy-e2ad@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8976.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/greybus/gbphy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-index 4c5be22b47fe..e01f6e8a17f2 100644
---- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-@@ -862,6 +862,7 @@ blsp1_dma: dma-controller@7884000 {
- 			clock-names = "bam_clk";
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,controlled-remotely;
- 		};
+diff --git a/drivers/staging/greybus/gbphy.c b/drivers/staging/greybus/gbphy.c
+index 6adcad286633..60cf09a302a7 100644
+--- a/drivers/staging/greybus/gbphy.c
++++ b/drivers/staging/greybus/gbphy.c
+@@ -102,8 +102,8 @@ static int gbphy_dev_uevent(const struct device *dev, struct kobj_uevent_env *en
+ }
  
- 		blsp1_uart1: serial@78af000 {
-@@ -982,6 +983,7 @@ blsp2_dma: dma-controller@7ac4000 {
- 			clock-names = "bam_clk";
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,controlled-remotely;
- 		};
+ static const struct gbphy_device_id *
+-gbphy_dev_match_id(struct gbphy_device *gbphy_dev,
+-		   struct gbphy_driver *gbphy_drv)
++gbphy_dev_match_id(const struct gbphy_device *gbphy_dev,
++		   const struct gbphy_driver *gbphy_drv)
+ {
+ 	const struct gbphy_device_id *id = gbphy_drv->id_table;
  
- 		blsp2_uart2: serial@7af0000 {
+@@ -119,7 +119,7 @@ gbphy_dev_match_id(struct gbphy_device *gbphy_dev,
+ 
+ static int gbphy_dev_match(struct device *dev, const struct device_driver *drv)
+ {
+-	struct gbphy_driver *gbphy_drv = to_gbphy_driver(drv);
++	const struct gbphy_driver *gbphy_drv = to_gbphy_driver(drv);
+ 	struct gbphy_device *gbphy_dev = to_gbphy_dev(dev);
+ 	const struct gbphy_device_id *id;
+ 
 -- 
 2.39.5
 
