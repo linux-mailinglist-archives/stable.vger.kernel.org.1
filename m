@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65820B23462
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB272B22F8B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E047188B7ED
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53B517EE5D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320792FDC4B;
-	Tue, 12 Aug 2025 18:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAF92FDC31;
+	Tue, 12 Aug 2025 17:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhSRRqc2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROFh8Vsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E732FA0CD;
-	Tue, 12 Aug 2025 18:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A852F7461;
+	Tue, 12 Aug 2025 17:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023673; cv=none; b=mdSBj3ppHuAKr7CXmDZOhymgvYZUG/pbhjsI+AIbzkMvzYG8aZ1YB1EU+3yN42/cpUQU9hhJqY3VclpZcEugUzeSjeHg3d2QG0RoiUE8KYLLYddGvBohKLBA0DDOzDAlHSfA+gD6U3pF8RKYyWP74+YCmcGJV1Rtp3IsdrmXVFc=
+	t=1755020414; cv=none; b=C3de64BF4brhaFvuBkZpvYJ2Tk/687oojMrIwwuhnnjBUfIloG68BLTHhsLle/rL/VGwUACxyUCj0/eA2j/1C6m5Kzqha5HjHf6rQ6PhpqoOT80MtUsHDw3yeIJDBUr812rdJCHfLPgvXFDAFkpYEHibuTN0nWggfcBgD1UYPYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023673; c=relaxed/simple;
-	bh=yvDBNq9oTx0/f2FtkqDS+IlmiObxnKLxUbT1MP+ogx8=;
+	s=arc-20240116; t=1755020414; c=relaxed/simple;
+	bh=M1T97OfnY9A3WTYbVoMPo3ToPIXtDZQuxa1/HimVc2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmZKLs80DzTQ05ua8b1oCLre7UVWAJYqOmCkF2JuKTmyJeRhw35DjAxGLtBp88ibZZqbF+H3rHeGq8xqVGZhiJBRO1J2nqmYpe/Y6ml6Hk6O5Y3CryQeg1y8LDsbp4UkgIfWqE6+Qwc1uENisz1dLkeBImEbFYiwoPI+W7mUAxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhSRRqc2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B590C4CEF0;
-	Tue, 12 Aug 2025 18:34:32 +0000 (UTC)
+	 MIME-Version; b=Pf9P1UX9lMro/uVxMDhRj5ETz8Q26DBsN5vuXebbD4xphAngd+BZwzua3CM72VzRDV2KQe0rfnGJrG1T7C4N+suhmm1Adku0OBwEAqeL3xMDXjPFy5bmc2EeedCaCChgUJli1+FQR6QU8xA5KTzqlT029JSGLsOfUNDleDucaR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROFh8Vsu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B5DC4CEF0;
+	Tue, 12 Aug 2025 17:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023672;
-	bh=yvDBNq9oTx0/f2FtkqDS+IlmiObxnKLxUbT1MP+ogx8=;
+	s=korg; t=1755020414;
+	bh=M1T97OfnY9A3WTYbVoMPo3ToPIXtDZQuxa1/HimVc2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhSRRqc2J7Zjzl7SY0htk/PdJ/p5sU2THjrLL1f0C8W8FgiwtPfoJBWGIAUKA5GXO
-	 iZQqOgVYjzsPebi/hwT2zkqOmJiTXBkqd2r7Xo6zYoNEoGhI6umZLcFBjNYIlEiDA6
-	 zybdnqXclBE64nJjku3E6/NcXVBG9nnLpQDiW/Yo=
+	b=ROFh8VsuWbekUpmInbvqWeZPy5/gZ2weuTTFfmddOGUz0SQUjP5jaTwCv6aYv+lmn
+	 NmSvnpDHmoTPO+1Ftg/6hPTuOwbYrrTFpwAtxg2NZpxXVZcTVHheNs3NgOEP+g3n+u
+	 3byZjgo+0giXqZFupWDc1Y0b1Q5qWHxVp+KeXsIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 149/627] drm/vmwgfx: Fix Host-Backed userspace on Guest-Backed kernel
-Date: Tue, 12 Aug 2025 19:27:24 +0200
-Message-ID: <20250812173424.964431436@linuxfoundation.org>
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Yue Hu <huyue2@coolpad.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.1 057/253] erofs: simplify z_erofs_transform_plain()
+Date: Tue, 12 Aug 2025 19:27:25 +0200
+Message-ID: <20250812172951.153267528@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 7872997c048e989c7689c2995d230fdca7798000 ]
+commit c5539762f32e97c5e16215fa1336e32095b8b0fd upstream.
 
-Running 3D applications with SVGA_FORCE_HOST_BACKED=1 or using an
-ancient version of mesa was broken because the buffer was pinned in
-VMW_BO_DOMAIN_SYS and could not be moved to VMW_BO_DOMAIN_MOB during
-validation.
+Use memcpy_to_page() instead of open-coding them.
 
-The compat_shader buffer should not pinned.
+In addition, add a missing flush_dcache_page() even though almost all
+modern architectures clear `PG_dcache_clean` flag for new file cache
+pages so that it doesn't change anything in practice.
 
-Fixes: 668b206601c5 ("drm/vmwgfx: Stop using raw ttm_buffer_object's")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://lore.kernel.org/r/20250429203427.1742331-1-ian.forbes@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20230627161240.331-2-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/decompressor.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-index 7fb1c88bcc47..69dfe69ce0f8 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -896,7 +896,7 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
- 		.busy_domain = VMW_BO_DOMAIN_SYS,
- 		.bo_type = ttm_bo_type_device,
- 		.size = size,
--		.pin = true,
-+		.pin = false,
- 		.keep_resv = true,
- 	};
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -323,7 +323,7 @@ static int z_erofs_transform_plain(struc
+ 	const unsigned int lefthalf = rq->outputsize - righthalf;
+ 	const unsigned int interlaced_offset =
+ 		rq->alg == Z_EROFS_COMPRESSION_SHIFTED ? 0 : rq->pageofs_out;
+-	unsigned char *src, *dst;
++	u8 *src;
  
--- 
-2.39.5
-
+ 	if (outpages > 2 && rq->alg == Z_EROFS_COMPRESSION_SHIFTED) {
+ 		DBG_BUGON(1);
+@@ -336,22 +336,19 @@ static int z_erofs_transform_plain(struc
+ 	}
+ 
+ 	src = kmap_local_page(rq->in[inpages - 1]) + rq->pageofs_in;
+-	if (rq->out[0]) {
+-		dst = kmap_local_page(rq->out[0]);
+-		memcpy(dst + rq->pageofs_out, src + interlaced_offset,
+-		       righthalf);
+-		kunmap_local(dst);
+-	}
++	if (rq->out[0])
++		memcpy_to_page(rq->out[0], rq->pageofs_out,
++			       src + interlaced_offset, righthalf);
+ 
+ 	if (outpages > inpages) {
+ 		DBG_BUGON(!rq->out[outpages - 1]);
+ 		if (rq->out[outpages - 1] != rq->in[inpages - 1]) {
+-			dst = kmap_local_page(rq->out[outpages - 1]);
+-			memcpy(dst, interlaced_offset ? src :
+-					(src + righthalf), lefthalf);
+-			kunmap_local(dst);
++			memcpy_to_page(rq->out[outpages - 1], 0, src +
++					(interlaced_offset ? 0 : righthalf),
++				       lefthalf);
+ 		} else if (!interlaced_offset) {
+ 			memmove(src, src + righthalf, lefthalf);
++			flush_dcache_page(rq->in[inpages - 1]);
+ 		}
+ 	}
+ 	kunmap_local(src);
 
 
 
