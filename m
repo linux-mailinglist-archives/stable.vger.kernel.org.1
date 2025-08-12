@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-168186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF532B233E0
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6451AB23222
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66375188B038
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:29:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97B931AA70AD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D649C2FE571;
-	Tue, 12 Aug 2025 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85FA2FDC52;
+	Tue, 12 Aug 2025 18:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9yYxDfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VecUASkC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7F12FDC55;
-	Tue, 12 Aug 2025 18:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959972FDC35;
+	Tue, 12 Aug 2025 18:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023335; cv=none; b=ZONvxFRaeDhjtsLze9HnHbeyhBKnk9MuszIYs0dIuv64Wu2Nf+gwhjlK2ZgoTN/neOxSgSysFG6O3aIxuHmzhVXf6lX25/Oa/hIF0qaTINaMxSaacDpPJG95Ev39MuGamTgJhPcH9siKBUp5frNY+fAzi2SdX08kd2SkJq8uVzM=
+	t=1755022069; cv=none; b=DLhAF35qpwPNHPb2DPv1yE4NRhB3Ck1I6XfFB1iTZfeC+PRO0mzFKGY5ggIdz0t7S1Gg2b6VfWLCAj/cAZ3nxjHqXrTi+1+BCudk6/AsUK0H/z2NyBLybOPdH+IOLgVcKe/5bWQm1AMdMR4dFUlgp4IM7xxJ+nTSL6AOPDZ8p8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023335; c=relaxed/simple;
-	bh=Pfe6nnZM+GK84TJmmJm3aVVERaJjOgSdztNMZtJCDYY=;
+	s=arc-20240116; t=1755022069; c=relaxed/simple;
+	bh=HUpVwWAfcgiVLVUcSDEw4hBPgO+a/W1Jq9+m5P1EMzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z06AElTTqmdend+UXUlstU2U9lbyGzcNZ+MoNh3Wvt7CxbRFfyn+TUGgpji1kdB6ZrepvCfMW9SgYMfyJXC3dqSddhz1xNoNZsV2Dn5okhH180WFu08W535PoLCQcXy9JDLie3aZq7GhN9ciFWRFPDW+PgPSkkxDAAbC8w+gXsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9yYxDfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7589EC4CEF0;
-	Tue, 12 Aug 2025 18:28:54 +0000 (UTC)
+	 MIME-Version; b=nkyFuMe95SWKISX1rLimPc2LPoowzEVlZrL93ZoFfk3KWJ94W9RWhsCFCIOObvStKXbz8jiwP1C4PGidr7MvIU5Lmaa1Ua9gfXDOESFPyJHeVp6W2A2nM0UtuRRxtdqLMJSIxBNdpC1SXYrzBPGN9oB6ML14WMN7Vu/COFPI4Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VecUASkC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2586C4CEF0;
+	Tue, 12 Aug 2025 18:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023334;
-	bh=Pfe6nnZM+GK84TJmmJm3aVVERaJjOgSdztNMZtJCDYY=;
+	s=korg; t=1755022069;
+	bh=HUpVwWAfcgiVLVUcSDEw4hBPgO+a/W1Jq9+m5P1EMzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9yYxDfVHNKUA6l4vIsk/BdpyizOyf6/AYQGbZk0a0t7X5xbQtgFX3A+AOB/46NYL
-	 aB1NNZVMAOa+uClCAjSNj5+FSz0l2ImQKHaF5efgu0EDpOpSpqKmjiCZ+wpEimu7QJ
-	 1yrMLloYJDnk0NGuirE2O3NSs2++tiZLPa1v0aOs=
+	b=VecUASkCpmwmMpP4CnwbeRIjsFgvGwtosslQtXzd80H1oGEioe65QgOkv1/npndCE
+	 BwKtPgJEJ51CVzbWJQSVlki3PDKLrbkE/ByIQ3GVDO1wzJQLN6W+Ntb4fr33AyyjQb
+	 xGJlAbCtUmYxVWIVyylKCvpuS3hk9YEyWLHSDZO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 049/627] pm: cpupower: Fix printing of CORE, CPU fields in cpupower-monitor
+Subject: [PATCH 6.12 047/369] usb: early: xhci-dbc: Fix early_ioremap leak
 Date: Tue, 12 Aug 2025 19:25:44 +0200
-Message-ID: <20250812173421.198919704@linuxfoundation.org>
+Message-ID: <20250812173016.532769869@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 14a3318b4ac8ae0ca2e1132a89de167e1030fbdb ]
+[ Upstream commit 2b7eec2ec3015f52fc74cf45d0408925e984ecd1 ]
 
-After the commit 0014f65e3df0 ("pm: cpupower: remove hard-coded
-topology depth values"), "cpupower monitor" output ceased to print the
-CORE and the CPU fields on a multi-socket platform.
+Using the kernel param earlyprintk=xdbc,keep without proper hardware
+setup leads to this:
 
-The reason for this is that the patch changed the behaviour to break
-out of the switch-case after printing the PKG details, while prior to
-the patch, the CORE and the CPU details would also get printed since
-the "if" condition check would pass for any level whose topology depth
-was lesser than that of a package.
+	[ ] xhci_dbc:early_xdbc_parse_parameter: dbgp_num: 0
+	...
+	[ ] xhci_dbc:early_xdbc_setup_hardware: failed to setup the connection to host
+	...
+	[ ] calling  kmemleak_late_init+0x0/0xa0 @ 1
+	[ ] kmemleak: Kernel memory leak detector initialized (mem pool available: 14919)
+	[ ] kmemleak: Automatic memory scanning thread started
+	[ ] initcall kmemleak_late_init+0x0/0xa0 returned 0 after 417 usecs
+	[ ] calling  check_early_ioremap_leak+0x0/0x70 @ 1
+	[ ] ------------[ cut here ]------------
+	[ ] Debug warning: early ioremap leak of 1 areas detected.
+	    please boot with early_ioremap_debug and report the dmesg.
+	[ ] WARNING: CPU: 11 PID: 1 at mm/early_ioremap.c:90 check_early_ioremap_leak+0x4e/0x70
 
-Fix this ensuring all the details below a desired topology depth are
-printed in the cpupower monitor output.
+When early_xdbc_setup_hardware() fails, make sure to call
+early_iounmap() since xdbc_init() won't handle it.
 
-Link: https://lore.kernel.org/r/20250612122355.19629-3-gautham.shenoy@amd.com
-Fixes: 0014f65e3df0 ("pm: cpupower: remove hard-coded topology depth values")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: aeb9dd1de98c ("usb/early: Add driver for xhci debug capability")
+Link: https://lore.kernel.org/r/20250627-xdbc-v1-1-43cc8c317b1b@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/usb/early/xhci-dbc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c b/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c
-index ad493157f826..e8b3841d5c0f 100644
---- a/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c
-@@ -121,10 +121,8 @@ void print_header(int topology_depth)
- 	switch (topology_depth) {
- 	case TOPOLOGY_DEPTH_PKG:
- 		printf(" PKG|");
--		break;
- 	case TOPOLOGY_DEPTH_CORE:
- 		printf("CORE|");
--		break;
- 	case	TOPOLOGY_DEPTH_CPU:
- 		printf(" CPU|");
- 		break;
-@@ -167,10 +165,8 @@ void print_results(int topology_depth, int cpu)
- 	switch (topology_depth) {
- 	case TOPOLOGY_DEPTH_PKG:
- 		printf("%4d|", cpu_top.core_info[cpu].pkg);
--		break;
- 	case TOPOLOGY_DEPTH_CORE:
- 		printf("%4d|", cpu_top.core_info[cpu].core);
--		break;
- 	case TOPOLOGY_DEPTH_CPU:
- 		printf("%4d|", cpu_top.core_info[cpu].cpu);
- 		break;
+diff --git a/drivers/usb/early/xhci-dbc.c b/drivers/usb/early/xhci-dbc.c
+index 341408410ed9..41118bba9197 100644
+--- a/drivers/usb/early/xhci-dbc.c
++++ b/drivers/usb/early/xhci-dbc.c
+@@ -681,6 +681,10 @@ int __init early_xdbc_setup_hardware(void)
+ 
+ 		xdbc.table_base = NULL;
+ 		xdbc.out_buf = NULL;
++
++		early_iounmap(xdbc.xhci_base, xdbc.xhci_length);
++		xdbc.xhci_base = NULL;
++		xdbc.xhci_length = 0;
+ 	}
+ 
+ 	return ret;
 -- 
 2.39.5
 
