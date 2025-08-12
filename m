@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-168233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309DFB2342B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:36:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D48EFB231FF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35B2189A1C5
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:32:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2A093AC102
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94362FDC4B;
-	Tue, 12 Aug 2025 18:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5465220409A;
+	Tue, 12 Aug 2025 18:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1f38v0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXq2uECq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6CA2EAB97;
-	Tue, 12 Aug 2025 18:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C5718FC91;
+	Tue, 12 Aug 2025 18:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023494; cv=none; b=WM4bQLVqahfP1OldjKHF9BnhS1I3L94ut/cELaAWpVH32/0N1owJzGC/rHKg0fwIsN8dpzq6Hh6f+HdGiSyjEtTdT3oehmE/+s31UT+xwjJcwOoBBTJJ5O6igyy1sfeaGvLd8EVSXU/1MNMx4ddw+R1GPJNePp1DRLfBcanwcN4=
+	t=1755022128; cv=none; b=TToVcnENonOXm7VAYvNXdjuk7vg69vnrIYHYqbh2r2cnTa4URQsQ0ZN/UD/bloN6mxFW1Wsz8QYzYXkv1jH/Xsw5MZjmK81Zjl1qWbW1Gx0u3z0t0Yx7Ydm+2bcTCY8Ve7kuxn1tARvDovL5g4guClHuow7satHT+m0JnOIbM/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023494; c=relaxed/simple;
-	bh=VEBS8EIVk3BJsgOYT1GciK6+EMKi7Ee/PcgmjeY1UsU=;
+	s=arc-20240116; t=1755022128; c=relaxed/simple;
+	bh=7VaMh0ye6W/oZ7jJRCRppNJKB9tm8Kk0PKJG4CX+kCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBWRKtM03PNYaapqJaiQ/4eXyLYfmUgypU5InHLR5GGyDWq+04vNAjS1CbHV+/EHqVI1WX7S+LyaaZcV2y5nlfvLjTQ90pQJJBtgfmSSL89N+jtRluBbEUBG6jS0C1EhrBOjXY3luV6OSX07e6wM6SoF+PJKFGTFLoqNTko0H9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1f38v0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA79C4CEF0;
-	Tue, 12 Aug 2025 18:31:33 +0000 (UTC)
+	 MIME-Version; b=S5gNhbI7h5M4GZzTfR8zTWhiNEtqEozoKUB+PhYnR/Xl6Qt9vPwCK7AymeX91Ty5eTdJ00Dkze5bICVdWDuRC1YPxuTcPRfZYdMWQtGkmqsSQ6LrMh6O2ZHsc/HK99+9uH4e96FVvtc/s3M17Ox2ZrcfaU442soZLWGHp1Rui9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXq2uECq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73331C4CEF6;
+	Tue, 12 Aug 2025 18:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023494;
-	bh=VEBS8EIVk3BJsgOYT1GciK6+EMKi7Ee/PcgmjeY1UsU=;
+	s=korg; t=1755022127;
+	bh=7VaMh0ye6W/oZ7jJRCRppNJKB9tm8Kk0PKJG4CX+kCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1f38v0bhL9BJ/YOKDVMclfR/bqEgxgFHX6wvmyG0xiyVLs6/Gwbz5en89wl3DL88
-	 7QfvTlaMxZWuXp+vcuxVehRGUr1Ugq/0Y8mtyVTn3LeCQb4aUlpg/oN9oKIdYvKWan
-	 VTD8zSGrsWihv2h3iOQHmC9Oz2zFEJHBCZJEnOsM=
+	b=tXq2uECq+V99QKriyjdusq6nHByO5nx4Km059BTo23IXV0t2GuJ8+zmO8XxNAyhS0
+	 1/Al1wGrBmS68JY5KUZqtPgu8bA1W/XKkd1CKRVDs/uo4OhV5ht7i1lxFsLB05EJBo
+	 eCTJnkb0R7BEFN3TjR8LyqwFKz7p3ykybwNxuV1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 063/627] x86/bugs: Introduce cdt_possible()
-Date: Tue, 12 Aug 2025 19:25:58 +0200
-Message-ID: <20250812173421.720908697@linuxfoundation.org>
+Subject: [PATCH 6.12 062/369] soc: qcom: pmic_glink: fix OF node leak
+Date: Tue, 12 Aug 2025 19:25:59 +0200
+Message-ID: <20250812173017.099262156@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8374a2719df2a00781e6821e373d7de71390d1b4 ]
+[ Upstream commit 65702c3d293e45d3cac5e4e175296a9c90404326 ]
 
-In preparation to allow ITS to also enable stuffing aka Call Depth
-Tracking (CDT) independently of retbleed, introduce a helper
-cdt_possible().
+Make sure to drop the OF node reference taken when registering the
+auxiliary devices when the devices are later released.
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250611-eibrs-fix-v4-5-5ff86cac6c61@linux.intel.com
-Stable-dep-of: ab9f2388e0b9 ("x86/bugs: Allow ITS stuffing in eIBRS+retpoline mode also")
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Cc: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250708085717.15922-1-johan@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/pmic_glink.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 937971fde749..0426500307f0 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1124,6 +1124,19 @@ early_param("nospectre_v1", nospectre_v1_cmdline);
+diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
+index baa4ac6704a9..5963f49f6e6e 100644
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -169,7 +169,10 @@ static int pmic_glink_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
+ 	return 0;
+ }
  
- enum spectre_v2_mitigation spectre_v2_enabled __ro_after_init = SPECTRE_V2_NONE;
- 
-+/* Depends on spectre_v2 mitigation selected already */
-+static inline bool cdt_possible(enum spectre_v2_mitigation mode)
+-static void pmic_glink_aux_release(struct device *dev) {}
++static void pmic_glink_aux_release(struct device *dev)
 +{
-+	if (!IS_ENABLED(CONFIG_MITIGATION_CALL_DEPTH_TRACKING) ||
-+	    !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE))
-+		return false;
-+
-+	if (mode == SPECTRE_V2_RETPOLINE)
-+		return true;
-+
-+	return false;
++	of_node_put(dev->of_node);
 +}
-+
- #undef pr_fmt
- #define pr_fmt(fmt)     "RETBleed: " fmt
  
-@@ -1272,7 +1285,7 @@ static void __init retbleed_update_mitigation(void)
- 		retbleed_mitigation = RETBLEED_MITIGATION_STUFF;
+ static int pmic_glink_add_aux_device(struct pmic_glink *pg,
+ 				     struct auxiliary_device *aux,
+@@ -183,8 +186,10 @@ static int pmic_glink_add_aux_device(struct pmic_glink *pg,
+ 	aux->dev.release = pmic_glink_aux_release;
+ 	device_set_of_node_from_dev(&aux->dev, parent);
+ 	ret = auxiliary_device_init(aux);
+-	if (ret)
++	if (ret) {
++		of_node_put(aux->dev.of_node);
+ 		return ret;
++	}
  
- 	if (retbleed_mitigation == RETBLEED_MITIGATION_STUFF &&
--	    spectre_v2_enabled != SPECTRE_V2_RETPOLINE) {
-+	    !cdt_possible(spectre_v2_enabled)) {
- 		pr_err("WARNING: retbleed=stuff depends on spectre_v2=retpoline\n");
- 		retbleed_mitigation = RETBLEED_MITIGATION_NONE;
- 	}
+ 	ret = auxiliary_device_add(aux);
+ 	if (ret)
 -- 
 2.39.5
 
