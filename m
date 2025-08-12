@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-169116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49EEB2383F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:22:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95784B23810
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 900DC1AA7EA4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:20:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9166E424B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3A728505A;
-	Tue, 12 Aug 2025 19:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347A228505A;
+	Tue, 12 Aug 2025 19:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyWo8kdY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMhRE+Gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2BB3D994;
-	Tue, 12 Aug 2025 19:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E691C305E2D;
+	Tue, 12 Aug 2025 19:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026432; cv=none; b=PrYMkIcDlWJd+NgQV47QTvps0JlTITKy+5yP+baAq5HzdT4pcWQ4TFj8P+aD/VZCcZVEZ8drOH0cFZ0Bp3DhAnD7Kw7/s3Iw8C9twI6ArR4dfYRa+ENMuH4Qv6uLAK6DMQGKTvsrcSUl6bK8Nh0mNPchavhYFdl0hsyrAdjucdM=
+	t=1755026314; cv=none; b=uXwPP2RXQ+ZTDBOLMAzcT2vI2nAVT8uqMPZG+0YdK1jHMAcOanhFEYh31hZhDJNq2tefAv8pdSgKussr3puzKNm3bEWJFTaeWcY+fkBQtIbHIbe/PYp+S37+h8JddPxgcHss5kr3+qKo0MyTTy+d8juJMUCAGeWFSEAEQPheBPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026432; c=relaxed/simple;
-	bh=Q6/QDn55EcyWZqL5hD0FxkpVJ6SfVf3s5ShaDBKdRFw=;
+	s=arc-20240116; t=1755026314; c=relaxed/simple;
+	bh=q9Zllc0ncdf50O0AyKN9eXj65RsY25hsGyomuhqFBrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PawDMuYSxs9DXMybYzFF78kzs85GbLMYfiQuF1VbljRT1adBl9QxFC/HSKcsE8aeS2jqlJDloWvCFt/fHQPx85wii2HR28SZMfsOY0/wWdIUMix+rWkfP7sKwARcUS06m1Cgw4x35pr9qjTIv7uIijxlm0ZW63O2h/KMCE690OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyWo8kdY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC68C4CEF0;
-	Tue, 12 Aug 2025 19:20:31 +0000 (UTC)
+	 MIME-Version; b=ZMuEEnEnQTxBOLugmzr10EoVbIcMRImL26o2DJaHY9PO6AFjwg3Ed+WVMTgfAXYop622YvFHg2UN98pn/LV2OSGZQBpMxBk/dfRU+lR2eCvZXaRMDNLL0lPAQOqXZhiRUks5mdq44MmqVrOM0s4G476Eh1kq8EoY6jdTxs4o21I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMhRE+Gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5333DC4CEF0;
+	Tue, 12 Aug 2025 19:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026432;
-	bh=Q6/QDn55EcyWZqL5hD0FxkpVJ6SfVf3s5ShaDBKdRFw=;
+	s=korg; t=1755026313;
+	bh=q9Zllc0ncdf50O0AyKN9eXj65RsY25hsGyomuhqFBrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyWo8kdYi8ffTsphPPS1goXoZNXR29uGOLZ0iHtmPfYeVQkQSmW8fJjyNTdukpYMC
-	 TNQLbHyRGsRcDsq4NycKokjUhZSoGzym3Nn5xlf6iakLat6jbPkKNZgCpZr/3wiUh9
-	 J1WWOtXtorZcCE6SXCIKBB+VjnbY5egt4AYS1P30=
+	b=DMhRE+GrahYUI1KvrDMt7cAzBzewd+Tc6pepw6VZPXcaLK9jUmEFPcfpCPuKIEuun
+	 L0cTy0BGFTx67KMgrJM88tOfzQEDzQQQA1zS/SlrRDwSAeCun9Dy6Ws4h+MfgRZp5B
+	 DagZparyzqz9vr3ZdvqpD4dL+nLjZRHYNDFoVijs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 292/480] hwrng: mtk - handle devm_pm_runtime_enable errors
-Date: Tue, 12 Aug 2025 19:48:20 +0200
-Message-ID: <20250812174409.476220820@linuxfoundation.org>
+Subject: [PATCH 6.15 293/480] crypto: keembay - Fix dma_unmap_sg() nents value
+Date: Tue, 12 Aug 2025 19:48:21 +0200
+Message-ID: <20250812174409.517834386@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,36 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 522a242a18adc5c63a24836715dbeec4dc3faee1 ]
+[ Upstream commit 01951a7dc5ac1a37e5fb7d86ea7eb2dfbf96e8b6 ]
 
-Although unlikely, devm_pm_runtime_enable() call might fail, so handle
-the return value.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Fixes: 78cb66caa6ab ("hwrng: mtk - Use devm_pm_runtime_enable")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Fixes: 472b04444cd3 ("crypto: keembay - Add Keem Bay OCS HCU driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/mtk-rng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/hw_random/mtk-rng.c b/drivers/char/hw_random/mtk-rng.c
-index 1e3048f2bb38..6c4e40d0365f 100644
---- a/drivers/char/hw_random/mtk-rng.c
-+++ b/drivers/char/hw_random/mtk-rng.c
-@@ -142,7 +142,9 @@ static int mtk_rng_probe(struct platform_device *pdev)
- 	dev_set_drvdata(&pdev->dev, priv);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, RNG_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
--	devm_pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		return ret;
+diff --git a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
+index 95dc8979918d..8f9e21ced0fe 100644
+--- a/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
++++ b/drivers/crypto/intel/keembay/keembay-ocs-hcu-core.c
+@@ -68,6 +68,7 @@ struct ocs_hcu_ctx {
+  * @sg_data_total:  Total data in the SG list at any time.
+  * @sg_data_offset: Offset into the data of the current individual SG node.
+  * @sg_dma_nents:   Number of sg entries mapped in dma_list.
++ * @nents:          Number of entries in the scatterlist.
+  */
+ struct ocs_hcu_rctx {
+ 	struct ocs_hcu_dev	*hcu_dev;
+@@ -91,6 +92,7 @@ struct ocs_hcu_rctx {
+ 	unsigned int		sg_data_total;
+ 	unsigned int		sg_data_offset;
+ 	unsigned int		sg_dma_nents;
++	unsigned int		nents;
+ };
  
- 	dev_info(&pdev->dev, "registered RNG driver\n");
+ /**
+@@ -199,7 +201,7 @@ static void kmb_ocs_hcu_dma_cleanup(struct ahash_request *req,
  
+ 	/* Unmap req->src (if mapped). */
+ 	if (rctx->sg_dma_nents) {
+-		dma_unmap_sg(dev, req->src, rctx->sg_dma_nents, DMA_TO_DEVICE);
++		dma_unmap_sg(dev, req->src, rctx->nents, DMA_TO_DEVICE);
+ 		rctx->sg_dma_nents = 0;
+ 	}
+ 
+@@ -260,6 +262,10 @@ static int kmb_ocs_dma_prepare(struct ahash_request *req)
+ 			rc = -ENOMEM;
+ 			goto cleanup;
+ 		}
++
++		/* Save the value of nents to pass to dma_unmap_sg. */
++		rctx->nents = nents;
++
+ 		/*
+ 		 * The value returned by dma_map_sg() can be < nents; so update
+ 		 * nents accordingly.
 -- 
 2.39.5
 
