@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-167742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F8FB231BB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:08:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBC6B23357
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0590C188E903
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C3482A70DE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBE82FE579;
-	Tue, 12 Aug 2025 18:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA36280037;
+	Tue, 12 Aug 2025 18:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgNGdNA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8/uQTQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC333217736;
-	Tue, 12 Aug 2025 18:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FD33F9D2;
+	Tue, 12 Aug 2025 18:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021839; cv=none; b=LmYD/8eFLlTnI78ROj6K4IiJZH0Y6CxFRLBwNy4NvN5XRqHByeMNJOsj05brASdXBYuHcB29463/jVshDE1FFkaNgyG0F3uzUyKd1GtyynV5fMwThbpUeJrGr5PkIFj5/mkLaNE2PQzfqioLtjAs4EwgXad0myTB0kfL/zEf3hs=
+	t=1755023038; cv=none; b=dJdcB8bvJ17W+xK6OHpjXFXoXL8PNislL1dgZYmcJStYppsJ8GbpeJ/6cQmQS4LRptbRnC245w5ZGDr4DJ6psXRtuPt7JQDX+Yb5gQ38YcU+pan3EFv4h7ZVaR3iQQ0Jq6RkIyYKjVuByWOjokKGgc9KMcKXEDWyUSVV8kMYYpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021839; c=relaxed/simple;
-	bh=mraxedJmANSE7TGDeZov1zWNkyn6EQWLswH0t0tCDo0=;
+	s=arc-20240116; t=1755023038; c=relaxed/simple;
+	bh=pfkXZoRlE0JU1nPdnKwf0cRyFXMcO4U2N9gWATePm2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNzixV7KaspmoXCam9wbzubBaIhvHu2gXsKaU7B8GY4w2m4vfJHP1my4uBtWOISFjx8x8qkHZDN2tVDwooF4tUNbnITVAf476dMV/gTzKSm4Jyt9S8C0AxjUEfxq9AuBBwuWhMMdgcxJ4nVAsg3kE2373JJPtTexg6YBHgvapF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgNGdNA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9B9C4CEF0;
-	Tue, 12 Aug 2025 18:03:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OcwJJymfcZSvx8Phs3tpKS98QQZVOB0QLO7cCcM0zmhSuIsLYMhVq/gtq7uHDxF3Aa8QxU38rw1cv5p12izV6RlxABMvVN/ET1F5ohjnY+9Bwpee9ozkWCTaLH8JiS9nJT/RV6UTEcWgm+IzCzRJ5ELd+LuZ4JyHkWTbiHQih/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8/uQTQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E14C4CEF7;
+	Tue, 12 Aug 2025 18:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021839;
-	bh=mraxedJmANSE7TGDeZov1zWNkyn6EQWLswH0t0tCDo0=;
+	s=korg; t=1755023038;
+	bh=pfkXZoRlE0JU1nPdnKwf0cRyFXMcO4U2N9gWATePm2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgNGdNA84Q4VWKVRnJTwDlPx3WL4aVAunPgEFomTwJNfaCVt4OJ75v2Z40kqT3XpW
-	 MGGPFMwO5cn1Qnmht1KBovWUI1FEgohjMe1eXY2w/V2oLZiqJKLtMYG3VQDYw1fzO0
-	 p5tVGIdEZTYLdfRTTIcf9tz8eGettdMIuw6xxcqo=
+	b=z8/uQTQ84jMVbfYqzlkOqlOZ8Q2J9TeVPEcMmIZrjMQlbcGyT1OqmhcfQVHQtOYmt
+	 6JNPI5fgykCdOpPNqBoS5MPvNe11l79e7vmfpFVBUfdyAToCvH4lfhkR7y2e4PF4Au
+	 wGyX+X5CGvAWhFtDqRyx3w2UhOASAmNMBZ36+RdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 241/262] smb: server: Fix extension string in ksmbd_extract_shortname()
+	Anton Nadezhdin <anton.nadezhdin@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	=?UTF-8?q?Markus=20Bl=C3=B6chl?= <markus@blochl.de>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 332/369] ice/ptp: fix crosstimestamp reporting
 Date: Tue, 12 Aug 2025 19:30:29 +0200
-Message-ID: <20250812173003.413719296@linuxfoundation.org>
+Message-ID: <20250812173029.196986272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Anton Nadezhdin <anton.nadezhdin@intel.com>
 
-commit 8e7d178d06e8937454b6d2f2811fa6a15656a214 upstream.
+commit a5a441ae283d54ec329aadc7426991dc32786d52 upstream.
 
-In ksmbd_extract_shortname(), strscpy() is incorrectly called with the
-length of the source string (excluding the NUL terminator) rather than
-the size of the destination buffer. This results in "__" being copied
-to 'extension' rather than "___" (two underscores instead of three).
+Set use_nsecs=true as timestamp is reported in ns. Lack of this result
+in smaller timestamp error window which cause error during phc2sys
+execution on E825 NICs:
+phc2sys[1768.256]: ioctl PTP_SYS_OFFSET_PRECISE: Invalid argument
 
-Use the destination buffer size instead to ensure that the string "___"
-(three underscores) is copied correctly.
+This problem was introduced in the cited commit which omitted setting
+use_nsecs to true when converting the ice driver to use
+convert_base_to_cs().
 
-Cc: stable@vger.kernel.org
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Testing hints (ethX is PF netdev):
+phc2sys -s ethX -c CLOCK_REALTIME  -O 37 -m
+phc2sys[1769.256]: CLOCK_REALTIME phc offset -5 s0 freq      -0 delay    0
+
+Fixes: d4bea547ebb57 ("ice/ptp: Remove convert_art_to_tsc()")
+Signed-off-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Markus Blöchl <markus@blochl.de>
 ---
- fs/smb/server/smb_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_ptp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -515,7 +515,7 @@ int ksmbd_extract_shortname(struct ksmbd
- 
- 	p = strrchr(longname, '.');
- 	if (p == longname) { /*name starts with a dot*/
--		strscpy(extension, "___", strlen("___"));
-+		strscpy(extension, "___", sizeof(extension));
- 	} else {
- 		if (p) {
- 			p++;
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2226,6 +2226,7 @@ ice_ptp_get_syncdevicetime(ktime_t *devi
+ 			hh_ts = ((u64)hh_ts_hi << 32) | hh_ts_lo;
+ 			system->cycles = hh_ts;
+ 			system->cs_id = CSID_X86_ART;
++			system->use_nsecs = true;
+ 			/* Read Device source clock time */
+ 			hh_ts_lo = rd32(hw, GLTSYN_HHTIME_L(tmr_idx));
+ 			hh_ts_hi = rd32(hw, GLTSYN_HHTIME_H(tmr_idx));
 
 
 
