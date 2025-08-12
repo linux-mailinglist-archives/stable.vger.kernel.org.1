@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-167459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A11B23035
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:49:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07BE4B23313
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 838D16835F8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:48:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2EB93AF102
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3689F2FABE3;
-	Tue, 12 Aug 2025 17:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A498D2DBF5E;
+	Tue, 12 Aug 2025 18:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXHrGVXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0JRaWW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7541221FAC;
-	Tue, 12 Aug 2025 17:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AB1280037;
+	Tue, 12 Aug 2025 18:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020887; cv=none; b=fY9vvsSc6BB+OGASFnF8K+jMRIOwkpEkRAJdpqRceqMisBwPRTlvKCppVWDXF/5g1LEEzpJDIqMni/ATc8v7Sgyq3lbDzkkGKEBbVhDp5nR48vLxV8Ub8p5lqHpeKQpFf8xJQcwOhlRFywaRMceu42fGKqhMiYnf0waCFlKPUDo=
+	t=1755022841; cv=none; b=Z9tbMs0n/8efnCToXCZXA3HvJTELGoydXgxx31Aj1tars7c9R2l9gyfpotsZHKjc8/MQPXgmNbodXi7mViXVMJGsLhSG965Ryl3mQhkjvwQwaWswnkNAiZxO5rdV87zCbwNhbKKB/euN7ih0APdRKuGKm7YSMd+kl4JpaqR6yi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020887; c=relaxed/simple;
-	bh=OT7QXgIYVZJwKIw5NI7TOe/NRA5ne18HD/miGD27FaU=;
+	s=arc-20240116; t=1755022841; c=relaxed/simple;
+	bh=Qci8POTMxmH5xZCw1Xc+80CQ25okeg+VlexHxP4BKRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIlEbe6AByV//iQasD9uzOWSbwlBMyt/YeR/2go54Mw8ptPEC6rJmHQPwAYYua31UqmKrn7Ygz6FeNr1HyY2Au1szIyRiLrfxzProxoPsk9odVX04a5ElhRIciqy510SIbgBTfUNiUMG+RobJ/KI/uvWGhIj3OHYFIFOVkq4r08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXHrGVXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59093C4CEF0;
-	Tue, 12 Aug 2025 17:48:06 +0000 (UTC)
+	 MIME-Version; b=sIU7d+gJQakFzrVu/HiCb9z1ki9kDU3cDfgH2AoZPstnPxFyQWSH5VQW2tERqdJvEa7WN6DpUUDgPF2uz87ONk/Hg3GdPlYRz6u8cXKeVse3hBSFVhQzavPVjT9gxN+1jeZm5UxYAehGWiFzC+FldcJhVtw9t8mZKzcmFJDz2sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0JRaWW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3677C4CEF1;
+	Tue, 12 Aug 2025 18:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020886;
-	bh=OT7QXgIYVZJwKIw5NI7TOe/NRA5ne18HD/miGD27FaU=;
+	s=korg; t=1755022841;
+	bh=Qci8POTMxmH5xZCw1Xc+80CQ25okeg+VlexHxP4BKRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXHrGVXDvDowOC8B9eqW9T3cYWoEG7vyJJiR7WXZY6O3aTkWLB15ENQUCuTfK3ysX
-	 9AqU4MTEBs7oN1dSO8uvg8RfQVbNj8WJprCo9I0trfpUDHg2eFmO4iYpec/ZAXoHSw
-	 HetOU2AvnOdWlchheHWGEYVsbYdaT8LYE7JtYNX8=
+	b=J0JRaWW3iBL3soV9CloCK9P/c7SBMq9q5et+DpjfiXn7zCs0RxcFRjVy0WYw1CHo9
+	 kQMjpz9p2l9gVs6kasu78XA+ESqGq1JxOo7rONzwkCKnKMPHqV95a5Zq9C8SsicLB3
+	 B8ngfpfklwQ88+G4ibBUB/3Kb57UbsFE62klH/nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chris Mason <clm@meta.com>,
+	Beata Michalska <beata.michalska@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/253] bpf: Check flow_dissector ctx accesses are aligned
-Date: Tue, 12 Aug 2025 19:29:30 +0200
-Message-ID: <20250812172956.517375278@linuxfoundation.org>
+Subject: [PATCH 6.12 274/369] sched/psi: Fix psi_seq initialization
+Date: Tue, 12 Aug 2025 19:29:31 +0200
+Message-ID: <20250812173025.437395523@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit ead3d7b2b6afa5ee7958620c4329982a7d9c2b78 ]
+[ Upstream commit 99b773d720aeea1ef2170dce5fcfa80649e26b78 ]
 
-flow_dissector_is_valid_access doesn't check that the context access is
-aligned. As a consequence, an unaligned access within one of the exposed
-field is considered valid and later rejected by
-flow_dissector_convert_ctx_access when we try to convert it.
+With the seqcount moved out of the group into a global psi_seq,
+re-initializing the seqcount on group creation is causing seqcount
+corruption.
 
-The later rejection is problematic because it's reported as a verifier
-bug with a kernel warning and doesn't point to the right instruction in
-verifier logs.
-
-Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
-Reported-by: syzbot+ccac90e482b2a81d74aa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ccac90e482b2a81d74aa
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/cc1b036be484c99be45eddf48bd78cc6f72839b1.1754039605.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 570c8efd5eb7 ("sched/psi: Optimize psi_group_change() cpu_clock() usage")
+Reported-by: Chris Mason <clm@meta.com>
+Suggested-by: Beata Michalska <beata.michalska@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/psi.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 4c806ce62739..cd0c28e94979 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -9270,6 +9270,9 @@ static bool flow_dissector_is_valid_access(int off, int size,
- 	if (off < 0 || off >= sizeof(struct __sk_buff))
- 		return false;
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index 81cfefc4d892..7d0f8fdd48a3 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -172,7 +172,7 @@ struct psi_group psi_system = {
+ 	.pcpu = &system_group_pcpu,
+ };
  
-+	if (off % size != 0)
-+		return false;
-+
- 	if (type == BPF_WRITE)
- 		return false;
+-static DEFINE_PER_CPU(seqcount_t, psi_seq);
++static DEFINE_PER_CPU(seqcount_t, psi_seq) = SEQCNT_ZERO(psi_seq);
  
+ static inline void psi_write_begin(int cpu)
+ {
+@@ -200,11 +200,7 @@ static void poll_timer_fn(struct timer_list *t);
+ 
+ static void group_init(struct psi_group *group)
+ {
+-	int cpu;
+-
+ 	group->enabled = true;
+-	for_each_possible_cpu(cpu)
+-		seqcount_init(per_cpu_ptr(&psi_seq, cpu));
+ 	group->avg_last_update = sched_clock();
+ 	group->avg_next_update = group->avg_last_update + psi_period;
+ 	mutex_init(&group->avgs_lock);
 -- 
 2.39.5
 
