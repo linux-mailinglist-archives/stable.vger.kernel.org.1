@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C3AB23338
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:26:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D524B22FEC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA78B1896731
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:21:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78A137B05C6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D162E7BD4;
-	Tue, 12 Aug 2025 18:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE882C15B5;
+	Tue, 12 Aug 2025 17:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrZbpKk7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvjkk9S3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939911FF7C5;
-	Tue, 12 Aug 2025 18:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37A12E4248;
+	Tue, 12 Aug 2025 17:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022874; cv=none; b=MYpN0EkVpUoJwlInmwt80cvNd1SikJe2VcCyeiEVhE4lOTRAmI+nehw8BAMQX+SeH461gIM/j/YBxAjn6ieTiym21HoABSJ/FYY05mPb0zeVor+m9ohV1qctZAq8+NVRCQ7AhCWsCXJKROoVwLbEoCUAI4MxbC3f4dLFF+WykZ0=
+	t=1755020746; cv=none; b=BwnpYRtrKYCCVsgwX+rfz8+WWzISMcKEZVI0sT7S71q7OGa8g9O2P0cCs9N8eXT8pmwdzOtb+Ndb5Dw9Xn4m9vLP4Rt03NItmkG1xi6RKp0ncHUpHoBPFjPN8Fi4+SkZuUTdXr91F1XPma3X+k51ggYuuMzT8vTPW9W1pEG9GAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022874; c=relaxed/simple;
-	bh=8dNOxOxxq0dBU7SNqO/HMXdacy8NTZSjDSdP91LYJnQ=;
+	s=arc-20240116; t=1755020746; c=relaxed/simple;
+	bh=do2l3Oxe2SideZJtP9GZOPr5cO1owpNnaRW0wPOtRJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHar18+BJtPT5O2mzLaHmSmsv1glADf1M+vjQiSawDl5IUDYDb/CNVoMjtGbWZyrhzdmYuoXi594Azx6hwGY+h1/P95abHjedVv7kPV0Xb69tVn9rKWgxaA+ED1FvTod/GC2iZ0ZOfomCnvuQ46TrlT3Qg1fNmS1UZZQlcMBJdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrZbpKk7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC44C4CEF0;
-	Tue, 12 Aug 2025 18:21:13 +0000 (UTC)
+	 MIME-Version; b=I3iau9tXOgbw+po8E/Djnwz1U+TvWAlBXbkNBClrqMq4ugoDqDKE0Kxt2N4pamYEKHsBXtcRFoo8btiw7BgIPW84DfhWbz3ccmSAp+QbErQmhdJDbUtWo5ZvLhKVc3F7+qo4es4B4hZ8cHeERxGJWNlKVO+Euy6kCsZlMVkmbNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvjkk9S3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD06C4CEF0;
+	Tue, 12 Aug 2025 17:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022874;
-	bh=8dNOxOxxq0dBU7SNqO/HMXdacy8NTZSjDSdP91LYJnQ=;
+	s=korg; t=1755020746;
+	bh=do2l3Oxe2SideZJtP9GZOPr5cO1owpNnaRW0wPOtRJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrZbpKk7pW9z1QVnUAciz1G1HroJaUF5SghD2fT+d9BjIRQ1PKvWcNos+l7+gALjx
-	 cqkdaZjCqQPqUtnNNmVEypRysVRXDf5l5a4tnc1HUud1QjesS8giDjCo+DJuDgcStP
-	 UWE+irK6vOJG/R45ieqfLortXs3akGgD65ChEBdw=
+	b=dvjkk9S3ygIj61ihjboG31k8Gy5LcwIna7wnLp6m5GVuxWJrmUofc1SLqfTS+a7i2
+	 VYm62uTnJZSUGvKdN+uP6CckCgk12ewVXIVmXgFB7k4L8neKiuImOz8HTIEBFTcrLy
+	 mvdgig4tIdaYp+v6IiH3HGzxNIT9zxX3rUrVGR3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"yohan.joung" <yohan.joung@sk.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 252/369] f2fs: fix to check upper boundary for value of gc_boost_zoned_gc_percent
+Subject: [PATCH 6.1 161/253] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
 Date: Tue, 12 Aug 2025 19:29:09 +0200
-Message-ID: <20250812173024.240822515@linuxfoundation.org>
+Message-ID: <20250812172955.568708270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yohan.joung <yohan.joung@sk.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 10dcaa56ef93f2a45e4c3fec27d8e1594edad110 ]
+[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
 
-to check the upper boundary when setting gc_boost_zoned_gc_percent
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-Fixes: 9a481a1c16f4 ("f2fs: create gc_no_zoned_gc_percent and gc_boost_zoned_gc_percent")
-Signed-off-by: yohan.joung <yohan.joung@sk.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 7df638f901a1..b450046c24ab 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -623,6 +623,13 @@ static ssize_t __sbi_store(struct f2fs_attr *a,
- 		return count;
- 	}
+diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+index 8a0e28aec928..0ecad398ed3d 100644
+--- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
++++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
+ 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
  
-+	if (!strcmp(a->attr.name, "gc_boost_zoned_gc_percent")) {
-+		if (t > 100)
-+			return -EINVAL;
-+		*ui = (unsigned int)t;
-+		return count;
-+	}
-+
- #ifdef CONFIG_F2FS_IOSTAT
- 	if (!strcmp(a->attr.name, "iostat_enable")) {
- 		sbi->iostat_enable = !!t;
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
+ 
+ 	return err;
+ }
+@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
+ 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
+ 
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
+ 
+ free_mem:
+ 	if (token && dma_map) {
 -- 
 2.39.5
 
