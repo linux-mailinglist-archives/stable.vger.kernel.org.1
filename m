@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4FDB23094
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925F0B234A7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F01B156603B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 654133A26F7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCDE2FDC2C;
-	Tue, 12 Aug 2025 17:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0058F2FE579;
+	Tue, 12 Aug 2025 18:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIuqBbhQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRvpJ84Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B422221FAC;
-	Tue, 12 Aug 2025 17:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B822FD1C2;
+	Tue, 12 Aug 2025 18:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021210; cv=none; b=gQJeo0X2qvauVtmWLJ1fD89BpnkkXzF4vGbMvdWPmVcS16YTEv3e68LEC5EgI/VTEi4b4dty7dO3vnUJSjhe/YjRrM2SJl19Kt0Fry5E8/899JJDRGoVcLYZf0FBYncZ9dNgeFhu6wCEs8TRWG2tbFasypXu49Q1BvsZLQgfqZQ=
+	t=1755023860; cv=none; b=CyK3FtwYQqKPnjxLiDxbpZshMqkgSUzBvNS8M794H5bx8lRHMmHfB+ni0ORLxnJDAUldcXajY1lQj6hwzm4yOBU2tmoZiJFqH3OdUIwmxSxGF/3IfagQ68O95fOE/zh5ST2FxLz7GoKZa1IR70GDLQLd/qO5NNaA8IIjnURurAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021210; c=relaxed/simple;
-	bh=o1qyW3BnBO4bevlilRmACezvOT3ousSxF4bhIRhmM84=;
+	s=arc-20240116; t=1755023860; c=relaxed/simple;
+	bh=I4nEyjtF/E5dmV0C2u64jcitbpaeoJSbZLURlTUhoLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BbxVYWjyg+UuD3pehrMzaEnnFKK8PMXdj2uUhYEFrg7X+DfabEpBgEqCk0j/O9FBL2Y3jSXUgZu2j1OLz3L7Nbe7rVuHyu+yehD/2J+OqJ9poc5sgVZvH/vVjD8BwXXVwUB+RTjcG4+z4TejrRSiqYb5H6XILeg7UEedNKZNASs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIuqBbhQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E095C4CEF6;
-	Tue, 12 Aug 2025 17:53:29 +0000 (UTC)
+	 MIME-Version; b=TJ6EK5FYXxArJ2Gi8dkdNM38kLHPkQlkYVwazx8slLKxYvJwWU8fbb/mBHDXcDOqQ8N19FRAeuEHyTWy4zlOhFLZPJDCZsdyx7Xribia8yDM7lfPcyR/YgRzvrOvZkAz7S7XfyY1X66fp9G3Z1Rz3lHNix/DozgUxIBhoEiUWj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRvpJ84Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055DCC4CEF0;
+	Tue, 12 Aug 2025 18:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021210;
-	bh=o1qyW3BnBO4bevlilRmACezvOT3ousSxF4bhIRhmM84=;
+	s=korg; t=1755023860;
+	bh=I4nEyjtF/E5dmV0C2u64jcitbpaeoJSbZLURlTUhoLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MIuqBbhQ5+zNQhwGzd6gk7AjmU2F75UhbENJg2nU8l+EbjT9YnHjrJpC31/RDNbyJ
-	 sGwb6qRLZxUxd/kyV0IkBWFMN16B/ZrX9Wgagcl8ujP8pVqDVLJvBoGnAX4DVizjpM
-	 5wZSm4zj7reHPcKK9x2FiIm6XDYc4mdYax2gGT/E=
+	b=bRvpJ84QYhBYCNv0mR6n5OQUQ7QQBw5TCuFIOTdVepXvZ3bdV5ymV2iyQMrbkm/hj
+	 SajhQmTUvn+wywzEuQtBcu6aon1T5xJ3FkTF4rk+8kc7czyC49YzPvSlQWz80LMfHF
+	 V7VoD8jn+zL59lk5/wOd85FwaefXSo5qERDZ3S8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>,
+	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/262] tcp: call tcp_measure_rcv_mss() for ooo packets
+Subject: [PATCH 6.16 171/627] wifi: ath12k: Clear auth flag only for actual association in security mode
 Date: Tue, 12 Aug 2025 19:27:46 +0200
-Message-ID: <20250812172956.359881959@linuxfoundation.org>
+Message-ID: <20250812173425.784725350@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>
 
-[ Upstream commit 38d7e444336567bae1c7b21fc18b7ceaaa5643a0 ]
+[ Upstream commit c27bb624b3d789a337df3bbcc020a575680555cc ]
 
-tcp_measure_rcv_mss() is used to update icsk->icsk_ack.rcv_mss
-(tcpi_rcv_mss in tcp_info) and tp->scaling_ratio.
+When setting a new bitrate, WMI peer association command is sent from
+the host without the peer authentication bit set in peer_flags for
+security mode, which causes ping failure.
 
-Calling it from tcp_data_queue_ofo() makes sure these
-fields are updated, and permits a better tuning
-of sk->sk_rcvbuf, in the case a new flow receives many ooo
-packets.
+The firmware handles peer_flags when the client is associating, as the
+peer authentication bit in peer_flags is set after the key exchange.
+When the WMI peer association command is sent from the host to update
+the new bitrate for an associated STA, the firmware expects the WMI
+peer authentication bit to be set in peer_flags.
 
-Fixes: dfa2f0483360 ("tcp: get rid of sysctl_tcp_adv_win_scale")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250711114006.480026-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this issue by ensuring that the WMI peer auth bit is set in
+peer_flags in WMI peer association command when updating the new
+bitrate.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Thiraviyam Mariyappan <thiraviyam.mariyappan@oss.qualcomm.com>
+Signed-off-by: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250608145651.1735236-1-ramasamy.kaliappan@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ++++
+ drivers/net/wireless/ath/ath12k/wmi.c | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 8520c43726e2..c6d00817ad3f 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4941,6 +4941,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
- 		return;
- 	}
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 3616269538e6..0feb800a4921 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -3235,6 +3235,7 @@ static void ath12k_bss_assoc(struct ath12k *ar,
  
-+	tcp_measure_rcv_mss(sk, skb);
- 	/* Disable header prediction. */
- 	tp->pred_flags = 0;
- 	inet_csk_schedule_ack(sk);
+ 	rcu_read_unlock();
+ 
++	peer_arg->is_assoc = true;
+ 	ret = ath12k_wmi_send_peer_assoc_cmd(ar, peer_arg);
+ 	if (ret) {
+ 		ath12k_warn(ar->ab, "failed to run peer assoc for %pM vdev %i: %d\n",
+@@ -5165,6 +5166,8 @@ static int ath12k_mac_station_assoc(struct ath12k *ar,
+ 			    "invalid peer NSS %d\n", peer_arg->peer_nss);
+ 		return -EINVAL;
+ 	}
++
++	peer_arg->is_assoc = true;
+ 	ret = ath12k_wmi_send_peer_assoc_cmd(ar, peer_arg);
+ 	if (ret) {
+ 		ath12k_warn(ar->ab, "failed to run peer assoc for STA %pM vdev %i: %d\n",
+@@ -5411,6 +5414,7 @@ static void ath12k_sta_rc_update_wk(struct wiphy *wiphy, struct wiphy_work *wk)
+ 			ath12k_peer_assoc_prepare(ar, arvif, arsta,
+ 						  peer_arg, true);
+ 
++			peer_arg->is_assoc = false;
+ 			err = ath12k_wmi_send_peer_assoc_cmd(ar, peer_arg);
+ 			if (err)
+ 				ath12k_warn(ar->ab, "failed to run peer assoc for STA %pM vdev %i: %d\n",
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 465f877fc0fb..e19803bfba75 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -2152,7 +2152,7 @@ static void ath12k_wmi_copy_peer_flags(struct wmi_peer_assoc_complete_cmd *cmd,
+ 		cmd->peer_flags |= cpu_to_le32(WMI_PEER_AUTH);
+ 	if (arg->need_ptk_4_way) {
+ 		cmd->peer_flags |= cpu_to_le32(WMI_PEER_NEED_PTK_4_WAY);
+-		if (!hw_crypto_disabled)
++		if (!hw_crypto_disabled && arg->is_assoc)
+ 			cmd->peer_flags &= cpu_to_le32(~WMI_PEER_AUTH);
+ 	}
+ 	if (arg->need_gtk_2_way)
 -- 
 2.39.5
 
