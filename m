@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B559B23060
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF605B23453
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334F8685AA7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BBD1893300
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8627E268C73;
-	Tue, 12 Aug 2025 17:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC532FDC49;
+	Tue, 12 Aug 2025 18:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEwarLkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RS9O9KHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441E92F90C8;
-	Tue, 12 Aug 2025 17:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F4E2E285E;
+	Tue, 12 Aug 2025 18:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021067; cv=none; b=s83UYpkRzBFUkm5+G0L3zsXD/Q/BEUAaDT8QwSK4MAPLagxSJaRT7e/V3inmLZAPPBcoGnp3Lh9m4DlelqAG31yeYdID31QfAC+7a44uc2l22xZZVVn6hoAFsA1LaKc3xPb+fCMNpovAZqgPG9yLILqowhELv2Xq1YMHMG3z544=
+	t=1755023642; cv=none; b=Y0x5NdjlVkXXDagHpjusZYfKOMkwkq88/oTPNnPPMGy5j+WhsZDHZPYuJVQPsfr5Vms6glar/9mM5gsz1u3ENSDmaUDgV/j7NJaCj8ox7zWiaJ2sOnONz91JL96n7fTJSEAnN3Ks9ATSSogb3TxeIoj1vDFIMUSTGsurAHlmd80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021067; c=relaxed/simple;
-	bh=0aMVn4gSF7DkxFvRoKphQQfT1JvyLYiaoY7/LB+c7mk=;
+	s=arc-20240116; t=1755023642; c=relaxed/simple;
+	bh=CKvLHWFNb33M1tH7BiCOJyHB0yrLfjxxh+0JrOz9Zu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4JTxIFfnKmvpsCQPKTayurYkbJ3VTEeDzkWi7Uzpi19T6byDelJISNsCVspfcHueFuk5hXULNEYUQx0+sz9DLRMkcm680Y9Rjy0fFmMSiEat5a0eMOi12W7goT0y/eRoB+w1pDZXNRxSBluICF60kwzAl4jZov0F0zl8S6v7YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEwarLkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26D5C4CEF0;
-	Tue, 12 Aug 2025 17:51:06 +0000 (UTC)
+	 MIME-Version; b=tYWgIKItKWtoQ/t2/JbJEItcO49OWS4QSSe06hp5EtI+YQfRtZUbNFqMm/WTAAKmdUKv9JgTGjk6A6iuMzktMGLpgzQuCl0RJzS26T8sevO6ojoJXyS1aO79S1kAXj146FMp3fxLPxEzhqbwcVM+lVCQ1oTQ+rBjLt9bcVy2WyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RS9O9KHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4FEC4CEF0;
+	Tue, 12 Aug 2025 18:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021067;
-	bh=0aMVn4gSF7DkxFvRoKphQQfT1JvyLYiaoY7/LB+c7mk=;
+	s=korg; t=1755023642;
+	bh=CKvLHWFNb33M1tH7BiCOJyHB0yrLfjxxh+0JrOz9Zu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEwarLkQkwlCbiMjFGoNLt8KBXLoh6THN/GmSWwCCozliHRW1LJctZ3YPIPPJ8U0i
-	 ffw+jLoomPVTjYhWBBJUksJG56JlBU83J2dHpPFe+sCQawyp/cFkmtc+1mZzDyo7VE
-	 tZoPyq31Z22iS2co0YzH+0qvPNTci/2UwByfsvRk=
+	b=RS9O9KHXYUIL+tpsZHZtPD9FY/FwivHHGwnmeRvkRcFIObdPMAW3YmqC9/oqW3lcQ
+	 Jz9yVDyj220UTkjfqfMza2ZUEWUUGXyiypU2ytwcSl8Oy9KTXK3eVihdjEgP+9EF85
+	 u+43N7HSVFde3VvUI4cj+wQ2llx4R0af/0fpJlNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/262] cpufreq: intel_pstate: Always use HWP_DESIRED_PERF in passive mode
+Subject: [PATCH 6.16 132/627] drm/rockchip: cleanup fb when drm_gem_fb_afbc_init failed
 Date: Tue, 12 Aug 2025 19:27:07 +0200
-Message-ID: <20250812172954.622660480@linuxfoundation.org>
+Message-ID: <20250812173424.335924655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 1cefe495cacba5fb0417da3a75a1a76e3546d176 ]
+[ Upstream commit 099593a28138b48feea5be8ce700e5bc4565e31d ]
 
-In the passive mode, intel_cpufreq_update_pstate() sets HWP_MIN_PERF in
-accordance with the target frequency to ensure delivering adequate
-performance, but it sets HWP_DESIRED_PERF to 0, so the processor has no
-indication that the desired performance level is actually equal to the
-floor one.  This may cause it to choose a performance point way above
-the desired level.
+In the function drm_gem_fb_init_with_funcs, the framebuffer (fb)
+and its corresponding object ID have already been registered.
 
-Moreover, this is inconsistent with intel_cpufreq_adjust_perf() which
-actually sets HWP_DESIRED_PERF in accordance with the target performance
-value.
+So we need to cleanup the drm framebuffer if the subsequent
+execution of drm_gem_fb_afbc_init fails.
 
-Address this by adjusting intel_cpufreq_update_pstate() to pass
-target_pstate as both the minimum and the desired performance levels
-to intel_cpufreq_hwp_update().
+Directly call drm_framebuffer_put to ensure that all fb related
+resources are cleanup.
 
-Fixes: a365ab6b9dfb ("cpufreq: intel_pstate: Implement the ->adjust_perf() callback")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Link: https://patch.msgid.link/6173276.lOV4Wx5bFT@rjwysocki.net
+Fixes: 7707f7227f09 ("drm/rockchip: Add support for afbc")
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250509031607.2542187-1-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_fb.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 8a4fdf212ce0..4f1206ff0a10 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2902,8 +2902,8 @@ static int intel_cpufreq_update_pstate(struct cpufreq_policy *policy,
- 		int max_pstate = policy->strict_target ?
- 					target_pstate : cpu->max_perf_ratio;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
+index dcc1f07632c3..5829ee061c61 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_fb.c
+@@ -52,16 +52,9 @@ rockchip_fb_create(struct drm_device *dev, struct drm_file *file,
+ 	}
  
--		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate, 0,
--					 fast_switch);
-+		intel_cpufreq_hwp_update(cpu, target_pstate, max_pstate,
-+					 target_pstate, fast_switch);
- 	} else if (target_pstate != old_pstate) {
- 		intel_cpufreq_perf_ctl_update(cpu, target_pstate, fast_switch);
+ 	if (drm_is_afbc(mode_cmd->modifier[0])) {
+-		int ret, i;
+-
+ 		ret = drm_gem_fb_afbc_init(dev, mode_cmd, afbc_fb);
+ 		if (ret) {
+-			struct drm_gem_object **obj = afbc_fb->base.obj;
+-
+-			for (i = 0; i < info->num_planes; ++i)
+-				drm_gem_object_put(obj[i]);
+-
+-			kfree(afbc_fb);
++			drm_framebuffer_put(&afbc_fb->base);
+ 			return ERR_PTR(ret);
+ 		}
  	}
 -- 
 2.39.5
