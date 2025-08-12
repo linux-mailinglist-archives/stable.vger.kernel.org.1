@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05820B23495
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79566B230A8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76EE21A211E7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B942E68624A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F62E2FAC11;
-	Tue, 12 Aug 2025 18:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6902F2FAC02;
+	Tue, 12 Aug 2025 17:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN+KD3Wj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="My77JFJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9681DB92A;
-	Tue, 12 Aug 2025 18:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278C7221FAC;
+	Tue, 12 Aug 2025 17:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023840; cv=none; b=qtHpEy/uJ11XS3uWxm3iMJ5Gd1TJfjNLVBOL442FuzB4IbjcGrERIDkvHk8NgwKW0CreUSHg5NfTVHom4NbkGSrNT39pEy6T0xrspkOr+4OgbWe8CHG9AeL+TcDKQGfm4p0J9pQlWxy0D+a78TNcND+yDhqpRRbpuPzdnQnlsWg=
+	t=1755021200; cv=none; b=Wk//N2SaIDdR8vh4QCtuw1Cf+KtdTAWDB83wuazp47af4r/nNE+bqz1LAEw4+evCE6P5pAKcyvFAGgaCzrxyyck9XgjpzNJoOsKVl7bg8kqi4i9fRdn09230okaMT/5VTKBOoTLhKupg6FPZA+GWB6McOcxlIVWI+0E1PH9ggSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023840; c=relaxed/simple;
-	bh=urn7o22lTMAOtliigNx5D/NZ9RXJel1w956uBJQb6Gg=;
+	s=arc-20240116; t=1755021200; c=relaxed/simple;
+	bh=VXB5nPlSEOhal34dbnWEhsxQKpx3xLr9Z2S+fpPLgpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKKfXT9nbeakyeuSm3I5fVe8rsY0t4TeXFZeaISx/9ePurhtocU4B9fhZXwyO5eBzNpEAOaPpMUZrW+qc/09/e4qHvXPPUppgbtKAb0sY17eEjtpECkuXjq+etK+Q6v7yLVs96Hb2jUP9bTY90MG4etDfSw2jiwkX7uSsrkBS5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN+KD3Wj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FB2C4CEF0;
-	Tue, 12 Aug 2025 18:37:19 +0000 (UTC)
+	 MIME-Version; b=sC6WVJNdvqG9gJn3rhbijcvogVxKub/JtijWLa0OS0nlcJIvOkXx88/ZA523MHPny4G5uzNE03VmoMCA2ctKunUOZ/BYUIxMztgpCMya85RzUxMg24tqEAL5R0dR0W63xb79wlod0YBogETCDHXIM3/Jzie76Cfw4fBWwgzGSME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=My77JFJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56874C4CEF0;
+	Tue, 12 Aug 2025 17:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023839;
-	bh=urn7o22lTMAOtliigNx5D/NZ9RXJel1w956uBJQb6Gg=;
+	s=korg; t=1755021200;
+	bh=VXB5nPlSEOhal34dbnWEhsxQKpx3xLr9Z2S+fpPLgpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sN+KD3Wj3pUf04/ac9rY4V0EAKQMQmUA4rxDIKRoONC4AlyiTCTdWwLKdN10IMJnN
-	 nF/ZcNNnw2bUrsKJvZpgUH50pJPDl2EWNhltizD7Vu4oRhOB/Wd7zuLjIH8X/avvgL
-	 ppkQbNpV35dW97Wb31m079TElGxE4Z4/fP1PQP9A=
+	b=My77JFJHB9PtEFiw4y9jdv5afBS688WwBbXoVrceKWQqpQjgPPDkZyBZ7L31P7XUL
+	 wwI3kAn+240gCwRoTgw4jaVTH7OVgF9vePRmk49tor4kzicUW0/UX1FXgInj6JD40r
+	 yKhxMUux+lDShNtRBR2fn0zpVhpr+tayqtsEXQN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Abinash Singh <abinashsinghlalotra@gmail.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 170/627] wifi: ath11k: clear initialized flag for deinit-ed srng lists
+Subject: [PATCH 6.6 077/262] xen/gntdev: remove struct gntdev_copy_batch from stack
 Date: Tue, 12 Aug 2025 19:27:45 +0200
-Message-ID: <20250812173425.747791019@linuxfoundation.org>
+Message-ID: <20250812172956.316173741@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit a5b46aa7cf5f05c213316a018e49a8e086efd98e ]
+[ Upstream commit 70045cf6593cbf0740956ea9b7b4269142c6ee38 ]
 
-In a number of cases we see kernel panics on resume due
-to ath11k kernel page fault, which happens under the
-following circumstances:
+When compiling the kernel with LLVM, the following warning was issued:
 
-1) First ath11k_hal_dump_srng_stats() call
+  drivers/xen/gntdev.c:991: warning: stack frame size (1160) exceeds
+  limit (1024) in function 'gntdev_ioctl'
 
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 22511ms before
- ath11k_pci 0000:01:00.0: group_id 1 14440788ms before
- [..]
- ath11k_pci 0000:01:00.0: failed to receive control response completion, polling..
- ath11k_pci 0000:01:00.0: Service connect timeout
- ath11k_pci 0000:01:00.0: failed to connect to HTT: -110
- ath11k_pci 0000:01:00.0: failed to start core: -110
- ath11k_pci 0000:01:00.0: firmware crashed: MHI_CB_EE_RDDM
- ath11k_pci 0000:01:00.0: already resetting count 2
- ath11k_pci 0000:01:00.0: failed to wait wlan mode request (mode 4): -110
- ath11k_pci 0000:01:00.0: qmi failed to send wlan mode off: -110
- ath11k_pci 0000:01:00.0: failed to reconfigure driver on crash recovery
- [..]
+The main reason is struct gntdev_copy_batch which is located on the
+stack and has a size of nearly 1kb.
 
-2) At this point reconfiguration fails (we have 2 resets) and
-  ath11k_core_reconfigure_on_crash() calls ath11k_hal_srng_deinit()
-  which destroys srng lists.  However, it does not reset per-list
-  ->initialized flag.
+For performance reasons it shouldn't by just dynamically allocated
+instead, so allocate a new instance when needed and instead of freeing
+it put it into a list of free structs anchored in struct gntdev_priv.
 
-3) Second ath11k_hal_dump_srng_stats() call sees stale ->initialized
-  flag and attempts to dump srng stats:
-
- Last interrupt received for each group:
- ath11k_pci 0000:01:00.0: group_id 0 66785ms before
- ath11k_pci 0000:01:00.0: group_id 1 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 2 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 3 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 4 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 5 14780845ms before
- ath11k_pci 0000:01:00.0: group_id 6 14485062ms before
- ath11k_pci 0000:01:00.0: group_id 7 66814ms before
- ath11k_pci 0000:01:00.0: group_id 8 68997ms before
- ath11k_pci 0000:01:00.0: group_id 9 67588ms before
- ath11k_pci 0000:01:00.0: group_id 10 69511ms before
- BUG: unable to handle page fault for address: ffffa007404eb010
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 100000067 P4D 100000067 PUD 10022d067 PMD 100b01067 PTE 0
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- RIP: 0010:ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k]
- Call Trace:
- <TASK>
- ? __die_body+0xae/0xb0
- ? page_fault_oops+0x381/0x3e0
- ? exc_page_fault+0x69/0xa0
- ? asm_exc_page_fault+0x22/0x30
- ? ath11k_hal_dump_srng_stats+0x2b4/0x3b0 [ath11k (HASH:6cea 4)]
- ath11k_qmi_driver_event_work+0xbd/0x1050 [ath11k (HASH:6cea 4)]
- worker_thread+0x389/0x930
- kthread+0x149/0x170
-
-Clear per-list ->initialized flag in ath11k_hal_srng_deinit().
-
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Fixes: 5118935b1bc2 ("ath11k: dump SRNG stats during FW assert")
-Link: https://patch.msgid.link/20250612084551.702803-1-senozhatsky@chromium.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: a4cdb556cae0 ("xen/gntdev: add ioctl for grant copy")
+Reported-by: Abinash Singh <abinashsinghlalotra@gmail.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250703073259.17356-1-jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/xen/gntdev-common.h |  4 +++
+ drivers/xen/gntdev.c        | 71 ++++++++++++++++++++++++++-----------
+ 2 files changed, 54 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index 8cb1505a5a0c..cab11a35f911 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1346,6 +1346,10 @@ EXPORT_SYMBOL(ath11k_hal_srng_init);
- void ath11k_hal_srng_deinit(struct ath11k_base *ab)
- {
- 	struct ath11k_hal *hal = &ab->hal;
-+	int i;
-+
-+	for (i = 0; i < HAL_SRNG_RING_ID_MAX; i++)
-+		ab->hal.srng_list[i].initialized = 0;
+diff --git a/drivers/xen/gntdev-common.h b/drivers/xen/gntdev-common.h
+index 9c286b2a1900..ac8ce3179ba2 100644
+--- a/drivers/xen/gntdev-common.h
++++ b/drivers/xen/gntdev-common.h
+@@ -26,6 +26,10 @@ struct gntdev_priv {
+ 	/* lock protects maps and freeable_maps. */
+ 	struct mutex lock;
  
- 	ath11k_hal_unregister_srng_key(ab);
- 	ath11k_hal_free_cont_rdp(ab);
++	/* Free instances of struct gntdev_copy_batch. */
++	struct gntdev_copy_batch *batch;
++	struct mutex batch_lock;
++
+ #ifdef CONFIG_XEN_GRANT_DMA_ALLOC
+ 	/* Device for which DMA memory is allocated. */
+ 	struct device *dma_dev;
+diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
+index 61faea1f0663..1f2160765618 100644
+--- a/drivers/xen/gntdev.c
++++ b/drivers/xen/gntdev.c
+@@ -56,6 +56,18 @@ MODULE_AUTHOR("Derek G. Murray <Derek.Murray@cl.cam.ac.uk>, "
+ 	      "Gerd Hoffmann <kraxel@redhat.com>");
+ MODULE_DESCRIPTION("User-space granted page access driver");
+ 
++#define GNTDEV_COPY_BATCH 16
++
++struct gntdev_copy_batch {
++	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
++	struct page *pages[GNTDEV_COPY_BATCH];
++	s16 __user *status[GNTDEV_COPY_BATCH];
++	unsigned int nr_ops;
++	unsigned int nr_pages;
++	bool writeable;
++	struct gntdev_copy_batch *next;
++};
++
+ static unsigned int limit = 64*1024;
+ module_param(limit, uint, 0644);
+ MODULE_PARM_DESC(limit,
+@@ -584,6 +596,8 @@ static int gntdev_open(struct inode *inode, struct file *flip)
+ 	INIT_LIST_HEAD(&priv->maps);
+ 	mutex_init(&priv->lock);
+ 
++	mutex_init(&priv->batch_lock);
++
+ #ifdef CONFIG_XEN_GNTDEV_DMABUF
+ 	priv->dmabuf_priv = gntdev_dmabuf_init(flip);
+ 	if (IS_ERR(priv->dmabuf_priv)) {
+@@ -608,6 +622,7 @@ static int gntdev_release(struct inode *inode, struct file *flip)
+ {
+ 	struct gntdev_priv *priv = flip->private_data;
+ 	struct gntdev_grant_map *map;
++	struct gntdev_copy_batch *batch;
+ 
+ 	pr_debug("priv %p\n", priv);
+ 
+@@ -620,6 +635,14 @@ static int gntdev_release(struct inode *inode, struct file *flip)
+ 	}
+ 	mutex_unlock(&priv->lock);
+ 
++	mutex_lock(&priv->batch_lock);
++	while (priv->batch) {
++		batch = priv->batch;
++		priv->batch = batch->next;
++		kfree(batch);
++	}
++	mutex_unlock(&priv->batch_lock);
++
+ #ifdef CONFIG_XEN_GNTDEV_DMABUF
+ 	gntdev_dmabuf_fini(priv->dmabuf_priv);
+ #endif
+@@ -785,17 +808,6 @@ static long gntdev_ioctl_notify(struct gntdev_priv *priv, void __user *u)
+ 	return rc;
+ }
+ 
+-#define GNTDEV_COPY_BATCH 16
+-
+-struct gntdev_copy_batch {
+-	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
+-	struct page *pages[GNTDEV_COPY_BATCH];
+-	s16 __user *status[GNTDEV_COPY_BATCH];
+-	unsigned int nr_ops;
+-	unsigned int nr_pages;
+-	bool writeable;
+-};
+-
+ static int gntdev_get_page(struct gntdev_copy_batch *batch, void __user *virt,
+ 				unsigned long *gfn)
+ {
+@@ -953,36 +965,53 @@ static int gntdev_grant_copy_seg(struct gntdev_copy_batch *batch,
+ static long gntdev_ioctl_grant_copy(struct gntdev_priv *priv, void __user *u)
+ {
+ 	struct ioctl_gntdev_grant_copy copy;
+-	struct gntdev_copy_batch batch;
++	struct gntdev_copy_batch *batch;
+ 	unsigned int i;
+ 	int ret = 0;
+ 
+ 	if (copy_from_user(&copy, u, sizeof(copy)))
+ 		return -EFAULT;
+ 
+-	batch.nr_ops = 0;
+-	batch.nr_pages = 0;
++	mutex_lock(&priv->batch_lock);
++	if (!priv->batch) {
++		batch = kmalloc(sizeof(*batch), GFP_KERNEL);
++	} else {
++		batch = priv->batch;
++		priv->batch = batch->next;
++	}
++	mutex_unlock(&priv->batch_lock);
++	if (!batch)
++		return -ENOMEM;
++
++	batch->nr_ops = 0;
++	batch->nr_pages = 0;
+ 
+ 	for (i = 0; i < copy.count; i++) {
+ 		struct gntdev_grant_copy_segment seg;
+ 
+ 		if (copy_from_user(&seg, &copy.segments[i], sizeof(seg))) {
+ 			ret = -EFAULT;
++			gntdev_put_pages(batch);
+ 			goto out;
+ 		}
+ 
+-		ret = gntdev_grant_copy_seg(&batch, &seg, &copy.segments[i].status);
+-		if (ret < 0)
++		ret = gntdev_grant_copy_seg(batch, &seg, &copy.segments[i].status);
++		if (ret < 0) {
++			gntdev_put_pages(batch);
+ 			goto out;
++		}
+ 
+ 		cond_resched();
+ 	}
+-	if (batch.nr_ops)
+-		ret = gntdev_copy(&batch);
+-	return ret;
++	if (batch->nr_ops)
++		ret = gntdev_copy(batch);
++
++ out:
++	mutex_lock(&priv->batch_lock);
++	batch->next = priv->batch;
++	priv->batch = batch;
++	mutex_unlock(&priv->batch_lock);
+ 
+-  out:
+-	gntdev_put_pages(&batch);
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
