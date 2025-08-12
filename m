@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C5BB23108
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17CCB234FA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D7481A20B94
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:59:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21ED61A2448F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D08E2FE564;
-	Tue, 12 Aug 2025 17:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE33F2FFDCD;
+	Tue, 12 Aug 2025 18:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBM4ZdTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vO1SdlBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8102F8BE7;
-	Tue, 12 Aug 2025 17:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5D12FE59E;
+	Tue, 12 Aug 2025 18:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021530; cv=none; b=QwQiZSP9tlyawClOeDxZOPpypsCWjKxkQj6KmpzUMWkEzAxrnNsAjmvP4hmmyoE/8tRsngu5kYEcUgD5M0psAr4Cpk/r8rg5d2BWKPnGOlCCps/r6ziEOwj0D3C7oyDRu1ce2EmlXkHAwPpt4tYcBIHjl84CrSavksFkJvBJ0G4=
+	t=1755024102; cv=none; b=k0x+a3/zRcNv/JiwkDj2KnO1O8k/6B368xJWbqHPi2FH19ckDE46rMyToXBdQ4EfVWRNNzAKYfYFk3/wgGJm0L+ZmZ2QbffAucsnG/k88xVNszz21dgf+xlOTI1w3unSl9m3Ui53k9ZCCRBZ+ipheCzBpNOrVWU1GvArjca5Nyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021530; c=relaxed/simple;
-	bh=3kmqdrUTqw+UJ+cCmm+MZhfEQe4c0hUr4f9lsOzSVq8=;
+	s=arc-20240116; t=1755024102; c=relaxed/simple;
+	bh=kB5l6H62mP/m1EZJXU3j+h6JYN8Q21FjCPr0e3dfp8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyFW+Ycqf4ToAlVaO8VvIe3s0IXgoBlMrT95ObQJf85OAdTvqMaco+s+nmXGMjtNdpB3AkdzOVT0u/eenAfDsrIgVYrEapUFHLV5CklR8T88UYx1gJNoBMNg99988d2o7MMGn451QBNxhdSQ8FN3xPXYrR3ZWY56JHnASCmnPLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBM4ZdTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D5EC4CEF1;
-	Tue, 12 Aug 2025 17:58:49 +0000 (UTC)
+	 MIME-Version; b=Tf4fo+HAJgeBRyqsESTNMX37kFIzanNbSZcGAcgMKN/SyhE5Ofmmwctk9j5QOjWP3Q3cAwlKaM4yI+xwVCwMwpUOyosAmaQP0tDoez35MrtSw/IwpTKYM2F1+r622TTQJwgzRVBZpdLHTq5R7OkgpROBUTR08bwbgU3he5L0/Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vO1SdlBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE87C4CEF0;
+	Tue, 12 Aug 2025 18:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021529;
-	bh=3kmqdrUTqw+UJ+cCmm+MZhfEQe4c0hUr4f9lsOzSVq8=;
+	s=korg; t=1755024102;
+	bh=kB5l6H62mP/m1EZJXU3j+h6JYN8Q21FjCPr0e3dfp8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBM4ZdTIr9dTP6fg5rQYhHRgQKZUS8VHv1J/Pujuz5ZzQ2IPnlUPglc1qnUllb/mF
-	 FHeQUcuKUETKn1Vxgcg0sj1be/3QjvOwLbrlbBz7s3D2R5wtCFnHkCGv0QA+lBCX4s
-	 D7/Thh6R1XRHmSCDayeqq6Qp24RPOz+BWSWiEW54=
+	b=vO1SdlBhAw224gEq6kn6StQhKQdQ1y6guhEtsR2f3/gSWysv+OMgG980OwSfaaEow
+	 3YndwbGkRCh5Kbru7hrDNYiBhVNNbHcOudgSMFsoGSzQeU/c299rTQ32VlT8nGrrlh
+	 h1h5FFTpMXUThQkaPZyhxbdf43NJdC29VLj1/hX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/262] dmaengine: nbpfaxi: Add missing check after DMA map
-Date: Tue, 12 Aug 2025 19:28:56 +0200
-Message-ID: <20250812172959.400465380@linuxfoundation.org>
+Subject: [PATCH 6.16 242/627] wifi: brcmfmac: fix P2P discovery failure in P2P peer due to missing P2P IE
+Date: Tue, 12 Aug 2025 19:28:57 +0200
+Message-ID: <20250812173428.504775841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-[ Upstream commit c6ee78fc8f3e653bec427cfd06fec7877ee782bd ]
+[ Upstream commit 579bf8037b70b644a674c126a32bbb2212cf5c21 ]
 
-The DMA map functions can fail and should be tested for errors.
-If the mapping fails, unmap and return an error.
+After commit bd99a3013bdc ("brcmfmac: move configuration of probe request
+IEs"), the probe request MGMT IE addition operation brcmf_vif_set_mgmt_ie()
+got moved from the brcmf_p2p_scan_prep() to the brcmf_cfg80211_scan().
 
-Fixes: b45b262cefd5 ("dmaengine: add a driver for AMBA AXI NBPF DMAC IP cores")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://lore.kernel.org/r/20250707075752.28674-2-fourier.thomas@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Because of this, as part of the scan request handler for the P2P Discovery,
+vif struct used for adding the Probe Request P2P IE in firmware got changed
+from the P2PAPI_BSSCFG_DEVICE vif to P2PAPI_BSSCFG_PRIMARY vif incorrectly.
+So the firmware stopped adding P2P IE to the outgoing P2P Discovery probe
+requests frames and the other P2P peers were unable to discover this device
+causing a regression on the P2P feature.
+
+To fix this, while setting the P2P IE in firmware, properly use the vif of
+the P2P discovery wdev on which the driver received the P2P scan request.
+This is done by not changing the vif pointer, until brcmf_vif_set_mgmt_ie()
+is completed.
+
+Fixes: bd99a3013bdc ("brcmfmac: move configuration of probe request IEs")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250626050706.7271-1-gokulkumar.sivakumar@infineon.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/nbpfaxi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/nbpfaxi.c b/drivers/dma/nbpfaxi.c
-index a361f8c29cd3..69c80d933903 100644
---- a/drivers/dma/nbpfaxi.c
-+++ b/drivers/dma/nbpfaxi.c
-@@ -711,6 +711,9 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
- 		list_add_tail(&ldesc->node, &lhead);
- 		ldesc->hwdesc_dma_addr = dma_map_single(dchan->device->dev,
- 					hwdesc, sizeof(*hwdesc), DMA_TO_DEVICE);
-+		if (dma_mapping_error(dchan->device->dev,
-+				      ldesc->hwdesc_dma_addr))
-+			goto unmap_error;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index b94c3619526c..086b9157292a 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1544,10 +1544,6 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 		return -EAGAIN;
+ 	}
  
- 		dev_dbg(dev, "%s(): mapped 0x%p to %pad\n", __func__,
- 			hwdesc, &ldesc->hwdesc_dma_addr);
-@@ -737,6 +740,16 @@ static int nbpf_desc_page_alloc(struct nbpf_channel *chan)
- 	spin_unlock_irq(&chan->lock);
+-	/* If scan req comes for p2p0, send it over primary I/F */
+-	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
+-		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
+-
+ 	brcmf_dbg(SCAN, "START ESCAN\n");
  
- 	return ARRAY_SIZE(dpage->desc);
-+
-+unmap_error:
-+	while (i--) {
-+		ldesc--; hwdesc--;
-+
-+		dma_unmap_single(dchan->device->dev, ldesc->hwdesc_dma_addr,
-+				 sizeof(hwdesc), DMA_TO_DEVICE);
-+	}
-+
-+	return -ENOMEM;
- }
+ 	cfg->scan_request = request;
+@@ -1563,6 +1559,10 @@ brcmf_cfg80211_scan(struct wiphy *wiphy, struct cfg80211_scan_request *request)
+ 	if (err)
+ 		goto scan_out;
  
- static void nbpf_desc_put(struct nbpf_desc *desc)
++	/* If scan req comes for p2p0, send it over primary I/F */
++	if (vif == cfg->p2p.bss_idx[P2PAPI_BSSCFG_DEVICE].vif)
++		vif = cfg->p2p.bss_idx[P2PAPI_BSSCFG_PRIMARY].vif;
++
+ 	err = brcmf_do_escan(vif->ifp, request);
+ 	if (err)
+ 		goto scan_out;
 -- 
 2.39.5
 
