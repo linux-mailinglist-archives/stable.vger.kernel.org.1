@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-168420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7335B23509
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73300B232F6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBAC46E571A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 854EA188D2DE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EE32FDC4F;
-	Tue, 12 Aug 2025 18:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAAA1D416C;
+	Tue, 12 Aug 2025 18:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN1TxjcA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQonfhuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B326BB5B;
-	Tue, 12 Aug 2025 18:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39BDD3F9D2;
+	Tue, 12 Aug 2025 18:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024109; cv=none; b=FGhngAT4burF2s3wL0uLcfmXVSdCg2DxOzw8nkX6vL97VMKyaB68Tgwklp8XgwICuNHn4dHMuIROynRGkwlQxrA52y/Satu6QUeBcCXN79kARB+16f1q2wTtQQGdBR01eAnwu62IzKqQFF49quhdHdHUoGwPTrunZv8aPo9LHP0=
+	t=1755022736; cv=none; b=KXlFvXmHmQcJEkIfYsOwPu9aiZ91tT85AtmbWSSP5hfL+mef3LigcjwpC6nZ6NJsZgyR0nlEj8GQ980Zw1QKYaCUaGh6mbf6mFwmB5zChD7vImGFc68t1LkmTrzqMA/OAbKzpSkCppSIwXEjxY3lPKm39fHtP0xdRZrY0aNWPMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024109; c=relaxed/simple;
-	bh=YQ3r019YSfUbeaDBtC0FRpRf1G2UdVFzuzt5TwYkClw=;
+	s=arc-20240116; t=1755022736; c=relaxed/simple;
+	bh=KDVl54CsvtCtoFfkN3XFNDHSPWk2PyEslFRTWUUhyVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmqAj9LC4wpcJ7x7u2yYyf9YdX8B2Dwp/7xMpsKi7e23cclMMirjG5gT552TBzFNChN7PgB+gZs2CHJXe9GEHnIlHdEl7PT2QZzWoGuys8US8gzIU+Acc3SnOtlj4xggTODiV4uNU98Mbh4b64K7PFD236QzFeZWfvOWCKNVwno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN1TxjcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D240C4CEF0;
-	Tue, 12 Aug 2025 18:41:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b0UBhL03IKGi4+fqEym+9sR+NUe3dayPq5eMjt3BPl8N7+mVmZESTlF6mq7dGgNE8BmUufoHcOlQIy3kcqQt4+MCJ/hneeabO/FYjNBRTeS4ZBjheKK/Pbpm2nf5rswDLy3VWHHMRs7IzKr1rxR5tDMc7di+A5u8T/JiN1VBeZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQonfhuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A23EC4CEF1;
+	Tue, 12 Aug 2025 18:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024109;
-	bh=YQ3r019YSfUbeaDBtC0FRpRf1G2UdVFzuzt5TwYkClw=;
+	s=korg; t=1755022736;
+	bh=KDVl54CsvtCtoFfkN3XFNDHSPWk2PyEslFRTWUUhyVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dN1TxjcAxsd2IipKpzxJulGCHKgY7LB/v4u85GCwBYHMMYyRoIpQ6KXqRRGrF9qKE
-	 SfmtHvkbdTrGyolg83NNzlI7uES6olilFBos4bHvgjHqp0LlUC5R6nD2xJHTv7XIGi
-	 vsjRQV666VZR/8Y94H3SgXKzvBgIiBO6J6VRGCOM=
+	b=IQonfhuCYbSepKfqbuQwvlDxS4fB448/kJJY+oPnJFuMagV3fvA+g/gv3ki15FYvX
+	 RLRuCbND6EBMz/JYKpaWU61K6WQXqbbNwHqOoAcBzQIgX0gHoWPrUEOt/wC1ZorKbW
+	 S4mYW2zv2da6cL34UPXxmtFUjBP8LV36Dy7gvUO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexey Gladkov <legion@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	MengEn Sun <mengensun@tencent.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 244/627] wifi: mac80211: Write cnt before copying in ieee80211_copy_rnr_beacon()
+Subject: [PATCH 6.12 242/369] ucount: fix atomic_long_inc_below() argument type
 Date: Tue, 12 Aug 2025 19:28:59 +0200
-Message-ID: <20250812173428.580829524@linuxfoundation.org>
+Message-ID: <20250812173023.874661714@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +68,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit a37192c432adaec9e8ef29e4ddb319ea2f443aa6 ]
+[ Upstream commit f8cd9193b62e92ad25def5370ca8ea2bc7585381 ]
 
-While I caught the need for setting cnt early in nl80211_parse_rnr_elems()
-in the original annotation of struct cfg80211_rnr_elems with __counted_by,
-I missed a similar pattern in ieee80211_copy_rnr_beacon(). Fix this by
-moving the cnt assignment to before the loop.
+The type of u argument of atomic_long_inc_below() should be long to avoid
+unwanted truncation to int.
 
-Fixes: 7b6d7087031b ("wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://patch.msgid.link/20250721182521.work.540-kees@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The patch fixes the wrong argument type of an internal function to
+prevent unwanted argument truncation.  It fixes an internal locking
+primitive; it should not have any direct effect on userspace.
+
+Mark said
+
+: AFAICT there's no problem in practice because atomic_long_inc_below()
+: is only used by inc_ucount(), and it looks like the value is
+: constrained between 0 and INT_MAX.
+:
+: In inc_ucount() the limit value is taken from
+: user_namespace::ucount_max[], and AFAICT that's only written by
+: sysctls, to the table setup by setup_userns_sysctls(), where
+: UCOUNT_ENTRY() limits the value between 0 and INT_MAX.
+:
+: This is certainly a cleanup, but there might be no functional issue in
+: practice as above.
+
+Link: https://lkml.kernel.org/r/20250721174610.28361-1-ubizjak@gmail.com
+Fixes: f9c82a4ea89c ("Increase size of ucounts to atomic_long_t")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Reviewed-by: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Alexey Gladkov <legion@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: MengEn Sun <mengensun@tencent.com>
+Cc: "Thomas Weißschuh" <linux@weissschuh.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 2 +-
+ kernel/ucount.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 18ad7ab1bb8c..7b17591a8610 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1122,13 +1122,13 @@ ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
- {
- 	int i, offset = 0;
- 
-+	dst->cnt = src->cnt;
- 	for (i = 0; i < src->cnt; i++) {
- 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
- 		dst->elem[i].len = src->elem[i].len;
- 		dst->elem[i].data = pos + offset;
- 		offset += dst->elem[i].len;
+diff --git a/kernel/ucount.c b/kernel/ucount.c
+index 696406939be5..78f4c4255358 100644
+--- a/kernel/ucount.c
++++ b/kernel/ucount.c
+@@ -212,7 +212,7 @@ void put_ucounts(struct ucounts *ucounts)
  	}
--	dst->cnt = src->cnt;
- 
- 	return offset;
  }
+ 
+-static inline bool atomic_long_inc_below(atomic_long_t *v, int u)
++static inline bool atomic_long_inc_below(atomic_long_t *v, long u)
+ {
+ 	long c, old;
+ 	c = atomic_long_read(v);
 -- 
 2.39.5
 
