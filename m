@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-167933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0F4B232AC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52264B22F77
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6966E28B6
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B92DB6844DB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FA52F4A02;
-	Tue, 12 Aug 2025 18:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25372FDC22;
+	Tue, 12 Aug 2025 17:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHznC6nY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb7DuFK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227D92D46B3;
-	Tue, 12 Aug 2025 18:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBF72FDC51;
+	Tue, 12 Aug 2025 17:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022480; cv=none; b=hwg8PjX4AYgH58rv4EA1tZDuHP4ImmzrmrDHFBMytX3O+FmhrzMbkpvvFyjtRuo8jCRRKYaSxUZu1egAnhFvD0FQXn8HqRCCiYVDnUa6sLxNQnRMRScCcIdgYq1M8Hw7+hvuRZ+UCQ+8lLZV/EwuUYFex+yXrochMzQvxNdtUso=
+	t=1755020333; cv=none; b=dzYp2pCXyvMCr87C6kW0TbMkJKuCZI2S67grwUl6pqn4FrYSsl16sH9Ia7CBTsUraD2xMMEhashS5iDD8CyA+Pe13yvB/uyB976zU5yWOafjAswX4JqTh1bqjzV5qfYuisBE88wkXKvAGG5QuT0SW1KVaMXLldQdbUZmfnMAmyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022480; c=relaxed/simple;
-	bh=JW31C43uVvJY2F/TgEroGph3crLXn/4QJYrY1bVLpVg=;
+	s=arc-20240116; t=1755020333; c=relaxed/simple;
+	bh=//iBkvNwi3TgTrySUrbqQhbUwVcZddPoZXeYyRTUxE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dq6YVEKUkmzseytd4ZTLnoS3MCKsxYVtD4d4Tbl1kanlvqgkK9bqAO5lqRhccW58jRziS6Ivlfhyl3FIuyFfvAYvRWTzyZyMipHgu6dhXJ7K16kdScBtWUAoq2N0a6vA/b0dGk72SGyPIP1tUe85IBvu42CZ7u4IR/uQMLe5XDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHznC6nY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80894C4CEF0;
-	Tue, 12 Aug 2025 18:14:39 +0000 (UTC)
+	 MIME-Version; b=tA6QnmHPc75oxz1n6ygypa/znEjCgSsXhOLFxKmNSHrUp+4BWe/03ms6SG6KRrHD2DNDcmFoIwfMg41kqspeem+RgLLvnULhOk0pPnBl460e0/18VZmG1NNuE3H8GwXyq3vsa21gZsmiC2oTwOXxdIMXaIRNU1tLCNqygDv0Tq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb7DuFK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F173CC4CEF0;
+	Tue, 12 Aug 2025 17:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022480;
-	bh=JW31C43uVvJY2F/TgEroGph3crLXn/4QJYrY1bVLpVg=;
+	s=korg; t=1755020333;
+	bh=//iBkvNwi3TgTrySUrbqQhbUwVcZddPoZXeYyRTUxE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHznC6nYjXk7rsUiWIQa9pcRnYxup/xNLmsa4JOGGvnSPSdjikbCabOt7ysbfmnr+
-	 wWGAjwokEmV/4B6kvfAQeMxzMayq4nsLWeSKvHQp5+sU9H42GbTu/qCNJRVKuekXbn
-	 bEWsWXZ2f0ulTwWf7iYRLU4jB7FjnXe+f1NE/eFY=
+	b=tb7DuFK1qXhiHX0Qd9MuPAwY9NlgOodfANz2eD6WDTwVJMYfILphJPCxagFvke5oq
+	 wjtYrgDJx/Ij81G9emcQn4wXcX8vOll7fDxSLbnZGEgF5uzVklZsVJybFZtKfTXR90
+	 liSmLOB9Lmnj3cj1wfhmtQH6p9VJpSBuAAHEJHVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 140/369] net/mlx5e: Clear Read-Only port buffer size in PBMC before update
+Subject: [PATCH 6.1 049/253] comedi: comedi_test: Fix possible deletion of uninitialized timers
 Date: Tue, 12 Aug 2025 19:27:17 +0200
-Message-ID: <20250812173020.040270490@linuxfoundation.org>
+Message-ID: <20250812172950.821049864@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit fd4b97246a23c1149479b88490946bcfbd28de63 ]
+commit 1b98304c09a0192598d0767f1eb8c83d7e793091 upstream.
 
-When updating the PBMC register, we read its current value,
-modify desired fields, then write it back.
+In `waveform_common_attach()`, the two timers `&devpriv->ai_timer` and
+`&devpriv->ao_timer` are initialized after the allocation of the device
+private data by `comedi_alloc_devpriv()` and the subdevices by
+`comedi_alloc_subdevices()`.  The function may return with an error
+between those function calls.  In that case, `waveform_detach()` will be
+called by the Comedi core to clean up.  The check that
+`waveform_detach()` uses to decide whether to delete the timers is
+incorrect.  It only checks that the device private data was allocated,
+but that does not guarantee that the timers were initialized.  It also
+needs to check that the subdevices were allocated.  Fix it.
 
-The port_buffer_size field within PBMC is Read-Only (RO).
-If this RO field contains a non-zero value when read,
-attempting to write it back will cause the entire PBMC
-register update to fail.
-
-This commit ensures port_buffer_size is explicitly cleared
-to zero after reading the PBMC register but before writing
-back the modified value.
-This allows updates to other fields in the PBMC register to succeed.
-
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1753256672-337784-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 73e0e4dfed4c ("staging: comedi: comedi_test: fix timer lock-up")
+Cc: stable@vger.kernel.org # 6.15+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://lore.kernel.org/r/20250708130627.21743-1-abbotti@mev.co.uk
+[ changed timer_delete_sync() to del_timer_sync() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/comedi/drivers/comedi_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 8e25f4ef5ccc..5ae787656a7c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -331,6 +331,9 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 	if (err)
- 		goto out;
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -788,7 +788,7 @@ static void waveform_detach(struct comed
+ {
+ 	struct waveform_private *devpriv = dev->private;
  
-+	/* RO bits should be set to 0 on write */
-+	MLX5_SET(pbmc_reg, in, port_buffer_size, 0);
-+
- 	err = mlx5e_port_set_pbmc(mdev, in);
- out:
- 	kfree(in);
--- 
-2.39.5
-
+-	if (devpriv) {
++	if (devpriv && dev->n_subdevices) {
+ 		del_timer_sync(&devpriv->ai_timer);
+ 		del_timer_sync(&devpriv->ao_timer);
+ 	}
 
 
 
