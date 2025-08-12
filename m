@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4979B23154
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DF1B23027
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F70B1AA4894
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0018A681821
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1172FFDD2;
-	Tue, 12 Aug 2025 18:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4432F8BE6;
+	Tue, 12 Aug 2025 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9GmcMor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywT+wBtt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884762FF16F;
-	Tue, 12 Aug 2025 18:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB2C26B2C8;
+	Tue, 12 Aug 2025 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021635; cv=none; b=UOZUTGtm5DdPNHdTRAT5UetWqbOrXPhg6C2R8NDGWuuHVxZR+4o9vkMT0Vs7lJsY17YQOsMduYzjc+R71JbI+oOy3lCYvJ/9cYE6x8zJAZk+dlYVTO9gu4H0qRY5CJWf30/4ZXqHWUN04Y7AOW+dOd5o/mV77+kshKSQnwaIX4c=
+	t=1755020863; cv=none; b=Hnc+cmeGiECRrhvsNQIqYtcYWH6Z0sEYp3KMJWnRjdOVx6Fnz0eedHK60GoZqF24K0cZ7UdwLXs8/3S8373piZJoeHeAFtS/G9/R4benPjfxayt1hyvMZLTiyVkjmjy/+Ro+ttBJNIqM1S418zhoB9QyMVmz8totLI/KAu9VlaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021635; c=relaxed/simple;
-	bh=zhfEiJ1bYdfx2IDH7IjVJxxrrPdea/nLBvXdQlP5Q5g=;
+	s=arc-20240116; t=1755020863; c=relaxed/simple;
+	bh=m2swpUTJ7yQig4+2g6SCdTx6B9plREkQ/vH+ygIX8F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmVUpr58zyeNCLlwm/EIhh5rat3zrOLtw9v6yAmqBkm4KLbhfDKfMzoQtPM/KOlvO2cJl/aLCCrxml97a5ZoYrd3aSt5NaWS2g08z81NFwcl7/W44/e9wotqgGZ9NiF6gAIwGvBPZqg7oRh+AopX+j9vXPDufxn5l0H/kmvz+0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9GmcMor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963D2C4CEF1;
-	Tue, 12 Aug 2025 18:00:34 +0000 (UTC)
+	 MIME-Version; b=m9L/hGrYqcSL7IZsIliY0RhdbR2V8+AqORgFVFujEeU4yZHC1vmNJKfzBJ5pDF5sn0XNppkLL+w/stXnOAOAB6Bct0xeqMy9uKH/i4X0PDnZBsbCHRfM3e4SAyaAJALxguC0Z/Fosrd99m5ubNdd7G80/YB18iAaqOmvgClV1rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywT+wBtt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9C7C4CEF0;
+	Tue, 12 Aug 2025 17:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021635;
-	bh=zhfEiJ1bYdfx2IDH7IjVJxxrrPdea/nLBvXdQlP5Q5g=;
+	s=korg; t=1755020863;
+	bh=m2swpUTJ7yQig4+2g6SCdTx6B9plREkQ/vH+ygIX8F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9GmcMor8t+aJ6t4MOUxeFBS2os30A795yimRBWy78unrFDtsP0EkI81gWNoB/DWQ
-	 OHzk03i8aC3Syfw+u2uR9txaEzCNpxDuyZIty8k+TDFPIOIJ41qRDopVx2cdFHyB/b
-	 SWimMIArqXCksaYkssf1+leBa3vDw5oqGML9Xm0A=
+	b=ywT+wBtt3e/gRsibtq/VDG6NyFYW+Sh5gZYkNkQDMaxZemsHVtp1M4DIOIcMe+vGc
+	 bV7SDE/lTZhxk+ZrfOwgxYZZlNWJIGkTVORUJW7n9YYom7PZAatsPWcZqRIY1/ceiA
+	 I/s3uDd5iIOS39v7Kl4CGHlLUpARW6McEim90ZFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/262] f2fs: fix to calculate dirty data during has_not_enough_free_secs()
+Subject: [PATCH 6.1 179/253] mtd: rawnand: rockchip: Add missing check after DMA map
 Date: Tue, 12 Aug 2025 19:29:27 +0200
-Message-ID: <20250812173000.745486409@linuxfoundation.org>
+Message-ID: <20250812172956.374830761@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit e194e140ab7de2ce2782e64b9e086a43ca6ff4f2 ]
+[ Upstream commit 3b36f86dc47261828f96f826077131a35dd825fd ]
 
-In lfs mode, dirty data needs OPU, we'd better calculate lower_p and
-upper_p w/ them during has_not_enough_free_secs(), otherwise we may
-encounter out-of-space issue due to we missed to reclaim enough
-free section w/ foreground gc.
+The DMA map functions can fail and should be tested for errors.
 
-Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 058e0e847d54 ("mtd: rawnand: rockchip: NFC driver for RK3308, RK2928 and others")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mtd/nand/raw/rockchip-nand-controller.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 66b89687fab1..a51a56bd0b61 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -606,8 +606,7 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 	unsigned int dent_blocks = total_dent_blocks % CAP_BLKS_PER_SEC(sbi);
- 	unsigned int data_blocks = 0;
+diff --git a/drivers/mtd/nand/raw/rockchip-nand-controller.c b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+index d8456b849c13..1efe97fd6595 100644
+--- a/drivers/mtd/nand/raw/rockchip-nand-controller.c
++++ b/drivers/mtd/nand/raw/rockchip-nand-controller.c
+@@ -657,9 +657,16 @@ static int rk_nfc_write_page_hwecc(struct nand_chip *chip, const u8 *buf,
  
--	if (f2fs_lfs_mode(sbi) &&
--		unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
-+	if (f2fs_lfs_mode(sbi)) {
- 		total_data_blocks = get_pages(sbi, F2FS_DIRTY_DATA);
- 		data_secs = total_data_blocks / CAP_BLKS_PER_SEC(sbi);
- 		data_blocks = total_data_blocks % CAP_BLKS_PER_SEC(sbi);
+ 	dma_data = dma_map_single(nfc->dev, (void *)nfc->page_buf,
+ 				  mtd->writesize, DMA_TO_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_data))
++		return -ENOMEM;
++
+ 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
+ 				 ecc->steps * oob_step,
+ 				 DMA_TO_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_oob)) {
++		dma_unmap_single(nfc->dev, dma_data, mtd->writesize, DMA_TO_DEVICE);
++		return -ENOMEM;
++	}
+ 
+ 	reinit_completion(&nfc->done);
+ 	writel(INT_DMA, nfc->regs + nfc->cfg->int_en_off);
+@@ -773,9 +780,17 @@ static int rk_nfc_read_page_hwecc(struct nand_chip *chip, u8 *buf, int oob_on,
+ 	dma_data = dma_map_single(nfc->dev, nfc->page_buf,
+ 				  mtd->writesize,
+ 				  DMA_FROM_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_data))
++		return -ENOMEM;
++
+ 	dma_oob = dma_map_single(nfc->dev, nfc->oob_buf,
+ 				 ecc->steps * oob_step,
+ 				 DMA_FROM_DEVICE);
++	if (dma_mapping_error(nfc->dev, dma_oob)) {
++		dma_unmap_single(nfc->dev, dma_data, mtd->writesize,
++				 DMA_FROM_DEVICE);
++		return -ENOMEM;
++	}
+ 
+ 	/*
+ 	 * The first blocks (4, 8 or 16 depending on the device)
 -- 
 2.39.5
 
