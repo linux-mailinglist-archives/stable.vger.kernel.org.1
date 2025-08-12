@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71618B234FC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:46:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1FCB23114
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E38D1B63B4A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 269AB3B2CAB
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0586BB5B;
-	Tue, 12 Aug 2025 18:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F722FE562;
+	Tue, 12 Aug 2025 17:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmNZWyDt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsHpQW11"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1BC2FDC33;
-	Tue, 12 Aug 2025 18:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820001EBFE0;
+	Tue, 12 Aug 2025 17:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024122; cv=none; b=UbRVeEE+6ZT08G4s+qvQD96HZhRPbwB1KfnmOilxPpjLh3sysHN47F765osii5vij/wCRAMQX1ESpkZnb/6ULh6n3mnADSdjIxCat0MHV4yEYuTsCVeQiwGFoXav8GvulRtyY/b9N6cNdDm1IfgdRo0zJnjFl4LY91Mdq1gz1q0=
+	t=1755021516; cv=none; b=UONsLaFSa6o+RsxAHFDI9H2Grk0UKtf+7fs3fMTV9UrK52S4BJpS926YkCvmiKUfBhOvBC+EOu2mzKX8N9WPSQ6N+qBa5hJzvZhRQS5W30Yfi4JAZNjIplqjPwAzis1f7HmsPMhU9dGWUA4A8rXcHE58EOiDEuxgvMN2OUCAtbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024122; c=relaxed/simple;
-	bh=Yj/Zg5h6xqQZFYghPPk/W0UzUyWx72sOrmlZsgANgXw=;
+	s=arc-20240116; t=1755021516; c=relaxed/simple;
+	bh=/Q46k/7T/Pj6x/5AOMuaFftowSBQ77OThUxBu8Gx4aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eM7/gfVeee5WM6h1KYDxZEDo0YT2YyKCT7jSV9lWxnbU00/5p4aVr2JSJZmaIs4cUUWYVPu9VCIbqIrmyIAM+PUGfKfSOHe7JL5ThhvCn3biGDWWJNAHSspW7ipq/ZMYHr0J6ch7S4AohhR3nVaP0aaSp1L6lvZlOKMpcW5vFpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmNZWyDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBC0C4CEF6;
-	Tue, 12 Aug 2025 18:42:01 +0000 (UTC)
+	 MIME-Version; b=nQ+QCjLNpJkINEcfdztGcRYC3NKvukp/jGMvn+WUbOBG9kKWKr6u0O4vUiD9ja3jdsYcEjRgGlvTyX//cvr8nkA3a0nV19Cyz+jguLh6GMPJaCZr2B8KyGZH9QPSQjSmlZA6F7VchpmAmv8jvnDfgkxHKsGkpFTjg9kYkNNkPGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsHpQW11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A9BC4CEF1;
+	Tue, 12 Aug 2025 17:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024122;
-	bh=Yj/Zg5h6xqQZFYghPPk/W0UzUyWx72sOrmlZsgANgXw=;
+	s=korg; t=1755021516;
+	bh=/Q46k/7T/Pj6x/5AOMuaFftowSBQ77OThUxBu8Gx4aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LmNZWyDt+S02IK/RxIU1szDQZ8KRKE7/i87sBcnSZ6lXtN/ZU+mBWWd2oXxa+03mj
-	 dZvCi/MSMsLiBQmS9+Pe2Nle8fQwvBqD87Q3ENwkGbYSvBiDsmSAkP3shekL96ojn2
-	 2EhRKbotTjZTzcaHabrBjOH3yqMiAuEmnXY68flc=
+	b=WsHpQW11Q0/LxiTWgaf95KIWOfJJPxdXlqrR4+6CBAcgtdPoVAdXS4o8XWiET2vqR
+	 yxlpZ8e8wI2F4uqGmL0AcgxgmAnzNWmz8nsCW/j9BybcqVkoNNs5kTOThSOVA+BFif
+	 q90URw3kIIUV+sweKmFX+mmwOIcX1I8fvwfyaH54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 238/627] wifi: mac80211: Dont call fq_flow_idx() for management frames
+Subject: [PATCH 6.6 145/262] PCI: endpoint: pci-epf-vntb: Fix the incorrect usage of __iomem attribute
 Date: Tue, 12 Aug 2025 19:28:53 +0200
-Message-ID: <20250812173428.356339935@linuxfoundation.org>
+Message-ID: <20250812172959.274391303@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Manivannan Sadhasivam <mani@kernel.org>
 
-[ Upstream commit cb3bb3d88dfcd177a1050c0a009a3ee147b2e5b9 ]
+[ Upstream commit 61ae7f8694fb4b57a8c02a1a8d2b601806afc999 ]
 
-skb_get_hash() can only be used when the skb is linked to a netdev
-device.
+__iomem attribute is supposed to be used only with variables holding the
+MMIO pointer. But here, 'mw_addr' variable is just holding a 'void *'
+returned by pci_epf_alloc_space(). So annotating it with __iomem is clearly
+wrong. Hence, drop the attribute.
 
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Fixes: 73bc9e0af594 ("mac80211: don't apply flow control on management frames")
-Link: https://patch.msgid.link/20250717162547.94582-3-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This also fixes the below sparse warning:
+
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17: warning: incorrect type in assignment (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    expected void [noderef] __iomem *mw_addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:524:17:    got void *
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21: warning: incorrect type in assignment (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    expected unsigned int [usertype] *epf_db
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:530:21:    got void [noderef] __iomem *mw_addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38: warning: incorrect type in argument 2 (different address spaces)
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    expected void *addr
+  drivers/pci/endpoint/functions/pci-epf-vntb.c:542:38:    got void [noderef] __iomem *mw_addr
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250709125022.22524-1-mani@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 4a9b258300fe..04f4d574401f 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1428,7 +1428,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
- {
- 	struct fq *fq = &local->fq;
- 	struct fq_tin *tin = &txqi->tin;
--	u32 flow_idx = fq_flow_idx(fq, skb);
-+	u32 flow_idx;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 8bdd295f21cc..33c3f9b980e6 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -531,7 +531,7 @@ static int epf_ntb_db_bar_init(struct epf_ntb *ntb)
+ 	struct device *dev = &ntb->epf->dev;
+ 	int ret;
+ 	struct pci_epf_bar *epf_bar;
+-	void __iomem *mw_addr;
++	void *mw_addr;
+ 	enum pci_barno barno;
+ 	size_t size = sizeof(u32) * ntb->db_count;
  
- 	ieee80211_set_skb_enqueue_time(skb);
- 
-@@ -1444,6 +1444,7 @@ static void ieee80211_txq_enqueue(struct ieee80211_local *local,
- 			IEEE80211_TX_INTCFL_NEED_TXPROCESSING;
- 		__skb_queue_tail(&txqi->frags, skb);
- 	} else {
-+		flow_idx = fq_flow_idx(fq, skb);
- 		fq_tin_enqueue(fq, tin, flow_idx, skb,
- 			       fq_skb_free_func);
- 	}
 -- 
 2.39.5
 
