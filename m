@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44C2B23280
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 579F4B2311B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFA437AC3E2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F234B68453D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E567C280037;
-	Tue, 12 Aug 2025 18:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790D42FE579;
+	Tue, 12 Aug 2025 17:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsMuhDzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdOEm1NX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A042DBF5E;
-	Tue, 12 Aug 2025 18:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342862FDC55;
+	Tue, 12 Aug 2025 17:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022729; cv=none; b=uoQQwf0YZEG045GjmE84ekYoIMBs6+0Mug64Ouy1m6POyaAGG8ywNYiQcWImFyebOPUT0HvQLqsUrFkFrTv3DYAabSa2g9fh+vcg5S1Q6MMUpry4Hf58225/cap+z22UnctqK/brlk+dVgumD8RM/Wk+7S+4TajpW1B8LrteWe4=
+	t=1755021533; cv=none; b=iJVDIBvT4gm2B9Qk17nDPz/ql5R2R0iZraH/NgUdSJMMMhQ4bzW53c3h2IBe+WMCQLXN96UZ4vpqfHWj6n7Nh1sbBQHzOEs6puKYz2Uwv4LwAiknNM4prXm+DFmeAx1JkLy+E0WMZedEhDICfDWJbeN39x8cCVFQZyC7zsFYoGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022729; c=relaxed/simple;
-	bh=0kKE/VO+Fn/Yccfhq0MdDwTMHQPRDb/GWclzSxgnsRM=;
+	s=arc-20240116; t=1755021533; c=relaxed/simple;
+	bh=oSc9oivqbtF/rN5xJx/h8bciU6sWvbL2+Fa/BwVptRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmyyGC+yUTcpYBGFPBlTcTKCdPhFHDuWnv92b/aZhw+cwIIgICNBE5+HnP2bqsOqaqqd2EZz/wZ/m+CYtsKihylJFHwiMKbtI7pCw2SGAktA8e+AuGGmVNSaChxbXAlYdpbVdcfb7Yc49KbnPbpUdcWeBTOGld3Y20h/z+9+rAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsMuhDzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF1AC4CEF1;
-	Tue, 12 Aug 2025 18:18:48 +0000 (UTC)
+	 MIME-Version; b=VvXwQLZlvo9c8i9h3HeXnGXNaxlWE46f8ScuQtJeN2/GNPcEjuaI9+erXk6N5cEN4CBhqDbMUPGo2xJp+V8IhvgfAo1v1/vmAVof9YbdH8ra3JuCGG+DnRLIbTdm6+ZCTbJlWj3IqbBrgabTBbAYTAi38Ea6bgmEi0uhF3wueD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdOEm1NX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7808C4CEF1;
+	Tue, 12 Aug 2025 17:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022729;
-	bh=0kKE/VO+Fn/Yccfhq0MdDwTMHQPRDb/GWclzSxgnsRM=;
+	s=korg; t=1755021533;
+	bh=oSc9oivqbtF/rN5xJx/h8bciU6sWvbL2+Fa/BwVptRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsMuhDzriyP7E7Qk3No0lXhPn/IsxsGW2qPCUY4TtbCFc9WSMO9F9CIJcAy/gtK8j
-	 L8mUBmkMqLf0HiwvhTeRTwPfnIUCytGigYezD7BT55vQ49fJOWqieHiNpuS8Plo7n7
-	 Vg6rlSyY5bDzLDu19/KipkiWOF7kAHzEcY5k/sDo=
+	b=vdOEm1NXqPIU/Hip8TLAJR77ZAK1XN+08aPg73AjVmsqM+39K+sfBVmQUED59q9bg
+	 r2ZpcJKuNsUQM3mBFWeYnEd8iW2hjR4nu34XnVOo+OcHOQ7ZWmvsdEfnbqvnG3x6rP
+	 q+Nx8qqOYVsoN4N7yJGR8/yp4iNdIPJGzKJu/GXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	John Johansen <john.johansen@canonical.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/369] apparmor: Fix unaligned memory accesses in KUnit test
+Subject: [PATCH 6.6 149/262] ASoC: fsl_xcvr: get channel status data when PHY is not exists
 Date: Tue, 12 Aug 2025 19:28:57 +0200
-Message-ID: <20250812173023.803265340@linuxfoundation.org>
+Message-ID: <20250812172959.445798585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit c68804199dd9d63868497a27b5da3c3cd15356db ]
+[ Upstream commit ca592e20659e0304ebd8f4dabb273da4f9385848 ]
 
-The testcase triggers some unnecessary unaligned memory accesses on the
-parisc architecture:
-  Kernel: unaligned access to 0x12f28e27 in policy_unpack_test_init+0x180/0x374 (iir 0x0cdc1280)
-  Kernel: unaligned access to 0x12f28e67 in policy_unpack_test_init+0x270/0x374 (iir 0x64dc00ce)
+There is no PHY for the XCVR module on i.MX93, the channel status needs
+to be obtained from FSL_XCVR_RX_CS_DATA_* registers. And channel status
+acknowledge (CSA) bit should be set once channel status is processed.
 
-Use the existing helper functions put_unaligned_le32() and
-put_unaligned_le16() to avoid such warnings on architectures which
-prefer aligned memory accesses.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 98c0cc48e27e ("apparmor: fix policy_unpack_test on big endian systems")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: e240b9329a30 ("ASoC: fsl_xcvr: Add support for i.MX93 platform")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250710030405.3370671-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack_test.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_xcvr.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
-index f070902da8fc..a7ac0ccc6cfe 100644
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -9,6 +9,8 @@
- #include "include/policy.h"
- #include "include/policy_unpack.h"
- 
-+#include <linux/unaligned.h>
-+
- #define TEST_STRING_NAME "TEST_STRING"
- #define TEST_STRING_DATA "testing"
- #define TEST_STRING_BUF_OFFSET \
-@@ -80,7 +82,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
- 	strscpy(buf + 3, TEST_U32_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
--	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
-+	put_unaligned_le32(TEST_U32_DATA, buf + 3 + strlen(TEST_U32_NAME) + 2);
- 
- 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
- 	*buf = AA_NAME;
-@@ -103,7 +105,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
- 	strscpy(buf + 3, TEST_ARRAY_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
--	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
-+	put_unaligned_le16(TEST_ARRAY_SIZE, buf + 3 + strlen(TEST_ARRAY_NAME) + 2);
- 
- 	return e;
- }
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index c46f64557a7f..1d7791c7fb4e 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1197,6 +1197,26 @@ static irqreturn_t irq0_isr(int irq, void *devid)
+ 				/* clear CS control register */
+ 				memset_io(reg_ctrl, 0, sizeof(val));
+ 			}
++		} else {
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_0,
++				    (u32 *)&xcvr->rx_iec958.status[0]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_1,
++				    (u32 *)&xcvr->rx_iec958.status[4]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_2,
++				    (u32 *)&xcvr->rx_iec958.status[8]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_3,
++				    (u32 *)&xcvr->rx_iec958.status[12]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_4,
++				    (u32 *)&xcvr->rx_iec958.status[16]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_5,
++				    (u32 *)&xcvr->rx_iec958.status[20]);
++			for (i = 0; i < 6; i++) {
++				val = *(u32 *)(xcvr->rx_iec958.status + i * 4);
++				*(u32 *)(xcvr->rx_iec958.status + i * 4) =
++					bitrev32(val);
++			}
++			regmap_set_bits(xcvr->regmap, FSL_XCVR_RX_DPTH_CTRL,
++					FSL_XCVR_RX_DPTH_CTRL_CSA);
+ 		}
+ 	}
+ 	if (isr & FSL_XCVR_IRQ_NEW_UD) {
 -- 
 2.39.5
 
