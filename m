@@ -1,126 +1,103 @@
-Return-Path: <stable+bounces-167113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547FEB22230
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 10:59:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD79B2220D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 10:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D30E3B1EB2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 08:53:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85F927A6A30
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 08:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC522E5B1D;
-	Tue, 12 Aug 2025 08:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0349D1388;
+	Tue, 12 Aug 2025 08:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KS7HfJt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dED4kvv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029DB2DCF7C;
-	Tue, 12 Aug 2025 08:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACBE2E611B;
+	Tue, 12 Aug 2025 08:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754988796; cv=none; b=REtdtZ92KSTGM6UXjdkGABd121q1JdlIAZhxrCzWU80lDS0CIjLGliAl3wrSH7Sce5gHQvz4ILvI7swbqxJNwSCmSBN6UldOamIRS2LncwQ6/6Zrkehkqc3zPnXVhem9dl/MX/HoJe/k6TDBu2fyoa5fmIdcTcthJ+Q2KujB3gI=
+	t=1754988955; cv=none; b=i7/C3tTY7tI7Gd7WuLR9UFp2S5gqWA7/IkxGm3DLTvTjo5D241opzqDiEZ/phu54cL/mEoAI0BxGByDTUeqiOlFIg9bslxCW4614lDogRpgN6MT0LjGeM12JlciUj6Zcgn8DQAt1WFkfGSeMQPGJ5TY5kZYkenjwk1Efl3N14PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754988796; c=relaxed/simple;
-	bh=9N3PLYa2OY1y/FTofQvg9RDzTZigqxMMs6HBj6/Kal8=;
+	s=arc-20240116; t=1754988955; c=relaxed/simple;
+	bh=yejeqnIcY0afKkvBfa59g0oUr+7FhSjBJOb0ih+bN1I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iOCy2opvmHip9aRYMZ/S6lMShncenhWT9BmEyiKKVMLYMAxuFknvEQEZi43EA0Sxlr/pDkl1oawPyNHprgEwEi52/CJReNt1YWOVUgNNXtm6JMwqnvXuw2OkfMuJBgX/xkG88l1cVSH2FTE8NpLQkTQObfnMVcgTTB5EX4e2y9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KS7HfJt5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DF9C4CEF0;
-	Tue, 12 Aug 2025 08:53:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aIOy0bdSwXlR43RU2PJmTEl6IcsHiiGQ/DCrBn2+GZTMQ3HRvdSGmt9Y4ybp0P4/Gs8XOyLCEPbgkxWLoFTKahR7MaVtmrsQnapHXI+0k39JDNw3ZRoB6mvvQ2Z6Q1mTjpMbh4SIBu3JarO5yK2dTmV7Rf/2dGNLSvxcYyIxGek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dED4kvv1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B14C4CEF0;
+	Tue, 12 Aug 2025 08:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754988794;
-	bh=9N3PLYa2OY1y/FTofQvg9RDzTZigqxMMs6HBj6/Kal8=;
+	s=korg; t=1754988955;
+	bh=yejeqnIcY0afKkvBfa59g0oUr+7FhSjBJOb0ih+bN1I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KS7HfJt5i7k8jhDh8FmhE5/fs/zR6m2gxcgL0bKzk3MXp0iHo8TLsga8ALH+8Dlov
-	 ZQ+97GJat9UbT46A07XsW6mJQti/ellDvQcF1F8Kj6eDc44Wb4tEVWfqtM+lccGvJW
-	 ds1Zb5goz3J4Hr7qSriaoiLx9rrVD9PXU39NnnIM=
-Date: Tue, 12 Aug 2025 10:53:11 +0200
+	b=dED4kvv1wVrMYi+ZldtTResyuxRJpuSAWBBbtD5x7upQNfUVGc26mTofL9+zM8Chs
+	 gZswRuYVp9N34ZAKOAWHEDgE3MACySIJNg24HMissfd2FKwyhC0PRTe43OPszmlMI/
+	 e72TfQwCQc1tEJ8p58ElnYqCgN+6+mP33eVyPLvE=
+Date: Tue, 12 Aug 2025 10:55:51 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	nicolas.frattaroli@collabora.com, Heiko Stuebner <heiko@sntech.de>
-Subject: Re: Patch "pwm: rockchip: Round period/duty down on apply, up on
- get" has been added to the 6.16-stable tree
-Message-ID: <2025081236-moneyless-enigmatic-891b@gregkh>
-References: <20250808223033.1417018-1-sashal@kernel.org>
- <c5s7efnva5gluplw65g6qqxjqpmcgprgtm6tsajkbdqibe73lb@lw5afb6b725i>
+To: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	stable-commits@vger.kernel.org,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: Patch "sched: Do not call __put_task_struct() on rt if
+ pi_blocked_on is set" has been added to the 6.16-stable tree
+Message-ID: <2025081238-tiring-prelaunch-3338@gregkh>
+References: <20250808232726.1423484-1-sashal@kernel.org>
+ <aJlFVnuKwSyDTXOq@uudg.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c5s7efnva5gluplw65g6qqxjqpmcgprgtm6tsajkbdqibe73lb@lw5afb6b725i>
+In-Reply-To: <aJlFVnuKwSyDTXOq@uudg.org>
 
-On Sat, Aug 09, 2025 at 11:45:23AM +0200, Uwe Kleine-König wrote:
-> Hello Sasha,
-> 
-> On Fri, Aug 08, 2025 at 06:30:33PM -0400, Sasha Levin wrote:
+On Sun, Aug 10, 2025 at 10:20:22PM -0300, Luis Claudio R. Goncalves wrote:
+> On Fri, Aug 08, 2025 at 07:27:26PM -0400, Sasha Levin wrote:
 > > This is a note to let you know that I've just added the patch titled
 > > 
-> >     pwm: rockchip: Round period/duty down on apply, up on get
+> >     sched: Do not call __put_task_struct() on rt if pi_blocked_on is set
 > > 
 > > to the 6.16-stable tree which can be found at:
 > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > > 
 > > The filename of the patch is:
-> >      pwm-rockchip-round-period-duty-down-on-apply-up-on-g.patch
+> >      sched-do-not-call-__put_task_struct-on-rt-if-pi_bloc.patch
 > > and it can be found in the queue-6.16 subdirectory.
 > > 
 > > If you, or anyone else, feels it should not be added to the stable tree,
 > > please let <stable@vger.kernel.org> know about it.
-> > 
-> > 
-> > 
-> > commit 51144efa3159cd95ab37e786c982822a060d7d1a
-> > Author: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> > Date:   Mon Jun 16 17:14:17 2025 +0200
-> > 
-> >     pwm: rockchip: Round period/duty down on apply, up on get
-> >     
-> >     [ Upstream commit 0b4d1abe5ca568c5b7f667345ec2b5ad0fb2e54b ]
-> >     
-> >     With CONFIG_PWM_DEBUG=y, the rockchip PWM driver produces warnings like
-> >     this:
-> >     
-> >       rockchip-pwm fd8b0010.pwm: .apply is supposed to round down
-> >       duty_cycle (requested: 23529/50000, applied: 23542/50000)
-> >     
-> >     This is because the driver chooses ROUND_CLOSEST for purported
-> >     idempotency reasons. However, it's possible to keep idempotency while
-> >     always rounding down in .apply().
-> >     
-> >     Do this by making .get_state() always round up, and making .apply()
-> >     always round down. This is done with u64 maths, and setting both period
-> >     and duty to U32_MAX (the biggest the hardware can support) if they would
-> >     exceed their 32 bits confines.
-> >     
-> >     Fixes: 12f9ce4a5198 ("pwm: rockchip: Fix period and duty cycle approximation")
-> >     Fixes: 1ebb74cf3537 ("pwm: rockchip: Add support for hardware readout")
-> >     Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-> >     Link: https://lore.kernel.org/r/20250616-rockchip-pwm-rounding-fix-v2-1-a9c65acad7b6@collabora.com
-> >     Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-> >     Signed-off-by: Sasha Levin <sashal@kernel.org>
 > 
-> while the new code makes the driver match the PWM rules now, I'd be
-> conservative and not backport that patch because while I consider it a
-> (very minor) fix that's a change in behaviour and maybe people depend on
-> that old behaviour. So let's not break our user's workflows and reserve
-> that for a major release. Please drop this patch from your queue.
+> Hi Sasha!
+> 
+> I am the author of that patch and I sent a follow-up patch that fixes a
+> mistake I made on the original patch:
+> 
+>     [RESEND PATCH] sched: restore the behavior of put_task_struct() for non-rt
+>     https://lore.kernel.org/all/aJOwe_ZS5rHXMrsO@uudg.org/
+> 
+> The patch you have does not match what is in the description. I unfortunately
+> sent the wrong version of the patch on the verge of leaving for a long vacation
+> and only noticed that when I returned. The code is correct, but does not
+> match the commit description and is a change that I would like to propose
+> later as an RFC, not the simpler bugfix originally intended.
+> 
+> I suggest waiting for the follow-up patch mentioned above to include both on
+> stable kernels.
 
-Now dropped, but note, any behavior change is ok for ANY kernel version
-as we guarantee they all work the same :)
+Ok, I'll go drop this now but please let us know when both patches
+shoudl be added.
 
-So good luck with your users in the 6.17 release...
-
-thanks
+thanks,
 
 greg k-h
 
