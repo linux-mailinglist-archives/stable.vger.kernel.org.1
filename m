@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-168517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45176B23514
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E897B23517
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B10A27B4C0A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8C2D7B4CA4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F1F2FD1B6;
-	Tue, 12 Aug 2025 18:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6B32FD1B2;
+	Tue, 12 Aug 2025 18:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGf8LKJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYkz7EdL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C72291C1F;
-	Tue, 12 Aug 2025 18:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7B21A01BF;
+	Tue, 12 Aug 2025 18:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024438; cv=none; b=BzJ6M/3lmPlc+wd4njPD+Z8XdDFXxYKmQ9Cvdt6EQwKamTSuOVnPHVqOl5tYCvIBUlaZMcnaCt5n8ALNWeWvMBX5U4bkYli5OsDbzN8lBnJzZIt/NdpXVS+K4H/NrcFk51zirp7XCKdPCpE20HXNSW2uaDEOt44nKGcI292f+Hw=
+	t=1755024444; cv=none; b=E1ClnCfHvhmt9fxc+o3+W0FkM1RItUrvZKc9vYMILeburSp0pxyRbZzjdB9DUuUOoCPTzBVxolmis9rQEnescvN0doeffP4jTcghuZ9Dcoq1gQUJ6IqO4/a0E5rNcOyYT0TAY6V6Izul/AIVdIHpcK45c5SApjFxmfsorpvtZh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024438; c=relaxed/simple;
-	bh=tEwGpfg+0keHRb2IY7IC/fL7ekGEsbiLdcMeLCEDUuM=;
+	s=arc-20240116; t=1755024444; c=relaxed/simple;
+	bh=jbAQU51pY6nZSFypqKfzsAnW9FA9n8IeMP55/iSizlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCxmP7pEXbzD3ckV4Ceg0D67N/6EXJHOJRmk62BwzZN2/o/1Z0cKuqjO3ghKyQF7zo3gncma/oSCmj94Af+5C7N59D8e6ld+wxZ02EHpDjFkyUrvdV01DtVPSLa6IH+mMV8LtU3Xen5h3y4/9HLW9A4HXM32jDU4nWXzuaaQ87A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGf8LKJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FB8C4CEF0;
-	Tue, 12 Aug 2025 18:47:17 +0000 (UTC)
+	 MIME-Version; b=G1Gsda5Lnb6G8mdXbphuNnO47pzGRNrdzh0Qzrnih5L37E+bzV+hmiDlLZd329XPcDelHoIv10hYq/Bvg4nBbRjfDlazgV0jLA0pMMh93QrVg7lNAIgf+N6c4LXPMLwyAJrmv2PGOqRu+JROWNSj6ksuukBJEdPGzXEFajklIYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYkz7EdL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D90C4CEF0;
+	Tue, 12 Aug 2025 18:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024437;
-	bh=tEwGpfg+0keHRb2IY7IC/fL7ekGEsbiLdcMeLCEDUuM=;
+	s=korg; t=1755024444;
+	bh=jbAQU51pY6nZSFypqKfzsAnW9FA9n8IeMP55/iSizlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGf8LKJwrnPfArgZfHJtOZIg5iKCRiRj91lRmh5N9hcxmFtAOoJFIeHdf2oHMCrJT
-	 PGDulJBL9HrEAXp7wM/sQ2FP9EoVgPHE+NHab1o30Y8Ih2f3sxRNtm6Gb/AydwPJpn
-	 1Cudloz0PDRpNBNAjPcA+TXStHqqnZlA6tfz/lBo=
+	b=wYkz7EdL5Zy2V2jLz+IRfx8DsHbu6AwpBFjy14v0DESOLJV0KopJb8lhmRz+Kdfbq
+	 oOmyE1BQXlpKi7i9GQIuxkcmGWtUkGHzbENs5fuqYSpaS3BATEYigoENz4+nET+njl
+	 RM7fx5fac+3+yGJfM9giV+zKn2X5JjXm3ZVgi5b8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 373/627] RDMA/hns: Fix -Wframe-larger-than issue
-Date: Tue, 12 Aug 2025 19:31:08 +0200
-Message-ID: <20250812173433.494080418@linuxfoundation.org>
+Subject: [PATCH 6.16 374/627] tracing: Use queue_rcu_work() to free filters
+Date: Tue, 12 Aug 2025 19:31:09 +0200
+Message-ID: <20250812173433.529747839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -67,65 +68,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 79d56805c5068f2bc81518043e043c3dedd1c82a ]
+[ Upstream commit 3aceaa539cfe3a2e62bd92e6697d9fae1c20c0be ]
 
-Fix -Wframe-larger-than issue by allocating memory for qpc struct
-with kzalloc() instead of using stack memory.
+Freeing of filters requires to wait for both an RCU grace period as well as
+a RCU task trace wait period after they have been detached from their
+lists. The trace task period can be quite large so the freeing of the
+filters was moved to use the call_rcu*() routines. The problem with that is
+that the callback functions of call_rcu*() is done from a soft irq and can
+cause latencies if the callback takes a bit of time.
 
-Fixes: 606bf89e98ef ("RDMA/hns: Refactor for hns_roce_v2_modify_qp function")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506240032.CSgIyFct-lkp@intel.com/
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250703113905.3597124-7-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+The filters are freed per event in a system and the syscalls system
+contains an event per system call, which can be over 700 events. Freeing 700
+filters in a bottom half is undesirable.
+
+Instead, move the freeing to use queue_rcu_work() which is done in task
+context.
+
+Link: https://lore.kernel.org/all/9a2f0cd0-1561-4206-8966-f93ccd25927f@paulmck-laptop/
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250609131732.04fd303b@gandalf.local.home
+Fixes: a9d0aab5eb33 ("tracing: Fix regression of filter waiting a long time on RCU synchronization")
+Suggested-by: "Paul E. McKenney" <paulmck@kernel.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ kernel/trace/trace_events_filter.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 246642859159..b30dce00f240 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5387,11 +5387,10 @@ static int hns_roce_v2_modify_qp(struct ib_qp *ibqp,
+diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
+index 3885aadc434d..196c8bf34970 100644
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -1344,13 +1344,14 @@ struct filter_list {
+ 
+ struct filter_head {
+ 	struct list_head	list;
+-	struct rcu_head		rcu;
++	union {
++		struct rcu_head		rcu;
++		struct rcu_work		rwork;
++	};
+ };
+ 
+-
+-static void free_filter_list(struct rcu_head *rhp)
++static void free_filter_list(struct filter_head *filter_list)
  {
- 	struct hns_roce_dev *hr_dev = to_hr_dev(ibqp->device);
- 	struct hns_roce_qp *hr_qp = to_hr_qp(ibqp);
--	struct hns_roce_v2_qp_context ctx[2];
--	struct hns_roce_v2_qp_context *context = ctx;
--	struct hns_roce_v2_qp_context *qpc_mask = ctx + 1;
-+	struct hns_roce_v2_qp_context *context;
-+	struct hns_roce_v2_qp_context *qpc_mask;
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
--	int ret;
-+	int ret = -ENOMEM;
+-	struct filter_head *filter_list = container_of(rhp, struct filter_head, rcu);
+ 	struct filter_list *filter_item, *tmp;
  
- 	if (attr_mask & ~IB_QP_ATTR_STANDARD_BITS)
- 		return -EOPNOTSUPP;
-@@ -5402,7 +5401,11 @@ static int hns_roce_v2_modify_qp(struct ib_qp *ibqp,
- 	 * we should set all bits of the relevant fields in context mask to
- 	 * 0 at the same time, else set them to 0x1.
- 	 */
--	memset(context, 0, hr_dev->caps.qpc_sz);
-+	context = kvzalloc(sizeof(*context), GFP_KERNEL);
-+	qpc_mask = kvzalloc(sizeof(*qpc_mask), GFP_KERNEL);
-+	if (!context || !qpc_mask)
-+		goto out;
-+
- 	memset(qpc_mask, 0xff, hr_dev->caps.qpc_sz);
- 
- 	ret = hns_roce_v2_set_abs_fields(ibqp, attr, attr_mask, cur_state,
-@@ -5444,6 +5447,8 @@ static int hns_roce_v2_modify_qp(struct ib_qp *ibqp,
- 		clear_qp(hr_qp);
- 
- out:
-+	kvfree(qpc_mask);
-+	kvfree(context);
- 	return ret;
+ 	list_for_each_entry_safe(filter_item, tmp, &filter_list->list, list) {
+@@ -1361,9 +1362,20 @@ static void free_filter_list(struct rcu_head *rhp)
+ 	kfree(filter_list);
  }
  
++static void free_filter_list_work(struct work_struct *work)
++{
++	struct filter_head *filter_list;
++
++	filter_list = container_of(to_rcu_work(work), struct filter_head, rwork);
++	free_filter_list(filter_list);
++}
++
+ static void free_filter_list_tasks(struct rcu_head *rhp)
+ {
+-	call_rcu(rhp, free_filter_list);
++	struct filter_head *filter_list = container_of(rhp, struct filter_head, rcu);
++
++	INIT_RCU_WORK(&filter_list->rwork, free_filter_list_work);
++	queue_rcu_work(system_wq, &filter_list->rwork);
+ }
+ 
+ /*
+@@ -1460,7 +1472,7 @@ static void filter_free_subsystem_filters(struct trace_subsystem_dir *dir,
+ 	tracepoint_synchronize_unregister();
+ 
+ 	if (head)
+-		free_filter_list(&head->rcu);
++		free_filter_list(head);
+ 
+ 	list_for_each_entry(file, &tr->events, list) {
+ 		if (file->system != dir || !file->filter)
+@@ -2305,7 +2317,7 @@ static int process_system_preds(struct trace_subsystem_dir *dir,
+ 	return 0;
+  fail:
+ 	/* No call succeeded */
+-	free_filter_list(&filter_list->rcu);
++	free_filter_list(filter_list);
+ 	parse_error(pe, FILT_ERR_BAD_SUBSYS_FILTER, 0);
+ 	return -EINVAL;
+  fail_mem:
+@@ -2315,7 +2327,7 @@ static int process_system_preds(struct trace_subsystem_dir *dir,
+ 	if (!fail)
+ 		delay_free_filter(filter_list);
+ 	else
+-		free_filter_list(&filter_list->rcu);
++		free_filter_list(filter_list);
+ 
+ 	return -ENOMEM;
+ }
 -- 
 2.39.5
 
