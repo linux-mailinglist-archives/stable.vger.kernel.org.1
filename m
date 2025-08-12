@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6721B232AA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EC9B2348E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6160F2A0E89
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:16:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E77581A23347
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8CA2E3B06;
-	Tue, 12 Aug 2025 18:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB91E2FD1A2;
+	Tue, 12 Aug 2025 18:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGc953yj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WtOkSIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B1C61FFE;
-	Tue, 12 Aug 2025 18:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984232F4A0A;
+	Tue, 12 Aug 2025 18:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022555; cv=none; b=b/bKDEIQfxqISC02JmlILNP+/D8v7EKIdiv2xpgDbTfOyiYFgxDGQ2Bhp9czHAL6aKLrT/zmiFIeih+9f/PBmdcNRsxrbdVy0KqHTY3mlABNBTIWYSEgAV5d/MZl12dFplUA7jn4eSWZ6P7zfRiYisgkGayJOK7DGXX7NSSnSCQ=
+	t=1755023823; cv=none; b=V3E5jg+iNAwdMv0N8aMjfGznkTPE+S/86+wYYrfyEsdUZ/3u9Vzn2NywIJxMhSAYDaJyIR+swu07CVzSFoYutH788oIPovtUW7VBRdcqmdXFUGssnevTvbXcnAU/X3oCb2igR6NiLB8RWX8i1Co49QHY6wOBNh3eE/DS4Rt961o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022555; c=relaxed/simple;
-	bh=O5fcJqewp8pouwYB/2xl9UQECQ+9m/c/qXVx/gqsZfs=;
+	s=arc-20240116; t=1755023823; c=relaxed/simple;
+	bh=IHfH7fUFPJ+HMenj244kBf+Cs+9KL7BcGD6x4r29jKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpGUhEiBspXc8lyDKzdbKzdtsJFT5ChCNAomlMYq5gJJmx9HM7+VHIUu20ybB/tPtldSi7nxvawamJ0BtM/XQji8/FmK9CQiM5He+j2E/g2vSVt5VkUbtxa5PqXogGzmy2zudVPG7l36LdaJK4Drem5Ssdej+fDGnSZ/4SPn3Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGc953yj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D17C4CEF0;
-	Tue, 12 Aug 2025 18:15:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PA0jX0hnqMV1G752w/rIsPKHxOuY8PYVUce0nq+DvKdtHBdHfI3yn0Ojwx/z83ggNMmMMHULVqsHyZEUTsmle1zXQ9konkTK2Ta7HC0ZqMtc2m4ifI/mPUdM2mvTqF2WcusRJ4GJTssSUV6ottqbNIL4ak5HkX4scWcKdZkJnWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WtOkSIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0987FC4CEF0;
+	Tue, 12 Aug 2025 18:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022554;
-	bh=O5fcJqewp8pouwYB/2xl9UQECQ+9m/c/qXVx/gqsZfs=;
+	s=korg; t=1755023823;
+	bh=IHfH7fUFPJ+HMenj244kBf+Cs+9KL7BcGD6x4r29jKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGc953yjINT8PZqB5LlswJoql+YEKiTu58KtwBT8fypsqkwcrGr9sPtA6vPdXPYyF
-	 zuA5EFtxkA2+YyVfil0R1NcrHGk0SfkdxJgLTN694QaW78w6mRxR0tiGL09Jbw1WVF
-	 mr55mbr3ZjXOYYwFG2UoB2vvqhbL2DIxL524ym3s=
+	b=2WtOkSIOh87MQMAW8c4kby2HeshscO+2RzoiIRvTWSxkdZnKTedMxdYVwMKXAdYD1
+	 SzJLgHqsUPIjmjy3EKYEkEcLmny4IXswfvnUyr9DSuUFZgdw9VZSUTVVAcxQs0sR1N
+	 5XwXwjySSL6S4jInFNwVbQ7B64q/bOzkDs8qV6sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 190/369] RDMA/hns: Fix accessing uninitialized resources
+Subject: [PATCH 6.16 192/627] Revert "drm/amdgpu: fix slab-use-after-free in amdgpu_userq_mgr_fini"
 Date: Tue, 12 Aug 2025 19:28:07 +0200
-Message-ID: <20250812173021.915503442@linuxfoundation.org>
+Message-ID: <20250812173426.572271279@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-[ Upstream commit 278c18a4a78a9a6bf529ef45ccde512a5686ea9d ]
+[ Upstream commit a73345b866ff8bbd93135af667c973a8fb4b2c40 ]
 
-hr_dev->pgdir_list and hr_dev->pgdir_mutex won't be initialized if
-CQ/QP record db are not enabled, but they are also needed when using
-SRQ with SRQ record db enabled. Simplified the logic by always
-initailizing the reosurces.
+This reverts commit 5fb90421fa0fbe0a968274912101fe917bf1c47b.
 
-Fixes: c9813b0b9992 ("RDMA/hns: Support SRQ record doorbell")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250703113905.3597124-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+The original patch moved `amdgpu_userq_mgr_fini()` to the driver's
+`postclose` callback, which is called after `drm_gem_release()` in
+the DRM file cleanup sequence.If a user application crashes or aborts
+without cleaning up its user queues, 'drm_gem_release()` may free
+GEM objects that are still referenced by active user queues, leading
+to use-after-free. By reverting, we ensure that user queues are
+disabled and cleaned up before any GEM objects are released,
+preventing this class of bug. However, this reintroduces a race
+during PCI hot-unplug, where device removal can race with per-file
+cleanup, leading to use-after-free in suspend/unplug paths.
+This will be fixed in the next patch.
+
+Fixes: 5fb90421fa0f ("drm/amdgpu: fix slab-use-after-free in amdgpu_userq_mgr_fini+0x70c")
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 16 +++++++++++++++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c |  3 ---
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 623610b3e2ec..11fa64044a8d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -947,10 +947,7 @@ static int hns_roce_init_hem(struct hns_roce_dev *hr_dev)
- static void hns_roce_teardown_hca(struct hns_roce_dev *hr_dev)
- {
- 	hns_roce_cleanup_bitmap(hr_dev);
--
--	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
--	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB)
--		mutex_destroy(&hr_dev->pgdir_mutex);
-+	mutex_destroy(&hr_dev->pgdir_mutex);
- }
- 
- /**
-@@ -968,11 +965,8 @@ static int hns_roce_setup_hca(struct hns_roce_dev *hr_dev)
- 	INIT_LIST_HEAD(&hr_dev->qp_list);
- 	spin_lock_init(&hr_dev->qp_list_lock);
- 
--	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
--	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB) {
--		INIT_LIST_HEAD(&hr_dev->pgdir_list);
--		mutex_init(&hr_dev->pgdir_mutex);
--	}
-+	INIT_LIST_HEAD(&hr_dev->pgdir_list);
-+	mutex_init(&hr_dev->pgdir_mutex);
- 
- 	hns_roce_init_uar_table(hr_dev);
- 
-@@ -1004,9 +998,7 @@ static int hns_roce_setup_hca(struct hns_roce_dev *hr_dev)
- 
- err_uar_table_free:
- 	ida_destroy(&hr_dev->uar_ida.ida);
--	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_CQ_RECORD_DB ||
--	    hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_QP_RECORD_DB)
--		mutex_destroy(&hr_dev->pgdir_mutex);
-+	mutex_destroy(&hr_dev->pgdir_mutex);
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 501bb82f2a37..4db92e0a60da 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2906,6 +2906,20 @@ static int amdgpu_pmops_runtime_idle(struct device *dev)
  	return ret;
  }
+ 
++static int amdgpu_drm_release(struct inode *inode, struct file *filp)
++{
++	struct drm_file *file_priv = filp->private_data;
++	struct amdgpu_fpriv *fpriv = file_priv->driver_priv;
++
++	if (fpriv) {
++		fpriv->evf_mgr.fd_closing = true;
++		amdgpu_eviction_fence_destroy(&fpriv->evf_mgr);
++		amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
++	}
++
++	return drm_release(inode, filp);
++}
++
+ long amdgpu_drm_ioctl(struct file *filp,
+ 		      unsigned int cmd, unsigned long arg)
+ {
+@@ -2957,7 +2971,7 @@ static const struct file_operations amdgpu_driver_kms_fops = {
+ 	.owner = THIS_MODULE,
+ 	.open = drm_open,
+ 	.flush = amdgpu_flush,
+-	.release = drm_release,
++	.release = amdgpu_drm_release,
+ 	.unlocked_ioctl = amdgpu_drm_ioctl,
+ 	.mmap = drm_gem_mmap,
+ 	.poll = drm_poll,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 195ed81d39ff..d2ce7d86dbc8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -1501,9 +1501,6 @@ void amdgpu_driver_postclose_kms(struct drm_device *dev,
+ 		amdgpu_vm_bo_del(adev, fpriv->prt_va);
+ 		amdgpu_bo_unreserve(pd);
+ 	}
+-	fpriv->evf_mgr.fd_closing = true;
+-	amdgpu_eviction_fence_destroy(&fpriv->evf_mgr);
+-	amdgpu_userq_mgr_fini(&fpriv->userq_mgr);
+ 
+ 	amdgpu_ctx_mgr_fini(&fpriv->ctx_mgr);
+ 	amdgpu_vm_fini(adev, &fpriv->vm);
 -- 
 2.39.5
 
