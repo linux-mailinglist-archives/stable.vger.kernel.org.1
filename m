@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC781B234B8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24512B22FEA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27FF0625880
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:39:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 137627B061B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8D62FD1AD;
-	Tue, 12 Aug 2025 18:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A35E2FDC3F;
+	Tue, 12 Aug 2025 17:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSqmpA9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9KSzjGy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE40121ABD0;
-	Tue, 12 Aug 2025 18:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4815C2C15B5;
+	Tue, 12 Aug 2025 17:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023936; cv=none; b=UBrATD7fm++tqH7cFsMES7Fw2MD/BAbkn1fRXRAoyXhrIJKqHm/CHd0JHafOxOwd70y7lMixZpVBje4FfIFd9agNdjiwNdnB/fLiIDvTuNMUJ5qKtTnIxx3O0gXgdoSvh2lCsfpT1xHe8MeOTb4OOvXwufFzC+VdKxEfg2m8QA8=
+	t=1755020743; cv=none; b=B9lwKpVnG7V1nkuhoUZczDzQjVj3nbVyqfBjUFT1fYBbCXgpGxHQzBWeoXXQO7jkVq3LopeyM1mZKWZU7z9/7h6NjjHPzcvKglSUQydls7E2HFypPlS0MDppR4z3oF5m78CWcSJitcQNB571CdOUDiqzFgTav5b/ZR9xN61EL+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023936; c=relaxed/simple;
-	bh=/O6oJBelGsbXIyKuz4NbLe0Etn0iiNPGlHdD37dZXoM=;
+	s=arc-20240116; t=1755020743; c=relaxed/simple;
+	bh=qw6y7UUqmIvnm9zG2amUmyx2hzOjCywS9/2P9IPAigg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAPHcHtl6wktmWBvWYqW+KGXZDw/x9wNH1qrGrP+03zRBNlH8ftW3sGI+CZvZyJly5fUL8vEvhcSnfmPJEaklQ+qw1oD8Op+74JIc02f0dhGKDFlSP5ls24sFeR1zqxle5cRbDkEPUg0mJH+4+KBo/AhvXuusMidbbmRy460HUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSqmpA9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3E7C4CEF0;
-	Tue, 12 Aug 2025 18:38:55 +0000 (UTC)
+	 MIME-Version; b=lZ6UbymMKY3IotMUTzu4EJU9qpSOoWvLfIqVx8IpMAHN5MbWeO9REBGM4uTsjiebNQ1c0EzT6C0irxycM8KdA+xDy1iwi9nNJyiWZ1wVm6Adb4hlKWQZjCOdsmzm3wwMd3BpiV1N0rBF9HUAMdRsuLUIYUGFflKJvosOiIqCAwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9KSzjGy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC107C4CEF0;
+	Tue, 12 Aug 2025 17:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023936;
-	bh=/O6oJBelGsbXIyKuz4NbLe0Etn0iiNPGlHdD37dZXoM=;
+	s=korg; t=1755020743;
+	bh=qw6y7UUqmIvnm9zG2amUmyx2hzOjCywS9/2P9IPAigg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xSqmpA9h81H5NM6rEAHLOr4KnsOjjx8u2fclig3QV9KXL+h52RvQ085WTJwdMPqg6
-	 lL99pBbw+CYbirmXW/Umz+nuHXRZhK8oVU9ijNFVkmV748KWMZ0X3abV77RNfMSPRW
-	 dZbvNM0ov3neCMAoIh7tWl7WNqRrjK8CtirvuLiM=
+	b=C9KSzjGyfK9tp067aXOx8TBFdvjnC2xoIdjRZX8ppDcNQzThEvyWMrYq9z1UfgHHU
+	 L/Dak9zBFl1j5+nPiaKUMuQ2dnsXMGsMLlnF+yppeNKSwH5q8oHpB8lYfwL8rzG4dD
+	 vKsDJc7iO6UUseZGaX6V5tN15YQzq2MPgRgoUg+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 225/627] wifi: mac80211: use RCU-safe iteration in ieee80211_csa_finish
+Subject: [PATCH 6.1 132/253] netfilter: xt_nfacct: dont assume acct name is null-terminated
 Date: Tue, 12 Aug 2025 19:28:40 +0200
-Message-ID: <20250812173427.845472547@linuxfoundation.org>
+Message-ID: <20250812172954.313391972@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 9975aeebe2908cdd552ee59607754755459fad52 ]
+[ Upstream commit bf58e667af7d96c8eb9411f926a0a0955f41ce21 ]
 
-The ieee80211_csa_finish() function currently uses for_each_sdata_link()
-to iterate over links of sdata. However, this macro internally uses
-wiphy_dereference(), which expects the wiphy->mtx lock to be held.
-When ieee80211_csa_finish() is invoked under an RCU read-side critical
-section (e.g., under rcu_read_lock()), this leads to a warning from the
-RCU debugging framework.
+BUG: KASAN: slab-out-of-bounds in .. lib/vsprintf.c:721
+Read of size 1 at addr ffff88801eac95c8 by task syz-executor183/5851
+[..]
+ string+0x231/0x2b0 lib/vsprintf.c:721
+ vsnprintf+0x739/0xf00 lib/vsprintf.c:2874
+ [..]
+ nfacct_mt_checkentry+0xd2/0xe0 net/netfilter/xt_nfacct.c:41
+ xt_check_match+0x3d1/0xab0 net/netfilter/x_tables.c:523
 
-  WARNING: suspicious RCU usage
-  net/mac80211/cfg.c:3830 suspicious rcu_dereference_protected() usage!
+nfnl_acct_find_get() handles non-null input, but the error
+printk relied on its presence.
 
-This warning is triggered because wiphy_dereference() is not safe to use
-without holding the wiphy mutex, and it is being used in an RCU context
-without the required locking.
-
-Fix this by introducing and using a new macro, for_each_sdata_link_rcu(),
-which performs RCU-safe iteration over sdata links using
-list_for_each_entry_rcu() and rcu_dereference(). This ensures that the
-link pointers are accessed safely under RCU and eliminates the warning.
-
-Fixes: f600832794c9 ("wifi: mac80211: restructure tx profile retrieval for MLO MBSSID")
-Signed-off-by: Maharaja Kennadyrajan <maharaja.kennadyrajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250711033846.40455-1-maharaja.kennadyrajan@oss.qualcomm.com
-[unindent like the non-RCU macro]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ff165b9251e4d295690
+Tested-by: syzbot+4ff165b9251e4d295690@syzkaller.appspotmail.com
+Fixes: ceb98d03eac5 ("netfilter: xtables: add nfacct match to support extended accounting")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c         |  2 +-
- net/mac80211/ieee80211_i.h | 15 +++++++++++++++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ net/netfilter/xt_nfacct.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index bc64c1b83a6e..18ad7ab1bb8c 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3760,7 +3760,7 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id)
- 		 */
- 		struct ieee80211_link_data *iter;
+diff --git a/net/netfilter/xt_nfacct.c b/net/netfilter/xt_nfacct.c
+index 7c6bf1c16813..0ca1cdfc4095 100644
+--- a/net/netfilter/xt_nfacct.c
++++ b/net/netfilter/xt_nfacct.c
+@@ -38,8 +38,8 @@ nfacct_mt_checkentry(const struct xt_mtchk_param *par)
  
--		for_each_sdata_link(local, iter) {
-+		for_each_sdata_link_rcu(local, iter) {
- 			if (iter->sdata == sdata ||
- 			    rcu_access_pointer(iter->conf->tx_bss_conf) != tx_bss_conf)
- 				continue;
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 30809f0b35f7..f71d9eeb8abc 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1226,6 +1226,21 @@ struct ieee80211_sub_if_data *vif_to_sdata(struct ieee80211_vif *p)
- 	if ((_link = wiphy_dereference((_local)->hw.wiphy,		\
- 				       ___sdata->link[___link_id])))
- 
-+/*
-+ * for_each_sdata_link_rcu() must be used under RCU read lock.
-+ */
-+#define for_each_sdata_link_rcu(_local, _link)						\
-+	/* outer loop just to define the variables ... */				\
-+	for (struct ieee80211_sub_if_data *___sdata = NULL;				\
-+	     !___sdata;									\
-+	     ___sdata = (void *)~0 /* always stop */)					\
-+	list_for_each_entry_rcu(___sdata, &(_local)->interfaces, list)			\
-+	if (ieee80211_sdata_running(___sdata))						\
-+	for (int ___link_id = 0;							\
-+	     ___link_id < ARRAY_SIZE((___sdata)->link);					\
-+	     ___link_id++)								\
-+	if ((_link = rcu_dereference((___sdata)->link[___link_id])))
-+
- #define for_each_link_data(sdata, __link)					\
- 	struct ieee80211_sub_if_data *__sdata = sdata;				\
- 	for (int __link_id = 0;							\
+ 	nfacct = nfnl_acct_find_get(par->net, info->name);
+ 	if (nfacct == NULL) {
+-		pr_info_ratelimited("accounting object `%s' does not exists\n",
+-				    info->name);
++		pr_info_ratelimited("accounting object `%.*s' does not exist\n",
++				    NFACCT_NAME_MAX, info->name);
+ 		return -ENOENT;
+ 	}
+ 	info->nfacct = nfacct;
 -- 
 2.39.5
 
