@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-168315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B61CB2347F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2728B22FAD
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED69A189497E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1391A188D9B3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E696D2F5481;
-	Tue, 12 Aug 2025 18:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A752FDC34;
+	Tue, 12 Aug 2025 17:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDL5FtBm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7l3GkTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52752D3ED6;
-	Tue, 12 Aug 2025 18:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEC82FD1D1;
+	Tue, 12 Aug 2025 17:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023768; cv=none; b=lagHIFQZ3NA8SU8hyIXfW2cQZkeZUCqls4JEx4sQm9RmE8t40dlHRdmmI1gWcqD3ddEiS+DjY6AL6at4XcdrwV0VzEhk4p6RcmYB4GCxnwOZyI+lYYYGKcqeN+n6435HnzDRDSbXkTJITDjxHn3ZAb+qwyccadaEhByiXW/pZfw=
+	t=1755020418; cv=none; b=BPiTugA6ErSZLmis63d2sQgPckSqdoKzNjF++P6iGM43BbWmQEi1mWkQirwy6DzHnG3X1H4SwIFa9XfL/Zbm9pSVFno4E73/uEYU+Yp13bByEZyDZhgygkcw7yVqJLozoHJnQMtimpC16+JxFPvsTxYIfwq9mKPuJ67X7HIbl0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023768; c=relaxed/simple;
-	bh=guyrkRMrllV9HqkL3i+bqyRDV514Vw3V/Rt0GdsZsCw=;
+	s=arc-20240116; t=1755020418; c=relaxed/simple;
+	bh=2vz2VvxOvRQS/5Mk0jNrw8mnmBSFHw/H28yGCbswQWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTl2HmMoFL7Vd97XrFLxU39zPpANngJhmpFMTIiE5hYPD9C0+7oEgc8spprIzKgcqJuoIiGy0xZNOeIlG3rpMRtOnzTA4bOkdYcpCDboGBYYW/Y4NixTpzEedvJaiAwbpYTJcphn63yJ2aw4XMXeJyXaIrqGVsZti4zSsLILexI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDL5FtBm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19417C4CEF0;
-	Tue, 12 Aug 2025 18:36:07 +0000 (UTC)
+	 MIME-Version; b=YJPoXOnv0gwLuVQIFSAAORkoYDmbxZgdP/2oi5R4PTXMt81hikG9VF/zwFE9bRUL9KiaKetrPigQIi3cHRz29jujUNnlJMH6aLhG0Io/i4PM8pVM4A6THRZT+SJJc4th3H73Df/6gqcgUPKdnFyy3OsA/i5BpgsLd2bPfFX13yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7l3GkTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2FAC4CEF0;
+	Tue, 12 Aug 2025 17:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023768;
-	bh=guyrkRMrllV9HqkL3i+bqyRDV514Vw3V/Rt0GdsZsCw=;
+	s=korg; t=1755020418;
+	bh=2vz2VvxOvRQS/5Mk0jNrw8mnmBSFHw/H28yGCbswQWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDL5FtBmE42PrhMbyqqQnblaQYWmnXkfOxrUSJkicSGRSIVAkXs1QewMIVG9gkweY
-	 zahyXSRqB2dvoZ2XiaXr+6jm64J3kWk1wsuhLvjql25KT/0YCE3OUsQDYjboZDtasf
-	 8kwIMYd5l+FbYLYrcZd1WYY2l7I8XJTq5boEp6ZI=
+	b=P7l3GkTYcUT7LMj97lns9nQ3BxnttBot2a9Bx4+PfuJsMnYqOajZxjDGcqZVWNWty
+	 a/OtYwBJMV1B49gcOcOU4B786Fx+Ud3uKXNnrAt5qqbnD+Tx+wLszXWxnrj6TC68d5
+	 cpBukyCU6e7FSmFzqN0u27E10aaq26340SKbP71w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	Zongyao Bai <zongyao.bai@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Seungjin Bae <eeodqql09@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 168/627] drm/xe/uapi: Correct sync type definition in comments
+Subject: [PATCH 6.1 075/253] usb: host: xhci-plat: fix incorrect type for of_match variable in xhci_plat_probe()
 Date: Tue, 12 Aug 2025 19:27:43 +0200
-Message-ID: <20250812173425.673362383@linuxfoundation.org>
+Message-ID: <20250812172951.923841368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 771f002ef1d6f6c2b9bddf779abd31da6b9ccd25 ]
+[ Upstream commit d9e496a9fb4021a9e6b11e7ba221a41a2597ac27 ]
 
-Commit 37d078e51b4c ("drm/xe/uapi: Split xe_sync types from flags") renamed some DRM_XE_SYNC_*
-defines but later commits kept using the old names. Correct them with the new definition.
+The variable `of_match` was incorrectly declared as a `bool`.
+It is assigned the return value of of_match_device(), which is a pointer of
+type `const struct of_device_id *`.
 
-v2: correct fixes tag and update commit message to explain why (Lucas)
-
-Fixes: 9329f0667215 ("drm/xe/uapi: Use LR abbrev for long-running vms")
-Fixes: 4b437893a826 ("drm/xe/uapi: More uAPI documentation additions and cosmetic updates")
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Zongyao Bai <zongyao.bai@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Link: https://lore.kernel.org/r/20250608230133.1250849-1-shuicheng.lin@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Fixes: 16b7e0cccb243 ("USB: xhci-plat: fix legacy PHY double init")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20250619055746.176112-2-eeodqql09@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/drm/xe_drm.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-plat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
-index 6a702ba7817c..5f1524f466a7 100644
---- a/include/uapi/drm/xe_drm.h
-+++ b/include/uapi/drm/xe_drm.h
-@@ -925,9 +925,9 @@ struct drm_xe_gem_mmap_offset {
-  *  - %DRM_XE_VM_CREATE_FLAG_LR_MODE - An LR, or Long Running VM accepts
-  *    exec submissions to its exec_queues that don't have an upper time
-  *    limit on the job execution time. But exec submissions to these
-- *    don't allow any of the flags DRM_XE_SYNC_FLAG_SYNCOBJ,
-- *    DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ, DRM_XE_SYNC_FLAG_DMA_BUF,
-- *    used as out-syncobjs, that is, together with DRM_XE_SYNC_FLAG_SIGNAL.
-+ *    don't allow any of the sync types DRM_XE_SYNC_TYPE_SYNCOBJ,
-+ *    DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ, used as out-syncobjs, that is,
-+ *    together with sync flag DRM_XE_SYNC_FLAG_SIGNAL.
-  *    LR VMs can be created in recoverable page-fault mode using
-  *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE, if the device supports it.
-  *    If that flag is omitted, the UMD can not rely on the slightly
-@@ -1394,7 +1394,7 @@ struct drm_xe_sync {
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 6704bd76e157..7ec4c38c3cee 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -184,7 +184,7 @@ static int xhci_plat_probe(struct platform_device *pdev)
+ 	int			ret;
+ 	int			irq;
+ 	struct xhci_plat_priv	*priv = NULL;
+-	bool			of_match;
++	const struct of_device_id *of_match;
  
- 	/**
- 	 * @timeline_value: Input for the timeline sync object. Needs to be
--	 * different than 0 when used with %DRM_XE_SYNC_FLAG_TIMELINE_SYNCOBJ.
-+	 * different than 0 when used with %DRM_XE_SYNC_TYPE_TIMELINE_SYNCOBJ.
- 	 */
- 	__u64 timeline_value;
- 
+ 	if (usb_disabled())
+ 		return -ENODEV;
 -- 
 2.39.5
 
