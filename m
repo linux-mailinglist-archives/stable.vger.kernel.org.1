@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA73B23749
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:10:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED159B2377E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49830587248
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:10:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6625A188B412
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1552D47F4;
-	Tue, 12 Aug 2025 19:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B63A2F4A07;
+	Tue, 12 Aug 2025 19:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABvv9H/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHPaPB45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9B529BDB7;
-	Tue, 12 Aug 2025 19:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF77B27781E;
+	Tue, 12 Aug 2025 19:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025802; cv=none; b=I9V+7l53sKSNtXenODYJndX1rjGNELauaq2QbP6hjaZIYWOEzXEM2D/vtdqbxlqQ5fIzFo15d9dY9sAud7gAqoIMr0KptnNVTmiJsXm+1OHu5enZpVtWaWAfMy+0Ub74vD5XPuL1ovKPXybGo8auXiYG2isOFUyvT2jHyRsTZhk=
+	t=1755025946; cv=none; b=rd8hQWZwfECtfjhLDn4IhOU5CYky+ENNhSXwZhZE640XMJgnOxv1peBYqZhLUko90S+1CYylqYwDbBv1jv2uJMFnwckTawic3fCmDVYTR1onIAlSnscxKGT3fVbgGTsLznUoTVTqvJxEgUP/0g4Q+44zWRQ88BjJtkgeCosiOos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025802; c=relaxed/simple;
-	bh=sqGhzEXL4Ey4PNCS3bIqSoSD2fxcim1KSE4h5FHdeMA=;
+	s=arc-20240116; t=1755025946; c=relaxed/simple;
+	bh=4QyvhCMXxU2bRBp7IsknWEDuwlGkUbu2DalJ1ZNr+NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/mIKOEv/W8A+4vca09Q5Yk0o3kuKy568WUmvrbOimoHfY3BwdDyTJWeVQZUw5HgT0segpojKL6vC++/xQZP1DzRYsmwhi+DP7WynqL45r6gnFHjfRqre2kCAjNpZkK1RnPdZYgLtQVnFG3I+SL4b+ZYB9CbdAAzaFgpnir7os4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABvv9H/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD7DC4CEF0;
-	Tue, 12 Aug 2025 19:10:01 +0000 (UTC)
+	 MIME-Version; b=prlCCdHZBwzxdifKZSZN8c2CbtSnNq3ecMtDv71kdvwpZRcunwoDgveHSbhDqy3xxQMLfSbdXfYWTXa3+XIVuzlxLMh89/SIWJd7CswIqBAYWepP0JJxver/yIC0UXCEGGt1kEGR6rEnXw//mYaD/8RKbqFd794leiTWfmvJQUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHPaPB45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CF1C4CEF0;
+	Tue, 12 Aug 2025 19:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025802;
-	bh=sqGhzEXL4Ey4PNCS3bIqSoSD2fxcim1KSE4h5FHdeMA=;
+	s=korg; t=1755025945;
+	bh=4QyvhCMXxU2bRBp7IsknWEDuwlGkUbu2DalJ1ZNr+NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABvv9H/h7rXuBZiYkwefbRKNpwhBvMYLhrTYP6SigDPWVMhjZIzIyUXA6KbFTIhGu
-	 0q+mUTJONusLUZTvckzUuKQARgFjKvtXYSAdorOCDXKowzHu4BSfHZBUDT+ICscdIm
-	 ta1toz0kLoJhucH4FBe61PDUngBPgkp+Fgx0U/Fw=
+	b=JHPaPB45nLF7EybXzheB/a2zlSC1cxrgYiX8YxPYdZu0qDLidVO8uxKaaBJU7xeSx
+	 hrEIFVFtDdyX+gU3w1OdCt2hALFXTO52rt+IJRa6cnw8NgOGCtp7D14LEUV0Yhb7pG
+	 nvwUv+vPo/G74cHa6vKsNQZ3sfcWQGr8dginB/Y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shixiong Ou <oushixiong@kylinos.cn>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 147/480] fbcon: Fix outdated registered_fb reference in comment
-Date: Tue, 12 Aug 2025 19:45:55 +0200
-Message-ID: <20250812174403.573346811@linuxfoundation.org>
+Subject: [PATCH 6.15 148/480] netfilter: nf_tables: Drop dead code from fill_*_info routines
+Date: Tue, 12 Aug 2025 19:45:56 +0200
+Message-ID: <20250812174403.614903328@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,43 +66,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shixiong Ou <oushixiong@kylinos.cn>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 0f168e7be696a17487e83d1d47e5a408a181080f ]
+[ Upstream commit 8080357a8c6cf4905bbd8969412c19d34be3395e ]
 
-The variable was renamed to fbcon_registered_fb, but this comment was
-not updated along with the change. Correct it to avoid confusion.
+This practically reverts commit 28339b21a365 ("netfilter: nf_tables: do
+not send complete notification of deletions"): The feature was never
+effective, due to prior modification of 'event' variable the conditional
+early return never happened.
 
-Signed-off-by: Shixiong Ou <oushixiong@kylinos.cn>
-Fixes: efc3acbc105a ("fbcon: Maintain a private array of fb_info")
-[sima: Add Fixes: line.]
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250709103438.572309-1-oushixiong1025@163.com
+User space also relies upon the current behaviour, so better reintroduce
+the shortened deletion notifications once it is fixed.
+
+Fixes: 28339b21a365 ("netfilter: nf_tables: do not send complete notification of deletions")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 25 -------------------------
+ 1 file changed, 25 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 2df48037688d..2b2d36c021ba 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -952,13 +952,13 @@ static const char *fbcon_startup(void)
- 	int rows, cols;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index a133e1c175ce..3eb000ae2f27 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1130,11 +1130,6 @@ static int nf_tables_fill_table_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_TABLE_PAD))
+ 		goto nla_put_failure;
  
- 	/*
--	 *  If num_registered_fb is zero, this is a call for the dummy part.
-+	 *  If fbcon_num_registered_fb is zero, this is a call for the dummy part.
- 	 *  The frame buffer devices weren't initialized yet.
- 	 */
- 	if (!fbcon_num_registered_fb || info_idx == -1)
- 		return display_desc;
- 	/*
--	 * Instead of blindly using registered_fb[0], we use info_idx, set by
-+	 * Instead of blindly using fbcon_registered_fb[0], we use info_idx, set by
- 	 * fbcon_fb_registered();
- 	 */
- 	info = fbcon_registered_fb[info_idx];
+-	if (event == NFT_MSG_DELTABLE) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_TABLE_FLAGS,
+ 			 htonl(table->flags & NFT_TABLE_F_MASK)))
+ 		goto nla_put_failure;
+@@ -1993,11 +1988,6 @@ static int nf_tables_fill_chain_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_CHAIN_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELCHAIN && !hook_list) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nft_is_base_chain(chain)) {
+ 		const struct nft_base_chain *basechain = nft_base_chain(chain);
+ 		struct nft_stats __percpu *stats;
+@@ -4788,11 +4778,6 @@ static int nf_tables_fill_set(struct sk_buff *skb, const struct nft_ctx *ctx,
+ 			 NFTA_SET_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELSET) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (set->flags != 0)
+ 		if (nla_put_be32(skb, NFTA_SET_FLAGS, htonl(set->flags)))
+ 			goto nla_put_failure;
+@@ -8276,11 +8261,6 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_OBJ_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELOBJ) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_OBJ_TYPE, htonl(obj->ops->type->type)) ||
+ 	    nla_put_be32(skb, NFTA_OBJ_USE, htonl(obj->use)) ||
+ 	    nft_object_dump(skb, NFTA_OBJ_DATA, obj, reset))
+@@ -9298,11 +9278,6 @@ static int nf_tables_fill_flowtable_info(struct sk_buff *skb, struct net *net,
+ 			 NFTA_FLOWTABLE_PAD))
+ 		goto nla_put_failure;
+ 
+-	if (event == NFT_MSG_DELFLOWTABLE && !hook_list) {
+-		nlmsg_end(skb, nlh);
+-		return 0;
+-	}
+-
+ 	if (nla_put_be32(skb, NFTA_FLOWTABLE_USE, htonl(flowtable->use)) ||
+ 	    nla_put_be32(skb, NFTA_FLOWTABLE_FLAGS, htonl(flowtable->data.flags)))
+ 		goto nla_put_failure;
 -- 
 2.39.5
 
