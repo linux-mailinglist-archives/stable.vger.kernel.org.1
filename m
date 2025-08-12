@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-167906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4618BB23273
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:18:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ACEB22F3A
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DF8418846AB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:13:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B07B7A7299
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7852882CE;
-	Tue, 12 Aug 2025 18:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E7F2FD1D1;
+	Tue, 12 Aug 2025 17:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYauTzla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9nGJx6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE5D2F5E;
-	Tue, 12 Aug 2025 18:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6562F7461;
+	Tue, 12 Aug 2025 17:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022387; cv=none; b=c6u6/CxgwwkHNslLPFaFedeTq2kZ1/XT5WbcXAVUH8UeCCRQT+d69/b82LXPzIBA5O5mKadpqxFerWyhme+/ysJHlG8cbLSJBC9b+r+ADcY6XkPcCZ+qvna/aWve76H9Q3NI4Fwa5kAaHt2UB6PZh2jvtAhI8msdg9EAMnrWo1Q=
+	t=1755020224; cv=none; b=TOqq/FkLbO0PMHAqfJx1hRToFkkzt+PN0V5QGFJQTua58VfAJOhhI39RfvRWxkdsj/PUoM0Un8fCLA5yAAFz9uANg/ltGbv4dJalgf/SAWQnMc/VCnu3QWUH8HeyXUYYxd8XAdo38CSCj2ki/oB1Auc30qA3PSPYGUMuSRiXkGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022387; c=relaxed/simple;
-	bh=wl9nkgqahRsOlIFsf9H2y3QezAq9anAkCIgXoPN6zj0=;
+	s=arc-20240116; t=1755020224; c=relaxed/simple;
+	bh=WzVBrozgtd7aoSZBndOvdHZ/kyypxhEs2opxOl2dS4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tm/T1rB6EHweHyCOCESvyWYwW1W2KbTIG9VoAyX0dWXrFA5syTOft1vgKVVqP2KD7Ur+uGtUo5EWTTVx3WtZMQH3h4af5Cg/Ls+Jxu32VHuEwimcfOU65VZHJULaMRDHzJb1hYZjUwrODZSk/PdMxFSVInX+lVdPgZnmE53K08g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYauTzla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379B9C4CEF1;
-	Tue, 12 Aug 2025 18:13:07 +0000 (UTC)
+	 MIME-Version; b=DoXvbl/oSoszFrk/XcAggH++YdqLnDWJZ0yvGFp5nC0pCTQGj08e1oiTG2obG3KZI5sWONqknvfQS7PYrlP8CFqxgLaI5ViOlm2wU05wXh66VmIf1R7XWRbV2ad7zel9HfsWtIkrKdQJJqGaPRgaGjYdzquBcpOZAvwqnbbiK1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9nGJx6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7D8C4CEF1;
+	Tue, 12 Aug 2025 17:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022387;
-	bh=wl9nkgqahRsOlIFsf9H2y3QezAq9anAkCIgXoPN6zj0=;
+	s=korg; t=1755020223;
+	bh=WzVBrozgtd7aoSZBndOvdHZ/kyypxhEs2opxOl2dS4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYauTzlaWvT6gP0FDIUeceNgVyZWU5dhodZFzrScOZU0Eq24OcxhTlOWBQtGtYMGc
-	 Lkh/hv32pwRmgDvGpH4+Oco42hC5e7kPYAtCFdXQezljL1yCntJpWRnbZOcgK5DiUR
-	 AoIwkPdaIqub1g1xmqx0vGjL95C5eMj8l+IUt+tM=
+	b=u9nGJx6Zk9quhnD2z+qMZlZQmKLo03LRZCUxMIqkK5TY0DJAvnx65PVq+z7JitiE/
+	 pRKSlDHYh47alyyGk4BGAOPTbNBFsxrqSxNPJyYh1BuKS6vDL0cqRoPDZbCsR4JPHA
+	 P1UjfeorMVHINuWfKeHotDcyH2+JcXIwCsU1/m2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abinash Singh <abinashsinghlalotra@gmail.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Jamie Bainbridge <jamie.bainbridge@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/369] xen/gntdev: remove struct gntdev_copy_batch from stack
+Subject: [PATCH 6.1 016/253] i40e: When removing VF MAC filters, only check PF-set MAC
 Date: Tue, 12 Aug 2025 19:26:44 +0200
-Message-ID: <20250812173018.803200009@linuxfoundation.org>
+Message-ID: <20250812172949.399860323@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,189 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Jamie Bainbridge <jamie.bainbridge@gmail.com>
 
-[ Upstream commit 70045cf6593cbf0740956ea9b7b4269142c6ee38 ]
+[ Upstream commit 5a0df02999dbe838c3feed54b1d59e9445f68b89 ]
 
-When compiling the kernel with LLVM, the following warning was issued:
+When the PF is processing an Admin Queue message to delete a VF's MACs
+from the MAC filter, we currently check if the PF set the MAC and if
+the VF is trusted.
 
-  drivers/xen/gntdev.c:991: warning: stack frame size (1160) exceeds
-  limit (1024) in function 'gntdev_ioctl'
+This results in undesirable behaviour, where if a trusted VF with a
+PF-set MAC sets itself down (which sends an AQ message to delete the
+VF's MAC filters) then the VF MAC is erased from the interface.
 
-The main reason is struct gntdev_copy_batch which is located on the
-stack and has a size of nearly 1kb.
+This results in the VF losing its PF-set MAC which should not happen.
 
-For performance reasons it shouldn't by just dynamically allocated
-instead, so allocate a new instance when needed and instead of freeing
-it put it into a list of free structs anchored in struct gntdev_priv.
+There is no need to check for trust at all, because an untrusted VF
+cannot change its own MAC. The only check needed is whether the PF set
+the MAC. If the PF set the MAC, then don't erase the MAC on link-down.
 
-Fixes: a4cdb556cae0 ("xen/gntdev: add ioctl for grant copy")
-Reported-by: Abinash Singh <abinashsinghlalotra@gmail.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250703073259.17356-1-jgross@suse.com>
+Resolve this by changing the deletion check only for PF-set MAC.
+
+(the out-of-tree driver has also intentionally removed the check for VF
+trust here with OOT driver version 2.26.8, this changes the Linux kernel
+driver behaviour and comment to match the OOT driver behaviour)
+
+Fixes: ea2a1cfc3b201 ("i40e: Fix VF MAC filter removal")
+Signed-off-by: Jamie Bainbridge <jamie.bainbridge@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/gntdev-common.h |  4 +++
- drivers/xen/gntdev.c        | 71 ++++++++++++++++++++++++++-----------
- 2 files changed, 54 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/xen/gntdev-common.h b/drivers/xen/gntdev-common.h
-index 9c286b2a1900..ac8ce3179ba2 100644
---- a/drivers/xen/gntdev-common.h
-+++ b/drivers/xen/gntdev-common.h
-@@ -26,6 +26,10 @@ struct gntdev_priv {
- 	/* lock protects maps and freeable_maps. */
- 	struct mutex lock;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 7f8899a0ae80d..7cfcb16c30911 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3076,10 +3076,10 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
+ 		const u8 *addr = al->list[i].addr;
  
-+	/* Free instances of struct gntdev_copy_batch. */
-+	struct gntdev_copy_batch *batch;
-+	struct mutex batch_lock;
-+
- #ifdef CONFIG_XEN_GRANT_DMA_ALLOC
- 	/* Device for which DMA memory is allocated. */
- 	struct device *dma_dev;
-diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
-index 61faea1f0663..1f2160765618 100644
---- a/drivers/xen/gntdev.c
-+++ b/drivers/xen/gntdev.c
-@@ -56,6 +56,18 @@ MODULE_AUTHOR("Derek G. Murray <Derek.Murray@cl.cam.ac.uk>, "
- 	      "Gerd Hoffmann <kraxel@redhat.com>");
- MODULE_DESCRIPTION("User-space granted page access driver");
- 
-+#define GNTDEV_COPY_BATCH 16
-+
-+struct gntdev_copy_batch {
-+	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
-+	struct page *pages[GNTDEV_COPY_BATCH];
-+	s16 __user *status[GNTDEV_COPY_BATCH];
-+	unsigned int nr_ops;
-+	unsigned int nr_pages;
-+	bool writeable;
-+	struct gntdev_copy_batch *next;
-+};
-+
- static unsigned int limit = 64*1024;
- module_param(limit, uint, 0644);
- MODULE_PARM_DESC(limit,
-@@ -584,6 +596,8 @@ static int gntdev_open(struct inode *inode, struct file *flip)
- 	INIT_LIST_HEAD(&priv->maps);
- 	mutex_init(&priv->lock);
- 
-+	mutex_init(&priv->batch_lock);
-+
- #ifdef CONFIG_XEN_GNTDEV_DMABUF
- 	priv->dmabuf_priv = gntdev_dmabuf_init(flip);
- 	if (IS_ERR(priv->dmabuf_priv)) {
-@@ -608,6 +622,7 @@ static int gntdev_release(struct inode *inode, struct file *flip)
- {
- 	struct gntdev_priv *priv = flip->private_data;
- 	struct gntdev_grant_map *map;
-+	struct gntdev_copy_batch *batch;
- 
- 	pr_debug("priv %p\n", priv);
- 
-@@ -620,6 +635,14 @@ static int gntdev_release(struct inode *inode, struct file *flip)
- 	}
- 	mutex_unlock(&priv->lock);
- 
-+	mutex_lock(&priv->batch_lock);
-+	while (priv->batch) {
-+		batch = priv->batch;
-+		priv->batch = batch->next;
-+		kfree(batch);
-+	}
-+	mutex_unlock(&priv->batch_lock);
-+
- #ifdef CONFIG_XEN_GNTDEV_DMABUF
- 	gntdev_dmabuf_fini(priv->dmabuf_priv);
- #endif
-@@ -785,17 +808,6 @@ static long gntdev_ioctl_notify(struct gntdev_priv *priv, void __user *u)
- 	return rc;
- }
- 
--#define GNTDEV_COPY_BATCH 16
--
--struct gntdev_copy_batch {
--	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
--	struct page *pages[GNTDEV_COPY_BATCH];
--	s16 __user *status[GNTDEV_COPY_BATCH];
--	unsigned int nr_ops;
--	unsigned int nr_pages;
--	bool writeable;
--};
--
- static int gntdev_get_page(struct gntdev_copy_batch *batch, void __user *virt,
- 				unsigned long *gfn)
- {
-@@ -953,36 +965,53 @@ static int gntdev_grant_copy_seg(struct gntdev_copy_batch *batch,
- static long gntdev_ioctl_grant_copy(struct gntdev_priv *priv, void __user *u)
- {
- 	struct ioctl_gntdev_grant_copy copy;
--	struct gntdev_copy_batch batch;
-+	struct gntdev_copy_batch *batch;
- 	unsigned int i;
- 	int ret = 0;
- 
- 	if (copy_from_user(&copy, u, sizeof(copy)))
- 		return -EFAULT;
- 
--	batch.nr_ops = 0;
--	batch.nr_pages = 0;
-+	mutex_lock(&priv->batch_lock);
-+	if (!priv->batch) {
-+		batch = kmalloc(sizeof(*batch), GFP_KERNEL);
-+	} else {
-+		batch = priv->batch;
-+		priv->batch = batch->next;
-+	}
-+	mutex_unlock(&priv->batch_lock);
-+	if (!batch)
-+		return -ENOMEM;
-+
-+	batch->nr_ops = 0;
-+	batch->nr_pages = 0;
- 
- 	for (i = 0; i < copy.count; i++) {
- 		struct gntdev_grant_copy_segment seg;
- 
- 		if (copy_from_user(&seg, &copy.segments[i], sizeof(seg))) {
- 			ret = -EFAULT;
-+			gntdev_put_pages(batch);
- 			goto out;
- 		}
- 
--		ret = gntdev_grant_copy_seg(&batch, &seg, &copy.segments[i].status);
--		if (ret < 0)
-+		ret = gntdev_grant_copy_seg(batch, &seg, &copy.segments[i].status);
-+		if (ret < 0) {
-+			gntdev_put_pages(batch);
- 			goto out;
-+		}
- 
- 		cond_resched();
- 	}
--	if (batch.nr_ops)
--		ret = gntdev_copy(&batch);
--	return ret;
-+	if (batch->nr_ops)
-+		ret = gntdev_copy(batch);
-+
-+ out:
-+	mutex_lock(&priv->batch_lock);
-+	batch->next = priv->batch;
-+	priv->batch = batch;
-+	mutex_unlock(&priv->batch_lock);
- 
--  out:
--	gntdev_put_pages(&batch);
- 	return ret;
- }
- 
+ 		/* Allow to delete VF primary MAC only if it was not set
+-		 * administratively by PF or if VF is trusted.
++		 * administratively by PF.
+ 		 */
+ 		if (ether_addr_equal(addr, vf->default_lan_addr.addr)) {
+-			if (i40e_can_vf_change_mac(vf))
++			if (!vf->pf_set_mac)
+ 				was_unimac_deleted = true;
+ 			else
+ 				continue;
 -- 
 2.39.5
 
