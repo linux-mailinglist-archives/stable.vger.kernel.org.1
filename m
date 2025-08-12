@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A709B2356C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:50:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80E2B23586
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F1C5584236
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:50:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03F2B1884D76
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1CC2FDC34;
-	Tue, 12 Aug 2025 18:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D402FD1B6;
+	Tue, 12 Aug 2025 18:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HO/LOeNh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bc+9b7kD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9B9247287;
-	Tue, 12 Aug 2025 18:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B3A2CA9;
+	Tue, 12 Aug 2025 18:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024605; cv=none; b=hraRgRgUMuIN24IJ9bivd8n0ZD7ELBsFxSVMwSHNt0zG9UfL4x/hJFzxOTfmWK7ab/C3FtbiXdbWugPn+w8D4iqccBbrGrGvMnPk0FuS08aBy8o65IXLpan6wfkEsW1bwY/ATSp88u9yhviQV6+iGfIRmnSAFuPPShqvA4bKRkw=
+	t=1755024492; cv=none; b=g5YGoc6h/w9cWN7QF0oQmFr5b+0sqQHCx0Yx4CEmNVOzfaFrmdMTL2a8qG0vK+8JOpctA0WpFiwxCP2Oslvd/Z6sWF4jUe8UaChaV3jU/d9Dy/bgy8uSiYLiRlDeHqBuPchThdQU0SspaOuXvl1qxm1xUF3qCU9/Ao1ELmEHipQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024605; c=relaxed/simple;
-	bh=/oN+XmUB8lmTc2F0d610G/h54YuylM8g0/g3G6nxRnM=;
+	s=arc-20240116; t=1755024492; c=relaxed/simple;
+	bh=et2pbS4YtUoAtoRaFZHGnJcKTikaXqDG1olRPhlt0HU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpxgX8vI2LxDDSYEEpanIQupF5EOPOZVegULKFYahm+dj9bmTfCp938aFFipL/ueI+xDCl43WzFTMPRWXdt4/QnaAIRgvIrgrUcN+Igx48GaOExZEC5lRjKzigcMFKlNXYjI96WavuV1zE1JLC12XUZ6w98UXYujHQ3mcTJZknA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HO/LOeNh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72634C4CEF0;
-	Tue, 12 Aug 2025 18:50:04 +0000 (UTC)
+	 MIME-Version; b=GkKc1bPjxsPPrlY2yhSlFSOkRmNoaWK+KiKo6GulS7+Z85wWvi3mZjTcBBx0PnPkHACTPar7gDCpHWhGG5onswYho/9FbbEYQxc63R6rLpbbhqFonHECU3aUYftAZXtbxtB9IUBA9L685ADOOyDc6VIEgAjmL92S2Vckw3Epycg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bc+9b7kD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAEAC4CEF0;
+	Tue, 12 Aug 2025 18:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024604;
-	bh=/oN+XmUB8lmTc2F0d610G/h54YuylM8g0/g3G6nxRnM=;
+	s=korg; t=1755024492;
+	bh=et2pbS4YtUoAtoRaFZHGnJcKTikaXqDG1olRPhlt0HU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HO/LOeNhoYYQ5nw8Bqnpbhx8RHamLy004xRfvr+vmvPxYaAzIA8atfa+xLGie6sfz
-	 EXInWCMOmMTeYJ2R8+1tYeUcbM5Na5ZoQTAiwo8FURekk/oLUDtv0jrVY01KBXCL6+
-	 AOniwH5WCJr4LIZ2dS/jn+PsU+vYokRS6aRldjiU=
+	b=Bc+9b7kDOx+LLHSeTashH5AHkQKVmBZ1qa2UFbKVGuSewt+XyI3ahJ5DouwZB/d59
+	 Qe9bYjjGNGrRe/bpIWd8158KeaNwC/YgBLtC/ku/aTY4QAp+5HTkdOSG2aKSXb9P4t
+	 qIjTGRqGezCjK829+Nbf0aRjV91Eo/CULwTwirIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paulk@sys-base.io>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 389/627] clk: sunxi-ng: v3s: Fix de clock definition
-Date: Tue, 12 Aug 2025 19:31:24 +0200
-Message-ID: <20250812173434.100259839@linuxfoundation.org>
+Subject: [PATCH 6.16 390/627] scsi: ibmvscsi_tgt: Fix dma_unmap_sg() nents value
+Date: Tue, 12 Aug 2025 19:31:25 +0200
+Message-ID: <20250812173434.136022999@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -66,42 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Kocialkowski <paulk@sys-base.io>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit e8ab346f9907a1a3aa2f0e5decf849925c06ae2e ]
+[ Upstream commit 023a293b9cd0bb86a9b50cd7688a3d9d266826db ]
 
-The de clock is marked with CLK_SET_RATE_PARENT, which is really not
-necessary (as confirmed from experimentation) and significantly
-restricts flexibility for other clocks using the same parent.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-In addition the source selection (parent) field is marked as using
-2 bits, when it the documentation reports that it uses 3.
-
-Fix both issues in the de clock definition.
-
-Fixes: d0f11d14b0bc ("clk: sunxi-ng: add support for V3s CCU")
-Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
-Link: https://patch.msgid.link/20250704154008.3463257-1-paulk@sys-base.io
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: 88a678bbc34c ("ibmvscsis: Initial commit of IBM VSCSI Tgt Driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250630111803.94389-2-fourier.thomas@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun8i-v3s.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/ibmvscsi_tgt/libsrp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-index 52e4369664c5..df345a620d8d 100644
---- a/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun8i-v3s.c
-@@ -347,8 +347,7 @@ static SUNXI_CCU_GATE(dram_ohci_clk,	"dram-ohci",	"dram",
+diff --git a/drivers/scsi/ibmvscsi_tgt/libsrp.c b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+index 8a0e28aec928..0ecad398ed3d 100644
+--- a/drivers/scsi/ibmvscsi_tgt/libsrp.c
++++ b/drivers/scsi/ibmvscsi_tgt/libsrp.c
+@@ -184,7 +184,8 @@ static int srp_direct_data(struct ibmvscsis_cmd *cmd, struct srp_direct_buf *md,
+ 	err = rdma_io(cmd, sg, nsg, md, 1, dir, len);
  
- static const char * const de_parents[] = { "pll-video", "pll-periph0" };
- static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
--				 0x104, 0, 4, 24, 2, BIT(31),
--				 CLK_SET_RATE_PARENT);
-+				 0x104, 0, 4, 24, 3, BIT(31), 0);
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
  
- static const char * const tcon_parents[] = { "pll-video", "pll-periph0" };
- static SUNXI_CCU_M_WITH_MUX_GATE(tcon_clk, "tcon", tcon_parents,
+ 	return err;
+ }
+@@ -256,7 +257,8 @@ static int srp_indirect_data(struct ibmvscsis_cmd *cmd, struct srp_cmd *srp_cmd,
+ 	err = rdma_io(cmd, sg, nsg, md, nmd, dir, len);
+ 
+ 	if (dma_map)
+-		dma_unmap_sg(iue->target->dev, sg, nsg, DMA_BIDIRECTIONAL);
++		dma_unmap_sg(iue->target->dev, sg, cmd->se_cmd.t_data_nents,
++			     DMA_BIDIRECTIONAL);
+ 
+ free_mem:
+ 	if (token && dma_map) {
 -- 
 2.39.5
 
