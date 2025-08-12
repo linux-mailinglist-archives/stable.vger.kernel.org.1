@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-168085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF067B23355
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:27:58 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C40FB234B2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84A4E3ABC9E
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:23:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C73CC4E4918
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89B82F745D;
-	Tue, 12 Aug 2025 18:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AA32FE593;
+	Tue, 12 Aug 2025 18:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH4SWIzl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZoO/wdZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E76280037;
-	Tue, 12 Aug 2025 18:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41462FE57A;
+	Tue, 12 Aug 2025 18:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022993; cv=none; b=egUhZ69zhGxf4IutIsO/8Zb1pyLV+00E2ydDB9jBsetxe0b8LDV18/oSK2fetNz7I/PpC+loXpEfKn2BLPDW7V1m7nB2M2nRDkbttjd+BF2Vi7f57k8qhTngYxdGL2bkZx0iV01TAzC64VAAn1WniXqc2X7b3l9fV5BB/1iYXL4=
+	t=1755024142; cv=none; b=nggN1yzS35RyJA+xwyuduqw8CaqGSXHPfwjmvhR2GeFnMoKKMdeQldhvVcJ/OHpw63MQ6Z20Q118zh3fmGqt1Hy81ni0r0vG8qliOPSgv216GsjKXwyWx+Z7+EygXxRcvnrMweSgrHYoEJcV0dxWGfAAxrxwAv4ojKICiWLCk/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022993; c=relaxed/simple;
-	bh=R4XMtiUBmd+f/3rXn+b6vPn1rtOhWyhjUp1KQrxtsfc=;
+	s=arc-20240116; t=1755024142; c=relaxed/simple;
+	bh=rmX3f5nTcOU5Ag/uUL/7Rx3b+tMT0FCsfnVBavvm5LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJItCuFKdYbNommgvgajj0jfuvN/Gl/FWqkxteP9bifDL30GnMrN4hlLlrb2PhiRsq3fYWXPE3e1M1ENdpej3oKkcxqHt1KN0JfnII3RxZqO+bFB4SSgEbbP+E5Bd6RKSXjSAT9psoJxxqlMnjIekbn2hO9h28/SfZV7Ma5+o1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH4SWIzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EA6C4CEF6;
-	Tue, 12 Aug 2025 18:23:12 +0000 (UTC)
+	 MIME-Version; b=pNajdiu11yWTWZWXMU2SEfPBL5ramRMwnMSr/52LRgFPYkA0ip+7kLX3sJ+vA/hbIbaMvX1zpJqCdf3ZpMwqH1XSJBvYU2lMvpECH4zJTjdUWYfyWygr24nL+Ln0u6xlaHWQEykWpitOVQ3r/kfwMulG6sNuHSXCd8r97x+7nKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZoO/wdZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E29C4CEF0;
+	Tue, 12 Aug 2025 18:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022993;
-	bh=R4XMtiUBmd+f/3rXn+b6vPn1rtOhWyhjUp1KQrxtsfc=;
+	s=korg; t=1755024141;
+	bh=rmX3f5nTcOU5Ag/uUL/7Rx3b+tMT0FCsfnVBavvm5LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bH4SWIzlHsHtcdkbCBRkb6FE47G7KI5fBewrqfHG3RuBf6FispwF83btRNo+1pMh+
-	 hwq4QKKGq8EzcllPo46rihiNl9DoMRY4WNjb2hYJbuSA09VKNQaI30yFcpzCFGJntW
-	 Q1koZQSiWneIJ1Le5jMJlKJ2LJk1gIuIB+7m4DRA=
+	b=hZoO/wdZJrEVZFaaNQ/MphYmPDLz4BE6Z4KJYrC8owXq4XuTM/xdBmFklkHy4r5vL
+	 7Bkh+hDlYgfCWJiPPf1uU4NYxkHoXTXIcKV8MiusaVreXgrg7IJ+nJOLe2as21tuww
+	 Mzrlho8gvus5ivCvCWIAe2/0l9296O0zzTLZLY6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 285/369] NFS: Fixup allocation flags for nfsiods __GFP_NORETRY
+Subject: [PATCH 6.16 287/627] ipv6: prevent infinite loop in rt6_nlmsg_size()
 Date: Tue, 12 Aug 2025 19:29:42 +0200
-Message-ID: <20250812173027.443917666@linuxfoundation.org>
+Message-ID: <20250812173430.231852126@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 99765233ab42bf7a4950377ad7894dce8a5c0e60 ]
+[ Upstream commit 54e6fe9dd3b0e7c481c2228782c9494d653546da ]
 
-If the NFS client is doing writeback from a workqueue context, avoid using
-__GFP_NORETRY for allocations if the task has set PF_MEMALLOC_NOIO or
-PF_MEMALLOC_NOFS.  The combination of these flags makes memory allocation
-failures much more likely.
+While testing prior patch, I was able to trigger
+an infinite loop in rt6_nlmsg_size() in the following place:
 
-We've seen those allocation failures show up when the loopback driver is
-doing writeback from a workqueue to a file on NFS, where memory allocation
-failure results in errors or corruption within the loopback device's
-filesystem.
+list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
+			fib6_siblings) {
+	rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
+}
 
-Suggested-by: Trond Myklebust <trondmy@kernel.org>
-Fixes: 0bae835b63c5 ("NFS: Avoid writeback threads getting stuck in mempool_alloc()")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/r/f83ac1155a4bc670f2663959a7a068571e06afd9.1752111622.git.bcodding@redhat.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+This is because fib6_del_route() and fib6_add_rt2node()
+uses list_del_rcu(), which can confuse rcu readers,
+because they might no longer see the head of the list.
+
+Restart the loop if f6i->fib6_nsiblings is zero.
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250725140725.3626540-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/ipv6/ip6_fib.c |  4 ++--
+ net/ipv6/route.c   | 34 ++++++++++++++++++----------------
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 1be4be3d4a2b..9840b779f0df 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -668,9 +668,12 @@ nfs_write_match_verf(const struct nfs_writeverf *verf,
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 93578b2ec35f..af7db69d9eac 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1265,7 +1265,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 							 &rt->fib6_siblings,
+ 							 fib6_siblings)
+ 					sibling->fib6_nsiblings--;
+-				rt->fib6_nsiblings = 0;
++				WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 				list_del_rcu(&rt->fib6_siblings);
+ 				rcu_read_lock();
+ 				rt6_multipath_rebalance(next_sibling);
+@@ -2015,7 +2015,7 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
+ 		list_for_each_entry_safe(sibling, next_sibling,
+ 					 &rt->fib6_siblings, fib6_siblings)
+ 			sibling->fib6_nsiblings--;
+-		rt->fib6_nsiblings = 0;
++		WRITE_ONCE(rt->fib6_nsiblings, 0);
+ 		list_del_rcu(&rt->fib6_siblings);
+ 		rt6_multipath_rebalance(next_sibling);
+ 	}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 38016f5b2291..2aeca451aab3 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5670,32 +5670,34 @@ static int rt6_nh_nlmsg_size(struct fib6_nh *nh, void *arg)
  
- static inline gfp_t nfs_io_gfp_mask(void)
+ static size_t rt6_nlmsg_size(struct fib6_info *f6i)
  {
--	if (current->flags & PF_WQ_WORKER)
--		return GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN;
--	return GFP_KERNEL;
-+	gfp_t ret = current_gfp_context(GFP_KERNEL);
-+
-+	/* For workers __GFP_NORETRY only with __GFP_IO or __GFP_FS */
-+	if ((current->flags & PF_WQ_WORKER) && ret == GFP_KERNEL)
-+		ret |= __GFP_NORETRY | __GFP_NOWARN;
-+	return ret;
- }
++	struct fib6_info *sibling;
++	struct fib6_nh *nh;
+ 	int nexthop_len;
  
- /*
+ 	if (f6i->nh) {
+ 		nexthop_len = nla_total_size(4); /* RTA_NH_ID */
+ 		nexthop_for_each_fib6_nh(f6i->nh, rt6_nh_nlmsg_size,
+ 					 &nexthop_len);
+-	} else {
+-		struct fib6_nh *nh = f6i->fib6_nh;
+-		struct fib6_info *sibling;
+-
+-		nexthop_len = 0;
+-		if (f6i->fib6_nsiblings) {
+-			rt6_nh_nlmsg_size(nh, &nexthop_len);
+-
+-			rcu_read_lock();
++		goto common;
++	}
+ 
+-			list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
+-						fib6_siblings) {
+-				rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
+-			}
++	rcu_read_lock();
++retry:
++	nh = f6i->fib6_nh;
++	nexthop_len = 0;
++	if (READ_ONCE(f6i->fib6_nsiblings)) {
++		rt6_nh_nlmsg_size(nh, &nexthop_len);
+ 
+-			rcu_read_unlock();
++		list_for_each_entry_rcu(sibling, &f6i->fib6_siblings,
++					fib6_siblings) {
++			rt6_nh_nlmsg_size(sibling->fib6_nh, &nexthop_len);
++			if (!READ_ONCE(f6i->fib6_nsiblings))
++				goto retry;
+ 		}
+-		nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
+ 	}
+-
++	rcu_read_unlock();
++	nexthop_len += lwtunnel_get_encap_size(nh->fib_nh_lws);
++common:
+ 	return NLMSG_ALIGN(sizeof(struct rtmsg))
+ 	       + nla_total_size(16) /* RTA_SRC */
+ 	       + nla_total_size(16) /* RTA_DST */
 -- 
 2.39.5
 
