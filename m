@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-168874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1A7B2371F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:08:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4811B2370F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:07:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBF2F1B65D3F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:07:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B37017B5C0D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDF52882CE;
-	Tue, 12 Aug 2025 19:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5D6283FE4;
+	Tue, 12 Aug 2025 19:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBsO4iYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Coo++Xfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73A1C1AAA;
-	Tue, 12 Aug 2025 19:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE96621C187;
+	Tue, 12 Aug 2025 19:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025621; cv=none; b=trgWuH6CE5b20S8uz2cyodjeJK2awz4G7M84KPOOsNfIbjdXDI4VYNbEa0cLXvkztiK8FuWvF342lFWbI7fq1oBsyI9+5+Y7scighOILvywKBISLRB8Fo58JoiJ0bz3OHNLim1XbcYYEtlTLnfqALvTYgIQ1c6Tonspp+SBzW0M=
+	t=1755025659; cv=none; b=CmGrWupWCD+Os2M1NMJ47DhkC5xqkudzqFWZLXCNTAvUdV6k5TC/CQ5m0Ddhhdc8ZxCbNux4rWunKjDu+zJ8Uze9zq4T3d4ZAxea6T9JehbIHoyAvnqsirQ+zxT0/XfDJnkyDi56rcmV4YlC66V35G89levfZvg4gWHBc1e+A/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025621; c=relaxed/simple;
-	bh=Cq7Ig1pZUZPdU61J2/K+ULtjmu0AIl3GtEq7hK6P/bg=;
+	s=arc-20240116; t=1755025659; c=relaxed/simple;
+	bh=lAXUEWMuYe2InyjfmbC0lCX86ENNTiVp6oN8r74hqFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0hR/R9MJBCtHpvL0l9nIV8SGmjQmdd3B0uP4xXJoc4YcLnDOVGCq8prkK+0P89oKxdM9YYmy1JMajIPD0nwEvQ89CMM0/aNB3l9jRnaGRZfyOzQ5dgS4GDFopWJ+/PTmPJ7IZa1nyi0TISFaH8ux6acNVMtUjZpXE0lY4JQ2R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBsO4iYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCAAC4CEF0;
-	Tue, 12 Aug 2025 19:07:00 +0000 (UTC)
+	 MIME-Version; b=Nr5UW3YDd18oVFT/N4HAeiWDCBIhDUdhUJBxRAPtEypAc4f0NgeuKfH1Zv+egQgW/K2yPFXO/Qnz0mu3qamjk0+Sr/D/vGE1yJKnxP94tMyDzIeElTKh3zHt4ueyogt5mUz+DndOvCWmUg9oJVpdB50NuYjOfMUkMRrXt9Vc41k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Coo++Xfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0F3C4CEF0;
+	Tue, 12 Aug 2025 19:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025621;
-	bh=Cq7Ig1pZUZPdU61J2/K+ULtjmu0AIl3GtEq7hK6P/bg=;
+	s=korg; t=1755025658;
+	bh=lAXUEWMuYe2InyjfmbC0lCX86ENNTiVp6oN8r74hqFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZBsO4iYkrS6JM9kOI3TvVKC/9Zaeu8M8ll6BNlx75yXQlamj8ptjZ0m6NvUKMTjQ6
-	 hFwU79+yFLd6aZVsVgjZm/mTF6asq+kFvWQU1SqsOKUsb7LUeX3vWh+uPSVoWwFznj
-	 ZHterm5IRWPd2tg15zpLbxyVc1EGuHdGmZToNVNs=
+	b=Coo++XfyCJlpo0TRtPaO4uhOyh02umtJN9I+cadF2HBqmAMiEJdkFUz/dkqcBFnfB
+	 DJU9J74a+VM8i1SOYVR226PkvrSPaChRET57Gku/vHIVwxcOmrt5ebmncb+NCRh7qq
+	 IBjGWuZL2HTOfINvJMZJ6ogquLgy5tozP0YqR9IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Annette Kobou <annette.kobou@kontron.de>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Adam Ford <aford173@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 078/480] ARM: dts: imx6ul-kontron-bl-common: Fix RTS polarity for RS485 interface
-Date: Tue, 12 Aug 2025 19:44:46 +0200
-Message-ID: <20250812174400.670524916@linuxfoundation.org>
+Subject: [PATCH 6.15 079/480] arm64: dts: imx8mm-beacon: Fix HS400 USDHC clock speed
+Date: Tue, 12 Aug 2025 19:44:47 +0200
+Message-ID: <20250812174400.711208450@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,35 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Annette Kobou <annette.kobou@kontron.de>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 47ef5256124fb939d8157b13ca048c902435cf23 ]
+[ Upstream commit f83f69097a302ed2a2775975ddcf12e6a5ac6ec3 ]
 
-The polarity of the DE signal of the transceiver is active-high for
-sending. Therefore rs485-rts-active-low is wrong and needs to be
-removed to make RS485 transmissions work.
+The reference manual for the i.MX8MM states the clock rate in
+MMC mode is 1/2 of the input clock, therefore to properly run
+at HS400 rates, the input clock must be 400MHz to operate at
+200MHz.  Currently the clock is set to 200MHz which is half the
+rate it should be, so the throughput is half of what it should be
+for HS400 operation.
 
-Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Fixes: 1ea4b76cdfde ("ARM: dts: imx6ul-kontron-n6310: Add Kontron i.MX6UL N6310 SoM and boards")
+Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-index 29d2f86d5e34..f4c45e964daf 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-kontron-bl-common.dtsi
-@@ -168,7 +168,6 @@ &uart2 {
- 	pinctrl-0 = <&pinctrl_uart2>;
- 	linux,rs485-enabled-at-boot-time;
- 	rs485-rx-during-tx;
--	rs485-rts-active-low;
- 	uart-has-rtscts;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+index 9ba0cb89fa24..c0f00835e47d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+@@ -286,6 +286,8 @@ &usdhc3 {
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+ 	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+ 	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MM_CLK_USDHC3>;
++	assigned-clock-rates = <400000000>;
+ 	bus-width = <8>;
+ 	non-removable;
  	status = "okay";
- };
 -- 
 2.39.5
 
