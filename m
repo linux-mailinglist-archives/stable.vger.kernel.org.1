@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-168316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A23B23480
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9052EB232A1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9F01A23764
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:36:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DDEF5826CA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82052F659A;
-	Tue, 12 Aug 2025 18:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA692FD1C2;
+	Tue, 12 Aug 2025 18:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I93IOBdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znIBLB0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959251DB92A;
-	Tue, 12 Aug 2025 18:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C59E1B87F2;
+	Tue, 12 Aug 2025 18:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023771; cv=none; b=s+XiLD2qRkSE7skqHS6g4EKgPyfa+cIycSfUYzDYOXbgYuKQuCnCVi42eifvcxeaYMuBK97HAmHR/sO97iFxZF8po/hiy6JSshG/ogcB3DXh8nA3cT6AXwHHUGPt1J4NVW/T6wMYpkZrTjOksDw0dMyRNy/o+7GBMzDsLnqLYpc=
+	t=1755022531; cv=none; b=duVemRJTg60ya2cfIaUX/cwqMCN+hbP7To7ii+cAkc8Umhr8IVW0SZGfees1QeaBkevteAXt7I5tVFFMAR1cxsTP/MOL+jHHesfAw0m/StC+EqV3YyG1QCVKA6yOy2ETCzCteh8VhVmTYXklatm8VaMr5zHAj2OGhAepKSevOeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023771; c=relaxed/simple;
-	bh=W/56mvw92a747GixckqX5N6NYoXWg7iRLFA6w4ijVIo=;
+	s=arc-20240116; t=1755022531; c=relaxed/simple;
+	bh=Kg0mht5U3BlexbwnAAH5rZuu2i2rD+bZCY7hzEM3AK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koeJ+VszsTvRB1H2Tu7dOK0neGkJvumE4LQ4ddURR9HzWBKvV3ZO0gUDaYd3APCSNnNLr8fWBjfxHMENqqkkxIVi1Ul9Fng6a2BD/c6OP617mxG9UXrJhBMk3R0rrvAVvQoGLscxo7bvNivF5uKZulys8b30cjwzpvs3sm8OmlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I93IOBdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDC7C4CEF0;
-	Tue, 12 Aug 2025 18:36:10 +0000 (UTC)
+	 MIME-Version; b=RnZF8E2q5FJMxmoWl7qYZxs9M/rrePtbvzHYkRBBC4vCdj3Pk+oQhho/XBort6RrxAFYzbeN3HEKIpl1Smah9YMIzwgbNxnVum6ZNojUiPk447kCtxB1dfE49dzR8PC6JyIe+vkWYX+yt+oJRQnRZMhdtN4v0NPMSlNBrjkluus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znIBLB0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD47C4CEF0;
+	Tue, 12 Aug 2025 18:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023771;
-	bh=W/56mvw92a747GixckqX5N6NYoXWg7iRLFA6w4ijVIo=;
+	s=korg; t=1755022531;
+	bh=Kg0mht5U3BlexbwnAAH5rZuu2i2rD+bZCY7hzEM3AK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I93IOBdmQkJnut+JprB4nhDqM+kGJY324E/ANHziAsbuN7K1U5mI751EyvK4NVrFs
-	 CNWVF22KhcooOk24KDXCot8jENno1xJhzGO86GN3P5pz4ew96/8ag+IrqQEtch5R6L
-	 bUoSMLXzPd5ZSKg5Ebog3p2w27cqz5j/BYooKgzE=
+	b=znIBLB0b0RU2oFtEcnq0ndNLxG+Cwz4oLnI1e37xXE3rby4r0fb/LnZCy9wj+1NIr
+	 eEAg71t6ReaQnXjErYyDnUiZ6taJZJeyq0nG94e+xkURcMMJ7E0ziatnZDkCdYpIQ+
+	 ZoHeMVxMBnfmIPdGq1jHwZb5OkloHggCnskKX2o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 177/627] wifi: iwlwifi: Fix error code in iwl_op_mode_dvm_start()
+Subject: [PATCH 6.12 175/369] perf tools: Fix use-after-free in help_unknown_cmd()
 Date: Tue, 12 Aug 2025 19:27:52 +0200
-Message-ID: <20250812173426.009260138@linuxfoundation.org>
+Message-ID: <20250812173021.360725004@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit cf80c02a9fdb6c5bc8508beb6a0f6a1294fc32f6 ]
+[ Upstream commit 1fdf938168c4d26fa279d4f204768690d1f9c4ae ]
 
-Preserve the error code if iwl_setup_deferred_work() fails.  The current
-code returns ERR_PTR(0) (which is NULL) on this path.  I believe the
-missing error code potentially leads to a use after free involving
-debugfs.
+Currently perf aborts when it finds an invalid command.  I guess it
+depends on the environment as I have some custom commands in the path.
 
-Fixes: 90a0d9f33996 ("iwlwifi: Add missing check for alloc_ordered_workqueue")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/a7a1cd2c-ce01-461a-9afd-dbe535f8df01@sabinyo.mountain
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+  $ perf bad-command
+  perf: 'bad-command' is not a perf-command. See 'perf --help'.
+  Aborted (core dumped)
+
+It's because the exclude_cmds() in libsubcmd has a use-after-free when
+it removes some entries.  After copying one to another entry, it keeps
+the pointer in the both position.  And the next copy operation will free
+the later one but it's the same entry in the previous one.
+
+For example, let's say cmds = { A, B, C, D, E } and excludes = { B, E }.
+
+  ci  cj  ei   cmds-name  excludes
+  -----------+--------------------
+   0   0   0 |     A         B       :    cmp < 0, ci == cj
+   1   1   0 |     B         B       :    cmp == 0
+   2   1   1 |     C         E       :    cmp < 0, ci != cj
+
+At this point, it frees cmds->names[1] and cmds->names[1] is assigned to
+cmds->names[2].
+
+   3   2   1 |     D         E       :    cmp < 0, ci != cj
+
+Now it frees cmds->names[2] but it's the same as cmds->names[1].  So
+accessing cmds->names[1] will be invalid.
+
+This makes the subcmd tests succeed.
+
+  $ perf test subcmd
+   69: libsubcmd help tests                                            :
+   69.1: Load subcmd names                                             : Ok
+   69.2: Uniquify subcmd names                                         : Ok
+   69.3: Exclude duplicate subcmd names                                : Ok
+
+Fixes: 4b96679170c6 ("libsubcmd: Avoid SEGV/use-after-free when commands aren't excluded")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250701201027.1171561-3-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/lib/subcmd/help.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index e015b83bb6e9..2b4dbebc71c2 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1467,7 +1467,8 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 	/********************
- 	 * 6. Setup services
- 	 ********************/
--	if (iwl_setup_deferred_work(priv))
-+	err = iwl_setup_deferred_work(priv);
-+	if (err)
- 		goto out_uninit_drv;
+diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
+index 8561b0f01a24..9ef569492560 100644
+--- a/tools/lib/subcmd/help.c
++++ b/tools/lib/subcmd/help.c
+@@ -9,6 +9,7 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ #include <dirent.h>
++#include <assert.h>
+ #include "subcmd-util.h"
+ #include "help.h"
+ #include "exec-cmd.h"
+@@ -82,10 +83,11 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
+ 				ci++;
+ 				cj++;
+ 			} else {
+-				zfree(&cmds->names[cj]);
+-				cmds->names[cj++] = cmds->names[ci++];
++				cmds->names[cj++] = cmds->names[ci];
++				cmds->names[ci++] = NULL;
+ 			}
+ 		} else if (cmp == 0) {
++			zfree(&cmds->names[ci]);
+ 			ci++;
+ 			ei++;
+ 		} else if (cmp > 0) {
+@@ -94,12 +96,12 @@ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
+ 	}
+ 	if (ci != cj) {
+ 		while (ci < cmds->cnt) {
+-			zfree(&cmds->names[cj]);
+-			cmds->names[cj++] = cmds->names[ci++];
++			cmds->names[cj++] = cmds->names[ci];
++			cmds->names[ci++] = NULL;
+ 		}
+ 	}
+ 	for (ci = cj; ci < cmds->cnt; ci++)
+-		zfree(&cmds->names[ci]);
++		assert(cmds->names[ci] == NULL);
+ 	cmds->cnt = cj;
+ }
  
- 	iwl_setup_rx_handlers(priv);
 -- 
 2.39.5
 
