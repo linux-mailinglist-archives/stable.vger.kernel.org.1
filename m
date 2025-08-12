@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC208B233BF
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:32:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7965DB231D2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C8F51A24C5F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3CBB3A2F88
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2942ECE93;
-	Tue, 12 Aug 2025 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D421E2E36F1;
+	Tue, 12 Aug 2025 18:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1iMIEQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hx0aJ310"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494DB21ABD0;
-	Tue, 12 Aug 2025 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930C02BEC2F;
+	Tue, 12 Aug 2025 18:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023255; cv=none; b=Z2Pw+IQm9TANchFN8eh7HOVRssQC1jRyyMOLTZ1LhzUz+CeROPUuxEXT/dIyCkQP0AvmmlOLYXt4sKsIyGNLjP822sUVCacuv9kA/Q83hxCPoOCq/vsj4sO8qYbX1NWtZQU4b1OmeorNEDdmnkmxjqNCKmhuIQHsBHh49m3r0TU=
+	t=1755022015; cv=none; b=MqIs4DOGCt45NgVyAcNgMEgSYXSoGf3pl0/wPJykOBlQ++FwzpXHqB/995xwCF58IFuBs77h4MZ5wTD6RATQnm7B5Nf4lt94oA2YeDFzlig/F9X9quilyfVEOSKb0+4PvhsMLT0rQ4re3HugEli83znDpcLcp6+QquL/f1MPLLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023255; c=relaxed/simple;
-	bh=02Yo3rBs0gShimZsyB+waqd6JJDgPH5NSuf7Qrm2UUM=;
+	s=arc-20240116; t=1755022015; c=relaxed/simple;
+	bh=nn3qD/P9vKGpHJCGVOltzJ5+LPrPM883DXo6pYiGOS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knUFPuJkvOcn88iWMyrSNtSd1nKWv8RZvd7BuSx/eZ6Itw2h4fiNrkXucsRF9ML7RMkUrkQBfK4wyd0mv+OlCyNWHMWIYxz/YqGzcD/ZQ3nIht1+aHK6hMit75OrhmJ+21BIxUbez0LHdde8qv3EO3Iq2swEMerYcNdtiWApxvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1iMIEQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4BAC4CEF1;
-	Tue, 12 Aug 2025 18:27:34 +0000 (UTC)
+	 MIME-Version; b=djBLVdZv+7MrBlVanr2A3FMr+GXqA561j1apVz84RQgajHXs4qf9O6j1aySF2Df6CYCbhxqKEyCsH+S5Xr3ppSqEdYbnLJGEEXGhzyZ9ZawUNZwIVMYCSWUtHagn09a/x/zV3QDJuh/IAoBKeTnxwBImP2bDVOoydMhQwx/v4GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hx0aJ310; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D54C4CEF0;
+	Tue, 12 Aug 2025 18:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023255;
-	bh=02Yo3rBs0gShimZsyB+waqd6JJDgPH5NSuf7Qrm2UUM=;
+	s=korg; t=1755022015;
+	bh=nn3qD/P9vKGpHJCGVOltzJ5+LPrPM883DXo6pYiGOS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1iMIEQhSJtmMHkruENhjkdGZrsI4FSk/TSyVG7psIwxM2ywLtrqXTqumcwxg56ty
-	 zzfFm/FX5DWXlOWl8MZWznUEM5nF5pmBl+idNw4OQW4m9F1a7+D0qNMcjNbeXjSQ6V
-	 LH2s4YR6xReu6A3C0TL9LxhJY4ZwZ6yP/LxCVY4Y=
+	b=hx0aJ3105tP0CDVMTGvXh2quHvXWmf9RDQ6fyo9NdES1k1oClk8Xo/h16saXRrj+V
+	 3A53If2ytFuv+yiIgN8lY6zYX4idhwJ8Llv5Jy19KOAn+dGv0DYHABtGjGlmlT1/I4
+	 nqOmzhFjE/HHPIEOxCoCkgcxKRUAcFm0lcIFKlcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1aa90f0eb1fc3e77d969@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Brian Howard <blhoward2@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 006/627] fs/ntfs3: cancle set bad inode after removing name fails
+Subject: [PATCH 6.12 004/369] ALSA: hda/cs35l56: Workaround bad dev-index on Lenovo Yoga Book 9i GenX
 Date: Tue, 12 Aug 2025 19:25:01 +0200
-Message-ID: <20250812173419.563445446@linuxfoundation.org>
+Message-ID: <20250812173014.909707681@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit d99208b91933fd2a58ed9ed321af07dacd06ddc3 ]
+[ Upstream commit 40b1c2f9b299295ed0482e1fee6f46521e6e79e5 ]
 
-The reproducer uses a file0 on a ntfs3 file system with a corrupted i_link.
-When renaming, the file0's inode is marked as a bad inode because the file
-name cannot be deleted.
+The Lenovo Yoga Book 9i GenX has the wrong values in the cirrus,dev-index
+_DSD property. Add a fixup for this model to ignore the property and
+hardcode the index from the I2C bus address.
 
-The underlying bug is that make_bad_inode() is called on a live inode.
-In some cases it's "icache lookup finds a normal inode, d_splice_alias()
-is called to attach it to dentry, while another thread decides to call
-make_bad_inode() on it - that would evict it from icache, but we'd already
-found it there earlier".
-In some it's outright "we have an inode attached to dentry - that's how we
-got it in the first place; let's call make_bad_inode() on it just for shits
-and giggles".
+The error in the cirrus,dev-index property would prevent the second amp
+instance from probing. The component binding would never see all the
+required instances and so there would not be a binding between
+patch_realtek.c and the cs35l56 driver.
 
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Reported-by: syzbot+1aa90f0eb1fc3e77d969@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1aa90f0eb1fc3e77d969
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reported-by: Brian Howard <blhoward2@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220228
+Link: https://patch.msgid.link/20250714110154.204740-1-rf@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c |  7 +++----
- fs/ntfs3/namei.c   | 10 +++-------
- fs/ntfs3/ntfs_fs.h |  3 +--
- 3 files changed, 7 insertions(+), 13 deletions(-)
+ sound/pci/hda/cs35l56_hda.c | 110 +++++++++++++++++++++++++++---------
+ 1 file changed, 82 insertions(+), 28 deletions(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 756e1306fe6c..7afbb4418eb2 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -3003,8 +3003,7 @@ int ni_add_name(struct ntfs_inode *dir_ni, struct ntfs_inode *ni,
-  * ni_rename - Remove one name and insert new name.
-  */
- int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
--	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de,
--	      bool *is_bad)
-+	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de)
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index 7baf3b506eef..7823f71012a8 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -876,6 +876,52 @@ static int cs35l56_hda_system_resume(struct device *dev)
+ 	return 0;
+ }
+ 
++static int cs35l56_hda_fixup_yoga9(struct cs35l56_hda *cs35l56, int *bus_addr)
++{
++	/* The cirrus,dev-index property has the wrong values */
++	switch (*bus_addr) {
++	case 0x30:
++		cs35l56->index = 1;
++		return 0;
++	case 0x31:
++		cs35l56->index = 0;
++		return 0;
++	default:
++		/* There is a pseudo-address for broadcast to both amps - ignore it */
++		dev_dbg(cs35l56->base.dev, "Ignoring I2C address %#x\n", *bus_addr);
++		return 0;
++	}
++}
++
++static const struct {
++	const char *sub;
++	int (*fixup_fn)(struct cs35l56_hda *cs35l56, int *bus_addr);
++} cs35l56_hda_fixups[] = {
++	{
++		.sub = "17AA390B", /* Lenovo Yoga Book 9i GenX */
++		.fixup_fn = cs35l56_hda_fixup_yoga9,
++	},
++};
++
++static int cs35l56_hda_apply_platform_fixups(struct cs35l56_hda *cs35l56, const char *sub,
++					     int *bus_addr)
++{
++	int i;
++
++	if (IS_ERR(sub))
++		return 0;
++
++	for (i = 0; i < ARRAY_SIZE(cs35l56_hda_fixups); i++) {
++		if (strcasecmp(cs35l56_hda_fixups[i].sub, sub) == 0) {
++			dev_dbg(cs35l56->base.dev, "Applying fixup for %s\n",
++				cs35l56_hda_fixups[i].sub);
++			return (cs35l56_hda_fixups[i].fixup_fn)(cs35l56, bus_addr);
++		}
++	}
++
++	return 0;
++}
++
+ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
  {
- 	int err;
- 	struct NTFS_DE *de2 = NULL;
-@@ -3027,8 +3026,8 @@ int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
- 	err = ni_add_name(new_dir_ni, ni, new_de);
- 	if (!err) {
- 		err = ni_remove_name(dir_ni, ni, de, &de2, &undo);
--		if (err && ni_remove_name(new_dir_ni, ni, new_de, &de2, &undo))
--			*is_bad = true;
-+		WARN_ON(err && ni_remove_name(new_dir_ni, ni, new_de, &de2,
-+			&undo));
+ 	u32 values[HDA_MAX_COMPONENTS];
+@@ -900,39 +946,47 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
+ 		ACPI_COMPANION_SET(cs35l56->base.dev, adev);
  	}
  
- 	/*
-diff --git a/fs/ntfs3/namei.c b/fs/ntfs3/namei.c
-index b807744fc6a9..0db7ca3b64ea 100644
---- a/fs/ntfs3/namei.c
-+++ b/fs/ntfs3/namei.c
-@@ -244,7 +244,7 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
- 	struct ntfs_inode *ni = ntfs_i(inode);
- 	struct inode *new_inode = d_inode(new_dentry);
- 	struct NTFS_DE *de, *new_de;
--	bool is_same, is_bad;
-+	bool is_same;
- 	/*
- 	 * de		- memory of PATH_MAX bytes:
- 	 * [0-1024)	- original name (dentry->d_name)
-@@ -313,12 +313,8 @@ static int ntfs_rename(struct mnt_idmap *idmap, struct inode *dir,
- 	if (dir_ni != new_dir_ni)
- 		ni_lock_dir2(new_dir_ni);
+-	property = "cirrus,dev-index";
+-	ret = device_property_count_u32(cs35l56->base.dev, property);
+-	if (ret <= 0)
+-		goto err;
+-
+-	if (ret > ARRAY_SIZE(values)) {
+-		ret = -EINVAL;
+-		goto err;
+-	}
+-	nval = ret;
++	/* Initialize things that could be overwritten by a fixup */
++	cs35l56->index = -1;
  
--	is_bad = false;
--	err = ni_rename(dir_ni, new_dir_ni, ni, de, new_de, &is_bad);
--	if (is_bad) {
--		/* Restore after failed rename failed too. */
--		_ntfs_bad_inode(inode);
--	} else if (!err) {
-+	err = ni_rename(dir_ni, new_dir_ni, ni, de, new_de);
-+	if (!err) {
- 		simple_rename_timestamp(dir, dentry, new_dir, new_dentry);
- 		mark_inode_dirty(inode);
- 		mark_inode_dirty(dir);
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 36b8052660d5..f54635df18fa 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -577,8 +577,7 @@ int ni_add_name(struct ntfs_inode *dir_ni, struct ntfs_inode *ni,
- 		struct NTFS_DE *de);
+-	ret = device_property_read_u32_array(cs35l56->base.dev, property, values, nval);
++	sub = acpi_get_subsystem_id(ACPI_HANDLE(cs35l56->base.dev));
++	ret = cs35l56_hda_apply_platform_fixups(cs35l56, sub, &id);
+ 	if (ret)
+-		goto err;
++		return ret;
  
- int ni_rename(struct ntfs_inode *dir_ni, struct ntfs_inode *new_dir_ni,
--	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de,
--	      bool *is_bad);
-+	      struct ntfs_inode *ni, struct NTFS_DE *de, struct NTFS_DE *new_de);
+-	cs35l56->index = -1;
+-	for (i = 0; i < nval; i++) {
+-		if (values[i] == id) {
+-			cs35l56->index = i;
+-			break;
+-		}
+-	}
+-	/*
+-	 * It's not an error for the ID to be missing: for I2C there can be
+-	 * an alias address that is not a real device. So reject silently.
+-	 */
+ 	if (cs35l56->index == -1) {
+-		dev_dbg(cs35l56->base.dev, "No index found in %s\n", property);
+-		ret = -ENODEV;
+-		goto err;
+-	}
++		property = "cirrus,dev-index";
++		ret = device_property_count_u32(cs35l56->base.dev, property);
++		if (ret <= 0)
++			goto err;
  
- bool ni_is_dirty(struct inode *inode);
+-	sub = acpi_get_subsystem_id(ACPI_HANDLE(cs35l56->base.dev));
++		if (ret > ARRAY_SIZE(values)) {
++			ret = -EINVAL;
++			goto err;
++		}
++		nval = ret;
++
++		ret = device_property_read_u32_array(cs35l56->base.dev, property, values, nval);
++		if (ret)
++			goto err;
++
++		for (i = 0; i < nval; i++) {
++			if (values[i] == id) {
++				cs35l56->index = i;
++				break;
++			}
++		}
++
++		/*
++		 * It's not an error for the ID to be missing: for I2C there can be
++		 * an alias address that is not a real device. So reject silently.
++		 */
++		if (cs35l56->index == -1) {
++			dev_dbg(cs35l56->base.dev, "No index found in %s\n", property);
++			ret = -ENODEV;
++			goto err;
++		}
++	}
  
+ 	if (IS_ERR(sub)) {
+ 		dev_info(cs35l56->base.dev,
 -- 
 2.39.5
 
