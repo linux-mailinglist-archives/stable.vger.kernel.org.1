@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4979B23473
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C05DB22F88
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:41:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB03B1890345
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2FB66837B0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B410B2EF652;
-	Tue, 12 Aug 2025 18:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A4E2FDC2E;
+	Tue, 12 Aug 2025 17:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzK9ORjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUrYhH1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7177E2D3ED6;
-	Tue, 12 Aug 2025 18:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108912F7477;
+	Tue, 12 Aug 2025 17:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023731; cv=none; b=MLDNRrtQWsjgvWez7cIoTw4DPYQ5MRAaY6V0EVUVx74u33QyW/OAj3wDpPyvoGnt4uqbwptVfvlMt3GZaWvmmeeRLDVPWpT4FA38bUnM8W+AxxWj6CouXROiptdzRN/Qs+5B3rPyRfwmjEa4LgXUYoUOi+uPSquF1XeBvrFx4jw=
+	t=1755020401; cv=none; b=TsnO/3bXHx7bOcg2i+v6mvql7nXIJxp6wLbQzuCqcQ/+oqwWQ+6cDl8p373sO66cZPzYXOwyqJfeJz/GTMysmAS9i2RWjNpATneLNm0wAtSpmbrSh9xid93u2vq40rJTZ5OapitHiGtmEgypE5n/Z+zbO/7xq0VKNCslyLBEGOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023731; c=relaxed/simple;
-	bh=MLsYnC8DCn19E6wvqi+OwQHysMIHW9e99a0rvqEk7M8=;
+	s=arc-20240116; t=1755020401; c=relaxed/simple;
+	bh=jxFwbtvHMLzW1Q8pKZf2kzcKaS3ovSIqmEz9Qja/6gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFaqxb+XhyumKpiahrzUyxrQXzmXDE/t14X1zHe6ihLVCMcgSXYCzmuDYfWnvtZX/2QlPa0Q4oeyWHP8n9Z8Z2EkeJuHfJVuI1Rixte2o/0OaJLUd2FcmKQt+1rf6OyEFBDrZrTwCdH5iDpFwLq8qFcXN3Ivhz+1xdcQ1nqPGqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzK9ORjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62E3C4CEF0;
-	Tue, 12 Aug 2025 18:35:30 +0000 (UTC)
+	 MIME-Version; b=LX+WecFAIO9qI5a5z1rbhEawezlkT2vdBexLe0hNFjM1sBU+PNnWdka3vVyBpmGPWWy7Htt2u4M8Z6LGEEi/KlvRhNOaXhlYLV1/VOG89c6qPLHxCT8aR5Cup9epIm1QUNTRZM4C5jVG/FhJmrC+k1FNYO1kJ2ZIxiCWAD03UwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUrYhH1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4097BC4CEF0;
+	Tue, 12 Aug 2025 17:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023731;
-	bh=MLsYnC8DCn19E6wvqi+OwQHysMIHW9e99a0rvqEk7M8=;
+	s=korg; t=1755020400;
+	bh=jxFwbtvHMLzW1Q8pKZf2kzcKaS3ovSIqmEz9Qja/6gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NzK9ORjR7hwagxpTYKbeahyqEGRBdyTss00GyAl9mcB5Q8VhqfUUlDVVIaqrvRPHq
-	 K6pbojL7qSCID85c01vgeQ45B3LuEH/mXQ1I/d7sXyrKcTcvXbQurtJSQPxdpxhYnO
-	 xP9DBLQuxiB2YrDk7BZuFwdMHvEHBP5ImX4u8PrM=
+	b=bUrYhH1+wbkFRPgtvokBVn3GjHffzkjkAyAWhyPj4XRDci5xlGa9uvgAUm7oJ4WEt
+	 Et60gCmXRN85rYeltwsW6z6utjsSXg11n8iK2bEaLwzwTegqk15VWVq/qqTJJxmaML
+	 YnmrXbyJocXjVHLQNH+HE9LKGWByTLVI3mQCi7uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Alexander Wilhelm <alexander.wilhelm@westermo.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 164/627] wifi: rtl818x: Kill URBs before clearing tx status queue
+Subject: [PATCH 6.1 071/253] soc: qcom: QMI encoding/decoding for big endian
 Date: Tue, 12 Aug 2025 19:27:39 +0200
-Message-ID: <20250812173425.529043103@linuxfoundation.org>
+Message-ID: <20250812172951.754487589@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
 
-[ Upstream commit 16d8fd74dbfca0ea58645cd2fca13be10cae3cdd ]
+[ Upstream commit 3ced38da5f7de4c260f9eaa86fc805827953243a ]
 
-In rtl8187_stop() move the call of usb_kill_anchored_urbs() before clearing
-b_tx_status.queue. This change prevents callbacks from using already freed
-skb due to anchor was not killed before freeing such skb.
+The QMI_DATA_LEN type may have different sizes. Taking the element's
+address of that type and interpret it as a smaller sized ones works fine
+for little endian platforms but not for big endian ones. Instead use
+temporary variables of smaller sized types and cast them correctly to
+support big endian platforms.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000080
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 7 UID: 0 PID: 0 Comm: swapper/7 Not tainted 6.15.0 #8 PREEMPT(voluntary)
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
- RIP: 0010:ieee80211_tx_status_irqsafe+0x21/0xc0 [mac80211]
- Call Trace:
-  <IRQ>
-  rtl8187_tx_cb+0x116/0x150 [rtl8187]
-  __usb_hcd_giveback_urb+0x9d/0x120
-  usb_giveback_urb_bh+0xbb/0x140
-  process_one_work+0x19b/0x3c0
-  bh_worker+0x1a7/0x210
-  tasklet_action+0x10/0x30
-  handle_softirqs+0xf0/0x340
-  __irq_exit_rcu+0xcd/0xf0
-  common_interrupt+0x85/0xa0
-  </IRQ>
-
-Tested on RTL8187BvE device.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c1db52b9d27e ("rtl8187: Use usb anchor facilities to manage urbs")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250617135634.21760-1-d.dulov@aladdin.ru
+Signed-off-by: Alexander Wilhelm <alexander.wilhelm@westermo.com>
+Fixes: 9b8a11e82615 ("soc: qcom: Introduce QMI encoder/decoder")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250522143530.3623809-2-alexander.wilhelm@westermo.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/qmi_encdec.c | 46 +++++++++++++++++++++++++++++------
+ 1 file changed, 38 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index 220ac5bdf279..8a57d6c72335 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -1041,10 +1041,11 @@ static void rtl8187_stop(struct ieee80211_hw *dev, bool suspend)
- 	rtl818x_iowrite8(priv, &priv->map->CONFIG4, reg | RTL818X_CONFIG4_VCOOFF);
- 	rtl818x_iowrite8(priv, &priv->map->EEPROM_CMD, RTL818X_EEPROM_CMD_NORMAL);
+diff --git a/drivers/soc/qcom/qmi_encdec.c b/drivers/soc/qcom/qmi_encdec.c
+index 5c7161b18b72..645c4ee24f5b 100644
+--- a/drivers/soc/qcom/qmi_encdec.c
++++ b/drivers/soc/qcom/qmi_encdec.c
+@@ -304,6 +304,8 @@ static int qmi_encode(const struct qmi_elem_info *ei_array, void *out_buf,
+ 	const void *buf_src;
+ 	int encode_tlv = 0;
+ 	int rc;
++	u8 val8;
++	u16 val16;
  
-+	usb_kill_anchored_urbs(&priv->anchored);
-+
- 	while ((skb = skb_dequeue(&priv->b_tx_status.queue)))
- 		dev_kfree_skb_any(skb);
+ 	if (!ei_array)
+ 		return 0;
+@@ -338,7 +340,6 @@ static int qmi_encode(const struct qmi_elem_info *ei_array, void *out_buf,
+ 			break;
  
--	usb_kill_anchored_urbs(&priv->anchored);
- 	mutex_unlock(&priv->conf_mutex);
+ 		case QMI_DATA_LEN:
+-			memcpy(&data_len_value, buf_src, temp_ei->elem_size);
+ 			data_len_sz = temp_ei->elem_size == sizeof(u8) ?
+ 					sizeof(u8) : sizeof(u16);
+ 			/* Check to avoid out of range buffer access */
+@@ -348,8 +349,17 @@ static int qmi_encode(const struct qmi_elem_info *ei_array, void *out_buf,
+ 				       __func__);
+ 				return -ETOOSMALL;
+ 			}
+-			rc = qmi_encode_basic_elem(buf_dst, &data_len_value,
+-						   1, data_len_sz);
++			if (data_len_sz == sizeof(u8)) {
++				val8 = *(u8 *)buf_src;
++				data_len_value = (u32)val8;
++				rc = qmi_encode_basic_elem(buf_dst, &val8,
++							   1, data_len_sz);
++			} else {
++				val16 = *(u16 *)buf_src;
++				data_len_value = (u32)le16_to_cpu(val16);
++				rc = qmi_encode_basic_elem(buf_dst, &val16,
++							   1, data_len_sz);
++			}
+ 			UPDATE_ENCODE_VARIABLES(temp_ei, buf_dst,
+ 						encoded_bytes, tlv_len,
+ 						encode_tlv, rc);
+@@ -523,14 +533,23 @@ static int qmi_decode_string_elem(const struct qmi_elem_info *ei_array,
+ 	u32 string_len = 0;
+ 	u32 string_len_sz = 0;
+ 	const struct qmi_elem_info *temp_ei = ei_array;
++	u8 val8;
++	u16 val16;
  
- 	if (!priv->is_rtl8187b)
+ 	if (dec_level == 1) {
+ 		string_len = tlv_len;
+ 	} else {
+ 		string_len_sz = temp_ei->elem_len <= U8_MAX ?
+ 				sizeof(u8) : sizeof(u16);
+-		rc = qmi_decode_basic_elem(&string_len, buf_src,
+-					   1, string_len_sz);
++		if (string_len_sz == sizeof(u8)) {
++			rc = qmi_decode_basic_elem(&val8, buf_src,
++						   1, string_len_sz);
++			string_len = (u32)val8;
++		} else {
++			rc = qmi_decode_basic_elem(&val16, buf_src,
++						   1, string_len_sz);
++			string_len = (u32)val16;
++		}
+ 		decoded_bytes += rc;
+ 	}
+ 
+@@ -604,6 +623,9 @@ static int qmi_decode(const struct qmi_elem_info *ei_array, void *out_c_struct,
+ 	u32 decoded_bytes = 0;
+ 	const void *buf_src = in_buf;
+ 	int rc;
++	u8 val8;
++	u16 val16;
++	u32 val32;
+ 
+ 	while (decoded_bytes < in_buf_len) {
+ 		if (dec_level >= 2 && temp_ei->data_type == QMI_EOTI)
+@@ -642,9 +664,17 @@ static int qmi_decode(const struct qmi_elem_info *ei_array, void *out_c_struct,
+ 		if (temp_ei->data_type == QMI_DATA_LEN) {
+ 			data_len_sz = temp_ei->elem_size == sizeof(u8) ?
+ 					sizeof(u8) : sizeof(u16);
+-			rc = qmi_decode_basic_elem(&data_len_value, buf_src,
+-						   1, data_len_sz);
+-			memcpy(buf_dst, &data_len_value, sizeof(u32));
++			if (data_len_sz == sizeof(u8)) {
++				rc = qmi_decode_basic_elem(&val8, buf_src,
++							   1, data_len_sz);
++				data_len_value = (u32)val8;
++			} else {
++				rc = qmi_decode_basic_elem(&val16, buf_src,
++							   1, data_len_sz);
++				data_len_value = (u32)val16;
++			}
++			val32 = cpu_to_le32(data_len_value);
++			memcpy(buf_dst, &val32, sizeof(u32));
+ 			temp_ei = temp_ei + 1;
+ 			buf_dst = out_c_struct + temp_ei->offset;
+ 			tlv_len -= data_len_sz;
 -- 
 2.39.5
 
