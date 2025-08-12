@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B574DB2319D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:06:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C869B2304E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B2441882820
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:04:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7236820B8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC0F2FFDEC;
-	Tue, 12 Aug 2025 18:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF702F7449;
+	Tue, 12 Aug 2025 17:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXHuAvde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBJtrxyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD65E2E36F1;
-	Tue, 12 Aug 2025 18:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED52257435;
+	Tue, 12 Aug 2025 17:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021802; cv=none; b=r0jovC6fUOKCgR/btOwfST8cSDIW/JUJOcgfkDYFSY9MBAedL68TXw55pUqfq+w5aowFWniz0MSubvR0v4naLCgioPnKkaj6CO3emXuIdYlv03BZxweuqkkZ+C0/yWgIVwqsH2pSiGuCJL9RyxletFcd1VBaa3GlxbtfzAkoCw8=
+	t=1755020996; cv=none; b=OkMiMWXDJRGdqIchyIh4vHCT7Qls5N2zmu0J5N/Flh9UAKOJbncsy0nhA9MPWiHiRgQUk4wbhe/nfnPEfU62k0RPSELN49IxN00s4etPc7HWaRb0ccZ+cxy+6cQQOHWzwlHh/N/1JbuXF/diBZErM46le96fY/yuhzj/ANaKiRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021802; c=relaxed/simple;
-	bh=XiuSKNm/oXr8X/5Uffx7XToV4jrs5ZiH8jQvgFzIquM=;
+	s=arc-20240116; t=1755020996; c=relaxed/simple;
+	bh=a35eeDcXRcWBTz18BZo+TGf1+noo0Qd1oV5eP8JkDzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mheUJzqVFfWPlRuWSbQIlW48Yph+YUschsiCMVMnPkHszx+nykjPz4+xSWMTqu6NQzY9Z15/currVa/rHuXaGtg4pYelq0GVZgbqEbvkvo4IqW7WYCtmC3AhqYd2JOP3OAwZKpI0ukcwMMqJP2ROtSydlNuDr/xSJgWsifmHFPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hXHuAvde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAC0C4CEF6;
-	Tue, 12 Aug 2025 18:03:22 +0000 (UTC)
+	 MIME-Version; b=Xyne/GxSEtgO+0yxyRHF/UevMWnNetnEDjjacbDOX4mm/0J2gn92qMBlq+MMzemIclQpWhJpyGMkfcPSDTvbw00UzoGFx2P1KhcR66P3AYWSge1PNmdNiX1gn2CpoLjBSqMcGb9RhrKmSvFPDq4EOshhC02En1GMSqdZsCYlTCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBJtrxyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B263FC4CEF0;
+	Tue, 12 Aug 2025 17:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021802;
-	bh=XiuSKNm/oXr8X/5Uffx7XToV4jrs5ZiH8jQvgFzIquM=;
+	s=korg; t=1755020996;
+	bh=a35eeDcXRcWBTz18BZo+TGf1+noo0Qd1oV5eP8JkDzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXHuAvde3JV5VtB1KUayKRjaYbQleuaDL6zCE/hniy119SAho41e2+MG2hBtReP1Q
-	 hnOHjdK4ZkLRypDBwwnXZVQfAa+Qe6p6M7JT53lkSWTIwUaOoiOUgWVEHiP61ipR4T
-	 HTVAphUo8L3gzFGuS0CWQzeQukqJ/lxkjSqDBcYQ=
+	b=cBJtrxyLvrUgYpcqTIYhNBj0KfjbOPOeKONjLAJyLvzYDVhydzal6ZQnF9UM2PWY4
+	 R5WP1zX1+egBvVC6fSn13S9fJtMgeUyvK/lxF5+UROZxjXIxSUlACMQQfwcvrNDINi
+	 /mpfDnN6eGEgEUcIbcosagtsP4OHIGS27aQ0SyGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jan Prusakowski <jprusakowski@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/262] pNFS/flexfiles: dont attempt pnfs on fatal DS errors
-Date: Tue, 12 Aug 2025 19:29:44 +0200
-Message-ID: <20250812173001.487623277@linuxfoundation.org>
+Subject: [PATCH 6.1 197/253] f2fs: vm_unmap_ram() may be called from an invalid context
+Date: Tue, 12 Aug 2025 19:29:45 +0200
+Message-ID: <20250812172957.188248731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+From: Jan Prusakowski <jprusakowski@google.com>
 
-[ Upstream commit f06bedfa62d57f7b67d44aacd6badad2e13a803f ]
+[ Upstream commit 08a7efc5b02a0620ae16aa9584060e980a69cb55 ]
 
-When an applications get killed (SIGTERM/SIGINT) while pNFS client performs a connection
-to DS, client ends in an infinite loop of connect-disconnect. This
-source of the issue, it that flexfilelayoutdev#nfs4_ff_layout_prepare_ds gets an error
-on nfs4_pnfs_ds_connect with status ERESTARTSYS, which is set by rpc_signal_task, but
-the error is treated as transient, thus retried.
+When testing F2FS with xfstests using UFS backed virtual disks the
+kernel complains sometimes that f2fs_release_decomp_mem() calls
+vm_unmap_ram() from an invalid context. Example trace from
+f2fs/007 test:
 
-The issue is reproducible with Ctrl+C the following script(there should be ~1000 files in
-a directory, client should must not have any connections to DSes):
+f2fs/007 5s ...  [12:59:38][    8.902525] run fstests f2fs/007
+[   11.468026] BUG: sleeping function called from invalid context at mm/vmalloc.c:2978
+[   11.471849] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 68, name: irq/22-ufshcd
+[   11.475357] preempt_count: 1, expected: 0
+[   11.476970] RCU nest depth: 0, expected: 0
+[   11.478531] CPU: 0 UID: 0 PID: 68 Comm: irq/22-ufshcd Tainted: G        W           6.16.0-rc5-xfstests-ufs-g40f92e79b0aa #9 PREEMPT(none)
+[   11.478535] Tainted: [W]=WARN
+[   11.478536] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   11.478537] Call Trace:
+[   11.478543]  <TASK>
+[   11.478545]  dump_stack_lvl+0x4e/0x70
+[   11.478554]  __might_resched.cold+0xaf/0xbe
+[   11.478557]  vm_unmap_ram+0x21/0xb0
+[   11.478560]  f2fs_release_decomp_mem+0x59/0x80
+[   11.478563]  f2fs_free_dic+0x18/0x1a0
+[   11.478565]  f2fs_finish_read_bio+0xd7/0x290
+[   11.478570]  blk_update_request+0xec/0x3b0
+[   11.478574]  ? sbitmap_queue_clear+0x3b/0x60
+[   11.478576]  scsi_end_request+0x27/0x1a0
+[   11.478582]  scsi_io_completion+0x40/0x300
+[   11.478583]  ufshcd_mcq_poll_cqe_lock+0xa3/0xe0
+[   11.478588]  ufshcd_sl_intr+0x194/0x1f0
+[   11.478592]  ufshcd_threaded_intr+0x68/0xb0
+[   11.478594]  ? __pfx_irq_thread_fn+0x10/0x10
+[   11.478599]  irq_thread_fn+0x20/0x60
+[   11.478602]  ? __pfx_irq_thread_fn+0x10/0x10
+[   11.478603]  irq_thread+0xb9/0x180
+[   11.478605]  ? __pfx_irq_thread_dtor+0x10/0x10
+[   11.478607]  ? __pfx_irq_thread+0x10/0x10
+[   11.478609]  kthread+0x10a/0x230
+[   11.478614]  ? __pfx_kthread+0x10/0x10
+[   11.478615]  ret_from_fork+0x7e/0xd0
+[   11.478619]  ? __pfx_kthread+0x10/0x10
+[   11.478621]  ret_from_fork_asm+0x1a/0x30
+[   11.478623]  </TASK>
 
-```
-echo 3 > /proc/sys/vm/drop_caches
+This patch modifies in_task() check inside f2fs_read_end_io() to also
+check if interrupts are disabled. This ensures that pages are unmapped
+asynchronously in an interrupt handler.
 
-for i in *
-do
-   head -1 $i
-done
-```
-
-The change aims to propagate the nfs4_ff_layout_prepare_ds error state
-to the caller that can decide whatever this is a retryable error or not.
-
-Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-Link: https://lore.kernel.org/r/20250627071751.189663-1-tigran.mkrtchyan@desy.de
-Fixes: 260f32adb88d ("pNFS/flexfiles: Check the result of nfs4_pnfs_ds_connect")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: bff139b49d9f ("f2fs: handle decompress only post processing in softirq")
+Signed-off-by: Jan Prusakowski <jprusakowski@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c    | 26 ++++++++++++++---------
- fs/nfs/flexfilelayout/flexfilelayoutdev.c |  6 +++---
- 2 files changed, 19 insertions(+), 13 deletions(-)
+ fs/f2fs/data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 0a26444fe202..7354b6b10478 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -745,14 +745,14 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 7b65766d365f..dc8f283f210c 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -273,7 +273,7 @@ static void f2fs_read_end_io(struct bio *bio)
  {
- 	struct nfs4_ff_layout_segment *fls = FF_LAYOUT_LSEG(lseg);
- 	struct nfs4_ff_layout_mirror *mirror;
--	struct nfs4_pnfs_ds *ds;
-+	struct nfs4_pnfs_ds *ds = ERR_PTR(-EAGAIN);
- 	u32 idx;
+ 	struct f2fs_sb_info *sbi = F2FS_P_SB(bio_first_page_all(bio));
+ 	struct bio_post_read_ctx *ctx;
+-	bool intask = in_task();
++	bool intask = in_task() && !irqs_disabled();
  
- 	/* mirrors are initially sorted by efficiency */
- 	for (idx = start_idx; idx < fls->mirror_array_cnt; idx++) {
- 		mirror = FF_LAYOUT_COMP(lseg, idx);
- 		ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
--		if (!ds)
-+		if (IS_ERR(ds))
- 			continue;
- 
- 		if (check_device &&
-@@ -760,10 +760,10 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment *lseg,
- 			continue;
- 
- 		*best_idx = idx;
--		return ds;
-+		break;
- 	}
- 
--	return NULL;
-+	return ds;
- }
- 
- static struct nfs4_pnfs_ds *
-@@ -933,7 +933,7 @@ ff_layout_pg_init_write(struct nfs_pageio_descriptor *pgio,
- 	for (i = 0; i < pgio->pg_mirror_count; i++) {
- 		mirror = FF_LAYOUT_COMP(pgio->pg_lseg, i);
- 		ds = nfs4_ff_layout_prepare_ds(pgio->pg_lseg, mirror, true);
--		if (!ds) {
-+		if (IS_ERR(ds)) {
- 			if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
- 				goto out_mds;
- 			pnfs_generic_pg_cleanup(pgio);
-@@ -1839,6 +1839,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
- 	u32 idx = hdr->pgio_mirror_idx;
- 	int vers;
- 	struct nfs_fh *fh;
-+	bool ds_fatal_error = false;
- 
- 	dprintk("--> %s ino %lu pgbase %u req %zu@%llu\n",
- 		__func__, hdr->inode->i_ino,
-@@ -1846,8 +1847,10 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
- 
- 	mirror = FF_LAYOUT_COMP(lseg, idx);
- 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
--	if (!ds)
-+	if (IS_ERR(ds)) {
-+		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
- 		goto out_failed;
-+	}
- 
- 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
- 						   hdr->inode);
-@@ -1888,7 +1891,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
- 	return PNFS_ATTEMPTED;
- 
- out_failed:
--	if (ff_layout_avoid_mds_available_ds(lseg))
-+	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
- 		return PNFS_TRY_AGAIN;
- 	trace_pnfs_mds_fallback_read_pagelist(hdr->inode,
- 			hdr->args.offset, hdr->args.count,
-@@ -1909,11 +1912,14 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
- 	int vers;
- 	struct nfs_fh *fh;
- 	u32 idx = hdr->pgio_mirror_idx;
-+	bool ds_fatal_error = false;
- 
- 	mirror = FF_LAYOUT_COMP(lseg, idx);
- 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
--	if (!ds)
-+	if (IS_ERR(ds)) {
-+		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
- 		goto out_failed;
-+	}
- 
- 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
- 						   hdr->inode);
-@@ -1956,7 +1962,7 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
- 	return PNFS_ATTEMPTED;
- 
- out_failed:
--	if (ff_layout_avoid_mds_available_ds(lseg))
-+	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
- 		return PNFS_TRY_AGAIN;
- 	trace_pnfs_mds_fallback_write_pagelist(hdr->inode,
- 			hdr->args.offset, hdr->args.count,
-@@ -1998,7 +2004,7 @@ static int ff_layout_initiate_commit(struct nfs_commit_data *data, int how)
- 	idx = calc_ds_index_from_commit(lseg, data->ds_commit_index);
- 	mirror = FF_LAYOUT_COMP(lseg, idx);
- 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
--	if (!ds)
-+	if (IS_ERR(ds))
- 		goto out_err;
- 
- 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
-diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-index d21c5ecfbf1c..95d5dca67145 100644
---- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-@@ -370,11 +370,11 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
- 			  struct nfs4_ff_layout_mirror *mirror,
- 			  bool fail_return)
- {
--	struct nfs4_pnfs_ds *ds = NULL;
-+	struct nfs4_pnfs_ds *ds;
- 	struct inode *ino = lseg->pls_layout->plh_inode;
- 	struct nfs_server *s = NFS_SERVER(ino);
- 	unsigned int max_payload;
--	int status;
-+	int status = -EAGAIN;
- 
- 	if (!ff_layout_init_mirror_ds(lseg->pls_layout, mirror))
- 		goto noconnect;
-@@ -412,7 +412,7 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
- 	ff_layout_send_layouterror(lseg);
- 	if (fail_return || !ff_layout_has_available_ds(lseg))
- 		pnfs_error_mark_layout_for_return(ino, lseg);
--	ds = NULL;
-+	ds = ERR_PTR(status);
- out:
- 	return ds;
- }
+ 	iostat_update_and_unbind_ctx(bio, 0);
+ 	ctx = bio->bi_private;
 -- 
 2.39.5
 
