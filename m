@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-167987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADCCB232E4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B30B23485
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB4641B62387
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:18:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA0B583E99
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB572EAB97;
-	Tue, 12 Aug 2025 18:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12CC2FD1C2;
+	Tue, 12 Aug 2025 18:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8fYLR8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hauMIR+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2722F5E;
-	Tue, 12 Aug 2025 18:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6C92F5E;
+	Tue, 12 Aug 2025 18:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022661; cv=none; b=eHOMbUaWT5YAArQ6x7ow0u54SKJG3Qjs+qFUGLE77PwXOS7CScGbIj/FleqxGGOuhrJmDB1cU2k/3sb4IGKK6NEkIDuPtVWDgi2qR0VXqj1gGX/D4zz9v3cz0rvEQk6d5+FF1NoyxjDQpPOo10PSQAXB0fHDJjwEoUQ4c9BVw7k=
+	t=1755023933; cv=none; b=VAi8Zee23xdo4p/Y3jzSHPkErHq0qvQSj8y1HEgYAbqXJzzjVMbkRcjD/7BIMYixVDH/sSd5Hu7m5YN8zB3OyZtq0B6lCq0Qq7XX+hVWBId1PBxVKGdMBVrh/DYEk4Dcfc9cZjghEo0vGqnabugecytg9M4lYBV8mBfXY37SKfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022661; c=relaxed/simple;
-	bh=/CHoCLEBrN7GW3oHWmrvFg8F4xfZmbdh0YlTIPOJroY=;
+	s=arc-20240116; t=1755023933; c=relaxed/simple;
+	bh=YE3yw4EIoyTcdC+E0xmwRky0vW6SU0BUyC89B5DVFq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3Xe7ORENOOqFDAwUvk5/diXOKya3zi9rM+XKVyVo0fynDLG/qa2B+IPuUNnYVGM0GgGq9DyQze9y9ogdG4lKDxYHyMr3A/ZdntZ+yugH5JkMN0k/GpqtRG3yxFOexiiWbfOIvwa142wGwBMfYRILR7bUem8nGyxFA+d1ggl4r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8fYLR8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0538C4CEF0;
-	Tue, 12 Aug 2025 18:17:40 +0000 (UTC)
+	 MIME-Version; b=D5P25TblPBe8WXmyQfVQZ7HQXIwBrEjaNSt7L6aovdVheAYfexA02BtrKS/mWqYbXlaCA8NL6zPggs+PiP/33EUBzBOxkHjnZjRs2POlsjW2rWBLJQtZNyhPaDddWEPSSmm5E+MUWIudG7x+Ha8IpYvq3AHTxlCBKuQ9mEzkioc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hauMIR+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6413C4CEF0;
+	Tue, 12 Aug 2025 18:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022661;
-	bh=/CHoCLEBrN7GW3oHWmrvFg8F4xfZmbdh0YlTIPOJroY=;
+	s=korg; t=1755023933;
+	bh=YE3yw4EIoyTcdC+E0xmwRky0vW6SU0BUyC89B5DVFq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8fYLR8t7pQfRrPuA7tw9iyyON4Xr9ehHDoHIH1C/7I3b99BHNqhjlGzBPf/w3h6s
-	 acHsGZPp0Qvq2P4tcZ2/vBuYsR7O7MpyfO5qw35ud8+JsuKfJpsWwB7R7GI3v44pyO
-	 s0WsVtJ7PePOS3mPX2n7fsDPzGXV+Uj3LLH7OHe0=
+	b=hauMIR+25zccLzbTGFMBz5KFqJpx1J+ayK6+AwVmXdP6tlpVUJT0sGnAh06tnjrXb
+	 VG7JFz4i2Qg0mIEM0mnK8RILT7MC/tvsWU8zNSOvnhCWCNCT9yvd3KfhcYE3uxhYom
+	 Uvpuwy7FX6vQp1+GoMG4EfVzB7NnBOIEAS0RyDXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 222/369] crypto: qat - fix seq_file position update in adf_ring_next()
+Subject: [PATCH 6.16 224/627] mwl8k: Add missing check after DMA map
 Date: Tue, 12 Aug 2025 19:28:39 +0200
-Message-ID: <20250812173023.111704944@linuxfoundation.org>
+Message-ID: <20250812173427.808516077@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 6908c5f4f066a0412c3d9a6f543a09fa7d87824b ]
+[ Upstream commit 50459501b9a212dbe7a673727589ee105a8a9954 ]
 
-The `adf_ring_next()` function in the QAT debug transport interface
-fails to correctly update the position index when reaching the end of
-the ring elements. This triggers the following kernel warning when
-reading ring files, such as
-/sys/kernel/debug/qat_c6xx_<D:B:D:F>/transport/bank_00/ring_00:
+The DMA map functions can fail and should be tested for errors.
+If the mapping fails, unmap and return an error.
 
-   [27725.022965] seq_file: buggy .next function adf_ring_next [intel_qat] did not update position index
-
-Ensure that the `*pos` index is incremented before returning NULL when
-after the last element in the ring is found, satisfying the seq_file API
-requirements and preventing the warning.
-
-Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 788838ebe8a4 ("mwl8k: use pci_unmap_addr{,set}() to keep track of unmap addresses on rx")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20250709111339.25360-2-fourier.thomas@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_transport_debug.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwl8k.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-index e2dd568b87b5..621b5d3dfcef 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-@@ -31,8 +31,10 @@ static void *adf_ring_next(struct seq_file *sfile, void *v, loff_t *pos)
- 	struct adf_etr_ring_data *ring = sfile->private;
+diff --git a/drivers/net/wireless/marvell/mwl8k.c b/drivers/net/wireless/marvell/mwl8k.c
+index bab9ef37a1ab..8bcb1d0dd618 100644
+--- a/drivers/net/wireless/marvell/mwl8k.c
++++ b/drivers/net/wireless/marvell/mwl8k.c
+@@ -1227,6 +1227,10 @@ static int rxq_refill(struct ieee80211_hw *hw, int index, int limit)
  
- 	if (*pos >= (ADF_SIZE_TO_RING_SIZE_IN_BYTES(ring->ring_size) /
--		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size)))
-+		     ADF_MSG_SIZE_TO_BYTES(ring->msg_size))) {
-+		(*pos)++;
- 		return NULL;
-+	}
+ 		addr = dma_map_single(&priv->pdev->dev, skb->data,
+ 				      MWL8K_RX_MAXSZ, DMA_FROM_DEVICE);
++		if (dma_mapping_error(&priv->pdev->dev, addr)) {
++			kfree_skb(skb);
++			break;
++		}
  
- 	return ring->base_addr +
- 		(ADF_MSG_SIZE_TO_BYTES(ring->msg_size) * (*pos)++);
+ 		rxq->rxd_count++;
+ 		rx = rxq->tail++;
 -- 
 2.39.5
 
