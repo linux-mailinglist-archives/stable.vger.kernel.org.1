@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BEDB2359C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:52:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B8EB235B2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 59AE34E4B2F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:52:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9AEC189D9B0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51F328000F;
-	Tue, 12 Aug 2025 18:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429E52FDC55;
+	Tue, 12 Aug 2025 18:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iusniunh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkEbDGpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852471474CC;
-	Tue, 12 Aug 2025 18:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F407A2C21E3;
+	Tue, 12 Aug 2025 18:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024727; cv=none; b=CseJn7Y8TV9QfiAGVrK5YeRjQ+XILLudAN+agPoU+vAZUK2/zp9PapKdNB/TevGrpd0heY1mRiDK0Xq+IfegHrLXFVG8IzqHbOEieI1VY018EViC35WADd94RmbeWparNpM3TTe75Qm5tJLqhI7o9KHRVlf8jp4nwdyL4hmcbPs=
+	t=1755024612; cv=none; b=FSK3kE9ZXK+DsTZ3QQY2szNYQDnrFS2Q5VYv1kYGwp7WeouIiIJ8H2NWr4e1ayldrWGr9hBuHga29BeAFg+g2gwn4socmq+6zxlsgJS/bY4cP8fyR7IySrXZdM5VXh5H26HHsS6XZf/ERFqVrE72h1KGeiyJW/Oy4wlCq5QaXUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024727; c=relaxed/simple;
-	bh=JVnQhT/c9gUhPMYQASiYdoaaF5eVLQVUXXV3RyvrD3s=;
+	s=arc-20240116; t=1755024612; c=relaxed/simple;
+	bh=pheDWyn9fQSF7iVfwkvigSV1QnNbMnF+zwzg1RBm0EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3BqgEJEusMgGgMsbB4fDW1n23Ui5lzVxJ01gVM3HehTsHsay0SD5Q2FZFaz8oKQjvLHAr2ZoOYrOLP5bRyZqQRRMg/QIMwm8MePLYxn0qIT2VLfQpb8zZr3CjOl9uyMmPS+NC/RAjUT2SphSbf9rhLILgr076yeOehNMGYX8rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iusniunh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080D9C4CEF0;
-	Tue, 12 Aug 2025 18:52:06 +0000 (UTC)
+	 MIME-Version; b=uYV0L4lN0CQ7qVrf6DQ4Wg3K9MRd3pIAEBpPKR4cIxRxy/r5IBQBTr9k9asu5e7TLpy+w97EHd/X2yu2xGaWFUdEXkCHlLnvt6ErzMIVZ2S9q4VDk+esS8dnl+6u8O3Ed4ai8Xf5vfR41aVZkBrUVFt3g1tz/aZl7q0Dwi9lkWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkEbDGpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6814CC4CEF0;
+	Tue, 12 Aug 2025 18:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024727;
-	bh=JVnQhT/c9gUhPMYQASiYdoaaF5eVLQVUXXV3RyvrD3s=;
+	s=korg; t=1755024611;
+	bh=pheDWyn9fQSF7iVfwkvigSV1QnNbMnF+zwzg1RBm0EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iusniunh0f781UgTehGoAnJr6mj4YwOi+tZw7eaAr4fFcxhN1mynpyWtgEaU+ho85
-	 cHIndCaUYjcNfMDD2W6xHeGMt2J0irVBQ0FPinrlWyIfJEDFXDyLFme54z92AB8kSf
-	 W5KThTixFO6rH/7FHkpSa9ZX/uRWY4Ti+0j7EcPw=
+	b=PkEbDGpqgXWRX4XwBrnlHGGKVZKLyqfb/iGbNVEBsryEn5jIv6ebxG7xyRw8mrOPG
+	 DRhzvTob5aOJ3L3NzrcM2a/XTBXY1C73X7sUdHh8DC+U584ZI4ftvU1YcO4giIihXh
+	 GnVZmd03qqYTGr5eVaDd4PR+/r6/TQtX7tYDdsGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 416/627] perf pmu: Switch FILENAME_MAX to NAME_MAX
-Date: Tue, 12 Aug 2025 19:31:51 +0200
-Message-ID: <20250812173435.110107337@linuxfoundation.org>
+Subject: [PATCH 6.16 417/627] dmaengine: mv_xor: Fix missing check after DMA map and missing unmap
+Date: Tue, 12 Aug 2025 19:31:52 +0200
+Message-ID: <20250812173435.145141173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -66,45 +66,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 82aac553372cd201b91a8b064be0cd5a501932b2 ]
+[ Upstream commit 60095aca6b471b7b7a79c80b7395f7e4e414b479 ]
 
-FILENAME_MAX is the same as PATH_MAX (4kb) in glibc rather than
-NAME_MAX's 255. Switch to using NAME_MAX and ensure the '\0' is
-accounted for in the path's buffer size.
+The DMA map functions can fail and should be tested for errors.
 
-Fixes: 754baf426e09 ("perf pmu: Change aliases from list to hashmap")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250717150855.1032526-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+In case of error, unmap the already mapped regions.
+
+Fixes: 22843545b200 ("dma: mv_xor: Add support for DMA_INTERRUPT")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://lore.kernel.org/r/20250701123753.46935-2-fourier.thomas@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/mv_xor.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
-index 609828513f6c..55ee17082c7f 100644
---- a/tools/perf/util/pmu.c
-+++ b/tools/perf/util/pmu.c
-@@ -452,7 +452,7 @@ static struct perf_pmu_alias *perf_pmu__find_alias(struct perf_pmu *pmu,
- {
- 	struct perf_pmu_alias *alias;
- 	bool has_sysfs_event;
--	char event_file_name[FILENAME_MAX + 8];
-+	char event_file_name[NAME_MAX + 8];
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index fa6e4646fdc2..1fdcb0f5c9e7 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1061,8 +1061,16 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ 	 */
+ 	mv_chan->dummy_src_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_src, MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_src_addr))
++		return ERR_PTR(-ENOMEM);
++
+ 	mv_chan->dummy_dst_addr = dma_map_single(dma_dev->dev,
+ 		mv_chan->dummy_dst, MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++	if (dma_mapping_error(dma_dev->dev, mv_chan->dummy_dst_addr)) {
++		ret = -ENOMEM;
++		goto err_unmap_src;
++	}
++
  
- 	if (hashmap__find(pmu->aliases, name, &alias))
- 		return alias;
-@@ -752,7 +752,7 @@ static int pmu_aliases_parse(struct perf_pmu *pmu)
+ 	/* allocate coherent memory for hardware descriptors
+ 	 * note: writecombine gives slightly better performance, but
+@@ -1071,8 +1079,10 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ 	mv_chan->dma_desc_pool_virt =
+ 	  dma_alloc_wc(&pdev->dev, MV_XOR_POOL_SIZE, &mv_chan->dma_desc_pool,
+ 		       GFP_KERNEL);
+-	if (!mv_chan->dma_desc_pool_virt)
+-		return ERR_PTR(-ENOMEM);
++	if (!mv_chan->dma_desc_pool_virt) {
++		ret = -ENOMEM;
++		goto err_unmap_dst;
++	}
  
- static int pmu_aliases_parse_eager(struct perf_pmu *pmu, int sysfs_fd)
- {
--	char path[FILENAME_MAX + 7];
-+	char path[NAME_MAX + 8];
- 	int ret, events_dir_fd;
+ 	/* discover transaction capabilities from the platform data */
+ 	dma_dev->cap_mask = cap_mask;
+@@ -1155,6 +1165,13 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ err_free_dma:
+ 	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
++err_unmap_dst:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_TO_DEVICE);
++err_unmap_src:
++	dma_unmap_single(dma_dev->dev, mv_chan->dummy_src_addr,
++			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
++
+ 	return ERR_PTR(ret);
+ }
  
- 	scnprintf(path, sizeof(path), "%s/events", pmu->name);
 -- 
 2.39.5
 
