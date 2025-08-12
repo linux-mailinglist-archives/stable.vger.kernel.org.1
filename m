@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-168897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA83B23725
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:08:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605D8B23717
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 617AC58518B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:08:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64291B61D3E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60892F83B4;
-	Tue, 12 Aug 2025 19:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A7D26FA77;
+	Tue, 12 Aug 2025 19:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3iRsHsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2CBxHSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D78279DB6;
-	Tue, 12 Aug 2025 19:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E7E27781E;
+	Tue, 12 Aug 2025 19:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025700; cv=none; b=Fwgl16iWjYFfMbHFHpUObnJwq6meeJmt4oaTkRHofFLH3qtm4adsn7zIflHvtNsNK2Fw2HbJ/h8kxPUbuzTj9cNtGm0sE/QZm+OAa8SW3RvcT9BixL5r3m6AbhbA3oU4mt7nS6dSDiF/lHtKptsZ1Ia0QTBwhJoOmwGpHZigXBU=
+	t=1755025587; cv=none; b=IhDqaunb58qx2QJ0gaPizv3nqegYsh2DU2rOSHl0EDVeD/JIkMYOQyQPY4LZsyasbVG74rIk+w+8asfLn425ekQLcIqn+HCJJ2Awg8O3Fgv1L1kwIWaoGXmKkJKLTX2juSgRyFEBpsellMunO5H2Ra+lO8OvRWVpfSECYIsXHH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025700; c=relaxed/simple;
-	bh=zprLKZoGswFLgnnbT9UPOmotydSpSK3vNWI9jekZJRU=;
+	s=arc-20240116; t=1755025587; c=relaxed/simple;
+	bh=k08cjy0ZCpxg2lI3ZeK/JYMGxicfvzYzBLS7tJGdh+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpfdpPyRu0/H2krCXotbMQRMBuHTYVuQSC4PNkog999wgSzHHSs0st219i7GR2q4hpKteNQ/6C0jYe8pp/F3LnoUGWsbk0IQk+umFtaHE25agpwpSUn6aFYoDC5uoG2jXZCITr0DiAgF64QEovXFWCYhy4gNKintk5w5OJKUOUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3iRsHsF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8758C4CEF0;
-	Tue, 12 Aug 2025 19:08:19 +0000 (UTC)
+	 MIME-Version; b=VTFl8sPhvJ/K0FngVAYNO7CexvauoKEkCcGWg7oR09/14eTjAaX4ginMkyerzv2t7w6F/5etkA8bBSqt6MvbdzB8NMpv7KzjGSSy2rdWMeds+91Df1YHOsxe2iA4/QVgAQ2SVA1Ein5RT5MaZyFBM7TkhhFD6YnAT95Y3/XMNMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2CBxHSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1896DC4CEF0;
+	Tue, 12 Aug 2025 19:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025700;
-	bh=zprLKZoGswFLgnnbT9UPOmotydSpSK3vNWI9jekZJRU=;
+	s=korg; t=1755025587;
+	bh=k08cjy0ZCpxg2lI3ZeK/JYMGxicfvzYzBLS7tJGdh+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3iRsHsFNWg/G/zRwcRdDmsCwXFevciA78M5HdXutEMoGiukzwUXOmIfOoYCub055
-	 UMXNhp/0AoOBdTWmKI13UxgbpbpW3HB20CA9bvReFwCJZh2RQIk9CicWuPtMY0T9Gw
-	 ZBkHsMQLD5EPh8QhvKDYbNa9p7XQmnbEcyK8pYRo=
+	b=U2CBxHSXEVwQJI8VgmsI3VxxRSAUTAnDZcNhC+BRbv5rrRzW/JlNSbp3UGc/kzeFk
+	 wNLd8QxfwHberybN7T/ATq8Iz8BfJn9MVNhXASAaNm9Dounle7Vho1GMuNIkQHrpSE
+	 4UkBNf9KEwiIZU1K2bWlol/IT5QzcXhk6nDI4QKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Lifeng Zheng <zhenglifeng1@huawei.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 085/480] cpufreq: Initialize cpufreq-based frequency-invariance later
-Date: Tue, 12 Aug 2025 19:44:53 +0200
-Message-ID: <20250812174400.955063007@linuxfoundation.org>
+Subject: [PATCH 6.15 086/480] cpufreq: Init policy->rwsem before it may be possibly used
+Date: Tue, 12 Aug 2025 19:44:54 +0200
+Message-ID: <20250812174400.996976600@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -68,59 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 2a6c727387062a2ea79eb6cf5004820cb1b0afe2 ]
+[ Upstream commit d1378d1d7edb3a4c4935a44fe834ae135be03564 ]
 
-The cpufreq-based invariance is enabled in cpufreq_register_driver(),
-but never disabled after registration fails. Move the invariance
-initialization to where all other initializations have been successfully
-done to solve this problem.
+In cpufreq_policy_put_kobj(), policy->rwsem is used. But in
+cpufreq_policy_alloc(), if freq_qos_add_notifier() returns an error, error
+path via err_kobj_remove or err_min_qos_notifier will be reached and
+cpufreq_policy_put_kobj() will be called before policy->rwsem is
+initialized. Thus, the calling of init_rwsem() should be moved to where
+before these two error paths can be reached.
 
-Fixes: 874f63531064 ("cpufreq: report whether cpufreq supports Frequency Invariance (FI)")
+Fixes: 67d874c3b2c6 ("cpufreq: Register notifiers with the PM QoS framework")
 Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-2-zhenglifeng1@huawei.com
-[ rjw: New subject ]
+Link: https://patch.msgid.link/20250709104145.2348017-3-zhenglifeng1@huawei.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/cpufreq/cpufreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index f45ded62b0e0..ea2a8d86d640 100644
+index ea2a8d86d640..5c84d56341e2 100644
 --- a/drivers/cpufreq/cpufreq.c
 +++ b/drivers/cpufreq/cpufreq.c
-@@ -3009,15 +3009,6 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	cpufreq_driver = driver_data;
- 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
+@@ -1323,6 +1323,8 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 		goto err_free_real_cpus;
+ 	}
  
--	/*
--	 * Mark support for the scheduler's frequency invariance engine for
--	 * drivers that implement target(), target_index() or fast_switch().
--	 */
--	if (!cpufreq_driver->setpolicy) {
--		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
--		pr_debug("supports frequency invariance");
--	}
--
- 	if (driver_data->setpolicy)
- 		driver_data->flags |= CPUFREQ_CONST_LOOPS;
- 
-@@ -3048,6 +3039,15 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
- 	hp_online = ret;
- 	ret = 0;
- 
-+	/*
-+	 * Mark support for the scheduler's frequency invariance engine for
-+	 * drivers that implement target(), target_index() or fast_switch().
-+	 */
-+	if (!cpufreq_driver->setpolicy) {
-+		static_branch_enable_cpuslocked(&cpufreq_freq_invariance);
-+		pr_debug("supports frequency invariance");
-+	}
++	init_rwsem(&policy->rwsem);
 +
- 	pr_debug("driver %s up and running\n", driver_data->name);
- 	goto out;
+ 	freq_constraints_init(&policy->constraints);
  
+ 	policy->nb_min.notifier_call = cpufreq_notifier_min;
+@@ -1345,7 +1347,6 @@ static struct cpufreq_policy *cpufreq_policy_alloc(unsigned int cpu)
+ 	}
+ 
+ 	INIT_LIST_HEAD(&policy->policy_list);
+-	init_rwsem(&policy->rwsem);
+ 	spin_lock_init(&policy->transition_lock);
+ 	init_waitqueue_head(&policy->transition_wait);
+ 	INIT_WORK(&policy->update, handle_update);
 -- 
 2.39.5
 
