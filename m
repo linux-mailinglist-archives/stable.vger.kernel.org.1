@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-169091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4773B23820
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68C0B23823
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0B267205B8
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50F553AA6FC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0924F28505A;
-	Tue, 12 Aug 2025 19:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27A621A43B;
+	Tue, 12 Aug 2025 19:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaJbhh5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbdnZWAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BC221ABD0;
-	Tue, 12 Aug 2025 19:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D66721ABD0;
+	Tue, 12 Aug 2025 19:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755026347; cv=none; b=XMUkPq/Oz4qz0N3QSQ3jH1czW3HUmB0afqPi6vwSaq8dSgGNHOX8n/d/vP1qdftPeCNALPgC5AbkldB62fs4zcKl6uVDknoiXDkrDsfjwdE8hgX1zf7rHEQ2FrVa1WzhSwWyfZTLuPnnA+2ZHTpzGFYeoJJy15dRa+rrLQXrgS4=
+	t=1755026354; cv=none; b=jd2VzogPb59Wc/rjg3HEKv8bFj4RpfCKAVTaWh3xtfwoydfTtxsoW2yNoPJILON+Md9lzXnanvwvU+kKA5X4Evoqe0+mcZfGCv3pEo3ckduSUe5uMvG1Op8HTDP2G2JOHFFmelfw5XlCt7oJYhhAVMr6MW7Np+UiqGk69DdRdTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755026347; c=relaxed/simple;
-	bh=ehVL5FcpeCvmTMuNchgkNWQpDrq/yRW6VkQ2Uoht4Gs=;
+	s=arc-20240116; t=1755026354; c=relaxed/simple;
+	bh=ttZ5Vhdun35VTpVsaRJm6UaqMEv4QKhfno9sBv20TP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWdlcbj6RXeIjISca0IMPVdMguoU7BMGGiK8TxRmgpN3gdIWficABr8IWQWcoO1zxBAhGPifDSxTZxhekCATjUyuV1PfREi4AyLEMW1ATQFfQUXV3ylrnz3PQ7ghr87lQQBuHYCzE63VfgSdQux0NjpoetogdOo7/UTWsFqBg98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaJbhh5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE54C4CEF0;
-	Tue, 12 Aug 2025 19:19:06 +0000 (UTC)
+	 MIME-Version; b=c+8TkaxxtrygERQ47TCCAIYiUhEOu9KnAtzZRJAAmesBvufdPFNdZSG3QV428Rm1/0HcgPCVX6cxqeWj0IjjGX3w7GieVXn1EcqidX+X0knRZel/wpu4Nv0eFLFNtQX13OCvcWs84SlKk/sfvx7SX0gkT62f59k25Q2VgGQIML0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbdnZWAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9956C4CEF0;
+	Tue, 12 Aug 2025 19:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755026347;
-	bh=ehVL5FcpeCvmTMuNchgkNWQpDrq/yRW6VkQ2Uoht4Gs=;
+	s=korg; t=1755026354;
+	bh=ttZ5Vhdun35VTpVsaRJm6UaqMEv4QKhfno9sBv20TP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iaJbhh5tDyg0/MjopQl2Ji023A4CUlD5IPwe5DL5x4BJ2kRnDfbszMVp7TN9TJqfm
-	 2Gna5aCJwqMVzPjG7PlzGXjPsY/zQMLr389HoyKwOv9+qFiE6k9steCcYqHm6/h0se
-	 gzkrBpM4RhBhaMvERrIW/2nTZ2qBfEzsEaix3hK8=
+	b=CbdnZWASdYt8jJdaT4/WdFP2wwHS9Cf5X2MJB/im4s7s7y9E20/VTbAB6EdNbc8cJ
+	 MkptmaBlWKRKokAFElin1AUqI36g0UKvx52zf4LTP0KjH1nUAe89GVN0p3PhRc7zoI
+	 i/wXl3YDcqGQ6Sh+KPAIUy5/6vYSl4lEpiebbryI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 311/480] clk: clocking-wizard: Fix the round rate handling for versal
-Date: Tue, 12 Aug 2025 19:48:39 +0200
-Message-ID: <20250812174410.260363574@linuxfoundation.org>
+Subject: [PATCH 6.15 312/480] crypto: qat - fix DMA direction for compression on GEN2 devices
+Date: Tue, 12 Aug 2025 19:48:40 +0200
+Message-ID: <20250812174410.301883001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,36 +67,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 7f5e9ca0a424af44a708bb4727624d56f83ecffa ]
+[ Upstream commit d41d75fe1b751ee6b347bf1cb1cfe9accc4fcb12 ]
 
-Fix the `clk_round_rate` implementation for Versal platforms by calling
-the Versal-specific divider calculation helper. The existing code used
-the generic divider routine, which results in incorrect round rate.
+QAT devices perform an additional integrity check during compression by
+decompressing the output. Starting from QAT GEN4, this verification is
+done in-line by the hardware. However, on GEN2 devices, the hardware
+reads back the compressed output from the destination buffer and performs
+a decompression operation using it as the source.
 
-Fixes: 7681f64e6404 ("clk: clocking-wizard: calculate dividers fractional parts")
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
-Link: https://lore.kernel.org/r/20250625054114.28273-1-shubhrajyoti.datta@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+In the current QAT driver, destination buffers are always marked as
+write-only. This is incorrect for QAT GEN2 compression, where the buffer
+is also read during verification. Since commit 6f5dc7658094
+("iommu/vt-d: Restore WO permissions on second-level paging entries"),
+merged in v6.16-rc1, write-only permissions are strictly enforced, leading
+to DMAR errors when using QAT GEN2 devices for compression, if VT-d is
+enabled.
+
+Mark the destination buffers as DMA_BIDIRECTIONAL. This ensures
+compatibility with GEN2 devices, even though it is not required for
+QAT GEN4 and later.
+
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Fixes: cf5bb835b7c8 ("crypto: qat - fix DMA transfer direction")
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/xilinx/clk-xlnx-clock-wizard.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/intel/qat/qat_common/qat_bl.c          | 6 +++---
+ drivers/crypto/intel/qat/qat_common/qat_compression.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-index bbf7714480e7..0295a13a811c 100644
---- a/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-+++ b/drivers/clk/xilinx/clk-xlnx-clock-wizard.c
-@@ -669,7 +669,7 @@ static long clk_wzrd_ver_round_rate_all(struct clk_hw *hw, unsigned long rate,
- 	u32 m, d, o, div, f;
- 	int err;
+diff --git a/drivers/crypto/intel/qat/qat_common/qat_bl.c b/drivers/crypto/intel/qat/qat_common/qat_bl.c
+index 5e4dad4693ca..9b2338f58d97 100644
+--- a/drivers/crypto/intel/qat/qat_common/qat_bl.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_bl.c
+@@ -38,7 +38,7 @@ void qat_bl_free_bufl(struct adf_accel_dev *accel_dev,
+ 		for (i = 0; i < blout->num_mapped_bufs; i++) {
+ 			dma_unmap_single(dev, blout->buffers[i].addr,
+ 					 blout->buffers[i].len,
+-					 DMA_FROM_DEVICE);
++					 DMA_BIDIRECTIONAL);
+ 		}
+ 		dma_unmap_single(dev, blpout, sz_out, DMA_TO_DEVICE);
  
--	err = clk_wzrd_get_divisors(hw, rate, *prate);
-+	err = clk_wzrd_get_divisors_ver(hw, rate, *prate);
- 	if (err)
- 		return err;
+@@ -162,7 +162,7 @@ static int __qat_bl_sgl_to_bufl(struct adf_accel_dev *accel_dev,
+ 			}
+ 			buffers[y].addr = dma_map_single(dev, sg_virt(sg) + left,
+ 							 sg->length - left,
+-							 DMA_FROM_DEVICE);
++							 DMA_BIDIRECTIONAL);
+ 			if (unlikely(dma_mapping_error(dev, buffers[y].addr)))
+ 				goto err_out;
+ 			buffers[y].len = sg->length;
+@@ -204,7 +204,7 @@ static int __qat_bl_sgl_to_bufl(struct adf_accel_dev *accel_dev,
+ 		if (!dma_mapping_error(dev, buflout->buffers[i].addr))
+ 			dma_unmap_single(dev, buflout->buffers[i].addr,
+ 					 buflout->buffers[i].len,
+-					 DMA_FROM_DEVICE);
++					 DMA_BIDIRECTIONAL);
+ 	}
  
+ 	if (!buf->sgl_dst_valid)
+diff --git a/drivers/crypto/intel/qat/qat_common/qat_compression.c b/drivers/crypto/intel/qat/qat_common/qat_compression.c
+index 2c3aa89b316a..cf94ba3011d5 100644
+--- a/drivers/crypto/intel/qat/qat_common/qat_compression.c
++++ b/drivers/crypto/intel/qat/qat_common/qat_compression.c
+@@ -205,7 +205,7 @@ static int qat_compression_alloc_dc_data(struct adf_accel_dev *accel_dev)
+ 	if (!obuff)
+ 		goto err;
+ 
+-	obuff_p = dma_map_single(dev, obuff, ovf_buff_sz, DMA_FROM_DEVICE);
++	obuff_p = dma_map_single(dev, obuff, ovf_buff_sz, DMA_BIDIRECTIONAL);
+ 	if (unlikely(dma_mapping_error(dev, obuff_p)))
+ 		goto err;
+ 
+@@ -233,7 +233,7 @@ static void qat_free_dc_data(struct adf_accel_dev *accel_dev)
+ 		return;
+ 
+ 	dma_unmap_single(dev, dc_data->ovf_buff_p, dc_data->ovf_buff_sz,
+-			 DMA_FROM_DEVICE);
++			 DMA_BIDIRECTIONAL);
+ 	kfree_sensitive(dc_data->ovf_buff);
+ 	kfree(dc_data);
+ 	accel_dev->dc_data = NULL;
 -- 
 2.39.5
 
