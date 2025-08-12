@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E7AB230D4
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:57:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0B3B2349B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20519684C9D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:56:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44E31887639
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4552FAC02;
-	Tue, 12 Aug 2025 17:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB612FD1A2;
+	Tue, 12 Aug 2025 18:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgP1UEpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maUngckA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD7D2FA0DB;
-	Tue, 12 Aug 2025 17:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4332FE565;
+	Tue, 12 Aug 2025 18:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021386; cv=none; b=Ktcv3kQjHdpJfPe7HWIIDZ1QZAmjYWZBErw1fvZGYo/aMEL54ss4+mSQMdcrGFGxZSBm9LIksWUSjDEBRapuq8jTUtykSr5UrPVyqbpy5EeenQcztwBCx4vC8z/m23+noPeWoEu7l+VfbonOr5DPzZZIjCi8T6Gwx/Vw7V3aRlE=
+	t=1755023850; cv=none; b=CCDG4d+Qgw03zMVCD8+/AVe15o4vSUF1pw6IK/VDUtIWcFUUZ8qCda1k5jRL163JReHnQF4gLOo01m6WGlpRTHqzKwITq4zVIB1/CpD4j0Om0AzgvDwRp36eeWBKoWCyLVsYfeLhvA/pvz1WxOXt8spey8c19Ds0nJDkZXFD9Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021386; c=relaxed/simple;
-	bh=bMbGRzpw59ADrS9wyoapxWDBmI+r6T0Cihdb2ufN9zM=;
+	s=arc-20240116; t=1755023850; c=relaxed/simple;
+	bh=mKk/YAvKf9kz9NXfYTYQOIU9iY+ciXxXuSEUnGNB0v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aXGT+Lhw3ASWqpftqwKXrctKqeGRF0ryZ+0HNKzbqAwj5pPIDnCD6uplFQufUExVgZTATi5wTvNdY489sMZKkURKnO94JL7F7bs4SoJST3GUeMqJQ8bS1Ao0VkICePIe5vWCXPxru7FdcqiXZGGrmZUzzLbHDwfgVVV9RUzNZSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgP1UEpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE4FC4CEF0;
-	Tue, 12 Aug 2025 17:56:25 +0000 (UTC)
+	 MIME-Version; b=ZOErlzuIX/uDULUJ4GU8ZkAqhz1QPn5ecPtgnefJ9EJR5R1+NU8oVRCIho6XGzgy4KpuwUy5a46tiHM+trAyBTjNp+88M39ZhLOqxwNQeY/guBLjVG65hupHbGQAMGo4Lpl1581EgoPDXI/XdDyb3jOeFXZOhYOvDORXLACE4ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maUngckA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B58C4CEF0;
+	Tue, 12 Aug 2025 18:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021385;
-	bh=bMbGRzpw59ADrS9wyoapxWDBmI+r6T0Cihdb2ufN9zM=;
+	s=korg; t=1755023849;
+	bh=mKk/YAvKf9kz9NXfYTYQOIU9iY+ciXxXuSEUnGNB0v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgP1UEpnBZwly95pBElPK45UvQLg0c5Op6CLkpcU25atgVWR8nQz7W5442GAC5Dmx
-	 KkPwdNc9DPbCF+YZkqUB8n5128pHHscqSGBAg2DWS3F9fLLr6M6xtEaoAYBuqytxKo
-	 nQJd4OgnsXrJhCpMjzkhBDmq7UtoqFhBepQ6sSdM=
+	b=maUngckALr0JX/1B1sQB4wPLq2gGesvlsvclZGgrhRlB/dU7cRycmk4NF6w4HyQzu
+	 GSaS+/xYx+IJTDVCz/rBqxIipd9K9HS7B5UPZcWDtx4s4bIK539X8OyD1DqMSzG0E4
+	 CYK2xpLeJRPP3zjPvs7U9M/mi2+xIUkNldq5C+9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Christoph Hellwig <hch@lst.de>,
+	Chris Mason <clm@meta.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/262] bpf/preload: Dont select USERMODE_DRIVER
+Subject: [PATCH 6.16 199/627] sched/deadline: Less agressive dl_server handling
 Date: Tue, 12 Aug 2025 19:28:14 +0200
-Message-ID: <20250812172957.604771197@linuxfoundation.org>
+Message-ID: <20250812173426.853672780@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 2b03164eee20eac7ce0fe3aa4fbda7efc1e5427a ]
+[ Upstream commit cccb45d7c4295bbfeba616582d0249f2d21e6df5 ]
 
-The usermode driver framework is not used anymore by the BPF
-preload code.
+Chris reported that commit 5f6bd380c7bd ("sched/rt: Remove default
+bandwidth control") caused a significant dip in his favourite
+benchmark of the day. Simply disabling dl_server cured things.
 
-Fixes: cb80ddc67152 ("bpf: Convert bpf_preload.ko to use light skeleton.")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/bpf/20250721-remove-usermode-driver-v1-1-0d0083334382@linutronix.de
+His workload hammers the 0->1, 1->0 transitions, and the
+dl_server_{start,stop}() overhead kills it -- fairly obviously a bad
+idea in hind sight and all that.
+
+Change things around to only disable the dl_server when there has not
+been a fair task around for a whole period. Since the default period
+is 1 second, this ensures the benchmark never trips this, overhead
+gone.
+
+Fixes: 557a6bfc662c ("sched/fair: Add trivial fair server")
+Reported-by: Chris Mason <clm@meta.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lkml.kernel.org/r/20250702121158.465086194@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/preload/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ include/linux/sched.h   |  1 +
+ kernel/sched/deadline.c | 25 ++++++++++++++++++++++---
+ kernel/sched/fair.c     |  9 ---------
+ 3 files changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/bpf/preload/Kconfig b/kernel/bpf/preload/Kconfig
-index c9d45c9d6918..f9b11d01c3b5 100644
---- a/kernel/bpf/preload/Kconfig
-+++ b/kernel/bpf/preload/Kconfig
-@@ -10,7 +10,6 @@ menuconfig BPF_PRELOAD
- 	# The dependency on !COMPILE_TEST prevents it from being enabled
- 	# in allmodconfig or allyesconfig configurations
- 	depends on !COMPILE_TEST
--	select USERMODE_DRIVER
- 	help
- 	  This builds kernel module with several embedded BPF programs that are
- 	  pinned into BPF FS mount point as human readable files that are
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index aa9c5be7a632..ae75562cca59 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -701,6 +701,7 @@ struct sched_dl_entity {
+ 	unsigned int			dl_defer	  : 1;
+ 	unsigned int			dl_defer_armed	  : 1;
+ 	unsigned int			dl_defer_running  : 1;
++	unsigned int			dl_server_idle    : 1;
+ 
+ 	/*
+ 	 * Bandwidth enforcement timer. Each -deadline task has its
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 89019a140826..094134c9b135 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1215,6 +1215,8 @@ static void __push_dl_task(struct rq *rq, struct rq_flags *rf)
+ /* a defer timer will not be reset if the runtime consumed was < dl_server_min_res */
+ static const u64 dl_server_min_res = 1 * NSEC_PER_MSEC;
+ 
++static bool dl_server_stopped(struct sched_dl_entity *dl_se);
++
+ static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_dl_entity *dl_se)
+ {
+ 	struct rq *rq = rq_of_dl_se(dl_se);
+@@ -1234,6 +1236,7 @@ static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sched_
+ 
+ 		if (!dl_se->server_has_tasks(dl_se)) {
+ 			replenish_dl_entity(dl_se);
++			dl_server_stopped(dl_se);
+ 			return HRTIMER_NORESTART;
+ 		}
+ 
+@@ -1639,8 +1642,10 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
+ void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec)
+ {
+ 	/* 0 runtime = fair server disabled */
+-	if (dl_se->dl_runtime)
++	if (dl_se->dl_runtime) {
++		dl_se->dl_server_idle = 0;
+ 		update_curr_dl_se(dl_se->rq, dl_se, delta_exec);
++	}
+ }
+ 
+ void dl_server_start(struct sched_dl_entity *dl_se)
+@@ -1663,7 +1668,7 @@ void dl_server_start(struct sched_dl_entity *dl_se)
+ 		setup_new_dl_entity(dl_se);
+ 	}
+ 
+-	if (!dl_se->dl_runtime)
++	if (!dl_se->dl_runtime || dl_se->dl_server_active)
+ 		return;
+ 
+ 	dl_se->dl_server_active = 1;
+@@ -1684,6 +1689,20 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
+ 	dl_se->dl_server_active = 0;
+ }
+ 
++static bool dl_server_stopped(struct sched_dl_entity *dl_se)
++{
++	if (!dl_se->dl_server_active)
++		return false;
++
++	if (dl_se->dl_server_idle) {
++		dl_server_stop(dl_se);
++		return true;
++	}
++
++	dl_se->dl_server_idle = 1;
++	return false;
++}
++
+ void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
+ 		    dl_server_has_tasks_f has_tasks,
+ 		    dl_server_pick_f pick_task)
+@@ -2435,7 +2454,7 @@ static struct task_struct *__pick_task_dl(struct rq *rq)
+ 	if (dl_server(dl_se)) {
+ 		p = dl_se->server_pick_task(dl_se);
+ 		if (!p) {
+-			if (dl_server_active(dl_se)) {
++			if (!dl_server_stopped(dl_se)) {
+ 				dl_se->dl_yielded = 1;
+ 				update_curr_dl_se(rq, dl_se, 0);
+ 			}
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7a14da5396fb..3ab8d4765edd 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5889,7 +5889,6 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
+ 	struct cfs_bandwidth *cfs_b = tg_cfs_bandwidth(cfs_rq->tg);
+ 	struct sched_entity *se;
+ 	long queued_delta, runnable_delta, idle_delta, dequeue = 1;
+-	long rq_h_nr_queued = rq->cfs.h_nr_queued;
+ 
+ 	raw_spin_lock(&cfs_b->lock);
+ 	/* This will start the period timer if necessary */
+@@ -5973,10 +5972,6 @@ static bool throttle_cfs_rq(struct cfs_rq *cfs_rq)
+ 
+ 	/* At this point se is NULL and we are at root level*/
+ 	sub_nr_running(rq, queued_delta);
+-
+-	/* Stop the fair server if throttling resulted in no runnable tasks */
+-	if (rq_h_nr_queued && !rq->cfs.h_nr_queued)
+-		dl_server_stop(&rq->fair_server);
+ done:
+ 	/*
+ 	 * Note: distribution will already see us throttled via the
+@@ -7070,7 +7065,6 @@ static void set_next_buddy(struct sched_entity *se);
+ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ {
+ 	bool was_sched_idle = sched_idle_rq(rq);
+-	int rq_h_nr_queued = rq->cfs.h_nr_queued;
+ 	bool task_sleep = flags & DEQUEUE_SLEEP;
+ 	bool task_delayed = flags & DEQUEUE_DELAYED;
+ 	struct task_struct *p = NULL;
+@@ -7154,9 +7148,6 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
+ 
+ 	sub_nr_running(rq, h_nr_queued);
+ 
+-	if (rq_h_nr_queued && !rq->cfs.h_nr_queued)
+-		dl_server_stop(&rq->fair_server);
+-
+ 	/* balance early to pull high priority tasks */
+ 	if (unlikely(!was_sched_idle && sched_idle_rq(rq)))
+ 		rq->next_balance = jiffies;
 -- 
 2.39.5
 
