@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462DFB234BA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0A8B230EC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD9A4188C9DC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:38:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85A3C188A8AA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88262FD1C2;
-	Tue, 12 Aug 2025 18:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA982FAC02;
+	Tue, 12 Aug 2025 17:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfaG59JP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA51HPvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FCA6BB5B;
-	Tue, 12 Aug 2025 18:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD1D2F8BE7;
+	Tue, 12 Aug 2025 17:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023917; cv=none; b=KlXIr1huvLP/9cEUeYFVY38lXhyohfCCmeqjTPWW1fDdka5JZDQmr/+5ELVBEp8PCrrKncujXZzWFvgRwmk1geJf245KwGsTcThPmAkv2sdZ2kpyBPO6K3sqSwBLkFqW2XTlF9hXUCiELN5iPx+7MXYA8FC5j4rO1dTg4zSPDhg=
+	t=1755021454; cv=none; b=bwjwVbFQ//LrSnpbwJiE2qn0hIdyTbsHuVlsDxctVw+BW1JpcNbfqnOLFeTSxU1cLROFeKKM3nwvDO1XgAq7/g6RatHOphNWy6mQqiWpoawsnnTf9Q2dlW7rgcqXNSZBSaZYy9EGNqTFVlD37IYsIUcCmnCBufVyly+uAFDNvDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023917; c=relaxed/simple;
-	bh=fr/bYhCEOwKzP0Rmh18RfS5qnxiZzxKFu3470BLZEFM=;
+	s=arc-20240116; t=1755021454; c=relaxed/simple;
+	bh=5LF3OgsPQtTTbibxMqtQ1G5iuGu8UNlsDOUfUE5pS04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIGhG/QeqooCYRk2sslpGZGAALOgjZY+xtofki6LXmMEb/yp2jHfzcKWSNm/umHfa8WFG4pKJV96Dhni9qN29urpimT1bq80OhL1xgow1TMj9TgmA0UYMVG9aPXRwg1xn7nbOCmPAX0wIjT14SmYsyKq5XW01DB8RoZBOf9lpNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfaG59JP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC86C4CEF0;
-	Tue, 12 Aug 2025 18:38:35 +0000 (UTC)
+	 MIME-Version; b=faLYdspPEGswQASpIHE3KpGTwA1UoSPO1qpJShOVpFz8ldMXpZ8TzRsfqz4MroabXWyFV7E+fhpkkKZUQURwYlE8PQ9eKPcljCR2+SeDopS2oRW7hTohoNwdo3AJu3Tx7WrmViksXaOpy6uqwIqLRH2PXNcwfGU3VSOwOPLw+4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA51HPvN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7972CC4CEF0;
+	Tue, 12 Aug 2025 17:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023916;
-	bh=fr/bYhCEOwKzP0Rmh18RfS5qnxiZzxKFu3470BLZEFM=;
+	s=korg; t=1755021453;
+	bh=5LF3OgsPQtTTbibxMqtQ1G5iuGu8UNlsDOUfUE5pS04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GfaG59JPHmdnyWfPoZJOj+HLYuyyVxKd1zijp6+RuL/DEN08jkuFztVKTmOl8Xp8r
-	 iN7v+lMx6BL/rNxgawdcSLOuSIfbVB7pgtxk4GZ0r67qJOUEsZU1xqR9aLMWsxJ5Uh
-	 hZOELmWtUNsD9d+RykRpx2tFcI1iq3Jd+eNCtAj4=
+	b=iA51HPvNhPrOCd8H7MbCNw4JdWZIyyT9Pxz8SxIWWYPjUGHfDXzd2JChOZfq3zXgL
+	 NLd3Wcxb4sQp7EKGaxBMWrnZ98NeLMORHn7+CUKTXzgadRK87YKytX+ailvfDLd7O5
+	 /04ssvj8jmC2Ufz3tApFq4O4ShBy1U/XTeBEODNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abinash Singh <abinashsinghlalotra@gmail.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 220/627] xen/gntdev: remove struct gntdev_copy_batch from stack
-Date: Tue, 12 Aug 2025 19:28:35 +0200
-Message-ID: <20250812173427.650073904@linuxfoundation.org>
+Subject: [PATCH 6.6 128/262] crypto: inside-secure - Fix `dma_unmap_sg()` nents value
+Date: Tue, 12 Aug 2025 19:28:36 +0200
+Message-ID: <20250812172958.556708178@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,189 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 70045cf6593cbf0740956ea9b7b4269142c6ee38 ]
+[ Upstream commit cb7fa6b6fc71e0c801e271aa498e2f19e6df2931 ]
 
-When compiling the kernel with LLVM, the following warning was issued:
+The `dma_unmap_sg()` functions should be called with the same nents as the
+`dma_map_sg()`, not the value the map function returned.
 
-  drivers/xen/gntdev.c:991: warning: stack frame size (1160) exceeds
-  limit (1024) in function 'gntdev_ioctl'
-
-The main reason is struct gntdev_copy_batch which is located on the
-stack and has a size of nearly 1kb.
-
-For performance reasons it shouldn't by just dynamically allocated
-instead, so allocate a new instance when needed and instead of freeing
-it put it into a list of free structs anchored in struct gntdev_priv.
-
-Fixes: a4cdb556cae0 ("xen/gntdev: add ioctl for grant copy")
-Reported-by: Abinash Singh <abinashsinghlalotra@gmail.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250703073259.17356-1-jgross@suse.com>
+Fixes: c957f8b3e2e5 ("crypto: inside-secure - avoid unmapping DMA memory that was not mapped")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/gntdev-common.h |  4 +++
- drivers/xen/gntdev.c        | 71 ++++++++++++++++++++++++++-----------
- 2 files changed, 54 insertions(+), 21 deletions(-)
+ drivers/crypto/inside-secure/safexcel_hash.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/xen/gntdev-common.h b/drivers/xen/gntdev-common.h
-index 9c286b2a1900..ac8ce3179ba2 100644
---- a/drivers/xen/gntdev-common.h
-+++ b/drivers/xen/gntdev-common.h
-@@ -26,6 +26,10 @@ struct gntdev_priv {
- 	/* lock protects maps and freeable_maps. */
- 	struct mutex lock;
+diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
+index f44c08f5f5ec..af4b978189e5 100644
+--- a/drivers/crypto/inside-secure/safexcel_hash.c
++++ b/drivers/crypto/inside-secure/safexcel_hash.c
+@@ -249,7 +249,9 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv,
+ 	safexcel_complete(priv, ring);
  
-+	/* Free instances of struct gntdev_copy_batch. */
-+	struct gntdev_copy_batch *batch;
-+	struct mutex batch_lock;
-+
- #ifdef CONFIG_XEN_GRANT_DMA_ALLOC
- 	/* Device for which DMA memory is allocated. */
- 	struct device *dma_dev;
-diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
-index 61faea1f0663..1f2160765618 100644
---- a/drivers/xen/gntdev.c
-+++ b/drivers/xen/gntdev.c
-@@ -56,6 +56,18 @@ MODULE_AUTHOR("Derek G. Murray <Derek.Murray@cl.cam.ac.uk>, "
- 	      "Gerd Hoffmann <kraxel@redhat.com>");
- MODULE_DESCRIPTION("User-space granted page access driver");
- 
-+#define GNTDEV_COPY_BATCH 16
-+
-+struct gntdev_copy_batch {
-+	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
-+	struct page *pages[GNTDEV_COPY_BATCH];
-+	s16 __user *status[GNTDEV_COPY_BATCH];
-+	unsigned int nr_ops;
-+	unsigned int nr_pages;
-+	bool writeable;
-+	struct gntdev_copy_batch *next;
-+};
-+
- static unsigned int limit = 64*1024;
- module_param(limit, uint, 0644);
- MODULE_PARM_DESC(limit,
-@@ -584,6 +596,8 @@ static int gntdev_open(struct inode *inode, struct file *flip)
- 	INIT_LIST_HEAD(&priv->maps);
- 	mutex_init(&priv->lock);
- 
-+	mutex_init(&priv->batch_lock);
-+
- #ifdef CONFIG_XEN_GNTDEV_DMABUF
- 	priv->dmabuf_priv = gntdev_dmabuf_init(flip);
- 	if (IS_ERR(priv->dmabuf_priv)) {
-@@ -608,6 +622,7 @@ static int gntdev_release(struct inode *inode, struct file *flip)
- {
- 	struct gntdev_priv *priv = flip->private_data;
- 	struct gntdev_grant_map *map;
-+	struct gntdev_copy_batch *batch;
- 
- 	pr_debug("priv %p\n", priv);
- 
-@@ -620,6 +635,14 @@ static int gntdev_release(struct inode *inode, struct file *flip)
+ 	if (sreq->nents) {
+-		dma_unmap_sg(priv->dev, areq->src, sreq->nents, DMA_TO_DEVICE);
++		dma_unmap_sg(priv->dev, areq->src,
++			     sg_nents_for_len(areq->src, areq->nbytes),
++			     DMA_TO_DEVICE);
+ 		sreq->nents = 0;
  	}
- 	mutex_unlock(&priv->lock);
  
-+	mutex_lock(&priv->batch_lock);
-+	while (priv->batch) {
-+		batch = priv->batch;
-+		priv->batch = batch->next;
-+		kfree(batch);
-+	}
-+	mutex_unlock(&priv->batch_lock);
-+
- #ifdef CONFIG_XEN_GNTDEV_DMABUF
- 	gntdev_dmabuf_fini(priv->dmabuf_priv);
- #endif
-@@ -785,17 +808,6 @@ static long gntdev_ioctl_notify(struct gntdev_priv *priv, void __user *u)
- 	return rc;
- }
- 
--#define GNTDEV_COPY_BATCH 16
--
--struct gntdev_copy_batch {
--	struct gnttab_copy ops[GNTDEV_COPY_BATCH];
--	struct page *pages[GNTDEV_COPY_BATCH];
--	s16 __user *status[GNTDEV_COPY_BATCH];
--	unsigned int nr_ops;
--	unsigned int nr_pages;
--	bool writeable;
--};
--
- static int gntdev_get_page(struct gntdev_copy_batch *batch, void __user *virt,
- 				unsigned long *gfn)
- {
-@@ -953,36 +965,53 @@ static int gntdev_grant_copy_seg(struct gntdev_copy_batch *batch,
- static long gntdev_ioctl_grant_copy(struct gntdev_priv *priv, void __user *u)
- {
- 	struct ioctl_gntdev_grant_copy copy;
--	struct gntdev_copy_batch batch;
-+	struct gntdev_copy_batch *batch;
- 	unsigned int i;
- 	int ret = 0;
- 
- 	if (copy_from_user(&copy, u, sizeof(copy)))
- 		return -EFAULT;
- 
--	batch.nr_ops = 0;
--	batch.nr_pages = 0;
-+	mutex_lock(&priv->batch_lock);
-+	if (!priv->batch) {
-+		batch = kmalloc(sizeof(*batch), GFP_KERNEL);
-+	} else {
-+		batch = priv->batch;
-+		priv->batch = batch->next;
-+	}
-+	mutex_unlock(&priv->batch_lock);
-+	if (!batch)
-+		return -ENOMEM;
-+
-+	batch->nr_ops = 0;
-+	batch->nr_pages = 0;
- 
- 	for (i = 0; i < copy.count; i++) {
- 		struct gntdev_grant_copy_segment seg;
- 
- 		if (copy_from_user(&seg, &copy.segments[i], sizeof(seg))) {
- 			ret = -EFAULT;
-+			gntdev_put_pages(batch);
- 			goto out;
- 		}
- 
--		ret = gntdev_grant_copy_seg(&batch, &seg, &copy.segments[i].status);
--		if (ret < 0)
-+		ret = gntdev_grant_copy_seg(batch, &seg, &copy.segments[i].status);
-+		if (ret < 0) {
-+			gntdev_put_pages(batch);
- 			goto out;
-+		}
- 
- 		cond_resched();
+@@ -497,7 +499,9 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
+ 			 DMA_FROM_DEVICE);
+ unmap_sg:
+ 	if (req->nents) {
+-		dma_unmap_sg(priv->dev, areq->src, req->nents, DMA_TO_DEVICE);
++		dma_unmap_sg(priv->dev, areq->src,
++			     sg_nents_for_len(areq->src, areq->nbytes),
++			     DMA_TO_DEVICE);
+ 		req->nents = 0;
  	}
--	if (batch.nr_ops)
--		ret = gntdev_copy(&batch);
--	return ret;
-+	if (batch->nr_ops)
-+		ret = gntdev_copy(batch);
-+
-+ out:
-+	mutex_lock(&priv->batch_lock);
-+	batch->next = priv->batch;
-+	priv->batch = batch;
-+	mutex_unlock(&priv->batch_lock);
- 
--  out:
--	gntdev_put_pages(&batch);
- 	return ret;
- }
- 
+ cdesc_rollback:
 -- 
 2.39.5
 
