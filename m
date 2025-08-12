@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AFCB23544
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:55 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9A4B23067
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C8D1893C1C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C3D324E356D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441C72FF152;
-	Tue, 12 Aug 2025 18:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAA32F83CB;
+	Tue, 12 Aug 2025 17:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lrx7naWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/kMnenO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B3D291C1F;
-	Tue, 12 Aug 2025 18:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF141268C73;
+	Tue, 12 Aug 2025 17:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024325; cv=none; b=Vh2ZxVKGUcY62tMMt/v8pUGZqR92NapbsEzbeiwA/9eF6DKB6/T9cGrMZkiAmxpeVHeL8puBKeOEXCQJH00KTlzQadKVj9UvFeb0k+cIogWnvX16/ofsWfTldsZPXIZ6X7ad5NCiU1fOiIBjap9b4jndgHN+6sfUEtSBpIm95j4=
+	t=1755021135; cv=none; b=Nw2JACBPQ/gUs8BEceVtaTUUZRQTkLNgR9jcd1IZoeM6hPvfzNfjLfI4UiX+cg7FvkEUJMYd1cnuUspEIHlgRZ/OMhwaDut9TY5CDOkbPjlKKj1KCIEl4R70Jfo3aQaqDS2+h8WgSZd8GNJc6Qf68HZdd8pN0foAefo7IIC9JQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024325; c=relaxed/simple;
-	bh=yHydd2DH4INEg4BhMlBVdapQVMoly0RPEM0uSNe/qWQ=;
+	s=arc-20240116; t=1755021135; c=relaxed/simple;
+	bh=UwqpBYWoJiZ+dGM+atPHE4JUiK9AbTYWPtJvKnDYO6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMmFcRDNapQSfGax3QddKLKn4LMinxpLkypbJa9kxvM+Q14KMrlNEuM7IdB71rVgft3BVzubuQM9FN+NLr1ysJuqUikw++J7YlC3ATOD1DO8RDtUo+ZGcfMG04LOnNyybeNM2wg5IgtXLcBBRuyQA8nb1oGIKB1h5s5BxvyJP+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lrx7naWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F34BC4CEF0;
-	Tue, 12 Aug 2025 18:45:24 +0000 (UTC)
+	 MIME-Version; b=DJeCm62WXn5cY5EvyzlfGgL0PsUx8D0TCq6PP6tneIByCPa7iwuzLnhN9t7XxaxAyTh4RQreG4Vp6rIkvYEhoPcw0UeZ9KvuXzu3SYd6UelBdUME6nkYcZB4sZezPTWwYla/GnfYuRX3apu091Tik2lWzxOgj1MYKVIhQN52L+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/kMnenO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D967C4CEF0;
+	Tue, 12 Aug 2025 17:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024324;
-	bh=yHydd2DH4INEg4BhMlBVdapQVMoly0RPEM0uSNe/qWQ=;
+	s=korg; t=1755021134;
+	bh=UwqpBYWoJiZ+dGM+atPHE4JUiK9AbTYWPtJvKnDYO6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lrx7naWsxnfSi0NqxfRs00AJHe3LQOiIjXAe2GuttD2LbPIuo1Ee0XE+KP8SKaFKT
-	 6eszQkRtCnwF8mLqNGmhng4GEiv7oYxHy85bGHT4RwHDZ0X+1exgODTbP8OREBFTSB
-	 UkRGtk89L4S4eQv2EKo3Ec+bHuggml16xVdJ4sK8=
+	b=S/kMnenOkIELI7FcjHihs1lh4ZgUJouRl50pLIgF4WQ+4sqs2JWqK6iXFRGKEEzZ0
+	 YP0fgXJS7A3W7mLCR/3+BP/B/ORUHvibEVw6ziiigCCS1qxGfBVyZaOdPeDbEA0WpB
+	 VY2fVJGi7+ZoldfIu/anPvWZ4hu+Au1IzgW4R96M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	David Lechner <david@lechnology.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 312/627] clk: davinci: Add NULL check in davinci_lpsc_clk_register()
+Subject: [PATCH 6.1 219/253] phy: mscc: Fix parsing of unicast frames
 Date: Tue, 12 Aug 2025 19:30:07 +0200
-Message-ID: <20250812173431.174829474@linuxfoundation.org>
+Message-ID: <20250812172958.158262958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 13de464f445d42738fe18c9a28bab056ba3a290a ]
+[ Upstream commit 6fb5ff63b35b7e849cc8510957f25753f87f63d2 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-davinci_lpsc_clk_register() does not check for this case, which results
-in a NULL pointer dereference.
+According to the 1588 standard, it is possible to use both unicast and
+multicast frames to send the PTP information. It was noticed that if the
+frames were unicast they were not processed by the analyzer meaning that
+they were not timestamped. Therefore fix this to match also these
+unicast frames.
 
-Add NULL check after devm_kasprintf() to prevent this issue and ensuring
-no resources are left allocated.
-
-Fixes: c6ed4d734bc7 ("clk: davinci: New driver for davinci PSC clocks")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://lore.kernel.org/r/20250401131341.26800-1-bsdhenrymartin@gmail.com
-Reviewed-by: David Lechner <david@lechnology.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: ab2bf9339357 ("net: phy: mscc: 1588 block initialization")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250726140307.3039694-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/davinci/psc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/phy/mscc/mscc_ptp.c | 1 +
+ drivers/net/phy/mscc/mscc_ptp.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/clk/davinci/psc.c b/drivers/clk/davinci/psc.c
-index b48322176c21..f3ee9397bb0c 100644
---- a/drivers/clk/davinci/psc.c
-+++ b/drivers/clk/davinci/psc.c
-@@ -277,6 +277,11 @@ davinci_lpsc_clk_register(struct device *dev, const char *name,
- 
- 	lpsc->pm_domain.name = devm_kasprintf(dev, GFP_KERNEL, "%s: %s",
- 					      best_dev_name(dev), name);
-+	if (!lpsc->pm_domain.name) {
-+		clk_hw_unregister(&lpsc->hw);
-+		kfree(lpsc);
-+		return ERR_PTR(-ENOMEM);
-+	}
- 	lpsc->pm_domain.attach_dev = davinci_psc_genpd_attach_dev;
- 	lpsc->pm_domain.detach_dev = davinci_psc_genpd_detach_dev;
- 	lpsc->pm_domain.flags = GENPD_FLAG_PM_CLK;
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index 7e7ce79eadff..d0bd6ab45ebe 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -897,6 +897,7 @@ static int vsc85xx_eth1_conf(struct phy_device *phydev, enum ts_blk blk,
+ 				     get_unaligned_be32(ptp_multicast));
+ 	} else {
+ 		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST;
++		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST;
+ 		vsc85xx_ts_write_csr(phydev, blk,
+ 				     MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(0), val);
+ 		vsc85xx_ts_write_csr(phydev, blk,
+diff --git a/drivers/net/phy/mscc/mscc_ptp.h b/drivers/net/phy/mscc/mscc_ptp.h
+index da3465360e90..ae9ad925bfa8 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.h
++++ b/drivers/net/phy/mscc/mscc_ptp.h
+@@ -98,6 +98,7 @@
+ #define MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(x) (MSCC_ANA_ETH1_FLOW_ENA(x) + 3)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_MASK_MASK	GENMASK(22, 20)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST	0x400000
++#define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST	0x200000
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_FULL_ADDR	0x100000
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST_MASK	GENMASK(17, 16)
+ #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST	0x020000
 -- 
 2.39.5
 
