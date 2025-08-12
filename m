@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-168891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D98EB2371D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:08:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207FDB23763
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FD19584F60
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:08:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6AE6E4902
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03AC2FFDDE;
-	Tue, 12 Aug 2025 19:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BF12F83B4;
+	Tue, 12 Aug 2025 19:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emZjEHAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0iCNr76J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5D92FFDD3;
-	Tue, 12 Aug 2025 19:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346D7279DB6;
+	Tue, 12 Aug 2025 19:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025680; cv=none; b=uZONmDhsS7122j/eKfDp6tjHGFaWYdiFgR+5RLc0WN7x8M4ARNX943fkYEEAQk4XsG9tVfNNem6Ls5PxPCSq45cOcoEjVyCSHFB+vnQVdvnD7SpdLWfECPhlwUDdijQT0HJqNpqGy5tPlUS/HmvG7QEnU2GJQlXzJpRqkY+fdX4=
+	t=1755025827; cv=none; b=rOPowgvdp3bNcIT7BCfj5uDMGjlg6+QDnUJGN+4m7E9gL9Xr7R1WDbDgyFssV234yGiMsy/qZHw924YSgno++Ruc76b65OreMkx9lYSLxx3V8XgveV6eAuH/vsxFx7GGsiYtMud0qkBb3S+cn8zhuvSswrw/XhVMqxHMdNG4e2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025680; c=relaxed/simple;
-	bh=LUrh22W0jwm0cStNtJXRTVgW7RzNxNB2VhCBGFzJ6ys=;
+	s=arc-20240116; t=1755025827; c=relaxed/simple;
+	bh=L+gquhZjVb7mLpVWiW6pMhzcv4njPE/P7LUbNgvdn5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULR1B9MfVNlPJfCmjjIUv7JbonnaRaoo0zqZ/bBGOL1Ph8t9e/UbsHzmTTVumg6NhypH7a+dQNkrcHvsXbuA1WPkNx+eHSaJG/Zjk6zZcIBIOhRUjyJEh4bNFxsWxj4d+b/9n30Dul/KOGUYu/KXkCoJIdczMs3hFaG2I6D+Fg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=emZjEHAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF760C4CEF6;
-	Tue, 12 Aug 2025 19:07:59 +0000 (UTC)
+	 MIME-Version; b=dRjC99fgWmML5tpPOF5cJnFfCMsc7t+VG8qVlhtrtD6ov15hnwUapRHjZLuXokV6CNOxw9AvvanyBj4kigFhwxTFxLIVaelCGHf/SQeZY3L0LJ7u4r9H43y2KegBhdnOnYi7+TkemZh9Pu7GFe6O/OGMVuK/N0scrmmQ2W5hsCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0iCNr76J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FFEC4CEF0;
+	Tue, 12 Aug 2025 19:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025680;
-	bh=LUrh22W0jwm0cStNtJXRTVgW7RzNxNB2VhCBGFzJ6ys=;
+	s=korg; t=1755025827;
+	bh=L+gquhZjVb7mLpVWiW6pMhzcv4njPE/P7LUbNgvdn5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=emZjEHAf0uFbwBSe0gz4AkwGCrbah2ptKu4tWMi333/vcKn3oMVYzFy9DL97aiaPU
-	 erE6txkOFb9hU608PyHkt4hHk1XIRbWR95LZYuOgx96gkM9mo4hbsFWfBuygcvEZUA
-	 0Gjhtyrd9CY0BKHpbrHK/C6yQToUjMVY+C7mK2Sw=
+	b=0iCNr76J2uV2F0WWAsCFD9MonAyjOnI8RTe0rnF1MX9YodWpJDefAMXsZelgLJ1R6
+	 N2dq3FYK12sXze+4+1jSAYeh53SNMMuWssrvSY6GzDASNI/3QG8gjoouSX3GpHb5vS
+	 MAFvIRwq/I1IFXAqQy7q59WewFNFI78teYB0FECk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 111/480] drm/vmwgfx: Fix Host-Backed userspace on Guest-Backed kernel
-Date: Tue, 12 Aug 2025 19:45:19 +0200
-Message-ID: <20250812174402.067322900@linuxfoundation.org>
+Subject: [PATCH 6.15 112/480] slub: Fix a documentation build error for krealloc()
+Date: Tue, 12 Aug 2025 19:45:20 +0200
+Message-ID: <20250812174402.108585009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -67,40 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Jonathan Corbet <corbet@lwn.net>
 
-[ Upstream commit 7872997c048e989c7689c2995d230fdca7798000 ]
+[ Upstream commit e8a45f198e3ae2434108f815bc28f37f6fe6742b ]
 
-Running 3D applications with SVGA_FORCE_HOST_BACKED=1 or using an
-ancient version of mesa was broken because the buffer was pinned in
-VMW_BO_DOMAIN_SYS and could not be moved to VMW_BO_DOMAIN_MOB during
-validation.
+The kerneldoc comment for krealloc() contains an unmarked literal block,
+leading to these warnings in the docs build:
 
-The compat_shader buffer should not pinned.
+  ./mm/slub.c:4936: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+  ./mm/slub.c:4936: ERROR: Undefined substitution referenced: "--------". [docutils]
 
-Fixes: 668b206601c5 ("drm/vmwgfx: Stop using raw ttm_buffer_object's")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://lore.kernel.org/r/20250429203427.1742331-1-ian.forbes@broadcom.com
+Mark up and indent the block properly to bring a bit of peace to our build
+logs.
+
+Fixes: 489a744e5fb1 (mm: krealloc: clarify valid usage of __GFP_ZERO)
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://patch.msgid.link/20250611155916.2579160-6-willy@infradead.org
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slub.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-index 7fb1c88bcc47..69dfe69ce0f8 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -896,7 +896,7 @@ int vmw_compat_shader_add(struct vmw_private *dev_priv,
- 		.busy_domain = VMW_BO_DOMAIN_SYS,
- 		.bo_type = ttm_bo_type_device,
- 		.size = size,
--		.pin = true,
-+		.pin = false,
- 		.keep_resv = true,
- 	};
- 
+diff --git a/mm/slub.c b/mm/slub.c
+index be8b09e09d30..5c73b956615f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4929,12 +4929,12 @@ __do_krealloc(const void *p, size_t new_size, gfp_t flags)
+  * When slub_debug_orig_size() is off, krealloc() only knows about the bucket
+  * size of an allocation (but not the exact size it was allocated with) and
+  * hence implements the following semantics for shrinking and growing buffers
+- * with __GFP_ZERO.
++ * with __GFP_ZERO::
+  *
+- *         new             bucket
+- * 0       size             size
+- * |--------|----------------|
+- * |  keep  |      zero      |
++ *           new             bucket
++ *   0       size             size
++ *   |--------|----------------|
++ *   |  keep  |      zero      |
+  *
+  * Otherwise, the original allocation size 'orig_size' could be used to
+  * precisely clear the requested size, and the new size will also be stored
 -- 
 2.39.5
 
