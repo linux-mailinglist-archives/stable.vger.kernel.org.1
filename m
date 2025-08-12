@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90484B231F1
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:11:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE32DB233B0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B31AB174643
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F28C91B63CF7
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457002FF141;
-	Tue, 12 Aug 2025 18:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E5D2FE595;
+	Tue, 12 Aug 2025 18:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5OZJuct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvgcfmFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050B02F5E;
-	Tue, 12 Aug 2025 18:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D802FD1AD;
+	Tue, 12 Aug 2025 18:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021951; cv=none; b=cvvSAwyCZe7jMO8pJf6T2GXrYkZqkOwn49bY7I4BRh/VedvhWtvvziWfzUM+pcyYqIDrDadZlrXboetcOSfWrYLDYhUCW8SnIioOOvRgEfJrSs7oWS+St7xxEY4zKftthIjnRf8b/5iWsSaVP7D6YVpYrhURLQbnDSZqS/zoo4c=
+	t=1755023208; cv=none; b=J2C1uKpE5fBLhF9gqEiy5hFAPhEJV4uzhNoZ4c77AvBx37WKnjmKhXrlOzFoKfvqpBe3wKtoKAlldytYphUj4XtMcYYPZF7602OWn0rWPX4WpSwvTqNgTVt8Lq5HVbCtNO6xmmPCw30kRSUeNyPzE1yshEZl2BpCaylwa98HoKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021951; c=relaxed/simple;
-	bh=+VVns0rzqzifyBh15vZEsiycIdhApH3BcgcvsM1Mo58=;
+	s=arc-20240116; t=1755023208; c=relaxed/simple;
+	bh=HUbwfTRMOsEabjP7GxE+gfihq0/FGxj6rUUpTJ8z2yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHfhR2IlUHduFtS3Mbe8RfoyWOiHCeleeNWl4DmQHos2p+xhJR26He3H/vQCc6NzCn8wrAJ7ycypFg0pJTWduSugDtxkQnt7x1229YD/0snOAKaSCB1LIUNOvLdfGtR0OMfHszwppAl12WNGV6C+SDUhg4HsmPzc++ERjMnJuxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5OZJuct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8A5C4CEF0;
-	Tue, 12 Aug 2025 18:05:50 +0000 (UTC)
+	 MIME-Version; b=NRcdpeNVu4a10j22gVQadgaeS0/JCCWpLwpHRLf5sjvTRQmtumjvzE1zUILkzJC8qnXlSerPIC847jxSA9yO55HFgvQwNp6LiFsNvgyBmGywz4l5Tl8c3VkUYD66F9twMy69waw9xHN+ajf7bqgFrbaUvUsEozwOSxPm0sZyFoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvgcfmFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7A8C4CEF1;
+	Tue, 12 Aug 2025 18:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021950;
-	bh=+VVns0rzqzifyBh15vZEsiycIdhApH3BcgcvsM1Mo58=;
+	s=korg; t=1755023208;
+	bh=HUbwfTRMOsEabjP7GxE+gfihq0/FGxj6rUUpTJ8z2yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5OZJucte+mWF9t6DHJa29lBeR54KKKLL3wTFIvLlDN2+Ss6Xf+5MLGdvaghVYt07
-	 VzPg6mCybBbCjrPHnRzbH3trrQ6MdLzoAm8W5q1tnaAv5238DLe3OZHEnfrkG8yHYS
-	 iW0V6zkrY/FbPl8KaHvvbWPCIcW6SC65cZVUkrKs=
+	b=XvgcfmFVDWO5gNyfdVyFoMBbVxaGyWlmA4mtPOVhXx0cr3zKg7/o62svvazDrkIKf
+	 27iQPY+rncaEjOt5bg/YaXKg13+b15vklKMy8STARuhwi4xsVvRwh6rUSJZ+qXBdQ5
+	 YoHMMvigLnumqBevJMkR0LXGj8ai+ju0QOMC686I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/369] ublk: use vmalloc for ublk_devices __queues
+Subject: [PATCH 6.16 013/627] block: mtip32xx: Fix usage of dma_map_sg()
 Date: Tue, 12 Aug 2025 19:25:08 +0200
-Message-ID: <20250812173015.166921094@linuxfoundation.org>
+Message-ID: <20250812173419.827838469@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit c2f48453b7806d41f5a3270f206a5cd5640ed207 ]
+[ Upstream commit 8e1fab9cccc7b806b0cffdceabb09b310b83b553 ]
 
-struct ublk_device's __queues points to an allocation with up to
-UBLK_MAX_NR_QUEUES (4096) queues, each of which have:
-- struct ublk_queue (48 bytes)
-- Tail array of up to UBLK_MAX_QUEUE_DEPTH (4096) struct ublk_io's,
-  32 bytes each
-This means the full allocation can exceed 512 MB, which may well be
-impossible to service with contiguous physical pages. Switch to
-kvcalloc() and kvfree(), since there is no need for physically
-contiguous memory.
+The dma_map_sg() can fail and, in case of failure, returns 0.  If it
+fails, mtip_hw_submit_io() returns an error.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250620151008.3976463-2-csander@purestorage.com
+The dma_unmap_sg() requires the nents parameter to be the same as the
+one passed to dma_map_sg(). This patch saves the nents in
+command->scatter_ents.
+
+Fixes: 88523a61558a ("block: Add driver for Micron RealSSD pcie flash cards")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250627121123.203731-2-fourier.thomas@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/mtip32xx/mtip32xx.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 3b1a5cdd6311..defcc964ecab 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -2116,7 +2116,7 @@ static void ublk_deinit_queues(struct ublk_device *ub)
+diff --git a/drivers/block/mtip32xx/mtip32xx.c b/drivers/block/mtip32xx/mtip32xx.c
+index 66ce6b81c7d9..8fc7761397bd 100644
+--- a/drivers/block/mtip32xx/mtip32xx.c
++++ b/drivers/block/mtip32xx/mtip32xx.c
+@@ -2040,11 +2040,12 @@ static int mtip_hw_ioctl(struct driver_data *dd, unsigned int cmd,
+  * @dir      Direction (read or write)
+  *
+  * return value
+- *	None
++ *	0	The IO completed successfully.
++ *	-ENOMEM	The DMA mapping failed.
+  */
+-static void mtip_hw_submit_io(struct driver_data *dd, struct request *rq,
+-			      struct mtip_cmd *command,
+-			      struct blk_mq_hw_ctx *hctx)
++static int mtip_hw_submit_io(struct driver_data *dd, struct request *rq,
++			     struct mtip_cmd *command,
++			     struct blk_mq_hw_ctx *hctx)
+ {
+ 	struct mtip_cmd_hdr *hdr =
+ 		dd->port->command_list + sizeof(struct mtip_cmd_hdr) * rq->tag;
+@@ -2056,12 +2057,14 @@ static void mtip_hw_submit_io(struct driver_data *dd, struct request *rq,
+ 	unsigned int nents;
  
- 	for (i = 0; i < nr_queues; i++)
- 		ublk_deinit_queue(ub, i);
--	kfree(ub->__queues);
-+	kvfree(ub->__queues);
+ 	/* Map the scatter list for DMA access */
+-	nents = blk_rq_map_sg(rq, command->sg);
+-	nents = dma_map_sg(&dd->pdev->dev, command->sg, nents, dma_dir);
++	command->scatter_ents = blk_rq_map_sg(rq, command->sg);
++	nents = dma_map_sg(&dd->pdev->dev, command->sg,
++			   command->scatter_ents, dma_dir);
++	if (!nents)
++		return -ENOMEM;
+ 
+-	prefetch(&port->flags);
+ 
+-	command->scatter_ents = nents;
++	prefetch(&port->flags);
+ 
+ 	/*
+ 	 * The number of retries for this command before it is
+@@ -2112,11 +2115,13 @@ static void mtip_hw_submit_io(struct driver_data *dd, struct request *rq,
+ 	if (unlikely(port->flags & MTIP_PF_PAUSE_IO)) {
+ 		set_bit(rq->tag, port->cmds_to_issue);
+ 		set_bit(MTIP_PF_ISSUE_CMDS_BIT, &port->flags);
+-		return;
++		return 0;
+ 	}
+ 
+ 	/* Issue the command to the hardware */
+ 	mtip_issue_ncq_command(port, rq->tag);
++
++	return 0;
  }
  
- static int ublk_init_queues(struct ublk_device *ub)
-@@ -2127,7 +2127,7 @@ static int ublk_init_queues(struct ublk_device *ub)
- 	int i, ret = -ENOMEM;
+ /*
+@@ -3315,7 +3320,9 @@ static blk_status_t mtip_queue_rq(struct blk_mq_hw_ctx *hctx,
  
- 	ub->queue_size = ubq_size;
--	ub->__queues = kcalloc(nr_queues, ubq_size, GFP_KERNEL);
-+	ub->__queues = kvcalloc(nr_queues, ubq_size, GFP_KERNEL);
- 	if (!ub->__queues)
- 		return ret;
+ 	blk_mq_start_request(rq);
+ 
+-	mtip_hw_submit_io(dd, rq, cmd, hctx);
++	if (mtip_hw_submit_io(dd, rq, cmd, hctx))
++		return BLK_STS_IOERR;
++
+ 	return BLK_STS_OK;
+ }
  
 -- 
 2.39.5
