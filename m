@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-167885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4324B23251
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:16:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F476B22F68
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4800658035B
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:12:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FC11627FC3
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987842F659A;
-	Tue, 12 Aug 2025 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE392FE57A;
+	Tue, 12 Aug 2025 17:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Scd3tuon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnYQi7xG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57008282E1;
-	Tue, 12 Aug 2025 18:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F482FDC5F;
+	Tue, 12 Aug 2025 17:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022315; cv=none; b=T727RjSzVgZLUi09APbYsDOdMMwiHMc+5osrxNQX3Z6u7hge2QRJnds56s5BKYNId3iB6a3LNv209GKBmXBnFvdMYrJAorUEKwq2UKXX/dGyq9X6cAaOWNH3c268MHfBQhk1VYl0MaPNbw/atHf1l2XkgrQNv8+NVnG24YZqCck=
+	t=1755020268; cv=none; b=LpCXfxt+Sx0ZajCmyIHqYCw/fWmynAGqmA+0PIVnEtbjXi3Sj5nfsu1+WV6RMxIEyvAs9GoelSB+ScY8L0v/LryB8bPjJmqQIRpNH20bP+mFq/Q0D4O39xhT/Jd59ALPrsOgPJ/zmW9ng4CcqBzQkK0o96ARWmb/UUAeZWKmlLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022315; c=relaxed/simple;
-	bh=9wims1xd4F51PdGXEkzeuOChxQHp0eqnWdR6Bj/Jwmw=;
+	s=arc-20240116; t=1755020268; c=relaxed/simple;
+	bh=IVCmp0NhqDqBlkOdVuZOKeXQH0JUyOllBBKMTwia5Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqQ0OeLd4jEu+dglPJTdzB4vyV6XKCYQAuNdSSNWujNtnWpteja7ZIx6tjuH8s4wyrW3ojPxZlMeXiKoS7vWciF3TBTNAr6ThGvNn0L/Pj4AbCH3jGZJD/fcXOTTMl8Iz6nmjwUZg+e3WcTujEAh7Qoccs003ruZPK46fQww6jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Scd3tuon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4398C4CEF0;
-	Tue, 12 Aug 2025 18:11:54 +0000 (UTC)
+	 MIME-Version; b=BhUmlwxBPkUwMXouV5dAc80D+ukvCMnBTypEO51SvFHilASNyJFAYGFMsO7Q3kJASRG9/5fiH9ZKSjo2/oAZMjwANYe993VJk7DsxgkDLNhsA63zVXFUEmyZeFpkW5CDttarBSVqO700ilgvzetpkCVfJRM3CQgt1yAjYSsGbW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnYQi7xG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55A11C4CEF0;
+	Tue, 12 Aug 2025 17:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022315;
-	bh=9wims1xd4F51PdGXEkzeuOChxQHp0eqnWdR6Bj/Jwmw=;
+	s=korg; t=1755020267;
+	bh=IVCmp0NhqDqBlkOdVuZOKeXQH0JUyOllBBKMTwia5Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Scd3tuon7Uf9Mv+bRVPinDHoq18pSH0frmVYxCVrOg4jo+oukZg6UGugWQUnjeUid
-	 J18bNELU4FPYtobnvukm3NPcvknZcqs5Q4ULCxQKSLL64FEUT1NxaWEpTMcbXdwLhv
-	 ECbI3dwlqQHO1fZ2OBR1cfppPUItqkKnCJYSP0s4=
+	b=YnYQi7xGmIJA7mNFyPqbNIUC9KYSElatuI2Z7l/N3P+VgeNGGMnaF3jvJlZFGtz4B
+	 NVGNCNpG+9oOSCIbah8eljsm40fzoAw5T3lP5pJJdYQV7lDv3UY3Q0aL6m+Q7giIln
+	 eRjV5OvVBVDWX13W+BWch2jDbZmPtPNFphrA6VnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Wetzel <Alexander@wetzel-home.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 120/369] wifi: mac80211: Do not schedule stopped TXQs
-Date: Tue, 12 Aug 2025 19:26:57 +0200
-Message-ID: <20250812173019.279695711@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 030/253] bus: fsl-mc: Fix potential double device reference in fsl_mc_get_endpoint()
+Date: Tue, 12 Aug 2025 19:26:58 +0200
+Message-ID: <20250812172950.015877248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Wetzel <Alexander@wetzel-home.de>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 11e3e22fa533f5d7cf04e32343b05a27eda3c7a5 ]
+commit bddbe13d36a02d5097b99cf02354d5752ad1ac60 upstream.
 
-Ignore TXQs with the flag IEEE80211_TXQ_STOP when scheduling a queue.
+The fsl_mc_get_endpoint() function may call fsl_mc_device_lookup()
+twice, which would increment the device's reference count twice if
+both lookups find a device. This could lead to a reference count leak.
 
-The flag is only set after all fragments have been dequeued and won't
-allow dequeueing other frames as long as the flag is set.
+Found by code review.
 
-For drivers using ieee80211_txq_schedule_start() this prevents an
-loop trying to push the queued frames while IEEE80211_TXQ_STOP is set:
-
-After setting IEEE80211_TXQ_STOP the driver will call
-ieee80211_return_txq(). Which calls __ieee80211_schedule_txq(), detects
-that there sill are frames in the queue and immediately restarts the
-stopped TXQ. Which can't dequeue any frame and thus starts over the loop.
-
-Signed-off-by: Alexander Wetzel <Alexander@wetzel-home.de>
-Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
-Link: https://patch.msgid.link/20250717162547.94582-2-Alexander@wetzel-home.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1ac210d128ef ("bus: fsl-mc: add the fsl_mc_get_endpoint function")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 8567494cebe5 ("bus: fsl-mc: rescan devices if endpoint not found")
+Link: https://patch.msgid.link/20250717022309.3339976-1-make24@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 00c309e7768e..0386810be520 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4106,7 +4106,9 @@ void __ieee80211_schedule_txq(struct ieee80211_hw *hw,
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -947,6 +947,7 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	struct fsl_mc_obj_desc endpoint_desc = {{ 0 }};
+ 	struct dprc_endpoint endpoint1 = {{ 0 }};
+ 	struct dprc_endpoint endpoint2 = {{ 0 }};
++	struct fsl_mc_bus *mc_bus;
+ 	int state, err;
  
- 	spin_lock_bh(&local->active_txq_lock[txq->ac]);
+ 	mc_bus_dev = to_fsl_mc_device(mc_dev->dev.parent);
+@@ -970,6 +971,8 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	strcpy(endpoint_desc.type, endpoint2.type);
+ 	endpoint_desc.id = endpoint2.id;
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
++	if (endpoint)
++		return endpoint;
  
--	has_queue = force || txq_has_queue(txq);
-+	has_queue = force ||
-+		    (!test_bit(IEEE80211_TXQ_STOP, &txqi->flags) &&
-+		     txq_has_queue(txq));
- 	if (list_empty(&txqi->schedule_order) &&
- 	    (has_queue || ieee80211_txq_keep_active(txqi))) {
- 		/* If airtime accounting is active, always enqueue STAs at the
--- 
-2.39.5
-
+ 	/*
+ 	 * We know that the device has an endpoint because we verified by
+@@ -977,17 +980,13 @@ struct fsl_mc_device *fsl_mc_get_endpoin
+ 	 * yet discovered by the fsl-mc bus, thus the lookup returned NULL.
+ 	 * Force a rescan of the devices in this container and retry the lookup.
+ 	 */
+-	if (!endpoint) {
+-		struct fsl_mc_bus *mc_bus = to_fsl_mc_bus(mc_bus_dev);
+-
+-		if (mutex_trylock(&mc_bus->scan_mutex)) {
+-			err = dprc_scan_objects(mc_bus_dev, true);
+-			mutex_unlock(&mc_bus->scan_mutex);
+-		}
+-
+-		if (err < 0)
+-			return ERR_PTR(err);
++	mc_bus = to_fsl_mc_bus(mc_bus_dev);
++	if (mutex_trylock(&mc_bus->scan_mutex)) {
++		err = dprc_scan_objects(mc_bus_dev, true);
++		mutex_unlock(&mc_bus->scan_mutex);
+ 	}
++	if (err < 0)
++		return ERR_PTR(err);
+ 
+ 	endpoint = fsl_mc_device_lookup(&endpoint_desc, mc_bus_dev);
+ 	/*
 
 
 
