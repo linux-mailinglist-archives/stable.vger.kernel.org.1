@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BCC6B2329F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:20:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45425B2346F
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EAF56E23E3
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 073133A8752
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DC92FF176;
-	Tue, 12 Aug 2025 18:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6EC2EF652;
+	Tue, 12 Aug 2025 18:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJX1wehN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0np2rtK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A992E36F1;
-	Tue, 12 Aug 2025 18:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9B41DB92A;
+	Tue, 12 Aug 2025 18:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022469; cv=none; b=AliEXWAXLvgYc18XtsSmWn/H4scSfux+R6MddLIowdmpBqJob13ubjjX6d9H6cUtWfJ2sqHEVtuKrUAFDlvEW1GgLEIsPzH22/M8CZbg8NVWFQgNqNccbm8Z3ZT7tKO9VPE1KvUbqWhPP6dJbgwVwXM5Vmy4lAxBWPW+8EoLeUg=
+	t=1755023738; cv=none; b=TAyQjCCMYjkFxZUgoSV83Hk/JC61k+CYuHMHVbRwGhnqzQm3ChqaTeLEqmW5mTz88G5GL1Iv8ulD2ZLiu87H/o3FQ/iPEFwHjZn2WFYaVxQOiH7WNQK4rb5ECv+4E/We1R3lq0gxdAdXY7JkynG7SvrVNC8Aigdn/wrb9TQ0XS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022469; c=relaxed/simple;
-	bh=akH2DWR4r4QnJG7BaGOXS4EKsq/ec3rHMt24O8kSB+M=;
+	s=arc-20240116; t=1755023738; c=relaxed/simple;
+	bh=LU5UFFzwhlFkSP6QpU6WE0QbtpV3K7KA85Cu5QQh/io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6cB3wgTcynUkiJWJ81n/uBqTiNm4m9D/IotgyuMZUSZFKYJcFY2dWhxtb0EkV1lucZUb1wI9/aHPRjiQv7pGSkdaE6s/fJEwt9HL4Bb31R/lnG38zspWDpqIV89x8VWdVkuYgmpv0om4+uJPaV19Xv4ADpd+rqWsdRd5hRsVb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJX1wehN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A9AC4CEF0;
-	Tue, 12 Aug 2025 18:14:29 +0000 (UTC)
+	 MIME-Version; b=qAJmpJT3RS9qBz6+d83+nsiZFIcmoaWNR1yvZ12lirKbiAglL9XMUTI9h9bYUddZuycbIjl6Mz/9DaF090E8mhLExp4xikj9kRhHlqXZq97nd9WC+aFRvQDkV01RO32eOZ1L+lHFcf6IRVzZsW0J9Sv7M6nO8psmkffJGC2GdEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0np2rtK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD128C4CEF0;
+	Tue, 12 Aug 2025 18:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022469;
-	bh=akH2DWR4r4QnJG7BaGOXS4EKsq/ec3rHMt24O8kSB+M=;
+	s=korg; t=1755023738;
+	bh=LU5UFFzwhlFkSP6QpU6WE0QbtpV3K7KA85Cu5QQh/io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJX1wehNR3KybYYRXYOzM6Ju4g8brUN+gYfwaC9azserbVhzEkEpgWNxUJ1cZwcSN
-	 23ppqWVlJqJ8NBBtrwW3pgjunz0/US/HngK2A8f5Omc/3QTBSRAKVTQsX/T7mVtWfE
-	 7xi/VChH0Ka8sXJ2/xF+5sevx7xnyvu1GnxjL+DI=
+	b=Y0np2rtKBU1tDFMPel6xwjp61/qA2PEonXW3iR3JWkGbx4xRG3jg1o8zIluhXeRd8
+	 kySwh5Gn79wOupRx3AeH0ykzNQKmfq1b1wb01grpL47J6RELrGEO0TX4n+wm2tfd0p
+	 DYP90LuR+cGu2UzGq9KedDOPH76dBe/G3ihsA2ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/369] power: supply: cpcap-charger: Fix null check for power_supply_get_by_name
+Subject: [PATCH 6.16 166/627] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
 Date: Tue, 12 Aug 2025 19:27:41 +0200
-Message-ID: <20250812173020.945236614@linuxfoundation.org>
+Message-ID: <20250812173425.602015842@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit d9fa3aae08f99493e67fb79413c0e95d30fca5e9 ]
+[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
 
-In the cpcap_usb_detect() function, the power_supply_get_by_name()
-function may return `NULL` instead of an error pointer.
-To prevent potential null pointer dereferences, Added a null check.
+When iwl_opmode_register() fails, it does not unregster rate control,
+which will cause a memory leak issue, this patch fixes it.
 
-Fixes: eab4e6d953c1 ("power: supply: cpcap-charger: get the battery inserted infomation from cpcap-battery")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20250519024741.5846-1-hanchunchao@inspur.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/cpcap-charger.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/cpcap-charger.c
-index 91e7292d86bb..66dc622159a6 100644
---- a/drivers/power/supply/cpcap-charger.c
-+++ b/drivers/power/supply/cpcap-charger.c
-@@ -688,9 +688,8 @@ static void cpcap_usb_detect(struct work_struct *work)
- 		struct power_supply *battery;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index a2dc5c3b0596..1c05a3d8e424 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -61,8 +61,10 @@ static int __init iwl_mvm_init(void)
+ 	}
  
- 		battery = power_supply_get_by_name("battery");
--		if (IS_ERR_OR_NULL(battery)) {
--			dev_err(ddata->dev, "battery power_supply not available %li\n",
--					PTR_ERR(battery));
-+		if (!battery) {
-+			dev_err(ddata->dev, "battery power_supply not available\n");
- 			return;
- 		}
+ 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
+-	if (ret)
++	if (ret) {
+ 		pr_err("Unable to register MVM op_mode: %d\n", ret);
++		iwl_mvm_rate_control_unregister();
++	}
  
+ 	return ret;
+ }
 -- 
 2.39.5
 
