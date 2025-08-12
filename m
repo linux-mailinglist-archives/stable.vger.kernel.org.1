@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-167704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEF4B2316D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:05:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BF9B234BE
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:43:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E07B63A7563
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C59F17A7AA9
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1A22FDC3C;
-	Tue, 12 Aug 2025 18:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076662F291B;
+	Tue, 12 Aug 2025 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2swrF/e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGW3GARn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97252FDC2E;
-	Tue, 12 Aug 2025 18:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C7A13AA2F;
+	Tue, 12 Aug 2025 18:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021714; cv=none; b=aeVIoEnm4wiQxq6DHgImz6vP3bydW9YfaXQMkJwj9xky5X3w0Zl1DNgSOWuvQ1dsT6jmuuhQmL4XzxQo2wPstAsrKfzQHh7Wu319vEEJQZb58ay5qnkNrVddcGyR/pT+sJM4ZD/bk1c4c9E6aYxD2xafRLS+VLM/i+KJw0jvTZs=
+	t=1755024183; cv=none; b=NZu4RFBr0WyJKZvsbvZ/7hF+btfbhi7168/BYfU+/4y+jW4Sjo0yoCGNuERcqbCDrkOoCnRxiC4kcFlcC68k+V7F04QcDlCY13DnPs5mLpksH9xcAsqeo8LJ+kmzDSSdYQpdRlS7e1sxWRSAlIIz6tgtG/zdsLrUXCexhpKlz+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021714; c=relaxed/simple;
-	bh=g4rzXRr/v+K2YIA3RLzLiKimlFY08AJuvCDxVNL4VnU=;
+	s=arc-20240116; t=1755024183; c=relaxed/simple;
+	bh=bE2qh0NULCFF4/g6Fqz4N+tZcNlTuCG9hTFtCqncdzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLmQ1SPFvHoRgQr5JlogeVXjKVV84kGtZuVe3o73LxoMsl3IsIhX5YRzlv1gNX9mKBZ6Wsvr8tMNjicfHn/ISpflVPOV887LekXUkJtqXGnaO7NTYGnXdv78jjgv36wX3xWLPbvlEQEXVEQvpC/zWgCMMeBa3gJWOhm2AeZa5t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2swrF/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6515BC4CEF0;
-	Tue, 12 Aug 2025 18:01:53 +0000 (UTC)
+	 MIME-Version; b=qan4XbZW0SocliTQuhDINbp71oOk/ps5R6sRNwSXmBmQlBlUBDJXc2j4haPJArh0xTIjaipVOs5IaiqK5drdUcOZhndCbpgspNnX9VNZ/wmE/aN6XeZz7UPyfOeHHp1WNNB8OvaeoPi9mMsDs43A+wpkhA4hFab6w04woeiBQg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGW3GARn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE4DC4CEF0;
+	Tue, 12 Aug 2025 18:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021713;
-	bh=g4rzXRr/v+K2YIA3RLzLiKimlFY08AJuvCDxVNL4VnU=;
+	s=korg; t=1755024183;
+	bh=bE2qh0NULCFF4/g6Fqz4N+tZcNlTuCG9hTFtCqncdzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2swrF/e9noaKg6ImmLDNUgkMAUj4EtNtXN/3tOl5C+IoGuxozWHp/TeeA/KPOu8Y
-	 gl/uA9EOXjpSzG/X2Z8bOGoOxqbib4VI9b2yzQa3/monRw9bIE2sllnIJjGZwmdRN7
-	 2L982T5XqKC70Di4sRuXbQj4k8IgqlEdUlpMI4+E=
+	b=nGW3GARnVpiffs8juFVnsjJwRnHwadG3KTnfCoB4gW6RhcNa0FiJR3Nu2FnBKO2Wu
+	 AXeyz1+avRVxuCQovFMyhNOdQuHkI6tEPgFGqU3nSU2ctxgm21AqF3RpbyvQQQKLK2
+	 I96yQQWmjRrrdyKRC72c+lsAah+GmMRrT/KT9br8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/262] phy: mscc: Fix parsing of unicast frames
-Date: Tue, 12 Aug 2025 19:29:52 +0200
-Message-ID: <20250812173001.844175984@linuxfoundation.org>
+Subject: [PATCH 6.16 298/627] pinctrl: cirrus: madera-core: Use devm_pinctrl_register_mappings()
+Date: Tue, 12 Aug 2025 19:29:53 +0200
+Message-ID: <20250812173430.641780740@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Thomas Richard <thomas.richard@bootlin.com>
 
-[ Upstream commit 6fb5ff63b35b7e849cc8510957f25753f87f63d2 ]
+[ Upstream commit 90256033c11028a57437b145449c0dab196183b9 ]
 
-According to the 1588 standard, it is possible to use both unicast and
-multicast frames to send the PTP information. It was noticed that if the
-frames were unicast they were not processed by the analyzer meaning that
-they were not timestamped. Therefore fix this to match also these
-unicast frames.
+Use devm_pinctrl_register_mappings(), so the mappings are automatically
+unregistered by the core. If pinctrl_enable() failed during the probe,
+pinctrl_mappings were not freed. Now it is done by the core.
 
-Fixes: ab2bf9339357 ("net: phy: mscc: 1588 block initialization")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250726140307.3039694-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 218d72a77b0b ("pinctrl: madera: Add driver for Cirrus Logic Madera codecs")
+Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/20250609-pinctrl-madera-devm-pinctrl-register-mappings-v1-1-ba2c2822cf6c@bootlin.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 1 +
- drivers/net/phy/mscc/mscc_ptp.h | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/pinctrl/cirrus/pinctrl-madera-core.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 7e7ce79eadff..d0bd6ab45ebe 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -897,6 +897,7 @@ static int vsc85xx_eth1_conf(struct phy_device *phydev, enum ts_blk blk,
- 				     get_unaligned_be32(ptp_multicast));
- 	} else {
- 		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST;
-+		val |= ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST;
- 		vsc85xx_ts_write_csr(phydev, blk,
- 				     MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(0), val);
- 		vsc85xx_ts_write_csr(phydev, blk,
-diff --git a/drivers/net/phy/mscc/mscc_ptp.h b/drivers/net/phy/mscc/mscc_ptp.h
-index da3465360e90..ae9ad925bfa8 100644
---- a/drivers/net/phy/mscc/mscc_ptp.h
-+++ b/drivers/net/phy/mscc/mscc_ptp.h
-@@ -98,6 +98,7 @@
- #define MSCC_ANA_ETH1_FLOW_ADDR_MATCH2(x) (MSCC_ANA_ETH1_FLOW_ENA(x) + 3)
- #define ANA_ETH1_FLOW_ADDR_MATCH2_MASK_MASK	GENMASK(22, 20)
- #define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_MULTICAST	0x400000
-+#define ANA_ETH1_FLOW_ADDR_MATCH2_ANY_UNICAST	0x200000
- #define ANA_ETH1_FLOW_ADDR_MATCH2_FULL_ADDR	0x100000
- #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST_MASK	GENMASK(17, 16)
- #define ANA_ETH1_FLOW_ADDR_MATCH2_SRC_DEST	0x020000
+diff --git a/drivers/pinctrl/cirrus/pinctrl-madera-core.c b/drivers/pinctrl/cirrus/pinctrl-madera-core.c
+index 73ec5b9beb49..d19ef13224cc 100644
+--- a/drivers/pinctrl/cirrus/pinctrl-madera-core.c
++++ b/drivers/pinctrl/cirrus/pinctrl-madera-core.c
+@@ -1061,8 +1061,9 @@ static int madera_pin_probe(struct platform_device *pdev)
+ 
+ 	/* if the configuration is provided through pdata, apply it */
+ 	if (pdata->gpio_configs) {
+-		ret = pinctrl_register_mappings(pdata->gpio_configs,
+-						pdata->n_gpio_configs);
++		ret = devm_pinctrl_register_mappings(priv->dev,
++						     pdata->gpio_configs,
++						     pdata->n_gpio_configs);
+ 		if (ret)
+ 			return dev_err_probe(priv->dev, ret,
+ 						"Failed to register pdata mappings\n");
+@@ -1081,17 +1082,8 @@ static int madera_pin_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static void madera_pin_remove(struct platform_device *pdev)
+-{
+-	struct madera_pin_private *priv = platform_get_drvdata(pdev);
+-
+-	if (priv->madera->pdata.gpio_configs)
+-		pinctrl_unregister_mappings(priv->madera->pdata.gpio_configs);
+-}
+-
+ static struct platform_driver madera_pin_driver = {
+ 	.probe = madera_pin_probe,
+-	.remove = madera_pin_remove,
+ 	.driver = {
+ 		.name = "madera-pinctrl",
+ 	},
 -- 
 2.39.5
 
