@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5080B232D9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:22:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390A9B22FC8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD0053A6F5C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:17:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A2DC188A32C
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EECD2F5E;
-	Tue, 12 Aug 2025 18:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299312FD1D1;
+	Tue, 12 Aug 2025 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tS8F9LOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaMdAAoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5BF61FFE;
-	Tue, 12 Aug 2025 18:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2202F7461;
+	Tue, 12 Aug 2025 17:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022625; cv=none; b=ANGX8SpogA32fna3e68KkiG7H2ZWwCM3CmRNsYktuNFFLBIrrqRF71ZSj9609XHRvBrNmJT7hwSm83xgVKr3JivgZKpu5de6vuVo5++39xodgRNMeQqqSYSmgahkIKQlQhNPvMN0Pis+El7JMXkeAbsff1WD83zCbVqlf3IBGDE=
+	t=1755020573; cv=none; b=VYFzA/EXZvFO6+LjPsFnU9MylOD7SQR1bcRx1vNdMOnH+uJKgP2uRlT8cfyLiRt1IpJaoIqUrzr4dFai+Rqd5KPEOlkkfv0/1Dvq6RwdQ9qfbOnUL5ztp079Qyt3m8xmKCVX8Kae4xCwKh0NtoCUZKk9Ekcp/Pjf7cYJbfvNQOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022625; c=relaxed/simple;
-	bh=7Ea624KM/+OgohTHZK7kVSM+M0R3gcY2hGwQPoqty9o=;
+	s=arc-20240116; t=1755020573; c=relaxed/simple;
+	bh=w7KwPsTtA48KeJKUhL+xPIj/gRXqEJEqwbGAnYecpDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjC1+XM95EUa7EsyQVTWxkypUPHcmxHHuYOQEzf1qPakeXJh1MGA9e9Hf9k+60goawR/vDZPruK0b6ErLX6U4XEnl9QaGTYjqoS9dBel+0h4+KC61vx26bFvuS0xZ9zmnfnDNYLSz3r+MTd9Ab6cZGu9kzRMPkoNJzs/h0BJuFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tS8F9LOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3168C4CEF0;
-	Tue, 12 Aug 2025 18:17:04 +0000 (UTC)
+	 MIME-Version; b=bua38tuhPys/5QigDozYJP0qzHpphSqnI5BXR2kqvSrg7bpOLfblGPJEig6PRGEFFs0lP5/xDzUOZkgELxp7M1wFkSSmuqJXlNds/9crmIbhdXomBk14FU6bimF26QfC3TxufdHNfekqCQbiH1bQO2itB7C9SF4p7iiVaXBbDq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaMdAAoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57696C4CEF0;
+	Tue, 12 Aug 2025 17:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022625;
-	bh=7Ea624KM/+OgohTHZK7kVSM+M0R3gcY2hGwQPoqty9o=;
+	s=korg; t=1755020572;
+	bh=w7KwPsTtA48KeJKUhL+xPIj/gRXqEJEqwbGAnYecpDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tS8F9LObQuLLlFWVxCCYweMnWdn1+cj9OsS+zjhfACpH/HV9+SVtb6T5VajrQ7Lzr
-	 2Ps4LLObbqNq8yss8cWd5F7DTJ7BLmeno3d1uoo6TDOcvLu0J2AFCreMBRzzA5KChd
-	 rLZhbl8oWeCNtD4pJuBcEi3WtmyKNTJ7k51UvYbA=
+	b=SaMdAAoSxbHp+cLjBDcWwx6lG8wLv5EJPSOK3/JsJojA9+uIzPKd3MappazLD+094
+	 xZGTgoDPojerApMboNH/DnjAitgTdVy/WR76lC34GsUFuBHVIM8OeOSf0aDXHFS22W
+	 EGjHJu0JBrxyPN1ZUgaI6TQqq7xdqZE+1+pEjSO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/369] crypto: img-hash - Fix dma_unmap_sg() nents value
-Date: Tue, 12 Aug 2025 19:28:26 +0200
-Message-ID: <20250812173022.622997953@linuxfoundation.org>
+Subject: [PATCH 6.1 119/253] wifi: rtl8xxxu: Fix RX skb size for aggregation disabled
+Date: Tue, 12 Aug 2025 19:28:27 +0200
+Message-ID: <20250812172953.771560162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Martin Kaistra <martin.kaistra@linutronix.de>
 
-[ Upstream commit 34b283636181ce02c52633551f594fec9876bec7 ]
+[ Upstream commit d76a1abcf57734d2bcd4a7ec051617edd4513d7f ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+Commit 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for
+phystats") increased the skb size when aggregation is enabled but decreased
+it for the aggregation disabled case.
 
-Fixes: d358f1abbf71 ("crypto: img-hash - Add Imagination Technologies hw hash accelerator")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+As a result, if a frame near the maximum size is received,
+rtl8xxxu_rx_complete() is called with status -EOVERFLOW and then the
+driver starts to malfunction and no further communication is possible.
+
+Restore the skb size in the aggregation disabled case.
+
+Fixes: 1e5b3b3fe9e0 ("rtl8xxxu: Adjust RX skb size to include space for phystats")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250709121522.1992366-1-martin.kaistra@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/img-hash.c | 2 +-
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
-index 7e93159c3b6b..d5df3d2da50c 100644
---- a/drivers/crypto/img-hash.c
-+++ b/drivers/crypto/img-hash.c
-@@ -436,7 +436,7 @@ static int img_hash_write_via_dma_stop(struct img_hash_dev *hdev)
- 	struct img_hash_request_ctx *ctx = ahash_request_ctx(hdev->req);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index cd22c756acc6..c1bc55f0e4c0 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -5858,7 +5858,7 @@ static int rtl8xxxu_submit_rx_urb(struct rtl8xxxu_priv *priv,
+ 		skb_size = fops->rx_agg_buf_size;
+ 		skb_size += (rx_desc_sz + sizeof(struct rtl8723au_phy_stats));
+ 	} else {
+-		skb_size = IEEE80211_MAX_FRAME_LEN;
++		skb_size = IEEE80211_MAX_FRAME_LEN + rx_desc_sz;
+ 	}
  
- 	if (ctx->flags & DRIVER_FLAGS_SG)
--		dma_unmap_sg(hdev->dev, ctx->sg, ctx->dma_ct, DMA_TO_DEVICE);
-+		dma_unmap_sg(hdev->dev, ctx->sg, 1, DMA_TO_DEVICE);
- 
- 	return 0;
- }
+ 	skb = __netdev_alloc_skb(NULL, skb_size, GFP_KERNEL);
 -- 
 2.39.5
 
