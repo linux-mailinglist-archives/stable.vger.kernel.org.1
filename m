@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9C8B2335F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:28:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D30FB231A8
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1776D2A78AE
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:24:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F6CA6E0BD6
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970232E7BD4;
-	Tue, 12 Aug 2025 18:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406472FE595;
+	Tue, 12 Aug 2025 18:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpX88eFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7dTAVSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F0A3F9D2;
-	Tue, 12 Aug 2025 18:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F054B2FF154;
+	Tue, 12 Aug 2025 18:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023052; cv=none; b=AqxptYR3pQ/lgb/US5jHx5zk/3wjPU5vVHMQUFbOZoyu2dWHhiOZ7lo4sA825AdaWt9yCeuoQ8a8AnQ959BwG2ExTxoh3MMix+k7DxgxYAm0TBX4CIackpPeL+6LKNh6pxDicrDvGPYnXBcmZyx6+BGFiiwESh3JxNxHeDGVqxA=
+	t=1755021860; cv=none; b=QnU+eSYe3hC7s3X2D61PZEq7B6A+DT2axQRug6qr3AjL+SzoR1/BDoKRP2meYStQPkq8/spboJeDNQysFvMsvFGCFHPtcOmWet5k+a/QSuyZgzEjHQ/toS7+595TZ9l8Z2oUKj27GeJ9+m1eeu2dIlx5bu50CxB+r7gPEgkWqlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023052; c=relaxed/simple;
-	bh=0ZD/DGY1kDanOaAFB5w310dRrl4hfD/NGZRa2Qn9uis=;
+	s=arc-20240116; t=1755021860; c=relaxed/simple;
+	bh=aJMnPjejzZP+ezk9My8S8ojSNcnu1ydthg/nNAB6YH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mp5nQLFStmXJ6lz5qgPKnh6ABrDB7UiXcvXnW9wdDYtNnY4iEFC2Ki0LSmeYh5CUAPzsTbdUdSwh3lawAKhXjtsIToydpFx4vJuXfV5kUF9HgWxwrVG7Ygbng7/2hXAevraxTECZ1wdrAhTNAQPat747y9Vxgy5h4+qq/wQUW2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpX88eFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B658AC4CEF0;
-	Tue, 12 Aug 2025 18:24:11 +0000 (UTC)
+	 MIME-Version; b=PitPjilZmduAe8b4pzBUpCkcBacTfMhzZOXFE5/4qOUoN40jAAqJn9QuUX38TQ4sQWWA0Eof8KOxoCfbkpYL71YRZ2NdbWNNbe/4hNipEgrxz7piTJyA9mgFUZSJmpG2XicvE4xS2yi+b33XX2qifnucX50EzjV9Kk3bB4TcuCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7dTAVSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6013FC4CEF0;
+	Tue, 12 Aug 2025 18:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023052;
-	bh=0ZD/DGY1kDanOaAFB5w310dRrl4hfD/NGZRa2Qn9uis=;
+	s=korg; t=1755021859;
+	bh=aJMnPjejzZP+ezk9My8S8ojSNcnu1ydthg/nNAB6YH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IpX88eFuhsClEmHaXPefD5MzhgJ8cW4vGYTa+cwY3+vxR7+P0bo0/Y4PCmXvdGEEu
-	 lEqmixeYmxMCCjL7ShLNa2rxc+x0mElYJJrqlHW2f5JO0zO6svx3vGlPyHF8QYknZp
-	 NT0K3GYGymzb2lS69XKQFI4XeKW6dZK+ofKOaKJM=
+	b=A7dTAVSLaHKEhWLiyU2Jw6bpCtxK/aRdegnLJ8AVQjLCTgWuie7FpJJze8c5u7xnc
+	 eKGMAfACf4Gfn0YtVKphv0nGiWK3SgU1UKa3vNttCJJ2uFbepTTZ3eV6Md7kU31HJX
+	 1Zp2gNsDW2yW91w/TxHgUYvQlSiwamML4IxOXWUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 336/369] drm/i915/hdmi: propagate errors from intel_hdmi_init_connector()
-Date: Tue, 12 Aug 2025 19:30:33 +0200
-Message-ID: <20250812173029.343742807@linuxfoundation.org>
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 246/262] i2c: stm32f7: simplify status messages in case of errors
+Date: Tue, 12 Aug 2025 19:30:34 +0200
+Message-ID: <20250812173003.625875512@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-commit 7fb56536fa37e23bc291d31c10e575d500f4fda7 upstream.
+[ Upstream commit 33a00d919253022aabafecae6bc88a6fad446589 ]
 
-Propagate errors from intel_hdmi_init_connector() to be able to handle
-them at callers. This is similar to intel_dp_init_connector().
+Avoid usage of __func__ when reporting an error message
+since dev_err/dev_dbg are already providing enough details
+to identify the source of the message.
 
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Closes: https://lore.kernel.org/r/20241031105145.2140590-1-senozhatsky@chromium.org
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/cdaf9e32cc4880c46e120933438c37b4d87be12e.1735568047.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: 6aae87fe7f18 ("i2c: stm32f7: unmap DMA mapped buffer")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_hdmi.c |   10 ++++++----
- drivers/gpu/drm/i915/display/intel_hdmi.h |    2 +-
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-stm32f7.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_hdmi.c
-+++ b/drivers/gpu/drm/i915/display/intel_hdmi.c
-@@ -3015,7 +3015,7 @@ void intel_infoframe_init(struct intel_d
- 	}
- }
- 
--void intel_hdmi_init_connector(struct intel_digital_port *dig_port,
-+bool intel_hdmi_init_connector(struct intel_digital_port *dig_port,
- 			       struct intel_connector *intel_connector)
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -1601,6 +1601,7 @@ static irqreturn_t stm32f7_i2c_isr_error
  {
- 	struct intel_display *display = to_intel_display(dig_port);
-@@ -3033,17 +3033,17 @@ void intel_hdmi_init_connector(struct in
- 		    intel_encoder->base.base.id, intel_encoder->base.name);
+ 	struct stm32f7_i2c_dev *i2c_dev = data;
+ 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
++	u16 addr = f7_msg->addr;
+ 	void __iomem *base = i2c_dev->base;
+ 	struct device *dev = i2c_dev->dev;
+ 	struct stm32_i2c_dma *dma = i2c_dev->dma;
+@@ -1610,8 +1611,7 @@ static irqreturn_t stm32f7_i2c_isr_error
  
- 	if (DISPLAY_VER(display) < 12 && drm_WARN_ON(dev, port == PORT_A))
--		return;
-+		return false;
+ 	/* Bus error */
+ 	if (status & STM32F7_I2C_ISR_BERR) {
+-		dev_err(dev, "<%s>: Bus error accessing addr 0x%x\n",
+-			__func__, f7_msg->addr);
++		dev_err(dev, "Bus error accessing addr 0x%x\n", addr);
+ 		writel_relaxed(STM32F7_I2C_ICR_BERRCF, base + STM32F7_I2C_ICR);
+ 		stm32f7_i2c_release_bus(&i2c_dev->adap);
+ 		f7_msg->result = -EIO;
+@@ -1619,21 +1619,19 @@ static irqreturn_t stm32f7_i2c_isr_error
  
- 	if (drm_WARN(dev, dig_port->max_lanes < 4,
- 		     "Not enough lanes (%d) for HDMI on [ENCODER:%d:%s]\n",
- 		     dig_port->max_lanes, intel_encoder->base.base.id,
- 		     intel_encoder->base.name))
--		return;
-+		return false;
+ 	/* Arbitration loss */
+ 	if (status & STM32F7_I2C_ISR_ARLO) {
+-		dev_dbg(dev, "<%s>: Arbitration loss accessing addr 0x%x\n",
+-			__func__, f7_msg->addr);
++		dev_dbg(dev, "Arbitration loss accessing addr 0x%x\n", addr);
+ 		writel_relaxed(STM32F7_I2C_ICR_ARLOCF, base + STM32F7_I2C_ICR);
+ 		f7_msg->result = -EAGAIN;
+ 	}
  
- 	ddc_pin = intel_hdmi_ddc_pin(intel_encoder);
- 	if (!ddc_pin)
--		return;
-+		return false;
+ 	if (status & STM32F7_I2C_ISR_PECERR) {
+-		dev_err(dev, "<%s>: PEC error in reception accessing addr 0x%x\n",
+-			__func__, f7_msg->addr);
++		dev_err(dev, "PEC error in reception accessing addr 0x%x\n", addr);
+ 		writel_relaxed(STM32F7_I2C_ICR_PECCF, base + STM32F7_I2C_ICR);
+ 		f7_msg->result = -EINVAL;
+ 	}
  
- 	drm_connector_init_with_ddc(dev, connector,
- 				    &intel_hdmi_connector_funcs,
-@@ -3088,6 +3088,8 @@ void intel_hdmi_init_connector(struct in
- 					   &conn_info);
- 	if (!intel_hdmi->cec_notifier)
- 		drm_dbg_kms(display->drm, "CEC notifier get failed\n");
-+
-+	return true;
- }
- 
- /*
---- a/drivers/gpu/drm/i915/display/intel_hdmi.h
-+++ b/drivers/gpu/drm/i915/display/intel_hdmi.h
-@@ -22,7 +22,7 @@ struct intel_encoder;
- struct intel_hdmi;
- union hdmi_infoframe;
- 
--void intel_hdmi_init_connector(struct intel_digital_port *dig_port,
-+bool intel_hdmi_init_connector(struct intel_digital_port *dig_port,
- 			       struct intel_connector *intel_connector);
- bool intel_hdmi_compute_has_hdmi_sink(struct intel_encoder *encoder,
- 				      const struct intel_crtc_state *crtc_state,
+ 	if (status & STM32F7_I2C_ISR_ALERT) {
+-		dev_dbg(dev, "<%s>: SMBus alert received\n", __func__);
++		dev_dbg(dev, "SMBus alert received\n");
+ 		writel_relaxed(STM32F7_I2C_ICR_ALERTCF, base + STM32F7_I2C_ICR);
+ 		i2c_handle_smbus_alert(i2c_dev->alert->ara);
+ 		return IRQ_HANDLED;
 
 
 
