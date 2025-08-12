@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD730B2330C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:24:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B01DB23147
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5BDE1887EFC
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:20:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB2F2162F6E
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7563F9D2;
-	Tue, 12 Aug 2025 18:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2D72FF167;
+	Tue, 12 Aug 2025 18:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07g5//oi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Woq9hNlY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8A11D416C;
-	Tue, 12 Aug 2025 18:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5432FE571;
+	Tue, 12 Aug 2025 17:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022793; cv=none; b=UCWSAUIYp3qZmKbqL7J0glo6j1RRFAcrzepvlX3Z3d4qQTTOZyinIGgnkR8hsu3nmpcwQQNzhkwpsKa67glp7pHOYXY+IVO2HOSqJE0ZczJCuyKdTaXJjajLUOjxDN5IChmKDcHAQjbAxjx98sRinEBVh4o9GTEWr6Ky+egZfNc=
+	t=1755021600; cv=none; b=C82ieD5KDzLcOxHk3Vd4r9hOQT8bFJUi0bDys/9x79xEJ/Dm7qPcUM+K9DnNgAe85ZeP66rnG2pPcOUQD/ha8iby8sQxxdR/eA7YnJxoqSzPfdeRzF/tUxDTzzFcyoGTwilsO52phn1HJsLnQzOp+dgbVc9mDzM9P+czIT9QK38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022793; c=relaxed/simple;
-	bh=tbhTJHZkRsNEBCcBhRpvfTYUCdGhpdyD9UfrKmAE0k0=;
+	s=arc-20240116; t=1755021600; c=relaxed/simple;
+	bh=GPWpdyQqvJfOAKWpm9l6XXf/KU/OEw88mf2Eaxll1yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TbzG8CMEakuvOMl4LUgH+JaN1oKOPyh2YX1TphvJfS/4jUmeCQjH2mYv/azRoXQOrVVQJEXJVlfVtknmmrWp8xwO+Q0P/UQCIimhnKMQo18kuPlDW8XbY4vpRwQ+SzCLpxeuUg+SuNx3Jwx/0LiLjegrdWSuSF2SsROLT6Xvo1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07g5//oi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC9DC4CEF6;
-	Tue, 12 Aug 2025 18:19:52 +0000 (UTC)
+	 MIME-Version; b=rt6NWxufjWCkEASAvg14UlqSj3yKLJIvh4+uxie95KxsQjKXrLjguEPvmQ5srvyXzw0/oB5tt66eBL0TOqBmyhom3sIfisZIXchycHiMXYZT8rlYOTUWJIooZXPteRFCnFvSnP8Eyi/gDwviz1Rm6ifgITK7lDfvO40SyQ6hOMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Woq9hNlY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4637AC4CEF0;
+	Tue, 12 Aug 2025 17:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022793;
-	bh=tbhTJHZkRsNEBCcBhRpvfTYUCdGhpdyD9UfrKmAE0k0=;
+	s=korg; t=1755021599;
+	bh=GPWpdyQqvJfOAKWpm9l6XXf/KU/OEw88mf2Eaxll1yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07g5//oi1+4vH0BsoPcFiNsurhnBfdIwpFPmnw1MkPHCg9OiqNMxeUFkioguSFUc6
-	 ecYJrObJjHou42sbd0QOHpF1mm7DYQetr/xWZYpRvIcJyAi8G+9F/L/R6TB+5KSz36
-	 +etrs5kmVqPEf9hFuQZRHwWr2jslkP7I0Kk/i0Bg=
+	b=Woq9hNlYcH7V2rlGFu3NgCB2dlQE8pTOr1ldApKdxbl8CtGcFJzfTZaSxjFhcEXct
+	 V6gIy87vZ96CGcw4RuB/msplYCeggZzuz7STwTqypPEicLu/qDAChKC084pfqhicyH
+	 /b8/2YHZrEnPf7EB28Hp/ePaa+2fzh8sjabVTiOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 261/369] f2fs: fix to calculate dirty data during has_not_enough_free_secs()
+Subject: [PATCH 6.6 170/262] rtc: pcf8563: fix incorrect maximum clock rate handling
 Date: Tue, 12 Aug 2025 19:29:18 +0200
-Message-ID: <20250812173024.582699431@linuxfoundation.org>
+Message-ID: <20250812173000.344681179@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit e194e140ab7de2ce2782e64b9e086a43ca6ff4f2 ]
+[ Upstream commit 906726a5efeefe0ef0103ccff5312a09080c04ae ]
 
-In lfs mode, dirty data needs OPU, we'd better calculate lower_p and
-upper_p w/ them during has_not_enough_free_secs(), otherwise we may
-encounter out-of-space issue due to we missed to reclaim enough
-free section w/ foreground gc.
+When pcf8563_clkout_round_rate() is called with a requested rate higher
+than the highest supported rate, it currently returns 0, which disables
+the clock. According to the clk API, round_rate() should instead return
+the highest supported rate. Update the function to return the maximum
+supported rate in this case.
 
-Fixes: 36abef4e796d ("f2fs: introduce mode=lfs mount option")
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: a39a6405d5f94 ("rtc: pcf8563: add CLKOUT to common clock framework")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250710-rtc-clk-round-rate-v1-5-33140bb2278e@redhat.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/rtc/rtc-pcf8563.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 7d7d709b55ff..f8f94301350c 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -626,8 +626,7 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 	unsigned int dent_blocks = total_dent_blocks % CAP_BLKS_PER_SEC(sbi);
- 	unsigned int data_blocks = 0;
+diff --git a/drivers/rtc/rtc-pcf8563.c b/drivers/rtc/rtc-pcf8563.c
+index ea82b89d8929..61be91c25cf1 100644
+--- a/drivers/rtc/rtc-pcf8563.c
++++ b/drivers/rtc/rtc-pcf8563.c
+@@ -386,7 +386,7 @@ static long pcf8563_clkout_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		if (clkout_rates[i] <= rate)
+ 			return clkout_rates[i];
  
--	if (f2fs_lfs_mode(sbi) &&
--		unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
-+	if (f2fs_lfs_mode(sbi)) {
- 		total_data_blocks = get_pages(sbi, F2FS_DIRTY_DATA);
- 		data_secs = total_data_blocks / CAP_BLKS_PER_SEC(sbi);
- 		data_blocks = total_data_blocks % CAP_BLKS_PER_SEC(sbi);
+-	return 0;
++	return clkout_rates[0];
+ }
+ 
+ static int pcf8563_clkout_set_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.39.5
 
