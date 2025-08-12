@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-168300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EDBDB2346C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:40:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58733B230BF
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4CF41885230
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 133EC623DE2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41C92F5481;
-	Tue, 12 Aug 2025 18:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE14E2FDC20;
+	Tue, 12 Aug 2025 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOGIncXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VImDN9jy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7313026A0EB;
-	Tue, 12 Aug 2025 18:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA5F2F83CB;
+	Tue, 12 Aug 2025 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023714; cv=none; b=Cy9Um007bhvaeLgAd2iZcFZILnl3xkQjHETbja5QFRwH7HoCe/fb+RA5g0+YXwXYqDQvSfPrgUtZ/0Yjgb9Q7pON5DYnfaCbVTssKR4IBCQpds23IaG7kjktPXREUpouu695lIrzeSZ5hglsS+1YcVnsZpfyQwVDJvVmFwjFyII=
+	t=1755021298; cv=none; b=ZI/g2HUFRxbBLeDGiTj39+67x/F2B3tjA9qY/lYZHt8p11tqdGJ5VRZ/+x50Tg8RoJepBL0nWf7cpPOyJ5AIaCi18OFJAQhCjjDqOuSTD0sXZ3kRHnqb7CJgcPsCIjtYvDsJbk6KNiFE27aBdsLATewK9098OXOspdWKQb3PvUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023714; c=relaxed/simple;
-	bh=RszMg4lcSrFQNCTvC74U2tBW9O+6d8zKvK/iKaUHajw=;
+	s=arc-20240116; t=1755021298; c=relaxed/simple;
+	bh=a5a5sX4/Cwq41aaJh+jkZ04hZlkIklzz4LtAQai74iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p46Or0cx8tH/E5CxHXtkH1ogOIL2mptl4OrYfk+x0AtRJQnpRXy52siehZykzSPcew5ZCm4wHh5TLZ0xb3KtriP4mio2RYj69Cc9tK1BQk5klkqWIuh3/R+xXYG/+2RMAQLlGgRL1ChPyFMnb1VF19X+a8zfL8bohuAVoGUhwuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOGIncXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6257C4CEF0;
-	Tue, 12 Aug 2025 18:35:13 +0000 (UTC)
+	 MIME-Version; b=kLP5yPBzjhN1zCJumW78eYJhzq4XL++PGlTJNSOVbBh1sXr6GR6jAJjiiUKaodfL5uLG76XLIox7NRQj9xtSK/+dfvQQtnV5jNtLhmIkfvYue5EP4BMuqLSL63amLEsP8P/3Lojcf04OwxmDfza1koDttU5FDAYZqEQUVrEYJFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VImDN9jy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF630C4CEF0;
+	Tue, 12 Aug 2025 17:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023714;
-	bh=RszMg4lcSrFQNCTvC74U2tBW9O+6d8zKvK/iKaUHajw=;
+	s=korg; t=1755021298;
+	bh=a5a5sX4/Cwq41aaJh+jkZ04hZlkIklzz4LtAQai74iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOGIncXi3DWxoi4dhc2axqLRDYpNtbDPjiOLMJ0I6fJci2KDeFUTWK5EcAq7rDwoE
-	 V7jfhMOvaHA4InOG0sVHKfzbazzJL8WFfM7oLuzbq7rhllE1A8kaJwLIfqBQNzn8uL
-	 gw4SCyu82LpqZEniPlgmyI3SuojE7siDM+kFhm6o=
+	b=VImDN9jy5/LfGHJaCpqvvaAWsPeYpvsXTWewIwAqAza9/AvBoMM3c1A/B+WVtcb2w
+	 KtkUzUD9ua15z5QAWK/Id4cqffJnUTHCzMaYp0D7mvBT4kNbQwqifAGTbBmzJjKQI2
+	 HKfHnPhD4a1lp5JkJjet4E0QbU0uikTjrj4XgU/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 160/627] wifi: ath12k: Pass ab pointer directly to ath12k_dp_tx_get_encap_type()
+Subject: [PATCH 6.6 067/262] m68k: Dont unregister boot console needlessly
 Date: Tue, 12 Aug 2025 19:27:35 +0200
-Message-ID: <20250812173425.375541940@linuxfoundation.org>
+Message-ID: <20250812172955.853471237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 05062834350f0bf7ad1abcebc2807220e90220eb ]
+[ Upstream commit 83f672a7f69ec38b1bbb27221e342937f68c11c7 ]
 
-In ath12k_dp_tx_get_encap_type(), the arvif parameter is only used to
-retrieve the ab pointer. In vdev delete sequence the arvif->ar could
-become NULL and that would trigger kernel panic.
-Since the caller ath12k_dp_tx() already has a valid ab pointer, pass it
-directly to avoid panic and unnecessary dereferencing.
+When MACH_IS_MVME147, the boot console calls mvme147_scc_write() to
+generate console output. That will continue to work even after
+debug_cons_nputs() becomes unavailable so there's no need to
+unregister the boot console.
 
-PC points to "ath12k_dp_tx+0x228/0x988 [ath12k]"
-LR points to "ath12k_dp_tx+0xc8/0x988 [ath12k]".
-The Backtrace obtained is as follows:
-ath12k_dp_tx+0x228/0x988 [ath12k]
-ath12k_mac_tx_check_max_limit+0x608/0x920 [ath12k]
-ieee80211_process_measurement_req+0x320/0x348 [mac80211]
-ieee80211_tx_dequeue+0x9ac/0x1518 [mac80211]
-ieee80211_tx_dequeue+0xb14/0x1518 [mac80211]
-ieee80211_tx_prepare_skb+0x224/0x254 [mac80211]
-ieee80211_xmit+0xec/0x100 [mac80211]
-__ieee80211_subif_start_xmit+0xc50/0xf40 [mac80211]
-ieee80211_subif_start_xmit+0x2e8/0x308 [mac80211]
-netdev_start_xmit+0x150/0x18c
-dev_hard_start_xmit+0x74/0xc0
+Take the opportunity to remove a repeated MACH_IS_* test. Use the
+actual .write method (instead of a wrapper) and test that pointer
+instead. This means adding an unused parameter to debug_cons_nputs() for
+consistency with the struct console API.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+early_printk.c is only built when CONFIG_EARLY_PRINTK=y. As of late,
+head.S is only built when CONFIG_MMU_MOTOROLA=y. So let the former symbol
+depend on the latter, to obviate some ifdef conditionals.
 
-Fixes: e93bbd65547e ("wifi: ath12k: fix packets are sent in native wifi mode while we set raw mode")
-Signed-off-by: Tamizh Chelvam Raja <tamizh.raja@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250606044936.3989400-1-tamizh.raja@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Daniel Palmer <daniel@0x0f.com>
+Fixes: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d1d4328e5aa9a87bd8352529ce62b767731c0530.1743467205.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/m68k/Kconfig.debug         |  2 +-
+ arch/m68k/kernel/early_printk.c | 42 +++++++++++----------------------
+ arch/m68k/kernel/head.S         |  8 +++----
+ 3 files changed, 19 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index b6816b6c2c04..075912eacfaa 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -13,10 +13,9 @@
- #include "mac.h"
+diff --git a/arch/m68k/Kconfig.debug b/arch/m68k/Kconfig.debug
+index 30638a6e8edc..d036f903864c 100644
+--- a/arch/m68k/Kconfig.debug
++++ b/arch/m68k/Kconfig.debug
+@@ -10,7 +10,7 @@ config BOOTPARAM_STRING
  
- static enum hal_tcl_encap_type
--ath12k_dp_tx_get_encap_type(struct ath12k_link_vif *arvif, struct sk_buff *skb)
-+ath12k_dp_tx_get_encap_type(struct ath12k_base *ab, struct sk_buff *skb)
+ config EARLY_PRINTK
+ 	bool "Early printk"
+-	depends on !(SUN3 || M68000 || COLDFIRE)
++	depends on MMU_MOTOROLA
+ 	help
+ 	  Write kernel log output directly to a serial port.
+ 	  Where implemented, output goes to the framebuffer as well.
+diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
+index f11ef9f1f56f..521cbb8a150c 100644
+--- a/arch/m68k/kernel/early_printk.c
++++ b/arch/m68k/kernel/early_printk.c
+@@ -16,25 +16,10 @@
+ #include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
+ 
+-asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
+-
+-static void __ref debug_cons_write(struct console *c,
+-				   const char *s, unsigned n)
+-{
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME147)
+-		mvme147_scc_write(c, s, n);
+-	else if (MACH_IS_MVME16x)
+-		mvme16x_cons_write(c, s, n);
+-	else
+-		debug_cons_nputs(s, n);
+-#endif
+-}
++asmlinkage void __init debug_cons_nputs(struct console *c, const char *s, unsigned int n);
+ 
+ static struct console early_console_instance = {
+ 	.name  = "debug",
+-	.write = debug_cons_write,
+ 	.flags = CON_PRINTBUFFER | CON_BOOT,
+ 	.index = -1
+ };
+@@ -44,6 +29,12 @@ static int __init setup_early_printk(char *buf)
+ 	if (early_console || buf)
+ 		return 0;
+ 
++	if (MACH_IS_MVME147)
++		early_console_instance.write = mvme147_scc_write;
++	else if (MACH_IS_MVME16x)
++		early_console_instance.write = mvme16x_cons_write;
++	else
++		early_console_instance.write = debug_cons_nputs;
+ 	early_console = &early_console_instance;
+ 	register_console(early_console);
+ 
+@@ -51,20 +42,15 @@ static int __init setup_early_printk(char *buf)
+ }
+ early_param("earlyprintk", setup_early_printk);
+ 
+-/*
+- * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be called
+- * after init sections are discarded (for platforms that use it).
+- */
+-#if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+-      defined(CONFIG_COLDFIRE))
+-
+ static int __init unregister_early_console(void)
  {
- 	struct ieee80211_tx_info *tx_info = IEEE80211_SKB_CB(skb);
--	struct ath12k_base *ab = arvif->ar->ab;
+-	if (!early_console || MACH_IS_MVME16x)
+-		return 0;
++	/*
++	 * debug_cons_nputs() defined in arch/m68k/kernel/head.S cannot be
++	 * called after init sections are discarded (for platforms that use it).
++	 */
++	if (early_console && early_console->write == debug_cons_nputs)
++		return unregister_console(early_console);
  
- 	if (test_bit(ATH12K_FLAG_RAW_MODE, &ab->dev_flags))
- 		return HAL_TCL_ENCAP_TYPE_RAW;
-@@ -305,7 +304,7 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_link_vif *arvif,
- 			u32_encode_bits(mcbc_gsn, HTT_TCL_META_DATA_GLOBAL_SEQ_NUM);
- 	}
- 
--	ti.encap_type = ath12k_dp_tx_get_encap_type(arvif, skb);
-+	ti.encap_type = ath12k_dp_tx_get_encap_type(ab, skb);
- 	ti.addr_search_flags = arvif->hal_addr_search_flags;
- 	ti.search_type = arvif->search_type;
- 	ti.type = HAL_TCL_DESC_TYPE_BUFFER;
+-	return unregister_console(early_console);
++	return 0;
+ }
+ late_initcall(unregister_early_console);
+-
+-#endif
+diff --git a/arch/m68k/kernel/head.S b/arch/m68k/kernel/head.S
+index 9e812d8606be..397114962a14 100644
+--- a/arch/m68k/kernel/head.S
++++ b/arch/m68k/kernel/head.S
+@@ -3267,8 +3267,8 @@ func_return	putn
+  *	turns around and calls the internal routines.  This routine
+  *	is used by the boot console.
+  *
+- *	The calling parameters are:
+- *		void debug_cons_nputs(const char *str, unsigned length)
++ *	The function signature is -
++ *		void debug_cons_nputs(struct console *c, const char *s, unsigned int n)
+  *
+  *	This routine does NOT understand variable arguments only
+  *	simple strings!
+@@ -3277,8 +3277,8 @@ ENTRY(debug_cons_nputs)
+ 	moveml	%d0/%d1/%a0,%sp@-
+ 	movew	%sr,%sp@-
+ 	ori	#0x0700,%sr
+-	movel	%sp@(18),%a0		/* fetch parameter */
+-	movel	%sp@(22),%d1		/* fetch parameter */
++	movel	%sp@(22),%a0		/* char *s */
++	movel	%sp@(26),%d1		/* unsigned int n */
+ 	jra	2f
+ 1:
+ #ifdef CONSOLE_DEBUG
 -- 
 2.39.5
 
