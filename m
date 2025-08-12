@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-168751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3C5B23678
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:01:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1687AB23659
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10AE6680A74
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96A417BB8CC
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071CC29BDB7;
-	Tue, 12 Aug 2025 19:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEB12FE565;
+	Tue, 12 Aug 2025 18:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+C3o3II"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cts3tEq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30BB3FE7;
-	Tue, 12 Aug 2025 19:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769CE2C21E3;
+	Tue, 12 Aug 2025 18:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025217; cv=none; b=jytzGootFPVZdYQ0v4SBeQjpuKNCqH0XOreZ7Y9I4EbjmPcf50NaPnnzBs4/P158SYeHaKjMF0eakPzjTmZMi5bV3qaLakcy19w0Lobskk0nyZXt4zYvS6LAuaXQxc2pm1+R1h7XzE3hou7iYXucjJn0wg9oTn0tqEy2F3hmNp0=
+	t=1755025096; cv=none; b=p/1C5rBe5FfViUAT0j24c5Xu31GHSK71wsEDQJvvFa4ZsHz2bEQOdEcvEohul6Susoeg6OICs+W8eTNW54FbmZodAPjvAXbFtmeou/N4AAwUvIVnUrE6H+2O+CUOEysufbycUlFRt65h6q2/NWOADbjcgGa7S6U/JA84B9pG8Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025217; c=relaxed/simple;
-	bh=yWvkx/Uf02ZmCHCONekGzNYAYrc39IhpAeZ2w9vyl9w=;
+	s=arc-20240116; t=1755025096; c=relaxed/simple;
+	bh=NdO198EUCdLzAvDZtPwytD0qyat7pMiQRdtQayaA8t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMYVqa75ORBmRc3LDMhmdNLgUKGnz8VlIxCh85LnFWlM+jDnIo4FDz6Y5V9al7N3c+J9fjPExKg1crR9MgMBOvUUAgDmZHwBb8987Z//iPylCgdbENyteawlj1ba6Hj4YSEyyFn8cr1hr2W1RJiEdncyN05+LotKg4tN0JbpuAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+C3o3II; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216F0C4CEF0;
-	Tue, 12 Aug 2025 19:00:16 +0000 (UTC)
+	 MIME-Version; b=ca+YR3g4eUF+pRndqKmflP1Cj0ozTg3hG5AeTXxX3KFfd9L4GkYZHNeqq3KiHMQzuDu99AzVRzS5FRpL1JvNO7kFTbY66DkO7AN5tBimCBx+JJHLGBp6uBH1TVuYjQ4Arrvhl/i3VXsRayj+ALurXdU9F9S8I2Q3Mq6dnvN9g4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cts3tEq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940EFC4CEF0;
+	Tue, 12 Aug 2025 18:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025217;
-	bh=yWvkx/Uf02ZmCHCONekGzNYAYrc39IhpAeZ2w9vyl9w=;
+	s=korg; t=1755025096;
+	bh=NdO198EUCdLzAvDZtPwytD0qyat7pMiQRdtQayaA8t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+C3o3IIOZahfmArqKpbblpoZpERovueX6GA4DQsRCNE7U9zmUOOKcfEIEsNB6KUK
-	 6PMooA+Idvpq1CfeQEASGlDB9OeNh1/utgOsIatlLRTPRm1jfHmyrjJCexxpyrew5T
-	 BDb/AMkvEyYPAcDRqIeR0BHy5Fa8VqVdEIEnj2OU=
+	b=cts3tEq6oIq8zZfsHpyFebNSBMmfSs9HMC9Rob/jl6FM5g/d8HwbdBW7pvCM6UKrz
+	 vX6zl0a8+rR1qIHbc+ZNC/TPA/8NgwuZRPMDlNwThlr0oTyg9izX70+zuyJVuTPc0U
+	 ydQCTqKtuaSzybU6FFo2uETSgolg14gu1b4qeYNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stefan Metzmacher <metze@samba.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 560/627] smb: server: make sure we call ib_dma_unmap_single() only if we called ib_dma_map_single already
-Date: Tue, 12 Aug 2025 19:34:15 +0200
-Message-ID: <20250812173453.195899001@linuxfoundation.org>
+Subject: [PATCH 6.16 561/627] smb: server: let recv_done() consistently call put_recvmsg/smb_direct_disconnect_rdma_connection
+Date: Tue, 12 Aug 2025 19:34:16 +0200
+Message-ID: <20250812173453.234416788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
 References: <20250812173419.303046420@linuxfoundation.org>
@@ -73,12 +73,13 @@ Content-Transfer-Encoding: 8bit
 
 From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit afb4108c92898350e66b9a009692230bcdd2ac73 ]
+[ Upstream commit cfe76fdbb9729c650f3505d9cfb2f70ddda2dbdc ]
 
-In case of failures either ib_dma_map_single() might not be called yet
-or ib_dma_unmap_single() was already called.
+We should call put_recvmsg() before smb_direct_disconnect_rdma_connection()
+in order to call it before waking up the callers.
 
-We should make sure put_recvmsg() only calls ib_dma_unmap_single() if needed.
+In all error cases we should call smb_direct_disconnect_rdma_connection()
+in order to avoid stale connections.
 
 Cc: Namjae Jeon <linkinjeon@kernel.org>
 Cc: Steve French <smfrench@gmail.com>
@@ -91,45 +92,81 @@ Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/smb/server/transport_rdma.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 393254109fc4..fac82e60ff80 100644
+index fac82e60ff80..cd8a92fe372b 100644
 --- a/fs/smb/server/transport_rdma.c
 +++ b/fs/smb/server/transport_rdma.c
-@@ -265,8 +265,13 @@ smb_direct_recvmsg *get_free_recvmsg(struct smb_direct_transport *t)
- static void put_recvmsg(struct smb_direct_transport *t,
- 			struct smb_direct_recvmsg *recvmsg)
- {
--	ib_dma_unmap_single(t->cm_id->device, recvmsg->sge.addr,
--			    recvmsg->sge.length, DMA_FROM_DEVICE);
-+	if (likely(recvmsg->sge.length != 0)) {
-+		ib_dma_unmap_single(t->cm_id->device,
-+				    recvmsg->sge.addr,
-+				    recvmsg->sge.length,
-+				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
-+	}
+@@ -521,13 +521,13 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	t = recvmsg->transport;
  
- 	spin_lock(&t->recvmsg_queue_lock);
- 	list_add(&recvmsg->list, &t->recvmsg_queue);
-@@ -638,6 +643,7 @@ static int smb_direct_post_recv(struct smb_direct_transport *t,
- 		ib_dma_unmap_single(t->cm_id->device,
- 				    recvmsg->sge.addr, recvmsg->sge.length,
- 				    DMA_FROM_DEVICE);
-+		recvmsg->sge.length = 0;
- 		smb_direct_disconnect_rdma_connection(t);
- 		return ret;
+ 	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_RECV) {
++		put_recvmsg(t, recvmsg);
+ 		if (wc->status != IB_WC_WR_FLUSH_ERR) {
+ 			pr_err("Recv error. status='%s (%d)' opcode=%d\n",
+ 			       ib_wc_status_msg(wc->status), wc->status,
+ 			       wc->opcode);
+ 			smb_direct_disconnect_rdma_connection(t);
+ 		}
+-		put_recvmsg(t, recvmsg);
+ 		return;
  	}
-@@ -1819,6 +1825,7 @@ static int smb_direct_create_pools(struct smb_direct_transport *t)
- 		if (!recvmsg)
- 			goto err;
- 		recvmsg->transport = t;
-+		recvmsg->sge.length = 0;
- 		list_add(&recvmsg->list, &t->recvmsg_queue);
+ 
+@@ -542,6 +542,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	case SMB_DIRECT_MSG_NEGOTIATE_REQ:
+ 		if (wc->byte_len < sizeof(struct smb_direct_negotiate_req)) {
+ 			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
+ 			return;
+ 		}
+ 		t->negotiation_requested = true;
+@@ -549,7 +550,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		t->status = SMB_DIRECT_CS_CONNECTED;
+ 		enqueue_reassembly(t, recvmsg, 0);
+ 		wake_up_interruptible(&t->wait_status);
+-		break;
++		return;
+ 	case SMB_DIRECT_MSG_DATA_TRANSFER: {
+ 		struct smb_direct_data_transfer *data_transfer =
+ 			(struct smb_direct_data_transfer *)recvmsg->packet;
+@@ -559,6 +560,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (wc->byte_len <
+ 		    offsetof(struct smb_direct_data_transfer, padding)) {
+ 			put_recvmsg(t, recvmsg);
++			smb_direct_disconnect_rdma_connection(t);
+ 			return;
+ 		}
+ 
+@@ -567,6 +569,7 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 			if (wc->byte_len < sizeof(struct smb_direct_data_transfer) +
+ 			    (u64)data_length) {
+ 				put_recvmsg(t, recvmsg);
++				smb_direct_disconnect_rdma_connection(t);
+ 				return;
+ 			}
+ 
+@@ -609,11 +612,16 @@ static void recv_done(struct ib_cq *cq, struct ib_wc *wc)
+ 		if (is_receive_credit_post_required(receive_credits, avail_recvmsg_count))
+ 			mod_delayed_work(smb_direct_wq,
+ 					 &t->post_recv_credits_work, 0);
+-		break;
++		return;
  	}
- 	t->count_avail_recvmsg = t->recv_credit_max;
+-	default:
+-		break;
+ 	}
++
++	/*
++	 * This is an internal error!
++	 */
++	WARN_ON_ONCE(recvmsg->type != SMB_DIRECT_MSG_DATA_TRANSFER);
++	put_recvmsg(t, recvmsg);
++	smb_direct_disconnect_rdma_connection(t);
+ }
+ 
+ static int smb_direct_post_recv(struct smb_direct_transport *t,
 -- 
 2.39.5
 
