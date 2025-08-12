@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC6CB23209
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1BBB233D1
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334A53AE30F
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833891AA4108
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2631EF38C;
-	Tue, 12 Aug 2025 18:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4643D2F5481;
+	Tue, 12 Aug 2025 18:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJi4bgLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6t3/Huz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9708C18FC91;
-	Tue, 12 Aug 2025 18:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F162F2ECE93;
+	Tue, 12 Aug 2025 18:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755022148; cv=none; b=su2T5EnOQ7JytX/Y6O98LBnWOq/1JC18nLymciWyYtyDhp0RTXYozjPaxUSTBkMOI068oyjt0O2dAM3uoIOefHdawDtmyWU4yN+DesdHow5MmtJbGAYiox6+5ol4WkJofZNQG5bCKAmDh0Fn88qRP4fy/rwdCW/hlN04BfEn/Ic=
+	t=1755023298; cv=none; b=EqcmXQsfeAM/GCqMrnW7cf5xHyTb5hV08uZIX7O+LNj7P8BsLZHu/7uyTRe/4QHWTaTTeysPZHsWOQ68tsfTDqWP8cwlzNA6e0vd5JdvXtxzQ+0D8AXcBnewgdqjcV9F//IxzenuFtYOSaM8i2YSK5pved1B886GoGpMNWgDLCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755022148; c=relaxed/simple;
-	bh=bJBTfyDhzyW4FpBoagvAoxRnIvRIYTa7Con22ehus6s=;
+	s=arc-20240116; t=1755023298; c=relaxed/simple;
+	bh=YjiPcC5zsuwrfszRvGXxoWua17LNPgyymGfKCU4sdso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NL4z8q/hhsSfx/Yocdc2oK1cjmM07nudAM270OXa/qCIrQulOpJuVv7hKdQxnd8aHQBN70gPb5RbQfilQLzh+qJeDsfs1fObH4xoemBxCL8rtagCPO/oGlcUy87vcObvssvjrtnxfhj8kky9anmA3CLmv9BbZz/v0yo5zGtEbdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJi4bgLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63D0C4CEF9;
-	Tue, 12 Aug 2025 18:09:07 +0000 (UTC)
+	 MIME-Version; b=bWsJ2aropqHMgpwDssMzNmsHrylByV17mKKjtttap/SjZ292il+25pE2nYrkorENF2LyY36gneS4JaoH9wx7C0tZw1wQFCWdx48SV5SeDfRSuEhcESvP55EOr0oLy009kSIKu7w1msVpTwxnAfF4S/HR58mSvxVyf5PDBSYF3tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6t3/Huz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199E7C4CEF1;
+	Tue, 12 Aug 2025 18:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755022148;
-	bh=bJBTfyDhzyW4FpBoagvAoxRnIvRIYTa7Con22ehus6s=;
+	s=korg; t=1755023297;
+	bh=YjiPcC5zsuwrfszRvGXxoWua17LNPgyymGfKCU4sdso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJi4bgLeobLdevo2fGKUreaRgvQUH5Q1tekhtUnrxKZnd5MV5skhTRVUZ+59QWK86
-	 pfeKa6rW/CeNkmAysmPPgBSGMMEVxPD2Ckal7mESUsuCU4z00zoN4f+4Z4lXu/0sTg
-	 l5VtNGgRZb6Q/SMbDt/ybsT7r1iEymoGpwdwH0js=
+	b=T6t3/HuzLemeckfTLMxys4kPEW1kXoczWZejWisexzxdCnDxaAE+8WGT0wmfWGNmY
+	 c2bN/fLpsqRvRsYZtl6N3t+wx3hGrKznGp1oWO7NhO3LukYbpD9YdrGc94JzkUVta8
+	 LwD8fbAO89470v6b1IrM60LyeSVF+sXxn7mIxWrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/369] usb: typec: ucsi: yoga-c630: fix error and remove paths
-Date: Tue, 12 Aug 2025 19:25:33 +0200
-Message-ID: <20250812173016.115565834@linuxfoundation.org>
+Subject: [PATCH 6.16 039/627] selftests: Fix errno checking in syscall_user_dispatch test
+Date: Tue, 12 Aug 2025 19:25:34 +0200
+Message-ID: <20250812173420.820868903@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Dmitry Vyukov <dvyukov@google.com>
 
-[ Upstream commit 168c3896f32e78e7b87f6aa9e85af36e47a9f96c ]
+[ Upstream commit b89732c8c8357487185f260a723a060b3476144e ]
 
-Fix memory leak and call ucsi_destroy() from the driver's remove
-function and probe's error path in order to remove debugfs files and
-free the memory. Also call yoga_c630_ec_unregister_notify() in the
-probe's error path.
+Successful syscalls don't change errno, so checking errno is wrong
+to ensure that a syscall has failed. For example for the following
+sequence:
 
-Fixes: 2ea6d07efe53 ("usb: typec: ucsi: add Lenovo Yoga C630 glue driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250621-c630-ucsi-v1-1-a86de5e11361@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
+	EXPECT_EQ(EINVAL, errno);
+	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
+	EXPECT_EQ(EINVAL, errno);
+
+only the first syscall may fail and set errno, but the second may succeed
+and keep errno intact, and the check will falsely pass.
+Or if errno happened to be EINVAL before, even the first check may falsely
+pass.
+
+Also use EXPECT/ASSERT consistently. Currently there is an inconsistent mix
+without obvious reasons for usage of one or another.
+
+Fixes: 179ef035992e ("selftests: Add kselftest for syscall user dispatch")
+Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/af6a04dbfef9af8570f5bab43e3ef1416b62699a.1747839857.git.dvyukov@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_yoga_c630.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ .../syscall_user_dispatch/sud_test.c          | 50 +++++++++----------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
-index 40e5da4fd2a4..080b6369a88c 100644
---- a/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
-+++ b/drivers/usb/typec/ucsi/ucsi_yoga_c630.c
-@@ -133,17 +133,30 @@ static int yoga_c630_ucsi_probe(struct auxiliary_device *adev,
- 
- 	ret = yoga_c630_ec_register_notify(ec, &uec->nb);
- 	if (ret)
--		return ret;
-+		goto err_destroy;
-+
-+	ret = ucsi_register(uec->ucsi);
-+	if (ret)
-+		goto err_unregister;
-+
-+	return 0;
- 
--	return ucsi_register(uec->ucsi);
-+err_unregister:
-+	yoga_c630_ec_unregister_notify(uec->ec, &uec->nb);
-+
-+err_destroy:
-+	ucsi_destroy(uec->ucsi);
-+
-+	return ret;
+diff --git a/tools/testing/selftests/syscall_user_dispatch/sud_test.c b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+index d975a6767329..48cf01aeec3e 100644
+--- a/tools/testing/selftests/syscall_user_dispatch/sud_test.c
++++ b/tools/testing/selftests/syscall_user_dispatch/sud_test.c
+@@ -79,6 +79,21 @@ TEST_SIGNAL(dispatch_trigger_sigsys, SIGSYS)
+ 	}
  }
  
- static void yoga_c630_ucsi_remove(struct auxiliary_device *adev)
++static void prctl_valid(struct __test_metadata *_metadata,
++			unsigned long op, unsigned long off,
++			unsigned long size, void *sel)
++{
++	EXPECT_EQ(0, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
++}
++
++static void prctl_invalid(struct __test_metadata *_metadata,
++			  unsigned long op, unsigned long off,
++			  unsigned long size, void *sel, int err)
++{
++	EXPECT_EQ(-1, prctl(PR_SET_SYSCALL_USER_DISPATCH, op, off, size, sel));
++	EXPECT_EQ(err, errno);
++}
++
+ TEST(bad_prctl_param)
  {
- 	struct yoga_c630_ucsi *uec = auxiliary_get_drvdata(adev);
+ 	char sel = SYSCALL_DISPATCH_FILTER_ALLOW;
+@@ -86,57 +101,42 @@ TEST(bad_prctl_param)
  
--	yoga_c630_ec_unregister_notify(uec->ec, &uec->nb);
- 	ucsi_unregister(uec->ucsi);
-+	yoga_c630_ec_unregister_notify(uec->ec, &uec->nb);
-+	ucsi_destroy(uec->ucsi);
+ 	/* Invalid op */
+ 	op = -1;
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0, 0, &sel);
+-	ASSERT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0, 0, &sel, EINVAL);
+ 
+ 	/* PR_SYS_DISPATCH_OFF */
+ 	op = PR_SYS_DISPATCH_OFF;
+ 
+ 	/* offset != 0 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, 0);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x1, 0x0, 0, EINVAL);
+ 
+ 	/* len != 0 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0xff, 0);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x0, 0xff, 0, EINVAL);
+ 
+ 	/* sel != NULL */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x0, 0x0, &sel, EINVAL);
+ 
+ 	/* Valid parameter */
+-	errno = 0;
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x0, 0x0);
+-	EXPECT_EQ(0, errno);
++	prctl_valid(_metadata, op, 0x0, 0x0, 0x0);
+ 
+ 	/* PR_SYS_DISPATCH_ON */
+ 	op = PR_SYS_DISPATCH_ON;
+ 
+ 	/* Dispatcher region is bad (offset > 0 && len == 0) */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x1, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, -1L, 0x0, &sel);
+-	EXPECT_EQ(EINVAL, errno);
++	prctl_invalid(_metadata, op, 0x1, 0x0, &sel, EINVAL);
++	prctl_invalid(_metadata, op, -1L, 0x0, &sel, EINVAL);
+ 
+ 	/* Invalid selector */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, op, 0x0, 0x1, (void *) -1);
+-	ASSERT_EQ(EFAULT, errno);
++	prctl_invalid(_metadata, op, 0x0, 0x1, (void *) -1, EFAULT);
+ 
+ 	/*
+ 	 * Dispatcher range overflows unsigned long
+ 	 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, 1, -1L, &sel);
+-	ASSERT_EQ(EINVAL, errno) {
+-		TH_LOG("Should reject bad syscall range");
+-	}
++	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, 1, -1L, &sel, EINVAL);
+ 
+ 	/*
+ 	 * Allowed range overflows usigned long
+ 	 */
+-	prctl(PR_SET_SYSCALL_USER_DISPATCH, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel);
+-	ASSERT_EQ(EINVAL, errno) {
+-		TH_LOG("Should reject bad syscall range");
+-	}
++	prctl_invalid(_metadata, PR_SYS_DISPATCH_ON, -1L, 0x1, &sel, EINVAL);
  }
  
- static const struct auxiliary_device_id yoga_c630_ucsi_id_table[] = {
+ /*
 -- 
 2.39.5
 
