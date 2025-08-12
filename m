@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-167331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53089B22F7D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:40:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1EFB23452
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F13A57A5358
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:39:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E85F16E7F2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E712FDC2B;
-	Tue, 12 Aug 2025 17:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80E32FD1A2;
+	Tue, 12 Aug 2025 18:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3qpZxwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gaCBGfo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BBB2F7477;
-	Tue, 12 Aug 2025 17:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A5B2F5481;
+	Tue, 12 Aug 2025 18:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755020453; cv=none; b=h45z+hNyRgwiTo3knKYy4xOpvpIoCdO/mxAFM5DpLnyyCE4/XtRBECXebFO+rAcyWkGe2Zw/VO5RmX6f5ZZ2As+9RzleZQinLfrIeuJDTt0daVjw8fG0UbMvKsDs+bsYN5n74zex/Xi2Lhlvxo1cRe8eBw1Ss/bjXv0RqDQM0l0=
+	t=1755023686; cv=none; b=ogtemryvaDW67fY8JPMdf2sgXorCSvaDNT6uv2WW5BoFByDAgv+9KSYSxKzvfuOFCDsFZ8+e1YakBmxI0CHcIL7Z+01GneQakwlRDE0syyBYwFI4Hs8w6INrxL6qBucLhv4JlOZG/UWWGJgEPp7Oj+p7dcwR4Tp1TG4LZuQMu10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755020453; c=relaxed/simple;
-	bh=9W9XsEOL3I9XOZqVzJBJgNwsmolxySWL2FPNI4RaaJE=;
+	s=arc-20240116; t=1755023686; c=relaxed/simple;
+	bh=T39/9jqDhUqVUtwEXKs+R/UpGNWJdIuJ9K+88Gk6r8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFofSkyicRm5LIQcaFhEMys4Cr89JulRN2L2s+GDRQuQxYs7Jjo0u16ahJge1i54683igdBCDYeyI3Tx1mMMCTrPuiiJcC0TPdnKo1hQJo/QEfBdOGQEHKoU51C9OEfX0s2mRKLF1DLMcZDv9DR9T0/B9ejwTYfgqaoozv+Qr6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3qpZxwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2F6C4CEF0;
-	Tue, 12 Aug 2025 17:40:51 +0000 (UTC)
+	 MIME-Version; b=jXBlsj391oK3IKZ7noM5fRJdXTg4M6IJhzDvDF6cm0vDkf7uQjgbrPJO6dBbHLl2KaHZo7SAqT2ZMWPXOcOrsdAfpyvLTqLaEvCbD74KPGJLOQ5KmENOWDFhksSQkK13vF+RClP7CVglkuo9jvYAE3BirUdFHjuDv07d5TA6td0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gaCBGfo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056D1C4CEF0;
+	Tue, 12 Aug 2025 18:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755020452;
-	bh=9W9XsEOL3I9XOZqVzJBJgNwsmolxySWL2FPNI4RaaJE=;
+	s=korg; t=1755023686;
+	bh=T39/9jqDhUqVUtwEXKs+R/UpGNWJdIuJ9K+88Gk6r8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3qpZxwITWql6gueUgHRngzNs/CarfzXuJ1wbaTRYJoFlvYe4EcYlccv6yWGgPZk5
-	 eZ26S/YW+E7sV12kFZE62SuXXdkPwXAWMwa6O/UWViNRIp1ka9GBvzPoEN4nSf+jsM
-	 QuI8k8HAP16yqrVUNhkfk51Oxc5pbuezkpVZ+aQ0=
+	b=0gaCBGfoBrXQzNhylT72FiklAZeKqtoXAfl5AOP/Ki+GUk1R3ymIx9tOl4ztSHuQM
+	 rYjn6w39Hw86shIUNVIfROY9KHTQz36YwzrFjL/StDOzZGcUYKgRTowpkjt3UFip0d
+	 oFd5cOe9nGzU8B14XEDmbdwouBzmanrfB8FraY50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Stefan Kerkmann <s.kerkmann@pengutronix.de>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.1 058/253] erofs: address D-cache aliasing
-Date: Tue, 12 Aug 2025 19:27:26 +0200
-Message-ID: <20250812172951.195444718@linuxfoundation.org>
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 152/627] drm/amdgpu/sdma: handle paging queues in amdgpu_sdma_reset_engine()
+Date: Tue, 12 Aug 2025 19:27:27 +0200
+Message-ID: <20250812173425.072719788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+References: <20250812173419.303046420@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 27917e8194f91dffd8b4825350c63cb68e98ce58 upstream.
+[ Upstream commit 9a9e87d15297ce72507178e93cbb773510c061cd ]
 
-Flush the D-cache before unlocking folios for compressed inodes, as
-they are dirtied during decompression.
+Need to properly start and stop paging queues if they are present.
 
-Avoid calling flush_dcache_folio() on every CPU write, since it's more
-like playing whack-a-mole without real benefit.
+This is not an issue today since we don't support a paging queue
+on any chips with queue reset.
 
-It has no impact on x86 and arm64/risc-v: on x86, flush_dcache_folio()
-is a no-op, and on arm64/risc-v, PG_dcache_clean (PG_arch_1) is clear
-for new page cache folios.  However, certain ARM boards are affected,
-as reported.
-
-Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
-Closes: https://lore.kernel.org/r/c1e51e16-6cc6-49d0-a63e-4e9ff6c4dd53@pengutronix.de
-Closes: https://lore.kernel.org/r/38d43fae-1182-4155-9c5b-ffc7382d9917@siemens.com
-Tested-by: Jan Kiszka <jan.kiszka@siemens.com>
-Tested-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Link: https://lore.kernel.org/r/20250709034614.2780117-2-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b22659d5d352 ("drm/amdgpu: switch amdgpu_sdma_reset_engine to use the new sdma function pointers")
+Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/decompressor.c |    6 ++----
- fs/erofs/zdata.c        |   32 +++++++++++++++++++-------------
- 2 files changed, 21 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -342,14 +342,12 @@ static int z_erofs_transform_plain(struc
- 
- 	if (outpages > inpages) {
- 		DBG_BUGON(!rq->out[outpages - 1]);
--		if (rq->out[outpages - 1] != rq->in[inpages - 1]) {
-+		if (rq->out[outpages - 1] != rq->in[inpages - 1])
- 			memcpy_to_page(rq->out[outpages - 1], 0, src +
- 					(interlaced_offset ? 0 : righthalf),
- 				       lefthalf);
--		} else if (!interlaced_offset) {
-+		else if (!interlaced_offset)
- 			memmove(src, src + righthalf, lefthalf);
--			flush_dcache_page(rq->in[inpages - 1]);
--		}
- 	}
- 	kunmap_local(src);
- 	return 0;
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -123,9 +123,11 @@ static inline unsigned int z_erofs_pclus
- 
- /*
-  * bit 30: I/O error occurred on this page
-+ * bit 29: CPU has dirty data in D-cache (needs aliasing handling);
-  * bit 0 - 29: remaining parts to complete this page
-  */
--#define Z_EROFS_PAGE_EIO			(1 << 30)
-+#define Z_EROFS_ONLINEPAGE_EIO		30
-+#define Z_EROFS_ONLINEPAGE_DIRTY	29
- 
- static inline void z_erofs_onlinepage_init(struct page *page)
- {
-@@ -144,7 +146,7 @@ static inline void z_erofs_onlinepage_sp
- 	atomic_inc((atomic_t *)&page->private);
- }
- 
--static void z_erofs_onlinepage_endio(struct page *page, int err)
-+static void z_erofs_onlinepage_end(struct page *page, int err, bool dirty)
- {
- 	int orig, v;
- 
-@@ -152,16 +154,20 @@ static void z_erofs_onlinepage_endio(str
- 
- 	do {
- 		orig = atomic_read((atomic_t *)&page->private);
--		v = (orig - 1) | (err ? Z_EROFS_PAGE_EIO : 0);
-+		DBG_BUGON(orig <= 0);
-+		v = dirty << Z_EROFS_ONLINEPAGE_DIRTY;
-+		v |= (orig - 1) | (!!err << Z_EROFS_ONLINEPAGE_EIO);
- 	} while (atomic_cmpxchg((atomic_t *)&page->private, orig, v) != orig);
- 
--	if (!(v & ~Z_EROFS_PAGE_EIO)) {
--		set_page_private(page, 0);
--		ClearPagePrivate(page);
--		if (!(v & Z_EROFS_PAGE_EIO))
--			SetPageUptodate(page);
--		unlock_page(page);
--	}
-+	if (v & (BIT(Z_EROFS_ONLINEPAGE_DIRTY) - 1))
-+		return;
-+	set_page_private(page, 0);
-+	ClearPagePrivate(page);
-+	if (v & BIT(Z_EROFS_ONLINEPAGE_DIRTY))
-+		flush_dcache_page(page);
-+	if (!(v & BIT(Z_EROFS_ONLINEPAGE_EIO)))
-+		SetPageUptodate(page);
-+	unlock_page(page);
- }
- 
- #define Z_EROFS_ONSTACK_PAGES		32
-@@ -925,7 +931,7 @@ next_part:
- 		goto repeat;
- 
- out:
--	z_erofs_onlinepage_endio(page, err);
-+	z_erofs_onlinepage_end(page, err, false);
- 	return err;
- }
- 
-@@ -1028,7 +1034,7 @@ static void z_erofs_fill_other_copies(st
- 			cur += len;
- 		}
- 		kunmap_local(dst);
--		z_erofs_onlinepage_endio(bvi->bvec.page, err);
-+		z_erofs_onlinepage_end(bvi->bvec.page, err, true);
- 		list_del(p);
- 		kfree(bvi);
- 	}
-@@ -1196,7 +1202,7 @@ out:
- 		/* recycle all individual short-lived pages */
- 		if (z_erofs_put_shortlivedpage(be->pagepool, page))
- 			continue;
--		z_erofs_onlinepage_endio(page, err);
-+		z_erofs_onlinepage_end(page, err, true);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
+index 9b54a1ece447..f7decf533bae 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
+@@ -597,8 +597,11 @@ int amdgpu_sdma_reset_engine(struct amdgpu_device *adev, uint32_t instance_id)
+ 		page_sched_stopped = true;
  	}
  
- 	if (be->decompressed_pages != be->onstack_pages)
+-	if (sdma_instance->funcs->stop_kernel_queue)
++	if (sdma_instance->funcs->stop_kernel_queue) {
+ 		sdma_instance->funcs->stop_kernel_queue(gfx_ring);
++		if (adev->sdma.has_page_queue)
++			sdma_instance->funcs->stop_kernel_queue(page_ring);
++	}
+ 
+ 	/* Perform the SDMA reset for the specified instance */
+ 	ret = amdgpu_sdma_soft_reset(adev, instance_id);
+@@ -607,8 +610,11 @@ int amdgpu_sdma_reset_engine(struct amdgpu_device *adev, uint32_t instance_id)
+ 		goto exit;
+ 	}
+ 
+-	if (sdma_instance->funcs->start_kernel_queue)
++	if (sdma_instance->funcs->start_kernel_queue) {
+ 		sdma_instance->funcs->start_kernel_queue(gfx_ring);
++		if (adev->sdma.has_page_queue)
++			sdma_instance->funcs->start_kernel_queue(page_ring);
++	}
+ 
+ exit:
+ 	/* Restart the scheduler's work queue for the GFX and page rings
+-- 
+2.39.5
+
 
 
 
