@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C1FB23597
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:51:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB7A4B233A2
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85B433B616A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:46:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A1D562E5D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1581A01BF;
-	Tue, 12 Aug 2025 18:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A382FFDCD;
+	Tue, 12 Aug 2025 18:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmvpeEx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/MEw9KU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C621A9F89;
-	Tue, 12 Aug 2025 18:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4802EE5E8;
+	Tue, 12 Aug 2025 18:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024388; cv=none; b=DczcNhNbHzLvyGHp6L4/V/3uX9dsyCIMBkcSWTC9YpqzPEaxCEikyX8KeWWkyqixldaWJ0n2rfnPnGMklg9aurA4kQeRZF7oxy03sUEmQ1rwFlAEvB+6Ii2hGUMra/3RKGQOv82AtPO91d92qBGUZ0jl7bo7eKx3Ccj+Xs3HVss=
+	t=1755023176; cv=none; b=b/o2bHhl+xqN8VqdZSdPAWKHjiOyMprYu3Qeg5iiyPSRxZ/DbpU57+ewLREn8bXRCQ9CWcQ/ESzu+5UyAbVCsbbVuMhfBAUM3QJQNpiRK9XUWwnB36pB9o5rDeAB0xxB0MMe+gJ8ubMlGJpFRvUEmV6h+QdJawWs8aUZbiHcAC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024388; c=relaxed/simple;
-	bh=6pUWw1bZq+FzutqoQAX2uk8KBZkQrECNTFA6Tbgme4c=;
+	s=arc-20240116; t=1755023176; c=relaxed/simple;
+	bh=9T+blBjNtIqK//m2viQYYKF84iKzWWwiVFoZsqn4SCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chcyi1kvDvoUopsmTjVxsfxOwjCy+njseKoNhpk5wQFKO/uTW3WNidV8mz0s3p1CE37X/hHGFaH0fmuwotC54XkGyPWRwNGf0wfTkq8ZiTpY8YvVf0w/r78CgjpAquz+SCdPt0yD93Pmpc3ki9GnRALkwmNEWGEw6ridcT1KK64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmvpeEx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65914C4CEF0;
-	Tue, 12 Aug 2025 18:46:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jyhKBc18InEup3ocv/4X2mEIHD3ayPvbVIC4dS1ZZm6woywdg+t5lpE0TAgOGMU8A40iL1/TM9m1bEOXhQI1HcbeeSvQ25/2a124gAt0mo+xIKsQDrkXjVxu/kDyRDHyD8vlqUwkbWtwcQDJfxF5S0amCOJ64mGzdpUFJLdbTI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/MEw9KU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2738DC4CEF0;
+	Tue, 12 Aug 2025 18:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024387;
-	bh=6pUWw1bZq+FzutqoQAX2uk8KBZkQrECNTFA6Tbgme4c=;
+	s=korg; t=1755023176;
+	bh=9T+blBjNtIqK//m2viQYYKF84iKzWWwiVFoZsqn4SCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmvpeEx6yjmGI2aXK84Vc00zLImbq5rs+6S7uzYeguggZyjK1dG0WLxIgN4LTH1y5
-	 vMajd0wojPH+YM0rtkrHkwV4v6PwKqP32nrBeiv4YNqBQJGDMpxcDhfNCvUUBTYUuG
-	 z/M+Y96Nf9pQ90hM+QWhkk63Y7Tg6+U0c3JiEg/w=
+	b=L/MEw9KUVXdiUHh2CmR4WO2tf2wKx2Z/SveJqom4FdpV2dthDGgScCAOaWyZ5Pa7d
+	 TTScAuDybwgZE+TBKZW9w6VkxstDxoa9VtdGC0jSVdXPag3TJ8tag6qUtnjSVZEW6l
+	 bS687cZVByx4jCCJbI98y9J/Z30P+bB5dJ/aHAJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 359/627] perf sched: Fix memory leaks in perf sched map
-Date: Tue, 12 Aug 2025 19:30:54 +0200
-Message-ID: <20250812173432.952954502@linuxfoundation.org>
+	"David E. Box" <david.e.box@linux.intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 358/369] platform/x86/intel/pmt: fix a crashlog NULL pointer access
+Date: Tue, 12 Aug 2025 19:30:55 +0200
+Message-ID: <20250812173030.156847095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,113 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Michael J. Ruhl <michael.j.ruhl@intel.com>
 
-[ Upstream commit dc3a80c98884d86389b3b572c50ccc7f502cd41b ]
+commit 54d5cd4719c5e87f33d271c9ac2e393147d934f8 upstream.
 
-It maintains per-cpu pointers for the current thread but it doesn't
-release the refcounts.
+Usage of the intel_pmt_read() for binary sysfs, requires a pcidev. The
+current use of the endpoint value is only valid for telemetry endpoint
+usage.
 
-Fixes: 5e895278697c014e ("perf sched: Move curr_thread initialization to perf_sched__map()")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250703014942.1369397-4-namhyung@kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without the ep, the crashlog usage causes the following NULL pointer
+exception:
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oops: Oops: 0000 [#1] SMP NOPTI
+RIP: 0010:intel_pmt_read+0x3b/0x70 [pmt_class]
+Code:
+Call Trace:
+ <TASK>
+ ? sysfs_kf_bin_read+0xc0/0xe0
+ kernfs_fop_read_iter+0xac/0x1a0
+ vfs_read+0x26d/0x350
+ ksys_read+0x6b/0xe0
+ __x64_sys_read+0x1d/0x30
+ x64_sys_call+0x1bc8/0x1d70
+ do_syscall_64+0x6d/0x110
+
+Augment struct intel_pmt_entry with a pointer to the pcidev to avoid
+the NULL pointer exception.
+
+Fixes: 045a513040cc ("platform/x86/intel/pmt: Use PMT callbacks")
+Cc: stable@vger.kernel.org
+Reviewed-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Link: https://lore.kernel.org/r/20250713172943.7335-2-michael.j.ruhl@intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-sched.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ drivers/platform/x86/intel/pmt/class.c |    3 ++-
+ drivers/platform/x86/intel/pmt/class.h |    1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index fa4052e04020..b73989fb6ace 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -1634,6 +1634,7 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
- 	const char *color = PERF_COLOR_NORMAL;
- 	char stimestamp[32];
- 	const char *str;
-+	int ret = -1;
+--- a/drivers/platform/x86/intel/pmt/class.c
++++ b/drivers/platform/x86/intel/pmt/class.c
+@@ -97,7 +97,7 @@ intel_pmt_read(struct file *filp, struct
+ 	if (count > entry->size - off)
+ 		count = entry->size - off;
  
- 	BUG_ON(this_cpu.cpu >= MAX_CPUS || this_cpu.cpu < 0);
+-	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
++	count = pmt_telem_read_mmio(entry->pcidev, entry->cb, entry->header.guid, buf,
+ 				    entry->base, off, count);
  
-@@ -1664,17 +1665,20 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
- 	sched_in = map__findnew_thread(sched, machine, -1, next_pid);
- 	sched_out = map__findnew_thread(sched, machine, -1, prev_pid);
- 	if (sched_in == NULL || sched_out == NULL)
--		return -1;
-+		goto out;
+ 	return count;
+@@ -252,6 +252,7 @@ static int intel_pmt_populate_entry(stru
+ 		return -EINVAL;
+ 	}
  
- 	tr = thread__get_runtime(sched_in);
--	if (tr == NULL) {
--		thread__put(sched_in);
--		return -1;
--	}
-+	if (tr == NULL)
-+		goto out;
-+
-+	thread__put(sched->curr_thread[this_cpu.cpu]);
-+	thread__put(sched->curr_out_thread[this_cpu.cpu]);
++	entry->pcidev = pci_dev;
+ 	entry->guid = header->guid;
+ 	entry->size = header->size;
+ 	entry->cb = ivdev->priv_data;
+--- a/drivers/platform/x86/intel/pmt/class.h
++++ b/drivers/platform/x86/intel/pmt/class.h
+@@ -39,6 +39,7 @@ struct intel_pmt_header {
  
- 	sched->curr_thread[this_cpu.cpu] = thread__get(sched_in);
- 	sched->curr_out_thread[this_cpu.cpu] = thread__get(sched_out);
- 
-+	ret = 0;
-+
- 	str = thread__comm_str(sched_in);
- 	new_shortname = 0;
- 	if (!tr->shortname[0]) {
-@@ -1769,12 +1773,10 @@ static int map_switch_event(struct perf_sched *sched, struct evsel *evsel,
- 	color_fprintf(stdout, color, "\n");
- 
- out:
--	if (sched->map.task_name)
--		thread__put(sched_out);
--
-+	thread__put(sched_out);
- 	thread__put(sched_in);
- 
--	return 0;
-+	return ret;
- }
- 
- static int process_sched_switch_event(const struct perf_tool *tool,
-@@ -3556,10 +3558,10 @@ static int perf_sched__map(struct perf_sched *sched)
- 
- 	sched->curr_out_thread = calloc(MAX_CPUS, sizeof(*(sched->curr_out_thread)));
- 	if (!sched->curr_out_thread)
--		return rc;
-+		goto out_free_curr_thread;
- 
- 	if (setup_cpus_switch_event(sched))
--		goto out_free_curr_thread;
-+		goto out_free_curr_out_thread;
- 
- 	if (setup_map_cpus(sched))
- 		goto out_free_cpus_switch_event;
-@@ -3590,7 +3592,14 @@ static int perf_sched__map(struct perf_sched *sched)
- out_free_cpus_switch_event:
- 	free_cpus_switch_event(sched);
- 
-+out_free_curr_out_thread:
-+	for (int i = 0; i < MAX_CPUS; i++)
-+		thread__put(sched->curr_out_thread[i]);
-+	zfree(&sched->curr_out_thread);
-+
- out_free_curr_thread:
-+	for (int i = 0; i < MAX_CPUS; i++)
-+		thread__put(sched->curr_thread[i]);
- 	zfree(&sched->curr_thread);
- 	return rc;
- }
--- 
-2.39.5
-
+ struct intel_pmt_entry {
+ 	struct telem_endpoint	*ep;
++	struct pci_dev		*pcidev;
+ 	struct intel_pmt_header	header;
+ 	struct bin_attribute	pmt_bin_attr;
+ 	struct kobject		*kobj;
 
 
 
