@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-168849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-168856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA116B236DA
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:05:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228BDB236F0
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 21:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077F856831C
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:05:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD4BD7AC22B
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BD62882CE;
-	Tue, 12 Aug 2025 19:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3968F27781E;
+	Tue, 12 Aug 2025 19:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsjmtAjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+S/jhNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F08A27781E;
-	Tue, 12 Aug 2025 19:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB45626FA77;
+	Tue, 12 Aug 2025 19:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755025540; cv=none; b=hcfhl37Vl2cATgSd07Z8prTRKQNnGio4NJA/85gIFvQNTAQmo1GceYM985MwOr2+xTWlyKDFc60pwuK/5ObqN7VZ/U6/MTCUXqWgpiwN3/rbzGlZeR1Sck4WsO8hPC9ERIJLU+UFJdrhdgHCG9sxxQ7IMuRwlST5Z4tF2rTpZgg=
+	t=1755025562; cv=none; b=A6WYxk81OxPwCvB1tzgOeZ5OgTQoZEqULcQhA1sv4PmD5cnzroQSZ0d40r3+XETE6y91Qvt7ltDdwx8F4T5XArAh8mhQHaA6qOCtdOjnA6iK5GYkHDtda2m9GPid1JPCPcPR93zIL0VubLTlUCsTt5UoYSLKPXbIiewHMMU80sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755025540; c=relaxed/simple;
-	bh=kqW45ayfTJ+Voa77o4ieH3kMa0masbLzxzrYQEp7uTs=;
+	s=arc-20240116; t=1755025562; c=relaxed/simple;
+	bh=VlO3fJm+Q016VMbBm3bAQTyVLIg0wVaONNUMRhGiaww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6o6BHQrI5651SOHgzGWwa+sBSsfk2FhvOmaeSf2njHc7Y4gzgWz9Eq/xNkQUl0Yoq+5ao6h0r0+PjiPFcifCp36NB/KJt8p6hzADSN8W6TuUDc09Iu0FhBPoP5p7GBVu8oq6lZMcia5FtG/kpvLGjFLuobRafiCXofzW5bmBxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsjmtAjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8E1C4CEF0;
-	Tue, 12 Aug 2025 19:05:37 +0000 (UTC)
+	 MIME-Version; b=JLyr+2vWWP+ISAy6naFNjYaCd4JZuDlKv36vjS8UxWqFw1Sd8nF634/ep/g/N6bemcVWfoJ1UWuiHLmX5XCN3Ypnn2HdxTTkP7MhPNvmigYzT6ZlKYGkLtNCiVkVIBEWVbxAZtSogVPqD65PdPA2Ix67M3cMxF+CSAPu7VpsEvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+S/jhNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA709C4CEF0;
+	Tue, 12 Aug 2025 19:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755025537;
-	bh=kqW45ayfTJ+Voa77o4ieH3kMa0masbLzxzrYQEp7uTs=;
+	s=korg; t=1755025561;
+	bh=VlO3fJm+Q016VMbBm3bAQTyVLIg0wVaONNUMRhGiaww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsjmtAjN99Epyv7PFihONu3QJVOO5i/7E4NHcnc6ZymX7wTkjRDg94BSGX4tHpKN0
-	 thlhJMa/SZ9Heun1pbLIunjZ5jRYP3DyaJIGfhNYhMbPxtG8fnnEf3911BoCrydM63
-	 8PDuiu1lgsY2UQtl+t4AjRar/y96DY0XEp7bMYZE=
+	b=W+S/jhNTKxASdGTpBTB+QIrkWHVmKu58m1uo+lmnNcB/ySphFwVNU1LN8pD7Ido2T
+	 ATLXR7levruB8wTi5x50BXvnwjGnRzU2ZFumyH2YsleiF2AQPl30OCE8pdWo41mSet
+	 XRix0sB+B3G2gJurJZE1AG0270gXD3iXDTvIZxAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 043/480] pm: cpupower: Fix printing of CORE, CPU fields in cpupower-monitor
-Date: Tue, 12 Aug 2025 19:44:11 +0200
-Message-ID: <20250812174359.177078132@linuxfoundation.org>
+Subject: [PATCH 6.15 044/480] ARM: dts: vfxxx: Correctly use two tuples for timer address
+Date: Tue, 12 Aug 2025 19:44:12 +0200
+Message-ID: <20250812174359.217541547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
 References: <20250812174357.281828096@linuxfoundation.org>
@@ -66,58 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 14a3318b4ac8ae0ca2e1132a89de167e1030fbdb ]
+[ Upstream commit f3440dcf8b994197c968fbafe047ce27eed226e8 ]
 
-After the commit 0014f65e3df0 ("pm: cpupower: remove hard-coded
-topology depth values"), "cpupower monitor" output ceased to print the
-CORE and the CPU fields on a multi-socket platform.
+Address and size-cells are 1 and the ftm timer node takes two address
+spaces in "reg" property, so this should be in two <> tuples.  Change
+has no functional impact, but original code is confusing/less readable.
 
-The reason for this is that the patch changed the behaviour to break
-out of the switch-case after printing the PKG details, while prior to
-the patch, the CORE and the CPU details would also get printed since
-the "if" condition check would pass for any level whose topology depth
-was lesser than that of a package.
-
-Fix this ensuring all the details below a desired topology depth are
-printed in the cpupower monitor output.
-
-Link: https://lore.kernel.org/r/20250612122355.19629-3-gautham.shenoy@amd.com
-Fixes: 0014f65e3df0 ("pm: cpupower: remove hard-coded topology depth values")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 07513e1330a9 ("ARM: dts: vf610: Add Freescale FlexTimer Module timer node.")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm/boot/dts/nxp/vf/vfxxx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c b/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c
-index ad493157f826..e8b3841d5c0f 100644
---- a/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/cpupower-monitor.c
-@@ -121,10 +121,8 @@ void print_header(int topology_depth)
- 	switch (topology_depth) {
- 	case TOPOLOGY_DEPTH_PKG:
- 		printf(" PKG|");
--		break;
- 	case TOPOLOGY_DEPTH_CORE:
- 		printf("CORE|");
--		break;
- 	case	TOPOLOGY_DEPTH_CPU:
- 		printf(" CPU|");
- 		break;
-@@ -167,10 +165,8 @@ void print_results(int topology_depth, int cpu)
- 	switch (topology_depth) {
- 	case TOPOLOGY_DEPTH_PKG:
- 		printf("%4d|", cpu_top.core_info[cpu].pkg);
--		break;
- 	case TOPOLOGY_DEPTH_CORE:
- 		printf("%4d|", cpu_top.core_info[cpu].core);
--		break;
- 	case TOPOLOGY_DEPTH_CPU:
- 		printf("%4d|", cpu_top.core_info[cpu].cpu);
- 		break;
+diff --git a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+index 597f20be82f1..62e555bf6a71 100644
+--- a/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
++++ b/arch/arm/boot/dts/nxp/vf/vfxxx.dtsi
+@@ -603,7 +603,7 @@ usbmisc1: usb@400b4800 {
+ 
+ 			ftm: ftm@400b8000 {
+ 				compatible = "fsl,ftm-timer";
+-				reg = <0x400b8000 0x1000 0x400b9000 0x1000>;
++				reg = <0x400b8000 0x1000>, <0x400b9000 0x1000>;
+ 				interrupts = <44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clock-names = "ftm-evt", "ftm-src",
+ 					"ftm-evt-counter-en", "ftm-src-counter-en";
 -- 
 2.39.5
 
