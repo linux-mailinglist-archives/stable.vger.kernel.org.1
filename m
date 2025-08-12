@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-168302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB262B2345A
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:39:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB3FB23085
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514D516F156
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:35:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0425A18927BA
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793CD2F659A;
-	Tue, 12 Aug 2025 18:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03EC2FAC02;
+	Tue, 12 Aug 2025 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hW/6IIGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rs0mAdN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381601DB92A;
-	Tue, 12 Aug 2025 18:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03D8268C73;
+	Tue, 12 Aug 2025 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023721; cv=none; b=N5wIXbSDBXSMhzfsVnZ2iah1wFlMqSsAEI8H6TUA1NQg5MMuYx207ukygSOK3WyubZqU4w9LsDbfAAri15zRw3a4JOvyXREzgSx03draoNrJQFbUW9mZHdCMvkSUogrYrgPQdPvlJwuiBSei1/EdhCvRfcBeGPtMxzIMWYu117A=
+	t=1755021145; cv=none; b=PQBkQFmcThaD1pSIM/AFLN3K1rUNYYEmAVJ2yZM08nF526Pz/VLquKYFFSxvSYUdmY4xEVOvZ4cv2GF3iN6F2gurnbbDij/0BAs+0rhiUiCTMj8qGJX1XfuRkp/+eofwsg4YOhmk4sjNx7bhuSBvv3UNa5/uxUpFnUNH8QFKNZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023721; c=relaxed/simple;
-	bh=kWn23H5AZCZOH3lJbgYdDRG6C7nnNTDVPclK3YNXNPI=;
+	s=arc-20240116; t=1755021145; c=relaxed/simple;
+	bh=rl1pDGdKVwIOkxD1UlASyPXL/7g2mLI0ca14oOrAMrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbDrMih1dAooDqUMbqNo9gwxVavsaUtF57KTdCjTC3MjugPqdL9PYCh1bC+Xh1Vu1K0EyxVRTsuiSs6qLic6Rg9fMjRZBRkaEhSePRz+JnYSLejaLC4Ke9P7EVzXphnFqqsKQ90WonUbH5rP9kJflst59TJtRq3Wwqi/ukj03/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hW/6IIGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C09C4CEF0;
-	Tue, 12 Aug 2025 18:35:20 +0000 (UTC)
+	 MIME-Version; b=LbGqVCuqZ/bs50T3esOmy4xzDkhOmFswOZoqAzZY7yrAUOYkzeiTSj92+MlUqRjkliVnslEjjVPX6+I1Zio5ce38TZKpjNnZQAhzlUhWVpl8TfikduFTkVFmMwNu+gbrohdQmtbbpZkSXyj2TYZjvSeV1ROpmqIDJt1IaNEHJJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rs0mAdN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA827C4CEF0;
+	Tue, 12 Aug 2025 17:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023721;
-	bh=kWn23H5AZCZOH3lJbgYdDRG6C7nnNTDVPclK3YNXNPI=;
+	s=korg; t=1755021145;
+	bh=rl1pDGdKVwIOkxD1UlASyPXL/7g2mLI0ca14oOrAMrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hW/6IIGRurW8vEn+dPTE5E60eK+aBPhqU8W3W68e+guEO8g/w64D5IlSjyxXGAuZC
-	 jZA9Q1UtN8AbaLRRHCEFzkA1vCq8F7Cd7DQ+PEYW2sdq4jgLkSKN+WnNbDKWM+Lyvv
-	 E1HEXgAFgY4poXzEoo9K9NxWaz0UJE3PUAhCys+U=
+	b=rs0mAdN6FjfpJGb7lSYOEU805GUet9ziioD/K80gO2MjOxd+jShM2UyF/fHqMbc/b
+	 e8xUfBYhqQYLMOOWz4Z5U1Hr8OxpftFFSEv1XZi37DcWKug+9Wro9uMKx/DWodGKBz
+	 M5YavSTiEI7hCVdm/hsl/2zZhfuFdBhsih2A1BEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 161/627] caif: reduce stack size, again
-Date: Tue, 12 Aug 2025 19:27:36 +0200
-Message-ID: <20250812173425.418535639@linuxfoundation.org>
+Subject: [PATCH 6.6 069/262] sched/psi: Optimize psi_group_change() cpu_clock() usage
+Date: Tue, 12 Aug 2025 19:27:37 +0200
+Message-ID: <20250812172955.946192398@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,361 +63,339 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit b630c781bcf6ff87657146661816d0d30a902139 ]
+[ Upstream commit 570c8efd5eb79c3725ba439ce105ed1bedc5acd9 ]
 
-I tried to fix the stack usage in this function a couple of years ago,
-but there is still a problem with the latest gcc versions in some
-configurations:
+Dietmar reported that commit 3840cbe24cf0 ("sched: psi: fix bogus
+pressure spikes from aggregation race") caused a regression for him on
+a high context switch rate benchmark (schbench) due to the now
+repeating cpu_clock() calls.
 
-net/caif/cfctrl.c:553:1: error: the frame size of 1296 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+In particular the problem is that get_recent_times() will extrapolate
+the current state to 'now'. But if an update uses a timestamp from
+before the start of the update, it is possible to get two reads
+with inconsistent results. It is effectively back-dating an update.
 
-Reduce this once again, with a separate cfctrl_link_setup() function that
-holds the bulk of all the local variables. It also turns out that the
-param[] array that takes up a large portion of the stack is write-only
-and can be left out here.
+(note that this all hard-relies on the clock being synchronized across
+CPUs -- if this is not the case, all bets are off).
 
-Fixes: ce6289661b14 ("caif: reduce stack size with KASAN")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620112244.3425554-1-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Combine this problem with the fact that there are per-group-per-cpu
+seqcounts, the commit in question pushed the clock read into the group
+iteration, causing tree-depth cpu_clock() calls. On architectures
+where cpu_clock() has appreciable overhead, this hurts.
+
+Instead move to a per-cpu seqcount, which allows us to have a single
+clock read for all group updates, increasing internal consistency and
+lowering update overhead. This comes at the cost of a longer update
+side (proportional to the tree depth) which can cause the read side to
+retry more often.
+
+Fixes: 3840cbe24cf0 ("sched: psi: fix bogus pressure spikes from aggregation race")
+Reported-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>,
+Link: https://lkml.kernel.org/20250522084844.GC31726@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/caif/cfctrl.c | 294 +++++++++++++++++++++++-----------------------
- 1 file changed, 144 insertions(+), 150 deletions(-)
+ include/linux/psi_types.h |   6 +-
+ kernel/sched/psi.c        | 121 +++++++++++++++++++++-----------------
+ 2 files changed, 68 insertions(+), 59 deletions(-)
 
-diff --git a/net/caif/cfctrl.c b/net/caif/cfctrl.c
-index 20139fa1be1f..06b604cf9d58 100644
---- a/net/caif/cfctrl.c
-+++ b/net/caif/cfctrl.c
-@@ -351,17 +351,154 @@ int cfctrl_cancel_req(struct cflayer *layr, struct cflayer *adap_layer)
- 	return found;
- }
+diff --git a/include/linux/psi_types.h b/include/linux/psi_types.h
+index f1fd3a8044e0..dd10c22299ab 100644
+--- a/include/linux/psi_types.h
++++ b/include/linux/psi_types.h
+@@ -84,11 +84,9 @@ enum psi_aggregators {
+ struct psi_group_cpu {
+ 	/* 1st cacheline updated by the scheduler */
  
-+static int cfctrl_link_setup(struct cfctrl *cfctrl, struct cfpkt *pkt, u8 cmdrsp)
+-	/* Aggregator needs to know of concurrent changes */
+-	seqcount_t seq ____cacheline_aligned_in_smp;
+-
+ 	/* States of the tasks belonging to this group */
+-	unsigned int tasks[NR_PSI_TASK_COUNTS];
++	unsigned int tasks[NR_PSI_TASK_COUNTS]
++			____cacheline_aligned_in_smp;
+ 
+ 	/* Aggregate pressure state derived from the tasks */
+ 	u32 state_mask;
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index f97e1473389f..837b065749ce 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -172,6 +172,28 @@ struct psi_group psi_system = {
+ 	.pcpu = &system_group_pcpu,
+ };
+ 
++static DEFINE_PER_CPU(seqcount_t, psi_seq);
++
++static inline void psi_write_begin(int cpu)
 +{
-+	u8 len;
-+	u8 linkid = 0;
-+	enum cfctrl_srv serv;
-+	enum cfctrl_srv servtype;
-+	u8 endpoint;
-+	u8 physlinkid;
-+	u8 prio;
-+	u8 tmp;
-+	u8 *cp;
-+	int i;
-+	struct cfctrl_link_param linkparam;
-+	struct cfctrl_request_info rsp, *req;
-+
-+	memset(&linkparam, 0, sizeof(linkparam));
-+
-+	tmp = cfpkt_extr_head_u8(pkt);
-+
-+	serv = tmp & CFCTRL_SRV_MASK;
-+	linkparam.linktype = serv;
-+
-+	servtype = tmp >> 4;
-+	linkparam.chtype = servtype;
-+
-+	tmp = cfpkt_extr_head_u8(pkt);
-+	physlinkid = tmp & 0x07;
-+	prio = tmp >> 3;
-+
-+	linkparam.priority = prio;
-+	linkparam.phyid = physlinkid;
-+	endpoint = cfpkt_extr_head_u8(pkt);
-+	linkparam.endpoint = endpoint & 0x03;
-+
-+	switch (serv) {
-+	case CFCTRL_SRV_VEI:
-+	case CFCTRL_SRV_DBG:
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		break;
-+	case CFCTRL_SRV_VIDEO:
-+		tmp = cfpkt_extr_head_u8(pkt);
-+		linkparam.u.video.connid = tmp;
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		break;
-+
-+	case CFCTRL_SRV_DATAGRAM:
-+		linkparam.u.datagram.connid = cfpkt_extr_head_u32(pkt);
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		break;
-+	case CFCTRL_SRV_RFM:
-+		/* Construct a frame, convert
-+		 * DatagramConnectionID
-+		 * to network format long and copy it out...
-+		 */
-+		linkparam.u.rfm.connid = cfpkt_extr_head_u32(pkt);
-+		cp = (u8 *) linkparam.u.rfm.volume;
-+		for (tmp = cfpkt_extr_head_u8(pkt);
-+		     cfpkt_more(pkt) && tmp != '\0';
-+		     tmp = cfpkt_extr_head_u8(pkt))
-+			*cp++ = tmp;
-+		*cp = '\0';
-+
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+
-+		break;
-+	case CFCTRL_SRV_UTIL:
-+		/* Construct a frame, convert
-+		 * DatagramConnectionID
-+		 * to network format long and copy it out...
-+		 */
-+		/* Fifosize KB */
-+		linkparam.u.utility.fifosize_kb = cfpkt_extr_head_u16(pkt);
-+		/* Fifosize bufs */
-+		linkparam.u.utility.fifosize_bufs = cfpkt_extr_head_u16(pkt);
-+		/* name */
-+		cp = (u8 *) linkparam.u.utility.name;
-+		caif_assert(sizeof(linkparam.u.utility.name)
-+			     >= UTILITY_NAME_LENGTH);
-+		for (i = 0; i < UTILITY_NAME_LENGTH && cfpkt_more(pkt); i++) {
-+			tmp = cfpkt_extr_head_u8(pkt);
-+			*cp++ = tmp;
-+		}
-+		/* Length */
-+		len = cfpkt_extr_head_u8(pkt);
-+		linkparam.u.utility.paramlen = len;
-+		/* Param Data */
-+		cp = linkparam.u.utility.params;
-+		while (cfpkt_more(pkt) && len--) {
-+			tmp = cfpkt_extr_head_u8(pkt);
-+			*cp++ = tmp;
-+		}
-+		if (CFCTRL_ERR_BIT & cmdrsp)
-+			break;
-+		/* Link ID */
-+		linkid = cfpkt_extr_head_u8(pkt);
-+		/* Length */
-+		len = cfpkt_extr_head_u8(pkt);
-+		/* Param Data */
-+		cfpkt_extr_head(pkt, NULL, len);
-+		break;
-+	default:
-+		pr_warn("Request setup, invalid type (%d)\n", serv);
-+		return -1;
-+	}
-+
-+	rsp.cmd = CFCTRL_CMD_LINK_SETUP;
-+	rsp.param = linkparam;
-+	spin_lock_bh(&cfctrl->info_list_lock);
-+	req = cfctrl_remove_req(cfctrl, &rsp);
-+
-+	if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
-+		cfpkt_erroneous(pkt)) {
-+		pr_err("Invalid O/E bit or parse error "
-+				"on CAIF control channel\n");
-+		cfctrl->res.reject_rsp(cfctrl->serv.layer.up, 0,
-+				       req ? req->client_layer : NULL);
-+	} else {
-+		cfctrl->res.linksetup_rsp(cfctrl->serv.layer.up, linkid,
-+					  serv, physlinkid,
-+					  req ?  req->client_layer : NULL);
-+	}
-+
-+	kfree(req);
-+
-+	spin_unlock_bh(&cfctrl->info_list_lock);
-+
-+	return 0;
++	write_seqcount_begin(per_cpu_ptr(&psi_seq, cpu));
 +}
 +
- static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
++static inline void psi_write_end(int cpu)
++{
++	write_seqcount_end(per_cpu_ptr(&psi_seq, cpu));
++}
++
++static inline u32 psi_read_begin(int cpu)
++{
++	return read_seqcount_begin(per_cpu_ptr(&psi_seq, cpu));
++}
++
++static inline bool psi_read_retry(int cpu, u32 seq)
++{
++	return read_seqcount_retry(per_cpu_ptr(&psi_seq, cpu), seq);
++}
++
+ static void psi_avgs_work(struct work_struct *work);
+ 
+ static void poll_timer_fn(struct timer_list *t);
+@@ -182,7 +204,7 @@ static void group_init(struct psi_group *group)
+ 
+ 	group->enabled = true;
+ 	for_each_possible_cpu(cpu)
+-		seqcount_init(&per_cpu_ptr(group->pcpu, cpu)->seq);
++		seqcount_init(per_cpu_ptr(&psi_seq, cpu));
+ 	group->avg_last_update = sched_clock();
+ 	group->avg_next_update = group->avg_last_update + psi_period;
+ 	mutex_init(&group->avgs_lock);
+@@ -258,14 +280,14 @@ static void get_recent_times(struct psi_group *group, int cpu,
+ 
+ 	/* Snapshot a coherent view of the CPU state */
+ 	do {
+-		seq = read_seqcount_begin(&groupc->seq);
++		seq = psi_read_begin(cpu);
+ 		now = cpu_clock(cpu);
+ 		memcpy(times, groupc->times, sizeof(groupc->times));
+ 		state_mask = groupc->state_mask;
+ 		state_start = groupc->state_start;
+ 		if (cpu == current_cpu)
+ 			memcpy(tasks, groupc->tasks, sizeof(groupc->tasks));
+-	} while (read_seqcount_retry(&groupc->seq, seq));
++	} while (psi_read_retry(cpu, seq));
+ 
+ 	/* Calculate state time deltas against the previous snapshot */
+ 	for (s = 0; s < NR_PSI_STATES; s++) {
+@@ -775,31 +797,21 @@ static void record_times(struct psi_group_cpu *groupc, u64 now)
+ 		groupc->times[PSI_NONIDLE] += delta;
+ }
+ 
++#define for_each_group(iter, group) \
++	for (typeof(group) iter = group; iter; iter = iter->parent)
++
+ static void psi_group_change(struct psi_group *group, int cpu,
+ 			     unsigned int clear, unsigned int set,
+-			     bool wake_clock)
++			     u64 now, bool wake_clock)
  {
- 	u8 cmdrsp;
- 	u8 cmd;
--	int ret = -1;
--	u8 len;
--	u8 param[255];
-+	int ret = 0;
- 	u8 linkid = 0;
- 	struct cfctrl *cfctrl = container_obj(layer);
--	struct cfctrl_request_info rsp, *req;
--
+ 	struct psi_group_cpu *groupc;
+ 	unsigned int t, m;
+ 	enum psi_states s;
+ 	u32 state_mask;
+-	u64 now;
  
- 	cmdrsp = cfpkt_extr_head_u8(pkt);
- 	cmd = cmdrsp & CFCTRL_CMD_MASK;
-@@ -374,150 +511,7 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
+ 	lockdep_assert_rq_held(cpu_rq(cpu));
+ 	groupc = per_cpu_ptr(group->pcpu, cpu);
  
- 	switch (cmd) {
- 	case CFCTRL_CMD_LINK_SETUP:
--		{
--			enum cfctrl_srv serv;
--			enum cfctrl_srv servtype;
--			u8 endpoint;
--			u8 physlinkid;
--			u8 prio;
--			u8 tmp;
--			u8 *cp;
--			int i;
--			struct cfctrl_link_param linkparam;
--			memset(&linkparam, 0, sizeof(linkparam));
+-	/*
+-	 * First we update the task counts according to the state
+-	 * change requested through the @clear and @set bits.
+-	 *
+-	 * Then if the cgroup PSI stats accounting enabled, we
+-	 * assess the aggregate resource states this CPU's tasks
+-	 * have been in since the last change, and account any
+-	 * SOME and FULL time these may have resulted in.
+-	 */
+-	write_seqcount_begin(&groupc->seq);
+-	now = cpu_clock(cpu);
 -
--			tmp = cfpkt_extr_head_u8(pkt);
--
--			serv = tmp & CFCTRL_SRV_MASK;
--			linkparam.linktype = serv;
--
--			servtype = tmp >> 4;
--			linkparam.chtype = servtype;
--
--			tmp = cfpkt_extr_head_u8(pkt);
--			physlinkid = tmp & 0x07;
--			prio = tmp >> 3;
--
--			linkparam.priority = prio;
--			linkparam.phyid = physlinkid;
--			endpoint = cfpkt_extr_head_u8(pkt);
--			linkparam.endpoint = endpoint & 0x03;
--
--			switch (serv) {
--			case CFCTRL_SRV_VEI:
--			case CFCTRL_SRV_DBG:
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				break;
--			case CFCTRL_SRV_VIDEO:
--				tmp = cfpkt_extr_head_u8(pkt);
--				linkparam.u.video.connid = tmp;
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				break;
--
--			case CFCTRL_SRV_DATAGRAM:
--				linkparam.u.datagram.connid =
--				    cfpkt_extr_head_u32(pkt);
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				break;
--			case CFCTRL_SRV_RFM:
--				/* Construct a frame, convert
--				 * DatagramConnectionID
--				 * to network format long and copy it out...
--				 */
--				linkparam.u.rfm.connid =
--				    cfpkt_extr_head_u32(pkt);
--				cp = (u8 *) linkparam.u.rfm.volume;
--				for (tmp = cfpkt_extr_head_u8(pkt);
--				     cfpkt_more(pkt) && tmp != '\0';
--				     tmp = cfpkt_extr_head_u8(pkt))
--					*cp++ = tmp;
--				*cp = '\0';
--
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--
--				break;
--			case CFCTRL_SRV_UTIL:
--				/* Construct a frame, convert
--				 * DatagramConnectionID
--				 * to network format long and copy it out...
--				 */
--				/* Fifosize KB */
--				linkparam.u.utility.fifosize_kb =
--				    cfpkt_extr_head_u16(pkt);
--				/* Fifosize bufs */
--				linkparam.u.utility.fifosize_bufs =
--				    cfpkt_extr_head_u16(pkt);
--				/* name */
--				cp = (u8 *) linkparam.u.utility.name;
--				caif_assert(sizeof(linkparam.u.utility.name)
--					     >= UTILITY_NAME_LENGTH);
--				for (i = 0;
--				     i < UTILITY_NAME_LENGTH
--				     && cfpkt_more(pkt); i++) {
--					tmp = cfpkt_extr_head_u8(pkt);
--					*cp++ = tmp;
--				}
--				/* Length */
--				len = cfpkt_extr_head_u8(pkt);
--				linkparam.u.utility.paramlen = len;
--				/* Param Data */
--				cp = linkparam.u.utility.params;
--				while (cfpkt_more(pkt) && len--) {
--					tmp = cfpkt_extr_head_u8(pkt);
--					*cp++ = tmp;
--				}
--				if (CFCTRL_ERR_BIT & cmdrsp)
--					break;
--				/* Link ID */
--				linkid = cfpkt_extr_head_u8(pkt);
--				/* Length */
--				len = cfpkt_extr_head_u8(pkt);
--				/* Param Data */
--				cfpkt_extr_head(pkt, &param, len);
--				break;
--			default:
--				pr_warn("Request setup, invalid type (%d)\n",
--					serv);
--				goto error;
--			}
--
--			rsp.cmd = cmd;
--			rsp.param = linkparam;
--			spin_lock_bh(&cfctrl->info_list_lock);
--			req = cfctrl_remove_req(cfctrl, &rsp);
--
--			if (CFCTRL_ERR_BIT == (CFCTRL_ERR_BIT & cmdrsp) ||
--				cfpkt_erroneous(pkt)) {
--				pr_err("Invalid O/E bit or parse error "
--						"on CAIF control channel\n");
--				cfctrl->res.reject_rsp(cfctrl->serv.layer.up,
--						       0,
--						       req ? req->client_layer
--						       : NULL);
--			} else {
--				cfctrl->res.linksetup_rsp(cfctrl->serv.
--							  layer.up, linkid,
--							  serv, physlinkid,
--							  req ? req->
--							  client_layer : NULL);
--			}
--
--			kfree(req);
--
--			spin_unlock_bh(&cfctrl->info_list_lock);
--		}
-+		ret = cfctrl_link_setup(cfctrl, pkt, cmdrsp);
- 		break;
- 	case CFCTRL_CMD_LINK_DESTROY:
- 		linkid = cfpkt_extr_head_u8(pkt);
-@@ -544,9 +538,9 @@ static int cfctrl_recv(struct cflayer *layer, struct cfpkt *pkt)
- 		break;
- 	default:
- 		pr_err("Unrecognized Control Frame\n");
-+		ret = -1;
- 		goto error;
+ 	/*
+ 	 * Start with TSK_ONCPU, which doesn't have a corresponding
+ 	 * task count - it's just a boolean flag directly encoded in
+@@ -851,7 +863,6 @@ static void psi_group_change(struct psi_group *group, int cpu,
+ 
+ 		groupc->state_mask = state_mask;
+ 
+-		write_seqcount_end(&groupc->seq);
+ 		return;
  	}
--	ret = 0;
- error:
- 	cfpkt_destroy(pkt);
- 	return ret;
+ 
+@@ -875,8 +886,6 @@ static void psi_group_change(struct psi_group *group, int cpu,
+ 
+ 	groupc->state_mask = state_mask;
+ 
+-	write_seqcount_end(&groupc->seq);
+-
+ 	if (state_mask & group->rtpoll_states)
+ 		psi_schedule_rtpoll_work(group, 1, false);
+ 
+@@ -911,24 +920,29 @@ static void psi_flags_change(struct task_struct *task, int clear, int set)
+ void psi_task_change(struct task_struct *task, int clear, int set)
+ {
+ 	int cpu = task_cpu(task);
+-	struct psi_group *group;
++	u64 now;
+ 
+ 	if (!task->pid)
+ 		return;
+ 
+ 	psi_flags_change(task, clear, set);
+ 
+-	group = task_psi_group(task);
+-	do {
+-		psi_group_change(group, cpu, clear, set, true);
+-	} while ((group = group->parent));
++	psi_write_begin(cpu);
++	now = cpu_clock(cpu);
++	for_each_group(group, task_psi_group(task))
++		psi_group_change(group, cpu, clear, set, now, true);
++	psi_write_end(cpu);
+ }
+ 
+ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		     bool sleep)
+ {
+-	struct psi_group *group, *common = NULL;
++	struct psi_group *common = NULL;
+ 	int cpu = task_cpu(prev);
++	u64 now;
++
++	psi_write_begin(cpu);
++	now = cpu_clock(cpu);
+ 
+ 	if (next->pid) {
+ 		psi_flags_change(next, 0, TSK_ONCPU);
+@@ -937,16 +951,15 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		 * ancestors with @prev, those will already have @prev's
+ 		 * TSK_ONCPU bit set, and we can stop the iteration there.
+ 		 */
+-		group = task_psi_group(next);
+-		do {
+-			if (per_cpu_ptr(group->pcpu, cpu)->state_mask &
+-			    PSI_ONCPU) {
++		for_each_group(group, task_psi_group(next)) {
++			struct psi_group_cpu *groupc = per_cpu_ptr(group->pcpu, cpu);
++
++			if (groupc->state_mask & PSI_ONCPU) {
+ 				common = group;
+ 				break;
+ 			}
+-
+-			psi_group_change(group, cpu, 0, TSK_ONCPU, true);
+-		} while ((group = group->parent));
++			psi_group_change(group, cpu, 0, TSK_ONCPU, now, true);
++		}
+ 	}
+ 
+ 	if (prev->pid) {
+@@ -979,12 +992,11 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 
+ 		psi_flags_change(prev, clear, set);
+ 
+-		group = task_psi_group(prev);
+-		do {
++		for_each_group(group, task_psi_group(prev)) {
+ 			if (group == common)
+ 				break;
+-			psi_group_change(group, cpu, clear, set, wake_clock);
+-		} while ((group = group->parent));
++			psi_group_change(group, cpu, clear, set, now, wake_clock);
++		}
+ 
+ 		/*
+ 		 * TSK_ONCPU is handled up to the common ancestor. If there are
+@@ -994,27 +1006,27 @@ void psi_task_switch(struct task_struct *prev, struct task_struct *next,
+ 		 */
+ 		if ((prev->psi_flags ^ next->psi_flags) & ~TSK_ONCPU) {
+ 			clear &= ~TSK_ONCPU;
+-			for (; group; group = group->parent)
+-				psi_group_change(group, cpu, clear, set, wake_clock);
++			for_each_group(group, common)
++				psi_group_change(group, cpu, clear, set, now, wake_clock);
+ 		}
+ 	}
++	psi_write_end(cpu);
+ }
+ 
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_struct *prev)
+ {
+ 	int cpu = task_cpu(curr);
+-	struct psi_group *group;
+ 	struct psi_group_cpu *groupc;
+ 	s64 delta;
+ 	u64 irq;
++	u64 now;
+ 
+ 	if (!curr->pid)
+ 		return;
+ 
+ 	lockdep_assert_rq_held(rq);
+-	group = task_psi_group(curr);
+-	if (prev && task_psi_group(prev) == group)
++	if (prev && task_psi_group(prev) == task_psi_group(curr))
+ 		return;
+ 
+ 	irq = irq_time_read(cpu);
+@@ -1023,25 +1035,22 @@ void psi_account_irqtime(struct rq *rq, struct task_struct *curr, struct task_st
+ 		return;
+ 	rq->psi_irq_time = irq;
+ 
+-	do {
+-		u64 now;
++	psi_write_begin(cpu);
++	now = cpu_clock(cpu);
+ 
++	for_each_group(group, task_psi_group(curr)) {
+ 		if (!group->enabled)
+ 			continue;
+ 
+ 		groupc = per_cpu_ptr(group->pcpu, cpu);
+ 
+-		write_seqcount_begin(&groupc->seq);
+-		now = cpu_clock(cpu);
+-
+ 		record_times(groupc, now);
+ 		groupc->times[PSI_IRQ_FULL] += delta;
+ 
+-		write_seqcount_end(&groupc->seq);
+-
+ 		if (group->rtpoll_states & (1 << PSI_IRQ_FULL))
+ 			psi_schedule_rtpoll_work(group, 1, false);
+-	} while ((group = group->parent));
++	}
++	psi_write_end(cpu);
+ }
+ #endif
+ 
+@@ -1229,12 +1238,14 @@ void psi_cgroup_restart(struct psi_group *group)
+ 		return;
+ 
+ 	for_each_possible_cpu(cpu) {
+-		struct rq *rq = cpu_rq(cpu);
+-		struct rq_flags rf;
++		u64 now;
+ 
+-		rq_lock_irq(rq, &rf);
+-		psi_group_change(group, cpu, 0, 0, true);
+-		rq_unlock_irq(rq, &rf);
++		guard(rq_lock_irq)(cpu_rq(cpu));
++
++		psi_write_begin(cpu);
++		now = cpu_clock(cpu);
++		psi_group_change(group, cpu, 0, 0, now, true);
++		psi_write_end(cpu);
+ 	}
+ }
+ #endif /* CONFIG_CGROUPS */
 -- 
 2.39.5
 
