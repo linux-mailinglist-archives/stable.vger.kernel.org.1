@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-167586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9168B230CB
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC978B232B4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C874C188CCE2
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 706B26E3302
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA2F2FDC20;
-	Tue, 12 Aug 2025 17:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5562F83A1;
+	Tue, 12 Aug 2025 18:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiBb1UCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNd+2m+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBA82FD1D7;
-	Tue, 12 Aug 2025 17:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3CE2EAB97;
+	Tue, 12 Aug 2025 18:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755021315; cv=none; b=JsJjyykL2qNUdrg7155MFZ/KYvW9rUaHKKcXckaX5PHKUBs0L+onsoSI/rQCMf1PFzZbV26aNAbfH1n2oBiAC7nCHD7xzGQlElNOAkD3IHEFi092W7aG8Hhn9VEWY+VZznxye2AfuUsPg9CZvzm90qYegHUyRuB/+q+xDWNPnSs=
+	t=1755022538; cv=none; b=X6Oy+UbZKQLCZX3x8YNntNt9AQhm93a274eS48hE/fmTKYnPjbfGoyOWF1hmfsdL24XtP9q4zCxTa3dg6fxsbT/nw4UVg4mwxDQ2WiTYRdb1SZqw82U8dyGtZiIboRJkH+tYAsLWZNk9ipOqDRmwb66VnAB5ZuqJSpvm+4Vy6K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755021315; c=relaxed/simple;
-	bh=79HMs7G7W3YRk0oqcZPoeca2U+Ma3oD73H51uFZ+sek=;
+	s=arc-20240116; t=1755022538; c=relaxed/simple;
+	bh=zdSgA62vMlGnBJHdBTFiF/vUTsb3kMBPsMdt18zd1dE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3GEefGi61+MaywxevLJ3HoN7eUqgEMoQXXwZ2gSTwY7ZrforDiBjcMhywyVd7beI00h4KtZACcVTc6m7lJhsBGMoGlmHrCPliIhm5rYEC6xxAQF4rPpuIZm0FZNFYFsu/zjcXktkG1jLhrX43gmKKK2o5ivkDbw3o/NFskPuQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiBb1UCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAA8C4CEF6;
-	Tue, 12 Aug 2025 17:55:14 +0000 (UTC)
+	 MIME-Version; b=QZovJT5El9b6aocodFEuZq62kqexIqUrQcHhjHUXdoyX5P+pEoufRMlKYpD8/y4FFNHItL7aOtnYEiNNw+AkeQaUsD3WSYA3IxagWlW6Wz0nDtwi/y7bIDdQihZK6r6NAO870182e0/zMYRTA4iYqj8cL7Sdf4TnDHpaEGb92Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNd+2m+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F052C4CEF0;
+	Tue, 12 Aug 2025 18:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755021315;
-	bh=79HMs7G7W3YRk0oqcZPoeca2U+Ma3oD73H51uFZ+sek=;
+	s=korg; t=1755022537;
+	bh=zdSgA62vMlGnBJHdBTFiF/vUTsb3kMBPsMdt18zd1dE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fiBb1UCQ/glfR6e/QhdOAI4QSAWvHXk6fInGDGMYgCy5Vnxh8QtjktK20+Caxo4Be
-	 Od9zZI+lA/mtmQpR6bDxkd3SZZN8PV2pBXbqatbG2HqwX0R0AOjC2HlARCh9GvsVXK
-	 e7PhcstexJc6zfyIEKAsIOVpvKc1dwl5Tx0Ji2KI=
+	b=UNd+2m+cIOFOJV+lF6irk3mMt3RkfybIsLGLj6VDUvdtHGKQ9d3R1UuYE7PyhYQWK
+	 M/hJ6WZ+Gm5yif7Bg25KfGyQH0/9Lz4tywhNAEM5irdQnxUuMOXSNMacAPpOuSslPL
+	 CkEcRZgXHDfjQv1Fw/lP9yrcL1pq7NMGqm1jfV3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Tomas Glozar <tglozar@redhat.com>,
-	Juri Lelli <jlelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	John Kacur <jkacur@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	wenglianfa <wenglianfa@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/262] tools/rv: Do not skip idle in trace
+Subject: [PATCH 6.12 185/369] RDMA/hns: Fix HW configurations not cleared in error flow
 Date: Tue, 12 Aug 2025 19:28:02 +0200
-Message-ID: <20250812172957.072359677@linuxfoundation.org>
+Message-ID: <20250812173021.730066638@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
-References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+References: <20250812173014.736537091@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,57 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: wenglianfa <wenglianfa@huawei.com>
 
-[ Upstream commit f60227f3448911b682c45041c3fbd94f6d3b15a2 ]
+[ Upstream commit 998b41cb20b02c4e28ac558e4e7f8609d659ec05 ]
 
-Currently, the userspace RV tool skips trace events triggered by the RV
-tool itself, this can be changed by passing the parameter -s, which sets
-the variable config_my_pid to 0 (instead of the tool's PID).
-This has the side effect of skipping events generated by idle (PID 0).
+hns_roce_clear_extdb_list_info() will eventually do some HW
+configurations through FW, and they need to be cleared by
+calling hns_roce_function_clear() when the initialization
+fails.
 
-Set config_my_pid to -1 (an invalid pid) to avoid skipping idle.
-
-Cc: Nam Cao <namcao@linutronix.de>
-Cc: Tomas Glozar <tglozar@redhat.com>
-Cc: Juri Lelli <jlelli@redhat.com>
-Cc: Clark Williams <williams@redhat.com>
-Cc: John Kacur <jkacur@redhat.com>
-Link: https://lore.kernel.org/20250723161240.194860-2-gmonaco@redhat.com
-Fixes: 6d60f89691fc ("tools/rv: Add in-kernel monitor interface")
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 7e78dd816e45 ("RDMA/hns: Clear extended doorbell info before using")
+Signed-off-by: wenglianfa <wenglianfa@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250703113905.3597124-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/rv/src/in_kernel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
-index f04479ecc96c..ced72950cb1e 100644
---- a/tools/verification/rv/src/in_kernel.c
-+++ b/tools/verification/rv/src/in_kernel.c
-@@ -353,7 +353,7 @@ ikm_event_handler(struct trace_seq *s, struct tep_record *record,
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 13b55390db63..6c4e0ea20224 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -2986,7 +2986,7 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
  
- 	if (config_has_id && (config_my_pid == id))
- 		return 0;
--	else if (config_my_pid && (config_my_pid == pid))
-+	else if (config_my_pid == pid)
- 		return 0;
+ 	ret = get_hem_table(hr_dev);
+ 	if (ret)
+-		goto err_clear_extdb_failed;
++		goto err_get_hem_table_failed;
  
- 	tep_print_event(trace_event->tep, s, record, "%16s-%-8d ", TEP_PRINT_COMM, TEP_PRINT_PID);
-@@ -595,7 +595,7 @@ static int parse_arguments(char *monitor_name, int argc, char **argv)
- 			config_reactor = optarg;
- 			break;
- 		case 's':
--			config_my_pid = 0;
-+			config_my_pid = -1;
- 			break;
- 		case 't':
- 			config_trace = 1;
+ 	if (hr_dev->is_vf)
+ 		return 0;
+@@ -3001,6 +3001,8 @@ static int hns_roce_v2_init(struct hns_roce_dev *hr_dev)
+ 
+ err_llm_init_failed:
+ 	put_hem_table(hr_dev);
++err_get_hem_table_failed:
++	hns_roce_function_clear(hr_dev);
+ err_clear_extdb_failed:
+ 	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08)
+ 		free_mr_exit(hr_dev);
 -- 
 2.39.5
 
