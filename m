@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-168447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E82B2352D
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:48:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DAFB2315D
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A91603B6BA7
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:43:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCCB91882368
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE5F13AA2F;
-	Tue, 12 Aug 2025 18:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3F32FE59A;
+	Tue, 12 Aug 2025 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/Zihosi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11ehih7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD662F291B;
-	Tue, 12 Aug 2025 18:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9E42FE56B;
+	Tue, 12 Aug 2025 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755024201; cv=none; b=HbQCLyNw1mmbuUKmi8yLwyye8QUC0BiFYR122OdFzdXBIIewhQbhOVYuuNWVfsHGskDhsEAIpBOop6if8UMtBBxN/BpJ1chMEUXLU+VcwCegb25Xguw5efJfvi5uTY/I7eO4p+CU/E3BBU5/PN4CwYLjxrtWbby+//lCpNRn8nE=
+	t=1755021655; cv=none; b=azEIjh+OY2hR6vf23d8a2P7tEY7U4Fp8oV+JWj8YyeBqkXwIlFlg2xkAbMgJHtd6Aj/lGmcDCWwTfqw56u7nn5ZEWJRGZbuA3OzDVACzD34OdvGnLPETCfKS93GVUff1TTvYNp4tZGAldAkGzSriOKW5p06RB5/pw13S/5FM520=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755024201; c=relaxed/simple;
-	bh=xv6OklFF9XwF/TpKxcRq0PPBtATK8yglN17sEUBM1Ls=;
+	s=arc-20240116; t=1755021655; c=relaxed/simple;
+	bh=Rq3DSFZKWTF4uy77ntu4jUxuPXSY0NIrN1x6mU0nLn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=umPeZDzs5ZtlOrpuTiBjdCAy8g11RjTQPpqwulvLw9cqSYHey1EQvF79vsEHpVaoYo/XTIUPcIfAong3/LN3E222pMW8t13BsW/ZigcxbNqM+ZpM1mdvJIUKaOfLx5xeTbbi2AlSqZYKRWIgSzREYRXciuczwzMQNX7X3n3t/Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/Zihosi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C34C4CEF0;
-	Tue, 12 Aug 2025 18:43:19 +0000 (UTC)
+	 MIME-Version; b=N96Y9r+J1fM5R/WuaPD5kDjGz7r96umOhsP0sVvD4sA9YMVtH347lGjIiLnzwxfbNhqswvJR7s/yALweOMqxEIAFOlPIxj80F/LP5QuaOEVDQhQqJVkmRbPLRkvu0CM5LP2NSyRXr/pBQct60/PzbETX8cyVsrNgB9MtZ8Pi/2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11ehih7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C0AC4CEF0;
+	Tue, 12 Aug 2025 18:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755024200;
-	bh=xv6OklFF9XwF/TpKxcRq0PPBtATK8yglN17sEUBM1Ls=;
+	s=korg; t=1755021655;
+	bh=Rq3DSFZKWTF4uy77ntu4jUxuPXSY0NIrN1x6mU0nLn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/ZihositbDJVRaXUGnPRpQQsgZelk1nv0RGKst4C/NZdZChRxlcdr5CS6be5VbqO
-	 49A4Nzz/kInuvodg4IXTYEfHTVndSxXScA0GpHXsbJtey7Mf/xXD3BY+nwfwHevkpF
-	 xkpz1JZwFP1GMi0ZJAa5c2SxZ7J4V69oUXc9Bmt8=
+	b=11ehih7zM8nrlCVaDwpxdX+7PwE5B7jFJw3cvL1CTDT0OajjKkh5bc2pzPI7/auDA
+	 LPYiZ73zQQKhs6uMQUWPI3BBwSFbGH/UcMzJNPkWxHMdLT2f9JLw09kuQO5g8lJ6qW
+	 Rha4OUxPbXzzFJSxrvA1tY8AeitvzNZm5CS2FZkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aaron Lewis <aaronlewis@google.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 276/627] net/mlx5e: Clear Read-Only port buffer size in PBMC before update
-Date: Tue, 12 Aug 2025 19:29:31 +0200
-Message-ID: <20250812173429.808886861@linuxfoundation.org>
+Subject: [PATCH 6.6 184/262] vfio/pci: Separate SR-IOV VF dev_set
+Date: Tue, 12 Aug 2025 19:29:32 +0200
+Message-ID: <20250812173000.957386317@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit fd4b97246a23c1149479b88490946bcfbd28de63 ]
+[ Upstream commit e908f58b6beb337cbe4481d52c3f5c78167b1aab ]
 
-When updating the PBMC register, we read its current value,
-modify desired fields, then write it back.
+In the below noted Fixes commit we introduced a reflck mutex to allow
+better scaling between devices for open and close.  The reflck was
+based on the hot reset granularity, device level for root bus devices
+which cannot support hot reset or bus/slot reset otherwise.  Overlooked
+in this were SR-IOV VFs, where there's also no bus reset option, but
+the default for a non-root-bus, non-slot-based device is bus level
+reflck granularity.
 
-The port_buffer_size field within PBMC is Read-Only (RO).
-If this RO field contains a non-zero value when read,
-attempting to write it back will cause the entire PBMC
-register update to fail.
+The reflck mutex has since become the dev_set mutex (via commit
+2cd8b14aaa66 ("vfio/pci: Move to the device set infrastructure")) and
+is our defacto serialization for various operations and ioctls.  It
+still seems to be the case though that sets of vfio-pci devices really
+only need serialization relative to hot resets affecting the entire
+set, which is not relevant to SR-IOV VFs.  As described in the Closes
+link below, this serialization contributes to startup latency when
+multiple VFs sharing the same "bus" are opened concurrently.
 
-This commit ensures port_buffer_size is explicitly cleared
-to zero after reading the PBMC register but before writing
-back the modified value.
-This allows updates to other fields in the PBMC register to succeed.
+Mark the device itself as the basis of the dev_set for SR-IOV VFs.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1753256672-337784-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Aaron Lewis <aaronlewis@google.com>
+Closes: https://lore.kernel.org/all/20250626180424.632628-1-aaronlewis@google.com
+Tested-by: Aaron Lewis <aaronlewis@google.com>
+Fixes: e309df5b0c9e ("vfio/pci: Parallelize device open and release")
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20250626225623.1180952-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 8e25f4ef5ccc..5ae787656a7c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -331,6 +331,9 @@ static int port_set_buffer(struct mlx5e_priv *priv,
- 	if (err)
- 		goto out;
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index fa168b434239..3f139360752e 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2235,7 +2235,7 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
+ 		return -EBUSY;
+ 	}
  
-+	/* RO bits should be set to 0 on write */
-+	MLX5_SET(pbmc_reg, in, port_buffer_size, 0);
-+
- 	err = mlx5e_port_set_pbmc(mdev, in);
- out:
- 	kfree(in);
+-	if (pci_is_root_bus(pdev->bus)) {
++	if (pci_is_root_bus(pdev->bus) || pdev->is_virtfn) {
+ 		ret = vfio_assign_device_set(&vdev->vdev, vdev);
+ 	} else if (!pci_probe_reset_slot(pdev->slot)) {
+ 		ret = vfio_assign_device_set(&vdev->vdev, pdev->slot);
 -- 
 2.39.5
 
