@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-168289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-167514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FB0B233F9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 20:34:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65134B23061
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 19:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F8CC7B88B9
-	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 18:33:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D778C685CD4
+	for <lists+stable@lfdr.de>; Tue, 12 Aug 2025 17:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00AC2F659A;
-	Tue, 12 Aug 2025 18:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D5B2FE574;
+	Tue, 12 Aug 2025 17:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UDVDFBDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdFENiIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7CC2E285E;
-	Tue, 12 Aug 2025 18:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C0C2868AF;
+	Tue, 12 Aug 2025 17:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755023676; cv=none; b=roA8ZlwMmab49KkHN+clZm0Es2DuPlHIxrC82VkqIiSYsn+vhULYnBCTQnPksiH0u4OzA+GgY0QZkMG8mIwAkf2VE6/o5TzF2MQHniXfQV9rsMKP414z38k1unIKUs/4U7+hmg2160HCr7lk1c8TOr/CmG2noQUJL5YkUxm9XhI=
+	t=1755021077; cv=none; b=q9v5IKrrt4o+gCWXGqOu8037bYClrcQ4dLn1HYnJCTe9VqxyfWQDYDg5dpF2jtMFXqlUSVy3thmI25ckgL+XvkRNDltcrdznAI0VzKyqMXS8f5D+aPw2Zg12BvGJ0XX/vKk7qoWjFReP2VGdrkSEPjWZ6IGquUhwXlwJ0CxsGJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755023676; c=relaxed/simple;
-	bh=XTI6XvRkEhVcfAaKf3gk62tRSUs0tkxcHccU3AdW1YI=;
+	s=arc-20240116; t=1755021077; c=relaxed/simple;
+	bh=fHASWCmMh0tyxsTf8XbZhsrmWp6dnCfCX41cxvSvSeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtBLxW8ANiczKkcV1PLXG9k6ISD97Z+7xUxECe3py/kMxndwB7LRWdFSyG24MeN5H6Y/UnypxJhtNdYv1jFLIbrEFepMO25mIuOTP1OKyLYYXpgsOupbWZhEzsV/CMQGOUtAGHmY+KGLE+fMAu6oj9UZme9KNyDW66cZwF30UC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDVDFBDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3BBC4CEF0;
-	Tue, 12 Aug 2025 18:34:35 +0000 (UTC)
+	 MIME-Version; b=ftglIUaR5hswbF6+TVwkMxayoBFboP+svCfAGhJ0b3j3pf06NVPbXGAPx2H8nj+toHQZVoIS4d/gpvPTIso8Tj4tvzBklYoifeS+/rXxJJa5NjANU1LNmuV3+4Bsx58tVpkna9zRBopgzWZUydXNv19sTNOOd5jNVYCWV5XocqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdFENiIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF18C4CEF0;
+	Tue, 12 Aug 2025 17:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755023676;
-	bh=XTI6XvRkEhVcfAaKf3gk62tRSUs0tkxcHccU3AdW1YI=;
+	s=korg; t=1755021077;
+	bh=fHASWCmMh0tyxsTf8XbZhsrmWp6dnCfCX41cxvSvSeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDVDFBDDLOMy+IM4iXG4Zfm7ZKD2E2MHfzpuCQDoS2hsQ5BYOmZDoAmtGKSrqxdqu
-	 KhU7ZNgk0gZ9eckPsv9W4T8y7TzhKpMKMlyvyXDjuM80sYp+mqkDXhyRvnM1ftQdQY
-	 8XiHCGxJQGOnqDdXRENDdHXZ0fJEa4G1ee1YRQHI=
+	b=ZdFENiIt1RE825ceWOiKABnVOJ9QeELDpjbs8gRMo//WI1gVoqPykzWmLXSkbLIiG
+	 5y8oiybngNLLszLZY6ofFXwIfwHjGXGsynPeqamY/s+IrK3p4TR36PxRmyBf/IkTvC
+	 IMwXFURFloPc+3iNLyrxxQkaqch4MX2BTbGwiNX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 150/627] slub: Fix a documentation build error for krealloc()
-Date: Tue, 12 Aug 2025 19:27:25 +0200
-Message-ID: <20250812173425.000605813@linuxfoundation.org>
+Subject: [PATCH 6.6 058/262] wifi: iwlwifi: Fix memory leak in iwl_mvm_init()
+Date: Tue, 12 Aug 2025 19:27:26 +0200
+Message-ID: <20250812172955.456377686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Corbet <corbet@lwn.net>
+From: Xiu Jianfeng <xiujianfeng@huawei.com>
 
-[ Upstream commit e8a45f198e3ae2434108f815bc28f37f6fe6742b ]
+[ Upstream commit ed2e916c890944633d6826dce267579334f63ea5 ]
 
-The kerneldoc comment for krealloc() contains an unmarked literal block,
-leading to these warnings in the docs build:
+When iwl_opmode_register() fails, it does not unregster rate control,
+which will cause a memory leak issue, this patch fixes it.
 
-  ./mm/slub.c:4936: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
-  ./mm/slub.c:4936: ERROR: Undefined substitution referenced: "--------". [docutils]
-
-Mark up and indent the block properly to bring a bit of peace to our build
-logs.
-
-Fixes: 489a744e5fb1 (mm: krealloc: clarify valid usage of __GFP_ZERO)
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://patch.msgid.link/20250611155916.2579160-6-willy@infradead.org
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: 9f66a397c877 ("iwlwifi: mvm: rs: add ops for the new rate scaling in the FW")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+Link: https://patch.msgid.link/20221109035213.570-1-xiujianfeng@huawei.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 31e11ef256f9..45a963e363d3 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4930,12 +4930,12 @@ __do_krealloc(const void *p, size_t new_size, gfp_t flags)
-  * When slub_debug_orig_size() is off, krealloc() only knows about the bucket
-  * size of an allocation (but not the exact size it was allocated with) and
-  * hence implements the following semantics for shrinking and growing buffers
-- * with __GFP_ZERO.
-+ * with __GFP_ZERO::
-  *
-- *         new             bucket
-- * 0       size             size
-- * |--------|----------------|
-- * |  keep  |      zero      |
-+ *           new             bucket
-+ *   0       size             size
-+ *   |--------|----------------|
-+ *   |  keep  |      zero      |
-  *
-  * Otherwise, the original allocation size 'orig_size' could be used to
-  * precisely clear the requested size, and the new size will also be stored
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index b2cf5aeff7e3..d2dbbc9fe384 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -65,8 +65,10 @@ static int __init iwl_mvm_init(void)
+ 	}
+ 
+ 	ret = iwl_opmode_register("iwlmvm", &iwl_mvm_ops);
+-	if (ret)
++	if (ret) {
+ 		pr_err("Unable to register MVM op_mode: %d\n", ret);
++		iwl_mvm_rate_control_unregister();
++	}
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
