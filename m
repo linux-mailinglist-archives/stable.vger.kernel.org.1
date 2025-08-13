@@ -1,126 +1,194 @@
-Return-Path: <stable+bounces-169389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA30B24A5D
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:15:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61929B24A9D
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22DFA3B4A39
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:12:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863381BC5D33
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2562E717F;
-	Wed, 13 Aug 2025 13:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED132EA470;
+	Wed, 13 Aug 2025 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="S6G+uz4j"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b="BFeVysPt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88E8185B67
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755090758; cv=none; b=q7WXaCvdc72Up5+SWq3MszR3jsV1miDd1bEWsOooz3+10N0nivgcbX90LrUrPbHh+hChOktcz3BuJFOxbcmzN9LJeLcNEmXCuFkyy4B36s3dF8/FDbYcxWdAyIloSXsCNuRIy9Qr7L/Y5Pe8Q8NEZvq419BTOiOR3+rDYKDFyvM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755090758; c=relaxed/simple;
-	bh=GgUzu6LME52TpeiHWzbrdSV93Ja1LmmwWYtxTAV0V6M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UI3KJ2YiMjY/VPzd/MJiC4uAOIbNnJhvZmLLSDMt0gUPH7L/okCPbl4rSZyURfdYutsZdkt1wQGQdLktDVRLl/tzSqca4rs04UpoEzjCqc/UkrpwqL6yxWRphBp7OfMrRz8RUEOm9aWAwBSAwGe43e0LdVBCIYufCi4beuEUz7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=S6G+uz4j; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7e835e02d96so455269585a.2
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 06:12:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1755090755; x=1755695555; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JtU72p9c0fOalcp8RP9DRRIkwqBXfYTQn42C9LNbTEE=;
-        b=S6G+uz4jYb3MjRBJvjzapqoHEdhXk8RDJLFLV2fyffZEpHcpdyAK4Co7vnopfLovXN
-         zH/cBJRTsbFv19iCA3aLUHetQ2tXKW1f7q4GVqkXurPNAn49CCvTM1zgSdLv9m1r3ZZC
-         fDxhPrjKM4FbLlq5m+G7aSnhGLhBoKHh6JYKTehyfq7q3Pc/w2PcKvw7mojulZF3Z1hM
-         3b0FGQu23lnZUTNaxF7nPELrkdJzqIEPD/tdt0onS5ES9Im6hpr+/kAUN0hQraTLiD90
-         pT7vOeZ+Lgp82w0G4lBSRCI6NzJb/9S9Tc36PdF2WfzADU65xWfGC50quBBV9YKggnRU
-         yhSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755090755; x=1755695555;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JtU72p9c0fOalcp8RP9DRRIkwqBXfYTQn42C9LNbTEE=;
-        b=CxknBC51iFB+NC7E8boE5xtY6iT62LfztlNSUjEG/6EO1ulU+NJjm+OroRTvpkNomM
-         w5IO4qdeoeWdUncIk3qKSlqDfDjj0VvUG/xJwrKromuF6aQIYQP0MHCAe/GhsVMzLK5X
-         gFQT6lsvr1obIRpE6TFxFbxHd1Cv2EJxg2NXCLsLPpaXIRi2FCk4E660NvMW0+Tji+gF
-         f+8e67amgQnK897S3SHekySh8KeJ1eXbhNYzPJjvBak1s7f+JibjDbKwVsB1bMzuqbAs
-         HwlBVXB8HHCiIsdGOhWCaywEF5nTKwouPHgoGCNL9aowdU4bMIjWXbaTjT/pAFtrQ0gm
-         7TSQ==
-X-Gm-Message-State: AOJu0Yzs+sQ3BRKK3UDyt7tCTosM4fvo0Pw17JEgJSVrs4/4Fq5O036R
-	ZV/8gRdZdYaoEWzWX1KcHz27E9PhPB4+kA3BW3mFjPcMV66hAK61bBMPPBkDNSiiMTCT7CsrUeM
-	4ChunU+5Gz60fKZtF4MwCB0yA6rDF/Baj46V8WFQurw==
-X-Gm-Gg: ASbGncvTeFcZtICeezjMA9ZGINzjexOfBDApAA04R0XbD/5P7rJu6kXz8Z3JcravFV8
-	Kb5FbCU5z68xkkNpk4nbSRvlTEO2Pd//c/NRY1UwcFnCDas8JkXRGVevJMpMZQm92/V58mbKfI2
-	dD/TyeF7k9j1gWin1tTf9Fjaw9moavFuGKjJADSiBf3qLQ3tCirRPxhAc+iv2G1N+hD4EJVJoke
-	CI/cuK+
-X-Google-Smtp-Source: AGHT+IG5QZZnM8BOlOZuuRDsxed9T4NNSIcdVy3asdv+WEHOb8IbJxfeZVezY2LY6qu6NbPDuHh/ZISvs4Hz6d9Xaoc=
-X-Received: by 2002:a05:620a:5613:b0:7e8:39da:9735 with SMTP id
- af79cd13be357-7e86524c86cmr343807085a.14.1755090755377; Wed, 13 Aug 2025
- 06:12:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CB12E8899;
+	Wed, 13 Aug 2025 13:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755091874; cv=pass; b=ccsiAMIWVdaNaRZPY1x6d3VrqhitDPPWDpx3AF1ae0W5j1Z6WBsUCZIUEJ3Oy4T/F6RMTd3rh3tD96ci76g11W7GhpZvC7cwlT9V1HIMJWJ/kVw2sNv1IUpAdq0+0R1Eoi776cIxbBkuv1+C4434fd3M2PMTmbnT8nPRMn1jhEg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755091874; c=relaxed/simple;
+	bh=iL88IyH4csTuiVKL5WFtJqMSKUZhYR2vJlQwTJBNCyU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D/3KZPPUvi0cbD07NBITWn+a0+FhorcLzst7J/eJYh6NHHSy7KCLATVHdajON1NHkXmHK8r9W0y0CgVPZY7H39YLhQfnoOhRJUgP5MPiAq09ShfnMo7yGxtnAwvMVepUzwySyc2CRxmVn7bxGTl48jxkGb9eQ+0opZOaCa6rMl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.b=BFeVysPt; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1755091863; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Gm8ZqbrArfSxMgKx4Se7hI59QU1SVh3IfH5aYnoR6xfpxr2+e7kbluJR+xoEQP8vwJH/ZPdbvmJBYeW02sav2yvqj0nwKGq7tahbQI5XaK2mbOLKJioIhf7GRcmH+R65/dzQKBn+oJpp9AqotYDhPmXVKqoIJU5bOH45vKM41HI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1755091863; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1PO4JwgNl3v4lcBIWYkGeBsmkYenxYCJt0c4vl9JYKo=; 
+	b=Ttp1JZ47Db6HXXWuaUdmSGm6791sxj4o4KYWHm30f14ZTTeFt+5I6e4UPalju50j/DjaniUYC1/V6MDDKfUi5tGW4eNHHrVexCOAiEC/nYyynH4AIw/TC0gATzawxoYFR/bQcEBedOucyr0AJBNuyRJqO7zeHz/L6SvNbCQEaFQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
+	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1755091863;
+	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+	bh=1PO4JwgNl3v4lcBIWYkGeBsmkYenxYCJt0c4vl9JYKo=;
+	b=BFeVysPtKmnvVmoE8wZBfy5QEmwPgZlv7HeUqHv15c82hAoQJe+Mp6BwplVJyh++
+	FLb7HWf0oU/iY5vBRp2BxEDv0gDHbFujujsmFLP7riiQpBU9dhIxR5yoPaAZKSyDT9c
+	uhRIngyRReUz57474MiupguM9UEQxzWdAW8CuQvc=
+Received: by mx.zohomail.com with SMTPS id 175509186228158.30300497816302;
+	Wed, 13 Aug 2025 06:31:02 -0700 (PDT)
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ Heiko Stuebner <heiko@sntech.de>, linux-pwm@vger.kernel.org
+Subject:
+ Re: Patch "pwm: rockchip: Round period/duty down on apply, up on get" has
+ been added to the 6.16-stable tree
+Date: Wed, 13 Aug 2025 15:30:57 +0200
+Message-ID: <13940446.uLZWGnKmhe@workhorse>
+In-Reply-To: <ztjkhfhr4oyqgarh4wrqtcgu4gh3fqnfnakdx34wlj37ggpiin@fibgy2g4zldp>
+References:
+ <20250808223033.1417018-1-sashal@kernel.org>
+ <2025081209-vista-preorder-bd6f@gregkh>
+ <ztjkhfhr4oyqgarh4wrqtcgu4gh3fqnfnakdx34wlj37ggpiin@fibgy2g4zldp>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812173014.736537091@linuxfoundation.org>
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Wed, 13 Aug 2025 09:12:23 -0400
-X-Gm-Features: Ac12FXxImiV90KDqFEsliS51c-s2jeKLqGC0XUvACkuiyfMmFUbXrGmqeZOS8OI
-Message-ID: <CAOBMUvjaYR2b3grBiXntb16ny_8RqVVH6NGJnjEYUFU=TmDqVQ@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/369] 6.12.42-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 12, 2025 at 2:10=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.42 release.
-> There are 369 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 14 Aug 2025 17:27:11 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.42-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+Hi Greg & Uwe,
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+On Tuesday, 12 August 2025 22:15:37 Central European Summer Time Uwe Kleine=
+=2DK=C3=B6nig wrote:
+> Hello Greg,
+>=20
+> On Tue, Aug 12, 2025 at 12:53:49PM +0200, Greg KH wrote:
+> > On Tue, Aug 12, 2025 at 12:36:48PM +0200, Uwe Kleine-K=C3=B6nig wrote:
+> > > On Tue, Aug 12, 2025 at 10:53:11AM +0200, Greg KH wrote:
+> > > > On Sat, Aug 09, 2025 at 11:45:23AM +0200, Uwe Kleine-K=C3=B6nig wro=
+te:
+> > > > > while the new code makes the driver match the PWM rules now, I'd =
+be
+> > > > > conservative and not backport that patch because while I consider=
+ it a
+> > > > > (very minor) fix that's a change in behaviour and maybe people de=
+pend on
+> > > > > that old behaviour. So let's not break our user's workflows and r=
+eserve
+> > > > > that for a major release. Please drop this patch from your queue.
+> > > >=20
+> > > > Now dropped, but note, any behavior change is ok for ANY kernel ver=
+sion
+> > > > as we guarantee they all work the same :)
+> > >=20
+> > > Your statement makes no sense, I guess you missed to add a "don't".
+> > > Otherwise I'd like to know who "we" is :-)
+> >=20
+> > {sigh} yes, I mean "any behavior change is NOT ok..."
+>=20
+> Ahh I though you wanted to say "any behavior change is ok for ANY kernel
+> version as we don't guarantee they all work the same". So let me explain
+> a bit:
+>=20
+> A PWM consumer (think fan driver) gets an opaque handle to the used PWM
+> device and then requests something like: "Configure the PWM to have a
+> period length of 50 ms and a duty length of 20 ms." The typical PWM
+> cannot fulfill the request exactly and has to choose if it configures
+> (say) period=3D46 ms + duty=3D16 ms, or period=3D52 ms and duty=3D26 ms (=
+or
+> possibly a mixture of the two, or an error code). Traditionally each
+> driver implemented its own policy here and so the generic fan driver
+> knows neither the possible hardware restrictions (another hardware might
+> be able to do period=3D51 ms and duty=3D19 ms) nor how the driver picked =
+one
+> of the options. Making things harder, it depends on the use case which
+> policy is the best, which also explains that different drivers picked
+> different algorithms. And also it's unclear even what "nearest" means.
+> For example a hardware might be able to configure period=3D17 ms or
+> period=3D24 ms in reply to a request of period=3D20ms. You probably say t=
+hat
+> 17 ms is nearer. But if you think in frequencies the request of
+> period=3D20ms corresponds to 50 Hz and then 24 ms ~ 41.6667 Hz is better
+> than 17 ms ~ 58.8235 Hz.
+>=20
+> To improve that situation a bit at least new PWM drivers are supposed to
+> round down both values. The commit under discussion modifies an existing
+> driver to align to that policy. So from a global point of view this is
+> an improvement, because it makes things a bit more deterministic for a
+> PWM consumer that doesn't know about the hardware details. The down side
+> is that a PWM consumer that does know these details might depend on the
+> actual implementation of the previously implemented policy.
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+As the author of the patch in question, I thought I should also chime
+in to elaborate on what this means in real terms on the hardware this
+patch is applicable to. In my testing, I've found the difference is
+usually a few tens of Hertz at a scale of tens of thousands of Hertz at
+best. However, out of an abundance of caution, I didn't want this to be
+picked up by literally every stable kernel still supported, because if
+this causes an actual observable functional change in the real world
+then it's only accidental as a regression. This should not be the case,
+but I'd rather not tempt fate here.
 
-Thanks,
-Brett
+What it does do however, aside from improving consistency here, is that
+it makes the PWM core no longer produce a warning on kernels built with
+PWM_DEBUG whenever the fan on my RADXA ROCK 5B changes speed. As someone
+who worked on both a new PWM driver where I wanted PWM_DEBUG on at the
+time as well as running this existing driver on the aforementioned device
+while working on other drivers of this SoC vendor, I did not want to
+switch between kernel configs all the time, and this greatly improved
+my willingness to keep on living.
+
+So in conclusion:
+1. this does not change behaviour for any real-world use case, as the
+   difference is so tiny it drowns out in the usual tolerances of PWM
+   consumers to account for clock shenanigans.
+2. even if someone does rely on 0.01% differences in PWM output on a
+   consumer device SoC, they would probably appreciate predictable
+   behaviour going forward, instead of their requested rate having
+   an error that is either positive or negative depending on how
+   the math works out. But they'd probably appreciate this change as
+   part of a new major release, not a stable patch release.
+3. The real motivation is making me less sad while working on other
+   things.
+
+Kind regards,
+Nicolas Frattaroli
+
+>=20
+> So this is a change in behaviour, but it adds to the consistency of the
+> PWM framework. If you want to make an LED blink or drive a fan, that
+> (most likely) doesn't matter to you. If you drive a robot arm in a
+> construction facility, it might.
+>=20
+> The mid term solution is a new PWM API that gives more control to the
+> consumer. The framework bits for that are already done and three drivers
+> are implementing that and two more are in the making. (And if you use
+> these with the legacy consumer function you also get the round down
+> behaviour.)
+>=20
+> Best regards
+> Uwe
+>=20
+
+
+
 
