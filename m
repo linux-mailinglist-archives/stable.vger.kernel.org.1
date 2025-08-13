@@ -1,154 +1,159 @@
-Return-Path: <stable+bounces-169333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11958B241B5
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 08:39:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444EEB241BE
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 08:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E17A7AE05C
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 06:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 525121883F02
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 06:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47F22D3A7D;
-	Wed, 13 Aug 2025 06:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06382D29D6;
+	Wed, 13 Aug 2025 06:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VDVPCiKh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ivbSqSZT"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66A12D3723
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 06:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB82E29DB88;
+	Wed, 13 Aug 2025 06:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755067138; cv=none; b=ee/qHZXF8TwAZbF0RVThFYiC84fLUq3PNtpGalX56bcyBuFF26JZZ64pKMPnwMr8pL/PTRR6oDR2SwnsyEaGLCbIIu1xxQOBta26d3E+InPXSwWRV2xCvN0jNSYUQStNUfC1EA/J4Ru01HvqDE0DcluLnX04QL0hzPj9q67xjdg=
+	t=1755067384; cv=none; b=GIyecLStGVF3V0VFx3gMriolxtjvda05MQP8RDDD+Plzvs4prj5IBkQFWgZr3/+GTls7Z6L4i4bav/z21J73f5iy2d6++jYa8mlB6ZcAgJtmO0UMWktzpIxZ4dbefWhrPgrZGLVmnc1r27mAw+sNhu//JWIicrSRe2t0vm246IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755067138; c=relaxed/simple;
-	bh=rXp5CgpdfOwq6IvtQTfJNHezSgRGwP7XgoOkdM34CAs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Til71Sl52+G0flClsZ0MbVlXprL8XUgxMIt2MwuA3UwHSRVk71Vf7uGooI5kj7lR3zQ1D7ry5Y3lt34E9hYATDV361G2LgNQbXET6ckzH5WrI9eY81RNtZxmvwxUQaueWRzFQ9nzmMLK/wjVI+NtxskwJoWPwvmsSfI5WdjFoTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VDVPCiKh; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57D643xp009553
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 06:38:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=X18+UHg7svFJzutDLuLGcKihBz8fvMq6lXl
-	9O85SJg8=; b=VDVPCiKhd7wqr8qb45I2gzPhX8OXurZrITlNVdC8eGcu/MrElrg
-	pCFEw22LxaVcjfYhm6dOjEE+V737aWYCb2MknciswHkVJ28RYA6tnm2eALeZzhNF
-	hrrVIS7BlN5flqYyx9o+6OzbfDBxJpw+aWVp5SB9qy8RHqHx9C5p4vRDlw9nKlpp
-	I2tOpJjnYG75nPPpDvE7fjq2uXobuVRMELA7ZOVx7atMuncNZB8JWzmAp4Sw/L+j
-	FosgZHrrSYRSkzitDPojVOayr9sai8PSf/RtPul2SbSq3kYOLFDOGkHej75QQ12u
-	2pxtbt+UsWkbGa2YHQapL48kPD4C3GJYGVw==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ffhjpjvd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 06:38:55 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-24249098fd0so68297465ad.0
-        for <stable@vger.kernel.org>; Tue, 12 Aug 2025 23:38:55 -0700 (PDT)
+	s=arc-20240116; t=1755067384; c=relaxed/simple;
+	bh=t6Gxkv+CDON82ECDUPUEjnK0xUD+Pt0dts94fDlhUuI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WLfy6QhWmEXRU4fPHlXBOmnM7XU1H11LV35lOr80kC2BCCr71jEed15M+G3t6kw6dvyYQj98yDPR7HkAg2fjwfWhI7kKW6+v94rYF42BEyu/myQi3ju3WcBAI1BOZaxLuqxDZPgQQaxK70QHj6BqbNSUD9eoMGn5S5oCE6H7NWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ivbSqSZT; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3323afe4804so50280091fa.0;
+        Tue, 12 Aug 2025 23:43:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755067381; x=1755672181; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8yyc4t9KTW/liBhOmzyg87dBz2efZXc6DlXeMNJMn3I=;
+        b=ivbSqSZTDuIR9WTMP4+HreRBQI+W+nta46QucJyENT3NhLBhDKWcuuAIiDzZ/cIizs
+         jKBdDPHLNjA1BZM2LQkm2E0akKphN1ddYme7r+QFkG6kGG2xz+g0t/yxbnCvym246bXR
+         U28QCHVVk2rUysRABXAFiLstWHhGA3U7CXcxo7O4Niw0tMU2/nEjdgVY7WqAYb5T+qWL
+         F22nD97aDsIudgM9kjkBplEVAiOVIrSDE/TvqEFLIBdf3RpaDZylVG1lUQfMdGHkyh/x
+         DIazDgzls9V//aMTJYCIlU3nn+NZOE5nlRkcpjCoe2FXNURHHOHjRzDn9SZFGYtdZV1/
+         BS5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755067135; x=1755671935;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X18+UHg7svFJzutDLuLGcKihBz8fvMq6lXl9O85SJg8=;
-        b=mO80oqhLYalQ2GEnFORrib//SNUwcdz+GyWy++rTLHSmBiK1DZH9x5BD8U4Hbg0fVa
-         XbehsgIcSDJEQzJwNiQeRRhmRWr+SczEOLzNDJJ1LzVH9PhV1W3tDfuEmvvceLHjHwk8
-         p1zT4StAx63V+NPmvB09I9CzNB0DHrGgUtO/Hbz7dW+x8f0uvVADuBc7lZcrJ6lSuTsH
-         TNb9IrmjPMGKc/NFIC4/vBaQnAWUMQcFuPLSOke4Aq995yzOE/GO7UmqH2iBT/0/0YAn
-         k82+d36DIlgjTeMsS5r+5Zh4JoCmC44bOq1kVAMpThKU+DWSAuXolCUodcWPvZ4NnMWK
-         r7tg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7Ktwt6uuWbN89u7s0w1/HGxwdYN0/+1c2YLWjG0xNcvHM7ERh8MxhSpHbG4t6nPrh72Jb0OI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5nmBnnzGUMoX+CLhofVSEVUwJbeIKTpBOJYgL3jat7WB+EJSE
-	YJiw9s1lQMgClZO+kJES1NDRhwiVF17DBOoO1iRxDBExqp5uQk/KcPdfhoV6DxjPGWgxHtVNfQo
-	kbd3a1cEGyILTwTspGEJWThMr29peGcP2vfjjN8Dqpx8s7iqf21LFmJe8zU8=
-X-Gm-Gg: ASbGncs9R/TXEu/ZIn50c6PLME4AvNGFl6uWpDmoAi6vgeMTEP3p+VfMz3FqL11tkR8
-	Fzso1xFrMa+ujnQkgGd6R5CcwEVdmCpZFdh/QaRjXIsLko55ti8d3ASEHcUiQZF8/ffj3Z6XvRE
-	G4viwEGX+5Kq4bYH9UfVCA5HjNCBKB6X3Q4ktqW4LY4SLhManPXLyLx1tiq8c1oitAr4QlSHb5W
-	bhfaEjs7GX3mp9EN3fvfgd5jwGB9dwMpIO80X9tvyVszNN5Zp6HCqg8b2BINfDRyKjXeAs4XRFt
-	bwlxvlQtttKtTXk2R3secsMPKLQfelLeI0aVwuZFR8eF7Awxp44j4729laBg+ymiC/xePgU3U6P
-	yEw==
-X-Received: by 2002:a17:903:3c2c:b0:235:f143:9b16 with SMTP id d9443c01a7336-2430d1e30c0mr26615705ad.41.1755067134611;
-        Tue, 12 Aug 2025 23:38:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH2uBR3ZPiiG7SAkxHbGW8wZNiVA+HlrNvkHKaxz/Lc8LMbuYKlIhTOF22do5XE5gFKhmT0Kg==
-X-Received: by 2002:a17:903:3c2c:b0:235:f143:9b16 with SMTP id d9443c01a7336-2430d1e30c0mr26615445ad.41.1755067134156;
-        Tue, 12 Aug 2025 23:38:54 -0700 (PDT)
-Received: from hu-kriskura-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24309a18411sm21766305ad.146.2025.08.12.23.38.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Aug 2025 23:38:53 -0700 (PDT)
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>
-Subject: [PATCH] arm64: dts: qcom: sm8450: Fix address for usb controller node
-Date: Wed, 13 Aug 2025 12:08:40 +0530
-Message-Id: <20250813063840.2158792-1-krishna.kurapati@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1755067381; x=1755672181;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8yyc4t9KTW/liBhOmzyg87dBz2efZXc6DlXeMNJMn3I=;
+        b=mBmZE+lti4+nL2WLhBbJaXV7gjVn6/DbDD+6m+equKvgVwwpIeNsnhCsa/K81GlsJy
+         X8umH1m8W98702x8MznQoe6fsP9AQDZXaUIy1gEkw7OcjT0CUMS/0Eb2OlLRWZsFkPe0
+         zyo0QIMDkLcYPhBaKjphWJ0D9L+T1e2r6tA7AyR4AzzWzZHMj3zs4r+nr4NxGhlD5odQ
+         IW11a8aI0EF6iYXraPtq365Gx78HyHgHd+D8EDoAAMQ/PBjP7JXF4WBrw9Xgn7HHPDpH
+         KvYSiBSM2CTzsQhs7kGw1U8Ynn+9O50og8k3G7ouFcRZnxEuD25h8bWZKaNzLp2nHAH5
+         bVcA==
+X-Forwarded-Encrypted: i=1; AJvYcCUzLAkMuJ6iCdenWBjwSqGXu+uCb4tB1FZAxC7QdPHzoNpGUiVioK6xx3O//HSbDXPIdg37BPzJ@vger.kernel.org, AJvYcCVNBxiDLNEQv/nenjmlUzLJHW9QHJwemyovWfOWXUQX+Xm8QnCj5beJVbigNd9Taqj2qcu6+6Dp2SM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbaaVrbYJ3lARzJVknUuZNAQw9S4u24fr7wRWoSxFgV+qpohwd
+	yLRGvSW5aTF4VHcg5RGLAc2dfMSFcMilkYB0fnOcvB29maMagQ/E0ndO
+X-Gm-Gg: ASbGncttcd7QM1YJTknNQb8DgTy1i95XWWqievYhoAus4rQ7TB2x/8Ac0O18J5pcAJr
+	GdPmkeBXQX+oNF+gubmtfz3Hf3yn/ek3qQ55oNvEy7Lc20sFRjU1N9hrlmAM8WwWWsZlnV4PFgt
+	rfeONNuFsXrXZsiH8PPfSMFFco9BN3RCo9L6dsOeRQQ+29f3hdbqIrXuFsZRNPD+DGGAv9WRZ9V
+	jbqnBiBXFwfBB+YaZVFd+u1Z/jL9SewMkWLJ+Xkm60c/xQ+NoORkJBvRvMtHBd023OvfEdrbrgg
+	+g8HdLdUQEmWvI54WmMgdtV6mY8kuE26IzVwPtLVC8BfE3K43UWPTz8y9bJGgtd07DnSZKUhlQZ
+	IMuZkBNp3mFXESfavxfG3VNVUg3Tsqa6yiWA=
+X-Google-Smtp-Source: AGHT+IHVzkxuHFsUNurcuwNerNIeGKmTKOL0YHxhLhx8qbrR5z5hsl3TRN2M+qAJKnVZGBccnjMZkQ==
+X-Received: by 2002:a2e:8709:0:b0:32c:a097:4198 with SMTP id 38308e7fff4ca-333e9644d55mr4007931fa.1.1755067380520;
+        Tue, 12 Aug 2025 23:43:00 -0700 (PDT)
+Received: from foxbook (bfd208.neoplus.adsl.tpnet.pl. [83.28.41.208])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-333b216ad95sm15581501fa.66.2025.08.12.23.42.57
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Tue, 12 Aug 2025 23:42:59 -0700 (PDT)
+Date: Wed, 13 Aug 2025 08:42:52 +0200
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: Marcus =?UTF-8?B?UsO8Y2tlcnQ=?= <kernel@nordisch.org>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Jiri Slaby	
+ <jirislaby@kernel.org>, gregkh@linuxfoundation.org,
+ linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
+ stable@vger.kernel.org, =?UTF-8?B?xYF1a2Fzeg==?= Bartosik
+ <ukaszb@chromium.org>, Oliver Neukum <oneukum@suse.com>
+Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
+ reset.
+Message-ID: <20250813084252.4dcd1dc5@foxbook>
+In-Reply-To: <bea9aa71d198ba7def318e6701612dfe7358b693.camel@nordisch.org>
+References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
+	<fc3e5cf5-a346-4329-a66e-5d28cb4fe763@kernel.org>
+	<5b039333-fc97-43b0-9d7a-287a9b313c34@linux.intel.com>
+	<4fd2765f5454cbf57fbc3c2fe798999d1c4adccb.camel@nordisch.org>
+	<20250813000248.36d9689e@foxbook>
+	<bea9aa71d198ba7def318e6701612dfe7358b693.camel@nordisch.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3NCBTYWx0ZWRfX0sIW6rVPMgvk
- VNBBcfH+fmdfcMfy275V/PKeh3/U3qH7DJSQcmYFXNBztUndVKNc/SXsDSVT4C+YGipliZ3YOmA
- 4OyKNPbTOmigPh1xoq+MW9OnUWN2UP14WQ3aKAJWwmzmOGWAqw/EIX2OZLQOIhleZGfach/qC/q
- 8hLnO1o+sFhOJj2k+2ZPTHqFkWzvzfzxZmcSMz+GkvOhH9ULBy7b/znceGWZG/6FxxkAKMFYCS6
- WCaMNxDEOKEJjTiXC+5p6LX4J7448zgHRVc7qk2oG8wM5J+X8m+omBcHTWePrl5/t5DnSC5ekfB
- +FqXJ55MPBDqrT3Mr4rkvmC+9iVDeooH15BRxBB7JetOaRtxFdM8BJ5rjOjy0Xt/wV22g0wymnj
- Qc4+7u4S
-X-Proofpoint-GUID: KzUHo5hcug3OCw6uxMJYfksYIqKxCdyb
-X-Authority-Analysis: v=2.4 cv=TJFFS0la c=1 sm=1 tr=0 ts=689c32ff cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=EUspDBNiAAAA:8
- a=1MfqABlD--IGNdjwxagA:9 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-ORIG-GUID: KzUHo5hcug3OCw6uxMJYfksYIqKxCdyb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_08,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 adultscore=0 impostorscore=0 malwarescore=0
- phishscore=0 clxscore=1015 spamscore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508110074
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Correct the address in usb controller node to fix the following warning:
+On Wed, 13 Aug 2025 03:58:07 +0200, Marcus R=C3=BCckert wrote:
+> dmesg |grep 'usb 1-2' ; dmesg |grep 'descriptor read'
+> [    2.686292] [    T787] usb 1-2: new full-speed USB device number 3
+> using xhci_hcd
+> [    3.054496] [    T787] usb 1-2: New USB device found, idVendor=3D31e3,
+> idProduct=3D1322, bcdDevice=3D 2.30
+> [    3.054499] [    T787] usb 1-2: New USB device strings: Mfr=3D1,
+> Product=3D2, SerialNumber=3D3
+> [    3.054500] [    T787] usb 1-2: Product: Wooting 60HE+
+> [    3.054501] [    T787] usb 1-2: Manufacturer: Wooting
 
-Warning (simple_bus_reg): /soc@0/usb@a6f8800: simple-bus unit address
-format error, expected "a600000"
+OK, so you had a keyboard in this port during the last boot. Is this
+keyboard always connected to the same port? There is no bus 1 port 2
+device on your earlier lsusb output, so it was either not connected
+there or not detected due to malfunction.
 
-Fixes: c015f76c23ac ("arm64: dts: qcom: sm8450: Fix address for usb controller node")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508121834.953Mvah2-lkp@intel.com/
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
----
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> journalctl --since 2025-07-01 --grep "reset full-speed USB device
+> number"
+>=20
+> Jul 24 15:56:34 kernel: usb 1-2: reset full-speed USB device number 14
+> using xhci_hcd
+> Jul 24 15:56:35 kernel: usb 1-2: reset full-speed USB device number 14
+> using xhci_hcd
+> Jul 24 15:56:36 kernel: usb 1-2: reset full-speed USB device number 14
+> using xhci_hcd
+> Jul 24 15:56:37 kernel: usb 1-2: reset full-speed USB device number 14
+> using xhci_hcd
+> Jul 31 19:53:02 kernel: usb 1-2: reset full-speed USB device number 50
+> using xhci_hcd
+> Jul 31 19:53:03 kernel: usb 1-2: reset full-speed USB device number 50
+> using xhci_hcd
+> Jul 31 19:53:04 kernel: usb 1-2: reset full-speed USB device number 50
+> using xhci_hcd
+> Jul 31 19:53:04 kernel: usb 1-2: reset full-speed USB device number 50
+> using xhci_hcd
+> Aug 06 16:51:34 kernel: usb 1-2: reset full-speed USB device number 12
+> using xhci_hcd
+> Aug 06 16:51:35 kernel: usb 1-2: reset full-speed USB device number 12
+> using xhci_hcd
+> Aug 06 16:51:36 kernel: usb 1-2: reset full-speed USB device number 12
+> using xhci_hcd
+> Aug 06 16:51:36 kernel: usb 1-2: reset full-speed USB device number 12
+> using xhci_hcd
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index 2baef6869ed7..38c91c3ec787 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -5417,7 +5417,7 @@ opp-202000000 {
- 			};
- 		};
- 
--		usb_1: usb@a6f8800 {
-+		usb_1: usb@a600000 {
- 			compatible = "qcom,sm8450-dwc3", "qcom,snps-dwc3";
- 			reg = <0 0x0a600000 0 0xfc100>;
- 			status = "disabled";
--- 
-2.34.1
+So this port was getting reset in the past. Can you also check:
+- how many of those resets were followed by "HC died"
+- if all "HC died" events were caused by resets of port usb 1-2
+  (or some other port)
 
+And for the record, what exactly was the original problem which you
+reported to Suse and believe to be caused by a kernel upgrade? Was it
+"HC died" and loss of multiple devices, or just the keyborad failing
+to work and spamming "reset USB device numebr x", or something else?
+
+Regards,
+Michal
 
