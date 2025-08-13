@@ -1,97 +1,138 @@
-Return-Path: <stable+bounces-169413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E819AB24C8D
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:55:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD339B24C8B
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A6EDA4E2562
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:55:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5E83A6F9F
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88E42EBBBC;
-	Wed, 13 Aug 2025 14:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8B22EFD88;
+	Wed, 13 Aug 2025 14:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jIwIRiuH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9Z1b9Dh"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958A42EA756
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 14:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDA32ED172;
+	Wed, 13 Aug 2025 14:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755096921; cv=none; b=EjiP2ItKaJBaIzTQluRIC4c7thR4BZXZ9T8z1dURop86COX3iUhQw2Srds+HjtZGt/gXPlRRyYCfPN/Lpmx7HKJUzJYSIHQ81xrRlAI68rBeI/Jny0qQUJgiWFjBfwqDWcipoQTy7Zo+szQWKW/l7OMRsAZPdC4ZBqus3YEIQY4=
+	t=1755096820; cv=none; b=DSN/vdtUu7wr8hDOBVP0PC3iFQjyd86cAyyEwJjGO12U/+g1HtsHUU0SGkvKUQdnNtxtcfCBI3eEzpisRK7WhY/acXos0kCv+WdgkJ2jec5inn/HPY1ivczgdxy9phEDjkYcVb8pnxCF4SjK4sHiTjBU70V9UaxD3oy3wmLUScA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755096921; c=relaxed/simple;
-	bh=M7GZNSUpI9ATPqxGDtbiF1Ozy+rhBjrdP5xZjfVP5lo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=URnwoZdfIvxr7lr6dP4D5IGWLmPNMUdf7V9eguhoi0De67/lu6lRm3vf6TG6byAEuMYO/8NhYoqv5MigJUWr/McNZ09QcW3st00aOAe6J2DPgUZZ2MP2pCAO2Siqn2GMVgiTTM2TGUPqBNAxXY5NKI3y0p53ApRLQDq3U2OK3b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jIwIRiuH; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755096907;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LvftcL58ct6X0ftT2fa9FbYktve1QOI78gCmcjiX2eg=;
-	b=jIwIRiuHdRmRr7Y++eYtolUWNm35sk2k0VwL5lOQMPhOAthrCOFojp2G0NDQabomPnmOP8
-	gEKBtK5y2ZC2xA1cDUAAgifuYzi8ZUxiTi4mvpamjoeGSAHqLTuavewaA/Awef0ag6L/88
-	DWjlaqaLE019fowMhri0iUaFzzZEozw=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Alan Stern <stern@rowland.harvard.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	wwang <wei_wang@realsil.com.cn>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: storage: realtek_cr: Use correct byte order for bcs->Residue
-Date: Wed, 13 Aug 2025 16:52:49 +0200
-Message-ID: <20250813145247.184717-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1755096820; c=relaxed/simple;
+	bh=qsIzK3FQVmuwp376IvkIc7QaQl0+eKfxluiwZGuycJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZ3tVzIvFop5D3B/m+I6cSiU8NNj7+PkYbg3EU/Shx+VPFS4AlyWroREbvOK3Y1ZbOphZjZarRuSb3OT4ZzTOi/1ooYWK3YCAPjDJWkFuebfzR/z9BEiKU7zUE4P4k52bymd7cytIQucchg7Zx3AeqEQ4nkQjtt0c+J1CDVmMx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9Z1b9Dh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933ADC4CEEB;
+	Wed, 13 Aug 2025 14:53:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755096820;
+	bh=qsIzK3FQVmuwp376IvkIc7QaQl0+eKfxluiwZGuycJo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h9Z1b9DhPWIV6cS+bkMlZk/eNbU+HdGphYtWJcvDnCd4mHNW6LGz0PAzq4S3sz/bQ
+	 Qu6Q/zr1uSLN9QG07lhIO8zKvSK3b5B2d7wMCY+FxzL+PtVIheklfnv+CxHDBiqwKK
+	 HH28jaOUNKO4S5N8tA/MsLvV3/5lSRVuQ5L0TQBQ=
+Date: Wed, 13 Aug 2025 16:53:37 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org, qemu-devel@nongnu.org,
+	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>,
+	LTP List <ltp@lists.linux.it>, chrubis <chrubis@suse.cz>,
+	Petr Vorel <pvorel@suse.cz>, Ian Rogers <irogers@google.com>,
+	linux-perf-users@vger.kernel.org,
+	Zhang Yi <yi.zhang@huaweicloud.com>,
+	Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	linux-ext4 <linux-ext4@vger.kernel.org>,
+	Zhang Yi <yi.zhang@huawei.com>, Theodore Ts'o <tytso@mit.edu>,
+	Baokun Li <libaokun1@huawei.com>
+Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
+Message-ID: <2025081311-purifier-reviver-aeb2@gregkh>
+References: <20250812173419.303046420@linuxfoundation.org>
+ <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
+ <2025081300-frown-sketch-f5bd@gregkh>
+ <CA+G9fYuEb7Y__CVHxZ8VkWGqfA4imWzXsBhPdn05GhOandg0Yw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYuEb7Y__CVHxZ8VkWGqfA4imWzXsBhPdn05GhOandg0Yw@mail.gmail.com>
 
-Since 'bcs->Residue' has the data type '__le32', convert it to the
-correct byte order of the CPU using this driver when assigning it to
-the local variable 'residue'.
+On Wed, Aug 13, 2025 at 08:01:51PM +0530, Naresh Kamboju wrote:
+> Hi Greg,
+> 
+> > > 2)
+> > >
+> > > The following list of LTP syscalls failure noticed on qemu-arm64 with
+> > > stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=y build configuration.
+> > >
+> > > Most failures report ENOSPC (28) or mkswap errors, which may be related
+> > > to disk space handling in the 64K page configuration on qemu-arm64.
+> > >
+> > > The issue is reproducible on multiple runs.
+> > >
+> > > * qemu-arm64, ltp-syscalls - 64K page size test failures list,
+> > >
+> > >   - fallocate04
+> > >   - fallocate05
+> > >   - fdatasync03
+> > >   - fsync01
+> > >   - fsync04
+> > >   - ioctl_fiemap01
+> > >   - swapoff01
+> > >   - swapoff02
+> > >   - swapon01
+> > >   - swapon02
+> > >   - swapon03
+> > >   - sync01
+> > >   - sync_file_range02
+> > >   - syncfs01
+> > >
+> > > Reproducibility:
+> > >  - 64K config above listed test fails
+> > >  - 4K config above listed test pass.
+> > >
+> > > Regression Analysis:
+> > > - New regression? yes
+> >
+> > Regression from 6.16?  Or just from 6.15.y?
+> 
+> Based on available data, the issue is not present in v6.16 or v6.15.
+> 
+> Anders, bisected this regression and found,
+> 
+>   ext4: correct the reserved credits for extent conversion
+>     [ Upstream commit 95ad8ee45cdbc321c135a2db895d48b374ef0f87 ]
+> 
+> Report lore link,
+> 
+> https://lore.kernel.org/stable/CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com/
 
-Cc: stable@vger.kernel.org
-Fixes: 50a6cb932d5c ("USB: usb_storage: add ums-realtek driver")
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
-Resending this as a separate patch for backporting as requested by Greg.
-Link to previous patch: https://lore.kernel.org/lkml/20250813101249.158270-6-thorsten.blum@linux.dev/
----
- drivers/usb/storage/realtek_cr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Great, and that's also affecting 6.17-rc1 so we are "bug compatible"?
+:)
 
-diff --git a/drivers/usb/storage/realtek_cr.c b/drivers/usb/storage/realtek_cr.c
-index 8a4d7c0f2662..758258a569a6 100644
---- a/drivers/usb/storage/realtek_cr.c
-+++ b/drivers/usb/storage/realtek_cr.c
-@@ -253,7 +253,7 @@ static int rts51x_bulk_transport(struct us_data *us, u8 lun,
- 		return USB_STOR_TRANSPORT_ERROR;
- 	}
- 
--	residue = bcs->Residue;
-+	residue = le32_to_cpu(bcs->Residue);
- 	if (bcs->Tag != us->tag)
- 		return USB_STOR_TRANSPORT_ERROR;
- 
--- 
-2.50.1
+thanks
 
+greg k-h
 
