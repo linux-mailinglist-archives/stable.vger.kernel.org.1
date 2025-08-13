@@ -1,138 +1,179 @@
-Return-Path: <stable+bounces-169458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A5CB254F8
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 23:07:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E333B254FD
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 23:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604CC3A5238
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 21:07:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1567A4DE6
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 21:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DEA2BE63A;
-	Wed, 13 Aug 2025 21:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226982D0275;
+	Wed, 13 Aug 2025 21:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cs0JMIG+"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="jyjkGtO3";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="BhYFMZlw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E552FD7B8;
-	Wed, 13 Aug 2025 21:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7952FD7B1;
+	Wed, 13 Aug 2025 21:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755119223; cv=none; b=Pn7Ok47RnyFKmsTkinm+hynMNfO+Y/+TbTiWbA/zbWiWXVCgPjfRiTDygW4x9oGev0xH2anCmkqygXOweDPeoPEJCNQTPiRxVJrIxowtSiL68mPo4MN+CMKYNceqYqNBAX0kkXIr47Jv+s+mg4b7Tz8BraFRdtz1gW4AbrhTdno=
+	t=1755119344; cv=none; b=gN+GCN1z2DO7mx9uR6V7R0ZfJVCoNNek+h7zlifFp21VomgfbcLc80zsM0Advg39zTNyp8kSxdwJElNmtq2ib+bASmZmeYb+FrzH3OvUaiAjuXgRAE1vV4V8P696ZJ34z9ucymqSjc/rTpOhsWXpMBY7cSjuyvzx5+Uo9CbD4g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755119223; c=relaxed/simple;
-	bh=IhhAZTqLltWlKwAU8CFVLg+OeV+VPx2PoKdVECpgfIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c5XmlMzfMkJhmDASNQPHRttp7lrO3B3EFLXJK70fu7/U+3ZqFgpoU3145o0Gtm68f6rqcovVThZaAqAaDQ+kPAdkRTq0ok9AN258Si0hiBlmznviPG6j1Nu4OPqI3dQco/O4uvuucJ+tjWjotRBdGNgZkoR0ljEJ/aMKnVEkcbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cs0JMIG+; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755119222; x=1786655222;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=IhhAZTqLltWlKwAU8CFVLg+OeV+VPx2PoKdVECpgfIU=;
-  b=cs0JMIG+4vXjaswbAabEXJXXd6Mnl63oggMjxjd1CLPrsQRS5k9CcTt4
-   iLiPsD83uee8SPNptHQSQBQRdJ6HfDGa2Yy23h4+YMDP0/zItqF9j4K3v
-   FaOCKSySLGzsB+s+4EgbasO/ktWJ5/hKn4vLER4rgtGhlhmeukZg2UGQB
-   9GLdXubzEQkim6SZ+RrYywjYnM3Pmw31N58OuJcREUEAjtFoCRvzEOovM
-   oyf2w1MkWRdmjgnewFAiN5zTktZMD5590fQvjOvIFB/87b44sj3z+EyCj
-   KMJozjsjJaFaMg95kmdVCmzUqZgb0x1ytVrL0wI2s26YGBPhWiqb1jQvr
-   g==;
-X-CSE-ConnectionGUID: A1ZewRheTOO7C5tR0v5alw==
-X-CSE-MsgGUID: LqC9SG9YSsuYyWVGoNOesA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57579074"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="57579074"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 14:07:02 -0700
-X-CSE-ConnectionGUID: kPrcgclvR6mNvHYoXnY6uQ==
-X-CSE-MsgGUID: I4M+uEG1RNSG7G5iQibY1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="203752285"
-Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.131]) ([10.125.111.131])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 14:07:01 -0700
-Message-ID: <e5a7d108-f900-4a63-8116-c9eb54171976@intel.com>
-Date: Wed, 13 Aug 2025 14:07:00 -0700
+	s=arc-20240116; t=1755119344; c=relaxed/simple;
+	bh=6/sHLc1vM08xncqo1L/xlJbUp5X1X9Xa+RNO/272Iw0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KiDAdAKKmdIl7TfRCfzgcjKY3pm2DbZ15yDJltZel5ame8fDYEvubHTVI808LREFzpRzSISvJ2FocrFROkvgr3jJPxUSujUe0GG3e2NxkDHL2FppdZPAS38e3ykE8OVDWGo0tVj0HMxvVbDdq0BuxDAwEDv66XQd4SOOUW2hch8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=jyjkGtO3; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=BhYFMZlw; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4c2Lb10xYjz9t8m;
+	Wed, 13 Aug 2025 23:09:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1755119341;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EUfrWGCGD4p5G0KOP57f8prhWUk222Vzv6EEzQPIn98=;
+	b=jyjkGtO3FMlWDQKquRRK5TnEz3Z9++QSMio3Wet5zLpoNfjVR3qqMHTW6pG43fV7oulnJ6
+	0aIZc81/LetFpdk+iIU47X87SorE6wrSN6gJHmnrUFMtTuQ2vmesx9wkd4dd1RQAK/efAB
+	2xXsqqhzxSqzQ9nMqA+fNs4KQZ9tjqtpOMn80ghZOEd18/btrIKf64pRhmKLgqCZqZzC6Z
+	6sD6vQw3B/+kg6jhYi2RdIeyqMFgqtIjA9FDWZkLBWSiEKTqPa/t7qEEE97mFcWwLzvxp2
+	CPVyIvSZeIPSP8InMAomWonKqD26XqfLvaZ3C1RB6QdY10qpT48Lp2vJMs40Vw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=BhYFMZlw;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut+renesas@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=marek.vasut+renesas@mailbox.org
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1755119339;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EUfrWGCGD4p5G0KOP57f8prhWUk222Vzv6EEzQPIn98=;
+	b=BhYFMZlwFUakbr6RRMkT93qtuJ6N+EPpwqEIbBlMtxX+oW+8bGq2sOH4ckS+vyfoTeCucI
+	lr3nHsYfY7n0Zjj7yeQDC+5GKF1s+FzuhS4uWgmwTT9z9SJS4TLC4EGBF5PnO7s/RWuLXs
+	nil0jYFsdEfrlA7yY/j0CMVQw+PjIHrN100KSLecQCF+c9uHUcS73uQEVqdZcN+so2dsyt
+	j0T3zMPS7UL3U4+VU8vCYCjcVzHKCpY+R2wIKk/MYc9TNS9gaAQblEmu/nahaJStdw69kY
+	wqI3C5H7+xAu+SLk4lmPufGk/NrrQG6OYn3XFudyuTKR5PeNKmtUGaOweUReEw==
+To: dri-devel@lists.freedesktop.org
+Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	stable@vger.kernel.org,
+	David Airlie <airlied@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v2] drm/rcar-du: dsi: Fix 1/2/3 lane support
+Date: Wed, 13 Aug 2025 23:08:13 +0200
+Message-ID: <20250813210840.97621-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] x86/fred: Remove ENDBR64 from FRED entry points
-To: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org
-Cc: luto@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, jmill@asu.edu,
- peterz@infradead.org, andrew.cooper3@citrix.com, stable@vger.kernel.org
-References: <20250716063320.1337818-1-xin@zytor.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250716063320.1337818-1-xin@zytor.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: d02abf8b371a1b8450d
+X-MBO-RS-META: 1y5d7be7378ug8qyj8gn47c1ghc9t7x5
+X-Rspamd-Queue-Id: 4c2Lb10xYjz9t8m
 
-On 7/15/25 23:33, Xin Li (Intel) wrote:
-> The FRED specification has been changed in v9.0 to state that there
-> is no need for FRED event handlers to begin with ENDBR64, because
-> in the presence of supervisor indirect branch tracking, FRED event
-> delivery does not enter the WAIT_FOR_ENDBRANCH state.
-> 
-> As a result, remove ENDBR64 from FRED entry points.
+Remove fixed PPI lane count setup. The R-Car DSI host is capable
+of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
+configuration from PPI register settings and instead configure
+the PPI lane count according to lane count information already
+obtained by this driver instance.
 
-So, the spec is being updated or has been updated to reflect the new
-architecture, right?
+Configure TXSETR register to match PPI lane count. The R-Car V4H
+Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
+Register (TXSETR), field LANECNT description indicates that the
+TXSETR register LANECNT bitfield lane count must be configured
+such, that it matches lane count configuration in PPISETR register
+DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
+configured to match.
 
-Remind me, are there no FRED systems out in the wild today, so we don't
-have to worry about breaking anything?
+Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+---
+Cc: David Airlie <airlied@gmail.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Magnus Damm <magnus.damm@gmail.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-renesas-soc@vger.kernel.org
+---
+V2: - Split this out of a series, update commit message, combine from
+      drm/rcar-du: dsi: Remove fixed PPI lane count setup
+      drm/rcar-du: dsi: Configure TXSETR register to match PPI lane count
+    - add Fixes tag, CC stable
+---
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      | 5 ++++-
+ drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h | 8 ++++----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
+index 1af4c73f7a88..952c3efb74da 100644
+--- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
++++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c
+@@ -576,7 +576,10 @@ static int rcar_mipi_dsi_startup(struct rcar_mipi_dsi *dsi,
+ 	udelay(10);
+ 	rcar_mipi_dsi_clr(dsi, CLOCKSET1, CLOCKSET1_UPDATEPLL);
+ 
+-	ppisetr = PPISETR_DLEN_3 | PPISETR_CLEN;
++	rcar_mipi_dsi_clr(dsi, TXSETR, TXSETR_LANECNT_MASK);
++	rcar_mipi_dsi_set(dsi, TXSETR, dsi->lanes - 1);
++
++	ppisetr = ((BIT(dsi->lanes) - 1) & PPISETR_DLEN_MASK) | PPISETR_CLEN;
+ 	rcar_mipi_dsi_write(dsi, PPISETR, ppisetr);
+ 
+ 	rcar_mipi_dsi_set(dsi, PHYSETUP, PHYSETUP_SHUTDOWNZ);
+diff --git a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
+index a6b276f1d6ee..a54c7eb4113b 100644
+--- a/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
++++ b/drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h
+@@ -12,6 +12,9 @@
+ #define LINKSR_LPBUSY			(1 << 1)
+ #define LINKSR_HSBUSY			(1 << 0)
+ 
++#define TXSETR				0x100
++#define TXSETR_LANECNT_MASK		(0x3 << 0)
++
+ /*
+  * Video Mode Register
+  */
+@@ -80,10 +83,7 @@
+  * PHY-Protocol Interface (PPI) Registers
+  */
+ #define PPISETR				0x700
+-#define PPISETR_DLEN_0			(0x1 << 0)
+-#define PPISETR_DLEN_1			(0x3 << 0)
+-#define PPISETR_DLEN_2			(0x7 << 0)
+-#define PPISETR_DLEN_3			(0xf << 0)
++#define PPISETR_DLEN_MASK		(0xf << 0)
+ #define PPISETR_CLEN			(1 << 8)
+ 
+ #define PPICLCR				0x710
+-- 
+2.47.2
+
 
