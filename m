@@ -1,127 +1,146 @@
-Return-Path: <stable+bounces-169308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91266B23EA8
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 04:55:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA565B23EE4
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 05:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CB596E7200
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 02:53:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96A8C1A26D61
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 03:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE8126C3AE;
-	Wed, 13 Aug 2025 02:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98512690D9;
+	Wed, 13 Aug 2025 03:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="E8RHMQwV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsgkdlnC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA1E26E711;
-	Wed, 13 Aug 2025 02:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F2F22338;
+	Wed, 13 Aug 2025 03:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755053575; cv=none; b=NPD1zLJrMsFELbf1jHjZ5B3tzWvzYweG489kT5YRCPePySuawECKfSfMHNSFUwo5Tx1TPynQ22oDNsTMA3rbPA5a0p6bzcqBqBi2lgHdPMhaaOqgvzPMgd38ivTGagTTCvHOJiiM8zQj98tXyKHpmv0LXiEL4NZGt4K2WNL4yhg=
+	t=1755055090; cv=none; b=TJK5NTaPfdrE7iuIDXPvLUDjNqE9bni4MFICuC2+AtdjTqLsYsFlbCEGaqB7/+2WwHDyhgci5kPaFZ/YXloG1wXpfXDf/uQy7cmXhseSh/t3VgRQ0NjS+j9Ai82qCWv4Kr9ofHzKIflxL7JoAY2AiVgLZqgQp/bQWgbxtlXt9pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755053575; c=relaxed/simple;
-	bh=KLXZBaq3TLieISROhyU6yYpBnfJhCu9c5EIrzguDWzk=;
+	s=arc-20240116; t=1755055090; c=relaxed/simple;
+	bh=ep7lK0F99GEgxWEt/eIh0MesHhIBI5SzHWocRe7DRX0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jVvI0El0h8QxqZLof0tdgqzkvk4yawPAbrH2ARVSwOJnLy2yjVL5iX4S/tCb4GE5roHX4HQurX8LqazWvRvwHbECrwY0rH7ExW1s2ibpYw5+Ji81OyN1U8iExNuFLOQp3AdqVbusFEJIOXkrAFm8XrSd4gqYIlZMhU9fYHq0V/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=E8RHMQwV; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-af66d49daffso1025330166b.1;
-        Tue, 12 Aug 2025 19:52:53 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=MDEXtq0aKSSMDPqVYiL0pQlILACbVzy/RZv/m1BYuKBKnlORL9TJ0GfCeqb9inzFEdZUxCb3/yon2pJgpIrzrhhFKi6giIaXGkpolcB3xn11DYu/jceMeriiD9xm45DXB+mgks1ydC5Vzs0C0K8Y7xyEIpGt+8/M7p5gWMrjTL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsgkdlnC; arc=none smtp.client-ip=209.85.221.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-3b78127c5d1so3963233f8f.3;
+        Tue, 12 Aug 2025 20:18:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1755053572; x=1755658372; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1755055087; x=1755659887; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=042+Laf4ikzkSiUo+Q4PSZALoUrhwG9sdAkdg18fh0c=;
-        b=E8RHMQwV7qUQ9hFvJ8ritr1o1FKMaXcq1Bt1fc1krjUHjrZ2jyu+dNqwz6/DKT4Mp5
-         Zb497cnboj5zs77Dioil6xvZpmVcQOF2093HxQlmuY7CfN8UuTaZ3DjxiiKz46coOkuC
-         t9UXTnReMGA6SffUOSk9f6Zj9+NSPKPjQ+qWXT/Sk1nw0P5mokTQzdXuBmnmerWVxO73
-         WJKhc6sNLs6E4riXeEIJ3J8qNZ5wYXZOL2u7FBsC1DaGLOMYX7emfNC5jXuUcWFLckEa
-         vYvitA0wCjg0bFfcvQlC+cRnTxx9hCoqIaKCHvn/Y1T8r9EdaolvWxmDL6MDJRccFI0O
-         rkqA==
+        bh=7XCYFs1Ir8nk3KK4TBgEVy6vlzhXtWwOkAnDASfP0Oo=;
+        b=bsgkdlnCCYgKfetqx3bAnULUnWFfjqcNVsOkOUB3tRWseQgj4MVG8ifcc1c445Vlzf
+         vulqfJVyrDRfeewn4lcOgW0MOWGDSzsYAYrsWS5WOg1HWz6nl2d4RM4MdQPm9bj0szA+
+         gMp8tmGEGYxOzqxXiErmawEj+LDaT4Qgam/296NBDCCVbigEG0mQCAZ3R10oMTt5PwTX
+         CkfjcCRfvYvpqYyWPaXocEiOtM21rU3bPkuX6GH/OHCnw56NPd5EQ9emn7xbl/w7l4Qx
+         q4jqXo2J0d2zfOpeq4f4nlsBJ6Dl8H+Uxo+pHM4wJNWpB20DjS/IZEV5+C0PBO4Mf27e
+         Iwqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755053572; x=1755658372;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1755055087; x=1755659887;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=042+Laf4ikzkSiUo+Q4PSZALoUrhwG9sdAkdg18fh0c=;
-        b=L7KXIi2RaYEj+WbH4wuRWBThfpmyOiYfG56qEIXRuGloazlgN6rkgdlRTdN2/SBn7p
-         PJAojzyLrPaGbRLHYP0yOIx5hZaPUX55xeivtHYFGgB2KxEKZr+nyW5gIOSVQl3t4/0s
-         IXipEPOLzM9+zTGiaLX3Eo5GcsAVpLlCDz8SkuK/xur6suApzvQ6+UWLW8KOf7X+hfQR
-         PmYRiAFGId0IJtkPkNnGJL/B5idEbXIBM1DzRr3eGvGsKMFzZT5ipflM9qSOv5/vB/ge
-         8owJF0/+nfh0X/g/NQw/ROgTwCDJKJNHWUvA5q/CXug2QkEs2lGnn1VnQv/2VANw4WU2
-         ik4g==
-X-Forwarded-Encrypted: i=1; AJvYcCU5GCt9ufwf4Nuri+aavbeyZyt5w5Y5ijflm8R1iS9OD1B08M1KokQPOs453AEUJ2nQW6GQ2qDdIBiGtxw=@vger.kernel.org, AJvYcCWcOMJhz4ihxhLhdSmiFFxcP8APa8KeQE74Lg2x1PvYve5Fxf/p8NbuKL4dsD7vgWmBopLRBbob@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO66KdbYXtKUnSICVFoWniG5AlYqsaW0xveSpVcTiCyYlI3OQx
-	/YXyWljk0ytCfbwRuC133/+5pRQG0MHVZw5vJJOr/cMue+CVAf4LMo0=
-X-Gm-Gg: ASbGncs7MJgq7VJ4hzFXyehC4xCFAKi7Cr8rT5xVHFLvNwLQH7GYKm4dm9d3WTev2aY
-	f9GoSI+xc25Mq12ILUUk0G00V/i+NfbYBRbw1Y7dCY+bcoTqN68VskFTKjl93J/eHgxYSXLQspE
-	AkdOd4O04jGCvTmItB0iQrDvVURouAyYAHYQhNYsX0674c9pkMbxPHo9z3szBdkwsC+SyjSITbp
-	LQS4xW68Lk6bMnFGqfuhI1NbsGmIp+riLeAgWFWsp8tB7+JNDDXhkJYwua1K2zgW8RL2l1Ek+kh
-	OSRxGkmgN3+WMdf8avByqb/kVIhlwJBUwCiBLCumNWnDtpGnk+UvpMlebjS3hg51SFM83A0DHv2
-	UYCraKto1aqVcwdLy7uR3kJC8doX4OLnt/5Ne0Xr7pu6D36iuSe7XcC6H7GmYuWVPPMbdgmStzt
-	t7fVVzpgHYRA==
-X-Google-Smtp-Source: AGHT+IGinuV3BWJsLOw3BMnIVMFnFkk+/iO2HAJYyI+8AQMIZAXSxQDGcKdQj7k2sochfOFf0alZQg==
-X-Received: by 2002:a17:907:da9:b0:ade:79c5:21dc with SMTP id a640c23a62f3a-afca4d47d82mr148548166b.25.1755053571338;
-        Tue, 12 Aug 2025 19:52:51 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b48db.dip0.t-ipconnect.de. [91.43.72.219])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af99518bfacsm1339330866b.72.2025.08.12.19.52.49
+        bh=7XCYFs1Ir8nk3KK4TBgEVy6vlzhXtWwOkAnDASfP0Oo=;
+        b=d/JJpt/EW9hR3ggwIuKMkbXw4CczeI0w2UerYEtMvNYEbPr+K4Bk+aW4gFRONAzgQ6
+         eCarZaYSHqu+VxMdMBHyHVWhyXO+qo5Y6pm3PvxGKTdt4hSfGgzn1qSrPk9VjJFNUYKp
+         AHBa5NmR0cOZqZt3l63eXTxMIgm1jr1w+iXlL3g1VBx+hhjGay4g1FEGhtHIM6y8MHnp
+         /L6DYtOARKVWf5U6FWIEYG1SaMsFHxCS/dN8XW6MMtu6hofTZoJs2MjDDJvjkvgqB1yf
+         g6kFK/Ct9XRHW4+SNhRgxnI1xMUUd62pp8sfUjmkFmE/x7eYfNzEkV2Yvw5eG6fz3yQn
+         1g9w==
+X-Forwarded-Encrypted: i=1; AJvYcCV5PkOOdqZjxBVR5oqY35wVHgkh5ayyXxE3KlKiYK5lPTuUbHgjvkWQwyiYM7RvHj8N6Yojh5dc@vger.kernel.org, AJvYcCXb4zD/Yp5EatJOzram4aYYbtsNCzQ3rfq8x+TCZOnOm3kDSuapbph/Xxn5XKDl6JJsnFeXC37phMYQJZs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyS/oerijfcyr4tJwKrZMNy1Jq1NMXSI9XZndRYVICbGz0onz61
+	I4ztwNakrGHTQqtIO8fEE+Tf7NtP+ZaRTjcLMKdcxJ8zrsb+RAkTIERr
+X-Gm-Gg: ASbGncuIKyVcAwCUe6PQCW+BcWgEHnIwfklmBUvRwCg2NuleaTbCS80hcQLXNT/LOc4
+	CY4Vdm6XcVx6O8GolxEHyWbnT7eYvDFqRjs6+Tn6Ohs+OpsHANWCQOZZqaBSIdYg27j1PjkpYMT
+	GPQRdJTZd5QtBKuMUyyhRcvUU1dQycd12xEfzfPZDJlY0Y5SxClTGe4hp4K+v6AsyD7M1DVHIHx
+	ICPNoqNydn0no2BymO4i3n02B3oA48xNFkvrwwbbE1LNNyyrDNxrTGyymxvmWvgHhQzs69/9Fvg
+	qSu3Xr53z4sC/V4Krgo/EAJehnpCn6d/NfF4bowdNlGe0PptY7iW6r/tFAVtjWxziJLjaMS+LYr
+	Sj6xmhh3NXwX5eed/JxiMPu58VgccaWO9EeX3VDBHeDA1ucgVeSE3bYmPzpta3u36y1tzkxkRwI
+	ult3wiJDGS2DJi1KTUVis4
+X-Google-Smtp-Source: AGHT+IFK1DMyzcLy23ebyF7+rQb4+XbWoa8waTcmvm2yM0sRpo4qdIIwHXD6dXoIgYNTEroCcmTFnw==
+X-Received: by 2002:a05:6000:2311:b0:3b7:8268:8335 with SMTP id ffacd0b85a97d-3b917eb8171mr822011f8f.42.1755055087110;
+        Tue, 12 Aug 2025 20:18:07 -0700 (PDT)
+Received: from [26.26.26.1] (95.112.207.35.bc.googleusercontent.com. [35.207.112.95])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b8e04c7407sm36750215f8f.13.2025.08.12.20.18.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Aug 2025 19:52:50 -0700 (PDT)
-Message-ID: <0e4b2e44-30b5-4907-8ad1-5890d53bf854@googlemail.com>
-Date: Wed, 13 Aug 2025 04:52:49 +0200
+        Tue, 12 Aug 2025 20:18:05 -0700 (PDT)
+Message-ID: <33b39588-5a39-4474-ac17-bde923803600@gmail.com>
+Date: Wed, 13 Aug 2025 11:17:57 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/369] 6.12.42-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250812173014.736537091@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Jason Gunthorpe <jgg@nvidia.com>, Baolu Lu <baolu.lu@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <4ce79c80-1fc8-4684-920a-c8d82c4c3dc8@intel.com>
+ <b6defa2a-164e-4c2f-ac55-fef5b4a9ba0f@linux.intel.com>
+ <20250811125753.GT184255@nvidia.com>
+Content-Language: en-US
+From: Ethan Zhao <etzhao1900@gmail.com>
+In-Reply-To: <20250811125753.GT184255@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Am 12.08.2025 um 19:24 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.42 release.
-> There are 369 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. Built with GCC 14.2 on Debian Trixie.
-No dmesg oddities or regressions found. I did not see any of the Python warning messages here which I did see in the 
-6.1.148-rc1 build.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
-Beste Grüße,
-Peter Schneider
+On 8/11/2025 8:57 PM, Jason Gunthorpe wrote:
+> On Fri, Aug 08, 2025 at 01:15:12PM +0800, Baolu Lu wrote:
+>> +static void kernel_pte_work_func(struct work_struct *work)
+>> +{
+>> +	struct ptdesc *ptdesc, *next;
+>> +
+>> +	iommu_sva_invalidate_kva_range(0, TLB_FLUSH_ALL);
+>> +
+>> +	guard(spinlock)(&kernel_pte_work.lock);
+>> +	list_for_each_entry_safe(ptdesc, next, &kernel_pte_work.list, pt_list) {
+>> +		list_del_init(&ptdesc->pt_list);
+>> +		pagetable_dtor_free(ptdesc);
+>> +	}
+> 
+> Do a list_move from kernel_pte_work.list to an on-stack list head and
+> then immediately release the lock. No reason to hold the spinock while
+> doing frees, also no reason to do list_del_init, that memory probably
+> gets zerod in pagetable_dtor_free() 
+Yep，using guard(spinlock)() for scope-bound lock management sacrifices
+fine-grained control over the protected area. If offers convenience at
+the cost of precision.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+Out of my bias, calling it sluggard(spinlock)() might be proper.
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Thanks，
+Ethan
+> 
+> Jason
+> 
+
 
