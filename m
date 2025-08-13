@@ -1,110 +1,156 @@
-Return-Path: <stable+bounces-169339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BF8B242F0
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 09:41:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80747B242F9
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 09:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64B7E1B6305E
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 07:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91AF66243C4
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 07:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5313A2E11D1;
-	Wed, 13 Aug 2025 07:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oYNS9sMr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8DF2DE6E4;
+	Wed, 13 Aug 2025 07:42:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA5C2DCF42
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 07:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC7A2D3204
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 07:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755070861; cv=none; b=GekliS4UyWaxi394Etsxh7SIHzT1I9kgcdK8LdC2c9hfuRk0t3HWFhm6GQqAoVl8W3v6mJHjSZjsuEVFXURLFSb0RhYxIm5VWNQIyrgJAZlvsjivJVAr2O2rB0iZvvcp5FUr4k+8gWtoedpFrlSKgK5GMiY3k4zDsuvj/n+o0FQ=
+	t=1755070952; cv=none; b=rsSfxyGr2YTkldhfXSxnK+ewfhLJ9cq68oScgkdVd1rPekd+U0n/K+qmZO0oJ1uxxn0QWXK35sCxCpf+AUPxUdOIWSmC57WgSg51OP2v3QcumpVAh8WK+ZGT4lUHqKV3ke3BipTH3Isy/w5HwGWi6poWt4BYIhY2vePUzbZ0OpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755070861; c=relaxed/simple;
-	bh=c9Ccc4FdRlKahKVue2t027gTXn3WFY4nUn/bdTfbFWk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RcNMb0WbIG2By4+FFj3Z++b7gzsUZZGc0fCslPaWXIwm26Gg8v1TUjZm3qBj2RvcxtXaMb3Ctyco0ALtm2RSqxkGAO5yCx6aHIM9+UOep9ehD+9RDRTFOz1HhgGSzUTUulDeA+S97ANOMONjE2xmVeRp2JqdvMu+LDE5tJGgTJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oYNS9sMr; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b788feab29so3849103f8f.2
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 00:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755070856; x=1755675656; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c9Ccc4FdRlKahKVue2t027gTXn3WFY4nUn/bdTfbFWk=;
-        b=oYNS9sMr6a1jozHeEjf+SffWX8dSDvJxiFp8QIjNJr1EF9wwdkZQsblYzf+SIU/YY2
-         4bxlhy3CpnZy/s2efNbWCnwrZeR2q9Ut1aWWoZ+TKwEgxVjN83WTgir9MozdhVEiopO8
-         rf9S8FV5MgkKwSUp6zIo0999djvYEhsmEUvJUj65Zyp7aG323LL5AfelEN8METZ2t7P7
-         WLruAOqR46oDWgVfGl78cbp1WyLUOmcVEUcSbk6wd7uBNflOO5KpmTezRTFid0QCFlha
-         XyeLFPxICKNonexgxUOSBWkUURyLDjbiBFzhTyp3Bqeu067/Sy+3wqs/4veTwsL6dE/h
-         LYRg==
+	s=arc-20240116; t=1755070952; c=relaxed/simple;
+	bh=HdN0XMRFktS6aaDUEEo85Pl2LmbyxkiHp3apivFUIDk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uhWxvz4LezqAWIR0hIzfJUDDm9r9YYkCDPV+/QbJoMdPC6tbzusm2YGGVtlROfoPC2LQ0ZhqW2PqlZN0jJxULft5x6UVJ9naGrRshUcoWFe8iMFEvAmmeku7GOJUaLBUxWvBsqrVPpRP0zfVPus6bK26PKNpG4kJj/IgnswaLlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-73de140046eso463884b3a.1
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 00:42:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755070856; x=1755675656;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c9Ccc4FdRlKahKVue2t027gTXn3WFY4nUn/bdTfbFWk=;
-        b=Cn+k2Nqg1XyyYeuJ8AZq5qNPvFROzxh7GSSZoQrRF4KBGSTq1y64rgeS8czlyI6HtC
-         xpTp/XGe7eP4y/P27COB/ucpI1MYF7Uksmna+uIMP13sywAX9bvZpz5CPrmEdqcDnErB
-         1epZ1I+LRu84lqpMZO9CVqQwHVRgZnTdgobPfEceAl6RJ7TdXE+2LAmCZ7RG7cMUXEED
-         /+TNz1oS6iK6k2QNE3e1R8DFCd/fmWbot1k5GHWTvJeRANZk5aCFF3JKSvfV+z/sJUf5
-         BdXW4yNehdEkj6U8UwsWtRE58xmmkY2yV7dlqisDvAWtyt8w/iEAC4l3NTWpn0H478A7
-         B60w==
-X-Gm-Message-State: AOJu0YyBv73vUmmM8hjAWS8oZLboaJJeVltqOIvd2JouJP9iIlMYPOUy
-	aYRl2aSXVjhEuTJ+HM9f8R0l/zLRRrj4r8CosvNMMl4FfMoqhlhW4jZz/PVSRHZ+Z7ZFYG/0hlX
-	GCw/NopsRgeBMVKe8kY66f8tYYYMQ3AHtz5XCp/GI5Vta4f/DPiAiOifK
-X-Gm-Gg: ASbGncu7Fy+Q5rURbmEhR9irwxuPVN7TitN5tLJ7tmgIPa/O58b/arBaY4QqIATLVJZ
-	TXXVqDyNqbvEu5BvPw95AB60h+VgHElNqo6gB0EBFnS2BLugE93Vk1ddZj9LAn0ajpTZj9KGBqL
-	SvRPR+4QI21z5PPVrgJ9QNVlnlIHpfyb51HpFg+2Hq7BvhLA9I6yB/qW2M8rqQLkNiQpC1Rj/PJ
-	iSFDO9ocVC3cPGd1+RaT51oXSKH+YR2PYLznWUxK2EHd0081U+uhQajAM8=
-X-Google-Smtp-Source: AGHT+IGGtpaH+it538UfR2iaRDBz9X7fJpT1gAY6RgW0EDKE5fzEZ79ezay15oRdLHx3Xf5OdtuQ3FdbihxaglEAAsY=
-X-Received: by 2002:a5d:64ca:0:b0:3b7:8fc4:2f4c with SMTP id
- ffacd0b85a97d-3b917d2b0f8mr1196666f8f.1.1755070855659; Wed, 13 Aug 2025
- 00:40:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755070950; x=1755675750;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SpiYdySHhrFSLFvt+ZXWlE3IvVelgPZB7slyigr8p3I=;
+        b=Omazhgc8XZ/huK65PO/VrhAaar4XvBxKwyV2gbrwJ/Yo8AxBr8nC6+l2Eda5NkbmMR
+         Juis8A3lzOTQMFXcFkt0wBIns6oWnjaswZI1BPwIW9JiJmLF50VTmevNCR3jLD91905m
+         XLjxxhqxuo84I4JiqsUPxk9KOQCPbnfQLI85qsMJsgj3fDQ2JW4DvLD7Gv2QetnVwg+n
+         HsOnsbYQ9XOreGI5UBcxkCulaX3l5dq33Y2dxPA2aXx2XI99L9srQkFT2izq7UTk0GSX
+         dczgKB1TSMzwd2VrP81dP81YZbcOz5eKwUxp1vLT0syBgdUpedTO8KTDmTOeSX2VvstD
+         zkoA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpV213TfLSb9WLQsNaxsQSc2dPda6xEK4Ye829ZayUo9geyY958JDhWc7kKvA+HJvyetjSqug=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpArcIJ1kOEpbvaTKCn4UCExbt31i2+EOu6vhiUg91diyV/Udz
+	2HW5JDE6Y2weJ2DsHZGuZZAdg7vSIF9qqdT7oVtqOSIafsBZU3wwurdQ
+X-Gm-Gg: ASbGncv3onfn/xGr5yMi/iccXPHLnGdHRSZibb5Wos3+pIDEyMAm74aSXnDXQtBLrQX
+	74W6V0VMTDM4QXBLu5FuoB7ANzxnXo+7/M7NHlH7k9wG1qNM+2eByFtHvAxSzMGjqgz8GOlONeq
+	MLvhA3+WrUIf2w8Nz9RF8GDPonFTx6i6UNjkwAvTilDxU7iVMB9kS1JnrrMDXTltvF/wms5OsrZ
+	UddpwCDETN+HwXu2CkyTlpNevNQPgi0eLjxcWBGZEo0OuxMAj4jR3Q/Qg74+JYTpzahI9WIJ50I
+	iOKqh801ZJ3tcv107OjJDJHYd5cBZdNxlJNR3b9+eRx/p8C2/gwapU8VqDaAjngRAeJsWrkByc6
+	uQ+JCH4fGKSVPskHE3b7cnCjtphsb/CLT
+X-Google-Smtp-Source: AGHT+IFyRulOk2yEiytouE8c1ifGVIrW23F74ZO8AVJB/Bv0ruH/ZKMqF0l+0q/T60XygCbCXcCjWw==
+X-Received: by 2002:a17:90b:224f:b0:31f:23f0:2df8 with SMTP id 98e67ed59e1d1-321d0ecb6aamr1294794a91.6.1755070950304;
+        Wed, 13 Aug 2025 00:42:30 -0700 (PDT)
+Received: from [192.168.50.136] ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b429920ab6dsm11951099a12.58.2025.08.13.00.42.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Aug 2025 00:42:29 -0700 (PDT)
+Message-ID: <17f91b9a-0a3a-47e1-bdfb-06237ae5da55@kzalloc.com>
+Date: Wed, 13 Aug 2025 16:42:24 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812144215.64809-1-baptiste.lepers@gmail.com>
-In-Reply-To: <20250812144215.64809-1-baptiste.lepers@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 13 Aug 2025 09:40:42 +0200
-X-Gm-Features: Ac12FXx8h4Xky-40CstbMiW32Dc7_qYQSYrfMREs0zT_bsEsb1sqx3OupPHpEcM
-Message-ID: <CAH5fLgg6eFYZ906GPFev_nha0axsUR71yC+En4X_fMjSn85UiA@mail.gmail.com>
-Subject: Re: [PATCH] rust: cpumask: Mark CpumaskVar as transparent
-To: Baptiste Lepers <baptiste.lepers@gmail.com>
-Cc: stable@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] arm64: Sleeping function called from invalid context in
+ do_debug_exception on PREEMPT_RT
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Mark Rutland <mark.rutland@arm.com>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Austin Kim <austindh.kim@gmail.com>,
+ linux-rt-devel@lists.linux.dev, syzkaller@googlegroups.com,
+ stable@vger.kernel.org
+References: <c36e8dca-d466-40ad-ad51-2b75e769ff47@kzalloc.com>
+ <aJw3L7B7u5qAPOMz@e129823.arm.com>
+Content-Language: en-US
+From: Yunseong Kim <ysk@kzalloc.com>
+Organization: kzalloc
+In-Reply-To: <aJw3L7B7u5qAPOMz@e129823.arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 12, 2025 at 4:42=E2=80=AFPM Baptiste Lepers
-<baptiste.lepers@gmail.com> wrote:
->
-> Unsafe code in CpumaskVar's methods assumes that the type has the same
-> layout as `bindings::cpumask_var_t`. This is not guaranteed by
-> the default struct representation in Rust, but requires specifying the
-> `transparent` representation.
->
-> Fixes: 8961b8cb3099a ("rust: cpumask: Add initial abstractions")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+Hi Yeoreum,
 
-Only during CONFIG_CPUMASK_OFFSTACK=3Dn, but yes.
+Thank you for pointing it!
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+On 8/13/25 3:56 PM, Yeoreum Yun wrote:
+> Hi Yunseong,
+> 
+>>
+>> | BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+>> | in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 20466, name: syz.0.1689
+>> | preempt_count: 1, expected: 0
+>> | RCU nest depth: 0, expected: 0
+>> | Preemption disabled at:
+>> | [<ffff800080241600>] debug_exception_enter arch/arm64/mm/fault.c:978 [inline]
+>> | [<ffff800080241600>] do_debug_exception+0x68/0x2fc arch/arm64/mm/fault.c:997
+>> | CPU: 0 UID: 0 PID: 20466 Comm: syz.0.1689 Not tainted 6.16.0-rc1-rt1-dirty #12 PREEMPT_RT
+>> | Hardware name: QEMU KVM Virtual Machine, BIOS 2025.02-8 05/13/2025
+>> | Call trace:
+>> |  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
+>> |  __dump_stack+0x30/0x40 lib/dump_stack.c:94
+>> |  dump_stack_lvl+0x148/0x1d8 lib/dump_stack.c:120
+>> |  dump_stack+0x1c/0x3c lib/dump_stack.c:129
+>> |  __might_resched+0x2e4/0x52c kernel/sched/core.c:8800
+>> |  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+>> |  rt_spin_lock+0xa8/0x1bc kernel/locking/spinlock_rt.c:57
+>> |  spin_lock include/linux/spinlock_rt.h:44 [inline]
+>> |  force_sig_info_to_task+0x6c/0x4a8 kernel/signal.c:1302
+>> |  force_sig_fault_to_task kernel/signal.c:1699 [inline]
+>> |  force_sig_fault+0xc4/0x110 kernel/signal.c:1704
+>> |  arm64_force_sig_fault+0x6c/0x80 arch/arm64/kernel/traps.c:265
+>> |  send_user_sigtrap arch/arm64/kernel/debug-monitors.c:237 [inline]
+>> |  single_step_handler+0x1f4/0x36c arch/arm64/kernel/debug-monitors.c:257
+>> |  do_debug_exception+0x154/0x2fc arch/arm64/mm/fault.c:1002
+>> |  el0_dbg+0x44/0x120 arch/arm64/kernel/entry-common.c:756
+>> |  el0t_64_sync_handler+0x3c/0x108 arch/arm64/kernel/entry-common.c:832
+>> |  el0t_64_sync+0x1ac/0x1b0 arch/arm64/kernel/entry.S:600
+>>
+>>
+>> It seems that commit eaff68b32861 ("arm64: entry: Add entry and exit functions
+>> for debug exception") in 6.17-rc1, also present as 6fb44438a5e1 in mainline,
+>> removed code that previously avoided sleeping context issues when handling
+>> debug exceptions:
+>> Link: https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/arch/arm64/mm/fault.c?id=eaff68b3286116d499a3d4e513a36d772faba587
+> 
+> No. Her patch commit 31575e11ecf7 (arm64: debug: split brk64 exception entry)
+> solves your splat since el0_brk64() doesn't call debug_exception_enter()
+> by spliting el0/el1 brk64 entry exception entry.
+> 
+> Formerly, el(0/1)_dbg() are handled in do_debug_exception() together
+> and it calls debug_exception_enter() disabling preemption and this makes
+> your splat while handling brk excepttion from el0.
+> 
+
+Do you think a fix is necessary if this issue also affects the LTS kernel
+before 6.17-rc1? As far as I know, most production RT kernels are still
+based on the existing LTS versions.
+
+> 
+> --
+> Sincerely,
+> Yeoreum Yun
+
+Thank you,
+Yunseong
+
 
