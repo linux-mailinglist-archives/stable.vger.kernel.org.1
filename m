@@ -1,178 +1,122 @@
-Return-Path: <stable+bounces-169365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F10B2471E
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 12:24:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2039B24732
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 12:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC25173E90
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 10:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 017C65659A6
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 10:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B55A2F1FC2;
-	Wed, 13 Aug 2025 10:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB842F3C33;
+	Wed, 13 Aug 2025 10:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A2uKbA6R"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WUFJxWfG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C857221277;
-	Wed, 13 Aug 2025 10:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC7F2F1FCA
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 10:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755080667; cv=none; b=D/dub9ZEOogcfTosoyn+qP/8uZGWd7zcq4it0exL22s83+YxILjiXyNTiGoicPCEdLgg2J80NY6l4paTjyvMTUSKxEQF0evLfN9GQyiTan949UoVoV+h2smpZW6n8H7RoZIc5caJ4z4xhqW/NeCfrV0wv8XQZw5r8ju706fB6XY=
+	t=1755081010; cv=none; b=iCWtV08u7K/ryBjtSQShH2jzS4YDpXm2tXVVWt65Hejg00nXCk11Hw/j1Bv00hgEZDN7VWZg1tp56QjQPTConjBr5OhG/VCmOLxl+1P4BXcx7cnkMxaXD9OZBD24HpJ3QVzoHjwNjAtwSldOxSMkYcZb8Jzuc7AwJ1Gu+15qAIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755080667; c=relaxed/simple;
-	bh=FJ/VBakO+nFumVlvWzR7mU1CQJoygXVl0eaOsOqiRMk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H7qOgYPLjGWc/2Sq6vhFsWXIRRW/JszKjf+KTJ0HDuVnElbJ1cKUkb5CE8fMPLnilx+kZ0cFO5WMvEseVbKB50tlPJ+1xR78nhOBHFSsOc8h8ckGUY90XKKQIuU84FMIq2/v5A1knklQ5tr0VcxOHQ4WODw7dUQ14t+xwClMHuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A2uKbA6R; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3b783d851e6so5462371f8f.0;
-        Wed, 13 Aug 2025 03:24:25 -0700 (PDT)
+	s=arc-20240116; t=1755081010; c=relaxed/simple;
+	bh=j9nZfVw6WNDy8P2NhYDYq7yIvlQTGbMyRsqF99spDPg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=UwqyZAQJN/qGVD6P3JZyDrMatvNv0uwyJpf9eU9LuI4p3ho9/d0D6ow8zu7XCwRmc2R/dgyNr7VfKKjWFr0am3O7EVZO3bBbxoRJG0A91pB/9DJVWvziH9bB89mJh++MfaP4JyGv238sM3c4AmCzlUno9UqHCrjRnyGyJANIQuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WUFJxWfG; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-61563789ab7so813538a12.3
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 03:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755080664; x=1755685464; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hBvMcb9A/AFLPKQ8t4bKDq8tGZPD9sVSSm5Hx/aM1sg=;
-        b=A2uKbA6RD1A+E4P5pytMYN3Mkpj6t+co1bk/7AtNTOnAE3+ee0+1tFOfvRNYAuxDpw
-         m2QwPYt3nosLeRV3BVzkgnUGshbSHQh+KDkLo4r5l6NjpJbDQALOeogn6q3TrBvMSNWH
-         b6rLiMy8m3TJT20mOq/TxgEz1AYGvk5wBafPP8PhnAYJ2xfSJCCDXS+M/8NBuTWF8kIH
-         EoouizoWS+i42TTSL7GisvInTD0IYVdLBabn4oKNxK/YszAlQuOQSznl8o405+K1TmIP
-         INqa+JbcEhx7yTS3RSyV1GcMfqr5Ejp9VFIM6xURSbNs1BZPXj9eS/Ra4BOpOw/MzN63
-         PZRg==
+        d=linaro.org; s=google; t=1755081007; x=1755685807; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m/uSEHyOY8TPjXVXr20mUPgAnYEaOn2OIFqZC7pMk9s=;
+        b=WUFJxWfG4eSFGdYuIruhFLprBSs3OYy9j9FabWpGTd7q2ocK54xvxHDEJJ1dfFkvlJ
+         hfUJ61RLp3OIyhZEbcFzLm2DRUtlY6/mISgI6pBwd+ybA1+wEZJst4mMyCPvK8IScmTD
+         oaZnS4AJ6/4tNpulm0OZ6wgoG1TBNPrinTktb3mqvDIJFD4ioqQfE8FIcFTHcisfuI6a
+         9FHDWjmkdUKbu32XA5vhCw47pfv6dez5Tx9ZD7tPUfezjnxaVPEy0LqVY4QX2mZdvfmx
+         ShAzh2JXgqwyFVS/rwYZNY1uDrx9iVfw1JD3YdxkjDDQzfWN4Ub5x/Djy3f+6EKA4ntR
+         p9vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755080664; x=1755685464;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hBvMcb9A/AFLPKQ8t4bKDq8tGZPD9sVSSm5Hx/aM1sg=;
-        b=pkE3s7Q385FX/7tmvDPKRGW886VtQoxpnPDnjnp88z0I9nf7RiN0X7LQYTrEwnVG/A
-         gjuNVtG0NsgiRGIuGmpYoZ4JZExPkMAJQTMJyP87V2zyJC487Sw3P8s2fJxzyLaZnKRk
-         wQM3kGPIZRnx+0QmflCoF2yM4jY4iXe8h+rS17L08c4QkwkQnZrdY/yeNL1kyJbgNwuw
-         k5Erx6nedwhLGSQt8MQ8cZ0/A5HrW8xxIOsV5fikwkTdE/9PJc2Q3ooZCmJT9p60z7zr
-         kJoBTSmHZdhe41lVtDRfyRt3hvLiDzZZ4/iE1o40njYm0MZ9LLLQLVXfKKi1Z9tlYUTr
-         Crdw==
-X-Forwarded-Encrypted: i=1; AJvYcCUaT9/Th0AywJ2xsBgY8NzUY+rz8bHeX71u6DqeW8Q3gdWdW6c58rIXtlwvoPwapEE9PfASWjVg@vger.kernel.org, AJvYcCVUVyav7a+pW9vnMOVE0Sw6wqJffX2lE056VeLQcAqOEMd0Om+EPgQbSlD1Mp1guSFzs2Cc+2ayYOZuMm0C@vger.kernel.org, AJvYcCXQMAHILqgkvj4iznvp4vu3lvI77elMQ4MvUqSftUuQzCqon2mMxlzf/jdzLCWB5iesRGkUm7suNUc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyucP2to++QGEHAfKiMEd0tkizxMiDgkscYFU187Rs9DwGjjmBO
-	PtFiVeL6znxf/1r7BYhn9jOq9mY9CYGpRXaqzdSYU1npXxKq869b5fCW
-X-Gm-Gg: ASbGnctiDtTcx6UcEE6WV1pw9RJI4/zdLsdDVCG8ocIoYEqf1NGeL+j981U2AfNPugR
-	dhKOmQeGOkKTVnZD5W6gK0TExlCdAC5n6pJj0CIkUiB23gig8md99v2XLFO1VTqOB5NtRfHAt9U
-	MeldGETt7Ah5HRtZSXnKBrax/vpEKko7nikIXd3ZAja0f5DzGN9/tgoaK5lkAjalZ8PH50UdxUO
-	2QbJMQbKmo6Vtr02uqIlmNFyiN4r+VdKNNswwHi5Zi+n692DtObEO4p7kV8Ih4QhRTsEjVVRsh2
-	U9gXtgfETjSo+Sby7WZoSLPej0KzVQyRTu48pr8jriFI9jAbDfEJ981yel2bvsrH6JajuaB1BA9
-	qBckAuN9bzGOCcuZ3YC1I0+8PDN75ugCqWqwTSBbNIYw+oEYuPbAPxduyH542JEU=
-X-Google-Smtp-Source: AGHT+IEJHjTQQo8npkV7yU/QWSo8+r2RnFWIg51TLG4KaWGQtT16a4oEJjJRn79a5sY1UbdD0pjCsw==
-X-Received: by 2002:a05:6000:2006:b0:3b7:8880:184a with SMTP id ffacd0b85a97d-3b917f42040mr1913827f8f.54.1755080663628;
-        Wed, 13 Aug 2025 03:24:23 -0700 (PDT)
-Received: from [192.168.20.170] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c3bf93dsm47351880f8f.27.2025.08.13.03.24.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Aug 2025 03:24:23 -0700 (PDT)
-Message-ID: <27cc9ae5-1c13-4ec9-ab10-ae95d6339116@gmail.com>
-Date: Wed, 13 Aug 2025 12:24:22 +0200
+        d=1e100.net; s=20230601; t=1755081007; x=1755685807;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m/uSEHyOY8TPjXVXr20mUPgAnYEaOn2OIFqZC7pMk9s=;
+        b=AD5lnUbbisdITkzRqrosHJbfCwesm0wVVGdvvvKwl6eDnUU/2mpcSiK5sltRBdVHns
+         8RlFDRaMimoPItXYpb1EPzKoceBGI3xRLgRSd/UjWdwRSaQ8V84fSwTyFLNzqgcqK2yR
+         JL4D2LWRR1Qwg9epWLMX6BBVaUwMonLIemke8MUNK4RSOQ3dIMNQ40OjN61G7UzE9rFI
+         qLqExQaM4Ik05BMC6eRh9rV6FgFtc+mb0upD1lN4ubNWjQySmn6dFLNVx1XRMGX6A6iV
+         KE0oIM/4d9ig6DzmPXgflat7MwJnDYii/VjDloWOHEjAF/Vl+UvRziMbB19QShCz1WGQ
+         PeiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhrt72mD9IkJalkSegQG9di2nQZHA1b1SbEcE02lepz+nFIeeI1LJFW7ki7lp8/ttNi/xEFCM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ0bzq1zq3SO2X/n7460SsJBKePpfaUzfBaqwF2Ga5kCm2+6e0
+	2rwP/jMfx20gnn5svnw5UO3OAqAkb+Gg8BJg5Bphqh/8ivJtj1rTWExK60oUhMZRpbeW8t1BMOW
+	YU+fv
+X-Gm-Gg: ASbGncvBVyMdJegVOLt9MFgZx8v63vH/0pVyrG25j/vCCdoArEYVhaQjkOLDz/xkOec
+	UcSQH/6nIjGHWMA6KNhNnH1U91woKru0LfQKkRXyw8PpF8f0NUPDL0XUodDrqlUVjIrRQWxAQQ8
+	xGGDF/6Duy1eUxpeVg0GB9bgdJHwnuFr1BaMVw4VflpMukWTd256LmxZfzppvCo8HUu7sJmMdEz
+	pBIZLj8AkCfq4yHS/rtozup9dlwiR15MkXZnZZVKzIEKM+nZ6XEPyqTjELgcfD7udzpf95epDWc
+	KV9bzAY/awSQPXc889dXIWXva1lgIHptquxUFdbjXKH12c1QJ3z2hTZTEf619LJXt42HvjvExz0
+	rEj5jbhnPrmlmeKN5fBO2Z9iL1K3XPHnNnmNRCAw=
+X-Google-Smtp-Source: AGHT+IF29cdNPOBhCMcj9Obj9AvGdSJsCml5B5sk74SLW18u0La5OP66JPcnqGI8eEVOZWoaJs2nkg==
+X-Received: by 2002:a05:6402:1ecc:b0:612:f2fc:2b9b with SMTP id 4fb4d7f45d1cf-6186bf79c06mr842428a12.1.1755081006695;
+        Wed, 13 Aug 2025 03:30:06 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f15d9fsm21466335a12.17.2025.08.13.03.30.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 03:30:05 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: krzk@kernel.org, alim.akhtar@samsung.com, 
+ Zhen Ni <zhen.ni@easystack.cn>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20250806025538.306593-1-zhen.ni@easystack.cn>
+References: <20250731083340.1057564-1-zhen.ni@easystack.cn>
+ <20250806025538.306593-1-zhen.ni@easystack.cn>
+Subject: Re: [PATCH v2] memory: samsung: exynos-srom: Fix of_iomap leak in
+ exynos_srom_probe
+Message-Id: <175508100520.39785.3470511038407039138.b4-ty@linaro.org>
+Date: Wed, 13 Aug 2025 12:30:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] i2c: add init_recovery() callback
-Content-Language: hu
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Wolfram Sang <wsa@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Andi Shyti <andi.shyti@kernel.org>, Russell King
- <rmk+kernel@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
- Hanna Hawa <hhhawa@amazon.com>, Robert Marko <robert.marko@sartura.hr>,
- Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Imre Kaloz <kaloz@openwrt.org>, stable@vger.kernel.org
-References: <20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com>
- <20250811-i2c-pxa-fix-i2c-communication-v2-1-ca42ea818dc9@gmail.com>
- <aJpP5eABTYnQRV82@smile.fi.intel.com>
-From: Gabor Juhos <j4g8y7@gmail.com>
-In-Reply-To: <aJpP5eABTYnQRV82@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-2025. 08. 11. 22:17 keltezéssel, Andy Shevchenko írta:
-> On Mon, Aug 11, 2025 at 09:49:55PM +0200, Gabor Juhos wrote:
->> Add a new init_recovery() callback to struct 'i2c_bus_recovery_info'
->> and modify the i2c_init_recovery() function to call that if specified
->> instead of the generic i2c_gpio_init_recovery() function.
->>
->> This allows controller drivers to skip calling the generic code by
->> implementing a dummy callback function, or alternatively to run a
->> fine tuned custom implementation.
->>
->> This is needed for the 'i2c-pxa' driver in order to be able to fix
->> a long standing bug for which the fix will be implemented in a
+
+On Wed, 06 Aug 2025 10:55:38 +0800, Zhen Ni wrote:
+> The of_platform_populate() call at the end of the function has a
+> possible failure path, causing a resource leak.
 > 
->> followup patch.
+> Replace of_iomap() with devm_platform_ioremap_resource() to ensure
+> automatic cleanup of srom->reg_base.
 > 
-> "...next change."
-
-Ok.
-
+> This issue was detected by smatch static analysis:
+> drivers/memory/samsung/exynos-srom.c:155 exynos_srom_probe()warn:
+> 'srom->reg_base' from of_iomap() not released on lines: 155.
 > 
-> ...
-> 
-> The first traditional question is why the generic recovery is not working.
+> [...]
 
+Applied, thanks!
 
-The details are in the driver specific patches. Should I write it all down here too?
+[1/1] memory: samsung: exynos-srom: Fix of_iomap leak in exynos_srom_probe
+      https://git.kernel.org/krzk/linux-mem-ctrl/c/6744085079e785dae5f7a2239456135407c58b25
 
-> 
-> ...
-> 
->> -	if (i2c_gpio_init_recovery(adap) == -EPROBE_DEFER)
->> +	if (bri->init_recovery) {
->> +		ret = bri->init_recovery(adap);
->> +		if (ret)
->> +			return ret;
-> 
->> +	} else if (i2c_gpio_init_recovery(adap) == -EPROBE_DEFER) {
->>  		return -EPROBE_DEFER;
->> +	}
-> 
-> If the above stays, I think we would drop the last and always have
-> init_recovery to be assigned.
-> 
-
-In that case we would have something like this:
-
-    if (!bri->init_recovery)
-        bri->init_recovery = i2c_gpio_init_recovery;
-
-    ret = bri->init_recovery(adap);
-    if (ret)
-        return ret;
-
-Since the callback is used only once, and within the same fuction where it is
-assigned, I don't really see the advantage of the assignment. Although it
-definitely looks cleaner as far as error handling is concerned.
-
-Originally, I have used the following solution:
-
-    if (bri->init_recovery)
-        ret = bri->init_recovery(adap);
-    else
-        ret = i2c_gpio_init_recovery(adap);
-
-    if (ret)
-        return ret;
-
-However the existing code ignores errors from i2c_gpio_init_recovery() except
-EPROBE_DEFER, so I changed this to the code proposed in the patch in order to
-keep the existing behaviour.
-
-Regards,
-Gabor
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 
