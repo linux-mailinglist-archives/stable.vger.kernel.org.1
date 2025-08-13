@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-169438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D91B24FCF
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 18:31:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD265B25014
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 18:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9E605C43C8
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:24:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36D33B2EF5
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E1328643E;
-	Wed, 13 Aug 2025 16:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A40428727D;
+	Wed, 13 Aug 2025 16:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5HvPAnj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLS9tCBm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684FD2857C1
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 16:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7A322F389
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 16:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755102268; cv=none; b=fKNUDjxxRvEsBirP7kPD6Or71B4q32C7FoRR7ajyVNqfJd/kY6ghHyjVFNr8nRHzXe8G/nhV2XGxAhhUNTXzvd02drzNjAYZXi0s5SwNsI0IGvXr73yThE3gROXoejxEzlUXlzlxBkbhXRvLdp/IsnTTxoBrn0s2DKu0ErfMX6I=
+	t=1755103342; cv=none; b=DNvcGBdRGxFUURxpThP14y37G9d0A8M/NQETFQp5R5Rj+BuRd5fEkTOwPeqIc+hM1Umh3NQDVKBwbr0P/bNWG480WJdQ5E81VCW45w+5HVjkPJoOtVHcGYFLPktJEDKaHcKV+EE4wNYwgd92uCVP2WnNtNuyh7AIrdJxcTeedS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755102268; c=relaxed/simple;
-	bh=711CkjRmnwJ76WtzMyBXRav45YSQZxzUKT8pg05Swec=;
+	s=arc-20240116; t=1755103342; c=relaxed/simple;
+	bh=d6SiTJ2gPPy7G0mF3ymCpTx9GLLSlFcB78dVhbHCsCA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bFm7kvEcHgVKiDqcSd/ZeWpWGdwPlgtOOEJLGLblLYXwJuupf9rReDZbt2XVmjrOotynrSlTZZPWWueTYO6ca+3hDVbGNim1lPI/JBEUsv0poqV1+Cs7FwFxgIZA7lzSM6+LuWBjnHCzojDF66JSL+8ESOn5g1aWuAjrH3SDD4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5HvPAnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB96C4CEEB;
-	Wed, 13 Aug 2025 16:24:27 +0000 (UTC)
+	 MIME-Version; b=lYfX9jgGOqrHZIHTVuY+haOQBNYYr3En2jExdzSHHkaqTu3dWxM5yaSwJ5KsbZboqHqdKO65WCSmgPkjASfcwE9Q4pJUNYV6J9vG4pk7ejKTXSknhnBvSs90wKsPfogEVNATRtQI1XjyzPRbuabz1JngkWi2aCAgDYClxe9mPkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLS9tCBm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F324C4CEEB;
+	Wed, 13 Aug 2025 16:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755102268;
-	bh=711CkjRmnwJ76WtzMyBXRav45YSQZxzUKT8pg05Swec=;
+	s=k20201202; t=1755103341;
+	bh=d6SiTJ2gPPy7G0mF3ymCpTx9GLLSlFcB78dVhbHCsCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5HvPAnjcZBJfha+vEnb+EjAMDSOz2xNKzQptbDYiKZErHTFHdprJNtgGIEdHLASs
-	 kLr8I9af+uS5xHwREoKp6TovbH/0VwVLouIb54+9QFbcLzKIjBC4xJR2CxOYBVfELi
-	 hFnVi69WQCoi2apHqL6aRUHRDf7zPaS8u4ev9clEdyBVpl4b/KY/EVGlcgnnWmTgGe
-	 PQ+A+3H5mjssDQIIbWXsze/8LFusUnkWulOzO9vyJhnoei5u3juTHQaKb1gnIh9Cyc
-	 AvRxTtH3+wwo9c7uqitK4ugQfxtIytTiMpMMwqiJDKgnxk/kBy98viGv61YeqseEq1
-	 idhmj2pmsLQFw==
+	b=MLS9tCBm65Cao2Myml8WGKHH6TXYKM60JeuwtbmSW4pyk/3gma8i69bNv2ekrP6ym
+	 5bgPtW5intn58V9eR6/F3GZmIl2wu/7nz21aikUgzxPHxLgA07s2pR/2SVW85p3FS3
+	 if//CezUYG1Mv1zsnjyiF+92ty9t9EErV4+QECqyXig4XBUKo6ipF5rOHgial/4B8z
+	 LoZGLudT4o1VMzHbCLnrulYL1CUMlUvnfSflEI82PN7rzaFdCabzUoCcvSAzX0atVQ
+	 DUgMir5x2GoTkULN95Rd8tpGSEBSHS3CNevC2l3SaQy9BR6lpEvHPNgsoCXawQ2K8O
+	 i6X/Bcko53/0A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Dave Hansen <dave.hansen@linux.intel.com>,
@@ -48,12 +48,12 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Alison Schofield <alison.schofield@intel.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] x86/fpu: Delay instruction pointer fixup until after warning
-Date: Wed, 13 Aug 2025 12:24:25 -0400
-Message-Id: <20250813162425.2060269-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] x86/fpu: Delay instruction pointer fixup until after warning
+Date: Wed, 13 Aug 2025 12:42:19 -0400
+Message-Id: <20250813164219.2063341-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081251-sitter-agreed-26a4@gregkh>
-References: <2025081251-sitter-agreed-26a4@gregkh>
+In-Reply-To: <2025081252-serotonin-cranium-3e92@gregkh>
+References: <2025081252-serotonin-cranium-3e92@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,17 +91,17 @@ Acked-by: Alison Schofield <alison.schofield@intel.com>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc:stable@vger.kernel.org
 Link: https://lore.kernel.org/all/20250624210148.97126F9E%40davehans-spike.ostc.intel.com
-[ Adapted ex_handler_default() call ]
+[ adapted ex_handler_default() call ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  arch/x86/mm/extable.c | 5 ++---
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/mm/extable.c b/arch/x86/mm/extable.c
-index b93d6cd08a7f..1ccf065f7af8 100644
+index 30bb0bd3b1b8..ae7e056d0007 100644
 --- a/arch/x86/mm/extable.c
 +++ b/arch/x86/mm/extable.c
-@@ -60,13 +60,12 @@ __visible bool ex_handler_fprestore(const struct exception_table_entry *fixup,
+@@ -59,13 +59,12 @@ __visible bool ex_handler_fprestore(const struct exception_table_entry *fixup,
  				    unsigned long error_code,
  				    unsigned long fault_addr)
  {
