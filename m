@@ -1,77 +1,80 @@
-Return-Path: <stable+bounces-169420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE0FB24D34
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 17:21:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BDFBB24D38
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 17:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF23E3B26D3
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:16:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD37417C198
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E2B1F12E9;
-	Wed, 13 Aug 2025 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9642A1F4CB2;
+	Wed, 13 Aug 2025 15:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giIE6ZUz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cw5QK7pP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829261DE3C3
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 15:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896821FDE09;
+	Wed, 13 Aug 2025 15:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755098198; cv=none; b=P+r12DZM+XT5/tAXJyhL8q2I+INpAQa40CqGMoVN/xS7MMqnrpZ3K0qx26uT36wErFov91oXRMjHyKVb7elaqSB5bnojXrxaysDhXhh1YLTAawrBgsHL/07zfn6CfcEA7tiJJkKXnHDrwGkW2kc2lVMk7s/G4taeCJXL9j7PnOU=
+	t=1755098253; cv=none; b=Nl//jBsxOOEgSfuW6CniWN2maedOU6blF2rc6fG/Mts3jxQbc2P5gzcOVsD5NbdZTIsXDacPUmoa9jexSzxPCDnhLwFoz9LDRMB0tRfO15dWyy9/JCB7PO7hbCo1UrQbdt90JXt/4LbGInQm0tZkVpj+6WGiR14AefPgbqbR0LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755098198; c=relaxed/simple;
-	bh=YWu6QysTTta+ygIB5yJvbhmovNUrZ+mY2Zbvv1O16X8=;
+	s=arc-20240116; t=1755098253; c=relaxed/simple;
+	bh=Q+mjl9s6d8i+VV8csuaRx+iX/KWEPZmIvaZMQSBL71U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=anJHFREawQAL0+POhZJls4HolamH9XUft/durdRXAoz5qxHqKlbEQ9J4my49V47fVeMc3HuWzTsjxqjMCkihkoEhHpNYPhJQODR+ySv8kqkZcgWv79jtKPTv6tJRY5aFAM7dyC4BhfXZNasDgcvdkIVad1f0TgpT7X4mmbFPai0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giIE6ZUz; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3e56aff470bso2985355ab.3
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 08:16:35 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=ro+68vlKkaJm9aG7zr1dI90LtRO1RrPQ0tQpna9m3fBg4Y7dWsZrBMe4Vrw3oxu8etQfNlT1hpWDFn/71/Cco/Q8m7RXA78xOd7xGVDGVSklBnfToakgjEzwdIf/Jck94/SH0WWHuu1SVAk3SmTuKigDLuur+LYTj4k/Ye1xOto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cw5QK7pP; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-459e1338565so62699075e9.2;
+        Wed, 13 Aug 2025 08:17:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1755098194; x=1755702994; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1755098249; x=1755703049; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=shieCgzmVFkz48fGZIWPswfofiSSkJbIXRswAa1EobQ=;
-        b=giIE6ZUzXsy5BiSrQL0MfvrHmTJC/QgApadMRKTwaz5RCeH3bFX1XkJg4DAPaMkPNx
-         5jHBIHwNtjpYMhOsC84f+8FOmxNP7AsSp0Q19UPDWDXnMvmhAGzeq+cEa4ZOS8LG9tuB
-         4hHh/jkYrI4URct0zsXCw8q01h4FIT26RpE7I=
+        bh=7NgH/qwxoTNWkh0Im/sLiD/T4hQEX/261YmLQy0amXU=;
+        b=Cw5QK7pPSHTC9ctOwB0mU35WFDb6g05UovEqLNPRk74bLGj37DVVrmS3K+b2u+idfY
+         sMnSnc87VVAtJd5gXXKhtFCtFOwQGQsQpKAY03LYiY5SV1q7J5lxvSB/hY2K7ZU5eoGq
+         tw5BXQVgT3sEkvPul62sMB5TTDrn+f78F0dWwCkpE3q+0QJz2Hlz4teY0T8neTxbptXQ
+         EkcFNoZpUBewMJxn4ypxCrLAwanvrS9Q7QivIGYA2LJU4ZnsTWXStCPPCvsw871zyMWz
+         ICgMhsqKh2mLT6J9YL+OKo73LYbWLDohqUDg2rZxcheYNlqjnr+n3788soG+yZCJxAi6
+         1a/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755098194; x=1755702994;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1755098249; x=1755703049;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=shieCgzmVFkz48fGZIWPswfofiSSkJbIXRswAa1EobQ=;
-        b=eEGM6fD3vqi4pgceM9y70RCIBWHS/LKQWLdfrv+JMFJ64pj6FyDNs7t+zz6MqgOju5
-         RMmVcWlA3ukWwdF+vcQBNbN+T24/qUd4CHbi4/ZHlO1jsWxIdwwTp3SLwau5D/KO+zHY
-         alZr3SsYOCeZZay1Yl2EDdQJLAIu5V+TKhG7stXxIzHVtQor1obOoB4GqwkmpOzpIffN
-         EXp2arp3Bbb25I9tw4lPPGPIE7ukNd8dKRSdJmWzxkNJC6J5LyCLP83953SB//ahvYOX
-         cj4nKmQ+44sTspmVUm6tL3CB3erUnG9+dpaGuR1Ca+LiAnjzPV2HfH+yr73LQXOsonJs
-         5E8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUsG9hZyBqSRMm6YbBoIqnu0eQCzcuS9gaYgR5/5dm8c7gl5grFZy5OedNPYmg+BLLfL0yp3Qo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDXSRtCpTMIorNsZSqlbgMPh3kFvppGi0Ris53D3ZGuOoc2J+3
-	rZ6Q4Ix7v3mcGQxwQKNaADcmWICf9tMZy5xxIdL9ExeBt+NT+VJ2raRCnepccmjkC9U=
-X-Gm-Gg: ASbGncsJdxh7y2/4IPTQQruvC4vtg15aUMFdxIkiJHJi4oKFPr+KeANgVydKhIGmsB5
-	2257angeQFRtvKDW1a2M/DnmuvQr3bkvh3ch1D0enz28jPmtUxzxcOKmFRSrFOZ7Hnt4BJKu4L/
-	skb5wwnC69sntIrOgDVjRF8qkovRm2XUz7fvqrQsBRojV+iNVVMZLMWTDxcRLb+y0IctYgbei4a
-	aWx81J08HGX/h7Uo3rHEqu3gOUz6H9yt8O6tqbmZVUk9bmfHOyjlKusMM4LJVGnHQIq0Cgv/Df8
-	RGzDJr1ZAEc5GnNf/JqAtoDfnzOjMkhxQdNq1mW2KZJp91CR3569TEf5ZllF/mWPYR9gj+wM3O8
-	yBtPFYXcGXaPRiSKNZwSI3aCjGwCsgpQV8w==
-X-Google-Smtp-Source: AGHT+IH3h+VIDrQjN5ai4jcK9ftE/5NNjveL7L/XQI2ggB2zwH69RAmhjvCcKUG170OJcY5Gh8frWA==
-X-Received: by 2002:a05:6e02:1fe6:b0:3e5:4b2e:3b05 with SMTP id e9e14a558f8ab-3e56739e3b5mr58175045ab.2.1755098194414;
-        Wed, 13 Aug 2025 08:16:34 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3e54270f79fsm43167685ab.7.2025.08.13.08.16.33
+        bh=7NgH/qwxoTNWkh0Im/sLiD/T4hQEX/261YmLQy0amXU=;
+        b=XlQwGIs4P/VDcWUCqHPFDSfPO5b1pvkpa+e6d9czPMxCImGE1R6MmUZjgmY0s/1CIW
+         KC5WN8EwIaP21eWog0g1ovQxwKXLa3g1pTAFP54amfwz3gYpO3Zv3j8aNB3NfR+MEZga
+         /2xl8eIMrtrECXruINg62oBH3tyPi4SJMm1VJzwZKlU37hNSZ6wgiyg5Tcv+l6ozQsDn
+         tjMW4GcntL2/6FXMfXprV+ByKrARgbuGHmzNhZgKNitMne+JsNiTjBynMqo42uYkaxXn
+         MmlvUxHO1q3+GBnUbi/8Hui82NGEMzHFmop1ZbqMvpyFtrEL1b0VwVi4wJhZ5ePYlrEj
+         FCJg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1gDJmlcJIpOYji9Ujc9DmNeJkwdSlL1ctlJ09pXxUW/tV/uB63zmjwSyMD8upQ28aAaiHMz9qpv6eBMcN@vger.kernel.org, AJvYcCWFM9CtKBvJN/X6Lz7SnfqHhXq+G95q6v6Rushy/GYHLujkg0m5RFm/JyVp9W5uB4B2FsiZHLuK@vger.kernel.org, AJvYcCWIX6fvphdRUEbqAJ1XsVuyPDT+b0/ZW7DsJfJHu/rCLMpk6i8WqL/ozb41jcXeeiiFzloIn23hqhE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZwmhRmMmehaMZ24XPOazHxzFat23x7p/1OPZJ0V+SPuhY7nEd
+	zbG1PHAN9umx4NXl5Uf4ki/+eL1pOhrMVEQVLTRIwLceIipdE/l0DAQqbb0mHw==
+X-Gm-Gg: ASbGncsFzhIToXKtTqA0hYGH3UXNgrVZ+8lHoRFzKFvk8GRDTabYSLJyryvnGluaCmD
+	CNbB139Pn8I/WRcop/Ng5Ut7gMMwDjHFpQmiV3e6JxECgabP8UcI+RydAjZHCxdtJcscadJ9ZyS
+	GBo/7GeRFIH2JEaeVyVmWvmG6qBph8kRE3EEn20Dmpc8DsP1+PQEJSiNSdcZ0AvWUe0ca6Qi9l8
+	hJHxs5OweoGG132OfPtm8AMNJZZCi8YnZ+fSeDHJ5preNxSCuPjLA9Wj7i1wzyUZaapb9Es6LEG
+	3tvjII6bwhxzDYYKeUBgxFBLFoxp4h004zXOVsfD/wiR40bFKWCsUyRR3eP0ShWqMExoutxv8hF
+	jOe8xkyMHgJ7Xf7cGmf36LxRVAM82/mYNVBu1ARHnTCBH+1zf1D5mOK7GT0rQhOs=
+X-Google-Smtp-Source: AGHT+IEU9KRhWGBF5usbRwgZ04Gy+x5ZxR0mwGBb2OxGZWNW1+E4gzMZFQnZut4o6iu6J3gcMERIlw==
+X-Received: by 2002:a05:600c:1c0c:b0:456:dc0:7d4e with SMTP id 5b1f17b1804b1-45a1a822aeamr5298495e9.18.1755098248485;
+        Wed, 13 Aug 2025 08:17:28 -0700 (PDT)
+Received: from [192.168.20.170] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1a50a42asm6062785e9.1.2025.08.13.08.17.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Aug 2025 08:16:33 -0700 (PDT)
-Message-ID: <0e8e6d86-1fd8-449b-aca7-5ec86b049267@linuxfoundation.org>
-Date: Wed, 13 Aug 2025 09:16:33 -0600
+        Wed, 13 Aug 2025 08:17:27 -0700 (PDT)
+Message-ID: <0bfcb570-dab3-4038-a1aa-8bc7fe2feee8@gmail.com>
+Date: Wed, 13 Aug 2025 17:17:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,46 +82,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/253] 6.1.148-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20250812172948.675299901@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 2/3] i2c: pxa: prevent calling of the generic recovery
+ init code
+Content-Language: hu
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Wolfram Sang <wsa@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Russell King
+ <rmk+kernel@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Hanna Hawa <hhhawa@amazon.com>, Robert Marko <robert.marko@sartura.hr>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Imre Kaloz <kaloz@openwrt.org>, stable@vger.kernel.org
+References: <20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com>
+ <20250811-i2c-pxa-fix-i2c-communication-v2-2-ca42ea818dc9@gmail.com>
+ <aJpR96Kkj12BwW-M@smile.fi.intel.com>
+ <8cb62eb9-9137-44b4-86f6-82f69813e83f@gmail.com>
+ <aJyOu_GUlDPuJXO5@smile.fi.intel.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
+In-Reply-To: <aJyOu_GUlDPuJXO5@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 8/12/25 11:26, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.148 release.
-> There are 253 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+2025. 08. 13. 15:10 keltezéssel, Andy Shevchenko írta:
+> On Wed, Aug 13, 2025 at 12:36:45PM +0200, Gabor Juhos wrote:
+>> 2025. 08. 11. 22:26 keltezéssel, Andy Shevchenko írta:
+>>> On Mon, Aug 11, 2025 at 09:49:56PM +0200, Gabor Juhos wrote:
 > 
-> Responses should be made by Thu, 14 Aug 2025 17:27:05 +0000.
-> Anything received after that time might be too late.
+> ...
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.148-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+>>> TBH this sounds to me like trying to hack the solution and as you pointed out
+>>> the problem is in pinctrl state changes. I think it may affect not only I2C case.
+>>
+>> It is not an error in the pinctrl code. I have checked and even fixed a few bugs
+>> in that.
+>>
+>>> And I didn't get how recovery code affects the initialisation (enumeration).
+>>
+>> Without the fix, it is not possible to initiate a transaction on the bus, which
+>> in turn prevents enumeration.
 > 
-> thanks,
-> 
-> greg k-h
-> 
+> But why? As you said below the first pin control state is changed during the
+> probe, which is fine, and the culprit one happens on the recovery.
 
-Compiled and booted on my test system. No dmesg regressions.
+Erm, no. Both happens during probe, before the I2C core tries to enumerate the
+devices on the bus.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+> Why is recovery involved in probe? This is quite confusing...
+Let me try to explain it differently. Here is the simplified call chain:
 
-thanks,
--- Shuah
+  i2c_pxa_probe()
+     ...
+     i2c_pxa_init_recovery()
+        pinctrl_select_state()                  <- selects GPIO state
+        pinctrl_select_state()                  <- selects default (I2C) state
+     ...
+     i2c_add_numbered_adapter()
+         i2c_register_adapter()
+             ...
+             i2c_init_recovery()
+                 i2c_gpio_init_recovery()
+                     i2c_gpio_init_generic_recovery()
+                         pinctrl_select_state() <- selects GPIO state***
+                         ...
+                         pinctrl_select_state() <- selects default (I2C) state
+             ...
+             bus_for_each_drv()
+                 __process_new_adapter()
+                     i2c_do_add_adapter()
+                         i2c_detect()           <- enumerates the devices
+
+The culprit is the first pinctrl_select_state() call in
+i2c_gpio_init_generic_recovery() marked with '***'.
+
+That call causes the controller to go stuck, which makes it impossible to
+transfer anything on the bus.
+
+> 
+>>> Do we set pin control state back and forth during probe? May be this is a root cause?
+>>
+>> Yes, basically. The state gets changed back and forth twice. Once in driver
+>> probe before the controller gets initialized, then once again in
+>> i2c_gpio_init_generic_recovery(). The problem is caused by the second state
+>> change as it runs after the controller gets enabled which confuses the hardware.
+> 
+> ...
+> 
+>>>>  static int i2c_pxa_init_recovery(struct pxa_i2c *i2c)
+>>>>  {
+>>>>  	struct i2c_bus_recovery_info *bri = &i2c->recovery;
+>>>
+>>>>  		return 0;
+>>>>  	}
+>>>>  
+>>>> +	bri->init_recovery = i2c_pxa_init_recovery_cb;
+>>>
+>>> This is unfortunate. I would keep the naming schema consistent, i.e. rename
+>>> existing function and use its original name for the new callback.
+>>
+>> I agree, but since the change is targeted also to stable kernels, I wanted to
+>> keep the change as minimal as possible.
+> 
+> Renaming is not a big deal AFAICS, but leaving this _cb will be confusing in a
+> long term. I prefer name to be changed.
+
+Ok, will change the name.
+
+Regards,
+Gabor
 
