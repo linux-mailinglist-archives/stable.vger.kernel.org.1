@@ -1,138 +1,155 @@
-Return-Path: <stable+bounces-169371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15839B2489B
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:40:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FE1B248AC
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82DD97B0AD9
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 11:39:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42111582F61
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 11:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D13B2F744B;
-	Wed, 13 Aug 2025 11:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="ROCCXBTG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6882F7443;
+	Wed, 13 Aug 2025 11:44:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF1E2F1FDE
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 11:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA0D2D94B0
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 11:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755085228; cv=none; b=mlgMc6OXEAaOX3V/unsdajqazGjxtDy8XJcsmUSBhYwQHDflw3sVptuZrecU8ma+p0IAkZHoou69ckFinRscVmYZPACnK96LUpYsNrFwiEZEOrePsxCyl4jQhkUk9lbzlsCzXT33D7SIoLucAwrq5ODaTWhHebnZTFbZAvRzBes=
+	t=1755085442; cv=none; b=JKtYtC2XL6JMu7XyNPcioX7dHdrsp+7guLwfLE3jYUKen7jSvZGwf5KodNrIdyuiQf0RE+oocZq07AVSzFx3XkxHOJxbjlLat4wnaXHAxiRDKYLWCwekST9oHAzhByAZ8vzkWs9rPN7RjHF/NBfLESzsQBrHAGew4eOvLuDOsVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755085228; c=relaxed/simple;
-	bh=BykKkHkEYLWLb7CWwOkQJr56BnQRn1jAcQYHyZXJ7SY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=APFBCbllyxw43SZdVixA0bFcYcq82IThaWQSaHmH3zaaVN7FXPvGi5SmwdDPFHye1NAAiYtXrhvo3cYz7dWmnxpbT8Fcf7eF21e6P/HARP5gQPVV72KnqbpfTy9wo2f4a8TZx8bh0K0Vkdp+PLQvPMIqpKF5Px8NSLrWwDEoDkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=ROCCXBTG; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b429abd429aso3605813a12.1
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 04:40:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl.com; s=google; t=1755085227; x=1755690027; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y3BIRKaVVBaY39rbF9hkLu5eZuKZvFD7FdH3yM7Pxzo=;
-        b=ROCCXBTGpPfnDZKZCGplVVjGL2ASiIxYn972CW8thXAsvVNqriDutNNwGcKxyLxglZ
-         eyz8hVFfhHsosuJuVUK2q+K2qE6a+AjWc0auWXq+VZgwDJYJiB2SmSDxnWAnrxr0pSn1
-         Y4HWvVkaU14zz30v3/i2EhG0CMi93L/C1Nx/x8AlNoLRPU+t7yJHEn1b9BgazdoDSz/K
-         ByL7f2L+Njd2iCbgVE487s+4pwu+h+szoNALtuUqKHNPL+TD5KQpeXRF2Xvv32jArQ6K
-         +2v+enVqao0LRImMQBkByg9AGDomuw3qNjMDbmKYK1r4h86Rs5HeMosbrGgaJjfVmgd7
-         DgmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755085227; x=1755690027;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y3BIRKaVVBaY39rbF9hkLu5eZuKZvFD7FdH3yM7Pxzo=;
-        b=wEDkST0aLhhrcuTaUSqV08CatdBDvV/u5cSr6PN6piYzvT3cRCzRqSSlVUzvM0S1O2
-         HILR76pclaJwLeFK+ofL9wtDJO0JS7znHB9/NPC9s7+rkZ6z2EcEXPgSyN0Mfwvt93yO
-         h1cJNq8EgxBcYz3zjsGsM2WzcUppTGgQBs5+tMvGtgy1EOlG33VP9k5DaMOodBO2vnxe
-         EIEBUVYFfz+hXECJsggvu5Jp2qvsJqkUmnKki53acyhecPzCV/XeyqcmIhZ+c73W6y6G
-         7n3RiNTjoQBN1doEHL2J1JDndBW5/H05Oz9eFz2rjQWqHAYyTj3JILrv5LnI2BM7sMVC
-         y8Nw==
-X-Gm-Message-State: AOJu0YxLnWpIFoAGFRDO/eqdqxlPqzrf4E9Bfl4FR8qzwi1DxUWOm91d
-	sMdjj7BmB0J81m5Qr2hZV5tJSwTf4MIU5pzlZOQvCjHmfRG4NhBaJVMUphlOiSqpxVEshcTO2GH
-	1Rw4EXkEwjqn4tq3rRyyAjKt+ToCKI5G404kVlvE/bw==
-X-Gm-Gg: ASbGncutxoSOLHN97//q6iA6Bz0oxcqNWRvCTOKF/TZyfZXMiV3folVD/cFipqNjYxT
-	es6iYi/hBq80a4TyhQVN0NcO6UA8JmpdYf6tuiHHDjxcj3Vd9Uz/Zm7KQiRNftAZnyCGeQBbfpT
-	LPj5gmX/qOI6mGV9tUhFkPjFnp1n3PKwSs+53gNZf6AKejjDdL2qF+7tTX6ySBIEBeNihfzNx+Y
-	Ktcwh69Q66ENrqMZQ==
-X-Google-Smtp-Source: AGHT+IG+nTtyJUv253oPnJUoEUCvokuRcXD3lVo6sfsPY5VdK1rqYeYLJlaXzeSlTxh4lbSWQWL4kc2qrpNDy+NJ/s0=
-X-Received: by 2002:a17:902:d4cb:b0:242:a1ee:6c3f with SMTP id
- d9443c01a7336-2430d10dd90mr37501495ad.4.1755085226707; Wed, 13 Aug 2025
- 04:40:26 -0700 (PDT)
+	s=arc-20240116; t=1755085442; c=relaxed/simple;
+	bh=Zf2QhI8jQ0RJ3JTvKnj4feUNlf+wUitU/3CBcHEaS3k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZIEIDb9Nu6L1n+BQxZL9uIJ876u+vaDkALsE68Ox4uPTIfSKQMAkwqe0RoVoKimkePVjb6V8MGIWLQvpbl/nlS4JY3Uv16kaQn9xMHf32gND9bEwkcA73gzS8TPiVrB4WQhGWbJqQBo4DXjeYXE/kWNeKrWPv+NTCb6nI40huuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 354C712FC;
+	Wed, 13 Aug 2025 04:43:52 -0700 (PDT)
+Received: from [10.57.1.244] (unknown [10.57.1.244])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BC853F738;
+	Wed, 13 Aug 2025 04:43:57 -0700 (PDT)
+Message-ID: <0d90f4c0-3eb8-4004-b22e-1a840d69fb50@arm.com>
+Date: Wed, 13 Aug 2025 12:43:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812173419.303046420@linuxfoundation.org>
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Wed, 13 Aug 2025 20:40:09 +0900
-X-Gm-Features: Ac12FXxMDc5GahUfXc8UnHZ4PbyMkPDHmDcjMghecDq50fr3-LAFQeLVWMO6SJo
-Message-ID: <CAKL4bV5HBA=WvUDwxxXAbAUvXz1ctf509GWJPHuDJWHUHk8vMw@mail.gmail.com>
-Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] arm64: Sleeping function called from invalid context in
+ do_debug_exception on PREEMPT_RT
+To: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, Yunseong Kim <ysk@kzalloc.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Mark Rutland <mark.rutland@arm.com>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Austin Kim <austindh.kim@gmail.com>,
+ linux-rt-devel@lists.linux.dev, syzkaller@googlegroups.com,
+ stable@vger.kernel.org, Ada Couprie Diaz <ada.coupriediaz@arm.com>
+References: <c36e8dca-d466-40ad-ad51-2b75e769ff47@kzalloc.com>
+ <aJw3L7B7u5qAPOMz@e129823.arm.com>
+ <17f91b9a-0a3a-47e1-bdfb-06237ae5da55@kzalloc.com>
+ <aJxT2ie1wW2+/OCg@e129823.arm.com> <aJxjvh4sAcUOJT2V@uudg.org>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Content-Language: en-US
+Organization: Arm Ltd.
+In-Reply-To: <aJxjvh4sAcUOJT2V@uudg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Greg
+Hi all,
 
-On Wed, Aug 13, 2025 at 3:32=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On 13/08/2025 11:06, Luis Claudio R. Goncalves wrote:
+> On Wed, Aug 13, 2025 at 09:59:06AM +0100, Yeoreum Yun wrote:
+>> +Ada Couprie Diaz
+Thanks for the ping !
+>>> Hi Yeoreum,
+>>>
+>>> Thank you for pointing it!
+>>>
+>>> On 8/13/25 3:56 PM, Yeoreum Yun wrote:
+>>>> Hi Yunseong,
+>>>>
+>>>>> | BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+>>>>> | in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 20466, name: syz.0.1689
+>>>>> | preempt_count: 1, expected: 0
+>>>>> | RCU nest depth: 0, expected: 0
+>>>>> | Preemption disabled at:
+>>>>> | [<ffff800080241600>] debug_exception_enter arch/arm64/mm/fault.c:978 [inline]
+>>>>> | [<ffff800080241600>] do_debug_exception+0x68/0x2fc arch/arm64/mm/fault.c:997
+>>>>> | CPU: 0 UID: 0 PID: 20466 Comm: syz.0.1689 Not tainted 6.16.0-rc1-rt1-dirty #12 PREEMPT_RT
+>>>>> | Hardware name: QEMU KVM Virtual Machine, BIOS 2025.02-8 05/13/2025
+>>>>> | Call trace:
+>>>>> |  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
+>>>>> |  __dump_stack+0x30/0x40 lib/dump_stack.c:94
+>>>>> |  dump_stack_lvl+0x148/0x1d8 lib/dump_stack.c:120
+>>>>> |  dump_stack+0x1c/0x3c lib/dump_stack.c:129
+>>>>> |  __might_resched+0x2e4/0x52c kernel/sched/core.c:8800
+>>>>> |  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+>>>>> |  rt_spin_lock+0xa8/0x1bc kernel/locking/spinlock_rt.c:57
+>>>>> |  spin_lock include/linux/spinlock_rt.h:44 [inline]
+>>>>> |  force_sig_info_to_task+0x6c/0x4a8 kernel/signal.c:1302
+>>>>> |  force_sig_fault_to_task kernel/signal.c:1699 [inline]
+>>>>> |  force_sig_fault+0xc4/0x110 kernel/signal.c:1704
+>>>>> |  arm64_force_sig_fault+0x6c/0x80 arch/arm64/kernel/traps.c:265
+>>>>> |  send_user_sigtrap arch/arm64/kernel/debug-monitors.c:237 [inline]
+>>>>> |  single_step_handler+0x1f4/0x36c arch/arm64/kernel/debug-monitors.c:257
+>>>>> |  do_debug_exception+0x154/0x2fc arch/arm64/mm/fault.c:1002
+>>>>> |  el0_dbg+0x44/0x120 arch/arm64/kernel/entry-common.c:756
+>>>>> |  el0t_64_sync_handler+0x3c/0x108 arch/arm64/kernel/entry-common.c:832
+>>>>> |  el0t_64_sync+0x1ac/0x1b0 arch/arm64/kernel/entry.S:600
+>>>>>
+>>>>>
+>>>>> It seems that commit eaff68b32861 ("arm64: entry: Add entry and exit functions
+>>>>> for debug exception") in 6.17-rc1, also present as 6fb44438a5e1 in mainline,
+>>>>> removed code that previously avoided sleeping context issues when handling
+>>>>> debug exceptions:
+>>>>> Link: https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/arch/arm64/mm/fault.c?id=eaff68b3286116d499a3d4e513a36d772faba587
+>>>> No. Her patch commit 31575e11ecf7 (arm64: debug: split brk64 exception entry)
+>>>> solves your splat since el0_brk64() doesn't call debug_exception_enter()
+>>>> by spliting el0/el1 brk64 entry exception entry.
+>>>>
+>>>> Formerly, el(0/1)_dbg() are handled in do_debug_exception() together
+>>>> and it calls debug_exception_enter() disabling preemption and this makes
+>>>> your splat while handling brk excepttion from el0.
+That's correct : one of the goal of the series was to be able to
+adapt each debug exception handler to what is needed,
+which allowed us to keep preemption enabled, or re-enable it
+much earlier, to prevent issues as above for some exceptions.
+>>> Do you think a fix is necessary if this issue also affects the LTS kernel
+>>> before 6.17-rc1? As far as I know, most production RT kernels are still
+>>> based on the existing LTS versions.
+Luis originally reported the issue on kernels 6.13-rt and 6.14-rc1[1].
+After some quick testing, the issue is present on
+6.1-rt, 6.6-rt and 6.12-rt as well.
+5.15-rt either doesn't have the issue, or doesn't report it.
+>> IMHO, I think her patch should be backedported.
+> I also strongly suggest backporting Ada's patch series, as without them
+> using anything that resorts to debug exceptions (ptrace, gdb, ...) on
+> aarch64 with PREEMPT_RT enabled may result in a backtrace or worse.
 >
-> This is the start of the stable review cycle for the 6.16.1 release.
-> There are 627 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 14 Aug 2025 17:32:40 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.16.1-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.16.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+> Luis
+Hopefully it shouldn't be too hard to backport for recent kernels,
+as I don't think those areas change a lot, but I haven't looked into it.
 
-6.16.1-rc1 tested.
-
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-[    0.000000] Linux version 6.16.1-rc1rv-gcd8771110407
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.1.1 20250729, GNU ld (GNU
-Binutils) 2.45.0) #1 SMP PREEMPT_DYNAMIC Wed Aug 13 12:10:19 JST 2025
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+I'm not sure when I would have time to work on backporting, but
+I'd be happy to help anyway or do it if I have the time in the future,
+given there seems to be some interest (and good reasons).
+>> [0]: https://lore.kernel.org/all/20250707114109.35672-1-ada.coupriediaz@arm.com/
+>>
+>> Thanks.
+>>
+>> --
+>> Sincerely,
+>> Yeoreum Yun
+Best,
+Ada
+[1]: https://lore.kernel.org/linux-arm-kernel/Z6YW_Kx4S2tmj2BP@uudg.org/
 
