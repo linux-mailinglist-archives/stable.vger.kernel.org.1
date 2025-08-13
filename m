@@ -1,78 +1,80 @@
-Return-Path: <stable+bounces-169406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51198B24C47
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:44:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF62B24C38
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297301C226B2
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:39:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DFB016C937
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C641CDA3F;
-	Wed, 13 Aug 2025 14:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246171D5CC7;
+	Wed, 13 Aug 2025 14:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isS8OVK/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qm6K/qJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD00D166F0C
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 14:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DD1A2C06;
+	Wed, 13 Aug 2025 14:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755095883; cv=none; b=lpoQCW+ChiHGKCnnST6Znehxr2brUPG1NytXFjZ1+UcXLbi77UAIn+YSrCukWbhlLExlfTHx2KNEOwUhKg+9sRA0LVqgjs8FR2Yit21dlXVFDYp7X4HnxdkwGKy4GLTgkO8OQ5qz3zgSf6ErlpRqtlVdLxo4CVQNp3+J50UNKwM=
+	t=1755095982; cv=none; b=jwgKunhE8sXl712G+Iqq2kCKx/Qx5avcSDez/iufG/5c16i3lmH6H7A10mtQgKqjok2xiSzKrx/7C+6ZCMGIWSKREr+iwg+ztHkb/rY+tt6urI0rGiZjDQmNAEQl8Bi+qAmWSWAhXoj2AXU5I6whvZOBynv3XxRWZpKOiLdY9mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755095883; c=relaxed/simple;
-	bh=FjloqKdggHKatAv2F21hK2/DVkBVuqjEt1atV9qsGn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m0r7gMfzXl3MFegTvjOCAUY76kA3x9q8OpQPVnyV71qKSChkprcYcRr6d0ezwlQ8dLcimklY/vXcYi1C6ds252+6wQzwn2hPoBfJqVdnKKfFiJoiuWKVjdPG5RC53UsE5k+NJoCOzgQ4Kykhmyi8RER0qje8rRk/RQ+teyZ5HzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isS8OVK/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EFDC4CEEB;
-	Wed, 13 Aug 2025 14:38:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755095883;
-	bh=FjloqKdggHKatAv2F21hK2/DVkBVuqjEt1atV9qsGn4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=isS8OVK/FU642hdnvYCxFlVfjd7z5vWnherTQ5p7mjl5NTWBuqFhppYwoznUDZKJA
-	 N31hxZ0YgaeiLnKDNRG0JoPjLUmEwUH5ALIvFy3l64lBu8CpLuB5zSCqetzPkYg7nG
-	 flU1FlfSTgHdKYgaXKEpRW8fdeI3pOnxJtVMuXJKSuRhjLwk85sUKp+tz7UAblRmGq
-	 IVi/llp7Wian1WoHZDU9BwyX6r81cPvNpwDalLZXn7IKZdlDZcBAiRpISgnn9nLDcI
-	 7wPV0FYzUxwQE2mLMFbwZQ4IgYnh0CPuT9whI6o0hzjyN+58UGP3o9LSDz+OaG4FAI
-	 VIb3GBs3znu7w==
-Date: Wed, 13 Aug 2025 07:38:02 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, John Ernberg <john.ernberg@actia.se>
-Subject: Re: [PATCH 5.4.y] net: usbnet: Avoid potential RCU stall on
- LINK_CHANGE event
-Message-ID: <20250813073802.3f28d69c@kernel.org>
-In-Reply-To: <20250813134932.2037778-1-sashal@kernel.org>
-References: <2025081259-headset-swinger-4805@gregkh>
-	<20250813134932.2037778-1-sashal@kernel.org>
+	s=arc-20240116; t=1755095982; c=relaxed/simple;
+	bh=1DxJ0yXU34ckoh7vdyqg5tNuqTpL7aVDJ2gqkAAqqA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bxb6awC0lW7owCxsBJHLmCAwCONDTECDME07EyfJnBY8NkJjnIF4ZWg1/5gJNLc1Kh+secCDuiAH92z1qNIabGSFrMVe7RsiZsCSCZi63RSYvtGUaUSGfnPW6Uxp2NmfHnnEZpmElNrFF79lQFJKTB0b70PjqToaJLdpuggutSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qm6K/qJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04CAC4CEEB;
+	Wed, 13 Aug 2025 14:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755095982;
+	bh=1DxJ0yXU34ckoh7vdyqg5tNuqTpL7aVDJ2gqkAAqqA0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qm6K/qJPbB3c8GG+i0EDFaWqK8v/gAhORkqiMgo4eL9IFi8kY/beZpAwST+NmiW7u
+	 0KeeHeORw1HjcpnX/8VId1TMGq3AiA/3+MtjF6NyrOoaaR+yMdmwSw+F2lFGMNvt8a
+	 cdYs/BYoZNWczl2FSHIruuo2ErkTFYPyKUBG3FeI=
+Date: Wed, 13 Aug 2025 16:39:39 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Alan Stern <stern@rowland.harvard.edu>, wwang <wei_wang@realsil.com.cn>,
+	stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@suse.de>,
+	linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] usb: storage: realtek_cr: Use correct byte order for
+ bcs->Residue
+Message-ID: <2025081358-posted-ritzy-bd3f@gregkh>
+References: <20250813101249.158270-2-thorsten.blum@linux.dev>
+ <20250813101249.158270-6-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250813101249.158270-6-thorsten.blum@linux.dev>
 
-On Wed, 13 Aug 2025 09:49:32 -0400 Sasha Levin wrote:
-> From: John Ernberg <john.ernberg@actia.se>
+On Wed, Aug 13, 2025 at 12:12:51PM +0200, Thorsten Blum wrote:
+> Since 'bcs->Residue' has the data type '__le32', we must convert it to
+> the correct byte order of the CPU using this driver when assigning it to
+> the local variable 'residue'.
 > 
-> [ Upstream commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f ]
-> 
-> The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-> up and down events when the WWAN interface is activated on the modem-side.
-> 
-> Interrupt URBs will in consecutive polls grab:
-> * Link Connected
-> * Link Disconnected
-> * Link Connected
+> Cc: stable@vger.kernel.org
 
-Be sure to pull in 8466d393700f9cc into the same release.
-This change broke Linus's laptop.
+When you have a bugfix, don't put it last in the patch series, as that
+doesn't make much sense if you want to backport it anywhere, like you
+are asking to do here.
+
+Please just send this as a separate patch, and do the cleanups in a
+different series.
+
+thanks,
+
+greg k-h
 
