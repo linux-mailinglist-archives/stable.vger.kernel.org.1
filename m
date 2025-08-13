@@ -1,178 +1,116 @@
-Return-Path: <stable+bounces-169301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2CCB23CF9
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 02:11:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD13B23D4D
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 02:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB9818C1B96
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 00:12:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 712663A5E0D
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 00:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8F320EB;
-	Wed, 13 Aug 2025 00:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C175245948;
+	Wed, 13 Aug 2025 00:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="diqL1sYF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AHVJyWzv"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2040.outbound.protection.outlook.com [40.107.243.40])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75918EC2
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 00:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755043905; cv=fail; b=C658omhbFqkrlk2Bby2RJ8pjsfR+n5B4fmO7PexeX5WMGhG3KqvZU95D2rDkB0xtwTsENJBQbLqpA8MOwgSpEnFmL7nNoeEaXR9r246v/S5uMVWVgnBulwtk94URY4wmv/fRiF5lJ/Bk9HZnlR8uTFJDpQOYPrrlqkaDAXdRXZE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755043905; c=relaxed/simple;
-	bh=ieKQ0hzE/gAgDtk2s6RmyF5/NeI0PIGlxGrLxMge4OA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fe3KTZjmaepScXNdRv315SoxPMB03gFJx5u/99g9Plq+r8gjdmqU2po5GvtAD7CjgzK78C6UVtzNsaAPyztPePZnRb1LPV+q91R1d721bMFx9nvFBqy8j2XpZC+8+6ztcHcOK/hQr4i6nFlDWtuuC7X1EYfkUG4iT488wdX07eM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=diqL1sYF; arc=fail smtp.client-ip=40.107.243.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MyKPFdTF24wAZ3/CLgbejohEcMiBgyL51wLxfx4FifU4WBD4rN8VdS0fAdhf4wxftZ7Y819XfzSFzNgxuzlB52QowPq2xWeGdOFAEdWBfK2fhy2jAARRaOJ4QQ81y1s2gCIa19Yq+Js8c3hKfi/F/YTwaoyAYHi0+ZIwSTPSDchT2tVlpgOgSP/592kibeaaRFLDCwS0r6qJQzTQLKW0J3tGrAkKPO1fZNBzEDEZmH0EQDeHKZ1HdCHb0eSmeY6ld8deDPrVN1o8lDas38xIlj9SgNAF6V6ARm37X/6c/9dRnwoeiVfHGqN5ywkFBW6CmwTWJSqnefPeq16/AJykSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1CUtbWRr20tfcR01KvSGL8KUmCU4qRf5SjyyNRaTJF4=;
- b=vrCxwt8r1QLudGquy0IbDOQ2ovbgPmB+j+Fha5eCR+Ln6cQUxgwGx2V8x2Du8fhSqk1tvPq1HQnCtBHTCiOBq+2JyyyHWVsrfMwMsDtGkEjK/Os5BSn3DCdEZkcNAtJ12YGJ+BXzB3bOU7aSbhJoHtwxrn61Jbo2Vy+ZFHuc8YxyxOrL+j2aqr58juA7eKI3QSIl4FGzSZispaifYpaRU9P/OlWEz+F0sQzipXS9yRcxLQhskCvtfpAkbAo4Z7utY/uOOOQ5xWcxri+LBW/OogMjoL2mtKWXPeYUlV5jRDsYdEsAgJ/OWenpZc8Eux5ibmxIzfPwbvIgY3/G/AgJTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1CUtbWRr20tfcR01KvSGL8KUmCU4qRf5SjyyNRaTJF4=;
- b=diqL1sYFeEeQAbr5DatJwShQkDk/e7nJM76h5LHfncv4pcKcNxs68dDKyxQxj3o5hlkSa1gMUCxB2w7Y5Vi+KRk5OFSf73GzPED8fZ5M+Jq6CkZe1CjwIQtuua3eYCjh4jdhj95Sm32Eteje2uyMnp2LeRt9tf5B3TWTf/Y9vlX3UgpitEeIGiAoeOyiTFY9kU0NMGvHW9RHOGUtwsXAL6w8kMMxIyzMceUPDgQFWvOwPvdNOYNl9jSbKm4VjbEkukMoOcv39WThdYc/3QM93vr0YPbm8pIhG1mfiDiabgRZiouM4l1bQ1pLOChFyMyrdMAWF6WO4+5l7w7BA9/Pbw==
-Received: from MW4PR04CA0322.namprd04.prod.outlook.com (2603:10b6:303:82::27)
- by CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.18; Wed, 13 Aug
- 2025 00:11:38 +0000
-Received: from BY1PEPF0001AE1B.namprd04.prod.outlook.com
- (2603:10b6:303:82:cafe::21) by MW4PR04CA0322.outlook.office365.com
- (2603:10b6:303:82::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.15 via Frontend Transport; Wed,
- 13 Aug 2025 00:11:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BY1PEPF0001AE1B.mail.protection.outlook.com (10.167.242.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.11 via Frontend Transport; Wed, 13 Aug 2025 00:11:38 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 12 Aug
- 2025 17:11:17 -0700
-Received: from ttabi.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 12 Aug
- 2025 17:11:16 -0700
-From: Timur Tabi <ttabi@nvidia.com>
-To: Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
-	<nouveau@lists.freedesktop.org>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH v3 1/3] drm/nouveau: fix error path in nvkm_gsp_fwsec_v2
-Date: Tue, 12 Aug 2025 19:10:02 -0500
-Message-ID: <20250813001004.2986092-1-ttabi@nvidia.com>
-X-Mailer: git-send-email 2.50.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DA51373
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 00:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755045732; cv=none; b=WCmqnskRd1nS/AE3sZpfbvb4qGmtf0vHDswLPF1TFpq7956tf/Fy+6UWNnCZbl0nPcNYdTP69JNPX4AB0faLLELbgVg22niwCfwtjVwn9T16artO1UdTTHBuVWXPvfpOCzelYf/G8KRqiT3SX5mJIOicILWo16vMoq3Nxf+Ed24=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755045732; c=relaxed/simple;
+	bh=GXpi3N3O0M/G/4BsOlPxvL3xtLdCY8DywwgqosRXRwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LTt4l7m5HL+UbuL5KKM4HmeLj/EhPKurD+Q/+XVCqkthrkQUG4XhDLuIIf7aGZMarvy6EbDG8j/F1FfXKCUZzvTb4Py2eYKXNvAbhUDxzN2ZZHkNaZeX+/8P1ZOT0N+g6tzF1rT4D652JSpD2gP+bXdpDO+E2TZS4rn81eOXRlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AHVJyWzv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755045729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PawZG/JlRR9XxpxWtLNSI+ORsMCVS4AlgAjYNNgDJx4=;
+	b=AHVJyWzvwhAEt33Xo18fcIb2+eafIYuwXZQogNJCA3U/b32OR+vJJ5lkm9+luPis4epnMv
+	9fiMIo7uo4cmGtdGJ43H8VGdchVorA14usEILkUcnKR7nXZJEgAQcYytzjgQfCV2DxgSl9
+	Z52VkOZP27DaZHKNbg9FMNopK2KU6/E=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-682-ZFhffxHwOX2un3Qzg_BNeQ-1; Tue,
+ 12 Aug 2025 20:42:04 -0400
+X-MC-Unique: ZFhffxHwOX2un3Qzg_BNeQ-1
+X-Mimecast-MFC-AGG-ID: ZFhffxHwOX2un3Qzg_BNeQ_1755045723
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1CE491956048;
+	Wed, 13 Aug 2025 00:42:03 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.48])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9172619560B5;
+	Wed, 13 Aug 2025 00:41:58 +0000 (UTC)
+Date: Wed, 13 Aug 2025 08:41:53 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Julian Sun <sunjunchao2870@gmail.com>
+Cc: linux-block@vger.kernel.org, axboe@kernel.dk, nilay@linux.ibm.com,
+	Julian Sun <sunjunchao@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] block: restore default wbt enablement
+Message-ID: <aJvfUVcsbxzsMB2m@fedora>
+References: <20250812154257.57540-1-sunjunchao@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1B:EE_|CYYPR12MB8750:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e37911f-ead5-49fb-664d-08ddd9fdf8de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EV3A4Gs/82qzmcvwD/onC3PVBnhVFM9KJPJc37t7MeDaHRpfAiKB7C77ToY5?=
- =?us-ascii?Q?no7EG3D+eCBJ1Vq+E9DTl0QfT7ssnKbyBRPewxZ8WCQT0YUThL5DNKnsrSqj?=
- =?us-ascii?Q?8JLk9w2I6MqeIUNrQW7nOLVfdWiIsB8vB+UKywfWzvdWexAwyJrYArbOyyGK?=
- =?us-ascii?Q?rmUX6/JRUr7AMOBOYpdL5Sxa4vEDTVX5/HOCMe6s0GsTFOe9uCJ2vDqDpe0z?=
- =?us-ascii?Q?aTpDSJrhLs0+GHUukVTS2tCCncVaDVkliCF7AOfqI0PTveZIHmrGujpTOpoI?=
- =?us-ascii?Q?8qk6r28rbfCRro/rOvImDCJmeMtfriMm+M0TaZRGA3N+ghDEvR38CLgHYA41?=
- =?us-ascii?Q?fbZp+/jdBJ929NhGuXYSMWHFkCf7gxas8bdw1iA9FdRvGE6/HW1kR+BAr9fe?=
- =?us-ascii?Q?BNPyWgS1HaDXTg2Ux9Qfm74K/x+C1MKgnwE5pd9q38hMBFQWAGa3DaSJy8ha?=
- =?us-ascii?Q?jbmB/3OpQMdOHLzrbZSusRFynRhW6xWQjumzx9r/HhE3mzsky+gt4i4u9mRF?=
- =?us-ascii?Q?rtFmM6BN0g6BMajZ5UNbqqIm+GvDrPsq3zqLtLDml+cnzV8aeGgX5VtC8cyf?=
- =?us-ascii?Q?92JhPv1HZu0hG70J+GmhOzASHrVCc8Qd/XmrIV7UN+iSu3nc54dUBeDSCEmH?=
- =?us-ascii?Q?oTHI+XbdguG4ifk9QAuc5KxiB1LQLCUnUMBUaXudqo0dYOtmWrdeLoIyBQpE?=
- =?us-ascii?Q?UJMyKeWYNt82cwE3iZ5mAitTMB5kLOhmHXjstW3AP3QresAR7zKZDjO6L7N0?=
- =?us-ascii?Q?UnA18NjQOH9+F2QQCcGmtmByLCGV5rhd/yZdWjc+6KhLz6oLojWcKxzGa4hg?=
- =?us-ascii?Q?WA0P560tX6pYrLF2XmfSGttauxh4s5Dq+rwR/lqjlxw/cczTQgUptycdz6/n?=
- =?us-ascii?Q?WIPGtMmQAHkGFHFkpdKiHDPdYZLpfTmnxieNFp0cZ4kVb85LqMxdpKxwTns0?=
- =?us-ascii?Q?O1YY2t/Y4Q0y10WrxGpNfKEuTi3IpeDgc0t/7g+1/MtQy6wDQIjpb0H8Z1Kq?=
- =?us-ascii?Q?8g70yPN0LBjo/5lY7BiorY4iXpQ6O152GxA8VVBfIf1DY3MZkoXKp8GFS7ss?=
- =?us-ascii?Q?vjbjI1PfGmWyrBg0Awtcdrkm5/R/6j6hNqwis8BLT/R62XHIcv3P/bhcHG6H?=
- =?us-ascii?Q?JtBZlpsfOkDLG3kimjOimisJwOmUgaTEiHx2yEeiUS93SrmxseKqr2TZCk53?=
- =?us-ascii?Q?Hr/mOWJePVBAp20GDkCAYeOVSVOC8JocE4cXSc0YDaomCKaFPjc3hMsntqxA?=
- =?us-ascii?Q?iIOGeDl6tt58+aeql3jqN/XZm+ryOBRZhAtD6/NxSjqQrgIeY9vop122laxZ?=
- =?us-ascii?Q?ExoVFc28mB/O4cXTFpwAZOT8hm1tGFoyxNeIKBBsbaT8XHomV5P4dp1pI5TI?=
- =?us-ascii?Q?qVrd/rpSOzIVO8sFdCQbFp/hngl/op+i3j3B5opkD1R4/e2zVUkx9O9mirSe?=
- =?us-ascii?Q?Wq1vQ5uZOFnf4779xeJDWMtpNLtZ8pSbAzEUnA7kjDALchxU0hzzBGx3WK1k?=
- =?us-ascii?Q?a9kZ5yldOWQyeNFmfBr++2qCPfCwrw2zqvCx?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 00:11:38.0438
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e37911f-ead5-49fb-664d-08ddd9fdf8de
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE1B.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8750
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812154257.57540-1-sunjunchao@bytedance.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Function nvkm_gsp_fwsec_v2() sets 'ret' if the kmemdup() call fails, but
-it never uses or returns 'ret' after that point.  We always need to release
-the firmware regardless, so do that and then check for error.
+On Tue, Aug 12, 2025 at 11:42:57PM +0800, Julian Sun wrote:
+> The commit 245618f8e45f ("block: protect wbt_lat_usec using
+> q->elevator_lock") protected wbt_enable_default() with
+> q->elevator_lock; however, it also placed wbt_enable_default()
+> before blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);, resulting
+> in wbt failing to be enabled.
+> 
+> Moreover, the protection of wbt_enable_default() by q->elevator_lock
+> was removed in commit 78c271344b6f ("block: move wbt_enable_default()
+> out of queue freezing from sched ->exit()"), so we can directly fix
+> this issue by placing wbt_enable_default() after
+> blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);.
+> 
+> Additionally, this issue also causes the inability to read the
+> wbt_lat_usec file, and the scenario is as follows:
+> 
+> root@q:/sys/block/sda/queue# cat wbt_lat_usec
+> cat: wbt_lat_usec: Invalid argument
+> 
+> root@q:/data00/sjc/linux# ls /sys/kernel/debug/block/sda/rqos
+> cannot access '/sys/kernel/debug/block/sda/rqos': No such file or directory
+> 
+> root@q:/data00/sjc/linux# find /sys -name wbt
+> /sys/kernel/debug/tracing/events/wbt
+> 
+> After testing with this patch, wbt can be enabled normally.
+> 
+> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 245618f8e45f ("block: protect wbt_lat_usec using q->elevator_lock")
 
-Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
----
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Looks fine,
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-index 52412965fac1..5b721bd9d799 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-@@ -209,11 +209,12 @@ nvkm_gsp_fwsec_v2(struct nvkm_gsp *gsp, const char *name,
- 	fw->boot_addr = bld->start_tag << 8;
- 	fw->boot_size = bld->code_size;
- 	fw->boot = kmemdup(bl->data + hdr->data_offset + bld->code_off, fw->boot_size, GFP_KERNEL);
--	if (!fw->boot)
--		ret = -ENOMEM;
- 
- 	nvkm_firmware_put(bl);
- 
-+	if (!fw->boot)
-+		return -ENOMEM;
-+
- 	/* Patch in interface data. */
- 	return nvkm_gsp_fwsec_patch(gsp, fw, desc->InterfaceOffset, init_cmd);
- }
--- 
-2.43.0
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+
+Thanks,
+Ming
 
 
