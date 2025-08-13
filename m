@@ -1,142 +1,138 @@
-Return-Path: <stable+bounces-169457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF174B254AA
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 22:47:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A5CB254F8
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 23:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E3237A785E
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 20:45:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604CC3A5238
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 21:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7485D23958A;
-	Wed, 13 Aug 2025 20:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DEA2BE63A;
+	Wed, 13 Aug 2025 21:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UF7LKToI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cs0JMIG+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33FB1F3B9E
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 20:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E552FD7B8;
+	Wed, 13 Aug 2025 21:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755118014; cv=none; b=Rq/oAC7bAIfHpC3eyfnqrctCNL55ib2+B6dqDe+rRi85Y4TmaE4nsezxHlkSfSHktgj7e4A4qoZqGdjJ1DNNtTvFuaCovSd7IV+ZvjmndkgfO4u7trErdC3XcRdBQvb9DZs6zsmoZBPs75rLYSz0x8X+7Z0ZRdUCzyRgR9fWTQM=
+	t=1755119223; cv=none; b=Pn7Ok47RnyFKmsTkinm+hynMNfO+Y/+TbTiWbA/zbWiWXVCgPjfRiTDygW4x9oGev0xH2anCmkqygXOweDPeoPEJCNQTPiRxVJrIxowtSiL68mPo4MN+CMKYNceqYqNBAX0kkXIr47Jv+s+mg4b7Tz8BraFRdtz1gW4AbrhTdno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755118014; c=relaxed/simple;
-	bh=3msZVg0HRJb3iRLBV25DLd2/0IRJKa8M5nKvdTDwsE0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fEYdwm/fq+DuKDnhYpTFi3aiVjCYqkhjb8cdaXjzjVGxGr7x9SnfpLkdkgOXiTisXV28k/YJBkrm5OBiCYNJMegPNGmAb543k47KcV1zZ9UqKZ0MF49pAp5aLCyQi5/c2lfI0jnpcjNfTeeOVoIMJdQ+KzLSUFJmSc6quD4v2Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UF7LKToI; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b471737a7baso110011a12.1
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:46:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755118012; x=1755722812; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BPb4y3nft44GjGTyIn5iIw4m7Onuiy/xdmv1KPATuDs=;
-        b=UF7LKToIVZ7xYboQiRYz8R76SyqYGi2/7uiX4XUzFqggwEKoMwS3Aszi2Z1gL/r4cT
-         Kb8vxzsP5s99yXkXi/LwhRJlnZCxFIKTlmfzMtZrfCP5iCBLl6Udf+HPseulj7HdA02y
-         XM+obMDv6fSP/V/rRykDR1+aLbWmc9Gto/r7gRMW8UrsV36vILX59fIUNzTF0oAHnXq9
-         pIHoxIS8EXksHliSoNiiSbAmex0W08e6+/+12yy0394GjmmHo9+iI+11V9NKK5EmV0Mx
-         GzO5JIaS1je/M8mLvb2H0ZhsBmbvBI/wEkXRX+bCZePvjIhcy8zzj9pZCnwb1WHQaS+H
-         fyIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755118012; x=1755722812;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BPb4y3nft44GjGTyIn5iIw4m7Onuiy/xdmv1KPATuDs=;
-        b=JpgqxiaADlLtUCgMTPOBtJjjqX9g51cNLTERCCMqVBwmyZpekVUTFavcrLjSceFYsZ
-         37BEiz8/wTSl2fBHbqcLuP65SG2dWIKf9OoxXNHo5NGEqlc4v9/l8GkKBdJAtjsslQSv
-         y74SIMJM1kWSlDRyOLGT4j7GEmH8NxgU78A4Qn66kQYTa73NZZAKKdKPDanWR9BNNE43
-         kiswcPvVyaP+PWA2zjVX9ZTM/2lBk1Z6nANfJT2NI8hnVrb8OtvpkDMDC4EcWYsUSFOp
-         YS7clq4AiHxVAPIu/OMvUY5dg118UHUhr8kYZDgS6f7+gKBzR7ZHsoV1O14SHeigcsEc
-         Lltg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0cocNMk9IVS6dAKLCOAAIUzIegp91yTQRgkaS+tA5vbMWDh69AmswpRGY4i2gtuRIqGNZ0VE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjwFaupH6GTMzVYquHoHcuZuKXysJdHgY+G2w0pWaWpbfMGg+y
-	3FLHEIIzlRiIY13n076CZVyub0bJnSn2489lBdvBf0ZGC3Z9fJSrbojvDyRDp42WNPwv/ri+L8h
-	EuiBa7Lv9ujfR+g==
-X-Google-Smtp-Source: AGHT+IFgXz7gVJeHrHVNI0YMYiBrpI1xtsujBpCmTgabA3qV1nDHzl4U4ZVxCdNm8xMf+diL2uY2q6ZIW6eh1g==
-X-Received: from plbp6.prod.google.com ([2002:a17:903:1746:b0:23c:7695:dcc5])
- (user=ipylypiv job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:db12:b0:240:417d:8115 with SMTP id d9443c01a7336-244584ee7a2mr6975095ad.16.1755118012159;
- Wed, 13 Aug 2025 13:46:52 -0700 (PDT)
-Date: Wed, 13 Aug 2025 13:46:48 -0700
+	s=arc-20240116; t=1755119223; c=relaxed/simple;
+	bh=IhhAZTqLltWlKwAU8CFVLg+OeV+VPx2PoKdVECpgfIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c5XmlMzfMkJhmDASNQPHRttp7lrO3B3EFLXJK70fu7/U+3ZqFgpoU3145o0Gtm68f6rqcovVThZaAqAaDQ+kPAdkRTq0ok9AN258Si0hiBlmznviPG6j1Nu4OPqI3dQco/O4uvuucJ+tjWjotRBdGNgZkoR0ljEJ/aMKnVEkcbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cs0JMIG+; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755119222; x=1786655222;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=IhhAZTqLltWlKwAU8CFVLg+OeV+VPx2PoKdVECpgfIU=;
+  b=cs0JMIG+4vXjaswbAabEXJXXd6Mnl63oggMjxjd1CLPrsQRS5k9CcTt4
+   iLiPsD83uee8SPNptHQSQBQRdJ6HfDGa2Yy23h4+YMDP0/zItqF9j4K3v
+   FaOCKSySLGzsB+s+4EgbasO/ktWJ5/hKn4vLER4rgtGhlhmeukZg2UGQB
+   9GLdXubzEQkim6SZ+RrYywjYnM3Pmw31N58OuJcREUEAjtFoCRvzEOovM
+   oyf2w1MkWRdmjgnewFAiN5zTktZMD5590fQvjOvIFB/87b44sj3z+EyCj
+   KMJozjsjJaFaMg95kmdVCmzUqZgb0x1ytVrL0wI2s26YGBPhWiqb1jQvr
+   g==;
+X-CSE-ConnectionGUID: A1ZewRheTOO7C5tR0v5alw==
+X-CSE-MsgGUID: LqC9SG9YSsuYyWVGoNOesA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57579074"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="57579074"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 14:07:02 -0700
+X-CSE-ConnectionGUID: kPrcgclvR6mNvHYoXnY6uQ==
+X-CSE-MsgGUID: I4M+uEG1RNSG7G5iQibY1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="203752285"
+Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.131]) ([10.125.111.131])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 14:07:01 -0700
+Message-ID: <e5a7d108-f900-4a63-8116-c9eb54171976@intel.com>
+Date: Wed, 13 Aug 2025 14:07:00 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.rc0.215.g125493bb4a-goog
-Message-ID: <20250813204648.1285197-1-ipylypiv@google.com>
-Subject: [PATCH] Revert "ata: libata-scsi: Improve CDL control"
-From: Igor Pylypiv <ipylypiv@google.com>
-To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Igor Pylypiv <ipylypiv@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] x86/fred: Remove ENDBR64 from FRED entry points
+To: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org
+Cc: luto@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, jmill@asu.edu,
+ peterz@infradead.org, andrew.cooper3@citrix.com, stable@vger.kernel.org
+References: <20250716063320.1337818-1-xin@zytor.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20250716063320.1337818-1-xin@zytor.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This reverts commit 17e897a456752ec9c2d7afb3d9baf268b442451b.
+On 7/15/25 23:33, Xin Li (Intel) wrote:
+> The FRED specification has been changed in v9.0 to state that there
+> is no need for FRED event handlers to begin with ENDBR64, because
+> in the presence of supervisor indirect branch tracking, FRED event
+> delivery does not enter the WAIT_FOR_ENDBRANCH state.
+> 
+> As a result, remove ENDBR64 from FRED entry points.
 
-The extra checks for the ATA_DFLAG_CDL_ENABLED flag prevent SET FEATURES
-command from being issued to a drive when NCQ commands are active.
+So, the spec is being updated or has been updated to reflect the new
+architecture, right?
 
-ata_mselect_control_ata_feature() sets / clears the ATA_DFLAG_CDL_ENABLED
-flag during the translation of MODE SELECT to SET FEATURES. If SET FEATURES
-gets deferred due to outstanding NCQ commands, the original MODE SELECT
-command will be re-queued. When the re-queued MODE SELECT goes through
-the ata_mselect_control_ata_feature() translation again, SET FEATURES
-will not be issued because ATA_DFLAG_CDL_ENABLED has been already set or
-cleared by the initial translation of MODE SELECT.
-
-The ATA_DFLAG_CDL_ENABLED checks in ata_mselect_control_ata_feature()
-are safe to remove because scsi_cdl_enable() implements a similar logic
-that avoids enabling CDL if it has been already enabled.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
----
- drivers/ata/libata-scsi.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 57f674f51b0c..856eabfd5a17 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3904,27 +3904,17 @@ static int ata_mselect_control_ata_feature(struct ata_queued_cmd *qc,
- 	/* Check cdl_ctrl */
- 	switch (buf[0] & 0x03) {
- 	case 0:
--		/* Disable CDL if it is enabled */
--		if (!(dev->flags & ATA_DFLAG_CDL_ENABLED))
--			return 0;
--		ata_dev_dbg(dev, "Disabling CDL\n");
-+		/* Disable CDL */
- 		cdl_action = 0;
- 		dev->flags &= ~ATA_DFLAG_CDL_ENABLED;
- 		break;
- 	case 0x02:
--		/*
--		 * Enable CDL if not already enabled. Since this is mutually
--		 * exclusive with NCQ priority, allow this only if NCQ priority
--		 * is disabled.
--		 */
--		if (dev->flags & ATA_DFLAG_CDL_ENABLED)
--			return 0;
-+		/* Enable CDL T2A/T2B: NCQ priority must be disabled */
- 		if (dev->flags & ATA_DFLAG_NCQ_PRIO_ENABLED) {
- 			ata_dev_err(dev,
- 				"NCQ priority must be disabled to enable CDL\n");
- 			return -EINVAL;
- 		}
--		ata_dev_dbg(dev, "Enabling CDL\n");
- 		cdl_action = 1;
- 		dev->flags |= ATA_DFLAG_CDL_ENABLED;
- 		break;
--- 
-2.51.0.rc0.215.g125493bb4a-goog
-
+Remind me, are there no FRED systems out in the wild today, so we don't
+have to worry about breaking anything?
 
