@@ -1,126 +1,138 @@
-Return-Path: <stable+bounces-169399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1E8B24B47
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:57:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC5AB24B6C
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 240AE1B610C7
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:53:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60A5D166F61
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5652EB5C4;
-	Wed, 13 Aug 2025 13:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D162EAD05;
+	Wed, 13 Aug 2025 13:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZAwj9hMe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DfnvEkGj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCBF2EAB68;
-	Wed, 13 Aug 2025 13:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F126727450;
+	Wed, 13 Aug 2025 13:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755093170; cv=none; b=QgHIHTLppQ17kxyZJzhLZbWTPzCM0hRYVJ9D+nnM5haKednXYJiQFqXbgWoGSDTD4gBUYbY/MZjRvpsRwXQ45qKohY5ESmuYoS8KRv6xlH6B8+02jEVn4sZ/RpNwmHOttdTJrI7x3f0Zk9PEkLSDshqWNNDIiysf/zW3yJMahAM=
+	t=1755093392; cv=none; b=td36y1cLcMDnhOYvgoPb8NySCv2ndYb/2T0J7x9vbdMFBT02UKZrK1LKVPo3wybWivykzUMF/AoLaGEwBzy7d4Dqn0sQVSJ3SKnuzB1lr4sgqu6Z+kz1+/xE65NtdG7uSxsbKb+VBKAwpspY/XCtdbRJ7I0FR1Skd8DnOuxeM/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755093170; c=relaxed/simple;
-	bh=yRzIBpcwo03V92Cu9B8zeqXJTartIC1MviVhaIBxQdM=;
+	s=arc-20240116; t=1755093392; c=relaxed/simple;
+	bh=PU8D4TvDAaiDVPVg+2dLpyoPg7qqnDgECUB9LA69pDQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j9YUhWaLzKBnG66U/zaEyxT6yN/eOt9KJWc4q5a6PGOAxp4rXQJFY7Gi8mHTuGpsZaqmXTqXadelceGFwUjRsoearY2pb9MZULTuAfLmRzOP7CNWpno9X5jhYV4rGeL4qvBiosWM3RBNKtE+7ZG/vk22Yiftb2wan/WKk05GHaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZAwj9hMe; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755093170; x=1786629170;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=yRzIBpcwo03V92Cu9B8zeqXJTartIC1MviVhaIBxQdM=;
-  b=ZAwj9hMeBbrlCEqTO1etqD52Ib7zYRuFfbkqzsVrMfKiNpQRlEPFCXGn
-   3nIOvMchcMhGBsxiAH9Kt2iX4/9H4G4RYXE434AsGeKcuAtwy3PXYGnwy
-   4bgJHzoYiEp+cb2DvpmEGtkiaPy+nVyQ5hoRntie97P9KMoNSj48OlRGk
-   L4CDHVaLEm2HXbZt4KZdTbdXR3E7ncapUlFhlRmJXRWTqrQKKcGDI2iTW
-   Y/MCDxfioY4Ut6THrPCEElSadYsntHEeh+e+DH+B8DJaIXnXKsfxVwhSp
-   bt9MNyzoC8EusmhT6ok2Sw4zXOxoSd8fgNV58Fkl3uzYTGOvPouGm+eUI
-   w==;
-X-CSE-ConnectionGUID: WxwWpv4/SxeMt2n2Nl4x+A==
-X-CSE-MsgGUID: mwuitVOTTWymQsL1rl8Vqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57289139"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="57289139"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:52:49 -0700
-X-CSE-ConnectionGUID: a6XmckWnTmOaZ0W7wn/o/A==
-X-CSE-MsgGUID: 9CE9RbIqTnCtSYCj/rZ3aA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="170928900"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:52:44 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1umBuB-00000005RqB-41aP;
-	Wed, 13 Aug 2025 16:52:39 +0300
-Date: Wed, 13 Aug 2025 16:52:39 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
-	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
-Message-ID: <aJyYp-3VA9kJ5YMd@smile.fi.intel.com>
-References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
- <202508120250.Eooq2ydr-lkp@intel.com>
- <20250813051633.GA3895812@ax162>
- <aJwj4dQ3b599qKHn@codewreck.org>
- <aJyVfWKX2eSMsfrb@black.igk.intel.com>
- <aJyW_QNI8vIdr03O@codewreck.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nwpa1knsM5ol170a98q1Zut9mSnoy9K8PVUghUW8VE7itoGQdDOTqpFmXu71Nej66igycULfG5rffhoYCrJwATSTLxOwuLdRIhMHY93anyUJBjj66HA4p/9WYcdsXFSehmFdz40en4mAscRAQJnsByLwl/a6e6X/t4Q99N1/SLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DfnvEkGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2AAC4CEED;
+	Wed, 13 Aug 2025 13:56:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755093391;
+	bh=PU8D4TvDAaiDVPVg+2dLpyoPg7qqnDgECUB9LA69pDQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DfnvEkGjlqlBmycupm29qobQQ7q/ILqOB43RDwKfg8vgJw0I/PreZK2XHrUgn02OR
+	 nZ4ATmmMOOLbF5jZFz8sLCRTeILdzEEpprPW1jzufXkZyxy0eKqZcrufrJyiLdlFot
+	 Y6UMyfulsdg7WJ4qEVKRlTltIxhEe7ktB3j5CjbrTcwVOvIYk0qlNzsoi2dt4AxYru
+	 LovStafbDmfrBiTV63Y6Bzr2st4W+lG0e31cPDZO4gI1wlbf2XR2ObvcgjLySXz8Y5
+	 BFkiEwdeqLSChCugFLb79vRwMrO444EVLyResNzgK6LGgVF6lgAcUlj5Ukq1k0avA0
+	 zc7n7ufOz+X/w==
+Date: Wed, 13 Aug 2025 14:56:25 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, achill@achill.org
+Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
+Message-ID: <f8133619-cbea-4794-97ff-f6c5d457e251@sirena.org.uk>
+References: <20250812173419.303046420@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="toqZ+J3Itf5R37vU"
+Content-Disposition: inline
+In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
+X-Cookie: Turn the other cheek.
+
+
+--toqZ+J3Itf5R37vU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aJyW_QNI8vIdr03O@codewreck.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Aug 13, 2025 at 10:45:33PM +0900, Dominique Martinet wrote:
-> Andy Shevchenko wrote on Wed, Aug 13, 2025 at 03:39:09PM +0200:
-> > > I assume Andrew will pick it up eventually?
-> > 
-> > I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
-> > and suggest all developers should follow).
-> 
-> I actually test with W=1 too, but somehow this warning doesn't show up
-> in my build, I'm not quite sure why :/
-> (even if I try clang like the test robot... But there's plenty of
-> other warnings all around everywhere else, so I agree this is all way
-> too manual)
+On Tue, Aug 12, 2025 at 07:24:55PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.16.1 release.
+> There are 627 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Depends on your config, last few releases I was specifically targetting x86
-defconfigs (32- and 64-bit) to be build with `make W=1`. There are a couple of
-changes that are still pending, but otherwise it builds with GCC and clang.
+As mentioned elsewhere I'm seeing failures in epoll_ctl04 from LTP:
 
--- 
-With Best Regards,
-Andy Shevchenko
+  epoll_ctl04.c:59: TFAIL: epoll_ctl(..., EPOLL_CTL_ADD, ...) with number of nesting is 5 expected EINVAL: ELOOP (40)
 
+these bisect down to "eventpoll: Fix semi-unbounded recursion".  Bisect
+log and links to full console logs:
 
+# bad: [cd8771110407dfe976259483baaae2c6e62a4146] Linux 6.16.1-rc1
+# good: [038d61fd642278bab63ee8ef722c50d10ab01e8f] Linux 6.16
+git bisect start 'cd8771110407dfe976259483baaae2c6e62a4146' '038d61fd642278bab63ee8ef722c50d10ab01e8f'
+# test job: [cd8771110407dfe976259483baaae2c6e62a4146] https://lava.sirena.org.uk/scheduler/job/1664129
+# bad: [cd8771110407dfe976259483baaae2c6e62a4146] Linux 6.16.1-rc1
+git bisect bad cd8771110407dfe976259483baaae2c6e62a4146
+# test job: [7ee553aeaf6d124298f393ec5eaa219b0968e16f] https://lava.sirena.org.uk/scheduler/job/1666114
+# bad: [7ee553aeaf6d124298f393ec5eaa219b0968e16f] media: v4l2-ctrls: Fix H264 SEPARATE_COLOUR_PLANE check
+git bisect bad 7ee553aeaf6d124298f393ec5eaa219b0968e16f
+# test job: [716cab0f18aa38d77b92073dab931186c770054f] https://lava.sirena.org.uk/scheduler/job/1666908
+# bad: [716cab0f18aa38d77b92073dab931186c770054f] wifi: ath12k: Avoid accessing uninitialized arvif->ar during beacon miss
+git bisect bad 716cab0f18aa38d77b92073dab931186c770054f
+# test job: [7fac9c079ff503f261ffb49bdd7f283803beca93] https://lava.sirena.org.uk/scheduler/job/1667071
+# bad: [7fac9c079ff503f261ffb49bdd7f283803beca93] ASoC: SDCA: Add missing default in switch in entity_pde_event()
+git bisect bad 7fac9c079ff503f261ffb49bdd7f283803beca93
+# test job: [1da0a31f7c952ad518d3a91df9a9109ba3c02d73] https://lava.sirena.org.uk/scheduler/job/1667175
+# bad: [1da0a31f7c952ad518d3a91df9a9109ba3c02d73] selftests: Fix errno checking in syscall_user_dispatch test
+git bisect bad 1da0a31f7c952ad518d3a91df9a9109ba3c02d73
+# test job: [53cd2297915f5c3be56ddad54be5cefb9cbc2fb9] https://lava.sirena.org.uk/scheduler/job/1667249
+# good: [53cd2297915f5c3be56ddad54be5cefb9cbc2fb9] ublk: validate ublk server pid
+git bisect good 53cd2297915f5c3be56ddad54be5cefb9cbc2fb9
+# test job: [8aca40e2c98c5eae8da96e84caaaaec97152dbed] https://lava.sirena.org.uk/scheduler/job/1667289
+# bad: [8aca40e2c98c5eae8da96e84caaaaec97152dbed] block: restore two stage elevator switch while running nr_hw_queue update
+git bisect bad 8aca40e2c98c5eae8da96e84caaaaec97152dbed
+# test job: [9fccd15a5cdcd1d2376f96fdba97ff82d26ea8ba] https://lava.sirena.org.uk/scheduler/job/1667364
+# good: [9fccd15a5cdcd1d2376f96fdba97ff82d26ea8ba] io_uring: fix breakage in EXPERT menu
+git bisect good 9fccd15a5cdcd1d2376f96fdba97ff82d26ea8ba
+# test job: [b47ce23d38c737a2f84af2b18c5e6b6e09e4932d] https://lava.sirena.org.uk/scheduler/job/1667417
+# bad: [b47ce23d38c737a2f84af2b18c5e6b6e09e4932d] eventpoll: Fix semi-unbounded recursion
+git bisect bad b47ce23d38c737a2f84af2b18c5e6b6e09e4932d
+# test job: [cac4afc0cefeb0b4d066867aebe0b7cb6806b9ae] https://lava.sirena.org.uk/scheduler/job/1667503
+# good: [cac4afc0cefeb0b4d066867aebe0b7cb6806b9ae] btrfs: remove partial support for lowest level from btrfs_search_forward()
+git bisect good cac4afc0cefeb0b4d066867aebe0b7cb6806b9ae
+# first bad commit: [b47ce23d38c737a2f84af2b18c5e6b6e09e4932d] eventpoll: Fix semi-unbounded recursion
+
+--toqZ+J3Itf5R37vU
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmicmYgACgkQJNaLcl1U
+h9BWOQf/fc12VadwQyASyYC8BClCyWix8956AMY1zJq9QxO/dW3mRBj2FY7bovnc
+AZIQPMeT+6H3ecohcV2h1QDDS/afHihUw+G9GALhD9SifdSJm2tzV4gDW8HwPoSz
+sE29wYbz6VwEZro0dYIwV61Lh1k/dL4i9asiaQXLlDTPVf4ffAqo3ACM+uZufj8i
+5vCRk+vykda9wMO7bAV+5Bba70WRYUPfE8kq585F277wzurXqo48SPVQDLCkXT2m
+G/J6fKQHTIe2tmky5BbiLvWg2ffXW0KZWrHS3liZDcFXpVs5hrcMfca7NB7Q9Gss
+emggwHmz9hjWmt20YWk8Fehg43fJLw==
+=phQ8
+-----END PGP SIGNATURE-----
+
+--toqZ+J3Itf5R37vU--
 
