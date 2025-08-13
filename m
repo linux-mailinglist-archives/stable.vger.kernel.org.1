@@ -1,131 +1,154 @@
-Return-Path: <stable+bounces-169403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9066DB24BA3
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:14:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64115B24BFC
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF1E3A7CDC
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:10:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1BC362553B
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F98A2EB5C4;
-	Wed, 13 Aug 2025 14:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5735E2EFDA5;
+	Wed, 13 Aug 2025 14:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nT8lzQ+R"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OagzIKxm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511312E92BE
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 14:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983FE2EFDA3
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 14:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755094231; cv=none; b=KSXnkp244osbtn+gHMurf1HyIB5NAuTB9jrR0XP0O99K8opiq/zXRMvdBK5hTPGaSBvF2YDuoYaxH5QRlU3gv5xFLVoTFNk3fJfGxmGz10cPPooyso6/wvVBNJGbFGzM+JLtjPvdW3rIgqZEpqHn7NetjoL2z/wh78sW3yzsqPw=
+	t=1755095527; cv=none; b=Fie5UsPST05vneYREKa8yVgkLPiCfkWWVmYsy6Av3ECCzcVPiGCdj5bweQfThzlXO3r2z8UnV41QS7pzjvF1QftALRaKBNFEJOIttlnswqLTWQxrZm9SmxdLcFS+oGAJ+JgW9nQkBJ5cTfTXNwT+tlH63sAS6hP+R2sSZyy/H6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755094231; c=relaxed/simple;
-	bh=UBm6XyBTqgkWoieGyTayfLKeLtUgMmvF9UMniVYtyIY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pH3JCp7RMgZ9f6WTNEhWIKxKu5hVpsm4phpz/wgYbupLYNk2fdtLuVI7/p1jMrgPAo1oJm4AbW75R8M9GiAEyfeLsVnnByKvhP7yXLLyM00HYefkHMN47rVWA+X0WHqx1Gk/JYHsPzH/l1iZ6M4ai5jp2+tFElsl++kqNCQ/PQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nT8lzQ+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4844FC4CEEB;
-	Wed, 13 Aug 2025 14:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755094230;
-	bh=UBm6XyBTqgkWoieGyTayfLKeLtUgMmvF9UMniVYtyIY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nT8lzQ+RQjGQdoe4J4NNw9k53c44IINqzHj6zils71f5xXWLDsf+pvKRLS/1UJAqV
-	 vQlsEB6OYX1ulny5LXJ+RuI535+ARcVTXOE8W513WwEm9woJb1go4G7mE7pgAzzUAz
-	 I77mBcOBf++tCgboW1O5PUHQ6jTK8W6dp18JYkc6sSK7C2CWwKeQcrfT3EStBWXdkd
-	 ACaBanSWJPUHrz7zPCJHdVXi4YO2nU7/+HBOJp47RtAo725hfu6TML1FF6h4TqV6PB
-	 aQPn+gmw3AIln46jIlSoKnPjbmakJXeI0hK3DahWVMxKasXf3g+K+uE/yCo0+LZPBp
-	 uGyNG4u47lf0g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
-Date: Wed, 13 Aug 2025 10:10:27 -0400
-Message-Id: <20250813141027.2043326-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081243-disaster-wrinkly-bdc6@gregkh>
-References: <2025081243-disaster-wrinkly-bdc6@gregkh>
+	s=arc-20240116; t=1755095527; c=relaxed/simple;
+	bh=ipApUWXD/vc+gn0dpjkARbKTGMwSNJWFy53h/IiXXnw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tWr0VsQSzLQJmPp5rga8RJRFYi9VFJlCLxeduG2CUUM5HNgcCenf36XY+fYrlECItaXEOXveGFcZalOOtlETnkYFK5ahwQASIitemWY2FEQbJCZKQkRs9lz+sHxHqw/WBlfwDLrqVmxJw+lvmPq2vdvBa7UscgapXyTzqH54wcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OagzIKxm; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b46f9bb92edso1543901a12.1
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 07:32:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755095525; x=1755700325; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=SdEySWA9pjFNhAetIdOe+TeBj+YFSkBbS61Z6xuGeG0=;
+        b=OagzIKxmmqyqb3udhiQ9X5ZnsWD902l4tGC1vq8DetSlLgrd6fiX/6jJ5aWzUO0HT7
+         1RPrXod7+PDSTjjPFoitGwp20HiGZAdEFGsHo8dZ3whAMwLYQWGNIEOGVcSHMpyRjOs0
+         RUQId8z4UfQW7cF5AtY6qbu+QGbRtIy3TlPp4aCUyCCy/0EksNlxUBKYGjiASAaW6IIZ
+         ZcoOBfbd6FhhqUdZh6KscUfL4HUo5RomEeu12790Kn6Zr2OoEd8jyX+QDzwY+Sb31dk6
+         QMfQSBXeHI3VbV4gkL3sLqfOdbl58htcmv1HP8iQ8qjFLVNFMssDSxTCg+qhZPM7eEne
+         VQ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755095525; x=1755700325;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SdEySWA9pjFNhAetIdOe+TeBj+YFSkBbS61Z6xuGeG0=;
+        b=FIj4KGL1pEU//kLaRq3USh+MhHNPFNhTDtJ+AnlEznuOxwC48nzmZ6WHjOaSV0sj4M
+         TQou7YRRuuxcQs9J5J2m9M+zyZVp+bnVL7GYmVshClRP30JW0SRJjyrCvMLnu88v/Bjs
+         T9q5mtgSaQyyGJreoD2+MhnbFnYPtIhUFX9l/6JNRSannv64g5RgoYYVISJaap4dx707
+         cimDi7seUUVDuErUcFhY790rpcVq3+aYSCSs2WHdnLLeWd5NxP3UwbrvFvCYD5EnGHWn
+         ZOTZKoIruuIYv1W3KqptkFTTxqFe5Axld2Z5C0xVVPMO87y/z0QsUrDnIX+6futy9VJZ
+         pYEg==
+X-Gm-Message-State: AOJu0YwDp6vXeYEZalK0An1yhrFciiy+OyIHKsML2aMolXN/a7TaZCxO
+	s4Bej0goPYJWw4Jjho4mMoDxYQnI8IqugGB1bhFDguorv4aI/YyR/ha7zMvdIq2qBanFZTMRLTd
+	shBcJoSTTmIOSTASxBOeCYEMjeV2MIDEs4gd9JKRivA==
+X-Gm-Gg: ASbGncs05opaQIYy5fxQ9AEetzBecyUSvt8g3N9tNhFphoN9WruL5recolHUTDzV7zu
+	HBxlh4ZeYN9wE2vB19pIXvU2JmFNg6174BAXEG2z2UiQhRtR6tkRr/mjmWnC39gpx06pYcO5GXC
+	ukJItkTxQ4fb5F5EWOXVjIzHzWVNl8Pi5Nc+TybPQPjbN2tKgXxlJasDaMlfMp1ovkwpBVyqqbs
+	DE+rB/wkHOdmacj5WifFdzIBu+J/UVwSX9S53xeaqTmjEYTvrXzzeLprVQB6w==
+X-Google-Smtp-Source: AGHT+IFzsa7z2LB/NwMV+7ODMzwtQZ5c6SDjL/beKBH/4CiDe3n9MltwqzwrpDodhDWNKfzJI3ZmU6XpdnvXzSkeC14=
+X-Received: by 2002:a17:90b:39c7:b0:321:cfbf:cbd6 with SMTP id
+ 98e67ed59e1d1-321d0d6912bmr4596811a91.6.1755095524619; Wed, 13 Aug 2025
+ 07:32:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250812173419.303046420@linuxfoundation.org> <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
+ <2025081300-frown-sketch-f5bd@gregkh>
+In-Reply-To: <2025081300-frown-sketch-f5bd@gregkh>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 13 Aug 2025 20:01:51 +0530
+X-Gm-Features: Ac12FXzTlKbJUDUafTa4ZlpVkqfN8sdY7Wfx9w4NKXTaujZ4mJCVSf-u4y5vZP8
+Message-ID: <CA+G9fYuEb7Y__CVHxZ8VkWGqfA4imWzXsBhPdn05GhOandg0Yw@mail.gmail.com>
+Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, qemu-devel@nongnu.org, 
+	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>, 
+	LTP List <ltp@lists.linux.it>, chrubis <chrubis@suse.cz>, Petr Vorel <pvorel@suse.cz>, 
+	Ian Rogers <irogers@google.com>, linux-perf-users@vger.kernel.org, 
+	Zhang Yi <yi.zhang@huaweicloud.com>, Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org, linux-ext4 <linux-ext4@vger.kernel.org>, 
+	Zhang Yi <yi.zhang@huawei.com>, "Theodore Ts'o" <tytso@mit.edu>, Baokun Li <libaokun1@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: "Geoffrey D. Bennett" <g@b4.vu>
+Hi Greg,
 
-[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
+> > 2)
+> >
+> > The following list of LTP syscalls failure noticed on qemu-arm64 with
+> > stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=y build configuration.
+> >
+> > Most failures report ENOSPC (28) or mkswap errors, which may be related
+> > to disk space handling in the 64K page configuration on qemu-arm64.
+> >
+> > The issue is reproducible on multiple runs.
+> >
+> > * qemu-arm64, ltp-syscalls - 64K page size test failures list,
+> >
+> >   - fallocate04
+> >   - fallocate05
+> >   - fdatasync03
+> >   - fsync01
+> >   - fsync04
+> >   - ioctl_fiemap01
+> >   - swapoff01
+> >   - swapoff02
+> >   - swapon01
+> >   - swapon02
+> >   - swapon03
+> >   - sync01
+> >   - sync_file_range02
+> >   - syncfs01
+> >
+> > Reproducibility:
+> >  - 64K config above listed test fails
+> >  - 4K config above listed test pass.
+> >
+> > Regression Analysis:
+> > - New regression? yes
+>
+> Regression from 6.16?  Or just from 6.15.y?
 
-During communication with Focusrite Scarlett Gen 2/3/4 USB audio
-interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
-snd_usb_ctl_msg() which can cause initialisation and control
-operations to fail intermittently.
+Based on available data, the issue is not present in v6.16 or v6.15.
 
-This patch adds up to 5 retries in scarlett2_usb(), with a delay
-starting at 5ms and doubling each time. This follows the same approach
-as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
-("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
-which resolved similar -EPROTO issues during device initialisation,
-and is the same approach as in fcp.c:fcp_usb().
+Anders, bisected this regression and found,
 
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
-Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ Applied patch to the older file name mixer_scarlett_gen2.c instead of mixer_scarlett2.c. ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/usb/mixer_scarlett_gen2.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+  ext4: correct the reserved credits for extent conversion
+    [ Upstream commit 95ad8ee45cdbc321c135a2db895d48b374ef0f87 ]
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index 0a9025e3c867..0aa5957cd9f9 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -125,6 +125,7 @@
- #include <linux/slab.h>
- #include <linux/usb.h>
- #include <linux/moduleparam.h>
-+#include <linux/delay.h>
- 
- #include <sound/control.h>
- #include <sound/tlv.h>
-@@ -1064,6 +1065,8 @@ static int scarlett2_usb(
- 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
- 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
- 	struct scarlett2_usb_packet *req, *resp = NULL;
-+	int retries = 0;
-+	const int max_retries = 5;
- 	int err;
- 
- 	req = kmalloc(req_buf_size, GFP_KERNEL);
-@@ -1087,10 +1090,15 @@ static int scarlett2_usb(
- 	if (req_size)
- 		memcpy(req->data, req_data, req_size);
- 
-+retry:
- 	err = scarlett2_usb_tx(dev, private->bInterfaceNumber,
- 			       req, req_buf_size);
- 
- 	if (err != req_buf_size) {
-+		if (err == -EPROTO && ++retries <= max_retries) {
-+			msleep(5 * (1 << (retries - 1)));
-+			goto retry;
-+		}
- 		usb_audio_err(
- 			mixer->chip,
- 			"Scarlett Gen 2/3 USB request result cmd %x was %d\n",
--- 
-2.39.5
+Report lore link,
 
+https://lore.kernel.org/stable/CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
