@@ -1,100 +1,77 @@
-Return-Path: <stable+bounces-169396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB574B24B0B
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:50:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF420B24B04
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D877418945E0
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:46:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB58117AFF3
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F452EAB8F;
-	Wed, 13 Aug 2025 13:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="iVDqdWfO"
-X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD7B72612;
-	Wed, 13 Aug 2025 13:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755092759; cv=none; b=a4AZIe3YPBX+e3pgBB0cc5zD6cY961wgQy9tMaEWwr+XbDuvfOI6Pn2Szf+uhorxapjy5O3hETDRC8oPCrcFkGuLkdYLqhFarT5p1folhgj/9mgDgSLvaR1k8RV2qG5zSadwd55cU+9l9EHaPgr1nRyxjtTzGLb6wMKEH4xDZYg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755092759; c=relaxed/simple;
-	bh=/moHEU+jrzpSY24+lzEDBteKQ7bkZsCMo6ltlWZ5QxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KUrvx1POMdhJiouMMZhNpukEZBgSkhUdgPBUshfCxFTk/YzCGVbrzfx+KutCWViCwVZg7DAEaKm7ZYCOmQQuprB3ZDjojuUM2US8ZcuTZtLTmTixIW6+c26ryZ/A8K5poMG7mOF001pcgObPvZuZEKf5C9gb3YEuL2fd7O86JW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=iVDqdWfO; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 67C9814C2D3;
-	Wed, 13 Aug 2025 15:45:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1755092755;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O7DIiSFTU0d+SOR8smmh+GVaLhshEu060AgzuYvrVMU=;
-	b=iVDqdWfOqfC7zGw5pMTbF0uOkQf840TCcqccC6MfX+jhl/kiESHTstDOEoMxRS/nUQ9Ds6
-	MEBHYWhy9RuQ9+cBA7nglc0sbtNAHjYVZFMvMLj68pFX5tUfEPka2mGiIJnWGOiM4o41Ev
-	RXYM4F8f9Vf8HclTLyjFnK9m7Xpd5+U3HFc6PF7bxgoB9V92C8LJVZzsDiEyLF6qf91di+
-	jAMaVx8cMTp864nf7WcPFtLDEap6afRs5PkVVA+IFVsk+0LOIdoAJW+vqTSf9bez9wh6Sq
-	RbmWS4DMcXMNdHulvj+iLRTjLlw3/C0a/tirBD8qwJsBJfG6dkgbK2ZK54YhbA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 8a7ce430;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC1C2EB5DC;
 	Wed, 13 Aug 2025 13:45:48 +0000 (UTC)
-Date: Wed, 13 Aug 2025 22:45:33 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
-	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
-Message-ID: <aJyW_QNI8vIdr03O@codewreck.org>
-References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
- <202508120250.Eooq2ydr-lkp@intel.com>
- <20250813051633.GA3895812@ax162>
- <aJwj4dQ3b599qKHn@codewreck.org>
- <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+X-Original-To: stable@vger.kernel.org
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9B314F125
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755092748; cv=none; b=r0iXaydaJd44gzk8Dp+XRPxpdwoKWwOGyiYt2JPeksIZMDMyrnLC87qDtWrhMZeJ/QwHLuduMwsUWvajT3OxeK3BB92VQtWgyz7gGplUt5FdGlcWZF00Pzcl24IYeFPYSBbq9jouHMy6usCzxQ+A1jpFRfPHt3nbaDazQDc57JU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755092748; c=relaxed/simple;
+	bh=jpPfaS2mL63R6WRS67iwH9PKBwGzxuPSBvRVcdrghQE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MoibGPJxzA7pUKsLFpb28c1pEskxOiA9lByqxp+0QACeZaA2+gDUoiV8qo/5vIAg7aSigm04BQBiydfxPnN0bpmWb67H5TLvn/PzGNzZw4L/e+GyPcKBT7LncoqfO5lNwXtyBvweR+yPOMAcbw3G6OfVeVh6Zmh9neT3cf/qPdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0BF5C12FC;
+	Wed, 13 Aug 2025 06:45:37 -0700 (PDT)
+Received: from [192.168.68.107] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 45E363F738;
+	Wed, 13 Aug 2025 06:45:44 -0700 (PDT)
+Message-ID: <f970dcac-cc89-4008-8704-d9ab7c8869fb@arm.com>
+Date: Wed, 13 Aug 2025 14:45:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 096/369] sched/psi: Optimize psi_group_change()
+ cpu_clock() usage
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Sasha Levin <sashal@kernel.org>
+References: <20250812173014.736537091@linuxfoundation.org>
+ <20250812173018.391927854@linuxfoundation.org>
+ <83b69ebb-a052-482e-aa6d-34194ef18dc3@arm.com>
+ <20250813130807.GB114408@cmpxchg.org>
+Content-Language: en-GB
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
+In-Reply-To: <20250813130807.GB114408@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Andy Shevchenko wrote on Wed, Aug 13, 2025 at 03:39:09PM +0200:
-> > I assume Andrew will pick it up eventually?
+On 13.08.25 14:08, Johannes Weiner wrote:
+> On Wed, Aug 13, 2025 at 01:20:41PM +0100, Dietmar Eggemann wrote:
+>> IIRC, there was a small bug with this which Peter already fixed
+>>
+>> https://lkml.kernel.org/r/20250716104050.GR1613200@noisy.programming.kicks-ass.net
+>>
+>> but I'm not sure whether this fix 'sched/psi: Fix psi_seq
+>> initialization' is already available for pulling?
 > 
-> I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
-> and suggest all developers should follow).
+> It's included later in the series:
+> 
+> https://lore.kernel.org/stable/55070b66-0994-4064-9afa-de1e53d06631@sirena.org.uk/T/#m0ddd243fe107dea7488d119cb60e8a9e18e2c9a1
+> 
+> Linus just didn't keep the CC list when he picked up the fix.
 
-I actually test with W=1 too, but somehow this warning doesn't show up
-in my build, I'm not quite sure why :/
-(even if I try clang like the test robot... But there's plenty of
-other warnings all around everywhere else, so I agree this is all way
-too manual)
-
-Anyway, sorry about it...
--- 
-Dominique
+Ah, I see. Thanks!
 
