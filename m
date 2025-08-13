@@ -1,156 +1,202 @@
-Return-Path: <stable+bounces-169426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4980B24D5A
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 17:29:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC66B24E6F
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 17:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C3287B3A37
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:27:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A1F5A4B2F
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DB823E32D;
-	Wed, 13 Aug 2025 15:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2C928F937;
+	Wed, 13 Aug 2025 15:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="iD/vDSU9"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YKa12+g7"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2061.outbound.protection.outlook.com [40.107.236.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAE823BCE2;
-	Wed, 13 Aug 2025 15:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755098927; cv=none; b=IHzQkhPUn/XfUH6LzQGLCQn/GrlV6SRQeTShrABIUn58regT2J57Cn6RxX/EAJ1qYHnzyQQzL1KypCqMdZxYcLbk6ZW4+4eWn6xU8BLlKDEwsOLxWVEUZo8r4IVr9MHynMou0l7PiAGg/XB6J+IPG+pLdrTaW6og1xXls+e6S+M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755098927; c=relaxed/simple;
-	bh=d4tIsS38EDYbVPrOHCTVdpAJiejvoXsr6isPmsDzQaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qQRT7ty6UolrHErdgeTnGkirB3wCy/Djio4skGOij6CsjTbREpYppok48uldJ47feepzv54wX8RT7ySLuH3K5huD+540LW6phKTeXODhuAOwdE1MD2Vsk3d2qVGHGFdhGy87WETw9jy/B63U6Np1Q47JJGtQMOYTUB2aAYc63jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=iD/vDSU9; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=99/b1Zz+WjCB1f6WwTNHvQByBXsYpqmstCtToqVhvHk=; b=iD/vDSU9sI7iSXH2vti3YhW/l7
-	WBPlbuoCL0mDmgYtM3Nfy/FT8JngWib2nu/AXoE4dwnSrJbvJDFFh5F0f+3jTcX2b8rg4Zs0olMJ9
-	vq0ycg35wvXZZUAV8lJSs/ElrsVBCH6zzjy290B3/xxTgq2wghkkqv7OPCj27HG/Nbr8JkKqvCLk2
-	sPp/oy/7DWQNTGO8F0xf9daAfQBDD5norhMHYNHlSHMtOpQ1y0qluWuKXzlJ4fHlNuQV9VJ11WFy0
-	HSpYqY3f+mJnalam52JvTJ0k7Wd5+SqqXGzgG70Z7TMb7C0e2M0JTIDhQl7JBya50FYGPgphn5HLu
-	SN8TCSLQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56374)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1umDOz-0006w9-15;
-	Wed, 13 Aug 2025 16:28:33 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1umDOx-0005rk-0D;
-	Wed, 13 Aug 2025 16:28:31 +0100
-Date: Wed, 13 Aug 2025 16:28:30 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Gabor Juhos <j4g8y7@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Hanna Hawa <hhhawa@amazon.com>,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Imre Kaloz <kaloz@openwrt.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] i2c: pxa: prevent calling of the generic recovery
- init code
-Message-ID: <aJyvHnLS-A3F2gN7@shell.armlinux.org.uk>
-References: <20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com>
- <20250811-i2c-pxa-fix-i2c-communication-v2-2-ca42ea818dc9@gmail.com>
- <aJpR96Kkj12BwW-M@smile.fi.intel.com>
- <8cb62eb9-9137-44b4-86f6-82f69813e83f@gmail.com>
- <aJyOu_GUlDPuJXO5@smile.fi.intel.com>
- <0bfcb570-dab3-4038-a1aa-8bc7fe2feee8@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694DC280A56;
+	Wed, 13 Aug 2025 15:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755100093; cv=fail; b=Y8E/H7bNeroI4IN8y0KHusS+peBER/4PCEJywVs4wmaD/mdA5zC8ZhdEMx3RNHuZcsB23rovyU72xOAA5dTXt9rpGEJfH859J5Z3sUkxhVPse5cxl4j+F0Yl/mO0xAs30x/V1aYCfeyEp/U6HZhAViI9WlLQs2hjvGbYxD0ZsUI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755100093; c=relaxed/simple;
+	bh=OwJwLhtjwpB0yE5p73nXqs3hyAn7B8GBVrtdNjiDhoI=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=QtPwBub5UypGrH4h0CHtK32GVgH6YWz/4fwAc6BIvSNWUMhNkzOwwPzTpWKOA+PHSBbos5VI+GW83MeifoteLuOqxuuOgN4Ta21hWRfADTrMc7Rfqtng/FsrhXigZVFynip2BK3nNwBef9SdPEUtVgEesPjeBRB41vFH6c3VeKQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YKa12+g7; arc=fail smtp.client-ip=40.107.236.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UVq9LNr7teu9aFn1HKA/QiLpa9yByQASa3G39L52IevyicEc85oCvdP9mn2bV7jxtIMcaEbLGwsetHu6PZeHOjT7CQNYvB71El8e6+p2gV/UCvgjpb5+nBD+eH2HVBJNn2GDW4OiagHAeYeoAVZqgfH9ctWg94kM9HfxNJ1SPKgv+fwaszbdhGsF32mupm03pO78Vs+XzccKjscr1F8WiIxNGr0W4gMcaIMC/9tjSTN4HPiBXKTiI5wgII6vzaAV916Nvzjay9w0xlbnn0Z8UoZ1emXlXLblo7KB0vMN+QqWs/rHAsYFgOywo8CzleM+VBqxwIqIGuUF4hYTgYERfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j1AYzArpDB2nJtsLwajLpk8Y3LJoPb1a4WxIZWpFqmE=;
+ b=lf/D9L3n6VIxKAmy4mIePty6AVRJkSUiZuq/MXqll8CERD6HO9i9uWhwpo6VT9bHDsJsrutLlGDePqdBpHgdkVBALqxyOxjEfPwkeMnJm3R2erzsER4mKt7788wNDoCQaoyUlpRtGjj4wydY2G+GTGBoL0QrzmEljK/jxHuH1Iis13YUrjxqRP3sv/h8ko+pUIJ3BKHmoxDDsZm6/yPR6pGKclco3vH5e9IhMyJ2f5ESFvBAYuRZgPqjQKUie0HNLrdJ8plHmm3NMRfHCFKqyQYSP8mzj81Q5b8PKd3xhZciN6JhpMKoDp3+t0wVmbUX2rpz0Gh1lqZ979e4Zyj6pg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j1AYzArpDB2nJtsLwajLpk8Y3LJoPb1a4WxIZWpFqmE=;
+ b=YKa12+g7eoAHcpAxVVOv+yX/MRKm5K0lZScOILT1puV+5QoAvYj7A1Z8g5/YcqOM8yWYKEINSdnoj4xlg1BUfIeEd4HA4hJ4ejGwlM1978geTMZXF7C11A4pwNJekL2KlhT30CgYU4mkN64BC0gRBCVzQd9dVHWMrPjs4hGcMxhnO3qrAWZI2tfNkNt5bOUhDtVMIm8mQuh1H2SCT95Pswg2ROpUNf5xHgHSN2a1cpbS4nifUoGR3LHMpMjnNbw+Kc4ipLBjAzvQ95n1PsIp95tCWPFYu52Qpl4FhHu4hNiZTa4uD4CvpBmG9gOTxEPN6vw072wpIacqbY1Ihc9ScA==
+Received: from MW4PR03CA0017.namprd03.prod.outlook.com (2603:10b6:303:8f::22)
+ by MN2PR12MB4077.namprd12.prod.outlook.com (2603:10b6:208:1da::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Wed, 13 Aug
+ 2025 15:48:09 +0000
+Received: from SJ1PEPF00001CEB.namprd03.prod.outlook.com
+ (2603:10b6:303:8f:cafe::30) by MW4PR03CA0017.outlook.office365.com
+ (2603:10b6:303:8f::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9009.14 via Frontend Transport; Wed,
+ 13 Aug 2025 15:48:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF00001CEB.mail.protection.outlook.com (10.167.242.27) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9031.11 via Frontend Transport; Wed, 13 Aug 2025 15:48:08 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 13 Aug
+ 2025 08:47:54 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 13 Aug
+ 2025 08:47:43 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Wed, 13 Aug 2025 08:47:43 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <achill@achill.org>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 6.1 000/253] 6.1.148-rc1 review
+In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
+References: <20250812172948.675299901@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0bfcb570-dab3-4038-a1aa-8bc7fe2feee8@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Message-ID: <5d8c35fc-0764-4905-9ca6-9232c3d816fa@rnnvmail203.nvidia.com>
+Date: Wed, 13 Aug 2025 08:47:43 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CEB:EE_|MN2PR12MB4077:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1dd3c6c8-9548-448d-2f3b-08ddda80ccf9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|82310400026|1800799024|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZWk4RENMdFpXRVZuSUtyalkvc0lQcEQzcW9DNVhIeDVtdmFGR0w4dGJxYW4y?=
+ =?utf-8?B?N05ydlFiVE03NDU2VDY4SmdjendmZFdQR2VzNWVoZmZ2VFdScERFQXpxVSsw?=
+ =?utf-8?B?UmorNUZOVVVCbGFSOWljdzFWOWx5djVQU2NTUElRZ1RHRDZCVHlvV2pCa3Q3?=
+ =?utf-8?B?NkJxaGdyaEhsZ0phV0xSM1FzaTc0N2xYdVlpdG84UHNvVXdPbzFWVFFnMkpF?=
+ =?utf-8?B?bzFVZ0ZBS1hVb0EzcUw5cUZCcnJjeHdPemloVFltdTZtTnNsK3U2elNuYkFX?=
+ =?utf-8?B?dFdzcS9iak1vb2ZzczFwcjdEQncvMHlYaEJkUnZQOEFMTGJoTVdxREV3YzFk?=
+ =?utf-8?B?NS9yZUN4QXJlcnQySjJGazZmU29ZMEpvb3I5RGd1NlNob01aMkd3bTFVekhW?=
+ =?utf-8?B?QTZNTDVpdEVXL0lNT1BJb0NCS2NTanA5cDFIaGpBcHBXVlA4N3hCZUhiQ0hu?=
+ =?utf-8?B?TUF3bS9icDRlTUIwemJEZWFxbWVNM0lTWDZlcVRzZ2lBVTJrTnVPcE9QSmtR?=
+ =?utf-8?B?YnNCSi9mVTMrak5aLzI3QXpaY3A1VHkzVHgwZ1o3TkZYMWFnNTVZZEduTGMw?=
+ =?utf-8?B?R0drNzB5K0gyRThKL2NaUG4wckxzZkRiK2pXdVpiaG1QekVQWnlUU3A3NGpJ?=
+ =?utf-8?B?YTFzbkJkWDlKVDYwNzBQRXdHVFp5cG56Q0tldGE3SkZqc2FLUzk1ZUUxVlNj?=
+ =?utf-8?B?MStvMGZVc25HQmREZXNINTlkV2RlWExuMDNIWEFncHBZQy8zOFJYUkhzYk9a?=
+ =?utf-8?B?bThXV2FjV2w1RDY4djJ0NXd0TXVxOGIxRFFsNDFoRjU3WER6QTc3bWRKUys3?=
+ =?utf-8?B?Q3pIVjNjZW0yTXNyaDhDN0hyYjBnZ3NQVlNhRmlpV0JHMHFuOU5GZi9pTG42?=
+ =?utf-8?B?aVJ2Mk9ldU9YcEVCa2c0cGdtUU9IVmpyNnkvd053Q1JTMUFOeDFRKzlTOEF4?=
+ =?utf-8?B?VDQ2ZmdkVXZTYjhSY01aVG1YRUlMdmZvTGxMeGNPS2RNb29IRW0rM0pUaStN?=
+ =?utf-8?B?VkVGYkJrbjRDekp2TkhEQ3BIejBVMlE2b2xOS050Rk56cTdaRTVtd0xUUEFn?=
+ =?utf-8?B?c0hBNlU3Q3NVbnZUdU1DN1owcUVKOGVOVnE4V0sxaTdKeTRuYjcwamV1TnVu?=
+ =?utf-8?B?WmtxSzc1eWROYktCeWxUeHg2UWt1cDFLNHZONytBZzlybWVkbkxYNDBkR2hV?=
+ =?utf-8?B?YTdsUnNTT1VmY2o0T21UNytQVDRUOEp3SzZycTdtTWVSWDRuckFDRnYxajBw?=
+ =?utf-8?B?V0tPYUFMOG1HS3VxcEwzOVJOKzFvN2NyWDZUV2hjL2JyMGg3UjZnenBZNDdl?=
+ =?utf-8?B?Q1B4SGRrQW5KazNpZy9kZnpjTHZac1lNV0NoSHZVczBkbVpkMnlNQk00SkV0?=
+ =?utf-8?B?UC9KT1BoQXZpNVhJVUtZM2lDWlkreUdKaWVpK2h4M00zRVltOGhJcjJXU281?=
+ =?utf-8?B?TUFESVJGZ1dOejlhNXFxenBTOVd2VHhpZUU0eVJkeitUQmZUK1NRclVRcDRX?=
+ =?utf-8?B?RkZ3Nlo0c2hncCtCOFNYMjhDZzRZY1lrSDJjRFg2bGFGK21CcG8yOStrbE8r?=
+ =?utf-8?B?d3ZManlSRExJQWxHWU1GWjZBcFFIS0pQNC9TallJcU9OYXl5MkFwR3ZueWUy?=
+ =?utf-8?B?SWExNm85dE9RYjRtcXczc0NKTVBVVlRkSndyMEVPQ2dSU3ZLT3loeFFDRmM5?=
+ =?utf-8?B?RktUVDlxclZxN0NUNlExY3NMeUo1NDZyQXhmRllYLzhVek1zdjVqeHVWSmli?=
+ =?utf-8?B?WXFpT0FicjZQOWtOSjg3aTZwRDZxRmp0ckxmeWtqNldwTUMxTWxKd09YUmcw?=
+ =?utf-8?B?R042U012a2FFL3RKSkt2YmdGRmNRUWp6TGdEWVh3RzAyUzgreDZqYjJJemNF?=
+ =?utf-8?B?Ty9OREpyUEpTRmdXWDhiVmNrTmJobHBXU09DaFl6ZW1ic0d6UnRqZURlRGZr?=
+ =?utf-8?B?UlVWamc2NWtPb1d0eXJUNG1sR0VCQ0swQlVFUzZHQThTZDIwN0FBQWFTYW1m?=
+ =?utf-8?B?dXVLZTMyRDZza2U3K0dmVGNDWG5YYjdYcGZTamljT0JpVXlpcERLVE11ajFo?=
+ =?utf-8?B?T09OWnJiK0pKNmRMSUo4azJIZE9RK25kNm5Jdz09?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 15:48:08.5365
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1dd3c6c8-9548-448d-2f3b-08ddda80ccf9
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CEB.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4077
 
-On Wed, Aug 13, 2025 at 05:17:28PM +0200, Gabor Juhos wrote:
-> 2025. 08. 13. 15:10 keltezéssel, Andy Shevchenko írta:
-> > On Wed, Aug 13, 2025 at 12:36:45PM +0200, Gabor Juhos wrote:
-> >> 2025. 08. 11. 22:26 keltezéssel, Andy Shevchenko írta:
-> >>> On Mon, Aug 11, 2025 at 09:49:56PM +0200, Gabor Juhos wrote:
-> > 
-> > ...
-> > 
-> >>> TBH this sounds to me like trying to hack the solution and as you pointed out
-> >>> the problem is in pinctrl state changes. I think it may affect not only I2C case.
-> >>
-> >> It is not an error in the pinctrl code. I have checked and even fixed a few bugs
-> >> in that.
-> >>
-> >>> And I didn't get how recovery code affects the initialisation (enumeration).
-> >>
-> >> Without the fix, it is not possible to initiate a transaction on the bus, which
-> >> in turn prevents enumeration.
-> > 
-> > But why? As you said below the first pin control state is changed during the
-> > probe, which is fine, and the culprit one happens on the recovery.
+On Tue, 12 Aug 2025 19:26:28 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.148 release.
+> There are 253 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Erm, no. Both happens during probe, before the I2C core tries to enumerate the
-> devices on the bus.
+> Responses should be made by Thu, 14 Aug 2025 17:27:05 +0000.
+> Anything received after that time might be too late.
 > 
-> > Why is recovery involved in probe? This is quite confusing...
-> Let me try to explain it differently. Here is the simplified call chain:
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.148-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 > 
->   i2c_pxa_probe()
->      ...
->      i2c_pxa_init_recovery()
->         pinctrl_select_state()                  <- selects GPIO state
->         pinctrl_select_state()                  <- selects default (I2C) state
->      ...
->      i2c_add_numbered_adapter()
->          i2c_register_adapter()
->              ...
->              i2c_init_recovery()
->                  i2c_gpio_init_recovery()
->                      i2c_gpio_init_generic_recovery()
->                          pinctrl_select_state() <- selects GPIO state***
->                          ...
->                          pinctrl_select_state() <- selects default (I2C) state
->              ...
->              bus_for_each_drv()
->                  __process_new_adapter()
->                      i2c_do_add_adapter()
->                          i2c_detect()           <- enumerates the devices
+> thanks,
 > 
-> The culprit is the first pinctrl_select_state() call in
-> i2c_gpio_init_generic_recovery() marked with '***'.
-> 
-> That call causes the controller to go stuck, which makes it impossible to
-> transfer anything on the bus.
+> greg k-h
 
-Probably because when GPIO state is selected, the I2C bus pins end up
-being set low, which the I2C controller sees, so it thinks there's
-another device communicating on the bus. I could be wrong, as I
-don't have the hardware to hand to research the issue again.
+All tests passing for Tegra ...
 
-I have a vague memory that the GPIO state must _always_ reflect the
-actual pin state before switching to it to avoid glitches and avoid
-inadvertently changing the I2C controller state.
+Test results for stable-v6.1:
+    10 builds:	10 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    119 tests:	119 pass, 0 fail
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Linux version:	6.1.148-rc1-g7bc1f1e9d73f
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
