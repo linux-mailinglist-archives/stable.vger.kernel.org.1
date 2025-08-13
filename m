@@ -1,155 +1,98 @@
-Return-Path: <stable+bounces-169372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FE1B248AC
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 402E8B248DB
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42111582F61
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 11:44:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E5BE5610EE
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 11:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6882F7443;
-	Wed, 13 Aug 2025 11:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3788D2F7441;
+	Wed, 13 Aug 2025 11:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8yXtjeB"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA0D2D94B0
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 11:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36C42D0C96;
+	Wed, 13 Aug 2025 11:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755085442; cv=none; b=JKtYtC2XL6JMu7XyNPcioX7dHdrsp+7guLwfLE3jYUKen7jSvZGwf5KodNrIdyuiQf0RE+oocZq07AVSzFx3XkxHOJxbjlLat4wnaXHAxiRDKYLWCwekST9oHAzhByAZ8vzkWs9rPN7RjHF/NBfLESzsQBrHAGew4eOvLuDOsVg=
+	t=1755086019; cv=none; b=cT5DDusNGQAwd4abnJR98ZHAzgiv3/VFj1/r4UmWDJu/QBdmBDOeqPbF+YmES0W8Yfceu/u0GT+0dj+vyWq8mRn/htE/vaT2zsuijcfXNP0YwtboUXRUa2Jqwn9U0apMlwGM8ue35C4AbEkn2a5tu6ahYQiLTI6QnJyyTvHFI2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755085442; c=relaxed/simple;
-	bh=Zf2QhI8jQ0RJ3JTvKnj4feUNlf+wUitU/3CBcHEaS3k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZIEIDb9Nu6L1n+BQxZL9uIJ876u+vaDkALsE68Ox4uPTIfSKQMAkwqe0RoVoKimkePVjb6V8MGIWLQvpbl/nlS4JY3Uv16kaQn9xMHf32gND9bEwkcA73gzS8TPiVrB4WQhGWbJqQBo4DXjeYXE/kWNeKrWPv+NTCb6nI40huuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 354C712FC;
-	Wed, 13 Aug 2025 04:43:52 -0700 (PDT)
-Received: from [10.57.1.244] (unknown [10.57.1.244])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BC853F738;
-	Wed, 13 Aug 2025 04:43:57 -0700 (PDT)
-Message-ID: <0d90f4c0-3eb8-4004-b22e-1a840d69fb50@arm.com>
-Date: Wed, 13 Aug 2025 12:43:50 +0100
+	s=arc-20240116; t=1755086019; c=relaxed/simple;
+	bh=evw2RJ3cEyt+soVXm8eE1TcVcHjaMDXk7/89m7+7DCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MrMCTzSZGRltqs6RlTEhgDExQCSvoVDVy4WUewQBIzQ5V0KuehAvpF1M1dN5mflLT1QUpaY6LeV0n1NPB5xzM4PSPo2ZlXe64ly42oObQUPx4DCwrYD1tIewhbg/fC8bxQgEly3278PxA6QNyUtIXybSBB94yYuwt8NuxAsid4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8yXtjeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C611EC4CEEB;
+	Wed, 13 Aug 2025 11:53:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755086015;
+	bh=evw2RJ3cEyt+soVXm8eE1TcVcHjaMDXk7/89m7+7DCU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j8yXtjeBH22ivW2qPdxKBx0E8AZE89hBnCIyegabVdB8zsyZOWqWqcYuIruhws3sj
+	 KTTojhrqJt18BTy1o1H9AlTJ59a5XLDKQ2HJT9KqRpSEwhr5zLbY8na6Iw54s5gcKE
+	 LtKHL/gbtgPs8OdXD3cb2LULRVtw2GHBZjiF8FCGLHiZ2vgbg3udWB8DbFleUg/Dee
+	 ubdhjTe5JFTBf/kjo9KOKP6itzx/c+QcW3xycRIWWaHv8VCtJcr39f+7UYmqBeJVKF
+	 3Db2xFFDqHwgiliQheN2+NTItYDbC0safwnoyxgaA2fFX2dba9IZSKxsU2+hw08Pxk
+	 O0K8lZRDy8x+g==
+Date: Wed, 13 Aug 2025 12:53:28 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, achill@achill.org
+Subject: Re: [PATCH 6.12 000/369] 6.12.42-rc1 review
+Message-ID: <55070b66-0994-4064-9afa-de1e53d06631@sirena.org.uk>
+References: <20250812173014.736537091@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] arm64: Sleeping function called from invalid context in
- do_debug_exception on PREEMPT_RT
-To: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, Yunseong Kim <ysk@kzalloc.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org, Mark Rutland <mark.rutland@arm.com>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Austin Kim <austindh.kim@gmail.com>,
- linux-rt-devel@lists.linux.dev, syzkaller@googlegroups.com,
- stable@vger.kernel.org, Ada Couprie Diaz <ada.coupriediaz@arm.com>
-References: <c36e8dca-d466-40ad-ad51-2b75e769ff47@kzalloc.com>
- <aJw3L7B7u5qAPOMz@e129823.arm.com>
- <17f91b9a-0a3a-47e1-bdfb-06237ae5da55@kzalloc.com>
- <aJxT2ie1wW2+/OCg@e129823.arm.com> <aJxjvh4sAcUOJT2V@uudg.org>
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Content-Language: en-US
-Organization: Arm Ltd.
-In-Reply-To: <aJxjvh4sAcUOJT2V@uudg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="naKEERq1eg+hPBfh"
+Content-Disposition: inline
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+X-Cookie: Turn the other cheek.
 
-Hi all,
 
-On 13/08/2025 11:06, Luis Claudio R. Goncalves wrote:
-> On Wed, Aug 13, 2025 at 09:59:06AM +0100, Yeoreum Yun wrote:
->> +Ada Couprie Diaz
-Thanks for the ping !
->>> Hi Yeoreum,
->>>
->>> Thank you for pointing it!
->>>
->>> On 8/13/25 3:56 PM, Yeoreum Yun wrote:
->>>> Hi Yunseong,
->>>>
->>>>> | BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
->>>>> | in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 20466, name: syz.0.1689
->>>>> | preempt_count: 1, expected: 0
->>>>> | RCU nest depth: 0, expected: 0
->>>>> | Preemption disabled at:
->>>>> | [<ffff800080241600>] debug_exception_enter arch/arm64/mm/fault.c:978 [inline]
->>>>> | [<ffff800080241600>] do_debug_exception+0x68/0x2fc arch/arm64/mm/fault.c:997
->>>>> | CPU: 0 UID: 0 PID: 20466 Comm: syz.0.1689 Not tainted 6.16.0-rc1-rt1-dirty #12 PREEMPT_RT
->>>>> | Hardware name: QEMU KVM Virtual Machine, BIOS 2025.02-8 05/13/2025
->>>>> | Call trace:
->>>>> |  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
->>>>> |  __dump_stack+0x30/0x40 lib/dump_stack.c:94
->>>>> |  dump_stack_lvl+0x148/0x1d8 lib/dump_stack.c:120
->>>>> |  dump_stack+0x1c/0x3c lib/dump_stack.c:129
->>>>> |  __might_resched+0x2e4/0x52c kernel/sched/core.c:8800
->>>>> |  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
->>>>> |  rt_spin_lock+0xa8/0x1bc kernel/locking/spinlock_rt.c:57
->>>>> |  spin_lock include/linux/spinlock_rt.h:44 [inline]
->>>>> |  force_sig_info_to_task+0x6c/0x4a8 kernel/signal.c:1302
->>>>> |  force_sig_fault_to_task kernel/signal.c:1699 [inline]
->>>>> |  force_sig_fault+0xc4/0x110 kernel/signal.c:1704
->>>>> |  arm64_force_sig_fault+0x6c/0x80 arch/arm64/kernel/traps.c:265
->>>>> |  send_user_sigtrap arch/arm64/kernel/debug-monitors.c:237 [inline]
->>>>> |  single_step_handler+0x1f4/0x36c arch/arm64/kernel/debug-monitors.c:257
->>>>> |  do_debug_exception+0x154/0x2fc arch/arm64/mm/fault.c:1002
->>>>> |  el0_dbg+0x44/0x120 arch/arm64/kernel/entry-common.c:756
->>>>> |  el0t_64_sync_handler+0x3c/0x108 arch/arm64/kernel/entry-common.c:832
->>>>> |  el0t_64_sync+0x1ac/0x1b0 arch/arm64/kernel/entry.S:600
->>>>>
->>>>>
->>>>> It seems that commit eaff68b32861 ("arm64: entry: Add entry and exit functions
->>>>> for debug exception") in 6.17-rc1, also present as 6fb44438a5e1 in mainline,
->>>>> removed code that previously avoided sleeping context issues when handling
->>>>> debug exceptions:
->>>>> Link: https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/arch/arm64/mm/fault.c?id=eaff68b3286116d499a3d4e513a36d772faba587
->>>> No. Her patch commit 31575e11ecf7 (arm64: debug: split brk64 exception entry)
->>>> solves your splat since el0_brk64() doesn't call debug_exception_enter()
->>>> by spliting el0/el1 brk64 entry exception entry.
->>>>
->>>> Formerly, el(0/1)_dbg() are handled in do_debug_exception() together
->>>> and it calls debug_exception_enter() disabling preemption and this makes
->>>> your splat while handling brk excepttion from el0.
-That's correct : one of the goal of the series was to be able to
-adapt each debug exception handler to what is needed,
-which allowed us to keep preemption enabled, or re-enable it
-much earlier, to prevent issues as above for some exceptions.
->>> Do you think a fix is necessary if this issue also affects the LTS kernel
->>> before 6.17-rc1? As far as I know, most production RT kernels are still
->>> based on the existing LTS versions.
-Luis originally reported the issue on kernels 6.13-rt and 6.14-rc1[1].
-After some quick testing, the issue is present on
-6.1-rt, 6.6-rt and 6.12-rt as well.
-5.15-rt either doesn't have the issue, or doesn't report it.
->> IMHO, I think her patch should be backedported.
-> I also strongly suggest backporting Ada's patch series, as without them
-> using anything that resorts to debug exceptions (ptrace, gdb, ...) on
-> aarch64 with PREEMPT_RT enabled may result in a backtrace or worse.
->
-> Luis
-Hopefully it shouldn't be too hard to backport for recent kernels,
-as I don't think those areas change a lot, but I haven't looked into it.
+--naKEERq1eg+hPBfh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'm not sure when I would have time to work on backporting, but
-I'd be happy to help anyway or do it if I have the time in the future,
-given there seems to be some interest (and good reasons).
->> [0]: https://lore.kernel.org/all/20250707114109.35672-1-ada.coupriediaz@arm.com/
->>
->> Thanks.
->>
->> --
->> Sincerely,
->> Yeoreum Yun
-Best,
-Ada
-[1]: https://lore.kernel.org/linux-arm-kernel/Z6YW_Kx4S2tmj2BP@uudg.org/
+On Tue, Aug 12, 2025 at 07:24:57PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.42 release.
+> There are 369 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--naKEERq1eg+hPBfh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmicfLgACgkQJNaLcl1U
+h9Dqxgf7BMGFlUnWJpeScLywEetujfk8HGzrSYrJLNEYj91Yrp92lGW/OCWC+rcc
+Fc6h82In5dI1FFP92ahZIADcYtW33Sfg0C4eDQFvJr2WYIbJcLJ9pgVUk/JfsvW2
+XwrW+AsajQEHQX+X3GgHQjNIZjbVu0QqsFPwSS01RJJgPzqaSLQcN/S08VS6iBsH
+In/pVPI2LO+XyR4gDRCDqFvAfPFITNzLwHexn5eFr+QJ9EC2v2tCYVlf2d5GtB7O
+KGazLLqgZ7u64FtfL6F9eS/7ul6z3Hqg3WUXtr6eUhrtaZSCGtN5p8XT+YvvDTsc
+V02fDxAWMN0gsdAnY0dNI2Bn8cZx/w==
+=p2Kl
+-----END PGP SIGNATURE-----
+
+--naKEERq1eg+hPBfh--
 
