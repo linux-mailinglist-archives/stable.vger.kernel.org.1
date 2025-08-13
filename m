@@ -1,102 +1,186 @@
-Return-Path: <stable+bounces-169397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A23B24B2D
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:53:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFAB24B29
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:53:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4D1F3BD853
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:49:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC39567008
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18AF42EAB8F;
-	Wed, 13 Aug 2025 13:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4F12EB5CD;
+	Wed, 13 Aug 2025 13:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RQpLU5gK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5Vo9BYe"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487192EA742
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3572ED159
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755092970; cv=none; b=L+ywY2u5Ubk7qAkmiD6owsAHNioW3LZJbf6U3/9Ca02Ye6nAyAoEFRNQ/5/hTDLc2QU+uiZCcWkIgu9aTQt8olykjumA3L4wlf7FOmDVCMRexnWyP+0V0N+SZGEx53ulrddfLvqRgL1SfuQpVIUAwgOcFNlq52fcS5yLUiXmJac=
+	t=1755092976; cv=none; b=jQeAbT+2pHYv/Eak44QgEyv758FbtkAeJ2JhiPq/6Hj470IK5pdOH1eqwE2khP/poPjdMIuTA3MO83eHHWpPTTCRWBMTgHO8Um8mBU3/rBgKF0hANeA6L3AmALcCW234vzP6TLzEtFceOaYNCXetNh2ILv636d5rOY3fBUiDFfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755092970; c=relaxed/simple;
-	bh=ngX7KqakvaHrr7jdbnboB1CiS7jx0blLv4FZ9WlGS6Y=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=iccE3s+5kljXX13gBX5Gn0ZRScFYbdMGWeWzOQieKK7dTTTtZQoWHaOHWii2a7h6LJeW6ZGhyfJD5FMgX686SVJIa1PzBdvUX9aZcMqpDav/C9lAwtwYf+erZsiR/hRr5DbVCtyS+VjFfi9Tm7LxRIQUNv/BgmjMxMB6KMENtOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RQpLU5gK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755092968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ngX7KqakvaHrr7jdbnboB1CiS7jx0blLv4FZ9WlGS6Y=;
-	b=RQpLU5gKqAQmlPqTTWU06eTp7WVhLv3Vnl4g51hLES5izZjnBGAH2eCxdM8ZL0khQVKRt1
-	AtfNiUcgpOHAwHnSg38LDq8hjUbBN87OQHr+qJ2IWlQq3jmeXfIs/mICKHioPYJ3Ch5MUX
-	cP83/PuVPFzdNG3hDphW/vCyaYsQxvU=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-85-7Vo1U-J3ONyy5NFUj1oonA-1; Wed,
- 13 Aug 2025 09:49:25 -0400
-X-MC-Unique: 7Vo1U-J3ONyy5NFUj1oonA-1
-X-Mimecast-MFC-AGG-ID: 7Vo1U-J3ONyy5NFUj1oonA_1755092957
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2ACA2195609F;
-	Wed, 13 Aug 2025 13:49:16 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.21])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1AE64300145D;
-	Wed, 13 Aug 2025 13:49:08 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <aJwj4dQ3b599qKHn@codewreck.org>
-References: <aJwj4dQ3b599qKHn@codewreck.org> <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org> <202508120250.Eooq2ydr-lkp@intel.com> <20250813051633.GA3895812@ax162>
-To: Dominique Martinet <asmadeus@codewreck.org>,
-    Christian Brauner <brauner@kernel.org>
-Cc: dhowells@redhat.com, Nathan Chancellor <nathan@kernel.org>,
-    kernel test robot <lkp@intel.com>,
-    Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-    "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-    Alexander Viro <viro@zeniv.linux.org.uk>,
-    Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
-    oe-kbuild-all@lists.linux.dev,
-    Linux Memory Management List <linux-mm@kvack.org>,
-    Maximilian Bosch <maximilian@mbosch.me>, Ryan Lahfa <ryan@lahfa.xyz>,
-    Christian Theune <ct@flyingcircus.io>,
-    Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-    linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >= folio size
+	s=arc-20240116; t=1755092976; c=relaxed/simple;
+	bh=j+9gjRNLR/A6RtIPYTYKsARAx+3bl2FoKC/cPIyIR6c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nTeR7Z9SaGoxaHdIBs+3VGs9PAZkGUzxVWPkjRheY+P/1tAHDmmfKt0mKbjtE6DgdysuQ0/0B0CK8Z4UE6nQeCyTgzt5HE99BUL4h/ue0ctF+uFH7fCEbJWTUaeXGG5YZf6KysLQs/S6LJtI3tmmmkiLtJIF6gO7Z3hIS1hbFX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5Vo9BYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37066C4CEEB;
+	Wed, 13 Aug 2025 13:49:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755092975;
+	bh=j+9gjRNLR/A6RtIPYTYKsARAx+3bl2FoKC/cPIyIR6c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=q5Vo9BYePuqZJEW7qb7hhgUApdipJj3CRE1RX9goCLeVkuxY+8uB84J7tJVjBHXGo
+	 VSE+Pnzz4gPMFrd2+Gn0JAo/7GAvC/H10fbQH1xMiGwgTbTCHCG5Mn1jKMGxUP3Yhy
+	 zRxyFNsUi6CKKXAjfJSPDAQy91lyUwhNkRh3vmq08numj9fuS44WfXBBnAx647TSWf
+	 s0KIiW4X5eXVk9MVwy3/Ynjv7rj2dAPaYM5WqSfIk6+YtfMb52JVbDDk6JoF331I8H
+	 NkH2R//BLI5B4I4gZ7tlGqXoQkE3IivEcOi/kc4BScI6Q/NV3xP07y3KPyXendJOWy
+	 It11rRYznNpyA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: John Ernberg <john.ernberg@actia.se>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
+Date: Wed, 13 Aug 2025 09:49:32 -0400
+Message-Id: <20250813134932.2037778-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025081259-headset-swinger-4805@gregkh>
+References: <2025081259-headset-swinger-4805@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <758962.1755092947.1@warthog.procyon.org.uk>
-Date: Wed, 13 Aug 2025 14:49:07 +0100
-Message-ID: <758963.1755092947@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
 
-Dominique Martinet <asmadeus@codewreck.org> wrote:
+From: John Ernberg <john.ernberg@actia.se>
 
-> I assume Andrew will pick it up eventually?
+[ Upstream commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f ]
 
-These might be more a Christian/VFS thing.
+The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
+up and down events when the WWAN interface is activated on the modem-side.
 
-David
+Interrupt URBs will in consecutive polls grab:
+* Link Connected
+* Link Disconnected
+* Link Connected
+
+Where the last Connected is then a stable link state.
+
+When the system is under load this may cause the unlink_urbs() work in
+__handle_link_change() to not complete before the next usbnet_link_change()
+call turns the carrier on again, allowing rx_submit() to queue new SKBs.
+
+In that event the URB queue is filled faster than it can drain, ending up
+in a RCU stall:
+
+    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
+    rcu: blocking rcu_node structures (internal RCU debug):
+    Sending NMI from CPU 1 to CPUs 0:
+    NMI backtrace for cpu 0
+
+    Call trace:
+     arch_local_irq_enable+0x4/0x8
+     local_bh_enable+0x18/0x20
+     __netdev_alloc_skb+0x18c/0x1cc
+     rx_submit+0x68/0x1f8 [usbnet]
+     rx_alloc_submit+0x4c/0x74 [usbnet]
+     usbnet_bh+0x1d8/0x218 [usbnet]
+     usbnet_bh_tasklet+0x10/0x18 [usbnet]
+     tasklet_action_common+0xa8/0x110
+     tasklet_action+0x2c/0x34
+     handle_softirqs+0x2cc/0x3a0
+     __do_softirq+0x10/0x18
+     ____do_softirq+0xc/0x14
+     call_on_irq_stack+0x24/0x34
+     do_softirq_own_stack+0x18/0x20
+     __irq_exit_rcu+0xa8/0xb8
+     irq_exit_rcu+0xc/0x30
+     el1_interrupt+0x34/0x48
+     el1h_64_irq_handler+0x14/0x1c
+     el1h_64_irq+0x68/0x6c
+     _raw_spin_unlock_irqrestore+0x38/0x48
+     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
+     unlink1+0xd4/0xdc [usbcore]
+     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
+     usb_unlink_urb+0x24/0x44 [usbcore]
+     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
+     __handle_link_change+0x34/0x70 [usbnet]
+     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
+     process_scheduled_works+0x2d0/0x48c
+     worker_thread+0x150/0x1dc
+     kthread+0xd8/0xe8
+     ret_from_fork+0x10/0x20
+
+Get around the problem by delaying the carrier on to the scheduled work.
+
+This needs a new flag to keep track of the necessary action.
+
+The carrier ok check cannot be removed as it remains required for the
+LINK_RESET event flow.
+
+Fixes: 4b49f58fff00 ("usbnet: handle link change")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adjust context in header ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/usb/usbnet.c   | 11 ++++++++---
+ include/linux/usb/usbnet.h |  1 +
+ 2 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 1e8f395c8639..2957e3a0080c 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1106,6 +1106,9 @@ static void __handle_link_change(struct usbnet *dev)
+ 		 * tx queue is stopped by netcore after link becomes off
+ 		 */
+ 	} else {
++		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
++			netif_carrier_on(dev->net);
++
+ 		/* submitting URBs for reading packets */
+ 		tasklet_schedule(&dev->bh);
+ 	}
+@@ -1978,10 +1981,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
+ void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
+ {
+ 	/* update link after link is reseted */
+-	if (link && !need_reset)
+-		netif_carrier_on(dev->net);
+-	else
++	if (link && !need_reset) {
++		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
++	} else {
++		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
+ 		netif_carrier_off(dev->net);
++	}
+ 
+ 	if (need_reset && link)
+ 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
+diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+index fc6ed1311589..83ca77818822 100644
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -83,6 +83,7 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++#		define EVENT_LINK_CARRIER_ON	14
+ 	u32			rx_speed;	/* in bps - NOT Mbps */
+ 	u32			tx_speed;	/* in bps - NOT Mbps */
+ };
+-- 
+2.39.5
 
 
