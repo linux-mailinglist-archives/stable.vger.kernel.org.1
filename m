@@ -1,67 +1,54 @@
-Return-Path: <stable+bounces-169464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B1AB25604
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 23:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1535EB2560D
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 23:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B3CE1BC32C5
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 21:56:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 757231BC7920
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 21:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499EA2EA152;
-	Wed, 13 Aug 2025 21:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94E22ECD37;
+	Wed, 13 Aug 2025 21:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="cZ2/tfdm"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="lxDS+N9M"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3C32E716C
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 21:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6781E89C;
+	Wed, 13 Aug 2025 21:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755122178; cv=none; b=IQbp74hsUp957YFOR5BMXFj51slr+SeAjZImcrChRi6qA1b12Jm69CJmlga5IkW7Q4NjYo1IQnzpD2oEkwG9bvQTUgB5SYVxF0Rw3VcZwJzrEMo6rvRosYbdFs1wWvFjWMEMFRpI6W4/PWt1MEWWzFVHcpQ0HNihp5RPAMYu8CI=
+	t=1755122343; cv=none; b=ofmysM2986igu4ycPI0LHhQT0W2SjUBg1tQzeFgciI34w1gDTChqnQwdjInl4oCG1JSyzzYlc9hswcqPzrOmKxe3gqq3ni26E0x4Moy6vI4Qvm0yGrcHKlpMwiFE/0AFUyN/tXiRIl/1gi6mZebQrVv2nB3TOm5c1PRyhkViBB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755122178; c=relaxed/simple;
-	bh=3bccP5G4ZVDV6OAhkchGrCnYBJbFBkw1qqCcvCIeSRE=;
+	s=arc-20240116; t=1755122343; c=relaxed/simple;
+	bh=7uGLGYdsjfx6KGSsceGFnWc45LxnvnvtnTpjtN4oVTY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MneMkzu+Q0psY7cpluMrfBzExB4v6o2LZWhKPbkuzjHCqdna+jn3yZFJbvaUcbuvDt1k0If/7w0eaCunOVkOKtbgaWoq7j6VpfhFFDfEjPCkr6pF467LvuFu6KxTMCFkx8eItcRc/Mx8W8bqA0RxcTscGHxNKeZvvOQP1JzeVwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=cZ2/tfdm; arc=none smtp.client-ip=35.89.44.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5006b.ext.cloudfilter.net ([10.0.29.217])
-	by cmsmtp with ESMTPS
-	id mEPtuuH3iJLhFmJSBuGR1i; Wed, 13 Aug 2025 21:56:15 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id mJSBuAXBeQb4ImJSBuDyio; Wed, 13 Aug 2025 21:56:15 +0000
-X-Authority-Analysis: v=2.4 cv=GcEXnRXL c=1 sm=1 tr=0 ts=689d09ff
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=SXGRLDKPG7BjaL2zA-YA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ee3sYPoOI8DKcngtIejia/XVFEfxIt+ZRzbJiXxB1I4=; b=cZ2/tfdmFl1io2CaRSdy9O//cX
-	0E+r6wIa/q/JFaNY1hrksWlAcXjRbO5eTePuF68qD4dhAi9F7rPvkRw26sQdCaB9nFSDbKdpr1H/b
-	eej8cA+CHhpX6AGWWVNvI5bEFWQIce0eA1iNrRys6A79EsvVd6+UIs5Cw1jzaO0/3MVTVd/HunSyi
-	4lXcKQvpZGRFORCl3Aq3m9GUHxNJ/vr6yBhYFdlfcfdw8koXPBNsWJ/RG391/ocrdKhfrg2m2smkO
-	+63kl5m0hQTOwv4eIj1CSeDFnqcKVRTLuOC4koD22oWBNvz+PGW34k2l+Xew6sXlLL1jUqbZGB6/V
-	WuyJOZoA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:39160 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1umJS9-000000021yI-3AsY;
-	Wed, 13 Aug 2025 15:56:13 -0600
-Message-ID: <8a4d31ce-a535-4558-8cdf-8238d7e8e3e0@w6rz.net>
-Date: Wed, 13 Aug 2025 14:56:11 -0700
+	 In-Reply-To:Content-Type; b=XdEqTiWmVgCroOlQ0wNqCYQ6iFYYwnwjppomNCs4pw9pLLWWCunwvZK7CVlIcsleMU2PEBV8om8VvYgWAJYFXOAmu1/XloxhQ5yoiXLcvb2JRGvtquSHRYcKgR8GeuzCbbtR0ddk6XMuMSL4fTAIMPN12h6G0rbqjefFLzaDSks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=lxDS+N9M; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [IPV6:2601:646:8081:9484:5b47:dac3:aa45:a64a] ([IPv6:2601:646:8081:9484:5b47:dac3:aa45:a64a])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 57DLw06P765108
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Wed, 13 Aug 2025 14:58:00 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 57DLw06P765108
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025072201; t=1755122281;
+	bh=nXQBTwyqB9t6cpucEWceyx0dfvy5zDVB162E3UNuLpw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lxDS+N9MyCNsYt8DOQ+03VTIw/0a6vDSD868tOXlwtUOiQRqMgbWIsTtXb0tpDHWf
+	 PuK5v/A6NwdLcZo8pw5ehl/yiQ4XCDayVljOQL33q7oEb/ZqWXTYhguh4ddqnoIU2Z
+	 +QFAw4sXBsB7K2F1Utp67RbFIkDuwxfztN8LNn3whdfBNgSvfzSs6y4c1mEJcUv74Z
+	 YR9EsQXQoofmgx2O5nmoNhoL26Da8k20BUt0OGyg/NNVJ2uNxsxSnubKPX0M0H0kfk
+	 Na8Ctm+iHWuCIWyxljQ8S1/I6YliPqCVUWG1jHhBSEnc3pqMD9MC4j6ACiSBX4T3GF
+	 eDLHd0vAOxcMg==
+Message-ID: <d0cac7d8-3036-4241-b11c-f005224daefd@zytor.com>
+Date: Wed, 13 Aug 2025 14:57:55 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,63 +56,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/253] 6.1.148-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250812172948.675299901@linuxfoundation.org>
+Subject: Re: [PATCH v3 1/1] x86/fred: Remove ENDBR64 from FRED entry points
+To: Dave Hansen <dave.hansen@intel.com>, "Xin Li (Intel)" <xin@zytor.com>,
+        linux-kernel@vger.kernel.org
+Cc: luto@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, jmill@asu.edu,
+        peterz@infradead.org, andrew.cooper3@citrix.com,
+        stable@vger.kernel.org
+References: <20250716063320.1337818-1-xin@zytor.com>
+ <e5a7d108-f900-4a63-8116-c9eb54171976@intel.com>
 Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250812172948.675299901@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <e5a7d108-f900-4a63-8116-c9eb54171976@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1umJS9-000000021yI-3AsY
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:39160
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 99
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfE94iZw5dSSxMOAOmN0npno9raleEzlRT0up/YtrhkBrjXn0CfCvadBG3Hr+a+gKuYotxYYrjzxTqzDgUddFjjhF+uAUzZIIMmEbtLfz35MJtzcysfH2
- KnCrmDPdCvSDoL+XgBNM+YfVaYbMBn23o1EoXm+TlZ/52nMoLDbpq5Xd80p71QEhgYKTWZI6EXVvBA==
 
-On 8/12/25 10:26, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.148 release.
-> There are 253 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 14 Aug 2025 17:27:05 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.148-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 2025-08-13 14:07, Dave Hansen wrote:
+> On 7/15/25 23:33, Xin Li (Intel) wrote:
+>> The FRED specification has been changed in v9.0 to state that there
+>> is no need for FRED event handlers to begin with ENDBR64, because
+>> in the presence of supervisor indirect branch tracking, FRED event
+>> delivery does not enter the WAIT_FOR_ENDBRANCH state.
+>>
+>> As a result, remove ENDBR64 from FRED entry points.
+> 
+> So, the spec is being updated or has been updated to reflect the new
+> architecture, right?
+> 
+> Remind me, are there no FRED systems out in the wild today, so we don't
+> have to worry about breaking anything?
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Correct. The FRED v9 spec contains this change.
 
-Tested-by: Ron Economos <re@w6rz.net>
+All production hardware and late pre-production hardware will have this.
+
+	-hpa
 
 
