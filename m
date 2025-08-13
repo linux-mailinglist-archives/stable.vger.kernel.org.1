@@ -1,121 +1,126 @@
-Return-Path: <stable+bounces-169388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E882B24A5C
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:15:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA30B24A5D
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93032586F61
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:12:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22DFA3B4A39
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CF22E719A;
-	Wed, 13 Aug 2025 13:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2562E717F;
+	Wed, 13 Aug 2025 13:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RxEgLO6q"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="S6G+uz4j"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9C026FA6E;
-	Wed, 13 Aug 2025 13:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88E8185B67
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755090694; cv=none; b=KhrJl9IWmqpkxZkgfZSJtlJjSg1AuQ/rPdUgDw75YqfupG+xysJJZIB71uqBpzkt8n2Gnw+mFpBVP+bIVe/00e8axkX1+upM2QcojFFykkXTFmmC8CpfQKj/kckYB5ddtKVQPZSipAVm10onjKte9g6ytyvp5zbvzhEuN49Lt6w=
+	t=1755090758; cv=none; b=q7WXaCvdc72Up5+SWq3MszR3jsV1miDd1bEWsOooz3+10N0nivgcbX90LrUrPbHh+hChOktcz3BuJFOxbcmzN9LJeLcNEmXCuFkyy4B36s3dF8/FDbYcxWdAyIloSXsCNuRIy9Qr7L/Y5Pe8Q8NEZvq419BTOiOR3+rDYKDFyvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755090694; c=relaxed/simple;
-	bh=q8TIZHVsbpGiRDf0kANTJMdQ12mBUINz3XeIl5TqG6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BV/FSychXZt07U0NCWba+DmQr7dM86tIqxO0GPbpDzHjLxoZtm8+vFcZdx9DSXpUIouX31dORXApGWN0mB7Rm+7H4GWqECudx/PPT3pCOYrAvu/mfZZ4oztoZY9sGOs8/kCNeUDH9JcVKrzileSqDQvXIL5Vjgv2gMyEMkglByw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RxEgLO6q; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755090693; x=1786626693;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=q8TIZHVsbpGiRDf0kANTJMdQ12mBUINz3XeIl5TqG6M=;
-  b=RxEgLO6qTdht6eSrG3r7qsqxy5aQJOzs9J9NdyTL2tmlaYH9JvQkE/vc
-   DlCk5j5UGlnBwGX10u2Dsz3niY1yVhrsTbWSdGFpccAHizOJCpc0iAGbh
-   Jm8ukuYNjT4cH9TMKkkOo+/tkkp8onJT50nh5bz4obOoI5IOp8yx/WMpL
-   1cUcTCLXLGZZND2D0vBAf4P0Aviit2Z3wECT85ttweHVTXghMgW6qtTbB
-   NSK79JnEOhH8jyMT24O+CVjIgq2CnsIgm2PJJgCzmNpSieGdFZRfQ9/D0
-   qbOPeIhHCh32r9hrxfqwHhCvy2TQgyzhLPzn4DFwKLO5T9+/tXm6DnJr5
-   Q==;
-X-CSE-ConnectionGUID: fxk8/J24TiGCLmfyvtDT8Q==
-X-CSE-MsgGUID: 9640fpgeSyO+x8N0HeMhRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57304120"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="57304120"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:11:31 -0700
-X-CSE-ConnectionGUID: cMXgOAqRTC2XlX23mmY/7A==
-X-CSE-MsgGUID: sRK+mKWDQBuKDzCZdZkvgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="170680302"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:11:27 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1umBGF-00000005RPp-1iZD;
-	Wed, 13 Aug 2025 16:11:23 +0300
-Date: Wed, 13 Aug 2025 16:11:23 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Gabor Juhos <j4g8y7@gmail.com>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>, Hanna Hawa <hhhawa@amazon.com>,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Imre Kaloz <kaloz@openwrt.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] i2c: pxa: handle 'Early Bus Busy' condition on
- Armada 3700
-Message-ID: <aJyO-5k29AAAnHdz@smile.fi.intel.com>
-References: <20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com>
- <20250811-i2c-pxa-fix-i2c-communication-v2-3-ca42ea818dc9@gmail.com>
- <aJpTHKbLbTz-Z3bo@smile.fi.intel.com>
- <27906f7b-b137-4af2-aa87-49519495a34d@gmail.com>
+	s=arc-20240116; t=1755090758; c=relaxed/simple;
+	bh=GgUzu6LME52TpeiHWzbrdSV93Ja1LmmwWYtxTAV0V6M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UI3KJ2YiMjY/VPzd/MJiC4uAOIbNnJhvZmLLSDMt0gUPH7L/okCPbl4rSZyURfdYutsZdkt1wQGQdLktDVRLl/tzSqca4rs04UpoEzjCqc/UkrpwqL6yxWRphBp7OfMrRz8RUEOm9aWAwBSAwGe43e0LdVBCIYufCi4beuEUz7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=S6G+uz4j; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7e835e02d96so455269585a.2
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 06:12:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1755090755; x=1755695555; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JtU72p9c0fOalcp8RP9DRRIkwqBXfYTQn42C9LNbTEE=;
+        b=S6G+uz4jYb3MjRBJvjzapqoHEdhXk8RDJLFLV2fyffZEpHcpdyAK4Co7vnopfLovXN
+         zH/cBJRTsbFv19iCA3aLUHetQ2tXKW1f7q4GVqkXurPNAn49CCvTM1zgSdLv9m1r3ZZC
+         fDxhPrjKM4FbLlq5m+G7aSnhGLhBoKHh6JYKTehyfq7q3Pc/w2PcKvw7mojulZF3Z1hM
+         3b0FGQu23lnZUTNaxF7nPELrkdJzqIEPD/tdt0onS5ES9Im6hpr+/kAUN0hQraTLiD90
+         pT7vOeZ+Lgp82w0G4lBSRCI6NzJb/9S9Tc36PdF2WfzADU65xWfGC50quBBV9YKggnRU
+         yhSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755090755; x=1755695555;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JtU72p9c0fOalcp8RP9DRRIkwqBXfYTQn42C9LNbTEE=;
+        b=CxknBC51iFB+NC7E8boE5xtY6iT62LfztlNSUjEG/6EO1ulU+NJjm+OroRTvpkNomM
+         w5IO4qdeoeWdUncIk3qKSlqDfDjj0VvUG/xJwrKromuF6aQIYQP0MHCAe/GhsVMzLK5X
+         gFQT6lsvr1obIRpE6TFxFbxHd1Cv2EJxg2NXCLsLPpaXIRi2FCk4E660NvMW0+Tji+gF
+         f+8e67amgQnK897S3SHekySh8KeJ1eXbhNYzPJjvBak1s7f+JibjDbKwVsB1bMzuqbAs
+         HwlBVXB8HHCiIsdGOhWCaywEF5nTKwouPHgoGCNL9aowdU4bMIjWXbaTjT/pAFtrQ0gm
+         7TSQ==
+X-Gm-Message-State: AOJu0Yzs+sQ3BRKK3UDyt7tCTosM4fvo0Pw17JEgJSVrs4/4Fq5O036R
+	ZV/8gRdZdYaoEWzWX1KcHz27E9PhPB4+kA3BW3mFjPcMV66hAK61bBMPPBkDNSiiMTCT7CsrUeM
+	4ChunU+5Gz60fKZtF4MwCB0yA6rDF/Baj46V8WFQurw==
+X-Gm-Gg: ASbGncvTeFcZtICeezjMA9ZGINzjexOfBDApAA04R0XbD/5P7rJu6kXz8Z3JcravFV8
+	Kb5FbCU5z68xkkNpk4nbSRvlTEO2Pd//c/NRY1UwcFnCDas8JkXRGVevJMpMZQm92/V58mbKfI2
+	dD/TyeF7k9j1gWin1tTf9Fjaw9moavFuGKjJADSiBf3qLQ3tCirRPxhAc+iv2G1N+hD4EJVJoke
+	CI/cuK+
+X-Google-Smtp-Source: AGHT+IG5QZZnM8BOlOZuuRDsxed9T4NNSIcdVy3asdv+WEHOb8IbJxfeZVezY2LY6qu6NbPDuHh/ZISvs4Hz6d9Xaoc=
+X-Received: by 2002:a05:620a:5613:b0:7e8:39da:9735 with SMTP id
+ af79cd13be357-7e86524c86cmr343807085a.14.1755090755377; Wed, 13 Aug 2025
+ 06:12:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <27906f7b-b137-4af2-aa87-49519495a34d@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20250812173014.736537091@linuxfoundation.org>
+In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Wed, 13 Aug 2025 09:12:23 -0400
+X-Gm-Features: Ac12FXxImiV90KDqFEsliS51c-s2jeKLqGC0XUvACkuiyfMmFUbXrGmqeZOS8OI
+Message-ID: <CAOBMUvjaYR2b3grBiXntb16ny_8RqVVH6NGJnjEYUFU=TmDqVQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/369] 6.12.42-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 13, 2025 at 12:50:35PM +0200, Gabor Juhos wrote:
-> 2025. 08. 11. 22:31 keltezéssel, Andy Shevchenko írta:
-> > On Mon, Aug 11, 2025 at 09:49:57PM +0200, Gabor Juhos wrote:
+On Tue, Aug 12, 2025 at 2:10=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.42 release.
+> There are 369 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 14 Aug 2025 17:27:11 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.42-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-...
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
-> >> Note: the patch is included in this series for completeness however
-> >> it can be applied independently from the preceding patches. On kernels
-> >> 6.3+, it restores I2C functionality even in itself because it recovers
-> >> the controller from the bad state described in the previous patch.
-> > 
-> > Sounds to me like this one should be applied first independently on the
-> > discussion / conclusion on the patch 1.
-> 
-> Yes. At least the users would have a working although not optimal solution in
-> the meantime.
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
-Then please reorder in the next version.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks,
+Brett
 
