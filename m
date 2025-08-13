@@ -1,110 +1,160 @@
-Return-Path: <stable+bounces-169470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721E7B2572E
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 01:04:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5B5B25757
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 01:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21180189A8D4
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 23:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F85C5A467F
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 23:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B812FB989;
-	Wed, 13 Aug 2025 23:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700492D0C80;
+	Wed, 13 Aug 2025 23:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gULORzCb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1u8jG06I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078F12F530B;
-	Wed, 13 Aug 2025 23:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C702FC86F;
+	Wed, 13 Aug 2025 23:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755126262; cv=none; b=Lco7pbKcRNLZPqix2GqraKyUr1wt0rgeDbpT114VALRGomnfL8JVxz3rDBf4Bt/HwlCE5h8lJa31z9AoiDLVCOLI3RrkdHdEqE5K/lkVgNVclJ/XMCJ1lbRGyrAQTysiAf8y7TV8LYIBZBKhwlkVHFNaXFtilCwc4mKtXf3ky5E=
+	t=1755126916; cv=none; b=EhifAdj/FE1EtNJ5H01zT7PJLAU8eIMppjeLO+TdikT4mvod8QDYTr3GgtuZSylmoObb7PutwMwvCrk6pAw5sCW+UI3nAA21R8zk0zJ/bPuEXQi83tUBe+vEWTDaUm0ZrUZgr2tw4f5eliix3v7DhpBuIQNqsATJPfUc9mwNyVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755126262; c=relaxed/simple;
-	bh=3F+ogyrYcJ8PY1I57KN+xxu49Rm1DOvKC0zBkVlpS24=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mJPc19zqY4UrPJ3rgMzgQYwazErsyB2fJNol85h4DaWtOt1mFkOfzNbmAFYcgDZ4FjEuJn7TYl3TPIXvNoOXokU3weFT/Mv650ID1OS6kfY1JL4vAYBmxl9w8zgdv6B2yYLfHacDWG4UxHwTCMr6x0kV6JHGGsdozNdiqp6UUxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gULORzCb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5ADC4CEF5;
-	Wed, 13 Aug 2025 23:04:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755126261;
-	bh=3F+ogyrYcJ8PY1I57KN+xxu49Rm1DOvKC0zBkVlpS24=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=gULORzCbX4t52dAfG5DuKvm4YIIqfvOAx2w15GEnWcGA3zPp1j7Cf5X0DN1XTUtdv
-	 n74MCqWqzp5i6s8L31cAIYg53ELJQ/y78Ez/QPWAtAMqFKENy687JX6LZtwcI1YySK
-	 X/4AixLfnG9jFoOCWc1ggn2g0Agkl+XXXBRlStfpOCy03YBcMGgEJ8P4X0dasp2onI
-	 ySv+D7D4PiGjXg6hX02QoDFlpOVGN/82cxQhy2q1soLdwF2tgPFkX+o6RBjn5T4ADE
-	 HhxlAxjwmBcpTl+gyAlfkbcB5xyfUjjHWZvzun5VoZ0syqCiu4T32eftEcAdCVhLqA
-	 dt4p4tG6o1mzg==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id D4BCCCE0A48; Wed, 13 Aug 2025 16:04:19 -0700 (PDT)
-Date: Wed, 13 Aug 2025 16:04:19 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
-	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
-Message-ID: <f389ac0d-de77-4443-9302-3d8895e39daf@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
- <202508120250.Eooq2ydr-lkp@intel.com>
- <20250813051633.GA3895812@ax162>
- <aJwj4dQ3b599qKHn@codewreck.org>
- <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+	s=arc-20240116; t=1755126916; c=relaxed/simple;
+	bh=Ts4k/+30/f+XUEGoWVZFGWd46MHjfr7Ve5FGfWHmHLs=;
+	h=Date:To:From:Subject:Message-Id; b=eZAcdMEMOsofEFThP82VdnJxyWtvB+fbqnknxeKwhChEPXP/k7MTMkMx95c/jfTnDIiyK99x+sVzyCwDJrdTtKB1dclEYRmyGPkZhyvnaKggAu3cEPIEtwHB5uYgQhKCFIg/MZIew3FBkAIrWJHXgPZh63mapo2RvSP2VtHx/vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1u8jG06I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AADEC4CEF5;
+	Wed, 13 Aug 2025 23:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1755126915;
+	bh=Ts4k/+30/f+XUEGoWVZFGWd46MHjfr7Ve5FGfWHmHLs=;
+	h=Date:To:From:Subject:From;
+	b=1u8jG06IVi5jhDfMTdLjdlqYZjAF7V6g0lSaq1AsTOh0qK8k9WoBbGGLVTLHG1fse
+	 /K+QjON8Ocjl5TUTyGOVES/z7CxXCZUxZj5Rf2TWt7TQPN+VEvIUfaZZFX8Nh+w+65
+	 be5VS9EaoGT3sTrRFPZTOlE5dr9rcDhwaJDo+6rk=
+Date: Wed, 13 Aug 2025 16:15:10 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,ryan@lahfa.xyz,maximilian@mbosch.me,dhowells@redhat.com,ct@flyingcircus.io,brauner@kernel.org,arnout@bzzt.net,asmadeus@codewreck.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250813231515.7AADEC4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJyVfWKX2eSMsfrb@black.igk.intel.com>
 
-On Wed, Aug 13, 2025 at 03:39:09PM +0200, Andy Shevchenko wrote:
-> On Wed, Aug 13, 2025 at 02:34:25PM +0900, Dominique Martinet wrote:
-> > Nathan Chancellor wrote on Tue, Aug 12, 2025 at 10:16:33PM -0700:
-> > > >    1 warning generated.
-> > > 
-> > > I see this in -next now, should remain be zero initialized or is there
-> > > some other fix that is needed?
-> > 
-> > A zero-initialization is fine, I sent a v2 with zero-initialization
-> > fixed yesterday:
-> > https://lkml.kernel.org/r/20250812-iot_iter_folio-v2-1-f99423309478@codewreck.org
-> > 
-> > (and I'll send a v3 with the goto replaced with a bigger if later today
-> > as per David's request)
-> > 
-> > I assume Andrew will pick it up eventually?
-> 
-> I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
-> and suggest all developers should follow).
 
-This build failure is showing up in my testing as well.
+The patch titled
+     Subject: iov_iter: iterate_folioq: fix handling of offset >= folio size
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size.patch
 
-In the service of preventing bisection issues, would it be possible to
-fold the fix into the original patch?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size.patch
 
-							Thanx, Paul
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Dominique Martinet <asmadeus@codewreck.org>
+Subject: iov_iter: iterate_folioq: fix handling of offset >= folio size
+Date: Wed, 13 Aug 2025 15:04:55 +0900
+
+It's apparently possible to get an iov advanced all the way up to the end
+of the current page we're looking at, e.g.
+
+(gdb) p *iter
+$24 = {iter_type = 4 '\004', nofault = false, data_source = false, iov_offset = 4096, {__ubuf_iovec = {
+      iov_base = 0xffff88800f5bc000, iov_len = 655}, {{__iov = 0xffff88800f5bc000, kvec = 0xffff88800f5bc000,
+        bvec = 0xffff88800f5bc000, folioq = 0xffff88800f5bc000, xarray = 0xffff88800f5bc000,
+        ubuf = 0xffff88800f5bc000}, count = 655}}, {nr_segs = 2, folioq_slot = 2 '\002', xarray_start = 2}}
+
+Where iov_offset is 4k with 4k-sized folios
+
+This should have been fine because we're only in the 2nd slot and there's
+another one after this, but iterate_folioq should not try to map a folio
+that skips the whole size, and more importantly part here does not end up
+zero (because 'PAGE_SIZE - skip % PAGE_SIZE' ends up PAGE_SIZE and not
+zero..), so skip forward to the "advance to next folio" code
+
+Link: https://lkml.kernel.org/r/20250813-iot_iter_folio-v3-0-a0ffad2b665a@codewreck.org
+Link: https://lkml.kernel.org/r/20250813-iot_iter_folio-v3-1-a0ffad2b665a@codewreck.org
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: db0aa2e9566f ("mm: Define struct folio_queue and ITER_FOLIOQ to handle a sequence of folios")
+Reported-by: Maximilian Bosch <maximilian@mbosch.me>
+Reported-by: Ryan Lahfa <ryan@lahfa.xyz>
+Reported-by: Christian Theune <ct@flyingcircus.io>
+Reported-by: Arnout Engelen <arnout@bzzt.net>
+Link: https://lkml.kernel.org/r/D4LHHUNLG79Y.12PI0X6BEHRHW@mbosch.me/
+Acked-by: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>	[6.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/iov_iter.h |   20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+--- a/include/linux/iov_iter.h~iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size
++++ a/include/linux/iov_iter.h
+@@ -160,7 +160,7 @@ size_t iterate_folioq(struct iov_iter *i
+ 
+ 	do {
+ 		struct folio *folio = folioq_folio(folioq, slot);
+-		size_t part, remain, consumed;
++		size_t part, remain = 0, consumed;
+ 		size_t fsize;
+ 		void *base;
+ 
+@@ -168,14 +168,16 @@ size_t iterate_folioq(struct iov_iter *i
+ 			break;
+ 
+ 		fsize = folioq_folio_size(folioq, slot);
+-		base = kmap_local_folio(folio, skip);
+-		part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
+-		remain = step(base, progress, part, priv, priv2);
+-		kunmap_local(base);
+-		consumed = part - remain;
+-		len -= consumed;
+-		progress += consumed;
+-		skip += consumed;
++		if (skip < fsize) {
++			base = kmap_local_folio(folio, skip);
++			part = umin(len, PAGE_SIZE - skip % PAGE_SIZE);
++			remain = step(base, progress, part, priv, priv2);
++			kunmap_local(base);
++			consumed = part - remain;
++			len -= consumed;
++			progress += consumed;
++			skip += consumed;
++		}
+ 		if (skip >= fsize) {
+ 			skip = 0;
+ 			slot++;
+_
+
+Patches currently in -mm which might be from asmadeus@codewreck.org are
+
+iov_iter-iterate_folioq-fix-handling-of-offset-=-folio-size.patch
+iov_iter-iov_folioq_get_pages-dont-leave-empty-slot-behind.patch
+
 
