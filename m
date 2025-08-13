@@ -1,203 +1,134 @@
-Return-Path: <stable+bounces-169431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238E9B24E8F
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 18:02:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18253B24EA8
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 18:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90B313AC93D
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:55:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B45AF18890F3
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5159A29A310;
-	Wed, 13 Aug 2025 15:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F8D286D69;
+	Wed, 13 Aug 2025 15:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nvO7FRt0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j09Fl+cK"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2061.outbound.protection.outlook.com [40.107.93.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61F7286D42;
-	Wed, 13 Aug 2025 15:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755100144; cv=fail; b=con4XG0AqwCryaEozL5LdxpJm5bL+kLauj4yOQhk0eGLPUlNsWFykav4YHnvF2v+6QaEghfmah0SnGm61659BuXX2RI9uzsP3Yyli4CuY028XKRCdjrhN7suYsEh14vX0CakRpZKTBvJoUDT7asKEGMOU0uN0RNnWyyh2ixNcDs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755100144; c=relaxed/simple;
-	bh=Abr437MWdhJ/vo/4KGToAjYCsfvpqDTKu28OBFPEsE8=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=VG//xmf1PaSbf+wYcyYzJV2hsx9w5J0zczN1vLVhdRV3Jyz5xz5BGUe1uuNamzYuovsVCK3+Y1Y2fbwMbMODJaBD0x7DDD6ARJ6sm6gS9RWBkGw+G/KEDjE43xw4sjAAtx8c0kTyk0wkgb0LVdZMm8RQlXe8zz8hdOCmgPv3EOA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nvO7FRt0; arc=fail smtp.client-ip=40.107.93.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fi2n316kTBlEbFQDFsTHDpYa5yXiiUFZYffIrhy+MSjAk6boglDPpaG6oQ2ccUnHJDfxV2UXS9wImwOBsQ3QBwMPmlP1GibAI8xijyaQBHoVWBNnQdEegxSHDGB1Y/R3+9SED2inMH6B6utnekJQPJMWhK9kM715/Fy/GzmgCaabwNhKA58Pj9B0dJORFh+RcLdKgvTP45PZSAMfpyVZtr21jMVC4cL/SRvohiQty7qFKkETaqSYVjYgt6wQgGR4+hXH5QQVGNzh6q6uv2S7y/px82UoSVq+Lxqa6NYHAqbBlw7mm8DEvjPt38BZI61DbFIqcXPpr7NIuPSX7yrP+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WoCR9piR0xti2t7k3nQn+xFXyoCZ9ULsLW7rgMW23ks=;
- b=Vl9sSIRj3EXU93HXf5tITdQO2MVWtHKdVskN27GtsKCuUBESBWm4JnkJYCAEty9aA8cMDjWg0tYj/nZE73MFGWJxmtXHiKpE5gEDeG2KDSQPGHnPJjKMXrp7bao/d4q3VOM+VeELYimw0xmpwUCMzL6rEDgV7NxPZhhOuc+gRG2r0AWCg+YoX++QCdrnPbmZK4qe1qjRbrYDyr0gyLRx0bbTGCTEelzD9wyZ9IxKW8QuUOMjzUdOScDKsxPjsKICacwPG4mfsnzbdVzhEcVScZOgv61jLyJMiMN14LG47DSQEip07/AFr6gVygCp4Id3t452rq0Ofd8QfBVQo3Ww8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WoCR9piR0xti2t7k3nQn+xFXyoCZ9ULsLW7rgMW23ks=;
- b=nvO7FRt0V3ikzDJzHimQzH+X51cJhmYfpJDDv0S4eoDUo33piLO4RtR/kk4u/77d0TPFTpuvpetwtW9uOAltFNdY26mCFWNoRLWnQb3Sf8M1iufZ4SRFDg559f2tcvMtMLJFL0bJ4v2EHgiwCeqj5Z/WMv1rp/bEY8vkL+1EzcBUGSZ1MT8tlpL5LgmpO9LvQ6uhtMhz2UjXd0CQnlGdQR2WPAzl6IWYtCBWSVM7GaWwlXKNeE8exiwWvKPHGEXljKsRBs50DxDrRfPQiuXOEIbC6sOdfd3UC0dhcCk7v+IMHaenkkJWnsfe3nd8uCNFcKk6Bw3UExG+aCyRHSvJTQ==
-Received: from SJ0PR03CA0120.namprd03.prod.outlook.com (2603:10b6:a03:333::35)
- by BY5PR12MB4227.namprd12.prod.outlook.com (2603:10b6:a03:206::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Wed, 13 Aug
- 2025 15:48:58 +0000
-Received: from SJ1PEPF00001CEA.namprd03.prod.outlook.com
- (2603:10b6:a03:333:cafe::70) by SJ0PR03CA0120.outlook.office365.com
- (2603:10b6:a03:333::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.16 via Frontend Transport; Wed,
- 13 Aug 2025 15:48:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ1PEPF00001CEA.mail.protection.outlook.com (10.167.242.26) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9031.11 via Frontend Transport; Wed, 13 Aug 2025 15:48:58 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 13 Aug
- 2025 08:48:44 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 13 Aug
- 2025 08:48:40 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
- Transport; Wed, 13 Aug 2025 08:48:40 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
-	<broonie@kernel.org>, <achill@achill.org>, <linux-tegra@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
-In-Reply-To: <20250812173419.303046420@linuxfoundation.org>
-References: <20250812173419.303046420@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A273F286D62
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 15:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755100555; cv=none; b=snWgBNzIKD+zGHdVa+Lu9mTscFgAoFw1d3JA9qvH5P2MNSNiON+L93R2llzuZgl+O4P112sETPlZ25H0F1tpzyHlBqjRX1WcUIo6NQiSsZifixe1fXvynvEfAOVm4CpIpy9CGkqthYwqPrYowp+Ffruz/sgIxWxksMAVtpLnn0c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755100555; c=relaxed/simple;
+	bh=zYTLanYT1OsG/PIur8uERAqhnN6cIvHBsGTUDepi0Y8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FsJbLf6AOvrNVDgSPDZ95AuSwrvMN2XdSp6E9JaRzkxokpOtdhy4+zrG2rsGp9QCx89pb1/zQVXRZQ/gLLV6v+sxHYgUBDevCxF/n19risCyHy/nWV4atSH179XEEckqd5k/jVL4sxFS55GJZ6G3YzjXstEZylQ2PK5S8aGWtyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j09Fl+cK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C8EC4CEEB;
+	Wed, 13 Aug 2025 15:55:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755100554;
+	bh=zYTLanYT1OsG/PIur8uERAqhnN6cIvHBsGTUDepi0Y8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=j09Fl+cKdI875zybFb1l9D7jS821WJYYG41JiiGzc0+TGI/yNJrwVhBEJTE/Q7oNI
+	 lvYPs4+VfI3jK9+I9/gyAoTcxRYGbtFpDTeQxdkVpUARG75NtzxKYiLoP//WjsYlXX
+	 CoChLizLors0F0+Q0+6IsG9GH704lLAAgtGLKe6iIWdZP3aiSuQjXzUO1/efd1PSWA
+	 Wf96mzgk9ZDXprxu6EEOuGsYQNCqOxmfUQwPV/j6z2Q1pyHw1hZ8uBgrJNieTm07YO
+	 cfU8kG7yM71iifwI5a85h4/QbhOi/Yu2ccYyFFGMOdcYk/WlMhDr4VMn9Mnt/o3Opd
+	 gXRah7cnPdAdw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
+Date: Wed, 13 Aug 2025 11:55:06 -0400
+Message-Id: <20250813155506.2051597-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025081244-epileptic-value-7d4e@gregkh>
+References: <2025081244-epileptic-value-7d4e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <ce401130-8935-469d-8d27-c1047556ccc7@rnnvmail205.nvidia.com>
-Date: Wed, 13 Aug 2025 08:48:40 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CEA:EE_|BY5PR12MB4227:EE_
-X-MS-Office365-Filtering-Correlation-Id: febd7aef-baf4-4c1e-76a7-08ddda80ead9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TTdzMTVjNC9uZTVKZlFQaU5QMVRISm9pK0RTWHpjZ3VKelBzZ3R2Rlo5cGk1?=
- =?utf-8?B?bno3T3IxdWFTUkRBZnR4ZldveDFnQ1ZIZ2YvL1JtN3o3WjFRN2FucGtweWUw?=
- =?utf-8?B?cVk5Wmg1Y3JRTmRVcXJIMFFYZVdkY25yTWwyRTl5ckRZQmYwMVYzcktmNkMr?=
- =?utf-8?B?YWpwejZBYWpkaDgybTBWTjVHekx5YnVHclJyRW40amZsR1ZXamJBMmJnL2xZ?=
- =?utf-8?B?Z255R0dTY3pxN2tiYnhxOVB3UmZ4Yk4xNDZndkVHRUhCQmpQZlRXakhuSzhz?=
- =?utf-8?B?MHdmWm03eGZVQVpmb2hqb2tQMWxMVUUraFU4NmdTMVRWZzEyNWNGcll0Ukxv?=
- =?utf-8?B?UndpemEyaVpVcU50eXFXOHUxd3kraEM5bHRuNG5aOVdMYmE0NTFETGJObTZS?=
- =?utf-8?B?TXZQTEVJMkd5dGNDZ2ZRVDQ3bmpFUWdnT0p1dDg5dFFPVXZ4ZjExbXE4L25C?=
- =?utf-8?B?REg2Ui9YQ2JaSFdhWDZ6K3hKdTBCdmFMMzE0YmNQZGQ0dkU0M09tcTlCQndU?=
- =?utf-8?B?WmptQVV6YUN2c05wMjZ0NDZHbTlGeWVwcUZGQks4Rk1JUWVQVG92Y25KR0lz?=
- =?utf-8?B?NmZObVhJU0ljZHU1dHhrMDhsZG13TTBRU083VDNqQ2gxRnhadHMwQSs0bXpU?=
- =?utf-8?B?RDFQSUZRckFWUHJsVDdWaVN0ZEtFUFdseXJaYW5YZXNqanJOUXhIT1ZoQSt5?=
- =?utf-8?B?MS9lWElsRWc1WTJBdWRld2NCeDRrOXNQWmlMWmlOMHpOYnBUMTJXVjFmbHUz?=
- =?utf-8?B?WWFzQzhxQ3RlUCtDVTVpVXlvaHR6bzNJREhaTnpzTU1pU0lON2xyL0lValB6?=
- =?utf-8?B?RnI5N3BuRWNBWHM5M2dhbnE1cFNOOWc3bmxTd0JwZ2g0VE01REZEUlYyWWpi?=
- =?utf-8?B?WktYdVlzbjh6bERQWlo1OTZERk5jNS81citUK3pXZTZWMzI4Z2F5SWNqV1pY?=
- =?utf-8?B?QW1UTlkwMS9KeUhhUVlubi9LZCtYODNHRzVRVFEwUkFEaEIvYStST0FEY3d0?=
- =?utf-8?B?S3BwRStOUFNlTS9UUklQZlBEZlpKNzhoUURhZ3dWdTNwcEFzWWNUaEhEVzQr?=
- =?utf-8?B?ZzM5ZWNVTm5TaE5GbmJwWkZqd2tEUGp5aHd4VmgzUkhoZ1dkN05hSlR1MDdl?=
- =?utf-8?B?eXhqQkZnSEpkYWVMUU9PMUtZVnNWVFlQYjlnN3BFQUQzWC90UFk0MWpJUlBM?=
- =?utf-8?B?K3Rnb2JiclFQQkluaFRialhPT3Z0WFFnR2l3eU8xR0o5RWc4QXRzeisyeTlv?=
- =?utf-8?B?b0t3bUVGcWxqTGYyL0ppRGZYV2wwM2hqWXowbWF2VkVYYTdjZ2JCRGpuOHcv?=
- =?utf-8?B?dndxZitRZGV2L3Fpbkp1eTZEck1xL2FkVFJLZm9CTUdaa29PL3dZNjkrWGNX?=
- =?utf-8?B?TUxZd09qcEI0RENjbVNwcERURThUZmlrVjZEZzBBSmRRRytoMFBZVzVOaCtO?=
- =?utf-8?B?WXE0aFplUHMzRjJYVXhPaTJmMDY1ZWdndW1hMWVBRW1VR09rZG1KVWgyWVJu?=
- =?utf-8?B?NTZ6ZHdqLzMyTlVHc0xxZ2pXRnJacEFSbGpnOXV0TkxaUlg3RDdwcUlyVGZQ?=
- =?utf-8?B?eWZGWHRNS2dKWXdyL2I3NTVhSWpSOXNDY29ha2lESkd4SFBSQU5WWitCTkZJ?=
- =?utf-8?B?N3JUUitIMUxOR3ZubWdGMXcrOUJrc1ZZZ0QwQkhNZEVlQzg0dGVHSzhDTGF1?=
- =?utf-8?B?Q2tBS3dFR29VaGp3SmhUajBUQk9TRThGOXBTdEdPU09WS1QzWW5BMENRd0li?=
- =?utf-8?B?aDZaM1BFUll1VWYydUR5YmtuUDVrZW56L1pJVytlalBnendJeUQxM3M5VDdk?=
- =?utf-8?B?TXJmdnFIS0p4QkNodGdGTDV4VVZzbFZ6aFFPeDBGNEpqSFVXTVRKR0k2K2pl?=
- =?utf-8?B?dEVsSGV4bU4yMXJJNzE3bDJ6YmRhS3pXSFFXeVlySElrZGhHeURTR2hqbXJq?=
- =?utf-8?B?YTRVS0RhNUdvNmZQR3hCVk5zS0hqSFJrdGdrMk1YMXBORDJYcVNlK08rbFlS?=
- =?utf-8?B?SytML3ZwTjJhR1d6MjBUb1grRXR6Zzh4Ym1lcjRGMkFVYmRQa0FYWmcvYUJ2?=
- =?utf-8?B?Mm9lWjF5RmQwa2xYSzZyelpmQXdiTE9HNUgrQT09?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2025 15:48:58.5688
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: febd7aef-baf4-4c1e-76a7-08ddda80ead9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CEA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4227
+Content-Transfer-Encoding: 8bit
 
-On Tue, 12 Aug 2025 19:24:55 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.16.1 release.
-> There are 627 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 14 Aug 2025 17:32:40 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.1-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: "Geoffrey D. Bennett" <g@b4.vu>
 
-Failures detected for Tegra ...
+[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
 
-Test results for stable-v6.16:
-    10 builds:	10 pass, 0 fail
-    28 boots:	28 pass, 0 fail
-    120 tests:	119 pass, 1 fail
+During communication with Focusrite Scarlett Gen 2/3/4 USB audio
+interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
+snd_usb_ctl_msg() which can cause initialisation and control
+operations to fail intermittently.
 
-Linux version:	6.16.1-rc1-gcd8771110407
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
-                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
-                tegra210-p2371-2180, tegra210-p3450-0000,
-                tegra30-cardhu-a04
+This patch adds up to 5 retries in scarlett2_usb(), with a delay
+starting at 5ms and doubling each time. This follows the same approach
+as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
+("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
+which resolved similar -EPROTO issues during device initialisation,
+and is the same approach as in fcp.c:fcp_usb().
 
-Test failures:	tegra194-p2972-0000: boot.py
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
+Cc: stable@vger.kernel.org
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Applied retry logic directly in scarlett2_usb() instead of scarlett2_usb_tx() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/usb/mixer_scarlett_gen2.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 1b7c7b754c38..1c31a9d21d42 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -95,6 +95,7 @@
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+ #include <linux/moduleparam.h>
++#include <linux/delay.h>
+ 
+ #include <sound/control.h>
+ #include <sound/tlv.h>
+@@ -591,6 +592,8 @@ static int scarlett2_usb(
+ 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
+ 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
+ 	struct scarlett2_usb_packet *req = NULL, *resp = NULL;
++	int retries = 0;
++	const int max_retries = 5;
+ 	int err = 0;
+ 
+ 	req = kmalloc(req_buf_size, GFP_KERNEL);
+@@ -614,6 +617,7 @@ static int scarlett2_usb(
+ 	if (req_size)
+ 		memcpy(req->data, req_data, req_size);
+ 
++retry:
+ 	err = snd_usb_ctl_msg(mixer->chip->dev,
+ 			usb_sndctrlpipe(mixer->chip->dev, 0),
+ 			SCARLETT2_USB_VENDOR_SPECIFIC_CMD_REQ,
+@@ -624,6 +628,10 @@ static int scarlett2_usb(
+ 			req_buf_size);
+ 
+ 	if (err != req_buf_size) {
++		if (err == -EPROTO && ++retries <= max_retries) {
++			msleep(5 * (1 << (retries - 1)));
++			goto retry;
++		}
+ 		usb_audio_err(
+ 			mixer->chip,
+ 			"Scarlett Gen 2 USB request result cmd %x was %d\n",
+-- 
+2.39.5
 
-Jon
 
