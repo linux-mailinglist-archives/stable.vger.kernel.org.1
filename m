@@ -1,129 +1,133 @@
-Return-Path: <stable+bounces-169422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E90B24D48
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 17:26:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5FDB24D4A
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 17:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CACD6209A6
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:19:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAC4388725B
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D3D1FE444;
-	Wed, 13 Aug 2025 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCA221ADA3;
+	Wed, 13 Aug 2025 15:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A2RJ0f4L"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QtuiWIH1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BA11F8BD6;
-	Wed, 13 Aug 2025 15:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01941FBCA7
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 15:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755098365; cv=none; b=EGzlBJlXoQlpb2w2Uo8mLUP5MapfBinpyDBGACCEY2jaMEzMCamnip9nnmNwrVLjkk4AYTLyKGBK5FPiaf52W8E80PJhVDbusXFXY4bCjfwd9DKIJxNyoMgSs3x0fL6zWTj+i0IQOQ4AYOXs9Z7sbJXCUtGWgyaxuoWgyr9xOtc=
+	t=1755098425; cv=none; b=RPEkJghl6yFp9QA6b35vn2p0SgbgjLl49MEti4viK+GlH/sIgO9Rq1DEc5QcULO8bbJkcZFR7n2XQq4Ed5a8/viOjMFumhJhg4ivUGv8cp94uIrPGQU1dQLrLWpb9wFcoTQl/b3rpV6wB7vUN6RDq2/idh+zYYvmtY8GGa8aoJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755098365; c=relaxed/simple;
-	bh=DQIKfCV7qhGOcLzNuplEtGMcxE2yoLWltZyc3B5rEgY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZyVpKJye16Kx8xhXUl4GG1FnuY0K7na/TgDfBvxXYlb+lTwM1QiW6qOjXzpmWnbc+nQwALIK7bTBEOP8tGYDU8gTppYVxhKUeGJ4GoxfhBiZ44TzPBNIdLlGoJXiqjQnnl0P6ggYfelF+guUulAvE3yFIuAqfi/btLY2kddqhc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A2RJ0f4L; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-459e20ec1d9so65108905e9.3;
-        Wed, 13 Aug 2025 08:19:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755098362; x=1755703162; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=htAap5fw/dg8+xLfXOlfECPNRc9i+jW0+owdWC0r+RQ=;
-        b=A2RJ0f4LUY1nM0UWIYJxvZpCsRyhGoISgkpjIymGZvNV30DR5yX9E575BrS3NdZOKP
-         3a8+7rWjALh2VXkxcVDDcTKUq8CdsWs8W7Urw3tdOpDBYteXRpsQ410WUgGVSASIVpnG
-         Sc6rY4c3JxAXmSP+dk5bIdHB5bSXkUs0xje5ZSxlb0OyHGz/5y+I8gWyDetmZ22fC1AJ
-         k1A7OKxKb3CtrgmrntlAo7T2uqlzjCXXos3lC8IPryNDWfHuNjtMHRdvMGcv4J3qMiAH
-         UljHNqdGpT+cNcc+CzosSloqtwT3Qd8kbcTGDLN3uVww3ZMLuVSDFrqjuHK9Q/bMoKeg
-         sLEQ==
+	s=arc-20240116; t=1755098425; c=relaxed/simple;
+	bh=J0Olzhfp398H83g4qgU0KwPikf1DxIDwgtT/Xr4oxYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NMxrTqDWqRsEmfHYm2Bu476z+ngDAulZdo90R3bknEMlr0nqsSzgzapMJOgvr7M83agbawnC+tvkILQvpFsykc/kzeRsPcx5MgHuREH2nSlFzgvIFFzrKFVoyF3bmegmRftBJBBKLu/fvSdZXAyt4ObEnMrAwH/y9EMpH6g/Osc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QtuiWIH1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755098421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=luPG1goyuiBS0FvRsoCQ2oyoviuaJXbbLcf+yNSBvlU=;
+	b=QtuiWIH16bBqSlwM4uoOPOiu71LOv/cvT6fqugsYlJFEFZF2WTsxi6H93wXWNGf99sX5mu
+	4HL2jJrR3ABGDJgcRJieoZckYXZ7y8b2fycFn9vNkM/d00UhKMP/EABtmLL9nfwuH+9/kn
+	zvyED05jFpaNVMSA6kYfZejEB8X1QIA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-280-TZZsYMgQMr-uP0tn0Z8EQw-1; Wed, 13 Aug 2025 11:20:19 -0400
+X-MC-Unique: TZZsYMgQMr-uP0tn0Z8EQw-1
+X-Mimecast-MFC-AGG-ID: TZZsYMgQMr-uP0tn0Z8EQw_1755098418
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-459d4b5db81so36722795e9.2
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 08:20:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755098362; x=1755703162;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=htAap5fw/dg8+xLfXOlfECPNRc9i+jW0+owdWC0r+RQ=;
-        b=nP8DA1NlSOqJSQSJ4/kHPJvnIscI21Wi+3Up3oWwPXK1DaJJIdVokgWaX0i20FZ1+o
-         9Ku+v2HMrNBN6e6Q7tlmUygXuE1fW6Lvjh8fbIsqssieeNUo7gRxkPjs5pmdV4qk9fDd
-         uLLq+tdiZEGwGwtuecOGB+/6sZOl5O4jdKni7fwWf18c1yC1fpkDZ9B1bHfejSnrlZNa
-         Kg1rnjc7KofBowszC0fKjLG3/JA2TOnIh58vM7btZ6hSTt0qfOw2eBIcl4WQOtbmWxDc
-         lNsp5WoGzpaezijPuS3jkVAduE6DaElmdhXwHM92ebxnDYN5Bo0sIrY2r7FqNrUWAZoW
-         P/+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVfhMiuM0+DCeoGAYzaEU25PuN9NRgFM2JaLo9XaoIQ/YInS9Te3LQqRAo49icaQPxKGOw6YrhW@vger.kernel.org, AJvYcCVncCcy8I8zQiWZaIVR99I60S6AUknd4E4Fm82CpVB78PKmXP2Dx2PokuMjIIHh1MTBSQoyH9sF3HQ=@vger.kernel.org, AJvYcCX+Y9ayPzGx/iwsg9lJXYlF0YZ6gf+jxrUKwfKJYFJ1yAF7eY2xjVvxLNo6D2Bo8emI7QhbCCNEhd/c0dVK@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+CA7nucarbCqp5jKfg2t1KrcQU2CZ7nKmP2tUQ/X6+N2opzd/
-	1jF9yS8OoCiFD2Yflwp/g84/2eSX5ixVin2/0G/Cv0vADs/iEuwSnowY
-X-Gm-Gg: ASbGncvovjuC055yUgxYIT/A63uaR2BLSdyZi40jKErJ43ldMk3nQVs9OniH+MiBDMj
-	5aCKOTGeVnLYxSg3DB0IM5qGK11QiH8WFt+asF1pO08pIiJMXjbRgeNYNusCGdk846pdQRvWpsk
-	hdtVI1OJV2w19ea6XRs76Tiv36fFJGJ2vxeKQwLduR/0VNvIw8hvrd6BloyozjSk9V96kzOpCKP
-	xsO6DCfzQN5OK+vhrv6UZvvXU6mzoZkTheeFAf4ut1ojI3fAXoc2SMyzHmTk0+m3bjdPPud8xe9
-	h1I+SOREtliqMIUVH7+bJF/GNaZEnzB4NuA+OAIVXYBbFHWaUN6nFCZroOsyLTiHNSQadMcZwQT
-	pqcUet+MszuScVK945sddU5nyzizCPmgssL3BhxggVQt1Idh9kDpx5OFTT8eL/foS3WlQ5mi/8w
-	==
-X-Google-Smtp-Source: AGHT+IGfIPb5dRAaA2WhedQJ3CbdENNLW9wcz91G+NNxprPgCPyCfh5MRUpcNjjB57ZCH9jlboc6ZQ==
-X-Received: by 2002:a05:600c:4750:b0:440:6a1a:d89f with SMTP id 5b1f17b1804b1-45a165b7b22mr36901465e9.4.1755098361733;
-        Wed, 13 Aug 2025 08:19:21 -0700 (PDT)
-Received: from [192.168.20.170] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a1a50b99bsm6409455e9.5.2025.08.13.08.19.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Aug 2025 08:19:21 -0700 (PDT)
-Message-ID: <0cddf626-5215-42d6-bd31-672e32ae293e@gmail.com>
-Date: Wed, 13 Aug 2025 17:19:21 +0200
+        d=1e100.net; s=20230601; t=1755098418; x=1755703218;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=luPG1goyuiBS0FvRsoCQ2oyoviuaJXbbLcf+yNSBvlU=;
+        b=Bdl0zXFfT1/hx7gZpzKhiPlHDN9GTRpbcoOQms2NY3xo5Cm+yE0XZw9Q79c6mcem2h
+         hrbetu5vbo9YCxYjFuQQ4wlDcnF1+KMIwXiej31ySPNp8Bh+oWouH67vnrQ2oeOPnYUQ
+         XSpIeWjTan+/kQDKn5h0vxqZzds4qknD+5a7YJ4443vqUxSXoTl9HjGdlZw9zBZzUcLC
+         ajFyCj/OlVYR0QFbsTqEB08Pe73+YRo4T4uFDCvPh8RVwkIx2VXJu0HDepCpT/2wCkdr
+         3hWhvpUxcMdR2paNlC5gQFh6LsnAYUqnYPDZ3OllMnoWYml6Vz2lP0loOyOH1Gj3nFuq
+         +VUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRcYWzr/At4lJwA1FTorowgJ+b4iHSCxNNzdQSLUouS6pUdNeWYIIGEJl8t/MgHWAMAx4wrYE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDUmWxuErFb7jl46IomkNQDKPXXWzv6NkO/1RYak3ONlZBthfI
+	xHKUIONoZAkwZOJv7oxX7MkSe8gHOh5ju47h8+tYSCQacy7mb4Gf1SF2MrJvlbHayLzoUmtO1Eb
+	6lbAbtHnIF5l3bfKr54yCj51jMcVhTwKrJ856GFA24OdQKOOKzwHySRDmnQ==
+X-Gm-Gg: ASbGncvlfD6PIFFok3H5Qq+2f17z7IJiV/pBH3jUvlWjDEO46o8PAvuMJFlS9ZSlAfl
+	VfsZCrw7k/WJ4tbIY8/PckP6yk460bVoRTT5TpbqwCMs4xiuYCI0ExfWWjyExR0Q9Whr5hZkWpR
+	/6EmhsXUEYqP62K6ZjZAycG2W6oLh2GHGxFsC3RbH5FkM4y9hQcas3scmFgZAMHECuTi0u1pF0c
+	HeiGatww+LhztcnWff2pXDrich3zDBNo5wc1XVoXPLMZz6tComyDKZdHdAY4MP0un4IEei+LjUd
+	g5s4e/Uh5dvyzYiFtjj0NeG5zNpCbTdcHWQGb+c4LfNiVp0yN9GpRR3vBJyHxgJ3zxD9L9mDrBL
+	O3Rh70+DunFPF
+X-Received: by 2002:a05:600c:3b16:b0:459:df48:3b19 with SMTP id 5b1f17b1804b1-45a165dc92bmr36316405e9.18.1755098418143;
+        Wed, 13 Aug 2025 08:20:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhftQeRBnMTP79oYeBPrLVQFcy0YoWKK+VKIdNr6Tz5JmKc8vfXV57DQ7KTU8XyYnvbwoCgg==
+X-Received: by 2002:a05:600c:3b16:b0:459:df48:3b19 with SMTP id 5b1f17b1804b1-45a165dc92bmr36316075e9.18.1755098417643;
+        Wed, 13 Aug 2025 08:20:17 -0700 (PDT)
+Received: from maszat.piliscsaba.szeredi.hu (94-21-53-46.pool.digikabel.hu. [94.21.53.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c489e81sm48584381f8f.68.2025.08.13.08.20.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 08:20:16 -0700 (PDT)
+From: Miklos Szeredi <mszeredi@redhat.com>
+To: linux-fsdevel@vger.kernel.org
+Cc: Bernd Schubert <bschubert@ddn.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Florian Weimer <fweimer@redhat.com>,
+	Chunsheng Luo <luochunsheng@ustc.edu>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] fuse: check if copy_file_range() returns larger than requested size
+Date: Wed, 13 Aug 2025 17:20:11 +0200
+Message-ID: <20250813152014.100048-2-mszeredi@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250813152014.100048-1-mszeredi@redhat.com>
+References: <20250813152014.100048-1-mszeredi@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] i2c: pxa: handle 'Early Bus Busy' condition on
- Armada 3700
-Content-Language: hu
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Wolfram Sang <wsa@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Andi Shyti <andi.shyti@kernel.org>, Russell King
- <rmk+kernel@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
- Hanna Hawa <hhhawa@amazon.com>, Robert Marko <robert.marko@sartura.hr>,
- Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Imre Kaloz <kaloz@openwrt.org>, stable@vger.kernel.org
-References: <20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com>
- <20250811-i2c-pxa-fix-i2c-communication-v2-3-ca42ea818dc9@gmail.com>
- <aJpTHKbLbTz-Z3bo@smile.fi.intel.com>
- <27906f7b-b137-4af2-aa87-49519495a34d@gmail.com>
- <aJyO-5k29AAAnHdz@smile.fi.intel.com>
-From: Gabor Juhos <j4g8y7@gmail.com>
-In-Reply-To: <aJyO-5k29AAAnHdz@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-2025. 08. 13. 15:11 keltezéssel, Andy Shevchenko írta:
-> On Wed, Aug 13, 2025 at 12:50:35PM +0200, Gabor Juhos wrote:
->> 2025. 08. 11. 22:31 keltezéssel, Andy Shevchenko írta:
->>> On Mon, Aug 11, 2025 at 09:49:57PM +0200, Gabor Juhos wrote:
-> 
+Just like write(), copy_file_range() should check if the return value is
+less or equal to the requested number of bytes.
 
-...
+Reported-by: Chunsheng Luo <luochunsheng@ustc.edu>
+Closes: https://lore.kernel.org/all/20250807062425.694-1-luochunsheng@ustc.edu/
+Fixes: 88bc7d5097a1 ("fuse: add support for copy_file_range()")
+Cc: <stable@vger.kernel.org> # v4.20
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+---
+ fs/fuse/file.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
->>>
->>> Sounds to me like this one should be applied first independently on the
->>> discussion / conclusion on the patch 1.
->>
->> Yes. At least the users would have a working although not optimal solution in
->> the meantime.
-> 
-> Then please reorder in the next version.
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index 5525a4520b0f..45207a6bb85f 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -3026,6 +3026,9 @@ static ssize_t __fuse_copy_file_range(struct file *file_in, loff_t pos_in,
+ 		fc->no_copy_file_range = 1;
+ 		err = -EOPNOTSUPP;
+ 	}
++	if (!err && outarg.size > len)
++		err = -EIO;
++
+ 	if (err)
+ 		goto out;
+ 
+-- 
+2.49.0
 
-Ok.
-
-Regards,
-Gabor
 
