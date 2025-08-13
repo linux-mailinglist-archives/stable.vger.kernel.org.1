@@ -1,122 +1,154 @@
-Return-Path: <stable+bounces-169379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06291B24991
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:33:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC862B249CA
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B032728448
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 12:32:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CB557ADCD7
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 12:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6FC29DB73;
-	Wed, 13 Aug 2025 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4955A2E54B0;
+	Wed, 13 Aug 2025 12:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="AkyiuBeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/lvod9q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A45B1F4617
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 12:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D700D1547D2;
+	Wed, 13 Aug 2025 12:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755088342; cv=none; b=kMrirob+S/FkN2mWeNLiIddgyQhXeD7P4oihnmqT2FvHZHLpUG7dCuvozwessDhBsas8ZrmRDImrbR0I1K3qZIPFJlVTMCQHGDZR2QeP0JUABiRS0XsE+SShXuPWtbFWkBZP//wI9iUNyqv+nhOXHnM3Kp7Qx0ZelOG0AblEBwM=
+	t=1755089453; cv=none; b=CknsgSvJgl1Zh59hOpLfYfRAuYQ8Yj5W7+EKf2yXWOrz5e8imxfb6zSuccQ2tQBFvqBeTWmzReWKClmzTMSky6SgpA8IJGIvWbWtVyCTiw6oyekgq/6qiVJvCyugJGYteJ1vkIQXGyjVVRUtG8PqUu6xsIR19d+zD2ab/ou76/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755088342; c=relaxed/simple;
-	bh=z4v/k+xEazihCbibG96JuAuBlCh9t85TYi3nbMjXIcQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=qX/IQj2DOjsnobRVxIOxpsROgYUq3hs4wQ6GdkOlwTRRyp6rNrrU3g9iUUR5ZcRbziUUSZ9TmXiMAmEFEBy1pUC8PJaQpDER6ng4Nn7G+TLB+8r17TmPuSQkmO8oLoz23rtGKgVLflWIbqxTUYEGA46k5l6VUVyQFWUBHgN2CdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=AkyiuBeM; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b3226307787so5302815a12.1
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 05:32:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1755088341; x=1755693141; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BOOchsUjzM3+ZVjtt7sbhib6V5OcY3gPPFMR9Tn6POs=;
-        b=AkyiuBeMgQiurJxbPmV5NB6ixysB5Te/bCM1j3Jiy2gRqukqfng6yaoZIRbcyZi6aI
-         rXptZDTv8q9xkG2Ec+f2eiyPYcKTADoKIhbQIKmvyQmrRIyV8RS5uG5nugqTrssmYxWC
-         AIUDwSGEPXteuc8JGHBqFfsrwj54Sk1N47/1o+48UUpWy1+mqzvqFo+SCWeg1yrK7DXP
-         t21SToUsrnbun2Kq0IsNzBmp5MzChWhH85M8+DILV8YeDSnQGgEtxFJEK9uRckUFt+44
-         jmPJv8+nBZ8tdIl/q2H6TAY1sAppXDlL/eGDlaSUFuULlopmTbHnlZKLAhJUWU+r8qTp
-         b/sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755088341; x=1755693141;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BOOchsUjzM3+ZVjtt7sbhib6V5OcY3gPPFMR9Tn6POs=;
-        b=VduIRcmf0SCk5Pr1tQiSX5hNOqvXZnWUeW8kz5MPCVO2QdNAWHAJV4pbvSJHZcnWeg
-         rNqP+UX9G8GXNWmlkZf7n384HRfEc2scF6IN1/0MCWmy0mG6i3L2Rbt6nLDjZ9DSG7Ia
-         FPN1k8ELk9z21aO8J9td1IAa31NlE0X08fEEFxUCop8NIZaBY0awfU7z6VGTJrpWWZBt
-         msanydfbMl3DoHh/FEuBcz9DDUZfkzyndyn8ndUz4obFxLQCEn/5OEzrMzAFI+G5ZpR5
-         oJORfu3G/xKHEDZGs+eq6AU6XWlD+T6BI4sRpa3fFQzqiqgElngjBxD7C7amud80QYKt
-         Wzrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUoKknHGgyW4AajTLK56R5L2V8bR757FKIeOvL49RxlzrsB3KKKk9ApFqW4Iw6v3UrbVCbsJFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7D+5gbkQHK86ROJK1KlZ5OSQ7FoLHvb8sG29E5kp5F636rlXM
-	f5AW9GuC3767HW0EgkvF/cLRskCZtXKvSgKgWUwcGB7TM95dadiIfFukH4rEym5dHYA=
-X-Gm-Gg: ASbGncu2Ec8f5vFRLWzk5DnYsSQrsxVGTqI2PV20wMPpdAq0mJdA1OBRZLtk8AUa2ny
-	ok3oV7AZRYGdZxodxHCeMSFKU+p6jadTNxpDtpSPWuiOG1gl4QS3BGAmaJdwI4X9JtdooXobf8q
-	r/r6NzUi+/1W8450Yc5itSw64Ya+Zjd2FCpreUm7nexnKGF0OeYVPlfec/XQbSoIznykua1Sfwz
-	LhZPjl3bPzaI3BZGIf8DZepFM/CsgdWiVbPZeJOWoxruTQklokMrvgpdpBPM3QJ9q/idjhh76St
-	6hEHJDro1vXef2H1LA/FymKMkPe0eV3xzYyEfYK3jIX+hkkEefu1KLxhfI7i4WzJm4sE6U2h0Zh
-	ja4qfgOqOnfsTqmvVYVyPemz0ng==
-X-Google-Smtp-Source: AGHT+IHT5scgbby93gh1/cl+pL0WzlubhAl0HAVwY7hiL1W8RJkliPiwTa9RyjSOretmT7Mzh/VLUA==
-X-Received: by 2002:a17:902:ea09:b0:240:9ff:d546 with SMTP id d9443c01a7336-2430d0b4c7cmr38502445ad.6.1755088340685;
-        Wed, 13 Aug 2025 05:32:20 -0700 (PDT)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3232553e4a2sm82418a91.4.2025.08.13.05.32.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 05:32:19 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: linux-block@vger.kernel.org, Julian Sun <sunjunchao2870@gmail.com>
-Cc: nilay@linux.ibm.com, ming.lei@redhat.com, 
- Julian Sun <sunjunchao@bytedance.com>, stable@vger.kernel.org
-In-Reply-To: <20250812154257.57540-1-sunjunchao@bytedance.com>
-References: <20250812154257.57540-1-sunjunchao@bytedance.com>
-Subject: Re: [PATCH v2] block: restore default wbt enablement
-Message-Id: <175508833916.953995.11740099334208966785.b4-ty@kernel.dk>
-Date: Wed, 13 Aug 2025 06:32:19 -0600
+	s=arc-20240116; t=1755089453; c=relaxed/simple;
+	bh=1sFEp7tfTZsLqsEbQ6yN/DfqybrcqHWTfRSt7pluUnU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WBMMPo6Dgs6KU48wanigWveFyU0ke3mw2WIRfJXi/Mywb36at153DHjZEIkG+6kzcYj2lurLyu3X1P3PtOxZeqOeqEzjvpyLN71JdgAnnF82zg+d0ECUUsVAapadPWOLvhYbau4YaAlmXXrz5wHh12dolrQbIE4C3mtxv7z6epw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/lvod9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B4EC4CEF6;
+	Wed, 13 Aug 2025 12:50:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755089452;
+	bh=1sFEp7tfTZsLqsEbQ6yN/DfqybrcqHWTfRSt7pluUnU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G/lvod9qaNFe8MgiqMNtSrnZl6ICr4ny7PsTyyOhzVZeCv/MZyhfDLlgNxCv37Z7r
+	 GYSIKBF/pteVt/vjuJB94/MdSefsCgRAQaRxWEIW2/awDVXuZZFSfXB+5rMnnQexLI
+	 cxOX0SSrpyCPB+x6DMMiVzgiv5VergRxG6Bl2MhE=
+Date: Wed, 13 Aug 2025 14:50:49 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org, qemu-devel@nongnu.org,
+	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>,
+	LTP List <ltp@lists.linux.it>, chrubis <chrubis@suse.cz>,
+	Petr Vorel <pvorel@suse.cz>, Ian Rogers <irogers@google.com>,
+	linux-perf-users@vger.kernel.org,
+	Zhang Yi <yi.zhang@huaweicloud.com>,
+	Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	linux-ext4 <linux-ext4@vger.kernel.org>
+Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
+Message-ID: <2025081300-frown-sketch-f5bd@gregkh>
+References: <20250812173419.303046420@linuxfoundation.org>
+ <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3-dev-2ce6c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
 
-
-On Tue, 12 Aug 2025 23:42:57 +0800, Julian Sun wrote:
-> The commit 245618f8e45f ("block: protect wbt_lat_usec using
-> q->elevator_lock") protected wbt_enable_default() with
-> q->elevator_lock; however, it also placed wbt_enable_default()
-> before blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);, resulting
-> in wbt failing to be enabled.
+On Wed, Aug 13, 2025 at 05:46:26PM +0530, Naresh Kamboju wrote:
+> Long story:
+> 1)
+> The perf gcc-13 build failed on x86_64 and i386.
 > 
-> Moreover, the protection of wbt_enable_default() by q->elevator_lock
-> was removed in commit 78c271344b6f ("block: move wbt_enable_default()
-> out of queue freezing from sched ->exit()"), so we can directly fix
-> this issue by placing wbt_enable_default() after
-> blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);.
+> Build regression: qemu-arm64 ARM64_64K_PAGES ltp syscalls swap fsync
+> fallocate failed.
 > 
-> [...]
+> > Ian Rogers <irogers@google.com>
+> >     perf topdown: Use attribute to see an event is a topdown metic or slots
+> 
+> Build error:
+> 
+> arch/x86/tests/topdown.c: In function 'event_cb':
+> arch/x86/tests/topdown.c:53:25: error: implicit declaration of
+> function 'pr_debug' [-Werror=implicit-function-declaration]
+>    53 |                         pr_debug("Broken topdown information
+> for '%s'\n", evsel__name(evsel));
+>       |                         ^~~~~~~~
+> cc1: all warnings being treated as errors
 
-Applied, thanks!
+Already fixed.
 
-[1/1] block: restore default wbt enablement
-      commit: 8f5845e0743bf3512b71b3cb8afe06c192d6acc4
+> 2)
+> 
+> The following list of LTP syscalls failure noticed on qemu-arm64 with
+> stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=y build configuration.
+> 
+> Most failures report ENOSPC (28) or mkswap errors, which may be related
+> to disk space handling in the 64K page configuration on qemu-arm64.
+> 
+> The issue is reproducible on multiple runs.
+> 
+> * qemu-arm64, ltp-syscalls - 64K page size test failures list,
+> 
+>   - fallocate04
+>   - fallocate05
+>   - fdatasync03
+>   - fsync01
+>   - fsync04
+>   - ioctl_fiemap01
+>   - swapoff01
+>   - swapoff02
+>   - swapon01
+>   - swapon02
+>   - swapon03
+>   - sync01
+>   - sync_file_range02
+>   - syncfs01
+> 
+> Reproducibility:
+>  - 64K config above listed test fails
+>  - 4K config above listed test pass.
+> 
+> Regression Analysis:
+> - New regression? yes
 
-Best regards,
--- 
-Jens Axboe
+Regression from 6.16?  Or just from 6.15.y?
 
+> 3)
+> 
+> Test regression: stable-rc 6.16.1-rc1 WARNING fs jbd2 transaction.c
+> start_this_handle
+> 
+> Kernel warning noticed on this stable-rc 6.16.1-rc1 this regression was
+> reported last month on the Linux next,
+> 
+> - https://lore.kernel.org/all/CA+G9fYsyYQ3ZL4xaSg1-Tt5Evto7Zd+hgNWZEa9cQLbahA1+xg@mail.gmail.com/
 
+Ok, no real regression here if this was already in 6.16.
 
+Doesn't look like it got fixed in 6.17-rc1 either :(
+
+thanks,
+
+greg k-h
 
