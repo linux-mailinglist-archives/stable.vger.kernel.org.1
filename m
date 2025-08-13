@@ -1,120 +1,142 @@
-Return-Path: <stable+bounces-169456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A261B25471
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 22:15:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF174B254AA
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 22:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 243C8568901
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 20:15:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E3237A785E
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 20:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAC02D541B;
-	Wed, 13 Aug 2025 20:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7485D23958A;
+	Wed, 13 Aug 2025 20:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="Ai90iJ9f"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UF7LKToI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17549271A71
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 20:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33FB1F3B9E
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 20:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755116116; cv=none; b=IJbuGqPWTPPeY9eQ9HF6rkBUO4dICQGMLosVu/WVYxS2pMxKjrym9FvzYZPJIBpap4XB9AA0zniI/SUsWVbVERD2YZxFHE349wI23Kze10PF2WOCqwuR3vrqIUcgtwe4ULs8xEDLwKu6scNShypIcTIxbBmPmlkxzRN/FO22SYI=
+	t=1755118014; cv=none; b=Rq/oAC7bAIfHpC3eyfnqrctCNL55ib2+B6dqDe+rRi85Y4TmaE4nsezxHlkSfSHktgj7e4A4qoZqGdjJ1DNNtTvFuaCovSd7IV+ZvjmndkgfO4u7trErdC3XcRdBQvb9DZs6zsmoZBPs75rLYSz0x8X+7Z0ZRdUCzyRgR9fWTQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755116116; c=relaxed/simple;
-	bh=/DpqAeslv8bRmsN2sfqbbHvqAKqaJvH3JKfHsdO27s4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=av5b+n9799jqPX8sR2UM8Pn77n5dHo/u1RTvktYC/5iJdvyii8aIcqiLe4zfiJV0Sd6JZnPDPTVfGXXlp0ya5S8G/N6EoUIxSqYdtBWoKx008vgxzbZBsA69bVcfPU4W+XKnYSqn6pTnvbrdFGdeT3hREvv+XJxDbh8BqU4qbFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=Ai90iJ9f; arc=none smtp.client-ip=209.85.166.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3e566327065so6065645ab.0
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:15:13 -0700 (PDT)
+	s=arc-20240116; t=1755118014; c=relaxed/simple;
+	bh=3msZVg0HRJb3iRLBV25DLd2/0IRJKa8M5nKvdTDwsE0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fEYdwm/fq+DuKDnhYpTFi3aiVjCYqkhjb8cdaXjzjVGxGr7x9SnfpLkdkgOXiTisXV28k/YJBkrm5OBiCYNJMegPNGmAb543k47KcV1zZ9UqKZ0MF49pAp5aLCyQi5/c2lfI0jnpcjNfTeeOVoIMJdQ+KzLSUFJmSc6quD4v2Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UF7LKToI; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b471737a7baso110011a12.1
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:46:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1755116113; x=1755720913; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HcgwJo67fSdIwhf/Y1kaVkQkpR61CWnlebZ6dKIeM1Y=;
-        b=Ai90iJ9fJ1yHbEda6tGc0tAtrZrca/fRRhz5yGL3SypnGDFVkmY6wsehiNEioyeK++
-         AKSdnreJai/Xs7SOwIIwgKfbe8QAXJ09fyWKg7gautqyvdQl9SAuZAFn+L8NAHor6LT4
-         lT1WO+/MV59UgaVZUdYIFWSOgXT8BLb2mTTzs=
+        d=google.com; s=20230601; t=1755118012; x=1755722812; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BPb4y3nft44GjGTyIn5iIw4m7Onuiy/xdmv1KPATuDs=;
+        b=UF7LKToIVZ7xYboQiRYz8R76SyqYGi2/7uiX4XUzFqggwEKoMwS3Aszi2Z1gL/r4cT
+         Kb8vxzsP5s99yXkXi/LwhRJlnZCxFIKTlmfzMtZrfCP5iCBLl6Udf+HPseulj7HdA02y
+         XM+obMDv6fSP/V/rRykDR1+aLbWmc9Gto/r7gRMW8UrsV36vILX59fIUNzTF0oAHnXq9
+         pIHoxIS8EXksHliSoNiiSbAmex0W08e6+/+12yy0394GjmmHo9+iI+11V9NKK5EmV0Mx
+         GzO5JIaS1je/M8mLvb2H0ZhsBmbvBI/wEkXRX+bCZePvjIhcy8zzj9pZCnwb1WHQaS+H
+         fyIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755116113; x=1755720913;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HcgwJo67fSdIwhf/Y1kaVkQkpR61CWnlebZ6dKIeM1Y=;
-        b=iym7RZSus/sk/Ju00nUEOYUo6ptzuvhaC3g6KZkUz2D/W4jmhdDBoa6itTRmhVogAX
-         fiLuFtc4YUBoPn3t0HGTSdgqEnFpxiTxwEqT4jsNVhEnj5cu2RL9BUFXUsLi+Bt00zaL
-         hBag0ZRrTppTbY3Qtl2ogGjhCXjWe7qTSgRxmMOM79twiPngqrs+pISgnN2O73Bem+Tu
-         Q23bc+bwoxFK9YJi9C1a424jpe6FCnflsYOotSvQ+91WTDwzm0Vcs0SSG4BA/RQ6mFKT
-         N9/hGIecVzvI68XX20LTVH9D6lNgfdydEa5+YRkKi1hLSe/6vLQu1OeNhEPh37GJzL77
-         CBQg==
-X-Gm-Message-State: AOJu0Yw8zHRpj9Co0xD0NEd8rqRMecci1MSCrtdplomPtrOa8vdwqwhA
-	MV/KwIvVRzUj7oMJB4QemYEY1FLW/vD9lozk9GSxUgLPU2bihn+D1Y4kABFrLkn4SA==
-X-Gm-Gg: ASbGncsT/EFYDn4fmLaPJKCT9S0yXLqhCOSZWTfWg7aGd5q7hMJiVtwMTLV5vEWSVIk
-	nUyzJ8XBwyzBbbFcjyBlCnxE+fV/vIwsfV0gK4rtErCH6YuTJrNPemfQJg9/RHX+2tnzTY3Ezqj
-	e5/op+6/bZpEe3EIKjItu3SXuNPm7cKiM1a/t08NqgFZvlkIGk6l6ruAuepS/W3Qqag62unCndX
-	GjijHK6584jX/wpTOqkZWmcCx6yK1n4B4HA7YEYGR7sEaLVKCeerNPGNJe5DHWMJZ3SsmMELcXM
-	9MZ2qPr88hi5XgYwPERN0Y7jK+yNwEPiADtyZYUWU+XrVXJ0I2dWyqgh6Nibhn6SBt0rtKUrsqu
-	zYpm4JTBirMBi9Qz12IkpwBArUE6rlb68kxqRG8I=
-X-Google-Smtp-Source: AGHT+IFIT83RK1BgW71T/A/tIXZmBd0yTKosCWQhpckCX2xdMMMQJzk4nn/G4EkvLEe5LUihAUVh8w==
-X-Received: by 2002:a05:6602:7184:b0:881:8957:d55e with SMTP id ca18e2360f4ac-8843446d220mr16540339f.3.1755116112915;
-        Wed, 13 Aug 2025 13:15:12 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50ae99cd268sm3906199173.22.2025.08.13.13.15.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 13:15:12 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 13 Aug 2025 14:15:10 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	achill@achill.org
-Subject: Re: [PATCH 6.15 000/480] 6.15.10-rc1 review
-Message-ID: <aJzyTmxsakkQ0SCB@fedora64.linuxtx.org>
-References: <20250812174357.281828096@linuxfoundation.org>
+        d=1e100.net; s=20230601; t=1755118012; x=1755722812;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BPb4y3nft44GjGTyIn5iIw4m7Onuiy/xdmv1KPATuDs=;
+        b=JpgqxiaADlLtUCgMTPOBtJjjqX9g51cNLTERCCMqVBwmyZpekVUTFavcrLjSceFYsZ
+         37BEiz8/wTSl2fBHbqcLuP65SG2dWIKf9OoxXNHo5NGEqlc4v9/l8GkKBdJAtjsslQSv
+         y74SIMJM1kWSlDRyOLGT4j7GEmH8NxgU78A4Qn66kQYTa73NZZAKKdKPDanWR9BNNE43
+         kiswcPvVyaP+PWA2zjVX9ZTM/2lBk1Z6nANfJT2NI8hnVrb8OtvpkDMDC4EcWYsUSFOp
+         YS7clq4AiHxVAPIu/OMvUY5dg118UHUhr8kYZDgS6f7+gKBzR7ZHsoV1O14SHeigcsEc
+         Lltg==
+X-Forwarded-Encrypted: i=1; AJvYcCW0cocNMk9IVS6dAKLCOAAIUzIegp91yTQRgkaS+tA5vbMWDh69AmswpRGY4i2gtuRIqGNZ0VE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjwFaupH6GTMzVYquHoHcuZuKXysJdHgY+G2w0pWaWpbfMGg+y
+	3FLHEIIzlRiIY13n076CZVyub0bJnSn2489lBdvBf0ZGC3Z9fJSrbojvDyRDp42WNPwv/ri+L8h
+	EuiBa7Lv9ujfR+g==
+X-Google-Smtp-Source: AGHT+IFgXz7gVJeHrHVNI0YMYiBrpI1xtsujBpCmTgabA3qV1nDHzl4U4ZVxCdNm8xMf+diL2uY2q6ZIW6eh1g==
+X-Received: from plbp6.prod.google.com ([2002:a17:903:1746:b0:23c:7695:dcc5])
+ (user=ipylypiv job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:db12:b0:240:417d:8115 with SMTP id d9443c01a7336-244584ee7a2mr6975095ad.16.1755118012159;
+ Wed, 13 Aug 2025 13:46:52 -0700 (PDT)
+Date: Wed, 13 Aug 2025 13:46:48 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.rc0.215.g125493bb4a-goog
+Message-ID: <20250813204648.1285197-1-ipylypiv@google.com>
+Subject: [PATCH] Revert "ata: libata-scsi: Improve CDL control"
+From: Igor Pylypiv <ipylypiv@google.com>
+To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Igor Pylypiv <ipylypiv@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Aug 12, 2025 at 07:43:28PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.15.10 release.
-> There are 480 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 14 Aug 2025 17:42:20 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.15.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+This reverts commit 17e897a456752ec9c2d7afb3d9baf268b442451b.
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+The extra checks for the ATA_DFLAG_CDL_ENABLED flag prevent SET FEATURES
+command from being issued to a drive when NCQ commands are active.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+ata_mselect_control_ata_feature() sets / clears the ATA_DFLAG_CDL_ENABLED
+flag during the translation of MODE SELECT to SET FEATURES. If SET FEATURES
+gets deferred due to outstanding NCQ commands, the original MODE SELECT
+command will be re-queued. When the re-queued MODE SELECT goes through
+the ata_mselect_control_ata_feature() translation again, SET FEATURES
+will not be issued because ATA_DFLAG_CDL_ENABLED has been already set or
+cleared by the initial translation of MODE SELECT.
+
+The ATA_DFLAG_CDL_ENABLED checks in ata_mselect_control_ata_feature()
+are safe to remove because scsi_cdl_enable() implements a similar logic
+that avoids enabling CDL if it has been already enabled.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+---
+ drivers/ata/libata-scsi.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 57f674f51b0c..856eabfd5a17 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3904,27 +3904,17 @@ static int ata_mselect_control_ata_feature(struct ata_queued_cmd *qc,
+ 	/* Check cdl_ctrl */
+ 	switch (buf[0] & 0x03) {
+ 	case 0:
+-		/* Disable CDL if it is enabled */
+-		if (!(dev->flags & ATA_DFLAG_CDL_ENABLED))
+-			return 0;
+-		ata_dev_dbg(dev, "Disabling CDL\n");
++		/* Disable CDL */
+ 		cdl_action = 0;
+ 		dev->flags &= ~ATA_DFLAG_CDL_ENABLED;
+ 		break;
+ 	case 0x02:
+-		/*
+-		 * Enable CDL if not already enabled. Since this is mutually
+-		 * exclusive with NCQ priority, allow this only if NCQ priority
+-		 * is disabled.
+-		 */
+-		if (dev->flags & ATA_DFLAG_CDL_ENABLED)
+-			return 0;
++		/* Enable CDL T2A/T2B: NCQ priority must be disabled */
+ 		if (dev->flags & ATA_DFLAG_NCQ_PRIO_ENABLED) {
+ 			ata_dev_err(dev,
+ 				"NCQ priority must be disabled to enable CDL\n");
+ 			return -EINVAL;
+ 		}
+-		ata_dev_dbg(dev, "Enabling CDL\n");
+ 		cdl_action = 1;
+ 		dev->flags |= ATA_DFLAG_CDL_ENABLED;
+ 		break;
+-- 
+2.51.0.rc0.215.g125493bb4a-goog
+
 
