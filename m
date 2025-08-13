@@ -1,120 +1,183 @@
-Return-Path: <stable+bounces-169452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8824CB2534D
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 20:49:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF153B25378
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 20:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FCC43AE279
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 18:49:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58B25A7121
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 18:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E222FF175;
-	Wed, 13 Aug 2025 18:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CBE305E22;
+	Wed, 13 Aug 2025 18:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEXDKDyG"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="w0i5Dd/Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359562FF145
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 18:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21482302CCC;
+	Wed, 13 Aug 2025 18:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755110961; cv=none; b=lSuvO672FUsVE8W6eKVcFH5oMlvMUT7ZxjNF88x+qxOxa6hIaRbUeiyrC5/WPaccFDZVCuhTWoHkf297dE+7dFvSxiZyqW51Mf1Zmf+BoRCqxQ++Q5829e8S87u48nOglVHv4W9cJSuAQZnKvqcW0QFe55FkkygNWc589oHYjhE=
+	t=1755111368; cv=none; b=RJBhvqlm0p+xsiiJLLqib+8WqIgXONs5zP7aDcKkMCFyGOEmZvUJ7OgHLAC+Oumz2eEvaNobP4l8SxiGQ73BQ2xdUiHOA4eHvWluGg2O36u9xm3v+pxHPatUjRlPyNVKkoHKtJ5bMkfF6u5BgDa0Wkld8mDmqO0pl+RUZp5N/3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755110961; c=relaxed/simple;
-	bh=eO+VaCfVqAgVEXUosHKSLBI2hw09lUea4Xr77bMmVIA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ID8IMOGReFIPc20sNYhktp6YcRwd0tF862Xq/awey7MAtlWB3ntChNmCaN6OG1kTGGY5Hpf8o7cd8vHNuHJMqSuJu7U5qX9+DImdWfot8TYS86R4CE5usCSKgIlqyRrK+XGtYpIywqu23kcNWlk9LpnG7KEjU4oJcHVc6k2256M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEXDKDyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E63FC4CEEB;
-	Wed, 13 Aug 2025 18:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755110960;
-	bh=eO+VaCfVqAgVEXUosHKSLBI2hw09lUea4Xr77bMmVIA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEXDKDyGRYHqaPpzgXi5v6otwKHBBFyRCEgTdpbk+5DNgtV4YTnYuLf98DTA2BjuP
-	 dul5oFVvi8vcu3G6JOYT00CUyZDVe2zT5FDQlwKHOlNxNlgotURY60EZouLdxwtXuJ
-	 a4bxGXAElt7PmoBTL53kSm5/pz4qayvNmMxbdQ1Xi01OIPQfrPuuOJbliLdHBOh+CU
-	 93kpXFAfR5ONgAo48cvlYErZY8WzmeT5PNXjZQTz65Bbq1O+NPCGivTjyw54vAofBT
-	 H8oWQ9ttccnEr5KMnMacEHVAYyLh6DNX4RLFAmeqALyvUnL0R4uYYh9xzzWOlUZyWu
-	 179q/IVuPHvrw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is supported
-Date: Wed, 13 Aug 2025 14:49:18 -0400
-Message-Id: <20250813184918.2071296-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081208-commerce-sports-ea01@gregkh>
-References: <2025081208-commerce-sports-ea01@gregkh>
+	s=arc-20240116; t=1755111368; c=relaxed/simple;
+	bh=Fe19/ip8+CVxXl2aEKak9LtudYaMiDlEcAjExYvKYTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfpowyCzyzn6FmXQtENFNq1SkbRDEJFowX5UqvflcflM7gRUv9j3sxGa4oFxiMcofOnHt1fa1LWW9HFmLLVMFbMkw6weaVrw9kn7V1qL0jwcwJro6bGmr2+LWEHO8vS8EzoomhWFvwD1gibCjTJ48tXjeB3NPO4ybLE6bhMk24s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=w0i5Dd/Q; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5lpkJos7qWPnLKHUIhAIUhJWzGvW6Gy5HTrpgDY7qFs=; b=w0i5Dd/QeMZm9yCMAj4ji+KQB4
+	hwaBPlNk992pRnUJXE8xcTRUBKlwpyVCXGGvQBjfsxUENoHMpscRc9L0Z4xYrhA29/BZCxR7u39yw
+	JONiv5w6hqmajGUsgftfEWBIxUNBjc9qrtij6s4ljff/rsbHC8W78GrpTtUbwB/RxSISLb9iDeXn9
+	GN/bMDaj/B3GX0S7OEds2zY2TdIPqLtdXVy2cFvSt4SXYnYYHmlPrAJ47TVFpDgFnVnQqts5LDTzi
+	4WJiaXKIeRdx59rrlKgpUUk797RMFE+lXFx1tKjj8e9f/JISGEFMjl1CO7ybKN3WiKAUOXRhFsFR6
+	6sD5MWBA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1umGdl-0000000CPrt-1AOC;
+	Wed, 13 Aug 2025 18:56:01 +0000
+Date: Wed, 13 Aug 2025 19:56:01 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Andrei Vagin <avagin@google.com>
+Cc: Andrei Vagin <avagin@gmail.com>, Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>, criu@lists.linux.dev,
+	Linux API <linux-api@vger.kernel.org>,
+	stable <stable@vger.kernel.org>
+Subject: Re: do_change_type(): refuse to operate on unmounted/not ours mounts
+Message-ID: <20250813185601.GJ222315@ZenIV>
+References: <CANaxB-xXgW1FEj6ydBT2=cudTbP=fX6x8S53zNkWcw1poL=L2A@mail.gmail.com>
+ <20250724230052.GW2580412@ZenIV>
+ <CANaxB-xbsOMkKqfaOJ0Za7-yP2N8axO=E1XS1KufnP78H1YzsA@mail.gmail.com>
+ <20250726175310.GB222315@ZenIV>
+ <CAEWA0a6jgj8vQhrijSJXUHBnCTtz0HEV66tmaVKPe83ng=3feQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAEWA0a6jgj8vQhrijSJXUHBnCTtz0HEV66tmaVKPe83ng=3feQ@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-From: Sean Christopherson <seanjc@google.com>
+On Sat, Jul 26, 2025 at 02:01:20PM -0700, Andrei Vagin wrote:
 
-[ Upstream commit 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 ]
+> > For a very mild example of fun to be had there:
+> >         mount("none", "/mnt", "tmpfs", 0, "");
+> >         chdir("/mnt");
+> >         umount2(".", MNT_DETACH);
+> >         mount(NULL, ".", NULL, MS_SHARED, NULL);
+> > Repeat in a loop, watch mount group id leak.  That's a trivial example
+> > of violating the assertion ("a mount that had been through umount_tree()
+> > is out of propagation graph and related data structures for good").
+> 
+> I wasn't referring to detached mounts. CRIU modifies mounts from
+> non-current namespaces.
+> 
+> >
+> > As for the "CAP_SYS_ADMIN within the mount user namespace" - which
+> > userns do you have in mind?
+> >
+> 
+> The user namespace of the target mount:
+> ns_capable(mnt->mnt_ns->user_ns, CAP_SYS_ADMIN)
 
-Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
-guest CPUID model, as debug support is supposed to be available if RTM is
-supported, and there are no known downsides to letting the guest debug RTM
-aborts.
+To bring that thread back: how about the following?  If nobody objects,
+I'm going to throw it into viro/vfs.git #fixes...
 
-Note, there are no known bug reports related to RTM_DEBUG, the primary
-motivation is to reduce the probability of breaking existing guests when a
-future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
-(KVM currently lets L2 run with whatever hardware supports; whoops).
+[PATCH] use uniform permission checks for all mount propagation changes
 
-Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
-DR7.RTM.
+do_change_type() and do_set_group() are operating on different
+aspects of the same thing - propagation graph.  The latter
+asks for mounts involved to be mounted in namespace(s) the caller
+has CAP_SYS_ADMIN for.  The former is a mess - originally it
+didn't even check that mount *is* mounted.  That got fixed,
+but the resulting check turns out to be too strict for userland -
+in effect, we check that mount is in our namespace, having already
+checked that we have CAP_SYS_ADMIN there.
 
-Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Changed guest_cpu_cap_has to guest_cpuid_has ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+What we really need (in both cases) is
+	* we only touch mounts that are mounted.  Hard requirement,
+data corruption if that's get violated.
+	* we don't allow to mess with a namespace unless you already
+have enough permissions to do so (i.e. CAP_SYS_ADMIN in its userns).
+
+That's an equivalent of what do_set_group() does; let's extract that
+into a helper (may_change_propagation()) and use it in both
+do_set_group() and do_change_type().
+
+Fixes: 12f147ddd6de "do_change_type(): refuse to operate on unmounted/not ours mounts"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/x86/include/asm/msr-index.h | 1 +
- arch/x86/kvm/vmx/vmx.c           | 4 ++++
- 2 files changed, 5 insertions(+)
-
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 727947ed5e5e..afd65c815043 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -379,6 +379,7 @@
- #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
- #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
- #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
-+#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
- 
- #define MSR_PEBS_FRONTEND		0x000003f7
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index fbe26b88f731..40862ed8162a 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2068,6 +2068,10 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
- 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
- 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
- 
-+	if (boot_cpu_has(X86_FEATURE_RTM) &&
-+	    (host_initiated || guest_cpuid_has(vcpu, X86_FEATURE_RTM)))
-+		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
-+
- 	return debugctl;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index ddfd4457d338..e7d9b23f1e9e 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2862,6 +2862,19 @@ static int graft_tree(struct mount *mnt, struct mount *p, struct mountpoint *mp)
+ 	return attach_recursive_mnt(mnt, p, mp);
  }
  
--- 
-2.39.5
-
++static int may_change_propagation(const struct mount *m)
++{
++        struct mnt_namespace *ns = m->mnt_ns;
++
++	 // it must be mounted in some namespace
++	 if (IS_ERR_OR_NULL(ns))         // is_mounted()
++		 return -EINVAL;
++	 // and the caller must be admin in userns of that namespace
++	 if (!ns_capable(ns->user_ns, CAP_SYS_ADMIN))
++		 return -EPERM;
++	 return 0;
++}
++
+ /*
+  * Sanity check the flags to change_mnt_propagation.
+  */
+@@ -2898,10 +2911,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
+ 
+ 	namespace_lock();
+-	if (!check_mnt(mnt)) {
+-		err = -EINVAL;
++	err = may_change_propagation(mnt);
++	if (err)
+ 		goto out_unlock;
+-	}
++
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
+@@ -3347,18 +3360,11 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+ 
+ 	namespace_lock();
+ 
+-	err = -EINVAL;
+-	/* To and From must be mounted */
+-	if (!is_mounted(&from->mnt))
+-		goto out;
+-	if (!is_mounted(&to->mnt))
+-		goto out;
+-
+-	err = -EPERM;
+-	/* We should be allowed to modify mount namespaces of both mounts */
+-	if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(from);
++	if (err)
+ 		goto out;
+-	if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
++	err = may_change_propagation(from);
++	if (err)
+ 		goto out;
+ 
+ 	err = -EINVAL;
 
