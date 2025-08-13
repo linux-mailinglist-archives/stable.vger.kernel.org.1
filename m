@@ -1,102 +1,123 @@
-Return-Path: <stable+bounces-169391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E05FB24AA2
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:33:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E657B24ACB
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6332163E7C
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:32:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D36787B76A0
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A402E611F;
-	Wed, 13 Aug 2025 13:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C977C7261D;
+	Wed, 13 Aug 2025 13:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hsVv6K/F"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N69VCTgc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0559192D97
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFFB2EA756;
+	Wed, 13 Aug 2025 13:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755091941; cv=none; b=o4UK61rrVRpdGai6joatI73BelP7ZeiD4r+j++9ypVHb9DY6Mq92cKF3ZghX23JQyx0vZgQM1u3QFNHagM6mfyzGVyWejjcwSQMwTd07J7yod+Tj2CatpZBrmSKbyf2N+2a4yGmqZUKDdx76793BKqw0jH3X/f2LRH9gVNUKkLA=
+	t=1755092356; cv=none; b=cAZOzqqazsjSuNotJJelPVyT8ycO6FOQkLE0r8QRE2Bt9ilaHr68mgxTcLMCe/5OvMz9au/AeZR64Lb6mDhg/hC9oMQZKxqwZ4J0SIN2Ijn3vOBEegFhnEXSFqy9RAxj+AP5o1+38r96dUFyOhzt16GDVpHblvxm7W3zCFHPiVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755091941; c=relaxed/simple;
-	bh=wsOobTfT6VyMSKBaXMDuQzU6EsoJJ7eiNC2rBfB2Ly8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oVQPUafiie9J8Z69BxAAd3FCZdFDoX7dBg0FutzlHu1jTpejwKCOQ4pA+SaKzVxaFQcnwdhEOL9o0OHdU03Lxq1OyzCeV7vmF2OyK46/IqP6hdzuQxbH4tuhHvoQWHQYY25TCBb5DWt7Pgh9IWkco8wzimSRP6b1ugZM5MqpZe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hsVv6K/F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991F1C4CEEB;
-	Wed, 13 Aug 2025 13:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755091941;
-	bh=wsOobTfT6VyMSKBaXMDuQzU6EsoJJ7eiNC2rBfB2Ly8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsVv6K/FvWkkANpYKNhFb83rG5Uc04WIwO9dXjmc1dceGGQ7R3tFXvwW1qhmLRW9y
-	 Sy2u7lD5WYR11kbUqR7qRljnleEjTaX7XRlPNSivc3i0CZtvVYHtEI/tVnGMOTb2sU
-	 iDw2NLcovSQpMcHoFttoLjBUnknUB/RqJxvF97Gj6TDZnsIn001zCQcwd8fD0fTRhS
-	 oS6InTFIml8CPHDekPy4mjHN0k8bRbyETj1jb8QAx/DriTrjZR/uv1W9aUOEUjVsin
-	 vmYgArV9UYZV4p3/SbwcPy3Yam8pW/4IcDFARuO4KvwkSWYTcnbWofjsJilCKLac8O
-	 Io86SeeH9FxYg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] smb: server: Fix extension string in ksmbd_extract_shortname()
-Date: Wed, 13 Aug 2025 09:32:18 -0400
-Message-Id: <20250813133218.2035014-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081211-chirping-aversion-8b66@gregkh>
-References: <2025081211-chirping-aversion-8b66@gregkh>
+	s=arc-20240116; t=1755092356; c=relaxed/simple;
+	bh=MgEKOEyyAEorH8iuoL33yXvGl8kuoAn+H2uLs0OHw6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ClURwLywrHkkH3vOmPdX8tFNRtcXFf7Y0q1K+DE9Q6ILam4BOlPbiOnh0OauTmvVKE+eQulRs/FfC6bNz/k0KzxfL1/gUNljyeAIWA4Iay7tWqk+5k+X6E8O/DomNmKUiTqlsXZ/zsAr1XiHur8GB/VQDMErGAA6l7JpzfRmN8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N69VCTgc; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755092355; x=1786628355;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MgEKOEyyAEorH8iuoL33yXvGl8kuoAn+H2uLs0OHw6M=;
+  b=N69VCTgc2znvvSEUehniANxzpD3hWWSx+47afhTIARX43jRVo1LockXy
+   Fl4UCTt5IQrLvPp1bkUwd0Ffi1ZC4WtNBdan/awLrH9Y1hPzN5qFa2100
+   21cDiMFxBwz7Ngf34dq/2VXt/6Hm8PKSUC3JZ16/WBYDJYrRaPRjX0FCX
+   7DBC9aAAFRwLDMB97htYIxa1ylTavgBIc8WkVvFVX5b6j8HFyKZqmLhky
+   EWy1PN23AoV6Icht2ywa2WdUubwJK0dvksYYA4n2Ab+scmqeGEPQuB3P7
+   kyptlujCw7GSBDbW3wJ0AGUpa2MXopXryxwx1w9YUIwD3CdzkzYt4xoBW
+   A==;
+X-CSE-ConnectionGUID: FvYK9XeaSgGqRWn7aFed1g==
+X-CSE-MsgGUID: ZrL5Qxo8SP+7ousz5TP85w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="44964699"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="44964699"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:39:14 -0700
+X-CSE-ConnectionGUID: N7uaji0FRw66mKcsookEbg==
+X-CSE-MsgGUID: sjsF9VtDR4iwOeSVE/y+eA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="170683697"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa005.fm.intel.com with ESMTP; 13 Aug 2025 06:39:10 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 2E07F95; Wed, 13 Aug 2025 15:39:09 +0200 (CEST)
+Date: Wed, 13 Aug 2025 15:39:09 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+ <202508120250.Eooq2ydr-lkp@intel.com>
+ <20250813051633.GA3895812@ax162>
+ <aJwj4dQ3b599qKHn@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJwj4dQ3b599qKHn@codewreck.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+On Wed, Aug 13, 2025 at 02:34:25PM +0900, Dominique Martinet wrote:
+> Nathan Chancellor wrote on Tue, Aug 12, 2025 at 10:16:33PM -0700:
+> > >    1 warning generated.
+> > 
+> > I see this in -next now, should remain be zero initialized or is there
+> > some other fix that is needed?
+> 
+> A zero-initialization is fine, I sent a v2 with zero-initialization
+> fixed yesterday:
+> https://lkml.kernel.org/r/20250812-iot_iter_folio-v2-1-f99423309478@codewreck.org
+> 
+> (and I'll send a v3 with the goto replaced with a bigger if later today
+> as per David's request)
+> 
+> I assume Andrew will pick it up eventually?
 
-[ Upstream commit 8e7d178d06e8937454b6d2f2811fa6a15656a214 ]
+I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
+and suggest all developers should follow).
 
-In ksmbd_extract_shortname(), strscpy() is incorrectly called with the
-length of the source string (excluding the NUL terminator) rather than
-the size of the destination buffer. This results in "__" being copied
-to 'extension' rather than "___" (two underscores instead of three).
-
-Use the destination buffer size instead to ensure that the string "___"
-(three underscores) is copied correctly.
-
-Cc: stable@vger.kernel.org
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ksmbd/smb_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/ksmbd/smb_common.c b/fs/ksmbd/smb_common.c
-index e90a1e8c1951..0438a634f4c2 100644
---- a/fs/ksmbd/smb_common.c
-+++ b/fs/ksmbd/smb_common.c
-@@ -508,7 +508,7 @@ int ksmbd_extract_shortname(struct ksmbd_conn *conn, const char *longname,
- 
- 	p = strrchr(longname, '.');
- 	if (p == longname) { /*name starts with a dot*/
--		strscpy(extension, "___", strlen("___"));
-+		strscpy(extension, "___", sizeof(extension));
- 	} else {
- 		if (p) {
- 			p++;
 -- 
-2.39.5
+With Best Regards,
+Andy Shevchenko
+
 
 
