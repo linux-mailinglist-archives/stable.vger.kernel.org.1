@@ -1,125 +1,131 @@
-Return-Path: <stable+bounces-169402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB74B24B95
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:08:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9066DB24BA3
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 16:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFEDA5C0F37
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:01:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF1E3A7CDC
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 14:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F405E2EB5B4;
-	Wed, 13 Aug 2025 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F98A2EB5C4;
+	Wed, 13 Aug 2025 14:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="hX1tM0qX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nT8lzQ+R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528E82E5B0F
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 14:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511312E92BE
+	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 14:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755093651; cv=none; b=AK8JqgbpE/j9y5UgyfOSR/qLHQf2YQMHOjrE9JtG/qU7TLyyJmz5yMbFPJ6Sc8w+I/E1Z4iM7Rl7dl6358Up8nsjQA1PjsYx/q8e2mQm0sHK18WIan6PUSnL9Cs6y0jnIGP1tBo0a84TvpP4EkvNSqkOV8fW8eLq+LFr4soO8RY=
+	t=1755094231; cv=none; b=KSXnkp244osbtn+gHMurf1HyIB5NAuTB9jrR0XP0O99K8opiq/zXRMvdBK5hTPGaSBvF2YDuoYaxH5QRlU3gv5xFLVoTFNk3fJfGxmGz10cPPooyso6/wvVBNJGbFGzM+JLtjPvdW3rIgqZEpqHn7NetjoL2z/wh78sW3yzsqPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755093651; c=relaxed/simple;
-	bh=UsGW5uN88QfodskVKu0bk/zEoPGB6z7yLng9J3kJqoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRx2+89uq+VPGYR6gSSYBdEHul1d4sYs1pq4DqFsLtvvgHmcrFKeAzjDa5LEYuiFySpK6tWng68gPtgCSdsZsgyMEedVAkFF3n5HTMlodLrIvGDoKhXFpYFtZ41ygMoekmq6VkzJaKt0hCg30Czg8RSLgN1d8jSGTPYlenhZJrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=hX1tM0qX; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4b07d777d5bso74375571cf.2
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 07:00:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1755093649; x=1755698449; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lc31v2yJfn5lC70LsWzHpGyS8F15AJd43KPnoZNTig0=;
-        b=hX1tM0qX1hpfCCM0ATyINtwaAKyg9z8ABBa1fyJQNUPuBTDUYVEbWTKjA4rwf2bji/
-         elvxo47HWeTZOH+HoEjfOMDVfNhe1C4Am+3HnpAQp+7DcI4tD+2o8+Nc5lTuMY9bPeyR
-         pdSleUu2Y3/zgYNClEQfKG1ZKlU1QnKne5FTrwk+GzqFES7j4XX484g/XVzOO3Rz2Vyl
-         VAGwkfezdSaFmaFimZVAK0iEEF6vpLlEbNKfHjUQY3xQmkI18cjdfwZ2Ou7oJ55GZJYk
-         bv/C7N8h1BCFxAxZiHvtvBOgcFwZk1Zl1FYe80QobZY8GzF9kELr6s+xn/fsO4jaYgAs
-         waQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755093649; x=1755698449;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lc31v2yJfn5lC70LsWzHpGyS8F15AJd43KPnoZNTig0=;
-        b=Puum9NC1K4vU/84/53T5wDajLh5SXyKCuJTglJG4jp4dH2+6FyBPbpHu+ize+hduws
-         R/Qy9rz3v/VDcI2HXHNUFhNAFuSS5imzUz1BjAwwzCSmCH4NpRJk+/VgLsrquwqdgi8W
-         2Ah8FNaeQx2bnEKDq3IaUguzSZNBQjdixVgTCcJt4gfp9wjswF49TQo1ek++McxJkHsr
-         VB6QJiwpjxxl+o6zPS+uCqhEhmI3jWQH8IuNxHTHPJSpBh7WqNhvT7cAHonGl/Rn3HTP
-         VhzEo4VGo1W2ynVat4VW4/Q9FnTmAQL+UaJWHE14adxvHnzyy/zAcpwx0nWGnXmE/skg
-         CaLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVz7L+c9yclMzHySncXcG14FJIcc7yZWlzOVeG8UP9Y5Br+xp1CYuw01Re1obv+kiPnxXDyVhA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOulHca/VY/ak078PB9ToxLEIYL7F0oHPJsrEs9uHUR3EMc0Ex
-	QK1LA3NdMDoOhnZwT/3XtPeoeeHrCZ59eN5OKIrWRqDBADMpdGKVU52RBdMC3jzO1w==
-X-Gm-Gg: ASbGncvzYlo8fl2uFChEtzjLhVlpkcKuHBpfqRHBwqlBXIfo5tVUDDWZ47WsPwNnG18
-	omL7hY0U09k7x9M444IiKESgewWJ1QC3uxgvbUC9TLsey7ktuEIUVVBDLTvgGLlo3y+kFAQj+hD
-	vL/4VIKHsN3GJ7Bg7XatxK1RZULE4wgnwvHfn4n57ogatDCuf+7xroZA8wSfYu7m+l7874TuHrp
-	QlGvePt8c5PjVRTJrUTfOYOp274BD2F0+fZTIOtrJlDv2WLeC8R2/V1EU7T3cEkoyFB7kqvlk2J
-	ilhcPH2GhD+oS5YbI+d2ziQwacUr95qRbAm1dftnKOJgPrz8Aj9sqoayd7b/zPnUMQWgVX7AueW
-	Q7NRuhYxGPjNMfDVpeXAhxTc1ZhDtbNPkC8Iu7oFs
-X-Google-Smtp-Source: AGHT+IEfhlGUyZwjmFmc8w/5qnUy1OjJjl63ruLaNjye3n5HyB1AIXAaAwqg8IppikZVDelkkPlPTA==
-X-Received: by 2002:a05:622a:4818:b0:4b0:be3b:d40 with SMTP id d75a77b69052e-4b0fc86fa65mr41526931cf.40.1755093648934;
-        Wed, 13 Aug 2025 07:00:48 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b1080bbf35sm933301cf.15.2025.08.13.07.00.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 07:00:48 -0700 (PDT)
-Date: Wed, 13 Aug 2025 10:00:46 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	wwang <wei_wang@realsil.com.cn>, stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@suse.de>, linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] usb: storage: realtek_cr: Use correct byte order for
- bcs->Residue
-Message-ID: <5c190936-7c9a-4577-87c2-f79975725787@rowland.harvard.edu>
-References: <20250813101249.158270-2-thorsten.blum@linux.dev>
- <20250813101249.158270-6-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1755094231; c=relaxed/simple;
+	bh=UBm6XyBTqgkWoieGyTayfLKeLtUgMmvF9UMniVYtyIY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pH3JCp7RMgZ9f6WTNEhWIKxKu5hVpsm4phpz/wgYbupLYNk2fdtLuVI7/p1jMrgPAo1oJm4AbW75R8M9GiAEyfeLsVnnByKvhP7yXLLyM00HYefkHMN47rVWA+X0WHqx1Gk/JYHsPzH/l1iZ6M4ai5jp2+tFElsl++kqNCQ/PQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nT8lzQ+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4844FC4CEEB;
+	Wed, 13 Aug 2025 14:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755094230;
+	bh=UBm6XyBTqgkWoieGyTayfLKeLtUgMmvF9UMniVYtyIY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nT8lzQ+RQjGQdoe4J4NNw9k53c44IINqzHj6zils71f5xXWLDsf+pvKRLS/1UJAqV
+	 vQlsEB6OYX1ulny5LXJ+RuI535+ARcVTXOE8W513WwEm9woJb1go4G7mE7pgAzzUAz
+	 I77mBcOBf++tCgboW1O5PUHQ6jTK8W6dp18JYkc6sSK7C2CWwKeQcrfT3EStBWXdkd
+	 ACaBanSWJPUHrz7zPCJHdVXi4YO2nU7/+HBOJp47RtAo725hfu6TML1FF6h4TqV6PB
+	 aQPn+gmw3AIln46jIlSoKnPjbmakJXeI0hK3DahWVMxKasXf3g+K+uE/yCo0+LZPBp
+	 uGyNG4u47lf0g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] ALSA: scarlett2: Add retry on -EPROTO from scarlett2_usb_tx()
+Date: Wed, 13 Aug 2025 10:10:27 -0400
+Message-Id: <20250813141027.2043326-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <2025081243-disaster-wrinkly-bdc6@gregkh>
+References: <2025081243-disaster-wrinkly-bdc6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250813101249.158270-6-thorsten.blum@linux.dev>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 13, 2025 at 12:12:51PM +0200, Thorsten Blum wrote:
-> Since 'bcs->Residue' has the data type '__le32', we must convert it to
-> the correct byte order of the CPU using this driver when assigning it to
-> the local variable 'residue'.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 50a6cb932d5c ("USB: usb_storage: add ums-realtek driver")
-> Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->  drivers/usb/storage/realtek_cr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/storage/realtek_cr.c b/drivers/usb/storage/realtek_cr.c
-> index 8a4d7c0f2662..758258a569a6 100644
-> --- a/drivers/usb/storage/realtek_cr.c
-> +++ b/drivers/usb/storage/realtek_cr.c
-> @@ -253,7 +253,7 @@ static int rts51x_bulk_transport(struct us_data *us, u8 lun,
->  		return USB_STOR_TRANSPORT_ERROR;
->  	}
->  
-> -	residue = bcs->Residue;
-> +	residue = le32_to_cpu(bcs->Residue);
->  	if (bcs->Tag != us->tag)
->  		return USB_STOR_TRANSPORT_ERROR;
->  
+From: "Geoffrey D. Bennett" <g@b4.vu>
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+[ Upstream commit 8a15ca0ca51399b652b1bbb23b590b220cf03d62 ]
+
+During communication with Focusrite Scarlett Gen 2/3/4 USB audio
+interfaces, -EPROTO is sometimes returned from scarlett2_usb_tx(),
+snd_usb_ctl_msg() which can cause initialisation and control
+operations to fail intermittently.
+
+This patch adds up to 5 retries in scarlett2_usb(), with a delay
+starting at 5ms and doubling each time. This follows the same approach
+as the fix for usb_set_interface() in endpoint.c (commit f406005e162b
+("ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()")),
+which resolved similar -EPROTO issues during device initialisation,
+and is the same approach as in fcp.c:fcp_usb().
+
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Closes: https://github.com/geoffreybennett/linux-fcp/issues/41
+Cc: stable@vger.kernel.org
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/aIdDO6ld50WQwNim@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Applied patch to the older file name mixer_scarlett_gen2.c instead of mixer_scarlett2.c. ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/usb/mixer_scarlett_gen2.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 0a9025e3c867..0aa5957cd9f9 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -125,6 +125,7 @@
+ #include <linux/slab.h>
+ #include <linux/usb.h>
+ #include <linux/moduleparam.h>
++#include <linux/delay.h>
+ 
+ #include <sound/control.h>
+ #include <sound/tlv.h>
+@@ -1064,6 +1065,8 @@ static int scarlett2_usb(
+ 	u16 req_buf_size = sizeof(struct scarlett2_usb_packet) + req_size;
+ 	u16 resp_buf_size = sizeof(struct scarlett2_usb_packet) + resp_size;
+ 	struct scarlett2_usb_packet *req, *resp = NULL;
++	int retries = 0;
++	const int max_retries = 5;
+ 	int err;
+ 
+ 	req = kmalloc(req_buf_size, GFP_KERNEL);
+@@ -1087,10 +1090,15 @@ static int scarlett2_usb(
+ 	if (req_size)
+ 		memcpy(req->data, req_data, req_size);
+ 
++retry:
+ 	err = scarlett2_usb_tx(dev, private->bInterfaceNumber,
+ 			       req, req_buf_size);
+ 
+ 	if (err != req_buf_size) {
++		if (err == -EPROTO && ++retries <= max_retries) {
++			msleep(5 * (1 << (retries - 1)));
++			goto retry;
++		}
+ 		usb_audio_err(
+ 			mixer->chip,
+ 			"Scarlett Gen 2/3 USB request result cmd %x was %d\n",
+-- 
+2.39.5
+
 
