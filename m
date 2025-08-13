@@ -1,186 +1,126 @@
-Return-Path: <stable+bounces-169398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFAB24B29
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:53:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F1E8B24B47
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 15:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC39567008
-	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:50:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 240AE1B610C7
+	for <lists+stable@lfdr.de>; Wed, 13 Aug 2025 13:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4F12EB5CD;
-	Wed, 13 Aug 2025 13:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5652EB5C4;
+	Wed, 13 Aug 2025 13:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5Vo9BYe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZAwj9hMe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3572ED159
-	for <stable@vger.kernel.org>; Wed, 13 Aug 2025 13:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCBF2EAB68;
+	Wed, 13 Aug 2025 13:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755092976; cv=none; b=jQeAbT+2pHYv/Eak44QgEyv758FbtkAeJ2JhiPq/6Hj470IK5pdOH1eqwE2khP/poPjdMIuTA3MO83eHHWpPTTCRWBMTgHO8Um8mBU3/rBgKF0hANeA6L3AmALcCW234vzP6TLzEtFceOaYNCXetNh2ILv636d5rOY3fBUiDFfQ=
+	t=1755093170; cv=none; b=QgHIHTLppQ17kxyZJzhLZbWTPzCM0hRYVJ9D+nnM5haKednXYJiQFqXbgWoGSDTD4gBUYbY/MZjRvpsRwXQ45qKohY5ESmuYoS8KRv6xlH6B8+02jEVn4sZ/RpNwmHOttdTJrI7x3f0Zk9PEkLSDshqWNNDIiysf/zW3yJMahAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755092976; c=relaxed/simple;
-	bh=j+9gjRNLR/A6RtIPYTYKsARAx+3bl2FoKC/cPIyIR6c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nTeR7Z9SaGoxaHdIBs+3VGs9PAZkGUzxVWPkjRheY+P/1tAHDmmfKt0mKbjtE6DgdysuQ0/0B0CK8Z4UE6nQeCyTgzt5HE99BUL4h/ue0ctF+uFH7fCEbJWTUaeXGG5YZf6KysLQs/S6LJtI3tmmmkiLtJIF6gO7Z3hIS1hbFX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5Vo9BYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37066C4CEEB;
-	Wed, 13 Aug 2025 13:49:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755092975;
-	bh=j+9gjRNLR/A6RtIPYTYKsARAx+3bl2FoKC/cPIyIR6c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5Vo9BYePuqZJEW7qb7hhgUApdipJj3CRE1RX9goCLeVkuxY+8uB84J7tJVjBHXGo
-	 VSE+Pnzz4gPMFrd2+Gn0JAo/7GAvC/H10fbQH1xMiGwgTbTCHCG5Mn1jKMGxUP3Yhy
-	 zRxyFNsUi6CKKXAjfJSPDAQy91lyUwhNkRh3vmq08numj9fuS44WfXBBnAx647TSWf
-	 s0KIiW4X5eXVk9MVwy3/Ynjv7rj2dAPaYM5WqSfIk6+YtfMb52JVbDDk6JoF331I8H
-	 NkH2R//BLI5B4I4gZ7tlGqXoQkE3IivEcOi/kc4BScI6Q/NV3xP07y3KPyXendJOWy
-	 It11rRYznNpyA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: John Ernberg <john.ernberg@actia.se>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] net: usbnet: Avoid potential RCU stall on LINK_CHANGE event
-Date: Wed, 13 Aug 2025 09:49:32 -0400
-Message-Id: <20250813134932.2037778-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081259-headset-swinger-4805@gregkh>
-References: <2025081259-headset-swinger-4805@gregkh>
+	s=arc-20240116; t=1755093170; c=relaxed/simple;
+	bh=yRzIBpcwo03V92Cu9B8zeqXJTartIC1MviVhaIBxQdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j9YUhWaLzKBnG66U/zaEyxT6yN/eOt9KJWc4q5a6PGOAxp4rXQJFY7Gi8mHTuGpsZaqmXTqXadelceGFwUjRsoearY2pb9MZULTuAfLmRzOP7CNWpno9X5jhYV4rGeL4qvBiosWM3RBNKtE+7ZG/vk22Yiftb2wan/WKk05GHaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZAwj9hMe; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755093170; x=1786629170;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yRzIBpcwo03V92Cu9B8zeqXJTartIC1MviVhaIBxQdM=;
+  b=ZAwj9hMeBbrlCEqTO1etqD52Ib7zYRuFfbkqzsVrMfKiNpQRlEPFCXGn
+   3nIOvMchcMhGBsxiAH9Kt2iX4/9H4G4RYXE434AsGeKcuAtwy3PXYGnwy
+   4bgJHzoYiEp+cb2DvpmEGtkiaPy+nVyQ5hoRntie97P9KMoNSj48OlRGk
+   L4CDHVaLEm2HXbZt4KZdTbdXR3E7ncapUlFhlRmJXRWTqrQKKcGDI2iTW
+   Y/MCDxfioY4Ut6THrPCEElSadYsntHEeh+e+DH+B8DJaIXnXKsfxVwhSp
+   bt9MNyzoC8EusmhT6ok2Sw4zXOxoSd8fgNV58Fkl3uzYTGOvPouGm+eUI
+   w==;
+X-CSE-ConnectionGUID: WxwWpv4/SxeMt2n2Nl4x+A==
+X-CSE-MsgGUID: mwuitVOTTWymQsL1rl8Vqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57289139"
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="57289139"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:52:49 -0700
+X-CSE-ConnectionGUID: a6XmckWnTmOaZ0W7wn/o/A==
+X-CSE-MsgGUID: 9CE9RbIqTnCtSYCj/rZ3aA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
+   d="scan'208";a="170928900"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 06:52:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1umBuB-00000005RqB-41aP;
+	Wed, 13 Aug 2025 16:52:39 +0300
+Date: Wed, 13 Aug 2025 16:52:39 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
+ folio size
+Message-ID: <aJyYp-3VA9kJ5YMd@smile.fi.intel.com>
+References: <20250811-iot_iter_folio-v1-1-d9c223adf93c@codewreck.org>
+ <202508120250.Eooq2ydr-lkp@intel.com>
+ <20250813051633.GA3895812@ax162>
+ <aJwj4dQ3b599qKHn@codewreck.org>
+ <aJyVfWKX2eSMsfrb@black.igk.intel.com>
+ <aJyW_QNI8vIdr03O@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJyW_QNI8vIdr03O@codewreck.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: John Ernberg <john.ernberg@actia.se>
+On Wed, Aug 13, 2025 at 10:45:33PM +0900, Dominique Martinet wrote:
+> Andy Shevchenko wrote on Wed, Aug 13, 2025 at 03:39:09PM +0200:
+> > > I assume Andrew will pick it up eventually?
+> > 
+> > I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
+> > and suggest all developers should follow).
+> 
+> I actually test with W=1 too, but somehow this warning doesn't show up
+> in my build, I'm not quite sure why :/
+> (even if I try clang like the test robot... But there's plenty of
+> other warnings all around everywhere else, so I agree this is all way
+> too manual)
 
-[ Upstream commit 0d9cfc9b8cb17dbc29a98792d36ec39a1cf1395f ]
+Depends on your config, last few releases I was specifically targetting x86
+defconfigs (32- and 64-bit) to be build with `make W=1`. There are a couple of
+changes that are still pending, but otherwise it builds with GCC and clang.
 
-The Gemalto Cinterion PLS83-W modem (cdc_ether) is emitting confusing link
-up and down events when the WWAN interface is activated on the modem-side.
-
-Interrupt URBs will in consecutive polls grab:
-* Link Connected
-* Link Disconnected
-* Link Connected
-
-Where the last Connected is then a stable link state.
-
-When the system is under load this may cause the unlink_urbs() work in
-__handle_link_change() to not complete before the next usbnet_link_change()
-call turns the carrier on again, allowing rx_submit() to queue new SKBs.
-
-In that event the URB queue is filled faster than it can drain, ending up
-in a RCU stall:
-
-    rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 0-.... } 33108 jiffies s: 201 root: 0x1/.
-    rcu: blocking rcu_node structures (internal RCU debug):
-    Sending NMI from CPU 1 to CPUs 0:
-    NMI backtrace for cpu 0
-
-    Call trace:
-     arch_local_irq_enable+0x4/0x8
-     local_bh_enable+0x18/0x20
-     __netdev_alloc_skb+0x18c/0x1cc
-     rx_submit+0x68/0x1f8 [usbnet]
-     rx_alloc_submit+0x4c/0x74 [usbnet]
-     usbnet_bh+0x1d8/0x218 [usbnet]
-     usbnet_bh_tasklet+0x10/0x18 [usbnet]
-     tasklet_action_common+0xa8/0x110
-     tasklet_action+0x2c/0x34
-     handle_softirqs+0x2cc/0x3a0
-     __do_softirq+0x10/0x18
-     ____do_softirq+0xc/0x14
-     call_on_irq_stack+0x24/0x34
-     do_softirq_own_stack+0x18/0x20
-     __irq_exit_rcu+0xa8/0xb8
-     irq_exit_rcu+0xc/0x30
-     el1_interrupt+0x34/0x48
-     el1h_64_irq_handler+0x14/0x1c
-     el1h_64_irq+0x68/0x6c
-     _raw_spin_unlock_irqrestore+0x38/0x48
-     xhci_urb_dequeue+0x1ac/0x45c [xhci_hcd]
-     unlink1+0xd4/0xdc [usbcore]
-     usb_hcd_unlink_urb+0x70/0xb0 [usbcore]
-     usb_unlink_urb+0x24/0x44 [usbcore]
-     unlink_urbs.constprop.0.isra.0+0x64/0xa8 [usbnet]
-     __handle_link_change+0x34/0x70 [usbnet]
-     usbnet_deferred_kevent+0x1c0/0x320 [usbnet]
-     process_scheduled_works+0x2d0/0x48c
-     worker_thread+0x150/0x1dc
-     kthread+0xd8/0xe8
-     ret_from_fork+0x10/0x20
-
-Get around the problem by delaying the carrier on to the scheduled work.
-
-This needs a new flag to keep track of the necessary action.
-
-The carrier ok check cannot be removed as it remains required for the
-LINK_RESET event flow.
-
-Fixes: 4b49f58fff00 ("usbnet: handle link change")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://patch.msgid.link/20250723102526.1305339-1-john.ernberg@actia.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adjust context in header ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/usb/usbnet.c   | 11 ++++++++---
- include/linux/usb/usbnet.h |  1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 1e8f395c8639..2957e3a0080c 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1106,6 +1106,9 @@ static void __handle_link_change(struct usbnet *dev)
- 		 * tx queue is stopped by netcore after link becomes off
- 		 */
- 	} else {
-+		if (test_and_clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags))
-+			netif_carrier_on(dev->net);
-+
- 		/* submitting URBs for reading packets */
- 		tasklet_schedule(&dev->bh);
- 	}
-@@ -1978,10 +1981,12 @@ EXPORT_SYMBOL(usbnet_manage_power);
- void usbnet_link_change(struct usbnet *dev, bool link, bool need_reset)
- {
- 	/* update link after link is reseted */
--	if (link && !need_reset)
--		netif_carrier_on(dev->net);
--	else
-+	if (link && !need_reset) {
-+		set_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
-+	} else {
-+		clear_bit(EVENT_LINK_CARRIER_ON, &dev->flags);
- 		netif_carrier_off(dev->net);
-+	}
- 
- 	if (need_reset && link)
- 		usbnet_defer_kevent(dev, EVENT_LINK_RESET);
-diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
-index fc6ed1311589..83ca77818822 100644
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -83,6 +83,7 @@ struct usbnet {
- #		define EVENT_LINK_CHANGE	11
- #		define EVENT_SET_RX_MODE	12
- #		define EVENT_NO_IP_ALIGN	13
-+#		define EVENT_LINK_CARRIER_ON	14
- 	u32			rx_speed;	/* in bps - NOT Mbps */
- 	u32			tx_speed;	/* in bps - NOT Mbps */
- };
 -- 
-2.39.5
+With Best Regards,
+Andy Shevchenko
+
 
 
