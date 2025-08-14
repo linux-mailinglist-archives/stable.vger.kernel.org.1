@@ -1,99 +1,204 @@
-Return-Path: <stable+bounces-169527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7A3B26413
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 13:20:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A85B2642E
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 13:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD86621F88
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 11:18:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8624D5C4D65
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 11:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F067128EA72;
-	Thu, 14 Aug 2025 11:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FC62EF659;
+	Thu, 14 Aug 2025 11:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l2mHGj/a"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U1ihBFd1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571BB264A65
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 11:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE3023AB94
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 11:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755170280; cv=none; b=DLj9q1pXuU0FRJ7+SzPtqImaPjiKDtZ7NlDn2oOAPKW6lit/fROwlzSxKyEytBMWuYjF7z6MwzMRa/u/4mkfgnJ3WaDr9uEtlKw/bwX5fPmk+v3Ue+giy2t/S1jYotRnlQKAb1L3QumWza/jMGcWoyqcMHn8v+LsuobxhVUvSGA=
+	t=1755170729; cv=none; b=m/DEZkl6nip8cZX5rdrYb29HOZHVKYXbXEWqRw7cf6fys+MU6JilVx3OOpai9Wo6RjtZ/6vj0XUDFLrBcEqDSZOTs7y3Hj8qVcePP4w96yzElY0vMaXC5azWOebLRvaQ/dpp1vH7rgEBa/jk/YcjxoYRB9y7F+kfkVXrQrEtlAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755170280; c=relaxed/simple;
-	bh=u+qdBBggu949YYeAXuPAdch6Q5KtVzYL2Kf6ivZ279E=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=uyQDdD63DNQynQRvBfrjt0PKkbFichCkuoKpBrnRXBWAiLa0nc9GOIwu+/Y86V9OlzMexX/Ll1WWsoiOC+SB9woQ17BwN/bY1purAmPuXrWobi6zSdcxGZHRsuJDa1mCI5A1ioIYXkZjW2n3IBX+hlGE/54M3UNGJ7mmFBOvrYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l2mHGj/a; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755170279; x=1786706279;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=u+qdBBggu949YYeAXuPAdch6Q5KtVzYL2Kf6ivZ279E=;
-  b=l2mHGj/aWuOqqp+d94qgmzg4oXpWwzx0qo/cxu8poVut5iG8n7VHnhS5
-   H4txRUmu5LrIS8Fmv19h5KJ3cHHZ6DX0HMGbAjfN/gnx1nsRlUrhAFUnn
-   QUs9YhQM+VeaA9NvubRMNX1eQNGKn4ke8BmBfyBJTK9bwsqOgxzEU3PNF
-   Y4qC5Q1Om9Ay19kqxW89yLAfpflcvil9Wxb/fvP4om4TVoj1qWMwS/wjq
-   DI+aXTA/sMcGTaSsAPyx39IrrLktA3J6HsR63HVM8S5cRkU/hDayuFSSR
-   rdTwdCnakxhIDn0P3+jLSrcrNNgAo5jXQurfyX4OZjTUj+9pwG21AXXun
-   g==;
-X-CSE-ConnectionGUID: CmUsbh9aTkOylh72oR3zBg==
-X-CSE-MsgGUID: rp3Chny0RHK9BMbHAA8HGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="80060326"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="80060326"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 04:17:59 -0700
-X-CSE-ConnectionGUID: hoea9W1VS2GCgKxT3PXAvQ==
-X-CSE-MsgGUID: ciQ5X1nSRuuvIZkAQIKw6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="171192526"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 14 Aug 2025 04:17:58 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umVxz-000AtM-2R;
-	Thu, 14 Aug 2025 11:17:55 +0000
-Date: Thu, 14 Aug 2025 19:17:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: yangshiguang1011@163.com
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] mm: slub: avoid wake up kswapd in set_track_prepare
-Message-ID: <aJ3F338VexFiaW9o@1a863d778a0f>
+	s=arc-20240116; t=1755170729; c=relaxed/simple;
+	bh=2jOKXSLvdS70L4BKyjdrfHg8uZbWAgz4JnhXo2zFrLQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J5The08u0+JPeAKR19LKuoozNX/MRsxyHZ80hgPW7HhVndEOGIEpamSLoaAKScenFxJZxphHS+R979lOTzIMe6W7BWau0KCE9YtnIoTUbUEvP/qb0djIhhC2C7U/DhslCPxM6h+7KHBejyBqFyr5bc6+/orZ4wIhNwk7vyrMGOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=U1ihBFd1; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-afcb7aecf92so9698966b.3
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 04:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755170726; x=1755775526; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=MadbLTh+bcaMwOPhpClvC1za3QmyjTKGxVk4wHGZkQo=;
+        b=U1ihBFd1B4CJGDzN0r94+ETWLerh0X8e5Pv5NWgXGTVQarWvy4yN5zUI7KWzw8W0o6
+         /Slx3KTgSpi65SAB9kSl4MI8EMUrG9UR9KpLZlWCXdZnE0M6y4fD+hiJEhbAU6aG93Ly
+         HCJEZ4vN2xX+jgPpmDQqp4DEXmNTsxq5zCzSulGl+JpbXZpqArxt89Qwpm0KOJDX3MDV
+         0rxTHJxUAx4NQkqTFYwkMB/AaYP946w22zMOxtDI2WOIh7sIiD/6wOUmOG8IuZzLh5al
+         qq9m9pdpAUI4pnX1EhXNXgUTogr9vwp4uSjqY2SJPeuKtBsj1oNctQZcaxlrIKw5H6W7
+         hbzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755170726; x=1755775526;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MadbLTh+bcaMwOPhpClvC1za3QmyjTKGxVk4wHGZkQo=;
+        b=LW0IQU5/Ljm68YUmihVJL+euzudL60xDIiBBrl5h43Fz36OmrIMPHMWf0P0p6w0rOK
+         CfmJNGvbr4vtzWNhPpA9zDGgYyC8/jEuqY7h3e6/66T7FZmvPE0+GN2fVIKsNIyAkRWH
+         XpgeEwxcPCQhd5ZvxECVMj3m0CJuKuyFwbDLwdYVM4G2ZAsDMmmOlKexteSShVobFRrS
+         qFko447H7oNXjaXOP3u7mdqo2YSqCz1v0pisQ0kkzMBz7Z08Xgubc2M9rO4ttZM34Er1
+         uyDBsTxdqO9YTBDyadUxcNduWwcet1AdSzKu5R8CQozveqi8/DSb8gXpQb0DIf1xTfod
+         gb+Q==
+X-Gm-Message-State: AOJu0Yzwd8FE14YSfRm+wTSCT5ox2FhRn8C/tr+N5wqF3zVTOxuIyFFr
+	2cVRk0IYwfk3AAu2qvKs/OTYGcN6EoykLye9Wrc/dUhE/OH87uMBaRrRE41GKnfXZpY=
+X-Gm-Gg: ASbGnctjmKVMpP8KnJY71Xdv5sBMhNR5GV6OlSqESHxofRDy6hhBn2F3Xk+LrXVsdUX
+	MEsCBKFMn1Mq793uK9k/jugYNwz7duwUslkKEzQilidSO1Yif+XJd5k+vRDdvmFvzP4x0xSwLd9
+	5Hl8OajEYz/t04BbbFUud4BJstGxNzO0zLNRo0ok9dBI5t5k7r2Iuw5qEXpyD5MzqdLSs+ZPhYg
+	586xmRwTM8r2FHArX+ightnRS2URn/rUAfzLoBjOkQvUq2pZxZDrw7PcN3qyQiorqEZM9zhwWJA
+	/XlDH1OGvrJwtJi3erq5eNYetxErqgHfKChMBRBy3bZxazf1t/tWxK94/7aoyekvywklwI16HHS
+	AXvFj72mot5XDBRHPUVBaZyTOpPN6uuXDyBA2zIKfokk=
+X-Google-Smtp-Source: AGHT+IGz9SdlM9ir1JrHYZlQJqEa9o9Knl5K77dZnjbHufnmqWtdb1cfdRoaFgbkZ/L1qlp7D5bG0g==
+X-Received: by 2002:a17:907:2d21:b0:afa:1bbc:c6d5 with SMTP id a640c23a62f3a-afcb98e1101mr109911266b.11.1755170725650;
+        Thu, 14 Aug 2025 04:25:25 -0700 (PDT)
+Received: from [192.168.1.29] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0a3cecsm2565432266b.53.2025.08.14.04.25.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Aug 2025 04:25:25 -0700 (PDT)
+Message-ID: <f2400037-c39c-4266-9e77-b084bd5f9395@linaro.org>
+Date: Thu, 14 Aug 2025 13:25:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814111641.380629-2-yangshiguang1011@163.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soc: qcom: icc-bwmon: Fix handling dev_pm_opp_find_bw_*()
+ errors
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Thara Gopinath <thara.gopinath@gmail.com>, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
+References: <20250814063256.10281-2-krzysztof.kozlowski@linaro.org>
+ <e35ca54c-252f-45c4-bfdf-fd943f833bc4@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ 2+47PN9NZAOyb771QoVr8A==
+In-Reply-To: <e35ca54c-252f-45c4-bfdf-fd943f833bc4@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 14/08/2025 11:15, Konrad Dybcio wrote:
+> On 8/14/25 8:32 AM, Krzysztof Kozlowski wrote:
+>> The ISR calls dev_pm_opp_find_bw_ceil(), which can return EINVAL, ERANGE
+>> or ENODEV, and if that one fails with ERANGE, then it tries again with
+>> floor dev_pm_opp_find_bw_floor().
+>>
+>> Code misses error checks for two cases:
+>> 1. First dev_pm_opp_find_bw_ceil() failed with error different than
+>>    ERANGE,
+>> 2. Any error from second dev_pm_opp_find_bw_floor().
+>>
+>> In an unlikely case these error happened, the code would further
+>> dereference the ERR pointer.  Close that possibility and make the code
+>> more obvious that all errors are correctly handled.
+>>
+>> Reported by Smatch:
+>>   icc-bwmon.c:693 bwmon_intr_thread() error: 'target_opp' dereferencing possible ERR_PTR()
+>>
+>> Fixes: b9c2ae6cac40 ("soc: qcom: icc-bwmon: Add bandwidth monitoring driver")
+>> Cc: <stable@vger.kernel.org>
+>> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+>> Closes: https://lore.kernel.org/r/aJTNEQsRFjrFknG9@stanley.mountain/
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>
+>> ---
+>>
+>> Some unreleased smatch, though, because I cannot reproduce the warning,
+>> but I imagine Dan keeps the tastiests reports for later. :)
+>> ---
+>>  drivers/soc/qcom/icc-bwmon.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/soc/qcom/icc-bwmon.c b/drivers/soc/qcom/icc-bwmon.c
+>> index 3dfa448bf8cf..597f9025e422 100644
+>> --- a/drivers/soc/qcom/icc-bwmon.c
+>> +++ b/drivers/soc/qcom/icc-bwmon.c
+>> @@ -656,6 +656,9 @@ static irqreturn_t bwmon_intr_thread(int irq, void *dev_id)
+>>  	if (IS_ERR(target_opp) && PTR_ERR(target_opp) == -ERANGE)
+>>  		target_opp = dev_pm_opp_find_bw_floor(bwmon->dev, &bw_kbps, 0);
+>>  
+>> +	if (IS_ERR(target_opp))
+>> +		return IRQ_HANDLED;
+> 
+> So the thunk above checks for a ceil freq relative to bw_kbps and then
+> if it doesn't exist, for a floor one
+> 
+> Meaning essentially if we fall into this branch, there's no OPPs in the
+> table, which would have been caught in probe
+Yes, unless:
+1. There is a bug in the opp code
+2. Probe code is anyhow changed in the future
 
-Thanks for your patch.
+I think the code should be readable and obviouswithin the function, not
+depend on some pre-checks in the probe. But if you think that's
+defensive coding I can also add a comment to silence future Smatch
+complains.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] mm: slub: avoid wake up kswapd in set_track_prepare
-Link: https://lore.kernel.org/stable/20250814111641.380629-2-yangshiguang1011%40163.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Best regards,
+Krzysztof
 
