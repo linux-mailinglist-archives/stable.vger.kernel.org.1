@@ -1,131 +1,193 @@
-Return-Path: <stable+bounces-169606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15242B26D42
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 19:06:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id F329AB26D48
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 19:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A2257A572A
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 17:05:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CCA4F4E307F
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 17:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192841E5B7A;
-	Thu, 14 Aug 2025 17:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179B41FDA89;
+	Thu, 14 Aug 2025 17:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2sbObHT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Uspf+S06"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC023321446;
-	Thu, 14 Aug 2025 17:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A6F1DF98D
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 17:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755191205; cv=none; b=Sg2xn9u1RgE583gdKwU0ssl5YyO3qP1s23MPIPlRuVT6irZIQ0Y1vWCS1c95cGdA3jYmU8L5AmMGzXhirZ7W/mj3DxBWjKkhQwE+EG76H3wIEvrnOCU6sgIz76hKIU+CTdUNYtftcQ1+jW4vJ0C9CGimrSugmhsC3gweu2veIJE=
+	t=1755191508; cv=none; b=hGRlBTOSCiroTAIW6kvNGH89DWNT9wAB23W3Jv2T2B9pAyO3vY0J6ui+B8XRutdZoS3Kfklcu+ztW9M/ynsQFf9Ep2XLJ7HnrhABZbLHaKssCs0yFsbMhuvYs27SRXRjvtrkpjx8Xw1Reh0szbCqLquZLnKKTTzaZyrSJPQtl6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755191205; c=relaxed/simple;
-	bh=7ZxYnpu99t0vZK+i5eu58QROLyB3Osh4912wLP+tnas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R9mtrDbnT8wPpSOWEsN1sgq2jgBuTrHOs4qhYvrspDASZjQe02+9zjmYcnpnDG1gTu4SH4S06R5U3YTtnKhNbA6+E3lmuzosS2eaRr5s6T8vn7ZqrNXd6HtzypeztL4Am+DM32IWd06eGS+AVu7tgKAfkrF8sVKLNzo/A0aXsAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2sbObHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07FDC4CEED;
-	Thu, 14 Aug 2025 17:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755191205;
-	bh=7ZxYnpu99t0vZK+i5eu58QROLyB3Osh4912wLP+tnas=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R2sbObHTU7j8tt1ACsqdXrxxy0DRrlkD6AzWHftGONh5kYE0OeE0LA3jZCM4cmbcS
-	 L20aaWDLkw1DM/nPhSNBFifj4b7k2mzoWsawWos9BqbPp5JU9cNjeac7GdQicyJH0p
-	 au6vTe0rnkXX/Dod1xOME9n2hdfVLBENtrqjA8wc=
-Date: Thu, 14 Aug 2025 19:06:41 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Zenm Chen <zenmchen@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, pkshih@realtek.com,
-	rtl8821cerfe2@gmail.com, stable@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net, usbwifi2024@gmail.com
-Subject: Re: [usb-storage] Re: [PATCH] USB: storage: Ignore driver CD mode
- for Realtek multi-mode Wi-Fi dongles
-Message-ID: <2025081428-unfold-shakily-6278@gregkh>
-References: <03d4c721-f96d-4ace-b01e-c7adef150209@rowland.harvard.edu>
- <20250814140329.2170-1-zenmchen@gmail.com>
- <b938a764-6ded-4b76-a15c-82c0062abf42@rowland.harvard.edu>
+	s=arc-20240116; t=1755191508; c=relaxed/simple;
+	bh=AhX5F4G0aBYzPmFDasmo2ht5cOhGbSJjHuqzpT/I+Lo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bwgK6hmbJvYrhwWD7o4sMT4orU/jOSNrjmZlsea9x/BtlyfboKp/LMxoDokc8mUiDU7NBdAeBki+2toG3hMWblUO6j9HH7tCoF3lBQyQ1vpPCkKJTIouET8WuVJTZ0V1vPbRUiHaA6glns8ca3UOKGc9dzJcfujvVVxVFn8yo1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Uspf+S06; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755191506;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lznyOOkV6KkkIEe59fB3MWrdJzsx93AmS4/MBGo8g1g=;
+	b=Uspf+S06CRjvpvhh1zBI92fWnUIxeCJj9r4qeRXYeN/dLQTC8wPFDU3WwRrM8c57yNvIg+
+	8bp3iGERf/0rYnlfPuwH/YDfvc4CXn6qrLYcECGvaqyhuAsfGIcuFp1mh8nRmMgdRRkjla
+	Odvr3A1ALZrS4qoNDJbpr+ZggJuL3IQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-687-JpwO8nKZPcOow3Wl0J_vAg-1; Thu, 14 Aug 2025 13:11:45 -0400
+X-MC-Unique: JpwO8nKZPcOow3Wl0J_vAg-1
+X-Mimecast-MFC-AGG-ID: JpwO8nKZPcOow3Wl0J_vAg_1755191504
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e8705feefaso312123085a.2
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 10:11:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755191504; x=1755796304;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lznyOOkV6KkkIEe59fB3MWrdJzsx93AmS4/MBGo8g1g=;
+        b=XMZ4kFy3JFLqEMadjtZ31XQvlYeVQG/8CsCBfhxkuPoekw2j4gGvXNNZe6b17uYZkA
+         H0g7SPElKp/iqXWZo2KNGS6x5PJfFYKLYq0UsXy+nSK+HrLN9UfVe//aODN0GGO4jyxk
+         K3Yymm3L1QzRpHyUyNeR33vY29nzg9uPtYP8kKsrLtmWq7XSXQxFnc02KuGqqyIb0rXh
+         jiBjLLjZVy+XQSVn5rdv4L/lQlSYOZQx2zqeJj9RRWbuusc6Y8WXY+3LRjRzOFWUkEvj
+         0QYbmhHjfXJEqs95F6SkkF2pbokK6jXre8xOzaE63sag8wD0kxACVJnuwaahhvKEVy0+
+         TSaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUt15rdyy3sVL9GAvKgvr916W7KAGDHxveH7keWacIlpGb0yCy81jQ49l9forcfLebTLhpsiz8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysCGZqaDib7VVKRAYgYpgRqkURFkGPudi1LbjfJ48Em39WboxF
+	0ysU8mPdaaApJj7zxgDBMeJBDIBnHg3adOB/5w7Oxyb5m1sqxEVnP9FZWAYyMOy2WchCbmXNfrG
+	xa5ozn+07GuDGIorAC/Xga9aay2m0pbl5EFei+mBGSZxJ+58ou3i71KLF3Q==
+X-Gm-Gg: ASbGncvViL/r+T/F/N0LpYN2H4o+gNm1HMwMINehQ0uBgSPCxM1F95ss3U4DZfv4icC
+	zIJ3FBuTPiMBWnLohuGRS7BEw/XXfJMh4iiexftKhwXlXVyypWsdJdfZLEOs+zDJ7kPUKzCFkq6
+	SbZLYGdEhrl/JSsgnv9FV19pBksL3t8bxIEsodounMjYKsG0kdpwFlg8zySGQfMfYQ66xTDKxWO
+	fJN12upAlKwBZHD6n4p808oxkb8vIEZ7z0bf+QlJjk35v4S87wF4HRwMtrot6ORvrU1ppIRrMe1
+	WHF3VwExNZa61Bfllw3mSGYju4EFeUKVqMS9mLJWy0mPMu8xXOpFpRPzgXHEVAR+JWijgm/JlA3
+	91Z91nImjLys=
+X-Received: by 2002:a05:620a:424a:b0:7e8:7094:52e7 with SMTP id af79cd13be357-7e87094638dmr516634985a.10.1755191504418;
+        Thu, 14 Aug 2025 10:11:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1WjbN3jtp13Y9aVPhnFkE4KaUT281M8OZYzkWWCEt0LdtOUTsCxK8pvtDoHGnPioaqAABXA==
+X-Received: by 2002:a05:620a:424a:b0:7e8:7094:52e7 with SMTP id af79cd13be357-7e87094638dmr516630585a.10.1755191503980;
+        Thu, 14 Aug 2025 10:11:43 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:f0e:9070:527b:9dff:feef:3874? ([2a01:e0a:f0e:9070:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e87b37e80bsm2466785a.37.2025.08.14.10.11.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Aug 2025 10:11:43 -0700 (PDT)
+Message-ID: <589663b5-7b92-4366-b4c1-6d4e091a0ea7@redhat.com>
+Date: Thu, 14 Aug 2025 19:11:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b938a764-6ded-4b76-a15c-82c0062abf42@rowland.harvard.edu>
+User-Agent: Mozilla Thunderbird
+Reply-To: eric.auger@redhat.com
+Subject: Re: [PATCH v2] iommu/virtio: Make instance lookup robust
+Content-Language: en-US
+To: Robin Murphy <robin.murphy@arm.com>, will@kernel.org, joro@8bytes.org,
+ jean-philippe@linaro.org
+Cc: iommu@lists.linux.dev, virtualization@lists.linux.dev,
+ stable@vger.kernel.org
+References: <308911aaa1f5be32a3a709996c7bd6cf71d30f33.1755190036.git.robin.murphy@arm.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <308911aaa1f5be32a3a709996c7bd6cf71d30f33.1755190036.git.robin.murphy@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 14, 2025 at 12:21:16PM -0400, Alan Stern wrote:
-> On Thu, Aug 14, 2025 at 10:03:29PM +0800, Zenm Chen wrote:
-> > > Also, can you collect a usbmon trace showing what happens when the dongle is plugged in?
-> > 
-> > Hi Alan,
-> > 
-> > Today I removed usb_modeswitch from my system and grabbed some data, could you please take
-> > a look what was wrong? many thanks!
-> 
-> Yes, this shows the problem.  I'll skip the unimportant stuff below.
-> 
-> > D-Link AX9U
-> 
-> ...
-> 
-> > ffff8ae1f0bee000 771359614 S Bo:2:053:5 -115 31 = 55534243 0a000000 08000000 80000a25 00000000 00000000 00000000 000000
-> > ffff8ae1f0bee000 771359684 C Bo:2:053:5 0 31 >
-> > ffff8ae1b52d83c0 771359702 S Bi:2:053:4 -115 8 <
-> > ffff8ae1b52d83c0 771359812 C Bi:2:053:4 0 8 = 00007bff 00000200
-> > ffff8ae1f0bee000 771359853 S Bi:2:053:4 -115 13 <
-> > ffff8ae1f0bee000 771359935 C Bi:2:053:4 0 13 = 55534253 0a000000 00000000 00
-> 
-> This is a READ CAPACITY(10) command.  It asks the device for the number
-> of data blocks it contains and the size of each block.  The reply says
-> there are 31744 blocks each containing 512 bytes (which is unheard-of
-> for CDs; they virtually always have 2048 bytes per block).
-> 
-> ...
-> 
-> > ffff8ae1f0bee000 771366235 S Bo:2:053:5 -115 31 = 55534243 17000000 0c000000 00000615 1000000c 00000000 00000000 000000
-> > ffff8ae1f0bee000 771366306 C Bo:2:053:5 0 31 >
-> > ffff8ae218ff2900 771366317 S Bo:2:053:5 -115 12 = 00000008 00000000 00000800
-> > ffff8ae218ff2900 771366432 C Bo:2:053:5 0 12 >
-> > ffff8ae1f0bee000 771366443 S Bi:2:053:4 -115 13 <
-> > ffff8ae1f0bee000 771366556 C Bi:2:053:4 0 13 = 55534253 17000000 0c000000 01
-> 
-> This is a MODE SELECT(6) command.  This one tells the device to change
-> the block size to 2048.  The device responds with an error indication.
-> 
-> > ffff8ae1f0bee000 771366567 S Bo:2:053:5 -115 31 = 55534243 18000000 12000000 80000603 00000012 00000000 00000000 000000
-> > ffff8ae1f0bee000 801899370 C Bo:2:053:5 -104 0
-> 
-> This is a REQUEST SENSE command; it asks the device to report the
-> details of the error condition from the previous command.  But the
-> device doesn't reply and the command times out.  From this point on,
-> the trace shows nothing but repeated resets.  They don't help and the
-> device appears to be dead.
-> 
-> I don't know of any reasonable way to tell the kernel not to send that
-> MODE SELECT(6) command.
-> 
-> The log for the Mercury is generally similar although the details are
-> different.  Everything works okay until the computer sends a command
-> that the device doesn't like.  At that point the device dies and
-> resets don't revive it.
-> 
-> So it does indeed look like there is no alternative to making
-> usb-storage ignore the devices.
-> 
-> Greg, do you still have the original patch email that started this 
-> thread?  You can add:
-> 
-> Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Hi Robin,
 
-Thanks, I have it somewhere, I'll dig it up and apply it.
+On 8/14/25 6:47 PM, Robin Murphy wrote:
+> Much like arm-smmu in commit 7d835134d4e1 ("iommu/arm-smmu: Make
+> instance lookup robust"), virtio-iommu appears to have the same issue
+> where iommu_device_register() makes the IOMMU instance visible to other
+> API callers (including itself) straight away, but internally the
+> instance isn't ready to recognise itself for viommu_probe_device() to
+> work correctly until after viommu_probe() has returned. This matters a
+> lot more now that bus_iommu_probe() has the DT/VIOT knowledge to probe
+> client devices the way that was always intended. Tweak the lookup and
+> initialisation in much the same way as for arm-smmu, to ensure that what
+> we register is functional and ready to go.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path")
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 
-greg k-h
+This version works for me. Thanks for the diligent respin.
+
+Tested-by: Eric Auger <eric.auger@redhat.com>
+
+Thanks
+
+Eric
+
+
+
+> ---
+>
+> v2: Of course generic bus_find_device_by_fwnode() didn't work, since
+>     it's dev->parent we need to check rather than dev itself, sigh...
+> ---
+>  drivers/iommu/virtio-iommu.c | 15 +++++++++------
+>  1 file changed, 9 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
+> index 532db1de201b..b39d6f134ab2 100644
+> --- a/drivers/iommu/virtio-iommu.c
+> +++ b/drivers/iommu/virtio-iommu.c
+> @@ -998,8 +998,7 @@ static void viommu_get_resv_regions(struct device *dev, struct list_head *head)
+>  	iommu_dma_get_resv_regions(dev, head);
+>  }
+>  
+> -static const struct iommu_ops viommu_ops;
+> -static struct virtio_driver virtio_iommu_drv;
+> +static const struct bus_type *virtio_bus_type;
+>  
+>  static int viommu_match_node(struct device *dev, const void *data)
+>  {
+> @@ -1008,8 +1007,9 @@ static int viommu_match_node(struct device *dev, const void *data)
+>  
+>  static struct viommu_dev *viommu_get_by_fwnode(struct fwnode_handle *fwnode)
+>  {
+> -	struct device *dev = driver_find_device(&virtio_iommu_drv.driver, NULL,
+> -						fwnode, viommu_match_node);
+> +	struct device *dev = bus_find_device(virtio_bus_type, NULL, fwnode,
+> +					     viommu_match_node);
+> +
+>  	put_device(dev);
+>  
+>  	return dev ? dev_to_virtio(dev)->priv : NULL;
+> @@ -1160,6 +1160,9 @@ static int viommu_probe(struct virtio_device *vdev)
+>  	if (!viommu)
+>  		return -ENOMEM;
+>  
+> +	/* Borrow this for easy lookups later */
+> +	virtio_bus_type = dev->bus;
+> +
+>  	spin_lock_init(&viommu->request_lock);
+>  	ida_init(&viommu->domain_ids);
+>  	viommu->dev = dev;
+> @@ -1229,10 +1232,10 @@ static int viommu_probe(struct virtio_device *vdev)
+>  	if (ret)
+>  		goto err_free_vqs;
+>  
+> -	iommu_device_register(&viommu->iommu, &viommu_ops, parent_dev);
+> -
+>  	vdev->priv = viommu;
+>  
+> +	iommu_device_register(&viommu->iommu, &viommu_ops, parent_dev);
+> +
+>  	dev_info(dev, "input address: %u bits\n",
+>  		 order_base_2(viommu->geometry.aperture_end));
+>  	dev_info(dev, "page mask: %#llx\n", viommu->pgsize_bitmap);
+
 
