@@ -1,100 +1,118 @@
-Return-Path: <stable+bounces-169503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4647BB25B54
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 07:54:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD01BB25B60
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 07:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D07767257E3
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 05:53:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3CFE5C3DA6
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 05:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD28225760;
-	Thu, 14 Aug 2025 05:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97D12264C5;
+	Thu, 14 Aug 2025 05:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cm0813xJ"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wBUdpOaP"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C14224220
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 05:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C827225791;
+	Thu, 14 Aug 2025 05:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755150829; cv=none; b=hoYaoKiGBitSKKbm7S4lZZ3Vj7L7DDjBJoPGbGa2gkVBpDJPPhAn9oWJQ1f7quu9QuhLDyirIBRfUC82dP+7Jen+Po1yb7BvPQYDaCZGStH4LMXzPA7JhMoV3vfD/jqGbV8jugWMnoFpRzIPxaN1wNg/iFgBWFG33lad80d5xks=
+	t=1755150905; cv=none; b=XEuiL+mVf6WNNGKhHEOGVKBvM4J2qwUIWqtf9wyVJ/wXzZdvjOc9YlYEbbqbWw+0Td/OSyjuzSFKmfBaEt7mcapUGhKwTUELyjWOQhv+BWtTwYQVJTTkhqwOa3yJhpqBSm+FJzl+HWAT99wnHgrWP09Ia2Rwj+XGhkUY67jbTxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755150829; c=relaxed/simple;
-	bh=yXUooRU1ki1YrtyhVlgopVe9AfClWJ4pOfZEs8MoNAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=PLvm4zfInrXO8BfcLxLgHaN/J5QSoRFWfdi6uwZaA6iH5C96Myzz/LYc/YX+hvhFXporUtairCeUaDwf38JTqQ6PGikAp3BTpuz+0TbzokYtwqHNOGovamXMMw4CnKIl3IqEl3PTRXhpjzTPwc8mrb+HCf8hvy+SdnwLeFPpnoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cm0813xJ; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755150827; x=1786686827;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=yXUooRU1ki1YrtyhVlgopVe9AfClWJ4pOfZEs8MoNAU=;
-  b=Cm0813xJBtwmBGx5owGS49zSmCEB9v0CpfcfdUwZtuqBDjTyEio7U2HM
-   LF1XztDTJyUE+c30b2/UwWvRA1AmezT8jSDsZ6reQOliRgT9ZXuHfsh1a
-   c230+0EJAnrfpJ7nUK1wyMmKBE+6dVZvKBXSUG5+Dt1b+HHI1PsB+fYOr
-   xZ/pHiDOO9fojxHbJrZQLnmQ9Nqm9+ewIwAZhiqvmykzWK3pNdZC9Thb5
-   Jb1UepEjNWjzOzYw74GJ006p7cobIEF/SWrb+Mpe/4C6DAJj0vCmIXTJI
-   Bt6DMDesiHtK4jOmqsnXTBbLv6t/FQZ+wnTHrxky9h0fmy1T+WI1xw/1E
-   Q==;
-X-CSE-ConnectionGUID: y3yh1McXSeOKV6RzYdX6Wg==
-X-CSE-MsgGUID: KqU0EEXdTWiQb41mAQdI4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57527316"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="57527316"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 22:53:46 -0700
-X-CSE-ConnectionGUID: AzxGHVTTRPiSGQLZt3Zw0Q==
-X-CSE-MsgGUID: FLZaYIJOSO6E+X4v0A1WAA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="170806722"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 13 Aug 2025 22:53:45 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umQuE-000Ad6-34;
-	Thu, 14 Aug 2025 05:53:42 +0000
-Date: Thu, 14 Aug 2025 13:52:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH][RFC][CFT] use uniform permission checks for all mount
- propagation changes
-Message-ID: <aJ15t0tdVvMkin4h@1a863d778a0f>
+	s=arc-20240116; t=1755150905; c=relaxed/simple;
+	bh=G6Z0ufc5WNkKpCSEZu+QYMKhZukGjdwDhLd3PZ7XxTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FyhCj5YSE4piOQx1vYkEeme3ubI5Pg5Fr5FdD3hUVX88yZEXP8Tp/rFqNRHAHiXNqMwK9orzoc9npD6Ol5ZNaf3yUu2sIlKQYSDf1TQk91BQr2Ekhbzt1rK6sCyYJk92xVRGQ4LnIwD4vvJ0ZhtfRzgMCUAXQiSLV2ZzNbOE2UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wBUdpOaP; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DD11C15B2;
+	Thu, 14 Aug 2025 07:54:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755150846;
+	bh=G6Z0ufc5WNkKpCSEZu+QYMKhZukGjdwDhLd3PZ7XxTc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=wBUdpOaPkUUQ5CjsWLre9KZuRRMfF5jEprVlnem0TnRBU3Y4fQ7br1nOV0HkcSqVx
+	 V6tiDaIetQqh5CEpcRrunZOwPcmCfUawtZEvqjW7M7wP9+/Y3D/5dwiqT+xc2g6LSb
+	 M7OKzjyz/Uu5G0WZJFNgmoPUE8Y2vXbedLAezECw=
+Message-ID: <d1354951-cbd3-4216-970b-e1e130f58522@ideasonboard.com>
+Date: Thu, 14 Aug 2025 08:54:57 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814055142.GN222315@ZenIV>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/rcar-du: dsi: Fix 1/2/3 lane support
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+ dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, David Airlie <airlied@gmail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ linux-renesas-soc@vger.kernel.org
+References: <20250813210840.97621-1-marek.vasut+renesas@mailbox.org>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+In-Reply-To: <20250813210840.97621-1-marek.vasut+renesas@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 Hi,
 
-Thanks for your patch.
+On 14/08/2025 00:08, Marek Vasut wrote:
+> Remove fixed PPI lane count setup. The R-Car DSI host is capable
+> of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
+> configuration from PPI register settings and instead configure
+> the PPI lane count according to lane count information already
+> obtained by this driver instance.
+> 
+> Configure TXSETR register to match PPI lane count. The R-Car V4H
+> Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
+> Register (TXSETR), field LANECNT description indicates that the
+> TXSETR register LANECNT bitfield lane count must be configured
+> such, that it matches lane count configuration in PPISETR register
+> DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
+> configured to match.
+> 
+> Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+> ---
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+> Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Magnus Damm <magnus.damm@gmail.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-renesas-soc@vger.kernel.org
+> ---
+> V2: - Split this out of a series, update commit message, combine from
+>       drm/rcar-du: dsi: Remove fixed PPI lane count setup
+>       drm/rcar-du: dsi: Configure TXSETR register to match PPI lane count
+>     - add Fixes tag, CC stable
+> ---
+>  drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      | 5 ++++-
+>  drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h | 8 ++++----
+>  2 files changed, 8 insertions(+), 5 deletions(-)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH][RFC][CFT] use uniform permission checks for all mount propagation changes
-Link: https://lore.kernel.org/stable/20250814055142.GN222315%40ZenIV
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+ Tomi
 
 
