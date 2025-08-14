@@ -1,244 +1,155 @@
-Return-Path: <stable+bounces-169507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CF3B25BB5
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:19:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE1FB25BD9
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB9E27A3FA2
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:17:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC325725FB7
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38C02417D4;
-	Thu, 14 Aug 2025 06:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F72586CE;
+	Thu, 14 Aug 2025 06:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VL3/GMqR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XfJJXpfC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADB523C4E3
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 06:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD552561DD
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 06:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755152333; cv=none; b=N+NdbyVElp41GYaTOyq5shy+KDy1Zh9SZdPn5Nbjmlo44XPSHSYIs0wBwTVPCOLDX09EQNjHsdJANrKS/KDMQu1v0UZ6rVza5uvdey0VVSLCFgvOs1pRZ+tYYWQuYYs4nx5REqMWnEZy1SXRrjSEaDRPaLHE0Cc9Vu4h3IyUnRw=
+	t=1755153185; cv=none; b=HrnhPyCAT4CeU2Ck2Gh/TurppkNxsMzc/EBtD7sbyAYxRt0E87cPdeGBLWB91N0UoInrXDT744xRA8Y4ntS9G8P3ZDeRBOmIjM4QkmGNKXjuK456f4Jpdx/r5ncvduyY9AM5GEZUKwcz+fa78WEFFnHeD32w4haFU50+MUttCJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755152333; c=relaxed/simple;
-	bh=4ncyZacGunfO50btMmfn7MReSvDAIsMQ0V86SaO7m3I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=djOG4/N7x5BLlfbxCeAaW+MLl++32NFKiLYJiww/f8qxs+I7GIBctGe0Pih0AU1V9Ytm0oD4b0Az9TMkMhXrEYBtzIYx1+7DBY57eH4BySpTzyFTdns/ArCCBQRbA8PZ/4s6q/RRVKUkf7/iYN3b4fjZd4u43jgy8ZHIDooHZgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VL3/GMqR; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1755153185; c=relaxed/simple;
+	bh=MSP9ZDwm0zsakgUyDdsbCsWSHeqo681DH+etzwx4O1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ay/M3w+Nx5/29n3TNPDGId87WbQpPy2uSepYic1+LxqI/y/AbwP547U7Ri2pi5YJqNsUkS0qO+WnK5ceBMogwwvqY6G0l/yUCaBU6HpKNAD7JoZvN/6PCoZ0NBKsr2RkQtilqNssFYAPJ4O9krwjI+Rc+3sPa1W/uELXA8siD68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XfJJXpfC; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b471740e488so618980a12.1
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 23:18:51 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb7a41b78so5433166b.2
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 23:33:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755152331; x=1755757131; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FVYoHiA4OWioHJGRjjS7sBw/dfBgPghCAuWYMygSBRo=;
-        b=VL3/GMqRvPiOMFcQ5rUquJPC2EW1z2oDjaKQp/NnjNNB7bv5BnqFLj3sCAAbd8eThG
-         c8DuPXflIqJozCCRXB7gvhIMbSsQlb6siMoA6HI/X2ExZvQDaGqrrgciJHFRU99lKzN+
-         OMA+tBFmHpsC+1FgNemck6b6GODmIKaAgI3S/mfUuj7ahCSClQRFljYRezy6NkXiySiD
-         htueZph1IG16O74pIb5xXYlzQEbSE84Xwjf3dMVdQul1LKqjduosCixh3q3KH1qwbWhs
-         FPf4N41vzcJbth16MWOEqvgTn7HJUvYrAqZbUK9NwAd7G9LE/OqhAFz14TXF9DZ0PS34
-         TwJw==
+        d=linaro.org; s=google; t=1755153181; x=1755757981; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yzvGTN8N2Y6NYFPVugmKZNPFUKHgdgs+Mpwi+TL0krQ=;
+        b=XfJJXpfCuv8p82O0Of4Oo9ymw/AuBvhz2BGj5TliQ4SKAjop4ChHnu1PpA1qFWWKqW
+         kOSsb3wZY8JKaU2Aip8QgQlmr3JYHzV+3NagAXJYkdoxsbB4zRHSpGhzxtc2N/+HCgBA
+         8qphUzM7lzg5lzxOTNCidRDR4eCwHJwrZAh76WIVRMfaVE35ATIwEJrpFQZ3X4m+G3Mq
+         AgsIGHfQJSbRN/odPjODZD7xt5frF/J4GiqFVzBw93IXYewM97rZTK3gFQzprYuTXDqq
+         B9EmDu9IVIn/sS7McnwsoNCWrunEvn7mPDHB2QifVN37P2X0Aor7PoxwYhgjeSTTLKOL
+         DqMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755152331; x=1755757131;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FVYoHiA4OWioHJGRjjS7sBw/dfBgPghCAuWYMygSBRo=;
-        b=D5ODC4HDOj6y955hFF8glKwy3Zp/Uhif4zAzNfA3zKQb5kr/Na3NctDOq7Fymp1i6P
-         f4B9m8HdG2Ui+mvA9fuW+inTs2fUD+JaJRmJWc/mZhy8P7wN+dEeeck8o7+8KUONKRbw
-         D/1LjwGRzsnLl3gM1TFAJeRT4SNYqzqvLqVKN55xRFxLl152hhX41nCLM/kmGSrII6bm
-         2kKmwGBTwwNlfaAtFDSH7cT4+yzRvYiPduM55E1EURd4DXH3WbfrGYEJIMuBJoA3qYH4
-         RsaXqaB1r0lDCsnUxWMw9/MectIOCFLbJVnd3rez6wW8Gb147jmqVIu72Re5vQfeZZ/5
-         4nKQ==
-X-Gm-Message-State: AOJu0YwPncqH9SYxXOIigts8Hgai70WoTzzZjN8LyH8ANIo4qoTL/qEM
-	K1GOArA0zxgyzGSsfdRPL6or0X6zvNj/2azzk3S0dp9DF9PSYGIZxraTuMsckOc9LFFHbXDsFLm
-	rWKGflxqDcyLvC8mJdw/40TH4mJ9JyojZ4RBNWXB3Nw==
-X-Gm-Gg: ASbGncvKP1+wjzUbO8CB0x4oTPtnS2QckN9LnjBk91ff0mEIe6hPHV3ufWTV1dGsDAb
-	owSN1IYebGnn2aA+ebrhBOwwGsv+2S3j43PFOtmNnkYoqOOPbK3Rfg7oVqlx41Gi0LhSvZSh8Ul
-	Pzrvsel6bxNd5I2f+Z56IyKgLi5L14gT7divBQJyLIskXSCj9pMo3+xlLJmkoHc88aoyARSNkIf
-	8vErcSWSJGmwFBo+8FlZ47g0S1LSk3BKC0dedE+jULJxVT/sg2khrvQJYwGNQ==
-X-Google-Smtp-Source: AGHT+IF+JGiaAocZP3GUsrFBMxJlJkthqOzpiN6ZQpV1nwc776gUguSzq/7yFO9BdbU87/LV2qjV17GNwGes+DtCtX8=
-X-Received: by 2002:a17:903:3bac:b0:240:83af:e2e0 with SMTP id
- d9443c01a7336-244586ef73dmr29790575ad.47.1755152331399; Wed, 13 Aug 2025
- 23:18:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755153181; x=1755757981;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yzvGTN8N2Y6NYFPVugmKZNPFUKHgdgs+Mpwi+TL0krQ=;
+        b=L7HXPiDgI9ZLm8lzYub6Kv8xA5rizwDzYjrJZqYKuTj9hy1MsSWKNSpM9pUMldabbr
+         Gi419zWM23bZ0XUO7FHTKfj5g2lBagTeZlZK13nFmwPmxI0VMY3k2rEB5NeUuQvGdfTr
+         fkEuRNU60mEUyhvy0zm9VvT3j2VJBuk4mOHYz76IMOV0sIRnoJ6FSvUii15gb6HVcDsI
+         QP2KVRL4CtuCiVX38gRHcgPrGylCA7nm/3yGMaaoiorjwyNtliMZWasgnFUob1abCxj6
+         vaeFbgntIJkRoNDaoOm7zdhSu7QFYa0F2tzgmRd7L9Dx5fdw8GloQFeeeOZl3T/3nSSG
+         5rlw==
+X-Gm-Message-State: AOJu0YwpvfIjt8o+SPNriGWFHCW3/+lRQjv915kl91b5z6+xKusbKyad
+	YDB9MCqOLNxSnM8+jT00DfTgYBHjbMY+U163qCm9CUa3hcooxZnuGlDsG4RpC0/66J8=
+X-Gm-Gg: ASbGncvRJs1MyoschnDLo009u0wQKmWMwB7YGWxrrutxcl4snrFSkxM5cc7kuNQXSEi
+	thJi+u885ikBZbMK7lhkc1QJ2KF8yEVCu4a/xKPbVqeuGnV22wD7AHRhEK6EXlFIU8skwavQbAP
+	v9OSkzl251lKZNpVEyDuWc+WvIIDFe8YyjS62OOycztepAp1GQFtqFP53Ss8WZvZCcQ78DD3iD8
+	nNaIBe6XzODgqxMmuCAHkbmdlXbP5bZnaaMw6uBJrz5ns88QloMsW9i0diGCPxZmirjRYeB9V17
+	+BcQzonFXvlHPYrXIqSove743zjJPhTh5ixtQxXDDS4Ve3eNhn6isBVrqs6Po1KMLVoiUkc4/b/
+	eLHw8QxFnZ9jn/imjyPEmhQTRIDrdd1xweQ==
+X-Google-Smtp-Source: AGHT+IE6MPymLmR2wd2sW3Q2E17DmNqWGyrB0k3NvlQpxyRqfzkQNcWoWvM9nwmxoqFq1Ox5VfpKOA==
+X-Received: by 2002:a17:906:478b:b0:af9:3c7f:7447 with SMTP id a640c23a62f3a-afcb938b374mr79084766b.2.1755153181493;
+        Wed, 13 Aug 2025 23:33:01 -0700 (PDT)
+Received: from kuoka.. ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a21c0ccsm2530971166b.111.2025.08.13.23.33.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 23:33:00 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH] soc: qcom: icc-bwmon: Fix handling dev_pm_opp_find_bw_*() errors
+Date: Thu, 14 Aug 2025 08:32:57 +0200
+Message-ID: <20250814063256.10281-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812174357.281828096@linuxfoundation.org>
-In-Reply-To: <20250812174357.281828096@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 14 Aug 2025 11:48:39 +0530
-X-Gm-Features: Ac12FXyBqFyeMoQOpaAL4FurlRjkn-Zmez588T_Bm1WbHUu695lBgJJWNy1ckCQ
-Message-ID: <CA+G9fYukypGY6DjcrnSCCHXekqpWQ1U7qWXJXKAp5aLpoxdZHg@mail.gmail.com>
-Subject: Re: [PATCH 6.15 000/480] 6.15.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1712; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=MSP9ZDwm0zsakgUyDdsbCsWSHeqo681DH+etzwx4O1w=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBonYMY98JneTBy4rFTUmxtFBQ2pOHgHHsaaMN7h
+ sSaKTW1NAmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaJ2DGAAKCRDBN2bmhouD
+ 13JpD/9w7VMiohNtnKxKbUZYpY3TF8JsDTOxEVf+C6BL0BJXNfucPpy3gO1MrnAr+PF+su0/HfV
+ R/hvO+aiqzr4FWTi3JRXSQ4q5n7IbqZUZqhZGietk7sa4PLQjLH6Sa3vt4Oy+hILkM6NLAmh+Kx
+ AkCYZygh8ICJilg4UvgfGpxPf9ISl2F7NDB4UL16tGa358DrWFHRnsGOVMsPY01+Gj72kM+6opy
+ MSF6IAkSWYCi51yAvtDrzR6kVuEA+boaOzekj8vQd+i0RcX3D1NBMVTretM0RtOpAaRsYI4dDn4
+ mAxZMIaL3Y4Y8V6JxHH0VRae4ETlldPElk5dg5BR2YZvsc90+em0hQq6ZslP4nqv8pVsJzazRm2
+ cMitdSpjtc0Ejsp+RD6oM37TdiSOTeHqb3ZkfEg2xaLVt6i+CDXW9KXDa6NdLeDCIg3k2zmv96z
+ z5xZ4fkyztJRcBG5A9y0BlHkQ2aopgrLqj3cPnhUGFAhRJgxCykrZ1vJGjcPKmXWNfOulXXLYU2
+ 6RB0gt3rpi9kgBLd5kI+KoEorHPSWuuIXaMIgzGTUKbJqnHlqrXbyc7ieKNcq2h5SfnqMs3ZghT
+ hpF3ryE2qbAVKFSE93tyYO6j7fAlnTSFuabqQLBNrOOH/lxFt6/xbwCmm2Rr3K0x7w/UmyaZHme sUkm6PlLcFtRe4w==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
 
-On Wed, 13 Aug 2025 at 00:32, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.15.10 release.
-> There are 480 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 14 Aug 2025 17:42:20 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.15.10-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The ISR calls dev_pm_opp_find_bw_ceil(), which can return EINVAL, ERANGE
+or ENODEV, and if that one fails with ERANGE, then it tries again with
+floor dev_pm_opp_find_bw_floor().
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Code misses error checks for two cases:
+1. First dev_pm_opp_find_bw_ceil() failed with error different than
+   ERANGE,
+2. Any error from second dev_pm_opp_find_bw_floor().
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+In an unlikely case these error happened, the code would further
+dereference the ERR pointer.  Close that possibility and make the code
+more obvious that all errors are correctly handled.
 
-## Build
-* kernel: 6.15.10-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 2510f67e2e346f399c76101231d19be2bc0844da
-* git describe: v6.15.9-481-g2510f67e2e34
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.15.y/build/v6.15=
-.9-481-g2510f67e2e34
+Reported by Smatch:
+  icc-bwmon.c:693 bwmon_intr_thread() error: 'target_opp' dereferencing possible ERR_PTR()
 
-## Test Regressions (compared to v6.15.8-93-gd9420fe2ce8c)
+Fixes: b9c2ae6cac40 ("soc: qcom: icc-bwmon: Add bandwidth monitoring driver")
+Cc: <stable@vger.kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/aJTNEQsRFjrFknG9@stanley.mountain/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-## Metric Regressions (compared to v6.15.8-93-gd9420fe2ce8c)
+---
 
-## Test Fixes (compared to v6.15.8-93-gd9420fe2ce8c)
+Some unreleased smatch, though, because I cannot reproduce the warning,
+but I imagine Dan keeps the tastiests reports for later. :)
+---
+ drivers/soc/qcom/icc-bwmon.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-## Metric Fixes (compared to v6.15.8-93-gd9420fe2ce8c)
+diff --git a/drivers/soc/qcom/icc-bwmon.c b/drivers/soc/qcom/icc-bwmon.c
+index 3dfa448bf8cf..597f9025e422 100644
+--- a/drivers/soc/qcom/icc-bwmon.c
++++ b/drivers/soc/qcom/icc-bwmon.c
+@@ -656,6 +656,9 @@ static irqreturn_t bwmon_intr_thread(int irq, void *dev_id)
+ 	if (IS_ERR(target_opp) && PTR_ERR(target_opp) == -ERANGE)
+ 		target_opp = dev_pm_opp_find_bw_floor(bwmon->dev, &bw_kbps, 0);
+ 
++	if (IS_ERR(target_opp))
++		return IRQ_HANDLED;
++
+ 	bwmon->target_kbps = bw_kbps;
+ 
+ 	bw_kbps--;
+-- 
+2.48.1
 
-## Test result summary
-total: 328235, pass: 307085, fail: 6419, skip: 14731, xfail: 0
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 138 passed, 1 failed
-* arm64: 57 total, 56 passed, 1 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 27 passed, 7 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 24 passed, 1 failed
-* s390: 22 total, 22 passed, 0 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 48 passed, 1 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
