@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-169595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D541B26C1F
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 18:12:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25157B26C3D
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 18:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06D837AC269
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 16:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DF9B188A39F
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 16:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020A0253F1A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86AC24C07A;
 	Thu, 14 Aug 2025 16:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DIFolO7W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TsjSsKtT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20A024C07A
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 16:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B8232144D
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 16:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755187938; cv=none; b=HP1TCQAQBRRNCM+8YJkTv5h5zNsiFzL+jI2xsbVF8W2enw8IgP/MxFAmm39m96lf0GhyY+/Pf42HnxsTrEvpPd96gjcIKHDle+aCml55b1U5ABerWtW+3MGD2r9T29S7FSxNe9hIdbVmfvqJzb7lvAe5yhbRxnUbb0A5pwct3QI=
+	t=1755187939; cv=none; b=iTHEhaaI6SHajECNNhYpfKRGFOWn2eB8B7Sp8qwHGssp3/UivoQMuT/+HDN8HhT8tzVPLFxYhR0AzpwF+tKOGnLJoDJuf2QkQUE0AkERk1z4FbcQHmxiMrQTlZFFDhSV3AQaQOLWyTKyBshtCzsEWBw0W4b6X0tr4e1MxsQuswI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755187938; c=relaxed/simple;
-	bh=nWPaR5XAox/kXKwWb/zUpT0wBcSBt97zOyh3bZYXisk=;
+	s=arc-20240116; t=1755187939; c=relaxed/simple;
+	bh=4xEnGGWihtipCBj0i7C0rbwot8yl9kQPK9rOQWB02Ps=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q01mkkgiuIE29AEi0LA8S29i+LjiLaOWzHj27G/0btonfUbi7Li6O9BEv9zDA31TmkxdmmRF2w3zMXBHlEVB8prUM5OS7/mgEgO/4NUSyMDxtrq0NXuRBcegs3kk+Q0BVx/U2I4yquFZJqQ8UCjNCOadqrZ4A2xeiqDXdknCh+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DIFolO7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855FBC4CEEF;
-	Thu, 14 Aug 2025 16:12:17 +0000 (UTC)
+	 MIME-Version; b=GiWPexcI8iIWeXbk6eGXSNpuV4F6fqKHtq7OW5GdRJ4luGqwwZF0jSVyA7Goj0lclBhkGb8agUIBw+LHke1JppM8TMoeLP/k4ReOFAjPz7+jNnWX7tXK981vaBgq1kZikY5iD58j/6sRVFPBAzmYai10vQnt0m+eMuzuLUe3f9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TsjSsKtT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747BDC4CEF4;
+	Thu, 14 Aug 2025 16:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755187938;
-	bh=nWPaR5XAox/kXKwWb/zUpT0wBcSBt97zOyh3bZYXisk=;
+	s=k20201202; t=1755187939;
+	bh=4xEnGGWihtipCBj0i7C0rbwot8yl9kQPK9rOQWB02Ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIFolO7Wdj7Koy2R+C7R/hI28MltAnc5VlercLAumDut0nOuSVrBNcwJuWOyfDRFB
-	 F9T4dBvF71LNQ0sF4DhvGPlZZGyzXX+3h+dRRDiz39q2aleiO34BTRqQ/HdSrVEqJy
-	 AAgRJ+UmxImEwDZb8lpYn9vGB0cgtHKKsXL1kV56KOKZYhMyUAGuVAZxZeC3TYksY1
-	 2i+OBB22U4RrqpHk6F2Pz6NA5xoJ3AttlbcUMen49feu8YWi9UcsdhBj9J78juHUsr
-	 vGBWtCYZ2gLNShA+oZQOFLEoRKEWJ2VApjXHj93wKzNIFjAaUtM0ELlwH25mPyK26x
-	 PhYIj32CZebOA==
+	b=TsjSsKtTzgt7ObciUqAMfOyhM++F9pa3RxgN/RvEqiRMeqt508/NZCpgPdw9OAzpl
+	 8CbrjtymwkHQ8QQtGSA1t6bKNehajLdCXhzkFfLZ2Frdjqzf+F41ENSfaRjlGcbbuM
+	 ZM+/CtIy95RGf6OZnJ0YeVu40VLUNdHan9wS+uuz3mepEmDdYXhBnMT1O5fTYJaEQr
+	 eqZkh0YK2GvL7Z8rcaTBYWOypsVqxv42kOJOl0VzyGVcvodylmobp2IyRsO/wRgiNV
+	 1zIa0K7N8emtIg1kuJ9u46pbfisFoyoy6cWNz/l59g+EEQtvnIcIgsYAUeAoF5+7wi
+	 gm9yVOzovghCw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Maxim Levitsky <mlevitsk@redhat.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 5/6] KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs
-Date: Thu, 14 Aug 2025 12:12:11 -0400
-Message-Id: <20250814161212.2107674-5-sashal@kernel.org>
+Subject: [PATCH 6.16.y 6/6] KVM: VMX: Preserve host's DEBUGCTLMSR_FREEZE_IN_SMM while running the guest
+Date: Thu, 14 Aug 2025 12:12:12 -0400
+Message-Id: <20250814161212.2107674-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250814161212.2107674-1-sashal@kernel.org>
 References: <2025081231-vengeful-creasing-d789@gregkh>
@@ -64,158 +63,189 @@ Content-Transfer-Encoding: 8bit
 
 From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit 7d0cce6cbe71af6e9c1831bff101a2b9c249c4a2 ]
+[ Upstream commit 6b1dd26544d045f6a79e8c73572c0c0db3ef3c1a ]
 
-Introduce vmx_guest_debugctl_{read,write}() to handle all accesses to
-vmcs.GUEST_IA32_DEBUGCTL. This will allow stuffing FREEZE_IN_SMM into
-GUEST_IA32_DEBUGCTL based on the host setting without bleeding the state
-into the guest, and without needing to copy+paste the FREEZE_IN_SMM
-logic into every patch that accesses GUEST_IA32_DEBUGCTL.
+Set/clear DEBUGCTLMSR_FREEZE_IN_SMM in GUEST_IA32_DEBUGCTL based on the
+host's pre-VM-Enter value, i.e. preserve the host's FREEZE_IN_SMM setting
+while running the guest.  When running with the "default treatment of SMIs"
+in effect (the only mode KVM supports), SMIs do not generate a VM-Exit that
+is visible to host (non-SMM) software, and instead transitions directly
+from VMX non-root to SMM.  And critically, DEBUGCTL isn't context switched
+by hardware on SMI or RSM, i.e. SMM will run with whatever value was
+resident in hardware at the time of the SMI.
 
-No functional change intended.
+Failure to preserve FREEZE_IN_SMM results in the PMU unexpectedly counting
+events while the CPU is executing in SMM, which can pollute profiling and
+potentially leak information into the guest.
+
+Check for changes in FREEZE_IN_SMM prior to every entry into KVM's inner
+run loop, as the bit can be toggled in IRQ context via IPI callback (SMP
+function call), by way of /sys/devices/cpu/freeze_on_smi.
+
+Add a field in kvm_x86_ops to communicate which DEBUGCTL bits need to be
+preserved, as FREEZE_IN_SMM is only supported and defined for Intel CPUs,
+i.e. explicitly checking FREEZE_IN_SMM in common x86 is at best weird, and
+at worst could lead to undesirable behavior in the future if AMD CPUs ever
+happened to pick up a collision with the bit.
+
+Exempt TDX vCPUs, i.e. protected guests, from the check, as the TDX Module
+owns and controls GUEST_IA32_DEBUGCTL.
+
+WARN in SVM if KVM_RUN_LOAD_DEBUGCTL is set, mostly to document that the
+lack of handling isn't a KVM bug (TDX already WARNs on any run_flag).
+
+Lastly, explicitly reload GUEST_IA32_DEBUGCTL on a VM-Fail that is missed
+by KVM but detected by hardware, i.e. in nested_vmx_restore_host_state().
+Doing so avoids the need to track host_debugctl on a per-VMCS basis, as
+GUEST_IA32_DEBUGCTL is unconditionally written by prepare_vmcs02() and
+load_vmcs12_host_state().  For the VM-Fail case, even though KVM won't
+have actually entered the guest, vcpu_enter_guest() will have run with
+vmcs02 active and thus could result in vmcs01 being run with a stale value.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-[sean: massage changelog, make inline, use in all prepare_vmcs02() cases]
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-8-seanjc@google.com
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250610232010.162191-9-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 6b1dd26544d0 ("KVM: VMX: Preserve host's DEBUGCTLMSR_FREEZE_IN_SMM while running the guest")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/nested.c    | 10 +++++-----
- arch/x86/kvm/vmx/pmu_intel.c |  8 ++++----
- arch/x86/kvm/vmx/vmx.c       |  8 +++++---
- arch/x86/kvm/vmx/vmx.h       | 10 ++++++++++
- 4 files changed, 24 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  7 +++++++
+ arch/x86/kvm/vmx/main.c         |  2 ++
+ arch/x86/kvm/vmx/nested.c       |  3 +++
+ arch/x86/kvm/vmx/vmx.c          |  3 +++
+ arch/x86/kvm/vmx/vmx.h          | 15 ++++++++++++++-
+ arch/x86/kvm/x86.c              | 14 ++++++++++++--
+ 6 files changed, 41 insertions(+), 3 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 7e45a20d3ebc..cbe76e0a008b 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1683,6 +1683,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+ enum kvm_x86_run_flags {
+ 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
+ 	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
++	KVM_RUN_LOAD_DEBUGCTL		= BIT(2),
+ };
+ 
+ struct kvm_x86_ops {
+@@ -1713,6 +1714,12 @@ struct kvm_x86_ops {
+ 	void (*vcpu_load)(struct kvm_vcpu *vcpu, int cpu);
+ 	void (*vcpu_put)(struct kvm_vcpu *vcpu);
+ 
++	/*
++	 * Mask of DEBUGCTL bits that are owned by the host, i.e. that need to
++	 * match the host's value even while the guest is active.
++	 */
++	const u64 HOST_OWNED_DEBUGCTL;
++
+ 	void (*update_exception_bitmap)(struct kvm_vcpu *vcpu);
+ 	int (*get_msr)(struct kvm_vcpu *vcpu, struct msr_data *msr);
+ 	int (*set_msr)(struct kvm_vcpu *vcpu, struct msr_data *msr);
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index c85cbce6d2f6..4a6d4460f947 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -915,6 +915,8 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ 	.vcpu_load = vt_op(vcpu_load),
+ 	.vcpu_put = vt_op(vcpu_put),
+ 
++	.HOST_OWNED_DEBUGCTL = DEBUGCTLMSR_FREEZE_IN_SMM,
++
+ 	.update_exception_bitmap = vt_op(update_exception_bitmap),
+ 	.get_feature_msr = vmx_get_feature_msr,
+ 	.get_msr = vt_op(get_msr),
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 1b8b0642fc2d..ef20184b8b11 100644
+index ef20184b8b11..c69df3aba8d1 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -2663,11 +2663,11 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	if (vmx->nested.nested_run_pending &&
- 	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
- 		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl &
--						  vmx_get_supported_debugctl(vcpu, false));
-+		vmx_guest_debugctl_write(vcpu, vmcs12->guest_ia32_debugctl &
-+					       vmx_get_supported_debugctl(vcpu, false));
- 	} else {
- 		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmx->nested.pre_vmenter_debugctl);
-+		vmx_guest_debugctl_write(vcpu, vmx->nested.pre_vmenter_debugctl);
+@@ -4861,6 +4861,9 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
+ 			WARN_ON(kvm_set_dr(vcpu, 7, vmcs_readl(GUEST_DR7)));
  	}
- 	if (kvm_mpx_supported() && (!vmx->nested.nested_run_pending ||
- 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
-@@ -3532,7 +3532,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
  
- 	if (!vmx->nested.nested_run_pending ||
- 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
--		vmx->nested.pre_vmenter_debugctl = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+		vmx->nested.pre_vmenter_debugctl = vmx_guest_debugctl_read();
- 	if (kvm_mpx_supported() &&
- 	    (!vmx->nested.nested_run_pending ||
- 	     !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
-@@ -4806,7 +4806,7 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
- 	__vmx_set_segment(vcpu, &seg, VCPU_SREG_LDTR);
- 
- 	kvm_set_dr(vcpu, 7, 0x400);
--	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
-+	vmx_guest_debugctl_write(vcpu, 0);
- 
- 	if (nested_vmx_load_msr(vcpu, vmcs12->vm_exit_msr_load_addr,
- 				vmcs12->vm_exit_msr_load_count))
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index bbf4509f32d0..0b173602821b 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -653,11 +653,11 @@ static void intel_pmu_reset(struct kvm_vcpu *vcpu)
-  */
- static void intel_pmu_legacy_freezing_lbrs_on_pmi(struct kvm_vcpu *vcpu)
- {
--	u64 data = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+	u64 data = vmx_guest_debugctl_read();
- 
- 	if (data & DEBUGCTLMSR_FREEZE_LBRS_ON_PMI) {
- 		data &= ~DEBUGCTLMSR_LBR;
--		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
-+		vmx_guest_debugctl_write(vcpu, data);
- 	}
- }
- 
-@@ -730,7 +730,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
- 
- 	if (!lbr_desc->event) {
- 		vmx_disable_lbr_msrs_passthrough(vcpu);
--		if (vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR)
-+		if (vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR)
- 			goto warn;
- 		if (test_bit(INTEL_PMC_IDX_FIXED_VLBR, pmu->pmc_in_use))
- 			goto warn;
-@@ -752,7 +752,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
- 
- static void intel_pmu_cleanup(struct kvm_vcpu *vcpu)
- {
--	if (!(vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR))
-+	if (!(vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR))
- 		intel_pmu_release_guest_lbr_event(vcpu);
- }
- 
++	/* Reload DEBUGCTL to ensure vmcs01 has a fresh FREEZE_IN_SMM value. */
++	vmx_reload_guest_debugctl(vcpu);
++
+ 	/*
+ 	 * Note that calling vmx_set_{efer,cr0,cr4} is important as they
+ 	 * handle a variety of side effects to KVM's software model.
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 6d5d31562267..a2cdc1cc4c57 100644
+index a2cdc1cc4c57..5e61c800e8e1 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2149,7 +2149,7 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			msr_info->data = vmx->pt_desc.guest.addr_a[index / 2];
- 		break;
- 	case MSR_IA32_DEBUGCTLMSR:
--		msr_info->data = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+		msr_info->data = vmx_guest_debugctl_read();
- 		break;
- 	default:
- 	find_uret_msr:
-@@ -2279,7 +2279,8 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 						VM_EXIT_SAVE_DEBUG_CONTROLS)
- 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
+@@ -7373,6 +7373,9 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
+ 		set_debugreg(vcpu->arch.dr6, 6);
  
--		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
-+		vmx_guest_debugctl_write(vcpu, data);
++	if (run_flags & KVM_RUN_LOAD_DEBUGCTL)
++		vmx_reload_guest_debugctl(vcpu);
 +
- 		if (intel_pmu_lbr_is_enabled(vcpu) && !to_vmx(vcpu)->lbr_desc.event &&
- 		    (data & DEBUGCTLMSR_LBR))
- 			intel_pmu_create_guest_lbr_event(vcpu);
-@@ -4794,7 +4795,8 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	vmcs_write32(GUEST_SYSENTER_CS, 0);
- 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
- 	vmcs_writel(GUEST_SYSENTER_EIP, 0);
--	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
-+
-+	vmx_guest_debugctl_write(&vmx->vcpu, 0);
- 
- 	if (cpu_has_vmx_tpr_shadow()) {
- 		vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, 0);
+ 	/*
+ 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
+ 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
 diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 392e66c7e5fe..c20a4185d10a 100644
+index c20a4185d10a..076af78af151 100644
 --- a/arch/x86/kvm/vmx/vmx.h
 +++ b/arch/x86/kvm/vmx/vmx.h
-@@ -417,6 +417,16 @@ void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
- u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated);
- bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated);
+@@ -419,12 +419,25 @@ bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated)
  
-+static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
-+{
-+	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
+ static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
+ {
++	WARN_ON_ONCE(val & DEBUGCTLMSR_FREEZE_IN_SMM);
++
++	val |= vcpu->arch.host_debugctl & DEBUGCTLMSR_FREEZE_IN_SMM;
+ 	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
+ }
+ 
+ static inline u64 vmx_guest_debugctl_read(void)
+ {
+-	return vmcs_read64(GUEST_IA32_DEBUGCTL);
++	return vmcs_read64(GUEST_IA32_DEBUGCTL) & ~DEBUGCTLMSR_FREEZE_IN_SMM;
 +}
 +
-+static inline u64 vmx_guest_debugctl_read(void)
++static inline void vmx_reload_guest_debugctl(struct kvm_vcpu *vcpu)
 +{
-+	return vmcs_read64(GUEST_IA32_DEBUGCTL);
-+}
++	u64 val = vmcs_read64(GUEST_IA32_DEBUGCTL);
 +
++	if (!((val ^ vcpu->arch.host_debugctl) & DEBUGCTLMSR_FREEZE_IN_SMM))
++		return;
++
++	vmx_guest_debugctl_write(vcpu, val & ~DEBUGCTLMSR_FREEZE_IN_SMM);
+ }
+ 
  /*
-  * Note, early Intel manuals have the write-low and read-high bitmap offsets
-  * the wrong way round.  The bitmaps control MSRs 0x00000000-0x00001fff and
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 05de6c5949a4..45c8cabba524 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10785,7 +10785,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		dm_request_for_irq_injection(vcpu) &&
+ 		kvm_cpu_accept_dm_intr(vcpu);
+ 	fastpath_t exit_fastpath;
+-	u64 run_flags;
++	u64 run_flags, debug_ctl;
+ 
+ 	bool req_immediate_exit = false;
+ 
+@@ -11057,7 +11057,17 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		set_debugreg(DR7_FIXED_1, 7);
+ 	}
+ 
+-	vcpu->arch.host_debugctl = get_debugctlmsr();
++	/*
++	 * Refresh the host DEBUGCTL snapshot after disabling IRQs, as DEBUGCTL
++	 * can be modified in IRQ context, e.g. via SMP function calls.  Inform
++	 * vendor code if any host-owned bits were changed, e.g. so that the
++	 * value loaded into hardware while running the guest can be updated.
++	 */
++	debug_ctl = get_debugctlmsr();
++	if ((debug_ctl ^ vcpu->arch.host_debugctl) & kvm_x86_ops.HOST_OWNED_DEBUGCTL &&
++	    !vcpu->arch.guest_state_protected)
++		run_flags |= KVM_RUN_LOAD_DEBUGCTL;
++	vcpu->arch.host_debugctl = debug_ctl;
+ 
+ 	guest_timing_enter_irqoff();
+ 
 -- 
 2.39.5
 
