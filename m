@@ -1,100 +1,93 @@
-Return-Path: <stable+bounces-169500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8285BB25B25
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 07:49:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99208B25B3A
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 07:51:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC395C1FD0
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 05:45:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE6D18838D6
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 05:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F75231839;
-	Thu, 14 Aug 2025 05:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22022236E8;
+	Thu, 14 Aug 2025 05:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ja91L5aV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWIP+R9T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2394122422E;
-	Thu, 14 Aug 2025 05:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC6B2222CA;
+	Thu, 14 Aug 2025 05:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755150074; cv=none; b=EEqR6ungFNv/r22VoGE1pOXhqJlNPB1HoyJcseyWsVX5wVEp+u8WO5pQkCK3voZvqONEIhoNh+ubqJB47OAXuXdh/0OCrot7z6TCS+D4Vg/lwBjyBu9MtLp07kxBY8Pj14cOHHF5dMOhS7Fy+Yjk7G0baeWKzESTdhgwaRoKCNs=
+	t=1755150504; cv=none; b=Pw+5IXhAMGx5X5Ylrm47ujhTq0ZzxJgPoVOF1YJ5ojD2N5CPlOK15zDj1vxtUZGOlHoT3ZijASqNo4aOJInLuPZma1EsPWhUo9XHHZTCTohwuFhFxQ/QEnjez2cmMuRW/R5NJ9656LkFXZrfdgj89lM2Gc+gE/T469ZpiQX2jSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755150074; c=relaxed/simple;
-	bh=QN3DbVOxFlmSd23l3i/P34veh0MEYLlbfjJE89nwiSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g9T3YFRmHKvLWrKTX7NgANR9TjWXN898o3VTOBTQ56IY0NEjEwTGgL481npy1vZKnl6l5u0LR2xCgIO6FRq8xM4bDmKipdbcpcpvRZUjIa5TSlzY/kLED3AyU02WsbX6bRGdeZkMTSwcdFGX66H2aDl//QVnQR6w6r8VV65zEnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ja91L5aV; arc=none smtp.client-ip=209.85.208.177
+	s=arc-20240116; t=1755150504; c=relaxed/simple;
+	bh=+0OzEiu1IwHYZBATpQwNvFeQfWRM20a9bZXzyMJbRNo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BgWFA9GdNJ7JIXLyrpFRA54oi35RgmLsse1gIY1/gWLmiycOZmqDii264MPzdI+3ENaIlQVRV1dM3S+SfSb8D1BTmp71XEWRwUrlHBL+dIirX6f+EEyp2xGZ0gfPNpYcqaNYmb0Ju7uCp8g0FORr2FRPLKEWc9KMVd+wNopHd84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWIP+R9T; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-333f8f5ca72so3919811fa.1;
-        Wed, 13 Aug 2025 22:41:12 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-55ce526a25eso552240e87.3;
+        Wed, 13 Aug 2025 22:48:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755150071; x=1755754871; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QN3DbVOxFlmSd23l3i/P34veh0MEYLlbfjJE89nwiSQ=;
-        b=ja91L5aV2mgny+Et422K0J9lJmohUPqLsUB1XxBTDjQW5Hr2LKz5/8gxdY9erDaQ+S
-         t2aU6+TgGfBbiTgDqyWSH4WOGP7aEZ6lTlNaKzokbbW/Cda5Sa/KuKf1bpHtpd5mfMKz
-         aVw+C0xqHvPVwWqwz5eyOxjXP8FOlY877aalrAOh0uNr2L5XNUxIAmkZ5Qc3HZjgsXru
-         t7eNYVKKp3nuBgQbnTkqd3+wtHev/eQ0xkgIUzzBdI4YtC3DrwNGv/YdM2qf7BaAhTDZ
-         fP+e9V5Tf8+5ExLqHsXFhFwUMtibob/vAuMbNyApAMrSvjhMjlzxy1oSnU/wL6RYD0vO
-         pRxA==
+        d=gmail.com; s=20230601; t=1755150501; x=1755755301; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PUNtO4pH/dYIC4p6AKf+kH0mLx/dB4II9+DFQLnph/s=;
+        b=OWIP+R9Tu1MDzW2sX1kfo1y0YYCsIBiP6HrZfGBS+D5GFidAsohHzD1VYqdIarg0J7
+         O3Ryo3WgRcTiT63RCuews2QYEImZ53s8QeSy1D4/Y0bcNwFN61b8TU+gLDF5NbLsDpRR
+         QG59nSF6mvBjesV9SLT+2eIUQHkrFBVSFSp9fF2hqMovqN5T+s3j7jB3O6q5sPcPbkEQ
+         wWoJkqRe+HlU+irZmygc1SVVaqATtIIuZWFXNdd9XnvaeGGVc/eOv0gLYj+7qszVmsYr
+         Wpcm997SYe+w1EyAf1kXWEzPnw18Kych4Fs/8PSjlH1hfSiV2AhGzxNf6cxvKucTPytt
+         np4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755150071; x=1755754871;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QN3DbVOxFlmSd23l3i/P34veh0MEYLlbfjJE89nwiSQ=;
-        b=mIUGtWyK7x+qT5UBldujT052vBk+egxjQO1ShCd0aYEXOideLbq6VKXcfK3tMkM0pL
-         xnk1X7OfcG9nDzkEFlv0CnikJPO08MVB7pPLPRyxVFg5pLWEYW+PWbcTa8VMjUMscFYw
-         Bi5hRWVyJgGsipmryFSOzf8n/FeHjO42lgHZWyDnkOBFFDbwjKiouX2E4MT69HPwMFne
-         Bpp9onKrEhfa3qe/vAELVTrZe6+qeOjly1Na6cIb24tq9jZdpde5BDYzUN0LouKonvfd
-         oteKhxcZ3jaEnGOc6sqnkUyHb28+PhZvobglFmpA9MbOxeXfeVgnWkHird9+gCvlmeJ1
-         +lug==
-X-Forwarded-Encrypted: i=1; AJvYcCVJK0cbJhqPprkMrwE4KPfwKFywiD0nUNlA7VBDKDOwuv0eiwxgGb+mrTBZzVjk6kA3Tw1/JFWF3lk=@vger.kernel.org, AJvYcCXtioJI2BFW2/NC6fSuLc+t+1mZXhPSIKGR/QutgrMQ2UThTm6lYtkMP+MUtWGumZO6CIVpooQd@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhYNuqoAjFzPC+iD0tf9nrxUx21jrVXu57QKAwhU5zdn+F53dl
-	GzF700z6m3QJrVGme6WIcB3dSBfGU/KlKZ8Gm9e8KweNC0TBCoM7l380kNKfd5UN
-X-Gm-Gg: ASbGncsr4XtwswWpM52La0AdJQbFk0/lFI2Jg9m4SlWx/HgJD0erWA658quH6vJR2qf
-	9jJz1WFfYDT2b+BNlRJuzEzoUnp4n1DwPXwJb1nAgRhI+OA/W+Z8/W7+TjOvGbOxxKvoNP6UNvT
-	5mhgxOMKeJQAT7QNmWK8lChET03C/1w45jC7wVFYrsYyzGC/Axkk+uNPL1kGAMBH6mRSl7lMhQS
-	mipH25YLQZ6vzjKVd+4IdABv5deZ0uz+P4e6KT48w3JEJRt6NXyRPVzzFwFgIg84dmXBkiljlhL
-	YxnEa9HDJ9h3cpx9GhW/Hb5u+EHUdkDyewQ0BH8l6AzDdyHOJbZkKytHE0TNUDQddXQDcLWCGB8
-	iYp0VpYMQq6+rdG/XvXOhuYiQn0va+cvljZI=
-X-Google-Smtp-Source: AGHT+IHEUl31P2HvgZjm/kJLJOMms0XyA6TZRZRA7CzFgjdCE5184lgjvICQYvRRmb3dU/Kmgvb4RQ==
-X-Received: by 2002:a2e:bea1:0:b0:332:1720:2eb8 with SMTP id 38308e7fff4ca-333fa438e42mr4327681fa.0.1755150070697;
-        Wed, 13 Aug 2025 22:41:10 -0700 (PDT)
-Received: from foxbook (bfd208.neoplus.adsl.tpnet.pl. [83.28.41.208])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-333f8e83c5dsm1445521fa.74.2025.08.13.22.41.09
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Wed, 13 Aug 2025 22:41:10 -0700 (PDT)
-Date: Thu, 14 Aug 2025 07:41:06 +0200
-From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
-To: Marcus =?UTF-8?B?UsO8Y2tlcnQ=?= <kernel@nordisch.org>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Jiri Slaby	
- <jirislaby@kernel.org>, gregkh@linuxfoundation.org,
- linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
- stable@vger.kernel.org, =?UTF-8?B?xYF1a2Fzeg==?= Bartosik
- <ukaszb@chromium.org>, Oliver Neukum <oneukum@suse.com>
-Subject: Re: [PATCH] usb: hub: Don't try to recover devices lost during warm
- reset.
-Message-ID: <20250814074106.2da56397@foxbook>
-In-Reply-To: <3566d1a04de7f61da46a11c7f1ec467e8b55e121.camel@nordisch.org>
-References: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
-	<fc3e5cf5-a346-4329-a66e-5d28cb4fe763@kernel.org>
-	<5b039333-fc97-43b0-9d7a-287a9b313c34@linux.intel.com>
-	<4fd2765f5454cbf57fbc3c2fe798999d1c4adccb.camel@nordisch.org>
-	<20250813000248.36d9689e@foxbook>
-	<bea9aa71d198ba7def318e6701612dfe7358b693.camel@nordisch.org>
-	<20250813084252.4dcd1dc5@foxbook>
-	<746fdb857648d048fd210fb9dc3b27067da71dff.camel@nordisch.org>
-	<20250813114848.71a3ad70@foxbook>
-	<3566d1a04de7f61da46a11c7f1ec467e8b55e121.camel@nordisch.org>
+        d=1e100.net; s=20230601; t=1755150501; x=1755755301;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PUNtO4pH/dYIC4p6AKf+kH0mLx/dB4II9+DFQLnph/s=;
+        b=xABx4faDVQjQCvoIaXyAK4k2AzCYFBHIaBqZeQqo/VUu5AAtsK2k3iL9bdBp0O5CgU
+         tm8ei0ckQ1/8yGQggxlXvhqYj4mG4jDZwplJmAIRzG5xBdez57ackiGVjka/C0CCPRnA
+         XNSEAVqxA7wZVaoymPU3w10XCioiJa3qZbP2xY65xOjeDF3/G9jTfKH9PEyZZGrTjRZE
+         oaIat4qcEdc3KGc7+5BGeaQxoJ0auzbRg10GLS+1NGJ8uH2W1L6PZMhM3rbWv4nhC0Fj
+         a1Tm9362h38UMUj1/STXn5wrxyBkM4Ai1OLLvCPrIuPQ6oM7YQq8eCa7AUkF+fLOjoQ/
+         Fdkg==
+X-Forwarded-Encrypted: i=1; AJvYcCVi0/FebMx/gMV91Yqokoc6CJnS02AaC41dtftY+QO7VfKuvCKcYTNJLaECXhlR70p0AeNTWZZ/cVBoqVI=@vger.kernel.org, AJvYcCWwnNpYKBmj7NZVCdaZSHoutn+Y2YXl1qQjfuDk70skW234OAF/1APus6CEAQcLDV3khRPHbmywh7Grc5eV+lk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU6qraKHC1+lG80mHTde6fwxRMiR0ghQo25/whY1lJ2bqfB1xf
+	ZteyoDgCv5iHmuA4LMNQaQPWXLVP3dxknfEocY4qZgwyck/OcggsVsd7wbioTwTe
+X-Gm-Gg: ASbGncs40LTmrfRp5ow5ZzrxTRBZgkUj8xzPxPSzhQgForuQxvtUIjfBj0LBru6E/R9
+	laf+K1qDCoT6GdK+ZjstL29XMBEzUBA756j0FTqgfUEtEi8wL7Azo7pEIAb08uaGt82V/FK0SWt
+	M4yukoqyYi7Oz1evx0kMZoIw+alUOw3Y27OePnN6q1Qe8JxZR9EaU114dtRtV3U4Ew1gAx+slTw
+	9JPY/NgKKxp0fq6UVpriXgfSLKOI4GwAxt7Un84InpqsCwTwZ9VPxKvlHA0s8oTNKdvfaqQ+XXl
+	pZUvLHC4aR4Se7oo0wyz42Sy+hjhl43M6TcQHhYrFk49t7YMPh0iFCDLbKiiEm/4Ao0zww2x8gf
+	4enXqqPI5U0kE0elNos6LuhuCmGF3Y+iGbAd2eSaPhO1e8lBCdkZmIq8ols+jD4re/FMhNuFGQD
+	DL1aCWwRkIHM1T0BQCOaSp
+X-Google-Smtp-Source: AGHT+IF0cS6nJeqSR4x3dUlA00S4ZeJZ+cRKVOPAb2WYQETUE7cy0JiKDYv/snz5x7N5TkN5gAYglw==
+X-Received: by 2002:a05:6512:420b:b0:55b:9192:319b with SMTP id 2adb3069b0e04-55ce5045d9emr390809e87.53.1755150500391;
+        Wed, 13 Aug 2025 22:48:20 -0700 (PDT)
+Received: from uuba.fritz.box (2001-14ba-6e-3100-4a6b-e900-eeb1-e216.rev.dnainternet.fi. [2001:14ba:6e:3100:4a6b:e900:eeb1:e216])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c987acsm5447456e87.100.2025.08.13.22.48.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 22:48:19 -0700 (PDT)
+From: =?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+To: stable@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	shaul.triebitz@intel.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 6.12.y] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
+Date: Thu, 14 Aug 2025 08:48:04 +0300
+Message-ID: <20250814054804.114024-1-hannelotta@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,42 +95,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, 13 Aug 2025 12:05:16 +0200, Marcus R=C3=BCckert wrote:
-> On Wed, 2025-08-13 at 11:48 +0200, Micha=C5=82 Pecio wrote:
-> > OK, three reset loops and three HC died in the last month, both at
-> > the same time, about once a week. Possibly not a coincidence ;)
-> >
-> > Not sure if we can confidently say that reverting this patch helped,
-> > because a week is just passing today. But the same hardware worked
-> > fine for weeks/months/years? before a recent kernel upgrade, correct? =
-=20
->=20
-> From 2024-07 until end of July this year (when I upgraded to kernel
-> 6.15.7) everything was working fine. Also since I run with the kernel
-> where the patch is reverted the issue has not shown up again.
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-Considering rarity of those events I think you would need to run for
-a few weeks to be sure that the problem is gone.
+[ Upstream commit 16ee3ea8faef8ff042acc15867a6c458c573de61 ]
 
-There is also a chance that some hardware change wich doesn't involve
-the "usb 1-2" keyboard caused it. In bug 220069, another AMD chipset
-was dying every few days if and only if two particular devices were
-connected to the same USB controller (the chipset had two controllers).
+When userspace sets supported rates for a new station via
+NL80211_CMD_NEW_STATION, it might send a list that's empty
+or contains only invalid values. Currently, we process these
+values in sta_link_apply_parameters() without checking the result of
+ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
 
->=20
-> > Random idea: would anything happen if you run 'usbreset' to manually
-> > reset this device? Maybe a few times. =20
->=20
-> How do I do that?
+A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+This patch applies the same approach in sta_link_apply_parameters()
+for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+rate by inspecting the result of ieee80211_parse_bitrates().
 
-Run usbreset without arguments (as root) and it will print a small help
-text and a list of devices it can reset. If you don't have usbreset,
-ask Suse. Normally it should be in usbutils package like lsusb.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-But I suspect nothing will happen (ie. the device will reset normally).
-We tried it in bug 220069 as well.
+Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+(cherry picked from commit 16ee3ea8faef8ff042acc15867a6c458c573de61)
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
+---
+ net/mac80211/cfg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-So it will be waiting until it crashes spontaneously again.
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index cf2b8a05c338..9da17d653238 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1879,12 +1879,12 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 	}
+ 
+ 	if (params->supported_rates &&
+-	    params->supported_rates_len) {
+-		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+-					 sband, params->supported_rates,
+-					 params->supported_rates_len,
+-					 &link_sta->pub->supp_rates[sband->band]);
+-	}
++	    params->supported_rates_len &&
++	    !ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
++				      sband, params->supported_rates,
++				      params->supported_rates_len,
++				      &link_sta->pub->supp_rates[sband->band]))
++		return -EINVAL;
+ 
+ 	if (params->ht_capa)
+ 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
+-- 
+2.50.0
+
 
