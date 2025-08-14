@@ -1,243 +1,157 @@
-Return-Path: <stable+bounces-169516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70791B25EBF
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 10:27:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F6FB25F0B
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 10:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDEFE1C815A4
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6185A7D18
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7622E7BAF;
-	Thu, 14 Aug 2025 08:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4040A291864;
+	Thu, 14 Aug 2025 08:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C0gBMjrG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBkRtPkN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC68E2E7659
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 08:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD6C25E451;
+	Thu, 14 Aug 2025 08:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755159884; cv=none; b=EwfurfoIZg1CJuTwT90QF630Dl+IA2ERlxPE1OBL4HGHAn2kfEDQD/uN5Wenmvd6SlgsdTQZBKLKZR9rZLFlOBL6DgrmKwx9/8xHVX+gxRZu9563OA05lO6CvQs47uu5ZWPZfEwQLBPmgotaYtLcLHFY4zF7CROhoroRNSht71A=
+	t=1755160646; cv=none; b=h664XuTqnHu7GYpfmAUiMALDUkSKwD5KnSUj5Dvn+6wftdSsm+snnhtHjSTPJS+haIsayoivcCHfz9CfKkNmBn8bCRLpQeKcrC99lFsu4+iaxNQEV8tCQjJNsS0mOPWC7UdhaV6GSA3uv5+cnPgmVaGvtm2LIswFYoZbERWN7Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755159884; c=relaxed/simple;
-	bh=QRuY0xcssAqNzsjoe0+GUA8Ky7ufdADxvjC0vu3O1m4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NUBanJNYhbL12/9bH6eeDTBODHTm2ZLRW8sNg8Y1B+KlDQnZ7KOkOXifGF8FZz8JQPp+LzsPeFfzMpiSNAQ8J+UTgZ5B/YMSDKHyNPza5zdJ8+GRGa7Z/y0KuPTOPXgqyXyu6rSb47zoikMjAejdMPCsAaIwyTXxIHHjmxF13eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C0gBMjrG; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b4717563599so504425a12.3
-        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 01:24:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755159882; x=1755764682; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PN4ndrkgVneBhF71YXNayTVC1k6fq5rxQE8AAOWHWiE=;
-        b=C0gBMjrGoGoEWwSDu9dlfODOYAQEXw6ta3mYFDeqUZenJBwikZtfeDUXTM4CkwM9sE
-         VyNXWNlG+8Hpz6yS9+5uQkU1Cn5hxST1QflmH23bNR0BizP9dcji0dKdDucIbaZarXkU
-         5So270KWNsJcSF/8hNGSHBRbK4XOCHTDf8lIsAgBz1awuAM3LhrFyqJvaxt8eJc8ZOUF
-         Nm57lLEdCdmRHMSdkOlOUbOaCY13V2ia44Ua12HHCiqUJ+5SWiTiotJ34wxYjOUUESbC
-         iabESHXFvmMiYmeYlhOmABe2H0dk4HL56Chz0s3aRMjDuNwACxritEreeMvTdeluoXQV
-         /3hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755159882; x=1755764682;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PN4ndrkgVneBhF71YXNayTVC1k6fq5rxQE8AAOWHWiE=;
-        b=hUQHg547wo4OyTqbrGR0gBLgKOoVy/wMAyNcHBvFAdZuIq8eZ6XcaJcTXu/e1NedUj
-         R45bh6hb3ZVxKeIiOAeiifBxWmHs1Jw33fAb8z6MSfhMRc7pYLOePww8hUcw5u4ZQUsz
-         5C2LcjoV+/Xt5bGHtdSG6KpmUGVgB/mjB9WjRg50BNpDq3AJznZoB+8pVdH0y7RSEJfZ
-         a99JmTJNHiFLnQEEPfBqe+jxccXAM0GtJ+327A6NU3s8oDkHciiJsVy3nfTb7gsVmU7M
-         Zn4qavyrYViXDiY47fmngQZXMoVu6+i0wIP/+gb/bL8xpNVFXOMEplX04IJGoO0jQE9M
-         xs5g==
-X-Gm-Message-State: AOJu0Yxuip3OY+NgRLh1CsmPP1j0wGeD/kxTaS2Zr4vts/0iuIAjZuqr
-	/HsPnKA+yLcx/G1Jur01E3XpGuSEsC10zEqESZ3lmCfY7uFZZeUlIuEig2fLrDXFOddwOpWHDB4
-	+affwLRF1Ne+sGycdhEbaOAbSDLLwNhBd9beEfaBwSA==
-X-Gm-Gg: ASbGncuGvoQ8azEC98/IgylCawufJiJuhrd5iN73xVpVrIDXCCsXhce0kso5u5jHzrN
-	5LuLjx4+ULpJgipnRGhBYeOo/dgtkhfKiK58gofCdfptuYxECdBVrbn3w7Ja91V1gGFBRdOz3pw
-	hZ2uw30ec52phPsgJ28BCrqxga5Lk5kQoDR9Ikht/8bZOeFQ9mB/IvLlFbeUVDYsiwDfW7HpxE7
-	387Vpq1nQSAw2nF26mn4Tu3e3g+uOumqE/6labcB9D0XZ4cnrAp
-X-Google-Smtp-Source: AGHT+IEQ6olLFhlnuBt+suQ/HYvysyluDH8m5MsRBc9LHDFH2apZD3pSIajpR/6y6fisab/HUr4DU1uJ9Fx/39JH2o0=
-X-Received: by 2002:a17:902:da92:b0:243:17a:cd48 with SMTP id
- d9443c01a7336-2445851f038mr40305795ad.17.1755159882053; Thu, 14 Aug 2025
- 01:24:42 -0700 (PDT)
+	s=arc-20240116; t=1755160646; c=relaxed/simple;
+	bh=4hgYOboBwr07GDnqTowvvQ/VZ9PXOaAt8FWiNkvyJSA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=KVyCmz2ZSmh//3bG9W684yIUFTU2jIIB0WRjgFnwtJuDL0KfXR75aUXE1caJTaifYLdMLD0CLXk0wXwsGlG9VOXUggeoUiumFZcTQgGqA1rK9bixzy0nI+g58/U9ObiVZv8rKICnRDXxqDXbR0XKkNV2PxpBHOz+2dRFl6JRSLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBkRtPkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2BFC4CEF4;
+	Thu, 14 Aug 2025 08:37:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755160645;
+	bh=4hgYOboBwr07GDnqTowvvQ/VZ9PXOaAt8FWiNkvyJSA=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=LBkRtPkNu0IlnWkQ9WyQvaOneSBW8OHUVGBEG7za+2z0PDUYOyuMnyUSBpTFHYIOt
+	 MR2Ib9v3nXyLzMu9srkdAp0CMu3haoI6fthZpJOEjBfB4uEydrRYSQf3T93q7jUdbG
+	 7QlUS/U5YyzfrAWcLzHZkizO44ev5svISjofIhXqnsVXvq0njRcJv4eMIXnRa7brPb
+	 1f3Bteh30883M24nC/KlJ27tkxqkozT9dIuo210He02a8VWQaRMQZCfIsnGGoteguN
+	 +M/dUWbTwfCxOOyEbOuNADOVRe1GZHRsH1vY7357fKAekjSdfcFPA64MPXGOESguYQ
+	 sOjIEpY/hWXLA==
+Message-ID: <58c46200-95b0-4cd8-bb5e-44f963a66875@kernel.org>
+Date: Thu, 14 Aug 2025 10:37:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250812173014.736537091@linuxfoundation.org>
-In-Reply-To: <20250812173014.736537091@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 14 Aug 2025 13:54:29 +0530
-X-Gm-Features: Ac12FXyyGXeSA7vfnwGf0EzVOprDr4qz86gCpoS_15nupDMTeTdNSdzNao3uL0M
-Message-ID: <CA+G9fYvMdJpO=qWHh0o0u7qeaTS3-=AF2FgtLgMbRuKQ_5vccw@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/369] 6.12.42-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 199/627] sched/deadline: Less agressive dl_server
+ handling
+From: Jiri Slaby <jirislaby@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Chris Mason <clm@meta.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>, Sasha Levin <sashal@kernel.org>
+References: <20250812173419.303046420@linuxfoundation.org>
+ <20250812173426.853672780@linuxfoundation.org>
+ <17955c87-1a82-4eae-94ee-3ac1447d4e71@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <17955c87-1a82-4eae-94ee-3ac1447d4e71@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 12 Aug 2025 at 23:37, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.42 release.
-> There are 369 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 14 Aug 2025 17:27:11 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.42-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
+On 14. 08. 25, 10:22, Jiri Slaby wrote:
+> Hi,
+> 
+> 
+> On 12. 08. 25, 19:28, Greg Kroah-Hartman wrote:
+>> 6.16-stable review patch.  If anyone has any objections, please let me 
+>> know.
+>>
+>> ------------------
+>>
+>> From: Peter Zijlstra <peterz@infradead.org>
+>>
+>> [ Upstream commit cccb45d7c4295bbfeba616582d0249f2d21e6df5 ]
+>>
+>> Chris reported that commit 5f6bd380c7bd ("sched/rt: Remove default
+>> bandwidth control") caused a significant dip in his favourite
+>> benchmark of the day. Simply disabling dl_server cured things.
+>>
+>> His workload hammers the 0->1, 1->0 transitions, and the
+>> dl_server_{start,stop}() overhead kills it -- fairly obviously a bad
+>> idea in hind sight and all that.
+>>
+>> Change things around to only disable the dl_server when there has not
+>> been a fair task around for a whole period. Since the default period
+>> is 1 second, this ensures the benchmark never trips this, overhead
+>> gone.
+> 
+> This causes:
+> sched: DL replenish lagged too much
+> 
+> Maybe some prereq missing?
+
+Not really, this is present both in linus/master and tip/master.
+>> Fixes: 557a6bfc662c ("sched/fair: Add trivial fair server")
+>> Reported-by: Chris Mason <clm@meta.com>
+>> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+>> Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+>> Acked-by: Juri Lelli <juri.lelli@redhat.com>
+>> Link: https://lkml.kernel.org/r/20250702121158.465086194@infradead.org
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
 > thanks,
->
-> greg k-h
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+-- 
+js
+suse labs
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.12.42-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 3566c7a6291d9602f9f443a3e97340103197f811
-* git describe: v6.12.41-370-g3566c7a6291d
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.41-370-g3566c7a6291d
-
-## Test Regressions (compared to v6.12.40-118-g487cdbecb4dc)
-
-## Metric Regressions (compared to v6.12.40-118-g487cdbecb4dc)
-
-## Test Fixes (compared to v6.12.40-118-g487cdbecb4dc)
-
-## Metric Fixes (compared to v6.12.40-118-g487cdbecb4dc)
-
-## Test result summary
-total: 308371, pass: 287741, fail: 6222, skip: 13991, xfail: 417
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 137 passed, 2 failed
-* arm64: 57 total, 56 passed, 1 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 40 passed, 0 failed
-* riscv: 25 total, 22 passed, 3 failed
-* s390: 22 total, 21 passed, 1 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 48 passed, 1 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
