@@ -1,114 +1,171 @@
-Return-Path: <stable+bounces-169482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B181CB258DA
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 03:17:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5976B25906
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 03:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ADAE1C21875
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 01:15:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23FCB1C22355
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 01:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A587194C75;
-	Thu, 14 Aug 2025 01:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="tPycMhMr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52279194C75;
+	Thu, 14 Aug 2025 01:27:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1AF188000;
-	Thu, 14 Aug 2025 01:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB19189F3F;
+	Thu, 14 Aug 2025 01:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755134107; cv=none; b=t7Rhzg9ZA1cDuGZ0mfJhW27FM4BmLRGjinQ0trunmAPOrWd51Csz9tWf1NMnfoH1muvqgCZRELCJB9DjuSRlP27TOtnlDx7gmvfDtuxuaJMzS50QoCUPTKt2248qD89srGL9IIPe2RU68SQ8QFQbfSI7WebxPJggjNf8FxnCVoA=
+	t=1755134878; cv=none; b=RbX7uUmbs1q804UJ+wZ/2ytNttUOddW7mFRDNM8iqh4sHYq3I2l2u4FPT3Kc4KX4J0LFiqyyDMKkWB/YuS6Ljby/b18Y249fNWx5Bll3c9ipSmLDPhSDKEAE8zQK1jczuhL0yHOtuuC0HMAVJkd25GYCQoWDuVFHAD8lGBLs5ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755134107; c=relaxed/simple;
-	bh=y9PO2PO6nPeVBRQUafPLj9FIxNajLXqS18P2UUJjTFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=T7F1Nc4HqLhv0lVl1eNXtwRVAWgXZuZ0w2rrtzmIXm87pJlyrjPor31HKVWbU/1aONuMgS5dOz3pbEs54YRtLu/GHE6DdU6XpJUybC/QEDw8oOA+npS6Rz6L84xmZQkcQLb5E65gacCWEbBJahRsgAijavvbqV43GrFWChOQa4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=tPycMhMr; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 468D714C2D3;
-	Thu, 14 Aug 2025 03:14:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1755134096;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=VSS/GzTf7mRkzo4sO438c/imKZ2sgMqL0KjQB+0sB9s=;
-	b=tPycMhMr7X0wubaDHNZnMqB/VEiz0UUE8omXCbl8cVPraMQEqlPqNl3No+vWVKYafyfuSA
-	xhjW37XOoQV3q0j5uHaXh7YYbCRG3IZ+tEUlLhY8SaSBmV/WqNdlGIekaFWtvKennOmXOg
-	0jP8VHStgbUj1JeXRD4kB6OG5m1l26zOxuPZDjMXERijZSNrQI3moAFxCHhbi/gpYqBfCC
-	2bzC09Ecy/3pG2mjK78rVDFpscJKNFoOvRfr4bJcTgSUHhKrooXlVZISs1Qm35JZT+XjI1
-	2qZyXvNOntTkDnzLDvryfNjAjjTCBnXfmst23VvZ/ZElMoQUN43e9Adp+48JMQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 5e52dd40;
-	Thu, 14 Aug 2025 01:14:49 +0000 (UTC)
-Date: Thu, 14 Aug 2025 10:14:34 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Dominique Martinet via B4 Relay <devnull+asmadeus.codewreck.org@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>, llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Maximilian Bosch <maximilian@mbosch.me>,
-	Ryan Lahfa <ryan@lahfa.xyz>, Christian Theune <ct@flyingcircus.io>,
-	Arnout Engelen <arnout@bzzt.net>, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] iov_iter: iterate_folioq: fix handling of offset >=
- folio size
-Message-ID: <aJ04ej2P3ZXiBjOG@codewreck.org>
+	s=arc-20240116; t=1755134878; c=relaxed/simple;
+	bh=HYvlknKOx1rKjvQkyNkvqhaEdoRV/o3tuBi9L0Uo+rg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pWlRcGlWOKUMSZpr2OlkiaN/SozXDS5YGW7NCY7hiekzWfl8MY8jgXbtEIU0CJb3IoZhFdp3X5iXYDIn/Db8oRS1SnvcyE3sUQbF4TJKpIgfEk5cgwxUOyuSpw7jgzNS7sTH/iA4BU5aSahfD0OGUcJXuO05GSXr9OjiNw/IAUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4c2SKl5B90zYQv10;
+	Thu, 14 Aug 2025 09:27:55 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 5084F1A12D9;
+	Thu, 14 Aug 2025 09:27:54 +0800 (CST)
+Received: from [10.174.179.80] (unknown [10.174.179.80])
+	by APP4 (Coremail) with SMTP id gCh0CgAHgxOVO51oPzBtDg--.8664S3;
+	Thu, 14 Aug 2025 09:27:52 +0800 (CST)
+Message-ID: <42aace87-1b89-4b17-96f1-3efbabc4acf3@huaweicloud.com>
+Date: Thu, 14 Aug 2025 09:27:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f389ac0d-de77-4443-9302-3d8895e39daf@paulmck-laptop>
- <aJyYp-3VA9kJ5YMd@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ Anders Roxell <anders.roxell@linaro.org>,
+ Ben Copeland <benjamin.copeland@linaro.org>, LTP List <ltp@lists.linux.it>,
+ chrubis <chrubis@suse.cz>, Petr Vorel <pvorel@suse.cz>,
+ Ian Rogers <irogers@google.com>, linux-perf-users@vger.kernel.org,
+ Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, linux-ext4 <linux-ext4@vger.kernel.org>,
+ Zhang Yi <yi.zhang@huawei.com>, Theodore Ts'o <tytso@mit.edu>,
+ Baokun Li <libaokun1@huawei.com>
+References: <20250812173419.303046420@linuxfoundation.org>
+ <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
+ <2025081300-frown-sketch-f5bd@gregkh>
+ <CA+G9fYuEb7Y__CVHxZ8VkWGqfA4imWzXsBhPdn05GhOandg0Yw@mail.gmail.com>
+ <2025081311-purifier-reviver-aeb2@gregkh>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <2025081311-purifier-reviver-aeb2@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgAHgxOVO51oPzBtDg--.8664S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF1fAFW7tF4UtrWrWr1DGFg_yoW8Zw4xpF
+	WrCF98tr45X345ArsFvw4IgFyUtrZ8Krn5Wr1rtw17C39IkryDZF4SgF1Y9F97Jr4DCFyr
+	ZrsFv3sIyryDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
+	Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	j6a0PUUUUU=
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
 
-Andy Shevchenko wrote on Wed, Aug 13, 2025 at 04:52:39PM +0300:
-> > I actually test with W=1 too, but somehow this warning doesn't show up
-> > in my build, I'm not quite sure why :/
-> > (even if I try clang like the test robot... But there's plenty of
-> > other warnings all around everywhere else, so I agree this is all way
-> > too manual)
+On 2025/8/13 22:53, Greg Kroah-Hartman wrote:
+> On Wed, Aug 13, 2025 at 08:01:51PM +0530, Naresh Kamboju wrote:
+>> Hi Greg,
+>>
+>>>> 2)
+>>>>
+>>>> The following list of LTP syscalls failure noticed on qemu-arm64 with
+>>>> stable-rc 6.16.1-rc1 with CONFIG_ARM64_64K_PAGES=y build configuration.
+>>>>
+>>>> Most failures report ENOSPC (28) or mkswap errors, which may be related
+>>>> to disk space handling in the 64K page configuration on qemu-arm64.
+>>>>
+>>>> The issue is reproducible on multiple runs.
+>>>>
+>>>> * qemu-arm64, ltp-syscalls - 64K page size test failures list,
+>>>>
+>>>>   - fallocate04
+>>>>   - fallocate05
+>>>>   - fdatasync03
+>>>>   - fsync01
+>>>>   - fsync04
+>>>>   - ioctl_fiemap01
+>>>>   - swapoff01
+>>>>   - swapoff02
+>>>>   - swapon01
+>>>>   - swapon02
+>>>>   - swapon03
+>>>>   - sync01
+>>>>   - sync_file_range02
+>>>>   - syncfs01
+>>>>
+>>>> Reproducibility:
+>>>>  - 64K config above listed test fails
+>>>>  - 4K config above listed test pass.
+>>>>
+>>>> Regression Analysis:
+>>>> - New regression? yes
+>>>
+>>> Regression from 6.16?  Or just from 6.15.y?
+>>
+>> Based on available data, the issue is not present in v6.16 or v6.15.
+>>
+>> Anders, bisected this regression and found,
+>>
+>>   ext4: correct the reserved credits for extent conversion
+>>     [ Upstream commit 95ad8ee45cdbc321c135a2db895d48b374ef0f87 ]
+>>
+>> Report lore link,
+>>
+>> https://lore.kernel.org/stable/CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com/
 > 
-> Depends on your config, last few releases I was specifically targetting x86
-> defconfigs (32- and 64-bit) to be build with `make W=1`. There are a couple of
-> changes that are still pending, but otherwise it builds with GCC and clang.
-
-I meant it the other way around: the warning isn't showing up on master
-+ these patches for my config.
-
-But now I double-checked, 'CC=clang make W=1' doesn't actually use
-clang, I should have tried 'make CC=clang W=1'...
-And, yeah, it just doesn't show up with gcc so I'll know it's better to
-check both compilers...
-
-Paul E. McKenney wrote on Wed, Aug 13, 2025 at 04:04:19PM -0700:
-> > I hope this to happen sooner as it broke my builds too (I always do now `make W=1`
-> > and suggest all developers should follow).
+> Great, and that's also affecting 6.17-rc1 so we are "bug compatible"?
+> :)
 > 
-> This build failure is showing up in my testing as well.
-> 
-> In the service of preventing bisection issues, would it be possible to
-> fold the fix into the original patch?
 
-Andrew just picked v3 up, so there won't be any such problem, and -next
-will stop failing after today's update
+Hi,
 
--- 
-Dominique Martinet | Asmadeus
+This issue has already fixed in 6.17-rc1 through this series:
+
+https://lore.kernel.org/linux-ext4/20250707140814.542883-1-yi.zhang@huaweicloud.com/
+
+
+To fix this issue in 6.16, it's necessary to backport the whole series
+instead of just pick 5137d6c8906b ("ext4: fix insufficient credits
+calculation in ext4_meta_trans_blocks()") and 95ad8ee45cdb {"ext4: correct
+the reserved credits for extent conversion").  Otherwise, this will make
+the problem more likely to occur.
+
+Thanks,
+Yi.
+
 
