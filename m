@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-169616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786CDB26F77
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 21:04:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A90B26F7B
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 21:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 509727ACFEE
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 19:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD4851CC1F8E
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 19:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C481233733;
-	Thu, 14 Aug 2025 19:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55F1220698;
+	Thu, 14 Aug 2025 19:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tlC0iwKG"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MxQJnWs8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7120207DFE
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 19:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AB310E0
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 19:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755198284; cv=none; b=RBVM3yQOKgX/BQlFs9g1PBndUau0Z6T3p+DDnYVaNbFq12u73fyJzZXrLcB7Xx2uTG+N83x1PT6BNX6PRmkix4IzRePG2SI5OriZyjEewJIFbLU9CorPuZguxKcVadka9GkqxVzleDmshZw4dktQTTbAHBE2G/sdrZ7yEWGPbv4=
+	t=1755198324; cv=none; b=JXlEAPV3a7JIbQCuc+n+APSkUKWsDYtAq0zd97WR+LhJ0fIOHMM22gXkF8vlzx3u/dn9rGEVmT3IB79de3UCXbDoXWoCE2xy6Qkg+bqB9rM5kZpgbL3Jq3aXB2yuuWBRf8pxIJ04aUDbhxaZ7VmmGq1MdSnUg+J7CUt1udSki1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755198284; c=relaxed/simple;
-	bh=qm4sJIAbvHbaMYpcH+1Lp87YAMKK3OmEhn43nB5qoAg=;
+	s=arc-20240116; t=1755198324; c=relaxed/simple;
+	bh=AN8qz/ITEUM5LRnJa3X9A8S8tftQ2fJgnHqHAaZHT7g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=G5YFW4p5FAb7XZk9MTrEDqD9rRB4louT/L4bjVvFbDLVxjwhTQCFlhAgGt8J0evjyy8zQD67WUYz2FCmjozjvYrlrX+Y8HTnZqZ5my5cqR7bjMsZscEsl9aZfQDSO8s/WmHouQQoOYID9U9AlDMWDDjcxaVv7MT9CkYCrUPTxIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tlC0iwKG; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=LVn6QpERBfSecmaPgSglIXUyLgQf8Sq3UsBs2VyPWaalc/9NJFrygCOUPwf9q/7pBp65xwLZIzAag1RtXSRp8GVPonwTmDQTcfKXjo+888tgUuCyjlqmb65kLDw5azvd6wM/X8DRWbIt6I64pFs1wQjfqTf+8phnpWKR6AxCA2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MxQJnWs8; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-24457f44a29so13981615ad.0
-        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 12:04:42 -0700 (PDT)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3232677ad11so1245222a91.1
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 12:05:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755198282; x=1755803082; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755198322; x=1755803122; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ib1aMJQeVnxOBq2+znYic6DVJjnFLkElsxAP6tuqDCk=;
-        b=tlC0iwKGjEuNGZKIr58S+syGYuLuK0rdUnfjNhAv7jTx14ixChnCTbDUaVma/cGlt+
-         AIMS3mkpMr/lf4SGPNpPUHASr+T1Mnf1ETXeoQPbtglq5Y6pSMe+6U/qy8E3Bp/SOMJQ
-         fTkFvAcSQd4Iw/WhJnmvMROP1bFj1FF3/tOvuRzlqh32L6u6SDvWYsd/twJ0l4pKQ01A
-         PF4d52sTT9Sj+4YIZhMtNtM7/fNJt5YeXzLRR6a7yJXWcQkCsdB7wUb8wPCaKYgYGjXT
-         aw1K4JKXYveXEWpAY6vN7KBNSO+AO/EvQCXu8Nmf/5tYUex3VUuKz2sc+qR1FY2iNARP
-         Mv8A==
+        bh=2DFNw3wArC7yOUYWlWO5gneOvkuHKG1tXFsZhvGkvUI=;
+        b=MxQJnWs8uNICgJAdcDgyy9mnNQc/sCo+6pNeKt5o5j5dQf3XIONgAFXQBEkEbbpH06
+         Z79kWdHHX8vj2VYku15WSbl2ihehjdMIcf/M5PSCFCarQXK2V8oZh8Wk21a5tm6ELWG1
+         QiVlQN+iHqj/MUMQfwELDg759d4wnxbrZWBLPjJAjJnaT8Rfx6wlvjprZqRhB27yquPr
+         JYMKaFOL+fekRYHdCOjvGqfm7vcTetN8bcht3g0itWVPgoOzuCrUd8ROkxF6JbJJz7mV
+         iFTnNRSQrq9VsXXDn+XCeFCfKleQs8sZlSctSqNXlrdilq0M7LMx8nMgDOKFJrUKkjzK
+         yYCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755198282; x=1755803082;
+        d=1e100.net; s=20230601; t=1755198322; x=1755803122;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ib1aMJQeVnxOBq2+znYic6DVJjnFLkElsxAP6tuqDCk=;
-        b=e3m2q2VMTaxFy/A6HvxMYrH1kInoPkFpv8DGtR9Rn7l5HyuqilKfYqYW3Oez7gGjTo
-         OAeFZ66S3EpKIX//pT1djVt8/xoOjDIHQ7wg0Jdn4jaHjhQ/F7pCgoVGdlM9KuzXuInb
-         9iHMrXSvGaez6G8Le6YI/ILug2EdRFgK5Dyq5iiX/pu8kXypjovCpJfcsUh3gdn6RXRx
-         b3Qe7rLBB8OikMsrSWwvr4ooFndGvLYwX9G55VEdBbVAM0n1rvjq4toj1p9Fp5MlpVUK
-         fBuP4IBfIiS/Uxp0IGRB4cprFrFMykjPlSu9gbqATCG3BrMqeRyfc6aqEXmL0g7ZqmJX
-         sGCA==
-X-Gm-Message-State: AOJu0YzFoUtwfAdizVYuLBdo5oAwGJf5v8RmpPzj/NaSZrkVQd1ooui2
-	RBkYfNyazhXQgiNPGVs6hZ8ZEHld4Mw8oYuSbFm6T70pO21oiYp7iZrgPh/kT+HBpEksnb8gbYD
-	da+uOiA==
-X-Google-Smtp-Source: AGHT+IEI+C0rlAmH3zBh0mBSUE4toz6V1mDNrj7lQVkWGfEe0JlgUObHmqJas/8VD64XqfM0vZQ5MunjeUI=
-X-Received: from pjbov7.prod.google.com ([2002:a17:90b:2587:b0:31f:335d:342d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:230c:b0:240:5549:708e
- with SMTP id d9443c01a7336-244586c501emr66249995ad.46.1755198282070; Thu, 14
- Aug 2025 12:04:42 -0700 (PDT)
-Date: Thu, 14 Aug 2025 12:04:40 -0700
-In-Reply-To: <20250814131146.2093579-1-sashal@kernel.org>
+        bh=2DFNw3wArC7yOUYWlWO5gneOvkuHKG1tXFsZhvGkvUI=;
+        b=igi7zBGfK13EgaELFYlWM8MZocPKnRLsG5YL3a2gym0gNWrlT8hLzepjVnWEFLdqyo
+         pDSpn1qlFNEiFYqqkp5QiX3CbH3JTISfTh+MYt7+gXlbjGaEwcHsHSNYEnVZIrWVODct
+         vDVMKUTZ5eyimdtyv7uYnsW3cCUT+NOlVzC3NC5sI/+k6ANqQSrh87nPXbkVvoG0NyGG
+         DqsH26J97SfpvuC6kZR250dkgsOcNF9MQ3B7xcZqQXccIuqujlXImhfTnDI+9MszGCO0
+         Qex6CIPBiaMdFzv6LkncxC4DdvZM8oShqXBFTLlCPIVFNw38RcWyTzwcLUj4awFmMbrd
+         3dug==
+X-Gm-Message-State: AOJu0YysiybQC9XcX19kWP0F4efaQ2StOcb35jw92iOZg/pMf3I7DuxN
+	S8ftisjsHtUGFNQK25DRJmi+oH2+oHv6nhlVdZ8MOBbBaT8+99MIAJl9XGA7/NL3xrdwFq/mXiR
+	rpNZEQw==
+X-Google-Smtp-Source: AGHT+IH2s+I1TSjeIAje9qDRzYT7oUTiJGlIez0qBhglzuXW+2EZOz+sXrUhTXz8K4L2QNsDcU3DcyVjE4I=
+X-Received: from pjb12.prod.google.com ([2002:a17:90b:2f0c:b0:321:c2a7:cbce])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:58cf:b0:321:2b8a:430a
+ with SMTP id 98e67ed59e1d1-32327b495f9mr6693312a91.28.1755198322479; Thu, 14
+ Aug 2025 12:05:22 -0700 (PDT)
+Date: Thu, 14 Aug 2025 12:05:21 -0700
+In-Reply-To: <20250814131146.2093579-2-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,37 +72,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <2025081214-bonanza-germproof-173f@gregkh> <20250814131146.2093579-1-sashal@kernel.org>
-Message-ID: <aJ4zSFLLsvhprN1K@google.com>
-Subject: Re: [PATCH 6.6.y 1/3] KVM: VMX: Extract checking of guest's DEBUGCTL
- into helper
+ <20250814131146.2093579-2-sashal@kernel.org>
+Message-ID: <aJ4zcdyjLovEVFGi@google.com>
+Subject: Re: [PATCH 6.6.y 2/3] KVM: nVMX: Check vmcs12->guest_ia32_debugctl on
+ nested VM-Enter
 From: Sean Christopherson <seanjc@google.com>
 To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: stable@vger.kernel.org, Maxim Levitsky <mlevitsk@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Aug 14, 2025, Sasha Levin wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Maxim Levitsky <mlevitsk@redhat.com>
 > 
-> [ Upstream commit 8a4351ac302cd8c19729ba2636acfd0467c22ae8 ]
+> [ Upstream commit 095686e6fcb4150f0a55b1a25987fad3d8af58d6 ]
 > 
-> Move VMX's logic to check DEBUGCTL values into a standalone helper so that
-> the code can be used by nested VM-Enter to apply the same logic to the
-> value being loaded from vmcs12.
+> Add a consistency check for L2's guest_ia32_debugctl, as KVM only supports
+> a subset of hardware functionality, i.e. KVM can't rely on hardware to
+> detect illegal/unsupported values.  Failure to check the vmcs12 value
+> would allow the guest to load any harware-supported value while running L2.
 > 
-> KVM needs to explicitly check vmcs12->guest_ia32_debugctl on nested
-> VM-Enter, as hardware may support features that KVM does not, i.e. relying
-> on hardware to detect invalid guest state will result in false negatives.
-> Unfortunately, that means applying KVM's funky suppression of BTF and LBR
-> to vmcs12 so as not to break existing guests.
+> Take care to exempt BTF and LBR from the validity check in order to match
+> KVM's behavior for writes via WRMSR, but without clobbering vmcs12.  Even
+> if VM_EXIT_SAVE_DEBUG_CONTROLS is set in vmcs12, L1 can reasonably expect
+> that vmcs12->guest_ia32_debugctl will not be modified if writes to the MSR
+> are being intercepted.
 > 
-> No functional change intended.
+> Arguably, KVM _should_ update vmcs12 if VM_EXIT_SAVE_DEBUG_CONTROLS is set
+> *and* writes to MSR_IA32_DEBUGCTLMSR are not being intercepted by L1, but
+> that would incur non-trivial complexity and wouldn't change the fact that
+> KVM's handling of DEBUGCTL is blatantly broken.  I.e. the extra complexity
+> is not worth carrying.
 > 
-> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Link: https://lore.kernel.org/r/20250610232010.162191-6-seanjc@google.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Link: https://lore.kernel.org/r/20250610232010.162191-7-seanjc@google.com
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > Stable-dep-of: 7d0cce6cbe71 ("KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs")
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
 
 Acked-by: Sean Christopherson <seanjc@google.com>
+
+Once again with the caveat that this lands after the RTM_DEBUG patch (which I
+also acked).
+
+https://lore.kernel.org/all/20250813183728.2070321-1-sashal@kernel.org
 
