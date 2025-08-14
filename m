@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-169621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A557EB27027
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 22:25:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCB5B27028
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 22:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23C467BFB0E
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 20:24:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2A5FC4E390C
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 20:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BD0259CBD;
-	Thu, 14 Aug 2025 20:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCDE25949A;
+	Thu, 14 Aug 2025 20:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mAbUgB1C"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZsvWxrhc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F35259C9A
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 20:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD82259C98
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 20:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755203135; cv=none; b=scN6atEt6t2E+30Lhp/ddJeiCvPegwti58HWJP0n7xZ+xKVYVfCgrL52MwThtiTMxnsnH1YLHNAXZU9tgAT/ZCzq5YVeRZ/5TfYRX3oqimQFgj1PQMBcfYlVTVfRYWuN2wydXVuybKAgrEKpFpXDVq2yODyNC+1yhVcGopYc9w4=
+	t=1755203147; cv=none; b=ER8fEWWyou5ZDzUaRmFG1t+pdduEGnFy/ircRh5gw7qHjfBcDvpdBnPgybEVpfpP5mcG8Sc1sIVWYG0h1TTf+uG+POddPlm8tD5nJlJRxZiqs2KkYXVZiM9pcPvHt00x1QKYTWXBM0tNmZl+D2tnt5g5BwAVDIhrR2hRUGShlUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755203135; c=relaxed/simple;
-	bh=btRuK0OjDfr6KPijoeCQ8c4lGZWLBPYmMCkWGMtR+oQ=;
+	s=arc-20240116; t=1755203147; c=relaxed/simple;
+	bh=1x3wlLSBkl3Nm4IPnmC1K+ECm/V2t6q369q79jnV6Is=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IDnPrnMtV1wLYran1WBQxHxgGXei0+dhJleIkKaYrQsK8UwDDvQAOu93Acq8ExatSWTFZRH5v9oJBwYdkU3dJVakXaehAAdPqeCzMha6c8h7lmaikB3gsxfH0Jzgu4VALZSkuK4/eGSNz3tixQSBfH2A2D+z+0zqUj5M+clgyBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mAbUgB1C; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=XPW2m98RFPPQymff+yVjnfEstIJgeoyn0v5imWRLHfgRLtgt5U3LPQ+k1umerhI+ES7k494uglCUhJBCQ8Of8cKF9wfaIvmal3fK+iFnyFbm0mf2wda76DfxG00jbnYrPO1ATAekyNb3MxfNb6RWFi3pNxrQ9WDnjc6e4jzCKgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZsvWxrhc; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-24458274406so26954425ad.3
-        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 13:25:34 -0700 (PDT)
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-323266a1e87so1368105a91.0
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 13:25:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755203134; x=1755807934; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755203145; x=1755807945; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MTrMhBuO9TgAl6EGBA33RiEPTzWN9EC7uvJKmJoNuUM=;
-        b=mAbUgB1CRLYOGzhmrW3QXsGRKQ1zmXHKvDQYUmKGkq6kiQIxmAFKGQPeaB2KQWbfnl
-         kUbKEuFec9HDR0T16+YgvUscgINr21emoMQJNE9Y7t1nZ2yBC5Ww3+HHuZ3T+Fk93AB5
-         P0fcMvVOsi08XfcHXF4zbAWK/vaKw8TixhjVidYhk3dw16u6RdRvZpNkKnvFqI6lc8nq
-         wUFsenXw33GOPm8V0aUE3HD/t5K2ErE9+mb6NT0jO507jwbdoV8zsE5TaspCLNVWRC/3
-         7+ctKSz+bUL6vuNr9Uvxj2eT422fv1XfLspnqHI0NT3pDwhpzDJTm5j7RctmOjK07nmr
-         addg==
+        bh=TrW19kH4borHEig8Orw5IwDu1jMWW/rjwhDsw81/SG8=;
+        b=ZsvWxrhcDN5txSa4IWz5Z7zpEmOqLvyxdXWd7l23ewrJqpmiSlDQWNMIlrs6uSinYa
+         3nEgXD3vlwsayamRDbqjz7T1eIOZo5PFWw33N8+Wy/c6LkmTGMyaOyJJoWTGbzhbYBSk
+         fxsluVec1x4ECxPwC03iPe0x2kghGrvMXOXDiVSUOsyLJCbC/S96RRTicqvNxd6l5ox/
+         3emrkKMtyCGnrjrOYgd5zjemWa6pMJVWlDMtsH+HkTHPdjEyJo3Fusz8f2nWNh9RExky
+         TEL7AAs9R6E0/UJXcI8wovkqVZYXvchj5IjerhexV3njQ3MzQmgVY2bsS0psKfBUmbuZ
+         B47g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755203134; x=1755807934;
+        d=1e100.net; s=20230601; t=1755203145; x=1755807945;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MTrMhBuO9TgAl6EGBA33RiEPTzWN9EC7uvJKmJoNuUM=;
-        b=B6eraluhJBuFOaOBlslEO4wW+WLqRg8eu9fK5hjxqUW76juLvX7YO/u16OxnR99XLb
-         LQIrnptCnENDjvgS5+2T1NBB4Q6N4RAMp9ERPPGbOcdTR2hAe6D1nyuPTlw/rMQzGIML
-         8ydtCbU9KGGchfZNNuns1fnZ+VzU36KkC+ejzSR/6/oVsDEXT7686sPSQkp1A6lgjBjx
-         b+KxVaeX2d3knmQtS9TrSH3i3PO/wibI+gpY8DBUbOkuFA+7Qni6+8+iOMyVTIRqIYXj
-         NyKhiJOSv9f4JRHLCa0fWicij7Z4au9CaDMXGvtH7oghh1azhc0tasaJuTBlfFgnewdU
-         xmOA==
-X-Gm-Message-State: AOJu0Ywh/MZyWMG+zyPM7HZtTnDwdDe2i5tkkqNDL1J5ukUvy4VoRxwp
-	45gSN1zkF5zYEZjlPutRWBS/IljV2sQ2lvFFZNdgoPCp3SLFBOOVxVeqSGWvH8p16FIcELpQbhb
-	JbYcmlg==
-X-Google-Smtp-Source: AGHT+IGzkmhgWa28hmQQxe+zC3SycYO0BgiWcXfU5LMhFn3fiktK+ARtK8Ekw7y92A0BPliF8mX2PehrAqs=
-X-Received: from pjbqx15.prod.google.com ([2002:a17:90b:3e4f:b0:31f:d4f:b20d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b4c:b0:242:e38c:89db
- with SMTP id d9443c01a7336-244586c46cfmr70931125ad.35.1755203133769; Thu, 14
- Aug 2025 13:25:33 -0700 (PDT)
-Date: Thu, 14 Aug 2025 13:25:32 -0700
-In-Reply-To: <20250724170725.1404455-2-sashal@kernel.org>
+        bh=TrW19kH4borHEig8Orw5IwDu1jMWW/rjwhDsw81/SG8=;
+        b=Tn9eqsAwoKZ3fvrnjSvnClpa2eyytsbIlYwPisKrkH6vI2lvM81ofu89uUngcLzzRk
+         IpkE++iCyANdhn9wpYCTMCFCC03R/ezPbnpwbGxROYwaFQCncwd3Syo0nWqi188B1eHQ
+         yoq1VwPF1bJ7bzG7OKKwIGVx8aM/pcurPK/NibdIAchvvlaKQsjD/MS3DTa/hKsuu6b8
+         uXAE3EPzYOElV1/fAvynDTfrHcv5+ECZlzGujJGUmZ1wcfjmUVY166Xy7YGlxqm0Uxi/
+         rmpm5Cf7cSvJHTaWXvm0BQTVWzJt5SQp5bHPzpCozAknA1lCeAL7JFNCM2C/2PVnwl3Q
+         FtnQ==
+X-Gm-Message-State: AOJu0Yxc8h4DZNXWERPsOCLteNpnyS+lOX33DAbt936r89PbUdfpm74S
+	NaqXOeI01Zgb8Gy0l+HyRqd8LBHjJ9IzDERyYyEZ5hUdiumrqwxCD+K9vB7OV14b52U8ykukt81
+	HynCaIw==
+X-Google-Smtp-Source: AGHT+IEAvVf2+mVKL0tPHsqMx/A7rogS4hHZVHpbKiyetrgRiS6v2D2pbAn/dcTI6w5wupn2ObztMWrewok=
+X-Received: from pjbos14.prod.google.com ([2002:a17:90b:1cce:b0:31f:3227:1724])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2dc7:b0:312:1ae9:1525
+ with SMTP id 98e67ed59e1d1-32327ab39aemr6963687a91.8.1755203144868; Thu, 14
+ Aug 2025 13:25:44 -0700 (PDT)
+Date: Thu, 14 Aug 2025 13:25:43 -0700
+In-Reply-To: <20250724170725.1404455-3-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,28 +72,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <2025062034-chastise-wrecking-9a12@gregkh> <20250724170725.1404455-1-sashal@kernel.org>
- <20250724170725.1404455-2-sashal@kernel.org>
-Message-ID: <aJ5GPOjf24EW1RPB@google.com>
-Subject: Re: [PATCH 6.1.y 2/3] x86/reboot: KVM: Handle VMXOFF in KVM's reboot callback
+ <20250724170725.1404455-3-sashal@kernel.org>
+Message-ID: <aJ5GR_BBiv6GGxCa@google.com>
+Subject: Re: [PATCH 6.1.y 3/3] KVM: VMX: Flush shadow VMCS on emergency reboot
 From: Sean Christopherson <seanjc@google.com>
 To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Kai Huang <kai.huang@intel.com>
+Cc: stable@vger.kernel.org, Chao Gao <chao.gao@intel.com>, 
+	Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
 On Thu, Jul 24, 2025, Sasha Levin wrote:
-> From: Sean Christopherson <seanjc@google.com>
+> From: Chao Gao <chao.gao@intel.com>
 > 
-> [ Upstream commit 119b5cb4ffd0166f3e98e9ee042f5046f7744f28 ]
+> [ Upstream commit a0ee1d5faff135e28810f29e0f06328c66f89852 ]
 > 
-> Use KVM VMX's reboot/crash callback to do VMXOFF in an emergency instead
-> of manually and blindly doing VMXOFF.  There's no need to attempt VMXOFF
-> if a hypervisor, i.e. KVM, isn't loaded/active, i.e. if the CPU can't
-> possibly be post-VMXON.
+> Ensure the shadow VMCS cache is evicted during an emergency reboot to
+> prevent potential memory corruption if the cache is evicted after reboot.
 > 
+> This issue was identified through code inspection, as __loaded_vmcs_clear()
+> flushes both the normal VMCS and the shadow VMCS.
+> 
+> Avoid checking the "launched" state during an emergency reboot, unlike the
+> behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
+> can interfere with operations like copy_shadow_to_vmcs12(), where shadow
+> VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
+> right after the VMCS load, the shadow VMCSes will be active but the
+> "launched" state may not be set.
+> 
+> Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
 > Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Link: https://lore.kernel.org/r/20230721201859.2307736-4-seanjc@google.com
+> Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Stable-dep-of: a0ee1d5faff1 ("KVM: VMX: Flush shadow VMCS on emergency reboot")
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
 
