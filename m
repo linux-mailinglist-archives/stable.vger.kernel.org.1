@@ -1,112 +1,275 @@
-Return-Path: <stable+bounces-169629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631E8B27038
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 22:33:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5A1B2708C
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 23:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3ED225E7280
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 20:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89C773B4E24
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 21:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E28258CF7;
-	Thu, 14 Aug 2025 20:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC05426B97E;
+	Thu, 14 Aug 2025 21:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gE2VdvHv"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WhIQMHqU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2085.outbound.protection.outlook.com [40.107.94.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB033B665
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 20:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755203609; cv=none; b=DIzXi0bzPgFVfawOLtdzmlwpPzFHwsUHokO/bMGLt/KW4yQxFBxIvPhK+936XwbfwNriR2sCRxqSGAwZkpjqC29eRkcCE9asvoaBFo4rF7SRUrsjhgSsrNRqWamrDh4iCzmQsK06pWnwpmBmnGHuWytwpnRnUDTpjhmoyFr4zn8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755203609; c=relaxed/simple;
-	bh=PGdzB5rJ700rC0ITGcMtJysha0XSeIQKynmSnED3iJU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OY+YZuEaWxHoblB1GciMKkEvSb56Tu8SIn5k2yEa4vbfdq5zmNNLwbJLbhWFbjRyaci5Gar+YQLAu2m3B7/3xrO9pUt6jxsaIKH1MXpX6+r1SCehB+3zwo23qJnFyz+t9BPrVU8x2eoOFfSmioDTB3PjuTTbAmlaaDyhekUBTJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gE2VdvHv; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-24457f44a29so14682585ad.0
-        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 13:33:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755203604; x=1755808404; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B4Mtlz8IIE/uW1ZYBHp1ebjQe32lzjSLKURSfraUkLQ=;
-        b=gE2VdvHvnHjESnTBZcmz6IKHJtNTTz2YtWgEnCSeNRXUDa04DyE/SXQXypjEQKy+Ka
-         eUjrxhwb6grlwi0d6RM6WUBRPltPwJRoXZkVQu8jDu0s4eNWCE/MeQJXU4IDc6urG/zK
-         P2mvtbVfFd7yzj2q4MG/5YCaJW/9rHcWTkPzFRNculpjYyAGHv2lzKEA9EH/Zk4O4poo
-         tBZCHtVjjQbj/vl/ZckMehSN0taJ+Vs5IEjqMOmqfScB2RRVOJIbINq8wBYe5vHsxSVl
-         LWWd41QWc3XWtXfvOETmp5lYJJO+aVJsU4DuvK1iwl6diML0vDOxq5Auoa2T+h/44DI3
-         OL+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755203604; x=1755808404;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B4Mtlz8IIE/uW1ZYBHp1ebjQe32lzjSLKURSfraUkLQ=;
-        b=iG3vgcgFs/SD+5appiI7XXQPdGvW6VZJ7G1GyCOgtLySFHan8PRTgljvWBiNNXJhbn
-         Vw/SgUyUlFslrUm/mWHpFYoMCjX6FPT9Y4EPl6pKfiuyjfaa+kDF06RZkGaoCq+jk4oe
-         26C9PgUyYL3hIuDmDJ1BAmY0w15GKKP3TKgyBNt5nm4dJI7oifXWs4+Es7ikGnOrWr+N
-         t15WdJGTY8Y5XvDjYN2uA9PPfv7hvoM4Qw+DS3uwoVZiCxdtCPSnI+wh8ojgS7iV87pS
-         WTM0e/IHZGEPD9sf+fi7ow/YWK5N/WpxD8FBqwsGRGbMW/c7bcYSryh62zys5sdnHPz9
-         IcEA==
-X-Gm-Message-State: AOJu0Yw3tiWXMN5SAIoPIgxlAuBD27VXwEFn8VBbH5+3zR+pWWGbAMgq
-	yoQcBih789U5BZDJTaxsrPTGsfU4cQvePSdhnwX4L9sseRSVHeUDMrYWOjbwIViwOjWSljRqoO9
-	bsKEkPg==
-X-Google-Smtp-Source: AGHT+IFTcmVMzV5ijoNUqzyfAoyRzV7nHDn7JYLtvC9IGN6hj/o6y1m+DgSv/kXDiMN2+aAkjoCbs39RmSI=
-X-Received: from plbmo5.prod.google.com ([2002:a17:903:a85:b0:240:72c0:cc89])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:985:b0:234:f580:a11
- with SMTP id d9443c01a7336-244584e4479mr64191465ad.19.1755203603985; Thu, 14
- Aug 2025 13:33:23 -0700 (PDT)
-Date: Thu, 14 Aug 2025 13:33:22 -0700
-In-Reply-To: <20250724181134.1457856-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE51B481DD;
+	Thu, 14 Aug 2025 21:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1755205462; cv=fail; b=uuR/gPNx9q11rQWSJoHWX9tlEkNl1ENMnMjN/KSmMrSP5PLIVwvGZ1H+MW/TI1XHTM9cfQ+hjEPSsP/DMabx0IxnYNJfLyXBVDFIdawyh2ONpAIdp8utDuQOG0MM4xDz2lLhySIQJzXVUvh0cMZCsJgwR/gQyAxTyYMn2GJZ5E4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1755205462; c=relaxed/simple;
+	bh=y+yuR53Q0TIyTccGqz7zou0QX9L3RfIldIK6kyKmH20=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hlvxtHvzuUezSLQzJUcT6isHfaZE3gKXSpEAoMBUxuEapJXZ5E14sHcG4sn417GdJsepr0SWXtHtYa8r//vqUGwkqN6zb3ABTpOazqOtteq/g8K+vBjWNgjJL36RhI/4y/aBJl10ja3TnZZ8lj1rx7ssxWKuvB0pmZIBspjZMyo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WhIQMHqU; arc=fail smtp.client-ip=40.107.94.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UDn/t46y+ZVtzCNIpXucLoPvYKh/FYG0s3rG2F1vV6QSwWYl9OrGA807PBVsnWbEpGArXVAKUlUTUF/KTfEJGRQqrRtHaBOv4IVtjB9fo8MSv6BchxEK85DUbL70I+D3GyQzsJsS06KQUTo08LNgfnFY3Xj8ZZgaCth/m6PWRbdHuUrL4/dt5athabVDju5NQtbfVy85yGZF4ND90+DtFvCph4f56J0aO87uIMUO3AZgMJZwjXhaAzgMmRPQAnR3Uq/Sc3uWofAELnpPQjpTXrm4e0H7CO+8ODDHvo+r7by3l9YcgsQjGwMVrvKKkLZhIsdSHTBiEmYqC8GB/PCTkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=L+fefGiP643bWbhlH0h/mgMGbq0UrkurRyvb+dSujKU=;
+ b=kCFH52R635273MA2tVTiyOsvVXWdkwanUOHB9h86gPi89Q+X4/WcZ+/vC0V2zovpAr/CqmUH2Zhpc7w9ePL1bxnz1sKQU1FLuF1KUPgDxIFrjOVPrGKvQnhEHsElbd6uaE55/56KTpwuyINjust0Wo+BWIiyDs7Rk4ZMsA3NCAgUst0RAQEgXB67fUhg37eflySnNGFK7yAzJ0YHcHyJcLR132/MwhZLH0kfc5V98PjCW7DWafsDa4dYMutM3rHL4t/V/hW3zHN7x6RArdEK5Y5vfv5mnTpdtz2u518288o12Zhk3vpFg/wRrluDSIQmgR3BMxm4sYPVnjpunWt8Hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=L+fefGiP643bWbhlH0h/mgMGbq0UrkurRyvb+dSujKU=;
+ b=WhIQMHqUGphP2w31pXoht841ajm0851SjZXQ6zoCOimdBwlSgeWDDCwB1FwoD01e+SNQxYOgWxAEgr1xHkNSytCKN1xXCF49DpHt0jFvJ/4LuiHsfCrtDbtsqhw1hYNVWLTy7BBrYNhlw4hMH8MEQwVC0QajDQf3mkHAHu2BywY=
+Received: from MN2PR06CA0005.namprd06.prod.outlook.com (2603:10b6:208:23d::10)
+ by SA5PPF9BB0D8619.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8d8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.15; Thu, 14 Aug
+ 2025 21:04:14 +0000
+Received: from BL02EPF00029929.namprd02.prod.outlook.com
+ (2603:10b6:208:23d:cafe::f) by MN2PR06CA0005.outlook.office365.com
+ (2603:10b6:208:23d::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9031.18 via Frontend Transport; Thu,
+ 14 Aug 2025 21:04:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF00029929.mail.protection.outlook.com (10.167.249.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9031.11 via Frontend Transport; Thu, 14 Aug 2025 21:04:14 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 14 Aug
+ 2025 16:04:13 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 14 Aug
+ 2025 16:04:13 -0500
+Received: from [172.23.255.54] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Thu, 14 Aug 2025 16:04:12 -0500
+Message-ID: <238b2fd0-33ab-4279-9205-de58332fa944@amd.com>
+Date: Thu, 14 Aug 2025 17:04:15 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2025062039-anger-volumes-9d75@gregkh> <20250724181134.1457856-1-sashal@kernel.org>
-Message-ID: <aJ5IEp6DFSLzP5nl@google.com>
-Subject: Re: [PATCH 5.15.y] KVM: VMX: Flush shadow VMCS on emergency reboot
-From: Sean Christopherson <seanjc@google.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Chao Gao <chao.gao@intel.com>, 
-	Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] xen/events: Fix Global and Domain VIRQ tracking
+To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>, Stefano Stabellini
+	<sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Chris Wright <chrisw@sous-sol.org>, "Jeremy
+ Fitzhardinge" <jeremy@xensource.com>
+CC: <stable@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20250812190041.23276-1-jason.andryuk@amd.com>
+ <a4b5fd6b-80db-4b58-b3e8-5832e542d64c@amd.com>
+ <6bf9bac0-a394-4064-bb5d-924f5a920e7e@suse.com>
+Content-Language: en-US
+From: Jason Andryuk <jason.andryuk@amd.com>
+In-Reply-To: <6bf9bac0-a394-4064-bb5d-924f5a920e7e@suse.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00029929:EE_|SA5PPF9BB0D8619:EE_
+X-MS-Office365-Filtering-Correlation-Id: e08dfef4-71bc-4bf3-cb8e-08dddb761fc9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?b0JFdG9MUFIrNXhEZE5MUkxCU2hIWGYrb2kwZ3QvYndVWnlxM2pPd08wUSsw?=
+ =?utf-8?B?MVovN0ZMQjYvZjJBcGF1cSt5aHRGT0tMQXoyM2twQmJYV01YTTJoQndYUVdN?=
+ =?utf-8?B?a3pYMDVzRXd5R3R6TjlTaVhYUGpkTWhtRFBqR1praXlPN0xWTGZXanllR1Nt?=
+ =?utf-8?B?dWxwTGJ5dlpwRXEzakRKMDMxdnptNVRYRzlacC9lckphUjI0blpjRFFDTUow?=
+ =?utf-8?B?NDlRekl0d0NlMUJ0L3B4U3ptKy9wK2V1NHdrSUZseE5PY0o1c1NYWVkwYW8y?=
+ =?utf-8?B?UHE1QjNYaEFRS29Sckl5NWY2WCs3MUh5c3BObHA1aHZQQ2k0dFhGdFBDd0lN?=
+ =?utf-8?B?a29CeUszdysvWU5UVVZoanp1WEJ6ZG1SUGc1cUJiTW44WHM2YXhJSGhxeTQx?=
+ =?utf-8?B?Q1EwNXNFcmljemtqSGhhK3F6WDVuUzlrei9PQlRBUHRQNEFGK01XYms1eVFx?=
+ =?utf-8?B?eElsVEpFZ0pYemJjL0pucDZtVzBBeTNTcVNCSzIzcGdRUUx1elhaVS94eUZY?=
+ =?utf-8?B?aVFvREo3bEVmWG9BNVpyVUxJS0hsd0hhcy9CWkNoVytzYkl6OHo1Q0pDOXlp?=
+ =?utf-8?B?eXhMVGZFUkZZbS85a21xV2tSWnRxTnZPV2hnc3dybm9QLzR0TXIrb05OT3pi?=
+ =?utf-8?B?UlJxVXNTY2o3Umo5UFN5dFVmaU9nN1N6NUw0emZTZFlrcmErQmdlTktWZ2FW?=
+ =?utf-8?B?emZpUjRGYmQ1clQ2U2VnaE9ybmJlWHdRbEF4RE0rMW1XOXczMTJweXVISG9q?=
+ =?utf-8?B?T0pDK1lQTTkrVlh0K3k0aDdaYkhVNEVIZG5Ga0xsWStBcXl0NHN1U09GM2xa?=
+ =?utf-8?B?VjJ6YU5GdXhJdllnSkI0Q1p1dDRlcHNCRVAzZ0wya0tLR2dOalFZUHJROVNn?=
+ =?utf-8?B?a3p5VGdYampTODNiaEN2WlFqZjU1cCtyRnhFYU00RDVjanRyWVpZLytpV3J0?=
+ =?utf-8?B?aXVPeHR1SXZmY3VDUU1MbUwzVDBLYitieEYzYWNST3JrTllCSitVRmcrK1ZL?=
+ =?utf-8?B?ckM4UnRENFQ0MnBkMnlqTitra25kWEhXTXp3MzEwWUJUS3dhdzFSUXVmNFZq?=
+ =?utf-8?B?Y0NRd3R2bnRkbXljRjE1NkFWZVBMR3c0VWxTVjdaSnUxUytUTFR4RG00dUE2?=
+ =?utf-8?B?cW90VWNwOHFTN2J1enJFd2w2TWxDb01wT2hDc3ZMbXJsQTF2OGd3cENJY2Za?=
+ =?utf-8?B?SzVsMHRZU2dWcENYVm1BQ25EVGEzSmUwYTVoaFlnSVFaTjh6NDAydWZBOTBH?=
+ =?utf-8?B?a201OFQ2L1JaOWpJOTZBTk1reEdoZWRGV2FPNG5EMzZPZEJRVHQ5WXlXMnVV?=
+ =?utf-8?B?aFdNUnh2cFFMM0IvNVNnSVF6RGdJbksyN2xORm8xZUZpR3oxZk91RXhNNmxL?=
+ =?utf-8?B?TmhwOExpVDQ4R0lUcDVRZ2YzQ3dtNVl3U3VPR0lpN0pCYjRLRWFpSXA0Q3V6?=
+ =?utf-8?B?eXJoTnluVGJoYkQ4VUhKd1lXb3NuelhoMU5DcFNIbEM0dVlHQVpseWlJYUla?=
+ =?utf-8?B?V0VhcCs2Y1UzOUpPek9HUHJIeGVWT0srMVl4d0lqa3RGU25wd0Rpc3VCMEQ5?=
+ =?utf-8?B?elU2blRlb2tuZEZkR3NIQ2hoU0ZxekU5N2NnQXpydGdBZFZlOWovSTBQMUxx?=
+ =?utf-8?B?WmhERnVmTVFGbXRQOWo1VE9oQ1VoVGQyK2EzQllUTHRHZVVDQkVPR2k3a08x?=
+ =?utf-8?B?ZThyajBjc09VQ3JWMUJGdWxibTJuaGo4WFpTdkNaaDhBV2JoOFdFVXorYisw?=
+ =?utf-8?B?Zk9tVGRGajR2QjZEd0hBTDBqVEV4YXgrUHVoUjVsb0dSVDRRNCtHZUo2OVJV?=
+ =?utf-8?B?cFMwOG1kRTgycDZEM3haODZoMUFFdzdaald0RGM4UDZZS252TDZPL3VkQ3p5?=
+ =?utf-8?B?b2RwRk9XNWdaZ213WGtLQ2hhSW8xeDhMQU1QMHhwMHRkMllldW1EYlZQbXZ2?=
+ =?utf-8?B?SHpVMVJQdXptMEFVSnJub1I1N0x2Q0xZdUJJYVBJbzVxVkZGUnhUMXUwR01I?=
+ =?utf-8?B?SEhtczRUTGVUNERXeFN1QjJFOWozNDdyYlQ4K3RSSHBKN1Q0TklWa2lORVc5?=
+ =?utf-8?Q?TDvjyD?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 21:04:14.1988
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e08dfef4-71bc-4bf3-cb8e-08dddb761fc9
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF00029929.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF9BB0D8619
 
-On Thu, Jul 24, 2025, Sasha Levin wrote:
-> From: Chao Gao <chao.gao@intel.com>
+On 2025-08-14 03:05, Jürgen Groß wrote:
+> On 13.08.25 17:03, Jason Andryuk wrote:
+>> On 2025-08-12 15:00, Jason Andryuk wrote:
+>>> VIRQs come in 3 flavors, per-VPU, per-domain, and global.  The existing
+>>> tracking of VIRQs is handled by per-cpu variables virq_to_irq.
+>>>
+>>> The issue is that bind_virq_to_irq() sets the per_cpu virq_to_irq at
+>>> registration time - typically CPU 0.  Later, the interrupt can migrate,
+>>> and info->cpu is updated.  When calling unbind_from_irq(), the per-cpu
+>>> virq_to_irq is cleared for a different cpu.  If bind_virq_to_irq() is
 > 
-> [ Upstream commit a0ee1d5faff135e28810f29e0f06328c66f89852 ]
-> 
-> Ensure the shadow VMCS cache is evicted during an emergency reboot to
-> prevent potential memory corruption if the cache is evicted after reboot.
-> 
-> This issue was identified through code inspection, as __loaded_vmcs_clear()
-> flushes both the normal VMCS and the shadow VMCS.
-> 
-> Avoid checking the "launched" state during an emergency reboot, unlike the
-> behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
-> can interfere with operations like copy_shadow_to_vmcs12(), where shadow
-> VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
-> right after the VMCS load, the shadow VMCSes will be active but the
-> "launched" state may not be set.
-> 
-> Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> [ adjusted context ]
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
+> This is what needs to be fixed. At migration the per_cpu virq_to_irq of the
+> source and the target cpu need to be updated to reflect that migration.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+I considered this, and even implemented it, before changing my approach. 
+  My concern was that the single VIRQ is now in one of the N per_cpu 
+virq_to_irq arrays.  A second attempt to register on CPU 0 will probably 
+find -1 and continue and issue the hypercall.
+
+It looks like Xen tracks virq on the bind_virq vcpu, so 
+per-domain/global stays on vcpu0.  Binding again would return -EEXISTS. 
+find_virq() would not match the virq if it was re-bound to a different vcpu.
+
+If we don't care about handling duplicate registration, then updating 
+the virq_to_irq tables should be is fine.
+
+>>> called again with CPU 0, the stale irq is returned.
+>>>
+>>> Change the virq_to_irq tracking to use CPU 0 for per-domain and global
+>>> VIRQs.  As there can be at most one of each, there is no need for
+>>> per-vcpu tracking.  Also, per-domain and global VIRQs need to be
+>>> registered on CPU 0 and can later move, so this matches the expectation.
+>>>
+>>> Fixes: e46cdb66c8fc ("xen: event channels")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+>>> ---
+>>> Fixes is the introduction of the virq_to_irq per-cpu array.
+>>>
+>>> This was found with the out-of-tree argo driver during suspend/resume.
+>>> On suspend, the per-domain VIRQ_ARGO is unbound.  On resume, the driver
+>>> attempts to bind VIRQ_ARGO.  The stale irq is returned, but the
+>>> WARN_ON(info == NULL || info->type != IRQT_VIRQ) in bind_virq_to_irq()
+>>> triggers for NULL info.  The bind fails and execution continues with the
+>>> driver trying to clean up by unbinding.  This eventually faults over the
+>>> NULL info.
+>>> ---
+>>>   drivers/xen/events/events_base.c | 17 ++++++++++++++++-
+>>>   1 file changed, 16 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/ 
+>>> events_base.c
+>>> index 41309d38f78c..a27e4d7f061e 100644
+>>> --- a/drivers/xen/events/events_base.c
+>>> +++ b/drivers/xen/events/events_base.c
+>>> @@ -159,7 +159,19 @@ static DEFINE_MUTEX(irq_mapping_update_lock);
+>>>   static LIST_HEAD(xen_irq_list_head);
+>>> -/* IRQ <-> VIRQ mapping. */
+>>> +static bool is_per_vcpu_virq(int virq) {
+>>> +    switch (virq) {
+>>> +    case VIRQ_TIMER:
+>>> +    case VIRQ_DEBUG:
+>>> +    case VIRQ_XENOPROF:
+>>> +    case VIRQ_XENPMU:
+>>> +        return true;
+>>> +    default:
+>>> +        return false;
+>>> +    }
+>>> +}
+>>> +
+>>> +/* IRQ <-> VIRQ mapping.  Global/Domain virqs are tracked in cpu 0.  */
+>>>   static DEFINE_PER_CPU(int [NR_VIRQS], virq_to_irq) = {[0 ... 
+>>> NR_VIRQS-1] = -1};
+>>>   /* IRQ <-> IPI mapping */
+>>> @@ -974,6 +986,9 @@ static void __unbind_from_irq(struct irq_info 
+>>> *info, unsigned int irq)
+>>>           switch (info->type) {
+>>>           case IRQT_VIRQ:
+>>> +            if (!is_per_vcpu_virq(virq_from_irq(info)))
+>>> +                cpu = 0;
+>>> +
+>>>               per_cpu(virq_to_irq, cpu)[virq_from_irq(info)] = -1;
+>>>               break;
+>>>           case IRQT_IPI:
+>>
+>> Thinking about it a little more, bind_virq_to_irq() should ensure cpu 
+>> == 0 for per-domain and global VIRQs to ensure the property holds.  
+>> Also virq_to_irq 
+> 
+> In Xen's evtchn_bind_virq() there is:
+> 
+>      if ( type != VIRQ_VCPU && vcpu != 0 )
+>          return -EINVAL;
+> 
+> Making sure in Linux that there is never a violation of that restriction 
+> would
+> require to always have an up-to-date table of all possible VIRQs and their
+> type, which I'd like to avoid.
+
+Yes, I agree with this.
+
+> I think it is the user of the VIRQ who is responsible to ensure cpu 0 is 
+> passed
+> to bind_virq_to_irq(), as this user knows that such a restriction 
+> applies to
+> the VIRQ in question (at least he should know that).
+> 
+> Special handling for really used VIRQs in the kernel can have some special
+> handling, of course, as they are known already and should be used 
+> correctly.
+
+Thanks,
+Jason
 
