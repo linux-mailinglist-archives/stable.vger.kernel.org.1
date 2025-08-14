@@ -1,155 +1,148 @@
-Return-Path: <stable+bounces-169508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE1FB25BD9
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:34:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B9BB25BE6
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC325725FB7
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:33:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429411C82A1D
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F72586CE;
-	Thu, 14 Aug 2025 06:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7DE253F35;
+	Thu, 14 Aug 2025 06:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XfJJXpfC"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="liK/K+Vs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD552561DD
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 06:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBB024EAA7;
+	Thu, 14 Aug 2025 06:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755153185; cv=none; b=HrnhPyCAT4CeU2Ck2Gh/TurppkNxsMzc/EBtD7sbyAYxRt0E87cPdeGBLWB91N0UoInrXDT744xRA8Y4ntS9G8P3ZDeRBOmIjM4QkmGNKXjuK456f4Jpdx/r5ncvduyY9AM5GEZUKwcz+fa78WEFFnHeD32w4haFU50+MUttCJI=
+	t=1755153448; cv=none; b=WQgfidOZpXBvGxgwY5kZYZPEkkC8jSR4+NCN3OFkMklqxiPp1i3o2FeqPdryDw8TEmoJnB4Ab5ckmWSDjgaDSR70/lIz+C4apvBhFJV/NwpvHzUE/MPsvDs1TM/ZdYAfZMV9ZBNB6qTPy6MO5QBCCrjoRkqxZBxDvO3watx4Hpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755153185; c=relaxed/simple;
-	bh=MSP9ZDwm0zsakgUyDdsbCsWSHeqo681DH+etzwx4O1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ay/M3w+Nx5/29n3TNPDGId87WbQpPy2uSepYic1+LxqI/y/AbwP547U7Ri2pi5YJqNsUkS0qO+WnK5ceBMogwwvqY6G0l/yUCaBU6HpKNAD7JoZvN/6PCoZ0NBKsr2RkQtilqNssFYAPJ4O9krwjI+Rc+3sPa1W/uELXA8siD68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XfJJXpfC; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-afcb7a41b78so5433166b.2
-        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 23:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755153181; x=1755757981; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yzvGTN8N2Y6NYFPVugmKZNPFUKHgdgs+Mpwi+TL0krQ=;
-        b=XfJJXpfCuv8p82O0Of4Oo9ymw/AuBvhz2BGj5TliQ4SKAjop4ChHnu1PpA1qFWWKqW
-         kOSsb3wZY8JKaU2Aip8QgQlmr3JYHzV+3NagAXJYkdoxsbB4zRHSpGhzxtc2N/+HCgBA
-         8qphUzM7lzg5lzxOTNCidRDR4eCwHJwrZAh76WIVRMfaVE35ATIwEJrpFQZ3X4m+G3Mq
-         AgsIGHfQJSbRN/odPjODZD7xt5frF/J4GiqFVzBw93IXYewM97rZTK3gFQzprYuTXDqq
-         B9EmDu9IVIn/sS7McnwsoNCWrunEvn7mPDHB2QifVN37P2X0Aor7PoxwYhgjeSTTLKOL
-         DqMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755153181; x=1755757981;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yzvGTN8N2Y6NYFPVugmKZNPFUKHgdgs+Mpwi+TL0krQ=;
-        b=L7HXPiDgI9ZLm8lzYub6Kv8xA5rizwDzYjrJZqYKuTj9hy1MsSWKNSpM9pUMldabbr
-         Gi419zWM23bZ0XUO7FHTKfj5g2lBagTeZlZK13nFmwPmxI0VMY3k2rEB5NeUuQvGdfTr
-         fkEuRNU60mEUyhvy0zm9VvT3j2VJBuk4mOHYz76IMOV0sIRnoJ6FSvUii15gb6HVcDsI
-         QP2KVRL4CtuCiVX38gRHcgPrGylCA7nm/3yGMaaoiorjwyNtliMZWasgnFUob1abCxj6
-         vaeFbgntIJkRoNDaoOm7zdhSu7QFYa0F2tzgmRd7L9Dx5fdw8GloQFeeeOZl3T/3nSSG
-         5rlw==
-X-Gm-Message-State: AOJu0YwpvfIjt8o+SPNriGWFHCW3/+lRQjv915kl91b5z6+xKusbKyad
-	YDB9MCqOLNxSnM8+jT00DfTgYBHjbMY+U163qCm9CUa3hcooxZnuGlDsG4RpC0/66J8=
-X-Gm-Gg: ASbGncvRJs1MyoschnDLo009u0wQKmWMwB7YGWxrrutxcl4snrFSkxM5cc7kuNQXSEi
-	thJi+u885ikBZbMK7lhkc1QJ2KF8yEVCu4a/xKPbVqeuGnV22wD7AHRhEK6EXlFIU8skwavQbAP
-	v9OSkzl251lKZNpVEyDuWc+WvIIDFe8YyjS62OOycztepAp1GQFtqFP53Ss8WZvZCcQ78DD3iD8
-	nNaIBe6XzODgqxMmuCAHkbmdlXbP5bZnaaMw6uBJrz5ns88QloMsW9i0diGCPxZmirjRYeB9V17
-	+BcQzonFXvlHPYrXIqSove743zjJPhTh5ixtQxXDDS4Ve3eNhn6isBVrqs6Po1KMLVoiUkc4/b/
-	eLHw8QxFnZ9jn/imjyPEmhQTRIDrdd1xweQ==
-X-Google-Smtp-Source: AGHT+IE6MPymLmR2wd2sW3Q2E17DmNqWGyrB0k3NvlQpxyRqfzkQNcWoWvM9nwmxoqFq1Ox5VfpKOA==
-X-Received: by 2002:a17:906:478b:b0:af9:3c7f:7447 with SMTP id a640c23a62f3a-afcb938b374mr79084766b.2.1755153181493;
-        Wed, 13 Aug 2025 23:33:01 -0700 (PDT)
-Received: from kuoka.. ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a21c0ccsm2530971166b.111.2025.08.13.23.33.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Aug 2025 23:33:00 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Thara Gopinath <thara.gopinath@gmail.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH] soc: qcom: icc-bwmon: Fix handling dev_pm_opp_find_bw_*() errors
-Date: Thu, 14 Aug 2025 08:32:57 +0200
-Message-ID: <20250814063256.10281-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1755153448; c=relaxed/simple;
+	bh=EvdQ6Bg8OnlITVamBcloGQkXv3LWJan23b0GY22b9ZE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=nXNCOXjACPjYaCN62jMA7Hg6ms7KqiWfR3tDeDfnKMmxhNwsKScM3sib3gyajzmqtt3iDwf3X3iTMOoz6a74r8Rhcw/SZ0f78DdmJG2UHQ+6+vhZvTqdyoZxuFCh850rM1lp+OqFRdOjb2MCYS6lPVcN50Tmw9EV9fbyUir5xtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=liK/K+Vs; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DM8Erw011435;
+	Thu, 14 Aug 2025 06:37:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=yYUb25VbWnegftuQMWLMgm
+	Nh1P2XLmEoohNyE4+Czww=; b=liK/K+VsHR4iAEkXsqzxG2bArLZQn9r8cjWNSg
+	6WjsEMU3MqmaMpDGQEEIwjIF4+a+807GdBaLygHEARCQA49u/7psYmIDIMKcaOrL
+	ikqVqyyKwkp2fFveysOT3P0UNW9sALgS8s/k5gwNlofO8g2REVt2kYc3xtbx7nHR
+	b/gzEGC7NPYp5D3Q+Hj30/Ph8KYKkm8SGooXVNqdECC2mv0L6K16crfgrb/64ThW
+	ipKuikfZqRinkbtYo3Siv6o+c5Rk28TMXhFKoysetVXgiuJVnSBfA4Z8/aByY9za
+	Tykycol2XzbWfVOc2ZC+bpJK6FVHvvVLsep02F20mzH3ylvg==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48g9q9wpem-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Aug 2025 06:37:20 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 57E6bGVO015595;
+	Thu, 14 Aug 2025 06:37:16 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 48dydm4gex-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Aug 2025 06:37:16 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57E6bGHT015590;
+	Thu, 14 Aug 2025 06:37:16 GMT
+Received: from hu-devc-blr-u20-c-new.qualcomm.com (hu-hardshar-blr.qualcomm.com [10.190.104.221])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 57E6bGvd015589
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Aug 2025 06:37:16 +0000
+Received: by hu-devc-blr-u20-c-new.qualcomm.com (Postfix, from userid 3848816)
+	id AAC1420A07; Thu, 14 Aug 2025 12:07:14 +0530 (+0530)
+From: Hardeep Sharma <quic_hardshar@quicinc.com>
+To: Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Hardeep Sharma <quic_hardshar@quicinc.com>
+Subject: [PATCH 6.6.y v2 1/1] block: Fix bounce check logic in blk_queue_may_bounce()
+Date: Thu, 14 Aug 2025 12:06:55 +0530
+Message-Id: <20250814063655.1902688-1-quic_hardshar@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1712; i=krzysztof.kozlowski@linaro.org;
- h=from:subject; bh=MSP9ZDwm0zsakgUyDdsbCsWSHeqo681DH+etzwx4O1w=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBonYMY98JneTBy4rFTUmxtFBQ2pOHgHHsaaMN7h
- sSaKTW1NAmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaJ2DGAAKCRDBN2bmhouD
- 13JpD/9w7VMiohNtnKxKbUZYpY3TF8JsDTOxEVf+C6BL0BJXNfucPpy3gO1MrnAr+PF+su0/HfV
- R/hvO+aiqzr4FWTi3JRXSQ4q5n7IbqZUZqhZGietk7sa4PLQjLH6Sa3vt4Oy+hILkM6NLAmh+Kx
- AkCYZygh8ICJilg4UvgfGpxPf9ISl2F7NDB4UL16tGa358DrWFHRnsGOVMsPY01+Gj72kM+6opy
- MSF6IAkSWYCi51yAvtDrzR6kVuEA+boaOzekj8vQd+i0RcX3D1NBMVTretM0RtOpAaRsYI4dDn4
- mAxZMIaL3Y4Y8V6JxHH0VRae4ETlldPElk5dg5BR2YZvsc90+em0hQq6ZslP4nqv8pVsJzazRm2
- cMitdSpjtc0Ejsp+RD6oM37TdiSOTeHqb3ZkfEg2xaLVt6i+CDXW9KXDa6NdLeDCIg3k2zmv96z
- z5xZ4fkyztJRcBG5A9y0BlHkQ2aopgrLqj3cPnhUGFAhRJgxCykrZ1vJGjcPKmXWNfOulXXLYU2
- 6RB0gt3rpi9kgBLd5kI+KoEorHPSWuuIXaMIgzGTUKbJqnHlqrXbyc7ieKNcq2h5SfnqMs3ZghT
- hpF3ryE2qbAVKFSE93tyYO6j7fAlnTSFuabqQLBNrOOH/lxFt6/xbwCmm2Rr3K0x7w/UmyaZHme sUkm6PlLcFtRe4w==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=CNMqXQrD c=1 sm=1 tr=0 ts=689d8420 cx=c_pps
+ a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=aRHBprkQ1X53iwqQ5hAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: -aOy7J7bLtS5wTFA6AJRsMHqcXjgTXKm
+X-Proofpoint-ORIG-GUID: -aOy7J7bLtS5wTFA6AJRsMHqcXjgTXKm
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2NCBTYWx0ZWRfXw/7ZR4OgbAko
+ 4RzDSzoX+n17nLV7RUakqOfSpcgzdkmCy/v5/0ssEjpZT82aKjMY8ggXB2SpMudFt5TkE2Lt9a9
+ chWWGdTeaYilrEkfBYbLIjxmtXnd/S3aAx951QfkwNYCzjKxfV49b2HFmhDG1aH2bG10ys1crs/
+ /z6hq3K2jLRquuwVaP66pyH6TR6sZRBHM6d9eXf66uHzYP5yc4kxlGowr9If0OqPyujl/YTslNP
+ PMdp7sbud2uG2ABzvIbJ3V9GMArA2/Pgz3FlJODnRcpICqfojfJRWUlQnsZ96UWAYAhC/jeu3uz
+ R7EyhJ3w7yr64Wmm9pSLKjnGHjiu6c+wFB5uMnFc+fel7w7P8G4nyF6Hw0FB5pNXBJGKHT4K78c
+ UqOgo2S5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-13_02,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ malwarescore=0 impostorscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120164
 
-The ISR calls dev_pm_opp_find_bw_ceil(), which can return EINVAL, ERANGE
-or ENODEV, and if that one fails with ERANGE, then it tries again with
-floor dev_pm_opp_find_bw_floor().
+Buffer bouncing is needed only when memory exists above the lowmem region,
+i.e., when max_low_pfn < max_pfn. The previous check (max_low_pfn >=
+max_pfn) was inverted and prevented bouncing when it could actually be
+required.
 
-Code misses error checks for two cases:
-1. First dev_pm_opp_find_bw_ceil() failed with error different than
-   ERANGE,
-2. Any error from second dev_pm_opp_find_bw_floor().
+Note that bouncing depends on CONFIG_HIGHMEM, which is typically enabled
+on 32-bit ARM where not all memory is permanently mapped into the kernel’s
+lowmem region.
 
-In an unlikely case these error happened, the code would further
-dereference the ERR pointer.  Close that possibility and make the code
-more obvious that all errors are correctly handled.
+Branch-Specific Note:
 
-Reported by Smatch:
-  icc-bwmon.c:693 bwmon_intr_thread() error: 'target_opp' dereferencing possible ERR_PTR()
+This fix is specific to this branch (6.6.y) only.
+In the upstream “tip” kernel, bounce buffer support for highmem pages
+was completely removed after kernel version 6.12. Therefore, this
+modification is not possible or relevant in the tip branch.
 
-Fixes: b9c2ae6cac40 ("soc: qcom: icc-bwmon: Add bandwidth monitoring driver")
-Cc: <stable@vger.kernel.org>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/aJTNEQsRFjrFknG9@stanley.mountain/
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Fixes: 9bb33f24abbd0 ("block: refactor the bounce buffering code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hardeep Sharma <quic_hardshar@quicinc.com>
 ---
+ block/blk.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Some unreleased smatch, though, because I cannot reproduce the warning,
-but I imagine Dan keeps the tastiests reports for later. :)
----
- drivers/soc/qcom/icc-bwmon.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/soc/qcom/icc-bwmon.c b/drivers/soc/qcom/icc-bwmon.c
-index 3dfa448bf8cf..597f9025e422 100644
---- a/drivers/soc/qcom/icc-bwmon.c
-+++ b/drivers/soc/qcom/icc-bwmon.c
-@@ -656,6 +656,9 @@ static irqreturn_t bwmon_intr_thread(int irq, void *dev_id)
- 	if (IS_ERR(target_opp) && PTR_ERR(target_opp) == -ERANGE)
- 		target_opp = dev_pm_opp_find_bw_floor(bwmon->dev, &bw_kbps, 0);
+diff --git a/block/blk.h b/block/blk.h
+index 67915b04b3c1..f8a1d64be5a2 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -383,7 +383,7 @@ static inline bool blk_queue_may_bounce(struct request_queue *q)
+ {
+ 	return IS_ENABLED(CONFIG_BOUNCE) &&
+ 		q->limits.bounce == BLK_BOUNCE_HIGH &&
+-		max_low_pfn >= max_pfn;
++		max_low_pfn < max_pfn;
+ }
  
-+	if (IS_ERR(target_opp))
-+		return IRQ_HANDLED;
-+
- 	bwmon->target_kbps = bw_kbps;
- 
- 	bw_kbps--;
+ static inline struct bio *blk_queue_bounce(struct bio *bio,
 -- 
-2.48.1
+2.25.1
 
 
