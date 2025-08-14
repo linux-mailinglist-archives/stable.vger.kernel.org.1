@@ -1,148 +1,105 @@
-Return-Path: <stable+bounces-169509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B9BB25BE6
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:37:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0EDB25BED
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 08:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429411C82A1D
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5AE69E2A69
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7DE253F35;
-	Thu, 14 Aug 2025 06:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA2D2512D1;
+	Thu, 14 Aug 2025 06:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="liK/K+Vs"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="JwM7opGU"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBB024EAA7;
-	Thu, 14 Aug 2025 06:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FC924EAAB;
+	Thu, 14 Aug 2025 06:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755153448; cv=none; b=WQgfidOZpXBvGxgwY5kZYZPEkkC8jSR4+NCN3OFkMklqxiPp1i3o2FeqPdryDw8TEmoJnB4Ab5ckmWSDjgaDSR70/lIz+C4apvBhFJV/NwpvHzUE/MPsvDs1TM/ZdYAfZMV9ZBNB6qTPy6MO5QBCCrjoRkqxZBxDvO3watx4Hpk=
+	t=1755153470; cv=none; b=Dkq9gHacEuZujbrM21k8Xgv7bBViSWAn5TSdRFtmI0PNChDlbmyyhsYjOA1Cn7dql+vHBB7AukgEGvVeYFcQBVXyfB9HuTOfJ1lc7mcS9cEB6UF4d6JXSMX4QhgFkesCt5ikhK7W0+cpAqd3zNKvb+nYmk7V/hqwuFUibg3FA8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755153448; c=relaxed/simple;
-	bh=EvdQ6Bg8OnlITVamBcloGQkXv3LWJan23b0GY22b9ZE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=nXNCOXjACPjYaCN62jMA7Hg6ms7KqiWfR3tDeDfnKMmxhNwsKScM3sib3gyajzmqtt3iDwf3X3iTMOoz6a74r8Rhcw/SZ0f78DdmJG2UHQ+6+vhZvTqdyoZxuFCh850rM1lp+OqFRdOjb2MCYS6lPVcN50Tmw9EV9fbyUir5xtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=liK/K+Vs; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DM8Erw011435;
-	Thu, 14 Aug 2025 06:37:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=yYUb25VbWnegftuQMWLMgm
-	Nh1P2XLmEoohNyE4+Czww=; b=liK/K+VsHR4iAEkXsqzxG2bArLZQn9r8cjWNSg
-	6WjsEMU3MqmaMpDGQEEIwjIF4+a+807GdBaLygHEARCQA49u/7psYmIDIMKcaOrL
-	ikqVqyyKwkp2fFveysOT3P0UNW9sALgS8s/k5gwNlofO8g2REVt2kYc3xtbx7nHR
-	b/gzEGC7NPYp5D3Q+Hj30/Ph8KYKkm8SGooXVNqdECC2mv0L6K16crfgrb/64ThW
-	ipKuikfZqRinkbtYo3Siv6o+c5Rk28TMXhFKoysetVXgiuJVnSBfA4Z8/aByY9za
-	Tykycol2XzbWfVOc2ZC+bpJK6FVHvvVLsep02F20mzH3ylvg==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48g9q9wpem-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 06:37:20 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 57E6bGVO015595;
-	Thu, 14 Aug 2025 06:37:16 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 48dydm4gex-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 06:37:16 +0000
-Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57E6bGHT015590;
-	Thu, 14 Aug 2025 06:37:16 GMT
-Received: from hu-devc-blr-u20-c-new.qualcomm.com (hu-hardshar-blr.qualcomm.com [10.190.104.221])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 57E6bGvd015589
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 06:37:16 +0000
-Received: by hu-devc-blr-u20-c-new.qualcomm.com (Postfix, from userid 3848816)
-	id AAC1420A07; Thu, 14 Aug 2025 12:07:14 +0530 (+0530)
-From: Hardeep Sharma <quic_hardshar@quicinc.com>
-To: Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Hardeep Sharma <quic_hardshar@quicinc.com>
-Subject: [PATCH 6.6.y v2 1/1] block: Fix bounce check logic in blk_queue_may_bounce()
-Date: Thu, 14 Aug 2025 12:06:55 +0530
-Message-Id: <20250814063655.1902688-1-quic_hardshar@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1755153470; c=relaxed/simple;
+	bh=B1QTAQBoom+bZUbodaVKz7Gl/FzojVpGFCIaeqSrgsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LLZ0fXjWSdak2EffuC6dYL7gBfPTEvQOHws0aOLtg8OIyBsyYE0nF56d7Fu8uhIaoRyDJq+Bs6bZCQDIYirAPY/eSoy1BK9k7+tmAw2CXpj3cI/7tTnHXD2pUUgJZ3HFW6yTZnQw2oxbRVv1tCZhfcesRRd/IbPnVh0SieK+mZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=JwM7opGU; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=PBoXKZba7jZDXvxDCcq8JAvR5ylpCzt0nNe7Pc3u/Lw=; b=JwM7opGUcWtB53X1JsZi9MIweR
+	6B1GSuOCBnnZ/BoEl30erJmH3IjFURVvUanwyoVP2ZfWCqLQC7iVSOrF9i7jRoyaFlSUytmCb/fXj
+	TbBBnHX1ykMhrST8KIGlVxKLCCLU+LO13gj0KTHc3SE4ZJpQi/WFOs1SGebKuHyy7K4T4tVs0YYv2
+	RGmJzTyWt7p5Wo35c3dP+/TFxBJqi52eMICCS7FG5RExIVCDI/o/iWsCwWS/EvPfQz1KDOKwvi6pW
+	0+59lQHd7MP4KAVKV96V1jvJ1hbNeDm9q8wUmp/anhI6vzZRSw+BDH+qMrxb8crBzF3dRZ5pHvXI0
+	tRcopWTA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1umRar-000000008l6-2zHC;
+	Thu, 14 Aug 2025 06:37:45 +0000
+Date: Thu, 14 Aug 2025 07:37:45 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: Tycho Andersen <tycho@tycho.pizza>, Andrei Vagin <avagin@google.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Pavel Tikhomirov <snorcht@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>, criu@lists.linux.dev,
+	Linux API <linux-api@vger.kernel.org>,
+	stable <stable@vger.kernel.org>
+Subject: Re: [RFC][CFT] selftest for permission checks in mount propagation
+ changes
+Message-ID: <20250814063745.GP222315@ZenIV>
+References: <CANaxB-xbsOMkKqfaOJ0Za7-yP2N8axO=E1XS1KufnP78H1YzsA@mail.gmail.com>
+ <20250726175310.GB222315@ZenIV>
+ <CAEWA0a6jgj8vQhrijSJXUHBnCTtz0HEV66tmaVKPe83ng=3feQ@mail.gmail.com>
+ <20250813185601.GJ222315@ZenIV>
+ <aJzi506tGJb8CzA3@tycho.pizza>
+ <20250813194145.GK222315@ZenIV>
+ <CAE1zp77jmFD=rySJVLf6yU+JKZnUpjkBagC3qQHrxPotrccEbQ@mail.gmail.com>
+ <20250814044239.GM222315@ZenIV>
+ <20250814055142.GN222315@ZenIV>
+ <20250814055702.GO222315@ZenIV>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Authority-Analysis: v=2.4 cv=CNMqXQrD c=1 sm=1 tr=0 ts=689d8420 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=aRHBprkQ1X53iwqQ5hAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: -aOy7J7bLtS5wTFA6AJRsMHqcXjgTXKm
-X-Proofpoint-ORIG-GUID: -aOy7J7bLtS5wTFA6AJRsMHqcXjgTXKm
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDE2NCBTYWx0ZWRfXw/7ZR4OgbAko
- 4RzDSzoX+n17nLV7RUakqOfSpcgzdkmCy/v5/0ssEjpZT82aKjMY8ggXB2SpMudFt5TkE2Lt9a9
- chWWGdTeaYilrEkfBYbLIjxmtXnd/S3aAx951QfkwNYCzjKxfV49b2HFmhDG1aH2bG10ys1crs/
- /z6hq3K2jLRquuwVaP66pyH6TR6sZRBHM6d9eXf66uHzYP5yc4kxlGowr9If0OqPyujl/YTslNP
- PMdp7sbud2uG2ABzvIbJ3V9GMArA2/Pgz3FlJODnRcpICqfojfJRWUlQnsZ96UWAYAhC/jeu3uz
- R7EyhJ3w7yr64Wmm9pSLKjnGHjiu6c+wFB5uMnFc+fel7w7P8G4nyF6Hw0FB5pNXBJGKHT4K78c
- UqOgo2S5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-13_02,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 phishscore=0 bulkscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120164
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814055702.GO222315@ZenIV>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Buffer bouncing is needed only when memory exists above the lowmem region,
-i.e., when max_low_pfn < max_pfn. The previous check (max_low_pfn >=
-max_pfn) was inverted and prevented bouncing when it could actually be
-required.
+> void do_unshare(void)
+> {
+> 	FILE *f;
+> 	uid_t uid = geteuid();
+> 	gid_t gid = getegid();
+> 	unshare(CLONE_NEWNS|CLONE_NEWUSER);
+> 	f = fopen("/proc/self/uid_map", "w");
+> 	fprintf(f, "0 %d 1", uid);
+> 	fclose(f);
+> 	f = fopen("/proc/self/setgroups", "w");
+> 	fprintf(f, "deny");
+> 	fclose(f);
+> 	f = fopen("/proc/self/gid_map", "w");
+> 	fprintf(f, "0 %d 1", gid);
+> 	fclose(f);
+> 	mount(NULL, "/", NULL, MS_REC|MS_PRIVATE, NULL);
+> }
 
-Note that bouncing depends on CONFIG_HIGHMEM, which is typically enabled
-on 32-bit ARM where not all memory is permanently mapped into the kernel’s
-lowmem region.
-
-Branch-Specific Note:
-
-This fix is specific to this branch (6.6.y) only.
-In the upstream “tip” kernel, bounce buffer support for highmem pages
-was completely removed after kernel version 6.12. Therefore, this
-modification is not possible or relevant in the tip branch.
-
-Fixes: 9bb33f24abbd0 ("block: refactor the bounce buffering code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hardeep Sharma <quic_hardshar@quicinc.com>
----
- block/blk.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/block/blk.h b/block/blk.h
-index 67915b04b3c1..f8a1d64be5a2 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -383,7 +383,7 @@ static inline bool blk_queue_may_bounce(struct request_queue *q)
- {
- 	return IS_ENABLED(CONFIG_BOUNCE) &&
- 		q->limits.bounce == BLK_BOUNCE_HIGH &&
--		max_low_pfn >= max_pfn;
-+		max_low_pfn < max_pfn;
- }
- 
- static inline struct bio *blk_queue_bounce(struct bio *bio,
--- 
-2.25.1
-
+This obviously needs error checking - in this form it won't do
+anything good without userns enabled (coredump on the first
+fprintf() in there, since there won't be /proc/self/uid_map);
+should probably just report CLONE_NEWUSER failure, warn about
+skipped tests, fall back to unshare(CLONE_NEWNS) and skip
+everything in in_child()...
 
