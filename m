@@ -1,221 +1,237 @@
-Return-Path: <stable+bounces-169545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BB4B265FC
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 14:56:24 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD6BB26637
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 15:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13C23A21E50
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 12:56:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F27174E57B7
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 13:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12212FCBF1;
-	Thu, 14 Aug 2025 12:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55063002D3;
+	Thu, 14 Aug 2025 13:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAiNtXs/"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TDgXKLmO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF342FB977
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 12:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE062FFDEC;
+	Thu, 14 Aug 2025 13:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755176180; cv=none; b=BGFSiFG6kG5EdMFgWgUWEjT9ptQOiXziZcbg7MOo0cHbGTZzNCifAM3pwDzfCIW+c0QZT0alR8VIN/jjFPQC2p4JA1pk5+YN4W4zkrpGpYdgeeK3w6Te29jv382gdVni2IQTKGdTSj50zm3YMPrL4c36Gw4JkLU0Rg2rRCpimVw=
+	t=1755176809; cv=none; b=lXnKMOLlDTStqZVteuwEn4aqxK0l/J92/PqpHRijzhkwyx/Y2qH7UBmAIndGXWBdJYreuHk3fAkhHxzj3GtYnPM3M1IdwC46N8u9UpHzLcm1yqGMZpBN0CCjIAxQIvqvw0UsZx1UBiY1MmHOOrt0jqf390CxzkPJHPDcoCqJ3Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755176180; c=relaxed/simple;
-	bh=WUnPNafm3JstUUcZ2j24PLIOsfIY8ldJyKyyF2tkaBM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lsGnlMuMF2ErZprP/VsCgnQQxQmIZWtxkAQUUyu61IBKQuqMjv1dQaI27C3vdQQjOQH/gs8OvWTlmwf3PhWneTQRt1hZHVagAZSvRwMBlFCCj5o2bdF2kJXtWCrNJ5hhOUbJJJFeKbQ2VvKYbC7HvmrbnU+TZKPW/s0aPvXdjlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAiNtXs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B30C4CEF1;
-	Thu, 14 Aug 2025 12:56:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755176180;
-	bh=WUnPNafm3JstUUcZ2j24PLIOsfIY8ldJyKyyF2tkaBM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAiNtXs/QtaaYgSHGXSA1wROqYBPt8TR74hrLfG6YhuTnNfzC72gBMvE8TIG5+9TR
-	 cTBqWmIJnICzCy+wN4YMHGMv3YUIehtPVEfLoJc6+k1kzgKp/0r4BeMq0R0jDt4j3M
-	 6eVUxTYl4ki830GXYqqXafa3N51eWd2nrZb35BzUa6OHV55dNW7w3nnBHoo1X0D1QZ
-	 6PI4O3CqZ7g+bdwgM99+iv7hYNUFB0NORLiua6IoWKnrKXFfdoVoJUESnvg4Nd2YtI
-	 FMOE4DPbrJGIvQmbp51KNHjajxuexXp9Xg2CBUzobiNi87r79pY8bIUxraZO0lAD1H
-	 LI28yWFM0Kk0A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Maxim Levitsky <mlevitsk@redhat.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs
-Date: Thu, 14 Aug 2025 08:56:14 -0400
-Message-Id: <20250814125614.2090890-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250814125614.2090890-1-sashal@kernel.org>
-References: <2025081209-sworn-unholy-36ad@gregkh>
- <20250814125614.2090890-1-sashal@kernel.org>
+	s=arc-20240116; t=1755176809; c=relaxed/simple;
+	bh=jOAqWxiriywVpdi5TvvVzAUwFdL9W9fDqxh9mmGsPOY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=kBTDpmZD553ZbmCJPMdiApxo+BHFel73Xru6piCpOpgIavNnraSIc4HRhQgSY8ivyrbf7EWis/CNNLBskEiqATTrbvKCjxn3bu4NaTW4iG+Kr2sDpOkKhvE5h6z0bWQ0wnZG9h3KIjBS7yIEvfZlkVtBeg4xnp8sSVnj90fZRlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TDgXKLmO; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57E9FKSE027000;
+	Thu, 14 Aug 2025 13:06:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	krCmXFTYeP7XPxF+yvCB610msvOX8qDJ7ylNRn64itE=; b=TDgXKLmOy6cQtKS7
+	bQlVryepSBECdEiPJgutVSSdfJiH51n/3j2IzTAat/wzJ459HeLvlTTOGQTeGBmX
+	dKBc1tHEKb9VKjCqwP5kEe80Lx0raXBhg1GzWeu+hGbAA5J0f6LAYwdIAY7N76xp
+	aw4XnwNunsOTqnTiXk602sSKBCgozPoy2zz8RnIHJjzQ4vWYAGd/72w/697MAK6p
+	iTWb1a6lujBLR51M9+z3X4EryTfPZPtqGYMQi5k0i37G5jbfC3UdsbFwbDsITc07
+	katUi9kzYk2sKrcURepF2ce1b/PeAzm4nDBM/BY7V9p0k2RlRZ3ErumdpzVhOy+B
+	bj6Rkg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ffhjukd2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Aug 2025 13:06:35 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57ED6YmD008250
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Aug 2025 13:06:34 GMT
+Received: from [10.50.4.137] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 14 Aug
+ 2025 06:06:32 -0700
+Message-ID: <4a898590-e1ca-41dc-b8b7-a5884d10db5d@quicinc.com>
+Date: Thu, 14 Aug 2025 18:36:29 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y v2 1/1] block: Fix bounce check logic in
+ blk_queue_may_bounce()
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
+        "Martin K .
+ Petersen" <martin.petersen@oracle.com>,
+        <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20250814063655.1902688-1-quic_hardshar@quicinc.com>
+ <2025081450-pacifist-laxative-bb4c@gregkh>
+ <21bf1ed6-9343-40e1-9532-c353718aee92@quicinc.com>
+ <2025081449-dangling-citation-90d7@gregkh>
+Content-Language: en-US
+From: Hardeep Sharma <quic_hardshar@quicinc.com>
+In-Reply-To: <2025081449-dangling-citation-90d7@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3NCBTYWx0ZWRfX3bnogNWKfMR/
+ pkUGFbI4Fa+HiSzuLOUc57yXJKys4ffNs0rDVEbdAe+5THN8SKzL1GdE0LrqQeLMW1KZ4ChpsxF
+ jTwkknavvpsZr1QyDy0E2m0rAMVbB+49LcSHA4bwJ2LxWVNq/CaKbUkZCaYZMQDEJAKU0lRI/rc
+ c2l6sOfzis06Tn9wTY60SjZ59w/bfbKyhcYlpEi8hPcDkwqJVRfiYh/L2lh7mBNFJB7jNNeNaik
+ yL7Zp1d/8jV3Al0f8wdSc36x9qOq002vQtYuLK2wbVXhBa8QqYl2BR9YKgLcXFuKSgILaKhQB+T
+ mmx9IueSqHnSylVrVn760RGV7Mjf/JAtAn2UJU/rX1OOtNnqB8gXi+KW4Rv29M1d5bhFwtFi/0F
+ XDP1AHek
+X-Proofpoint-GUID: bNKjm28c2Joohus3FoSjco54BNTGQihO
+X-Authority-Analysis: v=2.4 cv=TJFFS0la c=1 sm=1 tr=0 ts=689ddf5b cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8
+ a=COk6AnOGAAAA:8 a=8iWu0OXfL7HOh5h_90kA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: bNKjm28c2Joohus3FoSjco54BNTGQihO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-13_02,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 adultscore=0 impostorscore=0 malwarescore=0
+ phishscore=0 clxscore=1015 spamscore=0 bulkscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508110074
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+This change to blk_queue_may_bounce() in block/blk.h will only affect 
+systems with the following configuration:
 
-[ Upstream commit 7d0cce6cbe71af6e9c1831bff101a2b9c249c4a2 ]
+1. 32-bit ARM architecture
+2. Physical DDR memory greater than 1GB
+3. CONFIG_HIGHMEM enabled
+4. Virtual memory split of 1GB for kernel and 3GB for userspace
 
-Introduce vmx_guest_debugctl_{read,write}() to handle all accesses to
-vmcs.GUEST_IA32_DEBUGCTL. This will allow stuffing FREEZE_IN_SMM into
-GUEST_IA32_DEBUGCTL based on the host setting without bleeding the state
-into the guest, and without needing to copy+paste the FREEZE_IN_SMM
-logic into every patch that accesses GUEST_IA32_DEBUGCTL.
+Under these conditions, the logic for buffer bouncing is relevant 
+because the kernel may need to handle memory above the low memory 
+threshold, which is typical for highmem-enabled 32-bit systems with 
+large RAM. On other architectures or configurations, this code path will 
+not be exercised.
 
-No functional change intended.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-[sean: massage changelog, make inline, use in all prepare_vmcs02() cases]
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-8-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/kvm/vmx/nested.c    | 10 +++++-----
- arch/x86/kvm/vmx/pmu_intel.c |  8 ++++----
- arch/x86/kvm/vmx/vmx.c       |  8 +++++---
- arch/x86/kvm/vmx/vmx.h       | 10 ++++++++++
- 4 files changed, 24 insertions(+), 12 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 1e0b9f92ff18..9a336f661fc6 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -2653,11 +2653,11 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	if (vmx->nested.nested_run_pending &&
- 	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
- 		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl &
--						  vmx_get_supported_debugctl(vcpu, false));
-+		vmx_guest_debugctl_write(vcpu, vmcs12->guest_ia32_debugctl &
-+					       vmx_get_supported_debugctl(vcpu, false));
- 	} else {
- 		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmx->nested.pre_vmenter_debugctl);
-+		vmx_guest_debugctl_write(vcpu, vmx->nested.pre_vmenter_debugctl);
- 	}
- 	if (kvm_mpx_supported() && (!vmx->nested.nested_run_pending ||
- 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
-@@ -3527,7 +3527,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- 
- 	if (!vmx->nested.nested_run_pending ||
- 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
--		vmx->nested.pre_vmenter_debugctl = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+		vmx->nested.pre_vmenter_debugctl = vmx_guest_debugctl_read();
- 	if (kvm_mpx_supported() &&
- 	    (!vmx->nested.nested_run_pending ||
- 	     !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
-@@ -4774,7 +4774,7 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
- 	__vmx_set_segment(vcpu, &seg, VCPU_SREG_LDTR);
- 
- 	kvm_set_dr(vcpu, 7, 0x400);
--	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
-+	vmx_guest_debugctl_write(vcpu, 0);
- 
- 	if (nested_vmx_load_msr(vcpu, vmcs12->vm_exit_msr_load_addr,
- 				vmcs12->vm_exit_msr_load_count))
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 9c9d4a336166..a5edc623166a 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -605,11 +605,11 @@ static void intel_pmu_reset(struct kvm_vcpu *vcpu)
-  */
- static void intel_pmu_legacy_freezing_lbrs_on_pmi(struct kvm_vcpu *vcpu)
- {
--	u64 data = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+	u64 data = vmx_guest_debugctl_read();
- 
- 	if (data & DEBUGCTLMSR_FREEZE_LBRS_ON_PMI) {
- 		data &= ~DEBUGCTLMSR_LBR;
--		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
-+		vmx_guest_debugctl_write(vcpu, data);
- 	}
- }
- 
-@@ -679,7 +679,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
- 
- 	if (!lbr_desc->event) {
- 		vmx_disable_lbr_msrs_passthrough(vcpu);
--		if (vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR)
-+		if (vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR)
- 			goto warn;
- 		if (test_bit(INTEL_PMC_IDX_FIXED_VLBR, pmu->pmc_in_use))
- 			goto warn;
-@@ -701,7 +701,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
- 
- static void intel_pmu_cleanup(struct kvm_vcpu *vcpu)
- {
--	if (!(vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR))
-+	if (!(vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR))
- 		intel_pmu_release_guest_lbr_event(vcpu);
- }
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index fc483d8b4dc7..62c124b49d34 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2148,7 +2148,7 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			msr_info->data = vmx->pt_desc.guest.addr_a[index / 2];
- 		break;
- 	case MSR_IA32_DEBUGCTLMSR:
--		msr_info->data = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+		msr_info->data = vmx_guest_debugctl_read();
- 		break;
- 	default:
- 	find_uret_msr:
-@@ -2278,7 +2278,8 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 						VM_EXIT_SAVE_DEBUG_CONTROLS)
- 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
- 
--		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
-+		vmx_guest_debugctl_write(vcpu, data);
-+
- 		if (intel_pmu_lbr_is_enabled(vcpu) && !to_vmx(vcpu)->lbr_desc.event &&
- 		    (data & DEBUGCTLMSR_LBR))
- 			intel_pmu_create_guest_lbr_event(vcpu);
-@@ -4827,7 +4828,8 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	vmcs_write32(GUEST_SYSENTER_CS, 0);
- 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
- 	vmcs_writel(GUEST_SYSENTER_EIP, 0);
--	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
-+
-+	vmx_guest_debugctl_write(&vmx->vcpu, 0);
- 
- 	if (cpu_has_vmx_tpr_shadow()) {
- 		vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, 0);
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index ee330d14089d..5b2c5cb5e32e 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -438,6 +438,16 @@ void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
- u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated);
- bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated);
- 
-+static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
-+{
-+	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
-+}
-+
-+static inline u64 vmx_guest_debugctl_read(void)
-+{
-+	return vmcs_read64(GUEST_IA32_DEBUGCTL);
-+}
-+
- /*
-  * Note, early Intel manuals have the write-low and read-high bitmap offsets
-  * the wrong way round.  The bitmaps control MSRs 0x00000000-0x00001fff and
--- 
-2.39.5
+On 8/14/2025 5:06 PM, Greg KH wrote:
+> On Thu, Aug 14, 2025 at 04:24:25PM +0530, Hardeep Sharma wrote:
+>>
+>>
+>> On 8/14/2025 2:33 PM, Greg KH wrote:
+>>> On Thu, Aug 14, 2025 at 12:06:55PM +0530, Hardeep Sharma wrote:
+>>>> Buffer bouncing is needed only when memory exists above the lowmem region,
+>>>> i.e., when max_low_pfn < max_pfn. The previous check (max_low_pfn >=
+>>>> max_pfn) was inverted and prevented bouncing when it could actually be
+>>>> required.
+>>>>
+>>>> Note that bouncing depends on CONFIG_HIGHMEM, which is typically enabled
+>>>> on 32-bit ARM where not all memory is permanently mapped into the kernel’s
+>>>> lowmem region.
+>>>>
+>>>> Branch-Specific Note:
+>>>>
+>>>> This fix is specific to this branch (6.6.y) only.
+>>>> In the upstream “tip” kernel, bounce buffer support for highmem pages
+>>>> was completely removed after kernel version 6.12. Therefore, this
+>>>> modification is not possible or relevant in the tip branch.
+>>>>
+>>>> Fixes: 9bb33f24abbd0 ("block: refactor the bounce buffering code")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Hardeep Sharma <quic_hardshar@quicinc.com>
+>>>
+>>> Why do you say this is only for 6.6.y, yet your Fixes: line is older
+>>> than that?
+>> [Hardeep Sharma]::
+>>
+>> Yes, the original commit was merged in kernel 5.13-rc1, as indicated by the
+>> Fixes: line. However, we are currently working with kernel 6.6, where we
+>> encountered the issue. While it could be merged into 6.12 and then
+>> backported to earlier versions, our focus is on addressing it in 6.6.y,
+>> where the problem was observed.
+> 
+> For obvious reasons, we can not take a patch only for one older kernel
+> and not a newer (or the older ones if possible), otherwise you will have
+> a regression when you move forward to the new version as you will be
+> doing eventually.
+> 
+> So for that reason alone, we can not take this patch, NOR should you
+> want us to.
+> 
+>>> And why wasn't this ever found or noticed before?
+>> [Hardeep Sharma] ::
+> 
+> Odd quoting, please fix your email client :)
+> 
+>> This issue remained unnoticed likely because the bounce buffering logic is
+>> only triggered under specific hardware and configuration
+>> conditions—primarily on 32-bit ARM systems with CONFIG_HIGHMEM enabled and
+>> devices requiring DMA from lowmem. Many platforms either do not use highmem
+>> or have hardware that does not require bounce buffering, so the bug did not
+>> manifest widely.
+> 
+> So no one has hit this on any 5.15 or newer devices?  I find that really
+> hard to believe given the number of those devices in the world.  So what
+> is unique about your platform that you are hitting this and no one else
+> is?
+> 
+>>> Also, why can't we just remove all of the bounce buffering code in this
+>>> older kernel tree?  What is wrong with doing that instead?
+>>
+>> [Hardeep Sharma]::
+>>
+>> it's too intrusive — I'd need to backport 40+ dependency patches, and I'm
+>> unsure about the instability this might introduce in block layer on kernel
+>> 6.6. Plus, we don't know if it'll work reliably on 32-bit with 1GB+ DDR and
+>> highmem enabled. So I'd prefer to push just this single tested patch on
+>> kernel 6.6 and older affected versions.
+> 
+> Whenever we take one-off patches, 90% of the time it causes problems,
+> both with the fact that the patch is usually buggy, AND the fact that it
+> now will cause merge conflicts going forward.  40+ patches is nothing in
+> stable patch acceptance, please try that first as you want us to be able
+> to maintain these kernels well for your devices over time, right?
+> 
+> So please do that first.  Only after proof that that would not work
+> should you even consider a one-off patch.
+> 
+>> Removing bounce buffering code from older kernel trees is not feasible for
+>> all use cases. Some legacy platforms and drivers still rely on bounce
+>> buffering to support DMA operations with highmem pages, especially on 32-bit
+>> systems.
+> 
+> Then how was it removed in newer kernels at all?  Did we just drop
+> support for that hardware?  What happens when you move to a newer kernel
+> on your hardware, does it stop working?  Based on what I have seen with
+> some Android devices, they seem to work just fine on Linus's tree today,
+> so what is unique about your platform that is going to break and not
+> work anymore?
+> 
+>>> And finally, how was this tested?
+>>
+>> [Hardeep Sharma]:
+>>
+>> The patch was tested on a 32-bit ARM platform with CONFIG_HIGHMEM enabled
+>> and a storage device requiring DMA from lowmem.>
+> 
+> So this is for a 32bit ARM system only?  Not 64bit?  If so, why is this
+> also being submitted to the Android kernel tree which does not support
+> 32bit ARM at all?
+> 
+> And again, does your system not work properly on 6.16?  If not, why not
+> fix that first?
+> 
+> thanks,
+> 
+> greg k-h
 
 
