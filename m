@@ -1,187 +1,118 @@
-Return-Path: <stable+bounces-169493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF741B25A4B
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:09:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A22B25A74
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 06:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 372921C0233D
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 04:09:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 997406883B5
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 04:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9114D1C84B2;
-	Thu, 14 Aug 2025 04:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50EB21FBCA7;
+	Thu, 14 Aug 2025 04:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lpNPRiDV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zJzVGlIh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06652114;
-	Thu, 14 Aug 2025 04:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED1379FE
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 04:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755144543; cv=none; b=XSo3aEhpsQP5681cZsRRYL+2qBT2kOATTgdXiiGz7+ggqLlh6ylKAwnOvz2Nx/A+h8Vk8V+BP79gv+k6Jv9iMccmrQlREDXGPR8ZQNwNGaNsWGXkUHy6B0oovc461DH6+1sW+THUT7YtDK7USg8Q98gRNeYVz8olZeEsimkmZuU=
+	t=1755145588; cv=none; b=mlR/rZmm2LiBUkRrs8y0kAyqfEwOPPHsGCqyaNIFQdgZqWWVuaUZJRAjRDJL9+8iqbA7gtGUZmFIDnOlhK+roJi1tYzg2KLYR1Hy/tYax8xwPKnh/GitAVpEWDO4N6bSWGXnlG4/xkodJa6g+gQWTDgS7gEAhnlQKJFjeyk+AL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755144543; c=relaxed/simple;
-	bh=KMepZn3j6P2ZdrPCrd3OUv6DxkECDXp1XE6iQNQmjwM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e1QAvQyRomK2++H4w0XtBlKxTzE7xXRssg/6GhUOH8LI/Cr2iQbMO5P5VnAo+ZnIDdx4dwfUI8ExG8iQZKdFdrFr76iWhOW61TLqE1nkLd0MCOA/pgrtVSErxpbX1o4tSUgJwk9B76IXgMI9oJIh1cvw8+T+qDJyR/FNKyOjqEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lpNPRiDV; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-32326df0e75so441224a91.2;
-        Wed, 13 Aug 2025 21:09:01 -0700 (PDT)
+	s=arc-20240116; t=1755145588; c=relaxed/simple;
+	bh=M+zbR6R1Nm/4pCp0B7gheJGuNDaXY/XrNqF/Pyj8bmU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xgynju76i+cXpeQ7zV3KlBpkSucF0pjYKSa+gSacgI9Gph0XqIaOmFctB6H/bnY+bFaN7fzI0cDYvCCCRBO/cRv0PtBwxt4OaMsnZP2uyKWRcR9JbDJ369/MeS+zPvigx9fOFLAZJABEWOtRQntHZg9IDbH4IBNtl/nK+hr/Sms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zJzVGlIh; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76e2eb6ce24so524080b3a.3
+        for <stable@vger.kernel.org>; Wed, 13 Aug 2025 21:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755144541; x=1755749341; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3PU+08Hj7IdON/EOEoKrMGF/qgHczkSyXAOKfclSXjI=;
-        b=lpNPRiDVFeGx58BM9EX5dZi+FWrSMEWU9EOTX77rTZeSpjna2R5jJNiMYAX8y9Ae6W
-         hSRAJ8s+6xmbQw1GR1O+5ZHru2cZkjTeZFXnwRxSgAejHWYvoZ7ikl8frzkIVW3D/0dU
-         NaewNEo6jD3w5AkCIY6cKPu89Id3KIQdV8EbnDKOVNyF4Uv9W7iwkBbiT9DiGO5pqCch
-         k55aSbNFvUxkDhP31GgadJt2z/UqzqTs6eJ8QY4PMpvSmS1yRb3FH3u/fCGZTHnoP4QF
-         ZgM0Q6X/zxMtC4i0mkS/fU3H6FS4YGF++IO8PiQDUHIZbW66ls+3iwYLXM3j0KdRWl6Q
-         5gyw==
+        d=linaro.org; s=google; t=1755145586; x=1755750386; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Y4+VbSY2gENC6vjJLIhD6H5q5HP7szxm2F2pf2ubmU=;
+        b=zJzVGlIhOOZynWHY+t7mRu8y3SWCOAPEcC0ucyRK12R+yWvC05JlQ3kKWYyoFTS4W0
+         3Rtv6Iiq4omT8z/bs3GsfWgiDZWRllOvEorxYQyaqYSZBST4JzvcdF7Tkc/HRTy7OqrE
+         cPY4tIZwxUWgmIyA9MTBZzOtualAg954lX8N8/6lEkkHfECN1oGAdT4s9WxkGVzE0mam
+         1Q8xRe9atpVbOcHoWfEUaMpqA/ouqwq+KvMxpzJu8Ys4nAF5e2i63sW0JRvZZohyarRd
+         8gfz8Sa84PUTu8vHnHURHgz1Uf6j93ow6VqxmC9hILfGqwi3SSD1FxJKh8YMCsJvizhd
+         7pVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755144541; x=1755749341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3PU+08Hj7IdON/EOEoKrMGF/qgHczkSyXAOKfclSXjI=;
-        b=ETfTTeZ/Cv+ZmjP6YsTeE1EV7Rdkx71Jydt7oZDifLZiz9ghb6kAgBbrg89qTFFcIE
-         4ymGvirBpSJzSYkEGiPA3OJQHwv5Xg5Jshadv5liLTT9PSpFHX/zHlANyhTXBaHv6CCP
-         Ihp052W2waEYeV2iSqW6Ysl0eFpW37CKxYQD+vzaCgC6QsirJaXyinRQUmxYtGTE5KRg
-         FIWW22GR/s/UbX5U58u+tj394vXGNZf3kTK5VKox+45VGs32jgIpUDwU4aEqr/ZuvLMf
-         ++2y8YultDSpsemF8P0DmynCsqukSsMmxp+MpeOErv6rK4asXuEM1I3Kb5zrkDAVqTw+
-         1fLA==
-X-Forwarded-Encrypted: i=1; AJvYcCURHu+HVEvrcCCfqQ85h+qsmpH4Z6F/tLGXdr2xRPudfDnTioPKsf1T2SCjulFpn01ckpmKbEcjIdQHJLorGA==@vger.kernel.org, AJvYcCV/O654BgMVHeqYT1zrxVlOILIzrMbEeuaWHnIz67pscSD0/faK+5IpWkFiM5d5Llnb76iGA0H6VGE=@vger.kernel.org, AJvYcCVpxowCf0MW7uaJseRFH5QIvXeTvO1lMldfDbJCOpP2RhQ7gzPVoGySQeTjdnTDf6iR4v2f9qVadkG1VlI+@vger.kernel.org, AJvYcCVrqfHy/mGTj1WPXbdwaYBrwwcLZqw8/w+QkDjLp65nXH1u+bO9jow+VM3Hq3Ua2gpot8IPKEm8@vger.kernel.org
-X-Gm-Message-State: AOJu0YwS9ZuWSO+KuXX6QWgSXQkrQxoqY91CKaUZaZHu56ECKX+a5dPM
-	ZZDAfJ1zhypNVTvTZFvMPHqaB9IOjF5IRsq2YWrvvKf7KdZPxVsyNQq78KczUyER5V6zJmq0kk7
-	/jd/qOK+Rr8x9P0xk0uAWusdbPZBavsw=
-X-Gm-Gg: ASbGncvs3kETBP0cKNwppLz2G9H9cTLOOWm4e0MXmn94e89znv7W7vT+WNGT4LfSn/c
-	zoKvIrVH8UnbhbHDHefI1qVP5Sbk4ANQXpcm+Q9hT7+pa7+NfKqWYNS5Q6bX6OnG3157lRiE7GP
-	mKr59ip1li10I214BeRuftBxi/PQaOj/VEu1TC564iCVxzxhXs+uEQ7NzFkosxHAIjoxVyANlqp
-	UKYVDC6LA==
-X-Google-Smtp-Source: AGHT+IFysmNLgAgYG7lYtdrse3SHf122YqK9Usgrv1wtEBz9XZQh06wjpzoMvbc7m9/dJU9UOsdStJIh39nzZi+htsI=
-X-Received: by 2002:a17:90b:2248:b0:31f:9114:ead8 with SMTP id
- 98e67ed59e1d1-32327a76babmr2707556a91.6.1755144540852; Wed, 13 Aug 2025
- 21:09:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1755145586; x=1755750386;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4Y4+VbSY2gENC6vjJLIhD6H5q5HP7szxm2F2pf2ubmU=;
+        b=Q+6jmvn5+/0ym8a6ZVr8fOtb8DdP0dNZtCbTtawUrT7KPqkJweWokvj2ttAStHHPX3
+         LRNlUHAtm9Hn+EzVEDIDVDzzU0jbz5Dj1/QcAH6AflDUEfAGr6i0LGvxRmt8x0Yvm+Er
+         R0AOKnbbOnX5TSueP55UffGAtFSS3lW1Nzm0WfeTTa44mTChkFE/hVBWMgHgtM7OkDri
+         pB6YGqRrwtBTwqND38Mkg3pnAKAa2vhRECWRGKRa7GC92OlaWruK/ggjO7xQEYvnyVrO
+         vTzpTxev3sLHUnt5GIqsn7HKS9151iXDeTAuLKbBGtXmoPIEbV4tBAQ1MuqdjOZEtLcV
+         dkIw==
+X-Gm-Message-State: AOJu0Ywx+2ka/8mVL+VNQNJ6vpQe7Vt0L0i6fZ6+ZOidQ/seCnhekdk+
+	hfzL/9qUCp8kKzg+taDG2dUiMh5kEEf+23hCDW96AYCozEhxHF52X78SyUitU7iawPhUEzxbJMM
+	80q6p
+X-Gm-Gg: ASbGnctG1xPpk/7KMTykyezdB9KJERKQG+SkYKKKy060DOZ8JQicBB0pU36ooFTX3cK
+	s/IZTwd01Qyppc7ZQt4S7ox9DlG0sZfEGaVdhSIv+MrPH96HHF3LANJ2hRHfgrbko6VJJtlvzxJ
+	5kRN3Je35sckwwvlS0Ka0lctb8jl0K6yAPHgEV65WH7JYb1BhPx0pN//V5Qto9n5ZwRA844SPOq
+	jJIJsGZtKEMlsprlnTCAPVaPi+IE3tJWlp/freDttujPAkLkJwYSSCTIyp8reFQH5Kwu6t1DWuB
+	q+U3225gb6+QKQh+FyBLExh94JiHmh1h2NsyXqqmollwTsRl9fUwuu3vUVqDQdce7KDXXKuIt3C
+	R849SRDJCVYMu7IZ+kp9ZZOogO3GTJPgtrQE=
+X-Google-Smtp-Source: AGHT+IHTIvSY9FFJNBppNNZLO9sn/8s0tAcL4Le93FVv9JRJ529BpdCYJLpwI72ZJr0ZEnJN7dNv2g==
+X-Received: by 2002:a05:6a00:1304:b0:740:aa31:fe66 with SMTP id d2e1a72fcca58-76e2f8cf708mr2713273b3a.4.1755145585869;
+        Wed, 13 Aug 2025 21:26:25 -0700 (PDT)
+Received: from localhost ([122.172.87.165])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e2037acf2sm3493102b3a.112.2025.08.13.21.26.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Aug 2025 21:26:25 -0700 (PDT)
+Date: Thu, 14 Aug 2025 09:56:22 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Baptiste Lepers <baptiste.lepers@gmail.com>
+Cc: stable@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: cpumask: Mark CpumaskVar as transparent
+Message-ID: <20250814042622.t2qx6mlelntxi77b@vireshk-i7>
+References: <20250812144215.64809-1-baptiste.lepers@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANaxB-xXgW1FEj6ydBT2=cudTbP=fX6x8S53zNkWcw1poL=L2A@mail.gmail.com>
- <20250724230052.GW2580412@ZenIV> <CANaxB-xbsOMkKqfaOJ0Za7-yP2N8axO=E1XS1KufnP78H1YzsA@mail.gmail.com>
- <20250726175310.GB222315@ZenIV> <CAEWA0a6jgj8vQhrijSJXUHBnCTtz0HEV66tmaVKPe83ng=3feQ@mail.gmail.com>
- <20250813185601.GJ222315@ZenIV> <aJzi506tGJb8CzA3@tycho.pizza> <20250813194145.GK222315@ZenIV>
-In-Reply-To: <20250813194145.GK222315@ZenIV>
-From: Pavel Tikhomirov <snorcht@gmail.com>
-Date: Thu, 14 Aug 2025 12:08:49 +0800
-X-Gm-Features: Ac12FXwDKf6o0FeR-M8ho-Ad58OjJloPtXu94TLN21ukCAu7DxWTnnpglJ78QYM
-Message-ID: <CAE1zp77jmFD=rySJVLf6yU+JKZnUpjkBagC3qQHrxPotrccEbQ@mail.gmail.com>
-Subject: Re: do_change_type(): refuse to operate on unmounted/not ours mounts
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Tycho Andersen <tycho@tycho.pizza>, Andrei Vagin <avagin@google.com>, 
-	Andrei Vagin <avagin@gmail.com>, Christian Brauner <brauner@kernel.org>, 
-	linux-fsdevel <linux-fsdevel@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	criu@lists.linux.dev, Linux API <linux-api@vger.kernel.org>, 
-	stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812144215.64809-1-baptiste.lepers@gmail.com>
 
-On Thu, Aug 14, 2025 at 3:41=E2=80=AFAM Al Viro <viro@zeniv.linux.org.uk> w=
-rote:
->
-> On Wed, Aug 13, 2025 at 01:09:27PM -0600, Tycho Andersen wrote:
-> > On Wed, Aug 13, 2025 at 07:56:01PM +0100, Al Viro wrote:
-> > > @@ -3347,18 +3360,11 @@ static int do_set_group(struct path *from_pat=
-h, struct path *to_path)
-> > >
-> > >     namespace_lock();
-> > >
-> > > -   err =3D -EINVAL;
-> > > -   /* To and From must be mounted */
-> > > -   if (!is_mounted(&from->mnt))
-> > > -           goto out;
-> > > -   if (!is_mounted(&to->mnt))
-> > > -           goto out;
-> > > -
-> > > -   err =3D -EPERM;
-> > > -   /* We should be allowed to modify mount namespaces of both mounts=
- */
-> > > -   if (!ns_capable(from->mnt_ns->user_ns, CAP_SYS_ADMIN))
-> > > +   err =3D may_change_propagation(from);
-> > > +   if (err)
-> > >             goto out;
-> > > -   if (!ns_capable(to->mnt_ns->user_ns, CAP_SYS_ADMIN))
-> > > +   err =3D may_change_propagation(from);
-> >
-> > Just driving by, but I guess you mean "to" here.
->
-> D'oh...  Yes, of course.  Fun question: would our selftests have caught
-> that?
-> [checks]
-> move_mount_set_group_test.c doesn't have anything in that area, nothing i=
-n
-> LTP or xfstests either, AFAICS...
+On 12-08-25, 16:42, Baptiste Lepers wrote:
+> Unsafe code in CpumaskVar's methods assumes that the type has the same
+> layout as `bindings::cpumask_var_t`. This is not guaranteed by
+> the default struct representation in Rust, but requires specifying the
+> `transparent` representation.
+> 
+> Fixes: 8961b8cb3099a ("rust: cpumask: Add initial abstractions")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Baptiste Lepers <baptiste.lepers@gmail.com>
+> ---
+>  rust/kernel/cpumask.rs | 1 +
+>  1 file changed, 1 insertion(+)
 
-Yes, selftest is very simple and is not covering userns checks.
+Applied. Thanks.
 
->  And I don't see anything in
-> https://github.com/checkpoint-restore/criu
-> either - there are uses of MOVE_MOUNT_SET_GROUP, but they are well-buried
-> and I don't see anything in their tests that would even try to poke into
-> that thing...
->
-> Before we go and try to cobble something up, does anybody know of a place
-> where regression tests for MOVE_MOUNT_SET_GROUP could be picked from?
->
-
-Basically each CRIU test that is run by zdtm (if it is in ns/uns
-flavor (which are most of them)), tests mounts checkpoint/restore. And
-each test which has shared/slave moutns leads to MOVE_MOUNT_SET_GROUP
-being used and thus tested. We have a mountinfo comparison in zdtm
-which checks that propagation is topologically the same after c/r.
-
-But, yes, we do not cover userns checks, as in CRIU case, CRIU is
-expected to run in userns which has all capabilities over restored
-container, and should always pass those checks.
-
-JFYI:
-
-The use of MOVE_MOUNT_SET_GROUP in CRIU is well-buried in:
-
-https://github.com/checkpoint-restore/criu/blob/116e56ba46382c05066d33a8bba=
-dcc495dbdb644/criu/mount-v2.c#L896
-
-  +-< move_mount_set_group
-    +-< restore_one_sharing
-      +-< restore_one_sharing_group
-        +-< restore_mount_sharing_options
-          +-< prepare_mnt_ns_v2
-
-This stack already has a set of precreated mounts and walks over their
-sharing groups saved in CRIU image files and assigns them accordingly.
-
-And we have a bunch of tests with different sharing configurations to
-test propagation c/r specifically:
-
-git grep -l "SHARING\|SLAVE" test/zdtm/static
-test/zdtm/static/mnt_ext_auto.c
-test/zdtm/static/mnt_ext_master.c
-test/zdtm/static/mnt_ext_multiple.c
-test/zdtm/static/mnt_root_ext.c
-test/zdtm/static/mntns_overmount.c
-test/zdtm/static/mntns_shared_bind03.c
-test/zdtm/static/mount_complex_sharing.c
-test/zdtm/static/mountpoints.c
-test/zdtm/static/shared_slave_mount_children.c
-
-It should be enough to run a zdtm test-suit to check that change does
-not break something for CRIU (will do).
+-- 
+viresh
 
