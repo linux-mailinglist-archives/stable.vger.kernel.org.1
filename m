@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-169565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34013B26875
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 16:05:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF3AB2687F
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 16:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A444BA27BA8
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 13:57:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83BFA27E6C
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 13:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D463301491;
-	Thu, 14 Aug 2025 13:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A8C3009E0;
+	Thu, 14 Aug 2025 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sojiv3Us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1S3lmav"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB823009F0
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 13:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EB22FCBF1;
+	Thu, 14 Aug 2025 13:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755179822; cv=none; b=Pbj6eft5C9DeH0XDpTz1nOYLQoXpJnZa78NtUbdilUyeTTFvtndqsJ4MQUuEJIRUGpPd6aDqrxsJ8oLzPj1i6GWfGssJnHMcrSHeKq9WlewVlkmk+TQgjPkWD5ILN5X6SGLHrhP3NJCiCwzYUcreH5upWJbj0NUXHWDYV2gV464=
+	t=1755179879; cv=none; b=uA2iLeqi1j1dHwUPoVQ8A9hlmsWm0pDz29o0qUpmntv3+RgUhXehtMGRtLx9eG8WuxjmhxAgLhDV9gXB8x7k64HDqlJ6wymG5dvGo5nrQE8zDHLr+ZBV60pdvfwpu8E/qD30Lkmv+PKwqPuXRPhgkBxT5z24nW+1CD5AJ6TITbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755179822; c=relaxed/simple;
-	bh=Q7mbc3OIpQaPF8obJ8icgwvmlyAtL+TbGOLtiSQZ6es=;
+	s=arc-20240116; t=1755179879; c=relaxed/simple;
+	bh=00L8Plgo1muOZEE6yX/bScl7169HxigOb92OdTXvj6A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A27F5EB3iqhZwhDwBLaEFC1Jf1k+lFg219uNbX8myCsFEh5pSd+hNyrKve7Q7bHw/6SNuCcjU6txJMrJGXJc+l3bSGTfRMI4OTriPG2Flt7DMeVwgX7M+ftIBNRIXSwGkNajS/7MdnQqCojLg8MQLNBYam/6mEinMtCx3r/GedA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sojiv3Us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F10AC4CEEF;
-	Thu, 14 Aug 2025 13:57:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=E6XUKk20mP730bi1OnMzMmGXTJX6a7OXpYA6/4+4iJ14WGEj24FinjcV75I4ooE2/sDyTESvrDum0Av4RripQi0LVJ/POJvJIWyk4rUs4T9Egb3kWDJrYLf/a1tRs6V5PILCtAnwo8MokXptIQF4zn9sRz98Z3msK2b+RVy+O6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1S3lmav; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196A2C4CEED;
+	Thu, 14 Aug 2025 13:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755179821;
-	bh=Q7mbc3OIpQaPF8obJ8icgwvmlyAtL+TbGOLtiSQZ6es=;
+	s=korg; t=1755179878;
+	bh=00L8Plgo1muOZEE6yX/bScl7169HxigOb92OdTXvj6A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sojiv3UsybtdunXpyA0Crttz/b1pWBG0WsE9lbXRXbLa9LCyn+5d5BrRFyAjTLPjw
-	 2ktGP9YHMe450uLz1StN54N7defGdpcppvziO6onfFeQdJxq5jRP5EfqmdPEeWJobD
-	 RSs6hrcrlcHYtGfeqQJewvrnIxTK0VHuvTSzvjAQ=
-Date: Thu, 14 Aug 2025 15:56:58 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Gu Bowen <gubowen5@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	linux-mm@kvack.org, Waiman Long <llong@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH v3] mm: Fix possible deadlock in console_trylock_spinning
-Message-ID: <2025081450-tibia-angelfish-3aa2@gregkh>
-References: <20250813085310.2260586-1-gubowen5@huawei.com>
- <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
- <f3e631dc-245a-4efe-98e5-cbe94464daec@huawei.com>
- <aJ3f05Dqzx0OouJa@arm.com>
+	b=a1S3lmavTCmHq0GuVZEGqSDcHNBd1421699LqSu1KFIhCZ74Wi7CiX1c8+vYB5s4t
+	 NRxg7Kjxc9//LG6eKfDzCB4nmwT9bsRVyX9pvf3Y2XvkxAXC3YM8msbKJ7lx5W/GZR
+	 fDt20911pdG30fQfPQ79NtdZNSf8jlTbzFLkd6SU=
+Date: Thu, 14 Aug 2025 15:57:55 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Julian Taylor <julian.taylor@1und1.de>
+Cc: patchwork-bot+netdevbpf@kernel.org, Fedor Pchelkin <pchelkin@ispras.ru>,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	kuniyu@google.com, edumazet@google.com, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] netlink: avoid infinite retry looping in
+ netlink_unicast()
+Message-ID: <2025081422-monetize-ferocity-fe28@gregkh>
+References: <20250728080727.255138-1-pchelkin@ispras.ru>
+ <175392900576.2584771.4406793154439387342.git-patchwork-notify@kernel.org>
+ <9fa0c0ea-9c5d-4039-856f-222486283a3c@1und1.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,32 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aJ3f05Dqzx0OouJa@arm.com>
+In-Reply-To: <9fa0c0ea-9c5d-4039-856f-222486283a3c@1und1.de>
 
-On Thu, Aug 14, 2025 at 02:08:35PM +0100, Catalin Marinas wrote:
-> On Thu, Aug 14, 2025 at 10:33:56AM +0800, Gu Bowen wrote:
-> > On 8/14/2025 6:56 AM, Andrew Morton wrote:
-> > > I'm not sure which kernel version this was against, but kmemleak.c has
-> > > changed quite a lot.
-> > > 
-> > > Could we please see a patch against a latest kernel version?  Linus
-> > > mainline will suit.
-> > > 
-> > > Thanks.
+On Thu, Aug 14, 2025 at 02:51:27PM +0200, Julian Taylor wrote:
+> 
+> On 31.07.25 04:30, patchwork-bot+netdevbpf@kernel.org wrote:
+> > Hello:
 > > 
-> > I discovered this issue in kernel version 5.10. Afterwards, I reviewed the
-> > code of the mainline version and found that this deadlock path no longer
-> > exists due to the refactoring of console_lock in v6.2-rc1. For details on
-> > the refactoring, you can refer to this link :
-> > https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/.
-> > Therefore, theoretically, this issue existed before the refactoring of
-> > console_lock.
+> > This patch was applied to netdev/net.git (main)
+> > by Jakub Kicinski <kuba@kernel.org>:
+> > 
+> > On Mon, 28 Jul 2025 11:06:47 +0300 you wrote:
+> > > netlink_attachskb() checks for the socket's read memory allocation
+> > > constraints. Firstly, it has:
+> > > 
+> > >    rmem < READ_ONCE(sk->sk_rcvbuf)
+> > > 
+> > > to check if the just increased rmem value fits into the socket's receive
+> > > buffer. If not, it proceeds and tries to wait for the memory under:
+> > > 
+> > > [...]
+> > 
+> > Here is the summary with links:
+> >    - [net] netlink: avoid infinite retry looping in netlink_unicast()
+> >      https://git.kernel.org/netdev/net/c/759dfc7d04ba
+> > 
+> > You are awesome, thank you!
 > 
-> Oh, so you can no longer hit this issue with mainline. This wasn't
-> mentioned (or I missed it) in the commit log.
-> 
-> So this would be a stable-only fix that does not have a correspondent
-> upstream. Adding Greg for his opinion.
+> hello,
+> as far as I can tell this patch has not made it to the 6.1 stable tree yet in the 6.1.148 review yet:
+> https://www.spinics.net/lists/stable/msg866199.html
 
-Why not take the upstream changes instead?
+Please use lore.kernel.org links.
+
+> As this seems to be causing issues in distributions releasing 6.1.147 can this still be added to the next possible stable release?
+> See following issues in relation to loading audit rules which seems to trigger the fixed bug:
+> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1111017
+> https://github.com/amazonlinux/amazon-linux-2023/issues/988
+> 
+> I have tested this patch solves the problem in the Debian bookworm using 6.1.x
+
+What is the git commit id of this patch in Linus's tree?
+
+thanks,
+
+greg k-h
 
