@@ -1,140 +1,238 @@
-Return-Path: <stable+bounces-169523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413D1B261E0
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 12:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F63B261E3
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 12:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ADA71621DA
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 10:08:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A31D170C6D
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 10:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CA72E9EB4;
-	Thu, 14 Aug 2025 10:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189B02F745C;
+	Thu, 14 Aug 2025 10:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fqz4zLPp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="A/M0kQoe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064F01367
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 10:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B42D2ED14F
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 10:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755166127; cv=none; b=hcH2iWkKW2eZ6M6PXOBzDbdnOfE1ogh3EOckDVs7UwRus+r273srj6tSFAlBjJAVgZDPWoU+6nZrQyuXfdv8u0GAzj1cI+bxIbJrmPrY/d+T5BFs1R9ijwJIraP9ep15pui0s0IutXpGsaMgd9xd2Vee5gREZwKbrlkqf5Bhxdo=
+	t=1755166264; cv=none; b=ntgzbLYTA65SJn6+k9K3fXak8yL0UuGP9ccdXOK8Q7WT0HKuFQv2lSH1ZrdByOf4orIFhOt9kmNCLyf39tzZYZCj6BZ7wR8l5jEpfNqHLVvU52NsSxQJUFTFylYRrPSYJ6mkFenVDkYD/hXSEwcEC/0vDCpQwhwn1lXbv5o+V+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755166127; c=relaxed/simple;
-	bh=ttbDN4ZOU3yZqgR60ZF4HJpMsvIafyaDjgxNW14kxp8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=O3Gs63OQ2btThgu+4+n+nULc5+2B4uUe2ASXS06iwROIUlfnPOxyxhAZ/U0PI8BwMbZFXOrneEbX1azkN2CalnAjnkoZjPDLlW5MRphugO/ZbTxlHe7giouV+hS11IHOE7QA1uQlrwp0l9Y1CVcV9Y9RvucUaU98MXAAd/gqw9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fqz4zLPp; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755166126; x=1786702126;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=ttbDN4ZOU3yZqgR60ZF4HJpMsvIafyaDjgxNW14kxp8=;
-  b=Fqz4zLPp5gwb0vqUe5oPbQvh/FKw92PWrQF1X51EYp0alsF5fWLvhz8q
-   Q0eZCPMuWIBXKBAd2Bx0JYxPIQ84cZ6sR+NKhSUa6qrzhkLS1EpRCOa5N
-   tPHTIDcYf1cLrI2b5fSSZa650GoO82q5FT4GbPb30GkwOcmxOQIhhAY7E
-   wOcr38igN1CrqWVq7S0fS1u2y2B6g5AgxdyH+T93aD6pwSfcjH+vJtWn9
-   dwz4gcLWrp+zUJL2nEECse8bHVSkPvOZOEyYqQXTU13zSX8Xq/VGIP5MT
-   4OXapwGjTxSCo+7M3nrgC5wa8EfjFe7lbYVE/BQkvfGuaXjz8SG/Xd5ij
-   A==;
-X-CSE-ConnectionGUID: 7r9p9b3VSrO3tjLipANxOg==
-X-CSE-MsgGUID: XM9ZMD1QTYCV/IlkGmwwyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57194166"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="57194166"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 03:08:45 -0700
-X-CSE-ConnectionGUID: YGJRew6NSIy5r3+axtXnFw==
-X-CSE-MsgGUID: pYa5Aq4dRmq64KXV7jPwtQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="166360384"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost) ([10.245.246.100])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 03:08:44 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>,
- "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
- "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
-Cc: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, "Jason@zx2c4.com"
- <Jason@zx2c4.com>
-Subject: Re: [PATCH] drm/i915: silence rpm wakeref asserts on
- GEN11_GU_MISC_IIR access
-In-Reply-To: <fbb92a6aad7452188396136faced103614519e98.camel@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250805115656.832235-1-jani.nikula@intel.com>
- <fbb92a6aad7452188396136faced103614519e98.camel@intel.com>
-Date: Thu, 14 Aug 2025 13:08:40 +0300
-Message-ID: <edd962e40182456ef068f306023d73f045d729ca@intel.com>
+	s=arc-20240116; t=1755166264; c=relaxed/simple;
+	bh=3lgh8xQ26jozDiJYVvb/a6YneyTFrSwzHoOPM1g7Lwc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lxAM7nvxvP3/CgKDg23NuJBhP9gJA3gzVJHJQlY4KMzvMgFKHT93TspgsB3PZ7Jxp28ZFDfN8FJ5UJez8exidAGhBbWTaT5ZhEI3DRmyEGbw1ih60MU9/ZjMui0K1nl/QyLjruJ1FiwwwpI2Dg01Ei7HQ+eCWRXRCtoj57uS4ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=A/M0kQoe; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-76e2eb2bf30so862930b3a.2
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 03:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755166262; x=1755771062; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+fX785wkBJ0IdNPwEH4B6np2Zn3mGDedo7EzvKxRowo=;
+        b=A/M0kQoeBhLgn5cmxrlR1K98NT/OpTnmeo0o4WAp2VZwQfPweU8+8O3aTlIL3/57Gh
+         LaoR5aQqEKIGHLziMjGbKMsECmCzkSZKuJYi3U3/MPj/tFgJDr7Zv+izT77yAm0MXwjr
+         gCElk4i348HB/+dcLI0ee9z1gyFktFj58u+HDdL+wAbAxoYG4iFMK4o5zi/67uNKvlZr
+         s2rqkZierI3N0WZiJhP/7Zz1I2zlRK0W9TSMxESqiW8ZwH/g4xNe3DUAHyi+D5J+9yyO
+         XWOvmld5Du8pWJgwR/8AxanJ6YGk908Srj535OwWPmpMMAIHqWRVyGUdgr+SZCWkUHaC
+         Tz3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755166262; x=1755771062;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+fX785wkBJ0IdNPwEH4B6np2Zn3mGDedo7EzvKxRowo=;
+        b=JzHy7w3VWrlgnTluSz36rT2K5ii6RE6zLwgm/sGkngc0FX8HLLgE9jpa5R9dZ4LjXF
+         b7DmcLl5iR96DRQybCfVs3rKQHSGhw0zKzFfPs/hcLVGGMdkwhDEDPUsbTMFUzhuGhej
+         h36DpTz5XHWfhRxhEyWiLdNqqMr7MTvxmAEWr+N2u7y/UEjDqjWo+Tj85qDN0fJyHnqR
+         ZJs0eA7TB3ZPtZIz5tuwjDwr9R0WSbJlvlLS3uMNv7by28s+rhcCGC08YaipZnmix7SZ
+         zWU5Ky3I6Qd/oa/pz5ymg8athF00qkCZ9nE/SFYecjzxLuYv9lbQD/bWKmNQEoO9gw23
+         nP2w==
+X-Gm-Message-State: AOJu0YzPFLpQN51BSgfCfatf60eU5PCT7TmGqFAJJr20Fhf8PlKQKGtw
+	qKlnEevM3s4nbSW8LJqSeEqnwREJ7nAjgE5Ho8UbiqLlqD87Ka5rWsaolfvarmyQBKJgq6roo5v
+	LbQkmjLLvUZZQtJfsCEhLXxqs0ookwT4nqS0wKvxASQ==
+X-Gm-Gg: ASbGnctEdCUpfVRRtG4VDS+KbMYVkdvOSnECXnCRxGTgW9eGE1fHKW1Urn+Hc93CVWb
+	3nJenARAeYzgENE1tKtwq7ICKmORw8rGinHXsealG5nxrlLdjcE99GxwdmHLdQqqmf+Tpy/qGSx
+	iWQUYFTg7hSAxbL/ff2+uRpgFrao5Up01N9ZF06MPKXdt7GpQGRxqptSCe84dR0vRQOwKbydoEN
+	8XR/ZZ7a7HcY1ksjPdtpT9UHStCs15TW0gY8Q9XH6IjGBdRpWox
+X-Google-Smtp-Source: AGHT+IHb4ojkdA7zcslWWamWR1QUnn8TXopVuG6YgtHfwA2nc45FHARLYsJF9iFveQxGypjEoJChOlVWGf4q9ywKLhw=
+X-Received: by 2002:a17:903:1b0f:b0:240:3d07:9ea4 with SMTP id
+ d9443c01a7336-244584ed15cmr38835865ad.7.1755166262424; Thu, 14 Aug 2025
+ 03:11:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250812172952.959106058@linuxfoundation.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 14 Aug 2025 15:40:50 +0530
+X-Gm-Features: Ac12FXyZ1RL-JNvJ7CwJU5ih2TvRDng2iKqcJ0NdDKAOTzZYTi5fCS_1BEm7rUM
+Message-ID: <CA+G9fYv0QfL4vF5hJoSzd-kQ=BdcH8toAMhvEnhqem8og_UQjw@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/262] 6.6.102-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 14 Aug 2025, "Hogander, Jouni" <jouni.hogander@intel.com> wrote:
-> On Tue, 2025-08-05 at 14:56 +0300, Jani Nikula wrote:
->> Commit 8d9908e8fe9c ("drm/i915/display: remove small micro-
->> optimizations
->> in irq handling") not only removed the optimizations, it also enabled
->> wakeref asserts for the GEN11_GU_MISC_IIR access. Silence the asserts
->> by
->> wrapping the access inside
->> intel_display_rpm_assert_{block,unblock}().
->>=20
->> Reported-by: Jason A. Donenfeld <Jason@zx2c4.com>
->> Closes: https://lore.kernel.org/r/aG0tWkfmxWtxl_xc@zx2c4.com
->> Fixes: 8d9908e8fe9c ("drm/i915/display: remove small micro-
->> optimizations in irq handling")
->> Cc: <stable@vger.kernel.org> # v6.13+
->> Suggested-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+On Tue, 12 Aug 2025 at 23:14, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Reviewed-by: Jouni H=C3=B6gander <jouni.hogander@intel.com>
-
-Thanks, pushed to din.
-
-BR,
-Jani.
-
+> This is the start of the stable review cycle for the 6.6.102 release.
+> There are 262 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
->> ---
->> =C2=A0drivers/gpu/drm/i915/display/intel_display_irq.c | 4 ++++
->> =C2=A01 file changed, 4 insertions(+)
->>=20
->> diff --git a/drivers/gpu/drm/i915/display/intel_display_irq.c
->> b/drivers/gpu/drm/i915/display/intel_display_irq.c
->> index fb25ec8adae3..68157f177b6a 100644
->> --- a/drivers/gpu/drm/i915/display/intel_display_irq.c
->> +++ b/drivers/gpu/drm/i915/display/intel_display_irq.c
->> @@ -1506,10 +1506,14 @@ u32 gen11_gu_misc_irq_ack(struct
->> intel_display *display, const u32 master_ctl)
->> =C2=A0	if (!(master_ctl & GEN11_GU_MISC_IRQ))
->> =C2=A0		return 0;
->> =C2=A0
->> +	intel_display_rpm_assert_block(display);
->> +
->> =C2=A0	iir =3D intel_de_read(display, GEN11_GU_MISC_IIR);
->> =C2=A0	if (likely(iir))
->> =C2=A0		intel_de_write(display, GEN11_GU_MISC_IIR, iir);
->> =C2=A0
->> +	intel_display_rpm_assert_unblock(display);
->> +
->> =C2=A0	return iir;
->> =C2=A0}
->> =C2=A0
+> Responses should be made by Thu, 14 Aug 2025 17:27:08 +0000.
+> Anything received after that time might be too late.
 >
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.102-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
---=20
-Jani Nikula, Intel
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.6.102-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 7ec7f0298ca2b610c71e74b76d032616fe2cbaf5
+* git describe: v6.6.101-263-g7ec7f0298ca2
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
+01-263-g7ec7f0298ca2
+
+## Test Regressions (compared to v6.6.100-77-g1a25720a319a)
+
+## Metric Regressions (compared to v6.6.100-77-g1a25720a319a)
+
+## Test Fixes (compared to v6.6.100-77-g1a25720a319a)
+
+## Metric Fixes (compared to v6.6.100-77-g1a25720a319a)
+
+## Test result summary
+total: 279827, pass: 261488, fail: 5549, skip: 12412, xfail: 378
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 129 total, 129 passed, 0 failed
+* arm64: 44 total, 44 passed, 0 failed
+* i386: 23 total, 23 passed, 0 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 32 total, 31 passed, 1 failed
+* riscv: 15 total, 15 passed, 0 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 37 total, 36 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* modules
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
