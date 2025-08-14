@@ -1,221 +1,577 @@
-Return-Path: <stable+bounces-169489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DB9B25948
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 03:48:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC47CB25951
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 03:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6B2A887F3A
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 01:48:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 693AF7AB072
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 01:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4967230BCB;
-	Thu, 14 Aug 2025 01:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1164238166;
+	Thu, 14 Aug 2025 01:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5J/Yiks"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SbE4pyn4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A459414E2E2
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 01:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508C4204090;
+	Thu, 14 Aug 2025 01:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755136092; cv=none; b=jFn5ikytVk2Gro6T8q7J9xwD5r/F5XIe46+Sf//D36//j0VbFwLU+pNK7wEi9Kx5xTZGXmf7KsWDmWfhnhGt6F7TMNMGSQ1tacR+pHETm9bp1H4dKLXewYPhari5GYYcscqUletVa+x4S7BVu36cdl1aZ5reh/oMDqPZpijad5o=
+	t=1755136646; cv=none; b=YCQqtYDNeS9+MCrkrpeEeRPldLQO9Rl4WvpPmqk4+GsbowbN+aZDmA9VdUAucFnHFkv04Q7h53t6V2rN+satUpo4dxVkS8F022zJOjnf6LLaBUcXyMGL/wkq6xen43LbtmqE8kxjgpOFlUPvrKNk1oajcOFaj1r6b75dLxLLacw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755136092; c=relaxed/simple;
-	bh=hkrydW/BcIM0BQbS4BruH65XbFLMmCdvs7IwXiCT+M4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rvoUUQrdu0TIslhntqz8y936E/PPQMEZMh26lDhHZY8c1EQC+kM3PawQM3MvlHKYjIeyIClCTb10DL+jZ6zxsTIJaWmWU4ryi9Ywsb0t555qVHQl90FITvxFui6l8e3taL4v/Xdp+3MNtAKc7TsXHx9xMw6nw8dgHD/mrbDMaXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5J/Yiks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9998CC4CEEB;
-	Thu, 14 Aug 2025 01:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755136091;
-	bh=hkrydW/BcIM0BQbS4BruH65XbFLMmCdvs7IwXiCT+M4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5J/YiksCFwSCFFkkgxc5+9CCSvn0K/kGalyfPxUrJfPJWVVNy1a7Z9ahov6asvrW
-	 ed2Al2O+Fp3UwZrgFKBDgAkr6E5wO3xEdrPcfafs+nongQUqItgf1FqVnEArOr6XIi
-	 1p2mg5zzh1evq2iOVAPQ9uyL0gU9wuEFTRwv1cz76MHfLnCxKOEPd6hiaUUhg5F8oV
-	 38CXdXF3L5QBtGWM9rKmM0RzOTdmvBKK2B/USGBCvZu8amNbLU0O8GGlZKMRr8t+8T
-	 5uL1elJrTcskqcEplvKaHn3269CZZnOrsBLLDSiiTmmkQz8gLOhIw/ZV/C0B/PKOgW
-	 dGW/pSUh3z3eQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Maxim Levitsky <mlevitsk@redhat.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y 3/3] KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs
-Date: Wed, 13 Aug 2025 21:48:06 -0400
-Message-Id: <20250814014806.2082726-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250814014806.2082726-1-sashal@kernel.org>
-References: <2025081208-gerbil-shelve-9cc8@gregkh>
- <20250814014806.2082726-1-sashal@kernel.org>
+	s=arc-20240116; t=1755136646; c=relaxed/simple;
+	bh=wlLWX+UnpA8mFludyfGuIC5yAqUHEvKUAq+kWf0rnQM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KD0J1K+XeknDVVEGKqGt/6OuEqYzEzcYHFRp81r4N37TH2tAJ9CmE5iz83Kai3oDs5R+5NhZEYVbx+JkcIiel8RnqGtIO9wctgBTZ77UVo0d77GSGP1vAMLvb1JIPqgIbTt4kcQ4SWe4gTjaBhGLLVyyh8XcX3PBGYo3yAumheg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SbE4pyn4; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32326e71c08so96848a91.3;
+        Wed, 13 Aug 2025 18:57:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755136643; x=1755741443; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=y+kWqLLyePNycR+JiNLWQPriOMjue0Fgv8ycdj0wX2A=;
+        b=SbE4pyn4Wh0hzGgj74dpBII5j1T4X7Vwa2zqcZC1M94dBeR7TqoXgtxRp/2liyw7Ad
+         MT/aEBnXk0b38V7wLqSF0kKyUGFEL3ACzI+eM+UKJSKnvwQcQ3XJv2/ak4J6a52oLrS/
+         dOGTNOMEncqAEqQAlnbnDx2Ym+dC8WM3EZoMLGNp5JmHHpGTqxjQEeqoSFvSN4lt2ait
+         94ycw3FJ8ltpP0c5i4m6dKgAzcZKpEbwBWieahvlJCY0Q27Sbky9cGk4+cM2HQxX3hdu
+         FjCXTiWs0j0f78K8RAnoIUSJrJFOrD7G9Ontwo/qyoYgSu1CheWXUnZ83vJkSQ4Te/1J
+         Rvww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755136643; x=1755741443;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y+kWqLLyePNycR+JiNLWQPriOMjue0Fgv8ycdj0wX2A=;
+        b=bPJfT7CbF+4X9gSyzz2b6fyD3kzt7spFgDXC0+qvtII9xFGlXLxe4BGaYwFC8RGNHG
+         hWaviXMPUknWUbnLdpTqEjhUg6vIGsccmpEhKqucNGXUe4hJJPvgsk5FL/Z2VeqRZFNw
+         PMkyBaQGuiRj7V7vwK7Ee5t8+XGTj0wGNGeRG2plOpEeROVS14irhbYzG974Wn53LIUv
+         lM9udVMANpwsakoXk0hqN8375oDDoPU9QDDii0q32sJerXLBSlobjC8/pK7Jht4cMMb3
+         2PrJVgVFdXJ2CioNytt54PVgiAmdb2wUjqGzqivT4ZMVR6uc95ksDL8NDhFihGYFM5pe
+         t6ew==
+X-Forwarded-Encrypted: i=1; AJvYcCVClQJYyDinuSAr3OILTe958upyPmoKqrxnnVvb71OERfBkKY3JQUCNEDRY5+LeosNMCgz0StJpPXJA@vger.kernel.org, AJvYcCVqoXymIPshbt2wccFNKzJifCbUPaEUG3m3nowEAJpEYYLZ+mhoN6VrbB4X7AYIAxVCtsoviaNL@vger.kernel.org, AJvYcCWGsT3C94j2wELtQEUzatLkB0IFh9z1vgFgw3VP9ASMjOrgFW71GiPiR5BvHG8C5KP2I1hga6CqbCXOEKU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8HIJUJW9pyZ9CIrBcB7U3sdHk1f3uLeizLp2hlSMsDVWR/Jcm
+	kDMt59M01ov5JttK7ud6GHKPsrAWIrDXeeJ3yWSForijv42sbGo7y2Y8
+X-Gm-Gg: ASbGnctdXnvGc6kJMB/Xw3+Xr6rQ27fV2Du9OEQCaF+yxgpzaxwqryYYXVCZLCJjmeP
+	W5LAXgveQZ/GEZgwW5oKBCbExgSzBgZC+4vUVH9CfDmMZ9h6U02tZ+67Bj0HpbFdkTzUBlUpEXC
+	AFZ2fgNqI/xmS2qF72fC3/40sUwvgBAbVa191X5+lSB5cyx9cUcS01Vx2dQMMWPLSwkMeY+2Q4K
+	wWpbXFEBp0LGzUSAUhmoLx5Gc79WTElVYvaKX1YTwRMCbRuoTo+MPOFLSD389EF2PBEDrcQ81Vh
+	Q6gmFPgO6EhLFMmJ+BbokhhEIh04btb4MZuL/qeTLo8UpAIRq+1wtGafuWOZZfxqAoclFpCKGy0
+	KDIZ5mPR9vFU7pYhY6UtwwoCkIWcHYfc=
+X-Google-Smtp-Source: AGHT+IEPA6HMlWNpHXodrv1lD5E3otIkFSWEptYHG08XWLr4ANdEPjhnnUybs67K/lJPHq37cBOu7g==
+X-Received: by 2002:a05:6a20:734f:b0:240:25cf:8548 with SMTP id adf61e73a8af0-240bd296dccmr784167637.6.1755136642967;
+        Wed, 13 Aug 2025 18:57:22 -0700 (PDT)
+Received: from [192.168.1.7] ([110.78.157.89])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b435a19a01asm10970743a12.17.2025.08.13.18.57.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Aug 2025 18:57:22 -0700 (PDT)
+Message-ID: <8e9066d4-1b04-4423-869d-2bac0a3385a2@gmail.com>
+Date: Thu, 14 Aug 2025 08:57:16 +0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] USB: storage: Ignore driver CD mode for Realtek
+ multi-mode Wi-Fi dongles
+To: Zenm Chen <zenmchen@gmail.com>, stern@rowland.harvard.edu
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, pkshih@realtek.com, rtl8821cerfe2@gmail.com,
+ stable@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
+ usbwifi2024@gmail.com
+References: <03d4c721-f96d-4ace-b01e-c7adef150209@rowland.harvard.edu>
+ <20250813225417.4792-1-zenmchen@gmail.com>
+Content-Language: en-US
+From: Lars Melin <larsm17@gmail.com>
+In-Reply-To: <20250813225417.4792-1-zenmchen@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+On 2025-08-14 05:54, Zenm Chen wrote:
+> Alan Stern <stern@rowland.harvard.edu> 於 2025年8月14日 週四 上午2:19寫道：
+>>
+>> On Thu, Aug 14, 2025 at 01:53:12AM +0800, Zenm Chen wrote:
+>>> Alan Stern <stern@rowland.harvard.edu> 於 2025年8月14日 週四 上午12:58寫道：
+>>>>
+>>>> On Thu, Aug 14, 2025 at 12:24:15AM +0800, Zenm Chen wrote:
+>>>>> Many Realtek USB Wi-Fi dongles released in recent years have two modes:
+>>>>> one is driver CD mode which has Windows driver onboard, another one is
+>>>>> Wi-Fi mode. Add the US_FL_IGNORE_DEVICE quirk for these multi-mode devices.
+>>>>> Otherwise, usb_modeswitch may fail to switch them to Wi-Fi mode.
+>>>>
+>>>> There are several other entries like this already in the unusual_devs.h
+>>>> file.  But I wonder if we really still need them.  Shouldn't the
+>>>> usb_modeswitch program be smart enough by now to know how to handle
+>>>> these things?
+>>>
+>>> Hi Alan,
+>>>
+>>> Thanks for your review and reply.
+>>>
+>>> Without this patch applied, usb_modeswitch cannot switch my Mercury MW310UH
+>>> into Wi-Fi mode [1].
+>>
+>> Don't post a link to a video; it's not very helpful.  Instead, copy the
+>> output from the usb_modeswitch program and include it in an email
+>> message.
+> 
+> Sorry about that.
+> 
+>>
+>>> I also ran into a similar problem like [2] with D-Link
+>>> AX9U, so I believe this patch is needed.
+>>
+>> Maybe it is and maybe not.  It depends on where the underlying problem
+>> is.  If the problem is in the device then yes, the patch probably is
+>> needed.  But if the problem is in usb_modeswitch then the patch probably
+>> is not needed.
+>>
+>>>> In theory, someone might want to access the Windows driver on the
+>>>> emulated CD.  With this quirk, they wouldn't be able to.
+>>>>
+>>>
+>>> Actually an emulated CD doesn't appear when I insert these 2 Wi-Fi dongles into
+>>> my Linux PC, so users cannot access that Windows driver even if this patch is not
+>>> applied.
+>>
+>> What does happen when you insert the WiFi dongle?  That is, what
+>> messages appear in the dmesg log?
+> 
+> OS: Arch Linux
+> Kernel version: 6.15.9-arch1-1
+> 
+> These are the messages shown in the kernel log when the dongles were inserted.
+> 
+> Mercury MW310UH:
+> [ 4405.000985] usb 3-2: new high-speed USB device number 31 using ehci-pci
+> [ 4405.126736] usb 3-2: New USB device found, idVendor=0bda, idProduct=a192, bcdDevice= 2.00
+> [ 4405.126750] usb 3-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+> [ 4405.126756] usb 3-2: Product: DISK
+> [ 4405.126760] usb 3-2: Manufacturer: Realtek
+> [ 4405.127200] usb-storage 3-2:1.0: USB Mass Storage device detected
+> [ 4405.127632] scsi host8: usb-storage 3-2:1.0
+> [ 4406.155867] scsi 8:0:0:0: CD-ROM            Realtek  USB Disk autorun 1.00 PQ: 0 ANSI: 0 CCS
+> [ 4406.164982] sr 8:0:0:0: [sr0] scsi-1 drive
+> [ 4406.169602] sr 8:0:0:0: [sr0] Hmm, seems the drive doesn't support multisession CD's
+> [ 4406.282981] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4406.530027] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4406.776991] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4407.023992] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4407.263927] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4407.510987] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4407.757988] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4408.004967] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4408.244989] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4408.491971] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4408.738973] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4408.985967] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4409.225847] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4409.473012] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4409.719978] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4409.966958] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4410.206962] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4410.453952] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4410.700965] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4410.947959] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4411.187950] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4411.434956] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4411.681959] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4411.928970] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4412.054904] sr 8:0:0:0: Attached scsi CD-ROM sr0
+> [ 4412.055122] sr 8:0:0:0: Attached scsi generic sg3 type 5
+> [ 4412.168955] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4412.416956] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4412.663960] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4412.910947] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4413.150951] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4413.397994] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4413.645959] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4413.892990] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4414.133942] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4414.380798] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4414.621191] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4414.867934] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4415.117949] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4415.364797] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> 
+> ... Countless "usb 3-2: reset high-speed USB device number 31 using ehci-pci" appearred here.
+> 
+> [ 4854.437661] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4854.684646] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4856.951643] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4857.198641] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4857.445642] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4857.692644] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4859.959629] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4860.207512] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4860.454675] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4860.701628] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4862.968616] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4863.215613] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4863.462670] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4863.709608] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4865.975479] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4866.224610] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4866.471590] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4866.718605] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4868.983453] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4869.230624] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4869.477582] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> [ 4869.724579] usb 3-2: reset high-speed USB device number 31 using ehci-pci
+> 
+> 
+> 
+> D-Link AX9U:
+> [ 6400.069566] usb 3-2: new high-speed USB device number 38 using ehci-pci
+> [ 6400.195236] usb 3-2: New USB device found, idVendor=0bda, idProduct=1a2b, bcdDevice= 0.00
+> [ 6400.195250] usb 3-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+> [ 6400.195256] usb 3-2: Product: DISK
+> [ 6400.195261] usb 3-2: Manufacturer: Realtek
+> [ 6400.197475] usb-storage 3-2:1.0: USB Mass Storage device detected
+> [ 6400.197768] scsi host8: usb-storage 3-2:1.0
+> [ 6401.481648] scsi 8:0:0:0: CD-ROM            RTK      Driver Storage   2.04 PQ: 0 ANSI: 0 CCS
+> [ 6401.483955] sr 8:0:0:0: [sr0] scsi3-mmc drive: 0x/0x caddy
+> [ 6401.487626] sr 8:0:0:0: Attached scsi CD-ROM sr0
+> [ 6401.487828] sr 8:0:0:0: Attached scsi generic sg3 type 5
+> [ 6432.007456] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6462.723317] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6493.447105] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6524.163962] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6554.882745] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6565.190684] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6595.846508] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6626.562333] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6657.283170] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6688.002984] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6718.721814] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6749.445506] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6759.549662] INFO: task (udev-worker):2838 blocked for more than 122 seconds.
+> [ 6759.549677]       Not tainted 6.15.9-arch1-1 #1
+> [ 6759.549682] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> [ 6759.549685] task:(udev-worker)   state:D stack:0     pid:2838  tgid:2838  ppid:329    task_flags:0x400140 flags:0x00004002
+> [ 6759.549697] Call Trace:
+> [ 6759.549701]  <TASK>
+> [ 6759.549709]  __schedule+0x409/0x1330
+> [ 6759.549727]  schedule+0x27/0xd0
+> [ 6759.549735]  schedule_preempt_disabled+0x15/0x30
+> [ 6759.549743]  __mutex_lock.constprop.0+0x481/0x880
+> [ 6759.549754]  ? __pfx_blkdev_open+0x10/0x10
+> [ 6759.549763]  bdev_open+0x2a0/0x3d0
+> [ 6759.549771]  ? __pfx_blkdev_open+0x10/0x10
+> [ 6759.549777]  blkdev_open+0xa5/0x100
+> [ 6759.549785]  do_dentry_open+0x170/0x5d0
+> [ 6759.549794]  vfs_open+0x30/0x100
+> [ 6759.549804]  path_openat+0x717/0x1300
+> [ 6759.549813]  ? path_openat+0x98c/0x1300
+> [ 6759.549821]  do_filp_open+0xd8/0x180
+> [ 6759.549834]  do_sys_openat2+0x88/0xe0
+> [ 6759.549841]  __x64_sys_openat+0x61/0xa0
+> [ 6759.549847]  do_syscall_64+0x7b/0x810
+> [ 6759.549856]  ? do_syscall_64+0x87/0x810
+> [ 6759.549863]  ? do_syscall_64+0x87/0x810
+> [ 6759.549869]  ? set_pte_range+0xe2/0x200
+> [ 6759.549879]  ? set_ptes.isra.0+0x36/0x80
+> [ 6759.549886]  ? finish_fault+0x22f/0x460
+> [ 6759.549895]  ? do_fault+0x3a7/0x5b0
+> [ 6759.549903]  ? ___pte_offset_map+0x1b/0x180
+> [ 6759.549912]  ? __handle_mm_fault+0x7de/0xfd0
+> [ 6759.549918]  ? do_epoll_ctl+0xa80/0xdd0
+> [ 6759.549926]  ? __count_memcg_events+0xb0/0x150
+> [ 6759.549934]  ? count_memcg_events.constprop.0+0x1a/0x30
+> [ 6759.549941]  ? handle_mm_fault+0x1d2/0x2d0
+> [ 6759.549948]  ? do_user_addr_fault+0x181/0x690
+> [ 6759.549957]  ? irqentry_exit_to_user_mode+0x2c/0x1b0
+> [ 6759.549966]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [ 6759.549974] RIP: 0033:0x7fc19fe931ce
+> [ 6759.549995] RSP: 002b:00007ffe87a741b0 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
+> [ 6759.550003] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fc19fe931ce
+> [ 6759.550008] RDX: 0000000000080900 RSI: 00007ffe87a74270 RDI: ffffffffffffff9c
+> [ 6759.550012] RBP: 00007ffe87a741c0 R08: 0000000000000000 R09: 0000000000000000
+> [ 6759.550017] R10: 0000000000000000 R11: 0000000000000202 R12: 000055eaf18c4470
+> [ 6759.550021] R13: 00007ffe87a74500 R14: 0000000000080900 R15: 0000000000000015
+> [ 6759.550030]  </TASK>
+> [ 6759.550054] INFO: task (udev-worker):2838 is blocked on a mutex likely owned by task udisksd:706.
+> [ 6759.550059] task:udisksd         state:D stack:0     pid:706   tgid:706   ppid:1      task_flags:0x400100 flags:0x00004002
+> [ 6759.550068] Call Trace:
+> [ 6759.550071]  <TASK>
+> [ 6759.550075]  __schedule+0x409/0x1330
+> [ 6759.550084]  ? lock_timer_base+0x70/0x90
+> [ 6759.550094]  schedule+0x27/0xd0
+> [ 6759.550101]  schedule_timeout+0x83/0x100
+> [ 6759.550109]  ? __pfx_process_timeout+0x10/0x10
+> [ 6759.550117]  io_schedule_timeout+0x5b/0x90
+> [ 6759.550124]  wait_for_completion_io_timeout+0x7f/0x1a0
+> [ 6759.550134]  blk_execute_rq+0xee/0x170
+> [ 6759.550145]  scsi_execute_cmd+0x100/0x420
+> [ 6759.550157]  scsi_test_unit_ready+0x6f/0xf0
+> [ 6759.550172]  sr_drive_status+0x57/0x120 [sr_mod de25504f195c3fb7b76d163270dae636af6d4152]
+> [ 6759.550187]  cdrom_open+0xd4/0xab0 [cdrom ff26b01442b014534657abb98fa7fb688822fb56]
+> [ 6759.550208]  ? __disk_unblock_events+0x26/0xc0
+> [ 6759.550219]  ? disk_check_media_change+0x96/0xe0
+> [ 6759.550229]  sr_block_open+0x71/0x110 [sr_mod de25504f195c3fb7b76d163270dae636af6d4152]
+> [ 6759.550239]  ? __pfx_blkdev_open+0x10/0x10
+> [ 6759.550246]  blkdev_get_whole+0x2c/0xe0
+> [ 6759.550253]  ? __pfx_blkdev_open+0x10/0x10
+> [ 6759.550259]  bdev_open+0x201/0x3d0
+> [ 6759.550266]  ? __pfx_blkdev_open+0x10/0x10
+> [ 6759.550272]  blkdev_open+0xa5/0x100
+> [ 6759.550279]  do_dentry_open+0x170/0x5d0
+> [ 6759.550287]  vfs_open+0x30/0x100
+> [ 6759.550296]  path_openat+0x717/0x1300
+> [ 6759.550304]  ? __memcg_slab_free_hook+0xf7/0x140
+> [ 6759.550312]  do_filp_open+0xd8/0x180
+> [ 6759.550325]  do_sys_openat2+0x88/0xe0
+> [ 6759.550386]  __x64_sys_openat+0x61/0xa0
+> [ 6759.550397]  do_syscall_64+0x7b/0x810
+> [ 6759.550406]  ? vfs_read+0x2af/0x390
+> [ 6759.550419]  ? ksys_read+0xa8/0xe0
+> [ 6759.550429]  ? syscall_exit_to_user_mode+0x37/0x1c0
+> [ 6759.550439]  ? do_syscall_64+0x87/0x810
+> [ 6759.550448]  ? irqentry_exit_to_user_mode+0x2c/0x1b0
+> [ 6759.550458]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [ 6759.550466] RIP: 0033:0x7f3ced89f042
+> [ 6759.550479] RSP: 002b:00007fff0e8d04f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+> [ 6759.550488] RAX: ffffffffffffffda RBX: 0000562237bedca0 RCX: 00007f3ced89f042
+> [ 6759.550494] RDX: 0000000000000000 RSI: 0000562237bbc6e0 RDI: ffffffffffffff9c
+> [ 6759.550499] RBP: 00007fff0e8d0520 R08: 0000000000000000 R09: 0000000000000000
+> [ 6759.550504] R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff0e8d0650
+> [ 6759.550509] R13: 00007fff0e8d0654 R14: 0000562237bf1b80 R15: 0000562237bb0fe0
+> [ 6759.550520]  </TASK>
+> [ 6780.163423] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6787.459425] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6797.765312] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6828.289146] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6859.013081] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6889.732859] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6900.036820] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6930.692665] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6961.412477] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 6992.132215] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 7022.852189] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> [ 7030.145050] usb 3-2: reset high-speed USB device number 38 using ehci-pci
+> 
+> 
+> When trying to mount these two Wi-Fi dongles' driver CD, I got this error.
+> $ sudo mount /dev/sr0 /mnt/tmp
+> mount: /mnt/tmp: fsconfig() failed: /dev/sr0: Can't open blockdev.
+>         dmesg(1) may have more information after failed mount system call.
+> 
+> 
+> usb_modeswitch can switch D-Link AX9U into Wi-Fi mode successfully, but it took a
+> very long time (about 40 seconds).
+> 
+> $ lsusb
+> Bus 001 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+> Bus 001 Device 002: ID 0bda:5852 Realtek Semiconductor Corp. Bluetooth Radio
+> Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 003 Device 002: ID 2717:4106 Xiaomi Inc. MediaTek MT7601U [MI WiFi]
+> Bus 003 Device 035: ID 0bda:1a2b Realtek Semiconductor Corp. RTL8188GU 802.11n WLAN Adapter (Driver CDROM Mode)
+> Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+> Bus 004 Device 002: ID 046d:c077 Logitech, Inc. Mouse
+> Bus 004 Device 003: ID 05af:1023 Jing-Mold Enterprise Co., Ltd Ghost Key Elimiantion Keyboard
+> Bus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 006 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> Bus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 008 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> 
+> $ sudo  usb_modeswitch -v 0bda -p 1a2b -KW
+> Take all parameters from the command line
+> 
+> 
+>   * usb_modeswitch: handle USB devices with multiple modes
+>   * Version 2.6.2 (C) Josua Dietze 2017
+>   * Based on libusb1/libusbx
+> 
+>   ! PLEASE REPORT NEW CONFIGURATIONS !
+> 
+> DefaultVendor=  0x0bda
+> DefaultProduct= 0x1a2b
+> 
+> StandardEject=1
+> 
+> Look for default devices ...
+>    found USB ID 2717:4106
+>    found USB ID 0bda:1a2b
+>     vendor ID matched
+>     product ID matched
+>    found USB ID 1d6b:0002
+>    found USB ID 05af:1023
+>    found USB ID 046d:c077
+>    found USB ID 1d6b:0001
+>    found USB ID 1d6b:0002
+>    found USB ID 0bda:5852
+>     vendor ID matched
+>    found USB ID 1d6b:0001
+>    found USB ID 1d6b:0003
+>    found USB ID 1d6b:0002
+>    found USB ID 1d6b:0003
+>    found USB ID 1d6b:0002
+>   Found devices in default mode (1)
+> Access device 035 on bus 003
+> Get the current device configuration ...
+> Current configuration number is 1
+> Use interface number 0
+>   with class 8
+> Use endpoints 0x05 (out) and 0x84 (in)
+> 
+> USB description data (for identification)
+> -------------------------
+> Manufacturer: Realtek
+>       Product: DISK
+>    Serial No.: not provided
+> -------------------------
+> Sending standard EJECT sequence
+> Looking for active drivers ...
+>   OK, driver detached
+> Set up interface 0
+> Use endpoint 0x05 for message sending ...
+> Trying to send message 1 to endpoint 0x05 ...
+>   Sending the message returned error -7. Try to continue
+> Read the response to message 1 (CSW) ...
+>   Response successfully read (13 bytes), status 1
+> Trying to send message 2 to endpoint 0x05 ...
+>   OK, message successfully sent
+> Read the response to message 2 (CSW) ...
+>   Response successfully read (13 bytes), status 0
+> Trying to send message 3 to endpoint 0x05 ...
+> libusb: error [submit_bulk_transfer] submiturb failed, errno=113
+>   Sending the message returned error -1. Try to continue
+> Read the response to message 3 (CSW) ...
+>   Device seems to have vanished after reading. Good.
+>   Device is gone, skip any further commands
+> -> Run lsusb to note any changes. Bye!
+> 
+> $ lsusb
+> Bus 001 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+> Bus 001 Device 002: ID 0bda:5852 Realtek Semiconductor Corp. Bluetooth Radio
+> Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 003 Device 002: ID 2717:4106 Xiaomi Inc. MediaTek MT7601U [MI WiFi]
+> Bus 003 Device 036: ID 2001:332a D-Link Corp. 802.11ax WLAN Adapter
+> Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+> Bus 004 Device 002: ID 046d:c077 Logitech, Inc. Mouse
+> Bus 004 Device 003: ID 05af:1023 Jing-Mold Enterprise Co., Ltd Ghost Key Elimiantion Keyboard
+> Bus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 006 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> Bus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 008 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> 
+> 
+> On the other side, Mercury MW310UH cannot be switched successfully.
+> 
+> $ sudo  usb_modeswitch -v 0bda -p a192 -KW
+> Take all parameters from the command line
+> 
+> 
+>   * usb_modeswitch: handle USB devices with multiple modes
+>   * Version 2.6.2 (C) Josua Dietze 2017
+>   * Based on libusb1/libusbx
+> 
+>   ! PLEASE REPORT NEW CONFIGURATIONS !
+> 
+> DefaultVendor=  0x0bda
+> DefaultProduct= 0xa192
+> 
+> StandardEject=1
+> 
+> Look for default devices ...
+>    found USB ID 2717:4106
+>    found USB ID 0bda:a192
+>     vendor ID matched
+>     product ID matched
+>    found USB ID 1d6b:0002
+>    found USB ID 05af:1023
+>    found USB ID 046d:c077
+>    found USB ID 1d6b:0001
+>    found USB ID 1d6b:0002
+>    found USB ID 0bda:5852
+>     vendor ID matched
+>    found USB ID 1d6b:0001
+>    found USB ID 1d6b:0003
+>    found USB ID 1d6b:0002
+>    found USB ID 1d6b:0003
+>    found USB ID 1d6b:0002
+>   Found devices in default mode (1)
+> Access device 033 on bus 003
+> Get the current device configuration ...
+> Current configuration number is 1
+> Use interface number 0
+>   with class 8
+> Use endpoints 0x0b (out) and 0x8a (in)
+> 
+> USB description data (for identification)
+> -------------------------
+> Manufacturer: Realtek
+>       Product: DISK
+>    Serial No.: not provided
+> -------------------------
+> Sending standard EJECT sequence
+> Looking for active drivers ...
+>   OK, driver detached
+> Set up interface 0
+> Use endpoint 0x0b for message sending ...
+> Trying to send message 1 to endpoint 0x0b ...
+>   OK, message successfully sent
+> Read the response to message 1 (CSW) ...
+>   Response reading failed (error -8)
+>   Device is gone, skip any further commands
+> -> Run lsusb to note any changes. Bye!
+> 
+> $ lsusb
+> Bus 001 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+> Bus 001 Device 002: ID 0bda:5852 Realtek Semiconductor Corp. Bluetooth Radio
+> Bus 002 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 003 Device 002: ID 2717:4106 Xiaomi Inc. MediaTek MT7601U [MI WiFi]
+> Bus 003 Device 033: ID 0bda:a192 Realtek Semiconductor Corp. DISK
+> Bus 004 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+> Bus 004 Device 002: ID 046d:c077 Logitech, Inc. Mouse
+> Bus 004 Device 003: ID 05af:1023 Jing-Mold Enterprise Co., Ltd Ghost Key Elimiantion Keyboard
+> Bus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 006 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> Bus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 008 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> 
+>>
+>> Also, can you collect a usbmon trace showing what happens when the
+>> dongle is plugged in?
+> 
+> I am not familiar with this, but I will try these days, thank you!
+> 
+>>
+>> Alan Stern
+> 
 
-[ Upstream commit 7d0cce6cbe71af6e9c1831bff101a2b9c249c4a2 ]
+Hi Zenm,
 
-Introduce vmx_guest_debugctl_{read,write}() to handle all accesses to
-vmcs.GUEST_IA32_DEBUGCTL. This will allow stuffing FREEZE_IN_SMM into
-GUEST_IA32_DEBUGCTL based on the host setting without bleeding the state
-into the guest, and without needing to copy+paste the FREEZE_IN_SMM
-logic into every patch that accesses GUEST_IA32_DEBUGCTL.
+0bda:1a2b
+It is a USB Id supported by usb-modeswitch, I suspect that you would not 
+had got all the error messages for the device if you had let 
+usb-modeswitch access the device early (through udev) before the linux 
+storage driver tried to access it. The long time to switch when running 
+usb-modeswitch manually is likely also caused by clashes with 
+communication by the storage driver.
 
-No functional change intended.
+0bda:a192
+This USB Id is not yet supported by usb-modeswitch and it probably has a 
+different method than ejecting the virtual CD drive, the failure to 
+switch it when manually running usb-modeswitch is an indication of that.
+If you are a representative of Realtek or if you know how to switch the 
+device then contact the usb-modeswitch maintainer (Joshua Dietze) and 
+ask him to add switch support for it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-[sean: massage changelog, make inline, use in all prepare_vmcs02() cases]
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-8-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/x86/kvm/vmx/nested.c    | 10 +++++-----
- arch/x86/kvm/vmx/pmu_intel.c |  8 ++++----
- arch/x86/kvm/vmx/vmx.c       |  8 +++++---
- arch/x86/kvm/vmx/vmx.h       | 10 ++++++++++
- 4 files changed, 24 insertions(+), 12 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 1b8b0642fc2d..ef20184b8b11 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -2663,11 +2663,11 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	if (vmx->nested.nested_run_pending &&
- 	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
- 		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl &
--						  vmx_get_supported_debugctl(vcpu, false));
-+		vmx_guest_debugctl_write(vcpu, vmcs12->guest_ia32_debugctl &
-+					       vmx_get_supported_debugctl(vcpu, false));
- 	} else {
- 		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmx->nested.pre_vmenter_debugctl);
-+		vmx_guest_debugctl_write(vcpu, vmx->nested.pre_vmenter_debugctl);
- 	}
- 	if (kvm_mpx_supported() && (!vmx->nested.nested_run_pending ||
- 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
-@@ -3532,7 +3532,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- 
- 	if (!vmx->nested.nested_run_pending ||
- 	    !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS))
--		vmx->nested.pre_vmenter_debugctl = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+		vmx->nested.pre_vmenter_debugctl = vmx_guest_debugctl_read();
- 	if (kvm_mpx_supported() &&
- 	    (!vmx->nested.nested_run_pending ||
- 	     !(vmcs12->vm_entry_controls & VM_ENTRY_LOAD_BNDCFGS)))
-@@ -4806,7 +4806,7 @@ static void load_vmcs12_host_state(struct kvm_vcpu *vcpu,
- 	__vmx_set_segment(vcpu, &seg, VCPU_SREG_LDTR);
- 
- 	kvm_set_dr(vcpu, 7, 0x400);
--	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
-+	vmx_guest_debugctl_write(vcpu, 0);
- 
- 	if (nested_vmx_load_msr(vcpu, vmcs12->vm_exit_msr_load_addr,
- 				vmcs12->vm_exit_msr_load_count))
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index bbf4509f32d0..0b173602821b 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -653,11 +653,11 @@ static void intel_pmu_reset(struct kvm_vcpu *vcpu)
-  */
- static void intel_pmu_legacy_freezing_lbrs_on_pmi(struct kvm_vcpu *vcpu)
- {
--	u64 data = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+	u64 data = vmx_guest_debugctl_read();
- 
- 	if (data & DEBUGCTLMSR_FREEZE_LBRS_ON_PMI) {
- 		data &= ~DEBUGCTLMSR_LBR;
--		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
-+		vmx_guest_debugctl_write(vcpu, data);
- 	}
- }
- 
-@@ -730,7 +730,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
- 
- 	if (!lbr_desc->event) {
- 		vmx_disable_lbr_msrs_passthrough(vcpu);
--		if (vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR)
-+		if (vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR)
- 			goto warn;
- 		if (test_bit(INTEL_PMC_IDX_FIXED_VLBR, pmu->pmc_in_use))
- 			goto warn;
-@@ -752,7 +752,7 @@ void vmx_passthrough_lbr_msrs(struct kvm_vcpu *vcpu)
- 
- static void intel_pmu_cleanup(struct kvm_vcpu *vcpu)
- {
--	if (!(vmcs_read64(GUEST_IA32_DEBUGCTL) & DEBUGCTLMSR_LBR))
-+	if (!(vmx_guest_debugctl_read() & DEBUGCTLMSR_LBR))
- 		intel_pmu_release_guest_lbr_event(vcpu);
- }
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 215fb1a1f861..0b1e034e59a3 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2149,7 +2149,7 @@ int vmx_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			msr_info->data = vmx->pt_desc.guest.addr_a[index / 2];
- 		break;
- 	case MSR_IA32_DEBUGCTLMSR:
--		msr_info->data = vmcs_read64(GUEST_IA32_DEBUGCTL);
-+		msr_info->data = vmx_guest_debugctl_read();
- 		break;
- 	default:
- 	find_uret_msr:
-@@ -2279,7 +2279,8 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 						VM_EXIT_SAVE_DEBUG_CONTROLS)
- 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
- 
--		vmcs_write64(GUEST_IA32_DEBUGCTL, data);
-+		vmx_guest_debugctl_write(vcpu, data);
-+
- 		if (intel_pmu_lbr_is_enabled(vcpu) && !to_vmx(vcpu)->lbr_desc.event &&
- 		    (data & DEBUGCTLMSR_LBR))
- 			intel_pmu_create_guest_lbr_event(vcpu);
-@@ -4794,7 +4795,8 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	vmcs_write32(GUEST_SYSENTER_CS, 0);
- 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
- 	vmcs_writel(GUEST_SYSENTER_EIP, 0);
--	vmcs_write64(GUEST_IA32_DEBUGCTL, 0);
-+
-+	vmx_guest_debugctl_write(&vmx->vcpu, 0);
- 
- 	if (cpu_has_vmx_tpr_shadow()) {
- 		vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, 0);
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 392e66c7e5fe..c20a4185d10a 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -417,6 +417,16 @@ void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
- u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated);
- bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated);
- 
-+static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
-+{
-+	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
-+}
-+
-+static inline u64 vmx_guest_debugctl_read(void)
-+{
-+	return vmcs_read64(GUEST_IA32_DEBUGCTL);
-+}
-+
- /*
-  * Note, early Intel manuals have the write-low and read-high bitmap offsets
-  * the wrong way round.  The bitmaps control MSRs 0x00000000-0x00001fff and
--- 
-2.39.5
+thanks
+Lars
 
 
