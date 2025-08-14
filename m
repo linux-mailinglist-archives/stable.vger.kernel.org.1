@@ -1,119 +1,109 @@
-Return-Path: <stable+bounces-169619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBF5B2701C
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 22:19:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605E5B27026
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 22:25:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31824A21AD2
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 20:19:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B4D35E6BBF
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 20:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87B8258CE9;
-	Thu, 14 Aug 2025 20:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB425949A;
+	Thu, 14 Aug 2025 20:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y7hyQGZy"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3XkcQHYb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F6921C176;
-	Thu, 14 Aug 2025 20:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDA6246BB0
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 20:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755202749; cv=none; b=PwPqgoOW3+8m83v2FKSr1GNO+A6ctPAF9tcp8zk478cYGtinbT4cj72WbPQXt1jZW+V1zqMDMf76wrK1P3nnooEYwbaN2Nei55AMrl787GJ8QUlyev+WqOXHKV8HUfMZIN3mcyCJ/zLlSi4nMX1Gjr/o6QNgoDoTlkPN1eWQYus=
+	t=1755203126; cv=none; b=PBbkESQJlwYkxVmsrTlNdIxyZOYok6ltztbkG1xVGW5zVbjxLuOBNTQlzF0rcLrOnPhyI6Vi4Fsay5QLSHN2Aq6bU8FYVJE89CLEDtbR/lZUgvNyvA0rb2D2pxBA+y07z5B19onjM4jhNqkA/CLKm7o+PYf1xM+mWcNswm1OVk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755202749; c=relaxed/simple;
-	bh=OHrO9CYBzmjrP66VACTYaSpcj8ifkdq3OgNAHusx3JQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cl/mriYBWRu1zW/Y9PWeVytJdJe66gOPTK2MjA9tBEdulRweR/f1xzklqmF6RlD/dZUcAe7cwkiqyPULokxeMkvYgFVRxyInFE+biUwk0fDEsTXHMUC7+khTDQXZle8w/VNsSDstLAXqePi1ZWQIekCWM74I676jy1KYd09PVbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y7hyQGZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672F9C4CEED;
-	Thu, 14 Aug 2025 20:19:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755202748;
-	bh=OHrO9CYBzmjrP66VACTYaSpcj8ifkdq3OgNAHusx3JQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y7hyQGZy4wJOUZwphyJ1zqJnMhPkpykp6rMI1llau9JN9K1hTU9fbXk1wEcwcEbkX
-	 thotSCZ6wWOIJ6Q3j7XV7Ipv4F1k/8BPo50sKt3VlEn4bsSFVgAfTvuu/YqmfX906f
-	 Fwejtesxl1N4j1RXmgcq+cxUTA/Okk/knKVrky/3YwePFuRnpaJGrgE+LcjYr6GvhW
-	 Ep7GoSvIwOFQmRKGuuoh7Y1etIbuMCtDGntHuouK0da3/w6NUql4AYBeV96G5cppxB
-	 FQUr5dVHSAsM3WkIK9MormninvpPwy/jO+OOi4HKo/Dj4AwDU3czKZglNBwMrs7R2x
-	 xVbdtOshIOa2Q==
-Date: Thu, 14 Aug 2025 13:19:06 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	qemu-devel@nongnu.org,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Ben Copeland <benjamin.copeland@linaro.org>,
-	LTP List <ltp@lists.linux.it>, chrubis <chrubis@suse.cz>,
-	Petr Vorel <pvorel@suse.cz>, Ian Rogers <irogers@google.com>,
-	linux-perf-users@vger.kernel.org,
-	Zhang Yi <yi.zhang@huaweicloud.com>,
-	Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	linux-ext4 <linux-ext4@vger.kernel.org>
-Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
-Message-ID: <aJ5EupUV9t0jToY3@google.com>
-References: <20250812173419.303046420@linuxfoundation.org>
- <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
- <2025081300-frown-sketch-f5bd@gregkh>
+	s=arc-20240116; t=1755203126; c=relaxed/simple;
+	bh=0+2gSXSmKX4ZaV1u4wbmDErHMSVL7/CYkk+bXjFWknU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tz5yWVmxpbqirFX6QzKIw5hqoeQ9uoFdpfYkRqp/Vv98cGQ7NvEvERMEIuhUMS5jgSmSI2FglrwnMpzu+oKo4s/3RH16hyHjIpA0PYAT/L9WEDbVHYh+h0CX7dQ/g0p6zMi0qNGkSM74cArwvhfS7OaOJNh964FSVaJxWJlJAho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3XkcQHYb; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32326bed374so1295197a91.2
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 13:25:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1755203121; x=1755807921; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c4k9tDgJpZRRrZAUV1x7GsmpSBGKlOm/rY8jLoqojXA=;
+        b=3XkcQHYbzO7qewOZ/MuJcfFy0YH5ydkmgE9poUdXMNcGvmq3MN11OQY6znOaYhGCbm
+         buCG6mCsQNxRb1K3ALJd8UZEil1eBMWwQuZmw5UOJIFVnWjVZnl8o1pR4mJk0hjz0j+U
+         AUksDYNyKCE8U3oreCAF0rb/eKYK3n0y9UayU2WahGlcfoJZBVNWGlnti7Q5bUjQ5yek
+         G07IOpCYTZN+CbYIbkMMc1d6XgDpZt33lW6gB6egv8xxCwRxCxBnjG6H1pJFiLh+GUMN
+         wiL1B36UdPKo5dIa2qAwnrBeSFBuch0BzDun+digFDCrQQ1k25y5NigDTuPKGrwvfav8
+         Ggbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755203121; x=1755807921;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c4k9tDgJpZRRrZAUV1x7GsmpSBGKlOm/rY8jLoqojXA=;
+        b=RAP7KawgiqFB0kikt0YwNmIHj2alVTdJkPg/ZbM+W1vFSUUajODu3iKsUXJpUsyizK
+         3sGC6HHJ+UV4eZLt/shc3AiJQOR24I+Di3RuSz4QqHOFu2YA1etmfVVEB2w/jFRCnYOT
+         4GBiWHAon62det16wT6m1orkkhXMEK+5UGMT8wXIc2RurfXO8xmErnptFokHlrmp5fk/
+         SICZa4wDza+dVf/u/uMp7f9QbR2J8JPse/s01x4VoXPd8ie03KevAkahMB0BItS9TH4s
+         T1Pv08w3NQ8stlahGgVmzYbPgAkIXQ/7fty9ox6Qn6ZQqF8d7aQnYZPHyDJdmNxzA0x4
+         P7bw==
+X-Gm-Message-State: AOJu0YzTne+/hPNB34grlJcazG3e16/AlopuvpngwApFhIdEHXzlz1iD
+	peAl5ShBRqwj5v8E2UUTLXJVjm4A3/S4sSR4dMl+vy4xiM80CYvoAq/eDtBdTd3sboxiDxFmhAl
+	u7zXzhg==
+X-Google-Smtp-Source: AGHT+IHucHQJ6np9h82Us90IJNFIrc2AKTERXX6Eu9pUaCFvkTewnURZxPGP+k/VOCXkbMjUhq3hBaLOt2U=
+X-Received: from pjd4.prod.google.com ([2002:a17:90b:54c4:b0:311:c197:70a4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5643:b0:311:ea13:2e63
+ with SMTP id 98e67ed59e1d1-323279a6b75mr6665332a91.13.1755203120825; Thu, 14
+ Aug 2025 13:25:20 -0700 (PDT)
+Date: Thu, 14 Aug 2025 13:25:19 -0700
+In-Reply-To: <20250724170725.1404455-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2025081300-frown-sketch-f5bd@gregkh>
+Mime-Version: 1.0
+References: <2025062034-chastise-wrecking-9a12@gregkh> <20250724170725.1404455-1-sashal@kernel.org>
+Message-ID: <aJ5GLzyFedl44sO7@google.com>
+Subject: Re: [PATCH 6.1.y 1/3] x86/reboot: Harden virtualization hooks for
+ emergency reboot
+From: Sean Christopherson <seanjc@google.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Kai Huang <kai.huang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Hello,
-
-Thanks for the report!
-
-On Wed, Aug 13, 2025 at 02:50:49PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Aug 13, 2025 at 05:46:26PM +0530, Naresh Kamboju wrote:
-> > Long story:
-> > 1)
-> > The perf gcc-13 build failed on x86_64 and i386.
-> > 
-> > Build regression: qemu-arm64 ARM64_64K_PAGES ltp syscalls swap fsync
-> > fallocate failed.
-> > 
-> > > Ian Rogers <irogers@google.com>
-> > >     perf topdown: Use attribute to see an event is a topdown metic or slots
-> > 
-> > Build error:
-> > 
-> > arch/x86/tests/topdown.c: In function 'event_cb':
-> > arch/x86/tests/topdown.c:53:25: error: implicit declaration of
-> > function 'pr_debug' [-Werror=implicit-function-declaration]
-> >    53 |                         pr_debug("Broken topdown information
-> > for '%s'\n", evsel__name(evsel));
-> >       |                         ^~~~~~~~
-> > cc1: all warnings being treated as errors
+On Thu, Jul 24, 2025, Sasha Levin wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> Already fixed.
+> [ Upstream commit 5e408396c60cd0f0b53a43713016b6d6af8d69e0 ]
+> 
+> Provide dedicated helpers to (un)register virt hooks used during an
+> emergency crash/reboot, and WARN if there is an attempt to overwrite
+> the registered callback, or an attempt to do an unpaired unregister.
+> 
+> Opportunsitically use rcu_assign_pointer() instead of RCU_INIT_POINTER(),
+> mainly so that the set/unset paths are more symmetrical, but also because
+> any performance gains from using RCU_INIT_POINTER() are meaningless for
+> this code.
+> 
+> Reviewed-by: Kai Huang <kai.huang@intel.com>
+> Link: https://lore.kernel.org/r/20230721201859.2307736-3-seanjc@google.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Stable-dep-of: a0ee1d5faff1 ("KVM: VMX: Flush shadow VMCS on emergency reboot")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-Are you sure?  I'm not seeing the fix.  Can you share the commit id?
+Acked-by: Sean Christopherson <seanjc@google.com>
 
-I don't see the failure on my machine with gcc 14 but I also cannot
-find what's the fix.
+Note, the VMCLEAR dependency patch was already landed in 6.1.y as:
 
-Thanks,
-Namhyung
-
+1375d9600c38 ("x86/reboot: VMCLEAR active VMCSes before emergency reboot")
 
