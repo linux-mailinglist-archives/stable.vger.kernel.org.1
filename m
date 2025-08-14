@@ -1,178 +1,150 @@
-Return-Path: <stable+bounces-169520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F1DB260A8
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 11:21:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DF5B260B9
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 11:24:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 588C33B7770
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 09:15:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 826C81C241AF
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 09:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7122EA466;
-	Thu, 14 Aug 2025 09:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596A12EA155;
+	Thu, 14 Aug 2025 09:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fF53YECK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RhcIV5ZA"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDE12E973E
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 09:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CD92E613D
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 09:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755162915; cv=none; b=aYHAfXf4I2h5RqUneO+1nRvteGpGHgo2WG//9xJVqSXyNg7hFQ3DWdGekz4Qlp+ruJPFPdRdqDOj4l3Y+TEIeDXZCJZjAAgSSV2i/BmD5EnXI3kUoRER53CqBeYF4KTmBTCCc+atlT5lRbLxH48RsktwRh0ZKF/9vze3btpGdps=
+	t=1755163103; cv=none; b=bdSSAnzvFyM8cpnRtW2NKtKYmoRNIOrCqysL86UINxD8ZYlTg/IGoIZOsPHoGxTICMtKUVb5LaPOVT9IBGz11ebk8JUxOEDIftQuk8dkPW+azhmK22PCDsTzyAhaShCIvSnviQ3eUmjYAVlXV02JP8/0EnYX6thezjyfgncU070=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755162915; c=relaxed/simple;
-	bh=XhEhDZQsgMiczoesYFyeTv5mQBvZtLNYROcgClmCwOo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q/xf6L46FR4DxH0r6FM4giECO1qLXzd9/lB0dSbGCiub9p+LG55vkEiQG0O3dDGWyidoWzmAMXsq/Fv43Gx1V4OfUD37G5ghITMu+T0zDNRSh1akNe9rE3mFpioseK1ymfiYyYCBiqCFVtYxps8vUgU7Ea7t+6MVIkMm6EH6t2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fF53YECK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57E9CeOY013008
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 09:15:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	JXECCtiDhY+FWYo/Y2DbBqY/PXD9a7G7J6neCt3E7iU=; b=fF53YECKPEpR0cg2
-	VwKZMznx3OdK06LL4V00GTK7XF7m7O9Oc+xjaniO3m8nGem5KeT7rJyPcRHQ5yZd
-	e2KkheFATa41mjVAAbqJwSE+mk9dsoF0ubvLylZtys7cMvbR8m3eFbpqxb+LBEKr
-	TFSweUjxiGj0S0kUpdm1EaaF/ywK3kKKtoywAHsHarK2Kika3Ihu7nv8l7ioJc5p
-	JQRaFO8W2wELAON6cAoGg5GMx9z2QudnF9AeQAxC8T51R4s4Qih//aFoNUcKcWRT
-	fsIoLTuwMHS3Y9EGkObTcQD7t6giIx8Mu1corNqIUPi5/lMJYAaF3WaoUjzGZxAv
-	lZM5mg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ffq6txvx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 09:15:13 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7e870623c48so21040585a.2
-        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 02:15:13 -0700 (PDT)
+	s=arc-20240116; t=1755163103; c=relaxed/simple;
+	bh=9jfsBBqeJOEl9hddqXnvpXQHYPzROEJTWzYp929WPI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KTPSiEt43iO/Z4XDIzbPoRvl/voM14B1TL37AXFWrH5/qoRY8NH+I6zk/fvhMh+1xrh5sFug+kQSXnjsA73MSpCMU2DnsDgaI3++6WgQE6K8BtEaLl1ClHhHlg5S1yN7SSU9jtKm+IyqjNLko/ffUCPKwWR/phsWaBNvsfp4j2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RhcIV5ZA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755163100;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7KJnGM2svr7YW4cpJgDglh0IED9NSFfVKuR4V+h5zek=;
+	b=RhcIV5ZA4obAKJb3JxOKbN8K4S1LxWLEo/4XV/+viPfjg4SBDzlEV4lIPq3ctE2twxeOW+
+	vsewoOgIqPhKK2IVpEzu7rs8jlik7c7TSmH2arfo95u4L9N65jYUYYiOd131ryiD4yyL9i
+	EbUFB1U3MZ+fsz4V26VsdJWXhMG7594=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-504-RC_AcYDiPlaMPQIqdWvKqA-1; Thu, 14 Aug 2025 05:18:18 -0400
+X-MC-Unique: RC_AcYDiPlaMPQIqdWvKqA-1
+X-Mimecast-MFC-AGG-ID: RC_AcYDiPlaMPQIqdWvKqA_1755163098
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7e870317642so171763985a.0
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 02:18:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755162912; x=1755767712;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1755163098; x=1755767898;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JXECCtiDhY+FWYo/Y2DbBqY/PXD9a7G7J6neCt3E7iU=;
-        b=T8MeHig6u2szLC/+e7YBh39byu1KQfrdHhDPYNOMur38WtSknywLpqrXMmpJ3wnKxV
-         nAwbgC3VbH90qsFBxkeeev7MB0fPZE2mORZwgDiQ/3Nf7nHky8aFMsYI283r0OMotIw0
-         9bXe599yRyL7mfOe5vN/8Z7E9o7ltvGtXKbs96DhMdTiZTZT+XAoJIY9FfGHf8X1ZK0u
-         17VudhusG2XwiHWwUlBn+lZeoR1fkWi7UtPVmrRuJbMifZl8y1/EpXdF8ENbH3L1V3sb
-         zQ2r6vwsa3W5z6+MwKbV5T5R76Eq2SJGLep6wGxJQ7uBjYBOAJuN30SBVzjOjxJJxwHL
-         m41Q==
-X-Gm-Message-State: AOJu0Yx7AzAYcoKtthJf6IJ1uovV0PDKW3YjT7paMKubcSlosAiCPUx5
-	9ybhRW4rPySu4rTazw0kwzyY5hkHf3m4NMrGiFS+gI6Q7fDdIRmNT6XKMJW8GwFrYiTTXK/ScDJ
-	f95hEHP98s+XSIPDCh/4dC9qaV0Dvf/Ip+hAXXkdGe2fZBr32RPW92B7in78=
-X-Gm-Gg: ASbGncvXzQODsAsLEn7Qd171rtJN5r6mIsFfpcU5BR/FaE7E28nrVgVz8XMke1kamJ6
-	vqh0B+oi7m2Y8ZBP91UO0tua9bmWzy5eNtxoPX2/rjntLe6Po6fXIRW15zRGOuVDSA/iC1sB0Tk
-	h/5Ir5l8i5QODrr7nRRug8HlNTAxLL8NDja+LQd5J1ByIXqjaPa0HB1dq9cVysNe6y/IHkIk0BA
-	RmLZC/2wWxZL0CzsEzLkfx3MoZJ2bRGIEu2Jw1APv/69b7MWDp9Jgn+sDaW4T8mn2OdLFXciFx4
-	q0FUTr0l0Q40qxUTmGyeAma5D+dmObG0vPgfhzi0v6RoLqOBwQjsu+Xqj0/IeMaVOcL1ktpSJW/
-	SHBz5SQOzrIMbi3ZdOQ==
-X-Received: by 2002:a05:620a:2801:b0:7e8:1594:c1d2 with SMTP id af79cd13be357-7e870445097mr153925485a.10.1755162911952;
-        Thu, 14 Aug 2025 02:15:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG700skgv8n/LYxojP/q5UsrZ8ZDa7F90OYLMOTMtJbcl0KhlRKJm0m+VOoW1I+d9LOuGyLbA==
-X-Received: by 2002:a05:620a:2801:b0:7e8:1594:c1d2 with SMTP id af79cd13be357-7e870445097mr153923785a.10.1755162911409;
-        Thu, 14 Aug 2025 02:15:11 -0700 (PDT)
-Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a0757b7sm2547884966b.19.2025.08.14.02.15.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Aug 2025 02:15:10 -0700 (PDT)
-Message-ID: <e35ca54c-252f-45c4-bfdf-fd943f833bc4@oss.qualcomm.com>
-Date: Thu, 14 Aug 2025 11:15:08 +0200
+        bh=7KJnGM2svr7YW4cpJgDglh0IED9NSFfVKuR4V+h5zek=;
+        b=NgLJRYsJpoJwApYRoiSykEFzrAvrL2gapZaOJAkyzFizsHt7gkz05J4gY4rMY+tXA1
+         tK37Gg+okgbq5/FuQtbx8MC54nBSk7uKgnPywXYnzcJ3ns6GYhFy+qxIPaJiVk28/ZCs
+         p2uptWBnsRVAlXFfsayfnVvqGwkWOFU1vFFS52ytasogc5Kwlfp+UQmZpe/0vVFhlVW0
+         AQuMk9TrUwVBR3jWNkmtlzncKKF8SHnqyPpkWJeo6gm28pK+Gl70dCRXDIIBSzAASwio
+         QFLdTvVGjwH8JbJ0UB50LuIt0WaK42JXEdwxM+WyvQNaoIJnjFf57Wl4k0slcIoiJqPK
+         dX7g==
+X-Forwarded-Encrypted: i=1; AJvYcCU4sgyf1hKhQyhU6yipt0b9cAPOaxXsqVnPy4Rp9vrY+AnqVHsSDaQJjEPXzH4Q6UwmUt+d1iE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYTAGAxxm3in+VEB1jDqQ0HAchs+aYzH1NpS5hIRPQU2A6u86i
+	GVByOk/47pwc3TnJ5yv2cdmfzKN8woQGKe9hGyKvI2janpvvUo+LJEu+uZSVhCU3vhlls6OWOVh
+	61tRdjf/HQ17hjdUU1Dy4QjGz5uWZtM8wymOW7gmvHvH8MpKFqeASmkXvDw==
+X-Gm-Gg: ASbGncviOusRD2eU9xKGCqiUHEhQdF7xm4peu/BuqhaV4SHKo1geD7URKd77pzG7x7U
+	xjonxUcwlksxek+V03Ezjth9AEnz8bVdkKUARwKsV+ttQYMXHGGYY0ZjtV7kI/vHsEDeSBx2oeG
+	pDfGE2QAQ6IZK9R7RB8mh22/WBEJlSz08ljRBLXNXGXqRT/nqjGpP7+mxH9IOw97augiXoHGbxq
+	71m3rSCpq33lWyEfruNbvbNaVnj5uQH719GuaillMlY10rQyXJrHXi+lyJft8Ccr8D6KLQqNpIb
+	lNSEpDM2n2g1Hy2qpvF00X4cYavQYxCu+yG4Pdow7AKcAPgHuT+9hMZNt/fwwNOrA0Kc
+X-Received: by 2002:a05:620a:4009:b0:7e8:710d:a514 with SMTP id af79cd13be357-7e871b61fd6mr232211085a.53.1755163097771;
+        Thu, 14 Aug 2025 02:18:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/rNDxfUSF41mvaZG3MitrVFYLyJLI3VztVogKFuFPmYJr+uIbJGy5RLElJh3Ry5C/7l4gNg==
+X-Received: by 2002:a05:620a:4009:b0:7e8:710d:a514 with SMTP id af79cd13be357-7e871b61fd6mr232208885a.53.1755163097411;
+        Thu, 14 Aug 2025 02:18:17 -0700 (PDT)
+Received: from jlelli-thinkpadt14gen4.remote.csb ([151.57.34.72])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e81bc7a1e3sm1302247985a.74.2025.08.14.02.18.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Aug 2025 02:18:15 -0700 (PDT)
+Date: Thu, 14 Aug 2025 11:18:10 +0200
+From: Juri Lelli <juri.lelli@redhat.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Chris Mason <clm@meta.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.16 199/627] sched/deadline: Less agressive dl_server
+ handling
+Message-ID: <aJ2p0vhe6-2S2ZtJ@jlelli-thinkpadt14gen4.remote.csb>
+References: <20250812173419.303046420@linuxfoundation.org>
+ <20250812173426.853672780@linuxfoundation.org>
+ <17955c87-1a82-4eae-94ee-3ac1447d4e71@kernel.org>
+ <58c46200-95b0-4cd8-bb5e-44f963a66875@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: qcom: icc-bwmon: Fix handling dev_pm_opp_find_bw_*()
- errors
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
-References: <20250814063256.10281-2-krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250814063256.10281-2-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3NSBTYWx0ZWRfX5aIx+S+KI7QX
- EpQnTU6xAIq3j30i8/+tD+04Kh6fjghPYUIo1X27L06SxgqntVXqF1d0SXWoVtx3kYjs/aRt5kl
- /OPXWX2gDDp/tCM8LjuIp/wOBS/39xVHePh6c4EHhhBdjhyPO0gsq1yAPw51VxiZsen81CZ0ATB
- 7/jLJjYXxXVAqgsEdnr8Kzg7QWxebwYWCMkf7Of1yA2WD1txWUGLnU98gQBBC2DPo3COUBvCRMk
- 3N6wUt0teJGImPubtZ7tMMAgDnWwxfo7w71JWw4pAGSt2et8rPNmgdqYFoJoZuAdnloi4g4F1Bs
- oMhtcMcEF87wpi0X2ATOF2PxNFXiR141Dn8VWhb/QVTDuPFWeu92a700wvYyYhLUn+QZ2QzwZqP
- j7f2KHYD
-X-Authority-Analysis: v=2.4 cv=TLZFS0la c=1 sm=1 tr=0 ts=689da921 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
- a=oxqizksRuSS1_KsISTYA:9 a=QEXdDO2ut3YA:10 a=NFOGd7dJGGMPyQGDc5-O:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: 6CHQzqO-n6Ldz_W9uN8d85fVrTgb5-IT
-X-Proofpoint-ORIG-GUID: 6CHQzqO-n6Ldz_W9uN8d85fVrTgb5-IT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-13_02,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 malwarescore=0 spamscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508110075
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <58c46200-95b0-4cd8-bb5e-44f963a66875@kernel.org>
 
-On 8/14/25 8:32 AM, Krzysztof Kozlowski wrote:
-> The ISR calls dev_pm_opp_find_bw_ceil(), which can return EINVAL, ERANGE
-> or ENODEV, and if that one fails with ERANGE, then it tries again with
-> floor dev_pm_opp_find_bw_floor().
-> 
-> Code misses error checks for two cases:
-> 1. First dev_pm_opp_find_bw_ceil() failed with error different than
->    ERANGE,
-> 2. Any error from second dev_pm_opp_find_bw_floor().
-> 
-> In an unlikely case these error happened, the code would further
-> dereference the ERR pointer.  Close that possibility and make the code
-> more obvious that all errors are correctly handled.
-> 
-> Reported by Smatch:
->   icc-bwmon.c:693 bwmon_intr_thread() error: 'target_opp' dereferencing possible ERR_PTR()
-> 
-> Fixes: b9c2ae6cac40 ("soc: qcom: icc-bwmon: Add bandwidth monitoring driver")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/r/aJTNEQsRFjrFknG9@stanley.mountain/
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> Some unreleased smatch, though, because I cannot reproduce the warning,
-> but I imagine Dan keeps the tastiests reports for later. :)
-> ---
->  drivers/soc/qcom/icc-bwmon.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/soc/qcom/icc-bwmon.c b/drivers/soc/qcom/icc-bwmon.c
-> index 3dfa448bf8cf..597f9025e422 100644
-> --- a/drivers/soc/qcom/icc-bwmon.c
-> +++ b/drivers/soc/qcom/icc-bwmon.c
-> @@ -656,6 +656,9 @@ static irqreturn_t bwmon_intr_thread(int irq, void *dev_id)
->  	if (IS_ERR(target_opp) && PTR_ERR(target_opp) == -ERANGE)
->  		target_opp = dev_pm_opp_find_bw_floor(bwmon->dev, &bw_kbps, 0);
->  
-> +	if (IS_ERR(target_opp))
-> +		return IRQ_HANDLED;
+Hi,
 
-So the thunk above checks for a ceil freq relative to bw_kbps and then
-if it doesn't exist, for a floor one
+On 14/08/25 10:37, Jiri Slaby wrote:
+> On 14. 08. 25, 10:22, Jiri Slaby wrote:
+> > Hi,
+> > 
+> > 
+> > On 12. 08. 25, 19:28, Greg Kroah-Hartman wrote:
+> > > 6.16-stable review patch.  If anyone has any objections, please let
+> > > me know.
+> > > 
+> > > ------------------
+> > > 
+> > > From: Peter Zijlstra <peterz@infradead.org>
+> > > 
+> > > [ Upstream commit cccb45d7c4295bbfeba616582d0249f2d21e6df5 ]
+> > > 
+> > > Chris reported that commit 5f6bd380c7bd ("sched/rt: Remove default
+> > > bandwidth control") caused a significant dip in his favourite
+> > > benchmark of the day. Simply disabling dl_server cured things.
+> > > 
+> > > His workload hammers the 0->1, 1->0 transitions, and the
+> > > dl_server_{start,stop}() overhead kills it -- fairly obviously a bad
+> > > idea in hind sight and all that.
+> > > 
+> > > Change things around to only disable the dl_server when there has not
+> > > been a fair task around for a whole period. Since the default period
+> > > is 1 second, this ensures the benchmark never trips this, overhead
+> > > gone.
+> > 
+> > This causes:
+> > sched: DL replenish lagged too much
+> > 
+> > Maybe some prereq missing?
+> 
+> Not really, this is present both in linus/master and tip/master.
 
-Meaning essentially if we fall into this branch, there's no OPPs in the
-table, which would have been caught in probe
+https://lore.kernel.org/lkml/20250615131129.954975-1-kuyo.chang@mediatek.com/
+should be addressing it, but still under review.
 
-Konrad
+Thanks,
+Juri
+
 
