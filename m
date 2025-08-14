@@ -1,118 +1,304 @@
-Return-Path: <stable+bounces-169504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD01BB25B60
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 07:56:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE757B25B69
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 07:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3CFE5C3DA6
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 05:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E543A3AF20D
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 05:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97D12264C5;
-	Thu, 14 Aug 2025 05:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1232264C4;
+	Thu, 14 Aug 2025 05:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wBUdpOaP"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="tYjAdP18"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C827225791;
-	Thu, 14 Aug 2025 05:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77411FBEAC;
+	Thu, 14 Aug 2025 05:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755150905; cv=none; b=XEuiL+mVf6WNNGKhHEOGVKBvM4J2qwUIWqtf9wyVJ/wXzZdvjOc9YlYEbbqbWw+0Td/OSyjuzSFKmfBaEt7mcapUGhKwTUELyjWOQhv+BWtTwYQVJTTkhqwOa3yJhpqBSm+FJzl+HWAT99wnHgrWP09Ia2Rwj+XGhkUY67jbTxw=
+	t=1755151025; cv=none; b=mp82ssLIydjciVLXwi9NIEC0mpzOKBVZ/ZHRVOzXMvTkj0qKR7KLOIMgE9yTtgYs+MxWiK3HwRfKiU4mhu2/wbbKgd2cb752ucp9KKyRznmElUFqfkClYn6mIbPKV7XsYQZtRk+rRyIEyY36CY/uQTR1M0/XE/oCkH5Dtu8Mi1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755150905; c=relaxed/simple;
-	bh=G6Z0ufc5WNkKpCSEZu+QYMKhZukGjdwDhLd3PZ7XxTc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FyhCj5YSE4piOQx1vYkEeme3ubI5Pg5Fr5FdD3hUVX88yZEXP8Tp/rFqNRHAHiXNqMwK9orzoc9npD6Ol5ZNaf3yUu2sIlKQYSDf1TQk91BQr2Ekhbzt1rK6sCyYJk92xVRGQ4LnIwD4vvJ0ZhtfRzgMCUAXQiSLV2ZzNbOE2UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wBUdpOaP; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id DD11C15B2;
-	Thu, 14 Aug 2025 07:54:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755150846;
-	bh=G6Z0ufc5WNkKpCSEZu+QYMKhZukGjdwDhLd3PZ7XxTc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=wBUdpOaPkUUQ5CjsWLre9KZuRRMfF5jEprVlnem0TnRBU3Y4fQ7br1nOV0HkcSqVx
-	 V6tiDaIetQqh5CEpcRrunZOwPcmCfUawtZEvqjW7M7wP9+/Y3D/5dwiqT+xc2g6LSb
-	 M7OKzjyz/Uu5G0WZJFNgmoPUE8Y2vXbedLAezECw=
-Message-ID: <d1354951-cbd3-4216-970b-e1e130f58522@ideasonboard.com>
-Date: Thu, 14 Aug 2025 08:54:57 +0300
+	s=arc-20240116; t=1755151025; c=relaxed/simple;
+	bh=n68HbMTB8C6ZGPu/7blBCLU0rCn7wQk93MW7Z3F5rxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lhiJnlgMWLDnNaYVYrbkKE1r3DxEWDZasUHrdRTCQC/Nhw2ITPrvQigrINUs1DvR288uJwZZfJLvPgQOi+U57WVYjxFt4fNfAPWl1iUL+KtZhCx+NTq3Mwajt/OSSUdy4dUxkr/HNVRlda29orcURgs3nDxFchn4r/60xYBHB0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=tYjAdP18; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=DJJfzqEyiCj+MMKzXK28H85UE48D3pJGQJgzxb0UL4Y=; b=tYjAdP18FbxypqFtrgsjHfUmx/
+	ybVu9oaxpcqw6zEy37EAh7d2I8UYLZxQOUoOWe4EOSxMBhmRqxVAiaxBOsFyxZmrQZDyRJ+BypAqH
+	qJ5CUaAPnQ8s+VSuY80C+oC4023ZMm+YOEb4Ug98+au7z7UlbVcK6qroK3mxbw3KydXPwo4PfKTxN
+	hZi7OnekxPua+GsgoLq5KT4dunxBs5i/QGBvRCu1a0E7WWifINGtTLgBUL8Q9smNNsOERhUooQNEP
+	45gVUAPeqdv/IW6s0IaDl5A3uFQQrIBB0AvX7eRYQ8CR2yA6HadwYJIasxRmlE93QmrWxnDMuNP8E
+	utIGRgLw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1umQxS-0000000HQ2D-08mb;
+	Thu, 14 Aug 2025 05:57:02 +0000
+Date: Thu, 14 Aug 2025 06:57:02 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: Tycho Andersen <tycho@tycho.pizza>, Andrei Vagin <avagin@google.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Pavel Tikhomirov <snorcht@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>, criu@lists.linux.dev,
+	Linux API <linux-api@vger.kernel.org>,
+	stable <stable@vger.kernel.org>
+Subject: [RFC][CFT] selftest for permission checks in mount propagation
+ changes
+Message-ID: <20250814055702.GO222315@ZenIV>
+References: <20250724230052.GW2580412@ZenIV>
+ <CANaxB-xbsOMkKqfaOJ0Za7-yP2N8axO=E1XS1KufnP78H1YzsA@mail.gmail.com>
+ <20250726175310.GB222315@ZenIV>
+ <CAEWA0a6jgj8vQhrijSJXUHBnCTtz0HEV66tmaVKPe83ng=3feQ@mail.gmail.com>
+ <20250813185601.GJ222315@ZenIV>
+ <aJzi506tGJb8CzA3@tycho.pizza>
+ <20250813194145.GK222315@ZenIV>
+ <CAE1zp77jmFD=rySJVLf6yU+JKZnUpjkBagC3qQHrxPotrccEbQ@mail.gmail.com>
+ <20250814044239.GM222315@ZenIV>
+ <20250814055142.GN222315@ZenIV>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/rcar-du: dsi: Fix 1/2/3 lane support
-To: Marek Vasut <marek.vasut+renesas@mailbox.org>,
- dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org, David Airlie <airlied@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
- Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- linux-renesas-soc@vger.kernel.org
-References: <20250813210840.97621-1-marek.vasut+renesas@mailbox.org>
-Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-In-Reply-To: <20250813210840.97621-1-marek.vasut+renesas@mailbox.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814055142.GN222315@ZenIV>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Hi,
+// link with -lcap, can run both as root and as regular user
+#define _GNU_SOURCE
+#include <sched.h>
+#include <sys/capability.h>
+#include <sys/mount.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <stdbool.h>
 
-On 14/08/2025 00:08, Marek Vasut wrote:
-> Remove fixed PPI lane count setup. The R-Car DSI host is capable
-> of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
-> configuration from PPI register settings and instead configure
-> the PPI lane count according to lane count information already
-> obtained by this driver instance.
-> 
-> Configure TXSETR register to match PPI lane count. The R-Car V4H
-> Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
-> Register (TXSETR), field LANECNT description indicates that the
-> TXSETR register LANECNT bitfield lane count must be configured
-> such, that it matches lane count configuration in PPISETR register
-> DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
-> configured to match.
-> 
-> Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-> ---
-> Cc: David Airlie <airlied@gmail.com>
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-> Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Magnus Damm <magnus.damm@gmail.com>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> Cc: Simona Vetter <simona@ffwll.ch>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-renesas-soc@vger.kernel.org
-> ---
-> V2: - Split this out of a series, update commit message, combine from
->       drm/rcar-du: dsi: Remove fixed PPI lane count setup
->       drm/rcar-du: dsi: Configure TXSETR register to match PPI lane count
->     - add Fixes tag, CC stable
-> ---
->  drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      | 5 ++++-
->  drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h | 8 ++++----
->  2 files changed, 8 insertions(+), 5 deletions(-)
+_Bool drop_caps(void)
+{
+        cap_value_t cap_value[] = { CAP_SYS_ADMIN };
+        cap_t cap = cap_get_proc();
+        if (!cap) {
+		perror("cap_get_proc");
+		return false;
+	}
+	return true;
+}
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+void do_unshare(void)
+{
+	FILE *f;
+	uid_t uid = geteuid();
+	gid_t gid = getegid();
+	unshare(CLONE_NEWNS|CLONE_NEWUSER);
+	f = fopen("/proc/self/uid_map", "w");
+	fprintf(f, "0 %d 1", uid);
+	fclose(f);
+	f = fopen("/proc/self/setgroups", "w");
+	fprintf(f, "deny");
+	fclose(f);
+	f = fopen("/proc/self/gid_map", "w");
+	fprintf(f, "0 %d 1", gid);
+	fclose(f);
+	mount(NULL, "/", NULL, MS_REC|MS_PRIVATE, NULL);
+}
 
- Tomi
+void bind(char *p)
+{
+	mount(p, p, NULL, MS_BIND, NULL);
+}
 
+void change_type(char *p, int type)
+{
+	errno = 0;
+	mount(NULL, p, NULL, type, NULL);
+}
+
+void set_group(int fd1, char *p1, int fd2, char *p2)
+{
+	int flags = MOVE_MOUNT_SET_GROUP;
+	int n;
+
+	if (!p1 || !*p1) {
+		p1 = "";	// be kind to old kernels
+		flags |= MOVE_MOUNT_F_EMPTY_PATH;
+	}
+	if (!p2 || !*p2) {
+		p2 = "";	// be kind to old kernels
+		flags |= MOVE_MOUNT_T_EMPTY_PATH;
+	}
+	errno = 0;
+	move_mount(fd1, p1, fd2, p2, flags);
+}
+
+_Bool result(int expected)
+{
+	if (expected != errno) {
+		printf(" failed: %d != %d\n", expected, errno);
+		return false;
+	}
+	printf(" OK\n");
+	return true;
+}
+
+int fd1[2], fd2[2];
+
+void in_child(void)
+{
+	printf("from should be someplace we have permissions for");
+	set_group(AT_FDCWD, "mnt/a", AT_FDCWD, "/mnt/a/private");
+	result(EPERM);
+	printf("to should be someplace we have permissions for");
+	set_group(AT_FDCWD, "/mnt/a", AT_FDCWD, "mnt/a/private");
+	result(EPERM);
+	printf("change_type: should have permissions for target");
+	change_type("mnt/locked", MS_PRIVATE);
+	result(EPERM);
+}
+
+void in_parent(void)
+{
+	printf("from should be mounted (pipes are not)");
+	set_group(fd1[0], NULL, AT_FDCWD, "/mnt/a/private");
+	result(EINVAL);
+
+	printf("to should be mounted (pipes are not)");
+	set_group(AT_FDCWD, "/mnt", fd1[0], NULL);
+	result(EINVAL);
+
+	printf("from should be someplace we have permissions for");
+	set_group(AT_FDCWD, "mnt/a", AT_FDCWD, "/mnt/a/private");
+	if (result(0))
+		change_type("/mnt/a/private", MS_PRIVATE);
+
+	printf("to should be someplace we have permissions for");
+	set_group(AT_FDCWD, "/mnt", AT_FDCWD, "mnt/a/private");
+	if (result(0))
+		change_type("mnt/a/private", MS_PRIVATE);
+
+	printf("from should be mountpoint");
+	set_group(AT_FDCWD, "/mnt/a", AT_FDCWD, "/mnt/a/private");
+	result(EINVAL);
+
+	printf("to should be mountpoint");
+	set_group(AT_FDCWD, "/mnt/a", AT_FDCWD, "/mnt/a/private/b");
+	result(EINVAL);
+
+	printf("to and from should be on the same filesystem");
+	mount("none", "/mnt/no-locked", "tmpfs", 0, NULL);
+	set_group(AT_FDCWD, "/mnt/a/shared", AT_FDCWD, "/mnt/no-locked");
+	result(EINVAL);
+	umount("/mnt/no-locked");
+
+	printf("from should contain the counterpart of to");
+	set_group(AT_FDCWD, "/mnt/a/shared", AT_FDCWD, "/mnt/no-locked");
+	result(EINVAL);
+
+	printf("from should not have anything locked in counterpart of to");
+	set_group(AT_FDCWD, "mnt", AT_FDCWD, "/mnt/no-locked");
+	if (result(0))
+		change_type("/mnt/no-locked", MS_PRIVATE);
+
+	printf("change_type: should have permissions for target");
+	change_type("mnt/a/private", MS_PRIVATE);
+	result(0);
+
+	printf("change_type: target should be a mountpoint");
+	change_type("/mnt/a", MS_PRIVATE);
+	result(EINVAL);
+
+	chdir("/mnt/a/private");
+	umount2("/mnt/a/private", MNT_DETACH);
+	printf("change_type: target should be mounted");
+	change_type(".", MS_PRIVATE);
+	result(EINVAL);
+}
+
+int main()
+{
+	char path[40];
+	pid_t child;
+	int root_fd;
+	char c;
+
+	if (pipe(fd1) < 0 || pipe(fd2) < 0) {
+		perror("pipe");
+		return -1;
+	}
+	if (!drop_caps())
+		return -1;
+	do_unshare();
+
+	root_fd = open("/", O_PATH);
+
+	errno = 0;
+	mount("none", "/mnt", "tmpfs", 0, NULL);
+	mkdir("/mnt/a", 0777);
+	mkdir("/mnt/a/private", 0777);
+	mkdir("/mnt/a/private/b", 0777);
+	mkdir("/mnt/a/shared", 0777);
+	mkdir("/mnt/a/slave", 0777);
+	mkdir("/mnt/a/shared-slave", 0777);
+	mkdir("/mnt/locked", 0777);
+	mkdir("/mnt/no-locked", 0777);
+	bind("/mnt/locked");
+
+	child = fork();
+	if (child < 0) {
+		perror("fork");
+		return -1;
+	} else if (child == 0) {
+		do_unshare();
+		change_type("/mnt/", MS_SHARED);
+		bind("/mnt/a");
+		bind("/mnt/a/private");
+		change_type("/mnt/a/private", MS_PRIVATE);
+		write(fd1[1], &c, 1);
+		read(fd2[0], &c, 1);
+
+		fchdir(root_fd);
+		in_child();
+
+		write(fd1[1], &c, 1);
+		return 0;
+	}
+	read(fd1[0], &c, 1);
+	sprintf(path, "/proc/%d/root", child);
+	chdir(path);
+
+	change_type("/mnt", MS_SHARED);
+	bind("/mnt/a/private");
+	bind("/mnt/a/shared");
+	bind("/mnt/a/slave");
+	bind("/mnt/a/slave-shared");
+	bind("/mnt/no-locked");
+	change_type("/mnt/a/private", MS_PRIVATE);
+	change_type("/mnt/a/slave", MS_SLAVE);
+	change_type("/mnt/a/shared-slave", MS_SLAVE);
+	change_type("/mnt/a/shared-slave", MS_SHARED);
+	change_type("/mnt/no-locked", MS_PRIVATE);
+
+	in_parent();
+
+	fflush(stdout);
+	write(fd2[1], &c, 1);
+	read(fd1[0], &c, 1);
+	return 0;
+}
 
