@@ -1,94 +1,97 @@
-Return-Path: <stable+bounces-169573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B706B269F1
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 16:48:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AE7B269FC
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 16:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7F6604B16
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 14:38:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0227B5669B6
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 14:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C9C1C8612;
-	Thu, 14 Aug 2025 14:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429821DE3AC;
+	Thu, 14 Aug 2025 14:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYKlCDlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC271DDA09
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 14:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAC4149C7B;
+	Thu, 14 Aug 2025 14:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755182307; cv=none; b=t9iWl5uxexg/Yh7QlwrqEs9Oy7qdDxrEbpPFeHTdfUj+TsQHO1bepxpGEqY2F88fklJj0w2ojzY16P2xJV3iKlFG7wDnSpL5oGKYk9zV4iloJs8Gf0hZcV/nHF/efBEhfcxlb03BxQYaQu+c4Q72NPrgSG5Gbv3HkVTAqcLvg4A=
+	t=1755182408; cv=none; b=U20OXQZUiL7ge39qfeHumBV7/Ij4qRheefPDDYVg5N6ASEwr+lnPcZGWFc9FPxFKy/ZsKDBXsZqC2HOnegvHG3bDtLuU8KAahbDwkLldIps0HY8QLTDLUmUpsN6WbUvog2CctuX9A/T6SfZVE6xpai+DX5Tj6eXT3JtrlNyoebc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755182307; c=relaxed/simple;
-	bh=rD0PD1U86FJ4htRzmnGEXOB+DK4LfEOIyk2ipev5fCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tQvADmM6t01l2dCqAo3fMYEl7kRE72bkXAW9UZ0aCaUY2wCzqXyuD1D6U2yytPw/xxCB5wdpVlmd5R4s/qQvGrPCh5cwnTmAmlwpKTvkkTVXHDeiThRrztDrGAic1Yik9X/CWHJtG5kvcFuPluMwCzDyWSO0U2deJG1hYi/K9hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F94C4CEED;
-	Thu, 14 Aug 2025 14:38:25 +0000 (UTC)
-Date: Thu, 14 Aug 2025 15:38:23 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gu Bowen <gubowen5@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	linux-mm@kvack.org, Waiman Long <llong@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Lu Jialin <lujialin4@huawei.com>
-Subject: Re: [PATCH v3] mm: Fix possible deadlock in console_trylock_spinning
-Message-ID: <aJ303-YBCCLFeIoy@arm.com>
-References: <20250813085310.2260586-1-gubowen5@huawei.com>
- <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
- <f3e631dc-245a-4efe-98e5-cbe94464daec@huawei.com>
- <aJ3f05Dqzx0OouJa@arm.com>
- <2025081450-tibia-angelfish-3aa2@gregkh>
+	s=arc-20240116; t=1755182408; c=relaxed/simple;
+	bh=yDFqrPUyPLCfqYSBS14sKLQHo2t2+OUj3F6/x0jtDI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dl7jq7CL5VCtPlqOtz/VpaTlnSIM5SAA9SAT6yxh5Fxnp4pHbNEwZYLlHUmgzIzydDFusRiWGcGCmKSg4Y40auRd4UGKu75YPz6PrrY3ryAzDFyPOc/Vwjjd+3F5lw1KQQ6+IhVSiqg08QZMuYikRs30614Gm+OIQFQJIBQZvmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYKlCDlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE45C4CEED;
+	Thu, 14 Aug 2025 14:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755182407;
+	bh=yDFqrPUyPLCfqYSBS14sKLQHo2t2+OUj3F6/x0jtDI8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HYKlCDljZEv0GzcE8FZCCtfM5JbEiUXvibTXNkcvsrJvSyXaQlKplrUvLhOWQNCNK
+	 ng65e5q6/gMgF1HnE/XKx1psUDZkqo2u5JzeVDzgYOD4D5R9QU7V42TvcPlD0k5Q5J
+	 7Yhs6N5vYPIncJPd/frf8vLKS6po4GpFih2JoVve7lwjdJU4SBOn8vnLKEpmXT9fk9
+	 fPHwinX7/p8l1VcYcK97/DpwMZ4fdNCg6BbOVrGrxfjxcy8QL6bKK0SR0CaOD/6aLD
+	 FO9cmxbPJPelH7drulrOcSxXf/dkuoP3GKXgNTsUbsXlMssVVYt5lV8e0WSbEgqfsN
+	 PgMzimVPT1QOw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.6 000/262] 6.6.102-rc1 review
+Date: Thu, 14 Aug 2025 16:39:53 +0200
+Message-ID: <20250814143953.2341345-1-ojeda@kernel.org>
+In-Reply-To: <20250812172952.959106058@linuxfoundation.org>
+References: <20250812172952.959106058@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025081450-tibia-angelfish-3aa2@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 14, 2025 at 03:56:58PM +0200, Greg Kroah-Hartman wrote:
-> On Thu, Aug 14, 2025 at 02:08:35PM +0100, Catalin Marinas wrote:
-> > On Thu, Aug 14, 2025 at 10:33:56AM +0800, Gu Bowen wrote:
-> > > On 8/14/2025 6:56 AM, Andrew Morton wrote:
-> > > > I'm not sure which kernel version this was against, but kmemleak.c has
-> > > > changed quite a lot.
-> > > > 
-> > > > Could we please see a patch against a latest kernel version?  Linus
-> > > > mainline will suit.
-> > > > 
-> > > > Thanks.
-> > > 
-> > > I discovered this issue in kernel version 5.10. Afterwards, I reviewed the
-> > > code of the mainline version and found that this deadlock path no longer
-> > > exists due to the refactoring of console_lock in v6.2-rc1. For details on
-> > > the refactoring, you can refer to this link :
-> > > https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/.
-> > > Therefore, theoretically, this issue existed before the refactoring of
-> > > console_lock.
-> > 
-> > Oh, so you can no longer hit this issue with mainline. This wasn't
-> > mentioned (or I missed it) in the commit log.
-> > 
-> > So this would be a stable-only fix that does not have a correspondent
-> > upstream. Adding Greg for his opinion.
-> 
-> Why not take the upstream changes instead?
+On Tue, 12 Aug 2025 19:26:28 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.102 release.
+> There are 262 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 14 Aug 2025 17:27:08 +0000.
+> Anything received after that time might be too late.
 
-Gu reckons there are 40 patches -
-https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/
+Boot-tested under QEMU for Rust x86_64:
 
-I haven't checked what ended in mainline and whether we could do with
-fewer backports.
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
--- 
-Catalin
+Thanks!
+
+Cheers,
+Miguel
 
