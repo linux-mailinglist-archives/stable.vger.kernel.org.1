@@ -1,126 +1,110 @@
-Return-Path: <stable+bounces-169604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623DCB26D08
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 18:55:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65681B26D34
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 19:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AC84B6165A
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 16:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ECEB1CE1380
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 17:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1366E1FF1C9;
-	Thu, 14 Aug 2025 16:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SznRsunT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A238F2040B6;
+	Thu, 14 Aug 2025 17:00:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C605B2040B6
-	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E5117332C
+	for <stable@vger.kernel.org>; Thu, 14 Aug 2025 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755190440; cv=none; b=mGThzxtQthi7xk9/CbUsn580w21ZwXkXtmCebP7FlLPIj2xZEuf5GxtHOWXj2lCZfl8YzMIWzP3DmG3f4wCeAfeU1pogP/F7xso9sLLfhpNISF4DGolqLbkWl8QHXdYxwVdwdCknW11FaLSHEywstrnDaIqcEHbJ0jWEsFT51og=
+	t=1755190815; cv=none; b=hEDdyO9op5ej1uf9Gap2oKgyerRkikcfAXTXYBIrYa7qBRDiI0rZGCUTqQAMTwrOnE5B2a8tkMhwCABoyvRUfDlD7FqcVlF6uFigwMMBzwjhlypB654uOKLBuZ02czMO+wJr2ReAC2UbHLQnJEDeU9mi00Ej93xA3iC1f0K9h0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755190440; c=relaxed/simple;
-	bh=f/wLue3peOLjixeAvVnVfrO9pUwjazkiYvqHq/QRurU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sxRqYl7yJbtDxRmstHFGD2y/DKizzquWnO+J3ZDqkbEqkziYOtmIiFScjKjXKm5L4UFypOirQCV2k+9f5qHbAvw0682Rx2LsYunK+s3KoVHsPEICHoMMKM/dXri5OcNfNBaxdXWFvX8Kt5WFzC9a8SAHVFtumxZu6gzM6OXrouA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SznRsunT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11425C4CEF1;
-	Thu, 14 Aug 2025 16:53:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755190440;
-	bh=f/wLue3peOLjixeAvVnVfrO9pUwjazkiYvqHq/QRurU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SznRsunTTpHmUHdPESXYrmPNbRHu3LNCXWTXHFVDQDvvnTz8Ld4smNH65sZCkig44
-	 TE1/V7j4pwAHF5gcXormGDnlP+jOPZ1ixujrrFkW4bqVKS4dfPn7SSJ0g4fv40MM4X
-	 miG5DqkVSMAI8g5ZTCcYV4f7BRb4TByCDwT8Ms1G4P0KLfUU+fSMFzHnvG1krOyxcV
-	 fajYxTOFVWOs2QJlkUUYOkN1+FZ6qxW1r+XmM2+tBrFn4tm7nYcWsaKoC1eQbzC11y
-	 zaiVguyHTsSVRFapAXON9amJT95nl3riVwuCQFmSimrjMN0o1B4bjWO4On2yY2Imz1
-	 hZyRrhWnnRoYw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Bill Wendling <morbo@google.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] mm/hmm: move pmd_to_hmm_pfn_flags() to the respective #ifdeffery
-Date: Thu, 14 Aug 2025 12:53:56 -0400
-Message-Id: <20250814165356.2131524-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081229-useable-overhung-5a62@gregkh>
-References: <2025081229-useable-overhung-5a62@gregkh>
+	s=arc-20240116; t=1755190815; c=relaxed/simple;
+	bh=Qtjv+0z+bgRL4oYQkx3CSumff7VS5Ho9TiLgKtddUdU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kkXoNvkkig9dz2xaIhRhWelBzCXWmC38c7LSmoZDWjXfeohf6xSOy+Fs8noHuEhnDGBIcEVTaXEPebjNNWM6fJ7f1zz7eBNjrHV2WPIL2/3Ud6erd6NruZJHSxuRtPtBM059uthOuJX1lSMnKtJxAs0QwOXHYYTlIAzWJ6eIGIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8539AC4CEED;
+	Thu, 14 Aug 2025 17:00:13 +0000 (UTC)
+Date: Thu, 14 Aug 2025 18:00:11 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Gu Bowen <gubowen5@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
+	linux-mm@kvack.org, Waiman Long <llong@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Lu Jialin <lujialin4@huawei.com>
+Subject: Re: [PATCH v3] mm: Fix possible deadlock in console_trylock_spinning
+Message-ID: <aJ4WG0wZks-cdCm8@arm.com>
+References: <20250813085310.2260586-1-gubowen5@huawei.com>
+ <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
+ <f3e631dc-245a-4efe-98e5-cbe94464daec@huawei.com>
+ <aJ3f05Dqzx0OouJa@arm.com>
+ <2025081450-tibia-angelfish-3aa2@gregkh>
+ <aJ303-YBCCLFeIoy@arm.com>
+ <2025081435-esophagus-crumpet-2622@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025081435-esophagus-crumpet-2622@gregkh>
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On Thu, Aug 14, 2025 at 04:54:33PM +0200, Greg Kroah-Hartman wrote:
+> On Thu, Aug 14, 2025 at 03:38:23PM +0100, Catalin Marinas wrote:
+> > On Thu, Aug 14, 2025 at 03:56:58PM +0200, Greg Kroah-Hartman wrote:
+> > > On Thu, Aug 14, 2025 at 02:08:35PM +0100, Catalin Marinas wrote:
+> > > > On Thu, Aug 14, 2025 at 10:33:56AM +0800, Gu Bowen wrote:
+> > > > > On 8/14/2025 6:56 AM, Andrew Morton wrote:
+> > > > > > I'm not sure which kernel version this was against, but kmemleak.c has
+> > > > > > changed quite a lot.
+> > > > > > 
+> > > > > > Could we please see a patch against a latest kernel version?  Linus
+> > > > > > mainline will suit.
+> > > > > > 
+> > > > > > Thanks.
+> > > > > 
+> > > > > I discovered this issue in kernel version 5.10. Afterwards, I reviewed the
+> > > > > code of the mainline version and found that this deadlock path no longer
+> > > > > exists due to the refactoring of console_lock in v6.2-rc1. For details on
+> > > > > the refactoring, you can refer to this link :
+> > > > > https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/.
+> > > > > Therefore, theoretically, this issue existed before the refactoring of
+> > > > > console_lock.
+> > > > 
+> > > > Oh, so you can no longer hit this issue with mainline. This wasn't
+> > > > mentioned (or I missed it) in the commit log.
+> > > > 
+> > > > So this would be a stable-only fix that does not have a correspondent
+> > > > upstream. Adding Greg for his opinion.
+> > > 
+> > > Why not take the upstream changes instead?
+> > 
+> > Gu reckons there are 40 patches -
+> > https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/
+> 
+> 40 really isn't that much overall, we've taken way more for much smaller
+> issues :)
 
-[ Upstream commit 188cb385bbf04d486df3e52f28c47b3961f5f0c0 ]
+TBH, I'm not sure it's worth it. That's a potential deadlock on a rare
+error condition (a kmemleak bug or something wrong with the sites
+calling the kmemleak API).
 
-When pmd_to_hmm_pfn_flags() is unused, it prevents kernel builds with
-clang, `make W=1` and CONFIG_TRANSPARENT_HUGEPAGE=n:
+> > I haven't checked what ended in mainline and whether we could do with
+> > fewer backports.
+> 
+> I'll leave that all up to the people who are still wanting these older
+> kernels.
 
-  mm/hmm.c:186:29: warning: unused function 'pmd_to_hmm_pfn_flags' [-Wunused-function]
+Good point. Thanks for the advice ;).
 
-Fix this by moving the function to the respective existing ifdeffery
-for its the only user.
-
-See also:
-
-  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-
-Link: https://lkml.kernel.org/r/20250710082403.664093-1-andriy.shevchenko@linux.intel.com
-Fixes: 992de9a8b751 ("mm/hmm: allow to mirror vma of a file on a DAX backed filesystem")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Andriy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Minor context adjustment ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/hmm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 902f5fa6bf93..e0dccfc8db60 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -392,6 +392,7 @@ static int hmm_vma_walk_hole(unsigned long addr, unsigned long end,
- 	return hmm_vma_walk_hole_(addr, end, fault, write_fault, walk);
- }
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static inline uint64_t pmd_to_hmm_pfn_flags(struct hmm_range *range, pmd_t pmd)
- {
- 	if (pmd_protnone(pmd))
-@@ -401,7 +402,6 @@ static inline uint64_t pmd_to_hmm_pfn_flags(struct hmm_range *range, pmd_t pmd)
- 				range->flags[HMM_PFN_VALID];
- }
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
- 		unsigned long end, uint64_t *pfns, pmd_t pmd)
- {
 -- 
-2.39.5
-
+Catalin
 
