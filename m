@@ -1,185 +1,217 @@
-Return-Path: <stable+bounces-169526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B68BB263AE
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 13:00:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B43B26405
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 13:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B0D3AD540
-	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 10:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D48F51781CE
+	for <lists+stable@lfdr.de>; Thu, 14 Aug 2025 11:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2436030100C;
-	Thu, 14 Aug 2025 10:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA233C26;
+	Thu, 14 Aug 2025 11:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ek46LP1B"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LhIyxLw3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA142FC898;
-	Thu, 14 Aug 2025 10:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74030318132;
+	Thu, 14 Aug 2025 11:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755168886; cv=none; b=PZIvxTRUpGGS6PINg/AaA+JCBTgcZOhXx8X6Txn7E1BRE2LU9AUyBLfQkhpo8Lj4f35BqZzHDLzqXRfbzKQeGjb3jL/ujfkJ80iC+uM/lhdSPr5OM5Z7XYvo8Wp4a451KqC1PLgnwRKSjAcnrYr6J2Y2DWvMldSWR+7TpUWp/Q0=
+	t=1755170297; cv=none; b=k/HB/jY+fSmtykdzlZww2k1vB6eA4iUA3bvNTUW4cpQvgG6PcPa8AHi/A7SQAXt2V49p5MrM170UQLK7AB+ux8TD1bNDPzc4DKtn5FuK7xsuXLDwZuuCjuoK9gh0jrnUjqo9ITtsicBzfA366RNOaEOITRxGl4CzSVkvNS0xZrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755168886; c=relaxed/simple;
-	bh=/Jt/VvPHfcOxLL/uY9EPpog2kBoY+v8VaA1FtdGFLB0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oqTq1B20ChJant1k6cMDUkGNb/CMAsuhVp8+vMHiBN0IBt9+acbN1PSoCzk2zFqddePxRv56/lBtFl2npojlTCSsZpbkT9n4IMv6oXPpHd8WN+gLnSyGnBz/iFuDnQiYtbcsaE0ao99d5JRAzgtAL8DtXKxnKP90Sge1LUTeZ+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ek46LP1B; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57E98juh012959;
-	Thu, 14 Aug 2025 10:54:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	iAu6t9KixteDwsIhkvnJpX7+H6rs9d4kiPwt4KhmhGQ=; b=Ek46LP1Bo+xsNBIP
-	3si4f6Ddn8LxmJuOXXlq1+ACeKFftemNSEPa1/tb3TD+/FX2DawscKJtC4Y+EmwW
-	otw6sSFo36reJ6rabUYTxOvu28ndTQ1kk95QhAy4UzT+FApEzse2EVr9tz0D5x/Q
-	hzcueiWUxCtk/LDWC9kD8qRIlwLZwO1TwwdQL2mARRLVqu3mYe3H4tXlUIBcp4y7
-	qYWWqjJ7qEfXtaGOUUbUSQ7Bb4+hfRdgXEV2TFmwZurfeFMm0uaUl57ESIFQoGgs
-	pu+0glduPb1CPA2vLsaBPDGfFeEnP++wiAaH1hM2NDRrjkrWdUUSxcicrXRd8HvJ
-	m/fbPw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ffq6u8mv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 10:54:38 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 57EAsctN023580
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 10:54:38 GMT
-Received: from [10.50.4.137] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Thu, 14 Aug
- 2025 03:54:36 -0700
-Message-ID: <21bf1ed6-9343-40e1-9532-c353718aee92@quicinc.com>
-Date: Thu, 14 Aug 2025 16:24:25 +0530
+	s=arc-20240116; t=1755170297; c=relaxed/simple;
+	bh=eFYWsp08n6SVVedh4zbV4bDxYJdUahuYEnIagp/WlB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V0tLRw38qPTIpce/sLOZ8W1eqT2+GVEIU64cdq0XHUfcfeAgJShDhqvYQwMKnq6Dptr/4K7q8G3fBzmmfbdifkHZYN283rG0rfONKYbimyjYHAfytWXWhhg98fwTjzNaxd4ED8ze7LfMD6kCQmEvIsOKDqszDYhAODhFCyU1VXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LhIyxLw3; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=E0
+	2voVBQAU1rJD41PTsszXfus1cHekX350eLoFLGHrY=; b=LhIyxLw3gMDvP7o+qj
+	XhM+eOjzEBncHGNWm1AsBj1VRIW/TTvyjIL/2fVEWorzr3XrVES85ckEnp9FjG6D
+	YPGbw/nW34SQ9uKxI5Nw14/tCvPRKMCnEop03kYYkX4GAKTwuzEhGzR1QJWRv7QM
+	1sJ9DdNyj86j/NryHBVaHa6sw=
+Received: from mi-work.mioffice.cn (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wA3sla6xZ1ofjt8Bw--.11362S4;
+	Thu, 14 Aug 2025 19:17:15 +0800 (CST)
+From: yangshiguang1011@163.com
+To: harry.yoo@oracle.com
+Cc: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	glittao@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	yangshiguang <yangshiguang@xiaomi.com>
+Subject: [PATCH v2] mm: slub: avoid wake up kswapd in set_track_prepare
+Date: Thu, 14 Aug 2025 19:16:42 +0800
+Message-ID: <20250814111641.380629-2-yangshiguang1011@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y v2 1/1] block: Fix bounce check logic in
- blk_queue_may_bounce()
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
-        "Martin K .
- Petersen" <martin.petersen@oracle.com>,
-        <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250814063655.1902688-1-quic_hardshar@quicinc.com>
- <2025081450-pacifist-laxative-bb4c@gregkh>
-Content-Language: en-US
-From: Hardeep Sharma <quic_hardshar@quicinc.com>
-In-Reply-To: <2025081450-pacifist-laxative-bb4c@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDA3NSBTYWx0ZWRfX9Jdtps2lTmLX
- Og+U5DtEBm7QIrsVaKpcT38Y7/1PrE6pnA+VowumSlsKjXDmkU2bR28I0sYSix4+EZxwpgyw6tN
- VdU8HRqUqhnrdBQrj+CPy/DXTQymmV4ndWcl+zkvJC6M6aQGvnx2Ixw7FdubfY6BBRSSVK4j04V
- a+ut8ZUwVF/xxak1Wn1DMFz22PYqZaT7dbZHI4bJI5GVA+WtQGx6RVtpNjr3vwsC2kszdZOc9zO
- EDyWZVAfXzqG+34gEaFrz78aXjxUK0LlntKzn/zqkDo1063VxZFK0hrYAEeGvaRgKUKYjhxUKPR
- bBXgTfV49eO900p/kTzDDAGtIC+fvwWBvHlN8yZt9TzEj+pAh4GfGoqaYXXQBO5L4O3DHlRJmRi
- iju2nmq1
-X-Authority-Analysis: v=2.4 cv=TLZFS0la c=1 sm=1 tr=0 ts=689dc06e cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=JQxddNvltgY3yC4srtIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: cCMPdCj4G8B63rKTjGbZYrKiU-7-vOtF
-X-Proofpoint-ORIG-GUID: cCMPdCj4G8B63rKTjGbZYrKiU-7-vOtF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-13_02,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 phishscore=0 malwarescore=0 spamscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508110075
+X-CM-TRANSID:_____wA3sla6xZ1ofjt8Bw--.11362S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7XFyrpF
+	W7GFy3JF48JryjqFWUAw4Uur1SvrZ3CrW8CF43Wa4ruFyYqr48GFW7tFyjvFWrArykuanF
+	ka1UuFn3Ww4UZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jZTmDUUUUU=
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiSAWp5WidxSUN3gAAsH
 
+From: yangshiguang <yangshiguang@xiaomi.com>
 
+From: yangshiguang <yangshiguang@xiaomi.com>
 
-On 8/14/2025 2:33 PM, Greg KH wrote:
-> On Thu, Aug 14, 2025 at 12:06:55PM +0530, Hardeep Sharma wrote:
->> Buffer bouncing is needed only when memory exists above the lowmem region,
->> i.e., when max_low_pfn < max_pfn. The previous check (max_low_pfn >=
->> max_pfn) was inverted and prevented bouncing when it could actually be
->> required.
->>
->> Note that bouncing depends on CONFIG_HIGHMEM, which is typically enabled
->> on 32-bit ARM where not all memory is permanently mapped into the kernel’s
->> lowmem region.
->>
->> Branch-Specific Note:
->>
->> This fix is specific to this branch (6.6.y) only.
->> In the upstream “tip” kernel, bounce buffer support for highmem pages
->> was completely removed after kernel version 6.12. Therefore, this
->> modification is not possible or relevant in the tip branch.
->>
->> Fixes: 9bb33f24abbd0 ("block: refactor the bounce buffering code")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hardeep Sharma <quic_hardshar@quicinc.com>
-> 
-> Why do you say this is only for 6.6.y, yet your Fixes: line is older
-> than that?
-[Hardeep Sharma]::
+set_track_prepare() can incur lock recursion.
+The issue is that it is called from hrtimer_start_range_ns
+holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
+CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
+and try to hold the per_cpu(hrtimer_bases)[n].lock.
 
-Yes, the original commit was merged in kernel 5.13-rc1, as indicated by 
-the Fixes: line. However, we are currently working with kernel 6.6, 
-where we encountered the issue. While it could be merged into 6.12 and 
-then backported to earlier versions, our focus is on addressing it in 
-6.6.y, where the problem was observed.
+So avoid waking up kswapd.The oops looks something like:
 
-> 
-> And why wasn't this ever found or noticed before?
-[Hardeep Sharma] ::
+BUG: spinlock recursion on CPU#3, swapper/3/0
+ lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
+Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
+Call trace:
+spin_bug+0x0
+_raw_spin_lock_irqsave+0x80
+hrtimer_try_to_cancel+0x94
+task_contending+0x10c
+enqueue_dl_entity+0x2a4
+dl_server_start+0x74
+enqueue_task_fair+0x568
+enqueue_task+0xac
+do_activate_task+0x14c
+ttwu_do_activate+0xcc
+try_to_wake_up+0x6c8
+default_wake_function+0x20
+autoremove_wake_function+0x1c
+__wake_up+0xac
+wakeup_kswapd+0x19c
+wake_all_kswapds+0x78
+__alloc_pages_slowpath+0x1ac
+__alloc_pages_noprof+0x298
+stack_depot_save_flags+0x6b0
+stack_depot_save+0x14
+set_track_prepare+0x5c
+___slab_alloc+0xccc
+__kmalloc_cache_noprof+0x470
+__set_page_owner+0x2bc
+post_alloc_hook[jt]+0x1b8
+prep_new_page+0x28
+get_page_from_freelist+0x1edc
+__alloc_pages_noprof+0x13c
+alloc_slab_page+0x244
+allocate_slab+0x7c
+___slab_alloc+0x8e8
+kmem_cache_alloc_noprof+0x450
+debug_objects_fill_pool+0x22c
+debug_object_activate+0x40
+enqueue_hrtimer[jt]+0xdc
+hrtimer_start_range_ns+0x5f8
+...
 
-This issue remained unnoticed likely because the bounce buffering logic 
-is only triggered under specific hardware and configuration 
-conditions—primarily on 32-bit ARM systems with CONFIG_HIGHMEM enabled 
-and devices requiring DMA from lowmem. Many platforms either do not use 
-highmem or have hardware that does not require bounce buffering, so the 
-bug did not manifest widely.
+Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
+---
+v1 -> v2:
+    propagate gfp flags to set_track_prepare()
 
-> 
-> Also, why can't we just remove all of the bounce buffering code in this
-> older kernel tree?  What is wrong with doing that instead?
+[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
+---
+ mm/slub.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-[Hardeep Sharma]::
-
-it's too intrusive — I'd need to backport 40+ dependency patches, and 
-I'm unsure about the instability this might introduce in block layer on 
-kernel 6.6. Plus, we don't know if it'll work reliably on 32-bit with 
-1GB+ DDR and highmem enabled. So I'd prefer to push just this single 
-tested patch on kernel 6.6 and older affected versions.
-
-Removing bounce buffering code from older kernel trees is not feasible 
-for all use cases. Some legacy platforms and drivers still rely on 
-bounce buffering to support DMA operations with highmem pages, 
-especially on 32-bit systems.
-
-> 
-> And finally, how was this tested?
-
-[Hardeep Sharma]:
-
-The patch was tested on a 32-bit ARM platform with CONFIG_HIGHMEM 
-enabled and a storage device requiring DMA from lowmem.>
-> thanks,
-> 
-> greg k-h
-
-
+diff --git a/mm/slub.c b/mm/slub.c
+index 30003763d224..dba905bf1e03 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -962,19 +962,20 @@ static struct track *get_track(struct kmem_cache *s, void *object,
+ }
+ 
+ #ifdef CONFIG_STACKDEPOT
+-static noinline depot_stack_handle_t set_track_prepare(void)
++static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	depot_stack_handle_t handle;
+ 	unsigned long entries[TRACK_ADDRS_COUNT];
+ 	unsigned int nr_entries;
++	gfp_flags &= GFP_NOWAIT;
+ 
+ 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
+-	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
++	handle = stack_depot_save(entries, nr_entries, gfp_flags);
+ 
+ 	return handle;
+ }
+ #else
+-static inline depot_stack_handle_t set_track_prepare(void)
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	return 0;
+ }
+@@ -996,9 +997,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
+ }
+ 
+ static __always_inline void set_track(struct kmem_cache *s, void *object,
+-				      enum track_item alloc, unsigned long addr)
++				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
+ {
+-	depot_stack_handle_t handle = set_track_prepare();
++	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
+ 
+ 	set_track_update(s, object, alloc, addr, handle);
+ }
+@@ -1921,9 +1922,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
+ static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
+ static inline int check_object(struct kmem_cache *s, struct slab *slab,
+ 			void *object, u8 val) { return 1; }
+-static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
+ static inline void set_track(struct kmem_cache *s, void *object,
+-			     enum track_item alloc, unsigned long addr) {}
++			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
+ static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
+ 					struct slab *slab) {}
+ static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+@@ -3878,7 +3879,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			 * tracking info and return the object.
+ 			 */
+ 			if (s->flags & SLAB_STORE_USER)
+-				set_track(s, freelist, TRACK_ALLOC, addr);
++				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 			return freelist;
+ 		}
+@@ -3910,7 +3911,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			goto new_objects;
+ 
+ 		if (s->flags & SLAB_STORE_USER)
+-			set_track(s, freelist, TRACK_ALLOC, addr);
++			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 		return freelist;
+ 	}
+@@ -4422,7 +4423,7 @@ static noinline void free_to_partial_list(
+ 	depot_stack_handle_t handle = 0;
+ 
+ 	if (s->flags & SLAB_STORE_USER)
+-		handle = set_track_prepare();
++		handle = set_track_prepare(GFP_NOWAIT);
+ 
+ 	spin_lock_irqsave(&n->list_lock, flags);
+ 
+-- 
+2.43.0
 
 
