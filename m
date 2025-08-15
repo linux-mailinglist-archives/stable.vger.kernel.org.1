@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46E9B282F4
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 17:30:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8A3B282FF
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 17:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E76BAC48CA
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 15:30:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E8B11D03599
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 15:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B73D1A256B;
-	Fri, 15 Aug 2025 15:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D581D6188;
+	Fri, 15 Aug 2025 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWye/Jc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zt3RJolX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9352AD13
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 15:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9299D14F125
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755271852; cv=none; b=oTrPJhqvEcX7q3DiPXCNAHLUnb8WJTukN4qsj0A8NE6MI4oCgXLiOz99fxfynQc0xWhZhZEejmY4VK1SeacjcjVezcIVFu52nglCMjaCM4r7JjGRukcGP4QRzsYh284Y2zOmGlbK2aOKYplzsKJ1eG7nkN6v9DDoFW5fARfc0kY=
+	t=1755271920; cv=none; b=k18e/JybBB/+uw3pydeA09Xjsu4CRmxiiVfJ/r9j49XXlkL/h/M7dtO31PuiP/EVYQYkXho6ZcGLDo/QGPydBp+ZibrRcJTyG0LzIZX8w/O0vHQ7PHYt+BbJWCTEtyAOpfGW6lqHhLkrCD8NG5jp4Xe2WWz1tsaK/ZvmfF04k68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755271852; c=relaxed/simple;
-	bh=ybqmsReBfCALu/mumTCb8/pJ+3nb+xDhhy5xIG3OQJI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Vd9qt4TkzUlszHm2TbtpqNzWj/nNTAEBfEHjRoah2LAR7v97m/Kl90Od8uurUnN8jXZL4EDuJr67ghpP3B5paq6kKpX4wsXiRRs5h76jgFHcg6wOhUVpKFKTDJSNlLBaySvclglM1HuETWvytfPxgQu0Uodx1jOuWXTNVxPgcKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWye/Jc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD55AC4CEEB;
-	Fri, 15 Aug 2025 15:30:51 +0000 (UTC)
+	s=arc-20240116; t=1755271920; c=relaxed/simple;
+	bh=EoppllOCYVi2w8oSNCNNSEXH5ke4m1sy7Rpem9XPmiA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rWXgNOEE4Vq9kU3e0aAlfDyvVd3jlv7C716T74fO+LAh+Sw1yiKUC7wYSBJxK2SIn2plxQyfwzF4G3aXAWqTXNrRrSeVyEm8uOkwvWtT6TpN4ZWqm+/pAdluoCkK1BmuPYf5NW6TQyVcPfFiS8XaWanuHrtblq3CHD3QPu7wxKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zt3RJolX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8160C4CEEB;
+	Fri, 15 Aug 2025 15:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755271852;
-	bh=ybqmsReBfCALu/mumTCb8/pJ+3nb+xDhhy5xIG3OQJI=;
+	s=korg; t=1755271920;
+	bh=EoppllOCYVi2w8oSNCNNSEXH5ke4m1sy7Rpem9XPmiA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rWye/Jc45zHee1IODPVS0dp1Sw7R+/N4hMWmvgf87PBKcOgzppp/p5Uu6tzOBJ9xK
-	 SDrAbsK0eXec4QVHMgXvMrYQa8Db3nmXC7VkNEbEQrfguyKHwOoST3Wlcq8+VGb+Y5
-	 ZJgnNQUNO1gEHw6jWgp8guNZ7R59UraIxk/ra490=
-Subject: FAILED: patch "[PATCH] leds: flash: leds-qcom-flash: Fix registry access after" failed to apply to 6.6-stable tree
-To: krzysztof.kozlowski@linaro.org,fenglin.wu@oss.qualcomm.com,lee@kernel.org
+	b=Zt3RJolX+IzBlrj4rAotH2kHag2Zgr34MKOLm0F4uEYYwhuE9gaPNn0DFkbJhPbh2
+	 PYYedlqokzmaNj5Q8FVQmYyX+KJh+6K8WZd2ea5v3BBokrke026lc3wXZ9gWgPgD1U
+	 tp37cyQ5sia/qjdhYI2VkXu0UzOPMVqDW/S+J6Lk=
+Subject: FAILED: patch "[PATCH] net: enetc: fix device and OF node leak at probe" failed to apply to 6.1-stable tree
+To: johan@kernel.org,horms@kernel.org,kuba@kernel.org,vladimir.oltean@nxp.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Aug 2025 17:30:44 +0200
-Message-ID: <2025081544-skillet-cofounder-e278@gregkh>
+Date: Fri, 15 Aug 2025 17:31:56 +0200
+Message-ID: <2025081556-icon-nursing-ee42@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x fab15f57360b1e6620a1d0d6b0fbee896e6c1f07
+git cherry-pick -x 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081544-skillet-cofounder-e278@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081556-icon-nursing-ee42@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,78 +77,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fab15f57360b1e6620a1d0d6b0fbee896e6c1f07 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Thu, 29 May 2025 08:33:36 +0200
-Subject: [PATCH] leds: flash: leds-qcom-flash: Fix registry access after
- re-bind
+From 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 25 Jul 2025 19:12:10 +0200
+Subject: [PATCH] net: enetc: fix device and OF node leak at probe
 
-Driver in probe() updates each of 'reg_field' with 'reg_base':
+Make sure to drop the references to the IERB OF node and platform device
+taken by of_parse_phandle() and of_find_device_by_node() during probe.
 
-	for (i = 0; i < REG_MAX_COUNT; i++)
-		regs[i].reg += reg_base;
+Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-3-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-'reg_field' array (under variable 'regs' above) is statically allocated,
-thus each re-bind would add another 'reg_base' leading to bogus
-register addresses.  Constify the local 'reg_field' array and duplicate
-it in probe to solve this.
-
-Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250529063335.8785-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-
-diff --git a/drivers/leds/flash/leds-qcom-flash.c b/drivers/leds/flash/leds-qcom-flash.c
-index b4c19be51c4d..89cf5120f5d5 100644
---- a/drivers/leds/flash/leds-qcom-flash.c
-+++ b/drivers/leds/flash/leds-qcom-flash.c
-@@ -117,7 +117,7 @@ enum {
- 	REG_MAX_COUNT,
- };
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index f63a29e2e031..de0fb272c847 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -829,19 +829,29 @@ static int enetc_pf_register_with_ierb(struct pci_dev *pdev)
+ {
+ 	struct platform_device *ierb_pdev;
+ 	struct device_node *ierb_node;
++	int ret;
  
--static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x08, 0, 7),			/* status1	*/
- 	REG_FIELD(0x09, 0, 7),                  /* status2	*/
- 	REG_FIELD(0x0a, 0, 7),                  /* status3	*/
-@@ -132,7 +132,7 @@ static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x58, 0, 2),			/* therm_thrsh3 */
- };
+ 	ierb_node = of_find_compatible_node(NULL, NULL,
+ 					    "fsl,ls1028a-enetc-ierb");
+-	if (!ierb_node || !of_device_is_available(ierb_node))
++	if (!ierb_node)
+ 		return -ENODEV;
  
--static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x06, 0, 7),			/* status1	*/
- 	REG_FIELD(0x07, 0, 6),			/* status2	*/
- 	REG_FIELD(0x09, 0, 7),			/* status3	*/
-@@ -854,11 +854,17 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
- 	if (val == FLASH_SUBTYPE_3CH_PM8150_VAL || val == FLASH_SUBTYPE_3CH_PMI8998_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_3CH;
- 		flash_data->max_channels = 3;
--		regs = mvflash_3ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_3ch_regs, sizeof(mvflash_3ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
- 	} else if (val == FLASH_SUBTYPE_4CH_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_4CH;
- 		flash_data->max_channels = 4;
--		regs = mvflash_4ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_4ch_regs, sizeof(mvflash_4ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
++	if (!of_device_is_available(ierb_node)) {
++		of_node_put(ierb_node);
++		return -ENODEV;
++	}
++
+ 	ierb_pdev = of_find_device_by_node(ierb_node);
+ 	of_node_put(ierb_node);
  
- 		rc = regmap_read(regmap, reg_base + FLASH_REVISION_REG, &val);
- 		if (rc < 0) {
-@@ -880,6 +886,7 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
- 		dev_err(dev, "Failed to allocate regmap field, rc=%d\n", rc);
- 		return rc;
- 	}
-+	devm_kfree(dev, regs); /* devm_regmap_field_bulk_alloc() makes copies */
+ 	if (!ierb_pdev)
+ 		return -EPROBE_DEFER;
  
- 	platform_set_drvdata(pdev, flash_data);
- 	mutex_init(&flash_data->lock);
+-	return enetc_ierb_register_pf(ierb_pdev, pdev);
++	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
++
++	put_device(&ierb_pdev->dev);
++
++	return ret;
+ }
+ 
+ static const struct enetc_si_ops enetc_psi_ops = {
 
 
