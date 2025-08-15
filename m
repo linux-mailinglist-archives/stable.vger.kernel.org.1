@@ -1,104 +1,129 @@
-Return-Path: <stable+bounces-169789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D23B284DE
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 19:24:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED9EB284F8
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 19:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011DD5A1F06
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 17:24:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214A31CE3BD3
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 17:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62550143756;
-	Fri, 15 Aug 2025 17:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9838E30F535;
+	Fri, 15 Aug 2025 17:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ticg+z4y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkKIQ8dz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221F52F9C3A
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 17:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AD930F524;
+	Fri, 15 Aug 2025 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755278638; cv=none; b=cMWEM7HLEk70O3dqLRdoniSIAVoHcMgBw00Ku1pfjl+co60FEml219RAIR545LnLj3xS5VFjnK4GcuwwKKvr1UyPgS2xIGMWuFaXvZ8378FTwUzcKqj78WzmFvPBcOad7fP+xMupz+dQ+F5sxDohokE5bYfYV+0EtBxYJ6Jyl2Y=
+	t=1755278927; cv=none; b=XRZDvboh6J0E1x05JqljziDY30KVViazt5tBtI59JGyjBd6DSgdSC4QHFyPxNypeEuTYZbBDxivqATDRKarc9q1HX/PEBwNk9njhP6/4Dw3CVzcVPlfnSyr9wn4RlLaz2/8ZdLBx11YylnrgyVAOYi9//RWzOvpnJbAfriOC00s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755278638; c=relaxed/simple;
-	bh=ql/PS8M4/I1NVFiWZy6htRwC70EwNxT6G3S/vy/Dtoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOI7QOlSBcMpDv7kIYh0hnm4fTq8Gudml9Cpq0TuukWmwjQqZnaRnI3QRmPTpTQtSS+/UApt6S6U5GD0zRZQgiJXCt1z5gZN35IO2d01FcRwRWFyUi4NJMQQq0DkS7d5UsOLdzJysE+9TlpXlANtxKZRvnQF9B60GKImSZvGIIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ticg+z4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BD2C4CEF6;
-	Fri, 15 Aug 2025 17:23:56 +0000 (UTC)
+	s=arc-20240116; t=1755278927; c=relaxed/simple;
+	bh=kFHaCPABuJTztGrxoIXb4alwdVui2jyyPeZPCucfwVY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HRIfnqCPDkiM7dSY7THcqh6a7lXRNk4BEab6W/f1wtqKBHUthY2P8RoUlMnU2JLdQeC8GL/w0OJvTs69k+BYUnZLwfCCtqlD0aiL+AdwPijtbkHUTXJiKercvE4K5DXIKZZaa+ZP5I68Ye+o6AGssmWVgLN8YzB0QDU5lx9x0zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkKIQ8dz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8A1C4CEEB;
+	Fri, 15 Aug 2025 17:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755278636;
-	bh=ql/PS8M4/I1NVFiWZy6htRwC70EwNxT6G3S/vy/Dtoc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ticg+z4yzR+SOAPezhLtBYwxvGHIEXyW+3wwrcm5TxVYNHCBeHJkqQF/JMkjf1WHa
-	 NDladHLFJW2tyAz5bGUm29erzWTeqJU/5hcsx0APmMdv3oT5Le6F82CwUsHe1mqex/
-	 DW8AO3bK2K1M4zuiHJmYP7lcCdyqv9nYl9HpqedUagayS6z1n4/FGbV7EiYDpej3Yq
-	 ELtWLIZ4mS3ru3/cexzKjrSRg+cA/EPTUO2xz3pRHLx1OpJUW38TV0t7pZhIu7RXQ2
-	 +kHP+BrV0+IW55jzXzO2g3SEcreEGPmaB612PYZw4pBT5hVAW0oVJiwIzt54XPV7S2
-	 NeQhfWL0HswLg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] arm64: dts: ti: k3-j722s-evm: Fix USB gpio-hog level for Type-C
-Date: Fri, 15 Aug 2025 13:23:52 -0400
-Message-ID: <20250815172352.165389-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250815172352.165389-1-sashal@kernel.org>
-References: <2025081521-dangle-drapery-9a9a@gregkh>
- <20250815172352.165389-1-sashal@kernel.org>
+	s=k20201202; t=1755278926;
+	bh=kFHaCPABuJTztGrxoIXb4alwdVui2jyyPeZPCucfwVY=;
+	h=From:Subject:Date:To:Cc:From;
+	b=bkKIQ8dzTbYZ35KkicwmdW4kZIp3/+t6dxRRrIVSzsgnIwvN2uwkpauye0h555nKc
+	 azVUvz6v/foa1Xk1aobOVw817ANQNivLfRRCtNp1/6WHV28qfe97uczLIVtsdyngM8
+	 hfO7xwbfYci6rcb4iYrF17H6N68Jqgm0TrKVJ7Es6JIu88l+RPpWGKrkI5oGKFBmwC
+	 iNfg0Eo5LKYkOrEWTg2Gc2NsSdGlbG6ULcIq/z3C4owsGPx1PB7nojpdS2/zNGOnJa
+	 4Jsc1nIbVeDer6LtMVlUs7G9q6mKW4WikvcYXbCdNzmPt1Ex+IzBafOAMEd7EbRf0X
+	 6P7blVGAANrLQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/8] mptcp: misc fixes for v6.17-rc
+Date: Fri, 15 Aug 2025 19:28:18 +0200
+Message-Id: <20250815-net-mptcp-misc-fixes-6-17-rc2-v1-0-521fe9957892@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADJun2gC/x2MzQqDMBAGX0X23A9M/At9ldJDTbZ1D6YhK6Ugv
+ ruLx4GZ2Um5Civdm50q/0Tlmw3craG4vPKHIcmYfOuHNrgBmTesZYsFq2jEW/6sGOEm1OiRXJh
+ 9300cUk/2KJUvwxYPspSex3ECaHtIkXQAAAA=
+X-Change-ID: 20250815-net-mptcp-misc-fixes-6-17-rc2-d18b2437e8d4
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jianguo Wu <wujianguo@chinatelecom.cn>, Shuah Khan <shuah@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, zhenwei pi <pizhenwei@bytedance.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Christoph Paasch <cpaasch@openai.com>, stable@vger.kernel.org, 
+ Thomas Dreibholz <dreibh@simula.no>, Geliang Tang <geliang@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1941; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=kFHaCPABuJTztGrxoIXb4alwdVui2jyyPeZPCucfwVY=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLm59mzhffvk71p3Ly2Q2jRi2K2AyzSYqf3LdBad9FLq
+ 0Ckcm14RykLgxgXg6yYIot0W2T+zOdVvCVefhYwc1iZQIYwcHEKwESaohkZ+kI8z1zc8/CchHPS
+ jJJbP869E7v4iWOb68Qr/5jbHqrYz2BkeDfRr1InirX/3c793j/PMk+YYHtx8VyuR5tsyiWSFqz
+ VYgUA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+Here are various fixes:
 
-[ Upstream commit 65ba2a6e77e9e5c843a591055789050e77b5c65e ]
+- Patch 1: Better handling SKB extension allocation failures. A fix for
+  v5.7.
 
-According to the "GPIO Expander Map / Table" section of the J722S EVM
-Schematic within the Evaluation Module Design Files package [0], the
-GPIO Pin P05 located on the GPIO Expander 1 (I2C0/0x23) has to be pulled
-down to select the Type-C interface. Since commit under Fixes claims to
-enable the Type-C interface, update the property within "p05-hog" from
-"output-high" to "output-low", thereby switching from the Type-A
-interface to the Type-C interface.
+- Patches 2, 3: Avoid resetting MPTCP limits when flushing MPTCP
+  endpoints. With a validation in the selftests. Fixes for v5.7.
 
-[0]: https://www.ti.com/lit/zip/sprr495
+- Patches 4, 5, 6: Disallow '0' as ADD_ADDR retransmission timeout.
+  With a preparation patch, and a validation in the selftests. Fixes for
+  v5.11.
 
-Cc: stable@vger.kernel.org
-Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://lore.kernel.org/r/20250623100657.4082031-1-s-vadapalli@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Patches 8, 9: Fix C23 extension warnings in the selftests, spotted by
+  GCC. Fixes for v6.16.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j722s-evm.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Christoph Paasch (1):
+      mptcp: drop skb if MPTCP skb extension allocation fails
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-index f063e7e7fd8f..98fc1c0f86a4 100644
---- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-@@ -496,7 +496,7 @@ p05-hog {
- 			/* P05 - USB2.0_MUX_SEL */
- 			gpio-hog;
- 			gpios = <5 GPIO_ACTIVE_LOW>;
--			output-high;
-+			output-low;
- 		};
- 
- 		p01_hog: p01-hog {
+Geliang Tang (3):
+      mptcp: remove duplicate sk_reset_timer call
+      mptcp: disable add_addr retransmission when timeout is 0
+      selftests: mptcp: disable add_addr retrans in endpoint_tests
+
+Matthieu Baerts (NGI0) (4):
+      mptcp: pm: kernel: flush: do not reset ADD_ADDR limit
+      selftests: mptcp: pm: check flush doesn't reset limits
+      selftests: mptcp: connect: fix C23 extension warning
+      selftests: mptcp: sockopt: fix C23 extension warning
+
+ Documentation/networking/mptcp-sysctl.rst         |  2 ++
+ net/mptcp/options.c                               |  6 ++++--
+ net/mptcp/pm.c                                    | 18 ++++++++++++------
+ net/mptcp/pm_kernel.c                             |  1 -
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |  5 +++--
+ tools/testing/selftests/net/mptcp/mptcp_inq.c     |  5 +++--
+ tools/testing/selftests/net/mptcp/mptcp_join.sh   |  1 +
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.c |  5 +++--
+ tools/testing/selftests/net/mptcp/pm_netlink.sh   |  1 +
+ 9 files changed, 29 insertions(+), 15 deletions(-)
+---
+base-commit: 065c31f2c6915b38f45b1c817b31f41f62eaa774
+change-id: 20250815-net-mptcp-misc-fixes-6-17-rc2-d18b2437e8d4
+
+Best regards,
 -- 
-2.50.1
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
