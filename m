@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-169717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C775B2811C
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:00:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9CAB2817E
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13905622E61
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 13:57:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB790B67B12
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 14:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5890630100E;
-	Fri, 15 Aug 2025 13:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D1322173A;
+	Fri, 15 Aug 2025 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qWhnDZk3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AU2V+XxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0724D319876;
-	Fri, 15 Aug 2025 13:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1E2199931;
+	Fri, 15 Aug 2025 14:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755266246; cv=none; b=PwH8Vp9Itw8hSQ6wiISmGPqJchOpdCgiLZ1Yn8jrErIT/bukR9ul8WtPlpOXf8tI3mmom9c3VExji08p7lD8UXAViLbFFNoK2vYZefaAN1sYCkKkCH8V/yPLHDduV/o9lhd5WVXJ+uRoZLsJZAsHPC+A4gEwZtYK4Tr4cow3fc4=
+	t=1755267407; cv=none; b=Ob/zBpo24ihjs1FFiLGMkoiuemDN/Ej2Ct/Enh6otWi3AiupwVXzdtDbbcu4lic1ajRkvflk2LPIdudYb6unL7FGJcXQeuD6WedFjdSFKnv5L9OG6cI3TBSLbl624axjJxn1AA3U4bPJhmlYJAQ9Cokww4dOFhNgmfGMKB4BkdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755266246; c=relaxed/simple;
-	bh=4qznQcuodMDR8UxP8t1F4Kt5zqkLltVV1eg/6EKCeTk=;
+	s=arc-20240116; t=1755267407; c=relaxed/simple;
+	bh=K6/EXttm+nt5thkhDaytjTLjS99tqYgEMzqbiugO36Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZApRVRzp3XBPfLnSiJWaezQD7RTvfMVz+3HoXq9QRAzLPyeOLy3/KJvq/1ZSVSU0M5QOKxAovkjvrLJnfNmizl1bQh/0ISajzNZDPUnxbz4vYjF3BknnkZuKoIgfUcFLWPteYD2O93FD8WTnGEg3eqsrKU+UuTcydWZvZzGOss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qWhnDZk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30412C4CEEB;
-	Fri, 15 Aug 2025 13:57:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KqZT0cLp3krr0v0pvfGUbLmhCsIjHmEHfC0WgJU8p6zHq6ycpQUOqNSeTSlNsIh3DxqeEY/oaDO7hGIp4r6fJdXGzTgKTAStnD52crYTfZAgkJoe9SEuuMTGmUQgQ5r8s0xRG7BLiRAxsftIprKQU7i2K0hC5whSH8wcJ/S7yf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AU2V+XxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749DDC4CEEB;
+	Fri, 15 Aug 2025 14:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755266245;
-	bh=4qznQcuodMDR8UxP8t1F4Kt5zqkLltVV1eg/6EKCeTk=;
+	s=k20201202; t=1755267405;
+	bh=K6/EXttm+nt5thkhDaytjTLjS99tqYgEMzqbiugO36Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWhnDZk3tXS0Wbgw4bHyEbWlgmHi1yObAJr36OoyruYaEIAlf4mMD3Iik+aBOd8FZ
-	 VNj+iUBlJxQ67YlHq3Fi9CjKLHMGuYz1evn9vTSi23NWbwKNOOBlrob4AAStgoMkEJ
-	 vwpFJIgrTljeo/zUXU8znUXywT8c2SRZ3FeS5QvRLH68qdH7S8oIoLe83PzuF4qeQ9
-	 EYXMrWzxGz7LFbZip0yJlX9gWifE4ci9TObT8lq2/TC1BgUEmlGWuT3njIx+7NRfY8
-	 PYXHr4ROb0HtbGb7p4hjj5ypTiHJupa/jvw7NgFFmEVk95AfozbUQ9HEqUpSP6JXij
-	 Bh5aDvDLcvVIA==
+	b=AU2V+XxEIr27cYyPkH1gImqw5YNEsoNJ0csnCLhPGI3e0N1gJ8u62kqjmTJr1cXnp
+	 22lqwG68kCxlmI1UtZAl4P0/UtUpfu79YIflNT/dhnTyo2idRdXyS4E2JibRRpnASk
+	 KKOsWuJD/S/z+bs1Ypp1MhjG6OSJNls2EsCQWVM7m7ob/mHPU7taLvsvhcvizHTsox
+	 bOr4LjpXFeXFYO8v9IcTMkQJCHJEiV8DF3plcXCGy/JoHUmQ+xfMTEcAcm1BKRIgZe
+	 pXM0P4Lxz1Nsui5Ozk/YhMGFYoBkR5+4FIZl2neB9HpuosiLbYzRjKAqc8OcfWL66g
+	 gufiYxSa11BJw==
 From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
+To: Dominique Martinet <asmadeus@codewreck.org>
 Cc: Christian Brauner <brauner@kernel.org>,
-	Xiaoli Feng <fengxiaoli0714@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
+	Maximilian Bosch <maximilian@mbosch.me>,
+	Ryan Lahfa <ryan@lahfa.xyz>,
+	Christian Theune <ct@flyingcircus.io>,
+	Arnout Engelen <arnout@bzzt.net>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Steve French <sfrench@samba.org>
-Subject: Re: [PATCH] netfs: Fix unbuffered write error handling
-Date: Fri, 15 Aug 2025 15:57:06 +0200
-Message-ID: <20250815-erhoben-gesurft-4de96f87d6d5@brauner>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 0/2] iterate_folioq bug when offset==size (Was: [REGRESSION] 9pfs issues on 6.12-rc1)
+Date: Fri, 15 Aug 2025 16:16:33 +0200
+Message-ID: <20250815-scheckig-depesche-5de55f7855d1@brauner>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <915443.1755207950@warthog.procyon.org.uk>
-References: <915443.1755207950@warthog.procyon.org.uk>
+In-Reply-To: <20250813-iot_iter_folio-v3-0-a0ffad2b665a@codewreck.org>
+References: <20250813-iot_iter_folio-v3-0-a0ffad2b665a@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,20 +69,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1415; i=brauner@kernel.org; h=from:subject:message-id; bh=4qznQcuodMDR8UxP8t1F4Kt5zqkLltVV1eg/6EKCeTk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTMt9n/6/mnd1uVbxz6WeK3Lybf/4vWpakZ61+6fGlX8 rT8lj/xWEcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEjtgyMiz45p0jufTG/aAn 3c797/fX5UyaZ1tpKntQX2rh1xLOxdUM/yw2Lb3dzJ3x/590TueepYn+fCLVj5K2syj7J01vTA/ exgYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1360; i=brauner@kernel.org; h=from:subject:message-id; bh=K6/EXttm+nt5thkhDaytjTLjS99tqYgEMzqbiugO36Q=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTMd3Qv5kjp+24nyTv92sUpX3X9y/qj5H03Md6dZGa6c 9bBOYbtHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABP5EMHwP/F8UGqLavwV7wy/ yz+jrqydMmdZ9dxHf3l+N61w91t4t5ORobVu+oa5Ddv+Ots6sx46eS3rt0R1iuFBifehXi+v3xF v5QEA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 
-On Thu, 14 Aug 2025 22:45:50 +0100, David Howells wrote:
-> If all the subrequests in an unbuffered write stream fail, the subrequest
-> collector doesn't update the stream->transferred value and it retains its
-> initial LONG_MAX value.  Unfortunately, if all active streams fail, then we
-> take the smallest value of { LONG_MAX, LONG_MAX, ... } as the value to set
-> in wreq->transferred - which is then returned from ->write_iter().
+On Wed, 13 Aug 2025 15:04:54 +0900, Dominique Martinet wrote:
+> So we've had this regression in 9p for.. almost a year, which is way too
+> long, but there was no "easy" reproducer until yesterday (thank you
+> again!!)
 > 
-> LONG_MAX was chosen as the initial value so that all the streams can be
-> quickly assessed by taking the smallest value of all stream->transferred -
-> but this only works if we've set any of them.
+> It turned out to be a bug with iov_iter on folios,
+> iov_iter_get_pages_alloc2() would advance the iov_iter correctly up to
+> the end edge of a folio and the later copy_to_iter() fails on the
+> iterate_folioq() bug.
 > 
 > [...]
 
@@ -98,6 +100,8 @@ trailer updates or similar. If in doubt, please check the listed branch.
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
 branch: vfs.fixes
 
-[1/1] netfs: Fix unbuffered write error handling
-      https://git.kernel.org/vfs/vfs/c/a3de58b12ce0
+[1/2] iov_iter: iterate_folioq: fix handling of offset >= folio size
+      https://git.kernel.org/vfs/vfs/c/546a40359fd2
+[2/2] iov_iter: iov_folioq_get_pages: don't leave empty slot behind
+      https://git.kernel.org/vfs/vfs/c/334430b2d585
 
