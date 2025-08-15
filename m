@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8EEB28379
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:04:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81527B2837F
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 441C61CE4FBA
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:04:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EE017B8EC1
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565AF1DA21;
-	Fri, 15 Aug 2025 16:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BD32FCBFC;
+	Fri, 15 Aug 2025 16:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR59itdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKY5LYDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FE41EBA0D
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 16:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CE31DA21
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 16:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755273848; cv=none; b=EIwwEIvBwZizY1JiiDsOK1YfYeA9vjzrUycrPIkEkW06zC2rtfHy7G7JHVjyTVW2+5+MNFoqtRY9CJIizZvDzzeqTI0lNeutlCO0odn3WbYLk/wCY97RZ0Lea19r4Pk5SmhSOOgqa5xr7re2xKaVjEvTwaMxhI43ofstf8+T2+o=
+	t=1755274036; cv=none; b=lecn3x2PcK196YHhdl+E1+BQAXh9G7mPOQYCyupmQY4ZuN+dlbOKeLStTLbMMksgW8FftrxGeXMerxIGeSH/5XVZZhCUPXW8Q5BYyA3ROA99Mjwj0CQB6dkBBSSLcRfFe7Mv1QAei5NI38E4JSa8tlgBcQMKj5J6oPbzomiCsdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755273848; c=relaxed/simple;
-	bh=bEz3BARnIR9+2CxY/ukBd2bAgShLWm86rLTjxjtEEJo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WwdJ161GunNewq7/eOE5Vc3wzERipE4/QHXSkwjr/rR0tHVkQAEtMXhlH8exvyMYstpv+ZxZOrdSBFFN6HvuD2YvLoUZQPQoMY7yk8fmBGPlMNdKm1Kmv7hN1p+h+mouZcgB89ACI+6Jvxnl0oE0UplQsDN02FS/JQ74MimamjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR59itdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A73C4CEEB;
-	Fri, 15 Aug 2025 16:04:07 +0000 (UTC)
+	s=arc-20240116; t=1755274036; c=relaxed/simple;
+	bh=KrXSBHeRrPgwBuLlzbrcylB82VXQDMH1p0LjFR04fjw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kMtXCNtYM/lwqD7kylrwAUaZrHgNNTh3AJUPwkxtRoXOrjKOo/FGr/qaGvGsvUFbnUq7YhNZSrpIw649THgs2q1BVWAu2+24zQQmlHMyh75ux1qINhXPbdrf5AnfDDmJaLC4AghavOLngOXW4VzOnOu5BMHNLLndwZ8VtRRZ/fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKY5LYDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907C2C4CEEB;
+	Fri, 15 Aug 2025 16:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755273847;
-	bh=bEz3BARnIR9+2CxY/ukBd2bAgShLWm86rLTjxjtEEJo=;
+	s=korg; t=1755274036;
+	bh=KrXSBHeRrPgwBuLlzbrcylB82VXQDMH1p0LjFR04fjw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fR59itdW3Tuoxf0DIk6Se8o98fy04puhXScu7s/JeZIa0PUqkiuwK4E8jHYvsYiXr
-	 I/4EDcG9pt1yphKZsr0lVNf2/ZHSLRqbLVccCfoaacHrYY+nsu/WlhpHeDiB/7qUI1
-	 MMrInnTNVZhmVPoWuNNk0+hvX8QXRU4xubV8nR6Q=
-Subject: FAILED: patch "[PATCH] NFS: Fix the setting of capabilities when automounting a new" failed to apply to 5.10-stable tree
-To: trond.myklebust@hammerspace.com,bcodding@redhat.com
+	b=hKY5LYDKU3Bwt2PGfYpsgCsOfkX2vHFzHEZTdv5DNSdVCycpip6MaxD5gVsW7ZeCK
+	 df/ksIyRw4+Dmmv2aPchTxSUudhd+cqCUKqrxvWMwV1b9NjMpQ0Rjvpx/idKNXE3AM
+	 BBkJXXzAJ0tR/P7/gYLMr4AN8pSJfMdOJT3/Itcg=
+Subject: FAILED: patch "[PATCH] fscrypt: Don't use problematic non-inline crypto engines" failed to apply to 6.6-stable tree
+To: ebiggers@kernel.org,ardb@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Aug 2025 18:03:56 +0200
-Message-ID: <2025081556-disprove-clumsy-91a1@gregkh>
+Date: Fri, 15 Aug 2025 18:07:13 +0200
+Message-ID: <2025081512-filter-droop-370f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x b01f21cacde9f2878492cf318fee61bf4ccad323
+git cherry-pick -x b41c1d8d07906786c60893980d52688f31d114a6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081556-disprove-clumsy-91a1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081512-filter-droop-370f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,167 +77,247 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b01f21cacde9f2878492cf318fee61bf4ccad323 Mon Sep 17 00:00:00 2001
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
-Date: Sun, 3 Aug 2025 14:31:59 -0700
-Subject: [PATCH] NFS: Fix the setting of capabilities when automounting a new
- filesystem
+From b41c1d8d07906786c60893980d52688f31d114a6 Mon Sep 17 00:00:00 2001
+From: Eric Biggers <ebiggers@kernel.org>
+Date: Fri, 4 Jul 2025 00:03:22 -0700
+Subject: [PATCH] fscrypt: Don't use problematic non-inline crypto engines
 
-Capabilities cannot be inherited when we cross into a new filesystem.
-They need to be reset to the minimal defaults, and then probed for
-again.
+Make fscrypt no longer use Crypto API drivers for non-inline crypto
+engines, even when the Crypto API prioritizes them over CPU-based code
+(which unfortunately it often does).  These drivers tend to be really
+problematic, especially for fscrypt's workload.  This commit has no
+effect on inline crypto engines, which are different and do work well.
 
-Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
+Specifically, exclude drivers that have CRYPTO_ALG_KERN_DRIVER_ONLY or
+CRYPTO_ALG_ALLOCATES_MEMORY set.  (Later, CRYPTO_ALG_ASYNC should be
+excluded too.  That's omitted for now to keep this commit backportable,
+since until recently some CPU-based code had CRYPTO_ALG_ASYNC set.)
+
+There are two major issues with these drivers: bugs and performance.
+
+First, these drivers tend to be buggy.  They're fundamentally much more
+error-prone and harder to test than the CPU-based code.  They often
+don't get tested before kernel releases, and even if they do, the crypto
+self-tests don't properly test these drivers.  Released drivers have
+en/decrypted or hashed data incorrectly.  These bugs cause issues for
+fscrypt users who often didn't even want to use these drivers, e.g.:
+
+- https://github.com/google/fscryptctl/issues/32
+- https://github.com/google/fscryptctl/issues/9
+- https://lore.kernel.org/r/PH0PR02MB731916ECDB6C613665863B6CFFAA2@PH0PR02MB7319.namprd02.prod.outlook.com
+
+These drivers have also similarly caused issues for dm-crypt users,
+including data corruption and deadlocks.  Since Linux v5.10, dm-crypt
+has disabled most of them by excluding CRYPTO_ALG_ALLOCATES_MEMORY.
+
+Second, these drivers tend to be *much* slower than the CPU-based code.
+This may seem counterintuitive, but benchmarks clearly show it.  There's
+a *lot* of overhead associated with going to a hardware driver, off the
+CPU, and back again.  To prove this, I gathered as many systems with
+this type of crypto engine as I could, and I measured synchronous
+encryption of 4096-byte messages (which matches fscrypt's workload):
+
+Intel Emerald Rapids server:
+   AES-256-XTS:
+      xts-aes-vaes-avx512   16171 MB/s  [CPU-based, Vector AES]
+      qat_aes_xts             289 MB/s  [Offload, Intel QuickAssist]
+
+Qualcomm SM8650 HDK:
+   AES-256-XTS:
+      xts-aes-ce             4301 MB/s  [CPU-based, ARMv8 Crypto Extensions]
+      xts-aes-qce              73 MB/s  [Offload, Qualcomm Crypto Engine]
+
+i.MX 8M Nano LPDDR4 EVK:
+   AES-256-XTS:
+      xts-aes-ce              647 MB/s   [CPU-based, ARMv8 Crypto Extensions]
+      xts(ecb-aes-caam)        20 MB/s   [Offload, CAAM]
+   AES-128-CBC-ESSIV:
+      essiv(cbc-aes-caam,sha256-lib) 23 MB/s   [Offload, CAAM]
+
+STM32MP157F-DK2:
+   AES-256-XTS:
+      xts-aes-neonbs         13.2 MB/s   [CPU-based, ARM NEON]
+      xts(stm32-ecb-aes)     3.1 MB/s    [Offload, STM32 crypto engine]
+   AES-128-CBC-ESSIV:
+      essiv(cbc-aes-neonbs,sha256-lib)
+                             14.7 MB/s   [CPU-based, ARM NEON]
+      essiv(stm32-cbc-aes,sha256-lib)
+                             3.2 MB/s    [Offload, STM32 crypto engine]
+   Adiantum:
+      adiantum(xchacha12-arm,aes-arm,nhpoly1305-neon)
+                             52.8 MB/s   [CPU-based, ARM scalar + NEON]
+
+So, there was no case in which the crypto engine was even *close* to
+being faster.  On the first three, which have AES instructions in the
+CPU, the CPU was 30 to 55 times faster (!).  Even on STM32MP157F-DK2
+which has a Cortex-A7 CPU that doesn't have AES instructions, AES was
+over 4 times faster on the CPU.  And Adiantum encryption, which is what
+actually should be used on CPUs like that, was over 17 times faster.
+
+Other justifications that have been given for these non-inline crypto
+engines (almost always coming from the hardware vendors, not actual
+users) don't seem very plausible either:
+
+  - The crypto engine throughput could be improved by processing
+    multiple requests concurrently.  Currently irrelevant to fscrypt,
+    since it doesn't do that.  This would also be complex, and unhelpful
+    in many cases.  2 of the 4 engines I tested even had only one queue.
+
+  - Some of the engines, e.g. STM32, support hardware keys.  Also
+    currently irrelevant to fscrypt, since it doesn't support these.
+    Interestingly, the STM32 driver itself doesn't support this either.
+
+  - Free up CPU for other tasks and/or reduce energy usage.  Not very
+    plausible considering the "short" message length, driver overhead,
+    and scheduling overhead.  There's just very little time for the CPU
+    to do something else like run another task or enter low-power state,
+    before the message finishes and it's time to process the next one.
+
+  - Some of these engines resist power analysis and electromagnetic
+    attacks, while the CPU-based crypto generally does not.  In theory,
+    this sounds great.  In practice, if this benefit requires the use of
+    an off-CPU offload that massively regresses performance and has a
+    low-quality, buggy driver, the price for this hardening (which is
+    not relevant to most fscrypt users, and tends to be incomplete) is
+    just too high.  Inline crypto engines are much more promising here,
+    as are on-CPU solutions like RISC-V High Assurance Cryptography.
+
+Fixes: b30ab0e03407 ("ext4 crypto: add ext4 encryption facilities")
 Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250704070322.20692-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index e13eb429b8b5..8fb4a950dd55 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -682,6 +682,44 @@ struct nfs_client *nfs_init_client(struct nfs_client *clp,
- }
- EXPORT_SYMBOL_GPL(nfs_init_client);
+diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
+index f63791641c1d..696a5844bfa3 100644
+--- a/Documentation/filesystems/fscrypt.rst
++++ b/Documentation/filesystems/fscrypt.rst
+@@ -147,9 +147,8 @@ However, these ioctls have some limitations:
+   were wiped.  To partially solve this, you can add init_on_free=1 to
+   your kernel command line.  However, this has a performance cost.
  
-+static void nfs4_server_set_init_caps(struct nfs_server *server)
-+{
-+#if IS_ENABLED(CONFIG_NFS_V4)
-+	/* Set the basic capabilities */
-+	server->caps = server->nfs_client->cl_mvops->init_caps;
-+	if (server->flags & NFS_MOUNT_NORDIRPLUS)
-+		server->caps &= ~NFS_CAP_READDIRPLUS;
-+	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
-+		server->caps &= ~NFS_CAP_READ_PLUS;
-+
-+	/*
-+	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
-+	 * authentication.
-+	 */
-+	if (nfs4_disable_idmapping &&
-+	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
-+		server->caps |= NFS_CAP_UIDGID_NOMAP;
-+#endif
-+}
-+
-+void nfs_server_set_init_caps(struct nfs_server *server)
-+{
-+	switch (server->nfs_client->rpc_ops->version) {
-+	case 2:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		break;
-+	case 3:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
-+			server->caps |= NFS_CAP_READDIRPLUS;
-+		break;
-+	default:
-+		nfs4_server_set_init_caps(server);
-+		break;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
-+
- /*
-  * Create a version 2 or 3 client
+-- Secret keys might still exist in CPU registers, in crypto
+-  accelerator hardware (if used by the crypto API to implement any of
+-  the algorithms), or in other places not explicitly considered here.
++- Secret keys might still exist in CPU registers or in other places
++  not explicitly considered here.
+ 
+ Full system compromise
+ ~~~~~~~~~~~~~~~~~~~~~~
+@@ -406,9 +405,12 @@ the work is done by XChaCha12, which is much faster than AES when AES
+ acceleration is unavailable.  For more information about Adiantum, see
+ `the Adiantum paper <https://eprint.iacr.org/2018/720.pdf>`_.
+ 
+-The (AES-128-CBC-ESSIV, AES-128-CBC-CTS) pair exists only to support
+-systems whose only form of AES acceleration is an off-CPU crypto
+-accelerator such as CAAM or CESA that does not support XTS.
++The (AES-128-CBC-ESSIV, AES-128-CBC-CTS) pair was added to try to
++provide a more efficient option for systems that lack AES instructions
++in the CPU but do have a non-inline crypto engine such as CAAM or CESA
++that supports AES-CBC (and not AES-XTS).  This is deprecated.  It has
++been shown that just doing AES on the CPU is actually faster.
++Moreover, Adiantum is faster still and is recommended on such systems.
+ 
+ The remaining mode pairs are the "national pride ciphers":
+ 
+@@ -1318,22 +1320,13 @@ this by validating all top-level encryption policies prior to access.
+ Inline encryption support
+ =========================
+ 
+-By default, fscrypt uses the kernel crypto API for all cryptographic
+-operations (other than HKDF, which fscrypt partially implements
+-itself).  The kernel crypto API supports hardware crypto accelerators,
+-but only ones that work in the traditional way where all inputs and
+-outputs (e.g. plaintexts and ciphertexts) are in memory.  fscrypt can
+-take advantage of such hardware, but the traditional acceleration
+-model isn't particularly efficient and fscrypt hasn't been optimized
+-for it.
+-
+-Instead, many newer systems (especially mobile SoCs) have *inline
+-encryption hardware* that can encrypt/decrypt data while it is on its
+-way to/from the storage device.  Linux supports inline encryption
+-through a set of extensions to the block layer called *blk-crypto*.
+-blk-crypto allows filesystems to attach encryption contexts to bios
+-(I/O requests) to specify how the data will be encrypted or decrypted
+-in-line.  For more information about blk-crypto, see
++Many newer systems (especially mobile SoCs) have *inline encryption
++hardware* that can encrypt/decrypt data while it is on its way to/from
++the storage device.  Linux supports inline encryption through a set of
++extensions to the block layer called *blk-crypto*.  blk-crypto allows
++filesystems to attach encryption contexts to bios (I/O requests) to
++specify how the data will be encrypted or decrypted in-line.  For more
++information about blk-crypto, see
+ :ref:`Documentation/block/inline-encryption.rst <inline_encryption>`.
+ 
+ On supported filesystems (currently ext4 and f2fs), fscrypt can use
+diff --git a/fs/crypto/fscrypt_private.h b/fs/crypto/fscrypt_private.h
+index c1d92074b65c..6e7164530a1e 100644
+--- a/fs/crypto/fscrypt_private.h
++++ b/fs/crypto/fscrypt_private.h
+@@ -45,6 +45,23 @@
   */
-@@ -726,7 +764,6 @@ static int nfs_init_server(struct nfs_server *server,
- 	/* Initialise the client representation from the mount data */
- 	server->flags = ctx->flags;
- 	server->options = ctx->options;
--	server->caps |= NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
+ #undef FSCRYPT_MAX_KEY_SIZE
  
- 	switch (clp->rpc_ops->version) {
- 	case 2:
-@@ -762,6 +799,8 @@ static int nfs_init_server(struct nfs_server *server,
- 	if (error < 0)
- 		goto error;
- 
-+	nfs_server_set_init_caps(server);
++/*
++ * This mask is passed as the third argument to the crypto_alloc_*() functions
++ * to prevent fscrypt from using the Crypto API drivers for non-inline crypto
++ * engines.  Those drivers have been problematic for fscrypt.  fscrypt users
++ * have reported hangs and even incorrect en/decryption with these drivers.
++ * Since going to the driver, off CPU, and back again is really slow, such
++ * drivers can be over 50 times slower than the CPU-based code for fscrypt's
++ * workload.  Even on platforms that lack AES instructions on the CPU, using the
++ * offloads has been shown to be slower, even staying with AES.  (Of course,
++ * Adiantum is faster still, and is the recommended option on such platforms...)
++ *
++ * Note that fscrypt also supports inline crypto engines.  Those don't use the
++ * Crypto API and work much better than the old-style (non-inline) engines.
++ */
++#define FSCRYPT_CRYPTOAPI_MASK \
++	(CRYPTO_ALG_ALLOCATES_MEMORY | CRYPTO_ALG_KERN_DRIVER_ONLY)
 +
- 	/* Preserve the values of mount_server-related mount options */
- 	if (ctx->mount_server.addrlen) {
- 		memcpy(&server->mountd_address, &ctx->mount_server.address,
-@@ -934,7 +973,6 @@ void nfs_server_copy_userdata(struct nfs_server *target, struct nfs_server *sour
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
- 	target->acdirmax = source->acdirmax;
--	target->caps = source->caps;
- 	target->options = source->options;
- 	target->auth_info = source->auth_info;
- 	target->port = source->port;
-@@ -1169,6 +1207,8 @@ struct nfs_server *nfs_clone_server(struct nfs_server *source,
- 	if (error < 0)
- 		goto out_free_server;
+ #define FSCRYPT_CONTEXT_V1	1
+ #define FSCRYPT_CONTEXT_V2	2
  
-+	nfs_server_set_init_caps(server);
-+
- 	/* probe the filesystem info for this server filesystem */
- 	error = nfs_probe_server(server, fh);
- 	if (error < 0)
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 0143e0794d32..1a18d8d9be25 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -231,7 +231,7 @@ extern struct nfs_client *
- nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
- 				struct nfs4_sessionid *, u32);
- extern struct nfs_server *nfs_create_server(struct fs_context *);
--extern void nfs4_server_set_init_caps(struct nfs_server *);
-+extern void nfs_server_set_init_caps(struct nfs_server *);
- extern struct nfs_server *nfs4_create_server(struct fs_context *);
- extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
- extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 2ea98f1f116f..6fddf43d729c 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1074,24 +1074,6 @@ static void nfs4_session_limit_xasize(struct nfs_server *server)
- #endif
- }
- 
--void nfs4_server_set_init_caps(struct nfs_server *server)
--{
--	/* Set the basic capabilities */
--	server->caps |= server->nfs_client->cl_mvops->init_caps;
--	if (server->flags & NFS_MOUNT_NORDIRPLUS)
--			server->caps &= ~NFS_CAP_READDIRPLUS;
--	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
--		server->caps &= ~NFS_CAP_READ_PLUS;
--
--	/*
--	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
--	 * authentication.
--	 */
--	if (nfs4_disable_idmapping &&
--			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
--		server->caps |= NFS_CAP_UIDGID_NOMAP;
--}
--
- static int nfs4_server_common_setup(struct nfs_server *server,
- 		struct nfs_fh *mntfh, bool auth_probe)
- {
-@@ -1110,7 +1092,7 @@ static int nfs4_server_common_setup(struct nfs_server *server,
- 	if (error < 0)
- 		return error;
- 
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
- 
- 	/* Probe the root fh to retrieve its FSID and filehandle */
- 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index d7dc669d84c5..c7c7ec22f21d 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4092,7 +4092,7 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
- 	};
+diff --git a/fs/crypto/hkdf.c b/fs/crypto/hkdf.c
+index 5c095c8aa3b5..b1ef506cd341 100644
+--- a/fs/crypto/hkdf.c
++++ b/fs/crypto/hkdf.c
+@@ -58,7 +58,7 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
+ 	u8 prk[HKDF_HASHLEN];
  	int err;
  
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
+-	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, 0);
++	hmac_tfm = crypto_alloc_shash(HKDF_HMAC_ALG, 0, FSCRYPT_CRYPTOAPI_MASK);
+ 	if (IS_ERR(hmac_tfm)) {
+ 		fscrypt_err(NULL, "Error allocating " HKDF_HMAC_ALG ": %ld",
+ 			    PTR_ERR(hmac_tfm));
+diff --git a/fs/crypto/keysetup.c b/fs/crypto/keysetup.c
+index a67e20d126c9..74d4a2e1ad23 100644
+--- a/fs/crypto/keysetup.c
++++ b/fs/crypto/keysetup.c
+@@ -104,7 +104,8 @@ fscrypt_allocate_skcipher(struct fscrypt_mode *mode, const u8 *raw_key,
+ 	struct crypto_skcipher *tfm;
+ 	int err;
+ 
+-	tfm = crypto_alloc_skcipher(mode->cipher_str, 0, 0);
++	tfm = crypto_alloc_skcipher(mode->cipher_str, 0,
++				    FSCRYPT_CRYPTOAPI_MASK);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT) {
+ 			fscrypt_warn(inode,
+diff --git a/fs/crypto/keysetup_v1.c b/fs/crypto/keysetup_v1.c
+index b70521c55132..158ceae8a5bc 100644
+--- a/fs/crypto/keysetup_v1.c
++++ b/fs/crypto/keysetup_v1.c
+@@ -52,7 +52,8 @@ static int derive_key_aes(const u8 *master_key,
+ 	struct skcipher_request *req = NULL;
+ 	DECLARE_CRYPTO_WAIT(wait);
+ 	struct scatterlist src_sg, dst_sg;
+-	struct crypto_skcipher *tfm = crypto_alloc_skcipher("ecb(aes)", 0, 0);
++	struct crypto_skcipher *tfm =
++		crypto_alloc_skcipher("ecb(aes)", 0, FSCRYPT_CRYPTOAPI_MASK);
+ 
+ 	if (IS_ERR(tfm)) {
+ 		res = PTR_ERR(tfm);
 
 
