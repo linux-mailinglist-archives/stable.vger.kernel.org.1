@@ -1,143 +1,159 @@
-Return-Path: <stable+bounces-169708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151E1B27C43
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 11:10:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4527B27CFA
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 11:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC120B02A8B
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 09:04:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3EBD620233
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 09:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B192586EB;
-	Fri, 15 Aug 2025 09:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD65C253B71;
+	Fri, 15 Aug 2025 09:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gylnJGc4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5287D245022;
-	Fri, 15 Aug 2025 09:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD2B253358;
+	Fri, 15 Aug 2025 09:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755248518; cv=none; b=XSIFqXrYyPBfX1lXY2FywvvnBpr0DZWvN+dbQbKfyrc3/9GF9R1ZNwkbMpUmzRSKbFlz0V0BOGtxWdKtPHABgQ6BlD3GPXMX3BZbIfjyyT3f95i2HbNzl8VW88iB1kFaQSTTnyyB798gCYo0E5FLWR4BKISCEdRGFUoXFxlWd7Q=
+	t=1755249401; cv=none; b=ArsSbXW1OzhjLRu2zY3rh8ICgI7GCBzIPOyzw+B5gfsdjG0XfZsEF/+TNAaiARLHI0VIUwEbHYhJzPby/FWHfqkzSJva7ktOPulDncuEFT2OQMoTduT0RcyOWpFgFTyyrfxjLSLa7shrKrkdS0jQ8F7o0BrhskBfCKR5YfB+PIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755248518; c=relaxed/simple;
-	bh=4nhuPMpQH1XDW7lT9b2rrcPbTF2+KzidHExpR5owANk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cjq56OY+DzNsG9MXswQwsD39Ir2+NQzUVvy0z7K194FGTZpQnTxZkHTF8Ptsv+q1S8gC7/sM6JHehAY6nitCEfnTlMMJ6EfUJ1JrOA0/hkOVoyhQYfJZSBkOy9o4QWDeSrh6QV/rqrSfABOH0fZVjeJEuNNFscwDcf6KbxRH2oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.69.45])
-	by gateway (Coremail) with SMTP id _____8DxzOJ5955oBjpAAQ--.55780S3;
-	Fri, 15 Aug 2025 17:01:45 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.69.45])
-	by front1 (Coremail) with SMTP id qMiowJBxD8Jx955oUrVNAA--.32978S2;
-	Fri, 15 Aug 2025 17:01:44 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	linux-kernel@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH V4] init: Handle bootloader identifier in kernel parameters
-Date: Fri, 15 Aug 2025 17:01:20 +0800
-Message-ID: <20250815090120.1569947-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1755249401; c=relaxed/simple;
+	bh=RnALg3zNiXJMXGB95axE2CNi1u5Yu0VmjW8MGBkdvZE=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=EDn6dZDLm8AlGlw18Cgm26U+C1nUQ0jpfO+PIRwrzJIgcWmNdbWj9KSZqPVD3sHwm1cQiCRHDmI2LVgxZs+Ls0tAXdhn6Zotjf5/tBdR+/zspk2xESpPw1m+gOlRyucrXjy7K8FFY+enNfR55EQUqGYiryiW1xe66FXLTy8ZZbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gylnJGc4; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755249399; x=1786785399;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RnALg3zNiXJMXGB95axE2CNi1u5Yu0VmjW8MGBkdvZE=;
+  b=gylnJGc46UXG4ejIlyN4MSkIBoQ/e5QXVnuDddb2LryTJGiy1+UtRj/Y
+   8i11j7I+nFWXfCTDCQZnvUDhf1GnGnx71uzpOWoC6v3dsRqdrzSi9/MxL
+   LcKNLfiVBk2E3T/R5Fbws4vP+/lO8evWPFOGWN9phe+c40fwEw3iOo3aG
+   YqDiX7zAgvNv4+nPIzy+Vj65G0d4LrRDD3DNpURZF1h/Hr5vg0kG1uITm
+   ebypeOvmkyNMKBdnFIFjJK3TtPrFe5mfsimxYzMn6POpFTXMW2xjlpeh4
+   LVRb+0Vf5r67MxVZLtF5Y2FRnQl4YLBgGd6N/cuY1/c+btRFQMcRPSMo+
+   A==;
+X-CSE-ConnectionGUID: CfnL4v5uQjKWGzIHbotRXQ==
+X-CSE-MsgGUID: brcC6KJrQWms7a83pknSBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="56780912"
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
+   d="scan'208";a="56780912"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 02:16:39 -0700
+X-CSE-ConnectionGUID: PTJorfpnQzO0PoBIuqFskA==
+X-CSE-MsgGUID: LRywybBFR4ehjrv9KSMe8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
+   d="scan'208";a="204158562"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.241.96]) ([10.124.241.96])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 02:16:35 -0700
+Message-ID: <3f7a0524-75e1-447f-bdf5-db3f088a0ca9@linux.intel.com>
+Date: Fri, 15 Aug 2025 17:16:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxD8Jx955oUrVNAA--.32978S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7tw4fCr1rCFW3GF1xXr17XFc_yoW8Kw1xpF
-	Z7tr9xWaykGws8Cw48Wr4vga4Sywn3Aa17JanrWanxXFn0qFy0v3yftF1agas3trWfKF42
-	gF1DZF10k3W7CFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
-	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
-	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
-	1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_
-	JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
-	CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0
-	I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
-	8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU
-	0xZFpf9x07jepB-UUUUU=
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, "Hansen, Dave" <dave.hansen@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Lai, Yi1" <yi1.lai@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "security@kernel.org" <security@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: "Tian, Kevin" <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <20250807195154.GO184255@nvidia.com>
+ <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-BootLoader (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
-/boot/vmlinuz-x.y.z" to kernel parameters. But these identifiers are not
-recognized by the kernel itself so will be passed to user space. However
-user space init program also doesn't recognized it.
+On 8/8/2025 10:57 AM, Tian, Kevin wrote:
+>> From: Jason Gunthorpe <jgg@nvidia.com>
+>> Sent: Friday, August 8, 2025 3:52 AM
+>>
+>> On Thu, Aug 07, 2025 at 10:40:39PM +0800, Baolu Lu wrote:
+>>> +static void kernel_pte_work_func(struct work_struct *work)
+>>> +{
+>>> +	struct page *page, *next;
+>>> +
+>>> +	iommu_sva_invalidate_kva_range(0, TLB_FLUSH_ALL);
+>>> +
+>>> +	guard(spinlock)(&kernel_pte_work.lock);
+>>> +	list_for_each_entry_safe(page, next, &kernel_pte_work.list, lru) {
+>>> +		list_del_init(&page->lru);
+>>
+>> Please don't add new usages of lru, we are trying to get rid of this. :(
+>>
+>> I think the memory should be struct ptdesc, use that..
+>>
+> 
+> btw with this change we should also defer free of the pmd page:
+> 
+> pud_free_pmd_page()
+> 	...
+> 	for (i = 0; i < PTRS_PER_PMD; i++) {
+> 		if (!pmd_none(pmd_sv[i])) {
+> 			pte = (pte_t *)pmd_page_vaddr(pmd_sv[i]);
+> 			pte_free_kernel(&init_mm, pte);
+> 		}
+> 	}
+> 
+> 	free_page((unsigned long)pmd_sv);
+> 
+> Otherwise the risk still exists if the pmd page is repurposed before the
+> pte work is scheduled.
 
-KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
-some architectures.
+You're right that freeing high-level page table pages also requires an
+IOTLB flush before the pages are freed. But I question the practical
+risk of the race given the extremely small time window. If this is a
+real concern, a potential mitigation would be to clear the U/S bits in
+all page table entries for kernel address space? But I am not confident
+in making that change at this time as I am unsure of the side effects it
+might cause.
 
-We cannot change BootLoader's behavior, because this behavior exists for
-many years, and there are already user space programs search BOOT_IMAGE=
-in /proc/cmdline to obtain the kernel image locations:
+> 
+> another observation - pte_free_kernel is not used in remove_pagetable ()
+> and __change_page_attr(). Is it straightforward to put it in those paths
+> or do we need duplicate some deferring logic there?
 
-https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
-(search getBootOptions)
-https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
-(search getKernelReleaseWithBootOption)
+The remove_pagetable() function is called in the path where memory is
+hot-removed from the system, right? If so, there should be no issue, as
+the threat model here is a page table page being freed and repurposed
+while it's still cached in the IOTLB. In the hot-remove case, the memory
+is removed and will not be reused, so that's fine as far as I can see.
 
-So the the best way is handle (ignore) it by the kernel itself, which
-can avoid such boot warnings (if we use something like init=/bin/bash,
-bootloader identifier can even cause a crash):
+The same to __change_page_attr(), which only changes the attributes of a
+page table entry while the underlying page remains in use.
 
-Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
-Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
-V2: Update comments and commit messages.
-V3: Document bootloader identifiers.
-V4: Use strstarts() instead of strncmp().
-
- init/main.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/init/main.c b/init/main.c
-index 0ee0ee7b7c2c..9b5150166bcf 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -544,6 +544,12 @@ static int __init unknown_bootoption(char *param, char *val,
- 				     const char *unused, void *arg)
- {
- 	size_t len = strlen(param);
-+	/*
-+	 * Well-known bootloader identifiers:
-+	 * 1. LILO/Grub pass "BOOT_IMAGE=...";
-+	 * 2. kexec/kdump (kexec-tools) pass "kexec".
-+	 */
-+	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
- 
- 	/* Handle params aliased to sysctls */
- 	if (sysctl_is_alias(param))
-@@ -551,6 +557,12 @@ static int __init unknown_bootoption(char *param, char *val,
- 
- 	repair_env_string(param, val);
- 
-+	/* Handle bootloader identifier */
-+	for (int i = 0; bootloader[i]; i++) {
-+		if (strstarts(param, bootloader[i]))
-+			return 0;
-+	}
-+
- 	/* Handle obsolete-style parameters */
- 	if (obsolete_checksetup(param))
- 		return 0;
--- 
-2.47.3
-
+Thanks,
+baolu
 
