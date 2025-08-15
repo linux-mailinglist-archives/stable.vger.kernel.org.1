@@ -1,154 +1,143 @@
-Return-Path: <stable+bounces-169707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DB7B27BB6
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 10:53:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151E1B27C43
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 11:10:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C11188DB3A
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 08:51:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC120B02A8B
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 09:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19EC424E016;
-	Fri, 15 Aug 2025 08:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PbW+Lki5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B192586EB;
+	Fri, 15 Aug 2025 09:01:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3F01519B4;
-	Fri, 15 Aug 2025 08:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5287D245022;
+	Fri, 15 Aug 2025 09:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755247847; cv=none; b=DoYcf+R5wbjUkhecKbwcmmP8GFlUtIFuHTRRl+5C+1lFSMLe1M5TBDu3iHnL5+UpCopfX9B+rFPoey1rATTp3E45gRN11gqvDwEgcxsTHSmp/4TzixQu2ZGDuXRhah18+l+/geMgYVJ98Eiy0xe8PsWEloqXUAYGhNG69bGMfBY=
+	t=1755248518; cv=none; b=XSIFqXrYyPBfX1lXY2FywvvnBpr0DZWvN+dbQbKfyrc3/9GF9R1ZNwkbMpUmzRSKbFlz0V0BOGtxWdKtPHABgQ6BlD3GPXMX3BZbIfjyyT3f95i2HbNzl8VW88iB1kFaQSTTnyyB798gCYo0E5FLWR4BKISCEdRGFUoXFxlWd7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755247847; c=relaxed/simple;
-	bh=tFZ3dQRjUlI5OEsCU7Ae9mW17LHD+V/Wk9uO9K/WBhY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZQ8Qia8Oi00E2wYChL2N5VlT5SPQVGR5SipYIMlLXaw569ol/sLhpykHHweEySR8BxSW4YMwN5ZXNAtxKSQ9MUzWmzKYdXskDFbHI15P4P3KPiRPh7eX/3GPrUio5eEsHY8KrhsllPA1G0Jswp8ftjUpEauUgnbl6f2bB1fMZqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PbW+Lki5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AF8C4CEF7;
-	Fri, 15 Aug 2025 08:50:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755247847;
-	bh=tFZ3dQRjUlI5OEsCU7Ae9mW17LHD+V/Wk9uO9K/WBhY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PbW+Lki5GdtgPRWk6KJHakW5fq3skKRHg3Tjd7HfkKceyASIol5k3IhD8AgRZzUWx
-	 1JuJgF27o3H3SOLmxi8Pa7TJgus526rKsrRxulrOkoYwSpaY4WqmV1j7/7fCv/USMN
-	 M4UhPKa0JR6Pk24SqUvJn/VO/MdeoLIk3aPUmbdFZZufY6FGJMxiGCKZsDQONWhO+p
-	 p2Y7O0l8J+4aawypmZTvTmzWslQ//IaMoWp2l5Tm1Qwi9LhoXAL9JDgVDwRuJVq4Xe
-	 uo9CWt9/ofd5UzuzeE+PXzRWwsL0Q8aZ5XY0nhFUmp5G6OybZgjCBmVgD+b/Ox4Jjn
-	 mPfdQ/Qt+1Evg==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6188b5ae1e8so1879646a12.0;
-        Fri, 15 Aug 2025 01:50:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU1So165iKPOrtG6QbGV10jTXISfEQybZEAiLaQ8ntuh8Z6UKPGscaru59G4nCiLWPMYslt5p3S@vger.kernel.org, AJvYcCW087WfE4Tf5D7lAdWm7twollmz9Cl78FVdVPJc9noMTlZiwEEzWOmMVkKL8lbUUJKVSZ3ai0lkkopuDno=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyojF06PxiZT7NAxy3x5ZY6Gsp+x4Ovh11N/6aHny65SP1Fhcy5
-	nBTtIwRT2EqAy9W1GT3NKww6xPC5i5U+LF7cllQqqzTvCkKpY21DBJi4KaifsTqNKdOz8IRxNgs
-	4vrpw8BikS7qUFpnpv+9rIHv5ZpRg9Bg=
-X-Google-Smtp-Source: AGHT+IHGCpf4wRlB5ShJISeqNfHm1ljWIRp3fTE5KL5hhOU/yg6wagjRCoeo9Wgjye7juXOhgtVcmtt1IGZWWoeFvbE=
-X-Received: by 2002:a05:6402:51ca:b0:618:aea9:725b with SMTP id
- 4fb4d7f45d1cf-618b050d1f4mr851259a12.6.1755247845748; Fri, 15 Aug 2025
- 01:50:45 -0700 (PDT)
+	s=arc-20240116; t=1755248518; c=relaxed/simple;
+	bh=4nhuPMpQH1XDW7lT9b2rrcPbTF2+KzidHExpR5owANk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cjq56OY+DzNsG9MXswQwsD39Ir2+NQzUVvy0z7K194FGTZpQnTxZkHTF8Ptsv+q1S8gC7/sM6JHehAY6nitCEfnTlMMJ6EfUJ1JrOA0/hkOVoyhQYfJZSBkOy9o4QWDeSrh6QV/rqrSfABOH0fZVjeJEuNNFscwDcf6KbxRH2oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.45])
+	by gateway (Coremail) with SMTP id _____8DxzOJ5955oBjpAAQ--.55780S3;
+	Fri, 15 Aug 2025 17:01:45 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.45])
+	by front1 (Coremail) with SMTP id qMiowJBxD8Jx955oUrVNAA--.32978S2;
+	Fri, 15 Aug 2025 17:01:44 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH V4] init: Handle bootloader identifier in kernel parameters
+Date: Fri, 15 Aug 2025 17:01:20 +0800
+Message-ID: <20250815090120.1569947-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721101343.3283480-1-chenhuacai@loongson.cn> <20250811185635.f51ddda72f36bc0c2ba20600@linux-foundation.org>
-In-Reply-To: <20250811185635.f51ddda72f36bc0c2ba20600@linux-foundation.org>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 15 Aug 2025 16:50:34 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H60uwMpuwOi1Jb0sgQO5oE=5AioMONAt3MtGTWzgm6uyw@mail.gmail.com>
-X-Gm-Features: Ac12FXxMi_qLVWq4FNkYvA5_28kW1mRomx7voeDtiMJFOvKVKYCDp8Jp6A_eE9Q
-Message-ID: <CAAhV-H60uwMpuwOi1Jb0sgQO5oE=5AioMONAt3MtGTWzgm6uyw@mail.gmail.com>
-Subject: Re: [PATCH V3] init: Handle bootloader identifier in kernel parameters
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, linux-mm@kvack.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxD8Jx955oUrVNAA--.32978S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tw4fCr1rCFW3GF1xXr17XFc_yoW8Kw1xpF
+	Z7tr9xWaykGws8Cw48Wr4vga4Sywn3Aa17JanrWanxXFn0qFy0v3yftF1agas3trWfKF42
+	gF1DZF10k3W7CFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvKb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_
+	JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17
+	CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0
+	I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I
+	8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU
+	0xZFpf9x07jepB-UUUUU=
 
-On Tue, Aug 12, 2025 at 9:56=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Mon, 21 Jul 2025 18:13:43 +0800 Huacai Chen <chenhuacai@loongson.cn> w=
-rote:
->
-> > BootLoader (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
-=3D
-> > /boot/vmlinuz-x.y.z" to kernel parameters. But these identifiers are no=
-t
-> > recognized by the kernel itself so will be passed to user space. Howeve=
-r
-> > user space init program also doesn't recognized it.
-> >
-> > KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" o=
-n
-> > some architectures.
-> >
-> > We cannot change BootLoader's behavior, because this behavior exists fo=
-r
-> > many years, and there are already user space programs search BOOT_IMAGE=
-=3D
-> > in /proc/cmdline to obtain the kernel image locations:
-> >
-> > https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
-> > (search getBootOptions)
-> > https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
-> > (search getKernelReleaseWithBootOption)
-> >
-> > So the the best way is handle (ignore) it by the kernel itself, which
-> > can avoid such boot warnings (if we use something like init=3D/bin/bash=
-,
-> > bootloader identifier can even cause a crash):
-> >
-> > Kernel command line: BOOT_IMAGE=3D(hd0,1)/vmlinuz-6.x root=3D/dev/sda3 =
-ro console=3Dtty
-> > Unknown kernel command line parameters "BOOT_IMAGE=3D(hd0,1)/vmlinuz-6.=
-x", will be passed to user space.
-> >
-> > Cc: stable@vger.kernel.org
->
-> I think I'll keep this in -next until 6.18-rc1 - I suspect any issues
-> here will take a while to discover.
->
-> > --- a/init/main.c
-> > +++ b/init/main.c
-> > @@ -545,6 +545,12 @@ static int __init unknown_bootoption(char *param, =
-char *val,
-> >                                    const char *unused, void *arg)
-> >  {
-> >       size_t len =3D strlen(param);
-> > +     /*
-> > +      * Well-known bootloader identifiers:
-> > +      * 1. LILO/Grub pass "BOOT_IMAGE=3D...";
-> > +      * 2. kexec/kdump (kexec-tools) pass "kexec".
-> > +      */
-> > +     const char *bootloader[] =3D { "BOOT_IMAGE=3D", "kexec", NULL };
-> >
-> >       /* Handle params aliased to sysctls */
-> >       if (sysctl_is_alias(param))
-> > @@ -552,6 +558,12 @@ static int __init unknown_bootoption(char *param, =
-char *val,
-> >
-> >       repair_env_string(param, val);
-> >
-> > +     /* Handle bootloader identifier */
-> > +     for (int i =3D 0; bootloader[i]; i++) {
-> > +             if (!strncmp(param, bootloader[i], strlen(bootloader[i]))=
-)
-> > +                     return 0;
-> > +     }
->
-> We have str_has_prefix().
->
-> And strstarts()!  Both of which are awfully similar and both of which
-> lamely do two passes across a string.
-OK, I will send V4 with strstarts().
+BootLoader (Grub, LILO, etc) may pass an identifier such as "BOOT_IMAGE=
+/boot/vmlinuz-x.y.z" to kernel parameters. But these identifiers are not
+recognized by the kernel itself so will be passed to user space. However
+user space init program also doesn't recognized it.
 
-Huacai
+KEXEC/KDUMP (kexec-tools) may also pass an identifier such as "kexec" on
+some architectures.
+
+We cannot change BootLoader's behavior, because this behavior exists for
+many years, and there are already user space programs search BOOT_IMAGE=
+in /proc/cmdline to obtain the kernel image locations:
+
+https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/util.go
+(search getBootOptions)
+https://github.com/linuxdeepin/deepin-ab-recovery/blob/master/main.go
+(search getKernelReleaseWithBootOption)
+
+So the the best way is handle (ignore) it by the kernel itself, which
+can avoid such boot warnings (if we use something like init=/bin/bash,
+bootloader identifier can even cause a crash):
+
+Kernel command line: BOOT_IMAGE=(hd0,1)/vmlinuz-6.x root=/dev/sda3 ro console=tty
+Unknown kernel command line parameters "BOOT_IMAGE=(hd0,1)/vmlinuz-6.x", will be passed to user space.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+V2: Update comments and commit messages.
+V3: Document bootloader identifiers.
+V4: Use strstarts() instead of strncmp().
+
+ init/main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/init/main.c b/init/main.c
+index 0ee0ee7b7c2c..9b5150166bcf 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -544,6 +544,12 @@ static int __init unknown_bootoption(char *param, char *val,
+ 				     const char *unused, void *arg)
+ {
+ 	size_t len = strlen(param);
++	/*
++	 * Well-known bootloader identifiers:
++	 * 1. LILO/Grub pass "BOOT_IMAGE=...";
++	 * 2. kexec/kdump (kexec-tools) pass "kexec".
++	 */
++	const char *bootloader[] = { "BOOT_IMAGE=", "kexec", NULL };
+ 
+ 	/* Handle params aliased to sysctls */
+ 	if (sysctl_is_alias(param))
+@@ -551,6 +557,12 @@ static int __init unknown_bootoption(char *param, char *val,
+ 
+ 	repair_env_string(param, val);
+ 
++	/* Handle bootloader identifier */
++	for (int i = 0; bootloader[i]; i++) {
++		if (strstarts(param, bootloader[i]))
++			return 0;
++	}
++
+ 	/* Handle obsolete-style parameters */
+ 	if (obsolete_checksetup(param))
+ 		return 0;
+-- 
+2.47.3
+
 
