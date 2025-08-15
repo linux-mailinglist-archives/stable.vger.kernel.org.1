@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-169651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9875B27389
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 02:17:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A04B27388
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 02:17:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBBFC5601BF
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 00:16:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBB589E4058
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 00:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D688A214A9E;
-	Fri, 15 Aug 2025 00:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C09217723;
+	Fri, 15 Aug 2025 00:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u7zuo4Ts"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sYLQ5sqP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF40620C00C
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 00:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D862147EF
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 00:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755216759; cv=none; b=EL2P9k2MNSdCW/qqUIKIsc5dLp56aPWWcrHuo3tTBxPgl9h7vF0bRFhsH5Rbx0GMEZnxKM/FN9vmsLb1zLIBE8k8mVP6RVAnXsBZa5QZrvibUYwXsLgJ3vAkmoDORIJTIr/MXRSHDUbZZIgyEKo3PjvYO1xthG4LlohbZXCDXtk=
+	t=1755216761; cv=none; b=T6G/0WSTq/RhvGgUJrRlp/D7MJyFdrn29Q4hvq6mwWaxgjZDChzia05iA5D/vn2bLovluZPMsMJa6jbQJu8yTlxWJPIkGGcqxjAFpExNVtoK2o8LvO6sPoTmW0uRuBJ3Fv36XiNRwsdAAi0JMgqXfkV2vbdiaemi2hZZ0mldQWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755216759; c=relaxed/simple;
-	bh=yTUz+qG+cU6V8xwnekCabgy0vngZnFqvIXMxd1Gydqk=;
+	s=arc-20240116; t=1755216761; c=relaxed/simple;
+	bh=RZ7Dz8xwBsHGy5mh7rqSjgoKEOyTvpiJll9GacNdIxQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Zck2LF6I/1ced5YEmDa7LonCugKdCm5D1+mWeKKbREmU3XdYB/6/ULyA9S9rXJBgSHsy+MMrPPV/oyD8+OtrjIsv81edcKeLjM9D1kybFnECUEWpiTIPYaOfA4chIWMO4jHSVyXNGe+ILH1jx1ZWcvfpXkT5RKz3hv6rGSIKyzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u7zuo4Ts; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=RY3WSgxv+JQLN+cinYA1QRvP5b7w2uPBbX3GiVyPVlMFeN90bqD1mI8J4nBhc8+v3bnFsZXBsuWc32ZX8Xcu10nDecNU04g93TleMjxz50CBBMHXtfUw2WeHrk5XuOvMB+BVSCBt3erxkTJrAGh6onYMOTMaJIToE6GR2vnsK9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sYLQ5sqP; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-76e2eb787f2so1437562b3a.3
-        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 17:12:37 -0700 (PDT)
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b47173ae6easo1990715a12.1
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 17:12:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1755216757; x=1755821557; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1755216759; x=1755821559; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=jPuQ+cNG6Ky3AiODPwKfwN4pIduvIz2auWyqIQ/IVDc=;
-        b=u7zuo4Ts9CRAFLBGTYOHv+T9LI33EIUalKWvC7MFMTQtH76MLOegfvJItkV0z2qWzA
-         DjFtunlcMmjZZm07/5wO6KnrrfmAkFAJ8KKhqE4x7mwLpBsJaZPnWW330bvfeb+WAAEf
-         fLb+QlyEA4xFla/xz7yhVniEvSpO2vr5TCyhJud9taGAESPDKJG8MPGC6F16DCi6Fuba
-         9WSc8TWPkj+mEjom9Y0yogJgGC6Ndiw5iK9wp97iUVKs6Ipc2lAf2hltpi4pq9LQRAyB
-         a5qNdB/GnCpEbveOdphpPr32IyF74aKr+U4HUIS/o+yNQugY5EzLPQdAfTjofPZkpQSE
-         VQLw==
+        bh=5WU9voBHmtHCID+62ekjip+WsDaLPoXQ1Ho4KAjz+Bk=;
+        b=sYLQ5sqP+joFgShRs229ltnfmFKtmVeGfB3+jobeQCppC5tinDwcFsakJuE7PWJD3n
+         RCeGR2mhTHOLudMle49N2/iSBI+zo1uDLnobkkri/XPCm9PbmoHcXCRqVjaXl5Qlvot4
+         1YFwDbnobQPgw2RBW7qVG/mTcMaHToJ17ByTiYtamMmmkAyYUXi6wganyRUvLdNpuqSR
+         mynmI/SGoZEdteBvLpBWSrl7x9M39eUcdefHVyzrvCdj/J85uhNZlG9DChjhAKJJShFo
+         bVUZth8UMurwozCNBm0TRJnOxNRkLBlqeXdZupDpawqnW0lXdZaNP0ilI9s6LNIlcqln
+         TJag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755216757; x=1755821557;
+        d=1e100.net; s=20230601; t=1755216759; x=1755821559;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jPuQ+cNG6Ky3AiODPwKfwN4pIduvIz2auWyqIQ/IVDc=;
-        b=fVpihAce2aZvbWh7HJYinnXMOsrqz7NX6ZHT8jMkLXUxFkyCSl4ytuzzCIT6/FyQki
-         k9cWtyr6JMT8RlFDSbZk3EjyD954qr2xa3Bbvfv9Lpb/SCp3rhGuzaqra6YSjZASbPLh
-         VJ28ExeazljjS5o4cVbRZE0dN9lqWldUa2TzXHchIim3uu4QqSCH16kZrI4FA2bQgrS5
-         oy08C4UiLup6rq8Xxy1A4O9A6htJzcLIrAPeChYpA+mYvou9/8HtRvGu5yDcSjKmD2aT
-         M8QKzqOLz0KMfTOWmwC2KYxdem9nFoR/Q6KcDu+mXCDd3K3F8JLu5sOiRsVzoutJD4b3
-         fssg==
-X-Gm-Message-State: AOJu0YxCG618nzwK6+/Lzet4ovR/pMXns53hWxtvUbKi6jLJFqOdKIIK
-	fSWz8kFSuQmdEWBVqA0byzwa8pJ944rmouCH/3inSJc9ffPJxjvohPD3Cr5Ukw0Mjtjzk0tNEKQ
-	ZIA5nvvCMRqBxQYPnBzskO+HrXxjGFOPCN3AdTX8v8Jhfq7QYHtw+f4OgtkRCZRMhSJdpu+q+6H
-	6l4m01LHTmBvw/Rf0HtRjocx0suT5qhxILX8Tc
-X-Google-Smtp-Source: AGHT+IHJ7XeWcEMUSG1jDAsSbG5DOzoVCeXpHBp7b8baQtDYYKASKeMj0hM/4Tl94qbNbHjH0SF36wjcd4I=
-X-Received: from pfbik4.prod.google.com ([2002:a05:6a00:8d04:b0:76b:d1ee:d06c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1492:b0:74d:3a57:81d9
- with SMTP id d2e1a72fcca58-76e446de7a4mr75086b3a.8.1755216756957; Thu, 14 Aug
- 2025 17:12:36 -0700 (PDT)
+        bh=5WU9voBHmtHCID+62ekjip+WsDaLPoXQ1Ho4KAjz+Bk=;
+        b=npNF8WFZm9RDe+Ny6Js53XN6UwT11MoImUR20+yk12F7IBbDnanPf5wETa3b5tNp9l
+         Vdk+8rEv0Js8OEox3xfclqXOrcc5tdX60YPRXKmbqZhtfwXEE2W9CbBL4CxhEtPOJUuR
+         VK8mDGA9Q+BDWRZprkAxzeVeXQQqrk+RQAn/X43V0WVbalZ/BvdvHiNQgdE1p+N4J5mV
+         oDdlbNrldT5yN2HId/fDGznX6y/OdA6/XLKHvO+H6N4iAI5cdmiBY1dhbCTi8jj1gavJ
+         kgd4ttPU0bXgn8StOHBUVKx0R8ESK9Bv9FpzAMpLvPfSuRR8edcLrI3gbFriyx/sGyqP
+         PVdg==
+X-Gm-Message-State: AOJu0YwKZPVCOxrLvtpx0DDipPTaPqxfmAIxjfhig1Fy4eLmozo6AI2d
+	DK94EjtiYH0f3+4O/Gub09ocgY0hEdZmfbpzfXzwE5P8vZVwiLS903HKMGs+oYlbIQdqrFmJH+z
+	4RSfiqwn9re3LUgzLvMrkWUdhuQHq2Onegpm/BvD0wLeEn7kxGZ12um/PRUh/uW1pSEzNI5sbM4
+	rvnFRXklq638KVMxzlw359B8LSEJItOc8oinsV
+X-Google-Smtp-Source: AGHT+IHLp96Otjk1T4s0hj1MiompkYvxUqUTRUDczNOqtCXM0tJwB6ezd2X3zMPFXAvmZWvj66nHpW6DhT8=
+X-Received: from pgc14.prod.google.com ([2002:a05:6a02:2f8e:b0:b42:1052:52f5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:430d:b0:238:351a:6437
+ with SMTP id adf61e73a8af0-240d2f3f71bmr291638637.43.1755216758682; Thu, 14
+ Aug 2025 17:12:38 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 Aug 2025 17:11:58 -0700
+Date: Thu, 14 Aug 2025 17:11:59 -0700
 In-Reply-To: <20250815001205.2370711-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,9 +76,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250815001205.2370711-1-seanjc@google.com>
 X-Mailer: git-send-email 2.51.0.rc1.163.g2494970778-goog
-Message-ID: <20250815001205.2370711-15-seanjc@google.com>
-Subject: [PATCH 6.1.y 14/21] KVM: x86: Fully defer to vendor code to decide
- how to force immediate exit
+Message-ID: <20250815001205.2370711-16-seanjc@google.com>
+Subject: [PATCH 6.1.y 15/21] KVM: x86: Convert vcpu_run()'s immediate exit
+ param into a generic bitmap
 From: Sean Christopherson <seanjc@google.com>
 To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Sasha Levin <sashal@kernel.org>
@@ -86,258 +86,132 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 
-[ Upstream commit 0ec3d6d1f169baa7fc512ae4b78d17e7c94b7763 ]
+[ Upstream commit 2478b1b220c49d25cb1c3f061ec4f9b351d9a131 ]
 
-Now that vmx->req_immediate_exit is used only in the scope of
-vmx_vcpu_run(), use force_immediate_exit to detect that KVM should usurp
-the VMX preemption to force a VM-Exit and let vendor code fully handle
-forcing a VM-Exit.
+Convert kvm_x86_ops.vcpu_run()'s "force_immediate_exit" boolean parameter
+into an a generic bitmap so that similar "take action" information can be
+passed to vendor code without creating a pile of boolean parameters.
 
-Opportunsitically drop __kvm_request_immediate_exit() and just have
-vendor code call smp_send_reschedule() directly.  SVM already does this
-when injecting an event while also trying to single-step an IRET, i.e.
-it's not exactly secret knowledge that KVM uses a reschedule IPI to force
-an exit.
+This will allow dropping kvm_x86_ops.set_dr6() in favor of a new flag, and
+will also allow for adding similar functionality for re-loading debugctl
+in the active VMCS.
 
-Link: https://lore.kernel.org/r/20240110012705.506918-7-seanjc@google.com
+Opportunistically massage the TDX WARN and comment to prepare for adding
+more run_flags, all of which are expected to be mutually exclusive with
+TDX, i.e. should be WARNed on.
+
+No functional change intended.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250610232010.162191-3-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-[sean: resolve absurd conflict due to funky kvm_x86_ops.sched_in prototype]
+[sean: drop TDX crud, account for lack of kvm_x86_call()]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  1 -
- arch/x86/include/asm/kvm_host.h    |  3 ---
- arch/x86/kvm/svm/svm.c             |  7 ++++---
- arch/x86/kvm/vmx/vmx.c             | 32 +++++++++++++-----------------
- arch/x86/kvm/vmx/vmx.h             |  2 --
- arch/x86/kvm/x86.c                 | 10 +---------
- 6 files changed, 19 insertions(+), 36 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  6 +++++-
+ arch/x86/kvm/svm/svm.c          |  4 ++--
+ arch/x86/kvm/vmx/vmx.c          |  3 ++-
+ arch/x86/kvm/x86.c              | 10 ++++++++--
+ 4 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 29bef25ac77c..0e5ae3b0c867 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -100,7 +100,6 @@ KVM_X86_OP(write_tsc_multiplier)
- KVM_X86_OP(get_exit_info)
- KVM_X86_OP(check_intercept)
- KVM_X86_OP(handle_exit_irqoff)
--KVM_X86_OP(request_immediate_exit)
- KVM_X86_OP(sched_in)
- KVM_X86_OP_OPTIONAL(update_cpu_dirty_logging)
- KVM_X86_OP_OPTIONAL(vcpu_blocking)
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 93f523762854..86f3bd6601e7 100644
+index 86f3bd6601e7..1383f5e5238a 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -1590,8 +1590,6 @@ struct kvm_x86_ops {
- 			       struct x86_exception *exception);
- 	void (*handle_exit_irqoff)(struct kvm_vcpu *vcpu);
+@@ -1456,6 +1456,10 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+ 	return dest_mode_logical ? APIC_DEST_LOGICAL : APIC_DEST_PHYSICAL;
+ }
  
--	void (*request_immediate_exit)(struct kvm_vcpu *vcpu);
--
- 	void (*sched_in)(struct kvm_vcpu *kvm, int cpu);
++enum kvm_x86_run_flags {
++	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
++};
++
+ struct kvm_x86_ops {
+ 	const char *name;
  
- 	/*
-@@ -2059,7 +2057,6 @@ extern bool kvm_find_async_pf_gfn(struct kvm_vcpu *vcpu, gfn_t gfn);
+@@ -1529,7 +1533,7 @@ struct kvm_x86_ops {
  
- int kvm_skip_emulated_instruction(struct kvm_vcpu *vcpu);
- int kvm_complete_insn_gp(struct kvm_vcpu *vcpu, int err);
--void __kvm_request_immediate_exit(struct kvm_vcpu *vcpu);
- 
- void __user *__x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
- 				     u32 size);
+ 	int (*vcpu_pre_run)(struct kvm_vcpu *vcpu);
+ 	enum exit_fastpath_completion (*vcpu_run)(struct kvm_vcpu *vcpu,
+-						  bool force_immediate_exit);
++						  u64 run_flags);
+ 	int (*handle_exit)(struct kvm_vcpu *vcpu,
+ 		enum exit_fastpath_completion exit_fastpath);
+ 	int (*skip_emulated_instruction)(struct kvm_vcpu *vcpu);
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 337a304d211b..12de50db401f 100644
+index 12de50db401f..dc8a1b72d8ec 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -4033,8 +4033,11 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
- 		 * is enough to force an immediate vmexit.
- 		 */
- 		disable_nmi_singlestep(svm);
-+		force_immediate_exit = true;
-+	}
-+
-+	if (force_immediate_exit)
- 		smp_send_reschedule(vcpu->cpu);
--	}
+@@ -4008,9 +4008,9 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
+ 	guest_state_exit_irqoff();
+ }
  
- 	pre_svm_run(vcpu);
+-static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
+-					  bool force_immediate_exit)
++static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ {
++	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	bool spec_ctrl_intercepted = msr_write_intercepted(vcpu, MSR_IA32_SPEC_CTRL);
  
-@@ -4874,8 +4877,6 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.check_intercept = svm_check_intercept,
- 	.handle_exit_irqoff = svm_handle_exit_irqoff,
- 
--	.request_immediate_exit = __kvm_request_immediate_exit,
--
- 	.sched_in = svm_sched_in,
- 
- 	.nested_ops = &svm_nested_ops,
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 4db9d41d988c..179747d04edc 100644
+index 179747d04edc..382f42200688 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -49,6 +49,8 @@
- #include <asm/virtext.h>
- #include <asm/vmx.h>
- 
-+#include <trace/events/ipi.h>
-+
- #include "capabilities.h"
- #include "cpuid.h"
- #include "evmcs.h"
-@@ -1223,8 +1225,6 @@ void vmx_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
- 	u16 fs_sel, gs_sel;
- 	int i;
- 
--	vmx->req_immediate_exit = false;
--
- 	/*
- 	 * Note that guest MSRs to be saved/restored can also be changed
- 	 * when guest state is loaded. This happens when guest transitions
-@@ -5929,7 +5929,8 @@ static int handle_pml_full(struct kvm_vcpu *vcpu)
- 	return 1;
+@@ -7204,8 +7204,9 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ 	guest_state_exit_irqoff();
  }
  
--static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu)
-+static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu,
-+						   bool force_immediate_exit)
+-static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
++static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
  {
++	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
  	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	unsigned long cr3, cr4;
  
-@@ -5945,7 +5946,7 @@ static fastpath_t handle_fastpath_preemption_timer(struct kvm_vcpu *vcpu)
- 	 * If the timer expired because KVM used it to force an immediate exit,
- 	 * then mission accomplished.
- 	 */
--	if (vmx->req_immediate_exit)
-+	if (force_immediate_exit)
- 		return EXIT_FASTPATH_EXIT_HANDLED;
- 
- 	/*
-@@ -7090,13 +7091,13 @@ static void atomic_switch_perf_msrs(struct vcpu_vmx *vmx)
- 					msrs[i].host, false);
- }
- 
--static void vmx_update_hv_timer(struct kvm_vcpu *vcpu)
-+static void vmx_update_hv_timer(struct kvm_vcpu *vcpu, bool force_immediate_exit)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	u64 tscl;
- 	u32 delta_tsc;
- 
--	if (vmx->req_immediate_exit) {
-+	if (force_immediate_exit) {
- 		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, 0);
- 		vmx->loaded_vmcs->hv_timer_soft_disabled = false;
- 	} else if (vmx->hv_deadline_tsc != -1) {
-@@ -7149,7 +7150,8 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
- 	barrier_nospec();
- }
- 
--static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
-+static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu,
-+					     bool force_immediate_exit)
- {
- 	/*
- 	 * If L2 is active, some VMX preemption timer exits can be handled in
-@@ -7163,7 +7165,7 @@ static fastpath_t vmx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
- 	case EXIT_REASON_MSR_WRITE:
- 		return handle_fastpath_set_msr_irqoff(vcpu);
- 	case EXIT_REASON_PREEMPTION_TIMER:
--		return handle_fastpath_preemption_timer(vcpu);
-+		return handle_fastpath_preemption_timer(vcpu, force_immediate_exit);
- 	default:
- 		return EXIT_FASTPATH_NONE;
- 	}
-@@ -7284,7 +7286,9 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
- 		vmx_passthrough_lbr_msrs(vcpu);
- 
- 	if (enable_preemption_timer)
--		vmx_update_hv_timer(vcpu);
-+		vmx_update_hv_timer(vcpu, force_immediate_exit);
-+	else if (force_immediate_exit)
-+		smp_send_reschedule(vcpu->cpu);
- 
- 	kvm_wait_lapic_expire(vcpu);
- 
-@@ -7358,7 +7362,7 @@ static fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
- 	vmx_recover_nmi_blocking(vmx);
- 	vmx_complete_interrupts(vmx);
- 
--	return vmx_exit_handlers_fastpath(vcpu);
-+	return vmx_exit_handlers_fastpath(vcpu, force_immediate_exit);
- }
- 
- static void vmx_vcpu_free(struct kvm_vcpu *vcpu)
-@@ -7865,11 +7869,6 @@ static __init void vmx_set_cpu_caps(void)
- 		kvm_cpu_cap_check_and_set(X86_FEATURE_WAITPKG);
- }
- 
--static void vmx_request_immediate_exit(struct kvm_vcpu *vcpu)
--{
--	to_vmx(vcpu)->req_immediate_exit = true;
--}
--
- static int vmx_check_intercept_io(struct kvm_vcpu *vcpu,
- 				  struct x86_instruction_info *info)
- {
-@@ -8275,8 +8274,6 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
- 	.check_intercept = vmx_check_intercept,
- 	.handle_exit_irqoff = vmx_handle_exit_irqoff,
- 
--	.request_immediate_exit = vmx_request_immediate_exit,
--
- 	.sched_in = vmx_sched_in,
- 
- 	.cpu_dirty_log_size = PML_ENTITY_NUM,
-@@ -8533,7 +8530,6 @@ static __init int hardware_setup(void)
- 	if (!enable_preemption_timer) {
- 		vmx_x86_ops.set_hv_timer = NULL;
- 		vmx_x86_ops.cancel_hv_timer = NULL;
--		vmx_x86_ops.request_immediate_exit = __kvm_request_immediate_exit;
- 	}
- 
- 	kvm_caps.supported_mce_cap |= MCG_LMCE_P;
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 357819872d80..ddbe73958d7f 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -343,8 +343,6 @@ struct vcpu_vmx {
- 	unsigned int ple_window;
- 	bool ple_window_dirty;
- 
--	bool req_immediate_exit;
--
- 	/* Support for PML */
- #define PML_ENTITY_NUM		512
- 	struct page *pml_pg;
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 652f90ad7107..bc586a6df6ab 100644
+index bc586a6df6ab..b9cc3c05590e 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -10578,12 +10578,6 @@ static void kvm_vcpu_reload_apic_access_page(struct kvm_vcpu *vcpu)
- 	static_call_cond(kvm_x86_set_apic_access_page_addr)(vcpu);
- }
+@@ -10591,6 +10591,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		dm_request_for_irq_injection(vcpu) &&
+ 		kvm_cpu_accept_dm_intr(vcpu);
+ 	fastpath_t exit_fastpath;
++	u64 run_flags;
  
--void __kvm_request_immediate_exit(struct kvm_vcpu *vcpu)
--{
--	smp_send_reschedule(vcpu->cpu);
--}
--EXPORT_SYMBOL_GPL(__kvm_request_immediate_exit);
--
- /*
-  * Called within kvm->srcu read side.
-  * Returns 1 to let vcpu_run() continue the guest execution loop without
-@@ -10817,10 +10811,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 	bool req_immediate_exit = false;
+ 
+@@ -10811,8 +10812,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
  		goto cancel_injection;
  	}
  
--	if (req_immediate_exit) {
-+	if (req_immediate_exit)
+-	if (req_immediate_exit)
++	run_flags = 0;
++	if (req_immediate_exit) {
++		run_flags |= KVM_RUN_FORCE_IMMEDIATE_EXIT;
  		kvm_make_request(KVM_REQ_EVENT, vcpu);
--		static_call(kvm_x86_request_immediate_exit)(vcpu);
--	}
++	}
  
  	fpregs_assert_state_consistent();
  	if (test_thread_flag(TIF_NEED_FPU_LOAD))
+@@ -10848,7 +10852,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		WARN_ON_ONCE((kvm_vcpu_apicv_activated(vcpu) != kvm_vcpu_apicv_active(vcpu)) &&
+ 			     (kvm_get_apic_mode(vcpu) != LAPIC_MODE_DISABLED));
+ 
+-		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu, req_immediate_exit);
++		exit_fastpath = static_call(kvm_x86_vcpu_run)(vcpu, run_flags);
+ 		if (likely(exit_fastpath != EXIT_FASTPATH_REENTER_GUEST))
+ 			break;
+ 
+@@ -10860,6 +10864,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 			break;
+ 		}
+ 
++		run_flags = 0;
++
+ 		/* Note, VM-Exits that go down the "slow" path are accounted below. */
+ 		++vcpu->stat.exits;
+ 	}
 -- 
 2.51.0.rc1.163.g2494970778-goog
 
