@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CEDDB282ED
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 17:27:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B15B282F0
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 17:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B76189E3B5
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 15:27:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EB3C1897EFE
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 15:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5152C15B9;
-	Fri, 15 Aug 2025 15:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5722C0F9F;
+	Fri, 15 Aug 2025 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAYbxh6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWA4nS4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B746C2C0F91
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 15:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3DF4315F
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 15:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755271620; cv=none; b=tz+wI3h/mJODrF9opxQhrLBcGrbK4GhzL3y+ec+wbeFQWZoewxeFcFFoJpjRd74TYpfafQt6Qq5LUe1nlgpPtdsoob+6k6U9ZRTRfn/7BYtqFW3xkLuNNC8fRRBysunwNT5GCS/Ui3XouFICKFCetVPCreDEzUYjsXLRuQ9x9r0=
+	t=1755271765; cv=none; b=syQ+zLoprCBbWFPunjVJnkPwQm9GjMiKTEFNZvV1078KfndYwHMJjPTSsnY3jeeOJGlA9rOrWbvhofTFpsOMQaknfuk3erokqxsFrl4SanUFCoP6EvfvkQvHSGXAB2wM7RO/TdY+4bJVQ8fKl84+hUEv3P7VWR4LhLrQr6+Dsws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755271620; c=relaxed/simple;
-	bh=9HU9pK6tbCy5Z49gqDj5e2VLMVXHPJh0VLizM+Hizzk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ci8QHJ9yVPwjBi87TI6gSmHmSm6Mm3pwzjH6FIW95FguwCG+IJ5WDuv3c8xybONu9miHe7WES1Xp53QcJZUJ3BLajAAfzTAfqSQIm1V6nsydswjNIuXYgaGh9pK/Wlf3GPe9EJsLARWXvktZnCVbaW05KAUI2Svq0H99hRnDMYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAYbxh6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB491C4CEEB;
-	Fri, 15 Aug 2025 15:26:59 +0000 (UTC)
+	s=arc-20240116; t=1755271765; c=relaxed/simple;
+	bh=8tubh7vv9Sunm5Q37XKJj7HM16M9lWjqUQRDvuUC8cw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZdZzTBA8GsiXt1YKMIQCV4+i+fcGHY9Iqdv0U4mvPK7IM0259SM5YkgZf3xr03jGxV1oSixJpy6QqXITyVMrelh6loCkZ1D5nP5F0rNpqxU5KVMcDrAVaG5Ih/F7DU3o4mt2KLnK5BUzi/61QkFrX0dVIil9pczUB/0nTkS8Peo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWA4nS4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DF5C4CEF5;
+	Fri, 15 Aug 2025 15:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755271620;
-	bh=9HU9pK6tbCy5Z49gqDj5e2VLMVXHPJh0VLizM+Hizzk=;
+	s=korg; t=1755271764;
+	bh=8tubh7vv9Sunm5Q37XKJj7HM16M9lWjqUQRDvuUC8cw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bAYbxh6fHOV1+2TYsAhP2Qq+kGJoCRo8lvlrpqr7YaxAOBHjlQu1u4cPNwa31htO9
-	 QOHxHZtsINz5v7cFikYg5lot1snIO7M8jm8qPCoLljpn8Hk+4Lx7bVJljc6hQldnkG
-	 c03/1I+xxVhPr5NA+FW0ROraeh6dym/fRN03oJbM=
-Subject: FAILED: patch "[PATCH] io_uring/net: commit partial buffers on retry" failed to apply to 6.6-stable tree
-To: axboe@kernel.dk,superman.xpt@gmail.com
+	b=OWA4nS4NMy7QqB8+NJm8YZRvhIaI1VdMKDlbXFq7gUnCRhthKy0NU7/ld6rdLcVsz
+	 /Hi5wE/Hn6ZdpAvhaRYClnm1v+u/LE5YndUnOjk5l+anttqJf/fUIuG+QmIQcRwtiU
+	 9Z93i5OrG34lCFcI4lhoUzFj9oY4Uk6VrKfrja4g=
+Subject: FAILED: patch "[PATCH] arm64: dts: ti: k3-j722s-evm: Fix USB gpio-hog level for" failed to apply to 6.12-stable tree
+To: s-vadapalli@ti.com,vigneshr@ti.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Aug 2025 17:26:49 +0200
-Message-ID: <2025081549-shorter-borrower-941d@gregkh>
+Date: Fri, 15 Aug 2025 17:29:21 +0200
+Message-ID: <2025081521-dangle-drapery-9a9a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 41b70df5b38bc80967d2e0ed55cc3c3896bba781
+git cherry-pick -x 65ba2a6e77e9e5c843a591055789050e77b5c65e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081549-shorter-borrower-941d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081521-dangle-drapery-9a9a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,113 +77,40 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41b70df5b38bc80967d2e0ed55cc3c3896bba781 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Tue, 12 Aug 2025 08:30:11 -0600
-Subject: [PATCH] io_uring/net: commit partial buffers on retry
+From 65ba2a6e77e9e5c843a591055789050e77b5c65e Mon Sep 17 00:00:00 2001
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+Date: Mon, 23 Jun 2025 15:36:57 +0530
+Subject: [PATCH] arm64: dts: ti: k3-j722s-evm: Fix USB gpio-hog level for
+ Type-C
 
-Ring provided buffers are potentially only valid within the single
-execution context in which they were acquired. io_uring deals with this
-and invalidates them on retry. But on the networking side, if
-MSG_WAITALL is set, or if the socket is of the streaming type and too
-little was processed, then it will hang on to the buffer rather than
-recycle or commit it. This is problematic for two reasons:
+According to the "GPIO Expander Map / Table" section of the J722S EVM
+Schematic within the Evaluation Module Design Files package [0], the
+GPIO Pin P05 located on the GPIO Expander 1 (I2C0/0x23) has to be pulled
+down to select the Type-C interface. Since commit under Fixes claims to
+enable the Type-C interface, update the property within "p05-hog" from
+"output-high" to "output-low", thereby switching from the Type-A
+interface to the Type-C interface.
 
-1) If someone unregisters the provided buffer ring before a later retry,
-   then the req->buf_list will no longer be valid.
-
-2) If multiple sockers are using the same buffer group, then multiple
-   receives can consume the same memory. This can cause data corruption
-   in the application, as either receive could land in the same
-   userspace buffer.
-
-Fix this by disallowing partial retries from pinning a provided buffer
-across multiple executions, if ring provided buffers are used.
+[0]: https://www.ti.com/lit/zip/sprr495
 
 Cc: stable@vger.kernel.org
-Reported-by: pt x <superman.xpt@gmail.com>
-Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20250623100657.4082031-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index dd96e355982f..d69f2afa4f7a 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -494,6 +494,15 @@ static int io_bundle_nbufs(struct io_async_msghdr *kmsg, int ret)
- 	return nbufs;
- }
+diff --git a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+index a47852fdca70..d0533723412a 100644
+--- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+@@ -634,7 +634,7 @@ p05-hog {
+ 			/* P05 - USB2.0_MUX_SEL */
+ 			gpio-hog;
+ 			gpios = <5 GPIO_ACTIVE_LOW>;
+-			output-high;
++			output-low;
+ 		};
  
-+static int io_net_kbuf_recyle(struct io_kiocb *req,
-+			      struct io_async_msghdr *kmsg, int len)
-+{
-+	req->flags |= REQ_F_BL_NO_RECYCLE;
-+	if (req->flags & REQ_F_BUFFERS_COMMIT)
-+		io_kbuf_commit(req, req->buf_list, len, io_bundle_nbufs(kmsg, len));
-+	return IOU_RETRY;
-+}
-+
- static inline bool io_send_finish(struct io_kiocb *req, int *ret,
- 				  struct io_async_msghdr *kmsg,
- 				  unsigned issue_flags)
-@@ -562,8 +571,7 @@ int io_sendmsg(struct io_kiocb *req, unsigned int issue_flags)
- 			kmsg->msg.msg_controllen = 0;
- 			kmsg->msg.msg_control = NULL;
- 			sr->done_io += ret;
--			req->flags |= REQ_F_BL_NO_RECYCLE;
--			return -EAGAIN;
-+			return io_net_kbuf_recyle(req, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -674,8 +682,7 @@ int io_send(struct io_kiocb *req, unsigned int issue_flags)
- 			sr->len -= ret;
- 			sr->buf += ret;
- 			sr->done_io += ret;
--			req->flags |= REQ_F_BL_NO_RECYCLE;
--			return -EAGAIN;
-+			return io_net_kbuf_recyle(req, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -1071,8 +1078,7 @@ int io_recvmsg(struct io_kiocb *req, unsigned int issue_flags)
- 		}
- 		if (ret > 0 && io_net_retry(sock, flags)) {
- 			sr->done_io += ret;
--			req->flags |= REQ_F_BL_NO_RECYCLE;
--			return IOU_RETRY;
-+			return io_net_kbuf_recyle(req, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -1218,8 +1224,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 			sr->len -= ret;
- 			sr->buf += ret;
- 			sr->done_io += ret;
--			req->flags |= REQ_F_BL_NO_RECYCLE;
--			return -EAGAIN;
-+			return io_net_kbuf_recyle(req, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -1500,8 +1505,7 @@ int io_send_zc(struct io_kiocb *req, unsigned int issue_flags)
- 			zc->len -= ret;
- 			zc->buf += ret;
- 			zc->done_io += ret;
--			req->flags |= REQ_F_BL_NO_RECYCLE;
--			return -EAGAIN;
-+			return io_net_kbuf_recyle(req, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
-@@ -1571,8 +1575,7 @@ int io_sendmsg_zc(struct io_kiocb *req, unsigned int issue_flags)
- 
- 		if (ret > 0 && io_net_retry(sock, flags)) {
- 			sr->done_io += ret;
--			req->flags |= REQ_F_BL_NO_RECYCLE;
--			return -EAGAIN;
-+			return io_net_kbuf_recyle(req, kmsg, ret);
- 		}
- 		if (ret == -ERESTARTSYS)
- 			ret = -EINTR;
+ 		p01_hog: p01-hog {
 
 
