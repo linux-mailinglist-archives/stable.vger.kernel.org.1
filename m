@@ -1,112 +1,114 @@
-Return-Path: <stable+bounces-169710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D15B27D0A
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 11:27:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0D6B27D11
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 11:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E38961D229DD
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 09:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28813177D60
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 09:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D023725F973;
-	Fri, 15 Aug 2025 09:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDB8271469;
+	Fri, 15 Aug 2025 09:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intra2net.com header.i=@intra2net.com header.b="r0Dyl4BA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f+O2XvlA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.intra2net.com (smtp.intra2net.com [193.186.7.79])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DCB20B803
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 09:18:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.186.7.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8A4271455;
+	Fri, 15 Aug 2025 09:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755249488; cv=none; b=XknKqZr7juWi8nscU5cfWlGxdVvml/x4iA9C2qeTZF3c833yrAzoA0wflktc7j9lxZ1Y1BLkyFA3P67sdsr82uAwzneEKoPIfkz7wthaiFphyhVLOM1XcHwL3QyD1zpgn8Jo2KBDx1K/gpzNuslhhfIRFNOI/kHzTvLwwBHk/rk=
+	t=1755249822; cv=none; b=oRuRGF2TuJByAmj6Ur1ZtoCtzB99MZWxzQp5u9BnZUkcGVnCBLDDuh7t0mj5Hixo5glQ1nY1IRmvhACreIUQjwi4BkkmbV3WHIwks5PpnOVPuteaXrnRFdTBLY+qATPwMqRKStMXIC3pmHUps10Yy9QwnMP8fZ61zRiVQf7oGJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755249488; c=relaxed/simple;
-	bh=ZjukBWkX33Zd0Drahy0drCFWzLRXBro57ZoyS2RjzOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LpWHFMFe5vu8lF36UQU57yaj1nX6n1+Mur3EroLmvQH9GuURAekNsxFSLgiA/C3gZo99xZ0E0LoS02kQzTuP8c/pOyu+mtuUVZJWQ7NDL1fOjxo9EZTAeRgyJIVFfTTMai6g/+bbKFgx7tVRmr6kpFvzVUvypm9ACCwoYRwXrU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=intra2net.com; spf=none smtp.mailfrom=intra2net.com; dkim=pass (2048-bit key) header.d=intra2net.com header.i=@intra2net.com header.b=r0Dyl4BA; arc=none smtp.client-ip=193.186.7.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=intra2net.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=intra2net.com
-Received: from mail.m.i2n (mail.m.i2n [172.17.128.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.intra2net.com (Postfix) with ESMTPS id CEDEC20073;
-	Fri, 15 Aug 2025 11:18:03 +0200 (CEST)
-Received: from localhost (mail.m.i2n [127.0.0.1])
-	by localhost (Postfix) with ESMTP id C287A317;
-	Fri, 15 Aug 2025 11:18:03 +0200 (CEST)
-X-Virus-Scanned: by Intra2net Mail Security (AVE=8.3.70.112,VDF=8.20.60.128)
-X-Spam-Level: 0
-DKIM-Signature: v=1; d=intra2net.com; s=ncc-1701; a=rsa-sha256;
-	c=relaxed/relaxed; t=1755249483; x=1756113483; h=Cc:Cc:Content-Disposition:
-	Content-Disposition:Content-Type:Content-Type:Date:Date:From:From:
-	In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:
-	References:References:To:To; bh=8dY+ZMfn1nOuq2XNiUusBi+/dm59apjnsIhMDFob0KI=;
-	b=r0Dyl4BAN1vtTJzNajcu7AeR/tRbQq5LMiQMGaxvEOY89+AnzVih2YJ4KYQJH6bkiYkOV44LsuJ
-	iz6PuqUoJGcbW3+znKCUcNWW+AEEkXnoXuXk4N0W4RrDvFB8+8k6zjYIfyI4Cc4XdRJn7VYWF5DzO
-	Q47gXrjp9v22B3u5PoNdT5b7I1tDqb0xikO51XVgKfKsy/vIz3a/51GIX2oGPvPgqrM3BKcghEu3O
-	OBK1hHg9jm+SwRHNS2pHYdDNHV4u5Z3EkLAuiyO2RuK8MhvwjwJyXN2Tdr2PhuafkNXCBD6zG7lw6
-	+aaWp37Ug2aH1Z9TheZ9nKhwBw5Y8nLzLhRw==
-Received: from localhost (storm.m.i2n [172.16.1.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.m.i2n (Postfix) with ESMTPS id F3D8DC1;
-	Fri, 15 Aug 2025 11:18:02 +0200 (CEST)
-Date: Fri, 15 Aug 2025 11:18:02 +0200
-From: Thomas Jarosch <thomas.jarosch@intra2net.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, Lion Ackermann <nnamrec@gmail.com>,
-	regressions@lists.linux.dev,
-	Siddh Raman Pant <siddh.raman.pant@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [REGRESSION] 5.15.181 -> 5.15.189: kernel oops in drr_qlen_notify
-Message-ID: <20250815091802.5mqk34hsq5yg74a6@intra2net.com>
-References: <20250814211332.lp3ibcp5oopnov46@intra2net.com>
+	s=arc-20240116; t=1755249822; c=relaxed/simple;
+	bh=jHqU7C3cB2Y7jqGzJ6MmHNkSMTZoaJzqNsLyTa1jD5Q=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=u2bFxkKQrGcVznYievHowyGq7meHpGblvln2dH6nkFRbElHngU8XA1LbMdGaSysfJcGBSI9qUuwz3HDUqWnOj1v2olLEBVAlY1wEvw9JEuBRkw+AWyqfVimMsxJ2UFTLDbY7VZWJ37rrID40FjL7yvLGboL3MC0cpqxp31atCR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f+O2XvlA; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755249821; x=1786785821;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=jHqU7C3cB2Y7jqGzJ6MmHNkSMTZoaJzqNsLyTa1jD5Q=;
+  b=f+O2XvlAYo+BWBg23zOzp2VQrwpyFWXyPq4kq47N39yGElhr9IvfDFTn
+   SQjvgJrGPO8W6zIJVQbrKr7pUd2rRCgU/YHe3OPupx4XOGNA0EgS4vRPX
+   4evC7t+kbG2AJe1mxxjH7tbb1MW0YbEuTC41lvv4t3rAwhmrcOy73lttX
+   3zsI8kMfN8TYH75cVRojJl04Y0NJDfCf5/7EDWlNS76eweeLxlpXhOFDm
+   tNO2wLTCkRZhqG3EmsecBQ+8xIvYagOyoSeJf8XqVtxjHgzCnXMcu+CxA
+   erjn+Q8USjHOVfKaBPJLpCs/1wQJ2yyag/71JEpW0tK8jR/bqvUQsIHDi
+   Q==;
+X-CSE-ConnectionGUID: WOounE12QuWaWIGrPmrVjQ==
+X-CSE-MsgGUID: Rza15byRRIOTHbCNQwM6bA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11522"; a="83006025"
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
+   d="scan'208";a="83006025"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 02:23:40 -0700
+X-CSE-ConnectionGUID: jFtXsV/JRuOtvLDAMSV6Kw==
+X-CSE-MsgGUID: WArP5uIUQUmuo0UOlMgv/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,290,1747724400"; 
+   d="scan'208";a="171180582"
+Received: from yongfeih-mobl5.ccr.corp.intel.com (HELO [10.124.241.96]) ([10.124.241.96])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2025 02:23:36 -0700
+Message-ID: <4c956b03-d956-4f23-ad7e-f67286cf6b4a@linux.intel.com>
+Date: Fri, 15 Aug 2025 17:23:33 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814211332.lp3ibcp5oopnov46@intra2net.com>
-User-Agent: NeoMutt/20180716
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Ethan Zhao <etzhao1900@gmail.com>,
+ Dave Hansen <dave.hansen@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, Jann Horn <jannh@google.com>,
+ Vasant Hegde <vasant.hegde@amd.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
+ iommu@lists.linux.dev, security@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Jason Gunthorpe <jgg@nvidia.com>, Uladzislau Rezki <urezki@gmail.com>
+References: <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <4ce79c80-1fc8-4684-920a-c8d82c4c3dc8@intel.com>
+ <b6defa2a-164e-4c2f-ac55-fef5b4a9ba0f@linux.intel.com>
+ <2611981e-3678-4619-b2ab-d9daace5a68a@gmail.com> <aJm0znaAqBRWqOCT@pc636>
+ <20250811125559.GS184255@nvidia.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250811125559.GS184255@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello again,
-
-You wrote on Thu, Aug 14, 2025 at 11:13:32PM +0200:
-> I'm seeing a reproducible kernel oops on my home router updating from 5.15.181 to 5.15.189:
-> ..
->
-> It seems to be identical to:
-> https://lore.kernel.org/stable/bcf9c70e9cf750363782816c21c69792f6c81cd9.1754751592.git.siddh.raman.pant@oracle.com/
+On 8/11/2025 8:55 PM, Jason Gunthorpe wrote:
+> On Mon, Aug 11, 2025 at 11:15:58AM +0200, Uladzislau Rezki wrote:
 > 
-> While the kernel didn't oops anymore with the patch applied, the network traffic behaves erratic:
-> TCP traffic works, ICMP seems "stuck". tcpdump showed no icmp traffic on the ppp device.
+>> Agree, unless it is never considered as a hot path or something that can
+>> be really contented. It looks like you can use just a per-cpu llist to drain
+>> thinks.
+> I think we already largely agreed this was not a true fast path, I
+> don't think we need a per-cpu here.
+> 
+> But I would not make it extern unless there is a user?
 
-I didn't realize yesterday that the bandwidth management script uses both drr and hfsc.
+Fixed. Thanks!
 
-There is an upcoming patch series proposed for the 5.15 stable queue:
-
-1. "[PATCH 5.15, 5.10 2/6] sch_drr: make drr_qlen_notify() idempotent"
-https://lore.kernel.org/stable/bcf9c70e9cf750363782816c21c69792f6c81cd9.1754751592.git.siddh.raman.pant@oracle.com/#t
-
-2. "[PATCH 5.15, 5.10 3/6] sch_hfsc: make hfsc_qlen_notify() idempotent"
-https://lore.kernel.org/stable/8f1d425178ad93064465e15c68b38890b10b5814.1754751592.git.siddh.raman.pant@oracle.com/
-
-
-With those two patches applied, kernel 5.15.189 doesn't oops anymore.
-(if I drop the hfsc related patch, ICMP is broken as reported)
-
-Thanks for all the hard work on the stable kernel series! It's highly appreciated.
-
-Cheers,
-Thomas
+Thanks,
+baolu
 
