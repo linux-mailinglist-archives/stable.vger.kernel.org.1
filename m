@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-169815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D04B28673
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 21:31:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88937B286BD
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 21:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44101B64EE2
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 19:30:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04C811CE34D0
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 19:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0550B230BD5;
-	Fri, 15 Aug 2025 19:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6876F2288D5;
+	Fri, 15 Aug 2025 19:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FojzSoBR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BemAIFzd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C20221282
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 19:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2761A13FEE
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 19:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755286299; cv=none; b=UpNs/rvyaptjncnziBO5E1DnOCmSQZsaOc1mdRcGVDwvIpkR43xCVdlKna5EWBq8FuAq9U1qz3ZB8qyxXwBZ2n8DfD7CHCIe8A8eaNUSihwBXqUBoL7HRjvswSbbJ2NLW9zm8uYaqclKnuLn5GzYwR3TqETCbyV5OqEVx7KPTPY=
+	t=1755287660; cv=none; b=Z1N/dQIZroDChCL5qhfE5JMpA+z6W/N8+XTN6YwwE1mzZq61xq8iEYIRw93OofjQ7BiF1peOdKuuDKZ9oCv4jvxdt8TNkgDSC4c1PvPIBFP25rEisDabnDXghxVu6y4rBMdW2UsvaZGzGs2PPYnLqzQUudlulCyaUQDmxnBE+qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755286299; c=relaxed/simple;
-	bh=6faC/Djwe5ymEQ05CVs6fz8MxlP5RNNVhLgQXWWmeUQ=;
+	s=arc-20240116; t=1755287660; c=relaxed/simple;
+	bh=rBXYt/EmK8ff4xZheNyolrU/ZsTO7nxfeEWUT84T7tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZnzL30+rw0fyQ4ATN8b9EwNx3N3FglXhH2cTbr8TmDeY15xJNeTh6dmCNZHEQls3E6KV/NnVCYDzZ/39haWaraPv+NJrNpMnp6bRN8hbclgesbgXSrWY7yVwYLbwa69mxj2JkQAyQBLseUQReu5JVJTwSRT7FjYwZmBVRnrprs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FojzSoBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885ADC4CEF1;
-	Fri, 15 Aug 2025 19:31:35 +0000 (UTC)
+	 MIME-Version; b=OXuDKWqkNXOofV+39bx/6s01gMMWrv2V0sMcZVj4npAGOJirp7C59UIs07ZPH+2KrbvsDf7ym+L6v/jWNppZFnk7mSyf8XoufGdV28fLMo7sVDljCf0mBPy20nUIUj67gFVSWTmoWLHBodlj81lciDwsnNn9/q5nPrG1lDbRxXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BemAIFzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EFAC4CEEB;
+	Fri, 15 Aug 2025 19:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755286296;
-	bh=6faC/Djwe5ymEQ05CVs6fz8MxlP5RNNVhLgQXWWmeUQ=;
+	s=k20201202; t=1755287659;
+	bh=rBXYt/EmK8ff4xZheNyolrU/ZsTO7nxfeEWUT84T7tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FojzSoBR8A4QVmzPOF7MqWpAf3cEXDV7/XreWjT5ZKvbQNRLnviEX1PeaBNC9LXaK
-	 3kh+8lqA7l6BXPXUx+L/5xEW02hEvtUIWZF4yJmj3PMLzAaAzFMCB2rnKjJcKNHfHB
-	 Grlw0lka07E0iUc7nza0yQ/tpnDB5mUpe88CRarrm4rHBXkMA1DoeQQT0AVseN1euy
-	 a1+E6mcqCTxD0S95Io1GrvjcsQloMFSgZppE2ogEcxfx62egM+DBfG6t6UjZYt8HbK
-	 sXypnebs26PcVZqwPHWdpyYwIWl/Q7X4BJRo4xyk6uQKYg3DRkhHjGRVHBqrTBi7pn
-	 KhV28qPdB4tig==
+	b=BemAIFzdNIBmEV2gnuUImHttnPajswQllU4MAjeQ0Ib3JyIlneZCcoph3C8knesth
+	 VzDnyjG7QntHy4FLvyX1zpysVM8lg2WaUSSec9wAo1OOGmZ/v+VhtqHera8WNZZs8b
+	 mwNAGvZ6bY6H9r23u94/4WiwUSoKtXYH1ks4W7yGXhoyAd8k4KGHCfsfIADUJIJHw0
+	 HYLQEW+fdh7a9TJk216f40iPZv4zEsysFA1oeNC2VZ4JnV0VbUmZqSlhYudxbOBa7t
+	 9PdLMcyAcNpE63m9sDG/izH8PKjhJ22UABe6JJD4kVX67O/WK8dqzhXGqQNlGlodO8
+	 /givBhvXGaMIg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>,
+Cc: Johan Hovold <johan@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] leds: flash: leds-qcom-flash: Fix registry access after re-bind
-Date: Fri, 15 Aug 2025 15:31:27 -0400
-Message-ID: <20250815193127.192775-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y] net: enetc: fix device and OF node leak at probe
+Date: Fri, 15 Aug 2025 15:54:16 -0400
+Message-ID: <20250815195416.198795-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250815193127.192775-1-sashal@kernel.org>
-References: <2025081544-skillet-cofounder-e278@gregkh>
- <20250815193127.192775-1-sashal@kernel.org>
+In-Reply-To: <2025081556-icon-nursing-ee42@gregkh>
+References: <2025081556-icon-nursing-ee42@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,81 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fab15f57360b1e6620a1d0d6b0fbee896e6c1f07 ]
+[ Upstream commit 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed ]
 
-Driver in probe() updates each of 'reg_field' with 'reg_base':
+Make sure to drop the references to the IERB OF node and platform device
+taken by of_parse_phandle() and of_find_device_by_node() during probe.
 
-	for (i = 0; i < REG_MAX_COUNT; i++)
-		regs[i].reg += reg_base;
-
-'reg_field' array (under variable 'regs' above) is statically allocated,
-thus each re-bind would add another 'reg_base' leading to bogus
-register addresses.  Constify the local 'reg_field' array and duplicate
-it in probe to solve this.
-
-Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250529063335.8785-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-3-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/flash/leds-qcom-flash.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/flash/leds-qcom-flash.c b/drivers/leds/flash/leds-qcom-flash.c
-index 7df4e8426528..a619dbe01524 100644
---- a/drivers/leds/flash/leds-qcom-flash.c
-+++ b/drivers/leds/flash/leds-qcom-flash.c
-@@ -117,7 +117,7 @@ enum {
- 	REG_MAX_COUNT,
- };
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index bdf94335ee99..b84d5a66558a 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -1207,6 +1207,7 @@ static int enetc_pf_register_with_ierb(struct pci_dev *pdev)
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct platform_device *ierb_pdev;
+ 	struct device_node *ierb_node;
++	int ret;
  
--static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x08, 0, 7),			/* status1	*/
- 	REG_FIELD(0x09, 0, 7),                  /* status2	*/
- 	REG_FIELD(0x0a, 0, 7),                  /* status3	*/
-@@ -132,7 +132,7 @@ static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x58, 0, 2),			/* therm_thrsh3 */
- };
+ 	/* Don't register with the IERB if the PF itself is disabled */
+ 	if (!node || !of_device_is_available(node))
+@@ -1214,16 +1215,25 @@ static int enetc_pf_register_with_ierb(struct pci_dev *pdev)
  
--static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x06, 0, 7),			/* status1	*/
- 	REG_FIELD(0x07, 0, 6),			/* status2	*/
- 	REG_FIELD(0x09, 0, 7),			/* status3	*/
-@@ -855,11 +855,17 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
- 	if (val == FLASH_SUBTYPE_3CH_PM8150_VAL || val == FLASH_SUBTYPE_3CH_PMI8998_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_3CH;
- 		flash_data->max_channels = 3;
--		regs = mvflash_3ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_3ch_regs, sizeof(mvflash_3ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
- 	} else if (val == FLASH_SUBTYPE_4CH_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_4CH;
- 		flash_data->max_channels = 4;
--		regs = mvflash_4ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_4ch_regs, sizeof(mvflash_4ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
+ 	ierb_node = of_find_compatible_node(NULL, NULL,
+ 					    "fsl,ls1028a-enetc-ierb");
+-	if (!ierb_node || !of_device_is_available(ierb_node))
++	if (!ierb_node)
+ 		return -ENODEV;
  
- 		rc = regmap_read(regmap, reg_base + FLASH_REVISION_REG, &val);
- 		if (rc < 0) {
-@@ -881,6 +887,7 @@ static int qcom_flash_led_probe(struct platform_device *pdev)
- 		dev_err(dev, "Failed to allocate regmap field, rc=%d\n", rc);
- 		return rc;
- 	}
-+	devm_kfree(dev, regs); /* devm_regmap_field_bulk_alloc() makes copies */
++	if (!of_device_is_available(ierb_node)) {
++		of_node_put(ierb_node);
++		return -ENODEV;
++	}
++
+ 	ierb_pdev = of_find_device_by_node(ierb_node);
+ 	of_node_put(ierb_node);
  
- 	platform_set_drvdata(pdev, flash_data);
- 	mutex_init(&flash_data->lock);
+ 	if (!ierb_pdev)
+ 		return -EPROBE_DEFER;
+ 
+-	return enetc_ierb_register_pf(ierb_pdev, pdev);
++	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
++
++	put_device(&ierb_pdev->dev);
++
++	return ret;
+ }
+ 
+ static int enetc_pf_probe(struct pci_dev *pdev,
 -- 
 2.50.1
 
