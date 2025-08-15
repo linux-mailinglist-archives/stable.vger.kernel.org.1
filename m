@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-169832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B46B28830
-	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 00:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFFEB28831
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 00:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9847AC39C8
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 22:08:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03259AC3A4C
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 22:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EA323956A;
-	Fri, 15 Aug 2025 22:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF76256C6F;
+	Fri, 15 Aug 2025 22:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jP7wSa27"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X1mAa0mE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDD828399
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 22:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD77028399
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 22:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755295708; cv=none; b=rb+IdjKDu8/nbDhtWMQ49ScIfKxPC7ioNlubpHVbTSNvoV3ShDoDXhSBkJDwWorQvgSCD6w5+alDuoYlPzdS7071rQV89RChxcMriuk8YXqyN10X7a+409VNkcfEnr26A6c7HEJL0+CDDl3/8GYvdfoYuPrnwk+5fuEAMOXlgps=
+	t=1755295709; cv=none; b=i4fqpscRsPoVoEKW7KZ0DxhGFJTdrDb7y67hNKkbgR97/Ko2+bza/iznvTH+puyaK3UYZlwFmP2WX9DVILp8Dwy95l0aoLNf3xxLF/r/wWs8tiL36rQX50gAqKMCpStB+/yOinlOaj36YZ/5mr/qdb7wCJvRsLAaatYROeuKdsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755295708; c=relaxed/simple;
-	bh=/f0oqHNNYciAk8DfsDaXen0iliRLXox43bzQPOew9eg=;
+	s=arc-20240116; t=1755295709; c=relaxed/simple;
+	bh=SzolPRlU9fqujFujXdZjEDl5c6+eEnWw5hw4lbSFUHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+PZZ4rs0CZPnTcOdeJevheTrxRK8YI+zIZrMZeoZnkJ6qzkUCtGzZcK0tKyaRKGtTNruIPnNA7xmOdm5MTXSXiRTprSBmNlK0FrPw9jUxhdZcNq2mDSvwe2Z5igyjdZoakw4VG975vpOJm485fdbUmfgK8QysIHFNhIYOAwK4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jP7wSa27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE184C4CEEB;
-	Fri, 15 Aug 2025 22:08:27 +0000 (UTC)
+	 MIME-Version; b=kOg6CfooJiDVOJrCcFch6pd4vmvppq2yKdxUW++lJmEe985Qq7A8quw0gOLX+TJ4lbusaAmr0ZmU1Hy/NNUC30c/Dsm7nEzsBTZpJjiqYKKyk344PZxuHzsKNgObFG1alG/ij1mpm6coxPLWP+DxxoDd5yUnF7cJaG/naSODfZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X1mAa0mE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2E5C4CEF0;
+	Fri, 15 Aug 2025 22:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755295708;
-	bh=/f0oqHNNYciAk8DfsDaXen0iliRLXox43bzQPOew9eg=;
+	s=k20201202; t=1755295709;
+	bh=SzolPRlU9fqujFujXdZjEDl5c6+eEnWw5hw4lbSFUHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jP7wSa27JvWFkSw4HrKZI6hqyXkhUaYOzym9x6O/o/7zE7O5HGo+UDgT5jd0r/w6j
-	 25Xcl6Jcj9W1xn3lmz0HjOaBQgboNQ9sNkUfEBMb052C8jK8Eyi0JdJoS4iDmLTMSv
-	 Aoy7s8EU7nb36Xf/3ChS8zLw8FJCQv0KbxammDBeh1vy9k6Vt5MO67gOBvFunAkcrb
-	 Sc2MKMox3E6hXI8BN1pg18wbCWOBHMatncG9jhCLX5SDWlWgcOqkBjL5FWV0aV3NY+
-	 rHRKCP1eUUUD3X2J1/wsOuzm8f5vVABeEvaxjjOR5RMgKxrvzneqfIeQX5pEntr206
-	 mGy8HYd47827A==
+	b=X1mAa0mEVvYvtlRfzx8do7YQM7qbTv55Ae1MWgQXsD1rd+E9OxdrtAcx/ZXXOds8k
+	 lNhgsuuGm4xhHqr4IfQVPRiIApOA1LOCtkp7laoRhihjB6P+AksifohkV/nyb9Oqxu
+	 5ikuQyD3/hUtelTDaNaJUQ2C1gv5AjSgEmfODaOIsnLudr9CnjKUrf2rZ9JjfhUROW
+	 UPgmp7Gfv/eN1g77ydjN9WSKg+biwgXiDepl008E8hxLHEwIk6nw+M4CqyqscTtBXE
+	 iucV5AW2wsRikxFF7/9oVxdZhdPXKOlEuQ6n7Bw0/jgfx/k3Lecq42YfYXJLBkcVBl
+	 UM8xPhxjbJPJg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Brian Norris <briannorris@chromium.org>,
+Cc: Lukas Wunner <lukas@wunner.de>,
+	Laurent Bigonville <bigon@bigon.be>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/3] PCI: Allow PCI bridges to go to D3Hot on all non-x86
-Date: Fri, 15 Aug 2025 18:08:23 -0400
-Message-ID: <20250815220824.248963-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 3/3] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
+Date: Fri, 15 Aug 2025 18:08:24 -0400
+Message-ID: <20250815220824.248963-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250815220824.248963-1-sashal@kernel.org>
 References: <2025081508-ultra-derived-f72d@gregkh>
@@ -62,71 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit a5fb3ff632876d63ee1fc5ed3af2464240145a00 ]
+[ Upstream commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a ]
 
-Currently, pci_bridge_d3_possible() encodes a variety of decision factors
-when deciding whether a given bridge can be put into D3. A particular one
-of note is for "recent enough PCIe ports." Per Rafael [0]:
+pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
+pcie_portdrv_remove() to determine whether runtime power management shall
+be enabled (on probe) or disabled (on remove) on a PCIe port.
 
-  "There were hardware issues related to PM on x86 platforms predating
-   the introduction of Connected Standby in Windows.  For instance,
-   programming a port into D3hot by writing to its PMCSR might cause the
-   PCIe link behind it to go down and the only way to revive it was to
-   power cycle the Root Complex.  And similar."
+The underlying assumption is that pci_bridge_d3_possible() always returns
+the same value, else a runtime PM reference imbalance would occur.  That
+assumption is not given if the PCIe port is inaccessible on remove due to
+hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
+accesses Config Space to determine whether the port is Hot-Plug Capable.
+An inaccessible port returns "all ones", which is converted to "all
+zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
+Hot-Plug Capable on remove even though it was on probe.
 
-Thus, this function contains a DMI-based check for post-2015 BIOS.
+The resulting runtime PM ref imbalance causes warning messages such as:
 
-The above factors (Windows, x86) don't really apply to non-x86 systems, and
-also, many such systems don't have BIOS or DMI. However, we'd like to be
-able to suspend bridges on non-x86 systems too.
+  pcieport 0000:02:04.0: Runtime PM usage count underflow!
 
-Restrict the "recent enough" check to x86. If we find further
-incompatibilities, it probably makes sense to expand on the deny-list
-approach (i.e., bridge_d3_blacklist or similar).
+Avoid the Config Space access (and thus the runtime PM ref imbalance) by
+caching the Hot-Plug Capable bit in struct pci_dev.
 
-Link: https://lore.kernel.org/r/20250320110604.v6.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid
-Link: https://lore.kernel.org/linux-pci/CAJZ5v0j_6jeMAQ7eFkZBe5Yi+USGzysxAgfemYh=-zq4h5W+Qg@mail.gmail.com/ [0]
-Link: https://lore.kernel.org/linux-pci/20240227225442.GA249898@bhelgaas/ [1]
-Link: https://lore.kernel.org/linux-pci/20240828210705.GA37859@bhelgaas/ [2]
-[Brian: rewrite to !X86 based on Rafael's suggestions]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
+The struct already contains an "is_hotplug_bridge" flag, which however is
+not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
+Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
+allocated additional MMIO and bus number resources to allow for hierarchy
+expansion.
+
+The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
+places to identify Hot-Plug Capable PCIe ports, even though the flag
+encompasses other devices.  Subsequent commits replace these occurrences
+with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
+other kinds of hotplug bridges.
+
+Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
+and document the (non-obvious) requirement that pci_bridge_d3_possible()
+always returns the same value across the entire lifetime of a bridge,
+including its hot-removal.
+
+Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
+Reported-by: Laurent Bigonville <bigon@bigon.be>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
+Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
+Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 6cff20ce3b92 ("PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports")
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: stable@vger.kernel.org # v4.18+
+Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/pci-acpi.c | 4 +---
+ drivers/pci/pci.c      | 6 +++++-
+ drivers/pci/probe.c    | 2 +-
+ include/linux/pci.h    | 6 ++++++
+ 4 files changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
+index af370628e583..99c58ee09fbb 100644
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -816,13 +816,11 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
+ bool pciehp_is_native(struct pci_dev *bridge)
+ {
+ 	const struct pci_host_bridge *host;
+-	u32 slot_cap;
+ 
+ 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
+ 		return false;
+ 
+-	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
+-	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
++	if (!bridge->is_pciehp)
+ 		return false;
+ 
+ 	if (pcie_ports_native)
 diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e52299229b52..bfd1893d92ec 100644
+index bfd1893d92ec..d4e89123a112 100644
 --- a/drivers/pci/pci.c
 +++ b/drivers/pci/pci.c
-@@ -3024,7 +3024,7 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
+@@ -3023,8 +3023,12 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
+  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
   * @bridge: Bridge to check
   *
-  * This function checks if it is possible to move the bridge to D3.
-- * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
-+ * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
+- * This function checks if it is possible to move the bridge to D3.
+  * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
++ *
++ * Return: Whether it is possible to move the bridge to D3.
++ *
++ * The return value is guaranteed to be constant across the entire lifetime
++ * of the bridge, including its hot-removal.
   */
  bool pci_bridge_d3_possible(struct pci_dev *bridge)
  {
-@@ -3068,10 +3068,10 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
- 			return false;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index b777e1b01839..b358b93a0275 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1627,7 +1627,7 @@ void set_pcie_hotplug_bridge(struct pci_dev *pdev)
  
- 		/*
--		 * It should be safe to put PCIe ports from 2015 or newer
--		 * to D3.
-+		 * Out of caution, we only allow PCIe ports from 2015 or newer
-+		 * into D3 on x86.
- 		 */
--		if (dmi_get_bios_year() >= 2015)
-+		if (!IS_ENABLED(CONFIG_X86) || dmi_get_bios_year() >= 2015)
- 			return true;
- 		break;
- 	}
+ 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
+ 	if (reg32 & PCI_EXP_SLTCAP_HPC)
+-		pdev->is_hotplug_bridge = 1;
++		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
+ }
+ 
+ static void set_pcie_thunderbolt(struct pci_dev *dev)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index f611837f1989..6b3fef24d60e 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -327,6 +327,11 @@ struct rcec_ea;
+  *			determined (e.g., for Root Complex Integrated
+  *			Endpoints without the relevant Capability
+  *			Registers).
++ * @is_hotplug_bridge:	Hotplug bridge of any kind (e.g. PCIe Hot-Plug Capable,
++ *			Conventional PCI Hot-Plug, ACPI slot).
++ *			Such bridges are allocated additional MMIO and bus
++ *			number resources to allow for hierarchy expansion.
++ * @is_pciehp:		PCIe Hot-Plug Capable bridge.
+  */
+ struct pci_dev {
+ 	struct list_head bus_list;	/* Node in per-bus list */
+@@ -450,6 +455,7 @@ struct pci_dev {
+ 	unsigned int	is_physfn:1;
+ 	unsigned int	is_virtfn:1;
+ 	unsigned int	is_hotplug_bridge:1;
++	unsigned int	is_pciehp:1;
+ 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
+ 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
+ 	/*
 -- 
 2.50.1
 
