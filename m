@@ -1,173 +1,98 @@
-Return-Path: <stable+bounces-169770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017D9B283C8
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:27:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03525B2845D
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3063817FC22
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06745AE069D
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D399308F03;
-	Fri, 15 Aug 2025 16:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F792E5D35;
+	Fri, 15 Aug 2025 16:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="jNIwGicV"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5161DFE0B
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 16:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248FE2E5D14
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 16:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755275234; cv=none; b=en4Juo8BU+lpX5U+VPsMTiUad97qIPzySWX66UT/iifwbYtPOKAQ2IVFRMciSfFA+dA/cN6aWkYiDpmuLXLo0deOjvJDjQ5jDCA8b8zsqjRHWnjyjgdfwrkIuTh1+jmf0QxwqV3WHNBCqLkcGReeUC7Ukhbz67calhZukvyv3AI=
+	t=1755276518; cv=none; b=Pz3fNNaH1MMaq5FbEj1yfk8bThfRpyO5C78nb9vsae5YvCxe9uYfhwMv6qQPBUGfNtcg3wZOZq/FueNeJ5TEJOduf/+024etvl5HVFZwStimvPATy0HsOLTlBM2gVPLrznu4kMUp6dXiFnqFmMRdF/qGqLRKiXEKI931wOnAy+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755275234; c=relaxed/simple;
-	bh=AGu8NHhSIc0iB+NOPGEkI1bYwhV7J+/TXoKDpEb7GEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LJBe9gVocuQRUsRlgH2qEgEp9PxUxUkoH1+FfXu6cPaTNVUca416D+zQMey2YVZ2a7waTlE0nRQhav1fi46Z7X8qw3uSilKCH2kQEiJztYCrtn5Rx38BubGaL8MKQu8p1jHnPwb0SEE2FpsZDR1dVVMx26GNouYYoW+oc6u1kIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0B231691;
-	Fri, 15 Aug 2025 09:27:02 -0700 (PDT)
-Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A6E043F738;
-	Fri, 15 Aug 2025 09:27:08 -0700 (PDT)
-From: Ben Horgan <ben.horgan@arm.com>
-To: catalin.marinas@arm.com,
-	will@kernel.org,
-	maz@kernel.org,
-	oliver.upton@linux.dev,
-	joey.gouly@arm.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev
-Cc: james.morse@arm.com,
-	tabba@google.com,
-	Ben Horgan <ben.horgan@arm.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: arm64: Fix debug checking for np-guests using huge mappings
-Date: Fri, 15 Aug 2025 17:26:55 +0100
-Message-ID: <20250815162655.121108-1-ben.horgan@arm.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1755276518; c=relaxed/simple;
+	bh=2L6F6V4SJOY27ls+ZrHaQQ1KrtJ4MCsKiRDBN3ZRkZ0=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID; b=sJwQQ/pb48+5Io9LHNb1A38J8vzlVuZG1HQjg63iKzi4DMqIP7fyPFXT5vgp7uTnuEM+0qr1Z7uA3+WkCFwaIddNF4GcD/U5lFEUuGOosLdthVwfF63tVqS6vN3LXkzPh1kU+bbEwl2BZndM+yTaURogat7y3sNP7yzuzko69lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=jNIwGicV; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1755276496;
+	bh=2L6F6V4SJOY27ls+ZrHaQQ1KrtJ4MCsKiRDBN3ZRkZ0=;
+	h=From:To:Subject:Mime-Version:Date:Message-ID;
+	b=jNIwGicV6l6XSwFF51LQZ23F8hc8ZDk9Or3MW+hpfT+XkUpPyY7iS4UUNe10wlji7
+	 LRXGjxrxZTOx9QDMu3X1hjQEGIEyJhvwdc2rho0fsWzWQKQEps0baEaaRhb+XMYVLQ
+	 ODYtDKarO+FavtiiH8vnquVTU3ZKHgXB+hOtCgmM=
+EX-QQ-RecipientCnt: 2
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-FEAT: D4aqtcRDiqST8P4pfj07qGG6ZowgZlQrBrKFg+dHp6U=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: STQY5oYZzdsKc3lt7a4dTEcZHjA+pQNeJ2tuVq6Jhcw=
+X-QQ-STYLE: 
+X-QQ-mid: lv3sz3a-6t1755276495tef538caf
+From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Cc: "=?utf-8?B?Z3JlZ2to?=" <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.6] sched/fair: Fix frequency selection for non-invariant case
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Sat, 16 Aug 2025 00:48:14 +0800
+X-Priority: 3
+Message-ID: <tencent_07D4D9EB5CEA414A085CA5C3@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-BIZMAIL-ID: 17105409648277821311
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Sat, 16 Aug 2025 00:48:16 +0800 (CST)
+Feedback-ID: lv:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: Mp5a/kwQRzyIJY72d/hxIDwo72otSKD+QVJ/UeVXI50u6zSVZJb9ucHD
+	thUWL3e+8c39DURpiGz1XiFxMovO9rpFF690B5h1+iwG8/4e1/2/diydxfA0wiisNpncXb6
+	FCnbyEIQGWWJrx4phPlFeD8hLA9Z/jW1qL2Byh/kLXAFsYQtl/zZxLCxY7edDfjicRhMrVU
+	FZ6/DJfFIafOKRuWqmjaFjRngfTuiH2IJAGe7stqjGr4X3SyFHLnvTr+jD1KI7nGh11rDbh
+	GlCIFbe5emfCSnJH54OmdFCWRv4pNAUA1SSHlwC76D1PZmjEHR1Umftlmk0hSQcdoPTKecO
+	7/RwCOjosgoJY05gLrO2rv6kku9wH26CBdkqaWb1vHFzH8HHCQOLeRoFl1QHw33PCacQFeM
+	Z2O37UAvCC+eBE9zeO+ZbYyHfMJyxxZ+lrk0GDL/oorNdxx7G/cVKyLOCJsVNjKU1owN8Fv
+	J5MdSvDsSlszI/eFKW/uljp+UPIcy4W65TYBLK6XrAIzm+6enb80G6nh/uq/m/N/1UtE+9m
+	XrPcLmKPdXWNL+GMsQnTqneZh77xsnrKjnPxHoTUb5h3sU0hgvHzxdpNXXlzjodl9oU6yCO
+	/10DnYTx8u/6jMEYj2uSMHEuJkD06WCHBhHdJdl7VgH7p6vjNsYpsEwDqUGxJ8VzacgOPJT
+	M3RqflirkUNqBArhRL7ymsZF0fwyr20uXx7VTNGUroRplHQtg4mthUwjTaydbjGnayeXmUY
+	ePQHgBAMPZ0SshneXGavbjvIompOJnWycur08iI5XKoSD3B1fC6CMYuLllSA3j2NAKpMwWA
+	4SpJz2Xdi3wkiTCYGwU5K7zeUSqQMjB1qWgrKwz9n16Egz6hRQG5owZm95wIXxhdfdlznZ1
+	J4T7RRO8ZW+spqXLnI/YvEgTxrzeIRg5KaNUtFEB/y7+XJZgsTKXWS4zF0rp/di2VNb0SGu
+	a98YKeG3m6mXzFifu6jCsnzziNGtvH6a5tLvCVDwRDmK3NmOhiAB4Ruv+DTlffCPGQ00URE
+	DYghWKSMzEApFXSTOQ
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-When running with transparent huge pages and CONFIG_NVHE_EL2_DEBUG then
-the debug checking in assert_host_shared_guest() fails on the launch of an
-np-guest. This WARN_ON() causes a panic and generates the stack below.
-
-In __pkvm_host_relax_perms_guest() the debug checking assumes the mapping
-is a single page but it may be a block map. Update the checking so that
-the size is not checked and just assumes the correct size.
-
-While we're here make the same fix in __pkvm_host_mkyoung_guest().
-
-  Info: # lkvm run -k /share/arch/arm64/boot/Image -m 704 -c 8 --name guest-128
-  Info: Removed ghost socket file "/.lkvm//guest-128.sock".
-[ 1406.521757] kvm [141]: nVHE hyp BUG at: arch/arm64/kvm/hyp/nvhe/mem_protect.c:1088!
-[ 1406.521804] kvm [141]: nVHE call trace:
-[ 1406.521828] kvm [141]:  [<ffff8000811676b4>] __kvm_nvhe_hyp_panic+0xb4/0xe8
-[ 1406.521946] kvm [141]:  [<ffff80008116d12c>] __kvm_nvhe_assert_host_shared_guest+0xb0/0x10c
-[ 1406.522049] kvm [141]:  [<ffff80008116f068>] __kvm_nvhe___pkvm_host_relax_perms_guest+0x48/0x104
-[ 1406.522157] kvm [141]:  [<ffff800081169df8>] __kvm_nvhe_handle___pkvm_host_relax_perms_guest+0x64/0x7c
-[ 1406.522250] kvm [141]:  [<ffff800081169f0c>] __kvm_nvhe_handle_trap+0x8c/0x1a8
-[ 1406.522333] kvm [141]:  [<ffff8000811680fc>] __kvm_nvhe___skip_pauth_save+0x4/0x4
-[ 1406.522454] kvm [141]: ---[ end nVHE call trace ]---
-[ 1406.522477] kvm [141]: Hyp Offset: 0xfffece8013600000
-[ 1406.522554] Kernel panic - not syncing: HYP panic:
-[ 1406.522554] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
-[ 1406.522554] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
-[ 1406.522554] VCPU:0000000000000000
-[ 1406.523337] CPU: 3 UID: 0 PID: 141 Comm: kvm-vcpu-0 Not tainted 6.16.0-rc7 #97 PREEMPT
-[ 1406.523485] Hardware name: FVP Base RevC (DT)
-[ 1406.523566] Call trace:
-[ 1406.523629]  show_stack+0x18/0x24 (C)
-[ 1406.523753]  dump_stack_lvl+0xd4/0x108
-[ 1406.523899]  dump_stack+0x18/0x24
-[ 1406.524040]  panic+0x3d8/0x448
-[ 1406.524184]  nvhe_hyp_panic_handler+0x10c/0x23c
-[ 1406.524325]  kvm_handle_guest_abort+0x68c/0x109c
-[ 1406.524500]  handle_exit+0x60/0x17c
-[ 1406.524630]  kvm_arch_vcpu_ioctl_run+0x2e0/0x8c0
-[ 1406.524794]  kvm_vcpu_ioctl+0x1a8/0x9cc
-[ 1406.524919]  __arm64_sys_ioctl+0xac/0x104
-[ 1406.525067]  invoke_syscall+0x48/0x10c
-[ 1406.525189]  el0_svc_common.constprop.0+0x40/0xe0
-[ 1406.525322]  do_el0_svc+0x1c/0x28
-[ 1406.525441]  el0_svc+0x38/0x120
-[ 1406.525588]  el0t_64_sync_handler+0x10c/0x138
-[ 1406.525750]  el0t_64_sync+0x1ac/0x1b0
-[ 1406.525876] SMP: stopping secondary CPUs
-[ 1406.525965] Kernel Offset: disabled
-[ 1406.526032] CPU features: 0x0000,00000080,8e134ca1,9446773f
-[ 1406.526130] Memory Limit: none
-[ 1406.959099] ---[ end Kernel panic - not syncing: HYP panic:
-[ 1406.959099] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
-[ 1406.959099] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
-[ 1406.959099] VCPU:0000000000000000 ]
-
-Signed-off-by: Ben Horgan <ben.horgan@arm.com>
-Fixes: db14091d8f75 ("KVM: arm64: Stage-2 huge mappings for np-guests")
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Cc: Quentin Perret <qperret@google.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: stable@vger.kernel.org
-
----
-
-This addresses the bug I raised here:
-https://lore.kernel.org/linux-arm-kernel/17b526ff-b824-4c24-8ac0-6821e5cc8900@arm.com/
-
----
- arch/arm64/kvm/hyp/nvhe/mem_protect.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-index 8957734d6183..ddc8beb55eee 100644
---- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-+++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-@@ -1010,9 +1010,12 @@ static int __check_host_shared_guest(struct pkvm_hyp_vm *vm, u64 *__phys, u64 ip
- 		return ret;
- 	if (!kvm_pte_valid(pte))
- 		return -ENOENT;
--	if (kvm_granule_size(level) != size)
-+	if (size && kvm_granule_size(level) != size)
- 		return -E2BIG;
- 
-+	if (!size)
-+		size = kvm_granule_size(level);
-+
- 	state = guest_get_page_state(pte, ipa);
- 	if (state != PKVM_PAGE_SHARED_BORROWED)
- 		return -EPERM;
-@@ -1100,7 +1103,7 @@ int __pkvm_host_relax_perms_guest(u64 gfn, struct pkvm_hyp_vcpu *vcpu, enum kvm_
- 	if (prot & ~KVM_PGTABLE_PROT_RWX)
- 		return -EINVAL;
- 
--	assert_host_shared_guest(vm, ipa, PAGE_SIZE);
-+	assert_host_shared_guest(vm, ipa, 0);
- 	guest_lock_component(vm);
- 	ret = kvm_pgtable_stage2_relax_perms(&vm->pgt, ipa, prot, 0);
- 	guest_unlock_component(vm);
-@@ -1156,7 +1159,7 @@ int __pkvm_host_mkyoung_guest(u64 gfn, struct pkvm_hyp_vcpu *vcpu)
- 	if (pkvm_hyp_vm_is_protected(vm))
- 		return -EPERM;
- 
--	assert_host_shared_guest(vm, ipa, PAGE_SIZE);
-+	assert_host_shared_guest(vm, ipa, 0);
- 	guest_lock_component(vm);
- 	kvm_pgtable_stage2_mkyoung(&vm->pgt, ipa, 0);
- 	guest_unlock_component(vm);
--- 
-2.43.0
+SGksDQogICAgUGxlYXNlIGFwcGx5IHRoZSBjb21taXQgZTM3NjE3YzhlNTNhMWY3ZmNiYTZk
+NWUxMDQxZjRmZDhhMjQyNWMyNywNCml0IGZpeCB0aGUgUkVHUkVTU0lPTiBieSBhZGE4ZDdm
+YTBhZDQ5YTJhMDc4Zjk3ZjdmNmUwMmQyNGQzYzM1N2EzDQooInNjaGVkL2NwdWZyZXE6IFJl
+d29yayBzY2hlZHV0aWwgZ292ZXJub3IgcGVyZm9ybWFuY2UgZXN0aW1hdGlvbiIpIHdoaWNo
+DQppbnRyb2R1Y2VkIGluIHY2LjYuODkuDQoNCkJlc3QgUmVnYXJkcw0KV2VudGFvIEd1YW4=
 
 
