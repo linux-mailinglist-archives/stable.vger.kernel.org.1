@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A791B2837C
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:05:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A8EB2837A
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5790DAC1E1C
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:03:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF93C1CE5051
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A67B291C18;
-	Fri, 15 Aug 2025 16:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC589308F15;
+	Fri, 15 Aug 2025 16:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2Eyb+Dn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXS/1zud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5BD1DA21
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 16:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE071EBA0D
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 16:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755273809; cv=none; b=LfxETBtg0Z7HG0MhiuqZBRCQickwg6fP0qOvTipIO5lHi6ZkO14J0a2NO0jKrr9jtVwm6vecOWmdUo9TmDLagQGpkczdGsPe1Q34GyI0qysKCr07EeDkkd71BzwmUKsCeveJSta5xU1Wr9V2NnuEplYxYZGN3m92qbcl3XZZcAE=
+	t=1755273851; cv=none; b=lZKBMKAxLwyGhCOeJSfuqGC8zO9t9flH6pX0JCgH0vJlPcxgB0uOzswLJucM4J5drXipB++X05h6H9MAZnMwf4ihSE1EqGNhLS1Z+G1OmoNHvAbbFLiOISD4rl2LWRqcf7KxOE/ZjCpo9QnM9tvG3TL3qZHqIy/RKfa0jXj3cIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755273809; c=relaxed/simple;
-	bh=cXXjeNhnZBLvaw/hpqfBH2V+8KYuCzWRddOGhDzS/3I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y6yFCh0Pc4TUT4NEtjtkBdWGDbljOpL0AIM/FF5WcR06+CD9w2fKUgVnuOTj8DVaodfi+Vt+3nLOfDptqGTAQc/20Rb6WvzjDGzaN6DNosRGCTQrEKMl1IJP59Ls6hAcrMYxWpN2FKlA+dMIazXsiL+hv4zzL78G5j7nCYdBjps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2Eyb+Dn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7D8C4CEEB;
-	Fri, 15 Aug 2025 16:03:28 +0000 (UTC)
+	s=arc-20240116; t=1755273851; c=relaxed/simple;
+	bh=wTK18FCFgNi/YFg7aETHidzxypUDeTzypLC+Vf9XWe0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KmXIpxKfucpNFPInqKe3j7zBHOD8oTy+dvulqm4g0tb8jYvyNJThQ2ycMK6nT8lmNEzfZk3kP8xnL1QPvxOokpuU9sVRvKr17pBju97mNA+GciiwHaIg0pFd11IXbotuZ3zy/KHKbYP3+l2sc2eJ/1P5LesgQp+Ggp1HgD7QEQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXS/1zud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB84C4CEEB;
+	Fri, 15 Aug 2025 16:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755273808;
-	bh=cXXjeNhnZBLvaw/hpqfBH2V+8KYuCzWRddOGhDzS/3I=;
+	s=korg; t=1755273851;
+	bh=wTK18FCFgNi/YFg7aETHidzxypUDeTzypLC+Vf9XWe0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=b2Eyb+DnMZ11vViqPJFPp2GyfHzXEhn/ZWGau9UOXWj5L1KbDTX/iGdsxcH/1bHVk
-	 laQ78rPI618UzhnRSQN3iKeGpWgu7vAgGSiBqfUj2gVjOJH+KK4hbCSlstQ3wByKfS
-	 FFURDoaZJquzxzRAJm8oj0Ds/Db2CryDCqSjV57s=
-Subject: FAILED: patch "[PATCH] nfsd: handle get_client_locked() failure in" failed to apply to 5.4-stable tree
-To: jlayton@kernel.org,chuck.lever@oracle.com,llfamsec@gmail.com
+	b=tXS/1zudc2CukCwhXYh4rvl4+pQAYZ/PeWUKGmUlI9CYeSib+xipVCH2O28+2XN/f
+	 aSQKYPjMGldcEIWpJZ21uMFFe8TPAS0IaFkLTKzCBpVV2VMBOuRl2SpC9efvgewcTr
+	 EOgZU+0yaLg8180uXCfgIESxYYnyVqcX25dFg+o8=
+Subject: FAILED: patch "[PATCH] NFS: Fix the setting of capabilities when automounting a new" failed to apply to 5.4-stable tree
+To: trond.myklebust@hammerspace.com,bcodding@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Aug 2025 18:03:25 +0200
-Message-ID: <2025081525-comprised-nastily-418e@gregkh>
+Date: Fri, 15 Aug 2025 18:03:56 +0200
+Message-ID: <2025081556-illusive-crawlers-8c0e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 908e4ead7f757504d8b345452730636e298cbf68
+git cherry-pick -x b01f21cacde9f2878492cf318fee61bf4ccad323
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081525-comprised-nastily-418e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081556-illusive-crawlers-8c0e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,71 +77,167 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 908e4ead7f757504d8b345452730636e298cbf68 Mon Sep 17 00:00:00 2001
-From: Jeff Layton <jlayton@kernel.org>
-Date: Wed, 4 Jun 2025 12:01:10 -0400
-Subject: [PATCH] nfsd: handle get_client_locked() failure in
- nfsd4_setclientid_confirm()
+From b01f21cacde9f2878492cf318fee61bf4ccad323 Mon Sep 17 00:00:00 2001
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
+Date: Sun, 3 Aug 2025 14:31:59 -0700
+Subject: [PATCH] NFS: Fix the setting of capabilities when automounting a new
+ filesystem
 
-Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
-the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
-race with a confirmed client expiring and fail to get a reference. That
-could later lead to a UAF.
+Capabilities cannot be inherited when we cross into a new filesystem.
+They need to be reset to the minimal defaults, and then probed for
+again.
 
-Fix this by getting a reference early in the case where there is an
-extant confirmed client. If that fails then treat it as if there were no
-confirmed client found at all.
-
-In the case where the unconfirmed client is expiring, just fail and
-return the result from get_client_locked().
-
-Reported-by: lei lu <llfamsec@gmail.com>
-Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
-Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
+Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index a0e3fa2718c7..95d88555648d 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4690,10 +4690,16 @@ nfsd4_setclientid_confirm(struct svc_rqst *rqstp,
- 	}
- 	status = nfs_ok;
- 	if (conf) {
--		old = unconf;
--		unhash_client_locked(old);
--		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
--	} else {
-+		if (get_client_locked(conf) == nfs_ok) {
-+			old = unconf;
-+			unhash_client_locked(old);
-+			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
-+		} else {
-+			conf = NULL;
-+		}
-+	}
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index e13eb429b8b5..8fb4a950dd55 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -682,6 +682,44 @@ struct nfs_client *nfs_init_client(struct nfs_client *clp,
+ }
+ EXPORT_SYMBOL_GPL(nfs_init_client);
+ 
++static void nfs4_server_set_init_caps(struct nfs_server *server)
++{
++#if IS_ENABLED(CONFIG_NFS_V4)
++	/* Set the basic capabilities */
++	server->caps = server->nfs_client->cl_mvops->init_caps;
++	if (server->flags & NFS_MOUNT_NORDIRPLUS)
++		server->caps &= ~NFS_CAP_READDIRPLUS;
++	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
++		server->caps &= ~NFS_CAP_READ_PLUS;
 +
-+	if (!conf) {
- 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
- 		if (old) {
- 			status = nfserr_clid_inuse;
-@@ -4710,10 +4716,14 @@ nfsd4_setclientid_confirm(struct svc_rqst *rqstp,
- 			}
- 			trace_nfsd_clid_replaced(&old->cl_clientid);
- 		}
-+		status = get_client_locked(unconf);
-+		if (status != nfs_ok) {
-+			old = NULL;
-+			goto out;
-+		}
- 		move_to_confirmed(unconf);
- 		conf = unconf;
- 	}
--	get_client_locked(conf);
- 	spin_unlock(&nn->client_lock);
- 	if (conf == unconf)
- 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
++	/*
++	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
++	 * authentication.
++	 */
++	if (nfs4_disable_idmapping &&
++	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
++		server->caps |= NFS_CAP_UIDGID_NOMAP;
++#endif
++}
++
++void nfs_server_set_init_caps(struct nfs_server *server)
++{
++	switch (server->nfs_client->rpc_ops->version) {
++	case 2:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		break;
++	case 3:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
++			server->caps |= NFS_CAP_READDIRPLUS;
++		break;
++	default:
++		nfs4_server_set_init_caps(server);
++		break;
++	}
++}
++EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
++
+ /*
+  * Create a version 2 or 3 client
+  */
+@@ -726,7 +764,6 @@ static int nfs_init_server(struct nfs_server *server,
+ 	/* Initialise the client representation from the mount data */
+ 	server->flags = ctx->flags;
+ 	server->options = ctx->options;
+-	server->caps |= NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
+ 
+ 	switch (clp->rpc_ops->version) {
+ 	case 2:
+@@ -762,6 +799,8 @@ static int nfs_init_server(struct nfs_server *server,
+ 	if (error < 0)
+ 		goto error;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* Preserve the values of mount_server-related mount options */
+ 	if (ctx->mount_server.addrlen) {
+ 		memcpy(&server->mountd_address, &ctx->mount_server.address,
+@@ -934,7 +973,6 @@ void nfs_server_copy_userdata(struct nfs_server *target, struct nfs_server *sour
+ 	target->acregmax = source->acregmax;
+ 	target->acdirmin = source->acdirmin;
+ 	target->acdirmax = source->acdirmax;
+-	target->caps = source->caps;
+ 	target->options = source->options;
+ 	target->auth_info = source->auth_info;
+ 	target->port = source->port;
+@@ -1169,6 +1207,8 @@ struct nfs_server *nfs_clone_server(struct nfs_server *source,
+ 	if (error < 0)
+ 		goto out_free_server;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* probe the filesystem info for this server filesystem */
+ 	error = nfs_probe_server(server, fh);
+ 	if (error < 0)
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 0143e0794d32..1a18d8d9be25 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -231,7 +231,7 @@ extern struct nfs_client *
+ nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
+ 				struct nfs4_sessionid *, u32);
+ extern struct nfs_server *nfs_create_server(struct fs_context *);
+-extern void nfs4_server_set_init_caps(struct nfs_server *);
++extern void nfs_server_set_init_caps(struct nfs_server *);
+ extern struct nfs_server *nfs4_create_server(struct fs_context *);
+ extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
+ extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index 2ea98f1f116f..6fddf43d729c 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1074,24 +1074,6 @@ static void nfs4_session_limit_xasize(struct nfs_server *server)
+ #endif
+ }
+ 
+-void nfs4_server_set_init_caps(struct nfs_server *server)
+-{
+-	/* Set the basic capabilities */
+-	server->caps |= server->nfs_client->cl_mvops->init_caps;
+-	if (server->flags & NFS_MOUNT_NORDIRPLUS)
+-			server->caps &= ~NFS_CAP_READDIRPLUS;
+-	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
+-		server->caps &= ~NFS_CAP_READ_PLUS;
+-
+-	/*
+-	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
+-	 * authentication.
+-	 */
+-	if (nfs4_disable_idmapping &&
+-			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
+-		server->caps |= NFS_CAP_UIDGID_NOMAP;
+-}
+-
+ static int nfs4_server_common_setup(struct nfs_server *server,
+ 		struct nfs_fh *mntfh, bool auth_probe)
+ {
+@@ -1110,7 +1092,7 @@ static int nfs4_server_common_setup(struct nfs_server *server,
+ 	if (error < 0)
+ 		return error;
+ 
+-	nfs4_server_set_init_caps(server);
++	nfs_server_set_init_caps(server);
+ 
+ 	/* Probe the root fh to retrieve its FSID and filehandle */
+ 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index d7dc669d84c5..c7c7ec22f21d 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -4092,7 +4092,7 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
+ 	};
+ 	int err;
+ 
+-	nfs4_server_set_init_caps(server);
++	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
 
 
