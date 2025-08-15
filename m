@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-169827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39E2B28791
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 23:16:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E81B2882D
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 00:10:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65AA1C81383
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 21:15:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6010AC32B7
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 22:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F8A2C08A8;
-	Fri, 15 Aug 2025 21:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D16212B31;
+	Fri, 15 Aug 2025 22:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9meLGJo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ji9oOLeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D5D218AAA
-	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 21:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743142153C7
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 22:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755292466; cv=none; b=co4a9o/MYl5s87rrKgG4aTaHOAf6NJBKKXmjEf26m5vCOVezXH26f5MAv90dwyMGuk3wUE0O9i7VY2cQ6djXv8YgpaIBIR1cGLLYSG4bI1tNSJ+oedKxm4ZHUJlj7ARz7FlfdeuYe+QS4nFgZ9zEgt+kQpLNaoqFZhXO4tGiTZg=
+	t=1755295654; cv=none; b=ZMfyUpycMFI610Rr7zEtdpCsyOc5UfDlm44kgNcGMsh6C8Gr9dkL6gwLn14mmiWeQBLocU7kxYVThZIzxA/lByQowmptJHOosPWHuMev6Zv49mN/XdimvXV1hTlBocJ5Yw8fWWmaDWWjeWYLR1du25ovmrWcXgnlC5hIXUmBrak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755292466; c=relaxed/simple;
-	bh=CNtm8gVkoP0tcvocD5jpFDHQ/cJ6fZR6lprgjQwqNBk=;
+	s=arc-20240116; t=1755295654; c=relaxed/simple;
+	bh=3kOkmm93Jb9t7jUfHGsq6IRdZFWw/X5L9p0ZbYkfytg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1GOd9vnyza9bugYPcWc3qjjNOaULxvrZ4OHMOIkcCSQFnBW19eBvW9gjafigr31gRy2L1lRE1SbSzNSM7WjuNaSXt8D4r5pL1fr4XPc3f/j5/10+c10lEZizBVlisFEg22EZxCeWgywWnfXann05JVPoLy2VrCr+Gu3z2pH+40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9meLGJo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B410EC4CEF1;
-	Fri, 15 Aug 2025 21:14:24 +0000 (UTC)
+	 MIME-Version; b=MrLbDdvCOPqttMyxyA9sAGIyUn+Qi9Zc5hnK3dexpwh5MCACXOjaUwu71Xt/nhT68EmFBZyyPe+Ue9sGJB55WbpWeWUDF+sajzlanlZTrmFYEY084ksEJDfF/m89j2x6FfKJgLPTY7AX5560BTyMJwPEDGS+7NzeZ+w/rMf0FvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ji9oOLeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A021C4CEEB;
+	Fri, 15 Aug 2025 22:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755292465;
-	bh=CNtm8gVkoP0tcvocD5jpFDHQ/cJ6fZR6lprgjQwqNBk=;
+	s=k20201202; t=1755295654;
+	bh=3kOkmm93Jb9t7jUfHGsq6IRdZFWw/X5L9p0ZbYkfytg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9meLGJooIquO95dcr5pgJYWuCQvN/fgk/DRPaqzW3V5tH5vqrxMwyMCk18505z3D
-	 ghBjS/C2mmxbCLEa0mF7cSQm1595VIxvODS5DKzdCMCEhxtAkDpNwKPEmBSgx2rHjr
-	 j5WhjRgVzUGnKV/v0KFYYOHppEfRwcVHcg9O9meOOobithazML//yhHp/speEzVqqS
-	 gOQHZovycAixJoVBrJkLPDx7aR4T4q5r0+1sr8GbzeDiHqDG6ZRLX12KYYc/wHrxh9
-	 r2wMwhkHAeyD8xbPgD2neHRBv/0e9WAm8i66ie7JDNtim69DT7rM490NpLPcRze1Zw
-	 E9N3bCl8WAwsA==
+	b=ji9oOLeD1Zo5gXRak9uzzPfIhliJYJwpkFDIjzXeDCrAtsndWjnw9YukpE6SnIziW
+	 ivw6dafLHeiYlvnftdpmN28SeT/m+YETQIbOsRKDczKkON6ZhctmJFcctU5JBf96e+
+	 k1g9qV/rvlMuOfw0sCov22ZGbeE+iSQFTF5RtRTTqi04fugsA2PSuGK3qBm7LXOaAI
+	 2yWW99yr14rQNeXZ8D2a+DBRkgTY3Kj129yV1nqRVhiQIqSEOm/xRDUsm00ErmEijy
+	 nAehe6yuEKlj9yiil6OYU/jxtra9L7rX0FzuWV1e+8LFWC3yO1QbnyBstXvAzdD5uO
+	 +/u/V1pywrGYQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Eric Biggers <ebiggers@kernel.org>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] fscrypt: Don't use problematic non-inline crypto engines
-Date: Fri, 15 Aug 2025 17:14:21 -0400
-Message-ID: <20250815211421.234132-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] fscrypt: Don't use problematic non-inline crypto engines
+Date: Fri, 15 Aug 2025 18:07:29 -0400
+Message-ID: <20250815220729.247859-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081512-filter-droop-370f@gregkh>
-References: <2025081512-filter-droop-370f@gregkh>
+In-Reply-To: <2025081514-salad-crumpet-f125@gregkh>
+References: <2025081514-salad-crumpet-f125@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -169,83 +169,20 @@ Cc: stable@vger.kernel.org
 Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Link: https://lore.kernel.org/r/20250704070322.20692-1-ebiggers@kernel.org
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-[ Adjust context ]
+[ Drop some documentation changes ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/fscrypt.rst | 37 +++++++++++----------------
- fs/crypto/fscrypt_private.h           | 16 ++++++++++++
- fs/crypto/hkdf.c                      |  2 +-
- fs/crypto/keysetup.c                  |  3 ++-
- fs/crypto/keysetup_v1.c               |  3 ++-
- 5 files changed, 36 insertions(+), 25 deletions(-)
+ fs/crypto/fscrypt_private.h | 17 +++++++++++++++++
+ fs/crypto/hkdf.c            |  2 +-
+ fs/crypto/keysetup.c        |  3 ++-
+ fs/crypto/keysetup_v1.c     |  3 ++-
+ 4 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/filesystems/fscrypt.rst b/Documentation/filesystems/fscrypt.rst
-index a624e92f2687..6ba11dfb4bf3 100644
---- a/Documentation/filesystems/fscrypt.rst
-+++ b/Documentation/filesystems/fscrypt.rst
-@@ -141,9 +141,8 @@ However, these ioctls have some limitations:
-   CONFIG_PAGE_POISONING=y in your kernel config and add page_poison=1
-   to your kernel command line.  However, this has a performance cost.
- 
--- Secret keys might still exist in CPU registers, in crypto
--  accelerator hardware (if used by the crypto API to implement any of
--  the algorithms), or in other places not explicitly considered here.
-+- Secret keys might still exist in CPU registers or in other places
-+  not explicitly considered here.
- 
- Limitations of v1 policies
- ~~~~~~~~~~~~~~~~~~~~~~~~~~
-@@ -375,9 +374,12 @@ the work is done by XChaCha12, which is much faster than AES when AES
- acceleration is unavailable.  For more information about Adiantum, see
- `the Adiantum paper <https://eprint.iacr.org/2018/720.pdf>`_.
- 
--The (AES-128-CBC-ESSIV, AES-128-CTS-CBC) pair exists only to support
--systems whose only form of AES acceleration is an off-CPU crypto
--accelerator such as CAAM or CESA that does not support XTS.
-+The (AES-128-CBC-ESSIV, AES-128-CTS-CBC) pair was added to try to
-+provide a more efficient option for systems that lack AES instructions
-+in the CPU but do have a non-inline crypto engine such as CAAM or CESA
-+that supports AES-CBC (and not AES-XTS).  This is deprecated.  It has
-+been shown that just doing AES on the CPU is actually faster.
-+Moreover, Adiantum is faster still and is recommended on such systems.
- 
- The remaining mode pairs are the "national pride ciphers":
- 
-@@ -1231,22 +1233,13 @@ this by validating all top-level encryption policies prior to access.
- Inline encryption support
- =========================
- 
--By default, fscrypt uses the kernel crypto API for all cryptographic
--operations (other than HKDF, which fscrypt partially implements
--itself).  The kernel crypto API supports hardware crypto accelerators,
--but only ones that work in the traditional way where all inputs and
--outputs (e.g. plaintexts and ciphertexts) are in memory.  fscrypt can
--take advantage of such hardware, but the traditional acceleration
--model isn't particularly efficient and fscrypt hasn't been optimized
--for it.
--
--Instead, many newer systems (especially mobile SoCs) have *inline
--encryption hardware* that can encrypt/decrypt data while it is on its
--way to/from the storage device.  Linux supports inline encryption
--through a set of extensions to the block layer called *blk-crypto*.
--blk-crypto allows filesystems to attach encryption contexts to bios
--(I/O requests) to specify how the data will be encrypted or decrypted
--in-line.  For more information about blk-crypto, see
-+Many newer systems (especially mobile SoCs) have *inline encryption
-+hardware* that can encrypt/decrypt data while it is on its way to/from
-+the storage device.  Linux supports inline encryption through a set of
-+extensions to the block layer called *blk-crypto*.  blk-crypto allows
-+filesystems to attach encryption contexts to bios (I/O requests) to
-+specify how the data will be encrypted or decrypted in-line.  For more
-+information about blk-crypto, see
- :ref:`Documentation/block/inline-encryption.rst <inline_encryption>`.
- 
- On supported filesystems (currently ext4 and f2fs), fscrypt can use
 diff --git a/fs/crypto/fscrypt_private.h b/fs/crypto/fscrypt_private.h
-index 2d63da48635a..14b26036055e 100644
+index d5f68a0c5d15..88414cbd97ae 100644
 --- a/fs/crypto/fscrypt_private.h
 +++ b/fs/crypto/fscrypt_private.h
-@@ -27,6 +27,22 @@
+@@ -27,6 +27,23 @@
   */
  #define FSCRYPT_MIN_KEY_SIZE	16
  
@@ -265,11 +202,12 @@ index 2d63da48635a..14b26036055e 100644
 + */
 +#define FSCRYPT_CRYPTOAPI_MASK \
 +	(CRYPTO_ALG_ALLOCATES_MEMORY | CRYPTO_ALG_KERN_DRIVER_ONLY)
++
  #define FSCRYPT_CONTEXT_V1	1
  #define FSCRYPT_CONTEXT_V2	2
  
 diff --git a/fs/crypto/hkdf.c b/fs/crypto/hkdf.c
-index 5a384dad2c72..b7f5e7884e03 100644
+index 7607d18b35fc..8cc611896c32 100644
 --- a/fs/crypto/hkdf.c
 +++ b/fs/crypto/hkdf.c
 @@ -72,7 +72,7 @@ int fscrypt_init_hkdf(struct fscrypt_hkdf *hkdf, const u8 *master_key,
@@ -282,10 +220,10 @@ index 5a384dad2c72..b7f5e7884e03 100644
  		fscrypt_err(NULL, "Error allocating " HKDF_HMAC_ALG ": %ld",
  			    PTR_ERR(hmac_tfm));
 diff --git a/fs/crypto/keysetup.c b/fs/crypto/keysetup.c
-index 361f41ef46c7..2348fc2a47f8 100644
+index f7407071a952..94ad0024c529 100644
 --- a/fs/crypto/keysetup.c
 +++ b/fs/crypto/keysetup.c
-@@ -103,7 +103,8 @@ fscrypt_allocate_skcipher(struct fscrypt_mode *mode, const u8 *raw_key,
+@@ -88,7 +88,8 @@ fscrypt_allocate_skcipher(struct fscrypt_mode *mode, const u8 *raw_key,
  	struct crypto_skcipher *tfm;
  	int err;
  
