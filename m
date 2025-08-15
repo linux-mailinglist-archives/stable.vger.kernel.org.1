@@ -1,141 +1,306 @@
-Return-Path: <stable+bounces-169689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD12B27562
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 04:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA31B27573
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 04:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B617188A3F9
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 02:05:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B623C1897FF1
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 02:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345C1294A0C;
-	Fri, 15 Aug 2025 02:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA7D292B54;
+	Fri, 15 Aug 2025 02:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="UPw4PWwR"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="D9lY/Bz0"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B776628A1F9;
-	Fri, 15 Aug 2025 02:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC3D2629C
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 02:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755223283; cv=none; b=ZH1euObdae+lsf7STLwl9XCGyR45gOCRTGbk4ooudBUedUWyRs21vz+K6kpnB6oi9gl9VWSTfgNViqftWzsRHd2j2rUXBcU9kBKOs5ddAmnI5R5l9jFYbcrHzMbxoSjzSxgHMPs2O5fRVaxiUbPOUe/2EK2UEM0cSg7de2/T+bE=
+	t=1755223587; cv=none; b=PZN7RvVq2U6mGKaawIhPiL8K3TmCxzLhxa4xqEiW6+HgcjzVjmSMQhG8oiXHKhQ2IM1SYRZRO2mc33xGYlKcmOdCNnedF5EVjOrUfq9FVIyFu7oakBY732utirpCLTBipd59U12XvwkAjIOdamzMSndUsXlDr61uh5lZXzgTKeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755223283; c=relaxed/simple;
-	bh=jdxcyUe5l4oRk+B3RKLN5jSCzycW/bTs8X0cLOYpjNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c4OztlhS/b0cA87V7NkKiVDjMlp2Nxdd9TWR+qvJZvEepzLnPzli5+/NB2Kxy5BJGeI558LzwsANfTaU1sDIcukKlkcNsfD7IC8sctG0OQeEYAwZ94BL2rWGHdioeEJZbpAziS3vnMWxHohAPoKeCe+KuGtDvXYG1sGMN24zL/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=UPw4PWwR; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 4EF1A14C2D3;
-	Fri, 15 Aug 2025 04:01:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1755223279;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3to1JoTI7YxcKW36ucsrZ8J9JD5dqSy+UMJOKOKBxv0=;
-	b=UPw4PWwRqxf1H5wm6Xxz+bk+TNXbRFnTYziuff+8i7C6OO8Se8RC09eI8Fcum+oBQS9poC
-	b1Zoo0jfmSbXHuT8QZfYyItZad4X2x2SJEP2AyxwceCrfT0puraxxFHTdihNOAiuZIWika
-	nkpROOMoLZMoWnLxAuyzug8AotDS8bUzWWCnMYaO7Os7sjgSgTvJqci7KJfKUFXI2o7I/o
-	HiFDGcNMqo1c+f/cQNpTAtz91AHQIuefT07IyHLbCDN+RvdDuWnkmw+e9bnhXikd1BDVos
-	qCNiWlLkUAvs72tRqhAaogpJj2VqOiPG8mKpRUvOf1Ko9YUdsrEoqV/4IAmbnA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 831f3cb7;
-	Fri, 15 Aug 2025 02:01:15 +0000 (UTC)
-Date: Fri, 15 Aug 2025 11:01:00 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Nalivayko Sergey <Sergey.Nalivayko@kaspersky.com>
-Cc: v9fs-developer@lists.sourceforge.net, netdev@vger.kernel.org,
-	Eric Van Hensbergen <ericvh@gmail.com>,
-	Wang Hai <wanghai38@huawei.com>,
-	Latchesar Ionkov <lucho@ionkov.net>, lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: 9p: fix double req put in p9_fd_cancelled
-Message-ID: <aJ6U3DQn876wGS4C@codewreck.org>
-References: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
+	s=arc-20240116; t=1755223587; c=relaxed/simple;
+	bh=ey+Djyi7KnnM0ZX1t6GKLWA1EPB7+gI5c6GhQ8mADhY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SuBUja7iRDKgwyNn6D25r3jHFn/ScVTBOjdoYIBluHDR3bSbY7+0yJAmxSYt366Y2nuVTOi15aEna4AhLHiz1jAjmoCTa2mZZHDNpRGgWbJr02bfQT6IwEO4wttDrlFpe5m8uc/FMfQiUAi5D38036dI6X/WOsHlBMba8CV/WgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=D9lY/Bz0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57EIPLkE020893
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 02:06:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=yaaM+XL5Gi6ry6IeNjfcOR
+	LxBbF4Fo80QQCM6SflmPs=; b=D9lY/Bz0dtoZ9elsLZLHUqY1O5enfjIAmcK+t6
+	/RNRRhCOAxn11MA3oUAK0MPKM/OO4eKSSxGARBbYt+WJBOoFlEk3P8S+9zaEAw27
+	FB4DLqKuSCVLGhuFRTODlzYpraaewybXZ47u82Hhgn+BBxTj+tnB2olbux+K/gFo
+	OiaXpr/cgYqfjSTLxK4jQDaVW16vmM3FpixVmlRG7UgbNHczqbJulwjRfWoPwKii
+	eKrT1swk4dgUVmhT/b14n3TPgsPXOFbqC6PFkIa1d9uB1Rcv/XYxR6avrcceJ6fz
+	eexLp03y+cV4zCO+UT1A7Fp3SCNK350x8OEZQAHYovHcM/Og==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48dw9t1wwc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 02:06:24 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-76e2eb2b837so1207628b3a.3
+        for <stable@vger.kernel.org>; Thu, 14 Aug 2025 19:06:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755223582; x=1755828382;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yaaM+XL5Gi6ry6IeNjfcORLxBbF4Fo80QQCM6SflmPs=;
+        b=QkJleSwzGs8pmCc9dY9wSakrIgkICKjy9RaMjVlyxZvVQNJbndL8Eqm2ldhS2dr05W
+         2gup4V3GuCwPDaA+sRJkm+Klo6VjyziwuTsgwg28fxX2QwyvqZjzKlvswrAlvOWxnvvO
+         /6Di1NLKU86C5NI0hhIrufqxkMxBcDCU46OTTa+gpUQmCymlweuc19n8h4rscf0UTQbY
+         cb54hFiwSujRaF+NBdeZjoFaPvWGfJdCjn2KwoYdEA3rcqPWqAHj7DQUFX4sSqKVCYT8
+         y9fLPaGz15kv3MYTK2Ph1Tv/CrzwwR4LaZu0gJO3ZL0eQvc4GFN4Bt0xLnltyOCNcvcu
+         6O6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWKkkX5Kke0L0XhBnlQzefWEAlE+bDNMYeL3ymURxShqZQjU+R7XJucVbjGz3XggobL38F2D9U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvQJV5oCm698zAYwt6xYK1KwfPCVKatTm9WqyliwiU7f8gvJ0M
+	+m+O2+CDyolqvO+uI51kiw9qvmQ7FwgZEolVGxG5YY3ERS0b/vy6mfhsNJ+VTJ5MkemXVdmqh0I
+	BSeUqWqoVNHr5s2f4CwrfK07JAr1DC5zETrGBj5VbNLHTN+OrHKAdhdjrhZc=
+X-Gm-Gg: ASbGncuMnwPC9IFy2iAAZzB3Mr/eyK4mQRchHtvKuXL9n3hmKKtjXTZqnRGV9kQe+5c
+	eO+vH99tLLvW2phkzhfZj35dLwaxIeG2oIkdPiRnahFhQMdg0mIHXszZv+3+PEmWPOlzEBMRVnl
+	yA8q4opy5Btuuadbeec07nsKxgPVclBbSvt7LgrANSelEa1dlF5UuuvJ80JrS5EVeECmADLOad2
+	D2rKuhrJufyfU0wPQlQRagWbF38+1MmdUVygJnfb6M7mX+nq8dzJnrwYgXTAhc2y+E/fpzctEFn
+	hv3rSp3fEuCqZTCoYL8bbj8lLF595S+b7p6vZt29k0AjpiFuxemdhlYfyTJgnIXEQlIJ3S0ND5z
+	uEpH18+5oSgQDK57K
+X-Received: by 2002:a05:6a00:3997:b0:76b:f1c0:224b with SMTP id d2e1a72fcca58-76e4485ae74mr372746b3a.23.1755223582236;
+        Thu, 14 Aug 2025 19:06:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGiOav9YzVv+68s1XTQezP9a0+HNLO7H+DTaN2Oo1vUFa2w/+pnDcr2oWE+MaetHJSTw+Y80g==
+X-Received: by 2002:a05:6a00:3997:b0:76b:f1c0:224b with SMTP id d2e1a72fcca58-76e4485ae74mr372708b3a.23.1755223581711;
+        Thu, 14 Aug 2025 19:06:21 -0700 (PDT)
+Received: from [127.0.1.1] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e45593060sm35807b3a.86.2025.08.14.19.06.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Aug 2025 19:06:21 -0700 (PDT)
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Date: Fri, 15 Aug 2025 10:06:04 +0800
+Subject: [PATCH 6.15] wifi: ath12k: install pairwise key first
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250715154815.3501030-1-Sergey.Nalivayko@kaspersky.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250815-backport-6-15-y-ath12k-pairwise-key-v1-1-d6c977acb35b@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAAyWnmgC/5WNQQ6CMBBFr2Jm7RCmUkBX3sOwqGWQCUKxRZQQ7
+ m7DDdz85P2f/LdCYC8c4HJYwfMsQdwQgY4HsK0ZHoxSRwaVKp2WdMK7sd3o/IQ5ksYFzdSS6nA
+ 04j8SGDuOXVbXpjCKdWEgPo2eG/nulhvkCWmoYttKmJxfdvVM+/aXZSYkPJcNFSWXWZrbqwshe
+ b3N07q+T2JAtW3bDzhL02/jAAAA
+X-Change-ID: 20250813-backport-6-15-y-ath12k-pairwise-key-a4dda7a2e57a
+To: Jeff Johnson <jjohnson@kernel.org>, stable@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-kernel@vger.kernel.org, johan@kernel.org,
+        gregkh@linuxfoundation.org,
+        Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Authority-Analysis: v=2.4 cv=J+Wq7BnS c=1 sm=1 tr=0 ts=689e9620 cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8
+ a=EUspDBNiAAAA:8 a=bwSFjXmOb-h8CDtPQtgA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22
+X-Proofpoint-ORIG-GUID: l_THzj0kd7UUO3khw3VXP6GZUHqSouRy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA5MDAxNSBTYWx0ZWRfX15UrafWHNR6E
+ VEEDzjeV7ZcaVqmUWblX3anxkSo4gSMw5ipJXjjdHJNgrCEZvQkJF+YEWGIdmdPUUhPNVHtQqNg
+ 09InzEJmBjhAXLaUogxghua9qmrred8gsLHmKFsxbCLvb8VaT8vXvx263ZghTvTTp7t2s2vCZH9
+ J4jiJhYX9Mu/J+35q59UCsa/Dla9AQnNjGLMlXaP5QgRaDgkWv6SdrmY3ZgFPA6LcfiZyQC/MCP
+ ZCo/Nnvhgnd0w+lCZhmGCy57MsRu49Kg/2emYnnV+9sBnJ088mSsY9z3aJQ4H5ng/lkdGA8W1qO
+ MHyiFSYbOrIJHFunUzcmUIMaIHltTn+CEt7L2H5mvUOL71xF0VIF1BLj045/0rwbiSQ2h60Sr20
+ JnH1nhKo
+X-Proofpoint-GUID: l_THzj0kd7UUO3khw3VXP6GZUHqSouRy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-15_01,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ phishscore=0 suspectscore=0 spamscore=0 clxscore=1015 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508090015
 
-Nalivayko Sergey wrote on Tue, Jul 15, 2025 at 06:48:15PM +0300:
-> This happens because of a race condition between:
-> 
-> - The 9p client sending an invalid flush request and later cleaning it up;
-> - The 9p client in p9_read_work() canceled all pending requests.
-> 
->       Thread 1                              Thread 2
->     ...
->     p9_client_create()
->     ...
->     p9_fd_create()
->     ...
->     p9_conn_create()
->     ...
->     // start Thread 2
->     INIT_WORK(&m->rq, p9_read_work);
->                                         p9_read_work()
->     ...
->     p9_client_rpc()
->     ...
->                                         ...
->                                         p9_conn_cancel()
->                                         ...
->                                         spin_lock(&m->req_lock);
->     ...
->     p9_fd_cancelled()
->     ...
->                                         ...
->                                         spin_unlock(&m->req_lock);
->                                         // status rewrite
->                                         p9_client_cb(m->client, req, REQ_STATUS_ERROR)
->                                         // first remove
->                                         list_del(&req->req_list);
->                                         ...
-> 
->     spin_lock(&m->req_lock)
->     ...
->     // second remove
->     list_del(&req->req_list);
->     spin_unlock(&m->req_lock)
->   ...
-> 
-> Commit 74d6a5d56629 ("9p/trans_fd: Fix concurrency del of req_list in
-> p9_fd_cancelled/p9_read_work") fixes a concurrency issue in the 9p filesystem
-> client where the req_list could be deleted simultaneously by both
-> p9_read_work and p9_fd_cancelled functions, but for the case where req->status
-> equals REQ_STATUS_RCVD.
+[ Upstream commit 66e865f9dc78d00e6d1c8c6624cb0c9004e5aafb ]
 
-Sorry for the delay,
-Thanks for the investigation, this makes sense and deserves fixing.
+As station, WCN7850 firmware requires pairwise key to be installed before
+group key. Currently host does not care about this, so it is up to kernel
+or userspace to decide which one will be installed first. In case above
+requirement is not met, WCN7850 firmware's EAPOL station machine is messed
+up, and finally connection fails [1].
 
-> Add an explicit check for REQ_STATUS_ERROR in p9_fd_cancelled before
-> processing the request. Skip processing if the request is already in the error
-> state, as it has been removed and its resources cleaned up.
+Reorder key install for station interface in that case: this is done by
+caching group key first; Later when pairwise key arrives, both can be
+installed in required order.
 
-Looking at the other status, it's quite unlikely but if other thread
-would make it FLSHD we should also skip these -- and I don't think it's
-possible as far as the logic goes but if it's not sent yet we would have
-nothing to flush either, so it's probably better to invert the check,
-and make it `if (req != SENT) return` ?
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00217-QCAHKSWPL_SILICONZ-1
 
-client.c already checks `READ_ONCE(oldreq->status) == REQ_STATUS_SENT`
-before calling cancelled but that's without lock, so basically we're
-checking nothing raced since that check, and it's not limited to RCVD
-and ERROR.
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218733
+Link: https://lore.kernel.org/all/AS8P190MB12051DDBD84CD88E71C40AD7873F2@AS8P190MB1205.EURP190.PROD.OUTLOOK.COM # [1]
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+---
+for stable kernel 6.15.y
+---
+ drivers/net/wireless/ath/ath12k/core.h |  4 ++
+ drivers/net/wireless/ath/ath12k/mac.c  | 76 ++++++++++++++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/wmi.h  |  1 +
+ 3 files changed, 74 insertions(+), 7 deletions(-)
 
-If you can send a v2 with that I'll pick it up.
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index f5f1ec796f7c55a8f06724380714d10ed28e9748..4cff5e42eb34d261cdc418e6a105f5f4c5ff79b9 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -303,6 +303,10 @@ struct ath12k_link_vif {
+ 	struct ath12k_rekey_data rekey_data;
+ 
+ 	u8 current_cntdown_counter;
++
++	bool group_key_valid;
++	struct wmi_vdev_install_key_arg group_key;
++	bool pairwise_key_done;
+ };
+ 
+ struct ath12k_vif {
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index d1d3c9f34372da18759c6b7801c5cd9d3f092d40..647543f5f360f2ede581274499668f272ff77042 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -4641,14 +4641,13 @@ static int ath12k_install_key(struct ath12k_link_vif *arvif,
+ 		.key_len = key->keylen,
+ 		.key_data = key->key,
+ 		.key_flags = flags,
++		.ieee80211_key_cipher = key->cipher,
+ 		.macaddr = macaddr,
+ 	};
+ 	struct ath12k_vif *ahvif = arvif->ahvif;
+ 
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+ 
+-	reinit_completion(&ar->install_key_done);
+-
+ 	if (test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ar->ab->dev_flags))
+ 		return 0;
+ 
+@@ -4657,7 +4656,7 @@ static int ath12k_install_key(struct ath12k_link_vif *arvif,
+ 		/* arg.key_cipher = WMI_CIPHER_NONE; */
+ 		arg.key_len = 0;
+ 		arg.key_data = NULL;
+-		goto install;
++		goto check_order;
+ 	}
+ 
+ 	switch (key->cipher) {
+@@ -4685,19 +4684,82 @@ static int ath12k_install_key(struct ath12k_link_vif *arvif,
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV |
+ 			      IEEE80211_KEY_FLAG_RESERVE_TAILROOM;
+ 
++check_order:
++	if (ahvif->vdev_type == WMI_VDEV_TYPE_STA &&
++	    arg.key_flags == WMI_KEY_GROUP) {
++		if (cmd == SET_KEY) {
++			if (arvif->pairwise_key_done) {
++				ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
++					   "vdev %u pairwise key done, go install group key\n",
++					   arg.vdev_id);
++				goto install;
++			} else {
++				/* WCN7850 firmware requires pairwise key to be installed
++				 * before group key. In case group key comes first, cache
++				 * it and return. Will revisit it once pairwise key gets
++				 * installed.
++				 */
++				arvif->group_key = arg;
++				arvif->group_key_valid = true;
++				ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
++					   "vdev %u group key before pairwise key, cache and skip\n",
++					   arg.vdev_id);
++
++				ret = 0;
++				goto out;
++			}
++		} else {
++			arvif->group_key_valid = false;
++		}
++	}
++
+ install:
+-	ret = ath12k_wmi_vdev_install_key(arvif->ar, &arg);
++	reinit_completion(&ar->install_key_done);
+ 
++	ret = ath12k_wmi_vdev_install_key(arvif->ar, &arg);
+ 	if (ret)
+ 		return ret;
+ 
+ 	if (!wait_for_completion_timeout(&ar->install_key_done, 1 * HZ))
+ 		return -ETIMEDOUT;
+ 
+-	if (ether_addr_equal(macaddr, arvif->bssid))
+-		ahvif->key_cipher = key->cipher;
++	if (ether_addr_equal(arg.macaddr, arvif->bssid))
++		ahvif->key_cipher = arg.ieee80211_key_cipher;
++
++	if (ar->install_key_status) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	if (ahvif->vdev_type == WMI_VDEV_TYPE_STA &&
++	    arg.key_flags == WMI_KEY_PAIRWISE) {
++		if (cmd == SET_KEY) {
++			arvif->pairwise_key_done = true;
++			if (arvif->group_key_valid) {
++				/* Install cached GTK */
++				arvif->group_key_valid = false;
++				arg = arvif->group_key;
++				ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
++					   "vdev %u pairwise key done, group key ready, go install\n",
++					   arg.vdev_id);
++				goto install;
++			}
++		} else {
++			arvif->pairwise_key_done = false;
++		}
++	}
++
++out:
++	if (ret) {
++		/* In case of failure userspace may not do DISABLE_KEY
++		 * but triggers re-connection directly, so manually reset
++		 * status here.
++		 */
++		arvif->group_key_valid = false;
++		arvif->pairwise_key_done = false;
++	}
+ 
+-	return ar->install_key_status ? -EINVAL : 0;
++	return ret;
+ }
+ 
+ static int ath12k_clear_peer_keys(struct ath12k_link_vif *arvif,
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index bd7312f3cf24aa1352c807c5216dc010b7414058..d0cc697a418e10c70adc585d7e9e5759bd53d4ce 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -3725,6 +3725,7 @@ struct wmi_vdev_install_key_arg {
+ 	u32 key_idx;
+ 	u32 key_flags;
+ 	u32 key_cipher;
++	u32 ieee80211_key_cipher;
+ 	u32 key_len;
+ 	u32 key_txmic_len;
+ 	u32 key_rxmic_len;
 
-Thanks,
+---
+base-commit: 097aa9a71fd56cdc62c11bdf45a84f07acaa3604
+change-id: 20250813-backport-6-15-y-ath12k-pairwise-key-a4dda7a2e57a
+
+Best regards,
 -- 
-Dominique Martinet | Asmadeus
+Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+
 
