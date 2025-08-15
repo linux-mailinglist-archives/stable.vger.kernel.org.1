@@ -1,127 +1,173 @@
-Return-Path: <stable+bounces-169769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8C2B283C2
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:24:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017D9B283C8
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 18:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CFB71D03806
-	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:24:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3063817FC22
+	for <lists+stable@lfdr.de>; Fri, 15 Aug 2025 16:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5973090F9;
-	Fri, 15 Aug 2025 16:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUphFxrW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D399308F03;
+	Fri, 15 Aug 2025 16:27:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3A31607A4;
-	Fri, 15 Aug 2025 16:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5161DFE0B
+	for <stable@vger.kernel.org>; Fri, 15 Aug 2025 16:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755275045; cv=none; b=Q0yQwC8ZBR05TtXsxm8UItkRMCq1D6wp+UNIcodEnENn9gDfLLaZltaBXop1WgjVhE3u1chSkXQG7WiTiOzqm6oIAjVjM6LAp9juYbhbHaL4550c6UR6xDxtGQmqo5Gta6r2CALkykRoYx0JI8XCwPYDR13I/z8EOLJCnLaVij8=
+	t=1755275234; cv=none; b=en4Juo8BU+lpX5U+VPsMTiUad97qIPzySWX66UT/iifwbYtPOKAQ2IVFRMciSfFA+dA/cN6aWkYiDpmuLXLo0deOjvJDjQ5jDCA8b8zsqjRHWnjyjgdfwrkIuTh1+jmf0QxwqV3WHNBCqLkcGReeUC7Ukhbz67calhZukvyv3AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755275045; c=relaxed/simple;
-	bh=4W3MexmDLIj0LLuVBsUoXVIfys/oLMGtURiFQUEH13U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lDr6JeuicKkTay8B93GF1HoJVzfVG3Jt+ftyGNYNCHyvD5tduuAoONrIjcPreD4cD4jEf1wMTmTZbhW7MEGqDsFkv5XuoU/12LhuqBGISuKNdZZ9g+bIz8EJNtmxyr/dxC9LDUFGY46h9SihH1gocl3NxrmiLyclVh3NAxOhNfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUphFxrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B60C4CEEB;
-	Fri, 15 Aug 2025 16:24:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755275045;
-	bh=4W3MexmDLIj0LLuVBsUoXVIfys/oLMGtURiFQUEH13U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nUphFxrWKV+6n7KpkD3VVRbo27xzyyN/vWebfUiwoAS3RvQSWcpYef5mbG32vq0xD
-	 Hj0/e3bePcSFamI9nK1ma1Z1tJgmnKrGZNeX7nNEd7c2k/TECv6Usta5G6k2J1kTXq
-	 LsLm0KSBqNf5NIpDJGBe/pMGF4IRBd7RfiQ0AFAHXmAiB/AdFCFFEAZWTG5KJ1UEeH
-	 gx7uzJLw+iJTkPJ6nbo75iUvpli22kP4Ea4eVzyFa0QL+rwrRi3uUMsyrZOzUynbnX
-	 vzx4mQ8pLbKA4C23C8MVuQVsKobT/zIxnc9HN1TNS3GmfWQ6VfTQjsBHkx+jBmRUuP
-	 bmqcMI4Wr142Q==
-Date: Fri, 15 Aug 2025 09:24:01 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	qemu-devel@nongnu.org,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Ben Copeland <benjamin.copeland@linaro.org>,
-	LTP List <ltp@lists.linux.it>, chrubis <chrubis@suse.cz>,
-	Petr Vorel <pvorel@suse.cz>, Ian Rogers <irogers@google.com>,
-	linux-perf-users@vger.kernel.org,
-	Zhang Yi <yi.zhang@huaweicloud.com>,
-	Joseph Qi <jiangqi903@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	linux-ext4 <linux-ext4@vger.kernel.org>
-Subject: Re: [PATCH 6.16 000/627] 6.16.1-rc1 review
-Message-ID: <aJ9fIUkM04HhRgSR@google.com>
-References: <20250812173419.303046420@linuxfoundation.org>
- <CA+G9fYtBnCSa2zkaCn-oZKYz8jz5FZj0HS7DjSfMeamq3AXqNg@mail.gmail.com>
- <2025081300-frown-sketch-f5bd@gregkh>
- <aJ5EupUV9t0jToY3@google.com>
- <2025081536-resonate-wafer-6699@gregkh>
+	s=arc-20240116; t=1755275234; c=relaxed/simple;
+	bh=AGu8NHhSIc0iB+NOPGEkI1bYwhV7J+/TXoKDpEb7GEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LJBe9gVocuQRUsRlgH2qEgEp9PxUxUkoH1+FfXu6cPaTNVUca416D+zQMey2YVZ2a7waTlE0nRQhav1fi46Z7X8qw3uSilKCH2kQEiJztYCrtn5Rx38BubGaL8MKQu8p1jHnPwb0SEE2FpsZDR1dVVMx26GNouYYoW+oc6u1kIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F0B231691;
+	Fri, 15 Aug 2025 09:27:02 -0700 (PDT)
+Received: from e134344.cambridge.arm.com (e134344.arm.com [10.1.196.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A6E043F738;
+	Fri, 15 Aug 2025 09:27:08 -0700 (PDT)
+From: Ben Horgan <ben.horgan@arm.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org,
+	maz@kernel.org,
+	oliver.upton@linux.dev,
+	joey.gouly@arm.com,
+	suzuki.poulose@arm.com,
+	yuzenghui@huawei.com,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Cc: james.morse@arm.com,
+	tabba@google.com,
+	Ben Horgan <ben.horgan@arm.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: arm64: Fix debug checking for np-guests using huge mappings
+Date: Fri, 15 Aug 2025 17:26:55 +0100
+Message-ID: <20250815162655.121108-1-ben.horgan@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2025081536-resonate-wafer-6699@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 15, 2025 at 07:33:41AM +0200, Greg Kroah-Hartman wrote:
-> On Thu, Aug 14, 2025 at 01:19:06PM -0700, Namhyung Kim wrote:
-> > Hello,
-> > 
-> > Thanks for the report!
-> > 
-> > On Wed, Aug 13, 2025 at 02:50:49PM +0200, Greg Kroah-Hartman wrote:
-> > > On Wed, Aug 13, 2025 at 05:46:26PM +0530, Naresh Kamboju wrote:
-> > > > Long story:
-> > > > 1)
-> > > > The perf gcc-13 build failed on x86_64 and i386.
-> > > > 
-> > > > Build regression: qemu-arm64 ARM64_64K_PAGES ltp syscalls swap fsync
-> > > > fallocate failed.
-> > > > 
-> > > > > Ian Rogers <irogers@google.com>
-> > > > >     perf topdown: Use attribute to see an event is a topdown metic or slots
-> > > > 
-> > > > Build error:
-> > > > 
-> > > > arch/x86/tests/topdown.c: In function 'event_cb':
-> > > > arch/x86/tests/topdown.c:53:25: error: implicit declaration of
-> > > > function 'pr_debug' [-Werror=implicit-function-declaration]
-> > > >    53 |                         pr_debug("Broken topdown information
-> > > > for '%s'\n", evsel__name(evsel));
-> > > >       |                         ^~~~~~~~
-> > > > cc1: all warnings being treated as errors
-> > > 
-> > > Already fixed.
-> > 
-> > Are you sure?  I'm not seeing the fix.  Can you share the commit id?
-> 
-> I dropped the offending perf patch:
-> 	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=4199b872a5585e025f62886724f4f9ae80e014ae
-> 
-> Did that not work for you?
+When running with transparent huge pages and CONFIG_NVHE_EL2_DEBUG then
+the debug checking in assert_host_shared_guest() fails on the launch of an
+np-guest. This WARN_ON() causes a panic and generates the stack below.
 
-Oh sorry, I misunderstood you.  I thought you have a fix.
+In __pkvm_host_relax_perms_guest() the debug checking assumes the mapping
+is a single page but it may be a block map. Update the checking so that
+the size is not checked and just assumes the correct size.
 
-Thanks,
-Namhyung
+While we're here make the same fix in __pkvm_host_mkyoung_guest().
+
+  Info: # lkvm run -k /share/arch/arm64/boot/Image -m 704 -c 8 --name guest-128
+  Info: Removed ghost socket file "/.lkvm//guest-128.sock".
+[ 1406.521757] kvm [141]: nVHE hyp BUG at: arch/arm64/kvm/hyp/nvhe/mem_protect.c:1088!
+[ 1406.521804] kvm [141]: nVHE call trace:
+[ 1406.521828] kvm [141]:  [<ffff8000811676b4>] __kvm_nvhe_hyp_panic+0xb4/0xe8
+[ 1406.521946] kvm [141]:  [<ffff80008116d12c>] __kvm_nvhe_assert_host_shared_guest+0xb0/0x10c
+[ 1406.522049] kvm [141]:  [<ffff80008116f068>] __kvm_nvhe___pkvm_host_relax_perms_guest+0x48/0x104
+[ 1406.522157] kvm [141]:  [<ffff800081169df8>] __kvm_nvhe_handle___pkvm_host_relax_perms_guest+0x64/0x7c
+[ 1406.522250] kvm [141]:  [<ffff800081169f0c>] __kvm_nvhe_handle_trap+0x8c/0x1a8
+[ 1406.522333] kvm [141]:  [<ffff8000811680fc>] __kvm_nvhe___skip_pauth_save+0x4/0x4
+[ 1406.522454] kvm [141]: ---[ end nVHE call trace ]---
+[ 1406.522477] kvm [141]: Hyp Offset: 0xfffece8013600000
+[ 1406.522554] Kernel panic - not syncing: HYP panic:
+[ 1406.522554] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
+[ 1406.522554] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
+[ 1406.522554] VCPU:0000000000000000
+[ 1406.523337] CPU: 3 UID: 0 PID: 141 Comm: kvm-vcpu-0 Not tainted 6.16.0-rc7 #97 PREEMPT
+[ 1406.523485] Hardware name: FVP Base RevC (DT)
+[ 1406.523566] Call trace:
+[ 1406.523629]  show_stack+0x18/0x24 (C)
+[ 1406.523753]  dump_stack_lvl+0xd4/0x108
+[ 1406.523899]  dump_stack+0x18/0x24
+[ 1406.524040]  panic+0x3d8/0x448
+[ 1406.524184]  nvhe_hyp_panic_handler+0x10c/0x23c
+[ 1406.524325]  kvm_handle_guest_abort+0x68c/0x109c
+[ 1406.524500]  handle_exit+0x60/0x17c
+[ 1406.524630]  kvm_arch_vcpu_ioctl_run+0x2e0/0x8c0
+[ 1406.524794]  kvm_vcpu_ioctl+0x1a8/0x9cc
+[ 1406.524919]  __arm64_sys_ioctl+0xac/0x104
+[ 1406.525067]  invoke_syscall+0x48/0x10c
+[ 1406.525189]  el0_svc_common.constprop.0+0x40/0xe0
+[ 1406.525322]  do_el0_svc+0x1c/0x28
+[ 1406.525441]  el0_svc+0x38/0x120
+[ 1406.525588]  el0t_64_sync_handler+0x10c/0x138
+[ 1406.525750]  el0t_64_sync+0x1ac/0x1b0
+[ 1406.525876] SMP: stopping secondary CPUs
+[ 1406.525965] Kernel Offset: disabled
+[ 1406.526032] CPU features: 0x0000,00000080,8e134ca1,9446773f
+[ 1406.526130] Memory Limit: none
+[ 1406.959099] ---[ end Kernel panic - not syncing: HYP panic:
+[ 1406.959099] PS:834003c9 PC:0000b1806db6d170 ESR:00000000f2000800
+[ 1406.959099] FAR:ffff8000804be420 HPFAR:0000000000804be0 PAR:0000000000000000
+[ 1406.959099] VCPU:0000000000000000 ]
+
+Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+Fixes: db14091d8f75 ("KVM: arm64: Stage-2 huge mappings for np-guests")
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Cc: Quentin Perret <qperret@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: stable@vger.kernel.org
+
+---
+
+This addresses the bug I raised here:
+https://lore.kernel.org/linux-arm-kernel/17b526ff-b824-4c24-8ac0-6821e5cc8900@arm.com/
+
+---
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+index 8957734d6183..ddc8beb55eee 100644
+--- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
++++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
+@@ -1010,9 +1010,12 @@ static int __check_host_shared_guest(struct pkvm_hyp_vm *vm, u64 *__phys, u64 ip
+ 		return ret;
+ 	if (!kvm_pte_valid(pte))
+ 		return -ENOENT;
+-	if (kvm_granule_size(level) != size)
++	if (size && kvm_granule_size(level) != size)
+ 		return -E2BIG;
+ 
++	if (!size)
++		size = kvm_granule_size(level);
++
+ 	state = guest_get_page_state(pte, ipa);
+ 	if (state != PKVM_PAGE_SHARED_BORROWED)
+ 		return -EPERM;
+@@ -1100,7 +1103,7 @@ int __pkvm_host_relax_perms_guest(u64 gfn, struct pkvm_hyp_vcpu *vcpu, enum kvm_
+ 	if (prot & ~KVM_PGTABLE_PROT_RWX)
+ 		return -EINVAL;
+ 
+-	assert_host_shared_guest(vm, ipa, PAGE_SIZE);
++	assert_host_shared_guest(vm, ipa, 0);
+ 	guest_lock_component(vm);
+ 	ret = kvm_pgtable_stage2_relax_perms(&vm->pgt, ipa, prot, 0);
+ 	guest_unlock_component(vm);
+@@ -1156,7 +1159,7 @@ int __pkvm_host_mkyoung_guest(u64 gfn, struct pkvm_hyp_vcpu *vcpu)
+ 	if (pkvm_hyp_vm_is_protected(vm))
+ 		return -EPERM;
+ 
+-	assert_host_shared_guest(vm, ipa, PAGE_SIZE);
++	assert_host_shared_guest(vm, ipa, 0);
+ 	guest_lock_component(vm);
+ 	kvm_pgtable_stage2_mkyoung(&vm->pgt, ipa, 0);
+ 	guest_unlock_component(vm);
+-- 
+2.43.0
 
 
