@@ -1,110 +1,88 @@
-Return-Path: <stable+bounces-169864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A554B28EA3
-	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 16:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDF0B28F58
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 18:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 479301C242D9
-	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 14:52:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64D81C25E3C
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 16:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5717C2F28F2;
-	Sat, 16 Aug 2025 14:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF39D291C16;
+	Sat, 16 Aug 2025 16:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b="xE5Av/Gm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gX9I0BMF"
 X-Original-To: stable@vger.kernel.org
-Received: from isilmar-4.linta.de (isilmar-4.linta.de [136.243.71.142])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F592DAFA0;
-	Sat, 16 Aug 2025 14:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.243.71.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D7D23AE9A;
+	Sat, 16 Aug 2025 16:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755355950; cv=none; b=DpUoaTVoj014+EAEgApYjVX3UhVukO5p4uhGZiK4Jm/PNWtRmPCIUhGxhQKCjqmpVYX3WBsgLV6pNsQ0q7lJCcgXf5fbkv+ttNVlXrpkdO2Ufy8vFybnFSyQWNzAzJcfbv2jqq7Ll50rwpWuaoEgNV4wV/e8CZsVhWH3+RNsnZo=
+	t=1755360620; cv=none; b=O2ATxAnLXx163PTd7nVPQs7u1riwpCXpxBz5ob7RLQplu/3rU70WunF8j3Jp6aplWft2sbF23ufpCvYq5zflc7IZEea2KGWcnnVzhca/YI1qQCovUuhrS5NKXSKxuvS6yV1GGiDJOVewciDC92xj2BqmdbDeYGlU6B2xw4Bqsi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755355950; c=relaxed/simple;
-	bh=3do6237ns7Jz5GVPzNLh0umlxmUl0oaKcOpEPreWvws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dxJdoa13cz9pNE3G8rM0IjB4WucPIIzWPPOoVhhvkjmHOA0QrNXPsqojIlqzQXpn8EnhdUlO3I+w6p6begg7RlkjfZM4L9LkEQ51h2JK0GLs34tb4og/w13aUxuKM77pILGlhkEMelAw6cVDzRjIXyTOKz+fHEyfSCfIk9VOp+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net; spf=pass smtp.mailfrom=dominikbrodowski.net; dkim=pass (2048-bit key) header.d=dominikbrodowski.net header.i=@dominikbrodowski.net header.b=xE5Av/Gm; arc=none smtp.client-ip=136.243.71.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dominikbrodowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dominikbrodowski.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=dominikbrodowski.net;
-	s=k19.isilmar-4; t=1755355415;
-	bh=3do6237ns7Jz5GVPzNLh0umlxmUl0oaKcOpEPreWvws=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xE5Av/Gmg0m6GPDiMyPYUz84tBhSOk1Hi5sHnSoq21aIwuix8GMu8MLECm6aaEjQt
-	 UjoGCcvanr5/QpGflDzt0fXqU3fpc0BBp3/+C0CMSC1pvtc7wMplMrs/ipRRXMzN83
-	 1m0ASOpTtwM23a9e2KzE2Pb4bVuC3aMwafMvdZZfxP5RODFCH4cRKKZ/guC668AxCS
-	 wzyd97L+omantHV/JxW3B5hySn756u1YpyqfQOVyvNRciaktp/ffGSB5o63/ljqQwd
-	 WP0ePctVssOq7dULxYCTBDh08HsIbHgdpTqHp6wkuQKi9Nw2XStbe5avBJvzOO7iFF
-	 XJkG/2aV9Ygtg==
-Received: from shine.dominikbrodowski.net (shine.brodo.linta [10.2.0.112])
-	by isilmar-4.linta.de (Postfix) with ESMTPSA id 094C320071C;
-	Sat, 16 Aug 2025 14:43:34 +0000 (UTC)
-Received: by shine.dominikbrodowski.net (Postfix, from userid 1000)
-	id 5559DA009E; Sat, 16 Aug 2025 16:42:15 +0200 (CEST)
-Date: Sat, 16 Aug 2025 16:42:15 +0200
-From: Dominik Brodowski <linux@dominikbrodowski.net>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] pcmcia: Fix a NULL pointer dereference in
- __iodyn_find_io_region()
-Message-ID: <aKCYx6-E-daskCzh@shine.dominikbrodowski.net>
-References: <20250812072509.472061-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1755360620; c=relaxed/simple;
+	bh=dvV7dkSDKHOe3uTIJaHJRjvzm9dgErExd276G6LKKEg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GNLtkGGS+fFNDueL8TK61hgZjvGMwu+UxLE8md4v0zk5Ozyjwoq9L/XdHMY8ntdGW6YZa2AAvyOJTGiPAV+S7vz8JQC/Gj3G3Qbijn7txuq8PuMdPMV8usHG+bZJp1g9sFVIQm+qWW37LIUHIeyzBiNQR6wiCh8Y6fPVe9QFDFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gX9I0BMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60A1C4CEEF;
+	Sat, 16 Aug 2025 16:10:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755360620;
+	bh=dvV7dkSDKHOe3uTIJaHJRjvzm9dgErExd276G6LKKEg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gX9I0BMFfx847u0g9Qcvr0PdLMcjCdGZGNF3ef3Oh225nzkdRmmSTVoBVpORDEx4s
+	 Vbt0HW2IdbwcRQ3XJl9I/9OfAP9bsATqnAEHKKTr9iNU3Ga2BB4AanixDYSXvYo6ax
+	 qBuedFW/UVm4yMqIUVZy17SCg09iM+yLo/7bfb8efllSCbTPC6nMqE6ItjEY7sbECJ
+	 50lIuAVwbMy9wddoBLOid0prubrnqb+gXz3hNPC8n5PyEhFerVndjbK++WyAfcL6U2
+	 S72uG1VUmVJ1Y9ac6ISI47bbM0o4GghpRaqRK7oiN9P9v+i3xw3EqiW9pqqlataqs7
+	 5io568DjxjABA==
+From: SeongJae Park <sj@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2] mm/damon/core: fix damos_commit_filter not changing allow
+Date: Sat, 16 Aug 2025 09:10:17 -0700
+Message-Id: <20250816161017.63692-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250816015116.194589-1-ekffu200098@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250812072509.472061-1-make24@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-Many thanks, applied to pcmcia-next. This allocation is practically no-fail
-owing to GFP_KERNEL and the small allocation size, and rsrc_iodyn.c is on
-its way out, but it's better safe than to be sorry.
++ Andrew
 
-Best,
-	Dominik
+On Sat, 16 Aug 2025 10:51:16 +0900 Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
 
-Am Tue, Aug 12, 2025 at 03:25:09PM +0800 schrieb Ma Ke:
-> In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
-> res and used in pci_bus_alloc_resource(). There is a dereference of res
-> in pci_bus_alloc_resource(), which could lead to a NULL pointer
-> dereference on failure of pcmcia_make_resource().
+> Current damos_commit_filter() not persist allow value of filter. As a
+> result, changing allow value of filter and commit doesn't change
+> allow value.
 > 
-> Fix this bug by adding a check of res.
+> Add the missing allow value update, so commit filter now persist changing
+> allow value well.
 > 
-> Found by code review, complie tested only.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/pcmcia/rsrc_iodyn.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/pcmcia/rsrc_iodyn.c b/drivers/pcmcia/rsrc_iodyn.c
-> index b04b16496b0c..2677b577c1f8 100644
-> --- a/drivers/pcmcia/rsrc_iodyn.c
-> +++ b/drivers/pcmcia/rsrc_iodyn.c
-> @@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_region(struct pcmcia_socket *s,
->  	unsigned long min = base;
->  	int ret;
->  
-> +	if (!res)
-> +		return NULL;
-> +
->  	data.mask = align - 1;
->  	data.offset = base & data.mask;
->  
-> -- 
-> 2.25.1
-> 
-> 
+> Fixes: fe6d7fdd6249 ("mm/damon/core: add damos_filter->allow field")
+> Cc: stable@vger.kernel.org # 6.14.x
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
