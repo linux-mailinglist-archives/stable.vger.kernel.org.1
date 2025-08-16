@@ -1,85 +1,149 @@
-Return-Path: <stable+bounces-169846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA93B28AB6
-	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 07:40:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5C5B28B2F
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 08:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE58A1C8091D
-	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 05:40:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954F01C875F9
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 06:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D418F1E411C;
-	Sat, 16 Aug 2025 05:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5787F21A447;
+	Sat, 16 Aug 2025 06:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MChmmSVU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EsqMZVMM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D621E49F;
-	Sat, 16 Aug 2025 05:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE593176F0;
+	Sat, 16 Aug 2025 06:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755322786; cv=none; b=BZyNLyvi2bKo6thLtKk9spg7Cq0ykOt0KUelGPw4YDCumiZHCmISxLp/opW9F+HvUfpHAparUCGmj0VOgZubCU7QS4EYRte5+pEiDygqEd41HoV7hbxqJA2Uz3nHqOTYzJC7r415M5sz4KIqACHoPgPmSPGkT57IFoLPgzMM4ow=
+	t=1755327103; cv=none; b=LtRI2YJupQoVJI7drHxTrrU37F1PbWBo5cxfxnvxYv/YHZsMynvrW6YcpXPLowvj2zCtJD4DIJEiQUX4UCPXLmCdVmBLumG+TaGKm5qMwFgX05VyovxME3uvP9jgJDRSV7jwyhQjbBQCNygWewYkO6L5gEpyl5DS0dQSdgDpyow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755322786; c=relaxed/simple;
-	bh=4wn104ra76AoUwmdyaFPGDk1qiVGjHvNzVS7DARoOtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OVyblP0xfyBMwCcBtS1Ec/7efFuSk5467+mEeohQCfFcs8Qft/PUnUR5YF5xddzOzpy31Eqt7IuyrDax0Ay4zaJEc8Wi/dTZtWlEbAjYbHzooQUpvOjzMGfXtWFOWdMR/q+kX2XdXFc2usNyq+wj/k90hAHYBcj7gSSeDDROrFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MChmmSVU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92511C4CEEF;
-	Sat, 16 Aug 2025 05:39:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755322785;
-	bh=4wn104ra76AoUwmdyaFPGDk1qiVGjHvNzVS7DARoOtg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MChmmSVUJ9XtMxNp4QroiKgVigg6cnrrBfLi3duj8GnITJxCurnMUYx/wKFQJJrIX
-	 h+cOy9W9wEkVvKDCEHT7oDDpwjT+BYNNefVf1+iy/FrnR0RxlcM+Wl3sw7rC6CWzFJ
-	 ONM95Llk94yZZmEUj31uvO0e24lTuSSHN6W7yBmc=
-Date: Sat, 16 Aug 2025 07:39:42 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lars Wendler <polynomial-c@gmx.de>
-Cc: wangzijie <wangzijie1@honor.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] [BISECTED] linux-6.6.y and linux-6.12.y: proc: use
- the same treatment to check proc_lseek as ones for proc_read_iter et.al
-Message-ID: <2025081615-anew-willpower-adca@gregkh>
-References: <20250815195616.64497967@chagall.paradoxon.rec>
+	s=arc-20240116; t=1755327103; c=relaxed/simple;
+	bh=I1I/6P6R/jJHDP7d/EmBJ02o3OhrJmNh1erLpSB768s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z1Y7hdWWAe8taSYuTnjUbusYqfReO777Et/PyolP56LINWxc2VfWZT2GaiTkeiQLgyoobO7BVryn2+vHQJJtefCNvJKhfW+jSi1tm0DOmevRbV4webvefQ+e71+OTMubIh97bxYDh6PlRFGSQRgsiOxsrfNkeN5rqP7bPLcVutk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EsqMZVMM; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76e434a0118so1249290b3a.0;
+        Fri, 15 Aug 2025 23:51:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755327101; x=1755931901; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=39WcNe2AXItXXp9jrDQpd1B8VQX1N+yULMm80zOpn5Q=;
+        b=EsqMZVMML1Eh2ZNNHqqyPAoQbm1Mnz/OkEaquoslcXl4b4dRySbnuleHE4IBx2JOKJ
+         rON9LKpTCC+RoAzkHTUSNSKa+qb7F/GN2uk5+3KPB7Ms3TupgoZtuurLivFUNLjlV/jg
+         aBcWDubxHHmDu0fdnErgBQ0iv5EktVU98lpi21n+5GfvpU2PZSdnHkOG34lrCMv9v2xv
+         8Jz874zMwVxiJ+8RazV6QhZVNdXCLveAMHXawcxMRqXUF1GblUesCk8RUAz4J9RlH3ta
+         kAwCB79kF7Z/XriL9Mvdfy7Yuomf5OB4xCiV/Bozb2i2czvtBGBMs/xa+qppCIgeJCZt
+         4gOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755327101; x=1755931901;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=39WcNe2AXItXXp9jrDQpd1B8VQX1N+yULMm80zOpn5Q=;
+        b=KlfRJyKmhLXRDZozsxKwmbCS3jv15uxBSD6pAFK3sBXU5IxBjRcidHHJa3RyvBvQqL
+         Lps6CNsqoFqRp682PHgaR4qTE2o9Yyj++QQQOriUN/Y62C+/Nqws9ZN6ka1Iis0jKCAP
+         zXH373xCPKhJY891GCYBewf0SoZotABR+cgRwHL3BgmxLyjjlQ3LagvTfu4APlXzFMp4
+         8tsEaNzRm7p2InVEdiD/nKEgJNqmE7kh4DSuqGZvizStM4EL76JsTDHdVWMgXUnkIac2
+         Vd/ICyteXMEaHSi0L47iPwZgZ0QOh0WFZLY67Z1VVh3I5sq/71Hb45U+kD+Boy9c+UHl
+         5Urw==
+X-Forwarded-Encrypted: i=1; AJvYcCWndd9aMntFmX8Th7QW1j692JYdBbkyhh3YoM1j0zBfnUClpNMHz/xT8HzNttc8CKMRgE+sIWiRS9M8P5s=@vger.kernel.org, AJvYcCX3tN57IhjxX7eNOkqiTrLhSKREiB0r9EjaxWOPMEhoOqQ4tJDCzwh0LEWX2Wwz3wRUlCKllaiA@vger.kernel.org
+X-Gm-Message-State: AOJu0YypuAUpTCFEJfk1jMNbGNNajiFTjgeppz9ov3y/ZJFCvj7gOQSm
+	A8rr+i10dfdR3h4Q1mr9nMYIByBw812jUZco/LcSRxyL/SxrBctWVxvl
+X-Gm-Gg: ASbGncuNzZB4kVPgXahCQxUXchH7A8WUQ/8/hy0311kHuMCltBuTRhGRf+Gm9uHzkeQ
+	k/shFwKL2OHTiDhahaYBliwMNgaHQxaIfwq3BZhdybwgCNFqq48Pmh9P8eJt+7n0Qg++Yw8JDla
+	n8vzy369nKQjijUyZFFr1DS+rsmv+RR41lhKezKt7rXEZK6RmyhwWsXTZd/pVu1QJsM/UzUPi4Y
+	VwpKPi9F0Ey8RIZT+1d8PGhBxsvnOvns/tQGE8ETRL/wb15xem/x1u1EuhQu8HzP8PkKNKWJqQa
+	HYcDvjL4dbtmZ8fSD53BUyzqmyAlrC0WedB6x1fkDCFQ60bB4biHQ4lEIeIXpd20ZipMFuVeEee
+	l/QClt6ZFi62XjEbqwqUI+MRJzNEMr+c=
+X-Google-Smtp-Source: AGHT+IGUsLmuiPcI2giCI2IF6qVd6KgQXhFiqbI/NN3EugFt3xJ2EVq0iMIu3K9bJKvvdzrEtNpDKw==
+X-Received: by 2002:a05:6a00:3493:b0:76b:fd9d:8524 with SMTP id d2e1a72fcca58-76e446d626cmr6485065b3a.2.1755327100857;
+        Fri, 15 Aug 2025 23:51:40 -0700 (PDT)
+Received: from archlinux ([2401:4900:67c2:7988:186:bdc:a8e7:4149])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76e455b5f9asm2512433b3a.107.2025.08.15.23.51.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Aug 2025 23:51:40 -0700 (PDT)
+From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	hpa@zytor.com,
+	darwi@linutronix.de,
+	sohil.mehta@intel.com,
+	peterz@infradead.org,
+	ravi.bangoria@amd.com
+Cc: skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Suchit Karunakaran <suchitkarunakaran@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 RESEND] x86/cpu/intel: Fix the constant_tsc model check for Pentium 4
+Date: Sat, 16 Aug 2025 12:21:26 +0530
+Message-ID: <20250816065126.5000-1-suchitkarunakaran@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250815195616.64497967@chagall.paradoxon.rec>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 15, 2025 at 07:56:16PM +0200, Lars Wendler wrote:
-> Hi,
-> 
-> the stable LTS linux kernels 6.6.102 and 6.12.42 have a regression
-> regarding network interface monitoring with xosview and gkrellm. Both
-> programs no longer show any network traffic with gkrellm even
-> considering all network interfaces as being in down state. I haven't
-> checked other LTS kernels so I cannot tell if there are more affected
-> kernel branches.
-> 
-> I have bisected the issue to the commits
-> 33c778ea0bd0fa62ff590497e72562ff90f82b13 in 6.6.102 and
-> fc1072d934f687e1221d685cf1a49a5068318f34 in 6.12.42 which are both the
-> same change code-wise (upstream commit
-> ff7ec8dc1b646296f8d94c39339e8d3833d16c05).
-> 
-> Reverting these commits makes xosview and gkrellm "work" again as in
-> they both show network traffic again.
+Pentium 4's which are INTEL_P4_PRESCOTT (model 0x03) and later have
+a constant TSC. This was correctly captured until commit fadb6f569b10
+("x86/cpu/intel: Limit the non-architectural constant_tsc model checks").
 
-Is this also an issue in 6.16.1 and 6.17-rc1?
+In that commit, an error was introduced while selecting the last P4
+model (0x06) as the upper bound. Model 0x06 was transposed to
+INTEL_P4_WILLAMETTE, which is just plain wrong. That was presumably a
+simple typo, probably just copying and pasting the wrong P4 model.
 
-thanks,
+Fix the constant TSC logic to cover all later P4 models. End at
+INTEL_P4_CEDARMILL which accurately corresponds to the last P4 model.
 
-greg k-h
+Fixes: fadb6f569b10 ("x86/cpu/intel: Limit the non-architectural constant_tsc model checks")
+Cc: <stable@vger.kernel.org> # v6.15
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+---
+Changes since v4:
+- Updated the patch based on review suggestions
+
+Changes since v3:
+- Refined changelog
+
+Changes since v2:
+- Improved commit message
+
+Changes since v1:
+- Fixed incorrect logic
+
+ arch/x86/kernel/cpu/intel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index 076eaa41b8c8..98ae4c37c93e 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -262,7 +262,7 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 	if (c->x86_power & (1 << 8)) {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 		set_cpu_cap(c, X86_FEATURE_NONSTOP_TSC);
+-	} else if ((c->x86_vfm >= INTEL_P4_PRESCOTT && c->x86_vfm <= INTEL_P4_WILLAMETTE) ||
++	} else if ((c->x86_vfm >= INTEL_P4_PRESCOTT && c->x86_vfm <= INTEL_P4_CEDARMILL) ||
+ 		   (c->x86_vfm >= INTEL_CORE_YONAH  && c->x86_vfm <= INTEL_IVYBRIDGE)) {
+ 		set_cpu_cap(c, X86_FEATURE_CONSTANT_TSC);
+ 	}
+-- 
+2.50.1
+
 
