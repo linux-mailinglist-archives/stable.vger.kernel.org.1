@@ -1,225 +1,145 @@
-Return-Path: <stable+bounces-169854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33990B28C71
-	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 11:33:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A25BB28CA7
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 12:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44661C82133
-	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 09:33:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE531AE7285
+	for <lists+stable@lfdr.de>; Sat, 16 Aug 2025 10:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBC6243378;
-	Sat, 16 Aug 2025 09:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D2C28C5D1;
+	Sat, 16 Aug 2025 10:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J7X2e6qe"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="m0BWYAnD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124CC23F40F;
-	Sat, 16 Aug 2025 09:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F35728C039;
+	Sat, 16 Aug 2025 10:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755336788; cv=none; b=PrmnRS/JhUc5Ab7tzh6IuSLTzuCMMgWHThvrJHa7zO6n3UVHCx39jvDa8RWmO/KqE4dMkrSWwWr1J2r2t4x1FcV2wVYQiSrMYd7WhSaA9fT/+ybrhx56WxKscIQI85Go/f1+BaPro6OTobGK0fvrFPwFlsZYMw3khQoN6+9VpH8=
+	t=1755338768; cv=none; b=Qz/J9unV9G3nfZ41m2bN2O3jRoKKDY9SyyH60u42kjbMNsmtYuDBW4fUGnOc3KsE//UePJtkvY1ZzA7pk59b4xGKgTzUkNIu3yhGPaefI7Zwopui62R5n+zx4/hec9prdHueLZ/tJ3qkX5DCMOp8a+kIjy12do7llH9XgTrsn2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755336788; c=relaxed/simple;
-	bh=hdiMuqUgn3hq9fvJi99uwhoP1Kg6ZzWdtYhvi9M7LI8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j5he+/3w7Luo7eHBi3bEHQv/xvElb4sbVPv5ucKoYw83ggbkl3NA5n2R1yUs67u919vdclwk64PYk6bOVFdYS4zW5Hkod/aBNaOVtpHKjcJcD5b6xjNWDrfGF7I9TUMS1gJeDUmbNV71QaD4qZcHBFvyxyrXfYNwRTqWC36s62Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J7X2e6qe; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3b9e4110df6so363682f8f.2;
-        Sat, 16 Aug 2025 02:33:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755336784; x=1755941584; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Px5kT9Zj2OEa6lf/DpL6BrsHwqOYEXNq7iLeLvlTsBw=;
-        b=J7X2e6qeuP3EHGpkScroL60nUwlACJ5fO71Wn/lCNPMGmuRcSQaHkACdPTh+0uD0sT
-         k0nD6yXgGQ7yibWj6ukApzLlBodg8YCt8RmN0GOPbPrMTJvbTuFlORUh21cmtthZIBYQ
-         fECEWtGbBZWk5vB4P3C9tg//W+Om/RoAr1UMR+jOCkA48RZvTPQnUzWo4+c7GjQwrsr/
-         3YZ54Pb/KBaxr2r74F5oXJoMRtIMIFlp+7HUOHkHURzevdHAk9TPnYYY4frzbnxKfnq5
-         aS3qLAT4mjNO8ClmRlIUpihjVMeQz8f6CqPuaeqoDkFhYGUw2mEXCtCoLiPs7weDB3Do
-         3kkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755336784; x=1755941584;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Px5kT9Zj2OEa6lf/DpL6BrsHwqOYEXNq7iLeLvlTsBw=;
-        b=jbQd73CaylP1PSRrLgBWE8XQj49R4wdrvv2fnN27wJFVnQfvVOwmG3dAMZ7Kha9Pru
-         F46ZYQO//TG+3FbHRCR8xo7UoztwdKlzVfz7/0FE6gjyUivM5owvjTNtnCAotMGWefVu
-         neLsZIWTZNjekqfAW4jobS43xEg1fQOKik3Y7TpuFUZOzt71LXsJJAwe5bOWpD97mqTi
-         IjQG9ZBU/+f8MKKoJF8N9FFxvbaHt/NoWXC1Fk1Op8DagHwb8OondtGqwF8FoVzK7ETI
-         V7Ou/XZYR3amnBeo6XpbXtvPW3zrTz6n8nLLfjXpQeD4WW8Brc4poTokyh/WWo3m2yZB
-         j1Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCUT51GvoDqTCHtczL9gLsPcDC9KYyp2Jn2sH3BAn2l/tMKbBEmxbtoIZhy0ro7tPRwNG3MktU2h@vger.kernel.org, AJvYcCVU9c3oMKDNlw5agOzs+97O/KSz4bTWywGH37oqmHt30+9qGKpk8BbYfpMAcnB9B9QXFWNwBGHogrcF8Ro=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZDZx+eaM0Ufp2PKpotGxT4rPMZLTFBWk6G5lecZlTh8tuJjA5
-	cRseu2hWZKIVaD6wjGnvL32MPa49Am2hrmJb3hkvb2c5GyNQ0ZK6bkUq
-X-Gm-Gg: ASbGnct7hC+8bRichG/mG59bofOoJ1jS+wEC+AtW0Xcr4lz+ns8eaJy6okkL6PV3CqR
-	i+w6N0AWzNseUj17uHQyZgg/K7VGAaKQfQa7Qg9FUdKq40Ml3FQHF8SiBSkAyH/NoMtLi+V+rdz
-	ai2pYL4qOCT6Ew2uMW3mHSePnKq0syhphddEF8TR9VDSeIOvhn7sWgqawd9gK977k0sCLxNNMTZ
-	ZfVJT5Oi09lrc5ov4ZIEE293rVxTtfaLaWxPBIT6P2LCTBuVeYuLIg1l0GXUYsvHFTdeI0mFJ5l
-	gB+a6RWzFhbxUQ4Pp1ptlNSIWZDEkp4zduSG8P2ba+1tyLWauXaNGhirazXlQM5b2GxcAN3MI4p
-	yptEZii8pjSQMmqp07G04HGHYU157fP4d2Smcid14rlNhfrQ/SLRw
-X-Google-Smtp-Source: AGHT+IHOKiBGjTArO+Umj5Qhqd1VsyKLXbP72Y00mZJdxOsRmVixr/6cIZOinpjUeu5gz+hEOi9gkA==
-X-Received: by 2002:a05:600c:444a:b0:459:d449:a629 with SMTP id 5b1f17b1804b1-45a21895202mr18979955e9.8.1755336783950;
-        Sat, 16 Aug 2025 02:33:03 -0700 (PDT)
-Received: from [192.168.100.4] ([149.3.87.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb6475857dsm5171864f8f.2.2025.08.16.02.33.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 16 Aug 2025 02:33:03 -0700 (PDT)
-Message-ID: <eab6a734-b134-41a4-b455-7269eaaf033e@gmail.com>
-Date: Sat, 16 Aug 2025 13:33:00 +0400
+	s=arc-20240116; t=1755338768; c=relaxed/simple;
+	bh=/tvCba59DndcHKT1wO2n4S6E84FC8hxSXkLUPaJM1oI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=JhOsq/aPy4TxoVQHnZUVsFigUVgI9ro1+t/7HRCHpGFmbBtbT2unrDLbboQvZRS/6NwMChmhq5js/7plSZ5xJaEB9mBux0CgjZQb7IIy8FCwrcCiY7mFQmx/s8hjfc+Rjz7TV/TQeWAdm4AmyUHlHEHY76DCwf6w0n/lAfOlMjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=m0BWYAnD reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=8RBZaee7DFAtQwlLxj5DjaKUkNFGSPrEBSejl/nsRSQ=; b=m
+	0BWYAnD1iVKCHtD72+dacuUWLKPD3jtBzrPQceyGIWMAo+ksupPltvjHIVSWUcJL
+	FpWRVYE4efVYXY7obvqR1+QXIJf7LX7mgp7QQcaUUjIRKX8xT0wy6u0auhbngRJD
+	nkZJ8hjhbR9+i0y/RWj37z7zGtZhs8S5ZRtAMgYm3I=
+Received: from yangshiguang1011$163.com (
+ [2408:8607:1b00:8:9e7b:efff:fe4e:6d16] ) by ajax-webmail-wmsvr-40-116
+ (Coremail) ; Sat, 16 Aug 2025 18:05:15 +0800 (CST)
+Date: Sat, 16 Aug 2025 18:05:15 +0800 (CST)
+From: yangshiguang  <yangshiguang1011@163.com>
+To: "Harry Yoo" <harry.yoo@oracle.com>
+Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
+	rientjes@google.com, roman.gushchin@linux.dev, glittao@gmail.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, yangshiguang <yangshiguang@xiaomi.com>
+Subject: Re:Re: [PATCH v2] mm: slub: avoid wake up kswapd in
+ set_track_prepare
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20250519(9504565a)
+ Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <aKBAdUkCd95Rg85A@harry>
+References: <20250814111641.380629-2-yangshiguang1011@163.com>
+ <aKBAdUkCd95Rg85A@harry>
+X-NTES-SC: AL_Qu2eB/+Yt08q4yibZekfmUgRj+k6WsK3s/sn3oNfP5B+jD3p0T0ceV9KLFv96vuKKB6rvRGeUwZw9/RYepVacKsLlpC3vEWLniawSbSmH+6ptg==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: slub: avoid wake up kswapd in set_track_prepare
-To: Harry Yoo <harry.yoo@oracle.com>, yangshiguang1011@163.com
-Cc: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, glittao@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- yangshiguang <yangshiguang@xiaomi.com>
-References: <20250814111641.380629-2-yangshiguang1011@163.com>
- <aKBAdUkCd95Rg85A@harry>
-Content-Language: en-US
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-In-Reply-To: <aKBAdUkCd95Rg85A@harry>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-ID: <14b4d82.262b.198b25732bb.Coremail.yangshiguang1011@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:dCgvCgAXB+vbV6Bo6nQbAA--.560W
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiSByr5WigMtzoyQAIsV
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-Rather than masking to GFP_NOWAIT—which still allows kswapd to be 
-woken—let’s strip every reclaim bit (`__GFP_RECLAIM` and 
-`__GFP_KSWAPD_RECLAIM`) and add `__GFP_NORETRY | __GFP_NOWARN`. That 
-guarantees we never enter the slow path that calls `wakeup_kswapd()`, so 
-the timer-base lock can’t be re-entered.
-
-On 8/16/2025 12:25 PM, Harry Yoo wrote:
-> On Thu, Aug 14, 2025 at 07:16:42PM +0800, yangshiguang1011@163.com wrote:
->> From: yangshiguang <yangshiguang@xiaomi.com>
->>
->> From: yangshiguang <yangshiguang@xiaomi.com>
->>
->> set_track_prepare() can incur lock recursion.
->> The issue is that it is called from hrtimer_start_range_ns
->> holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
->> CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
->> and try to hold the per_cpu(hrtimer_bases)[n].lock.
->>
->> So avoid waking up kswapd.The oops looks something like:
-> 
-> Hi yangshiguang,
-> 
-> In the next revision, could you please elaborate the commit message
-> to reflect how this change avoids waking up kswapd?
-> 
->> BUG: spinlock recursion on CPU#3, swapper/3/0
->>   lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
->> Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
->> Call trace:
->> spin_bug+0x0
->> _raw_spin_lock_irqsave+0x80
->> hrtimer_try_to_cancel+0x94
->> task_contending+0x10c
->> enqueue_dl_entity+0x2a4
->> dl_server_start+0x74
->> enqueue_task_fair+0x568
->> enqueue_task+0xac
->> do_activate_task+0x14c
->> ttwu_do_activate+0xcc
->> try_to_wake_up+0x6c8
->> default_wake_function+0x20
->> autoremove_wake_function+0x1c
->> __wake_up+0xac
->> wakeup_kswapd+0x19c
->> wake_all_kswapds+0x78
->> __alloc_pages_slowpath+0x1ac
->> __alloc_pages_noprof+0x298
->> stack_depot_save_flags+0x6b0
->> stack_depot_save+0x14
->> set_track_prepare+0x5c
->> ___slab_alloc+0xccc
->> __kmalloc_cache_noprof+0x470
->> __set_page_owner+0x2bc
->> post_alloc_hook[jt]+0x1b8
->> prep_new_page+0x28
->> get_page_from_freelist+0x1edc
->> __alloc_pages_noprof+0x13c
->> alloc_slab_page+0x244
->> allocate_slab+0x7c
->> ___slab_alloc+0x8e8
->> kmem_cache_alloc_noprof+0x450
->> debug_objects_fill_pool+0x22c
->> debug_object_activate+0x40
->> enqueue_hrtimer[jt]+0xdc
->> hrtimer_start_range_ns+0x5f8
->> ...
->>
->> Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
->> Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
->> ---
->> v1 -> v2:
->>      propagate gfp flags to set_track_prepare()
->>
->> [1] https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com
->> ---
->>   mm/slub.c | 21 +++++++++++----------
->>   1 file changed, 11 insertions(+), 10 deletions(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 30003763d224..dba905bf1e03 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -962,19 +962,20 @@ static struct track *get_track(struct kmem_cache *s, void *object,
->>   }
->>   
->>   #ifdef CONFIG_STACKDEPOT
->> -static noinline depot_stack_handle_t set_track_prepare(void)
->> +static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
->>   {
->>   	depot_stack_handle_t handle;
->>   	unsigned long entries[TRACK_ADDRS_COUNT];
->>   	unsigned int nr_entries;
->> +	gfp_flags &= GFP_NOWAIT;
-> 
-> Is there any reason to downgrade it to GFP_NOWAIT when the gfp flag allows
-> direct reclamation?
-> 
->>   	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
->> -	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
->> +	handle = stack_depot_save(entries, nr_entries, gfp_flags);
->>   
->>   	return handle;
->>   }
->>   #else
->> -static inline depot_stack_handle_t set_track_prepare(void)
->> +static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
->>   {
->>   	return 0;
->>   }
->> @@ -4422,7 +4423,7 @@ static noinline void free_to_partial_list(
->>   	depot_stack_handle_t handle = 0;
->>   
->>   	if (s->flags & SLAB_STORE_USER)
->> -		handle = set_track_prepare();
->> +		handle = set_track_prepare(GFP_NOWAIT);
-> 
-> I don't think it is safe to use GFP_NOWAIT during free?
-> 
-> Let's say fill_pool() -> kmem_alloc_batch() fails to allocate an object
-> and then free_object_list() frees allocated objects,
-> set_track_prepare(GFP_NOWAIT) may wake up kswapd, and the same deadlock
-> you reported will occur.
-> 
-> So I think it should be __GFP_NOWARN?
-> 
-
+CgpBdCAyMDI1LTA4LTE2IDE2OjI1OjI1LCAiSGFycnkgWW9vIiA8aGFycnkueW9vQG9yYWNsZS5j
+b20+IHdyb3RlOgo+T24gVGh1LCBBdWcgMTQsIDIwMjUgYXQgMDc6MTY6NDJQTSArMDgwMCwgeWFu
+Z3NoaWd1YW5nMTAxMUAxNjMuY29tIHdyb3RlOgo+PiBGcm9tOiB5YW5nc2hpZ3VhbmcgPHlhbmdz
+aGlndWFuZ0B4aWFvbWkuY29tPgo+PiAKPj4gRnJvbTogeWFuZ3NoaWd1YW5nIDx5YW5nc2hpZ3Vh
+bmdAeGlhb21pLmNvbT4KPj4gCj4+IHNldF90cmFja19wcmVwYXJlKCkgY2FuIGluY3VyIGxvY2sg
+cmVjdXJzaW9uLgo+PiBUaGUgaXNzdWUgaXMgdGhhdCBpdCBpcyBjYWxsZWQgZnJvbSBocnRpbWVy
+X3N0YXJ0X3JhbmdlX25zCj4+IGhvbGRpbmcgdGhlIHBlcl9jcHUoaHJ0aW1lcl9iYXNlcylbbl0u
+bG9jaywgYnV0IHdoZW4gZW5hYmxlZAo+PiBDT05GSUdfREVCVUdfT0JKRUNUU19USU1FUlMsIG1h
+eSB3YWtlIHVwIGtzd2FwZCBpbiBzZXRfdHJhY2tfcHJlcGFyZSwKPj4gYW5kIHRyeSB0byBob2xk
+IHRoZSBwZXJfY3B1KGhydGltZXJfYmFzZXMpW25dLmxvY2suCj4+IAo+PiBTbyBhdm9pZCB3YWtp
+bmcgdXAga3N3YXBkLlRoZSBvb3BzIGxvb2tzIHNvbWV0aGluZyBsaWtlOgo+Cj5IaSB5YW5nc2hp
+Z3VhbmcsIAo+Cj5JbiB0aGUgbmV4dCByZXZpc2lvbiwgY291bGQgeW91IHBsZWFzZSBlbGFib3Jh
+dGUgdGhlIGNvbW1pdCBtZXNzYWdlCj50byByZWZsZWN0IGhvdyB0aGlzIGNoYW5nZSBhdm9pZHMg
+d2FraW5nIHVwIGtzd2FwZD8KPgoKb2YgY291cnNlLiBUaGFua3MgZm9yIHRoZSByZW1pbmRlci4K
+Cj4+IEJVRzogc3BpbmxvY2sgcmVjdXJzaW9uIG9uIENQVSMzLCBzd2FwcGVyLzMvMAo+PiAgbG9j
+azogMHhmZmZmZmY4YTRiZjI5YzgwLCAubWFnaWM6IGRlYWQ0ZWFkLCAub3duZXI6IHN3YXBwZXIv
+My8wLCAub3duZXJfY3B1OiAzCj4+IEhhcmR3YXJlIG5hbWU6IFF1YWxjb21tIFRlY2hub2xvZ2ll
+cywgSW5jLiBQb3BzaWNsZSBiYXNlZCBvbiBTTTg4NTAgKERUKQo+PiBDYWxsIHRyYWNlOgo+PiBz
+cGluX2J1ZysweDAKPj4gX3Jhd19zcGluX2xvY2tfaXJxc2F2ZSsweDgwCj4+IGhydGltZXJfdHJ5
+X3RvX2NhbmNlbCsweDk0Cj4+IHRhc2tfY29udGVuZGluZysweDEwYwo+PiBlbnF1ZXVlX2RsX2Vu
+dGl0eSsweDJhNAo+PiBkbF9zZXJ2ZXJfc3RhcnQrMHg3NAo+PiBlbnF1ZXVlX3Rhc2tfZmFpcisw
+eDU2OAo+PiBlbnF1ZXVlX3Rhc2srMHhhYwo+PiBkb19hY3RpdmF0ZV90YXNrKzB4MTRjCj4+IHR0
+d3VfZG9fYWN0aXZhdGUrMHhjYwo+PiB0cnlfdG9fd2FrZV91cCsweDZjOAo+PiBkZWZhdWx0X3dh
+a2VfZnVuY3Rpb24rMHgyMAo+PiBhdXRvcmVtb3ZlX3dha2VfZnVuY3Rpb24rMHgxYwo+PiBfX3dh
+a2VfdXArMHhhYwo+PiB3YWtldXBfa3N3YXBkKzB4MTljCj4+IHdha2VfYWxsX2tzd2FwZHMrMHg3
+OAo+PiBfX2FsbG9jX3BhZ2VzX3Nsb3dwYXRoKzB4MWFjCj4+IF9fYWxsb2NfcGFnZXNfbm9wcm9m
+KzB4Mjk4Cj4+IHN0YWNrX2RlcG90X3NhdmVfZmxhZ3MrMHg2YjAKPj4gc3RhY2tfZGVwb3Rfc2F2
+ZSsweDE0Cj4+IHNldF90cmFja19wcmVwYXJlKzB4NWMKPj4gX19fc2xhYl9hbGxvYysweGNjYwo+
+PiBfX2ttYWxsb2NfY2FjaGVfbm9wcm9mKzB4NDcwCj4+IF9fc2V0X3BhZ2Vfb3duZXIrMHgyYmMK
+Pj4gcG9zdF9hbGxvY19ob29rW2p0XSsweDFiOAo+PiBwcmVwX25ld19wYWdlKzB4MjgKPj4gZ2V0
+X3BhZ2VfZnJvbV9mcmVlbGlzdCsweDFlZGMKPj4gX19hbGxvY19wYWdlc19ub3Byb2YrMHgxM2MK
+Pj4gYWxsb2Nfc2xhYl9wYWdlKzB4MjQ0Cj4+IGFsbG9jYXRlX3NsYWIrMHg3Ywo+PiBfX19zbGFi
+X2FsbG9jKzB4OGU4Cj4+IGttZW1fY2FjaGVfYWxsb2Nfbm9wcm9mKzB4NDUwCj4+IGRlYnVnX29i
+amVjdHNfZmlsbF9wb29sKzB4MjJjCj4+IGRlYnVnX29iamVjdF9hY3RpdmF0ZSsweDQwCj4+IGVu
+cXVldWVfaHJ0aW1lcltqdF0rMHhkYwo+PiBocnRpbWVyX3N0YXJ0X3JhbmdlX25zKzB4NWY4Cj4+
+IC4uLgo+PiAKPj4gU2lnbmVkLW9mZi1ieTogeWFuZ3NoaWd1YW5nIDx5YW5nc2hpZ3VhbmdAeGlh
+b21pLmNvbT4KPj4gRml4ZXM6IDVjZjkwOWM1NTNlOSAoIm1tL3NsdWI6IHVzZSBzdGFja2RlcG90
+IHRvIHNhdmUgc3RhY2sgdHJhY2UgaW4gb2JqZWN0cyIpCj4+IC0tLQo+PiB2MSAtPiB2MjoKPj4g
+ICAgIHByb3BhZ2F0ZSBnZnAgZmxhZ3MgdG8gc2V0X3RyYWNrX3ByZXBhcmUoKQo+PiAKPj4gWzFd
+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI1MDgwMTA2NTEyMS44NzY3OTMtMS15YW5n
+c2hpZ3VhbmcxMDExQDE2My5jb20gCj4+IC0tLQo+PiAgbW0vc2x1Yi5jIHwgMjEgKysrKysrKysr
+KystLS0tLS0tLS0tCj4+ICAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwgMTAgZGVs
+ZXRpb25zKC0pCj4+IAo+PiBkaWZmIC0tZ2l0IGEvbW0vc2x1Yi5jIGIvbW0vc2x1Yi5jCj4+IGlu
+ZGV4IDMwMDAzNzYzZDIyNC4uZGJhOTA1YmYxZTAzIDEwMDY0NAo+PiAtLS0gYS9tbS9zbHViLmMK
+Pj4gKysrIGIvbW0vc2x1Yi5jCj4+IEBAIC05NjIsMTkgKzk2MiwyMCBAQCBzdGF0aWMgc3RydWN0
+IHRyYWNrICpnZXRfdHJhY2soc3RydWN0IGttZW1fY2FjaGUgKnMsIHZvaWQgKm9iamVjdCwKPj4g
+IH0KPj4gIAo+PiAgI2lmZGVmIENPTkZJR19TVEFDS0RFUE9UCj4+IC1zdGF0aWMgbm9pbmxpbmUg
+ZGVwb3Rfc3RhY2tfaGFuZGxlX3Qgc2V0X3RyYWNrX3ByZXBhcmUodm9pZCkKPj4gK3N0YXRpYyBu
+b2lubGluZSBkZXBvdF9zdGFja19oYW5kbGVfdCBzZXRfdHJhY2tfcHJlcGFyZShnZnBfdCBnZnBf
+ZmxhZ3MpCj4+ICB7Cj4+ICAJZGVwb3Rfc3RhY2tfaGFuZGxlX3QgaGFuZGxlOwo+PiAgCXVuc2ln
+bmVkIGxvbmcgZW50cmllc1tUUkFDS19BRERSU19DT1VOVF07Cj4+ICAJdW5zaWduZWQgaW50IG5y
+X2VudHJpZXM7Cj4+ICsJZ2ZwX2ZsYWdzICY9IEdGUF9OT1dBSVQ7Cj4KPklzIHRoZXJlIGFueSBy
+ZWFzb24gdG8gZG93bmdyYWRlIGl0IHRvIEdGUF9OT1dBSVQgd2hlbiB0aGUgZ2ZwIGZsYWcgYWxs
+b3dzCj5kaXJlY3QgcmVjbGFtYXRpb24/Cj4KCkhpIEhhcnJ5LAoKVGhlIG9yaWdpbmFsIGFsbG9j
+YXRpb24gaXMgR0ZQX05PV0FJVC4KU28gSSB0aGluayBpdCdzIGJldHRlciBub3QgdG8gaW5jcmVh
+c2UgdGhlIGFsbG9jYXRpb24gY29zdCBoZXJlLgoKCj4+ICAJbnJfZW50cmllcyA9IHN0YWNrX3Ry
+YWNlX3NhdmUoZW50cmllcywgQVJSQVlfU0laRShlbnRyaWVzKSwgMyk7Cj4+IC0JaGFuZGxlID0g
+c3RhY2tfZGVwb3Rfc2F2ZShlbnRyaWVzLCBucl9lbnRyaWVzLCBHRlBfTk9XQUlUKTsKPj4gKwlo
+YW5kbGUgPSBzdGFja19kZXBvdF9zYXZlKGVudHJpZXMsIG5yX2VudHJpZXMsIGdmcF9mbGFncyk7
+Cj4+ICAKPj4gIAlyZXR1cm4gaGFuZGxlOwo+PiAgfQo+PiAgI2Vsc2UKPj4gLXN0YXRpYyBpbmxp
+bmUgZGVwb3Rfc3RhY2tfaGFuZGxlX3Qgc2V0X3RyYWNrX3ByZXBhcmUodm9pZCkKPj4gK3N0YXRp
+YyBpbmxpbmUgZGVwb3Rfc3RhY2tfaGFuZGxlX3Qgc2V0X3RyYWNrX3ByZXBhcmUoZ2ZwX3QgZ2Zw
+X2ZsYWdzKQo+PiAgewo+PiAgCXJldHVybiAwOwo+PiAgfQo+PiBAQCAtNDQyMiw3ICs0NDIzLDcg
+QEAgc3RhdGljIG5vaW5saW5lIHZvaWQgZnJlZV90b19wYXJ0aWFsX2xpc3QoCj4+ICAJZGVwb3Rf
+c3RhY2tfaGFuZGxlX3QgaGFuZGxlID0gMDsKPj4gIAo+PiAgCWlmIChzLT5mbGFncyAmIFNMQUJf
+U1RPUkVfVVNFUikKPj4gLQkJaGFuZGxlID0gc2V0X3RyYWNrX3ByZXBhcmUoKTsKPj4gKwkJaGFu
+ZGxlID0gc2V0X3RyYWNrX3ByZXBhcmUoR0ZQX05PV0FJVCk7Cj4KPkkgZG9uJ3QgdGhpbmsgaXQg
+aXMgc2FmZSB0byB1c2UgR0ZQX05PV0FJVCBkdXJpbmcgZnJlZT8KPgo+TGV0J3Mgc2F5IGZpbGxf
+cG9vbCgpIC0+IGttZW1fYWxsb2NfYmF0Y2goKSBmYWlscyB0byBhbGxvY2F0ZSBhbiBvYmplY3QK
+PmFuZCB0aGVuIGZyZWVfb2JqZWN0X2xpc3QoKSBmcmVlcyBhbGxvY2F0ZWQgb2JqZWN0cywKPnNl
+dF90cmFja19wcmVwYXJlKEdGUF9OT1dBSVQpIG1heSB3YWtlIHVwIGtzd2FwZCwgYW5kIHRoZSBz
+YW1lIGRlYWRsb2NrCj55b3UgcmVwb3J0ZWQgd2lsbCBvY2N1ci4KPgo+U28gSSB0aGluayBpdCBz
+aG91bGQgYmUgX19HRlBfTk9XQVJOPwo+CgpZZXMsIHRoaXMgZW5zdXJlcyBzYWZldHkuCgo+LS0g
+Cj5DaGVlcnMsCj5IYXJyeSAvIEh5ZW9uZ2dvbgo=
 
