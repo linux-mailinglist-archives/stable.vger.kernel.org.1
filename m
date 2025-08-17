@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-169874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE272B29126
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 04:28:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68523B29127
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 04:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD90E2043C3
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 02:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83DF1964631
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 02:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C988C1C862E;
-	Sun, 17 Aug 2025 02:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F1F1D61BB;
+	Sun, 17 Aug 2025 02:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNFAq5Q+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rGSN9SBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F1315E96
-	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 02:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631C715E96
+	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 02:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755397695; cv=none; b=obKi/RVgCfOTWYYg5wsjJlyULDGQNZWzChY1LuDvBqjz16yBkg0rCn7gAZMlo5jxU4qs9m/2eTxjOsgw24BgbCmvco1aBxjJsIw7d3PeS3evUuCBAasKN3FsHiudO11vSV7fPcuOp8KXpB9vYZ1zey2hhOUliBG35pckUtfLkHM=
+	t=1755397696; cv=none; b=A2exfH1G8gBvz2b3Yf3GRnmpsjxKJLPPd28doQnkqCaMqIVTiSDLdVmSDn3cUTpWimgUO/X/ZYuuuGdRtOlN09+rr9w/gP4YDhoa7o11SW+l2i0WFn5j6hduE6Fc9qxHSTUPW8DDkpH5liKqpU5UuFUI2I9dujoDR+mGB3vAxWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755397695; c=relaxed/simple;
-	bh=F+7nQfwYxBSq2NlteLWxIxXqb//U47gTEkKi+8ZJDVk=;
+	s=arc-20240116; t=1755397696; c=relaxed/simple;
+	bh=YFA11S0pguit9DsquA+Hx4Q8cKh+waPfedqQmc/WsWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDdKLfCSKDyxiD43GyDDQ4o2BhRFp2gn3whaxXtLhI/Ph/IDmxpKWFvnEGaEVm0LHU4BlUUnJ54yqwNk9W35vEM54PKpkGjTA7NlNLH0OCI/54RXdqmA7Q7JrZRVVofEypZBgj1Cxkig+/r4GpLRYXX/vks3CvLtMvOEbGlr+Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNFAq5Q+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5284C4CEEF;
-	Sun, 17 Aug 2025 02:28:14 +0000 (UTC)
+	 MIME-Version; b=KWE5SaRUdpZABBiK7P/tA8uTJ69xn2txfNBOyp5TznkWqgCEsrMCRRhMhy7EhqARpwYaUBxs3ap0k/mI21NIhyF7N4Joxr8h97/P1jeyPOymL7DvNoKVgoIrFC84+Gu0828mtveZy5Ml+UOYWKar9GO+vXzr9CDDHgPVgnnd4nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rGSN9SBa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B8DC4CEF6;
+	Sun, 17 Aug 2025 02:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1755397695;
-	bh=F+7nQfwYxBSq2NlteLWxIxXqb//U47gTEkKi+8ZJDVk=;
+	bh=YFA11S0pguit9DsquA+Hx4Q8cKh+waPfedqQmc/WsWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNFAq5Q+yZoux5rTZhjjMqlZikepOuCQap1+U3Qv5PpGAT93LLVaUk4FF5wVSGK0L
-	 hnZ5bs5lhYi+ppzhwNYAIwPXu9t1hYDIzabDROdlA+OfKVSGdpRY0RCLDuxT6GO3Mz
-	 ACpv4dpGistZ4K40j8VvBriupc2zACdkhv2gycbvpMK72M+KVr4RgXgNHy+oSnm1xT
-	 VsgmdQpjyRLUSQ3nRYNwiyLSg+W+L9RIjQrSY0pCTn21CHCBvXu3rX6HKxa0cezXIU
-	 2esaeTWjTR5gwMtykMO7neprnvvBuPeJORwxF1NKMaGE41OJQNM/lC28Qz3jI6H0Ja
-	 CbcAO1NNagTiw==
+	b=rGSN9SBarZDthJLR8qEl0g8dLmndliNgkqoLkjvKXN70cSWw+jepKjJUA2L4FfszO
+	 Ys+2zfu8UnkrW5/fZuRH2QKLN4C9aruj38p9wbwQaQCTxqhr3faoT63VZf6DmlF+HM
+	 sDMW7+q2v/kQ4LG69e+oJpULgXAf18PDwTrZTww0dYdu+E6sBIXVC6k4aMlfUfl0Xo
+	 7e/D6O7qQ3sypC06x/EjbipGhgkLWdbu5ssng02b4LxXytLYRcxfmt3Ro3iGlWGKES
+	 YODRxcomVF6ZqNiBb3xmfDTtl4HsOlnmDIutFZsEcU6m0dwrS4XcyOpZGFJQwX9zRv
+	 f4XajUrJGQyaw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 1/3] NFSv4: Fix nfs4_bitmap_copy_adjust()
-Date: Sat, 16 Aug 2025 22:28:10 -0400
-Message-ID: <20250817022812.1338100-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y 2/3] NFS: Fix up handling of outstanding layoutcommit in nfs_update_inode()
+Date: Sat, 16 Aug 2025 22:28:11 -0400
+Message-ID: <20250817022812.1338100-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081556-illusive-crawlers-8c0e@gregkh>
+In-Reply-To: <20250817022812.1338100-1-sashal@kernel.org>
 References: <2025081556-illusive-crawlers-8c0e@gregkh>
+ <20250817022812.1338100-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,101 +62,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit a71029b86752e8d40301af235a6bbf4896cc1402 ]
+[ Upstream commit 709fa5769914b377af87962bbe4ff81ffb019b2d ]
 
-Don't remove flags from the set retrieved from the cache_validity.
-We do want to retrieve all attributes that are listed as being
-invalid, whether or not there is a delegation set.
+If there is an outstanding layoutcommit, then the list of attributes
+whose values are expected to change is not the full set. So let's
+be explicit about the full list.
 
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ fs/nfs/inode.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 3477da3c2190..2145360d81ac 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -282,7 +282,7 @@ const u32 nfs4_fs_locations_bitmap[3] = {
- };
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 0dc53732b5c9..4f0d2fc810e4 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -1869,7 +1869,11 @@ static int nfs_update_inode(struct inode *inode, struct nfs_fattr *fattr)
+ 	nfs_wcc_update_inode(inode, fattr);
  
- static void nfs4_bitmap_copy_adjust(__u32 *dst, const __u32 *src,
--		struct inode *inode)
-+				    struct inode *inode, unsigned long flags)
- {
- 	unsigned long cache_validity;
- 
-@@ -290,22 +290,19 @@ static void nfs4_bitmap_copy_adjust(__u32 *dst, const __u32 *src,
- 	if (!inode || !nfs4_have_delegation(inode, FMODE_READ))
- 		return;
- 
--	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity);
--	if (!(cache_validity & NFS_INO_REVAL_FORCED))
--		cache_validity &= ~(NFS_INO_INVALID_CHANGE
--				| NFS_INO_INVALID_SIZE);
-+	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity) | flags;
- 
-+	/* Remove the attributes over which we have full control */
-+	dst[1] &= ~FATTR4_WORD1_RAWDEV;
- 	if (!(cache_validity & NFS_INO_INVALID_SIZE))
- 		dst[0] &= ~FATTR4_WORD0_SIZE;
- 
- 	if (!(cache_validity & NFS_INO_INVALID_CHANGE))
- 		dst[0] &= ~FATTR4_WORD0_CHANGE;
--}
- 
--static void nfs4_bitmap_copy_adjust_setattr(__u32 *dst,
--		const __u32 *src, struct inode *inode)
--{
--	nfs4_bitmap_copy_adjust(dst, src, inode);
-+	if (!(cache_validity & NFS_INO_INVALID_OTHER))
-+		dst[1] &= ~(FATTR4_WORD1_MODE | FATTR4_WORD1_OWNER |
-+			    FATTR4_WORD1_OWNER_GROUP);
- }
- 
- static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dentry,
-@@ -3333,12 +3330,15 @@ static int nfs4_do_setattr(struct inode *inode, const struct cred *cred,
- 		.inode = inode,
- 		.stateid = &arg.stateid,
- 	};
-+	unsigned long adjust_flags = NFS_INO_INVALID_CHANGE;
- 	int err;
- 
-+	if (sattr->ia_valid & (ATTR_MODE|ATTR_UID|ATTR_GID))
-+		adjust_flags |= NFS_INO_INVALID_OTHER;
-+
- 	do {
--		nfs4_bitmap_copy_adjust_setattr(bitmask,
--				nfs4_bitmask(server, olabel),
--				inode);
-+		nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, olabel),
-+					inode, adjust_flags);
- 
- 		err = _nfs4_do_setattr(inode, &arg, &res, cred, ctx);
- 		switch (err) {
-@@ -4143,8 +4143,7 @@ static int _nfs4_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
- 		.rpc_resp = &res,
- 	};
- 
--	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode);
--
-+	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode, 0);
- 	nfs_fattr_init(fattr);
- 	return nfs4_call_sync(server->client, server, &msg, &args.seq_args, &res.seq_res, 0);
- }
-@@ -4732,8 +4731,8 @@ static int _nfs4_proc_link(struct inode *inode, struct inode *dir, const struct
+ 	if (pnfs_layoutcommit_outstanding(inode)) {
+-		nfsi->cache_validity |= save_cache_validity & NFS_INO_INVALID_ATTR;
++		nfsi->cache_validity |=
++			save_cache_validity &
++			(NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
++			 NFS_INO_INVALID_MTIME | NFS_INO_INVALID_SIZE |
++			 NFS_INO_REVAL_FORCED);
+ 		cache_revalidated = false;
  	}
  
- 	nfs4_inode_make_writeable(inode);
--	nfs4_bitmap_copy_adjust_setattr(bitmask, nfs4_bitmask(server, res.label), inode);
--
-+	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, res.label), inode,
-+				NFS_INO_INVALID_CHANGE);
- 	status = nfs4_call_sync(server->client, server, &msg, &arg.seq_args, &res.seq_res, 1);
- 	if (!status) {
- 		update_changeattr(dir, &res.cinfo, res.fattr->time_start, 0);
 -- 
 2.50.1
 
