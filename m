@@ -1,220 +1,140 @@
-Return-Path: <stable+bounces-169876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE49CB29128
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 04:28:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA469B29274
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 11:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E9FE196464B
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 02:28:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D2F42012DB
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 09:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB7F1D88D7;
-	Sun, 17 Aug 2025 02:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FAF223301;
+	Sun, 17 Aug 2025 09:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWQD7dlH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDJk5aZ7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBC515E96
-	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 02:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D71D6BB;
+	Sun, 17 Aug 2025 09:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755397697; cv=none; b=m0FnsaejediFrHWMyq5AaIEcLQrgb8RzY1OaRMGCoRlZn9O4pUKHdhd5KFWZuBUr6EO9ElPapsSZCGxT2Kfw+u96pGph8juo8HyftgyPTOpIQXJZv9h+u/pE1CyOCGd366lWEM3PMe/mXx3mC83MUKYOSLQOJuXwLx0bAxStsWg=
+	t=1755423515; cv=none; b=MS82D4PSnb9uDmfjXtJVxSpDRpisWHa6n2EIfWVrEK8keYDO/N6w7rNubeGiUrAErz9U/4JzQWMn27B39sZ5SXsiVRriC3EQVqOAg6LnMBE91wDgEYyo5vwyGTYbZhtgwFDcyxSFTPBF3aV0aL+Jkmo/kUdPvbo+5HC7wnRPD78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755397697; c=relaxed/simple;
-	bh=uUXtbSSNvWOiQ8Acy8ydM2wE6j+KYoHxrpW8DAIN1dM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4SmSOoygYM8lhzulxeL2u6dmW9U+0gmFCceq3n/nk1Ad50Sle2ZzO8v4lj+AZCAOaPHxHL4v7oMaFNFxPgZIEpvtnE6COu58ZsoIhJsYZ+hSq+S0of6dXOPN28ZJez0Uc8jaZSpwbsem8UpwGHg11GX27MOCwLQpSnDC3Eia80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWQD7dlH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335BBC4CEF5;
-	Sun, 17 Aug 2025 02:28:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755397696;
-	bh=uUXtbSSNvWOiQ8Acy8ydM2wE6j+KYoHxrpW8DAIN1dM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWQD7dlH1OzMrHvCepmwarcH8fEUoDdMLRWKsZoaZsgxh+5RWAC1p60HyZDiKEyja
-	 csaH6l1eDpYcgoeFZR5zzx/IKZuNbnVCMWhVYak8D5wQj3IciCURkOeb8L4AaI6YpO
-	 I6TqtAfm5QgG+lL48hbgW4gvzGQ9qierL2LJktt0nB6oMOQXIFQj2OuEDEvZxP254g
-	 vQ7eKXHCZCbFHdMg6yUKFOdm9e/7rkWAlk2ACJUI1heyy035J3T4kK3vWOgKtEUAX6
-	 LggbG/Yuovy9Pv5LFhrepiDFiYOOlbB5ODtcoeN0zMF0tzyV92TQIBNkZjXtRtZyAn
-	 eNaWm6I8QmN2A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 3/3] NFS: Fix the setting of capabilities when automounting a new filesystem
-Date: Sat, 16 Aug 2025 22:28:12 -0400
-Message-ID: <20250817022812.1338100-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250817022812.1338100-1-sashal@kernel.org>
-References: <2025081556-illusive-crawlers-8c0e@gregkh>
- <20250817022812.1338100-1-sashal@kernel.org>
+	s=arc-20240116; t=1755423515; c=relaxed/simple;
+	bh=c8YRrckfoSfijJ8+9Yeqa5yV4ks/1VCihLQAEoIt5LM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aW06BeHyPzutQrv7+SuAF9gpmAqwSZACcamvXOZAYYXWr7b3P/+7vGilkWeJ2g8B9RVPWYDEGcQ89/tbpPqlnROvmwoNXJ1D1kUNQb4mXA+FY/riM0HFZwFeXkXT6Cf9nF+XT5l5wJ0/WaEhKoWdr1saAvyRSc3sfFBXW4Ix0GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDJk5aZ7; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-24456f3f669so31185495ad.1;
+        Sun, 17 Aug 2025 02:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755423513; x=1756028313; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
+        b=FDJk5aZ7IDQGla/M8atFp6I2vlUA25wSdhpURbZp0L39pDptwxJAqMqFMQ7PF74RfV
+         txBTx5SPrP/yoslhdlGQRhk1xG9ALUOXkisNlXaHqg5CaY/+Oac0ifcEvuPbV01PwhKc
+         fFZtjguOcXRr+tWo8141HDd945eEMKMML3cfYr9v/BlfKASTlaOefjRYn4FBvDMlLUgT
+         g8Ldsk5AoXe0uuT7uzDGuACieCxToFMiIUw/Y15NkwqTXYVx2IYCAfDtoFC5xjDKjxGK
+         ryegQ/o2Hz2T33hS2d0gwhdV4IpRCFALNI0m0LlE+t5jnL9waJTgZHxrlIgHl16R/vJB
+         ofyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755423513; x=1756028313;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V+glvcUxBNLETyj4EbzaF6Mcl14MmSj24IXXGqr4BWU=;
+        b=gyouzOTv0w5uiDLU9QrjdgaSi84h8Cguf7kxnBWVrvO9EGclDEb8gRuKCNEu1W+9jV
+         NTDPo86CAoOcpq2yru2dMVAb5nAnI3iOpvSrNXZaP007/7u/kFj7RGTDuNmOmAOvA52f
+         yp48DnjE6NyDkbh1ZRkPl4zOpPB6LIZwmu+rEuTh03xU4yz1Nb9hrNMc+6Hm7fz0f6oM
+         3erZ1ennEwyaP9qWNlNVdgUlxWX9kUi1KHtCmpWNuMAqH38dN/Tu/T0DgDHqd+2GT9HE
+         rNUavvj2dxlF0DAHq5J2IWwXLIrKwJcu1vFo3RP8u1//U8m/KW6Jdl0X/l9PyOMA2FGr
+         tGjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUb1nqblZsT2oYBOpwa8L+nJhS3jOUmrxNfslkZk3VpcfyeLLcwfuakEtzAWPb2LYFUchz/jfqA@vger.kernel.org, AJvYcCVoc40OAZFBxXqoC4TKM1vvAo0SF72V4LGcECkgDgYu1h+GbYelMHDeTjfAHWa+vdtZiGACWAJdBWVylKp95b8=@vger.kernel.org, AJvYcCXkPWLBN0RweAs1hCW1RbiNkPEw/U+ALCFBXBKlNOvCXXIDNwL2dVpz5AfEz5FoL2cBLNCNCcgImYj4@vger.kernel.org, AJvYcCXs5tW9MxIb60DdceIphpFwtn9WrMLbC2T68VZL5lyGhtp1zL8NKOsPtfwTVCgbZHJONeTmSscXeEEL@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmbfdiP9KxQZodKPnfo/dBaDrzKz9HMl2XoKUO3RAb18dNaMD0
+	uaGhctPXTCW3htiwfWpkW4NUMl+7swauSMjsNHhXdL4ns9xZjZ/8DOTLcsfOVGrbnH8=
+X-Gm-Gg: ASbGncv7q/aBqq98QQQGozmt9Ffi72XeasehPZODvUl7vziOqxL1+F6Op/dxJz/vWJC
+	owZX8Frm9Mc7VyPsJhIT86V11xu5p3YEeB6Q53R4xUe1geNt2HxG1lizuW6pu1WoU4sAMmLjcmU
+	uCQeGBn0dtW6GJhHq+JlwzgfG1zSzwesXQFBmYdhsx6uCkq7jJmgKKIN/rK4UNjTv39hdx++vHZ
+	Cp+vngYJekk3tqcklfpgDLRUmheYnJZAWwR8m9H7Tt8SEbDT/afU80zxzJYl/jOK11v/tRENDb0
+	PIJPFJhnu9Hr6P77Edg9dVCScGWKsKFZuZYf+AVUs0ZbxuWKAoKtxNk1l5hl1DrTYhPNRYiOCMC
+	x0ZoddmeV079vWbu4UyblpAi6yLVUpp/sPw1lmOrZXteANewAZylPBIL4
+X-Google-Smtp-Source: AGHT+IHkGdbvw5mBqyT/2JEfiXA/xt9ZKA48sqXHZkrOlalPiagbZZCBEljY1VqxFuyOzhpXRp8Wcw==
+X-Received: by 2002:a17:902:da82:b0:242:b138:8119 with SMTP id d9443c01a7336-2445988787emr180301885ad.26.1755423512654;
+        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
+Received: from [192.168.0.218] ([116.206.223.216])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9d02csm51916845ad.7.2025.08.17.02.38.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Aug 2025 02:38:32 -0700 (PDT)
+Message-ID: <db9749a0-9c6a-4781-b5fd-82eb129a9c36@gmail.com>
+Date: Sun, 17 Aug 2025 15:08:27 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH TEST] ath10k: Testing Mani's ASPM patch (QCA9377, v6.16-rc1)
+From: Bandhan Pramanik <bandhanpramanik06.foss@gmail.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, stable@vger.kernel.org
+References: <FB546B0D-2209-4FA0-9DC9-A75C0BC9FA4F@gmail.com>
+ <20250711163645.GA2294895@bhelgaas>
+ <CAEmM+QiSZBoJV2n6944tYU7fcrzKRTUgsKRdqwDEkKkZiPVCMw@mail.gmail.com>
+ <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
+Content-Language: en-US
+In-Reply-To: <04489490-aca2-4e67-8eb2-e95f223ead3c@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+Hello everyone,
 
-[ Upstream commit b01f21cacde9f2878492cf318fee61bf4ccad323 ]
+I was actually trying to build a kernel for someone else using build 
+automation scripts. They still didn't compile. (Here's the relevant 
+thread I'm referring to: 
+https://lore.kernel.org/ath10k/176B76BC-6801-4C3F-A774-9611B43ED4AF@gmail.com/T/#t) 
 
-Capabilities cannot be inherited when we cross into a new filesystem.
-They need to be reset to the minimal defaults, and then probed for
-again.
+Regardless, I tested the patches by Mani 
+(https://lore.kernel.org/r/20250716-ath-aspm-fix-v1-0-dd3e62c1b692@oss.qualcomm.com).
 
-Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-[ adapted to older fs_context-less API structures ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/nfs/client.c     | 44 ++++++++++++++++++++++++++++++++++++++++----
- fs/nfs/internal.h   |  1 +
- fs/nfs/nfs4client.c | 13 +------------
- fs/nfs/nfs4proc.c   |  2 ++
- 4 files changed, 44 insertions(+), 16 deletions(-)
+Here are the logs:
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 323cef064f2a..bdece12af53e 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -646,6 +646,42 @@ struct nfs_client *nfs_init_client(struct nfs_client *clp,
- }
- EXPORT_SYMBOL_GPL(nfs_init_client);
- 
-+static void nfs4_server_set_init_caps(struct nfs_server *server)
-+{
-+#if IS_ENABLED(CONFIG_NFS_V4)
-+	/* Set the basic capabilities */
-+	server->caps = server->nfs_client->cl_mvops->init_caps;
-+	if (server->flags & NFS_MOUNT_NORDIRPLUS)
-+		server->caps &= ~NFS_CAP_READDIRPLUS;
-+
-+	/*
-+	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
-+	 * authentication.
-+	 */
-+	if (nfs4_disable_idmapping &&
-+	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
-+		server->caps |= NFS_CAP_UIDGID_NOMAP;
-+#endif
-+}
-+
-+void nfs_server_set_init_caps(struct nfs_server *server)
-+{
-+	switch (server->nfs_client->rpc_ops->version) {
-+	case 2:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		break;
-+	case 3:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
-+			server->caps |= NFS_CAP_READDIRPLUS;
-+		break;
-+	default:
-+		nfs4_server_set_init_caps(server);
-+		break;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
-+
- /*
-  * Create a version 2 or 3 client
-  */
-@@ -683,9 +719,6 @@ static int nfs_init_server(struct nfs_server *server,
- 	/* Initialise the client representation from the mount data */
- 	server->flags = data->flags;
- 	server->options = data->options;
--	server->caps |= NFS_CAP_HARDLINKS|NFS_CAP_SYMLINKS|NFS_CAP_FILEID|
--		NFS_CAP_MODE|NFS_CAP_NLINK|NFS_CAP_OWNER|NFS_CAP_OWNER_GROUP|
--		NFS_CAP_ATIME|NFS_CAP_CTIME|NFS_CAP_MTIME;
- 
- 	if (data->rsize)
- 		server->rsize = nfs_block_size(data->rsize, NULL);
-@@ -710,6 +743,8 @@ static int nfs_init_server(struct nfs_server *server,
- 	if (error < 0)
- 		goto error;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* Preserve the values of mount_server-related mount options */
- 	if (data->mount_server.addrlen) {
- 		memcpy(&server->mountd_address, &data->mount_server.address,
-@@ -834,7 +869,6 @@ void nfs_server_copy_userdata(struct nfs_server *target, struct nfs_server *sour
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
- 	target->acdirmax = source->acdirmax;
--	target->caps = source->caps;
- 	target->options = source->options;
- 	target->auth_info = source->auth_info;
- 	target->port = source->port;
-@@ -1042,6 +1076,8 @@ struct nfs_server *nfs_clone_server(struct nfs_server *source,
- 	if (error < 0)
- 		goto out_free_server;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* probe the filesystem info for this server filesystem */
- 	error = nfs_probe_fsinfo(server, fh, fattr_fsinfo);
- 	if (error < 0)
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index bfb53756654d..46fc42d575ce 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -172,6 +172,7 @@ nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
- 				struct nfs4_sessionid *, u32);
- extern struct nfs_server *nfs_create_server(struct nfs_mount_info *,
- 					struct nfs_subversion *);
-+extern void nfs_server_set_init_caps(struct nfs_server *);
- extern struct nfs_server *nfs4_create_server(
- 					struct nfs_mount_info *,
- 					struct nfs_subversion *);
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 1f4bdcda3fda..eeab44727a76 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1011,18 +1011,7 @@ static int nfs4_server_common_setup(struct nfs_server *server,
- 	if (error < 0)
- 		goto out;
- 
--	/* Set the basic capabilities */
--	server->caps |= server->nfs_client->cl_mvops->init_caps;
--	if (server->flags & NFS_MOUNT_NORDIRPLUS)
--			server->caps &= ~NFS_CAP_READDIRPLUS;
--	/*
--	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
--	 * authentication.
--	 */
--	if (nfs4_disable_idmapping &&
--			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
--		server->caps |= NFS_CAP_UIDGID_NOMAP;
--
-+	nfs_server_set_init_caps(server);
- 
- 	/* Probe the root fh to retrieve its FSID and filehandle */
- 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 2145360d81ac..5f8de86b2798 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3884,6 +3884,8 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
- 		.interruptible = true,
- 	};
- 	int err;
-+
-+	nfs_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
--- 
-2.50.1
+Without pcie_aspm=off (did not work): 
+https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg
+
+With pcie_aspm=off (worked, no issues observed): 
+https://gist.github.com/BandhanPramanik/ddb0cb23eca03ca2ea43a1d832a16180/raw/84edf89740919e3cba2ac33e567110b14e2d3627/patch-dmesg-pcie_aspm_off
+
+I'm not fully sure what the logs imply, but thanks, it did work even 
+after playing YouTube videos for two hours (might not even work in the 
+future, cannot be certain). Earlier, my laptop had its Wi-Fi turning off 
+within minutes because of IRQ #16 being flooded, in every kernel I 
+tested so far. Now, it does work.
+
+There can be seen certain stuff in the second log, where it took some 
+time to connect to Wi-Fi, but I think it is mostly fine.
+
+Thanks to those who have prepared the patches and those who did bear 
+with me, but there's one request I still need to make.
+
+For anyone who has built patched kernels for Ubuntu and exported in DEB 
+files, I would appreciate any guidance or pointers on how to do the 
+same, as my efforts to use "make deb-pkg" have been futile: 
+https://github.com/BandhanPramanik/ath10k-patched-kernel-ppa/actions/runs/16975573959/job/48123563881
+
+
+Bandhan Pramanik
+বন্ধন প্রামাণিক
 
 
