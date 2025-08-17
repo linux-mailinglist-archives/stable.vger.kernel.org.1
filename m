@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-169873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB40B29125
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 04:26:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE272B29126
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 04:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D001196408F
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 02:26:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD90E2043C3
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 02:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A629D1C862E;
-	Sun, 17 Aug 2025 02:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C988C1C862E;
+	Sun, 17 Aug 2025 02:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8BhpSTO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNFAq5Q+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C1516CD33
-	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 02:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F1315E96
+	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 02:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755397557; cv=none; b=tZfjkYzCo62UQpX3/zGlqBNrHeP/KFZy5hBRXkyNUdO3+xw5EUZLuNb3JCOfedoTKVh8NBEtr3sNX7K3s0eyN+eIMUm7VbjGvF/AlpqWGFF8SljfynvjCOyX+P52bECc04s6TGe6RE6X9IRNfYdcHdWl1aXBivtgtGVmcT1Wvdk=
+	t=1755397695; cv=none; b=obKi/RVgCfOTWYYg5wsjJlyULDGQNZWzChY1LuDvBqjz16yBkg0rCn7gAZMlo5jxU4qs9m/2eTxjOsgw24BgbCmvco1aBxjJsIw7d3PeS3evUuCBAasKN3FsHiudO11vSV7fPcuOp8KXpB9vYZ1zey2hhOUliBG35pckUtfLkHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755397557; c=relaxed/simple;
-	bh=EAvRkoR6QZhAtmTZDC+HuhZP0QRn2sb9gkc9v0XgdSA=;
+	s=arc-20240116; t=1755397695; c=relaxed/simple;
+	bh=F+7nQfwYxBSq2NlteLWxIxXqb//U47gTEkKi+8ZJDVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHBizBwgvb5bdrtNzwF9JBKj/JaD/KzQzOufFTNwS8iNl0AZPLwhlvMwDDg5h+RvGC2SlxpYIcc+D9Jm2wA6lw5KJdQfeseHoTH0VUHtNYTLlZxup8F068IxskwCgPFb9JrFcGyrxKuOzXvwL3HRclfN5KW1lfW6q+qC3/DZQ/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8BhpSTO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072F5C4CEEF;
-	Sun, 17 Aug 2025 02:25:55 +0000 (UTC)
+	 MIME-Version; b=CDdKLfCSKDyxiD43GyDDQ4o2BhRFp2gn3whaxXtLhI/Ph/IDmxpKWFvnEGaEVm0LHU4BlUUnJ54yqwNk9W35vEM54PKpkGjTA7NlNLH0OCI/54RXdqmA7Q7JrZRVVofEypZBgj1Cxkig+/r4GpLRYXX/vks3CvLtMvOEbGlr+Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNFAq5Q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5284C4CEEF;
+	Sun, 17 Aug 2025 02:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755397556;
-	bh=EAvRkoR6QZhAtmTZDC+HuhZP0QRn2sb9gkc9v0XgdSA=;
+	s=k20201202; t=1755397695;
+	bh=F+7nQfwYxBSq2NlteLWxIxXqb//U47gTEkKi+8ZJDVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8BhpSTO0NjzXnNl20ygPTHV9pdHGTNZUPDDjYZrtue/dZbTzbN7ULvVfHD1vqaOR
-	 Ewdb82MYKHyvwY+OHda6E3fJj01qJmSUUzK8fdsLeZZxkn/O9y7BufQAtj7v/KvJZZ
-	 USzTlWQqqr8JfT56lza6OKV3phaY23C66BATWoDzXhXjxK7Ocn5hdu43esYaojgjWa
-	 9yd6ugUhVEcUoOI5Io0pe7VEY68XMZWzi5/2Ttl9OzANmix9S2r8YTm1XpCLliGsqs
-	 6opdlXtCIhO0puGvWRfUuph1vn9cuaER0YUUqlSBVZIRytXWYP5+plYWusOEgXglX1
-	 OGLAJ2BeHUspA==
+	b=PNFAq5Q+yZoux5rTZhjjMqlZikepOuCQap1+U3Qv5PpGAT93LLVaUk4FF5wVSGK0L
+	 hnZ5bs5lhYi+ppzhwNYAIwPXu9t1hYDIzabDROdlA+OfKVSGdpRY0RCLDuxT6GO3Mz
+	 ACpv4dpGistZ4K40j8VvBriupc2zACdkhv2gycbvpMK72M+KVr4RgXgNHy+oSnm1xT
+	 VsgmdQpjyRLUSQ3nRYNwiyLSg+W+L9RIjQrSY0pCTn21CHCBvXu3rX6HKxa0cezXIU
+	 2esaeTWjTR5gwMtykMO7neprnvvBuPeJORwxF1NKMaGE41OJQNM/lC28Qz3jI6H0Ja
+	 CbcAO1NNagTiw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Lukas Wunner <lukas@wunner.de>,
-	Laurent Bigonville <bigon@bigon.be>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
-Date: Sat, 16 Aug 2025 22:25:53 -0400
-Message-ID: <20250817022553.1336244-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y 1/3] NFSv4: Fix nfs4_bitmap_copy_adjust()
+Date: Sat, 16 Aug 2025 22:28:10 -0400
+Message-ID: <20250817022812.1338100-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081511-procreate-museum-7213@gregkh>
-References: <2025081511-procreate-museum-7213@gregkh>
+In-Reply-To: <2025081556-illusive-crawlers-8c0e@gregkh>
+References: <2025081556-illusive-crawlers-8c0e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,146 +59,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a ]
+[ Upstream commit a71029b86752e8d40301af235a6bbf4896cc1402 ]
 
-pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
-pcie_portdrv_remove() to determine whether runtime power management shall
-be enabled (on probe) or disabled (on remove) on a PCIe port.
+Don't remove flags from the set retrieved from the cache_validity.
+We do want to retrieve all attributes that are listed as being
+invalid, whether or not there is a delegation set.
 
-The underlying assumption is that pci_bridge_d3_possible() always returns
-the same value, else a runtime PM reference imbalance would occur.  That
-assumption is not given if the PCIe port is inaccessible on remove due to
-hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
-accesses Config Space to determine whether the port is Hot-Plug Capable.
-An inaccessible port returns "all ones", which is converted to "all
-zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
-Hot-Plug Capable on remove even though it was on probe.
-
-The resulting runtime PM ref imbalance causes warning messages such as:
-
-  pcieport 0000:02:04.0: Runtime PM usage count underflow!
-
-Avoid the Config Space access (and thus the runtime PM ref imbalance) by
-caching the Hot-Plug Capable bit in struct pci_dev.
-
-The struct already contains an "is_hotplug_bridge" flag, which however is
-not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
-Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
-allocated additional MMIO and bus number resources to allow for hierarchy
-expansion.
-
-The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
-places to identify Hot-Plug Capable PCIe ports, even though the flag
-encompasses other devices.  Subsequent commits replace these occurrences
-with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
-other kinds of hotplug bridges.
-
-Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
-and document the (non-obvious) requirement that pci_bridge_d3_possible()
-always returns the same value across the entire lifetime of a bridge,
-including its hot-removal.
-
-Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
-Reported-by: Laurent Bigonville <bigon@bigon.be>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
-Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v4.18+
-Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
-[ changed "recent enough PCIe ports" comment to "some PCIe ports" ]
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c |  4 +---
- drivers/pci/pci.c      |  8 ++++++--
- drivers/pci/probe.c    |  2 +-
- include/linux/pci.h    | 10 +++++++++-
- 4 files changed, 17 insertions(+), 7 deletions(-)
+ fs/nfs/nfs4proc.c | 33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 8f4a4fc48efa..268ca998443a 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -792,13 +792,11 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
- bool pciehp_is_native(struct pci_dev *bridge)
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 3477da3c2190..2145360d81ac 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -282,7 +282,7 @@ const u32 nfs4_fs_locations_bitmap[3] = {
+ };
+ 
+ static void nfs4_bitmap_copy_adjust(__u32 *dst, const __u32 *src,
+-		struct inode *inode)
++				    struct inode *inode, unsigned long flags)
  {
- 	const struct pci_host_bridge *host;
--	u32 slot_cap;
+ 	unsigned long cache_validity;
  
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
- 		return false;
+@@ -290,22 +290,19 @@ static void nfs4_bitmap_copy_adjust(__u32 *dst, const __u32 *src,
+ 	if (!inode || !nfs4_have_delegation(inode, FMODE_READ))
+ 		return;
  
--	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
--	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
-+	if (!bridge->is_pciehp)
- 		return false;
+-	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity);
+-	if (!(cache_validity & NFS_INO_REVAL_FORCED))
+-		cache_validity &= ~(NFS_INO_INVALID_CHANGE
+-				| NFS_INO_INVALID_SIZE);
++	cache_validity = READ_ONCE(NFS_I(inode)->cache_validity) | flags;
  
- 	if (pcie_ports_native)
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index f9a7efed4969..9cf46bf7e1e7 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2921,8 +2921,12 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
-  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
-  * @bridge: Bridge to check
-  *
-- * This function checks if it is possible to move the bridge to D3.
-- * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
-+ * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
-+ *
-+ * Return: Whether it is possible to move the bridge to D3.
-+ *
-+ * The return value is guaranteed to be constant across the entire lifetime
-+ * of the bridge, including its hot-removal.
-  */
- bool pci_bridge_d3_possible(struct pci_dev *bridge)
- {
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 773715992cf0..a8d431731d22 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1590,7 +1590,7 @@ void set_pcie_hotplug_bridge(struct pci_dev *pdev)
++	/* Remove the attributes over which we have full control */
++	dst[1] &= ~FATTR4_WORD1_RAWDEV;
+ 	if (!(cache_validity & NFS_INO_INVALID_SIZE))
+ 		dst[0] &= ~FATTR4_WORD0_SIZE;
  
- 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
- 	if (reg32 & PCI_EXP_SLTCAP_HPC)
--		pdev->is_hotplug_bridge = 1;
-+		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
+ 	if (!(cache_validity & NFS_INO_INVALID_CHANGE))
+ 		dst[0] &= ~FATTR4_WORD0_CHANGE;
+-}
+ 
+-static void nfs4_bitmap_copy_adjust_setattr(__u32 *dst,
+-		const __u32 *src, struct inode *inode)
+-{
+-	nfs4_bitmap_copy_adjust(dst, src, inode);
++	if (!(cache_validity & NFS_INO_INVALID_OTHER))
++		dst[1] &= ~(FATTR4_WORD1_MODE | FATTR4_WORD1_OWNER |
++			    FATTR4_WORD1_OWNER_GROUP);
  }
  
- static void set_pcie_thunderbolt(struct pci_dev *dev)
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index ccff086316e9..d2f2a0c761b6 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -317,7 +317,14 @@ struct pci_sriov;
- struct pci_p2pdma;
- struct rcec_ea;
+ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dentry,
+@@ -3333,12 +3330,15 @@ static int nfs4_do_setattr(struct inode *inode, const struct cred *cred,
+ 		.inode = inode,
+ 		.stateid = &arg.stateid,
+ 	};
++	unsigned long adjust_flags = NFS_INO_INVALID_CHANGE;
+ 	int err;
  
--/* The pci_dev structure describes PCI devices */
-+/* struct pci_dev - describes a PCI device
-+ *
-+ * @is_hotplug_bridge:	Hotplug bridge of any kind (e.g. PCIe Hot-Plug Capable,
-+ *			Conventional PCI Hot-Plug, ACPI slot).
-+ *			Such bridges are allocated additional MMIO and bus
-+ *			number resources to allow for hierarchy expansion.
-+ * @is_pciehp:		PCIe Hot-Plug Capable bridge.
-+ */
- struct pci_dev {
- 	struct list_head bus_list;	/* Node in per-bus list */
- 	struct pci_bus	*bus;		/* Bus this device is on */
-@@ -440,6 +447,7 @@ struct pci_dev {
- 	unsigned int	is_physfn:1;
- 	unsigned int	is_virtfn:1;
- 	unsigned int	is_hotplug_bridge:1;
-+	unsigned int	is_pciehp:1;
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	/*
++	if (sattr->ia_valid & (ATTR_MODE|ATTR_UID|ATTR_GID))
++		adjust_flags |= NFS_INO_INVALID_OTHER;
++
+ 	do {
+-		nfs4_bitmap_copy_adjust_setattr(bitmask,
+-				nfs4_bitmask(server, olabel),
+-				inode);
++		nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, olabel),
++					inode, adjust_flags);
+ 
+ 		err = _nfs4_do_setattr(inode, &arg, &res, cred, ctx);
+ 		switch (err) {
+@@ -4143,8 +4143,7 @@ static int _nfs4_proc_getattr(struct nfs_server *server, struct nfs_fh *fhandle,
+ 		.rpc_resp = &res,
+ 	};
+ 
+-	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode);
+-
++	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, label), inode, 0);
+ 	nfs_fattr_init(fattr);
+ 	return nfs4_call_sync(server->client, server, &msg, &args.seq_args, &res.seq_res, 0);
+ }
+@@ -4732,8 +4731,8 @@ static int _nfs4_proc_link(struct inode *inode, struct inode *dir, const struct
+ 	}
+ 
+ 	nfs4_inode_make_writeable(inode);
+-	nfs4_bitmap_copy_adjust_setattr(bitmask, nfs4_bitmask(server, res.label), inode);
+-
++	nfs4_bitmap_copy_adjust(bitmask, nfs4_bitmask(server, res.label), inode,
++				NFS_INO_INVALID_CHANGE);
+ 	status = nfs4_call_sync(server->client, server, &msg, &arg.seq_args, &res.seq_res, 1);
+ 	if (!status) {
+ 		update_changeattr(dir, &res.cinfo, res.fattr->time_start, 0);
 -- 
 2.50.1
 
