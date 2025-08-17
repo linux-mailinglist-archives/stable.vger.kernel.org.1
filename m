@@ -1,133 +1,113 @@
-Return-Path: <stable+bounces-169883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDEDB2928F
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 11:59:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B80B29291
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 12:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42D40207BB2
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 09:59:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB4BB207C0B
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 10:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0959C221DBA;
-	Sun, 17 Aug 2025 09:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFBA2248B8;
+	Sun, 17 Aug 2025 10:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqJyb1Xi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9wy2Jba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD247218ACA
-	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 09:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AC21ADFE4;
+	Sun, 17 Aug 2025 10:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755424750; cv=none; b=ILUASC+k2ky1B81gFdmPCInCW5cbcmHFx3MvFYiw5iEtYeTON1UYLR4AeZPOnx0ngL8s/Jg/8WCrcWBtiLz9Ci398Xl41hqgSr76yAWsvUccQwApJCIaxp2QRfTg3J/+A03c1P2+/wbUbRUpS7A7rBW16IDv7pC2wTJo+5TDMtA=
+	t=1755424842; cv=none; b=eXPOWWLOb+JH1tCMOF8463aiVZT2Z5q5jDJBlLno++vv8HBCOYsKkLtJB7GFhteKGbWfqjjkvnzfOhwJ6znAMu6C4zephQ6EoQdjOQJhCUUtYeCoP7biEefiC4Ts4VoB9+fLlqG8Q1Ij15plOm2CLkLwgMorZsSKd3s8bz2o9L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755424750; c=relaxed/simple;
-	bh=+H6AH/jBx1aql8TlxV63WqeLnOU3+r3oxFe6hU9liTs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AahXExzpV+6TJklHrrtJ0m4MaR8GavsKt33vnRFBKnZ0ihUM84/mMqqTWRcrVbLbUdZ3QIoDLGUj0Gt1FkW4bCh5rT/H5TTzrE2qE4r2AcqIe7y3HynYXwlIOR9kO8hKmjLLqWjNpiWYcPbR+DEknHTcdZuJg0dYiZjIvLr5hXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqJyb1Xi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7A0C4CEEB;
-	Sun, 17 Aug 2025 09:59:08 +0000 (UTC)
+	s=arc-20240116; t=1755424842; c=relaxed/simple;
+	bh=lSiCBzBEvtd04BW3HYknPJpAutHVmPwDd22OHkFFny0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T+oc3QtMYynPLJA0TfMcqb5sza/lKNJ4NaM6dqFyDTVZm1Nv2EGDpcLoPD6zOmjrKPXduJxPMBfTg9t6B5xn9ejlCNegyOWVbnmerTMNvJVQPU6/uXVTiu/DmsbWSbaasUDajOiaW4RB9TJPMwbs+nxDRG7lzEJsNzH7RsLHg2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9wy2Jba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EF2C4CEEB;
+	Sun, 17 Aug 2025 10:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755424749;
-	bh=+H6AH/jBx1aql8TlxV63WqeLnOU3+r3oxFe6hU9liTs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=RqJyb1XiRqVoiuAEj5C+mBKe9T4mIe/arV6LRSiolLFukMewldhowZ7A/aCMxkW6+
-	 an9o+5qXZYPEB2GYcInrKsO422s16s/EM6Vw4DSwAaDPOZCIxqlZkvnJgLLCdH8SIA
-	 +gYFWZfN5pnR/ohk7nyR4zl1F/fbLz2M/d2SE9eg=
-Subject: FAILED: patch "[PATCH] smb: client: let send_done() cleanup before calling" failed to apply to 5.10-stable tree
-To: metze@samba.org,longli@microsoft.com,smfrench@gmail.com,stfrench@microsoft.com,tom@talpey.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Aug 2025 11:58:58 +0200
-Message-ID: <2025081757-moonwalk-backpedal-fe00@gregkh>
+	s=korg; t=1755424841;
+	bh=lSiCBzBEvtd04BW3HYknPJpAutHVmPwDd22OHkFFny0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T9wy2Jbaghanj4R+70yLqB4uLPg2UJW6RBfW0whiB6UAdJFi/rSwM+AitkUJzhP9t
+	 aOmvLwnKoDje2FR6cmvAkXPld+UUyD+reMawmznB2O04C6sJYJuycpnMdmMWFY11Ae
+	 du2m3KFTgpuVlgWtVeWUwKaHhA7JgjeBdM4AQlTM=
+Date: Sun, 17 Aug 2025 12:00:25 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Stefan Metzmacher <metze@samba.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Steve French <smfrench@gmail.com>, Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.16 563/627] smb: client: let send_done() cleanup before
+ calling smbd_disconnect_rdma_connection()
+Message-ID: <2025081719-parcel-oblong-5ffd@gregkh>
+References: <20250812173419.303046420@linuxfoundation.org>
+ <20250812173453.306156678@linuxfoundation.org>
+ <527dc1db-762e-4aa0-82a2-f147a76f8133@samba.org>
+ <2025081325-movable-popcorn-4eb8@gregkh>
+ <6acc8228-da51-4528-87c4-4cb2c96d3e8a@samba.org>
+ <2025081301-carpool-gully-cbfc@gregkh>
+ <c582ccee-9425-4f4e-a04a-c86e9992e917@samba.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c582ccee-9425-4f4e-a04a-c86e9992e917@samba.org>
 
+On Sun, Aug 17, 2025 at 11:45:31AM +0200, Stefan Metzmacher wrote:
+> Hi Greg,
+> 
+> > > > > Am 12.08.25 um 19:34 schrieb Greg Kroah-Hartman:
+> > > > > > 6.16-stable review patch.  If anyone has any objections, please let me know.
+> > > > > > 
+> > > > > > ------------------
+> > > > > > 
+> > > > > > From: Stefan Metzmacher <metze@samba.org>
+> > > > > > 
+> > > > > > [ Upstream commit 5349ae5e05fa37409fd48a1eb483b199c32c889b ]
+> > > > > 
+> > > > > This needs this patch
+> > > > > https://lore.kernel.org/linux-cifs/20250812164506.29170-1-metze@samba.org/T/#u
+> > > > > as follow up fix that is not yet upstream.
+> > > > > 
+> > > > > The same applies to all other branches (6.15, 6.12, 6.6, ...)
+> > > > 
+> > > > Thanks, now queued up.
+> > > 
+> > > Even if it's not upstream yet?
+> > > I thought the policy is that upstream is required first...
+> > > 
+> > > It's only here
+> > > https://git.samba.org/?p=sfrench/cifs-2.6.git;a=shortlog;h=refs/heads/for-next
+> > > as
+> > > https://git.samba.org/?p=sfrench/cifs-2.6.git;a=commitdiff;h=8b2b8a6a5827848250c0caf075b23256bab4ac88
+> > > 
+> > > But that commit hash can change on rebase.
+> > 
+> > Ah, I thought since this was in linux-next it would not rebase.  Having
+> > public trees that rebase is dangerous...
+> > 
+> > Anyway, I'll go drop both of these now, please let us know when you want
+> > these added back.
+> 
+> It landed as 8c48e1c7520321cc87ff651e96093e2f412785fb, so
+> 5349ae5e05fa37409fd48a1eb483b199c32c889b can be backported
+> with 8c48e1c7520321cc87ff651e96093e2f412785fb being the fixup.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 5349ae5e05fa37409fd48a1eb483b199c32c889b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081757-moonwalk-backpedal-fe00@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 5349ae5e05fa37409fd48a1eb483b199c32c889b Mon Sep 17 00:00:00 2001
-From: Stefan Metzmacher <metze@samba.org>
-Date: Mon, 4 Aug 2025 14:10:12 +0200
-Subject: [PATCH] smb: client: let send_done() cleanup before calling
- smbd_disconnect_rdma_connection()
-
-We should call ib_dma_unmap_single() and mempool_free() before calling
-smbd_disconnect_rdma_connection().
-
-And smbd_disconnect_rdma_connection() needs to be the last function to
-call as all other state might already be gone after it returns.
-
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index 754e94a0e07f..e99e783f1b0e 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -281,18 +281,20 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
- 		request, wc->status);
- 
--	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
--		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
--			wc->status, wc->opcode);
--		smbd_disconnect_rdma_connection(request->info);
--	}
--
- 	for (i = 0; i < request->num_sge; i++)
- 		ib_dma_unmap_single(sc->ib.dev,
- 			request->sge[i].addr,
- 			request->sge[i].length,
- 			DMA_TO_DEVICE);
- 
-+	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
-+			wc->status, wc->opcode);
-+		mempool_free(request, info->request_mempool);
-+		smbd_disconnect_rdma_connection(info);
-+		return;
-+	}
-+
- 	if (atomic_dec_and_test(&request->info->send_pending))
- 		wake_up(&request->info->wait_send_pending);
- 
-
 
