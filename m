@@ -1,127 +1,85 @@
-Return-Path: <stable+bounces-169889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BA2B2935E
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 15:51:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FB8B29368
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 16:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1CE0207DE1
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 13:51:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 481814E476B
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 14:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C416A28F933;
-	Sun, 17 Aug 2025 13:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D1629CB24;
+	Sun, 17 Aug 2025 14:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLrRscUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcY7eKah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810A228ECF9;
-	Sun, 17 Aug 2025 13:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAD115D1
+	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 14:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755438680; cv=none; b=V0/LAbhpShyBjcsJPQuAepP0WR04y8G1V8lV8QGRXcabyA4XsPWnoUoCUGsKznVOlf4kb0OIsQQnZafGl7dapxm1qbYy3NcBNqFfAcBH0pc9k8K1NGi70xmG9rfAYrl2pYluiiPr8lHgYoMcMHnH1TzvIolq0/pTM3TZHZzNQPk=
+	t=1755439524; cv=none; b=upJ99b5ZO9u1xHor27uigkafmVEXhY1uTcucLVDruripZWhCUvSXSC5kB8y7FjVUjphkY3KbSUx7HQuRuJ3pp8qW8W64jYZZe7lddX2M3PZpcGY7FdX1rB5G4pM0s47zcXESBltGMb+CaI3zYGdGb2VQ0gBEHVu8Z8blZeMuuA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755438680; c=relaxed/simple;
-	bh=2iXWa7hwO2t88PD+wbv+GpbMBV06YRmCt2vdXsEX3ag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+1ARm0YOFQ7RFGbFZ5FUUq8spEqlHZKBRqqe1MuxxObJvaobJTcKdVvFbWjeHwszFecE2tJqJNkn1AKdUDH+2ey8G9dGOyffA9Goa6hgLgSQ+H3UQiuNFy9dq4F4WyIN8RnZPcDfXZ0NAMbEyMEYuMnINZwa3B60iRzDMhl/sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLrRscUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4697DC4CEEB;
-	Sun, 17 Aug 2025 13:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755438680;
-	bh=2iXWa7hwO2t88PD+wbv+GpbMBV06YRmCt2vdXsEX3ag=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLrRscUGoscmWLHDVwGDD1ImiR8vFWNbfknhrRc5byvNqvKZsqJsrnLHWfzO56K4c
-	 daFpJZLq3SWxlW/lJu5gRdNhOslan3bjG2c6OlmhKJGZb3i5lR1h2bxC50cz2zrQ2l
-	 fryItI0c8wWMA0Hh+gqAYG7O+qqK9DsFP5S9+o1m1ATB/MzP8+gMtgWQH2a1luk0RA
-	 5773/S9kMdqXjxi6D0VMvRfM9ItbRDM7m3Y5g65yFYvg5I+eYOv2hTQQmw2oeFyAw9
-	 KXDF50ekLB/lzqJjULc7wXD/O5cC9Pnmjd8IgHns2vMQm+2893ISkfOv/XQN5TxKe5
-	 ev+ZLjwq1TZ4g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Stefan Metzmacher <metze@samba.org>,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
-Date: Sun, 17 Aug 2025 09:51:13 -0400
-Message-ID: <20250817135113.1474958-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081751-drench-clammy-f8dd@gregkh>
-References: <2025081751-drench-clammy-f8dd@gregkh>
+	s=arc-20240116; t=1755439524; c=relaxed/simple;
+	bh=PJ17ZBM8vnBMeQbb0Ut90UvV0t+Aze88KGdtfeCQtHk=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A0N6auuoSM+WYjWBSc2247acTKrnrqeJkUFIzJlI/JByLaF1UgBKziZW3VDrhMnK4OTWNyurANf0L5qV2YlrVB0n+XjKoH4wWrN7ciwQelF0jHNvkuXtl8LW03F5jMPBtVH7K43mTQec84C0rHlnuXQuCA8YPqiYeQY0EhbWVqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcY7eKah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695CBC4CEEB;
+	Sun, 17 Aug 2025 14:05:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755439523;
+	bh=PJ17ZBM8vnBMeQbb0Ut90UvV0t+Aze88KGdtfeCQtHk=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=PcY7eKahOqiTYt5oPuXr/3kpH3/QJm3pg/3q4mC8MIZoWilGyW915w5Xe1H/vGmuB
+	 eCcxYkYW1RRTQ7NVn1epVNZMr76KhE+pv+clS130NPPu2j5Sn7puzVDZnAP6iMk+Qc
+	 /VU2EFAN13kLQUX0pG7Z+wev1YGnwodFQC7A5IJs=
+Date: Sun, 17 Aug 2025 16:05:20 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [REGRESSION] [BISECTED] linux-6.6.y and linux-6.12.y: proc: use
+ the same treatment to check proc_lseek as ones for proc_read_iter et.al
+Message-ID: <2025081751-accurate-eradicate-9456@gregkh>
+References: <20250815195616.64497967@chagall.paradoxon.rec>
+ <2025081615-anew-willpower-adca@gregkh>
+ <20250817134329.GC2771@pc21.mareichelt.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250817134329.GC2771@pc21.mareichelt.com>
 
-From: Stefan Metzmacher <metze@samba.org>
+On Sun, Aug 17, 2025 at 03:43:29PM +0200, Markus Reichelt wrote:
+> * Greg KH <gregkh@linuxfoundation.org> wrote:
+> 
+> > > I have bisected the issue to the commits
+> > > 33c778ea0bd0fa62ff590497e72562ff90f82b13 in 6.6.102 and
+> > > fc1072d934f687e1221d685cf1a49a5068318f34 in 6.12.42 which are both the
+> > > same change code-wise (upstream commit
+> > > ff7ec8dc1b646296f8d94c39339e8d3833d16c05).
+> > > 
+> > > Reverting these commits makes xosview and gkrellm "work" again as in
+> > > they both show network traffic again.
+> > 
+> > Is this also an issue in 6.16.1 and 6.17-rc1?
+> 
+> I can confirm the issue with gkrellm on 6.16.1 (and 6.15.10 fwiw).
+> 
 
-[ Upstream commit 5349ae5e05fa37409fd48a1eb483b199c32c889b ]
+Great, we are bug compatible!
 
-We should call ib_dma_unmap_single() and mempool_free() before calling
-smbd_disconnect_rdma_connection().
+Please work with the developers of those changes to resolve the
+regression in Linus's tree and then we can backport the needed fixes.
 
-And smbd_disconnect_rdma_connection() needs to be the last function to
-call as all other state might already be gone after it returns.
+thanks,
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Replaced `info` with `request->info` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/smb/client/smbdirect.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index d47eae133a20..f50cddd256bb 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -273,18 +273,21 @@ static void send_done(struct ib_cq *cq, struct ib_wc *wc)
- 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
- 		request, wc->status);
- 
--	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
--		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
--			wc->status, wc->opcode);
--		smbd_disconnect_rdma_connection(request->info);
--	}
--
- 	for (i = 0; i < request->num_sge; i++)
- 		ib_dma_unmap_single(request->info->id->device,
- 			request->sge[i].addr,
- 			request->sge[i].length,
- 			DMA_TO_DEVICE);
- 
-+	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+		struct smbd_connection *info = request->info;
-+		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
-+			wc->status, wc->opcode);
-+		mempool_free(request, info->request_mempool);
-+		smbd_disconnect_rdma_connection(info);
-+		return;
-+	}
-+
- 	if (atomic_dec_and_test(&request->info->send_pending))
- 		wake_up(&request->info->wait_send_pending);
- 
--- 
-2.50.1
-
+greg k-h
 
