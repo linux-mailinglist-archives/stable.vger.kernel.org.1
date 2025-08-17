@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-169875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68523B29127
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 04:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE49CB29128
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 04:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83DF1964631
-	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 02:28:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E9FE196464B
+	for <lists+stable@lfdr.de>; Sun, 17 Aug 2025 02:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F1F1D61BB;
-	Sun, 17 Aug 2025 02:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB7F1D88D7;
+	Sun, 17 Aug 2025 02:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rGSN9SBa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWQD7dlH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631C715E96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBC515E96
 	for <stable@vger.kernel.org>; Sun, 17 Aug 2025 02:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755397696; cv=none; b=A2exfH1G8gBvz2b3Yf3GRnmpsjxKJLPPd28doQnkqCaMqIVTiSDLdVmSDn3cUTpWimgUO/X/ZYuuuGdRtOlN09+rr9w/gP4YDhoa7o11SW+l2i0WFn5j6hduE6Fc9qxHSTUPW8DDkpH5liKqpU5UuFUI2I9dujoDR+mGB3vAxWs=
+	t=1755397697; cv=none; b=m0FnsaejediFrHWMyq5AaIEcLQrgb8RzY1OaRMGCoRlZn9O4pUKHdhd5KFWZuBUr6EO9ElPapsSZCGxT2Kfw+u96pGph8juo8HyftgyPTOpIQXJZv9h+u/pE1CyOCGd366lWEM3PMe/mXx3mC83MUKYOSLQOJuXwLx0bAxStsWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755397696; c=relaxed/simple;
-	bh=YFA11S0pguit9DsquA+Hx4Q8cKh+waPfedqQmc/WsWk=;
+	s=arc-20240116; t=1755397697; c=relaxed/simple;
+	bh=uUXtbSSNvWOiQ8Acy8ydM2wE6j+KYoHxrpW8DAIN1dM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWE5SaRUdpZABBiK7P/tA8uTJ69xn2txfNBOyp5TznkWqgCEsrMCRRhMhy7EhqARpwYaUBxs3ap0k/mI21NIhyF7N4Joxr8h97/P1jeyPOymL7DvNoKVgoIrFC84+Gu0828mtveZy5Ml+UOYWKar9GO+vXzr9CDDHgPVgnnd4nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rGSN9SBa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B8DC4CEF6;
-	Sun, 17 Aug 2025 02:28:15 +0000 (UTC)
+	 MIME-Version; b=H4SmSOoygYM8lhzulxeL2u6dmW9U+0gmFCceq3n/nk1Ad50Sle2ZzO8v4lj+AZCAOaPHxHL4v7oMaFNFxPgZIEpvtnE6COu58ZsoIhJsYZ+hSq+S0of6dXOPN28ZJez0Uc8jaZSpwbsem8UpwGHg11GX27MOCwLQpSnDC3Eia80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWQD7dlH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335BBC4CEF5;
+	Sun, 17 Aug 2025 02:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755397695;
-	bh=YFA11S0pguit9DsquA+Hx4Q8cKh+waPfedqQmc/WsWk=;
+	s=k20201202; t=1755397696;
+	bh=uUXtbSSNvWOiQ8Acy8ydM2wE6j+KYoHxrpW8DAIN1dM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGSN9SBarZDthJLR8qEl0g8dLmndliNgkqoLkjvKXN70cSWw+jepKjJUA2L4FfszO
-	 Ys+2zfu8UnkrW5/fZuRH2QKLN4C9aruj38p9wbwQaQCTxqhr3faoT63VZf6DmlF+HM
-	 sDMW7+q2v/kQ4LG69e+oJpULgXAf18PDwTrZTww0dYdu+E6sBIXVC6k4aMlfUfl0Xo
-	 7e/D6O7qQ3sypC06x/EjbipGhgkLWdbu5ssng02b4LxXytLYRcxfmt3Ro3iGlWGKES
-	 YODRxcomVF6ZqNiBb3xmfDTtl4HsOlnmDIutFZsEcU6m0dwrS4XcyOpZGFJQwX9zRv
-	 f4XajUrJGQyaw==
+	b=kWQD7dlH1OzMrHvCepmwarcH8fEUoDdMLRWKsZoaZsgxh+5RWAC1p60HyZDiKEyja
+	 csaH6l1eDpYcgoeFZR5zzx/IKZuNbnVCMWhVYak8D5wQj3IciCURkOeb8L4AaI6YpO
+	 I6TqtAfm5QgG+lL48hbgW4gvzGQ9qierL2LJktt0nB6oMOQXIFQj2OuEDEvZxP254g
+	 vQ7eKXHCZCbFHdMg6yUKFOdm9e/7rkWAlk2ACJUI1heyy035J3T4kK3vWOgKtEUAX6
+	 LggbG/Yuovy9Pv5LFhrepiDFiYOOlbB5ODtcoeN0zMF0tzyV92TQIBNkZjXtRtZyAn
+	 eNaWm6I8QmN2A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/3] NFS: Fix up handling of outstanding layoutcommit in nfs_update_inode()
-Date: Sat, 16 Aug 2025 22:28:11 -0400
-Message-ID: <20250817022812.1338100-2-sashal@kernel.org>
+Subject: [PATCH 5.4.y 3/3] NFS: Fix the setting of capabilities when automounting a new filesystem
+Date: Sat, 16 Aug 2025 22:28:12 -0400
+Message-ID: <20250817022812.1338100-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250817022812.1338100-1-sashal@kernel.org>
 References: <2025081556-illusive-crawlers-8c0e@gregkh>
@@ -62,36 +63,157 @@ Content-Transfer-Encoding: 8bit
 
 From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 709fa5769914b377af87962bbe4ff81ffb019b2d ]
+[ Upstream commit b01f21cacde9f2878492cf318fee61bf4ccad323 ]
 
-If there is an outstanding layoutcommit, then the list of attributes
-whose values are expected to change is not the full set. So let's
-be explicit about the full list.
+Capabilities cannot be inherited when we cross into a new filesystem.
+They need to be reset to the minimal defaults, and then probed for
+again.
 
+Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a new filesystem")
+[ adapted to older fs_context-less API structures ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/inode.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/nfs/client.c     | 44 ++++++++++++++++++++++++++++++++++++++++----
+ fs/nfs/internal.h   |  1 +
+ fs/nfs/nfs4client.c | 13 +------------
+ fs/nfs/nfs4proc.c   |  2 ++
+ 4 files changed, 44 insertions(+), 16 deletions(-)
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 0dc53732b5c9..4f0d2fc810e4 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1869,7 +1869,11 @@ static int nfs_update_inode(struct inode *inode, struct nfs_fattr *fattr)
- 	nfs_wcc_update_inode(inode, fattr);
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index 323cef064f2a..bdece12af53e 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -646,6 +646,42 @@ struct nfs_client *nfs_init_client(struct nfs_client *clp,
+ }
+ EXPORT_SYMBOL_GPL(nfs_init_client);
  
- 	if (pnfs_layoutcommit_outstanding(inode)) {
--		nfsi->cache_validity |= save_cache_validity & NFS_INO_INVALID_ATTR;
-+		nfsi->cache_validity |=
-+			save_cache_validity &
-+			(NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
-+			 NFS_INO_INVALID_MTIME | NFS_INO_INVALID_SIZE |
-+			 NFS_INO_REVAL_FORCED);
- 		cache_revalidated = false;
- 	}
++static void nfs4_server_set_init_caps(struct nfs_server *server)
++{
++#if IS_ENABLED(CONFIG_NFS_V4)
++	/* Set the basic capabilities */
++	server->caps = server->nfs_client->cl_mvops->init_caps;
++	if (server->flags & NFS_MOUNT_NORDIRPLUS)
++		server->caps &= ~NFS_CAP_READDIRPLUS;
++
++	/*
++	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
++	 * authentication.
++	 */
++	if (nfs4_disable_idmapping &&
++	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
++		server->caps |= NFS_CAP_UIDGID_NOMAP;
++#endif
++}
++
++void nfs_server_set_init_caps(struct nfs_server *server)
++{
++	switch (server->nfs_client->rpc_ops->version) {
++	case 2:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		break;
++	case 3:
++		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
++		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
++			server->caps |= NFS_CAP_READDIRPLUS;
++		break;
++	default:
++		nfs4_server_set_init_caps(server);
++		break;
++	}
++}
++EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
++
+ /*
+  * Create a version 2 or 3 client
+  */
+@@ -683,9 +719,6 @@ static int nfs_init_server(struct nfs_server *server,
+ 	/* Initialise the client representation from the mount data */
+ 	server->flags = data->flags;
+ 	server->options = data->options;
+-	server->caps |= NFS_CAP_HARDLINKS|NFS_CAP_SYMLINKS|NFS_CAP_FILEID|
+-		NFS_CAP_MODE|NFS_CAP_NLINK|NFS_CAP_OWNER|NFS_CAP_OWNER_GROUP|
+-		NFS_CAP_ATIME|NFS_CAP_CTIME|NFS_CAP_MTIME;
  
+ 	if (data->rsize)
+ 		server->rsize = nfs_block_size(data->rsize, NULL);
+@@ -710,6 +743,8 @@ static int nfs_init_server(struct nfs_server *server,
+ 	if (error < 0)
+ 		goto error;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* Preserve the values of mount_server-related mount options */
+ 	if (data->mount_server.addrlen) {
+ 		memcpy(&server->mountd_address, &data->mount_server.address,
+@@ -834,7 +869,6 @@ void nfs_server_copy_userdata(struct nfs_server *target, struct nfs_server *sour
+ 	target->acregmax = source->acregmax;
+ 	target->acdirmin = source->acdirmin;
+ 	target->acdirmax = source->acdirmax;
+-	target->caps = source->caps;
+ 	target->options = source->options;
+ 	target->auth_info = source->auth_info;
+ 	target->port = source->port;
+@@ -1042,6 +1076,8 @@ struct nfs_server *nfs_clone_server(struct nfs_server *source,
+ 	if (error < 0)
+ 		goto out_free_server;
+ 
++	nfs_server_set_init_caps(server);
++
+ 	/* probe the filesystem info for this server filesystem */
+ 	error = nfs_probe_fsinfo(server, fh, fattr_fsinfo);
+ 	if (error < 0)
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index bfb53756654d..46fc42d575ce 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -172,6 +172,7 @@ nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
+ 				struct nfs4_sessionid *, u32);
+ extern struct nfs_server *nfs_create_server(struct nfs_mount_info *,
+ 					struct nfs_subversion *);
++extern void nfs_server_set_init_caps(struct nfs_server *);
+ extern struct nfs_server *nfs4_create_server(
+ 					struct nfs_mount_info *,
+ 					struct nfs_subversion *);
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index 1f4bdcda3fda..eeab44727a76 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1011,18 +1011,7 @@ static int nfs4_server_common_setup(struct nfs_server *server,
+ 	if (error < 0)
+ 		goto out;
+ 
+-	/* Set the basic capabilities */
+-	server->caps |= server->nfs_client->cl_mvops->init_caps;
+-	if (server->flags & NFS_MOUNT_NORDIRPLUS)
+-			server->caps &= ~NFS_CAP_READDIRPLUS;
+-	/*
+-	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
+-	 * authentication.
+-	 */
+-	if (nfs4_disable_idmapping &&
+-			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
+-		server->caps |= NFS_CAP_UIDGID_NOMAP;
+-
++	nfs_server_set_init_caps(server);
+ 
+ 	/* Probe the root fh to retrieve its FSID and filehandle */
+ 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 2145360d81ac..5f8de86b2798 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3884,6 +3884,8 @@ int nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *fhandle)
+ 		.interruptible = true,
+ 	};
+ 	int err;
++
++	nfs_server_set_init_caps(server);
+ 	do {
+ 		err = nfs4_handle_exception(server,
+ 				_nfs4_server_capabilities(server, fhandle),
 -- 
 2.50.1
 
