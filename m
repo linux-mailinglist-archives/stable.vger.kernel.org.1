@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F280B2A398
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6C5B2A95C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8378D1B602BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDC781BA1FBA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967D431B11A;
-	Mon, 18 Aug 2025 13:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB4332A3D8;
+	Mon, 18 Aug 2025 14:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wc4Quvht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWsewurm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B40C3074AE;
-	Mon, 18 Aug 2025 13:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF454223337;
+	Mon, 18 Aug 2025 14:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522311; cv=none; b=G/sNiQlFCEM43ZlhEyupo2F/gLfoIGMEgHUNec4CUmPHPTN+bapZQFblqJN2esMy3zyvxgB8C4KfmW1waPs6vpTQNEiEK8eUeJkJm0Fxg3+pbvpb+Nmv1t1OscY3ZlA/ZUMtlYZNaMXMoI0R4i7If7ZMoSJoxJGJlJ+bIgz9pe4=
+	t=1755525618; cv=none; b=gsgCT8StUURyNCP4sXe947+8GxocI3P/f1XgVLkYl1CVwF1Azp0lzxpC692coyPOQz4YTwvS+XFHg7OdZmWPAdriiKqanePA7XBR5w1h+1lZ9+LQLEsRKHsf1RghAsUykMIfxQoY09aUwCrqX89AtiItonDLZPMCCS+SMucVC1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522311; c=relaxed/simple;
-	bh=C4pROU8YVTLfVQSfgA09UPmMNH9m3qqw5LCnzk+HssY=;
+	s=arc-20240116; t=1755525618; c=relaxed/simple;
+	bh=OV82ttCaOUVeJ538w5Xzr3j3QmefR1tt5Y5Ql7BCJ0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ay8P8IvuWpxqMwe5jYQuDgpNrxervNQUNClwTZppRqIOQkoDuEZAmuAjHT3WEtMLonDfLw5KhzOdV2RCu7+vEVIVjFeT1YIFfm64SmDzL49fxHB/a9JdT0n0QDPTxLTsP3mL0zPGeWPXP6Jbqy0c+e7Sjj7GsIqsJvKaxDY8MiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wc4Quvht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA3BC4CEEB;
-	Mon, 18 Aug 2025 13:05:10 +0000 (UTC)
+	 MIME-Version; b=kbEkfO4kHRjHX/TbedwCvN8LNsLVlLvzAzO8q6aiz0UG58rOS+vPOMJtz+l6Mclpwsj6pTzTkkTpxgZ3CpMbEJYEWKY00n1vs/HTj0bBOKT8aOvOgEnULjswBezvecsgeuIJwSK/563/rDqrIdcxK1FvUw9gonMJ4Zr6SRi3dn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWsewurm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F01BC4CEEB;
+	Mon, 18 Aug 2025 14:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522311;
-	bh=C4pROU8YVTLfVQSfgA09UPmMNH9m3qqw5LCnzk+HssY=;
+	s=korg; t=1755525617;
+	bh=OV82ttCaOUVeJ538w5Xzr3j3QmefR1tt5Y5Ql7BCJ0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wc4QuvhtQqapvt7W2bRaKOfUGpcFBPhDY5EJBzHzB+zSfGjlTvQm7GJucFdDVlCxG
-	 uBzajh8vw70mg56FXajsV9UmLDpQANA6/GZyp5iYSZVom6OVeliEF83E2G3HCySlt6
-	 sx4AbEIQiovKnbpyFITCO5PheBb0uPtqpgVtOUVQ=
+	b=EWsewurmEQz7/ql1wVjeihthsyQ9vSRjHSjKO95WUK5WTPIS91UicVwmXUUB5LwwK
+	 SaXCf8wgOidjbXMIuh3cjmTdJumT20Dq7GRyl/jogqdp3H/V/oRqJ2XiOJQfSMdvdU
+	 8SjFA6drqg9Yu/NHAHEeDV4m6KPYw+fgYsv6nlQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongzhen Zhang <zhangyongzhen@kylinos.cn>,
-	Helge Deller <deller@gmx.de>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 278/444] fbdev: fix potential buffer overflow in do_register_framebuffer()
+Subject: [PATCH 6.16 317/570] powerpc: floppy: Add missing checks after DMA map
 Date: Mon, 18 Aug 2025 14:45:04 +0200
-Message-ID: <20250818124459.392857528@linuxfoundation.org>
+Message-ID: <20250818124518.075135683@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 523b84dc7ccea9c4d79126d6ed1cf9033cf83b05 ]
+[ Upstream commit cf183c1730f2634245da35e9b5d53381b787d112 ]
 
-The current implementation may lead to buffer overflow when:
-1.  Unregistration creates NULL gaps in registered_fb[]
-2.  All array slots become occupied despite num_registered_fb < FB_MAX
-3.  The registration loop exceeds array bounds
+The DMA map functions can fail and should be tested for errors.
 
-Add boundary check to prevent registered_fb[FB_MAX] access.
-
-Signed-off-by: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250620075602.12575-1-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbmem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/floppy.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index eca2498f2436..6a033bf17ab6 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -403,6 +403,9 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 		if (!registered_fb[i])
- 			break;
+diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
+index f8ce178b43b7..34abf8bea2cc 100644
+--- a/arch/powerpc/include/asm/floppy.h
++++ b/arch/powerpc/include/asm/floppy.h
+@@ -144,9 +144,12 @@ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
+ 		bus_addr = 0;
+ 	}
  
-+	if (i >= FB_MAX)
-+		return -ENXIO;
-+
- 	if (!fb_info->modelist.prev || !fb_info->modelist.next)
- 		INIT_LIST_HEAD(&fb_info->modelist);
+-	if (!bus_addr)	/* need to map it */
++	if (!bus_addr) {	/* need to map it */
+ 		bus_addr = dma_map_single(&isa_bridge_pcidev->dev, addr, size,
+ 					  dir);
++		if (dma_mapping_error(&isa_bridge_pcidev->dev, bus_addr))
++			return -ENOMEM;
++	}
  
+ 	/* remember this one as prev */
+ 	prev_addr = addr;
 -- 
 2.39.5
 
