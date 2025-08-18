@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4781EB2A382
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C37B2A90B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEABE5E2CFC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87043581083
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B2B31E0F2;
-	Mon, 18 Aug 2025 13:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7742F322552;
+	Mon, 18 Aug 2025 13:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gn2T6Cs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWHswkYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F61230D0D;
-	Mon, 18 Aug 2025 13:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3520927B358;
+	Mon, 18 Aug 2025 13:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522290; cv=none; b=WD4NODFuQd2/2nhCVSXD2iGxfBABcyAm6dEG1j0tGI/JsLY+DJd6c25kUdLMlvGmfDw1ldJvbLbLs8VcV+Ijp78hdWzzrrAZWChI3xnF6HWFaX7KJ6ZFj8TC8ZpxLwbj4x1O5d8Us8q7IUPnXJYV4DxeJ5h9XJyZE53Hn2Dl2qo=
+	t=1755525547; cv=none; b=rwjYnCNF1MKT+WJs+Hjsl23uCcM5r9q51qW8hETG03/fKCcgnDa0M8SxIt8kvE1a1ieE8NzZjAmlLGDEO7MhH3cUxXiUrKCJCoBY+iMNorRIqHbFnPy5E8ueFS8REy6CKXuPMJzGhCHdUB2D6zoOcNXBk8hi968n3VX8551MvOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522290; c=relaxed/simple;
-	bh=9GxcHCa9E+brpnU5g7R8LXRWfruuQaXzFTKSm2LNMms=;
+	s=arc-20240116; t=1755525547; c=relaxed/simple;
+	bh=Gk16XEps7z2W5oGGPkWamH1dP9b+KopYJg8HZn75R10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImMFOs353Qu9KSl6YPTSnom299LLsDqizbwaEANEYnNEz0D7s2uyt1XEqkwJrykaWeyvO2nvv6JXMhU73BdArIdOBEQQehi46ZeDzHcs/qWbdbM2WDU26EpZpyvvTyn5OiMn9mdD6EZpGYZv5wa/V/kCgKuS4JgRZ3/+hALcSPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gn2T6Cs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EEEC4CEEB;
-	Mon, 18 Aug 2025 13:04:49 +0000 (UTC)
+	 MIME-Version; b=rAbwTPe7GZg3jw56KeWL9ue4yG+yI7MRwUewDE+RHwwUgfkqlKBM4eIle9+AK6Xr5adFdl3m992Q0x1YDE0YKjarC+QxQVFDghSrasU+eTUy+iMhdEkvZ1DRWGu2RIUBcFh5a7hgZPm02UEU3vUXBMhZKK/pVEaBioNC8oSCeR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWHswkYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987C5C4CEEB;
+	Mon, 18 Aug 2025 13:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522290;
-	bh=9GxcHCa9E+brpnU5g7R8LXRWfruuQaXzFTKSm2LNMms=;
+	s=korg; t=1755525547;
+	bh=Gk16XEps7z2W5oGGPkWamH1dP9b+KopYJg8HZn75R10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gn2T6CsLaiXFHkcaDtsr5DJ3CSFTKqgFADgtTk5phHbte9wX7epw+r/FMqWlZsXH
-	 b3tqcJz0TX9cfXxJ0J73V0PNCBF3BqJbjfYdKoXAJCGP6yPtTNvL2RJtB2V1ODzx2i
-	 odtt1ToJLJrb5Neo+a2QEt4LNjgLxRxtCQOvC3rg=
+	b=QWHswkYzm9qT1WD8G9Yww/LgQBgsRcHRJf0L35vg04ZHbfYAtK1cwSRSDXrvti1XK
+	 YCKHyeer2GqXZUqOfehgqD+8V1qBpGrI9nPjA8Cpg9ZMCTawccUUWCT1ZO4Fqeee/8
+	 d/EXnElOfKts8gRGWIQKcO4C0lplcvuXuTuplHCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/444] wifi: rtw89: scan abort when assign/unassign_vif
-Date: Mon, 18 Aug 2025 14:44:41 +0200
-Message-ID: <20250818124458.381354885@linuxfoundation.org>
+Subject: [PATCH 6.16 295/570] drm/panel: raydium-rm67200: Move initialization from enable() to prepare stage
+Date: Mon, 18 Aug 2025 14:44:42 +0200
+Message-ID: <20250818124517.215844091@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 3db8563bac6c34018cbb96b14549a95c368b0304 ]
+[ Upstream commit 691674a282bdbf8f8bce4094369a2d1e4b5645e9 ]
 
-If scan happen during start_ap, the register which control TX might be
-turned off during scan. Additionally, if set_channel occurs during scan
-will backup this register and set to firmware after set_channel done.
-When scan complete, firmware will also set TX by this register, causing
-TX to be disabled and beacon can't be TX. Therefore, in assign/unassign_vif
-call scan abort before set_channel to avoid scan racing with set_channel.
+The DSI host has different modes in prepare() and enable() functions,
+prepare() is in LP command mode and enable() is in HS video mode.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250610130034.14692-13-pkshih@realtek.com
+>From our experience, generally the initialization sequence needs to be
+sent in the LP command mode.
+
+Move the setup init function from enable() to prepare() to fix a display
+shift on rk3568 evb.
+
+Tested on rk3568/rk3576/rk3588 EVB.
+
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250618091520.691590-1-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/panel/panel-raydium-rm67200.c | 22 ++++++-------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index 4df4e04c3e67..559aa60e3df0 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.c
-+++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -2682,6 +2682,9 @@ int rtw89_chanctx_ops_assign_vif(struct rtw89_dev *rtwdev,
- 	rtwvif_link->chanctx_assigned = true;
- 	cfg->ref_count++;
+diff --git a/drivers/gpu/drm/panel/panel-raydium-rm67200.c b/drivers/gpu/drm/panel/panel-raydium-rm67200.c
+index 64b685dc11f6..6d4d00d4cd74 100644
+--- a/drivers/gpu/drm/panel/panel-raydium-rm67200.c
++++ b/drivers/gpu/drm/panel/panel-raydium-rm67200.c
+@@ -318,6 +318,7 @@ static void w552793baa_setup(struct mipi_dsi_multi_context *ctx)
+ static int raydium_rm67200_prepare(struct drm_panel *panel)
+ {
+ 	struct raydium_rm67200 *ctx = to_raydium_rm67200(panel);
++	struct mipi_dsi_multi_context mctx = { .dsi = ctx->dsi };
+ 	int ret;
  
-+	if (rtwdev->scanning)
-+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
+ 	ret = regulator_bulk_enable(ctx->num_supplies, ctx->supplies);
+@@ -328,6 +329,12 @@ static int raydium_rm67200_prepare(struct drm_panel *panel)
+ 
+ 	msleep(60);
+ 
++	ctx->panel_info->panel_setup(&mctx);
++	mipi_dsi_dcs_exit_sleep_mode_multi(&mctx);
++	mipi_dsi_msleep(&mctx, 120);
++	mipi_dsi_dcs_set_display_on_multi(&mctx);
++	mipi_dsi_msleep(&mctx, 30);
 +
- 	if (list_empty(&rtwvif->mgnt_entry))
- 		list_add_tail(&rtwvif->mgnt_entry, &mgnt->active_list);
+ 	return 0;
+ }
  
-@@ -2715,6 +2718,9 @@ void rtw89_chanctx_ops_unassign_vif(struct rtw89_dev *rtwdev,
- 	rtwvif_link->chanctx_assigned = false;
- 	cfg->ref_count--;
+@@ -343,20 +350,6 @@ static int raydium_rm67200_unprepare(struct drm_panel *panel)
+ 	return 0;
+ }
  
-+	if (rtwdev->scanning)
-+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
-+
- 	if (!rtw89_vif_is_active_role(rtwvif))
- 		list_del_init(&rtwvif->mgnt_entry);
+-static int raydium_rm67200_enable(struct drm_panel *panel)
+-{
+-	struct raydium_rm67200 *rm67200 = to_raydium_rm67200(panel);
+-	struct mipi_dsi_multi_context ctx = { .dsi = rm67200->dsi };
+-
+-	rm67200->panel_info->panel_setup(&ctx);
+-	mipi_dsi_dcs_exit_sleep_mode_multi(&ctx);
+-	mipi_dsi_msleep(&ctx, 120);
+-	mipi_dsi_dcs_set_display_on_multi(&ctx);
+-	mipi_dsi_msleep(&ctx, 30);
+-
+-	return ctx.accum_err;
+-}
+-
+ static int raydium_rm67200_disable(struct drm_panel *panel)
+ {
+ 	struct raydium_rm67200 *rm67200 = to_raydium_rm67200(panel);
+@@ -381,7 +374,6 @@ static const struct drm_panel_funcs raydium_rm67200_funcs = {
+ 	.prepare = raydium_rm67200_prepare,
+ 	.unprepare = raydium_rm67200_unprepare,
+ 	.get_modes = raydium_rm67200_get_modes,
+-	.enable = raydium_rm67200_enable,
+ 	.disable = raydium_rm67200_disable,
+ };
  
 -- 
 2.39.5
