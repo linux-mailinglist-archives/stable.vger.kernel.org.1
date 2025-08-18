@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-171591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C171B2AA5D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:31:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD21B2AAFF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284A11BA2364
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:24:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBEE31BC34EE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E668535A2A3;
-	Mon, 18 Aug 2025 14:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1F4343D75;
+	Mon, 18 Aug 2025 14:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjD+cSo8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNHiMIIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A385B35A296;
-	Mon, 18 Aug 2025 14:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E186343D6F;
+	Mon, 18 Aug 2025 14:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526450; cv=none; b=R7Sz3ocLPb6nWrpoD8Ta4SOPEE/iAMsabKCizNQfiCdwk/egMqtqIcTsW80dJuOC25HNJ0Qha49valxH9RD250CXn0iVELNj8eXelJTpOsIUyki0eLLQsXliD44Dt+ms+1058w+9ES+BXkUqM2cRZ1JIdUk2pmQxRoQJ7O+CviY=
+	t=1755526487; cv=none; b=GdhpteOc1F0A/geORZuOTBOfVgQi4IKuSTf2qTBmO/Qm0AiNW8vkhbC+EoNn6FrBK6TYzXqFrrU2mw4ltCiofos+qqUIplwa3TcEb6esS2ryiakq6I9c9rio0bQppfDT1th+Ms15xA2BO2Uuh9r9/xqziTfjJJUjEEv3L9qTyKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526450; c=relaxed/simple;
-	bh=Ynr7B52KmX2YLPyygpvbH6+2gzcpai0qnAAEvHtf43I=;
+	s=arc-20240116; t=1755526487; c=relaxed/simple;
+	bh=y/aa1UrUYp8AM2XdfxkkrwJw8FVRbTe9d0rRAKuKfVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxqFX+ngVVm3pUrasngLBvEElFRaFtncLUNaldTpd0uR5cEUAgXgl6OHyeUjPAtcCgCcfGOf6izOgcPhUauJJlrZjLQkolQQQcjhriFkttgwmyQYQYV1XOHb3hwbi7NYi3GC49AzZw+w9N5GjkRSg8WTM9rKAMG6Ls7tt6xv8TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjD+cSo8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EAAC4CEEB;
-	Mon, 18 Aug 2025 14:14:09 +0000 (UTC)
+	 MIME-Version; b=U27isEAfNUGlQkCukHbXHV7fl1OrbzawbKiXYBQlcHj89SIdJutfr1u83pyV1syOZxjU9nwCcfSKx7hnyxcfFPWPxX0m8bLlX0itHC6Ekv+Qt3C0iGyCxzgaVmY9VIk7gBkmt0flDW8dSfLx+pl5OMyUOqhY92SwKq8Tp5Urbpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNHiMIIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80F0C4CEEB;
+	Mon, 18 Aug 2025 14:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526450;
-	bh=Ynr7B52KmX2YLPyygpvbH6+2gzcpai0qnAAEvHtf43I=;
+	s=korg; t=1755526486;
+	bh=y/aa1UrUYp8AM2XdfxkkrwJw8FVRbTe9d0rRAKuKfVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjD+cSo83Mx24NsG9EEfp1iI8WUjEyHYXeEQ1Ixj3kDyCvOB8JXNd2DwY8dOLy67v
-	 2eQ9K+KS7RgNM8JXIELfDrI6kOzJTqT0A3my844t9FyfALvRIafd76ICh6le4GsBB/
-	 tF2q6DrC0pyjd7dHIgT7L0I8KroE+EAlVERMVpiU=
+	b=uNHiMIIEDTfe7p5QtJtB/tLRX5CIq5slL+izUrKNBxdqwDdMoDTr03e4q/c8ELj3s
+	 jHX6YZZnVp/XpYH9SG2sy+4KT8pCKCHrKhryo75FkvcsWt3jPVHSiXB7blbQ/O5tHf
+	 2F1Yujui9Wd6Tl/3BiZY8DaSvZKdgJdNb9ZNRvt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 551/570] media: v4l2: Add support for NV12M tiled variants to v4l2_format_info()
-Date: Mon, 18 Aug 2025 14:48:58 +0200
-Message-ID: <20250818124527.092480449@linuxfoundation.org>
+Subject: [PATCH 6.16 552/570] media: uvcvideo: Turn on the camera if V4L2_EVENT_SUB_FL_SEND_INITIAL
+Date: Mon, 18 Aug 2025 14:48:59 +0200
+Message-ID: <20250818124527.135595322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -66,43 +67,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit f7546da1d6eb8928efb89b7faacbd6c2f8f0de5c upstream.
+commit a03e32e60141058d46ea8cf4631654c43c740fdb upstream.
 
-Commit 6f1466123d73 ("media: s5p-mfc: Add YV12 and I420 multiplanar
-format support") added support for the new formats to s5p-mfc driver,
-what in turn required some internal calls to the v4l2_format_info()
-function while setting up formats. This in turn broke support for the
-"old" tiled NV12MT* formats, which are not recognized by this function.
-Fix this by adding those variants of NV12M pixel format to
-v4l2_format_info() function database.
+If we subscribe to an event with V4L2_EVENT_SUB_FL_SEND_INITIAL, the
+driver needs to report back some values that require the camera to be
+powered on. But VIDIOC_SUBSCRIBE_EVENT is not part of the ioctls that
+turn on the camera.
 
-Fixes: 6f1466123d73 ("media: s5p-mfc: Add YV12 and I420 multiplanar format support")
+We could unconditionally turn on the camera during
+VIDIOC_SUBSCRIBE_EVENT, but it is more efficient to turn it on only
+during V4L2_EVENT_SUB_FL_SEND_INITIAL, which we believe is not a common
+usecase.
+
+To avoid a list_del if uvc_pm_get() fails, we move list_add_tail to the
+end of the function.
+
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Fixes: d1b618e79548 ("media: uvcvideo: Do not turn on the camera for some ioctls")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250701-uvc-grannular-invert-v4-5-8003b9b89f68@chromium.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-common.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/usb/uvc/uvc_ctrl.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/media/v4l2-core/v4l2-common.c
-+++ b/drivers/media/v4l2-core/v4l2-common.c
-@@ -323,6 +323,12 @@ const struct v4l2_format_info *v4l2_form
- 		{ .format = V4L2_PIX_FMT_NV61M,   .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 1 },
- 		{ .format = V4L2_PIX_FMT_P012M,   .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 2, 4, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2 },
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index 303b7509ec47..efe609d70877 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -2072,18 +2072,24 @@ static int uvc_ctrl_add_event(struct v4l2_subscribed_event *sev, unsigned elems)
+ 		goto done;
+ 	}
  
-+		/* Tiled YUV formats, non contiguous variant */
-+		{ .format = V4L2_PIX_FMT_NV12MT,        .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2,
-+		  .block_w = { 64, 32, 0, 0 },	.block_h = { 32, 16, 0, 0 }},
-+		{ .format = V4L2_PIX_FMT_NV12MT_16X16,  .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2,
-+		  .block_w = { 16,  8, 0, 0 },	.block_h = { 16,  8, 0, 0 }},
+-	list_add_tail(&sev->node, &mapping->ev_subs);
+ 	if (sev->flags & V4L2_EVENT_SUB_FL_SEND_INITIAL) {
+ 		struct v4l2_event ev;
+ 		u32 changes = V4L2_EVENT_CTRL_CH_FLAGS;
+ 		s32 val = 0;
+ 
++		ret = uvc_pm_get(handle->chain->dev);
++		if (ret)
++			goto done;
 +
- 		/* Bayer RGB formats */
- 		{ .format = V4L2_PIX_FMT_SBGGR8,	.pixel_enc = V4L2_PIXEL_ENC_BAYER, .mem_planes = 1, .comp_planes = 1, .bpp = { 1, 0, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 1, .vdiv = 1 },
- 		{ .format = V4L2_PIX_FMT_SGBRG8,	.pixel_enc = V4L2_PIXEL_ENC_BAYER, .mem_planes = 1, .comp_planes = 1, .bpp = { 1, 0, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 1, .vdiv = 1 },
+ 		if (uvc_ctrl_mapping_is_compound(mapping) ||
+ 		    __uvc_ctrl_get(handle->chain, ctrl, mapping, &val) == 0)
+ 			changes |= V4L2_EVENT_CTRL_CH_VALUE;
+ 
+ 		uvc_ctrl_fill_event(handle->chain, &ev, ctrl, mapping, val,
+ 				    changes);
++
++		uvc_pm_put(handle->chain->dev);
++
+ 		/*
+ 		 * Mark the queue as active, allowing this initial event to be
+ 		 * accepted.
+@@ -2092,6 +2098,8 @@ static int uvc_ctrl_add_event(struct v4l2_subscribed_event *sev, unsigned elems)
+ 		v4l2_event_queue_fh(sev->fh, &ev);
+ 	}
+ 
++	list_add_tail(&sev->node, &mapping->ev_subs);
++
+ done:
+ 	mutex_unlock(&handle->chain->ctrl_mutex);
+ 	return ret;
+-- 
+2.50.1
+
 
 
 
