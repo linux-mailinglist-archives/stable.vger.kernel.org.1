@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E618EB2A820
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4908BB2A4F5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0830A1BA3D7C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A299B7BD082
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE92335BD9;
-	Mon, 18 Aug 2025 13:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30B732255C;
+	Mon, 18 Aug 2025 13:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arYPu1Oi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMcMiJJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9E3335BA8;
-	Mon, 18 Aug 2025 13:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61466220F38;
+	Mon, 18 Aug 2025 13:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524915; cv=none; b=iMG6WJeAmDFX140S01R697j7uIVQOz47wR5L/v/fxm2jtLLqZ7nWLSmsqUXaxPKVpO/QNPYWzNuJQBAakW/1NlCdUPu7k7s2USuMWKD3QQ34d9EHR3egzx8pNa2yE5rZxiucuGexw2NHAxf3S0T+JcNBsk9CBWbQNrg3asauCWE=
+	t=1755523103; cv=none; b=sPI8Lta+47Dm+uWu9/HA4/VGm5GKVqw9oTRGmLNhF+RAZLpklrWFgNzXDAMP/PzoOMC/w3yPagHXJuuGfq9jKJKmoob/qnOkdjZHz/Lg6lDq5aCp3lX2/lSZEJkuf3SDdaJ2oOkwD4qLTUHV+DSkVBipupwvmyWRGn5DVUfGuyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524915; c=relaxed/simple;
-	bh=vtFXI++kzCVBk5gDKke7kp1D8+2inMWaHQGlXb2Inzs=;
+	s=arc-20240116; t=1755523103; c=relaxed/simple;
+	bh=PyNOPFAC7blmiTURzr9YOLa4snK8EgYIRiws/4BfMrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQrjUN8WD++/KbfFrXu9SiDenT7FiSo+7whsrkQWtvkD+qvasTixp6jpDnCiHGsDn5cL/eipuc0TiXHjY7aF2VFM4T0sU2M/nozKH1qMd/kfQvEUqf2PlDWBGKMrvnr+g/8F4ioeWuRteDFjdX9QKYomcf4QGyiJh7Y+91TnXgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arYPu1Oi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F09C4CEEB;
-	Mon, 18 Aug 2025 13:48:35 +0000 (UTC)
+	 MIME-Version; b=L5nn2gfSVVpof5NHexzYgdYHX+alRscKDVyonJC69142ko+fg7UChEcdJqmv/oOTWlTlT/m710o4GnpDHm/TN8jL+5VgDmjSwE3mnQvaj32taYL0JBismUJAYQvW/UCwqqURrdQwfvpVbh8PU0KqZk4eJ9VPV07K6CzfIaes+cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMcMiJJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C647AC4CEEB;
+	Mon, 18 Aug 2025 13:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524915;
-	bh=vtFXI++kzCVBk5gDKke7kp1D8+2inMWaHQGlXb2Inzs=;
+	s=korg; t=1755523103;
+	bh=PyNOPFAC7blmiTURzr9YOLa4snK8EgYIRiws/4BfMrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arYPu1OiMEv7+bxEb0wSV4Y+kGp10vOLPzCHo7SavjFXPUR0/Pn14JKbi7VO/I8aa
-	 ndSOD9T5k8SOjrwNht3pQaqxMbsv+soduFDy6EGvsGmmMJK9zqlppd9DX2sCgRBWzq
-	 g41kKwqceSI7geGS2kXuEdfPJRCTim1NC1SmOOZA=
+	b=pMcMiJJbSRvkxwBbduQ6Iu7zVI1WpVAcwRMHc7RLAkyFrzeO62p8etsCsxEJixOJW
+	 u0Y2QiJV1pmNWSpk0JRaqZTFvKhOPLLdnAGnfTRXQkI46T1700cz5HmhqeH8UgqnD3
+	 RaMCaE8ncrtv6jcvUy6NN2RxbFiW8fZBAwiCH2f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 070/570] net: ti: icssg-prueth: Fix emac link speed handling
+Subject: [PATCH 6.15 071/515] cpuidle: governors: menu: Avoid using invalid recent intervals data
 Date: Mon, 18 Aug 2025 14:40:57 +0200
-Message-ID: <20250818124508.516475751@linuxfoundation.org>
+Message-ID: <20250818124501.123886939@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MD Danish Anwar <danishanwar@ti.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 06feac15406f4f66f4c0c6ea60b10d44775d4133 ]
+[ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
 
-When link settings are changed emac->speed is populated by
-emac_adjust_link(). The link speed and other settings are then written into
-the DRAM. However if both ports are brought down after this and brought up
-again or if the operating mode is changed and a firmware reload is needed,
-the DRAM is cleared by icssg_config(). As a result the link settings are
-lost.
+Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
+discarding useful information") caused the number of wakeup interrupts
+to increase on an idle system [1], which was not expected to happen
+after merely allowing shallower idle states to be selected by the
+governor in some cases.
 
-Fix this by calling emac_adjust_link() after icssg_config(). This re
-populates the settings in the DRAM after a new firmware load.
+However, on the system in question, all of the idle states deeper than
+WFI are rejected by the driver due to a firmware issue [2].  This causes
+the governor to only consider the recent interval duriation data
+corresponding to attempts to enter WFI that are successful and the
+recent invervals table is filled with values lower than the scheduler
+tick period.  Consequently, the governor predicts an idle duration
+below the scheduler tick period length and avoids stopping the tick
+more often which leads to the observed symptom.
 
-Fixes: 9facce84f406 ("net: ti: icssg-prueth: Fix firmware load sequence.")
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Message-ID: <20250805173812.2183161-1-danishanwar@ti.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Address it by modifying the governor to update the recent intervals
+table also when entering the previously selected idle state fails, so
+it knows that the short idle intervals might have been the minority
+had the selected idle states been actually entered every time.
+
+Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
+Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/cpuidle/governors/menu.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 2f5c4335dec3..008d77727400 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -50,6 +50,8 @@
- /* CTRLMMR_ICSSG_RGMII_CTRL register bits */
- #define ICSSG_CTRL_RGMII_ID_MODE                BIT(24)
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index 39aa0aea61c6..711517bd43a1 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -97,6 +97,14 @@ static inline int which_bucket(u64 duration_ns)
  
-+static void emac_adjust_link(struct net_device *ndev);
+ static DEFINE_PER_CPU(struct menu_device, menu_devices);
+ 
++static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
++{
++	/* Update the repeating-pattern data. */
++	data->intervals[data->interval_ptr++] = interval_us;
++	if (data->interval_ptr >= INTERVALS)
++		data->interval_ptr = 0;
++}
 +
- static int emac_get_tx_ts(struct prueth_emac *emac,
- 			  struct emac_tx_ts_response *rsp)
- {
-@@ -266,6 +268,10 @@ static int prueth_emac_common_start(struct prueth *prueth)
- 		ret = icssg_config(prueth, emac, slice);
- 		if (ret)
- 			goto disable_class;
-+
-+		mutex_lock(&emac->ndev->phydev->lock);
-+		emac_adjust_link(emac->ndev);
-+		mutex_unlock(&emac->ndev->phydev->lock);
+ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
+ 
+ /*
+@@ -222,6 +230,14 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	if (data->needs_update) {
+ 		menu_update(drv, dev);
+ 		data->needs_update = 0;
++	} else if (!dev->last_residency_ns) {
++		/*
++		 * This happens when the driver rejects the previously selected
++		 * idle state and returns an error, so update the recent
++		 * intervals table to prevent invalid information from being
++		 * used going forward.
++		 */
++		menu_update_intervals(data, UINT_MAX);
  	}
  
- 	ret = prueth_emac_start(prueth);
+ 	/* Find the shortest expected idle interval. */
+@@ -482,10 +498,7 @@ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
+ 
+ 	data->correction_factor[data->bucket] = new_factor;
+ 
+-	/* update the repeating-pattern data */
+-	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
+-	if (data->interval_ptr >= INTERVALS)
+-		data->interval_ptr = 0;
++	menu_update_intervals(data, ktime_to_us(measured_ns));
+ }
+ 
+ /**
 -- 
 2.50.1
 
