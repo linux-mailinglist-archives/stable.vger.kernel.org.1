@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703E1B2A6F2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8409B2AA9E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D61F22A5A6A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B25B6E7F17
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1288320381;
-	Mon, 18 Aug 2025 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF3B322DC8;
+	Mon, 18 Aug 2025 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhID4EVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3wCez6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B90C21FF5D;
-	Mon, 18 Aug 2025 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE44B20010A;
+	Mon, 18 Aug 2025 14:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524354; cv=none; b=QY5D79n/2XGJeTIp+kt/W7pRdrZHmp+WFQKhwkFhtzQoS8dVRGSoJiOj9r12A3o7AzW6E/1uFUfVGmUJB0nLk1LM4XcgfJUxkZVF8L6Branbp12HW4NB8O2VRtbpXBOyTuaKyi5zNVsPKl4zsdlktvXRfgwFDNBt1OaHBwayszI=
+	t=1755526122; cv=none; b=F4EftRbmv5Kan6KWOZiYfId0DigZ0Vi0+RViP8Bsmm4/zet0ha9GXM0Q7/Pu70oObK35A8/3/dvV87XhZqJ3ImcTXHE7zOK9XTqQsV9oYosLhrZL02qsuqOTRG4UY/kW+BjjgitRKektDQmtFc3cNugfbms+qB+N+YIpH/PBP0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524354; c=relaxed/simple;
-	bh=wCM+W3PCx6jIoUtwzyQYHTU5UA3w+YzMoNPyk5KcRn0=;
+	s=arc-20240116; t=1755526122; c=relaxed/simple;
+	bh=/aqiaxOrCTyCFV67dPi6D9oPv6KmJH9/wrxv6+YAB5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUz9QNjg/lRFz5xaopPCfzLmUv7XmSZOhkJATOpO4B+qcXV4wnv2LORt6HsVlnC0+5PfRhtsL7vZHyLj/r2Gl7D3OL0181blWlJDlAq5ZEz5DmPqxu5/saSt2GFzXcalXf+j9VyEXXY+JHztdkgg9nEIJ4gCBM1v1Z5Aq7Z3zJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhID4EVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8B1C4CEF1;
-	Mon, 18 Aug 2025 13:39:13 +0000 (UTC)
+	 MIME-Version; b=cS1m+7vLY69T7srxO30iJ+poD0eUanwlP6fC21PbglbjNFZjJls0NOMX1fEpH8hn/SyPfaD/Fl3b5kajRNRItX0nEQzbE/WPP4aOhJmKw5SrHeeipQfyEF639JezWNU6Quk2LDQoOrS+jFrwHdnk2S/WSYvTXZt8Z4FT30vsAKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3wCez6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1639BC4CEEB;
+	Mon, 18 Aug 2025 14:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524354;
-	bh=wCM+W3PCx6jIoUtwzyQYHTU5UA3w+YzMoNPyk5KcRn0=;
+	s=korg; t=1755526121;
+	bh=/aqiaxOrCTyCFV67dPi6D9oPv6KmJH9/wrxv6+YAB5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZhID4EVsuHayqsoBldks2t/uqjjIDz7CruCx+9yfRlkgkRULpZRq/bLMFGV3CzbDm
-	 icQmDHqdzYaM4AfCJZhLQJ5QFl5SqEywO1qr6zTIwb5cmEuvdVnZswtUzxca0Mm/Yz
-	 DTiruqC8WMoeOhpOEv+8yWL/oUkfMi5AaoikCbLE=
+	b=w3wCez6RjVpRjXEiNzPtoFbBgiY5I24YoMgfyVIRqtCLzGSaY+ee228jwm9kfq8FD
+	 Of3pfKl79GuE/E+r/xsiXqjEW2I7Z7403ea9XCydYpNZFSYp8CWbXjZJ/F/KnxBIN/
+	 gMhImNrie63x27NaUpb/VJDjCgZarDxyaNyYpreQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 447/515] cifs: reset iface weights when we cannot find a candidate
-Date: Mon, 18 Aug 2025 14:47:13 +0200
-Message-ID: <20250818124515.632440947@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 447/570] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
+Date: Mon, 18 Aug 2025 14:47:14 +0200
+Message-ID: <20250818124523.035766150@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 upstream.
+[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
 
-We now do a weighted selection of server interfaces when allocating
-new channels. The weights are decided based on the speed advertised.
-The fulfilled weight for an interface is a counter that is used to
-track the interface selection. It should be reset back to zero once
-all interfaces fulfilling their weight.
+The on_treeview2_cursor_changed() handler is connected to both the left
+and right tree views, but it hardcodes model2 (the GtkTreeModel of the
+right tree view). This is incorrect. Get the associated model from the
+view.
 
-In cifs_chan_update_iface, this reset logic was missing. As a result
-when the server interface list changes, the client may not be able
-to find a new candidate for other channels after all interfaces have
-been fulfilled.
-
-Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ scripts/kconfig/gconf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -332,6 +332,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 	struct cifs_server_iface *old_iface = NULL;
- 	struct cifs_server_iface *last_iface = NULL;
- 	struct sockaddr_storage ss;
-+	int retry = 0;
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index c0f46f189060..abe4cfe66b14 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -942,13 +942,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
+ void
+ on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
+ {
++	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+ 	GtkTreeSelection *selection;
+ 	GtkTreeIter iter;
+ 	struct menu *menu;
  
- 	spin_lock(&ses->chan_lock);
- 	chan_index = cifs_ses_get_chan_index(ses, server);
-@@ -360,6 +361,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 		return;
+ 	selection = gtk_tree_view_get_selection(treeview);
+-	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
+-		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
++	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
++		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
+ 		text_insert_help(menu);
  	}
- 
-+try_again:
- 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
- 				     iface_head);
- 	iface_min_speed = last_iface->speed;
-@@ -397,6 +399,13 @@ cifs_chan_update_iface(struct cifs_ses *
- 	}
- 
- 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
-+		list_for_each_entry(iface, &ses->iface_list, iface_head)
-+			iface->weight_fulfilled = 0;
-+
-+		/* see if it can be satisfied in second attempt */
-+		if (!retry++)
-+			goto try_again;
-+
- 		iface = NULL;
- 		cifs_dbg(FYI, "unable to find a suitable iface\n");
- 	}
+ }
+-- 
+2.39.5
+
 
 
 
