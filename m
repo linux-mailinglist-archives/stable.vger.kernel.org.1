@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48080B2A3E7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57354B2A6BF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D471E1B6173C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A4BD684EA5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02913203A7;
-	Mon, 18 Aug 2025 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6A4335BD4;
+	Mon, 18 Aug 2025 13:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdbyVc2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsLiMf8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDE93218C2;
-	Mon, 18 Aug 2025 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA01335BD3;
+	Mon, 18 Aug 2025 13:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522485; cv=none; b=L0I1KbpEoS/9NTQVSFbtT6uJx2Bxb481BOqijM89G/BHJGMvCXL4avmiTh0FiFSQ6fU+fP+Php6KsutYFO+9PI8fsTARUbrniZf2wQTHIMmaByR/j2aFxjyJJEIUkhae8gOtisMyWPN+pHyCsN+PUUdgyGQ95P0R5bpTPlRZoJ8=
+	t=1755523996; cv=none; b=Y++X1Hg+sqUykqLQyzQ5CV8Kwx7R8JJea825YaH+z6XulD4tUYf7zRcHiO+51Xdp21hzF6uXniuqygs8LlrQ90Y/RhU9Ylqz2z7nLK6LuBs5rYeTf0Nj21SaU19KIsxsmpIFWfrw+sTLir4aOWXyipBEqA9V/aUi83NUjzh2M7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522485; c=relaxed/simple;
-	bh=YV9eRs3RgIx1uCYH+lUSBhk9bBPNjOgiAcJMOe/XBcE=;
+	s=arc-20240116; t=1755523996; c=relaxed/simple;
+	bh=rBvNH53nbDQvh1cbU84nVJmnvOJNLk3Oxrj/ONm+LO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acqndOpZ8ndE7GwFvrJtR1ZzfYzopEpcrQaa8Vw5aualXviasdC9LxIecHdtGBksAkN9N9M14XAGCcgwFoI73epYkACDrKA+78R4JqQghU4T4/VyQUmayk6otqb8vU/WJhkds10gwRRmfnyrruVBXgM2evoJ2VyTODKRKJY8e9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdbyVc2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C71C4CEEB;
-	Mon, 18 Aug 2025 13:08:04 +0000 (UTC)
+	 MIME-Version; b=NMPw7VQAf8JSdViOD0UA4AaHB4Eyt+y7NaostNcWAYRStA0zgz+WX8RzEtk/G1l3FAkon/iNdsKTg50gPbqkAjN0CbcypRsIPW+bWIfOS5ueQ8bZWrb0CZY+iyzT/vXsPEmLQu4pYFFafh9nF4Q3nHAQT0VpB8bMJTjFOXtV6g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsLiMf8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AE6C4CEEB;
+	Mon, 18 Aug 2025 13:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522485;
-	bh=YV9eRs3RgIx1uCYH+lUSBhk9bBPNjOgiAcJMOe/XBcE=;
+	s=korg; t=1755523996;
+	bh=rBvNH53nbDQvh1cbU84nVJmnvOJNLk3Oxrj/ONm+LO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdbyVc2zkClQsYo73M1FQdTNh1DsfzXyoHGzzac6YAI+UIvMNDVn3ASPYLgtLcYSR
-	 KJQ24/8QAOqj0poVqWsWkDPtINLtlwUatShrQ08r3DrQ5qOjW3SfHmRX+JKEF3W0wt
-	 P9ILdCQupHjihupeiSgM2H7tD4P6KNoHHuSrkXmE=
+	b=bsLiMf8uIv4OSuH7YYhblbnZTNApXVDwwM0bIzZ5BiTc108zLQzxtAhpnyqBdEajx
+	 O4pvVsB/bmV7bu1frUOzOx8bfnlPf52BjabTkvyy8gtX7oeh6Hn5KRIFOOjk3CT/It
+	 uCeBXny+ij9RvLkkhT9fgLsQrVvFQKpPEukhTgMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Mueller <smueller@chronox.de>,
-	Markus Theil <theil.markus@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 297/444] crypto: jitter - fix intermediary handling
+Subject: [PATCH 6.15 337/515] clk: tegra: periph: Fix error handling and resolve unsigned compare warning
 Date: Mon, 18 Aug 2025 14:45:23 +0200
-Message-ID: <20250818124500.091392100@linuxfoundation.org>
+Message-ID: <20250818124511.407291625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Theil <theil.markus@gmail.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 735b72568c73875269a6b73ab9543a70f6ac8a9f ]
+[ Upstream commit 2dc2ca9000eea2eb749f658196204cb84d4306f7 ]
 
-The intermediary value was included in the wrong
-hash state. While there, adapt to user-space by
-setting the timestamp to 0 if stuck and inserting
-the values nevertheless.
+./drivers/clk/tegra/clk-periph.c:59:5-9: WARNING:
+	Unsigned expression compared with zero: rate < 0
 
-Acked-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Markus Theil <theil.markus@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The unsigned long 'rate' variable caused:
+- Incorrect handling of negative errors
+- Compile warning: "Unsigned expression compared with zero"
+
+Fix by changing to long type and adding req->rate cast.
+
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://lore.kernel.org/r/79c7f01e29876c612e90d6d0157fb1572ca8b3fb.1752046270.git.xiaopei01@kylinos.cn
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/jitterentropy-kcapi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/clk/tegra/clk-periph.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
-index c24d4ff2b4a8..1266eb790708 100644
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -144,7 +144,7 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * Inject the data from the previous loop into the pool. This data is
- 	 * not considered to contain any entropy, but it stirs the pool a bit.
- 	 */
--	ret = crypto_shash_update(desc, intermediary, sizeof(intermediary));
-+	ret = crypto_shash_update(hash_state_desc, intermediary, sizeof(intermediary));
- 	if (ret)
- 		goto err;
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+index 0626650a7011..c9fc52a36fce 100644
+--- a/drivers/clk/tegra/clk-periph.c
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -51,7 +51,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
+ 	struct tegra_clk_periph *periph = to_clk_periph(hw);
+ 	const struct clk_ops *div_ops = periph->div_ops;
+ 	struct clk_hw *div_hw = &periph->divider.hw;
+-	unsigned long rate;
++	long rate;
  
-@@ -157,11 +157,12 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * conditioning operation to have an identical amount of input data
- 	 * according to section 3.1.5.
- 	 */
--	if (!stuck) {
--		ret = crypto_shash_update(hash_state_desc, (u8 *)&time,
--					  sizeof(__u64));
-+	if (stuck) {
-+		time = 0;
- 	}
+ 	__clk_hw_set_clk(div_hw, hw);
  
-+	ret = crypto_shash_update(hash_state_desc, (u8 *)&time, sizeof(__u64));
-+
- err:
- 	shash_desc_zero(desc);
- 	memzero_explicit(intermediary, sizeof(intermediary));
+@@ -59,7 +59,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
+ 	if (rate < 0)
+ 		return rate;
+ 
+-	req->rate = rate;
++	req->rate = (unsigned long)rate;
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
