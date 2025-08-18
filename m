@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DF5B2A5DC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D9FB2A941
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8CEE7B341C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B346583D81
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72EA22C339;
-	Mon, 18 Aug 2025 13:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B9F320CBC;
+	Mon, 18 Aug 2025 13:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHO3ME/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+ddC62Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7446F2222A0;
-	Mon, 18 Aug 2025 13:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA5D2C235D;
+	Mon, 18 Aug 2025 13:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523820; cv=none; b=kVBAnvgFUUMUGlAcR/NZFVVAjXGu/mnFpX3naoBjnmykzUvZ5heuvK7NsRrfHYpKwK/ZKuTd5FpNIf9Hkzh7p8VXjJgBHT5riAx3PsC27xvKfBrb2yFMtoziaZIUFceCifEDkyx3XPmsgtgGvdF350TNTFFq4vKRE9Yap9ChMJQ=
+	t=1755525496; cv=none; b=CcwATFHpdC9VAj1nc1ecc1c5fEvPQggKNJGk4qxLWuBcHCHkXYGD6oIOJYQJOVIoBWmytBoVQ0Tn+zSprnCAcWNeuHKhcc4T435fz28yjDunLr2Q0+FxjT2YdCFdtER15g1cOzKX2T26yBo5f6Ugh9Zx+rrxisUvGRP+L+bYht4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523820; c=relaxed/simple;
-	bh=63Qy0577ctdlcktXy6qu+XHIY/7ps69Tkwlm1Nri4fo=;
+	s=arc-20240116; t=1755525496; c=relaxed/simple;
+	bh=tzs5p2pii35p6oUAH2g/UsnJWpED1MXjH1G7DsrZ358=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upXaZZvr5Tv3//fq8oe+v1Sa3Ys0DlrysC46N+cMvYoTpw1Mps/Of5Qv0DhDdu0UcC5l82vGJGnkfcq2oOBL0CC/L8brqGZ6yrHfUXltNkN3e2PnhPqbht8a2G3HbTxAxEhQ1tkhDHku9HEUA3/70qsaXZvxiRxyDCJTTjEyTK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHO3ME/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3E1C4CEEB;
-	Mon, 18 Aug 2025 13:30:19 +0000 (UTC)
+	 MIME-Version; b=b1sxWtFAu7Otchzlqnw5wJFFpNd39CkhkMP62ub4ghAFVlIN357282NRUDrZZqcqzcFieLzrJhIkp4Ecje7I1J/Zg90TNkYC92s0DfWSkf541f7Ydike4GyF+JjNj1gxU5RMoeYpXnVDARsiIuqNWKYa7MX19QUK15x70l8dVlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+ddC62Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B960C4CEEB;
+	Mon, 18 Aug 2025 13:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523820;
-	bh=63Qy0577ctdlcktXy6qu+XHIY/7ps69Tkwlm1Nri4fo=;
+	s=korg; t=1755525496;
+	bh=tzs5p2pii35p6oUAH2g/UsnJWpED1MXjH1G7DsrZ358=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHO3ME/YHZB4yncB9uUMc4A3K0hqdBr8BD8CeEU4z9i0ogpXsJYM++TzyOwAWUGgU
-	 hKeph607CN4aOpO9tCtqVy9bvImnmUMwFIIJo4uErNsaKzp6VQjfqxSEb9U+r5R5Pj
-	 zokYLC/q9jsmmpC5RJwngLK6mhzRTUW+MElErHCg=
+	b=M+ddC62YDjs1RPfk+JI1pvain6DhlbX3VOZ8WsWbolK39Wp8ntHJ80DmJSP0TSWHL
+	 lLQZFJdvGjUBYqmCoq0XQ2s14PR4rmntS1gjfqeJiPxyR+yR+0yEc0Cjch1+KgkX1E
+	 P6Q00T11TqsTpF76EqENQW0Gkm195Nw48w1+3eJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 282/515] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
+Subject: [PATCH 6.16 281/570] drm/xe/xe_query: Use separate iterator while filling GT list
 Date: Mon, 18 Aug 2025 14:44:28 +0200
-Message-ID: <20250818124509.277842899@linuxfoundation.org>
+Message-ID: <20250818124516.671019915@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
+[ Upstream commit d4eb4a010262ea7801e576d1033b355910f2f7d4 ]
 
-Ensure descriptor is freed on error to avoid memory leak.
+The 'id' value updated by for_each_gt() is the uapi GT ID of the GTs
+being iterated over, and may skip over values if a GT is not present on
+the device.  Use a separate iterator for GT list array assignments to
+ensure that the array will be filled properly on future platforms where
+index in the GT query list may not match the uapi ID.
 
-Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
+v2:
+ - Include the missing increment of the iterator.  (Jonathan)
+
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250701201320.2514369-16-matthew.d.roper@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_query.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 03f639fbf9b6..3df15ff3e9d2 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -3006,6 +3006,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	struct iwl_fw_dump_desc *desc;
- 	unsigned int delay = 0;
- 	bool monitor_only = false;
-+	int ret;
+diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
+index 2dbf4066d86f..34f7488acc99 100644
+--- a/drivers/gpu/drm/xe/xe_query.c
++++ b/drivers/gpu/drm/xe/xe_query.c
+@@ -368,6 +368,7 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 	struct drm_xe_query_gt_list __user *query_ptr =
+ 		u64_to_user_ptr(query->data);
+ 	struct drm_xe_query_gt_list *gt_list;
++	int iter = 0;
+ 	u8 id;
  
- 	if (trigger) {
- 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
-@@ -3036,7 +3037,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	desc->trig_desc.type = cpu_to_le32(trig);
- 	memcpy(desc->trig_desc.data, str, len);
+ 	if (query->size == 0) {
+@@ -385,12 +386,12 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
  
--	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	if (ret)
-+		kfree(desc);
+ 	for_each_gt(gt, xe, id) {
+ 		if (xe_gt_is_media_type(gt))
+-			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
++			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
+ 		else
+-			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MAIN;
+-		gt_list->gt_list[id].tile_id = gt_to_tile(gt)->id;
+-		gt_list->gt_list[id].gt_id = gt->info.id;
+-		gt_list->gt_list[id].reference_clock = gt->info.reference_clock;
++			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MAIN;
++		gt_list->gt_list[iter].tile_id = gt_to_tile(gt)->id;
++		gt_list->gt_list[iter].gt_id = gt->info.id;
++		gt_list->gt_list[iter].reference_clock = gt->info.reference_clock;
+ 		/*
+ 		 * The mem_regions indexes in the mask below need to
+ 		 * directly identify the struct
+@@ -406,19 +407,21 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 		 * assumption.
+ 		 */
+ 		if (!IS_DGFX(xe))
+-			gt_list->gt_list[id].near_mem_regions = 0x1;
++			gt_list->gt_list[iter].near_mem_regions = 0x1;
+ 		else
+-			gt_list->gt_list[id].near_mem_regions =
++			gt_list->gt_list[iter].near_mem_regions =
+ 				BIT(gt_to_tile(gt)->id) << 1;
+-		gt_list->gt_list[id].far_mem_regions = xe->info.mem_region_mask ^
+-			gt_list->gt_list[id].near_mem_regions;
++		gt_list->gt_list[iter].far_mem_regions = xe->info.mem_region_mask ^
++			gt_list->gt_list[iter].near_mem_regions;
+ 
+-		gt_list->gt_list[id].ip_ver_major =
++		gt_list->gt_list[iter].ip_ver_major =
+ 			REG_FIELD_GET(GMD_ID_ARCH_MASK, gt->info.gmdid);
+-		gt_list->gt_list[id].ip_ver_minor =
++		gt_list->gt_list[iter].ip_ver_minor =
+ 			REG_FIELD_GET(GMD_ID_RELEASE_MASK, gt->info.gmdid);
+-		gt_list->gt_list[id].ip_ver_rev =
++		gt_list->gt_list[iter].ip_ver_rev =
+ 			REG_FIELD_GET(GMD_ID_REVID, gt->info.gmdid);
 +
-+	return ret;
- }
- IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
++		iter++;
+ 	}
  
+ 	if (copy_to_user(query_ptr, gt_list, size)) {
 -- 
 2.39.5
 
