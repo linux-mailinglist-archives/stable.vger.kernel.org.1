@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01521B2A74D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CA9B2A544
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA9286E04C6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 974ED1BA2CDE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A53226D18;
-	Mon, 18 Aug 2025 13:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAE42E22B0;
+	Mon, 18 Aug 2025 13:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5y7gQ8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFb4JqYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D7F222575;
-	Mon, 18 Aug 2025 13:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A980127B358;
+	Mon, 18 Aug 2025 13:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524617; cv=none; b=SrALrGMzCmwGK1dXAvVy7SMznoT54RCe94YykfA4YVOJc5FIMucMZUO/OEMxXBb00gsHWAKxURnCfdAXXV8wtcw+qso0wsrQVID0unrRlztsR+fAWoald+lN7fejyTW5q9XSgLtOYgJU/T8Tiq/TvHVUM0RDhyjbYWFXr0DLG1Y=
+	t=1755523021; cv=none; b=s+3+HZOhm+wlTj3r1E07BGYol0pSgq88LAQuSlXgG/S0THsVywvT2hTgYaNB+2rgj0cXvWFtJMKiFA8vv8FejZNQ8+Jn/iw9HbNk/BI8eJ0RyIs/coch7w35wU38a9LxIR6BdBDHhiTKGM3WN2F8xdY64dxswnm0EbS4D4KaSbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524617; c=relaxed/simple;
-	bh=SIvh6KcNCEMHvIttfLm+em4JKh7+c6N8xZGs6I0caQ4=;
+	s=arc-20240116; t=1755523021; c=relaxed/simple;
+	bh=YnauoailNUtnY1l1dwDnkiYU+j1xy4p1Z/cfsO8uUD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wf6B1Ze/mJF07yATpOTrlUKbDMdgJVW/ecg2YElyh3foqnOUStL+g6ybqrD2FwpoO0Y91ejyVdcJBvLiJJX+ILBYDSLZn9S7dwv1uWFggnnxuHCCHzTLGFTqG5jpCoTLou01isgiGXgVkp+1pVauFXna9UCtADtAIpBkMIlBSMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5y7gQ8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E052BC4CEF1;
-	Mon, 18 Aug 2025 13:43:36 +0000 (UTC)
+	 MIME-Version; b=MGefKzXmO2lL5rmjv7IQhnXgQFRFZMDSjUtLYMPR2sczY6O054WayrNd+0dJxmOmMcQPm/7PjxRn7ak13XMWm1mlTz07ISPx1d6Xmnstcdpm9gvAZvZEfAmbL3IoZJuPkh4gLKXYnvJB9a6xjj8SLGr5qQ0lVWKSUKOqIumbBYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFb4JqYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279C7C4CEEB;
+	Mon, 18 Aug 2025 13:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524617;
-	bh=SIvh6KcNCEMHvIttfLm+em4JKh7+c6N8xZGs6I0caQ4=;
+	s=korg; t=1755523021;
+	bh=YnauoailNUtnY1l1dwDnkiYU+j1xy4p1Z/cfsO8uUD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5y7gQ8UGHANZcJkZLGQqgdGWinbdTt7GvZC/9l/QVlH59WCSBUPkajl/yBt/lqcM
-	 YoCSNErhIuTP/DOvZjflV+N+ESLbgQQgWqm4FS/fmJjXeISEOq2Hyvh5BNFygDOAkm
-	 g/xYzhgp0LM0FGHV/AV6E352T7XZ9q6ztLY4e54A=
+	b=kFb4JqYeahBTKNytp4Ze9JiNKpC+a4NTv3wAkdy2x94DIP8EDAWgL9UHzSspmJjOM
+	 yiwFUzLe1Dym1E08Ws1WbKZThCfHreRez96JrUlYBUhWbs67Dfjig5C5t+zN0x6F9U
+	 evNEmUcUj6rgvzmgIX1uBF/w11dp1qxjgyGOXNQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.16 011/570] smb: client: remove redundant lstrp update in negotiate protocol
-Date: Mon, 18 Aug 2025 14:39:58 +0200
-Message-ID: <20250818124506.218175638@linuxfoundation.org>
+	Dongcheng Yan <dongcheng.yan@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.15 013/515] media: i2c: set lt6911uxes reset_gpio to GPIOD_OUT_LOW
+Date: Mon, 18 Aug 2025 14:39:59 +0200
+Message-ID: <20250818124458.831785578@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: Dongcheng Yan <dongcheng.yan@intel.com>
 
-commit e19d8dd694d261ac26adb2a26121a37c107c81ad upstream.
+commit 3c607baf68639d6bfe1a336523c4c9597f4b512a upstream.
 
-Commit 34331d7beed7 ("smb: client: fix first command failure during
-re-negotiation") addressed a race condition by updating lstrp before
-entering negotiate state. However, this approach may have some unintended
-side effects.
+reset_gpio needs to be an output and set to GPIOD_OUT_LOW, to ensure
+lt6911uxe is in reset state during probe.
 
-The lstrp field is documented as "when we got last response from this
-server", and updating it before actually receiving a server response
-could potentially affect other mechanisms that rely on this timestamp.
-For example, the SMB echo detection logic also uses lstrp as a reference
-point. In scenarios with frequent user operations during reconnect states,
-the repeated calls to cifs_negotiate_protocol() might continuously
-update lstrp, which could interfere with the echo detection timing.
+This issue was found on the onboard lt6911uxe, where the reset_pin was
+not reset, causing the lt6911uxe to fail to probe.
 
-Additionally, commit 266b5d02e14f ("smb: client: fix race condition in
-negotiate timeout by using more precise timing") introduced a dedicated
-neg_start field specifically for tracking negotiate start time. This
-provides a more precise solution for the original race condition while
-preserving the intended semantics of lstrp.
-
-Since the race condition is now properly handled by the neg_start
-mechanism, the lstrp update in cifs_negotiate_protocol() is no longer
-necessary and can be safely removed.
-
-Fixes: 266b5d02e14f ("smb: client: fix race condition in negotiate timeout by using more precise timing")
+Fixes: e49563c3be09d4 ("media: i2c: add lt6911uxe hdmi bridge driver")
 Cc: stable@vger.kernel.org
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/i2c/lt6911uxe.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -4204,7 +4204,6 @@ retry:
- 		return 0;
- 	}
+--- a/drivers/media/i2c/lt6911uxe.c
++++ b/drivers/media/i2c/lt6911uxe.c
+@@ -600,7 +600,7 @@ static int lt6911uxe_probe(struct i2c_cl
  
--	server->lstrp = jiffies;
- 	server->tcpStatus = CifsInNegotiate;
- 	server->neg_start = jiffies;
- 	spin_unlock(&server->srv_lock);
+ 	v4l2_i2c_subdev_init(&lt6911uxe->sd, client, &lt6911uxe_subdev_ops);
+ 
+-	lt6911uxe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_IN);
++	lt6911uxe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(lt6911uxe->reset_gpio))
+ 		return dev_err_probe(dev, PTR_ERR(lt6911uxe->reset_gpio),
+ 				     "failed to get reset gpio\n");
 
 
 
