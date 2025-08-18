@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882BAB2A4E9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:27:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FE6B2A7CD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 233324E310D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91EEA681F23
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18833203BE;
-	Mon, 18 Aug 2025 13:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E70288C1F;
+	Mon, 18 Aug 2025 13:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3mcMFDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfKJqg3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2622253F2;
-	Mon, 18 Aug 2025 13:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236B327F758;
+	Mon, 18 Aug 2025 13:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523280; cv=none; b=OTux4TqHBfwt+AAUCOOsU0rZ5SXB6Kjq2Fbw7r9XxEIIPDJGwvMpnMYZ9AlLFLF8mq1iDbzScADbSsGVwIv4p3DGfBeHOt11FBX7arPSBhoAPTvvtmiDKlOy7Rf250T7+w6IuWmDtL6Rw8dfc8BkG8DGSSodXt6h01JA7auO6Z4=
+	t=1755524952; cv=none; b=OxVGy2xNn/qFv8pYp5XsxsmfS7aAmyVV8iFNrgsv20mqx7UwoOeQk2EzMShj1jWMefhCo1ZdwXCAdQgkipMwccGfBm19Q+gNKKlWSwVRLogDo8pfw9xdLw24S3uEoAnY7lanCtk+npoEA1DVq37xPiEdN0LddDcNrUewLhweixg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523280; c=relaxed/simple;
-	bh=tJMcw8U90GzYlPEye22Uc+IbrZSvf4ytu6CGUDuYBH4=;
+	s=arc-20240116; t=1755524952; c=relaxed/simple;
+	bh=ey9z6U4ceqV4TeUDJewi8O465GyDJzHVvh777RN3XGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ruiLxKbhCPcGklM0AmmWRorE2jSsbNbhgXg57e0uG3MQV+pmMHPokNm5OwsSCSANvcE6V6ZGLM/zhPPi6nznINKumpGDoTmBkmYGpoFpmoR+xYpc9gC+mBjYCDEk4oaqEkLeTK7i596+puH0fORZHF6mJG9sb2H9BQUsheTFcGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3mcMFDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4844EC4CEEB;
-	Mon, 18 Aug 2025 13:21:19 +0000 (UTC)
+	 MIME-Version; b=SIK277Bewk7qRZkL9VOMBh8ABxfxz7bbMN9rJl+bHCPi9KNiJ9W4jsmr5OgVUm9pFVh0/MLe93Q+zRNvB6azyl7MuxT+UO0UbzoUoprXhiC6yn8SUyHZ3GsNjMGiZzjr6fGggNyq8Yawf6fNYX3efMamt9tjgm1RBa+DuFjRvHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfKJqg3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2D3C4CEEB;
+	Mon, 18 Aug 2025 13:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523280;
-	bh=tJMcw8U90GzYlPEye22Uc+IbrZSvf4ytu6CGUDuYBH4=;
+	s=korg; t=1755524952;
+	bh=ey9z6U4ceqV4TeUDJewi8O465GyDJzHVvh777RN3XGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3mcMFDChj0BULSul6REo5BL16XH7m8H+y47ty9wvYLb8X1wuXnylcV4cZVnn3G4/
-	 yjWPLu1VS4+aa2Em076u1I5q6Ns+0dWUEn3tOgEfSlMyNWgq9yrvDzf4e7sP1qz2JB
-	 YjxdZ2XTWWK8VKUMIIfeInAMMdGIX3ys09Cd23Dw=
+	b=XfKJqg3kevaN1GSU+DtVhVV5rdNtEdrjq+82+b0NVhVWNtR/3n2hosNBhWrV/cnSK
+	 Gzr3RVYFyBgL941B6wA9RHooTnmty7YRo0V0SJQrB8NU9NwlgzIvp/zXfFbXxxhWbL
+	 z8kRkd7Z75AnqH7a0qHOqqYL3RuOaRmNE+XKsajc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Prashant Malani <pmalani@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 115/515] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
+Subject: [PATCH 6.16 114/570] ata: libata-sata: Disallow changing LPM state if not supported
 Date: Mon, 18 Aug 2025 14:41:41 +0200
-Message-ID: <20250818124502.780137208@linuxfoundation.org>
+Message-ID: <20250818124510.204045599@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashant Malani <pmalani@google.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
+[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
 
-AMU counters on certain CPPC-based platforms tend to yield inaccurate
-delivered performance measurements on systems that are idle/mostly idle.
-This results in an inaccurate frequency being stored by cpufreq in its
-policy structure when the CPU is brought online. [1]
+Modify ata_scsi_lpm_store() to return an error if a user attempts to set
+a link power management policy for a port that does not support LPM,
+that is, ports flagged with ATA_FLAG_NO_LPM.
 
-Consequently, if the userspace governor tries to set the frequency to a
-new value, there is a possibility that it would be the erroneous value
-stored earlier. In such a scenario, cpufreq would assume that the
-requested frequency has already been set and return early, resulting in
-the correct/new frequency request never making it to the hardware.
-
-Since the operating frequency is liable to this sort of inconsistency,
-mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
-invoked when a target frequency update is requested.
-
-Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Prashant Malani <pmalani@google.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-sata.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index cb93f00bafdb..156c1e516cc8 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -816,7 +816,7 @@ static struct freq_attr *cppc_cpufreq_attr[] = {
- };
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index cb46ce276bb1..47169c469f43 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -924,6 +924,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
  
- static struct cpufreq_driver cppc_cpufreq_driver = {
--	.flags = CPUFREQ_CONST_LOOPS,
-+	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify = cppc_verify_policy,
- 	.target = cppc_cpufreq_set_target,
- 	.get = cppc_cpufreq_get_rate,
+ 	spin_lock_irqsave(ap->lock, flags);
+ 
++	if (ap->flags & ATA_FLAG_NO_LPM) {
++		count = -EOPNOTSUPP;
++		goto out_unlock;
++	}
++
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		ata_for_each_dev(dev, &ap->link, ENABLED) {
+ 			if (dev->quirks & ATA_QUIRK_NOLPM) {
 -- 
 2.39.5
 
