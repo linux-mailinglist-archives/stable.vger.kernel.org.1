@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A1EB2A862
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79492B2A388
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D943F1BA1B4F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D19B2A7E57
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D50022AE7A;
-	Mon, 18 Aug 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F9E217F3D;
+	Mon, 18 Aug 2025 13:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijyjS5AL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCceGfTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA5222A4E9;
-	Mon, 18 Aug 2025 13:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D461D12DDA1;
+	Mon, 18 Aug 2025 13:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525308; cv=none; b=KBZAF+5ZMy/y9H2nyX7uZuo9o+aMo8avoPesnbLYMWX0E2BSSPRUpeJKza+k5RzHVAQ8Z2W6DCo3npTahSBpVkwYqdEFFDsKERMNZdA6JMRT03H/c1gIFs3BHwj1Va4uwkkkVVTMKlrVm7qqVE4xxSkxc3iGL7q2VNFN824ZXWg=
+	t=1755522052; cv=none; b=okMP6sp3uFTdDQZosJ3jWW7P7wlQGUWW5kE8aC/TYolBEgcoC8BYo201H4jMEDj7v/TDUGvt+LAth3JaxW1fRBatvNXkru8/IxkTuKY7rk5Y9fhHzN/yIzpOroAZ5MTDM8HHW6sa+777ISnf7ptiJDtPF5IcDtkt9Fzq5IgSsbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525308; c=relaxed/simple;
-	bh=stZwFapQAVFCiyTjZmdzmLZ8s5erXKwggj3su96nUQs=;
+	s=arc-20240116; t=1755522052; c=relaxed/simple;
+	bh=4lMs02/2t853vVRJ+dpOwRwKp/SzNk3TY2apRC/TkTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAoU72+Ha5HLa3t07xcuUhwamRgrkwXtdguCeITXxFg4vNkvSVHcEWuFbkLo3iO5BTAG323mrVyB6fo3+necxjBESpnk683/bJzBt/jLaNgnkAKLBtjFst/mCdQ7tsNWnoXEBrkSLu+GD2moh9VB/IjPsTvFJT8k460ExOIe05w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijyjS5AL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF01C4CEF1;
-	Mon, 18 Aug 2025 13:55:07 +0000 (UTC)
+	 MIME-Version; b=R44qJrQqosrdWzoMeXZuA0asa73M61CGaYlx3LL2JwpH/syPc/6ucdZRXb1JNY/TbDkg+kEdU6hHCIiA4bg07fYk2KAMdU4LnQgEqt1Q/DYdX383XuCiBTcLp2v6D+1205dX22h1KuOv8lyY0LNK6eEb4ifFRxd3MdEVCM0vWXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCceGfTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438A1C4CEF1;
+	Mon, 18 Aug 2025 13:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525307;
-	bh=stZwFapQAVFCiyTjZmdzmLZ8s5erXKwggj3su96nUQs=;
+	s=korg; t=1755522052;
+	bh=4lMs02/2t853vVRJ+dpOwRwKp/SzNk3TY2apRC/TkTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijyjS5ALuek8wH4hfwzZ/idNhZ0sAZgtVtv5YBPjfBhCakPTuUuywjLcvAQRFGm0k
-	 Yh0cr6RewWORce2nh/GLrSrbcwWsWuAN1p1UC3k8KpS1Tad4RoixiZTYg7Mq6cPJH/
-	 q/LTgp70JH9vXwqY/3/74hu4LekC6yRCPpaxTLyc=
+	b=qCceGfTGCc1ZRmXkTvcvpWNo6u0CtAJqfXMsZyvHyjGrIfE7WsfckfuPpzU7DKK+d
+	 ZkDzfiIv5nR7oZwDfupAnEqvBXHrG9rSs7LxN1IX4J3Dn6JvStCf1ZkzZmOLxXllI0
+	 1cQ36BiYoFWZMSTRlgJpkpzzxnTizznOlvBpX5lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Breno Leitao <leitao@debian.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 222/570] s390/sclp: Use monotonic clock in sclp_sync_wait()
+Subject: [PATCH 6.12 183/444] arm64: Mark kernel as tainted on SAE and SError panic
 Date: Mon, 18 Aug 2025 14:43:29 +0200
-Message-ID: <20250818124514.358532986@linuxfoundation.org>
+Message-ID: <20250818124455.732906201@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 925f0707a67cae0a974c4bd5b718f0263dc56824 ]
+[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
 
-sclp_sync_wait() should use the monotonic clock for the delay loop.
-Otherwise the code won't work correctly when the clock is changed.
+Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
+interrupts trigger a panic to flag potential hardware faults. This
+tainting mechanism aids in debugging and enables correlation of
+hardware-related crashes in large-scale deployments.
 
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+This change aligns with similar patches[1] that mark machine check
+events when the system crashes due to hardware errors.
+
+Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/traps.c | 1 +
+ arch/arm64/mm/fault.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
-index 840be75e75d4..9a55e2d04e63 100644
---- a/drivers/s390/char/sclp.c
-+++ b/drivers/s390/char/sclp.c
-@@ -719,7 +719,7 @@ sclp_sync_wait(void)
- 	timeout = 0;
- 	if (timer_pending(&sclp_request_timer)) {
- 		/* Get timeout TOD value */
--		timeout = get_tod_clock_fast() +
-+		timeout = get_tod_clock_monotonic() +
- 			  sclp_tod_from_jiffies(sclp_request_timer.expires -
- 						jiffies);
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index 563cbce11126..e2e8ffa65aa5 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -921,6 +921,7 @@ void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigne
+ 
+ void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
+ {
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	console_verbose();
+ 
+ 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 850307b49bab..2d1ebc0c3437 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -798,6 +798,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 		 */
+ 		siaddr  = untagged_addr(far);
  	}
-@@ -739,7 +739,7 @@ sclp_sync_wait(void)
- 	/* Loop until driver state indicates finished request */
- 	while (sclp_running_state != sclp_running_state_idle) {
- 		/* Check for expired request timer */
--		if (get_tod_clock_fast() > timeout && timer_delete(&sclp_request_timer))
-+		if (get_tod_clock_monotonic() > timeout && timer_delete(&sclp_request_timer))
- 			sclp_request_timer.function(&sclp_request_timer);
- 		cpu_relax();
- 	}
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
+ 
+ 	return 0;
 -- 
 2.39.5
 
