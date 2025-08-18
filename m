@@ -1,98 +1,119 @@
-Return-Path: <stable+bounces-170064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1F7B2A227
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:51:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065DBB2A5C9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9BCF16EFEF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:43:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42C6356782C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85212264B3;
-	Mon, 18 Aug 2025 12:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F69321F34;
+	Mon, 18 Aug 2025 13:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="La1XjXG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVHiYqdp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AA91C8606
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 12:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9469B321F20;
+	Mon, 18 Aug 2025 13:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521008; cv=none; b=ulfwSiNTZKSehAnGkJ24kgIaBTOg98cKTpnTe7oZJzUqUwy00Qn5lLI2PoDhOH9ldSsFLbWagKWY22kZFNly/Whog5ixrOVOyYriuviAN0Mkn8LPil5j+AltV3PC9j/kAvlFjvQeuQiD4ufulTkH4IG56p5m4z+SRDpDVmAdDFM=
+	t=1755523402; cv=none; b=Pio5KT3UPzNbpQ7H16wr8Ay5xy5IvMbOmY7V2X7TQzuj4HcmIjhqsw+586Cpn038jkHDWwnktuFrH3/WFmCC7tW5aEtU/TlwbfQuePhmPQZIc9eo/KqNJXxVsY9hr7J05i0c/L9XkBBrOaqplK0/Lh+P1TSRay9B5O2lPs54A9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521008; c=relaxed/simple;
-	bh=gG3oGq/hJVfxFUTpg6jg7GO9O7GLdA0OnBQMXthbYVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=kgsNQsqoD4voQDMVunCUwZdyQHwDdsdfbEdRE1O2lUQEVsprrmVRs3BejFfV4nX5Krew6mCUIY3A36Z2wbAeJ8Q3lkoMuXBB8fydoGPmR0hPNbWK/hSQ2dPJtWECy3OzSEnxAKzY+Z5rYO5Ls6YaeDyPgsQQVNEsTGQPI994w7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=La1XjXG0; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755521008; x=1787057008;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=gG3oGq/hJVfxFUTpg6jg7GO9O7GLdA0OnBQMXthbYVM=;
-  b=La1XjXG0xIZUeDQR1j74m5bOa1YD+tRUM1561t3TI2f+C13/+hK95xru
-   1Rxej8k0FJdUjluvBofeZXk7ud9FniAVnGsEekIwuW99oWMGoDzQB9G1x
-   WNMKVontTehnlRGbSpxu36WGHrbAJZvD2qOHXC4JnSiSFMz3CSIv5G3Qd
-   d3flpUwDCLveEZOz6WBRIWqKlPGHdpKvyJoWlicd9p2BMBnpsXB3oHdg7
-   nLjxaUnZ67hKEDyT4K/22rjSDAiAvgDb0b4QN6/K4RC2RRO0d0QrhNsyt
-   0vUvVdUExXMMAbbmmdYw3HJNIMtwsUT6ZHplU1H8wmwZZu2mbXGwGbSMW
-   g==;
-X-CSE-ConnectionGUID: 5ALAzMFDTNOyBOmHDRGjPA==
-X-CSE-MsgGUID: oRI0euxaSTOGoUK5QWxeFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="57598365"
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="57598365"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 05:43:27 -0700
-X-CSE-ConnectionGUID: pC+0/5geTbqx5UTMICCXow==
-X-CSE-MsgGUID: twCjzM6eRgiFfqaKun1MwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
-   d="scan'208";a="171806153"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 18 Aug 2025 05:43:26 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1unzCt-000EE3-2H;
-	Mon, 18 Aug 2025 12:43:23 +0000
-Date: Mon, 18 Aug 2025 20:42:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/2] media: cx18: Fix invalid access to file *
-Message-ID: <aKMfs970ReRSZGy9@769e0d9fd271>
+	s=arc-20240116; t=1755523402; c=relaxed/simple;
+	bh=el5m8y5mGmFYQO+MCZxIVeV1qFSeVQfC+scHDlPW6KA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=igEgX2rCQnKMFpfjbsgrWbwCM4858BtBpZylG0kZA/vY5so1nbcDMtm/hIqR2Zx8mocyM23j3o+2a9bjMkDOnbBuBTXxcPF6T9PaYjc8GbU+eYOqN3XROljt2IWUDZekKDFnj8sVR+LfHyxYQeM7ejEVN2HkRJWVnCA20nkwZ1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVHiYqdp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05521C4CEEB;
+	Mon, 18 Aug 2025 13:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755523402;
+	bh=el5m8y5mGmFYQO+MCZxIVeV1qFSeVQfC+scHDlPW6KA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AVHiYqdp1kPAGRvagKE6nkGngwLFhDVEUcYnsy6bltNM0jrBR+2qP/ZvZh96EU1xm
+	 mkvzfDz+FO74sTYCCwB9DwiDf21SGMrtZBTY4aiPLFUsbFwo/5li1NyeiGW2MpK6hl
+	 vLVL/idocKY+IwoQAM9vDLZqlVSpJE9YOznAvz9Y=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 161/515] ASoC: SDCA: Add flag for unused IRQs
+Date: Mon, 18 Aug 2025 14:42:27 +0200
+Message-ID: <20250818124504.581377603@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250818-cx18-v4l2-fh-v1-1-6fe153760bce@ideasonboard.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
-Thanks for your patch.
+------------------
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+[ Upstream commit 775f5729b47d8737f4f98e0141f61b3358245398 ]
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/2] media: cx18: Fix invalid access to file *
-Link: https://lore.kernel.org/stable/20250818-cx18-v4l2-fh-v1-1-6fe153760bce%40ideasonboard.com
+Zero is a valid SDCA IRQ interrupt position so add a special value to
+indicate that the IRQ is not used.
 
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Link: https://patch.msgid.link/20250624122844.2761627-6-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/sound/sdca_function.h   | 2 ++
+ sound/soc/sdca/sdca_functions.c | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/include/sound/sdca_function.h b/include/sound/sdca_function.h
+index 253654568a41..1403a9f46976 100644
+--- a/include/sound/sdca_function.h
++++ b/include/sound/sdca_function.h
+@@ -16,6 +16,8 @@ struct device;
+ struct sdca_entity;
+ struct sdca_function_desc;
+ 
++#define SDCA_NO_INTERRUPT -1
++
+ /*
+  * The addressing space for SDCA relies on 7 bits for Entities, so a
+  * maximum of 128 Entities per function can be represented.
+diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
+index 15aa57a07c73..e1803f0dc590 100644
+--- a/sound/soc/sdca/sdca_functions.c
++++ b/sound/soc/sdca/sdca_functions.c
+@@ -912,6 +912,8 @@ static int find_sdca_entity_control(struct device *dev, struct sdca_entity *enti
+ 				       &tmp);
+ 	if (!ret)
+ 		control->interrupt_position = tmp;
++	else
++		control->interrupt_position = SDCA_NO_INTERRUPT;
+ 
+ 	control->label = find_sdca_control_label(dev, entity, control);
+ 	if (!control->label)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.5
 
 
 
