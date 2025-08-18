@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14781B2A7A8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F30B2A54E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7612584D40
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 857805E0061
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1D6321F38;
-	Mon, 18 Aug 2025 13:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20554322542;
+	Mon, 18 Aug 2025 13:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZspcqX4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouH1bhFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E14321F27;
-	Mon, 18 Aug 2025 13:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DD332277F;
+	Mon, 18 Aug 2025 13:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524736; cv=none; b=er1TfHzQ/gMA8GyyV+1xx2hOLasUz1sT4Q3ai/XVvgPYYNKwNJlwLdXYVop2VgUAp406E5qwCVxdOWv/JsveAKbRxPETB8seuSXfL9Nd/iuUubrMlxVEB/mXwY7oi8Ub6MzKcjoR1JuWroKbi3TUV2508hK7dNSZdEhyctd+54k=
+	t=1755523078; cv=none; b=Byioa0pVYdu5CDxZ9KKXh546kTxwTKf7WD9QRDVbg3r7Sivrg/+xWGaQj5CRKHqXi+eTy3I+qRwB+JR4IYHFNtgJM5dgO0WBqtO1oWZ9lWAoH9frimC06L797jcOst5eK3YHrmLfm89LORLCtr267A0IYXQe1diOmy1cexWq8II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524736; c=relaxed/simple;
-	bh=vHpEhGjxsBWsqpOSOyEebFtvpLnvmIT/evEO2vDhp6g=;
+	s=arc-20240116; t=1755523078; c=relaxed/simple;
+	bh=hO03T6sJTdesA/pPy+V8lJJYI1Y/htMfkdIr5iJFPuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlvjM2CwKQZlglS7NdSm+gvkJwfOrXnEnaZ0CqMHXMKW/8oRJrXdsh64sU+tKUAw5NBf7bIIYfeMLX7/V7NkjBvHvMFJkRHLhDGE8WaWrjqKegSSokoTdArXdsmemEd1r3lmXUiRrkkFzkjpgN+3AYH/0LxXOOJw0jhJQGZLmxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZspcqX4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A9BDC4CEEB;
-	Mon, 18 Aug 2025 13:45:35 +0000 (UTC)
+	 MIME-Version; b=nosx8yQC7Ea+iLrOnkjAZNn4XcqSHIHTnnN0c0Zey2JLX9wRvxL7MpZtYIkhQ5yB4qQ1xBN8KcPLLMRIIEw99rD5nr4NiGBBqusEf9/HlvyCTd8L7jWMpEc9ckk/0xGZ/sZF4mE/mWe5/tCw9zGUqConYOwlivGcx0ayHz8wMsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouH1bhFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BABC4CEF1;
+	Mon, 18 Aug 2025 13:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524736;
-	bh=vHpEhGjxsBWsqpOSOyEebFtvpLnvmIT/evEO2vDhp6g=;
+	s=korg; t=1755523078;
+	bh=hO03T6sJTdesA/pPy+V8lJJYI1Y/htMfkdIr5iJFPuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZspcqX4/XfY07kjfCasqlCRU1zNV+tMmZL9WXV4sACalfrgSDXl5J1HTg6b8rJZVK
-	 yjEzQiDcQAr/63587EAPN1TWjxVcHCzmHyDfn0rU0PN8FuxH5r3I90LeN7SWxl7ARw
-	 ws3jafKZrQ4wb9SwQhb3ZT38eNXUvX6NMSdN19hY=
+	b=ouH1bhFP9h5a9KJ8ywMEeP8JRGxhu1adWbioU33zVjZzkTMwRo9B4yO0aNU092ga4
+	 MjalSD8W499haLj32dQy0tWp951dZavuL1xgw4G0tKasJsb4mr+J4rVzRh0oEXBH70
+	 JiMsNMMqhMj3uDeoeCnJKFFsR/35lKFWEi8BAYlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.16 046/570] lib/crypto: x86/poly1305: Fix register corruption in no-SIMD contexts
+	Jiayi Li <lijiayi@kylinos.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.15 047/515] ACPI: processor: perflib: Fix initial _PPC limit application
 Date: Mon, 18 Aug 2025 14:40:33 +0200
-Message-ID: <20250818124507.592009359@linuxfoundation.org>
+Message-ID: <20250818124500.232391465@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-commit 16f2c30e290e04135b70ad374fb7e1d1ed9ff5e7 upstream.
+commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
 
-Restore the SIMD usability check and base conversion that were removed
-by commit 318c53ae02f2 ("crypto: x86/poly1305 - Add block-only
-interface").
+If the BIOS sets a _PPC frequency limit upfront, it will fail to take
+effect due to a call ordering issue.  Namely, freq_qos_update_request()
+is called before freq_qos_add_request() for the given request causing
+the constraint update to be ignored.  The call sequence in question is
+as follows:
 
-This safety check is cheap and is well worth eliminating a footgun.
-While the Poly1305 functions should not be called when SIMD registers
-are unusable, if they are anyway, they should just do the right thing
-instead of corrupting random tasks' registers and/or computing incorrect
-MACs.  Fixing this is also needed for poly1305_kunit to pass.
+cpufreq_policy_online()
+  acpi_cpufreq_cpu_init()
+    acpi_processor_register_performance()
+      acpi_processor_get_performance_info()
+        acpi_processor_get_platform_limit()
+         freq_qos_update_request(&perflib_req) <- inactive QoS request
+  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
+                               CPUFREQ_CREATE_POLICY)
+    acpi_processor_notifier()
+      acpi_processor_ppc_init()
+        freq_qos_add_request(&perflib_req) <- QoS request activation
 
-Just use irq_fpu_usable() instead of the original crypto_simd_usable(),
-since poly1305_kunit won't rely on crypto_simd_disabled_for_test.
+Address this by adding an acpi_processor_get_platform_limit() call
+to acpi_processor_ppc_init(), after the perflib_req activation via
+freq_qos_add_request(), which causes the initial _PPC limit to be
+picked up as appropriate.  However, also ensure that the _PPC limit
+will not be picked up in the cases when the cpufreq driver does not
+call acpi_processor_register_performance() by adding a pr->performance
+check to the related_cpus loop in acpi_processor_ppc_init().
 
-Fixes: 318c53ae02f2 ("crypto: x86/poly1305 - Add block-only interface")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20250706231100.176113-5-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
+[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
+[ rjw: Subject and changelog adjustments ]
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/crypto/poly1305_glue.c |   40 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+ drivers/acpi/processor_perflib.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/arch/x86/lib/crypto/poly1305_glue.c
-+++ b/arch/x86/lib/crypto/poly1305_glue.c
-@@ -25,6 +25,42 @@ struct poly1305_arch_internal {
- 	struct { u32 r2, r1, r4, r3; } rn[9];
- };
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -172,11 +172,14 @@ void acpi_processor_ppc_init(struct cpuf
+ {
+ 	unsigned int cpu;
  
-+/*
-+ * The AVX code uses base 2^26, while the scalar code uses base 2^64. If we hit
-+ * the unfortunate situation of using AVX and then having to go back to scalar
-+ * -- because the user is silly and has called the update function from two
-+ * separate contexts -- then we need to convert back to the original base before
-+ * proceeding. It is possible to reason that the initial reduction below is
-+ * sufficient given the implementation invariants. However, for an avoidance of
-+ * doubt and because this is not performance critical, we do the full reduction
-+ * anyway. Z3 proof of below function: https://xn--4db.cc/ltPtHCKN/py
-+ */
-+static void convert_to_base2_64(void *ctx)
-+{
-+	struct poly1305_arch_internal *state = ctx;
-+	u32 cy;
-+
-+	if (!state->is_base2_26)
++	if (ignore_ppc == 1)
 +		return;
 +
-+	cy = state->h[0] >> 26; state->h[0] &= 0x3ffffff; state->h[1] += cy;
-+	cy = state->h[1] >> 26; state->h[1] &= 0x3ffffff; state->h[2] += cy;
-+	cy = state->h[2] >> 26; state->h[2] &= 0x3ffffff; state->h[3] += cy;
-+	cy = state->h[3] >> 26; state->h[3] &= 0x3ffffff; state->h[4] += cy;
-+	state->hs[0] = ((u64)state->h[2] << 52) | ((u64)state->h[1] << 26) | state->h[0];
-+	state->hs[1] = ((u64)state->h[4] << 40) | ((u64)state->h[3] << 14) | (state->h[2] >> 12);
-+	state->hs[2] = state->h[4] >> 24;
-+	/* Unsigned Less Than: branchlessly produces 1 if a < b, else 0. */
-+#define ULT(a, b) ((a ^ ((a ^ b) | ((a - b) ^ b))) >> (sizeof(a) * 8 - 1))
-+	cy = (state->hs[2] >> 2) + (state->hs[2] & ~3ULL);
-+	state->hs[2] &= 3;
-+	state->hs[0] += cy;
-+	state->hs[1] += (cy = ULT(state->hs[0], cy));
-+	state->hs[2] += ULT(state->hs[1], cy);
-+#undef ULT
-+	state->is_base2_26 = 0;
-+}
-+
- asmlinkage void poly1305_block_init_arch(
- 	struct poly1305_block_state *state,
- 	const u8 raw_key[POLY1305_BLOCK_SIZE]);
-@@ -62,7 +98,9 @@ void poly1305_blocks_arch(struct poly130
- 	BUILD_BUG_ON(SZ_4K < POLY1305_BLOCK_SIZE ||
- 		     SZ_4K % POLY1305_BLOCK_SIZE);
+ 	for_each_cpu(cpu, policy->related_cpus) {
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
  
--	if (!static_branch_likely(&poly1305_use_avx)) {
-+	if (!static_branch_likely(&poly1305_use_avx) ||
-+	    unlikely(!irq_fpu_usable())) {
-+		convert_to_base2_64(ctx);
- 		poly1305_blocks_x86_64(ctx, inp, len, padbit);
- 		return;
+-		if (!pr)
++		if (!pr || !pr->performance)
+ 			continue;
+ 
+ 		/*
+@@ -192,6 +195,11 @@ void acpi_processor_ppc_init(struct cpuf
+ 		if (ret < 0)
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
++
++		ret = acpi_processor_get_platform_limit(pr);
++		if (ret)
++			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
++			       cpu, ret);
  	}
+ }
+ 
 
 
 
