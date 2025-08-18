@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C4CB2A98A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED83B2A67C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E5255A1573
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DE3E564F18
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE94134AB09;
-	Mon, 18 Aug 2025 14:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98EB335BC3;
+	Mon, 18 Aug 2025 13:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JgsfJwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzqVSp9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2A534AB01;
-	Mon, 18 Aug 2025 14:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F0B335BA1;
+	Mon, 18 Aug 2025 13:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525682; cv=none; b=cjxOGMBeOwIDyQJWJZ4AtBTyydCcz4/j72I2ukhxOVb9+8mwa3FF3fAHChLw10ciEgYIJ/qoHEU+yBOCOuDbodghiMp0qLh+ikSFFWuTorvKLGvokeuHwjqx2O9AVTstI22q77iSIX+kj615Q8D8YTLeVA/lVOUopaj+7jUabSQ=
+	t=1755523990; cv=none; b=hj+p10hCselDAUfmq/EI5q2ltV0PkCpCnnNfoHkTcuPQnQRc+/R75Jdp0TA5s5diR6HsToJXmrNosPWZcE1K0zsmieEaJ9Zr4ReS85wqKxg8wcz/zd+1slA2IGTAQir3/MLCArH3CZ0zAoF/hnqUsqUNJbx7OdcyfRFUsxwdLfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525682; c=relaxed/simple;
-	bh=3/x6A2GdN34xHKKFyr8fPqMWQluhcNEphgsdgobOinA=;
+	s=arc-20240116; t=1755523990; c=relaxed/simple;
+	bh=Gu4szEaJPjobXveju7pATTAe7zEpe1qiBfspOo/btjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Je9cfcFxYwcFJPzakQ8XRN1RAAqcdMDCt4EQuXc7sxe5s++oGeYGiAD+BNqpyi1ZCmDCbjDUIvqyNq3YszdPezeDHI2K9HyKt3sI4d/PsZCl4cVKUFrygMZP6vjps35/5VB/lD9I6HM7TV+LamLUEkNcn1oqIe2+5Ec+wNlCoxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JgsfJwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90874C4CEEB;
-	Mon, 18 Aug 2025 14:01:21 +0000 (UTC)
+	 MIME-Version; b=JXiXOh0boL3IBtxJ+tQY8U45FJL4XThBkj1V8CLdbc8fQBboGs3AYqXKZij/V7MmWZ+XUqRJocWuHaSOBze5iakobspdFPMFTIWmEjxaY/NnzSWkiefYVZRW4RKSxBiYuFPhZd/t3zTTIgqy055QkH2frJ6THdN+aGcz5nC7YYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzqVSp9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A53BC4CEEB;
+	Mon, 18 Aug 2025 13:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525682;
-	bh=3/x6A2GdN34xHKKFyr8fPqMWQluhcNEphgsdgobOinA=;
+	s=korg; t=1755523989;
+	bh=Gu4szEaJPjobXveju7pATTAe7zEpe1qiBfspOo/btjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JgsfJwjgw0bGaeOxp681DeuZyvd1li4V/WZcNVG657BpEoeKTXI4juCM2NXOgAGM
-	 KgsrJPkHxO0NRz6bHVlftYwUeFFBFSoG3kZfOqOtxMXv4c0uwsoY0UDtuVOPuWdLjU
-	 Hz5e6ZW2vv1+KGM/+tM24uDv5gyCrmywMRuol0Wo=
+	b=lzqVSp9Wuw/lfh/jlQ3BMIDfYrOZ5KqzP8garp1Ghw0g6CXhMlA+GuZUrSfDxfmue
+	 e84uGgH4IY2W/Dxc74BWRp2Xj8FcDicNzRJl15g+ZnOLUwfJmZKfdRi3cCPcYuQEgo
+	 7B4Zzg9+c+Q8wjdKxJUPx14pFi7t1u7+gEPLhIt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhiqi Song <songzhiqi1@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 334/570] net: dsa: b53: prevent SWITCH_CTRL access on BCM5325
+Subject: [PATCH 6.15 335/515] crypto: hisilicon/hpre - fix dma unmap sequence
 Date: Mon, 18 Aug 2025 14:45:21 +0200
-Message-ID: <20250818124518.718399247@linuxfoundation.org>
+Message-ID: <20250818124511.324290844@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Zhiqi Song <songzhiqi1@huawei.com>
 
-[ Upstream commit 22ccaaca43440e90a3b68d2183045b42247dc4be ]
+[ Upstream commit 982fd1a74de63c388c060e4fa6f7fbd088d6d02e ]
 
-BCM5325 doesn't implement SWITCH_CTRL register so we should avoid reading
-or writing it.
+Perform DMA unmapping operations before processing data.
+Otherwise, there may be unsynchronized data accessed by
+the CPU when the SWIOTLB is enabled.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-8-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zhiqi Song <songzhiqi1@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre_crypto.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 990d21fad939..bb0a5fd6a372 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -361,11 +361,12 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_crypto.c b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+index 61b5e1c5d019..1550c3818383 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+@@ -1491,11 +1491,13 @@ static void hpre_ecdh_cb(struct hpre_ctx *ctx, void *resp)
+ 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
+ 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
  
- 	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, mgmt);
++	/* Do unmap before data processing */
++	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
++
+ 	p = sg_virt(areq->dst);
+ 	memmove(p, p + ctx->key_sz - curve_sz, curve_sz);
+ 	memmove(p + curve_sz, p + areq->dst_len - curve_sz, curve_sz);
  
--	/* Include IMP port in dumb forwarding mode
--	 */
--	b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
--	mgmt |= B53_MII_DUMB_FWDG_EN;
--	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
-+	if (!is5325(dev)) {
-+		/* Include IMP port in dumb forwarding mode */
-+		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
-+		mgmt |= B53_MII_DUMB_FWDG_EN;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
-+	}
+-	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
+ 	kpp_request_complete(areq, ret);
  
- 	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
- 	 * frames should be flooded or not.
+ 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
+@@ -1808,9 +1810,11 @@ static void hpre_curve25519_cb(struct hpre_ctx *ctx, void *resp)
+ 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
+ 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
+ 
++	/* Do unmap before data processing */
++	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
++
+ 	hpre_key_to_big_end(sg_virt(areq->dst), CURVE25519_KEY_SIZE);
+ 
+-	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
+ 	kpp_request_complete(areq, ret);
+ 
+ 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
 -- 
 2.39.5
 
