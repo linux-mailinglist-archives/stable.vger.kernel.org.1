@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52147B2A85D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99600B2A30F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 598E31BA21EB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFBA71887077
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66E8335BAA;
-	Mon, 18 Aug 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4164A30FF29;
+	Mon, 18 Aug 2025 12:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYnJv9vz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g62W8xlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E83335BA3;
-	Mon, 18 Aug 2025 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEC733F3;
+	Mon, 18 Aug 2025 12:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525084; cv=none; b=Oyqa9Uw0XENAMJSlgPnJSgHsXs/YWQoiuLNuNEGve9RVBlqlP8kmnITJUnA0QS+9BgKmbTZBCvh2b38h90DWHR0rScgV7ZxdXyeMSLCSLqxXzpLjGbx7eM+IikHlcClh7Mwuw7XlWUjcFe5OQLbOAlJbfBcbzXudf9SbBk2AZe4=
+	t=1755521870; cv=none; b=WZ1rNeSeIUyPt9hdAPZ8RMmUF4EHitc2kQ+/Kt3I3Uho2Va1pjSRUXerOby/GANUU23oaU/HfZMTtg6Dz7D2s1K4KSoP6GBleI/LVeVz9Nvzc0b5tRY47tFKf+2yA5dpY95yGKa++U1m+jMg40ele3Y7e8+lGPzB4sFKs3EDjPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525084; c=relaxed/simple;
-	bh=zuC0Pxa3txATwH8lsekoMLMM1pUDqGLx1LHkMRBJkGM=;
+	s=arc-20240116; t=1755521870; c=relaxed/simple;
+	bh=cJaVDADiCHZe9yx7gnDW3xb9oiJnX+MXkQkT453RQz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jCjJ6feEaqcFESLFnVwINfSV7WAO2S7filGpQjY9a3QfpeIXablMx6fUUglOyH4eFTfUW/HJOU8vg0/1pfYqkgG8biNG+8yj19qdLO55sWJ9Oj7iU+8TH6UaiPcXUnPTnJPkRS6eA15A6ff4I7hFKHtTbIWWFHaaUNAoiHtLsg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYnJv9vz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26485C4CEEB;
-	Mon, 18 Aug 2025 13:51:23 +0000 (UTC)
+	 MIME-Version; b=eaTz6EGJeVmrlFrZ24YkOIgh2EbRujf4ZvMlNQtThnYmgAuzB8VzatkP4bBKZq9H6ow1BSt85OHiNE3C4xqmGJQ9aArdwcjzDV+9egi3PBU9x2f+xyLMGYY60f3g2CRytpr8l1BWc8x6XUvUZKSiW6DTclCtL81T1j001Ditqxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g62W8xlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F05C4CEEB;
+	Mon, 18 Aug 2025 12:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525084;
-	bh=zuC0Pxa3txATwH8lsekoMLMM1pUDqGLx1LHkMRBJkGM=;
+	s=korg; t=1755521870;
+	bh=cJaVDADiCHZe9yx7gnDW3xb9oiJnX+MXkQkT453RQz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYnJv9vzvtWqE20c2ywRWVD7yHkWXnKhq7QfkKHmqRuKyIxiIDWsiyZI6hdZ+S6LN
-	 2xCDTN658rbmnAH7wkkK9q8/I2AO/dwrdoL6oS1oFmCqD11fZWXENPaZvJWjB6RCmQ
-	 Wd7Ll0gk+6H0TmMplBsDCZ8cqnwrqkTsbviz1tHc=
+	b=g62W8xlzgd+M2oAF0piNiF3zBZmE5SrmKUFS5G3nuhaSDPxw0jxyLesw9fYVOtb86
+	 +5O4cHrRbE5VKd3aH/mdRzFCcLgeJ3oY5VWXVjDPqmn5E67lxCGZM7U0uapBTAjeUe
+	 g8VJud4kuq2tunZdNpk3nIo3m0IM0IOczO1WTMmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 153/570] tools/nolibc: define time_t in terms of __kernel_old_time_t
+Subject: [PATCH 6.12 114/444] EDAC/synopsys: Clear the ECC counters on init
 Date: Mon, 18 Aug 2025 14:42:20 +0200
-Message-ID: <20250818124511.707241967@linuxfoundation.org>
+Message-ID: <20250818124453.203708879@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,206 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 
-[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
+[ Upstream commit b1dc7f097b78eb8d25b071ead2384b07a549692b ]
 
-Nolibc assumes that the kernel ABI is using a time values that are as
-large as a long integer. For most ABIs this holds true.
-But for x32 this is not correct, as it uses 32bit longs but 64bit times.
+Clear the ECC error and counter registers during initialization/probe to avoid
+reporting stale errors that may have occurred before EDAC registration.
 
-Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
-and time_t being the same type. While timespec::tv_sec comes from the
-kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
+For that, unify the Zynq and ZynqMP ECC state reading paths and simplify the
+code.
 
-Switch to the __kernel_old_time_t to always get the correct type.
+  [ bp: Massage commit message.
+    Fix an -Wsometimes-uninitialized warning as reported by
+    Reported-by: kernel test robot <lkp@intel.com>
+    Closes: https://lore.kernel.org/oe-kbuild-all/202507141048.obUv3ZUm-lkp@intel.com ]
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
-Acked-by: Willy Tarreau <w@1wt.eu>
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250713050753.7042-1-shubhrajyoti.datta@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/std.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/edac/synopsys_edac.c | 97 +++++++++++++++++-------------------
+ 1 file changed, 46 insertions(+), 51 deletions(-)
 
-diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
-index adda7333d12e..ba950f0e7338 100644
---- a/tools/include/nolibc/std.h
-+++ b/tools/include/nolibc/std.h
-@@ -16,6 +16,8 @@
- #include "stdint.h"
- #include "stddef.h"
+diff --git a/drivers/edac/synopsys_edac.c b/drivers/edac/synopsys_edac.c
+index d7416166fd8a..ec3ed5e2b2d7 100644
+--- a/drivers/edac/synopsys_edac.c
++++ b/drivers/edac/synopsys_edac.c
+@@ -332,20 +332,26 @@ struct synps_edac_priv {
+ #endif
+ };
  
-+#include <linux/types.h>
++enum synps_platform_type {
++	ZYNQ,
++	ZYNQMP,
++	SYNPS,
++};
 +
- /* those are commonly provided by sys/types.h */
- typedef unsigned int          dev_t;
- typedef unsigned long         ino_t;
-@@ -27,6 +29,6 @@ typedef unsigned long       nlink_t;
- typedef   signed long         off_t;
- typedef   signed long     blksize_t;
- typedef   signed long      blkcnt_t;
--typedef   signed long        time_t;
-+typedef __kernel_old_time_t  time_t;
+ /**
+  * struct synps_platform_data -  synps platform data structure.
++ * @platform:		Identifies the target hardware platform
+  * @get_error_info:	Get EDAC error info.
+  * @get_mtype:		Get mtype.
+  * @get_dtype:		Get dtype.
+- * @get_ecc_state:	Get ECC state.
+  * @get_mem_info:	Get EDAC memory info
+  * @quirks:		To differentiate IPs.
+  */
+ struct synps_platform_data {
++	enum synps_platform_type platform;
+ 	int (*get_error_info)(struct synps_edac_priv *priv);
+ 	enum mem_type (*get_mtype)(const void __iomem *base);
+ 	enum dev_type (*get_dtype)(const void __iomem *base);
+-	bool (*get_ecc_state)(void __iomem *base);
+ #ifdef CONFIG_EDAC_DEBUG
+ 	u64 (*get_mem_info)(struct synps_edac_priv *priv);
+ #endif
+@@ -720,51 +726,38 @@ static enum dev_type zynqmp_get_dtype(const void __iomem *base)
+ 	return dt;
+ }
  
- #endif /* _NOLIBC_STD_H */
+-/**
+- * zynq_get_ecc_state - Return the controller ECC enable/disable status.
+- * @base:	DDR memory controller base address.
+- *
+- * Get the ECC enable/disable status of the controller.
+- *
+- * Return: true if enabled, otherwise false.
+- */
+-static bool zynq_get_ecc_state(void __iomem *base)
++static bool get_ecc_state(struct synps_edac_priv *priv)
+ {
++	u32 ecctype, clearval;
+ 	enum dev_type dt;
+-	u32 ecctype;
+-
+-	dt = zynq_get_dtype(base);
+-	if (dt == DEV_UNKNOWN)
+-		return false;
+ 
+-	ecctype = readl(base + SCRUB_OFST) & SCRUB_MODE_MASK;
+-	if ((ecctype == SCRUB_MODE_SECDED) && (dt == DEV_X2))
+-		return true;
+-
+-	return false;
+-}
+-
+-/**
+- * zynqmp_get_ecc_state - Return the controller ECC enable/disable status.
+- * @base:	DDR memory controller base address.
+- *
+- * Get the ECC enable/disable status for the controller.
+- *
+- * Return: a ECC status boolean i.e true/false - enabled/disabled.
+- */
+-static bool zynqmp_get_ecc_state(void __iomem *base)
+-{
+-	enum dev_type dt;
+-	u32 ecctype;
+-
+-	dt = zynqmp_get_dtype(base);
+-	if (dt == DEV_UNKNOWN)
+-		return false;
+-
+-	ecctype = readl(base + ECC_CFG0_OFST) & SCRUB_MODE_MASK;
+-	if ((ecctype == SCRUB_MODE_SECDED) &&
+-	    ((dt == DEV_X2) || (dt == DEV_X4) || (dt == DEV_X8)))
+-		return true;
++	if (priv->p_data->platform == ZYNQ) {
++		dt = zynq_get_dtype(priv->baseaddr);
++		if (dt == DEV_UNKNOWN)
++			return false;
++
++		ecctype = readl(priv->baseaddr + SCRUB_OFST) & SCRUB_MODE_MASK;
++		if (ecctype == SCRUB_MODE_SECDED && dt == DEV_X2) {
++			clearval = ECC_CTRL_CLR_CE_ERR | ECC_CTRL_CLR_UE_ERR;
++			writel(clearval, priv->baseaddr + ECC_CTRL_OFST);
++			writel(0x0, priv->baseaddr + ECC_CTRL_OFST);
++			return true;
++		}
++	} else {
++		dt = zynqmp_get_dtype(priv->baseaddr);
++		if (dt == DEV_UNKNOWN)
++			return false;
++
++		ecctype = readl(priv->baseaddr + ECC_CFG0_OFST) & SCRUB_MODE_MASK;
++		if (ecctype == SCRUB_MODE_SECDED &&
++		    (dt == DEV_X2 || dt == DEV_X4 || dt == DEV_X8)) {
++			clearval = readl(priv->baseaddr + ECC_CLR_OFST) |
++			ECC_CTRL_CLR_CE_ERR | ECC_CTRL_CLR_CE_ERRCNT |
++			ECC_CTRL_CLR_UE_ERR | ECC_CTRL_CLR_UE_ERRCNT;
++			writel(clearval, priv->baseaddr + ECC_CLR_OFST);
++			return true;
++		}
++	}
+ 
+ 	return false;
+ }
+@@ -934,18 +927,18 @@ static int setup_irq(struct mem_ctl_info *mci,
+ }
+ 
+ static const struct synps_platform_data zynq_edac_def = {
++	.platform = ZYNQ,
+ 	.get_error_info	= zynq_get_error_info,
+ 	.get_mtype	= zynq_get_mtype,
+ 	.get_dtype	= zynq_get_dtype,
+-	.get_ecc_state	= zynq_get_ecc_state,
+ 	.quirks		= 0,
+ };
+ 
+ static const struct synps_platform_data zynqmp_edac_def = {
++	.platform = ZYNQMP,
+ 	.get_error_info	= zynqmp_get_error_info,
+ 	.get_mtype	= zynqmp_get_mtype,
+ 	.get_dtype	= zynqmp_get_dtype,
+-	.get_ecc_state	= zynqmp_get_ecc_state,
+ #ifdef CONFIG_EDAC_DEBUG
+ 	.get_mem_info	= zynqmp_get_mem_info,
+ #endif
+@@ -957,10 +950,10 @@ static const struct synps_platform_data zynqmp_edac_def = {
+ };
+ 
+ static const struct synps_platform_data synopsys_edac_def = {
++	.platform = SYNPS,
+ 	.get_error_info	= zynqmp_get_error_info,
+ 	.get_mtype	= zynqmp_get_mtype,
+ 	.get_dtype	= zynqmp_get_dtype,
+-	.get_ecc_state	= zynqmp_get_ecc_state,
+ 	.quirks         = (DDR_ECC_INTR_SUPPORT | DDR_ECC_INTR_SELF_CLEAR
+ #ifdef CONFIG_EDAC_DEBUG
+ 			  | DDR_ECC_DATA_POISON_SUPPORT
+@@ -1390,10 +1383,6 @@ static int mc_probe(struct platform_device *pdev)
+ 	if (!p_data)
+ 		return -ENODEV;
+ 
+-	if (!p_data->get_ecc_state(baseaddr)) {
+-		edac_printk(KERN_INFO, EDAC_MC, "ECC not enabled\n");
+-		return -ENXIO;
+-	}
+ 
+ 	layers[0].type = EDAC_MC_LAYER_CHIP_SELECT;
+ 	layers[0].size = SYNPS_EDAC_NR_CSROWS;
+@@ -1413,6 +1402,12 @@ static int mc_probe(struct platform_device *pdev)
+ 	priv = mci->pvt_info;
+ 	priv->baseaddr = baseaddr;
+ 	priv->p_data = p_data;
++	if (!get_ecc_state(priv)) {
++		edac_printk(KERN_INFO, EDAC_MC, "ECC not enabled\n");
++		rc = -ENODEV;
++		goto free_edac_mc;
++	}
++
+ 	spin_lock_init(&priv->reglock);
+ 
+ 	mc_init(mci, pdev);
 -- 
 2.39.5
 
