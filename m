@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-171436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A028B2A9E3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA42B2A3F5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C857B5871AE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98FEE189A75B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44829322C84;
-	Mon, 18 Aug 2025 14:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3216320CD0;
+	Mon, 18 Aug 2025 13:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0TuRo1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLNW0YYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0036C322C80;
-	Mon, 18 Aug 2025 14:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61132320CC6;
+	Mon, 18 Aug 2025 13:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525917; cv=none; b=bIjV/Y7JTOlbETY2TOJ1rM5f6DqDm+DCyUnSL/6WR7b8Fhd2jp8bWiXj2BEmNr54zVwGAU88mxXVmRNuMeuMNXQcS+XcJaEiL1I/Yjk/k2eIbb9xSyd1KEpAtvYOAWkYrRg4MRve7SbUoZnQekmMeljEe1h0IOaWyw2HEkjh4nk=
+	t=1755522510; cv=none; b=bQbQGAb7nYzlHJ6cInm7rlk2afdqRGaj8LFsDhVvv7tnxfigpWSviILH0qjWKKb+kH+2VJ56SSMtQLbdIUHIS2tceFWAISOUjdGDwMRt4kk8NsLfOM/G2We16NrakKLHAnlOSw8g7xXl16t7NNH7jin/IiV8hai37olI5Shb6z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525917; c=relaxed/simple;
-	bh=4xH6R9Ep+RUOH5C23tG5JpgcW91P9c60P1ukDFjcXwA=;
+	s=arc-20240116; t=1755522510; c=relaxed/simple;
+	bh=bHK2mArjQs6WMOPqJLlD4gm7bUlzBozP6IGCXbVmTJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTVoGM104+PPH2dg0mnAO/zmtIp0niu4nVS8aYAr9nTJDz1gI6/Q5iVOPLPhFw5cXjMpROWLMTB9iRADU5z+EF3wO1ueWJ+27PN8TwiJgJSHzxxUEaWuRTPmAo7XW7GnlnLYJi9J0wMOmeu2c6yiTlseYbEZylee9uGPBcrBpwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0TuRo1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E46CC4CEEB;
-	Mon, 18 Aug 2025 14:05:15 +0000 (UTC)
+	 MIME-Version; b=VkIiMV04AGDioLRPaxHXBiQmAgUpxvgwSQcriUDQ/+fZfOvTezzdcIBNf6wolDZaBv+GZlRnItll6wQPN25EA/83eqDnwAA+UE9zWIaFDLRFcbZ4fEVXHLk26p00dsV4GzI8nOhLfAMYKpOww0tA7uX4cfx6XzqXXc3KgJxiIOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLNW0YYh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5398C4CEEB;
+	Mon, 18 Aug 2025 13:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525916;
-	bh=4xH6R9Ep+RUOH5C23tG5JpgcW91P9c60P1ukDFjcXwA=;
+	s=korg; t=1755522510;
+	bh=bHK2mArjQs6WMOPqJLlD4gm7bUlzBozP6IGCXbVmTJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0TuRo1H47t+2IKr+X+jG0z3BZkMOJD6fyqGuq+ssM1BM7fYycXPTnIOszq7ULkPv
-	 imHlxJHb4NoFYgIx0Vsv2MQG2gHUKiiepLrRmqBkUdkmM8jaQT6SfqJOqCF5LbSfDw
-	 5/lfxME+a+8e3G9/+umoALPa3xwWiETfUH36gp1E=
+	b=BLNW0YYhsQ5D2S45x57EmjknJ2iqd9W4hSbFC5p2veYl7OSVk6t7fXBbjRHA7l5Rq
+	 Pt6OTbyOc4ifpu6/fWZ9wPy/6q6NIYC4LKzEv431djdIiPRPQwt/1AdAeNDQ7n0rkK
+	 aHRqJ1A4ZMgMk4ZAzdS0jy56AjV/x9T7Uu/q1gjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	"fangzhong.zhou" <myth5@myth5.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 377/570] ext4: limit the maximum folio order
+Subject: [PATCH 6.12 338/444] i2c: Force DLL0945 touchpad i2c freq to 100khz
 Date: Mon, 18 Aug 2025 14:46:04 +0200
-Message-ID: <20250818124520.378510131@linuxfoundation.org>
+Message-ID: <20250818124501.605411088@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: fangzhong.zhou <myth5@myth5.com>
 
-[ Upstream commit b12f423d598fd874df9ecfb2436789d582fda8e6 ]
+[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
 
-In environments with a page size of 64KB, the maximum size of a folio
-can reach up to 128MB. Consequently, during the write-back of folios,
-the 'rsv_blocks' will be overestimated to 1,577, which can make
-pressure on the journal space where the journal is small. This can
-easily exceed the limit of a single transaction. Besides, an excessively
-large folio is meaningless and will instead increase the overhead of
-traversing the bhs within the folio. Therefore, limit the maximum order
-of a folio to 2048 filesystem blocks.
+This patch fixes an issue where the touchpad cursor movement becomes
+slow on the Dell Precision 5560. Force the touchpad freq to 100khz
+as a workaround.
 
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Reported-by: Joseph Qi <jiangqi903@gmail.com>
-Closes: https://lore.kernel.org/linux-ext4/CA+G9fYsyYQ3ZL4xaSg1-Tt5Evto7Zd+hgNWZEa9cQLbahA1+xg@mail.gmail.com/
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250707140814.542883-12-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
+is now smooth and responsive.
+
+Signed-off-by: fangzhong.zhou <myth5@myth5.com>
+[wsa: kept sorting and removed unnecessary parts from commit msg]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h   |  2 +-
- fs/ext4/ialloc.c |  3 +--
- fs/ext4/inode.c  | 22 +++++++++++++++++++---
- 3 files changed, 21 insertions(+), 6 deletions(-)
+ drivers/i2c/i2c-core-acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 18373de980f2..fe3366e98493 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3020,7 +3020,7 @@ int ext4_walk_page_buffers(handle_t *handle,
- 				     struct buffer_head *bh));
- int do_journal_get_write_access(handle_t *handle, struct inode *inode,
- 				struct buffer_head *bh);
--bool ext4_should_enable_large_folio(struct inode *inode);
-+void ext4_set_inode_mapping_order(struct inode *inode);
- #define FALL_BACK_TO_NONDELALLOC 1
- #define CONVERT_INLINE_DATA	 2
- 
-diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
-index 79aa3df8d019..df4051613b29 100644
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -1335,8 +1335,7 @@ struct inode *__ext4_new_inode(struct mnt_idmap *idmap,
- 		}
- 	}
- 
--	if (ext4_should_enable_large_folio(inode))
--		mapping_set_large_folios(inode->i_mapping);
-+	ext4_set_inode_mapping_order(inode);
- 
- 	ext4_update_inode_fsync_trans(handle, inode, 1);
- 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index ee4129b5ecce..0f316632b8dd 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5107,7 +5107,7 @@ static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
- 	return -EFSCORRUPTED;
- }
- 
--bool ext4_should_enable_large_folio(struct inode *inode)
-+static bool ext4_should_enable_large_folio(struct inode *inode)
- {
- 	struct super_block *sb = inode->i_sb;
- 
-@@ -5124,6 +5124,22 @@ bool ext4_should_enable_large_folio(struct inode *inode)
- 	return true;
- }
- 
-+/*
-+ * Limit the maximum folio order to 2048 blocks to prevent overestimation
-+ * of reserve handle credits during the folio writeback in environments
-+ * where the PAGE_SIZE exceeds 4KB.
-+ */
-+#define EXT4_MAX_PAGECACHE_ORDER(i)		\
-+		umin(MAX_PAGECACHE_ORDER, (11 + (i)->i_blkbits - PAGE_SHIFT))
-+void ext4_set_inode_mapping_order(struct inode *inode)
-+{
-+	if (!ext4_should_enable_large_folio(inode))
-+		return;
-+
-+	mapping_set_folio_order_range(inode->i_mapping, 0,
-+				      EXT4_MAX_PAGECACHE_ORDER(inode));
-+}
-+
- struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 			  ext4_iget_flags flags, const char *function,
- 			  unsigned int line)
-@@ -5441,8 +5457,8 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 		ret = -EFSCORRUPTED;
- 		goto bad_inode;
- 	}
--	if (ext4_should_enable_large_folio(inode))
--		mapping_set_large_folios(inode->i_mapping);
-+
-+	ext4_set_inode_mapping_order(inode);
- 
- 	ret = check_igot_inode(inode, flags, function, line);
- 	/*
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d2499f302b50..f43067f6797e 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -370,6 +370,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
+ 	 * the device works without issues on Windows at what is expected to be
+ 	 * a 400KHz frequency. The root cause of the issue is not known.
+ 	 */
++	{ "DLL0945", 0 },
+ 	{ "ELAN06FA", 0 },
+ 	{}
+ };
 -- 
 2.39.5
 
