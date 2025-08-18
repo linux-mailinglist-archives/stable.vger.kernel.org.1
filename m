@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-170135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4CFB2A26A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAAEB2A57E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC74D622891
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5375581A71
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D963218C0;
-	Mon, 18 Aug 2025 12:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEA3322752;
+	Mon, 18 Aug 2025 13:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCOLjPc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNC+1Y/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A455318144;
-	Mon, 18 Aug 2025 12:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1AA335BD8;
+	Mon, 18 Aug 2025 13:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521638; cv=none; b=d+JDntCllK4TOVAcmeCBzxCbLgtdeSjo8h9tDmHGsaZB6qrdBur58X2uqqqJI9YfJvDclshNYOZYBT3V8ZNr9DGJZaqv078rkXLWoLh5kgE/aK8vEAm7SFsoBr4sbShjoBkJvRErS65VP8nsDZ9nZTpDbnEP0JoKai99pq7YD0U=
+	t=1755523261; cv=none; b=UgLm7zVJWH5As/RR0x78tKiqhdKmcaHSjEKDK2mDMGs6GAlbdQdIJkG8qAXIPe6eXdkTrQhrgDU2Hh1s7tgtc2MP5RSBLnSNIv5DBnBQ9LArQI+V8fYXVetCi6QiN0NJ8bYa0QPj9PXuqOR5VQyi2uFzxreNfESNterKil7+HGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521638; c=relaxed/simple;
-	bh=CPVuKjmpOwogSwa5fNFF/o+gEry1Q1GamRlCZIbwsqY=;
+	s=arc-20240116; t=1755523261; c=relaxed/simple;
+	bh=L/YdTlTrngD96KqCmNGXSlO3ZsWr+8Rsx2sXRws2kDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trqzxBXmBMejVsHxG9mCyzD+Zpr8eNIlilXtapPTsQL70CBXuCkJ9QIR9ZBOofTVqY+1pjWLfRMV7cWdbEGzEYkmwfjAF/RC5uhnHiOru+yOSfM/8JBkBJRRdpPzW+qZdwR2HJc3PP9GGi/d7MjpsYsjSepClonUe0mo58aqiTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCOLjPc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E801C4CEEB;
-	Mon, 18 Aug 2025 12:53:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PBbx5MBijqspibMr/0Vr991uhPkGUVnhsY7LY+0n5ugbQ+gFrwCESD1Sek5RG9h/TO+oVjP9IAGGatTh405icNFo1GMurivBb07S28dMinhp4AAPWpb6X50pwFoawd9h+BwHc+zf7rzB85ur+px+FOVQgBPCbMZIVVn0ip43IIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNC+1Y/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C699BC4CEEB;
+	Mon, 18 Aug 2025 13:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521637;
-	bh=CPVuKjmpOwogSwa5fNFF/o+gEry1Q1GamRlCZIbwsqY=;
+	s=korg; t=1755523261;
+	bh=L/YdTlTrngD96KqCmNGXSlO3ZsWr+8Rsx2sXRws2kDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCOLjPc3AqiLjsbY0t+AH7zpwz0xvCQRRPO57X+tWV7WLmywobxBP3cOZX3HQoMUz
-	 WA4Ms02JseyBU0WAKlQuLFqfjBxMUHc8r1yubmomRs9jw0hl+T+vEiy1KEBzgAZVJN
-	 Y+iFPR6GbvErpvVRCoJytAh7BusLLuKVlaeDmZa0=
+	b=oNC+1Y/gUSJ0V6H8G8d4Dbps3pyqJinw8s/ZyDuvu39JV3mBQSt/9gYSaYFYW9q1/
+	 jTAV5F9PQk0lxye2/LuL4OXj4pblkbSwn68J2297GetT7oRhaDYWh9kM3zg7cu/QCb
+	 +YURmyxe+1bO0YhghLF8eK0miD9cKHW688pTJG7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/444] KVM: x86: Drop kvm_x86_ops.set_dr6() in favor of a new KVM_RUN flag
+Subject: [PATCH 6.15 086/515] firmware: arm_ffa: Change initcall level of ffa_init() to rootfs_initcall
 Date: Mon, 18 Aug 2025 14:41:12 +0200
-Message-ID: <20250818124450.663015531@linuxfoundation.org>
+Message-ID: <20250818124501.682474377@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,155 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 80c64c7afea1da6a93ebe88d3d29d8a60377ef80 ]
+[ Upstream commit 0e0546eabcd6c19765a8dbf5b5db3723e7b0ea75 ]
 
-Instruct vendor code to load the guest's DR6 into hardware via a new
-KVM_RUN flag, and remove kvm_x86_ops.set_dr6(), whose sole purpose was to
-load vcpu->arch.dr6 into hardware when DR6 can be read/written directly
-by the guest.
+The Linux IMA (Integrity Measurement Architecture) subsystem used for
+secure boot, file integrity, or remote attestation cannot be a loadable
+module for few reasons listed below:
 
-Note, TDX already WARNs on any run_flag being set, i.e. will yell if KVM
-thinks DR6 needs to be reloaded.  TDX vCPUs force KVM_DEBUGREG_AUTO_SWITCH
-and never clear the flag, i.e. should never observe KVM_RUN_LOAD_GUEST_DR6.
+ o Boot-Time Integrity: IMA’s main role is to measure and appraise files
+ before they are used. This includes measuring critical system files during
+ early boot (e.g., init, init scripts, login binaries). If IMA were a
+ module, it would be loaded too late to cover those.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[sean: drop TDX changes]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+ o TPM Dependency: IMA integrates tightly with the TPM to record
+ measurements into PCRs. The TPM must be initialized early (ideally before
+ init_ima()), which aligns with IMA being built-in.
+
+ o Security Model: IMA is part of a Trusted Computing Base (TCB). Making it
+ a module would weaken the security model, as a potentially compromised
+ system could delay or tamper with its initialization.
+
+IMA must be built-in to ensure it starts measuring from the earliest
+possible point in boot which inturn implies TPM must be initialised and
+ready to use before IMA.
+
+To enable integration of tpm_event_log with the IMA subsystem, the TPM
+drivers (tpm_crb and tpm_crb_ffa) also needs to be built-in. However with
+FF-A driver also being initialised at device initcall level, it can lead to
+an initialization order issue where:
+ - crb_acpi_driver_init() may run before tpm_crb_ffa_driver()_init and
+   ffa_init()
+ - As a result, probing the TPM device via CRB over FFA is deferred
+ - ima_init() (called as a late initcall) runs before deferred probe
+   completes, IMA fails to find the TPM and logs the below error:
+
+   |  ima: No TPM chip found, activating TPM-bypass!
+
+Eventually it fails to generate boot_aggregate with PCR values.
+
+Because of the above stated dependency, the ffa driver needs to initialised
+before tpm_crb_ffa module to ensure IMA finds the TPM successfully when
+present.
+
+[ jarkko: reformatted some of the paragraphs because they were going past
+  the 75 character boundary. ]
+
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |  1 -
- arch/x86/include/asm/kvm_host.h    |  2 +-
- arch/x86/kvm/svm/svm.c             | 10 ++++++----
- arch/x86/kvm/vmx/main.c            |  1 -
- arch/x86/kvm/vmx/vmx.c             |  9 +++------
- arch/x86/kvm/x86.c                 |  2 +-
- 6 files changed, 11 insertions(+), 14 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index cfb22f8c451a..861d080ed4c6 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -47,7 +47,6 @@ KVM_X86_OP(set_idt)
- KVM_X86_OP(get_gdt)
- KVM_X86_OP(set_gdt)
- KVM_X86_OP(sync_dirty_debug_regs)
--KVM_X86_OP(set_dr6)
- KVM_X86_OP(set_dr7)
- KVM_X86_OP(cache_reg)
- KVM_X86_OP(get_rflags)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index cccc8cbe72db..2ed05925d9d5 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1629,6 +1629,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
- 
- enum kvm_x86_run_flags {
- 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
-+	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
- };
- 
- struct kvm_x86_ops {
-@@ -1679,7 +1680,6 @@ struct kvm_x86_ops {
- 	void (*get_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
- 	void (*set_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
- 	void (*sync_dirty_debug_regs)(struct kvm_vcpu *vcpu);
--	void (*set_dr6)(struct kvm_vcpu *vcpu, unsigned long value);
- 	void (*set_dr7)(struct kvm_vcpu *vcpu, unsigned long value);
- 	void (*cache_reg)(struct kvm_vcpu *vcpu, enum kvm_reg reg);
- 	unsigned long (*get_rflags)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 7d1b871cfc02..800f781475c0 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4270,10 +4270,13 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 	svm_hv_update_vp_id(svm->vmcb, vcpu);
- 
- 	/*
--	 * Run with all-zero DR6 unless needed, so that we can get the exact cause
--	 * of a #DB.
-+	 * Run with all-zero DR6 unless the guest can write DR6 freely, so that
-+	 * KVM can get the exact cause of a #DB.  Note, loading guest DR6 from
-+	 * KVM's snapshot is only necessary when DR accesses won't exit.
- 	 */
--	if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
-+	if (unlikely(run_flags & KVM_RUN_LOAD_GUEST_DR6))
-+		svm_set_dr6(vcpu, vcpu->arch.dr6);
-+	else if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
- 		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
- 
- 	clgi();
-@@ -5084,7 +5087,6 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.set_idt = svm_set_idt,
- 	.get_gdt = svm_get_gdt,
- 	.set_gdt = svm_set_gdt,
--	.set_dr6 = svm_set_dr6,
- 	.set_dr7 = svm_set_dr7,
- 	.sync_dirty_debug_regs = svm_sync_dirty_debug_regs,
- 	.cache_reg = svm_cache_reg,
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 47476fcc179a..7668e2fb8043 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -60,7 +60,6 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 	.set_idt = vmx_set_idt,
- 	.get_gdt = vmx_get_gdt,
- 	.set_gdt = vmx_set_gdt,
--	.set_dr6 = vmx_set_dr6,
- 	.set_dr7 = vmx_set_dr7,
- 	.sync_dirty_debug_regs = vmx_sync_dirty_debug_regs,
- 	.cache_reg = vmx_cache_reg,
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 2a977cdfcd0c..b9c7940feac6 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -5630,12 +5630,6 @@ void vmx_sync_dirty_debug_regs(struct kvm_vcpu *vcpu)
- 	set_debugreg(DR6_RESERVED, 6);
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 37eb2e6c2f9f..65bf1685350a 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -2059,7 +2059,7 @@ static int __init ffa_init(void)
+ 	kfree(drv_info);
+ 	return ret;
  }
+-module_init(ffa_init);
++rootfs_initcall(ffa_init);
  
--void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
--{
--	lockdep_assert_irqs_disabled();
--	set_debugreg(vcpu->arch.dr6, 6);
--}
--
- void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
+ static void __exit ffa_exit(void)
  {
- 	vmcs_writel(GUEST_DR7, val);
-@@ -7400,6 +7394,9 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- 		vmcs_writel(GUEST_RIP, vcpu->arch.regs[VCPU_REGS_RIP]);
- 	vcpu->arch.regs_dirty = 0;
- 
-+	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
-+		set_debugreg(vcpu->arch.dr6, 6);
-+
- 	/*
- 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
- 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 44ab46f2a2d2..7beea8fb6ea6 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10977,7 +10977,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		set_debugreg(vcpu->arch.eff_db[3], 3);
- 		/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
- 		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
--			kvm_x86_call(set_dr6)(vcpu, vcpu->arch.dr6);
-+			run_flags |= KVM_RUN_LOAD_GUEST_DR6;
- 	} else if (unlikely(hw_breakpoint_active())) {
- 		set_debugreg(DR7_FIXED_1, 7);
- 	}
 -- 
-2.50.1
+2.39.5
 
 
 
