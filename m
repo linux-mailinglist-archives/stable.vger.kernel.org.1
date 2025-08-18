@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-171611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34E9B2AAA6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:34:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C171B2AA5D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33051BC37A6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284A11BA2364
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515162FFDD5;
-	Mon, 18 Aug 2025 14:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E668535A2A3;
+	Mon, 18 Aug 2025 14:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dy69nTwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjD+cSo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E98C22D793;
-	Mon, 18 Aug 2025 14:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A385B35A296;
+	Mon, 18 Aug 2025 14:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526517; cv=none; b=kmP7lR12ZJgOAoepM8po5L+Zdz3W3YlQTYaoz1czqG9vWxxnAR4t8MMFkOmnqYjZc2HxdLhOtDtLDxMiWHd/si8QRFdD+A1iFJOxOKezADYcNzzkRb/FYylmCgdIyTxvSfjQrPH9TSAObK69okFYtVdCjW0oztnPTFY5EX8Fqz0=
+	t=1755526450; cv=none; b=R7Sz3ocLPb6nWrpoD8Ta4SOPEE/iAMsabKCizNQfiCdwk/egMqtqIcTsW80dJuOC25HNJ0Qha49valxH9RD250CXn0iVELNj8eXelJTpOsIUyki0eLLQsXliD44Dt+ms+1058w+9ES+BXkUqM2cRZ1JIdUk2pmQxRoQJ7O+CviY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526517; c=relaxed/simple;
-	bh=g5l2pDSpVfVvx/ENsthLPqU2Pt7xKxpHWWcKlRki9TE=;
+	s=arc-20240116; t=1755526450; c=relaxed/simple;
+	bh=Ynr7B52KmX2YLPyygpvbH6+2gzcpai0qnAAEvHtf43I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYdFoVwcpkbV+STa2QnVRBWXhiHmU/dRvklzedLq4nhxm/sGO+5Vv6ZS/FrXWEoTEUbZRTtYg5Vcy+7XpxtvceYa3J7VwfpvY3ufbslagZvo2DbAml9O1rtrmcA3SIPn8H8VrOWTVSFRX60xI8lTC0O1Qa1NT42b4b5NfjADsG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dy69nTwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B138C4CEEB;
-	Mon, 18 Aug 2025 14:15:16 +0000 (UTC)
+	 MIME-Version; b=RxqFX+ngVVm3pUrasngLBvEElFRaFtncLUNaldTpd0uR5cEUAgXgl6OHyeUjPAtcCgCcfGOf6izOgcPhUauJJlrZjLQkolQQQcjhriFkttgwmyQYQYV1XOHb3hwbi7NYi3GC49AzZw+w9N5GjkRSg8WTM9rKAMG6Ls7tt6xv8TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjD+cSo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EAAC4CEEB;
+	Mon, 18 Aug 2025 14:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526516;
-	bh=g5l2pDSpVfVvx/ENsthLPqU2Pt7xKxpHWWcKlRki9TE=;
+	s=korg; t=1755526450;
+	bh=Ynr7B52KmX2YLPyygpvbH6+2gzcpai0qnAAEvHtf43I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dy69nTwWPuiuCS7sq1u6PWdyrsb+IR/M6vuACaqCVWJ7FoPZXZxktHctjKXLU97sc
-	 DyMSg4S8K8Ogc+gEha+5arvjEC4jim0W7ur8MCtvxQM0cqbNxXOOuncIxafr7Ma6Dk
-	 OPB5qK7//JzKV5W6lqFUKUVG/gLMx3gKzmUhZNPc=
+	b=qjD+cSo83Mx24NsG9EEfp1iI8WUjEyHYXeEQ1Ixj3kDyCvOB8JXNd2DwY8dOLy67v
+	 2eQ9K+KS7RgNM8JXIELfDrI6kOzJTqT0A3my844t9FyfALvRIafd76ICh6le4GsBB/
+	 tF2q6DrC0pyjd7dHIgT7L0I8KroE+EAlVERMVpiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 550/570] media: uvcvideo: Do not mark valid metadata as invalid
-Date: Mon, 18 Aug 2025 14:48:57 +0200
-Message-ID: <20250818124527.054271845@linuxfoundation.org>
+Subject: [PATCH 6.16 551/570] media: v4l2: Add support for NV12M tiled variants to v4l2_format_info()
+Date: Mon, 18 Aug 2025 14:48:58 +0200
+Message-ID: <20250818124527.092480449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -67,59 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
+commit f7546da1d6eb8928efb89b7faacbd6c2f8f0de5c upstream.
 
-Currently, the driver performs a length check of the metadata buffer
-before the actual metadata size is known and before the metadata is
-decided to be copied. This results in valid metadata buffers being
-incorrectly marked as invalid.
+Commit 6f1466123d73 ("media: s5p-mfc: Add YV12 and I420 multiplanar
+format support") added support for the new formats to s5p-mfc driver,
+what in turn required some internal calls to the v4l2_format_info()
+function while setting up formats. This in turn broke support for the
+"old" tiled NV12MT* formats, which are not recognized by this function.
+Fix this by adding those variants of NV12M pixel format to
+v4l2_format_info() function database.
 
-Move the length check to occur after the metadata size is determined and
-is decided to be copied.
-
+Fixes: 6f1466123d73 ("media: s5p-mfc: Add YV12 and I420 multiplanar format support")
 Cc: stable@vger.kernel.org
-Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/v4l2-core/v4l2-common.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -1442,12 +1442,6 @@ static void uvc_video_decode_meta(struct
- 	if (!meta_buf || length == 2)
- 		return;
+--- a/drivers/media/v4l2-core/v4l2-common.c
++++ b/drivers/media/v4l2-core/v4l2-common.c
+@@ -323,6 +323,12 @@ const struct v4l2_format_info *v4l2_form
+ 		{ .format = V4L2_PIX_FMT_NV61M,   .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 1 },
+ 		{ .format = V4L2_PIX_FMT_P012M,   .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 2, 4, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2 },
  
--	if (meta_buf->length - meta_buf->bytesused <
--	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
--		meta_buf->error = 1;
--		return;
--	}
--
- 	has_pts = mem[1] & UVC_STREAM_PTS;
- 	has_scr = mem[1] & UVC_STREAM_SCR;
- 
-@@ -1468,6 +1462,12 @@ static void uvc_video_decode_meta(struct
- 				  !memcmp(scr, stream->clock.last_scr, 6)))
- 		return;
- 
-+	if (meta_buf->length - meta_buf->bytesused <
-+	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
-+		meta_buf->error = 1;
-+		return;
-+	}
++		/* Tiled YUV formats, non contiguous variant */
++		{ .format = V4L2_PIX_FMT_NV12MT,        .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2,
++		  .block_w = { 64, 32, 0, 0 },	.block_h = { 32, 16, 0, 0 }},
++		{ .format = V4L2_PIX_FMT_NV12MT_16X16,  .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2,
++		  .block_w = { 16,  8, 0, 0 },	.block_h = { 16,  8, 0, 0 }},
 +
- 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
- 	local_irq_save(flags);
- 	time = uvc_video_get_time();
+ 		/* Bayer RGB formats */
+ 		{ .format = V4L2_PIX_FMT_SBGGR8,	.pixel_enc = V4L2_PIXEL_ENC_BAYER, .mem_planes = 1, .comp_planes = 1, .bpp = { 1, 0, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 1, .vdiv = 1 },
+ 		{ .format = V4L2_PIX_FMT_SGBRG8,	.pixel_enc = V4L2_PIXEL_ENC_BAYER, .mem_planes = 1, .comp_planes = 1, .bpp = { 1, 0, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 1, .vdiv = 1 },
 
 
 
