@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5FDB2A500
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AA7B2A7A0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15AFF7BE070
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:22:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA32687007
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EE932252C;
-	Mon, 18 Aug 2025 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9B6261B97;
+	Mon, 18 Aug 2025 13:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvDY2cYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByTbuNjJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95B7322524;
-	Mon, 18 Aug 2025 13:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1BC225397;
+	Mon, 18 Aug 2025 13:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523068; cv=none; b=CNPlEJtcbhTeA1Nmv3TQJgv5Q2uxpvs+yyjRjZ6ZROZxyM8Hg6D3xT7SL5PvWdXjNrtOZR+5A5f2X93vE1FSO4CEC+6q6cTeFntLQeEq1anMuT7y3pMbQYbPI8YpT6Pog4WyLnYkOYCwq52nYjWUdhTdpeuuTvCihcVr6gicbLo=
+	t=1755524810; cv=none; b=DEp8dXnQUj/m1l4ZRMGOfLJIBj0Ilb0K/z6bro5J9iscLd4w69+aarCgHzuKWLI8iQzo8uZt8Bbl5WTpGaIKZAYe7gs1/pib1hC2i/kJXM1frt6Q6NoTrpBB7kRDHtIEiHx9Nl0xkDJCoA1xxB35V3TlSxLoTCGW4oGnCWGlYtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523068; c=relaxed/simple;
-	bh=FoQlQB5WjUhC0B04GtlLDxaX2gmcmL/yGFzWIxNg1fo=;
+	s=arc-20240116; t=1755524810; c=relaxed/simple;
+	bh=GCaOvX7vSgoE3sBrAwW4/3+F31CP9eyNrwUWKpVaSns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKLLFrGwG4oeYk3HPnohjZFrbdEjNNu4tzsIgTbES3xWXX/t045r3dJLUQXSefNNCUkYnUBv4d8VUrxEh+cTn8KddWI11jxOQ0QIbKpcn/xbuw9lIgIf70XbQbkUbTiQ/xvq50wD+eMrnJO2f4MuNyhyjUFyevGuCgjITvn5/tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvDY2cYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5DFC4CEEB;
-	Mon, 18 Aug 2025 13:17:48 +0000 (UTC)
+	 MIME-Version; b=lAkwCQ+/7sbfbZE0KBhu7PFqkYO350g0cOS4EdK2B+h+Ph90AmX1q6eSvfk/d+bSiPuMPT9eNqc7kug0Am9CMCPjv/k973z7SeJW4S4Ulwmc6GhhFd5fsXfXwFWX21Yv1nxPPkqwbvfZWNGUW8Q9kKE7ZgELOeG/WNxni5mQNHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByTbuNjJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E1AC4CEF1;
+	Mon, 18 Aug 2025 13:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523068;
-	bh=FoQlQB5WjUhC0B04GtlLDxaX2gmcmL/yGFzWIxNg1fo=;
+	s=korg; t=1755524809;
+	bh=GCaOvX7vSgoE3sBrAwW4/3+F31CP9eyNrwUWKpVaSns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvDY2cYqL/+DKifFzsBJBC6kLwGObj+WsENFuOlx9LJpuLVHqqBMrwMEBK8ktGrYh
-	 SOzoVo1clNc66z0JEfE7I/IFbSD6W49t7sYgS0UumbEEwSv2CDPswgjUFGl7Iv4tae
-	 QoH1yoEBYP0T/izne+eJawf9F117c689JBIdR6Tc=
+	b=ByTbuNjJ9LlXgq/tyupiC2YbJkfLAMl2GvYThSuIyrW/WB3/66Jy8JLwkp6SSVLSp
+	 9x/lEHDvdaHCxsMGIxIUQpkSxI3ZD9r8tW7lm1elV7zE99Sc+O9xJjiZFPdJsqUgKv
+	 psKcjUkaTURSx1tjRuyrYA02W8ivlpylRZMsGE34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 062/515] net: hibmcge: fix the np_link_fail error reporting issue
-Date: Mon, 18 Aug 2025 14:40:48 +0200
-Message-ID: <20250818124500.797591472@linuxfoundation.org>
+Subject: [PATCH 6.16 062/570] xfrm: restore GSO for SW crypto
+Date: Mon, 18 Aug 2025 14:40:49 +0200
+Message-ID: <20250818124508.208178502@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 62c50180ffda01468e640ac14925503796f255e2 ]
+[ Upstream commit 234d1eff5d4987024be9d40ac07b918a5ae8db1a ]
 
-Currently, after modifying device port mode, the np_link_ok state
-is immediately checked. At this point, the device may not yet ready,
-leading to the querying of an intermediate state.
+Commit 49431af6c4ef incorrectly assumes that the GSO path is only used
+by HW offload, but it's also useful for SW crypto.
 
-This patch will poll to check if np_link is ok after
-modifying device port mode, and only report np_link_fail upon timeout.
+This patch re-enables GSO for SW crypto. It's not an exact revert to
+preserve the other changes made to xfrm_dev_offload_ok afterwards, but
+it reverts all of its effects.
 
-Fixes: e0306637e85d ("net: hibmcge: Add support for mac link exception handling feature")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 49431af6c4ef ("xfrm: rely on XFRM offload")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_device.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 9b65eef62b3f..2844124f306d 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -12,6 +12,8 @@
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index d2819baea414..1f88472aaac0 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -415,10 +415,12 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
+ 	struct net_device *dev = x->xso.dev;
+ 	bool check_tunnel_size;
  
- #define HBG_HW_EVENT_WAIT_TIMEOUT_US	(2 * 1000 * 1000)
- #define HBG_HW_EVENT_WAIT_INTERVAL_US	(10 * 1000)
-+#define HBG_MAC_LINK_WAIT_TIMEOUT_US	(500 * 1000)
-+#define HBG_MAC_LINK_WAIT_INTERVAL_US	(5 * 1000)
- /* little endian or big endian.
-  * ctrl means packet description, data means skb packet data
-  */
-@@ -213,6 +215,9 @@ void hbg_hw_fill_buffer(struct hbg_priv *priv, u32 buffer_dma_addr)
+-	if (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED)
++	if (!x->type_offload ||
++	    (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED && x->encap))
+ 		return false;
  
- void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
- {
-+	u32 link_status;
-+	int ret;
+-	if ((dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm) {
++	if ((!dev || dev == xfrm_dst_path(dst)->dev) &&
++	    !xdst->child->xfrm) {
+ 		mtu = xfrm_state_mtu(x, xdst->child_mtu_cached);
+ 		if (skb->len <= mtu)
+ 			goto ok;
+@@ -430,6 +432,9 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
+ 	return false;
+ 
+ ok:
++	if (!dev)
++		return true;
 +
- 	hbg_hw_mac_enable(priv, HBG_STATUS_DISABLE);
- 
- 	hbg_reg_write_field(priv, HBG_REG_PORT_MODE_ADDR,
-@@ -224,8 +229,14 @@ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
- 
- 	hbg_hw_mac_enable(priv, HBG_STATUS_ENABLE);
- 
--	if (!hbg_reg_read_field(priv, HBG_REG_AN_NEG_STATE_ADDR,
--				HBG_REG_AN_NEG_STATE_NP_LINK_OK_B))
-+	/* wait MAC link up */
-+	ret = readl_poll_timeout(priv->io_base + HBG_REG_AN_NEG_STATE_ADDR,
-+				 link_status,
-+				 FIELD_GET(HBG_REG_AN_NEG_STATE_NP_LINK_OK_B,
-+					   link_status),
-+				 HBG_MAC_LINK_WAIT_INTERVAL_US,
-+				 HBG_MAC_LINK_WAIT_TIMEOUT_US);
-+	if (ret)
- 		hbg_np_link_fail_task_schedule(priv);
- }
- 
+ 	check_tunnel_size = x->xso.type == XFRM_DEV_OFFLOAD_PACKET &&
+ 			    x->props.mode == XFRM_MODE_TUNNEL;
+ 	switch (x->props.family) {
 -- 
 2.50.1
 
