@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-171270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E924B2A877
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF0AB2A324
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06C51BA4E5C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A241890E1F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F952D8DD4;
-	Mon, 18 Aug 2025 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D772C235F;
+	Mon, 18 Aug 2025 12:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNtAwEmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kY165aPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E37719E82A;
-	Mon, 18 Aug 2025 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDD727E074;
+	Mon, 18 Aug 2025 12:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525369; cv=none; b=U1dWcbRgmbwOKb3CiWGJgH57pJVlp4/3z/9diJw2FRAjucNmDJS61LY3+ApYQnLC4dmZc+6HzRh5ZZdmWcG3wZW4Kto6AikSe3EHTNCNzyY0YdvQ2DRrG0ChvoOaA/AuTD2tDjjUbZGS/Tuj/C3K1gorPJ8liTGlC5E/f4Sqr4k=
+	t=1755521947; cv=none; b=ECVOAlvtpNvXsj8MAsDlNzulqsGCFduzgtWaG+WVjbRWYWWXTWW+3DKm96UbziGzypFtdSOGVG4Yo3ISdTqcOtvUhovClZIOrKBhr6yjQ38ANw9gL/VWfsktKOe/GHlGCxvFZ03M9ZZe0wJfytfLCW0lndRd6IJ+WoU12uJZ460=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525369; c=relaxed/simple;
-	bh=anCvD88NKyArOGq68kMwGRcTnsT8oZ8eO3ADi2IIGGQ=;
+	s=arc-20240116; t=1755521947; c=relaxed/simple;
+	bh=NYP/FoYJW1ZhnWX1aUv1iEY5mgnkxkVn5XgFYGDmUbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAiop8PoOaOPHt6y6h3fMOebuKQQBvvP8Y0pLzP8YcWc34r+asSetLKeIdwxYlzIYpOXDoNl8HH86OEQDyOV3nEO31cHO6B7ULnmIqgBL+VoiSBMXKSA8lYw+5kUf21wpl57BZIEUHrHKBrmRVu85GWY6MqL/tRgEWzmZeoQ9cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNtAwEmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71DBC116C6;
-	Mon, 18 Aug 2025 13:56:08 +0000 (UTC)
+	 MIME-Version; b=o4CGb2xDPnixH9OJrRXYf7nN6exd/4HgE7VBkYmTl1uuAkDSUfrfEIkpg3LmZxhDeKCf+sVZ1/TdkbIrqh2g7SxLlw/VLZmNx5J4K0voXkUK79/2yU5+rWtQY9ILd3a47Su6k4XSR+yNNvYydxeRv2U7CbJtDjap/kwmR/uefBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kY165aPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D586DC113D0;
+	Mon, 18 Aug 2025 12:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525369;
-	bh=anCvD88NKyArOGq68kMwGRcTnsT8oZ8eO3ADi2IIGGQ=;
+	s=korg; t=1755521947;
+	bh=NYP/FoYJW1ZhnWX1aUv1iEY5mgnkxkVn5XgFYGDmUbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNtAwEmRhbo0EubV5u7z5hZ9/5f/yQm1O3SA814yNGFSjaCEb20LKl5ahiKlsYLWo
-	 lOiPcalOPdJsoKwnTKPQbiuyHH3dEqisqKopFXEeVGH2gKVhxlr2VEWJ8GqoO2Hd+j
-	 MqKkhhZ6Tr/dbcKKlTg5vg89wjSNh9HU9LDS6pRc=
+	b=kY165aPkL0cDTNj17kqOCJuoQaEE6+qBaYF3swAKm76bYb38Ae3cu3BgrxVphftND
+	 RMNUeMuBPtc35Y+1w4mj/K3ZGzPmOXLVIH4npFWTXEtcTPM4QLsIoGHQFsrVqGy8Cb
+	 /K/w6nqCtJC62yvbmrUmrzrhl27uFTYkrvWb5MzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Nam Cao <namcao@linutronix.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 208/570] verification/dot2k: Make a separate dot2k_templates/Kconfig_container
+Subject: [PATCH 6.12 169/444] net: usb: cdc-ncm: check for filtering capability
 Date: Mon, 18 Aug 2025 14:43:15 +0200
-Message-ID: <20250818124513.817610183@linuxfoundation.org>
+Message-ID: <20250818124455.224252230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 214459699fd202c28b7b9f787e674acbd3af724a ]
+[ Upstream commit 61c3e8940f2d8b5bfeaeec4bedc2f3e7d873abb3 ]
 
-A generated container's Kconfig has an incorrect line:
+If the decice does not support filtering, filtering
+must not be used and all packets delivered for the
+upper layers to sort.
 
-    select DA_MON_EVENTS_IMPLICIT
-
-This is due to container generation uses the same template Kconfig file as
-deterministic automaton monitor.
-
-Therefore, make a separate Kconfig template for container which has only
-the necessaries for container.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/d54fd7ee120785bec5695220e837dbbd6efb30e5.1751634289.git.namcao@linutronix.de
-Reviewed-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20250717120649.2090929-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/dot2/dot2k.py                          | 3 ++-
- tools/verification/dot2/dot2k_templates/Kconfig_container | 5 +++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
- create mode 100644 tools/verification/dot2/dot2k_templates/Kconfig_container
+ drivers/net/usb/cdc_ncm.c   | 20 ++++++++++++++++----
+ include/linux/usb/cdc_ncm.h |  1 +
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/tools/verification/dot2/dot2k.py b/tools/verification/dot2/dot2k.py
-index 745d35a4a379..dd4b5528a4f2 100644
---- a/tools/verification/dot2/dot2k.py
-+++ b/tools/verification/dot2/dot2k.py
-@@ -35,6 +35,7 @@ class dot2k(Dot2c):
-             self.states = []
-             self.main_c = self.__read_file(self.monitor_templates_dir + "main_container.c")
-             self.main_h = self.__read_file(self.monitor_templates_dir + "main_container.h")
-+            self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig_container")
-         else:
-             super().__init__(file_path, extra_params.get("model_name"))
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index d5c47a2a62dc..4abfdfcf0e28 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -893,6 +893,10 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
+ 		}
+ 	}
  
-@@ -44,7 +45,7 @@ class dot2k(Dot2c):
-             self.monitor_type = MonitorType
-             self.main_c = self.__read_file(self.monitor_templates_dir + "main.c")
-             self.trace_h = self.__read_file(self.monitor_templates_dir + "trace.h")
--        self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig")
-+            self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig")
-         self.enum_suffix = "_%s" % self.name
-         self.description = extra_params.get("description", self.name) or "auto-generated"
-         self.auto_patch = extra_params.get("auto_patch")
-diff --git a/tools/verification/dot2/dot2k_templates/Kconfig_container b/tools/verification/dot2/dot2k_templates/Kconfig_container
-new file mode 100644
-index 000000000000..a606111949c2
---- /dev/null
-+++ b/tools/verification/dot2/dot2k_templates/Kconfig_container
-@@ -0,0 +1,5 @@
-+config RV_MON_%%MODEL_NAME_UP%%
-+	depends on RV
-+	bool "%%MODEL_NAME%% monitor"
-+	help
-+	  %%DESCRIPTION%%
++	if (ctx->func_desc)
++		ctx->filtering_supported = !!(ctx->func_desc->bmNetworkCapabilities
++			& USB_CDC_NCM_NCAP_ETH_FILTER);
++
+ 	iface_no = ctx->data->cur_altsetting->desc.bInterfaceNumber;
+ 
+ 	/* Device-specific flags */
+@@ -1899,6 +1903,14 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
+ 	}
+ }
+ 
++static void cdc_ncm_update_filter(struct usbnet *dev)
++{
++	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
++
++	if (ctx->filtering_supported)
++		usbnet_cdc_update_filter(dev);
++}
++
+ static const struct driver_info cdc_ncm_info = {
+ 	.description = "CDC NCM (NO ZLP)",
+ 	.flags = FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET
+@@ -1909,7 +1921,7 @@ static const struct driver_info cdc_ncm_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP  */
+@@ -1923,7 +1935,7 @@ static const struct driver_info cdc_ncm_zlp_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP */
+@@ -1965,7 +1977,7 @@ static const struct driver_info wwan_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as wwan_info, but with FLAG_NOARP  */
+@@ -1979,7 +1991,7 @@ static const struct driver_info wwan_noarp_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ static const struct usb_device_id cdc_devs[] = {
+diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
+index 2d207cb4837d..4ac082a63173 100644
+--- a/include/linux/usb/cdc_ncm.h
++++ b/include/linux/usb/cdc_ncm.h
+@@ -119,6 +119,7 @@ struct cdc_ncm_ctx {
+ 	u32 timer_interval;
+ 	u32 max_ndp_size;
+ 	u8 is_ndp16;
++	u8 filtering_supported;
+ 	union {
+ 		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
+ 		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
 -- 
 2.39.5
 
