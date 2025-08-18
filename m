@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-171066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44524B2A810
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6D4B2A539
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ECAC1B62FA7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA5B86837E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7482B27B32F;
-	Mon, 18 Aug 2025 13:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBB9321F5B;
+	Mon, 18 Aug 2025 13:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8WjF/hx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVPWlAWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216CD234984;
-	Mon, 18 Aug 2025 13:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9C7321F4C;
+	Mon, 18 Aug 2025 13:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524708; cv=none; b=UtivTNDUT+d41CLvCrDxt42G/ysVQ7VMoz+6bfPQWxsImilKDyHCAA0UT+2ITxf59hwtf+gNg52h9ABrM7OKayXCvNmWnOx/QSHlGsJtugSAbkVXN2/JkK3L4KzCzObCkrAdWKt1srnwj72cu7Vf/HzBwQY/YI1zgA3cQa2d8G8=
+	t=1755523002; cv=none; b=e8VcL2yBzlBietKMCKyvWmBwUAJTd/NPLO008sP3SNdow+NpUCTJ02RrosW2QJ/5J0Lm1ksMDK4+xOopi0FLLt7LeGCdbKjvwXzufK8CTzpZ+a2an22uxGAiXcWzt8CpM26rMhwA1Zqs1LFlKP/qhTkmeuue0BNLglsP4kaRPPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524708; c=relaxed/simple;
-	bh=qX0UV+6I1+IcFNAN/l29pzOrtmN4SdVMGhRdyoTg4Hw=;
+	s=arc-20240116; t=1755523002; c=relaxed/simple;
+	bh=LxBhDTf0sdMxIqlSD8VnQEmChA94TRxC7QiNlx4s4cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQM5+APlvD7F8lWzj78c9IDjfKU0vXdQkA9kDDuGrZ6D4lLAHDiXOb72h8yzQpRasJ1A4KQZYz/5bts6FtBOLbzBsa0YfKu+13RJgl+8G/FYCaA1OTUFyIbXKLvfE+93btPl0uOLIXWDuq4IOY5dJ9jp1naDFAFwRlI8v3d872M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8WjF/hx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F378C4CEEB;
-	Mon, 18 Aug 2025 13:45:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GY4F56Vn3m45srlld9zgJw9ScgIx+k1FsHWbsyMXbKG5Txz/rIgAC6iAw0kkX6NR7jd+dVBGfZqO3/RBWiMOUe6oqPTMq3AVW9xS74raRce4T68IwhwKvVdGJ1sVAiEO6+nF0lWASVpo8HgmL/902GOmRe4GpXu9CWTXzu30hqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVPWlAWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491DBC4CEEB;
+	Mon, 18 Aug 2025 13:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524708;
-	bh=qX0UV+6I1+IcFNAN/l29pzOrtmN4SdVMGhRdyoTg4Hw=;
+	s=korg; t=1755523002;
+	bh=LxBhDTf0sdMxIqlSD8VnQEmChA94TRxC7QiNlx4s4cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8WjF/hxU5bf941vAlinB0GDiEMbn2Sd+263OAvLpbDH3jRRxRZAv+0vl2i3owo63
-	 wGPLkzGXRlnU/SIfWxMTwAEx1eNe82hE6MeKiTyokwSY28cncwuFjle/iNddqdTGmi
-	 77wDHgu1zU3i6z66uQWlF9RLpCnH74OuMdZO6bpI=
+	b=RVPWlAWtC+tq+kY9pL4I8eyiF5AcKHZABNbVWtcSC4rL7r5Da7HCC4B8mC4qfnUT6
+	 CAgi5DWHjDfTzJNcuC8Jpt3HtvYicidaEHOk1xXANS9a3kK9V4k4CgQrDf3pCVdFMN
+	 I45W2hjQP2DhALTNS39aQSFeWxvhWi/xXZeS/8DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 038/570] LoongArch: Make relocate_new_kernel_size be a .quad value
+	Ma Ke <make24@iscas.ac.cn>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 039/515] sunvdc: Balance device refcount in vdc_port_mpgroup_check
 Date: Mon, 18 Aug 2025 14:40:25 +0200
-Message-ID: <20250818124507.281496392@linuxfoundation.org>
+Message-ID: <20250818124459.943674239@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit a1a81b5477196ca1290b367404a461e046e647d5 upstream.
+commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
 
-Now relocate_new_kernel_size is a .long value, which means 32bit, so its
-high 32bit is undefined. This causes memcpy((void *)reboot_code_buffer,
-relocate_new_kernel, relocate_new_kernel_size) in machine_kexec_prepare()
-access out of range memories in some cases, and then end up with an ADE
-exception.
+Using device_find_child() to locate a probed virtual-device-port node
+causes a device refcount imbalance, as device_find_child() internally
+calls get_device() to increment the device’s reference count before
+returning its pointer. vdc_port_mpgroup_check() directly returns true
+upon finding a matching device without releasing the reference via
+put_device(). We should call put_device() to decrement refcount.
 
-So make relocate_new_kernel_size be a .quad value, which means 64bit, to
-avoid such errors.
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/relocate_kernel.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/sunvdc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/relocate_kernel.S
-+++ b/arch/loongarch/kernel/relocate_kernel.S
-@@ -109,4 +109,4 @@ SYM_CODE_END(kexec_smp_wait)
- relocate_new_kernel_end:
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -957,8 +957,10 @@ static bool vdc_port_mpgroup_check(struc
+ 	dev = device_find_child(vdev->dev.parent, &port_data,
+ 				vdc_device_probed);
  
- 	.section ".data"
--SYM_DATA(relocate_new_kernel_size, .long relocate_new_kernel_end - relocate_new_kernel)
-+SYM_DATA(relocate_new_kernel_size, .quad relocate_new_kernel_end - relocate_new_kernel)
+-	if (dev)
++	if (dev) {
++		put_device(dev);
+ 		return true;
++	}
+ 
+ 	return false;
+ }
 
 
 
