@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54ADB2A8D6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:09:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EBBB2A32A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B674587D1A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE763A9EF6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A73C234984;
-	Mon, 18 Aug 2025 13:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F30C318144;
+	Mon, 18 Aug 2025 13:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCnN1O6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9TEHMeT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0995C335BC5;
-	Mon, 18 Aug 2025 13:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCEC1EFFB4;
+	Mon, 18 Aug 2025 13:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525382; cv=none; b=fpQcVz2oUpP+80ingq1XRrJadyDEpk7SvHkZFG5XKiKoTgAJ17zGzbBUyPlV4FRvS/vT2l+RnQQIALFoGiFr0GEhqg9BDnzQg7yNFI0dTjWz3VNhN20MUWFrkyFhZQr+DJatPJY1rT7+p4ZPkl4eSot7s1tsc0/zyzo3/B9a+o4=
+	t=1755522076; cv=none; b=il8Z3FbSyMGHH9G1y4EMf37kFeSj8pCaLBD98QLICOwnFbtSYER2Vsfr9pi7JDx7Q1XoyjH+NOQdCzwPuHU8Oxt2CXlLidTPaXOfwC9IGoY7OtyEt/bO9aqo+KlcsiVqIvGk1phf7ar9mSUwVoinvlcBkSqPTMR6GhKPRVekfCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525382; c=relaxed/simple;
-	bh=t+iBC2CCDkdzFuBbe+jbopojYV6Noj0ETj3YbQXcFpE=;
+	s=arc-20240116; t=1755522076; c=relaxed/simple;
+	bh=OvUt35NqQl+/exMAT6a6BccCA7uv7RwLd7wnaMsfpGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPY/vbmZNsxiGpXEYdy4pSt8N50ggyjwYrzcsnsRYpuhUh7h8DWSj0cgwNeyc7Gp+kMVb5ufQ6AKt8zW3Cmq12ryK/T7/FK1lYb45PC1KXoHdFpHT7GJVUS/BR5Di8MF6czQ9nrYqEv+o1+49P9S638jcy4thP32vPyVXLRXpnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCnN1O6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D54DC4CEEB;
-	Mon, 18 Aug 2025 13:56:21 +0000 (UTC)
+	 MIME-Version; b=iEHqz0tWtdOIEBIOX5Zgx/+xYpA5VVERS0/spKMlvf3ModaRZ8YoJWDWcrZ8nOzZf7jfVFj/l81aE2HN/+UEAOZ18oph6ZFzvQJwMkR4DQnpwp8+nLsYX5Z9NOu2adTPbYQLEIrT3Rjyk88OHWKytbW8syds+2pLxXYet7x49c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9TEHMeT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE473C4CEF1;
+	Mon, 18 Aug 2025 13:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525381;
-	bh=t+iBC2CCDkdzFuBbe+jbopojYV6Noj0ETj3YbQXcFpE=;
+	s=korg; t=1755522076;
+	bh=OvUt35NqQl+/exMAT6a6BccCA7uv7RwLd7wnaMsfpGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zCnN1O6peXD2CWpL260xwbVDNNh4X2GUQxXwViH+y79+FIGd2MAOTIG6QygYN6QvI
-	 nOBYAOw70i3BwAWydL0QlfvAFJV09jWPFBVI7KlXxsFrZTPTu2yVtKywtiasJnSMwh
-	 5Jz6+qXrdlW2DDUs+lSyBmBGvODB0k9kDAP79P1g=
+	b=x9TEHMeTek3L/v3aVHwaxuHkBUPoCnITuTO4wqNqBzxoSxSfS5RmjxDGZeTeWhtTP
+	 qKRLMMRZSoqlFK94yHeEgNVCeP/Qw5cIdzlBvJ5sKCqAXfodIUOftyhlqpmQTd+kcq
+	 JlLuEFQhHb5IaZCsqi9uNmzWhbupIhw0U7Pj2p/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 246/570] net: phy: micrel: Add ksz9131_resume()
+Subject: [PATCH 6.12 207/444] ipv6: mcast: Check inet6_dev->dead under idev->mc_lock in __ipv6_dev_mc_inc().
 Date: Mon, 18 Aug 2025 14:43:53 +0200
-Message-ID: <20250818124515.296637501@linuxfoundation.org>
+Message-ID: <20250818124456.619048120@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit f25a7eaa897f21396e99f90809af82ca553c9d14 ]
+[ Upstream commit dbd40f318cf2f59759bd170c401adc20ba360a3e ]
 
-The Renesas RZ/G3E SMARC EVK uses KSZ9131RNXC phy. On deep power state,
-PHY loses the power and on wakeup the rgmii delays are not reconfigured
-causing it to fail.
+Since commit 63ed8de4be81 ("mld: add mc_lock for protecting
+per-interface mld data"), every multicast resource is protected
+by inet6_dev->mc_lock.
 
-Replace the callback kszphy_resume()->ksz9131_resume() for reconfiguring
-the rgmii_delay when it exits from PM suspend state.
+RTNL is unnecessary in terms of protection but still needed for
+synchronisation between addrconf_ifdown() and __ipv6_dev_mc_inc().
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250711054029.48536-1-biju.das.jz@bp.renesas.com
+Once we removed RTNL, there would be a race below, where we could
+add a multicast address to a dead inet6_dev.
+
+  CPU1                            CPU2
+  ====                            ====
+  addrconf_ifdown()               __ipv6_dev_mc_inc()
+                                    if (idev->dead) <-- false
+    dead = true                       return -ENODEV;
+    ipv6_mc_destroy_dev() / ipv6_mc_down()
+      mutex_lock(&idev->mc_lock)
+      ...
+      mutex_unlock(&idev->mc_lock)
+                                    mutex_lock(&idev->mc_lock)
+                                    ...
+                                    mutex_unlock(&idev->mc_lock)
+
+The race window can be easily closed by checking inet6_dev->dead
+under inet6_dev->mc_lock in __ipv6_dev_mc_inc() as addrconf_ifdown()
+will acquire it after marking inet6_dev dead.
+
+Let's check inet6_dev->dead under mc_lock in __ipv6_dev_mc_inc().
+
+Note that now __ipv6_dev_mc_inc() no longer depends on RTNL and
+we can remove ASSERT_RTNL() there and the RTNL comment above
+addrconf_join_solict().
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250702230210.3115355-4-kuni1840@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/ipv6/addrconf.c |  7 +++----
+ net/ipv6/mcast.c    | 11 +++++------
+ 2 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 50c6a4e8cfa1..52c677811616 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -5405,6 +5405,14 @@ static int lan8841_suspend(struct phy_device *phydev)
- 	return kszphy_generic_suspend(phydev);
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index be51b8792b96..49ec223f2eda 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -2228,13 +2228,12 @@ void addrconf_dad_failure(struct sk_buff *skb, struct inet6_ifaddr *ifp)
+ 	in6_ifa_put(ifp);
  }
  
-+static int ksz9131_resume(struct phy_device *phydev)
-+{
-+	if (phydev->suspended && phy_interface_is_rgmii(phydev))
-+		ksz9131_config_rgmii_delay(phydev);
-+
-+	return kszphy_resume(phydev);
-+}
-+
- static struct phy_driver ksphy_driver[] = {
+-/* Join to solicited addr multicast group.
+- * caller must hold RTNL */
++/* Join to solicited addr multicast group. */
+ void addrconf_join_solict(struct net_device *dev, const struct in6_addr *addr)
  {
- 	.phy_id		= PHY_ID_KS8737,
-@@ -5651,7 +5659,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
- 	.suspend	= kszphy_suspend,
--	.resume		= kszphy_resume,
-+	.resume		= ksz9131_resume,
- 	.cable_test_start	= ksz9x31_cable_test_start,
- 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
- 	.get_features	= ksz9477_get_features,
+ 	struct in6_addr maddr;
+ 
+-	if (dev->flags&(IFF_LOOPBACK|IFF_NOARP))
++	if (READ_ONCE(dev->flags) & (IFF_LOOPBACK | IFF_NOARP))
+ 		return;
+ 
+ 	addrconf_addr_solict_mult(addr, &maddr);
+@@ -3883,7 +3882,7 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
+ 	 *	   Do not dev_put!
+ 	 */
+ 	if (unregister) {
+-		idev->dead = 1;
++		WRITE_ONCE(idev->dead, 1);
+ 
+ 		/* protected by rtnl_lock */
+ 		RCU_INIT_POINTER(dev->ip6_ptr, NULL);
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 9949554e3211..e2a11a2f3b25 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -907,23 +907,22 @@ static struct ifmcaddr6 *mca_alloc(struct inet6_dev *idev,
+ static int __ipv6_dev_mc_inc(struct net_device *dev,
+ 			     const struct in6_addr *addr, unsigned int mode)
+ {
+-	struct ifmcaddr6 *mc;
+ 	struct inet6_dev *idev;
+-
+-	ASSERT_RTNL();
++	struct ifmcaddr6 *mc;
+ 
+ 	/* we need to take a reference on idev */
+ 	idev = in6_dev_get(dev);
+-
+ 	if (!idev)
+ 		return -EINVAL;
+ 
+-	if (idev->dead) {
++	mutex_lock(&idev->mc_lock);
++
++	if (READ_ONCE(idev->dead)) {
++		mutex_unlock(&idev->mc_lock);
+ 		in6_dev_put(idev);
+ 		return -ENODEV;
+ 	}
+ 
+-	mutex_lock(&idev->mc_lock);
+ 	for_each_mc_mclock(idev, mc) {
+ 		if (ipv6_addr_equal(&mc->mca_addr, addr)) {
+ 			mc->mca_users++;
 -- 
 2.39.5
 
