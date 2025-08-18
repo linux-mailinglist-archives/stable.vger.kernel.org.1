@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B564B2A547
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B579B2A2EA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 468E54E351B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7158C4E6A88
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2446D322760;
-	Mon, 18 Aug 2025 13:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC4A31A04F;
+	Mon, 18 Aug 2025 12:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUpvHMMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aja4dUH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D590132A3D2;
-	Mon, 18 Aug 2025 13:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB1E26F283;
+	Mon, 18 Aug 2025 12:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523550; cv=none; b=cpMTp4avDAt2Es19EDMBEM0N6Yh7yfKpcQsLRswVTsvzpkFgVkaX0rC5lIJomlkhj6YTffQ/JY8QvTmH2YQYKqxSv2O1ebOP4XD8HYJf6QswwrE9eho2SbP0fIhdqP4P/rX4K589vZ/ZTih84GkuvFB3riUG1lYm0JKctAT5GXk=
+	t=1755521929; cv=none; b=h1q4PGa8s9/7qRpYogp8VmEJ2wD8CSHjJ5UpY7cUhD0FRo8Rjp/86na23+VQyTvftNs6sNQj0+RBVIZEA57u7iZ6wi/XkVVUvKEbSFP7jHAd6WB+3m32p8B+V8jZusXpihNm3d2zxKEEjfykMs6wrjw7JrKtqOHgHPpZ0dMna9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523550; c=relaxed/simple;
-	bh=BvSqDZpJGK/T2trxFFw/XNcixKTStujTkZvyx4eC9W4=;
+	s=arc-20240116; t=1755521929; c=relaxed/simple;
+	bh=FqqKRO1li257K6m5AKY987EdaxRbRESvcpSmZ7+4Gbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/zDW6Ojd7bcUNOejFyoLdJu6EZIYcEmEjvL+d/Nri3PwOtuftqvcf+Q5Z8i/ALTkIQ/M7u3caSRVY24fMaScVMsNppKNKIKsRNRseV5p9VNeceYnT+DfPro7Y0THvUqHcDEYbSqTHIacxC5RwPG6Uung0zjRksYz4dvyvty738=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUpvHMMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6108CC4CEEB;
-	Mon, 18 Aug 2025 13:25:50 +0000 (UTC)
+	 MIME-Version; b=RXyGmD/aq0t/snKGAnaOT+6vrh4nNtxoXOA+YHRik9nb8SxSQCBDQTv/Xbvr5xBey51QFWiayIgiVUuyDzw022OieH46rbi0UeDRmIA+ia7to5Z33EaKrd8N7DcDEYGQ//HT/+N8ieDLfQY78J32nB7VVtEo5bL1UsEh8LVaJrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aja4dUH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12C2C4CEEB;
+	Mon, 18 Aug 2025 12:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523550;
-	bh=BvSqDZpJGK/T2trxFFw/XNcixKTStujTkZvyx4eC9W4=;
+	s=korg; t=1755521929;
+	bh=FqqKRO1li257K6m5AKY987EdaxRbRESvcpSmZ7+4Gbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUpvHMMdY8CjeDJx/8iN+sWl185YbQVjpUqF+Vuj5CKLJUYxID7+pepPGXC4CUVh+
-	 xxI6nI07qKnlxXkh0qBMEFKC6fdfL5eRldTQZ5KD/86h4PzeM3tZJ/Ccwnnn6pFiCP
-	 kZBi/Sd3lAHvxWf0G687CwOXWe7MI36usl5KAHvg=
+	b=aja4dUH/NtaesbnzFCx5mdt13uPLQv6CE/dbfxAL12gj+E21AH5pPgrHTYOVD4jAU
+	 ztg4Dr3msZKnAAULxug+TyF/P59UdIyo1/TWViDRC62VFPgDhKpPWyVDE6tpW3X7Do
+	 +NCWaJKrqnOFwA0W0+BPREwM+3Bnl39pj7Fuvf/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	En-Wei Wu <en-wei.wu@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 205/515] wifi: cfg80211: reject HTC bit for management frames
+Subject: [PATCH 6.12 165/444] Bluetooth: btusb: Add new VID/PID 0489/e14e for MT7925
 Date: Mon, 18 Aug 2025 14:43:11 +0200
-Message-ID: <20250818124506.259444691@linuxfoundation.org>
+Message-ID: <20250818124455.080494696@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: En-Wei Wu <en-wei.wu@canonical.com>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+[ Upstream commit 942873c8137fe0015ab37f62f159d88079859c5e ]
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+Add VID 0489 & PID e14e for MediaTek MT7925 USB Bluetooth chip.
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
+
+T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e14e Rev= 1.00
+S:  Manufacturer=MediaTek Inc.
+S:  Product=Wireless_Device
+S:  SerialNumber=000000000
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
+A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
+I:* If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
+E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+
+Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 05d44a443518..fd88a32d43d6 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -850,7 +850,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
- 
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
- 
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 1d2e85b41820..d7aaaeb4fe32 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -702,6 +702,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe139), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe14e), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe14f), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe150), .driver_info = BTUSB_MEDIATEK |
 -- 
 2.39.5
 
