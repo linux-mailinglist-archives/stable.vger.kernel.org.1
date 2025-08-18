@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB24B2A5DD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5629B2A346
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2062A1B647B9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0962B1764D9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AE822B5AC;
-	Mon, 18 Aug 2025 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D7521ABAA;
+	Mon, 18 Aug 2025 12:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdLWP+SK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE4mshLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D30D2135CE;
-	Mon, 18 Aug 2025 13:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E463218CF;
+	Mon, 18 Aug 2025 12:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523419; cv=none; b=UO3mSpXev2e78WtH0q9VgfpWXLXcKRzCTY8JzkyHoRzB9sE8HOD36dLbDX/98auDhhaDmpiVQzmy/M56N1MGfmnHLsE41tD0fB3+3zBytU2BvUNF5Nz88TbQN5I8UtfoRrZfjClJyOI2hefoubQph2VpspCgeMy+rkp31HqooDI=
+	t=1755521798; cv=none; b=NmtSTkcosQxGdPt5O2rb7603vTKyq9s+dCmUu1zojxh7qreJz0HBgByBicU0BhwjJLXPmxLcOXHpqPo1QOWsTeVE5c6FRzWu7+jxdh7/+c16/QndN8PIU6d9OXmDXAkRrIUVMEoIvCJXnG3qtO/M5fmUWugNdrkdBmWIRYdUgBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523419; c=relaxed/simple;
-	bh=cp5YBTf59dxaOIaFRFgqLzSfDFLu9A5Qo6F4B8NfBMM=;
+	s=arc-20240116; t=1755521798; c=relaxed/simple;
+	bh=J0tYxburseI+5yjW2vQsYgase/hn57Fko44Sfyy1Blw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNbQ198qbC4+s00uvASmOboTDs5x5ulJv0u4D99MPkOCOjt/euASOciDLNXxOgLc0SFRkR9E3SXjPe+jpe/Ca+84Ah8kGrywyetq1tmVDEz2Y2ULbR+OvTV5RjlzVUCrVzfFzjdlU5HhC8Wem/+bHQ9ZOsPGEuqBrv1tPXV2szc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdLWP+SK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC61AC4CEEB;
-	Mon, 18 Aug 2025 13:23:38 +0000 (UTC)
+	 MIME-Version; b=pLknRAq/ybn8NSrMA+IV77EBIPD7St1IcW6q6+eSLRLezWATNV9g6pKXsUneIrY6VHsU2qS7iPlWqOrckKqQHXtj1aB+Wdz3OVHFmrnfik3xFUXyJdRpLPEfvB3BsJS9Il6KhhEIRxQWou0sWQf3WKeN4UkbPzit1IJZeKesG7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE4mshLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE667C4CEEB;
+	Mon, 18 Aug 2025 12:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523419;
-	bh=cp5YBTf59dxaOIaFRFgqLzSfDFLu9A5Qo6F4B8NfBMM=;
+	s=korg; t=1755521798;
+	bh=J0tYxburseI+5yjW2vQsYgase/hn57Fko44Sfyy1Blw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdLWP+SKgx73bjwaF6TEUJ7NgqFqvoCUdW/m4Jk83S1tI8w/hCbjtp2Tt5J3UfkDV
-	 AXJpTG1KcbUII5Sola6WKtTEzpwfOLeSNnnVFUgNmsA2w+ULoGTyZFQsvl7an0VL7f
-	 hmp6rcHEhIL+aol6ZUlFNkDZuzxxZ45tFMybHSRw=
+	b=zE4mshLAmbmvKfafTCYE3AMKQCOIyAhWD9zUPIZ7p1EtyQPUG+ETXU7o2yusqEYci
+	 cv4A/irxa+Gukvo5k0iDs2yUmqqHv7IMNjWAlsEogVwjdeTxKMkz4immXyQ7zDCNps
+	 vACra2tcammo3w5aTr5Jqrs8HyYOCSra5us5hyw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 166/515] ALSA: hda: Handle the jack polling always via a work
+Subject: [PATCH 6.12 126/444] firmware: tegra: Fix IVC dependency problems
 Date: Mon, 18 Aug 2025 14:42:32 +0200
-Message-ID: <20250818124504.766796770@linuxfoundation.org>
+Message-ID: <20250818124453.637688070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit 5f7e54b23e4d253eff3b10b12d6fa92d28d7dddc ]
+[ Upstream commit 78eb18020a88a4eed15f5af7700ed570642ff8f1 ]
 
-We used to call directly hda_jackpoll_work() from a couple of places
-for updating the jack and notify to user-space, but this makes rather
-the code flow fragile.  Namely, because of those direct calls,
-hda_jackpoll_work() uses snd_hda_power_up_pm() and *_down_pm() calls
-instead of the standard snd_hda_power_up() and *_down() calls.  The
-latter pair assures the runtime PM resume sync, so it can avoid the
-race against the PM callbacks gracefully, while the former pair may
-continue if called concurrently, hence it may race (by design).
+The IVC code is library code that other drivers need to select if they
+need that library. However, if the symbol is user-selectable this can
+lead to conflicts.
 
-In this patch, we change the call pattern of hda_jackpoll_work(); now
-all callers are replaced with the standard snd_hda_jack_report_sync()
-and the additional schedule_delayed_work().
+Fix this by making the symbol only selectable for COMPILE_TEST and add
+a select TEGRA_IVC to TEGRA_BPMP, which is currently the only user.
 
-Since hda_jackpoll_work() is called only from the associated work,
-it's always outside the PM code path, and we can safely use
-snd_hda_power_up() and *_down() there instead.  This allows us to
-remove the racy check of power-state in hda_jackpoll_work(), as well
-as the tricky cancel_delayed_work() and rescheduling at
-hda_codec_runtime_suspend().
-
-Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Closes: https://lore.kernel.org/20250619020844.2974160-1-joakim.zhang@cixtech.com
-Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250623131437.10670-4-tiwai@suse.de
+Link: https://lore.kernel.org/r/20250506133118.1011777-10-thierry.reding@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_codec.c | 41 +++++++++++++--------------------------
- 1 file changed, 14 insertions(+), 27 deletions(-)
+ drivers/firmware/tegra/Kconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
-index b436d436831b..ca7c3517c341 100644
---- a/sound/pci/hda/hda_codec.c
-+++ b/sound/pci/hda/hda_codec.c
-@@ -639,24 +639,16 @@ static void hda_jackpoll_work(struct work_struct *work)
- 	struct hda_codec *codec =
- 		container_of(work, struct hda_codec, jackpoll_work.work);
+diff --git a/drivers/firmware/tegra/Kconfig b/drivers/firmware/tegra/Kconfig
+index cde1ab8bd9d1..91f2320c0d0f 100644
+--- a/drivers/firmware/tegra/Kconfig
++++ b/drivers/firmware/tegra/Kconfig
+@@ -2,7 +2,7 @@
+ menu "Tegra firmware driver"
  
--	/* for non-polling trigger: we need nothing if already powered on */
--	if (!codec->jackpoll_interval && snd_hdac_is_power_on(&codec->core))
-+	if (!codec->jackpoll_interval)
- 		return;
+ config TEGRA_IVC
+-	bool "Tegra IVC protocol"
++	bool "Tegra IVC protocol" if COMPILE_TEST
+ 	depends on ARCH_TEGRA
+ 	help
+ 	  IVC (Inter-VM Communication) protocol is part of the IPC
+@@ -13,8 +13,9 @@ config TEGRA_IVC
  
- 	/* the power-up/down sequence triggers the runtime resume */
--	snd_hda_power_up_pm(codec);
-+	snd_hda_power_up(codec);
- 	/* update jacks manually if polling is required, too */
--	if (codec->jackpoll_interval) {
--		snd_hda_jack_set_dirty_all(codec);
--		snd_hda_jack_poll_all(codec);
--	}
--	snd_hda_power_down_pm(codec);
--
--	if (!codec->jackpoll_interval)
--		return;
--
--	schedule_delayed_work(&codec->jackpoll_work,
--			      codec->jackpoll_interval);
-+	snd_hda_jack_set_dirty_all(codec);
-+	snd_hda_jack_poll_all(codec);
-+	schedule_delayed_work(&codec->jackpoll_work, codec->jackpoll_interval);
-+	snd_hda_power_down(codec);
- }
- 
- /* release all pincfg lists */
-@@ -2926,12 +2918,12 @@ static void hda_call_codec_resume(struct hda_codec *codec)
- 		snd_hda_regmap_sync(codec);
- 	}
- 
--	if (codec->jackpoll_interval)
--		hda_jackpoll_work(&codec->jackpoll_work.work);
--	else
--		snd_hda_jack_report_sync(codec);
-+	snd_hda_jack_report_sync(codec);
- 	codec->core.dev.power.power_state = PMSG_ON;
- 	snd_hdac_leave_pm(&codec->core);
-+	if (codec->jackpoll_interval)
-+		schedule_delayed_work(&codec->jackpoll_work,
-+				      codec->jackpoll_interval);
- }
- 
- static int hda_codec_runtime_suspend(struct device *dev)
-@@ -2943,8 +2935,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
- 	if (!codec->card)
- 		return 0;
- 
--	cancel_delayed_work_sync(&codec->jackpoll_work);
--
- 	state = hda_call_codec_suspend(codec);
- 	if (codec->link_down_at_suspend ||
- 	    (codec_has_clkstop(codec) && codec_has_epss(codec) &&
-@@ -2952,10 +2942,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
- 		snd_hdac_codec_link_down(&codec->core);
- 	snd_hda_codec_display_power(codec, false);
- 
--	if (codec->bus->jackpoll_in_suspend &&
--		(dev->power.power_state.event != PM_EVENT_SUSPEND))
--		schedule_delayed_work(&codec->jackpoll_work,
--					codec->jackpoll_interval);
- 	return 0;
- }
- 
-@@ -3117,10 +3103,11 @@ int snd_hda_codec_build_controls(struct hda_codec *codec)
- 	if (err < 0)
- 		return err;
- 
-+	snd_hda_jack_report_sync(codec); /* call at the last init point */
- 	if (codec->jackpoll_interval)
--		hda_jackpoll_work(&codec->jackpoll_work.work);
--	else
--		snd_hda_jack_report_sync(codec); /* call at the last init point */
-+		schedule_delayed_work(&codec->jackpoll_work,
-+				      codec->jackpoll_interval);
-+
- 	sync_power_up_states(codec);
- 	return 0;
- }
+ config TEGRA_BPMP
+ 	bool "Tegra BPMP driver"
+-	depends on ARCH_TEGRA && TEGRA_HSP_MBOX && TEGRA_IVC
++	depends on ARCH_TEGRA && TEGRA_HSP_MBOX
+ 	depends on !CPU_BIG_ENDIAN
++	select TEGRA_IVC
+ 	help
+ 	  BPMP (Boot and Power Management Processor) is designed to off-loading
+ 	  the PM functions which include clock/DVFS/thermal/power from the CPU.
 -- 
 2.39.5
 
