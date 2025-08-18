@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E27EB2A6D5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E64B2A974
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE6E583800
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D27FB62A9C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA24335BA8;
-	Mon, 18 Aug 2025 13:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BAA322A14;
+	Mon, 18 Aug 2025 14:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR3XWUgK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBJNxv+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977D53203BA;
-	Mon, 18 Aug 2025 13:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E6831E115;
+	Mon, 18 Aug 2025 14:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524238; cv=none; b=BNdRc6O9B34tpl6BiHb5fkvv7OkrQupy4Zb4CdvdGxa+HRiKkYGRof8GHx6ndLzwSo+GYQgjYT4ZJOZ8enej40wIgYetqY0phA0PGGDQhXcPTGiPSBV/9xOsqGjQh0KhGfmUSIzflrSji86zNCQL92LogaPXUY35NrU36BjY0j8=
+	t=1755526079; cv=none; b=JhETHV6LUqoXtA7GPUujlxS5jPG+vDJ7mehdSnCkRbpO6//4PTEmmn0nbwdUQ5wqhDhQxvsfGhGD7lspTGMCAzGtKf2YRSvdXMzJybVvE0aZhzdMi/P3//RRRD0q5SkZtD8NMxmUfLs3tSRarbOeUBUey9yao61pZUsmv+bDnC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524238; c=relaxed/simple;
-	bh=LP2SznVFEoWh3mFLzYixVzphMUahhH7IR8K78LVauJQ=;
+	s=arc-20240116; t=1755526079; c=relaxed/simple;
+	bh=TgNpWJM3ciLgKxSaIjuoKzRztpQwJurouV65hjcgjec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7Tn/lQGTMwSiMtE1KUF+3b+9Pn88efcfpYRHMVycv3Pk0S5LdEbB+8e3xbhkutUuBpSG1JF1ErefxJwyUzIoQ2MnmaRRDOVTzdI1EE27zu+IFM7CGqdso4LZF2aB4fMfXRNuN3e3IG3pD8VLTh/TDUuJIuzhRuJ2c7aUlw+nuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR3XWUgK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D007C4CEF1;
-	Mon, 18 Aug 2025 13:37:17 +0000 (UTC)
+	 MIME-Version; b=R7o0v4wm6WlVrtEG32g4ywnAetlCvkVliFtx4pI3ZXKghLQgAZsvIPOlSUasmPSPCPuT/I1o7OVWmCHWHbPb1LyzYR7QZ9XUYGQ+//s20ReNcULxmx3OLRbAnt/0l3aJmS9qGY1h36uE5KqO+llI+OvjAgJdheCeCoK6bwybh1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBJNxv+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F82C4CEEB;
+	Mon, 18 Aug 2025 14:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524238;
-	bh=LP2SznVFEoWh3mFLzYixVzphMUahhH7IR8K78LVauJQ=;
+	s=korg; t=1755526079;
+	bh=TgNpWJM3ciLgKxSaIjuoKzRztpQwJurouV65hjcgjec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KR3XWUgK2FarrWi5Ozh+pDUWkKwZA3YBhyhhPOXqG93E+2IN9gcaSTFpp+1sRzEE8
-	 J/kZP/GCwPAoSLnvEHGKd0wZCcawc9mfx8/AzYOUNNWnKcI1ZWHXEjsukdZ+rcJt0+
-	 dFSNFnuZLOTEcCmJp2tM6YOB3n3KUAQhdzJy7zOU=
+	b=DBJNxv+1nEG7DKiKCwNcOfVQYi6+Sjaky4w4hfrEv+jwR/2rXxhxueCVQ6cMKFdP/
+	 HhnaW9f6H8aRo9rRwG6/3kasyUFky/5WoPQCucmufTXS2ydp9ivxOXpVdJwCQWAuMi
+	 eOjIz1OYJHR+AdJjrivIhmzx3WMxUW4InTkpnOMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	Yishai Hadas <yishaih@nvidia.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 411/515] vfio/mlx5: fix possible overflow in tracking max message size
+Subject: [PATCH 6.16 410/570] media: tc358743: Increase FIFO trigger level to 374
 Date: Mon, 18 Aug 2025 14:46:37 +0200
-Message-ID: <20250818124514.237802429@linuxfoundation.org>
+Message-ID: <20250818124521.641704401@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit b3060198483bac43ec113c62ae3837076f61f5de ]
+[ Upstream commit 86addd25314a1e77dbdcfddfeed0bab2f27da0e2 ]
 
-MLX cap pg_track_log_max_msg_size consists of 5 bits, value of which is
-used as power of 2 for max_msg_size. This can lead to multiplication
-overflow between max_msg_size (u32) and integer constant, and afterwards
-incorrect value is being written to rq_size.
+The existing fixed value of 16 worked for UYVY 720P60 over
+2 lanes at 594MHz, or UYVY 1080P60 over 4 lanes. (RGB888
+1080P60 needs 6 lanes at 594MHz).
+It doesn't allow for lower resolutions to work as the FIFO
+underflows.
 
-Fix this issue by extending integer constant to u64 type.
+374 is required for 1080P24 or 1080P30 UYVY over 2 lanes @
+972Mbit/s, but >374 means that the FIFO underflows on 1080P50
+UYVY over 2 lanes @ 972Mbit/s.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Whilst it would be nice to compute it, the required information
+isn't published by Toshiba.
 
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://lore.kernel.org/r/20250701144017.2410-2-a.sadovnikov@ispras.ru
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/mlx5/cmd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/tc358743.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
-index 11eda6b207f1..6d36b3b4cd30 100644
---- a/drivers/vfio/pci/mlx5/cmd.c
-+++ b/drivers/vfio/pci/mlx5/cmd.c
-@@ -1538,8 +1538,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
- 	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
- 	max_msg_size = (1ULL << log_max_msg_size);
- 	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
--	if (rq_size < 4 * max_msg_size)
--		rq_size = 4 * max_msg_size;
-+	if (rq_size < 4ULL * max_msg_size)
-+		rq_size = 4ULL * max_msg_size;
- 
- 	memset(tracker, 0, sizeof(*tracker));
- 	tracker->uar = mlx5_get_uars_page(mdev);
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 0bf6481dd0d9..1c7546d2ada4 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1979,8 +1979,19 @@ static int tc358743_probe_of(struct tc358743_state *state)
+ 	state->pdata.refclk_hz = clk_get_rate(refclk);
+ 	state->pdata.ddc5v_delay = DDC5V_DELAY_100_MS;
+ 	state->pdata.enable_hdcp = false;
+-	/* A FIFO level of 16 should be enough for 2-lane 720p60 at 594 MHz. */
+-	state->pdata.fifo_level = 16;
++	/*
++	 * Ideally the FIFO trigger level should be set based on the input and
++	 * output data rates, but the calculations required are buried in
++	 * Toshiba's register settings spreadsheet.
++	 * A value of 16 works with a 594Mbps data rate for 720p60 (using 2
++	 * lanes) and 1080p60 (using 4 lanes), but fails when the data rate
++	 * is increased, or a lower pixel clock is used that result in CSI
++	 * reading out faster than the data is arriving.
++	 *
++	 * A value of 374 works with both those modes at 594Mbps, and with most
++	 * modes on 972Mbps.
++	 */
++	state->pdata.fifo_level = 374;
+ 	/*
+ 	 * The PLL input clock is obtained by dividing refclk by pll_prd.
+ 	 * It must be between 6 MHz and 40 MHz, lower frequency is better.
 -- 
 2.39.5
 
