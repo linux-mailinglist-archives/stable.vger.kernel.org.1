@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E0DB2A6D9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE77B2A43A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 648B8173663
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D415C1B60925
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136B031E115;
-	Mon, 18 Aug 2025 13:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8215730F7F8;
+	Mon, 18 Aug 2025 13:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZs+Wmnz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJ3MgWeW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38CA322764;
-	Mon, 18 Aug 2025 13:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDF0218AAB;
+	Mon, 18 Aug 2025 13:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524223; cv=none; b=aAEwr9c7DHPnq4yC5acmLU/G8oZQAEGel0/Q9p1x6ak/XseI4M7de3lZ5/P1ehFqMUOfagIF/f9ZxweNDL6up3rU0C/uuc+qtWcTbMEYQvwOq8mHgcHMjAMnZb4e2Ga+MHGkWich6hXj5LF4CIDX1I8RyEN4Q2R3qq8zxkF5z5s=
+	t=1755522713; cv=none; b=Y/jW7iD7HNQqcJ9GKZ2oaSc/6WR0sbmX3ldCr96sHd+bP262Qzm03hV6eA7mbCyRw2t0EfTvpxl6vg/SI60Wve82ycyrR/bhWbekeR3Cb5whffl23s2rWR6ci2siITfq6VzRz+/ibA8kRRokfKpAlsO0X3n7b7D0tRUnbUtEz2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524223; c=relaxed/simple;
-	bh=pp6lmWFG00JiprghlRuMuBSHeiue9ePLLEdoWLJF6NE=;
+	s=arc-20240116; t=1755522713; c=relaxed/simple;
+	bh=sI19jQw2cH5btsc9CuQE0QiJKmEdm+iui4XqMuzEvSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sI0h0QjARq4KvsRnvSAdu9wB8Qniz6i2gpBeTMx9F+xxgekaq+Xwt1Zuk3slIYx0AnndEdEiWjTwdbbX9QXAIBPuM8xKIXe2MX8KKFgta6c7VHwzfCsthq9oZ7eMyS7yhODZcQdxMjJEQ56lw5JLlQxtJDeIPTsgBqZVg+GlJXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZs+Wmnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7D2C4CEEB;
-	Mon, 18 Aug 2025 13:37:02 +0000 (UTC)
+	 MIME-Version; b=M06QXzt0YX6Bk51QHYP/DQ/Romxx8UY3ncE9TW9+EBb2usOVfEzg3jvfa6W3Xpcbcnz8QZsi8pzXCruInxvHhyNhUv5oUSrYMiANqvSNRhVCEEfHeZeDrZkiiosNMuI8QtOgSzbtDVvX/d2HOyZu/Jok33s9Ctt3CRnf/bj8oJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJ3MgWeW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD6C4CEEB;
+	Mon, 18 Aug 2025 13:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524223;
-	bh=pp6lmWFG00JiprghlRuMuBSHeiue9ePLLEdoWLJF6NE=;
+	s=korg; t=1755522712;
+	bh=sI19jQw2cH5btsc9CuQE0QiJKmEdm+iui4XqMuzEvSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZs+Wmnz7AcAlg9UyqGMnC9pEduQRukSwVfwEZYBtV8GyIDY5qSMlCDhS3QW962wT
-	 EvGwI0yO9tFe+LXB7WWmlcuJo9ftcWghK52bWqmfi+IP1ExDZ8gCJrCxQUIsKRzjG8
-	 nnbvkPqSuQc/fL0JCX8Y3howlfNd6o95uk00YsEc=
+	b=mJ3MgWeWpnJSeG473ItO9UY85Tc/5HeVibs2Fj20MfpuwsGIvLBKKZr99wn0pKmPU
+	 CFYT0uwX0dMSkedk0c2lRZWO3+2MeZrksai0/gCsSi1ibtdTBZT3rw2BPO6j/HXAuV
+	 ZOlenYaK3oJAlHxmrpdsQAVwXErVF8PI4LwUaqxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Konstantin Evtushenko <koevtushenko@yandex.com>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 406/515] vfio/type1: conditional rescheduling while pinning
+Subject: [PATCH 6.12 366/444] pNFS: Fix uninited ptr deref in block/scsi layout
 Date: Mon, 18 Aug 2025 14:46:32 +0200
-Message-ID: <20250818124514.038042214@linuxfoundation.org>
+Message-ID: <20250818124502.625004795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit b1779e4f209c7ff7e32f3c79d69bca4e3a3a68b6 ]
+[ Upstream commit 9768797c219326699778fba9cd3b607b2f1e7950 ]
 
-A large DMA mapping request can loop through dma address pinning for
-many pages. In cases where THP can not be used, the repeated vmf_insert_pfn can
-be costly, so let the task reschedule as need to prevent CPU stalls. Failure to
-do so has potential harmful side effects, like increased memory pressure
-as unrelated rcu tasks are unable to make their reclaim callbacks and
-result in OOM conditions.
+The error occurs on the third attempt to encode extents. When function
+ext_tree_prepare_commit() reallocates a larger buffer to retry encoding
+extents, the "layoutupdate_pages" page array is initialized only after the
+retry loop. But ext_tree_free_commitdata() is called on every iteration
+and tries to put pages in the array, thus dereferencing uninitialized
+pointers.
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:   36-....: (20999 ticks this GP) idle=b01c/1/0x4000000000000000 softirq=35839/35839 fqs=3538
- rcu:            hardirqs   softirqs   csw/system
- rcu:    number:        0        107            0
- rcu:   cputime:       50          0        10446   ==> 10556(ms)
- rcu:   (t=21075 jiffies g=377761 q=204059 ncpus=384)
-...
-  <TASK>
-  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-  ? walk_system_ram_range+0x63/0x120
-  ? walk_system_ram_range+0x46/0x120
-  ? pgprot_writethrough+0x20/0x20
-  lookup_memtype+0x67/0xf0
-  track_pfn_insert+0x20/0x40
-  vmf_insert_pfn_prot+0x88/0x140
-  vfio_pci_mmap_huge_fault+0xf9/0x1b0 [vfio_pci_core]
-  __do_fault+0x28/0x1b0
-  handle_mm_fault+0xef1/0x2560
-  fixup_user_fault+0xf5/0x270
-  vaddr_get_pfns+0x169/0x2f0 [vfio_iommu_type1]
-  vfio_pin_pages_remote+0x162/0x8e0 [vfio_iommu_type1]
-  vfio_iommu_type1_ioctl+0x1121/0x1810 [vfio_iommu_type1]
-  ? futex_wake+0x1c1/0x260
-  x64_sys_call+0x234/0x17a0
-  do_syscall_64+0x63/0x130
-  ? exc_page_fault+0x63/0x130
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+An additional problem is that there is no limit on the maximum possible
+buffer_size. When there are too many extents, the client may create a
+layoutcommit that is larger than the maximum possible RPC size accepted
+by the server.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20250715184622.3561598-1-kbusch@meta.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+During testing, we observed two typical scenarios. First, one memory page
+for extents is enough when we work with small files, append data to the
+end of the file, or preallocate extents before writing. But when we fill
+a new large file without preallocating, the number of extents can be huge,
+and counting the number of written extents in ext_tree_encode_commit()
+does not help much. Since this number increases even more between
+unlocking and locking of ext_tree, the reallocated buffer may not be
+large enough again and again.
+
+Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250630183537.196479-2-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/nfs/blocklayout/extent_tree.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index ba5d91e576af..a685e01f73f5 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -648,6 +648,13 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
+diff --git a/fs/nfs/blocklayout/extent_tree.c b/fs/nfs/blocklayout/extent_tree.c
+index 8f7cff7a4293..0add0f329816 100644
+--- a/fs/nfs/blocklayout/extent_tree.c
++++ b/fs/nfs/blocklayout/extent_tree.c
+@@ -552,6 +552,15 @@ static int ext_tree_encode_commit(struct pnfs_block_layout *bl, __be32 *p,
+ 	return ret;
+ }
  
- 	while (npage) {
- 		if (!batch->size) {
-+			/*
-+			 * Large mappings may take a while to repeatedly refill
-+			 * the batch, so conditionally relinquish the CPU when
-+			 * needed to avoid stalls.
-+			 */
-+			cond_resched();
-+
- 			/* Empty batch, so refill it. */
- 			ret = vaddr_get_pfns(mm, vaddr, npage, dma->prot,
- 					     &pfn, batch);
++/**
++ * ext_tree_prepare_commit - encode extents that need to be committed
++ * @arg: layout commit data
++ *
++ * Return values:
++ *   %0: Success, all required extents are encoded
++ *   %-ENOSPC: Some extents are encoded, but not all, due to RPC size limit
++ *   %-ENOMEM: Out of memory, extents not encoded
++ */
+ int
+ ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
+ {
+@@ -568,12 +577,12 @@ ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
+ 	start_p = page_address(arg->layoutupdate_page);
+ 	arg->layoutupdate_pages = &arg->layoutupdate_page;
+ 
+-retry:
+-	ret = ext_tree_encode_commit(bl, start_p + 1, buffer_size, &count, &arg->lastbytewritten);
++	ret = ext_tree_encode_commit(bl, start_p + 1, buffer_size,
++			&count, &arg->lastbytewritten);
+ 	if (unlikely(ret)) {
+ 		ext_tree_free_commitdata(arg, buffer_size);
+ 
+-		buffer_size = ext_tree_layoutupdate_size(bl, count);
++		buffer_size = NFS_SERVER(arg->inode)->wsize;
+ 		count = 0;
+ 
+ 		arg->layoutupdate_pages =
+@@ -588,7 +597,8 @@ ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
+ 			return -ENOMEM;
+ 		}
+ 
+-		goto retry;
++		ret = ext_tree_encode_commit(bl, start_p + 1, buffer_size,
++				&count, &arg->lastbytewritten);
+ 	}
+ 
+ 	*start_p = cpu_to_be32(count);
+@@ -608,7 +618,7 @@ ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
+ 	}
+ 
+ 	dprintk("%s found %zu ranges\n", __func__, count);
+-	return 0;
++	return ret;
+ }
+ 
+ void
 -- 
 2.39.5
 
