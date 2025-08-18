@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D12B2A61D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB14AB2A933
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 345A81B668D9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55F3E6E57B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC33E315781;
-	Mon, 18 Aug 2025 13:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F14D346A19;
+	Mon, 18 Aug 2025 13:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zu3/XgU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ib2dMJ6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7898F335BB8;
-	Mon, 18 Aug 2025 13:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD30346A09;
+	Mon, 18 Aug 2025 13:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523676; cv=none; b=p8cO6nbvzc0lzD9l9n8rNsKbrYHIYrlSMlair5201AukHG4hjbA2FQuo+oCYcb99tTg9jNBfM6CpnFSF5Xt07XgTOcbfm0pfyEOCnxCmruBDN/KYla9UigqJDmWvT2sThOSHnDKjw2gtUoxqn/KstwSGq/scTyX+FZMIZ0siuuU=
+	t=1755525475; cv=none; b=GlxeOV13yN5P3WvF6neHPKtPT+4Kse2rWcwktb/705Rb4ZMeirMYZP4Nx8Elr2Cumf8Q5kqTS86+hNyRNeDjtKRJlylSBF/TAEkcioqtHnV+b7hH+BUVMXLriUFLs+BaYKH0tciSAho7u/xbKtcd6JeHhhydQTdnB575YADuVc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523676; c=relaxed/simple;
-	bh=1YKMc+O7bszezgWmwJ/ngpBvjNoCgse3TYGD4MK24NM=;
+	s=arc-20240116; t=1755525475; c=relaxed/simple;
+	bh=3inpm9HEl7Ag3K04oEvqQBtFS9zzwcsVYY6PUSyEsjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsZBbci2owBuItGbEsONAQBUKmkBr1HVtSHeHm3var07lLTHSA9G8cyBe4J3rx4+7epYs/OvQJlWQgKFVIBFJ6H6JcAcFN5EzWvJDaScJz5TLRGwriJHz+0qvf++eje6u4Hzo5vderDUNr3/PivnrNOdG4gx9ha8WT5j3mDCOyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zu3/XgU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9443FC4CEEB;
-	Mon, 18 Aug 2025 13:27:55 +0000 (UTC)
+	 MIME-Version; b=guRyBBTTEkcrzYHl29gAXzh/ZjOFeSDLb38hLWR9mluRH2By3p3lF2ZV5HAwcZJbEWfWeQ10lTpbzvnQ2fY1ZNtax3ZviwABTqqT4pZP8mGtqMCjyIBtL0/7vWnGVWFKmJ/n2JD3HRaFd2KO+IHcQyGLOgDlUFbzFD2TBjmLxSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ib2dMJ6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB923C4CEEB;
+	Mon, 18 Aug 2025 13:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523676;
-	bh=1YKMc+O7bszezgWmwJ/ngpBvjNoCgse3TYGD4MK24NM=;
+	s=korg; t=1755525475;
+	bh=3inpm9HEl7Ag3K04oEvqQBtFS9zzwcsVYY6PUSyEsjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zu3/XgUBPEZSR9s8HFw7NR3MxmtG2jnIYdEE2ZaQyuamfoo2YGu67/47P2v2Y1X6
-	 5QPpmK6mjw7e+kHZNY1rtmbX+i/4XE2rwjoR3OWZr90YW1GlJf5lHGAS85HVPlW6VJ
-	 jbOKbCFAmEYhiDydxNKoYMaF3MiQvbg80qjx2e18=
+	b=Ib2dMJ6xcjuPWejK3776k615f3O3WNw86faHx3TF3sr4Lq/FLzt5NQ0YKH8sRFGPZ
+	 lKTPEGfHfClInhwLCY2x8RZNwsnAdL0y49K9Xmgy/0SVEStJSxeLtzTOO57v3i14F1
+	 czMICEe3ZXw0VHKEMH7GtvKKE8nVkt17J28f2gZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 244/515] wifi: mac80211: avoid weird state in error path
+Subject: [PATCH 6.16 243/570] wifi: mac80211: dont unreserve never reserved chanctx
 Date: Mon, 18 Aug 2025 14:43:50 +0200
-Message-ID: <20250818124507.780212667@linuxfoundation.org>
+Message-ID: <20250818124515.182474620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit be1ba9ed221ffb95a8bb15f4c83d0694225ba808 ]
+[ Upstream commit a6d521bafcb290294128a51b13dbf4baae5748fc ]
 
-If we get to the error path of ieee80211_prep_connection, for example
-because of a FW issue, then ieee80211_vif_set_links is called
-with 0.
-But the call to drv_change_vif_links from ieee80211_vif_update_links
-will probably fail as well, for the same reason.
-In this case, the valid_links and active_links bitmaps will be reverted
-to the value of the failing connection.
-Then, in the next connection, due to the logic of
-ieee80211_set_vif_links_bitmaps, valid_links will be set to the ID of
-the new connection assoc link, but the active_links will remain with the
-ID of the old connection's assoc link.
-If those IDs are different, we get into a weird state of valid_links and
-active_links being different. One of the consequences of this state is
-to call drv_change_vif_links with new_links as 0, since the & operation
-between the bitmaps will be 0.
+If a link has no chanctx, indicating it is an inactive link
+that we tracked CSA for, then attempting to unreserve the
+reserved chanctx will throw a warning and fail, since there
+never was a reserved chanctx. Skip the unreserve.
 
-Since a removal of a link should always succeed, ignore the return value
-of drv_change_vif_links if it was called to only remove links, which is
-the case for the ieee80211_prep_connection's error path.
-That way, the bitmaps will not be reverted to have the value from the
-failing connection and will have 0, so the next connection will have a
-good state.
-
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250609213231.ba2011fb435f.Id87ff6dab5e1cf757b54094ac2d714c656165059@changeid
+Link: https://patch.msgid.link/20250709233537.022192f4b1ae.Ib58156ac13e674a9f4d714735be0764a244c0aae@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h | 2 ++
- net/mac80211/link.c    | 9 ++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 829032258978..5989cacb9d50 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -4462,6 +4462,8 @@ struct ieee80211_prep_tx_info {
-  *	new links bitmaps may be 0 if going from/to a non-MLO situation.
-  *	The @old array contains pointers to the old bss_conf structures
-  *	that were already removed, in case they're needed.
-+ *	Note that removal of link should always succeed, so the return value
-+ *	will be ignored in a removal only case.
-  *	This callback can sleep.
-  * @change_sta_links: Change the valid links of a station, similar to
-  *	@change_vif_links. This callback can sleep.
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 4f7b7d0f64f2..d71eabe5abf8 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -2,7 +2,7 @@
- /*
-  * MLO link handling
-  *
-- * Copyright (C) 2022-2024 Intel Corporation
-+ * Copyright (C) 2022-2025 Intel Corporation
-  */
- #include <linux/slab.h>
- #include <linux/kernel.h>
-@@ -368,6 +368,13 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
- 			ieee80211_update_apvlan_links(sdata);
- 	}
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 42bb996157e9..60f943f133ac 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2535,7 +2535,8 @@ ieee80211_sta_abort_chanswitch(struct ieee80211_link_data *link)
+ 	if (!local->ops->abort_channel_switch)
+ 		return;
  
-+	/*
-+	 * Ignore errors if we are only removing links as removal should
-+	 * always succeed
-+	 */
-+	if (!new_links)
-+		ret = 0;
-+
- 	if (ret) {
- 		/* restore config */
- 		memcpy(sdata->link, old_data, sizeof(old_data));
+-	ieee80211_link_unreserve_chanctx(link);
++	if (rcu_access_pointer(link->conf->chanctx_conf))
++		ieee80211_link_unreserve_chanctx(link);
+ 
+ 	ieee80211_vif_unblock_queues_csa(sdata);
+ 
 -- 
 2.39.5
 
