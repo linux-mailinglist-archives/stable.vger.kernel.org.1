@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B89B2A25A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38229B2A85E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 28F104E2DC6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFBBC686037
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BF9258ED7;
-	Mon, 18 Aug 2025 12:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA22335BC1;
+	Mon, 18 Aug 2025 13:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgbEsYX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hbb/DfA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795E11E51FE;
-	Mon, 18 Aug 2025 12:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC40335BA3;
+	Mon, 18 Aug 2025 13:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521712; cv=none; b=gQNn4QtOtRH0IDs0EZTBHMylXq/nISrG0lBYQ/c06l/yHu6wCAmF9fN2zpUqjivfDEoyuZ7XUmnLP5WFhMls9C9hxshUucB9wZEdFORFlqmbdjU8thoW09dHfCwfnmwElUCy58YVaSMa/rF/zSObVoQPhP7iKVp5nRA8KBuWvlc=
+	t=1755525142; cv=none; b=iPvV5Xu/A44lSyCTrPGS4bKlgr3CTxzGysJ7ksJteRd8NTPD+D6nPlGt1zc9xowAt80scM6hnYsnX3zEywp0bZivs3L+WRAsCd2/wcTTPGtpi/H9sGv5kEfkaArTlXp3EouccnZVW+qbFia0NE/HmRsczGWb+ytE3Ac6/P0RyKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521712; c=relaxed/simple;
-	bh=2NsON+6RLou/5bM8rBBGQ5Y73aQcHDbFKCvwMsoKkHI=;
+	s=arc-20240116; t=1755525142; c=relaxed/simple;
+	bh=2BDNpRZGnHESDxz6qxj8OBE3eEvPuLKV2LLwPGjVKIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+5ihzB/au3RLV/h9iF+StC+kTSN6dRw2I1SK6d5Vln1+qxgglWUjD+PrQP1rDVP9BPsZqkle3iWBjzkFrEpfT/o/O8c+GPh3aZilTDP8MmIwuoTTpZ0oYJUaMvP/nmXVDjvPn7tHwu3nodlV0Tu+0xTZzfE1+86FEBWcEpICTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgbEsYX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA34AC4CEEB;
-	Mon, 18 Aug 2025 12:55:11 +0000 (UTC)
+	 MIME-Version; b=ZfwsBwNFQMUrGpZ110vFZGtioiPImchyrS79Qk/p0C3IWAT45/O7sJ3X0BZJb4lBzXsI67Jfotb7Px+QRaly5AXrC7BoPokIgUNZ8i7BwY4eI5gqoEBLxF/U2BRvea/McI8rqrTmTfAHXA1Nlrc/JCfi9DQ5zslhpyo8/7H9rFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hbb/DfA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6EAC4CEEB;
+	Mon, 18 Aug 2025 13:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521712;
-	bh=2NsON+6RLou/5bM8rBBGQ5Y73aQcHDbFKCvwMsoKkHI=;
+	s=korg; t=1755525141;
+	bh=2BDNpRZGnHESDxz6qxj8OBE3eEvPuLKV2LLwPGjVKIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgbEsYX6PnAr4kVpL5cjusk5740P6rm8jj6HtaDX6hZ5opG2DkUX8B7a98IezsnWs
-	 VYYkwkWchz1lf8SKzT46UAnhb4Q4IylcbgOffaQZ+QEsPT2C78afHBC4FypqlIU+6Q
-	 0KoZNCN3C/52QFfy51dNyc65XhbLhlnIJsWCPRjs=
+	b=Hbb/DfA+ZfUSqLD+NQ9SEgqDX52ff5ji9q9UZQyvLps5CRzeY4+88hjlAvq17UJzc
+	 gW4U0x8l4jnsAmUJXdPKxXlJMguxq7UuGR5TsHxKQyFuQvidnyU/gR85sdcMLIqDXe
+	 7zfzhgx+ZBCcVTXIH0UoLCw+QoZpI4KAglBvkKyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Hiago De Franco <hiago.franco@toradex.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/444] usb: xhci: Avoid showing warnings for dying controller
+Subject: [PATCH 6.16 139/570] remoteproc: imx_rproc: skip clock enable when M-core is managed by the SCU
 Date: Mon, 18 Aug 2025 14:42:06 +0200
-Message-ID: <20250818124452.696265627@linuxfoundation.org>
+Message-ID: <20250818124511.174024388@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Hiago De Franco <hiago.franco@toradex.com>
 
-[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
+[ Upstream commit 496deecb020d14ba89ba7084fbc3024f91687023 ]
 
-When a USB4 dock is unplugged from a system it won't respond to ring
-events. The PCI core handles the surprise removal event and notifies
-all PCI drivers. The XHCI PCI driver sets a flag that the device is
-being removed, and when the device stops responding a flag is also
-added to indicate it's dying.
+For the i.MX8X and i.MX8 family SoCs, when the Cortex-M core is powered
+up and started by the Cortex-A core using the bootloader (e.g., via the
+U-Boot bootaux command), both M-core and Linux run within the same SCFW
+(System Controller Firmware) partition. With that, Linux has permission
+to control the M-core.
 
-When that flag is set don't bother to show warnings about a missing
-controller.
+But once the M-core is started by the bootloader, the SCFW automatically
+enables its clock and sets the clock rate. If Linux later attempts to
+enable the same clock via clk_prepare_enable(), the SCFW returns a
+'LOCKED' error, as the clock is already configured by the SCFW. This
+causes the probe function in imx_rproc.c to fail, leading to the M-core
+power domain being shut down while the core is still running. This
+results in a fault from the SCU (System Controller Unit) and triggers a
+system reset.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To address this issue, ignore handling the clk for i.MX8X and i.MX8
+M-core, as SCFW already takes care of enabling and configuring the
+clock.
+
+Suggested-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Hiago De Franco <hiago.franco@toradex.com>
+Acked-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Link: https://lore.kernel.org/r/20250629172512.14857-3-hiagofranco@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/remoteproc/imx_rproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 09a5a6604962..e399638d6000 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -119,7 +119,8 @@ int xhci_halt(struct xhci_hcd *xhci)
- 	ret = xhci_handshake(&xhci->op_regs->status,
- 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
- 	if (ret) {
--		xhci_warn(xhci, "Host halt failed, %d\n", ret);
-+		if (!(xhci->xhc_state & XHCI_STATE_DYING))
-+			xhci_warn(xhci, "Host halt failed, %d\n", ret);
- 		return ret;
- 	}
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 74299af1d7f1..627e57a88db2 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -1029,8 +1029,8 @@ static int imx_rproc_clk_enable(struct imx_rproc *priv)
+ 	struct device *dev = priv->dev;
+ 	int ret;
  
-@@ -178,7 +179,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
- 	state = readl(&xhci->op_regs->status);
+-	/* Remote core is not under control of Linux */
+-	if (dcfg->method == IMX_RPROC_NONE)
++	/* Remote core is not under control of Linux or it is managed by SCU API */
++	if (dcfg->method == IMX_RPROC_NONE || dcfg->method == IMX_RPROC_SCU_API)
+ 		return 0;
  
- 	if (state == ~(u32)0) {
--		xhci_warn(xhci, "Host not accessible, reset failed.\n");
-+		if (!(xhci->xhc_state & XHCI_STATE_DYING))
-+			xhci_warn(xhci, "Host not accessible, reset failed.\n");
- 		return -ENODEV;
- 	}
- 
+ 	priv->clk = devm_clk_get(dev, NULL);
 -- 
 2.39.5
 
