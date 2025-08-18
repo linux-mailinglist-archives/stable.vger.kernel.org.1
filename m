@@ -1,102 +1,122 @@
-Return-Path: <stable+bounces-170533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F77B2A4D0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:26:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9A4B2A222
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD1B7682667
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:19:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46EE91B24FCA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE4833A016;
-	Mon, 18 Aug 2025 13:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCB221ABAA;
+	Mon, 18 Aug 2025 12:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqfJSIiD"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wIFuNi5W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C33D33A00B;
-	Mon, 18 Aug 2025 13:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99E23218D5;
+	Mon, 18 Aug 2025 12:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522947; cv=none; b=dNpS9759hxZWvRUUzIcJcIirmToRFShYQHFuLuudkDJfeJsL2IyUKBgCISyMWOSRuw1YgYwDRWpe5dWfuwaWOKK/x3s395DRvaSnhfGCn0ruCBkmSnYVNV7Rx2qV6lvn7AQ++l+xKl6p4VtF3y14ZRxSy3D3vXCV3b0HpnzynH4=
+	t=1755520834; cv=none; b=Nfiu78ZlcnVh1L5dUeOMRfEZpe6iLxcTzUDfSlkMVOwP4vRVzIl9eb1NLP9ULCesRV/Q6qQmtpoeBciydw923MmWG3kxJ2YUiFnEsF9vAm9BlLB2hkQPnb/dY7IdmPOjaw2jUTwlhQwO1Mwhvi2XD8joeO1GXe6Gi5vMrxwhWAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522947; c=relaxed/simple;
-	bh=gh4wvHlEbprhfzEtm0sHnt9UDzTrNby0ns1dKK1yUWI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjCDtF1G2oF/D+GLLPoM70xunsmlErJrEWBt6awKvDtzzg79OgsTRKxFgQK5DZZ9RubtJuKeqj/IFrjM4VnsfPxaGkTb2gmVrfFAnj6HGi8Ec2zJTPwysPgaIOJuR6ZDBiR81s4/rXkJzsF8X6lUpUX9dKBjJ22FCrSdlU4C9dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqfJSIiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868A8C4CEF1;
-	Mon, 18 Aug 2025 13:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522947;
-	bh=gh4wvHlEbprhfzEtm0sHnt9UDzTrNby0ns1dKK1yUWI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqfJSIiD8f2lutt93ji3nDwm/JBueiSWpd/HDebfRXZ5Z1+LuQVWblg07DfcKvXyC
-	 t2HIBScl+CluuNMFwjVXrUQROoQdtXHx1cfEnzUKXObmMsceg+enMfhwkttp9Lpdg1
-	 K3agegBcrGoECmLnBYSXo7IsMFsX6jzUf4I/QtWw=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 024/515] net: mtk_eth_soc: fix device leak at probe
+	s=arc-20240116; t=1755520834; c=relaxed/simple;
+	bh=nN45isTJxzIZjkB1+OZX6kGfR+BlhzKzlg/3pRIMJII=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rElSPRDWHj3YVrRCiWogIs/Baud7E5st3equx0L29EZzsdlTOYev4UFofTRUx7sGuTeYNPLtWMNxXI/q30qYqgU4bBLFEEvm6K0OTVRHLQg+ufgWhSDBKl8G7IuqDltLzl1FXZhfBpOpWu7t5yHkV10ZOSJEHx7TYyfLagYywJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wIFuNi5W; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.0.172] (mob-5-90-51-68.net.vodafone.it [5.90.51.68])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 22CBE1249;
+	Mon, 18 Aug 2025 14:39:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755520773;
+	bh=nN45isTJxzIZjkB1+OZX6kGfR+BlhzKzlg/3pRIMJII=;
+	h=From:Subject:Date:To:Cc:From;
+	b=wIFuNi5WyyIRrzIgZS/5608epmrF476Ai1FUFkMplS4yI4/xPvIJ3+87yKrJqnGMW
+	 jkFurnn61YXEuAycTn2cb8XYggzLGGqJHx3ryxDylnd1UdfR6KogDIH9aKx60BOsAC
+	 jPizyHcMtzTuQNfQ+VHIuGIegDPCSCQ5JEwKFa20=
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: [PATCH 0/2] media: pci: Fix invalid access to file *
 Date: Mon, 18 Aug 2025 14:40:10 +0200
-Message-ID: <20250818124459.395034494@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+Message-Id: <20250818-cx18-v4l2-fh-v1-0-6fe153760bce@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACofo2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDC0ML3eQKIFFmkmOkm5aha56amGhmaGmZlpKSqgTUUlCUmpZZATYuOra
+ 2FgDJPez5XgAAAA==
+X-Change-ID: 20250818-cx18-v4l2-fh-7eaa6199fdde
+To: Andy Walls <awalls@md.metrocast.net>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil+cisco@kernel.org>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1310;
+ i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
+ bh=nN45isTJxzIZjkB1+OZX6kGfR+BlhzKzlg/3pRIMJII=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBoox88GS45UOSxNu+V7EOzbuNiW12eL3m4KANfe
+ V1QE3qS7Q+JAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaKMfPAAKCRByNAaPFqFW
+ PLd6D/9685yz1B00Cmnfa3Gq632TvoUCPp6hfrF+3d5hSkf947KfsqYOEZAxm3cVE672XzObxT+
+ uSeHHZXamqBOFUwgv/xB6TtrRH2s4HvXCZ1wCsusGD2mnz0QHJxbscYQ4ZyIaQfaAxDuioS2GmH
+ 48TOD5UA2qrt39RXrotN1AanZHATkXx40r9NMErE8cSp/AxISi3ZEjmPjQv6DEuDuduSqbif/uC
+ NkbvVnZYwIPd6b+NutakcdRAZv87n9cK+Yg5lAbhMATeTJZQb0nqPDqaWWQ/YRsGBqpQ6IO8oi2
+ e0+xZPDsL4npulToD+Xmda2Shynvbmie/HPVab9eZPJ9GDxRRfiN9Pe0lmDZNwyh+5KY5H99UUX
+ Nj3Gz4q13rB/uLSkB9I5DB9fAOHcW6c6sttJrVMcpUnk5cbz/GsyKDD4OWsjZqrAvZ3j54hGBQP
+ 4x94PZTupSBTmWdva/XNP4lbuwXBDs8YFmDJuxy9QPLnMX9OS2vHKrEXyQQNGcgi+V7XPBNDU9H
+ 5kC5jZKqzeaglFeLV3/CxMKKR9CuyjFTvoakCKzkRC5qOM5wQCI+9c1/diuDHoFIe8H/Rzkhe3R
+ CMaU/QxATbLqNtG1hsu+MbHiclKb4V+vIajtU8FhsCt3fqFcqE3zZ14R4NKKTV5WPdj1/dduzu4
+ NWcBoWygCpNjkPw==
+X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
+ fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+Since commits
+7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
+9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
 
-------------------
+All the ioctl handlers access their private data structures
+from file *
 
-From: Johan Hovold <johan@kernel.org>
+The ivtv and cx18 drivers call the ioctl handlers from their
+DVB layer without a valid file *, causing invalid memory access.
 
-commit 3e13274ca8750823e8b68181bdf185d238febe0d upstream.
+The issue has been reported by smatch in
+"[bug report] media: cx18: Access v4l2_fh from file"
 
-The reference count to the WED devices has already been incremented when
-looking them up using of_find_device_by_node() so drop the bogus
-additional reference taken during probe.
+Fix this by providing wrappers for the ioctl handlers to be
+used by the DVB layer that do not require a valid file *.
 
-Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
-Cc: stable@vger.kernel.org	# 5.19
-Cc: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-5-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c |    1 -
- 1 file changed, 1 deletion(-)
+Jacopo Mondi (2):
+      media: cx18: Fix invalid access to file *
+      media: ivtv: Fix invalid access to file *
 
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -2794,7 +2794,6 @@ void mtk_wed_add_hw(struct device_node *
- 	if (!pdev)
- 		goto err_of_node_put;
- 
--	get_device(&pdev->dev);
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		goto err_put_device;
+ drivers/media/pci/cx18/cx18-driver.c |  6 +++---
+ drivers/media/pci/cx18/cx18-ioctl.c  | 26 ++++++++++++++++++++------
+ drivers/media/pci/cx18/cx18-ioctl.h  |  8 +++++---
+ drivers/media/pci/ivtv/ivtv-driver.c |  4 ++--
+ drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
+ drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
+ 6 files changed, 51 insertions(+), 21 deletions(-)
+---
+base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
+change-id: 20250818-cx18-v4l2-fh-7eaa6199fdde
 
+Best regards,
+-- 
+Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
 
