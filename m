@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6E1B2A5D4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48076B2A3E9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3B8624E36FA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DE741B26379
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4022322A39;
-	Mon, 18 Aug 2025 13:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397E231E109;
+	Mon, 18 Aug 2025 13:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2r5d1aTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rf8o5cUR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0C527B333;
-	Mon, 18 Aug 2025 13:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE723218C2;
+	Mon, 18 Aug 2025 13:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524076; cv=none; b=b2RYx2axKtdgyTFuWqKbV6FTKTRlfrTT2i8rlDMzXIdz3GQyedlBThTKpM3Hom6zEFQk0F+/S1py//P2sQx7QOBpaFe6dfNbvzqWdG/9knG8+QkKwh9SgZYqZUutwdMSIBlZjsP88plH25kVo4KcNLDsyDEZ+m7wNaujW5c+LBc=
+	t=1755522489; cv=none; b=tFHmEFZbi64MHKA8RddMWZudRXjAb6MFwMSzeYXBTZjLun+KN41au9BkP8vlBtKelglOUfMM4YkJISovs2gNSL6pZOws8ScOzxyBS7wP/T0cz6w8sz5mxcjkvReP7PJHN/oy8ejCDpoZEYQ0ufVtTtAeV2WhEKYh7Hjeg8Zkz9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524076; c=relaxed/simple;
-	bh=uggxG3vF7oNftXFMMYfAZUP2uyVDB2ehPy1kFnc8vZg=;
+	s=arc-20240116; t=1755522489; c=relaxed/simple;
+	bh=bV5CIWjnumz8LJTiWznnuY6jA2lkRTuSTxxkE9fK2zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H//WDZ8GeZlNp6wU336jPQf+T2igZlh4xmkZyzXK2tSuKVlUyGuEV1ihYCshvWy6UuPmzpddqdgcggGp/QIXcH2ud03U36juYKs0eUB3T0CsA9gLil+lW+3Eb/yR8hUpflNFG8e/+MTyBHGJj5s143jYTNcoeZ/amGNxODZfiLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2r5d1aTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED77C4CEEB;
-	Mon, 18 Aug 2025 13:34:35 +0000 (UTC)
+	 MIME-Version; b=rSSIx8bQszmXswSVz0OkkChfrPv2N4stcEVlv6fWpW9yxtGEkXmZp+UUcci8TZdYiqmFZxpvZenZfyWUkMwa/+rRM1Unfqm1mgOPkVVmGiy3jLgQ0TXCEluZau9j/f73i7CgVtZavL9t38PResrFozN0Ncoor5tmpOt91eXkhkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rf8o5cUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAE8C4CEEB;
+	Mon, 18 Aug 2025 13:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524076;
-	bh=uggxG3vF7oNftXFMMYfAZUP2uyVDB2ehPy1kFnc8vZg=;
+	s=korg; t=1755522488;
+	bh=bV5CIWjnumz8LJTiWznnuY6jA2lkRTuSTxxkE9fK2zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2r5d1aTIUNilyce4FYXpCSRQVD+qhsVKoujqZdlEs8WZOQUA+tdKAZHXwioXbnKG6
-	 f/OQGp3tJAs5++HhN7x+5dHt7pqiHahlEwvgUB21FVyE7AxptqBWlh9K3nt0/xKm66
-	 l973oZP9XRFwETCpzNejBPsALkLqmWp+uQLrlIaQ=
+	b=rf8o5cURsYw66wIf4m1S7902xPH0wPNCs7HpvW4bSngCsHJsvLjkYQeedXoDdlHYr
+	 sAG/MSjYIJLcOv6pdNXUMlotvcmQFpRn/bQ8nWy/fwWSvwL/ADHcW6U6Vx2nBSSw2a
+	 1N5/X/2V7yZJ7hCfhVQiDjolWGHkbdPwH/E/6CuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	George Moussalem <george.moussalem@outlook.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 328/515] drm/amd/display: Only finalize atomic_obj if it was initialized
+Subject: [PATCH 6.12 288/444] clk: qcom: ipq5018: keep XO clock always on
 Date: Mon, 18 Aug 2025 14:45:14 +0200
-Message-ID: <20250818124511.060773383@linuxfoundation.org>
+Message-ID: <20250818124459.760395252@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: George Moussalem <george.moussalem@outlook.com>
 
-[ Upstream commit b174084b3fe15ad1acc69530e673c1535d2e4f85 ]
+[ Upstream commit 693a723291d0634eaea24cff2f9d807f3223f204 ]
 
-[Why]
-If amdgpu_dm failed to initalize before amdgpu_dm_initialize_drm_device()
-completed then freeing atomic_obj will lead to list corruption.
+The XO clock must not be disabled to avoid the kernel trying to disable
+the it. As such, keep the XO clock always on by flagging it as critical.
 
-[How]
-Check if atomic_obj state is initialized before trying to free.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250516-ipq5018-cmn-pll-v4-1-389a6b30e504@outlook.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq5018.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 9c01496ba590..75e7af5c5a3e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5309,7 +5309,8 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
- 
- static void amdgpu_dm_destroy_drm_device(struct amdgpu_display_manager *dm)
- {
--	drm_atomic_private_obj_fini(&dm->atomic_obj);
-+	if (dm->atomic_obj.state)
-+		drm_atomic_private_obj_fini(&dm->atomic_obj);
- }
- 
- /******************************************************************************
+diff --git a/drivers/clk/qcom/gcc-ipq5018.c b/drivers/clk/qcom/gcc-ipq5018.c
+index 70f5dcb96700..24eb4c40da63 100644
+--- a/drivers/clk/qcom/gcc-ipq5018.c
++++ b/drivers/clk/qcom/gcc-ipq5018.c
+@@ -1371,7 +1371,7 @@ static struct clk_branch gcc_xo_clk = {
+ 				&gcc_xo_clk_src.clkr.hw,
+ 			},
+ 			.num_parents = 1,
+-			.flags = CLK_SET_RATE_PARENT,
++			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
+ 			.ops = &clk_branch2_ops,
+ 		},
+ 	},
 -- 
 2.39.5
 
