@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB84DB2A6C6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2548B2A408
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84370627971
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04C4E627625
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A6C22AE7A;
-	Mon, 18 Aug 2025 13:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0230E31B107;
+	Mon, 18 Aug 2025 13:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ac0Y4Hmb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+0UaCFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12973219A7E;
-	Mon, 18 Aug 2025 13:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32AA27B33A;
+	Mon, 18 Aug 2025 13:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524116; cv=none; b=hlEuG8FE+1zM5Wt5CeHToTIt+nEY+IQr2qWlZfbFOuo4SbzjU1oYD9H5D7qa7naVrdKn3vZInWswuByZSC4tZ9ATWarpo/N9PgBYnui8jkXouucIVTc3OzsPAS3VXbFoTLdpDgtP3BrRsLRJRXTl+rNviUTQon47/VNfPMZSPvc=
+	t=1755522605; cv=none; b=lA/PG5DzRFXF3/fDLnLYaVtqNsean2cpUoO7dD3ZE3BjvlePzV8IPSmiM/rrUYhBXz8l0NOcO3utv1Q8NkpBbVJsZAQ9Y/BlP24qnz1I5Y1EFFmx38fIqHTdbvAmMwSNqM4DaG+njXv2HKYnRwl/F4KqpCUw3+9tUVZfpSlm018=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524116; c=relaxed/simple;
-	bh=Nq/nYQcXg8MuyzJpalYDsCBYT3FtbnGYl54j9m/z92s=;
+	s=arc-20240116; t=1755522605; c=relaxed/simple;
+	bh=w0nLIXYHF9W/qTkDEuzwIRE7ChgtavOvUZqZf7ozRNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oq762/8v0+CxDx7YEFsPjE6ixKUETZZy4XDrv7LbPU+ojado6dsvU3zlWndOlA29nIvAirvhtjR8oXR+AcIR0qja1pcATqBJYq7muwy3gAsfXjlbA4xkLx2u55zSEJCj6Mcsv+YtDnLciQ+p7WJBL+NAwYPOQykXNkGR63MKRis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ac0Y4Hmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87330C4CEEB;
-	Mon, 18 Aug 2025 13:35:15 +0000 (UTC)
+	 MIME-Version; b=XRwVhWLcthazIXgGI2HhprtZkUaI1xuoyVlhqfzrd3vhDa8vSYHNvDHHByNEL5Qsjf9XCd2FJxCH5SNiKQr6SrpReEF+MPoCGIg9IsCkKHG6osf21SDLRChJttWWbqrLCi5N0hws9QbiJe17OSPa2WBOzJifY/8BCa9Xdnf+Ekc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+0UaCFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23097C4CEEB;
+	Mon, 18 Aug 2025 13:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524115;
-	bh=Nq/nYQcXg8MuyzJpalYDsCBYT3FtbnGYl54j9m/z92s=;
+	s=korg; t=1755522605;
+	bh=w0nLIXYHF9W/qTkDEuzwIRE7ChgtavOvUZqZf7ozRNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ac0Y4Hmb93nd6YOLbSUCj1Db0olpdgqUA7+YWvSBdZ+6cKgMfLNFDKMyrU5yaks5K
-	 BVz0iGRmDj4w9ZncaWXlr3J5RmPeGUFyetp4QWSNTVj8npcTmJPcpKFjv/WdY6oOom
-	 eTdqOg6ADl+KMEFQ7N9MlV2wi06PFE5OgmC0n9pM=
+	b=f+0UaCFdVDgdgZ3WpI/qQZqUPs1IElV87UHoomGBtLVbSLVsCRTFnnR7+1LNo4V9Y
+	 ao5nPM1RYqfhQtMGli6uBGbqm2CK9p7PGWNK4X7KbKypWEiC6dYqXeCx9GIUqwezIf
+	 2LF8TSP1LAJ+AUtAynauTx/sgw2b52kMJdaLr0o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheick Traore <cheick.traore@foss.st.com>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Jorge Marques <jorge.marques@analog.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 373/515] pinctrl: stm32: Manage irq affinity settings
+Subject: [PATCH 6.12 333/444] i3c: master: Initialize ret in i3c_i2c_notifier_call()
 Date: Mon, 18 Aug 2025 14:45:59 +0200
-Message-ID: <20250818124512.775658534@linuxfoundation.org>
+Message-ID: <20250818124501.420966556@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheick Traore <cheick.traore@foss.st.com>
+From: Jorge Marques <jorge.marques@analog.com>
 
-[ Upstream commit 4c5cc2f65386e22166ce006efe515c667aa075e4 ]
+[ Upstream commit 290ce8b2d0745e45a3155268184523a8c75996f1 ]
 
-Trying to set the affinity of the interrupts associated to stm32
-pinctrl results in a write error.
+Set ret to -EINVAL if i3c_i2c_notifier_call() receives an invalid
+action, resolving uninitialized warning.
 
-Fill struct irq_chip::irq_set_affinity to use the default helper
-function.
-
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Link: https://lore.kernel.org/20250610143042.295376-3-antonio.borneo@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250622-i3c-master-ret-uninitialized-v1-1-aabb5625c932@analog.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i3c/master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index cc0b4d1d7cff..ba9dbb21b497 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -408,6 +408,7 @@ static struct irq_chip stm32_gpio_irq_chip = {
- 	.irq_set_wake	= irq_chip_set_wake_parent,
- 	.irq_request_resources = stm32_gpio_irq_request_resources,
- 	.irq_release_resources = stm32_gpio_irq_release_resources,
-+	.irq_set_affinity = IS_ENABLED(CONFIG_SMP) ? irq_chip_set_affinity_parent : NULL,
- };
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 9b7a34f9eca2..c8e5c9291ea4 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2471,6 +2471,8 @@ static int i3c_i2c_notifier_call(struct notifier_block *nb, unsigned long action
+ 	case BUS_NOTIFY_DEL_DEVICE:
+ 		ret = i3c_master_i2c_detach(adap, client);
+ 		break;
++	default:
++		ret = -EINVAL;
+ 	}
+ 	i3c_bus_maintenance_unlock(&master->bus);
  
- static int stm32_gpio_domain_translate(struct irq_domain *d,
 -- 
 2.39.5
 
