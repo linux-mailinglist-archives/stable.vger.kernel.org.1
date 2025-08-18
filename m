@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1020B2A540
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62D8B2A254
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54BEF1BA2BF1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41E3164DA2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828AF321F5F;
-	Mon, 18 Aug 2025 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A673218D7;
+	Mon, 18 Aug 2025 12:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCUEuEDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qs7DAnzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4056F321F58;
-	Mon, 18 Aug 2025 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C6929B0;
+	Mon, 18 Aug 2025 12:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523006; cv=none; b=E5d7fEO3PPryvH61xIJT7/QzM1M6vJYRdEXimfkE7gNrf/jQBc4W6kz+w8XBHFViXRrXCezwwblf2H8OSdVZQJEqX9mFDFq8b4v20Kvq7rt0j/qoqSIxJG1F60Ms7Q9lAlys3dP5DnmOtdR/0qWiApJykXjJ7bTLzffwu5107FE=
+	t=1755521396; cv=none; b=pFmNWVTDj6bZS3gwrVbIu4mZ+xeR1L+GDB2oyif9ouAOUmNbeSggsOVhZsMMDMfbFMn4sTThMV07oaT0Egao0tQJmJF/nbfDnCuNrcCP51Q5o5dsM0EPAqQcZ+FcVZ672oPS7QjP3I5tFcMd+83e31xnfRuL/eIlXbvXSV6kWZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523006; c=relaxed/simple;
-	bh=8P2yIMKdP8XionFQOJuE5YKVK+EsYKFNj2zmmA+QX44=;
+	s=arc-20240116; t=1755521396; c=relaxed/simple;
+	bh=fLtlrlUK+sLikI+OI1sYqwpYROMbFh2lsk/RqTlrlTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TjxQ5vvDeajI8NDctc8joC1FK1FodjTFuMksvGxe49q6YRupItGcGtED11oeCOlDvaSp1kITUaLR0nPqQ9fMP0sXZM9tASDpK6gZJbSapnE6T6OdmmzqU1/BSjsCzlvEwHD89/qv6YnQWHp3+4p2gYbKqzGAgIk0/wXUCnRbykw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCUEuEDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B697C4CEEB;
-	Mon, 18 Aug 2025 13:16:45 +0000 (UTC)
+	 MIME-Version; b=ibW3G5nG5QluC89h/reZXJHzU1aw7QDdnXjeK4sJ9DKFoPZKTnjWkmz8RhdH2R2/AR5kwTPkwC8FFamhfT48qCOeeE9uTEdRJbuaOel+EhjyhgvGi6pUorKduWKWFxEtdnwL+f8G4HC3b7LRF3f3uUce3Z/yvl5FPmwBXGf1Z6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qs7DAnzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39198C4CEEB;
+	Mon, 18 Aug 2025 12:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523006;
-	bh=8P2yIMKdP8XionFQOJuE5YKVK+EsYKFNj2zmmA+QX44=;
+	s=korg; t=1755521395;
+	bh=fLtlrlUK+sLikI+OI1sYqwpYROMbFh2lsk/RqTlrlTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCUEuEDRyE6eQmufBu2d+mxmkKfpGK1k/wDOY2xVDFOFTQs4DdBeUiIVArjGd+AnH
-	 oVoyl6QZpOm7Yhk0Y8949oVbCxJRUha8FN+PVTB6kHwkKg0QzpblbNvYvK8yerXBMg
-	 2uXzHFuikvTiHqRMtk6V8aRCFepFpHU7YQV5wyNc=
+	b=Qs7DAnzFJ0V4T8Ys9l7xFS2dhYJi0XwTpEe/9CrTM9abxl46lqFx3aNeYAEDTWiIu
+	 xubWs5XhCMO8AScuNoyxr6Y6m6/faQG9l4rXdsJyMnSaAe1EVxcahUk5bjzZqmWHIk
+	 xXHCEx2TV3VQGHY2CWxKEtTlU6f6mpgi+fpI6bZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.15 040/515] clk: samsung: exynos850: fix a comment
-Date: Mon, 18 Aug 2025 14:40:26 +0200
-Message-ID: <20250818124459.979271625@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 001/444] io_uring: dont use int for ABI
+Date: Mon, 18 Aug 2025 14:40:27 +0200
+Message-ID: <20250818124448.940529531@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 320e7efce30e2613c2c7877acc46a8e71192cdcd upstream.
+commit cf73d9970ea4f8cace5d8f02d2565a2723003112 upstream.
 
-The code below the updated comment is for CMU_CPUCL1, not CMU_CPUCL0.
+__kernel_rwf_t is defined as int, the actual size of which is
+implementation defined. It won't go well if some compiler / archs
+ever defines it as i64, so replace it with __u32, hoping that
+there is no one using i16 for it.
 
-Fixes: dedf87341ad6 ("clk: samsung: exynos850: Add CMU_CPUCL0 and CMU_CPUCL1")
 Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-3-49daf1ff4592@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 2b188cc1bb857 ("Add io_uring IO interface")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/47c666c4ee1df2018863af3a2028af18feef11ed.1751412511.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-exynos850.c |    2 +-
+ include/uapi/linux/io_uring.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/samsung/clk-exynos850.c
-+++ b/drivers/clk/samsung/clk-exynos850.c
-@@ -1360,7 +1360,7 @@ static const unsigned long cpucl1_clk_re
- 	CLK_CON_GAT_GATE_CLK_CPUCL1_CPU,
- };
- 
--/* List of parent clocks for Muxes in CMU_CPUCL0 */
-+/* List of parent clocks for Muxes in CMU_CPUCL1 */
- PNAME(mout_pll_cpucl1_p)		 = { "oscclk", "fout_cpucl1_pll" };
- PNAME(mout_cpucl1_switch_user_p)	 = { "oscclk", "dout_cpucl1_switch" };
- PNAME(mout_cpucl1_dbg_user_p)		 = { "oscclk", "dout_cpucl1_dbg" };
+--- a/include/uapi/linux/io_uring.h
++++ b/include/uapi/linux/io_uring.h
+@@ -50,7 +50,7 @@ struct io_uring_sqe {
+ 	};
+ 	__u32	len;		/* buffer size or number of iovecs */
+ 	union {
+-		__kernel_rwf_t	rw_flags;
++		__u32		rw_flags;
+ 		__u32		fsync_flags;
+ 		__u16		poll_events;	/* compatibility */
+ 		__u32		poll32_events;	/* word-reversed for BE */
 
 
 
