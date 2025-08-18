@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6AEFB2A9A4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91073B2A459
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A8F41BA5FA8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82EFF566AE2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B463F343D90;
-	Mon, 18 Aug 2025 14:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E92A31CA61;
+	Mon, 18 Aug 2025 13:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I50kvWKT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nxUClUV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CD2343D8C;
-	Mon, 18 Aug 2025 14:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B43D3218CA;
+	Mon, 18 Aug 2025 13:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525860; cv=none; b=cUCpxqJfUj7NvsvbvTo/DcljSvzvowLHZvDEna8SmKiV51BvSK5PXQiqtkkMCfaUVlnc8cLZEZoPziMOOdsj5SMixoKuHCqIwi2KqzI+Vbb1/+NA9vMvi3Z+rl/p3kZ2apCELzT6ERKth2+slvDi3RBNJM8VloMYXfNXzAf8/Kg=
+	t=1755522551; cv=none; b=h5zi8dW591fkhBKPEyLEMuwYRR7251Y35zIYgjsXFxxxvZOFrWTtALZMrs8b2rSyDdwoLwFw5B3+G125CVOeBUYYdNdFfOdV2rAaZ641zd4dzqMyPcT+jRbZ8Fj4Kv3PeukhYQZkkK5H1saVS8jKho2fkVnkwR7Ry1zvPn34LS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525860; c=relaxed/simple;
-	bh=WPy16ivYc0SwzR1WLaAOsaglN9RFYvuTLgyqUyukXqE=;
+	s=arc-20240116; t=1755522551; c=relaxed/simple;
+	bh=u/3ElNYB7qyEyDvS3YiXjeJc9d8gj6qmxuQ9zW6qeN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPctLW9CCHbTukdSYfkq5FZSsfPVw7p/YSS7HTo8aOexI1WIY6wgBhLIq33Ic0HALtEYrxEmIYwdnB1bGuGDPsu3VcIpYVqXMtnSdQpMD+n6mDW88l7uh0DFN2+L0XSIC+S/CYgInDOxUbSrCX8E4+Dvav9mlJMphN4OP8o9hDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I50kvWKT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8662BC4CEEB;
-	Mon, 18 Aug 2025 14:04:19 +0000 (UTC)
+	 MIME-Version; b=LxY+lMnZJXqovf0VUMv5AF0D6f4WZp+uY17DClYDWf/PAXuyDVL5pb+LUHAWCJJFVLltUkNWukX4cA/Aow0kV8KvPzUeP+cW8okrxtgNR0V5mQEWykNtNNGikE/ityHKZZBy8j9o1tc5vfE1wKD/dmQbUhJOOXmoVZPLL8AuBCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nxUClUV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA78C4CEEB;
+	Mon, 18 Aug 2025 13:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525860;
-	bh=WPy16ivYc0SwzR1WLaAOsaglN9RFYvuTLgyqUyukXqE=;
+	s=korg; t=1755522550;
+	bh=u/3ElNYB7qyEyDvS3YiXjeJc9d8gj6qmxuQ9zW6qeN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I50kvWKTedynayoJO+euNI5aSFvjKe/7/LFsu7LWZlulfoG+Lx5Fa3xcXD9fKwy/p
-	 QlVnpqyES/2WQRlra+O8uKw23h1rYGi4V1RkfyYdS0iCwwCfbcAWVUgVySh3MMGcX+
-	 njPdZT/v9Vkmp4Ige0YPMuUhkSuSXYXEkjHoSCOs=
+	b=2nxUClUV8T4DNnye/cEU+qheXbDhZ/d/2f5N/He30POpPgI3ImceAPKIh9bz3uJca
+	 hEHYctlcBnF4Dc+bcFheL+kf2tmXbL8ew7erfDgYfDM1W44t+AYSi7PyB4+S3rOG5P
+	 6upu0ADrUk28yKmJOQvmapQ8bGZkkmpyVlckDkEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Drew Fustini <drew@pdp7.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Breno Leitao <leitao@debian.org>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 388/570] clk: thead: Mark essential bus clocks as CLK_IGNORE_UNUSED
+Subject: [PATCH 6.12 349/444] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
 Date: Mon, 18 Aug 2025 14:46:15 +0200
-Message-ID: <20250818124520.791710106@linuxfoundation.org>
+Message-ID: <20250818124502.008876061@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Wilczynski <m.wilczynski@samsung.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 0370395d45ca6dd53bb931978f0e91ac8dd6f1c5 ]
+[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
 
-Probing peripherals in the AON and PERI domains, such as the PVT thermal
-sensor and the PWM controller, can lead to boot hangs or unresponsive
-devices on the LPi4A board. The root cause is that their parent bus
-clocks ('CLK_CPU2AON_X2H' and the 'CLK_PERISYS_APB' clocks) are
-automatically gated by the kernel's power-saving mechanisms when the bus
-is perceived as idle.
+During BMC firmware upgrades on live systems, the ipmi_msghandler
+generates excessive "BMC returned incorrect response" warnings
+while the BMC is temporarily offline. This can flood system logs
+in large deployments.
 
-Alternative solutions were investigated, including modeling the parent
-bus in the Device Tree with 'simple-pm-bus' or refactoring the clock
-driver's parentage. The 'simple-pm-bus' approach is not viable due to
-the lack of defined bus address ranges in the hardware manual and its
-creation of improper dependencies on the 'pm_runtime' API for consumer
-drivers.
+Replace dev_warn() with dev_warn_ratelimited() to throttle these
+warnings and prevent log spam during BMC maintenance operations.
 
-Therefore, applying the'`CLK_IGNORE_UNUSED' flag directly to the
-essential bus clocks is the most direct and targeted fix. This prevents
-the kernel from auto-gating these buses and ensures peripherals remain
-accessible.
-
-This change fixes the boot hang associated with the PVT sensor and
-resolves the functional issues with the PWM controller.
-
-Link: https://lore.kernel.org/all/9e8a12db-236d-474c-b110-b3be96edf057@samsung.com/ [1]
-
-Reviewed-by: Drew Fustini <drew@pdp7.com>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-Signed-off-by: Drew Fustini <drew@pdp7.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index 485b1d5cfd18..cf1bba58f641 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -792,11 +792,12 @@ static CCU_GATE(CLK_AON2CPU_A2X, aon2cpu_a2x_clk, "aon2cpu-a2x", axi4_cpusys2_ac
- 		0x134, BIT(8), 0);
- static CCU_GATE(CLK_X2X_CPUSYS, x2x_cpusys_clk, "x2x-cpusys", axi4_cpusys2_aclk_pd,
- 		0x134, BIT(7), 0);
--static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd, 0x138, BIT(8), 0);
-+static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd,
-+		0x138, BIT(8), CLK_IGNORE_UNUSED);
- static CCU_GATE(CLK_CPU2PERI_X2H, cpu2peri_x2h_clk, "cpu2peri-x2h", axi4_cpusys2_aclk_pd,
- 		0x140, BIT(9), CLK_IGNORE_UNUSED);
- static CCU_GATE(CLK_PERISYS_APB1_HCLK, perisys_apb1_hclk, "perisys-apb1-hclk", perisys_ahb_hclk_pd,
--		0x150, BIT(9), 0);
-+		0x150, BIT(9), CLK_IGNORE_UNUSED);
- static CCU_GATE(CLK_PERISYS_APB2_HCLK, perisys_apb2_hclk, "perisys-apb2-hclk", perisys_ahb_hclk_pd,
- 		0x150, BIT(10), CLK_IGNORE_UNUSED);
- static CCU_GATE(CLK_PERISYS_APB3_HCLK, perisys_apb3_hclk, "perisys-apb3-hclk", perisys_ahb_hclk_pd,
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 6a4a8ecd0edd..09405668ebb3 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -4617,10 +4617,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
+ 		 * The NetFN and Command in the response is not even
+ 		 * marginally correct.
+ 		 */
+-		dev_warn(intf->si_dev,
+-			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
+-			 (msg->data[0] >> 2) | 1, msg->data[1],
+-			 msg->rsp[0] >> 2, msg->rsp[1]);
++		dev_warn_ratelimited(intf->si_dev,
++				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
++				     (msg->data[0] >> 2) | 1, msg->data[1],
++				     msg->rsp[0] >> 2, msg->rsp[1]);
+ 
+ 		goto return_unspecified;
+ 	}
 -- 
 2.39.5
 
