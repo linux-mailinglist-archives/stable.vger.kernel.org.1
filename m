@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B08B2A6F5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A14B2A987
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74205581388
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97B24B635EF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7554F2877DC;
-	Mon, 18 Aug 2025 13:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96425334707;
+	Mon, 18 Aug 2025 14:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To09DOpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoQjpAKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321D121FF5D;
-	Mon, 18 Aug 2025 13:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C22232A3FA;
+	Mon, 18 Aug 2025 14:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524351; cv=none; b=P54SKTxQe1Ctx6QbRNjZ0KfYL9nCBqDKTS28SBeYPOAoOHJW4Y71yHBvsKT6z2pgX05VhxvYNqNuZbVSG2wSz+m2rToa+qAWWXvim0QrxRWEIl4fiAyluLYCSLd6TDM3Cpm50FS/DL+UDgEUtYCJpDwFa/owYG7PruyvgxRGSuY=
+	t=1755526203; cv=none; b=p+nCKf7HLbMke9e4yp2r4Aigvwbltkusfi02ZqQbp8lBq+//cwEuo6hqatDezXYCkdHCGPc8qO+XpURGa22Ca5k2uBmiePQKZJ5hPhzzwTZuPh8+U7OB+w7YKaT7ufSMxMRGE9avRPTOVx1xsSNYbcxovqrlHAwYWuaSGwYwddg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524351; c=relaxed/simple;
-	bh=A3b/u5sxWkWu+xDjqWwIyzM7F3U7oPAsf6B+zBaBwhI=;
+	s=arc-20240116; t=1755526203; c=relaxed/simple;
+	bh=d2mEA5NF33oHA1pHwyjvjljCuHTcP5SgISkbVMZk5oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KM9h9y9kFL11eImv0j20eIaKfr9siTHrjaUL5KGJhCU6QQuB8rHevrpfQfWN/9RcnSaFJOqdAWRa9y9IuUpBMKblAnL8WSgAjPdVKkrsqzYL4gHZrvPlCNbAbCzgaazp6+z/AauOuzmTDbZexaLo4qlZ7TOh//lyvdul1Jm2oXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To09DOpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974BBC4CEEB;
-	Mon, 18 Aug 2025 13:39:10 +0000 (UTC)
+	 MIME-Version; b=YZZBb9tHHbknz4A5i1UsFdSXxdFEdpS7FWvQq/KCyqpUSMwjLBDUDtNITFO3erZL+ja17poK3fOTxsEaB1Ynf5jzyFg7llkwTViZHLto+zoqpYUIMIzmFvuxJ/jFLq4FHxBapqRL2OFYFaOgtyBn6Ep9IVBY7qKIuZSiYG3tkCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoQjpAKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF7CC4CEEB;
+	Mon, 18 Aug 2025 14:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524351;
-	bh=A3b/u5sxWkWu+xDjqWwIyzM7F3U7oPAsf6B+zBaBwhI=;
+	s=korg; t=1755526203;
+	bh=d2mEA5NF33oHA1pHwyjvjljCuHTcP5SgISkbVMZk5oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=To09DOpl9kXxOd/SkIn32Sb6bI506PFOiLFmOZyLWbOrjLc+MVaJXBZO1RT8gl+gX
-	 N5Bm+xFKZYEODlLiSg68l98mPGfzNue/XKyE4wC507UbtJmY5pqxj1yMMbbV5nk7lt
-	 22VvYcM+XrGuAos0M+V8JWh9HFFWBv3cHEVauTAk=
+	b=CoQjpAKV4dZxiSuxc3hJJ+9h67XvyDFAHjpUCeAtppKCQJVG4qa5aK37awsPyNYkF
+	 yCyJgHsXJUZHCddF7plX97Ma3naH1foGoy/Bz95HN4f27k0XOlpHJcecOG6Yl0MTYL
+	 /J3ykclQA4ojcr6mIsU0DajbCOsrGEdMsLsIFPhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.15 446/515] clk: qcom: dispcc-sm8750: Fix setting rate byte and pixel clocks
+	Alex Williamson <alex.williamson@redhat.com>,
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 445/570] vfio/mlx5: fix possible overflow in tracking max message size
 Date: Mon, 18 Aug 2025 14:47:12 +0200
-Message-ID: <20250818124515.594693940@linuxfoundation.org>
+Message-ID: <20250818124522.959642309@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-commit 0acf9e65a47d1e489c8b24c45a64436e30bcccf4 upstream.
+[ Upstream commit b3060198483bac43ec113c62ae3837076f61f5de ]
 
-On SM8750 the setting rate of pixel and byte clocks, while the parent
-DSI PHY PLL, fails with:
+MLX cap pg_track_log_max_msg_size consists of 5 bits, value of which is
+used as power of 2 for max_msg_size. This can lead to multiplication
+overflow between max_msg_size (u32) and integer constant, and afterwards
+incorrect value is being written to rq_size.
 
-  disp_cc_mdss_byte0_clk_src: rcg didn't update its configuration.
+Fix this issue by extending integer constant to u64 type.
 
-DSI PHY PLL has to be unprepared and its "PLL Power Down" bits in
-CMN_CTRL_0 asserted.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Mark these clocks with CLK_OPS_PARENT_ENABLE to ensure the parent is
-enabled during rate changes.
-
-Cc: stable@vger.kernel.org
-Fixes: f1080d8dab0f ("clk: qcom: dispcc-sm8750: Add SM8750 Display clock controller")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250520090741.45820-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
+Link: https://lore.kernel.org/r/20250701144017.2410-2-a.sadovnikov@ispras.ru
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8750.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/vfio/pci/mlx5/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8750.c b/drivers/clk/qcom/dispcc-sm8750.c
-index 877b40d50e6f..ca09da111a50 100644
---- a/drivers/clk/qcom/dispcc-sm8750.c
-+++ b/drivers/clk/qcom/dispcc-sm8750.c
-@@ -393,7 +393,7 @@ static struct clk_rcg2 disp_cc_mdss_byte0_clk_src = {
- 		.name = "disp_cc_mdss_byte0_clk_src",
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_byte2_ops,
- 	},
- };
-@@ -408,7 +408,7 @@ static struct clk_rcg2 disp_cc_mdss_byte1_clk_src = {
- 		.name = "disp_cc_mdss_byte1_clk_src",
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_byte2_ops,
- 	},
- };
-@@ -712,7 +712,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
- 		.name = "disp_cc_mdss_pclk0_clk_src",
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
-@@ -727,7 +727,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
- 		.name = "disp_cc_mdss_pclk1_clk_src",
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
-@@ -742,7 +742,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk2_clk_src = {
- 		.name = "disp_cc_mdss_pclk2_clk_src",
- 		.parent_data = disp_cc_parent_data_1,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 5b919a0b2524..a92b095b90f6 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1523,8 +1523,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
+ 	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
+ 	max_msg_size = (1ULL << log_max_msg_size);
+ 	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
+-	if (rq_size < 4 * max_msg_size)
+-		rq_size = 4 * max_msg_size;
++	if (rq_size < 4ULL * max_msg_size)
++		rq_size = 4ULL * max_msg_size;
+ 
+ 	memset(tracker, 0, sizeof(*tracker));
+ 	tracker->uar = mlx5_get_uars_page(mdev);
 -- 
-2.50.1
+2.39.5
 
 
 
