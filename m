@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69ACCB2A5F5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14929B2A63D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 312E0172A7D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77E0681258
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1080431E0F8;
-	Mon, 18 Aug 2025 13:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7983B32A3F6;
+	Mon, 18 Aug 2025 13:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gj5P6du8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmDIbJDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EE431E115;
-	Mon, 18 Aug 2025 13:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3674332A3D2;
+	Mon, 18 Aug 2025 13:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523512; cv=none; b=H2QsfOei+LKC87i2V+y+/uGDVKRAUE3WsfaYWA8r+cWUm0G78T8ror0O4qX93m1s2T+tbPamCg2q1X9YFDmi/+PqvLLuUzUXdGclzc8jK5/8TNyorTfFRSyZj0XZ1cogxBPPqRBZXTxkNkGdvNnvpdv6GUNXc13Ds2oyYq17GtE=
+	t=1755523548; cv=none; b=JnWJdpzTE2P0gtJnLY8FwWUuf4eYHG04j9h+cs0DvnZpV/gxQcqoSyIdGZOx2xmndKLcGtlnGH5zz8k2s13IEb7k2Gu5ociVRvDLpQEHF7+RhjupXb0LjNswxUNpSp3+0DIu2YUMaDFpRG+k51dycWN21HLVbHH9gDvVN92jwDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523512; c=relaxed/simple;
-	bh=3jPPzQQ8tKcnJStMw3L8T6sq/D6Ds2Vpv8oHHWp15kE=;
+	s=arc-20240116; t=1755523548; c=relaxed/simple;
+	bh=Q5yZKlhjlEsBgTHwnsYmG3UDS8krdExq4ES16ds3CqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lwLlfErXIxyFQIRt2KkDPSRjMuleW+NOMaWEnbybnMzD8k4rR6S81lgw+a618OYp0iHVINeJ/LQT9IQNUSaNtGEWq0g1bPJqQj5qL3xIdd9dUGOUsQd45OH4/khMQ42vIbEj2QJyzlK4NuFzEUaBLXqVxKoRk/RB2+ylM3/rXgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gj5P6du8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B688CC4CEF1;
-	Mon, 18 Aug 2025 13:25:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QSE4x+fG28ufF/Iyzg8C9vecDnDxYwxn71R1w0yOlD5ppexdRLArB3aDerxi6Z5/2zBOjDXkBGBZ2h+ZmNg1hB1kgZNOOb8bk0c+r2cdQTEJQri3dA+y9j+paQUjxnuKR+XlGa0BdowumqvoRk3wMl1Aez/E4hdtZaVeOJwlNNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmDIbJDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204A8C4CEEB;
+	Mon, 18 Aug 2025 13:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523512;
-	bh=3jPPzQQ8tKcnJStMw3L8T6sq/D6Ds2Vpv8oHHWp15kE=;
+	s=korg; t=1755523547;
+	bh=Q5yZKlhjlEsBgTHwnsYmG3UDS8krdExq4ES16ds3CqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gj5P6du8qfnNzVH1ZjzXbs5PxsG/YnQvtuJb1oSueC0DSKNq5CwR8dk/EUP0NkC2D
-	 hSzDjqSvdza3g8kE++KSG1wKmi1VUYZseIebZsiUc1fOprtWLjZPPtc6dOPkbKS/pF
-	 POEjr22yZ3u+8ogEUDuT4UCv9isi/lcs69o3II3s=
+	b=JmDIbJDiHWMKH1rDVIQMHoS05U1fVczTM/NX0w+wHQiZT+8sxphBwpj5yH0Xo18Qf
+	 xrJ8qUljlFTfTI85+sbuChOiy7eibUUOWaPioNP5k43gdhdTcgIVAMv0KuXEEjR/ts
+	 TaN2jyzKoktaVeYoURpevGBlU/qDMb5fv7sKtrDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Xinxin Wan <xinxin.wan@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 186/515] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
-Date: Mon, 18 Aug 2025 14:42:52 +0200
-Message-ID: <20250818124505.534540802@linuxfoundation.org>
+Subject: [PATCH 6.15 187/515] ASoC: codecs: rt5640: Retry DEVICE_ID verification
+Date: Mon, 18 Aug 2025 14:42:53 +0200
+Message-ID: <20250818124505.569776257@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -69,65 +69,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Xinxin Wan <xinxin.wan@intel.com>
 
-[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
+[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
 
-The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
-~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
-ensure reliable synchronization timing even for the worst-case scenario.
+To be more resilient to codec-detection failures when the hardware
+powers on slowly, add retry mechanism to the device verification check.
+Similar pattern is found throughout a number of Realtek codecs. Our
+tests show that 60ms delay is sufficient to address readiness issues on
+rt5640 chip.
 
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ sound/soc/codecs/rt5640.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 5e0be36af0c5..32063f54f364 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -202,6 +202,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
- 	return spi_write(st->spi, st->data.d8, 2);
- }
+diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
+index 21a18012b4c0..55881a5669e2 100644
+--- a/sound/soc/codecs/rt5640.c
++++ b/sound/soc/codecs/rt5640.c
+@@ -3013,6 +3013,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
+ 	}
  
-+static int ad7768_send_sync_pulse(struct ad7768_state *st)
-+{
-+	/*
-+	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
-+	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
-+	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
-+	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
-+	 *
-+	 * Add a delay to ensure the pulse width is always sufficient to
-+	 * trigger synchronization.
-+	 */
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
-+	fsleep(3);
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
+ 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
++	if (val != RT5640_DEVICE_ID) {
++		usleep_range(60000, 100000);
++		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
++	}
 +
-+	return 0;
-+}
-+
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
-@@ -289,10 +307,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 		return ret;
- 
- 	/* A sync-in pulse is required every time the filter dec rate changes */
--	gpiod_set_value(st->gpio_sync_in, 1);
--	gpiod_set_value(st->gpio_sync_in, 0);
--
--	return 0;
-+	return ad7768_send_sync_pulse(st);
- }
- 
- static int ad7768_set_freq(struct ad7768_state *st,
+ 	if (val != RT5640_DEVICE_ID) {
+ 		dev_err(&i2c->dev,
+ 			"Device with ID register %#x is not rt5640/39\n", val);
 -- 
 2.39.5
 
