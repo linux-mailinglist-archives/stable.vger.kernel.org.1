@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E265DB29E42
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADF6B29E43
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 813E81893F9C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:45:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1905A1899A3C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D3D30F52A;
-	Mon, 18 Aug 2025 09:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5225514AD0D;
+	Mon, 18 Aug 2025 09:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0znPNIs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC8nZZcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46E7286D50
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09089302CB9
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755510293; cv=none; b=rsjybM4shQIeeO9fyTpHezxS+EA3CkcM/fBbmz4Tz2E/ugA8ZGPOTRulnisfqqA7qW74ZY5h1zklt75SnCMiRVM3DFzTeoeF1v+TLPbB76GRdyc9ufdfiiVO1Pv4U2afxPAlHn7UehOJ9s6alR+qHAxhh2NJx1NYYE+fn9dPZss=
+	t=1755510304; cv=none; b=TmXoK/C72RPxj4gr1IiL3CJfyoUoBwktFvRVE0GcHFZjU/OGT+ESEdG8qGxrFQBEVkVuvdNcEnfgcn1x/OlTF0v3CpWyMavfisZphouBiwsl5E6XRwzzb75slF2ThaRPfxt3ScyDodBvfQT4xhvpkevQ4CCnkDlk/8O6kayFz78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755510293; c=relaxed/simple;
-	bh=7LOrK+EVMJiMiQCmdouqbhIh/QYEI+YqmWtKv+sDfC8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jpPkmqiTEQJvODNM8sZq1YpWB9yA715XrGn6c8UoFcP1lt6rjV5zvIV5F+kFiry3hp6naVDL16/0d57XeF4hGt7hI5PdGF8qwRgiwaPqREhj+8SGxXnZ7C9sfG8BTKSbhsJbwjJu6xCAExirVud1fiyRkcpcHzg8BB+wsthDVjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0znPNIs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0408EC4CEEB;
-	Mon, 18 Aug 2025 09:44:52 +0000 (UTC)
+	s=arc-20240116; t=1755510304; c=relaxed/simple;
+	bh=Zqq30a5axZZoVfjPE9rlUtdDzBAUdmBk3yS47H9R8lA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QHdrxZlEvqqxZ1yxJmCR2cYf2NpFS1o5zX3+B4L/q1+nI6K+fMi+RZtpp3P7FiGuSpBcKnIHMCZ5+W268Xn2pGjIvX1O1G0VAfq2pmrvE6/258RZF5lLLtU6QoNlENBjNkZA9ciYfuU6TWygh0lX9S1CvNL/fq2RuHwp5rYlhFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC8nZZcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233D1C4CEEB;
+	Mon, 18 Aug 2025 09:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755510293;
-	bh=7LOrK+EVMJiMiQCmdouqbhIh/QYEI+YqmWtKv+sDfC8=;
+	s=korg; t=1755510303;
+	bh=Zqq30a5axZZoVfjPE9rlUtdDzBAUdmBk3yS47H9R8lA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=C0znPNIsyF+ic2fuIt1q6AMS/C0975UjheBGyb43UTEPrKSk0tCiOLPMKn+TksuKa
-	 xCkobDVKyKQ5n1/PC5xM8otLZhBEDE0W/x0zHaQV9w56cR8h8ZeV00m8f3VBKxFAkh
-	 10VuOqBcsEbfRrTMeG5djFH0jt31yR4djyPlvRVA=
-Subject: FAILED: patch "[PATCH] x86/sev: Ensure SVSM reserved fields in a page validation" failed to apply to 6.15-stable tree
+	b=EC8nZZcEggY9/T9X4BIIGeO71MrQ7Wz9E8szTnAxoSF7shx3novIqiCBa4Z3WL9G8
+	 tSaI+/ayFySc23+ti3QRZFApZZe40EuS6e+I1n2nPXWMhnUhJLkl5G0gKHg0pQEHDZ
+	 vsQuSpUjWzLfhAQlbH4FVyb9IaE6pZhsmCODaVM4=
+Subject: FAILED: patch "[PATCH] x86/sev: Ensure SVSM reserved fields in a page validation" failed to apply to 6.12-stable tree
 To: thomas.lendacky@amd.com,bp@alien8.de,joerg.roedel@amd.com,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 11:44:50 +0200
-Message-ID: <2025081850-culture-uncheck-1048@gregkh>
+Date: Mon, 18 Aug 2025 11:44:52 +0200
+Message-ID: <2025081852-debtless-penniless-395d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3ee9cebd0a5e7ea47eb35cec95eaa1a866af982d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081850-culture-uncheck-1048@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081852-debtless-penniless-395d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
