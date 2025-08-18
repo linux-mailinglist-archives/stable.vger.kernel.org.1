@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75FA0B2A687
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DC4B2A39C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98C131BA0972
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D97CC1894F71
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10861335BBA;
-	Mon, 18 Aug 2025 13:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4023831CA60;
+	Mon, 18 Aug 2025 13:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA/woddT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0VNn7aN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E32335BA1;
-	Mon, 18 Aug 2025 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CA428C849;
+	Mon, 18 Aug 2025 13:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523983; cv=none; b=cVcU6ftqiCUPfN73XvO8CsKeAEraRdgYYxN0yy9lqc36VqxncYOh2/cqRiBuLm9oJrclxE/VBA26fbF8XC1q6GMu10q1asgH5b/9x+J/I8OToY6GM1ef7OcnWmMyi+Oc70dGL8vKk+HbgDffXX6yxt+kre+KJ6zVoFdtSmGYhgE=
+	t=1755522342; cv=none; b=tN+COhN/gRHBwTX7McE2qHZBoUKflCmQLeL0J4cMRCLgr/FBw8yiGO8yiHi2nbM5spXJI11QOx9vNt+7Vwp+IIjEgPyYyH+DJgSnYHmqIHdERlce8nJszR0D1DeqWCw5WvBA4r62pBsHyqNAcH5taVYeGKoczEyhZOu5B2nCZqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523983; c=relaxed/simple;
-	bh=mcsXzbOONBqTKwv/5+UAmj0RJF3fDHFhR1bAxT3NuzM=;
+	s=arc-20240116; t=1755522342; c=relaxed/simple;
+	bh=TgS5Po55zlQWLIteRZwK7/aM3/Zn/JJz020PCFDA1i4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JA135OUUFZKRmg4YrK3pt4Bfb2XE8jYwryQuSnpGWqbxdJE/1sZ0H33yiZvvORESUB8iB3oUvNHbfACWji3z0DkGTH6Z9QB08XM8NnNz5Mgjt3nDhE21mfvdypufgN6fnEPDxZ6lLD8nQEnWsYQvd8CDCIq5HE99gccjsqin1G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA/woddT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7DBC4CEEB;
-	Mon, 18 Aug 2025 13:33:02 +0000 (UTC)
+	 MIME-Version; b=SOmGQxpqTFLQ4OHuMZCDi4id6be14lJSUgwZMzG+Ho+iUCs1JSWEL4FWdNI8tGlmherI5LfrCrqZN93oryBpk73IRJgaB4k5O6jsIZbPcvHcfrDohiXIDhIfaBSPDBbeCnO8a5lVJxPa91dZOxuwy7/Or5ENtJLlRRA199EJduk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0VNn7aN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246FBC4CEEB;
+	Mon, 18 Aug 2025 13:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523983;
-	bh=mcsXzbOONBqTKwv/5+UAmj0RJF3fDHFhR1bAxT3NuzM=;
+	s=korg; t=1755522341;
+	bh=TgS5Po55zlQWLIteRZwK7/aM3/Zn/JJz020PCFDA1i4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iA/woddT2uU+pyl8Z4g96S9VdxgBbZXDXwELZQ5vDS4x5vDMTLxwEOOaetY71m4JE
-	 IhyQNBmz4ZmjniRJzLNWXDEjqhpsGCvSvnbwyuna6DfACS4J2lE2NFrClKf8ROATHw
-	 FS7qZZqJPsh0n0nkArmF/Uqn6qmBnVa8H5dWxy5s=
+	b=S0VNn7aNHMgdgxOp7XGyCZR9ZhsbBcXUze/SgyzNR9BdOakYdtfH0Kvj6rNHPCG4h
+	 jGlzgNc7N3sA51LfVqffYrldO+zlBOZ7ZC9oGvw+80Vp3e66VmGKw83jNR5Qv618b2
+	 osp5ys0lu0qiLCalFczy+E7Rcsx2owlvKWqa/6kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 325/515] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
-Date: Mon, 18 Aug 2025 14:45:11 +0200
-Message-ID: <20250818124510.947873236@linuxfoundation.org>
+Subject: [PATCH 6.12 286/444] watchdog: dw_wdt: Fix default timeout
+Date: Mon, 18 Aug 2025 14:45:12 +0200
+Message-ID: <20250818124459.686923765@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
+[ Upstream commit ac3dbb91e0167d017f44701dd51c1efe30d0c256 ]
 
-BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
+The Synopsys Watchdog driver sets the default timeout to 30 seconds,
+but on some devices this is not a valid timeout. E.g. on RK3588 the
+actual timeout being used is 44 seconds instead.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Once the watchdog is started the value is updated accordingly, but
+it would be better to expose a sensible timeout to userspace without
+the need to first start the watchdog.
+
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250717-dw-wdt-fix-initial-timeout-v1-1-86dc864d48dd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/watchdog/dw_wdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index bb0a5fd6a372..d15d912690c4 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -366,14 +366,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
- 		mgmt |= B53_MII_DUMB_FWDG_EN;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
--	}
+diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
+index 84dca3695f86..e5e6d7f15918 100644
+--- a/drivers/watchdog/dw_wdt.c
++++ b/drivers/watchdog/dw_wdt.c
+@@ -644,6 +644,8 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
+ 	} else {
+ 		wdd->timeout = DW_WDT_DEFAULT_SECONDS;
+ 		watchdog_init_timeout(wdd, 0, dev);
++		/* Limit timeout value to hardware constraints. */
++		dw_wdt_set_timeout(wdd, wdd->timeout);
+ 	}
  
--	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
--	 * frames should be flooded or not.
--	 */
--	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
--	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
-+		 * frames should be flooded or not.
-+		 */
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+	} else {
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_IP_MCAST_25;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+	}
- }
- 
- static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 25d25bd1071f..f2caf8fe5699 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -110,6 +110,7 @@
- 
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
-+#define  B53_IP_MCAST_25		BIT(0)
- #define  B53_IPMC_FWD_EN		BIT(1)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
+ 	platform_set_drvdata(pdev, dw_wdt);
 -- 
 2.39.5
 
