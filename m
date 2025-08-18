@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC438B2A9F6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:26:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3BBB2A647
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F156E7372
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76BB97B1EDA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885F6343D8B;
-	Mon, 18 Aug 2025 14:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD5D321F3B;
+	Mon, 18 Aug 2025 13:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DK3xbkgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cNvt7Vg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E7C31E0FE;
-	Mon, 18 Aug 2025 14:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175AF2882DC;
+	Mon, 18 Aug 2025 13:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525852; cv=none; b=JyAf569WZnv5PGJj4QQ+b02zzqJ872YLs/Qf7wvYHHfu+rLcHNY0VWobjz/c7M/JDVrbQ/VnCB0sWgHI97rgEED4u/sRpoFh+vLFCSug3tvMlLMZPniTaFHTZfLwEwM0co+K6W6atEOq+gAUC5L3RgooFhO5JBzBzMsahj9cHUY=
+	t=1755524166; cv=none; b=HK1uAvElKfL/CpJJfF2uwoy5M6MyK0f9scF1i+slb8LoV8d0c4neZnh1RwG1hIMCldvEpyIEFoH/rv/GRV3pjny+UaFFVm/0nH9mdjGvqSDhawvbixPd3vGMlYupYweZuDZ0mS2XpV9RGZQuwPlul37ThLyQ53cidTzEk7HnFsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525852; c=relaxed/simple;
-	bh=xXTmZA1mwAAT72wGJenz4MbHh2aBaUw0jklN2jDWSGs=;
+	s=arc-20240116; t=1755524166; c=relaxed/simple;
+	bh=O0MlNt/hO9cX41fGURkVHrJfrIn59EOzsj6inaUNNRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naE6cScqil/AYHKVjMn/BYnqI89gT1N1DHNRcthnaxbaYEwBW4Y9sBtY2bisQ1ycjvjZcmglXmWLgpxdtTL2Hch6u5A1jL0x5vjBDIOCpbOh2w03XSKULNUsmhlTo+ujrUEJxzlidPZIyrcGWcFqjf1JpxyI8TG3zJVV+OimAC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DK3xbkgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49B2C4CEEB;
-	Mon, 18 Aug 2025 14:04:11 +0000 (UTC)
+	 MIME-Version; b=FInBlWyXhaemkMM/abhM4PPruttW8CgDHRDSdv5kXacNMXzUU30KQ/LYHxwdDmncSV1PHjo4QOA5p3bRi77M7UNd8LB+2/sevxHj1JwPM5eidcNEDOxzt3/CtKyL10UYWRssJgDWJHmnGWHP/3CgiBQ3WJ9s/WHzKDGu/pLlQhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cNvt7Vg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84151C4CEEB;
+	Mon, 18 Aug 2025 13:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525852;
-	bh=xXTmZA1mwAAT72wGJenz4MbHh2aBaUw0jklN2jDWSGs=;
+	s=korg; t=1755524165;
+	bh=O0MlNt/hO9cX41fGURkVHrJfrIn59EOzsj6inaUNNRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DK3xbkgxdWGLiU/ZXBOelrir9CTduQa392ZjTqb0x4v/fwh61GTtHhwAz6m+7TrZV
-	 sIwoInua7RC+vavZW1KxpFhZreF5LOQoivPKEousw7vTiD//n/qdw7fj/lYL0jJ5gO
-	 JHJdDrQ/jnwGSd1BHybDk/B3eeB9PYSMkz1y5yXs=
+	b=0cNvt7Vgx6h3wwxXlE/dTb5Kqflgu2R22XRTh8hZWVwk01uEd4bey/+fKb63KXW/q
+	 9X63TP88xm7YB43cYXFKEs1FP1jTMuwkiz/7NiCAy/bwxsT8meDv4qppGV1wo/hhwz
+	 8toA3OGPFU2OaxuqOBJH+y6TFS6jbfvYPYXsXiwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 386/570] MIPS: lantiq: falcon: sysctrl: fix request memory check logic
+Subject: [PATCH 6.15 387/515] soundwire: amd: serialize amd manager resume sequence during pm_prepare
 Date: Mon, 18 Aug 2025 14:46:13 +0200
-Message-ID: <20250818124520.715943434@linuxfoundation.org>
+Message-ID: <20250818124513.312040601@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 9c9a7ff9882fc6ba7d2f4050697e8bb80383e8dc ]
+[ Upstream commit 03837341790039d6f1cbf7a1ae7dfa2cb77ef0a4 ]
 
-request_mem_region() will return NULL instead of error code
-when the memory request fails. Therefore, we should check if
-the return value is non-zero instead of less than zero. In
-this way, this patch also fixes the build warnings:
+During pm_prepare callback, pm_request_resume() delays SoundWire manager D0
+entry sequence. Synchronize runtime resume sequence for amd_manager
+instance prior to invoking child devices resume sequence for both the amd
+power modes(ClockStop Mode and Power off mode).
+Change the power_mode_mask check and use pm_runtime_resume() in
+amd_pm_prepare() callback.
 
-arch/mips/lantiq/falcon/sysctrl.c:214:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  214 |                                 res_status.name) < 0) ||
-      |                                                  ^
-arch/mips/lantiq/falcon/sysctrl.c:216:47: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  216 |                                 res_ebu.name) < 0) ||
-      |                                               ^
-arch/mips/lantiq/falcon/sysctrl.c:219:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  219 |                                 res_sys[0].name) < 0) ||
-      |                                                  ^
-arch/mips/lantiq/falcon/sysctrl.c:222:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  222 |                                 res_sys[1].name) < 0) ||
-      |                                                  ^
-arch/mips/lantiq/falcon/sysctrl.c:225:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  225 |                                 res_sys[2].name) < 0))
-      |
-
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250530054447.1645807-3-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/lantiq/falcon/sysctrl.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/soundwire/amd_manager.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
-index 1187729d8cbb..357543996ee6 100644
---- a/arch/mips/lantiq/falcon/sysctrl.c
-+++ b/arch/mips/lantiq/falcon/sysctrl.c
-@@ -214,19 +214,16 @@ void __init ltq_soc_init(void)
- 	of_node_put(np_syseth);
- 	of_node_put(np_sysgpe);
- 
--	if ((request_mem_region(res_status.start, resource_size(&res_status),
--				res_status.name) < 0) ||
--		(request_mem_region(res_ebu.start, resource_size(&res_ebu),
--				res_ebu.name) < 0) ||
--		(request_mem_region(res_sys[0].start,
--				resource_size(&res_sys[0]),
--				res_sys[0].name) < 0) ||
--		(request_mem_region(res_sys[1].start,
--				resource_size(&res_sys[1]),
--				res_sys[1].name) < 0) ||
--		(request_mem_region(res_sys[2].start,
--				resource_size(&res_sys[2]),
--				res_sys[2].name) < 0))
-+	if ((!request_mem_region(res_status.start, resource_size(&res_status),
-+				 res_status.name)) ||
-+	    (!request_mem_region(res_ebu.start, resource_size(&res_ebu),
-+				 res_ebu.name)) ||
-+	    (!request_mem_region(res_sys[0].start, resource_size(&res_sys[0]),
-+				 res_sys[0].name)) ||
-+	    (!request_mem_region(res_sys[1].start, resource_size(&res_sys[1]),
-+				 res_sys[1].name)) ||
-+	    (!request_mem_region(res_sys[2].start, resource_size(&res_sys[2]),
-+				 res_sys[2].name)))
- 		pr_err("Failed to request core resources");
- 
- 	status_membase = ioremap(res_status.start,
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 7a671a786197..3b335d6eaa94 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1178,10 +1178,10 @@ static int __maybe_unused amd_pm_prepare(struct device *dev)
+ 	 * device is not in runtime suspend state, observed that device alerts are missing
+ 	 * without pm_prepare on AMD platforms in clockstop mode0.
+ 	 */
+-	if (amd_manager->power_mode_mask & AMD_SDW_CLK_STOP_MODE) {
+-		ret = pm_request_resume(dev);
++	if (amd_manager->power_mode_mask) {
++		ret = pm_runtime_resume(dev);
+ 		if (ret < 0) {
+-			dev_err(bus->dev, "pm_request_resume failed: %d\n", ret);
++			dev_err(bus->dev, "pm_runtime_resume failed: %d\n", ret);
+ 			return 0;
+ 		}
+ 	}
 -- 
 2.39.5
 
