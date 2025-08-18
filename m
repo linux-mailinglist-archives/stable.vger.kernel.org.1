@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BE5B2A7FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26BDB2A30A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD1455A1211
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B451B17693C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC79335BCD;
-	Mon, 18 Aug 2025 13:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DD731B102;
+	Mon, 18 Aug 2025 12:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEQdBa0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uk2jmUQO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33D8335BA3;
-	Mon, 18 Aug 2025 13:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EBF27B355;
+	Mon, 18 Aug 2025 12:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525065; cv=none; b=oPFiQVistshDhIpiUFBafZ9pn0WLaMKwV5qALpVq9obXluawW1CLQHuOMsWp3s0IBPoyui9zlH6LdE+QG/TanE2M4gEkDSxIKoZ06z087aEJt6k40J5aBG9o6LkXsxIRhXGUTvXGfS537ls/tHmrzZ2JAKIuX52fHZlWrl9Td8I=
+	t=1755521748; cv=none; b=iHkZmvSQbXx7+oOSGMZvYsrb/Qg5yjhf3dM15HT5cmrAmfB7crRYGZg3+Enu3FlWj95Hz51365upKjFHHpnantAsUp3VP6vZwH2vxHRAbh7WRxKKiEa91GnLSjsvmUcqf4Xh4n8GpRU+t4lDjPn5yfK+dy4AG8DSocy1iTAJINs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525065; c=relaxed/simple;
-	bh=oun18WkY52jzwSxZF0e3kD30pcvt4cZ6s9NTTyJnITU=;
+	s=arc-20240116; t=1755521748; c=relaxed/simple;
+	bh=1XSmO+/e3Z7Iw+aBDKI30Q3uagmr9SytoQBPcWJjz10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nG8/qaTcx42LC4Gq0deyvPu/yaSzvdqITSwRIG0lvzA2CepaxTUCZk0eX2vQKQQHeTzOPjtra7OP5XhtQ24d6Zun7WzKdUwqDrnblwhXSZks3lZsIcx/jTXtilrYmPV3BT/5yNTenqdmwvltOJSLc9WdRPhP9hsygAA0DBPE+Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEQdBa0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AC1C4CEEB;
-	Mon, 18 Aug 2025 13:51:04 +0000 (UTC)
+	 MIME-Version; b=r96LkzIzauE++Slp5O++IISR0BDI13KM5ZlJZfa3MkdxFbnbpns6X/4r2dgoeLJoNrJf66IoFHf6T9yrgYK7j/XRv4TN7XjN4XKWrcBVQdrc84oH/4ugf2+i5U88GE72EnErXvmfQ6NOBcmDTEKvVXdwYLFion5wZou1tIn6Rqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uk2jmUQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E77CC4CEEB;
+	Mon, 18 Aug 2025 12:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525064;
-	bh=oun18WkY52jzwSxZF0e3kD30pcvt4cZ6s9NTTyJnITU=;
+	s=korg; t=1755521747;
+	bh=1XSmO+/e3Z7Iw+aBDKI30Q3uagmr9SytoQBPcWJjz10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEQdBa0t7DwGgsEJ+vk5uRd9MaeTg0D9swRY5g06vRg1x/1yIYfz/nuV0PFRyAa2v
-	 B3T6a+mr4MmNuWVEwJDOpxRHrcrHRxYtuLW2GPUHJ5XsFCmmqeqWAlERSyMa/Mc8Pb
-	 pd7D0FBnYOiT/xGvqZNy/L7H3rOEOYKIZurPZTyw=
+	b=uk2jmUQOZSdiAWNtvPrVL0cC4Yj7mGkUu8ebzOeHUfjzMJqd19lcBQKKLf5KgVGuF
+	 roORo6HGWjmTNM89eYq3NBjSNUj2WNYyiyI85wKlcXlFsk5zV7SF9D4LaV+qBVirh7
+	 VxBIX4R8B3y9/NaqLbood2gYzZy04NDXc27qUwcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kochetkov <al.kochet@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 148/570] ARM: rockchip: fix kernel hang during smp initialization
+Subject: [PATCH 6.12 109/444] gpio: wcd934x: check the return value of regmap_update_bits()
 Date: Mon, 18 Aug 2025 14:42:15 +0200
-Message-ID: <20250818124511.519821512@linuxfoundation.org>
+Message-ID: <20250818124453.024796176@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Kochetkov <al.kochet@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
+[ Upstream commit ff0f0d7c6587e38c308be9905e36f86e98fb9c1f ]
 
-In order to bring up secondary CPUs main CPU write trampoline
-code to SRAM. The trampoline code is written while secondary
-CPUs are powered on (at least that true for RK3188 CPU).
-Sometimes that leads to kernel hang. Probably because secondary
-CPU execute trampoline code while kernel doesn't expect.
+regmap_update_bits() can fail so check its return value in
+wcd_gpio_direction_output() for consistency with the rest of the code
+and propagate any errors.
 
-The patch moves SRAM initialization step to the point where all
-secondary CPUs are powered down.
-
-That fixes rarely hangs on RK3188:
-[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.091996] rockchip_smp_prepare_cpus: ncores 4
-
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
-Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250709-gpiochip-set-rv-gpio-remaining-v1-2-b8950f69618d@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio-wcd934x.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
-index 36915a073c23..f432d22bfed8 100644
---- a/arch/arm/mach-rockchip/platsmp.c
-+++ b/arch/arm/mach-rockchip/platsmp.c
-@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 	}
+diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
+index 2bba27b13947..cfa7b0a50c8e 100644
+--- a/drivers/gpio/gpio-wcd934x.c
++++ b/drivers/gpio/gpio-wcd934x.c
+@@ -46,9 +46,12 @@ static int wcd_gpio_direction_output(struct gpio_chip *chip, unsigned int pin,
+ 				     int val)
+ {
+ 	struct wcd_gpio_data *data = gpiochip_get_data(chip);
++	int ret;
  
- 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
--		if (rockchip_smp_prepare_sram(node)) {
--			of_node_put(node);
--			return;
--		}
--
- 		/* enable the SCU power domain */
- 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
+-	regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
+-			   WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
++	ret = regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
++				 WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
++	if (ret)
++		return ret;
  
-@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
- 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
- 	}
--	of_node_put(node);
- 
- 	/* Make sure that all cores except the first are really off */
- 	for (i = 1; i < ncores; i++)
- 		pmu_set_power_domain(0 + i, false);
-+
-+	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
-+		if (rockchip_smp_prepare_sram(node)) {
-+			of_node_put(node);
-+			return;
-+		}
-+	}
-+
-+	of_node_put(node);
- }
- 
- static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
+ 	return regmap_update_bits(data->map, WCD_REG_VAL_CTL_OFFSET,
+ 				  WCD_PIN_MASK(pin),
 -- 
 2.39.5
 
