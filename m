@@ -1,122 +1,149 @@
-Return-Path: <stable+bounces-170061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9A4B2A222
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:51:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB18B2A4EC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46EE91B24FCA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:41:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1BCD3B1177
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BCB221ABAA;
-	Mon, 18 Aug 2025 12:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57D8340D97;
+	Mon, 18 Aug 2025 13:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="wIFuNi5W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVh+FNiA"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99E23218D5;
-	Mon, 18 Aug 2025 12:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AE340D91;
+	Mon, 18 Aug 2025 13:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755520834; cv=none; b=Nfiu78ZlcnVh1L5dUeOMRfEZpe6iLxcTzUDfSlkMVOwP4vRVzIl9eb1NLP9ULCesRV/Q6qQmtpoeBciydw923MmWG3kxJ2YUiFnEsF9vAm9BlLB2hkQPnb/dY7IdmPOjaw2jUTwlhQwO1Mwhvi2XD8joeO1GXe6Gi5vMrxwhWAk=
+	t=1755522950; cv=none; b=q4afFIelg6DFyz5xPAu5r5CC3+84s2OCrBkYEpuUfIkKKxQ6ziRe9JgZddULrgOUqrR1JC7WgJvjU8vGScsnqQAXs/de7SV26J5sEAXy0df+esnOzpRPdcTTytqwvxf8KwOCWy1b+F1bJuBRF+m8hxQ49iaAB3QHHnCIBexI++U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755520834; c=relaxed/simple;
-	bh=nN45isTJxzIZjkB1+OZX6kGfR+BlhzKzlg/3pRIMJII=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rElSPRDWHj3YVrRCiWogIs/Baud7E5st3equx0L29EZzsdlTOYev4UFofTRUx7sGuTeYNPLtWMNxXI/q30qYqgU4bBLFEEvm6K0OTVRHLQg+ufgWhSDBKl8G7IuqDltLzl1FXZhfBpOpWu7t5yHkV10ZOSJEHx7TYyfLagYywJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wIFuNi5W; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.0.172] (mob-5-90-51-68.net.vodafone.it [5.90.51.68])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 22CBE1249;
-	Mon, 18 Aug 2025 14:39:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755520773;
-	bh=nN45isTJxzIZjkB1+OZX6kGfR+BlhzKzlg/3pRIMJII=;
-	h=From:Subject:Date:To:Cc:From;
-	b=wIFuNi5WyyIRrzIgZS/5608epmrF476Ai1FUFkMplS4yI4/xPvIJ3+87yKrJqnGMW
-	 jkFurnn61YXEuAycTn2cb8XYggzLGGqJHx3ryxDylnd1UdfR6KogDIH9aKx60BOsAC
-	 jPizyHcMtzTuQNfQ+VHIuGIegDPCSCQ5JEwKFa20=
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Subject: [PATCH 0/2] media: pci: Fix invalid access to file *
-Date: Mon, 18 Aug 2025 14:40:10 +0200
-Message-Id: <20250818-cx18-v4l2-fh-v1-0-6fe153760bce@ideasonboard.com>
+	s=arc-20240116; t=1755522950; c=relaxed/simple;
+	bh=R0Xpn0QfpqFrf2hH+R/gwPfX+61fKpq9fZJDYPoUw6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iBsyLq9cR3WMECnrs4ALZV5ueBILrjc04hlaPSyEPB4zIRNI10Jw9GUvYKfOjKIoMMgFJx9cjgK7BcWtQGjE0YDpWrgSsCOQge1GjMWx33xR57QsGVs3qVDElIiDv/BMjzgOxgs2S4FQ6OXNtFmSn6AOcBlp1U8rQFGBkA1wKa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVh+FNiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3040C4CEF1;
+	Mon, 18 Aug 2025 13:15:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755522950;
+	bh=R0Xpn0QfpqFrf2hH+R/gwPfX+61fKpq9fZJDYPoUw6s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uVh+FNiAcyTHgiapXu+8HHx0xjzspSRHIV5rb6+NSTUb51WanV8wNney2FnwFyFn1
+	 nIgsVaoyL9+ECfBBXQHknq01xhvmxFSKTbrSK425+9I500Fz5lCbcA4W/3NSNlTmc0
+	 rskcN+04kaRI+gB1fBmJSBI+Z8gm//pTScIV8KR0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 025/515] net: ti: icss-iep: fix device and OF node leaks at probe
+Date: Mon, 18 Aug 2025 14:40:11 +0200
+Message-ID: <20250818124459.432075167@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACofo2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDC0ML3eQKIFFmkmOkm5aha56amGhmaGmZlpKSqgTUUlCUmpZZATYuOra
- 2FgDJPez5XgAAAA==
-X-Change-ID: 20250818-cx18-v4l2-fh-7eaa6199fdde
-To: Andy Walls <awalls@md.metrocast.net>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1310;
- i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
- bh=nN45isTJxzIZjkB1+OZX6kGfR+BlhzKzlg/3pRIMJII=;
- b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBoox88GS45UOSxNu+V7EOzbuNiW12eL3m4KANfe
- V1QE3qS7Q+JAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaKMfPAAKCRByNAaPFqFW
- PLd6D/9685yz1B00Cmnfa3Gq632TvoUCPp6hfrF+3d5hSkf947KfsqYOEZAxm3cVE672XzObxT+
- uSeHHZXamqBOFUwgv/xB6TtrRH2s4HvXCZ1wCsusGD2mnz0QHJxbscYQ4ZyIaQfaAxDuioS2GmH
- 48TOD5UA2qrt39RXrotN1AanZHATkXx40r9NMErE8cSp/AxISi3ZEjmPjQv6DEuDuduSqbif/uC
- NkbvVnZYwIPd6b+NutakcdRAZv87n9cK+Yg5lAbhMATeTJZQb0nqPDqaWWQ/YRsGBqpQ6IO8oi2
- e0+xZPDsL4npulToD+Xmda2Shynvbmie/HPVab9eZPJ9GDxRRfiN9Pe0lmDZNwyh+5KY5H99UUX
- Nj3Gz4q13rB/uLSkB9I5DB9fAOHcW6c6sttJrVMcpUnk5cbz/GsyKDD4OWsjZqrAvZ3j54hGBQP
- 4x94PZTupSBTmWdva/XNP4lbuwXBDs8YFmDJuxy9QPLnMX9OS2vHKrEXyQQNGcgi+V7XPBNDU9H
- 5kC5jZKqzeaglFeLV3/CxMKKR9CuyjFTvoakCKzkRC5qOM5wQCI+9c1/diuDHoFIe8H/Rzkhe3R
- CMaU/QxATbLqNtG1hsu+MbHiclKb4V+vIajtU8FhsCt3fqFcqE3zZ14R4NKKTV5WPdj1/dduzu4
- NWcBoWygCpNjkPw==
-X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
- fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+Content-Transfer-Encoding: 8bit
 
-Since commits
-7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
-9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
-All the ioctl handlers access their private data structures
-from file *
+------------------
 
-The ivtv and cx18 drivers call the ioctl handlers from their
-DVB layer without a valid file *, causing invalid memory access.
+From: Johan Hovold <johan@kernel.org>
 
-The issue has been reported by smatch in
-"[bug report] media: cx18: Access v4l2_fh from file"
+commit e05c54974a05ab19658433545d6ced88d9075cf0 upstream.
 
-Fix this by providing wrappers for the ioctl handlers to be
-used by the DVB layer that do not require a valid file *.
+Make sure to drop the references to the IEP OF node and device taken by
+of_parse_phandle() and of_find_device_by_node() when looking up IEP
+devices during probe.
 
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Drop the bogus additional reference taken on successful lookup so that
+the device is released correctly by icss_iep_put().
+
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Cc: stable@vger.kernel.org	# 6.6
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-6-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Jacopo Mondi (2):
-      media: cx18: Fix invalid access to file *
-      media: ivtv: Fix invalid access to file *
+ drivers/net/ethernet/ti/icssg/icss_iep.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
- drivers/media/pci/cx18/cx18-driver.c |  6 +++---
- drivers/media/pci/cx18/cx18-ioctl.c  | 26 ++++++++++++++++++++------
- drivers/media/pci/cx18/cx18-ioctl.h  |  8 +++++---
- drivers/media/pci/ivtv/ivtv-driver.c |  4 ++--
- drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
- drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
- 6 files changed, 51 insertions(+), 21 deletions(-)
----
-base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
-change-id: 20250818-cx18-v4l2-fh-7eaa6199fdde
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -685,11 +685,17 @@ struct icss_iep *icss_iep_get_idx(struct
+ 	struct platform_device *pdev;
+ 	struct device_node *iep_np;
+ 	struct icss_iep *iep;
++	int ret;
+ 
+ 	iep_np = of_parse_phandle(np, "ti,iep", idx);
+-	if (!iep_np || !of_device_is_available(iep_np))
++	if (!iep_np)
+ 		return ERR_PTR(-ENODEV);
+ 
++	if (!of_device_is_available(iep_np)) {
++		of_node_put(iep_np);
++		return ERR_PTR(-ENODEV);
++	}
++
+ 	pdev = of_find_device_by_node(iep_np);
+ 	of_node_put(iep_np);
+ 
+@@ -698,21 +704,28 @@ struct icss_iep *icss_iep_get_idx(struct
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	iep = platform_get_drvdata(pdev);
+-	if (!iep)
+-		return ERR_PTR(-EPROBE_DEFER);
++	if (!iep) {
++		ret = -EPROBE_DEFER;
++		goto err_put_pdev;
++	}
+ 
+ 	device_lock(iep->dev);
+ 	if (iep->client_np) {
+ 		device_unlock(iep->dev);
+ 		dev_err(iep->dev, "IEP is already acquired by %s",
+ 			iep->client_np->name);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 	iep->client_np = np;
+ 	device_unlock(iep->dev);
+-	get_device(iep->dev);
+ 
+ 	return iep;
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(icss_iep_get_idx);
+ 
 
-Best regards,
--- 
-Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
 
