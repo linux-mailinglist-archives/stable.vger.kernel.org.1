@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAA1B2A565
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6E8B2A26C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80EBB7BF8CA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5CD46228FA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53AE31E0EB;
-	Mon, 18 Aug 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5624F31CA48;
+	Mon, 18 Aug 2025 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nn6CgO4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0d4PPFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600D6335BDD;
-	Mon, 18 Aug 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BB5318144;
+	Mon, 18 Aug 2025 12:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523273; cv=none; b=XwDecyHOwAxWx0SAQFH/OEU+LnLiqkeHU/59eYhsIzU2lLYnhGbbWxuIo5aPa2fkEtpFz1XPI/4xqnSZYsURoIGH7BI6Rm3rl03FCT1BYS0fjUqu/kKuN5vGruB9tQfj8OZ+SEuzRJrTigIGU7jojUX0T2mgFYkEd132fdlwMSQ=
+	t=1755521646; cv=none; b=Qg9SjtkztH5nlHLPKXD9JA7pORaddj9mA5Aj7y2asLfyrW51uqzSpOWG3G+NoiQUZPU+vOniXIwHoBNLo+gLKBBZt0HrXV+cqoHS8RcFvvxKW+tKo2GpQIHm4fRMgWIz4bSOEIvI+4OaFZUN79P5CrlXWGUMdpZBDOg/sctIPk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523273; c=relaxed/simple;
-	bh=GogLS+T6ZYHLJhVwSgMuqKrX4/Q34AWMGI/W9SHTsnQ=;
+	s=arc-20240116; t=1755521646; c=relaxed/simple;
+	bh=sdbl+67EDfHewcH2ATPGj/7qX6TcnPgy/tELp9KgWRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t780/YOeiiEV/nKs2aq8H9UJLkgFmH/2z960CXIixd2f9roIgTtobOtpZA7um4gy7ttISbrGxu/HKsOeFBEPN8RRRlljI5ejgVzXzw2K+o9OrVzuyhB8RrGzqeXgf3UgIVMRoLqTrObduQwOEuSenK/Au80lyz+irdg23uyXZB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nn6CgO4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E0DC4CEEB;
-	Mon, 18 Aug 2025 13:21:12 +0000 (UTC)
+	 MIME-Version; b=S38II9pZUxQJKsZkLO8DMmuWqpsKZAIkPGSM579AO8F4HMg0n6F0jPuVhrFMFGPP+Jmki6IttwyVlSu+bAZmcs9gO5voo31kLA8PgtB09ELHMH5COV5L4YVGeZZ06sYHBY1kXh5he9QaDV/JxTaDedNJlkJINUcHbi8Ngr2BqHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0d4PPFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32334C4CEEB;
+	Mon, 18 Aug 2025 12:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523273;
-	bh=GogLS+T6ZYHLJhVwSgMuqKrX4/Q34AWMGI/W9SHTsnQ=;
+	s=korg; t=1755521644;
+	bh=sdbl+67EDfHewcH2ATPGj/7qX6TcnPgy/tELp9KgWRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nn6CgO4g74UQEw/vs5jCARtHvlk6t2+wbmWaPfIyV71wN2bCO3pNMOktvVw6ghMnF
-	 F4rY8L886MDgv/f16KdLHKFNhtkVN/+rSC/91fY0iGAqryPizj6hdf1CAwq6vNvp2X
-	 iVVF9ou5TTCxoD+vXmweBXmkmOuoeNrpzYfYZRPQ=
+	b=r0d4PPFdIc0Z9a7nnQWRftUT5g4efuPaDsSyAXPqNhhRT5ZVnwo462d9MbCuOBH8n
+	 z2avZ1I0+6LyIrch34HImcAbepUh1Act3H1YanTr+N0QwbHOAIFjAoS35sdOGEW0jH
+	 KHsuWW9hzGzz5Vroes59ULG4YvVdr8ogeM5p08bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 088/515] nvme-pci: try function level reset on init failure
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 048/444] KVM: VMX: Extract checking of guests DEBUGCTL into helper
 Date: Mon, 18 Aug 2025 14:41:14 +0200
-Message-ID: <20250818124501.762548538@linuxfoundation.org>
+Message-ID: <20250818124450.734361946@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 5b2c214a95942f7997d1916a4c44017becbc3cac ]
+[ Upstream commit 8a4351ac302cd8c19729ba2636acfd0467c22ae8 ]
 
-NVMe devices from multiple vendors appear to get stuck in a reset state
-that we can't get out of with an NVMe level Controller Reset. The kernel
-would report these with messages that look like:
+Move VMX's logic to check DEBUGCTL values into a standalone helper so that
+the code can be used by nested VM-Enter to apply the same logic to the
+value being loaded from vmcs12.
 
-  Device not ready; aborting reset, CSTS=0x1
+KVM needs to explicitly check vmcs12->guest_ia32_debugctl on nested
+VM-Enter, as hardware may support features that KVM does not, i.e. relying
+on hardware to detect invalid guest state will result in false negatives.
+Unfortunately, that means applying KVM's funky suppression of BTF and LBR
+to vmcs12 so as not to break existing guests.
 
-These have historically required a power cycle to make them usable
-again, but in many cases, a PCIe FLR is sufficient to restart operation
-without a power cycle. Try it if the initial controller reset fails
-during any nvme reset attempt.
+No functional change intended.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610232010.162191-6-seanjc@google.com
+Stable-dep-of: 7d0cce6cbe71 ("KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 776c867fb64d..5396282015a2 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1888,8 +1888,28 @@ static int nvme_pci_configure_admin_queue(struct nvme_dev *dev)
- 	 * might be pointing at!
- 	 */
- 	result = nvme_disable_ctrl(&dev->ctrl, false);
--	if (result < 0)
--		return result;
-+	if (result < 0) {
-+		struct pci_dev *pdev = to_pci_dev(dev->dev);
-+
-+		/*
-+		 * The NVMe Controller Reset method did not get an expected
-+		 * CSTS.RDY transition, so something with the device appears to
-+		 * be stuck. Use the lower level and bigger hammer PCIe
-+		 * Function Level Reset to attempt restoring the device to its
-+		 * initial state, and try again.
-+		 */
-+		result = pcie_reset_flr(pdev, false);
-+		if (result < 0)
-+			return result;
-+
-+		pci_restore_state(pdev);
-+		result = nvme_disable_ctrl(&dev->ctrl, false);
-+		if (result < 0)
-+			return result;
-+
-+		dev_info(dev->ctrl.device,
-+			"controller reset completed after pcie flr\n");
-+	}
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 529a10bba056..ff61093e9af7 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2192,6 +2192,19 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
+ 	return debugctl;
+ }
  
- 	result = nvme_alloc_queue(dev, 0, NVME_AQ_DEPTH);
- 	if (result)
++static bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data,
++				  bool host_initiated)
++{
++	u64 invalid;
++
++	invalid = data & ~vmx_get_supported_debugctl(vcpu, host_initiated);
++	if (invalid & (DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR)) {
++		kvm_pr_unimpl_wrmsr(vcpu, MSR_IA32_DEBUGCTLMSR, data);
++		invalid &= ~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR);
++	}
++	return !invalid;
++}
++
+ /*
+  * Writes msr value into the appropriate "register".
+  * Returns 0 on success, non-0 otherwise.
+@@ -2260,19 +2273,12 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		}
+ 		vmcs_writel(GUEST_SYSENTER_ESP, data);
+ 		break;
+-	case MSR_IA32_DEBUGCTLMSR: {
+-		u64 invalid;
+-
+-		invalid = data & ~vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
+-		if (invalid & (DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR)) {
+-			kvm_pr_unimpl_wrmsr(vcpu, msr_index, data);
+-			data &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
+-			invalid &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
+-		}
+-
+-		if (invalid)
++	case MSR_IA32_DEBUGCTLMSR:
++		if (!vmx_is_valid_debugctl(vcpu, data, msr_info->host_initiated))
+ 			return 1;
+ 
++		data &= vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
++
+ 		if (is_guest_mode(vcpu) && get_vmcs12(vcpu)->vm_exit_controls &
+ 						VM_EXIT_SAVE_DEBUG_CONTROLS)
+ 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
+@@ -2282,7 +2288,6 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		    (data & DEBUGCTLMSR_LBR))
+ 			intel_pmu_create_guest_lbr_event(vcpu);
+ 		return 0;
+-	}
+ 	case MSR_IA32_BNDCFGS:
+ 		if (!kvm_mpx_supported() ||
+ 		    (!msr_info->host_initiated &&
 -- 
-2.39.5
+2.50.1
 
 
 
