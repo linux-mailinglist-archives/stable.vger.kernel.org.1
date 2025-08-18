@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-170754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854C4B2A559
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BE1B2A88B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 705FC4E35BC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E5747ACE6A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54676335BDF;
-	Mon, 18 Aug 2025 13:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCB346A14;
+	Mon, 18 Aug 2025 13:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePBttVoR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UT3rAmqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1253D335BD5;
-	Mon, 18 Aug 2025 13:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D98A346A10;
+	Mon, 18 Aug 2025 13:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523666; cv=none; b=Fu4eyTpVGyExzwxgxkIOyw3xAOafTC3HFwa8RZYy3a6D8nF+ElmWa1p5nhmjvDUxpfM3nMOgIHqk6aCABUXbgYKcy7x+wINVTHKutFNXNaEfos467nVo84KZ85jmQtCQyXplVvGJLyMdI8lodLp3jEcy7/5qkjD0MuYkpgAbyoU=
+	t=1755525469; cv=none; b=J71RzoYiErvSXPepA3m5bDNgp7BUuHF2P4hjXWurRlKHvcpccBpBfwt07LUAzqTFMQqjOLFpdW4h23fRzXWPipqitHfAzp8+FDZR8e3dJn9b+ypbaWIVWXScMlUQ3L4ro+vMEjPPQQhSNkU7z9ppAzYm5Wp4AbYilFwfwV12oxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523666; c=relaxed/simple;
-	bh=6V36/dDB7p3DtZTgN6FKaBaQeDQSKykWbXARyMcYAmk=;
+	s=arc-20240116; t=1755525469; c=relaxed/simple;
+	bh=TeG7PFwNcuvBpKF2KOUQ4mEk/yvWJCpaMrwu39PTcUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFxBHa839z5rO+fDu43QMZRtD+YmVlVyT0GcwHrWGjWHwGsdlP/soo2MopYmiEz2qFn6ghsbJjfTnoOyrNDLHvNkI45LKyDg5A9ZHzOTkpmgHN8U0H9bnm4ax4j+Uml4I+mLSZvt4pHkKUMnnyAStHjonvz1zNF7nqwbfIog+/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePBttVoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B2DC4CEEB;
-	Mon, 18 Aug 2025 13:27:45 +0000 (UTC)
+	 MIME-Version; b=UVocgkNJyJV9t3KkrMk/VSaElqVi7pHT3TsYwGlrkhiLYeU9nwp3hmX9GbtqcI47OuCAiGGyMew/4M8M6Y1f7j/S/oNrQmP7Uyps6aN4MFdAMBCnemDpcL2pVkb9XMxnknW35KxAq5SDOVwZsTsaLrNJwAwyf3ihDMDEoY3EYu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UT3rAmqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AF5C4CEEB;
+	Mon, 18 Aug 2025 13:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523665;
-	bh=6V36/dDB7p3DtZTgN6FKaBaQeDQSKykWbXARyMcYAmk=;
+	s=korg; t=1755525469;
+	bh=TeG7PFwNcuvBpKF2KOUQ4mEk/yvWJCpaMrwu39PTcUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePBttVoR1eI0K7BTvMdpaLq9Oz/dDpEkeTnSRMEDLfABc+kKMdgX7K1cTbNB2oD+s
-	 FfreWA/cg88pjDa0RSAIu9OTLZr6h5OyxUQsrtb8l2TuBPXpmRr9tzzov6i77TxtGp
-	 Zf+HttFW2rzXJ0Cjo81FYu6sFqw9OKZxZ8l5FE6w=
+	b=UT3rAmqmsE5u3WgMQvWY5q6SeqQ42gZR8YlIrFvpCtd4Yis7CATACls0a4NycQgTo
+	 6QGc1prO99Mn8Mli49WXn434meXsTWuZLIJK6ufemttD00pafMOGm0FDxngSEnJQDC
+	 bwvUOmE1HS+5vsgyfXhvEej0lQgGqfHv38IZc42E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ogness <john.ogness@linutronix.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Nam Cao <namcao@linutronix.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 241/515] rv: Add #undef TRACE_INCLUDE_FILE
-Date: Mon, 18 Aug 2025 14:43:47 +0200
-Message-ID: <20250818124507.664509924@linuxfoundation.org>
+Subject: [PATCH 6.16 241/570] wifi: mac80211: handle WLAN_HT_ACTION_NOTIFY_CHANWIDTH async
+Date: Mon, 18 Aug 2025 14:43:48 +0200
+Message-ID: <20250818124515.103707882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +62,216 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 2d088762631b212eb0809e112642843844ef64eb ]
+[ Upstream commit 93370f2d37f50757a810da409efc0223c342527e ]
 
-Without "#undef TRACE_INCLUDE_FILE", there could be a build error due to
-TRACE_INCLUDE_FILE being redefined. Therefore add it.
+If this action frame, with the value of IEEE80211_HT_CHANWIDTH_ANY,
+arrives right after a beacon that changed the operational bandwidth from
+20 MHz to 40 MHz, then updating the rate control bandwidth to 40 can
+race with updating the chanctx width (that happens in the beacon
+proccesing) back to 40 MHz:
 
-Also fix a typo while at it.
+cpu0					cpu1
 
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/f805e074581e927bb176c742c981fa7675b6ebe5.1752088709.git.namcao@linutronix.de
-Reviewed-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+ieee80211_rx_mgmt_beacon
+ieee80211_config_bw
+ieee80211_link_change_chanreq
+(*)ieee80211_link_update_chanreq
+					ieee80211_rx_h_action
+					(**)ieee80211_sta_cur_vht_bw
+(***) ieee80211_recalc_chanctx_chantype
+
+in (**), the maximum between the capability width and the bss width is
+returned. But the bss width was just updated to 40 in (*),
+so the action frame handling code will increase the width of the rate
+control before the chanctx was increased (in ***), leading to a FW error
+(at least in iwlwifi driver. But this is wrong regardless).
+
+Fix this by simply handling the action frame async, so it won't race
+with the beacon proccessing.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218632
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233537.bb9dc6f36c35.I39782d6077424e075974c3bee4277761494a1527@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/rv/rv_trace.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/ht.c          | 40 +++++++++++++++++++++++++++++++++++++-
+ net/mac80211/ieee80211_i.h |  6 ++++++
+ net/mac80211/iface.c       | 29 +++++++++++++++++++++++++++
+ net/mac80211/rx.c          | 35 ++++++---------------------------
+ 4 files changed, 80 insertions(+), 30 deletions(-)
 
-diff --git a/kernel/trace/rv/rv_trace.h b/kernel/trace/rv/rv_trace.h
-index 422b75f58891..99c3801616d4 100644
---- a/kernel/trace/rv/rv_trace.h
-+++ b/kernel/trace/rv/rv_trace.h
-@@ -129,8 +129,9 @@ DECLARE_EVENT_CLASS(error_da_monitor_id,
- #endif /* CONFIG_DA_MON_EVENTS_ID */
- #endif /* _TRACE_RV_H */
+diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
+index 32390d8a9d75..1c82a28b03de 100644
+--- a/net/mac80211/ht.c
++++ b/net/mac80211/ht.c
+@@ -9,7 +9,7 @@
+  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+  * Copyright 2007-2010, Intel Corporation
+  * Copyright 2017	Intel Deutschland GmbH
+- * Copyright(c) 2020-2024 Intel Corporation
++ * Copyright(c) 2020-2025 Intel Corporation
+  */
  
--/* This part ust be outside protection */
-+/* This part must be outside protection */
- #undef TRACE_INCLUDE_PATH
- #define TRACE_INCLUDE_PATH .
-+#undef TRACE_INCLUDE_FILE
- #define TRACE_INCLUDE_FILE rv_trace
- #include <trace/define_trace.h>
+ #include <linux/ieee80211.h>
+@@ -603,3 +603,41 @@ void ieee80211_request_smps(struct ieee80211_vif *vif, unsigned int link_id,
+ }
+ /* this might change ... don't want non-open drivers using it */
+ EXPORT_SYMBOL_GPL(ieee80211_request_smps);
++
++void ieee80211_ht_handle_chanwidth_notif(struct ieee80211_local *local,
++					 struct ieee80211_sub_if_data *sdata,
++					 struct sta_info *sta,
++					 struct link_sta_info *link_sta,
++					 u8 chanwidth, enum nl80211_band band)
++{
++	enum ieee80211_sta_rx_bandwidth max_bw, new_bw;
++	struct ieee80211_supported_band *sband;
++	struct sta_opmode_info sta_opmode = {};
++
++	lockdep_assert_wiphy(local->hw.wiphy);
++
++	if (chanwidth == IEEE80211_HT_CHANWIDTH_20MHZ)
++		max_bw = IEEE80211_STA_RX_BW_20;
++	else
++		max_bw = ieee80211_sta_cap_rx_bw(link_sta);
++
++	/* set cur_max_bandwidth and recalc sta bw */
++	link_sta->cur_max_bandwidth = max_bw;
++	new_bw = ieee80211_sta_cur_vht_bw(link_sta);
++
++	if (link_sta->pub->bandwidth == new_bw)
++		return;
++
++	link_sta->pub->bandwidth = new_bw;
++	sband = local->hw.wiphy->bands[band];
++	sta_opmode.bw =
++		ieee80211_sta_rx_bw_to_chan_width(link_sta);
++	sta_opmode.changed = STA_OPMODE_MAX_BW_CHANGED;
++
++	rate_control_rate_update(local, sband, link_sta,
++				 IEEE80211_RC_BW_CHANGED);
++	cfg80211_sta_opmode_change_notify(sdata->dev,
++					  sta->addr,
++					  &sta_opmode,
++					  GFP_KERNEL);
++}
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index f71d9eeb8abc..61439e6efdb7 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2220,6 +2220,12 @@ u8 ieee80211_mcs_to_chains(const struct ieee80211_mcs_info *mcs);
+ enum nl80211_smps_mode
+ ieee80211_smps_mode_to_smps_mode(enum ieee80211_smps_mode smps);
+ 
++void ieee80211_ht_handle_chanwidth_notif(struct ieee80211_local *local,
++					 struct ieee80211_sub_if_data *sdata,
++					 struct sta_info *sta,
++					 struct link_sta_info *link_sta,
++					 u8 chanwidth, enum nl80211_band band);
++
+ /* VHT */
+ void
+ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index c01634fdba78..851d399fca13 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1556,6 +1556,35 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
+ 				break;
+ 			}
+ 		}
++	} else if (ieee80211_is_action(mgmt->frame_control) &&
++		   mgmt->u.action.category == WLAN_CATEGORY_HT) {
++		switch (mgmt->u.action.u.ht_smps.action) {
++		case WLAN_HT_ACTION_NOTIFY_CHANWIDTH: {
++			u8 chanwidth = mgmt->u.action.u.ht_notify_cw.chanwidth;
++			struct ieee80211_rx_status *status;
++			struct link_sta_info *link_sta;
++			struct sta_info *sta;
++
++			sta = sta_info_get_bss(sdata, mgmt->sa);
++			if (!sta)
++				break;
++
++			status = IEEE80211_SKB_RXCB(skb);
++			if (!status->link_valid)
++				link_sta = &sta->deflink;
++			else
++				link_sta = rcu_dereference_protected(sta->link[status->link_id],
++							lockdep_is_held(&local->hw.wiphy->mtx));
++			if (link_sta)
++				ieee80211_ht_handle_chanwidth_notif(local, sdata, sta,
++								    link_sta, chanwidth,
++								    status->band);
++			break;
++		}
++		default:
++			WARN_ON(1);
++			break;
++		}
+ 	} else if (ieee80211_is_action(mgmt->frame_control) &&
+ 		   mgmt->u.action.category == WLAN_CATEGORY_VHT) {
+ 		switch (mgmt->u.action.u.vht_group_notif.action_code) {
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index e73431549ce7..8ec06cf0a9f0 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3576,41 +3576,18 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 			goto handled;
+ 		}
+ 		case WLAN_HT_ACTION_NOTIFY_CHANWIDTH: {
+-			struct ieee80211_supported_band *sband;
+ 			u8 chanwidth = mgmt->u.action.u.ht_notify_cw.chanwidth;
+-			enum ieee80211_sta_rx_bandwidth max_bw, new_bw;
+-			struct sta_opmode_info sta_opmode = {};
++
++			if (chanwidth != IEEE80211_HT_CHANWIDTH_20MHZ &&
++			    chanwidth != IEEE80211_HT_CHANWIDTH_ANY)
++				goto invalid;
+ 
+ 			/* If it doesn't support 40 MHz it can't change ... */
+ 			if (!(rx->link_sta->pub->ht_cap.cap &
+-					IEEE80211_HT_CAP_SUP_WIDTH_20_40))
+-				goto handled;
+-
+-			if (chanwidth == IEEE80211_HT_CHANWIDTH_20MHZ)
+-				max_bw = IEEE80211_STA_RX_BW_20;
+-			else
+-				max_bw = ieee80211_sta_cap_rx_bw(rx->link_sta);
+-
+-			/* set cur_max_bandwidth and recalc sta bw */
+-			rx->link_sta->cur_max_bandwidth = max_bw;
+-			new_bw = ieee80211_sta_cur_vht_bw(rx->link_sta);
+-
+-			if (rx->link_sta->pub->bandwidth == new_bw)
++				IEEE80211_HT_CAP_SUP_WIDTH_20_40))
+ 				goto handled;
+ 
+-			rx->link_sta->pub->bandwidth = new_bw;
+-			sband = rx->local->hw.wiphy->bands[status->band];
+-			sta_opmode.bw =
+-				ieee80211_sta_rx_bw_to_chan_width(rx->link_sta);
+-			sta_opmode.changed = STA_OPMODE_MAX_BW_CHANGED;
+-
+-			rate_control_rate_update(local, sband, rx->link_sta,
+-						 IEEE80211_RC_BW_CHANGED);
+-			cfg80211_sta_opmode_change_notify(sdata->dev,
+-							  rx->sta->addr,
+-							  &sta_opmode,
+-							  GFP_ATOMIC);
+-			goto handled;
++			goto queue;
+ 		}
+ 		default:
+ 			goto invalid;
 -- 
 2.39.5
 
