@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-170585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0C7B2A52C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C96B2A789
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9CE17A27BB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53CD583B93
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18741320CDB;
-	Mon, 18 Aug 2025 13:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5B3321F4C;
+	Mon, 18 Aug 2025 13:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMeEn9Lg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOtCLPNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95D5334701;
-	Mon, 18 Aug 2025 13:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0D3321F43;
+	Mon, 18 Aug 2025 13:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523116; cv=none; b=VLG6l+l2mfYjdlT4nL2jZsna0ZWKl01bM/7mh6ewRvlbgh8Lng7ufafN5/5DhgUMGRzu4HkgzfiIGJQZyXW/4k5EbCk7tgVkry3BA/9iBX1r0wSs8/BRoElXzdvUSm1nbv8QdA2l4v9HLQhdSuG5MeiMrCqd3O+oFKifik8Fgz4=
+	t=1755524742; cv=none; b=A+AkNlx6ydaTU3/JzdpoyV6zSLTRqN9h6ew5oWF95mU2bzPJM+fmc7zpwSOlqNciXF6Btdt9TYmqLCtt7dc9cBTbyJisod7ilIi7Qx8+KV/b6dn+6B2M/bd8Tl8SPAqIsAbG9g2d32o5r22zqZOWi93v/porQghVV3AvUjgvvJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523116; c=relaxed/simple;
-	bh=cYxfFJkRWGsT7E8swiNUnxXnH7smthF8jZxI2izkV6c=;
+	s=arc-20240116; t=1755524742; c=relaxed/simple;
+	bh=xv3I08wWxP2VNEENmVnkyAgSOO6fhrEXO38hyk2padw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvDr0UnXILz9D+IORMfo2XnGxzQbNimVZlf7rNYRSchvbACRzAYOKvMySHtxYKW6J/qB0mskL+rkHOQD6e2Ud9vKM/p0R8WqpWdwo6Xy8wFQM5XNJBY8XF0WfUtegc1dGdwyYy2CFal4Dgh4WoZx5b1wB8143j+V6K5IHPR9iaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMeEn9Lg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375CCC4CEEB;
-	Mon, 18 Aug 2025 13:18:35 +0000 (UTC)
+	 MIME-Version; b=a/FXcxXko/7Z0gE2Sv0CoJqJGiOjvv2I0VfhtJCikYwvNNprKcD50ZnxEmAUHIIQ4lWDl5A/HUvTqyHbKTlaMrq/OKvKW9bectY3ypvo+Sw6m+7LccJTXTzVpa3JT4e+13tPOH+pKN0Y3883zv8+a5AxeiBGs7CI12txTsxmSjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOtCLPNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E063C4CEEB;
+	Mon, 18 Aug 2025 13:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523116;
-	bh=cYxfFJkRWGsT7E8swiNUnxXnH7smthF8jZxI2izkV6c=;
+	s=korg; t=1755524742;
+	bh=xv3I08wWxP2VNEENmVnkyAgSOO6fhrEXO38hyk2padw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMeEn9Lg8hgmtLCtD3QkDhf8JUqQ45lmTKgNNbeOTjDdJVZtfV2TqKthdQmYgW22X
-	 TXNftZowZgnrSJDR/xFIzXfXPpNwOTPLqHpSyqloJT4SqlCj9lcf2qtCGJBYp6JSqy
-	 hF1ER1GUxEYiJD6fEvWS4xOxY75iSPJJ54dAHsBg=
+	b=dOtCLPNZbNUSWfYHI4S56QDgtacw4/L0wGM8SKqOIH++5GKy8OIcKfYUj1b7DCTUv
+	 Ef7vv3r/TIH7ris9x9T35EDL7ySd3J4INLgfgiLthWHwxTuhz/1r85VFUMn7d3p8ey
+	 l6OE/Qi8KVTDJYIpdd465DX82MuAHFkbgu7/H7os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Bigonville <bigon@bigon.be>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH 6.15 048/515] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
-Date: Mon, 18 Aug 2025 14:40:34 +0200
-Message-ID: <20250818124500.272301802@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.16 048/570] fs: Prevent file descriptor table allocations exceeding INT_MAX
+Date: Mon, 18 Aug 2025 14:40:35 +0200
+Message-ID: <20250818124507.664671934@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Sasha Levin <sashal@kernel.org>
 
-commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a upstream.
+commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
 
-pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
-pcie_portdrv_remove() to determine whether runtime power management shall
-be enabled (on probe) or disabled (on remove) on a PCIe port.
+When sysctl_nr_open is set to a very high value (for example, 1073741816
+as set by systemd), processes attempting to use file descriptors near
+the limit can trigger massive memory allocation attempts that exceed
+INT_MAX, resulting in a WARNING in mm/slub.c:
 
-The underlying assumption is that pci_bridge_d3_possible() always returns
-the same value, else a runtime PM reference imbalance would occur.  That
-assumption is not given if the PCIe port is inaccessible on remove due to
-hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
-accesses Config Space to determine whether the port is Hot-Plug Capable.
-An inaccessible port returns "all ones", which is converted to "all
-zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
-Hot-Plug Capable on remove even though it was on probe.
+  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
 
-The resulting runtime PM ref imbalance causes warning messages such as:
+This happens because kvmalloc_array() and kvmalloc() check if the
+requested size exceeds INT_MAX and emit a warning when the allocation is
+not flagged with __GFP_NOWARN.
 
-  pcieport 0000:02:04.0: Runtime PM usage count underflow!
+Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
+- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
+- Multiple bitmaps: ~400MB
+- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
 
-Avoid the Config Space access (and thus the runtime PM ref imbalance) by
-caching the Hot-Plug Capable bit in struct pci_dev.
+Reproducer:
+1. Set /proc/sys/fs/nr_open to 1073741816:
+   # echo 1073741816 > /proc/sys/fs/nr_open
 
-The struct already contains an "is_hotplug_bridge" flag, which however is
-not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
-Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
-allocated additional MMIO and bus number resources to allow for hierarchy
-expansion.
+2. Run a program that uses a high file descriptor:
+   #include <unistd.h>
+   #include <sys/resource.h>
 
-The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
-places to identify Hot-Plug Capable PCIe ports, even though the flag
-encompasses other devices.  Subsequent commits replace these occurrences
-with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
-other kinds of hotplug bridges.
+   int main() {
+       struct rlimit rlim = {1073741824, 1073741824};
+       setrlimit(RLIMIT_NOFILE, &rlim);
+       dup2(2, 1073741880);  // Triggers the warning
+       return 0;
+   }
 
-Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
-and document the (non-obvious) requirement that pci_bridge_d3_possible()
-always returns the same value across the entire lifetime of a bridge,
-including its hot-removal.
+3. Observe WARNING in dmesg at mm/slub.c:5027
 
-Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
-Reported-by: Laurent Bigonville <bigon@bigon.be>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
-Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v4.18+
-Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
+systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
+maximum possible value. The rationale was that systems with memory
+control groups (memcg) no longer need separate file descriptor limits
+since memory is properly accounted. However, this change overlooked
+that:
+
+1. The kernel's allocation functions still enforce INT_MAX as a maximum
+   size regardless of memcg accounting
+2. Programs and tests that legitimately test file descriptor limits can
+   inadvertently trigger massive allocations
+3. The resulting allocations (>8GB) are impractical and will always fail
+
+systemd's algorithm starts with INT_MAX and keeps halving the value
+until the kernel accepts it. On most systems, this results in nr_open
+being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
+descriptors.
+
+While processes rarely use file descriptors near this limit in normal
+operation, certain selftests (like
+tools/testing/selftests/core/unshare_test.c) and programs that test file
+descriptor limits can trigger this issue.
+
+Fix this by adding a check in alloc_fdtable() to ensure the requested
+allocation size does not exceed INT_MAX. This causes the operation to
+fail with -EMFILE instead of triggering a kernel warning and avoids the
+impractical >8GB memory allocation request.
+
+Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-acpi.c |    4 +---
- drivers/pci/pci.c      |    6 +++++-
- drivers/pci/probe.c    |    2 +-
- include/linux/pci.h    |    6 ++++++
- 4 files changed, 13 insertions(+), 5 deletions(-)
+ fs/file.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -816,13 +816,11 @@ int pci_acpi_program_hp_params(struct pc
- bool pciehp_is_native(struct pci_dev *bridge)
- {
- 	const struct pci_host_bridge *host;
--	u32 slot_cap;
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -197,6 +197,21 @@ static struct fdtable *alloc_fdtable(uns
+ 			return ERR_PTR(-EMFILE);
+ 	}
  
- 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
- 		return false;
- 
--	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
--	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
-+	if (!bridge->is_pciehp)
- 		return false;
- 
- 	if (pcie_ports_native)
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3030,8 +3030,12 @@ static const struct dmi_system_id bridge
-  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
-  * @bridge: Bridge to check
-  *
-- * This function checks if it is possible to move the bridge to D3.
-  * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
-+ *
-+ * Return: Whether it is possible to move the bridge to D3.
-+ *
-+ * The return value is guaranteed to be constant across the entire lifetime
-+ * of the bridge, including its hot-removal.
-  */
- bool pci_bridge_d3_possible(struct pci_dev *bridge)
- {
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1678,7 +1678,7 @@ void set_pcie_hotplug_bridge(struct pci_
- 
- 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
- 	if (reg32 & PCI_EXP_SLTCAP_HPC)
--		pdev->is_hotplug_bridge = 1;
-+		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
- }
- 
- static void set_pcie_thunderbolt(struct pci_dev *dev)
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -328,6 +328,11 @@ struct rcec_ea;
-  *			determined (e.g., for Root Complex Integrated
-  *			Endpoints without the relevant Capability
-  *			Registers).
-+ * @is_hotplug_bridge:	Hotplug bridge of any kind (e.g. PCIe Hot-Plug Capable,
-+ *			Conventional PCI Hot-Plug, ACPI slot).
-+ *			Such bridges are allocated additional MMIO and bus
-+ *			number resources to allow for hierarchy expansion.
-+ * @is_pciehp:		PCIe Hot-Plug Capable bridge.
-  */
- struct pci_dev {
- 	struct list_head bus_list;	/* Node in per-bus list */
-@@ -453,6 +458,7 @@ struct pci_dev {
- 	unsigned int	is_physfn:1;
- 	unsigned int	is_virtfn:1;
- 	unsigned int	is_hotplug_bridge:1;
-+	unsigned int	is_pciehp:1;
- 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
- 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
- 	/*
++	/*
++	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
++	 * and kvmalloc() will warn if the allocation size is greater than
++	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
++	 *
++	 * This can happen when sysctl_nr_open is set to a very high value and
++	 * a process tries to use a file descriptor near that limit. For example,
++	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
++	 * systemd typically sets it to - then trying to use a file descriptor
++	 * close to that value will require allocating a file descriptor table
++	 * that exceeds 8GB in size.
++	 */
++	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
++		return ERR_PTR(-EMFILE);
++
+ 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
+ 	if (!fdt)
+ 		goto out;
 
 
 
