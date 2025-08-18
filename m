@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-171583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE26B2AACE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:36:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B34E9B2AAA6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67D565661A2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C33051BC37A6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A4A35A28A;
-	Mon, 18 Aug 2025 14:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515162FFDD5;
+	Mon, 18 Aug 2025 14:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SB8UF5tg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dy69nTwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FDB35A280;
-	Mon, 18 Aug 2025 14:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E98C22D793;
+	Mon, 18 Aug 2025 14:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526422; cv=none; b=H4Q/Lz9wZhB5f04ZAt4MR7eNQe/NPmYsl0mAMYIfURmPbixbA61ycuzJivLsdIRWnuHXKfiiXNbTS748dEG476lS5B400VGv8s9YQU5QLLu/ynHmIakDaCZxgOSxyzVB7fRAkUAx4puhX1ySvimve7XE4xVo6vYYM5wfGOOuifE=
+	t=1755526517; cv=none; b=kmP7lR12ZJgOAoepM8po5L+Zdz3W3YlQTYaoz1czqG9vWxxnAR4t8MMFkOmnqYjZc2HxdLhOtDtLDxMiWHd/si8QRFdD+A1iFJOxOKezADYcNzzkRb/FYylmCgdIyTxvSfjQrPH9TSAObK69okFYtVdCjW0oztnPTFY5EX8Fqz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526422; c=relaxed/simple;
-	bh=2xlEgcr55/GyXKfoGxnFJKPsNGFQSOQg6ytt6DCYpJI=;
+	s=arc-20240116; t=1755526517; c=relaxed/simple;
+	bh=g5l2pDSpVfVvx/ENsthLPqU2Pt7xKxpHWWcKlRki9TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfrXH+773c746y3qKXalftnyvzOan7YhDg9zO111oO/fXmKvG4xnLjHqSal/GrnTrrfqJg8nUozypkF7B9E/0+2MZl2+qwLAJihLV+ayr71odIxJtJbeQvrDhdMePkVkwFncNqccTSdpx6ecQNx40zAMCZ7h/uqufWrPQEt583c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SB8UF5tg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20303C4CEEB;
-	Mon, 18 Aug 2025 14:13:40 +0000 (UTC)
+	 MIME-Version; b=kYdFoVwcpkbV+STa2QnVRBWXhiHmU/dRvklzedLq4nhxm/sGO+5Vv6ZS/FrXWEoTEUbZRTtYg5Vcy+7XpxtvceYa3J7VwfpvY3ufbslagZvo2DbAml9O1rtrmcA3SIPn8H8VrOWTVSFRX60xI8lTC0O1Qa1NT42b4b5NfjADsG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dy69nTwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B138C4CEEB;
+	Mon, 18 Aug 2025 14:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526421;
-	bh=2xlEgcr55/GyXKfoGxnFJKPsNGFQSOQg6ytt6DCYpJI=;
+	s=korg; t=1755526516;
+	bh=g5l2pDSpVfVvx/ENsthLPqU2Pt7xKxpHWWcKlRki9TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SB8UF5tgcTcvBJoVsRnFa1RvPU2M6OkaYVUxgQiZmEnLukLLx28vG62AAKh2Yqu0N
-	 jnEFIsJOCRjIuXPV2VPGZw0Fj+59xN5zInrhnE5r5L/z1bXxnXMZtTaOB3vgsZo3RO
-	 aara932nG/l71f3gm+ni5GNTjvfQe51UGNgXzt/c=
+	b=Dy69nTwWPuiuCS7sq1u6PWdyrsb+IR/M6vuACaqCVWJ7FoPZXZxktHctjKXLU97sc
+	 DyMSg4S8K8Ogc+gEha+5arvjEC4jim0W7ur8MCtvxQM0cqbNxXOOuncIxafr7Ma6Dk
+	 OPB5qK7//JzKV5W6lqFUKUVG/gLMx3gKzmUhZNPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vedang Nagar <quic_vnagar@quicinc.com>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.16 549/570] media: venus: Fix OOB read due to missing payload bound check
-Date: Mon, 18 Aug 2025 14:48:56 +0200
-Message-ID: <20250818124527.018535946@linuxfoundation.org>
+Subject: [PATCH 6.16 550/570] media: uvcvideo: Do not mark valid metadata as invalid
+Date: Mon, 18 Aug 2025 14:48:57 +0200
+Message-ID: <20250818124527.054271845@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -69,198 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vedang Nagar <quic_vnagar@quicinc.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 06d6770ff0d8cc8dfd392329a8cc03e2a83e7289 upstream.
+commit bda2859bff0b9596a19648f3740c697ce4c71496 upstream.
 
-Currently, The event_seq_changed() handler processes a variable number
-of properties sent by the firmware. The number of properties is indicated
-by the firmware and used to iterate over the payload. However, the
-payload size is not being validated against the actual message length.
+Currently, the driver performs a length check of the metadata buffer
+before the actual metadata size is known and before the metadata is
+decided to be copied. This results in valid metadata buffers being
+incorrectly marked as invalid.
 
-This can lead to out-of-bounds memory access if the firmware provides a
-property count that exceeds the data available in the payload. Such a
-condition can result in kernel crashes or potential information leaks if
-memory beyond the buffer is accessed.
+Move the length check to occur after the metadata size is determined and
+is decided to be copied.
 
-Fix this by properly validating the remaining size of the payload before
-each property access and updating bounds accordingly as properties are
-parsed.
-
-This ensures that property parsing is safely bounded within the received
-message buffer and protects against malformed or malicious firmware
-behavior.
-
-Fixes: 09c2845e8fe4 ("[media] media: venus: hfi: add Host Firmware Interface (HFI)")
 Cc: stable@vger.kernel.org
-Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
-Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250707-uvc-meta-v8-1-ed17f8b1218b@chromium.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_msgs.c |   83 ++++++++++++++++++---------
- 1 file changed, 58 insertions(+), 25 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_msgs.c
-+++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
-@@ -33,8 +33,9 @@ static void event_seq_changed(struct ven
- 	struct hfi_buffer_requirements *bufreq;
- 	struct hfi_extradata_input_crop *crop;
- 	struct hfi_dpb_counts *dpb_count;
-+	u32 ptype, rem_bytes;
-+	u32 size_read = 0;
- 	u8 *data_ptr;
--	u32 ptype;
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -1442,12 +1442,6 @@ static void uvc_video_decode_meta(struct
+ 	if (!meta_buf || length == 2)
+ 		return;
  
- 	inst->error = HFI_ERR_NONE;
- 
-@@ -44,86 +45,118 @@ static void event_seq_changed(struct ven
- 		break;
- 	default:
- 		inst->error = HFI_ERR_SESSION_INVALID_PARAMETER;
--		goto done;
-+		inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
-+		return;
- 	}
- 
- 	event.event_type = pkt->event_data1;
- 
- 	num_properties_changed = pkt->event_data2;
--	if (!num_properties_changed) {
--		inst->error = HFI_ERR_SESSION_INSUFFICIENT_RESOURCES;
--		goto done;
+-	if (meta_buf->length - meta_buf->bytesused <
+-	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
+-		meta_buf->error = 1;
+-		return;
 -	}
-+	if (!num_properties_changed)
-+		goto error;
+-
+ 	has_pts = mem[1] & UVC_STREAM_PTS;
+ 	has_scr = mem[1] & UVC_STREAM_SCR;
  
- 	data_ptr = (u8 *)&pkt->ext_event_data[0];
-+	rem_bytes = pkt->shdr.hdr.size - sizeof(*pkt);
-+
- 	do {
-+		if (rem_bytes < sizeof(u32))
-+			goto error;
- 		ptype = *((u32 *)data_ptr);
-+
-+		data_ptr += sizeof(u32);
-+		rem_bytes -= sizeof(u32);
-+
- 		switch (ptype) {
- 		case HFI_PROPERTY_PARAM_FRAME_SIZE:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_framesize))
-+				goto error;
-+
- 			frame_sz = (struct hfi_framesize *)data_ptr;
- 			event.width = frame_sz->width;
- 			event.height = frame_sz->height;
--			data_ptr += sizeof(*frame_sz);
-+			size_read = sizeof(struct hfi_framesize);
- 			break;
- 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_CURRENT:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_profile_level))
-+				goto error;
-+
- 			profile_level = (struct hfi_profile_level *)data_ptr;
- 			event.profile = profile_level->profile;
- 			event.level = profile_level->level;
--			data_ptr += sizeof(*profile_level);
-+			size_read = sizeof(struct hfi_profile_level);
- 			break;
- 		case HFI_PROPERTY_PARAM_VDEC_PIXEL_BITDEPTH:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_bit_depth))
-+				goto error;
-+
- 			pixel_depth = (struct hfi_bit_depth *)data_ptr;
- 			event.bit_depth = pixel_depth->bit_depth;
--			data_ptr += sizeof(*pixel_depth);
-+			size_read = sizeof(struct hfi_bit_depth);
- 			break;
- 		case HFI_PROPERTY_PARAM_VDEC_PIC_STRUCT:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_pic_struct))
-+				goto error;
-+
- 			pic_struct = (struct hfi_pic_struct *)data_ptr;
- 			event.pic_struct = pic_struct->progressive_only;
--			data_ptr += sizeof(*pic_struct);
-+			size_read = sizeof(struct hfi_pic_struct);
- 			break;
- 		case HFI_PROPERTY_PARAM_VDEC_COLOUR_SPACE:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_colour_space))
-+				goto error;
-+
- 			colour_info = (struct hfi_colour_space *)data_ptr;
- 			event.colour_space = colour_info->colour_space;
--			data_ptr += sizeof(*colour_info);
-+			size_read = sizeof(struct hfi_colour_space);
- 			break;
- 		case HFI_PROPERTY_CONFIG_VDEC_ENTROPY:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(u32))
-+				goto error;
-+
- 			event.entropy_mode = *(u32 *)data_ptr;
--			data_ptr += sizeof(u32);
-+			size_read = sizeof(u32);
- 			break;
- 		case HFI_PROPERTY_CONFIG_BUFFER_REQUIREMENTS:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_buffer_requirements))
-+				goto error;
-+
- 			bufreq = (struct hfi_buffer_requirements *)data_ptr;
- 			event.buf_count = hfi_bufreq_get_count_min(bufreq, ver);
--			data_ptr += sizeof(*bufreq);
-+			size_read = sizeof(struct hfi_buffer_requirements);
- 			break;
- 		case HFI_INDEX_EXTRADATA_INPUT_CROP:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_extradata_input_crop))
-+				goto error;
-+
- 			crop = (struct hfi_extradata_input_crop *)data_ptr;
- 			event.input_crop.left = crop->left;
- 			event.input_crop.top = crop->top;
- 			event.input_crop.width = crop->width;
- 			event.input_crop.height = crop->height;
--			data_ptr += sizeof(*crop);
-+			size_read = sizeof(struct hfi_extradata_input_crop);
- 			break;
- 		case HFI_PROPERTY_PARAM_VDEC_DPB_COUNTS:
--			data_ptr += sizeof(u32);
-+			if (rem_bytes < sizeof(struct hfi_dpb_counts))
-+				goto error;
-+
- 			dpb_count = (struct hfi_dpb_counts *)data_ptr;
- 			event.buf_count = dpb_count->fw_min_cnt;
--			data_ptr += sizeof(*dpb_count);
-+			size_read = sizeof(struct hfi_dpb_counts);
- 			break;
- 		default:
-+			size_read = 0;
- 			break;
- 		}
-+		data_ptr += size_read;
-+		rem_bytes -= size_read;
- 		num_properties_changed--;
- 	} while (num_properties_changed > 0);
+@@ -1468,6 +1462,12 @@ static void uvc_video_decode_meta(struct
+ 				  !memcmp(scr, stream->clock.last_scr, 6)))
+ 		return;
  
--done:
-+	inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
-+	return;
++	if (meta_buf->length - meta_buf->bytesused <
++	    length + sizeof(meta->ns) + sizeof(meta->sof)) {
++		meta_buf->error = 1;
++		return;
++	}
 +
-+error:
-+	inst->error = HFI_ERR_SESSION_INSUFFICIENT_RESOURCES;
- 	inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
- }
- 
+ 	meta = (struct uvc_meta_buf *)((u8 *)meta_buf->mem + meta_buf->bytesused);
+ 	local_irq_save(flags);
+ 	time = uvc_video_get_time();
 
 
 
