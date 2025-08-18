@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D2CB2A35B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356A1B2A681
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 984D73BABD8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B17451B6071E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1043531CA5E;
-	Mon, 18 Aug 2025 13:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE407226D0F;
+	Mon, 18 Aug 2025 13:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rh7A2IBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqlN5SUH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17A61F462D;
-	Mon, 18 Aug 2025 13:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B46B21CC58;
+	Mon, 18 Aug 2025 13:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522159; cv=none; b=n1UY6Ko81aEdtMHgLZpzQdVZRzMhT5OQfgMctGOKhYsobZcvyF2pAzQ49Z7/qBxlPoV6dqVaeOiQ8c42asK3sBbj8kZbCVsMs/v4XdNyOHmCpwfMPjyu7j9r69p/J6kL4reKzO5sTGESf4A3Hi8LPUzBdmDAqyhLIgoRqxwUFCU=
+	t=1755523796; cv=none; b=KX9PIaZMCbbwR7TxErQc2B77YZF+97H7O+DS6RIMWhzXI2h3d3pRiVSqqpYkIgARl3a5OWgnOPI6VC+P2peqRhEBsMf5ZF1Q5mFITABzRM8k03or/+g1GCJ0EjfDwmqkgBZy1njPOE4VkSJT4UI9kT+XaOlCY9s3YQzpQxaTYbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522159; c=relaxed/simple;
-	bh=o4QWapWgNj6Bk43uYtRWWdsCWyA4LH/cDfy7jFyhCVk=;
+	s=arc-20240116; t=1755523796; c=relaxed/simple;
+	bh=ND/vVST3fuLWkSyrmGStfVUTEYKfrTPtfDfG3FV9Hbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTiwDByvkBXS28r/txf5XdiyynOemlxiDij/9ozAZqm0c5VwfywpXrizXexg2uUZRWgujTrFWaHJ9i5CLDkhFx7RPY/cHr/wf5aoYGuKQpk0hxJbwbjC3ezesm8fON1qx2fhYJiAyFSNNJMuJ1dd+pFv08urDH16eFJczwJ+T+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh7A2IBH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E915EC4CEEB;
-	Mon, 18 Aug 2025 13:02:38 +0000 (UTC)
+	 MIME-Version; b=L7zgUKaJkFWS6/VLCdsfTq8HN6aszdeBXpLfKRiAXG3qvVApmeuOKrPfzWXArEBjnxkBEiwNrbCHtJj80NtF5F/pSZmE6bOdjSUg2d3bw8cQywWSRoygmg4H6ImC6V5+U6McHHg+aEpcnJGHxFw8O/uxmKQrBzzVv04bUMgE8tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqlN5SUH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D0DC4CEEB;
+	Mon, 18 Aug 2025 13:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522159;
-	bh=o4QWapWgNj6Bk43uYtRWWdsCWyA4LH/cDfy7jFyhCVk=;
+	s=korg; t=1755523796;
+	bh=ND/vVST3fuLWkSyrmGStfVUTEYKfrTPtfDfG3FV9Hbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rh7A2IBHUQq5ewOBmFQiEfmP3m8UUVWf52f0OsWjtpsCRRcsI7USajMepeXuaxesx
-	 ZK7VpC/UgzoNJSuWQEEEmnNEF3ChZjmfIGJIrzEf0QW4ptDmcTqdsf51mdOMiRuJpM
-	 gziIrc04/QD++9IZOz7OZO2nKzM8VCZC+VOLpBg8=
+	b=oqlN5SUH0bVl7bL8Una/XwShDwLGRzYv3q5B4T7U6/MitUw/a+bSfjNKC14uDLpxJ
+	 S+64deFhv0VF8/tZvky98/9YMVhsuP7QursmqLdamtaOmYPaVtX7mRk5fk2jpZVIE5
+	 UjEfKvaaOpCJ4Q4Yfx9BaC+CjT3HfslbXzvviLt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
-	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 234/444] wifi: mac80211: update radar_required in channel context after channel switch
-Date: Mon, 18 Aug 2025 14:44:20 +0200
-Message-ID: <20250818124457.609418899@linuxfoundation.org>
+Subject: [PATCH 6.15 275/515] drm/panel: raydium-rm67200: Move initialization from enable() to prepare stage
+Date: Mon, 18 Aug 2025 14:44:21 +0200
+Message-ID: <20250818124509.005686034@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 140c6a61d83cbd85adba769b5ef8d61acfa5b392 ]
+[ Upstream commit 691674a282bdbf8f8bce4094369a2d1e4b5645e9 ]
 
-Currently, when a non-DFS channel is brought up and the bandwidth is
-expanded from 80 MHz to 160 MHz, where the primary 80 MHz is non-DFS
-and the secondary 80 MHz consists of DFS channels, radar detection
-fails if radar occurs in the secondary 80 MHz.
+The DSI host has different modes in prepare() and enable() functions,
+prepare() is in LP command mode and enable() is in HS video mode.
 
-When the channel is switched from 80 MHz to 160 MHz, with the primary
-80 MHz being non-DFS and the secondary 80 MHz consisting of DFS
-channels, the radar required flag in the channel switch parameters
-is set to true. However, when using a reserved channel context,
-it is not updated in sdata, which disables radar detection in the
-secondary 80 MHz DFS channels.
+>From our experience, generally the initialization sequence needs to be
+sent in the LP command mode.
 
-Update the radar required flag in sdata to fix this issue when using
-a reserved channel context.
+Move the setup init function from enable() to prepare() to fix a display
+shift on rk3568 evb.
 
-Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
-Signed-off-by: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250608140324.1687117-1-ramasamy.kaliappan@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Tested on rk3568/rk3576/rk3588 EVB.
+
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250618091520.691590-1-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/chan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/panel/panel-raydium-rm67200.c | 22 ++++++-------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 282e8c13e2bf..e3b46df95b71 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1349,6 +1349,7 @@ ieee80211_link_use_reserved_reassign(struct ieee80211_link_data *link)
- 		goto out;
- 	}
+diff --git a/drivers/gpu/drm/panel/panel-raydium-rm67200.c b/drivers/gpu/drm/panel/panel-raydium-rm67200.c
+index 64b685dc11f6..6d4d00d4cd74 100644
+--- a/drivers/gpu/drm/panel/panel-raydium-rm67200.c
++++ b/drivers/gpu/drm/panel/panel-raydium-rm67200.c
+@@ -318,6 +318,7 @@ static void w552793baa_setup(struct mipi_dsi_multi_context *ctx)
+ static int raydium_rm67200_prepare(struct drm_panel *panel)
+ {
+ 	struct raydium_rm67200 *ctx = to_raydium_rm67200(panel);
++	struct mipi_dsi_multi_context mctx = { .dsi = ctx->dsi };
+ 	int ret;
  
-+	link->radar_required = link->reserved_radar_required;
- 	list_move(&link->assigned_chanctx_list, &new_ctx->assigned_links);
- 	rcu_assign_pointer(link_conf->chanctx_conf, &new_ctx->conf);
+ 	ret = regulator_bulk_enable(ctx->num_supplies, ctx->supplies);
+@@ -328,6 +329,12 @@ static int raydium_rm67200_prepare(struct drm_panel *panel)
+ 
+ 	msleep(60);
+ 
++	ctx->panel_info->panel_setup(&mctx);
++	mipi_dsi_dcs_exit_sleep_mode_multi(&mctx);
++	mipi_dsi_msleep(&mctx, 120);
++	mipi_dsi_dcs_set_display_on_multi(&mctx);
++	mipi_dsi_msleep(&mctx, 30);
++
+ 	return 0;
+ }
+ 
+@@ -343,20 +350,6 @@ static int raydium_rm67200_unprepare(struct drm_panel *panel)
+ 	return 0;
+ }
+ 
+-static int raydium_rm67200_enable(struct drm_panel *panel)
+-{
+-	struct raydium_rm67200 *rm67200 = to_raydium_rm67200(panel);
+-	struct mipi_dsi_multi_context ctx = { .dsi = rm67200->dsi };
+-
+-	rm67200->panel_info->panel_setup(&ctx);
+-	mipi_dsi_dcs_exit_sleep_mode_multi(&ctx);
+-	mipi_dsi_msleep(&ctx, 120);
+-	mipi_dsi_dcs_set_display_on_multi(&ctx);
+-	mipi_dsi_msleep(&ctx, 30);
+-
+-	return ctx.accum_err;
+-}
+-
+ static int raydium_rm67200_disable(struct drm_panel *panel)
+ {
+ 	struct raydium_rm67200 *rm67200 = to_raydium_rm67200(panel);
+@@ -381,7 +374,6 @@ static const struct drm_panel_funcs raydium_rm67200_funcs = {
+ 	.prepare = raydium_rm67200_prepare,
+ 	.unprepare = raydium_rm67200_unprepare,
+ 	.get_modes = raydium_rm67200_get_modes,
+-	.enable = raydium_rm67200_enable,
+ 	.disable = raydium_rm67200_disable,
+ };
  
 -- 
 2.39.5
