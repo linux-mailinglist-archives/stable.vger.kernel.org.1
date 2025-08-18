@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAD7B2A404
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07DDB2A725
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96FA5624E68
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4BE31B22225
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75476320392;
-	Mon, 18 Aug 2025 13:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532BC335BB7;
+	Mon, 18 Aug 2025 13:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gc8P8h+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkIrNMkI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33EBE31B13A;
-	Mon, 18 Aug 2025 13:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10128335BB3;
+	Mon, 18 Aug 2025 13:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522578; cv=none; b=ZBRQv5sf0EnMFGebiCu4Ne0EqbioyCZS53IXJVdnSwYSBcrfXSpceYGOhR5mSbUIaHMZPN9JqfCHzdghXWLv2Os6wnQa7ms1btDxh0gI7xjZLrYZB/zAxG4OgxDLWiSYLUwWRdz8UNW4sspYV7xO6xjvjzyaYfz5LhgFFhZC/1A=
+	t=1755524248; cv=none; b=JOTs0Hd25dHz8YdijvLd6kgzonDYAj+Pf/va11qSpXpXvCCpAfbm+d53tOe+GOTfItfYjP5ZxN7IoCMTLfJtGGx+Nko8cM1WBf97g7uYSGTgapsKsaRcw3LIGLfOsUhqve+esOi8Kl5zZ4zqeY01rvN23Q4GAPmBSAdY3DhkBVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522578; c=relaxed/simple;
-	bh=r8tmck5aZvLuJMdhqmtYzl8AkQLgTFvx27ICYemEQd4=;
+	s=arc-20240116; t=1755524248; c=relaxed/simple;
+	bh=KEa16O2Y/xHGMqcOiNdqKGsMa2OOdHHUet4JyIZ9Aw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLgJ/CA8Du0qW8kq3yAz838M2B2JwSBckFGuyiQuquu4RvS1Za7obM6mubvJFp+8ednDMZvmOBnMVLt4eTW3VJf0Twfv6gqYU4WI+iMZh4eV5h2dHRvFVnmz5ujh/H+EBAaW2lOOIp3CzX7PgsdMt+Df5oZiP/j6Ww9CX5h3jlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gc8P8h+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC42DC4CEEB;
-	Mon, 18 Aug 2025 13:09:37 +0000 (UTC)
+	 MIME-Version; b=FNLoLuf1/2cAeTv2T2lRhg2jQLylqI2u2kuMTp/47dM6v3A5F8oPEeAwsH8ano17fBdEdg2qB9ehCL6LbX2IUFFqely9apFIzKkbOMkJnaL0wX4agEls3EbWlpL+ALjgO6BxyO/ZJXkpfxXtFB9KzB5NNEOcoU5bXLvh0rNDfEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkIrNMkI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D40C113D0;
+	Mon, 18 Aug 2025 13:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522578;
-	bh=r8tmck5aZvLuJMdhqmtYzl8AkQLgTFvx27ICYemEQd4=;
+	s=korg; t=1755524247;
+	bh=KEa16O2Y/xHGMqcOiNdqKGsMa2OOdHHUet4JyIZ9Aw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gc8P8h+8KU/B+5FNXbcympvg0qeXxZqnLwODaBeCMp7xV5gnu1qlMXFGlkup0Ayfp
-	 TkppkqaDrdfhsw6NrzGwMa1iGioDbqfpctxx9IpfVyTK91Ptk+l+9CqTYWTRczPMbb
-	 aBM9dNJjjmEUGcDdL4bYltpraSz/A9rbIv3inHyk=
+	b=VkIrNMkIte5WIXD0EDpp9JlFgDvL7sUya5h1NyVHWqzGQb+QZ2KUwiHDw3NcaVjCq
+	 db/hL7yAbzIofKrTd63884MaB2rNNaO4U9XO0DwMDTCS4jGAAqFtxV7KMgov9e9672
+	 pmdQ4kejYahaW9AslED1Pi3Tqv9qN8xla2ZQC5og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calvin Owens <calvin@wbinvd.org>,
-	Len Brown <len.brown@intel.com>,
+	Jorge Marques <jorge.marques@analog.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 356/444] tools/power turbostat: Handle cap_get_proc() ENOSYS
+Subject: [PATCH 6.15 396/515] i3c: master: Initialize ret in i3c_i2c_notifier_call()
 Date: Mon, 18 Aug 2025 14:46:22 +0200
-Message-ID: <20250818124502.263002606@linuxfoundation.org>
+Message-ID: <20250818124513.656018704@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Calvin Owens <calvin@wbinvd.org>
+From: Jorge Marques <jorge.marques@analog.com>
 
-[ Upstream commit d34fe509f5f76d9dc36291242d67c6528027ebbd ]
+[ Upstream commit 290ce8b2d0745e45a3155268184523a8c75996f1 ]
 
-Kernels configured with CONFIG_MULTIUSER=n have no cap_get_proc().
-Check for ENOSYS to recognize this case, and continue on to
-attempt to access the requested MSRs (such as temperature).
+Set ret to -EINVAL if i3c_i2c_notifier_call() receives an invalid
+action, resolving uninitialized warning.
 
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250622-i3c-master-ret-uninitialized-v1-1-aabb5625c932@analog.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/i3c/master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 9be6803ea10f..b663a76d31f1 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -6246,8 +6246,16 @@ int check_for_cap_sys_rawio(void)
- 	int ret = 0;
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index e53c69d24873..dfa0bad991cf 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2467,6 +2467,8 @@ static int i3c_i2c_notifier_call(struct notifier_block *nb, unsigned long action
+ 	case BUS_NOTIFY_DEL_DEVICE:
+ 		ret = i3c_master_i2c_detach(adap, client);
+ 		break;
++	default:
++		ret = -EINVAL;
+ 	}
+ 	i3c_bus_maintenance_unlock(&master->bus);
  
- 	caps = cap_get_proc();
--	if (caps == NULL)
-+	if (caps == NULL) {
-+		/*
-+		 * CONFIG_MULTIUSER=n kernels have no cap_get_proc()
-+		 * Allow them to continue and attempt to access MSRs
-+		 */
-+		if (errno == ENOSYS)
-+			return 0;
-+
- 		return 1;
-+	}
- 
- 	if (cap_get_flag(caps, CAP_SYS_RAWIO, CAP_EFFECTIVE, &cap_flag_value)) {
- 		ret = 1;
 -- 
 2.39.5
 
