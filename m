@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1CCB2A843
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47B7B2A29F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EC2618A12D6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 953197A1CB4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C25E335BCE;
-	Mon, 18 Aug 2025 13:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2687127B330;
+	Mon, 18 Aug 2025 12:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBNcouMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iO2kT3Fy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB270335BAF;
-	Mon, 18 Aug 2025 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2D43218CF;
+	Mon, 18 Aug 2025 12:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525272; cv=none; b=u6BhizFxE0ohC/DXhmi9sz12CYIqpLv6gsobY9rzzZ5Ggi6GvJEoX9NXChixOK0HgfKRXK77mmo7JnCQBZlteIQfjWz00CF0YaBe5sAjQR05pww+u3qXYH3qpiWVY+GEg40KgA/MqywPmS+UWJ1ZtLA/oKuzwmV1Ny32hNq0WX8=
+	t=1755521960; cv=none; b=Lvn0gEkOiZmDyyZJ8t+e1lw1lrgKHV0ZUd6wvWQPz73aMIzNy27E2WyzMtAFKuIYOaBDn7TX5RPm5IEec2Od7+psTG5fCXognqUP/eak1gvX8JMT2cmBWxnDqwd5kFdUuUaQsiz9+vVyAr3vhDtzwWFAqtq07DIoRMNrYPgcnvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525272; c=relaxed/simple;
-	bh=86gxCNv8SPtJ7dkT4f32M487pfB4Cj0XEc4TzzAFOIc=;
+	s=arc-20240116; t=1755521960; c=relaxed/simple;
+	bh=/y/8wgBwhrwOXHikcxvpv9hNEjb8S5n0GI2oIrcoruk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3c0Rf1pCxnQ79dQVwBzCRgyb+B0ljtLFJgUjyNi4t0Sd0WjHMk2abSgPyugCmV4vgNHwSM3KXVx5V94mofulnXDt7onPwBDHHDEVNerhoOs01dUezKqk1wsNY5w5eY/uj9aTsOHGlFFhEXNa0+r7FEXlIdgL71yQPTKeC/9uRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBNcouMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597ACC4CEEB;
-	Mon, 18 Aug 2025 13:54:31 +0000 (UTC)
+	 MIME-Version; b=b0/JPH4Jn8QtVTH7k9bW6HB//3EjvXwHnXX6xuaWQpgiA8B3AAT3SShJTd7l4rsgii9qhymYN3UMXADHc8C0Dw+JToCVYn4t/SjkO6ugRpxsdoxI/++f9nZ+/TJOC6DlUGB2sy3AlscpZctvxForvcKBEqx1fo+V3Qjj9y9nJE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iO2kT3Fy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB3CC4CEEB;
+	Mon, 18 Aug 2025 12:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525271;
-	bh=86gxCNv8SPtJ7dkT4f32M487pfB4Cj0XEc4TzzAFOIc=;
+	s=korg; t=1755521960;
+	bh=/y/8wgBwhrwOXHikcxvpv9hNEjb8S5n0GI2oIrcoruk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBNcouMyYTuzbusG2BHnCo2bCdRUgskFzr3FbNCOscIAb/s/mjPjVwHy0whBSFtpB
-	 PGn6xGzftysDon5tM5Tvmb/bpIIW4SHHyx8Pr0SEyEZgWTOA7v6M0RgUNQY0pepM9w
-	 +Y0DMo8PYJhTk1VP5StA9WEfERnDMzbPDQV8Rq04=
+	b=iO2kT3FyIyz/YA5wYq0bMYCDPFzyobg2CMpOeDni52/93xQoWl0J+NPhasadeHHyB
+	 9tVF//up4I9VD96P07e9hleUTtlSfbsXZVimEgtCPAhg11/7aJ311zfIdS85oKUMqB
+	 sZT9Xja18hVonhNw2waKUoGAtcYTLMmceqnJms+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 212/570] Bluetooth: hci_sock: Reset cookie to zero in hci_sock_free_cookie()
+Subject: [PATCH 6.12 173/444] s390/time: Use monotonic clock in get_cycles()
 Date: Mon, 18 Aug 2025 14:43:19 +0200
-Message-ID: <20250818124513.967711786@linuxfoundation.org>
+Message-ID: <20250818124455.370586448@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 4d7936e8a5b1fa803f4a631d2da4a80fa4f0f37f ]
+[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
 
-Reset cookie value to 0 instead of 0xffffffff in hci_sock_free_cookie()
-since:
-0         :  means cookie has not been assigned yet
-0xffffffff:  means cookie assignment failure
+Otherwise the code might not work correctly when the clock
+is changed.
 
-Also fix generating cookie failure with usage shown below:
-hci_sock_gen_cookie(sk)   // generate cookie
-hci_sock_free_cookie(sk)  // free cookie
-hci_sock_gen_cookie(sk)   // Can't generate cookie any more
-
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/timex.h | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 428ee5c7de7e..fc866759910d 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -118,7 +118,7 @@ static void hci_sock_free_cookie(struct sock *sk)
- 	int id = hci_pi(sk)->cookie;
- 
- 	if (id) {
--		hci_pi(sk)->cookie = 0xffffffff;
-+		hci_pi(sk)->cookie = 0;
- 		ida_free(&sock_cookie_ida, id);
- 	}
+diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+index 640901f2fbc3..811ec531954b 100644
+--- a/arch/s390/include/asm/timex.h
++++ b/arch/s390/include/asm/timex.h
+@@ -192,13 +192,6 @@ static inline unsigned long get_tod_clock_fast(void)
+ 	asm volatile("stckf %0" : "=Q" (clk) : : "cc");
+ 	return clk;
  }
+-
+-static inline cycles_t get_cycles(void)
+-{
+-	return (cycles_t) get_tod_clock() >> 2;
+-}
+-#define get_cycles get_cycles
+-
+ int get_phys_clock(unsigned long *clock);
+ void init_cpu_timer(void);
+ 
+@@ -226,6 +219,12 @@ static inline unsigned long get_tod_clock_monotonic(void)
+ 	return tod;
+ }
+ 
++static inline cycles_t get_cycles(void)
++{
++	return (cycles_t)get_tod_clock_monotonic() >> 2;
++}
++#define get_cycles get_cycles
++
+ /**
+  * tod_to_ns - convert a TOD format value to nanoseconds
+  * @todval: to be converted TOD format value
 -- 
 2.39.5
 
