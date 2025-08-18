@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28033B2A958
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B5BB2A461
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 390F4B62218
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8703A188FAA2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3612321F58;
-	Mon, 18 Aug 2025 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A3B30F7F8;
+	Mon, 18 Aug 2025 13:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzoJ1oZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6zwMu2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05A2322525;
-	Mon, 18 Aug 2025 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B1B2765D9;
+	Mon, 18 Aug 2025 13:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526024; cv=none; b=NaDR9PjnlP+IXa11zcEYA1leP2rDHmPODBsBPzczfMV4SY+c5IJtGedtHvMwCWYVmmPxuOPcz0wJR05rK4cT5ZLYAgafn1SjjRhQdzQPQT0XLdBsUlQWIMJAvDo+gpdfSWHUNzSdKyD0p9givbticDiq1j9vEK4610HHOY9uAII=
+	t=1755522818; cv=none; b=SUDDhbb9zkLZzklIDk+1pTS5BYR9CvH7NDpRPGpzxRZFEGDjLr6GiqAE8UlamvTr6PgTHKbD2u5xE9lwCpmp2XKXyTMfMZPFvDxSa2MZLT+9q2H42wyt+BLT0tVUk5BzM3YYJHlWcFeeQJKGImgeuLrMxGZHk3LheJneSRQ+6CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526024; c=relaxed/simple;
-	bh=Qci8KyMFoBi49LhGFgQApFOaIeppruZnvPD8Y6TMk2Y=;
+	s=arc-20240116; t=1755522818; c=relaxed/simple;
+	bh=nDbEx6jSJbmKSvPcXlwaCHejf1/Hb7T6Pd1uYbA/kfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieq9MEWxMWcOrWp0Hs9my0wkl830bImtkefkqOiMoslrEpE7VWpPyazI48iUo3beymvm4GxACjB3c5izEMoBndTHXJPdWCsNWkyVzC2b9TzmAosc3hlr8T364OJGTnkeNDeDtayr2+SdgZ9pF3gKUhlH9RgLMikFWmoN94enV5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzoJ1oZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB37C113D0;
-	Mon, 18 Aug 2025 14:07:03 +0000 (UTC)
+	 MIME-Version; b=DaVTEPGUZ9KgCb+zj2cVTwc7iq2l7CnlfSxMS9RHTSCQqLcGXvjv//a6tsWVewTbjuL7uJOHEiHAi+Z9ZfDFqyMB8S6DrcanbsGuanTMMbivJNLyLLCUKAxq2MtNiPpPGVG3Uwmqks04W8ClBWCvAYCGBc9nhRrPecx+bLYBgtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6zwMu2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F72CC4CEEB;
+	Mon, 18 Aug 2025 13:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526024;
-	bh=Qci8KyMFoBi49LhGFgQApFOaIeppruZnvPD8Y6TMk2Y=;
+	s=korg; t=1755522818;
+	bh=nDbEx6jSJbmKSvPcXlwaCHejf1/Hb7T6Pd1uYbA/kfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzoJ1oZ4yTxRFzJCEfXSOTDcibPQWvImcekZybb2OoF5S7AG8EHLKIYD8gufutr4S
-	 +xGAdKa7aww6yaM6pV0cBn9OUmROX59WZMa+ewxkf/LQCGvGa3+XAaF9r/B+68T0me
-	 vChGuToLN+WBIPPo0NU871M8YSsotJYx4oJ6jia0=
+	b=h6zwMu2aUQatIE79Z6+JsUJGz5SzTqFfmzKCezu4hDQpxlV1dOy48MUSxlmXGRsEW
+	 9JqzTfnCibxl+qft5MbBxecHpQ6XOQgoYuRYbq/IYI6MUKjQcixPugSWu34N9MJO4a
+	 Dv77BJjWlDg2Cd4sG1Ke5vZbyCoEJBAmYhv0Fsfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 436/570] f2fs: check the generic conditions first
-Date: Mon, 18 Aug 2025 14:47:03 +0200
-Message-ID: <20250818124522.621560492@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 398/444] btrfs: qgroup: fix qgroup create ioctl returning success after quotas disabled
+Date: Mon, 18 Aug 2025 14:47:04 +0200
+Message-ID: <20250818124503.843224795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit e23ab8028de0d92df5921a570f5212c0370db3b5 ]
+commit 08530d6e638427e7e1344bd67bacc03882ba95b9 upstream.
 
-Let's return errors caught by the generic checks. This fixes generic/494 where
-it expects to see EBUSY by setattr_prepare instead of EINVAL by f2fs for active
-swapfile.
+When quotas are disabled qgroup ioctls are supposed to return -ENOTCONN,
+but the qgroup create ioctl stopped doing that when it races with a quota
+disable operation, returning 0 instead. This change of behaviour happened
+in commit 6ed05643ddb1 ("btrfs: create qgroup earlier in snapshot
+creation").
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue happens as follows:
+
+1) Task A enters btrfs_ioctl_qgroup_create(), qgroups are enabled and so
+   qgroup_enabled() returns true since fs_info->quota_root is not NULL;
+
+2) Task B enters btrfs_ioctl_quota_ctl() -> btrfs_quota_disable() and
+   disables qgroups, so now fs_info->quota_root is NULL;
+
+3) Task A enters btrfs_create_qgroup() and calls btrfs_qgroup_mode(),
+   which returns BTRFS_QGROUP_MODE_DISABLED since quotas are disabled,
+   and then btrfs_create_qgroup() returns 0 to the caller, which makes
+   the ioctl return 0 instead of -ENOTCONN.
+
+   The check for fs_info->quota_root and returning -ENOTCONN if it's NULL
+   is made only after the call btrfs_qgroup_mode().
+
+Fix this by moving the check for disabled quotas with btrfs_qgroup_mode()
+into transaction.c:create_pending_snapshot(), so that we don't abort the
+transaction if btrfs_create_qgroup() returns -ENOTCONN and quotas are
+disabled.
+
+Fixes: 6ed05643ddb1 ("btrfs: create qgroup earlier in snapshot creation")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ fs/btrfs/qgroup.c      |    3 ---
+ fs/btrfs/transaction.c |    6 ++++--
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 696131e655ed..bb3fd6a8416f 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1047,6 +1047,18 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	if (unlikely(f2fs_cp_error(F2FS_I_SB(inode))))
- 		return -EIO;
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1701,9 +1701,6 @@ int btrfs_create_qgroup(struct btrfs_tra
+ 	struct btrfs_qgroup *prealloc = NULL;
+ 	int ret = 0;
  
-+	err = setattr_prepare(idmap, dentry, attr);
-+	if (err)
-+		return err;
-+
-+	err = fscrypt_prepare_setattr(dentry, attr);
-+	if (err)
-+		return err;
-+
-+	err = fsverity_prepare_setattr(dentry, attr);
-+	if (err)
-+		return err;
-+
- 	if (unlikely(IS_IMMUTABLE(inode)))
- 		return -EPERM;
+-	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_DISABLED)
+-		return 0;
+-
+ 	mutex_lock(&fs_info->qgroup_ioctl_lock);
+ 	if (!fs_info->quota_root) {
+ 		ret = -ENOTCONN;
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1739,8 +1739,10 @@ static noinline int create_pending_snaps
  
-@@ -1065,18 +1077,6 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 			return -EINVAL;
+ 	ret = btrfs_create_qgroup(trans, objectid);
+ 	if (ret && ret != -EEXIST) {
+-		btrfs_abort_transaction(trans, ret);
+-		goto fail;
++		if (ret != -ENOTCONN || btrfs_qgroup_enabled(fs_info)) {
++			btrfs_abort_transaction(trans, ret);
++			goto fail;
++		}
  	}
  
--	err = setattr_prepare(idmap, dentry, attr);
--	if (err)
--		return err;
--
--	err = fscrypt_prepare_setattr(dentry, attr);
--	if (err)
--		return err;
--
--	err = fsverity_prepare_setattr(dentry, attr);
--	if (err)
--		return err;
--
- 	if (is_quota_modification(idmap, inode, attr)) {
- 		err = f2fs_dquot_initialize(inode);
- 		if (err)
--- 
-2.39.5
-
+ 	/*
 
 
 
