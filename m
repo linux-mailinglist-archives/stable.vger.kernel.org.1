@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1C7B2A441
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305ABB2A9C8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 772DB18A4F92
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3024B17EFB8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1E531B117;
-	Mon, 18 Aug 2025 13:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54806341ADA;
+	Mon, 18 Aug 2025 14:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kngen8kI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I89h4pV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4A431AF14;
-	Mon, 18 Aug 2025 13:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FFF335BAB;
+	Mon, 18 Aug 2025 14:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522729; cv=none; b=mdWCrJw953rf5md9Rg5LGOAorDR9IMrc7QfwTZXmRwyJJ3tcYALp7RTq5Uth/r31OXsIkUkVW7LmrB3cMcND1gpae4UH+7VP29QcZsFjxkKvcve4u5k2vrWgygN2a4/SR6tlp6BqHiftxfLKxxNH/DnwVMZNhNz42+4vxfILHw0=
+	t=1755526055; cv=none; b=YQW1p0udfZqLwHXhDrInIql9iIn6ihLJJ89ccef073oYBAF2yzrJTWRN5J89tko/ewSDohV3yr5ww9awfXqdeGR/4H9z8HNbuHvKtfUH9r46hQhoCUnl62SXT2WVLmfPppf0wSFOIue9jykJIEZFKmcG6ell0zvvSmSSzw3QAGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522729; c=relaxed/simple;
-	bh=As/38ufJaXlmve227v+rwIzZ7ZcrtFy5m6NSdazVP9E=;
+	s=arc-20240116; t=1755526055; c=relaxed/simple;
+	bh=JK2jwkb+LfjMJNqNrg8lvMm9g/4GuRYdhIA97D4vmJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nidi+CdcggU9Eu/d5sjyPkUPzQUPn8mT4HwKFtK97lDTe5Byal8l5To8B1M1/0gclIxOhdfIZstJLZC45yW1duQf38rdBWXd0DXmVk1KZpLu/MguXsbAVivl+AuKqfSI9Tg87bMCO+XGUneXp10Ts7GMMcIAmtFdK1cSwJXAM3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kngen8kI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D71FC4CEEB;
-	Mon, 18 Aug 2025 13:12:08 +0000 (UTC)
+	 MIME-Version; b=amiIn9bGmjrXP5XhaIC0uXWuY4zaxxIVmTbEjzrT8ifKfPUHGWvDoEDSe8GjQRwOmp7IPvwMK8xaOXn5UwtdtOXDhaRxwIQT2MqG8V48wwh6yaVevOWOhulZcaIsbKKH10XHojb8YUEze+pyASeyz13DIKx0cvYPAkEpoxcuxHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I89h4pV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAC0C4CEEB;
+	Mon, 18 Aug 2025 14:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522728;
-	bh=As/38ufJaXlmve227v+rwIzZ7ZcrtFy5m6NSdazVP9E=;
+	s=korg; t=1755526055;
+	bh=JK2jwkb+LfjMJNqNrg8lvMm9g/4GuRYdhIA97D4vmJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kngen8kIT2XacE7uT4Y9pUIjLtCtYjkZxGOfOA2Poo1hApLhdUNpi0xLqRZB1jJeN
-	 uS4L8f4xE1UT4PvplvHWUvEJQHybO18AVfgwZLWcC2RiMpAgRZNR1KdsGtkBam2PuH
-	 HfZqaJi7SBR9UEPhQcpcf7kJUv9GCOrUUZqrtGjE=
+	b=I89h4pV72ieGyRGdpa8B51S5wvoLsxOTodDU2EuvBmNOtugP5Zwxh6dInLtHnMyNZ
+	 tKzp5E8XBNGzKVILy1ejmlxCK3Tj5u9WRSboOqhdtGZ5g6KM2HA2TIGPNA0dlpm4o9
+	 xoNYbfcwrEHizAGxRBt0R4nZYT1TLDEfDnK/KiUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 404/444] btrfs: fix iteration bug in __qgroup_excl_accounting()
-Date: Mon, 18 Aug 2025 14:47:10 +0200
-Message-ID: <20250818124504.079423166@linuxfoundation.org>
+	John Garry <john.g.garry@oracle.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 444/570] scsi: aacraid: Stop using PCI_IRQ_AFFINITY
+Date: Mon, 18 Aug 2025 14:47:11 +0200
+Message-ID: <20250818124522.921185265@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: John Garry <john.g.garry@oracle.com>
 
-commit 7b632596188e1973c6b3ac1c9f8252f735e1039f upstream.
+[ Upstream commit dafeaf2c03e71255438ffe5a341d94d180e6c88e ]
 
-__qgroup_excl_accounting() uses the qgroup iterator machinery to
-update the account of one qgroups usage for all its parent hierarchy,
-when we either add or remove a relation and have only exclusive usage.
+When PCI_IRQ_AFFINITY is set for calling pci_alloc_irq_vectors(), it
+means interrupts are spread around the available CPUs. It also means that
+the interrupts become managed, which means that an interrupt is shutdown
+when all the CPUs in the interrupt affinity mask go offline.
 
-However, there is a small bug there: we loop with an extra iteration
-temporary qgroup called `cur` but never actually refer to that in the
-body of the loop. As a result, we redundantly account the same usage to
-the first qgroup in the list.
+Using managed interrupts in this way means that we should ensure that
+completions should not occur on HW queues where the associated interrupt
+is shutdown. This is typically achieved by ensuring only CPUs which are
+online can generate IO completion traffic to the HW queue which they are
+mapped to (so that they can also serve completion interrupts for that HW
+queue).
 
-This can be reproduced in the following way:
+The problem in the driver is that a CPU can generate completions to a HW
+queue whose interrupt may be shutdown, as the CPUs in the HW queue
+interrupt affinity mask may be offline. This can cause IOs to never
+complete and hang the system. The driver maintains its own CPU <-> HW
+queue mapping for submissions, see aac_fib_vector_assign(), but this does
+not reflect the CPU <-> HW queue interrupt affinity mapping.
 
-  mkfs.btrfs -f -O squota <dev>
-  mount <dev> <mnt>
-  btrfs subvol create <mnt>/sv
-  dd if=/dev/zero of=<mnt>/sv/f bs=1M count=1
-  sync
-  btrfs qgroup create 1/100 <mnt>
-  btrfs qgroup create 2/200 <mnt>
-  btrfs qgroup assign 1/100 2/200 <mnt>
-  btrfs qgroup assign 0/256 1/100 <mnt>
-  btrfs qgroup show <mnt>
+Commit 9dc704dcc09e ("scsi: aacraid: Reply queue mapping to CPUs based on
+IRQ affinity") tried to remedy this issue may mapping CPUs properly to HW
+queue interrupts. However this was later reverted in commit c5becf57dd56
+("Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ
+affinity") - it seems that there were other reports of hangs. I guess
+that this was due to some implementation issue in the original commit or
+maybe a HW issue.
 
-and the broken result is (note the 2MiB on 1/100 and 0Mib on 2/100):
+Fix the very original hang by just not using managed interrupts by not
+setting PCI_IRQ_AFFINITY.  In this way, all CPUs will be in each HW queue
+affinity mask, so should not create completion problems if any CPUs go
+offline.
 
-  Qgroupid    Referenced    Exclusive   Path
-  --------    ----------    ---------   ----
-  0/5           16.00KiB     16.00KiB   <toplevel>
-  0/256          1.02MiB      1.02MiB   sv
-
-  Qgroupid    Referenced    Exclusive   Path
-  --------    ----------    ---------   ----
-  0/5           16.00KiB     16.00KiB   <toplevel>
-  0/256          1.02MiB      1.02MiB   sv
-  1/100          2.03MiB      2.03MiB   2/100<1 member qgroup>
-  2/100            0.00B        0.00B   <0 member qgroups>
-
-With this fix, which simply re-uses `qgroup` as the iteration variable,
-we see the expected result:
-
-  Qgroupid    Referenced    Exclusive   Path
-  --------    ----------    ---------   ----
-  0/5           16.00KiB     16.00KiB   <toplevel>
-  0/256          1.02MiB      1.02MiB   sv
-
-  Qgroupid    Referenced    Exclusive   Path
-  --------    ----------    ---------   ----
-  0/5           16.00KiB     16.00KiB   <toplevel>
-  0/256          1.02MiB      1.02MiB   sv
-  1/100          1.02MiB      1.02MiB   2/100<1 member qgroup>
-  2/100          1.02MiB      1.02MiB   <0 member qgroups>
-
-The existing fstests did not exercise two layer inheritance so this bug
-was missed. I intend to add that testing there, as well.
-
-Fixes: a0bdc04b0732 ("btrfs: qgroup: use qgroup_iterator in __qgroup_excl_accounting()")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20250715111535.499853-1-john.g.garry@oracle.com
+Closes: https://lore.kernel.org/linux-scsi/20250618192427.3845724-1-jmeneghi@redhat.com/
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |    3 +--
+ drivers/scsi/aacraid/comminit.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1492,7 +1492,6 @@ static int __qgroup_excl_accounting(stru
- 				    struct btrfs_qgroup *src, int sign)
- {
- 	struct btrfs_qgroup *qgroup;
--	struct btrfs_qgroup *cur;
- 	LIST_HEAD(qgroup_list);
- 	u64 num_bytes = src->excl;
- 	int ret = 0;
-@@ -1502,7 +1501,7 @@ static int __qgroup_excl_accounting(stru
- 		goto out;
- 
- 	qgroup_iterator_add(&qgroup_list, qgroup);
--	list_for_each_entry(cur, &qgroup_list, iterator) {
-+	list_for_each_entry(qgroup, &qgroup_list, iterator) {
- 		struct btrfs_qgroup_list *glist;
- 
- 		qgroup->rfer += sign * num_bytes;
+diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
+index 28cf18955a08..726c8531b7d3 100644
+--- a/drivers/scsi/aacraid/comminit.c
++++ b/drivers/scsi/aacraid/comminit.c
+@@ -481,8 +481,7 @@ void aac_define_int_mode(struct aac_dev *dev)
+ 	    pci_find_capability(dev->pdev, PCI_CAP_ID_MSIX)) {
+ 		min_msix = 2;
+ 		i = pci_alloc_irq_vectors(dev->pdev,
+-					  min_msix, msi_count,
+-					  PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
++					  min_msix, msi_count, PCI_IRQ_MSIX);
+ 		if (i > 0) {
+ 			dev->msi_enabled = 1;
+ 			msi_count = i;
+-- 
+2.39.5
+
 
 
 
