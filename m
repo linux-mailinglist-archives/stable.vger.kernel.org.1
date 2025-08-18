@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3884B2A9CF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66A2B2A6CE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E46FE3BBB49
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5494C580359
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC012343D8C;
-	Mon, 18 Aug 2025 14:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C448322532;
+	Mon, 18 Aug 2025 13:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okPYKyE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oxoshe67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906B343D80;
-	Mon, 18 Aug 2025 14:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094E4322525;
+	Mon, 18 Aug 2025 13:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525863; cv=none; b=ZU0hkRuuDhb8Lf1Fdx1x17grE17K8DlIXAmpP1+OjvSFoZNkEvuGL4YQA7tIe3rv36FxsayY10kHQtGqD0dWV35IXGIIdnCtto4XYviVTcn3RtYSD7fi9BXVc2SE67oLxDy5HQETvXN+iO9mPzx4FvqBS2NBj6Z69wjcC39yym0=
+	t=1755524179; cv=none; b=VlTva3ZnVOSv6uCaOqd6+CE8Qs80iSToXxaEISiiqGhloqEensifrJ+a4b33J9ablIQ/7vmtXbgnVodANwkuj4ZqQAGEyEEdPVOurFqihfcX7h2Ior8G9ZLb+xVKip9QVhDqpCfN78iN5GHC7nQedST0ZQbenb7ljUW//c4uqGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525863; c=relaxed/simple;
-	bh=qybBR+FG+SRgCP1evoBxMGj4DDHLQLh9BIT7jMD5Wy4=;
+	s=arc-20240116; t=1755524179; c=relaxed/simple;
+	bh=3HmXGMQZGprrm3/vk9w4Q7t4Da+Hr1tGdJtSb72gxd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjTvquSe932yx2F2OJKCcmG6ihtn1qI6QpyjnCeH30S2YHpdvSri3G7I0KCxiqar0jnnJ7k+jErvNiXrRGPigJ9ZDABEpwUESKETXU9NRh4DCZojP0sLg/KOcRrnXaq+t2Vt+SPU/WOiolrCgB8Yt8erL121AAnRy2boJkokAS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okPYKyE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDED7C4CEEB;
-	Mon, 18 Aug 2025 14:04:22 +0000 (UTC)
+	 MIME-Version; b=u9/6T6aURZKTmIoD3P916LFPUMlVweVfke6VwkOrLIc0N8qVpIJwOorzez3/3BhCMp+vwTncYdDQasm8SfTZ3uyIgeQMHvJYTNfBMyjXmkY+GYFB+a+M74H3Bglr7mcW7FYMTpBi8RWfKA3zG0BnzoCXku5X7GOwy09i9yHTlrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oxoshe67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D804C19423;
+	Mon, 18 Aug 2025 13:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525863;
-	bh=qybBR+FG+SRgCP1evoBxMGj4DDHLQLh9BIT7jMD5Wy4=;
+	s=korg; t=1755524178;
+	bh=3HmXGMQZGprrm3/vk9w4Q7t4Da+Hr1tGdJtSb72gxd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okPYKyE71jAYBE7YPGl/AoUn/rxf5RWgHvsCOQrg0QsxRCOgVS8WhDqYIxOtaMatI
-	 OtK7SS5X9VjZgaeYIquVB3sFWbI2lnBloXVhjyyRs08x/2IHuhBE7bZytigyueUE6O
-	 pcwENuhgFhXhMQJ7hAlzxHDsvZtuap+2ts68BDA8=
+	b=Oxoshe67cB8Sfz52931Z6/HmhsfRbOsdgwzV4sF5Axx4sfpwuL7Nz+L+QrzSbGxrc
+	 hV7sAVCyymwXbZzBsqWBXxHezvDw+Ox8ER/QSXA7qd6KPnXLn/zRkl4ZKYN6ohVXA7
+	 ups0AxPWyEfMSYQ+NVfrc45Rc8MEyVReNaIVc71Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Purva Yeshi <purvayeshi550@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 389/570] media: i2c: vd55g1: Setup sensor external clock before patching
+Subject: [PATCH 6.15 390/515] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
 Date: Mon, 18 Aug 2025 14:46:16 +0200
-Message-ID: <20250818124520.831180269@linuxfoundation.org>
+Message-ID: <20250818124513.429697465@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-[ Upstream commit df2f8fd91bde57d5d5aca6adddf7e988f2e8c60e ]
+[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
 
-Proper clock configuration is required to advance through FSM states.
-Prior than this having a different clock value than default sensor's
-value was used (12 MHz) could prevent the sensor from booting.
+Fix Smatch-detected error:
+drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
+error: uninitialized symbol 'r'.
 
-Signed-off-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Smatch detects a possible use of the uninitialized variable 'r' in
+dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
+skipped and 'r' is returned without being set, leading to undefined
+behavior.
+
+Initialize 'r' to 0 before the loop. This ensures that if there are no
+devices to iterate over, the function still returns a defined value.
+
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/vd55g1.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/md/dm-zoned-target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/vd55g1.c b/drivers/media/i2c/vd55g1.c
-index 25e2fc88a036..8552ce75e1aa 100644
---- a/drivers/media/i2c/vd55g1.c
-+++ b/drivers/media/i2c/vd55g1.c
-@@ -1038,8 +1038,6 @@ static int vd55g1_enable_streams(struct v4l2_subdev *sd,
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
+index 6141fc25d842..c38bd6e4c273 100644
+--- a/drivers/md/dm-zoned-target.c
++++ b/drivers/md/dm-zoned-target.c
+@@ -1061,7 +1061,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
+ 	struct dmz_target *dmz = ti->private;
+ 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
+ 	sector_t capacity;
+-	int i, r;
++	int i, r = 0;
  
--	vd55g1_write(sensor, VD55G1_REG_EXT_CLOCK, sensor->xclk_freq, &ret);
--
- 	/* Configure output */
- 	vd55g1_write(sensor, VD55G1_REG_MIPI_DATA_RATE,
- 		     sensor->mipi_rate, &ret);
-@@ -1613,6 +1611,9 @@ static int vd55g1_power_on(struct device *dev)
- 		goto disable_clock;
- 	}
- 
-+	/* Setup clock now to advance through system FSM states */
-+	vd55g1_write(sensor, VD55G1_REG_EXT_CLOCK, sensor->xclk_freq, &ret);
-+
- 	ret = vd55g1_patch(sensor);
- 	if (ret) {
- 		dev_err(dev, "Sensor patch failed %d\n", ret);
+ 	for (i = 0; i < dmz->nr_ddevs; i++) {
+ 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
 -- 
 2.39.5
 
