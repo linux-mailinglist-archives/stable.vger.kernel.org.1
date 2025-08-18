@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D9BB2A584
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF93B2A26B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E3807BC530
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 636374E2E2D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290AD321F36;
-	Mon, 18 Aug 2025 13:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7BA31E113;
+	Mon, 18 Aug 2025 12:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8qYMF2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1O4/tF01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA78D226D0F;
-	Mon, 18 Aug 2025 13:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F7C31E10D;
+	Mon, 18 Aug 2025 12:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523405; cv=none; b=kxI+fomzaYg5khOtSfaL2c35S5OoAfgmEx0JBbO+YslvFTE0+p3OVHF5fEUWgXjro+8db2WJTkc1OrEF6XX1sgu4A4y3PuB3m1rCMllRvDY4Bzvcm7Tt2eZt3Vt3ilcHZKUSOAm11Mgq1VlLCmJj3As+KdpQk9vNCGrbI61hzYs=
+	t=1755521788; cv=none; b=UXBE4kBwg3oSIE2TRLzYaPLXfEwrjhme0CRZ8GV6a9uSpoVWAqRE3ZpRlloe/ahpeGKzzPN8sKvUojjAxDNe9r35H4X+vJrfClkd8XBtdguccw3WuTpvpouE4vusB/nZTDV4Llt5xY6uIJ+DL7U7DWbdHcggUCVBOvZL7eWhHU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523405; c=relaxed/simple;
-	bh=HPbMH2D/kIg3mv5sfCtZoUx73yI3f/typsk2rBNKeBo=;
+	s=arc-20240116; t=1755521788; c=relaxed/simple;
+	bh=ozsfhQAjuHUkRMH+kPqBmQGowoOBQudc6Xk5eiPzGY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nP+d4j5VqSXQZFmeejrn/MMEQnyZXdogntGUmgsIcMGZdyjeZXugo1to5T1SWBC8PbJ2B61fKxp2QEoFBDw6c2Sf2zpnAIa6cZs36EISG9iKbyXwdStUc5Ku+ai2+YUNAqKeBObQzbtBJhXDmCNOLKILZ8qPUyvX/fRG1icFynQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8qYMF2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A20BC4CEEB;
-	Mon, 18 Aug 2025 13:23:25 +0000 (UTC)
+	 MIME-Version; b=uZ6UaqLTjq/+oPqFeBB3uXg3kwb1G2kG8VZRShyr8nLcJwesDWPrLQfhOxIKuJ/1CsOoPvYs5YVfDESKRouOCTiXOyAy3Z8b88j/Sl7mf39D8f1iofb5wWBYI/L7LOk3WbFD2p8uc2yujwLFtZtSgFqQmD4JNacznQEqeh63UG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1O4/tF01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF635C4CEEB;
+	Mon, 18 Aug 2025 12:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523405;
-	bh=HPbMH2D/kIg3mv5sfCtZoUx73yI3f/typsk2rBNKeBo=;
+	s=korg; t=1755521788;
+	bh=ozsfhQAjuHUkRMH+kPqBmQGowoOBQudc6Xk5eiPzGY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8qYMF2Dt5gjhRQBdXaWR7jheNIncgLlwP46pGxkhpxEIynrR6yesFqUqxm0wXXWP
-	 L4Auizs1+j2XWDti+tuJTf8p3BK6U/WGyANh1eA3mOKZnwO6YvbcSg70TTNJtRde/q
-	 E+e83P3iDFdmMhnpcmWzYnEub7j0f/7qn6G+uZCU=
+	b=1O4/tF01oObT/p5vbRWTX8AHmkVhEBzlGRJWC4sSwKBmRkKUu5HC8ve1gX0b1yOED
+	 BWvDzwnxIg+3Bh7IsQqSX8xD82yLQKA+K1LuD5Yz+pBrHrY9tp59lJAxLgo6yYZGQX
+	 hjpMiedkJnNHnUmfj96wxdy56yWYWMZhsGumIc4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 162/515] char: misc: Fix improper and inaccurate error code returned by misc_init()
-Date: Mon, 18 Aug 2025 14:42:28 +0200
-Message-ID: <20250818124504.618081695@linuxfoundation.org>
+Subject: [PATCH 6.12 123/444] selftests: tracing: Use mutex_unlock for testing glob filter
+Date: Mon, 18 Aug 2025 14:42:29 +0200
+Message-ID: <20250818124453.527927785@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 0ef1fe4bc38673db72e39b700b29c50dfcc5a415 ]
+[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
 
-misc_init() returns -EIO for __register_chrdev() invocation failure, but:
+Since commit c5b6ababd21a ("locking/mutex: implement
+mutex_trylock_nested") makes mutex_trylock() as an inlined
+function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
+mutex_trylock() for testing the glob filter of ftrace.
 
-- -EIO is for I/O error normally, but __register_chrdev() does not do I/O.
-- -EIO can not cover various error codes returned by __register_chrdev().
+Use mutex_unlock instead.
 
-Fix by returning error code of __register_chrdev().
-
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250620-fix_mischar-v1-3-6c2716bbf1fa@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-index dda466f9181a..30178e20d962 100644
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -314,8 +314,8 @@ static int __init misc_init(void)
- 	if (err)
- 		goto fail_remove;
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+index 4b994b6df5ac..ed81eaf2afd6 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
+ ftrace_filter_check '*pin*lock' '.*pin.*lock$'
  
--	err = -EIO;
--	if (__register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops))
-+	err = __register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops);
-+	if (err < 0)
- 		goto fail_printk;
- 	return 0;
+ # filter by start*mid*
+-ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
++ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
  
+ # Advanced full-glob matching feature is recently supported.
+ # Skip the tests if we are sure the kernel does not support it.
 -- 
 2.39.5
 
