@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-171164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B3FB2A7E7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6B9B2A243
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01B5A583FBF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D82D37A80CD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D780335BA3;
-	Mon, 18 Aug 2025 13:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2222632145A;
+	Mon, 18 Aug 2025 12:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJAe6ZSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9Ibn6+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A564335BBF;
-	Mon, 18 Aug 2025 13:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1731CA58;
+	Mon, 18 Aug 2025 12:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525025; cv=none; b=RXJYHNjFnH8XVWHLunC5NtV78hwgFKJq+0/KJZh8PiH3suHlxgSKwozZ35lCv3NnD50tP63cqTm3M7VacthCwV5/CQPBrDfmL13h9gOg8KpHQvb6vbdk/ctFzbuFvc3WbFaiyGJMmXWSaQs6aP7f+QPccD+p8reBewMxOFAR2mU=
+	t=1755521587; cv=none; b=jWG9gRRGGX+pSeFVaVkIqChAlzxREthZDq62gzFGUcMBK+zx9Rb5Sm0c9OKn9BiLGMJItIIaPTBURHlIeQkCS2Yu2++eNM5nQ2NVcxeZXwTajaBdv6Ci9M5N5CBULG+iwvRKhb/1Ql7wspgPHOb0N7YPhMPaGLiT5e4sidpAWWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525025; c=relaxed/simple;
-	bh=aUTUCXr7oVVFKp6jPUU3/cRtoE/g5KwRBkWOK6LTGF8=;
+	s=arc-20240116; t=1755521587; c=relaxed/simple;
+	bh=F75cNJEbr89CSOoOshQJ/rr4DsMAFoQewFF3xlZlUZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUKig40jNfawYbT7WuXBTQ2tZlvEsh9iVMcCnuI/mM/fw6auuQ0mQZ0CeVexy8hL+uvxlAnR5hBe3mkyl8rEEa15SaKPmC8Jc0PQY/0LVcWFteR6dfEC8P0aENMkHTc7plpF1jzxQLUdoxzIenNwuZha9Lc0+oyaHBUCUOz48Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJAe6ZSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F69FC4CEEB;
-	Mon, 18 Aug 2025 13:50:23 +0000 (UTC)
+	 MIME-Version; b=C2B3HElVb0sbIOgBCGcMnQdhyzGE99ywkZ+1o5KeDiPN4+wmc+CzCrceH1dwPBHQ897jVk3AzmuKTAjZVBRjtogZhRt0SBMgilmLYmlWIKjWVbIXGoAG1mMOO5ncRZlm5wMSE8awKFKw6g4cxlWbaRVqQCi0sghaawNjOZyi/tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9Ibn6+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4209EC4CEEB;
+	Mon, 18 Aug 2025 12:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525025;
-	bh=aUTUCXr7oVVFKp6jPUU3/cRtoE/g5KwRBkWOK6LTGF8=;
+	s=korg; t=1755521587;
+	bh=F75cNJEbr89CSOoOshQJ/rr4DsMAFoQewFF3xlZlUZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJAe6ZSyc+V+mAfVCtXJ7ksdFtt3yoV1sV38ucLr95GATLfIjZ9mBrmtdp0BcbK85
-	 U16qgUH2vVaVX7pRb4B1yXPIjJV3PeLelcwUdwluQmTwWmMWPhIPYqO/AWVHiJhmzF
-	 WzGUXxjP7WOISQh2urgxrIQ4iMKDrVkdQ67H9Fvk=
+	b=Q9Ibn6+DTWOlGlUgJs3YSpMAB+iy5D1tX6ir6I0O1LcQYnDRDn3331XVpovDEo5iQ
+	 F5mfpgF34E0tJlsWxLrDlaFlt5gnko/pxn2POH2a93GXNVOqo8k1Dl5KzxoALuOnip
+	 JZdYRQC8Fz0GLeqk4PxXj+tr6c86Y7O6mXE1+w/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 104/570] gfs2: Validate i_depth for exhash directories
+Subject: [PATCH 6.12 065/444] hfs: fix slab-out-of-bounds in hfs_bnode_read()
 Date: Mon, 18 Aug 2025 14:41:31 +0200
-Message-ID: <20250818124509.815635644@linuxfoundation.org>
+Message-ID: <20250818124451.384373783@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +61,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 557c024ca7250bb65ae60f16c02074106c2f197b ]
+[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
 
-A fuzzer test introduced corruption that ends up with a depth of 0 in
-dir_e_read(), causing an undefined shift by 32 at:
+This patch introduces is_bnode_offset_valid() method that checks
+the requested offset value. Also, it introduces
+check_and_correct_requested_length() method that checks and
+correct the requested length (if it is necessary). These methods
+are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
+hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
+the access out of allocated memory and triggering the crash.
 
-  index = hash >> (32 - dip->i_depth);
-
-As calculated in an open-coded way in dir_make_exhash(), the minimum
-depth for an exhash directory is ilog2(sdp->sd_hash_ptrs) and 0 is
-invalid as sdp->sd_hash_ptrs is fixed as sdp->bsize / 16 at mount time.
-
-So we can avoid the undefined behaviour by checking for depth values
-lower than the minimum in gfs2_dinode_in(). Values greater than the
-maximum are already being checked for there.
-
-Also switch the calculation in dir_make_exhash() to use ilog2() to
-clarify how the depth is calculated.
-
-Tested with the syzkaller repro.c and xfstests '-g quick'.
-
-Reported-by: syzbot+4708579bb230a0582a57@syzkaller.appspotmail.com
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/dir.c   | 6 ++----
- fs/gfs2/glops.c | 6 ++++++
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
-index dbf1aede744c..509e2f0d97e7 100644
---- a/fs/gfs2/dir.c
-+++ b/fs/gfs2/dir.c
-@@ -60,6 +60,7 @@
- #include <linux/crc32.h>
- #include <linux/vmalloc.h>
- #include <linux/bio.h>
-+#include <linux/log2.h>
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index cb823a8a6ba9..1dac5d9c055f 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -15,6 +15,48 @@
  
- #include "gfs2.h"
- #include "incore.h"
-@@ -912,7 +913,6 @@ static int dir_make_exhash(struct inode *inode)
- 	struct qstr args;
- 	struct buffer_head *bh, *dibh;
- 	struct gfs2_leaf *leaf;
--	int y;
- 	u32 x;
- 	__be64 *lp;
- 	u64 bn;
-@@ -979,9 +979,7 @@ static int dir_make_exhash(struct inode *inode)
- 	i_size_write(inode, sdp->sd_sb.sb_bsize / 2);
- 	gfs2_add_inode_blocks(&dip->i_inode, 1);
- 	dip->i_diskflags |= GFS2_DIF_EXHASH;
--
--	for (x = sdp->sd_hash_ptrs, y = -1; x; x >>= 1, y++) ;
--	dip->i_depth = y;
-+	dip->i_depth = ilog2(sdp->sd_hash_ptrs);
+ #include "btree.h"
  
- 	gfs2_dinode_out(dip, dibh->b_data);
- 
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index cebd66b22694..fe0faad4892f 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -11,6 +11,7 @@
- #include <linux/bio.h>
- #include <linux/posix_acl.h>
- #include <linux/security.h>
-+#include <linux/log2.h>
- 
- #include "gfs2.h"
- #include "incore.h"
-@@ -450,6 +451,11 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
- 		gfs2_consist_inode(ip);
- 		return -EIO;
- 	}
-+	if ((ip->i_diskflags & GFS2_DIF_EXHASH) &&
-+	    depth < ilog2(sdp->sd_hash_ptrs)) {
-+		gfs2_consist_inode(ip);
-+		return -EIO;
++static inline
++bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++{
++	bool is_valid = off < node->tree->node_size;
++
++	if (!is_valid) {
++		pr_err("requested invalid offset: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off);
 +	}
- 	ip->i_depth = (u8)depth;
- 	ip->i_entries = be32_to_cpu(str->di_entries);
++
++	return is_valid;
++}
++
++static inline
++int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
++{
++	unsigned int node_size;
++
++	if (!is_bnode_offset_valid(node, off))
++		return 0;
++
++	node_size = node->tree->node_size;
++
++	if ((off + len) > node_size) {
++		int new_len = (int)node_size - off;
++
++		pr_err("requested length has been corrected: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, "
++		       "requested_len %d, corrected_len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len, new_len);
++
++		return new_len;
++	}
++
++	return len;
++}
++
+ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+@@ -22,6 +64,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 	int bytes_read;
+ 	int bytes_to_read;
  
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	pagenum = off >> PAGE_SHIFT;
+ 	off &= ~PAGE_MASK; /* compute page offset for the first page */
+@@ -80,6 +136,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -104,6 +174,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -119,6 +203,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(src_node, src, len);
++	len = check_and_correct_requested_length(dst_node, dst, len);
++
+ 	src += src_node->page_offset;
+ 	dst += dst_node->page_offset;
+ 	src_page = src_node->page[0];
+@@ -136,6 +224,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(node, src, len);
++	len = check_and_correct_requested_length(node, dst, len);
++
+ 	src += node->page_offset;
+ 	dst += node->page_offset;
+ 	page = node->page[0];
 -- 
 2.39.5
 
