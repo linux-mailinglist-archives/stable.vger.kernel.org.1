@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A79B2A593
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74E0B2A833
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26466582383
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90066E253C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A41B261B9E;
-	Mon, 18 Aug 2025 13:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44214335BCD;
+	Mon, 18 Aug 2025 13:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ6BFsPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8NKMPwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B40258EDE;
-	Mon, 18 Aug 2025 13:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26DE335BAA;
+	Mon, 18 Aug 2025 13:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523300; cv=none; b=cQBvXGnohec8BYKGp4y53Rk1eMfxSJc9v+UadMjsclZge5sqdzIx9E68Y52wbyL0D7E039qG2+TRMg+tJ0cY1FLktgIzGjM0BNosbJJ4bebbo9/NGsh68wXCO2vtkv77z9vjtje/t4VvbOHL5uGFav8vet6G7LIOl21mtMsCNtA=
+	t=1755525009; cv=none; b=uhe01DommgIRICaYO0gWPVUCQBDMBegq1ruy3H8KFvkRTc5mbFE3QIMBEKsK9PtXRA6qsP3iowVybINN/cvlEIVGnXRvfJUmuyTVRsZvDYLfOlUjwf32u4xPWkAkSCC+ephShi7mgb3KHEesK0f2vgjf0IcChNzIW70ErzdIUlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523300; c=relaxed/simple;
-	bh=ZwTORpMIObtnuIYLIw6nOWeipw9v7+yRX9DKwsLC5z4=;
+	s=arc-20240116; t=1755525009; c=relaxed/simple;
+	bh=Zk8BlyGHNydMvYfGu79HbTb4UCKV592wKQSXLydrNzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHOLzaSvdPRMaAu0ldvQMGp9dYa99WyGAbKCcg5Pbo/lPoguFh6zggfPePiriMezmXNQDjJ8mgXoISpytRKM+vY60NF/HUFqtp/+Ri2JrnMARW4Ww7obRJfs4Pbw8n1AcCfq+10QW/MsxoXpr3nk5CGp5olkBtQzfe1YsKap/bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ6BFsPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36978C4CEEB;
-	Mon, 18 Aug 2025 13:21:38 +0000 (UTC)
+	 MIME-Version; b=Ne2ZPFOs9AVlewoSjtp4zDv9VpitF8kVCkhNQRYW7ggpYh4udo3cWnveyAHmXJ7Z1R0kbxwe1gFJPO4zrlzkc+jFiypMzQU2AVM1ZiAYqIgMmIh99w2fEp5atL9AUw2GDBA6TSlOBeC2FcEiAjijCIjoMwi+UyK58qTjQTpiubM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8NKMPwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1719AC4CEEB;
+	Mon, 18 Aug 2025 13:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523299;
-	bh=ZwTORpMIObtnuIYLIw6nOWeipw9v7+yRX9DKwsLC5z4=;
+	s=korg; t=1755525008;
+	bh=Zk8BlyGHNydMvYfGu79HbTb4UCKV592wKQSXLydrNzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZ6BFsPOGOPnNpBC7obHMK4qFBUw2F1QL+1xaH3rstv84q3YDZK2OrV241ne2ZBb0
-	 O0O5CEeOotJqlW/PSoUZFB1bbsZJzxlJKby5Hfrd9CbDeklDUqv1nMFEHqep/Gi8bD
-	 Lthbh0r+1C+TStCc6pMhiPXpdkDBrnWHLUguqdIs=
+	b=E8NKMPwtyHIbLT7d5JA4//FKOtewup5hai2qp44Q4Yg6oN228C0zuv68UJ66M1kb4
+	 CQ69/acvW58WFtqMBdgUYnYBB1eg73qpLbe1+B2zjyB99zcVKYWZwK4qv8yzdwdPKy
+	 tC5FC9+ik1/GZZu12Mvd8LznKAl+bRnxUWxCHRns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jameson Thies <jthies@google.com>,
-	Benson Leung <bleung@chromium.org>,
+	Cynthia Huang <cynthia@andestech.com>,
+	Ben Zong-You Xie <ben717@andestech.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 129/515] usb: typec: ucsi: Add poll_cci operation to cros_ec_ucsi
-Date: Mon, 18 Aug 2025 14:41:55 +0200
-Message-ID: <20250818124503.368539887@linuxfoundation.org>
+Subject: [PATCH 6.16 129/570] selftests/futex: Define SYS_futex on 32-bit architectures with 64-bit time_t
+Date: Mon, 18 Aug 2025 14:41:56 +0200
+Message-ID: <20250818124510.792303122@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jameson Thies <jthies@google.com>
+From: Cynthia Huang <cynthia@andestech.com>
 
-[ Upstream commit 300386d117a98961fc1d612d1f1a61997d731b8a ]
+[ Upstream commit 04850819c65c8242072818655d4341e70ae998b5 ]
 
-cros_ec_ucsi fails to allocate a UCSI instance in it's probe function
-because it does not define all operations checked by ucsi_create.
-Update cros_ec_ucsi operations to use the same function for read_cci
-and poll_cci.
+The kernel does not provide sys_futex() on 32-bit architectures that do not
+support 32-bit time representations, such as riscv32.
 
-Signed-off-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20250711202033.2201305-1-jthies@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, glibc cannot define SYS_futex, causing compilation failures in
+tests that rely on this syscall. Define SYS_futex as SYS_futex_time64 in
+such cases to ensure successful compilation and compatibility.
+
+Signed-off-by: Cynthia Huang <cynthia@andestech.com>
+Signed-off-by: Ben Zong-You Xie <ben717@andestech.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/all/20250710103630.3156130-1-ben717@andestech.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/cros_ec_ucsi.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/futex/include/futextest.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/usb/typec/ucsi/cros_ec_ucsi.c b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
-index 4ec1c6d22310..eed2a7d0ebc6 100644
---- a/drivers/usb/typec/ucsi/cros_ec_ucsi.c
-+++ b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
-@@ -137,6 +137,7 @@ static int cros_ucsi_sync_control(struct ucsi *ucsi, u64 cmd, u32 *cci,
- static const struct ucsi_operations cros_ucsi_ops = {
- 	.read_version = cros_ucsi_read_version,
- 	.read_cci = cros_ucsi_read_cci,
-+	.poll_cci = cros_ucsi_read_cci,
- 	.read_message_in = cros_ucsi_read_message_in,
- 	.async_control = cros_ucsi_async_control,
- 	.sync_control = cros_ucsi_sync_control,
+diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testing/selftests/futex/include/futextest.h
+index ddbcfc9b7bac..7a5fd1d5355e 100644
+--- a/tools/testing/selftests/futex/include/futextest.h
++++ b/tools/testing/selftests/futex/include/futextest.h
+@@ -47,6 +47,17 @@ typedef volatile u_int32_t futex_t;
+ 					 FUTEX_PRIVATE_FLAG)
+ #endif
+ 
++/*
++ * SYS_futex is expected from system C library, in glibc some 32-bit
++ * architectures (e.g. RV32) are using 64-bit time_t, therefore it doesn't have
++ * SYS_futex defined but just SYS_futex_time64. Define SYS_futex as
++ * SYS_futex_time64 in this situation to ensure the compilation and the
++ * compatibility.
++ */
++#if !defined(SYS_futex) && defined(SYS_futex_time64)
++#define SYS_futex SYS_futex_time64
++#endif
++
+ /**
+  * futex() - SYS_futex syscall wrapper
+  * @uaddr:	address of first futex
 -- 
 2.39.5
 
