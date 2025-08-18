@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D8FB2A3EB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B56B2AA3B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8492D1B2625C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B035F1BA4228
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A030820126A;
-	Mon, 18 Aug 2025 13:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C830031E101;
+	Mon, 18 Aug 2025 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Neuh/p29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJdh32QK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0A53218C2;
-	Mon, 18 Aug 2025 13:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8710234E19B;
+	Mon, 18 Aug 2025 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522498; cv=none; b=Q5jw192kTIOYig73YAGq3WuoqmeRbLuN4x8hLzzu1rjZHYblD09fiZjAi7ow1A/eSt6UoupLUcr8IoQRnwMqn4lFEC9y49oTEaQMk+zFCGic+nBzU7r9v3tFU1f50cq+QA4bpkwRCnqWkVLxaKle3SL2yfdDGQ+1BJjqtMmeR+8=
+	t=1755525814; cv=none; b=W8U02GrDvuryPMFaVD3LVLEZjTx6KJ1CPL4rubr/XvORhl+SVLksO9RhPzllhoAk2WfuaDWDSIiHDfmJP3fXbpYI8WPlehSEIqEIxlpdAUMRSyJB3G4RJwXX2n0n3/DTUM0FK16D/IZVPfLuKLQ0dqXQTpgU6BLcVgo4z0MrWxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522498; c=relaxed/simple;
-	bh=UVGlxAq+AGY1OoHm4j8PLRk260t691h7ivJleLvhnzQ=;
+	s=arc-20240116; t=1755525814; c=relaxed/simple;
+	bh=9sueY2WCDO9s/Dhxlc2w5TiR8RXGEApG9irsF+al83Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSRyGOVfwYZ/wXMutcp5YnxkoZL5LB9tMUvwhictFz8NfhHvALbIoZR+b9FX5/F0lH2kKlZB/0uBbjvMt6Fh3q/agBBJghDM07eOT33GJeec4kJ9WZreXYFgkYhDTc3BwiHZy71MQcPGmdMywndhcqcxbBt8wgDKoWLyeNfSDTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Neuh/p29; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F34C4CEEB;
-	Mon, 18 Aug 2025 13:08:15 +0000 (UTC)
+	 MIME-Version; b=VsNvW52zaMj5j8eHOs0v5kdKBXEpaT5XCFC3kfnUx3n9zKjvwAX7TRby/V0vgl/qiHAfRflapuEwDsJp1F6dgn9R16gVW7mhaPJvp1uUpUjDBqGG1B66r9WTN+RyUKhj/HaSHPiPnTSxwpvPOlcU4AAVSEssLG8fVPevCOrdUow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJdh32QK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE34C4CEEB;
+	Mon, 18 Aug 2025 14:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522495;
-	bh=UVGlxAq+AGY1OoHm4j8PLRk260t691h7ivJleLvhnzQ=;
+	s=korg; t=1755525814;
+	bh=9sueY2WCDO9s/Dhxlc2w5TiR8RXGEApG9irsF+al83Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Neuh/p298vjL4dsw1Tp7JiHI5k3OcSJ4fMMkP4QzX1iRY0DOZIHtsZdRIq8f6Y2Ps
-	 IH8Q3X8u73Djf00+HXTUnvyOSGAwgwYImfReyh8InRaRXhqbo/rdVwEhaWf7V2Tnhr
-	 oLR99vzKNBbIJyH8TXzSEzS2/3MXuK/83h5TBEFI=
+	b=BJdh32QKNjLng7DQeZZ6YFfie28CmCevcfJw+Jo/t22tGTwrVW8vSoEL9CJOo1Hot
+	 LO/YG1gtJW3kM2TfBu/brnxh3+np52tx7yc2WxGzUTmqXd9qVa53KtjSUJiQfUX4QV
+	 B9fdcGue4Zqll5/ZZe/IymLlEb+NOB66ZSshcBA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Florin Leotescu <florin.leotescu@nxp.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 334/444] dm-mpath: dont print the "loaded" message if registering fails
+Subject: [PATCH 6.16 373/570] hwmon: (emc2305) Set initial PWM minimum value during probe based on thermal state
 Date: Mon, 18 Aug 2025 14:46:00 +0200
-Message-ID: <20250818124501.457671989@linuxfoundation.org>
+Message-ID: <20250818124520.219702972@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
-[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
+[ Upstream commit 0429415a084a15466e87d504e8c2a502488184a5 ]
 
-If dm_register_path_selector, don't print the "version X loaded" message.
+Prevent the PWM value from being set to minimum when thermal zone
+temperature exceeds any trip point during driver probe. Otherwise, the
+PWM fan speed will remains at minimum speed and not respond to
+temperature changes.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+Link: https://lore.kernel.org/r/20250603113125.3175103-5-florin.leotescu@oss.nxp.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-ps-historical-service-time.c | 4 +++-
- drivers/md/dm-ps-queue-length.c            | 4 +++-
- drivers/md/dm-ps-round-robin.c             | 4 +++-
- drivers/md/dm-ps-service-time.c            | 4 +++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/hwmon/emc2305.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
-index b49e10d76d03..2c8626a83de4 100644
---- a/drivers/md/dm-ps-historical-service-time.c
-+++ b/drivers/md/dm-ps-historical-service-time.c
-@@ -541,8 +541,10 @@ static int __init dm_hst_init(void)
- {
- 	int r = dm_register_path_selector(&hst_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " HST_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
-index e305f05ad1e5..eb543e6431e0 100644
---- a/drivers/md/dm-ps-queue-length.c
-+++ b/drivers/md/dm-ps-queue-length.c
-@@ -260,8 +260,10 @@ static int __init dm_ql_init(void)
- {
- 	int r = dm_register_path_selector(&ql_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " QL_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
-index d1745b123dc1..66a15ac0c22c 100644
---- a/drivers/md/dm-ps-round-robin.c
-+++ b/drivers/md/dm-ps-round-robin.c
-@@ -220,8 +220,10 @@ static int __init dm_rr_init(void)
- {
- 	int r = dm_register_path_selector(&rr_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " RR_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
-index 969d31c40272..f8c43aecdb27 100644
---- a/drivers/md/dm-ps-service-time.c
-+++ b/drivers/md/dm-ps-service-time.c
-@@ -341,8 +341,10 @@ static int __init dm_st_init(void)
- {
- 	int r = dm_register_path_selector(&st_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " ST_VERSION " loaded");
- 
+diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+index 234c54956a4b..1dbe3f26467d 100644
+--- a/drivers/hwmon/emc2305.c
++++ b/drivers/hwmon/emc2305.c
+@@ -299,6 +299,12 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
+ 		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
+ 		return PTR_ERR(data->cdev_data[cdev_idx].cdev);
+ 	}
++
++	if (data->cdev_data[cdev_idx].cur_state > 0)
++		/* Update pwm when temperature is above trips */
++		pwm = EMC2305_PWM_STATE2DUTY(data->cdev_data[cdev_idx].cur_state,
++					     data->max_state, EMC2305_FAN_MAX);
++
+ 	/* Set minimal PWM speed. */
+ 	if (data->pwm_separate) {
+ 		ret = emc2305_set_pwm(dev, pwm, cdev_idx);
+@@ -312,10 +318,10 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
+ 		}
+ 	}
+ 	data->cdev_data[cdev_idx].cur_state =
+-		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
++		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
+ 				       EMC2305_FAN_MAX);
+ 	data->cdev_data[cdev_idx].last_hwmon_state =
+-		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
++		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
+ 				       EMC2305_FAN_MAX);
+ 	return 0;
+ }
 -- 
 2.39.5
 
