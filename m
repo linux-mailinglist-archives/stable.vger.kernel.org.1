@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-170875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2806B2A6EB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE45B2A8F5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22191B63A5C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3F307BBB9F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BAC322A3C;
-	Mon, 18 Aug 2025 13:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17452334737;
+	Mon, 18 Aug 2025 14:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRCI/2zB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o84yV921"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC18322A3B;
-	Mon, 18 Aug 2025 13:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A633376B4;
+	Mon, 18 Aug 2025 14:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524083; cv=none; b=OS98PnnGyzYgZj5xstwzk7MdxeOFm08MqqyuPW38p11UNSHwyg5uxUzTqtAJ2sxgHpX2567YE75wzcOI3VhkgXA2dLSwGxaRie0u+IxKQGHimbbC0336V3wpA+UKWn5U3481zLu98Kd8MS9rOaPmzU9wVP3tOUZUU6E/Lfifnag=
+	t=1755525662; cv=none; b=JDJLeoMHLOJCOuzq6YfesswhzUEgTHOLV68ULiIOwH95GdOUxl3MGTYeFHBoSkJDY5d+Q43AtXqT75t1gLf56gSwaoL9AH//hFVLKBwoArQ8U2XiXHkzm5rIYTeWi2EJke/4942TqBvEIvzVoq1RFKLK6I3FRG+75jQoRSvr09E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524083; c=relaxed/simple;
-	bh=/lqcXO84IJYQDZQchY5B3peqbAEyZltgr6jqpcWm4i0=;
+	s=arc-20240116; t=1755525662; c=relaxed/simple;
+	bh=z+WkyoSQQNapYb3WMQTc3fqnoN05D+sR62DafNjo0bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7iZ9FsMNxbcQXjpuKtuuRu44IcuvjjKeUeMBcibW/UmznlGhikYBKBCO5qp5hxnfM4ihJBaTIsmG84s7ggZT2HLHKUY3588xFJGKQLKIVqJ8kT6BpEjKVsE2rPrxwLLVMjfdBvmxpb+E/m0mU7JZWdObepZ/xDAv4wAuRhqE/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRCI/2zB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F85C4CEF1;
-	Mon, 18 Aug 2025 13:34:42 +0000 (UTC)
+	 MIME-Version; b=lqwU+jnZ9vK8ZS6b/1jAdXjW+WgVYYGDhW/ONFOjkl30sl3SlGVRrdidcYH18bjOz1oX+5v6m6ukWp5X7PwUZGr8vk9ncNGH1DovYYkKc9p0A+XHUyglHH6KgPCGRxYmdwyp9ltHSSExsCMEtspUqzBpipn82mP03neoGJuOaTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o84yV921; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D99EC4CEEB;
+	Mon, 18 Aug 2025 14:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524082;
-	bh=/lqcXO84IJYQDZQchY5B3peqbAEyZltgr6jqpcWm4i0=;
+	s=korg; t=1755525662;
+	bh=z+WkyoSQQNapYb3WMQTc3fqnoN05D+sR62DafNjo0bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRCI/2zBWNzRTy9MdWkfYV0Zw432wd/7cNOTtZMoyo53Jk3Qxn7o4Sdvtu1wlUroI
-	 Xgfifm5UhR2krEiN34WlzHHEO0xwqhFkI4goI7hwi44T6GqKkllZQ8M+9uXZO4zc1a
-	 VQ5xir4JhNmDWbxBlMncmjoho8KXfPiUSlVoMIsc=
+	b=o84yV921b5YXvVJyGGAhkEppn2p+J69PfCkge8c6dJ1GtlUYI6Sz3w1T0L96J+5Mp
+	 aFlIICQpH1izfqMypDzrKEHrhSFUVHugIPSw4LddxRFFF1GGXLkL5Hl1PRIXriarMv
+	 xm+6jY7c2/kz+XfdkS46RixK+mT03z6sEAp26mvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 330/515] drm/amd/display: Disable dsc_power_gate for dcn314 by default
+Subject: [PATCH 6.16 329/570] gve: Return error for unknown admin queue command
 Date: Mon, 18 Aug 2025 14:45:16 +0200
-Message-ID: <20250818124511.135083393@linuxfoundation.org>
+Message-ID: <20250818124518.528527475@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 02f3ec53177243d32ee8b6f8ba99136d7887ee3a ]
+[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
 
-[Why]
-"REG_WAIT timeout 1us * 1000 tries - dcn314_dsc_pg_control line"
-warnings seen after resuming from s2idle.
-DCN314 has issues with DSC power gating that cause REG_WAIT timeouts
-when attempting to power down DSC blocks.
+In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
+admin queue command opcode is encountered.
 
-[How]
-Disable dsc_power_gate for dcn314 by default.
+This prevents the function from silently succeeding on invalid input
+and prevents undefined behavior by ensuring the function fails gracefully
+when an unrecognized opcode is provided.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+These changes improve error handling.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c | 1 +
+ drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-index f47cd281d6e7..7aab08151e72 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-@@ -926,6 +926,7 @@ static const struct dc_debug_options debug_defaults_drv = {
- 	.seamless_boot_odm_combine = true,
- 	.enable_legacy_fast_update = true,
- 	.using_dml2 = false,
-+	.disable_dsc_power_gate = true,
- };
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 3e8fc33cc11f..7f2334006f9f 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -564,6 +564,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 		break;
+ 	default:
+ 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
++		return -EINVAL;
+ 	}
  
- static const struct dc_panel_config panel_config_defaults = {
+ 	return 0;
 -- 
 2.39.5
 
