@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-170516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FABB2A48F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBEDB2AA7B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF544174702
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E23168630A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E0F31E0FF;
-	Mon, 18 Aug 2025 13:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C08822FDE8;
+	Mon, 18 Aug 2025 14:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwlT3EEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kd4fC2tN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C5831B13A;
-	Mon, 18 Aug 2025 13:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079CB1D61BB;
+	Mon, 18 Aug 2025 14:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522893; cv=none; b=bRejNdfHrQVaF5PFRaC7CCNyuZPL9SaO9+nemdfeSnOsdRsUgXmskEwwVqbfab9njzIw2/1b1KpQ6RMbWjxuVkSHos9jNmkRPMFrHuvMSt5rOcD7H8Vttyx3RFTiLccc8UnxJwzqHD60Mx0qwmb1Q2Gs3Zge0a/vCsiJswEBaQ0=
+	t=1755526136; cv=none; b=fn6XLxAgKcjgbNAuTWrCH8PCbN+7cFH7bUO1doWMuOKmdbG3Urb1MC+0ntcAp1/XIWoyE7Zp4t4zDe6HaXYypmUPYlxnCZPlZCwfck0Rh1Aas2goGxf0yH/2yAvx99MtRDcWpwKE59iWhQb2WRXY0mlFoBXVke8AyAtiNqtxMG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522893; c=relaxed/simple;
-	bh=+vq8NK/lcl+oNe8PSBKPDd7QGaaRad3gQXWoT+UrkWk=;
+	s=arc-20240116; t=1755526136; c=relaxed/simple;
+	bh=UYofjXticcb/N1J8MTxSEvLBZrewNDCShqlphaoK/RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAmCTrT1ZQEtmsDCHYdHXS6jF5snFzRmuietQza6WgFk8501nkwvw/9v+4auAWKeGYeqhsDtKwCuV2VQd0cTwUX4rg3qLHT+o4gkfjJ2jZg5ehRBj62mU0TAxzE9yOFXgn6okP9Fe25WG9LuVaM3bfvUUzDqGhAl5j3h2FzH4GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwlT3EEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16ACAC4CEEB;
-	Mon, 18 Aug 2025 13:14:52 +0000 (UTC)
+	 MIME-Version; b=NccQ5g5K126O7Sx3WCFCOafxWYrsGm2bneYgOFhMPdL7+1Pr1eX0b6+4ThKFHZNhhlUd+nnESK9rXJEztenmzieCNJoGABbdNvLdstGVXcvDA4g05ijsZgZG9cSnqQY+dXtAwbBHO35k1Fyx8ncuOk5Yctx9tOPNwSkZFcTJqrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kd4fC2tN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CC3C4CEEB;
+	Mon, 18 Aug 2025 14:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522893;
-	bh=+vq8NK/lcl+oNe8PSBKPDd7QGaaRad3gQXWoT+UrkWk=;
+	s=korg; t=1755526135;
+	bh=UYofjXticcb/N1J8MTxSEvLBZrewNDCShqlphaoK/RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LwlT3EEFz+PgQmxpxx+w/xdVTS++UTQCnanVilDEmdoEef/n8JbjFoM1hx+OAnfPh
-	 fdAEHS8IhaMmKZ+wZVay8tZ96rn3qCaIw+a2H0iaPHbo8VWDP5VnL7BaEjNPWT3Ncq
-	 +/YKdugs0ftn8hEQxOOsh99M9PBRl1jU/YLPCt3A=
+	b=Kd4fC2tNdL9/30gwhUAXy0pdTqr7Nye47ZCQaEfoI9ZnNHvbDuGzUWN6uMsueO990
+	 uvdhckKx/9Oc7W/v7EBGEvp47P841MtOmGJDNJX0D34mWTGJk74rkYvpF7JSrpXTIl
+	 devojGGCrlMv8sKnc7chq6k2aBC8q7TY7nLBnW20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Steve French <stfrench@microsoft.com>,
+	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 429/444] smb: client: fix netns refcount leak after net_passive changes
+Subject: [PATCH 6.16 468/570] rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
 Date: Mon, 18 Aug 2025 14:47:35 +0200
-Message-ID: <20250818124505.034228404@linuxfoundation.org>
+Message-ID: <20250818124523.905426519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
 
-[ Upstream commit 59b33fab4ca4d7dacc03367082777627e05d0323 ]
+[ Upstream commit 48458654659c9c2e149c211d86637f1592470da5 ]
 
-After commit 5c70eb5c593d ("net: better track kernel sockets lifetime"),
-kernel sockets now use net_passive reference counting. However, commit
-95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock after rmmod"")
-restored the manual socket refcount manipulation without adapting to this
-new mechanism, causing a memory leak.
+In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
+kernel time as long as rtc_read_time() succeeds. In some power loss
+situations, our supercapacitor-backed DS1342 RTC comes up with either an
+unpredictable future time or the default 01/01/00 from the datasheet.
+The oscillator stop flag (OSF) is set in these scenarios due to the
+power loss and can be used to determine the validity of the RTC data.
 
-The issue can be reproduced by[1]:
-1. Creating a network namespace
-2. Mounting and Unmounting CIFS within the namespace
-3. Deleting the namespace
+Some chip types in the ds1307 driver already have OSF handling to
+determine whether .read_time provides valid RTC data or returns -EINVAL.
 
-Some memory leaks may appear after a period of time following step 3.
+This change removes the clear of the OSF in .probe as the OSF needs to
+be preserved to expand the OSF handling to the ds1341 chip type (note
+that DS1341 and DS1342 share a datasheet).
 
-unreferenced object 0xffff9951419f6b00 (size 256):
-  comm "ip", pid 447, jiffies 4294692389 (age 14.730s)
-  hex dump (first 32 bytes):
-    1b 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 80 77 c2 44 51 99 ff ff  .........w.DQ...
-  backtrace:
-    __kmem_cache_alloc_node+0x30e/0x3d0
-    __kmalloc+0x52/0x120
-    net_alloc_generic+0x1d/0x30
-    copy_net_ns+0x86/0x200
-    create_new_namespaces+0x117/0x300
-    unshare_nsproxy_namespaces+0x60/0xa0
-    ksys_unshare+0x148/0x360
-    __x64_sys_unshare+0x12/0x20
-    do_syscall_64+0x59/0x110
-    entry_SYSCALL_64_after_hwframe+0x78/0xe2
-...
-unreferenced object 0xffff9951442e7500 (size 32):
-  comm "mount.cifs", pid 475, jiffies 4294693782 (age 13.343s)
-  hex dump (first 32 bytes):
-    40 c5 38 46 51 99 ff ff 18 01 96 42 51 99 ff ff  @.8FQ......BQ...
-    01 00 00 00 6f 00 c5 07 6f 00 d8 07 00 00 00 00  ....o...o.......
-  backtrace:
-    __kmem_cache_alloc_node+0x30e/0x3d0
-    kmalloc_trace+0x2a/0x90
-    ref_tracker_alloc+0x8e/0x1d0
-    sk_alloc+0x18c/0x1c0
-    inet_create+0xf1/0x370
-    __sock_create+0xd7/0x1e0
-    generic_ip_connect+0x1d4/0x5a0 [cifs]
-    cifs_get_tcp_session+0x5d0/0x8a0 [cifs]
-    cifs_mount_get_session+0x47/0x1b0 [cifs]
-    dfs_mount_share+0xfa/0xa10 [cifs]
-    cifs_mount+0x68/0x2b0 [cifs]
-    cifs_smb3_do_mount+0x10b/0x760 [cifs]
-    smb3_get_tree+0x112/0x2e0 [cifs]
-    vfs_get_tree+0x29/0xf0
-    path_mount+0x2d4/0xa00
-    __se_sys_mount+0x165/0x1d0
-
-Root cause:
-When creating kernel sockets, sk_alloc() calls net_passive_inc() for
-sockets with sk_net_refcnt=0. The CIFS code manually converts kernel
-sockets to user sockets by setting sk_net_refcnt=1, but doesn't call
-the corresponding net_passive_dec(). This creates an imbalance in the
-net_passive counter, which prevents the network namespace from being
-destroyed when its last user reference is dropped. As a result, the
-entire namespace and all its associated resources remain allocated.
-
-Timeline of patches leading to this issue:
-- commit ef7134c7fc48 ("smb: client: Fix use-after-free of network
-  namespace.") in v6.12 fixed the original netns UAF by manually
-  managing socket refcounts
-- commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
-  rmmod") in v6.13 attempted to use kernel sockets but introduced
-  TCP timer issues
-- commit 5c70eb5c593d ("net: better track kernel sockets lifetime")
-  in v6.14-rc5 introduced the net_passive mechanism with
-  sk_net_refcnt_upgrade() for proper socket conversion
-- commit 95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock
-  after rmmod"") in v6.15-rc3 reverted to manual refcount management
-  without adapting to the new net_passive changes
-
-Fix this by using sk_net_refcnt_upgrade() which properly handles the
-net_passive counter when converting kernel sockets to user sockets.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220343 [1]
-Fixes: 95d2b9f693ff ("Revert "smb: client: fix TCP timers deadlock after rmmod"")
-Cc: stable@vger.kernel.org
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3165,18 +3165,15 @@ generic_ip_connect(struct TCP_Server_Inf
- 		struct net *net = cifs_net_ns(server);
- 		struct sock *sk;
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index c6d388bb4a19..1960d1bd851c 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1824,10 +1824,8 @@ static int ds1307_probe(struct i2c_client *client)
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
  
--		rc = __sock_create(net, sfamily, SOCK_STREAM,
--				   IPPROTO_TCP, &server->ssocket, 1);
-+		rc = sock_create_kern(net, sfamily, SOCK_STREAM,
-+				      IPPROTO_TCP, &server->ssocket);
- 		if (rc < 0) {
- 			cifs_server_dbg(VFS, "Error %d creating socket\n", rc);
- 			return rc;
+-		/* oscillator fault?  clear flag, and warn */
++		/* oscillator fault? warn */
+ 		if (regs[1] & DS1337_BIT_OSF) {
+-			regmap_write(ds1307->regmap, DS1337_REG_STATUS,
+-				     regs[1] & ~DS1337_BIT_OSF);
+ 			dev_warn(ds1307->dev, "SET TIME!\n");
  		}
- 
- 		sk = server->ssocket->sk;
--		__netns_tracker_free(net, &sk->ns_tracker, false);
--		sk->sk_net_refcnt = 1;
--		get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
--		sock_inuse_add(net, 1);
-+		sk_net_refcnt_upgrade(sk);
- 
- 		/* BB other socket options to set KEEPALIVE, NODELAY? */
- 		cifs_dbg(FYI, "Socket created\n");
+ 		break;
+-- 
+2.39.5
+
 
 
 
