@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031D2B2A80B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2DDB2A357
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75ECB5A1CE1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7EF16174A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBB7218ABD;
-	Mon, 18 Aug 2025 13:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681B531CA59;
+	Mon, 18 Aug 2025 12:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsP4zc6M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rl06iTFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03256335BCB;
-	Mon, 18 Aug 2025 13:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231B131CA4A;
+	Mon, 18 Aug 2025 12:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525172; cv=none; b=mBwk/tlGDNou067gOCb+YaDWTsk/vxjFYGY3dE1TyZ6u+uUwAJjWHlR1mj9eJEcTEhfHhDtrMXYF830CPMeLx9y15syo/OmLZ+dAkYg1TX+Zlva8wcZojcemEjaZPYA3C8O9HCN1onI+XJ2PZC+qlyro/KSHwheDR6zDokiQbWA=
+	t=1755521861; cv=none; b=SF8vSfELqBTN8V5o/NV7pVdi/V1cJqRbtrnWEvCPCGK/nP2OiadEG4IyTtQQj16YAkuOUVQi+C2jLkf9n79vG+zpglGsovzD29hYGMS+T4ltpb5dIercM71aJhFrCI/G6XDXNuJrA8cpiBiA3y7L+xIYXhdK2Og+/y9JSGM2Fp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525172; c=relaxed/simple;
-	bh=uYhHuc4BZlc6BpnlbSG4H5YTLwMvNPW9JYCPHNclJ+w=;
+	s=arc-20240116; t=1755521861; c=relaxed/simple;
+	bh=CTujG0ad01nHDEO2/BgQ8vuhX2KFLLusEIOrXyeje9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tf63O+38bVLziO7EW/oEhBfb8Ol1TATo9SVsOjQbOKjHoKBvH84aTjrhrM1ap9AFi25I4UsvaysmMXENZlvycigRxDBJ5iCfQZLJyjskirtWUZ17M1dpqKCRl9Y0X5QOOklI+OZxEc1u7J3PjMiipSYSg70Q+bmc1y+xCejzkM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsP4zc6M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67925C4CEEB;
-	Mon, 18 Aug 2025 13:52:51 +0000 (UTC)
+	 MIME-Version; b=NgZJo/XFJNvRSwVjgAKKyNAJJJUOLHr2K9Yej/Rv5YDaAKXYI6Ht89hxjLj9XNOKJQIgkeBE2EyE4G+TsBWaGi3qSDrtcJJahrVne4HcBckgsYmpeR2ja6bSLHGNikboYbYXgmJ1XdIQbDRf1LlSW0ASp2R8DBwgOVZforplCQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rl06iTFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9395DC116B1;
+	Mon, 18 Aug 2025 12:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525171;
-	bh=uYhHuc4BZlc6BpnlbSG4H5YTLwMvNPW9JYCPHNclJ+w=;
+	s=korg; t=1755521861;
+	bh=CTujG0ad01nHDEO2/BgQ8vuhX2KFLLusEIOrXyeje9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsP4zc6MOdmn9IKhStOpxim9BE4NgWNR1sN1bu2cAe4HKXmTQY9qK+aX7Ih5iInDt
-	 YZWWJyCbiihneHxxRkt6pGK3coevk+4lTxYjEDeFbAxCCEW1UJwCUilWifMqUCPSq5
-	 H71srGeov+kW/5KuOzkBbpyZWmGu3DLR1pLXKu6c=
+	b=Rl06iTFOoUPOHNzERi9LpjDnG+g96o5a4PJ2Gc0Qm7Ht+RIxz7EpjbuxK1JhxQBOf
+	 4OEh516fN17ohSxm42qjERTejgitGol2eu8y8Ca2gMUEl3Juv62WnhbNXc5goYLDNT
+	 7d4ILTCf0uv8IZklN8n3DkZlIvuIBf3CJtd1ZjWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 181/570] ALSA: hda: Handle the jack polling always via a work
-Date: Mon, 18 Aug 2025 14:42:48 +0200
-Message-ID: <20250818124512.779174717@linuxfoundation.org>
+Subject: [PATCH 6.12 143/444] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
+Date: Mon, 18 Aug 2025 14:42:49 +0200
+Message-ID: <20250818124454.277955096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 5f7e54b23e4d253eff3b10b12d6fa92d28d7dddc ]
+[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
 
-We used to call directly hda_jackpoll_work() from a couple of places
-for updating the jack and notify to user-space, but this makes rather
-the code flow fragile.  Namely, because of those direct calls,
-hda_jackpoll_work() uses snd_hda_power_up_pm() and *_down_pm() calls
-instead of the standard snd_hda_power_up() and *_down() calls.  The
-latter pair assures the runtime PM resume sync, so it can avoid the
-race against the PM callbacks gracefully, while the former pair may
-continue if called concurrently, hence it may race (by design).
+We currently log parse failures for ELD data and some disconnection events
+as errors without rate limiting. These log messages can be triggered very
+frequently in some situations, especially ELD parsing when there is nothing
+connected to a HDMI port which will generate:
 
-In this patch, we change the call pattern of hda_jackpoll_work(); now
-all callers are replaced with the standard snd_hda_jack_report_sync()
-and the additional schedule_delayed_work().
+hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
 
-Since hda_jackpoll_work() is called only from the associated work,
-it's always outside the PM code path, and we can safely use
-snd_hda_power_up() and *_down() there instead.  This allows us to
-remove the racy check of power-state in hda_jackpoll_work(), as well
-as the tricky cancel_delayed_work() and rescheduling at
-hda_codec_runtime_suspend().
+While there's doubtless work that could be done on reducing the number of
+connection notification callbacks it's possible these may be legitimately
+generated by poor quality physical connections so let's use rate limiting
+to mitigate the log spam for the parse errors and lower the severity for
+disconnect logging to debug level.
 
-Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Closes: https://lore.kernel.org/20250619020844.2974160-1-joakim.zhang@cixtech.com
-Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250623131437.10670-4-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_codec.c | 41 +++++++++++++--------------------------
- 1 file changed, 14 insertions(+), 27 deletions(-)
+ sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
-index c018beeecd3d..d205f13653bb 100644
---- a/sound/pci/hda/hda_codec.c
-+++ b/sound/pci/hda/hda_codec.c
-@@ -639,24 +639,16 @@ static void hda_jackpoll_work(struct work_struct *work)
- 	struct hda_codec *codec =
- 		container_of(work, struct hda_codec, jackpoll_work.work);
+diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
+index e1a7f0b0c0f3..33c7ba842eee 100644
+--- a/sound/soc/codecs/hdac_hdmi.c
++++ b/sound/soc/codecs/hdac_hdmi.c
+@@ -1233,7 +1233,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 						>> DRM_ELD_VER_SHIFT;
  
--	/* for non-polling trigger: we need nothing if already powered on */
--	if (!codec->jackpoll_interval && snd_hdac_is_power_on(&codec->core))
-+	if (!codec->jackpoll_interval)
- 		return;
- 
- 	/* the power-up/down sequence triggers the runtime resume */
--	snd_hda_power_up_pm(codec);
-+	snd_hda_power_up(codec);
- 	/* update jacks manually if polling is required, too */
--	if (codec->jackpoll_interval) {
--		snd_hda_jack_set_dirty_all(codec);
--		snd_hda_jack_poll_all(codec);
--	}
--	snd_hda_power_down_pm(codec);
--
--	if (!codec->jackpoll_interval)
--		return;
--
--	schedule_delayed_work(&codec->jackpoll_work,
--			      codec->jackpoll_interval);
-+	snd_hda_jack_set_dirty_all(codec);
-+	snd_hda_jack_poll_all(codec);
-+	schedule_delayed_work(&codec->jackpoll_work, codec->jackpoll_interval);
-+	snd_hda_power_down(codec);
- }
- 
- /* release all pincfg lists */
-@@ -2895,12 +2887,12 @@ static void hda_call_codec_resume(struct hda_codec *codec)
- 		snd_hda_regmap_sync(codec);
+ 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
+-		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: Unknown ELD version %d\n", ver);
+ 		return -EINVAL;
  	}
  
--	if (codec->jackpoll_interval)
--		hda_jackpoll_work(&codec->jackpoll_work.work);
--	else
--		snd_hda_jack_report_sync(codec);
-+	snd_hda_jack_report_sync(codec);
- 	codec->core.dev.power.power_state = PMSG_ON;
- 	snd_hdac_leave_pm(&codec->core);
-+	if (codec->jackpoll_interval)
-+		schedule_delayed_work(&codec->jackpoll_work,
-+				      codec->jackpoll_interval);
- }
+@@ -1241,7 +1242,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
  
- static int hda_codec_runtime_suspend(struct device *dev)
-@@ -2912,8 +2904,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
- 	if (!codec->card)
- 		return 0;
+ 	if (mnl > ELD_MAX_MNL) {
+-		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: MNL Invalid %d\n", mnl);
+ 		return -EINVAL;
+ 	}
  
--	cancel_delayed_work_sync(&codec->jackpoll_work);
--
- 	state = hda_call_codec_suspend(codec);
- 	if (codec->link_down_at_suspend ||
- 	    (codec_has_clkstop(codec) && codec_has_epss(codec) &&
-@@ -2921,10 +2911,6 @@ static int hda_codec_runtime_suspend(struct device *dev)
- 		snd_hdac_codec_link_down(&codec->core);
- 	snd_hda_codec_display_power(codec, false);
+@@ -1300,8 +1302,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
  
--	if (codec->bus->jackpoll_in_suspend &&
--		(dev->power.power_state.event != PM_EVENT_SUSPEND))
--		schedule_delayed_work(&codec->jackpoll_work,
--					codec->jackpoll_interval);
- 	return 0;
- }
+ 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
  
-@@ -3086,10 +3072,11 @@ int snd_hda_codec_build_controls(struct hda_codec *codec)
- 	if (err < 0)
- 		return err;
+-		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
+-						__func__, pin->nid, port->id);
++		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
++			__func__, pin->nid, port->id);
  
-+	snd_hda_jack_report_sync(codec); /* call at the last init point */
- 	if (codec->jackpoll_interval)
--		hda_jackpoll_work(&codec->jackpoll_work.work);
--	else
--		snd_hda_jack_report_sync(codec); /* call at the last init point */
-+		schedule_delayed_work(&codec->jackpoll_work,
-+				      codec->jackpoll_interval);
-+
- 	sync_power_up_states(codec);
- 	return 0;
- }
+ 		/*
+ 		 * PCMs are not registered during device probe, so don't
 -- 
 2.39.5
 
