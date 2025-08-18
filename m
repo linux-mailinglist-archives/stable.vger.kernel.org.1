@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E13D5B2A75E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7134CB2A9D3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA6266813D7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 592731BA1584
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A36321F20;
-	Mon, 18 Aug 2025 13:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637CB322A30;
+	Mon, 18 Aug 2025 14:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evHnR8Dy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TeNYzlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2275A220696;
-	Mon, 18 Aug 2025 13:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBC1322A1A;
+	Mon, 18 Aug 2025 14:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524397; cv=none; b=aLT9n1h9OL4D9XxF+7VYrKKsIFmBzXOjXOJkjO3YtmtOpbzF/lZCC07Mpv4Uk06zO5GGwMbKPWQV4sRDHmBl1c8azxEmMTAuC2zGu9vQCoWNFmRLCEYWrCllMsmr3Yymof1CatmqPcqghgGMUyLVpUnYmRGHRrR/bvLlR8TrfZs=
+	t=1755526098; cv=none; b=uuummVUDb5SZN4RV2Su8bqoSK4ws+GKcff4jXP4rtGxSv1I7mGGIYCF2pwXc4E2ctTSVj3nr0jm0ZigqBBNQpx++lo3qhNInOBwp+v3zNKHon+7Z4A1opM/d6LEVP8o7tFzLv1pQ/bW9Z2w0Sbvn5lEQ8iPh9CpqX+Xf/NX3pxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524397; c=relaxed/simple;
-	bh=hl2MC7hvbAtqv+95wtQQ4fJz7Uhx99KPUChMznOIO7M=;
+	s=arc-20240116; t=1755526098; c=relaxed/simple;
+	bh=we7xIqrKv7D84adXaklFZhWC9yl5ZbLZ06d+ExIy2LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHltWiv3xYKQV6aqF1kASnn7LYV6g6kISF7Mf0j0R6AcVmj2ozMqqc+3ON5IIkL0f6O0E2cg+WWsaSR/RVZWy6QUklpbjge59Rp+AkQxPkM9Krz82XdvYMCUzQHgRz1yJBgecBZFPuBqFtc9c9DrJI5/lFeCO6J2HDgGZDKs/e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evHnR8Dy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B97C4CEF1;
-	Mon, 18 Aug 2025 13:39:56 +0000 (UTC)
+	 MIME-Version; b=YEiPcPd8WhKM/YmhKDpCBGkM6MRUg88mKxYDIPBxUxbkAMvDlov7eHmAADyn1n71WRAlglImjKi/4+mqwlZiT8B/7ezqDoo6A6JO15+10g1qniPzHoQonJDWDnVm8N4oWLjPg+oyNPwodT8mKAn+IuPLTuMWQWBGBNm2ncQcX5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TeNYzlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EACC4CEEB;
+	Mon, 18 Aug 2025 14:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524397;
-	bh=hl2MC7hvbAtqv+95wtQQ4fJz7Uhx99KPUChMznOIO7M=;
+	s=korg; t=1755526098;
+	bh=we7xIqrKv7D84adXaklFZhWC9yl5ZbLZ06d+ExIy2LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=evHnR8DyJoxryHgLXV8QfRdCA2UAZwSGr2H/C92zUKVdg1n8lq9uub7o4ommeDS1p
-	 JuTYL2ElUwlVe4zVtxjiysBej/A5t8v5EYuCjr96FyPSGn9tX3GR/waAethe3F5oyY
-	 Bulyv0hU9CaIEfz9BjSVE2gqdrUDWCyEIipHkReI=
+	b=0TeNYzlEhvexw+HGaWmR3vzDFkRyI0dcXlWmwT5Ialz5XBZp7GG3nqZM9fVZaWoIC
+	 SANxRdTEhSNgvRTzzAuuYcwzCossNdCW7aPmUy2NpiRjp6eLSXmpfPmOwx4m4bxn5H
+	 m3BpbFyUCgRpPZ4K28rO9HBpaznbMrz+S8W/UTnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.15 459/515] thunderbolt: Fix copy+paste error in match_service_id()
+	Thomas Croft <thomasmcft@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 458/570] ALSA: hda/realtek: add LG gram 16Z90R-A to alc269 fixup table
 Date: Mon, 18 Aug 2025 14:47:25 +0200
-Message-ID: <20250818124516.090517506@linuxfoundation.org>
+Message-ID: <20250818124523.497210070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Thomas Croft <thomasmcft@gmail.com>
 
-commit 5cc1f66cb23cccc704e3def27ad31ed479e934a5 upstream.
+[ Upstream commit dbe05428c4e54068a86e7e02405f3b30b1d2b3dd ]
 
-The second instance of TBSVC_MATCH_PROTOCOL_VERSION seems to have been
-intended to be TBSVC_MATCH_PROTOCOL_REVISION.
+Several months ago, Joshua Grisham submitted a patch [1]
+for several ALC298 based sound cards.
 
-Fixes: d1ff70241a27 ("thunderbolt: Add support for XDomain discovery protocol")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://lore.kernel.org/r/20250721050136.30004-1-ebiggers@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The entry for the LG gram 16 in the alc269_fixup_tbl only matches the
+Subsystem ID for the 16Z90R-Q and 16Z90R-K models [2]. My 16Z90R-A has a
+different Subsystem ID [3]. I'm not sure why these IDs differ, but I
+speculate it's due to the NVIDIA GPU included in the 16Z90R-A model that
+isn't present in the other models.
+
+I applied the patch to the latest Arch Linux kernel and the card was
+initialized as expected.
+
+[1]: https://lore.kernel.org/linux-sound/20240909193000.838815-1-josh@joshuagrisham.com/
+[2]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0488
+[3]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0489
+
+Signed-off-by: Thomas Croft <thomasmcft@gmail.com>
+Link: https://patch.msgid.link/20250804151457.134761-2-thomasmcft@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/domain.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/thunderbolt/domain.c
-+++ b/drivers/thunderbolt/domain.c
-@@ -36,7 +36,7 @@ static bool match_service_id(const struc
- 			return false;
- 	}
- 
--	if (id->match_flags & TBSVC_MATCH_PROTOCOL_VERSION) {
-+	if (id->match_flags & TBSVC_MATCH_PROTOCOL_REVISION) {
- 		if (id->protocol_revision != svc->prtcrevs)
- 			return false;
- 	}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 88a5d659dc78..2ab2666d4058 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11401,6 +11401,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1854, 0x0440, "LG CQ6", ALC256_FIXUP_HEADPHONE_AMP_VOL),
+ 	SND_PCI_QUIRK(0x1854, 0x0441, "LG CQ6 AIO", ALC256_FIXUP_HEADPHONE_AMP_VOL),
+ 	SND_PCI_QUIRK(0x1854, 0x0488, "LG gram 16 (16Z90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
++	SND_PCI_QUIRK(0x1854, 0x0489, "LG gram 16 (16Z90R-A)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x1854, 0x048a, "LG gram 17 (17ZD90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
+ 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+-- 
+2.39.5
+
 
 
 
