@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-171088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FC2B2A805
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E50B2A557
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314836E129F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB4D1B27417
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D5E335BC4;
-	Mon, 18 Aug 2025 13:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B06322520;
+	Mon, 18 Aug 2025 13:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PY7Tx+KZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaWLFdMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40977335BA8;
-	Mon, 18 Aug 2025 13:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8253531B11A;
+	Mon, 18 Aug 2025 13:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524777; cv=none; b=CVPndgPIKq9cT3mrK34BOsIKHXa8BhBv/m+zkdrQtE3MrncnjSqMtZtGohPUU4MofFDYUn0ioCdST9Qvrjz/Vu6RxYCcdhokWSjo09eu7t+EorPplU+6qkGvHSrd7pEgvTbkC4w/KQeJ7/bB0+Nf0mlxRLU/Cs4wLq9T6SJYupY=
+	t=1755523062; cv=none; b=bs0DoZ6vmTDqzLK4kzMc68LzkgAZ4fyFvkiRY4fcYo4Fn9ev8kRWLGKirYdrZhH37ta5qcUV0BoEl9wzSo2lzKuY0S4EWh7MqCXzc3vDtTH7/nqcGdcLJz5KAuqNCJzZq/++NkgGJ9re9w1P/M6vXYUWwQc84LOVad5gCiNkGOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524777; c=relaxed/simple;
-	bh=Irl1Q3zWD7beWeBCIqryy/sBIJ62M789UOylayvbAFY=;
+	s=arc-20240116; t=1755523062; c=relaxed/simple;
+	bh=5nhd9Mh9ITTxnF1EI/fYhZsV8srvggHEwD5niFDPOco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KComt+dhNUM1qzXHfgmV+hPMoeTMFW0ohukqYLBlXWkmJ1eLTwuKH3pvM57Y48N7gUncyfgIZ385ZyvHeg6eby8pAWR4sqyegrOsO3DK+RncJRkaxlFWu7+9skNUYa3vjoB2YJMyPJx+/IqYrv1S5g2oEU2MBWURf/r+A8B+A3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PY7Tx+KZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44870C4CEEB;
-	Mon, 18 Aug 2025 13:46:16 +0000 (UTC)
+	 MIME-Version; b=qBc6RRfagxWd/BGEqM0I11xDbnZ5DJvbmnGLZxjJvKIP76RU7CqHtLA8ai8uFTD0PXziLjn0ouFHh4STRWWcr1DlbTHzNw67LgS1ac2DrwcZ7xrzSYLEjOSL872gBawBTxW+xCNy2UeGA4NsBSNfSmC8K3JzDxO31SSRrG+XNfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaWLFdMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D254C4CEEB;
+	Mon, 18 Aug 2025 13:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524777;
-	bh=Irl1Q3zWD7beWeBCIqryy/sBIJ62M789UOylayvbAFY=;
+	s=korg; t=1755523062;
+	bh=5nhd9Mh9ITTxnF1EI/fYhZsV8srvggHEwD5niFDPOco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PY7Tx+KZbkbJK8Kxa0/iYILeoTEsOfRTOIsRg0FlXUwbjKOunHP/troITBPkgJc2h
-	 br8JzFeMlxef0AzWnJFSocX6PEBfr/9FDsDX1jJeyIVEfbHatrBNXociDQLSgEOp53
-	 oC015NAWsM7DGhVppcgWoUIvSWmELMse3uEz60nE=
+	b=UaWLFdMIGEshtb32EWzKyQsgAOgdb001mCpAPObWsyJTrwMArVWdxJpE6IQj+K1b2
+	 vlC0hkf0UZMmnu9Prte/BDSiqZz/zNFEAgiVkrcv1mq3/o89urHpzB+ZvxygN3rCKw
+	 IEx0plwNBJ8occpspweewFUw3I+6S14t7ZJdZGD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.16 058/570] smb: client: dont wait for info->send_pending == 0 on error
-Date: Mon, 18 Aug 2025 14:40:45 +0200
-Message-ID: <20250818124508.049939641@linuxfoundation.org>
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 060/515] net: hibmcge: fix rtnl deadlock issue
+Date: Mon, 18 Aug 2025 14:40:46 +0200
+Message-ID: <20250818124500.722166920@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Jijie Shao <shaojijie@huawei.com>
 
-commit 8c48e1c7520321cc87ff651e96093e2f412785fb upstream.
+[ Upstream commit c875503a9b9082928d7d3fc60b5400d16fbfae4e ]
 
-We already called ib_drain_qp() before and that makes sure
-send_done() was called with IB_WC_WR_FLUSH_ERR, but
-didn't called atomic_dec_and_test(&sc->send_io.pending.count)
+Currently, the hibmcge netdev acquires the rtnl_lock in
+pci_error_handlers.reset_prepare() and releases it in
+pci_error_handlers.reset_done().
 
-So we may never reach the info->send_pending == 0 condition.
+However, in the PCI framework:
+pci_reset_bus - __pci_reset_slot - pci_slot_save_and_disable_locked -
+ pci_dev_save_and_disable - err_handler->reset_prepare(dev);
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In pci_slot_save_and_disable_locked():
+	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+		if (!dev->slot || dev->slot!= slot)
+			continue;
+		pci_dev_save_and_disable(dev);
+		if (dev->subordinate)
+			pci_bus_save_and_disable_locked(dev->subordinate);
+	}
+
+This will iterate through all devices under the current bus and execute
+err_handler->reset_prepare(), causing two devices of the hibmcge driver
+to sequentially request the rtnl_lock, leading to a deadlock.
+
+Since the driver now executes netif_device_detach()
+before the reset process, it will not concurrently with
+other netdev APIs, so there is no need to hold the rtnl_lock now.
+
+Therefore, this patch removes the rtnl_lock during the reset process and
+adjusts the position of HBG_NIC_STATE_RESETTING to ensure
+that multiple resets are not executed concurrently.
+
+Fixes: 3f5a61f6d504f ("net: hibmcge: Add reset supported in this module")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1316,10 +1316,6 @@ void smbd_destroy(struct TCP_Server_Info
- 	log_rdma_event(INFO, "cancelling idle timer\n");
- 	cancel_delayed_work_sync(&info->idle_timer_work);
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+index ff3295b60a69..dee1e8681157 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+@@ -53,9 +53,11 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
+ {
+ 	int ret;
  
--	log_rdma_event(INFO, "wait for all send posted to IB to finish\n");
--	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
+-	ASSERT_RTNL();
++	if (test_and_set_bit(HBG_NIC_STATE_RESETTING, &priv->state))
++		return -EBUSY;
+ 
+ 	if (netif_running(priv->netdev)) {
++		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 		dev_warn(&priv->pdev->dev,
+ 			 "failed to reset because port is up\n");
+ 		return -EBUSY;
+@@ -64,7 +66,6 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
+ 	netif_device_detach(priv->netdev);
+ 
+ 	priv->reset_type = type;
+-	set_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
+ 	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
+ 	if (ret) {
+@@ -83,28 +84,25 @@ static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
+ 	    type != priv->reset_type)
+ 		return 0;
+ 
+-	ASSERT_RTNL();
 -
- 	/* It's not possible for upper layer to get to reassembly */
- 	log_rdma_event(INFO, "drain the reassembly queue\n");
- 	do {
-@@ -1965,7 +1961,11 @@ int smbd_send(struct TCP_Server_Info *se
- 	 */
+-	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 	ret = hbg_rebuild(priv);
+ 	if (ret) {
+ 		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
++		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
+ 		return ret;
+ 	}
  
- 	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
-+		atomic_read(&info->send_pending) == 0 ||
-+		sc->status != SMBDIRECT_SOCKET_CONNECTED);
-+
-+	if (sc->status != SMBDIRECT_SOCKET_CONNECTED && rc == 0)
-+		rc = -EAGAIN;
+ 	netif_device_attach(priv->netdev);
++	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
  
- 	return rc;
+ 	dev_info(&priv->pdev->dev, "reset done\n");
+ 	return ret;
  }
+ 
+-/* must be protected by rtnl lock */
+ int hbg_reset(struct hbg_priv *priv)
+ {
+ 	int ret;
+ 
+-	ASSERT_RTNL();
+ 	ret = hbg_reset_prepare(priv, HBG_RESET_TYPE_FUNCTION);
+ 	if (ret)
+ 		return ret;
+@@ -169,7 +167,6 @@ static void hbg_pci_err_reset_prepare(struct pci_dev *pdev)
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct hbg_priv *priv = netdev_priv(netdev);
+ 
+-	rtnl_lock();
+ 	hbg_reset_prepare(priv, HBG_RESET_TYPE_FLR);
+ }
+ 
+@@ -179,7 +176,6 @@ static void hbg_pci_err_reset_done(struct pci_dev *pdev)
+ 	struct hbg_priv *priv = netdev_priv(netdev);
+ 
+ 	hbg_reset_done(priv, HBG_RESET_TYPE_FLR);
+-	rtnl_unlock();
+ }
+ 
+ static const struct pci_error_handlers hbg_pci_err_handler = {
+-- 
+2.50.1
+
 
 
 
