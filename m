@@ -1,158 +1,195 @@
-Return-Path: <stable+bounces-169930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CA7B29A92
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:13:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16645B29B2A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2839D7A6E7A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:11:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2C7918A53DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F180B279780;
-	Mon, 18 Aug 2025 07:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6123F28688D;
+	Mon, 18 Aug 2025 07:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XVle09w6"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385821A8412;
-	Mon, 18 Aug 2025 07:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC99275B1E
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 07:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755501201; cv=none; b=qtkxgPB4iBq0+LrVXLlbCicvAJomzx0wsRvwXKCCbhV72ehIshXPBx1gGx9FuBrK7dK7DOOCMWSgqT6pN6T7k2uEneiugzBuM/jGkKacVjZB9pMMVpbaKyJAl84Xj6SScAdOmux67RcDbj/ApNKPxVncBFai/izjRkL6naOm2ag=
+	t=1755503276; cv=none; b=DWHFvEdAeqMPdyS2/+yKhyzrtc+56YZY9DgaB59pctBzkD01OVekp6JL9Sz8gLtP1270W5uUCH9J0ZNn9TxXKL8y6jogeI9jYCzIYluA6f15w5d2eyG0r04LNCDfgQsCvfqqKODLhOl+Ovpn2k6EuonQdtLk0Y6JRfQcojNYhDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755501201; c=relaxed/simple;
-	bh=gXzjd7SHO90hAluAn6bigXV6r8bbeDuxs3pUSBeslsk=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=RFzVsaJ+gkiNDjS3rsoJXNXfz2YQeaEEiXbHVk7kSVUAWsvnszWr+hwlPY+XCD2jih8QqD1ka1kDieBPnxaAOIQmDXfVQi1DDYdSlGDdfoHB3tS6mHGnkBsSBM65o+bm/SDt0FUPWu9QSWzWjdC33gbsnsS/+rYfU0MdPBWVgmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4c53pN73p0zYQvcC;
-	Mon, 18 Aug 2025 15:13:16 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 90EC01A0BA3;
-	Mon, 18 Aug 2025 15:13:15 +0800 (CST)
-Received: from [10.174.179.143] (unknown [10.174.179.143])
-	by APP4 (Coremail) with SMTP id gCh0CgDXUxSH0qJozDNQEA--.20983S3;
-	Mon, 18 Aug 2025 15:13:13 +0800 (CST)
-Subject: Re: Patch "md: call del_gendisk in control path" has been added to
- the 6.6-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>, Yu Kuai <yukuai1@huaweicloud.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, xni@redhat.com,
- Song Liu <song@kernel.org>, "yukuai (C)" <yukuai3@huawei.com>
-References: <20250817141818.2370452-1-sashal@kernel.org>
- <7748b907-8279-c222-d4e4-b94c3216408b@huaweicloud.com>
- <2025081846-veneering-radish-498d@gregkh>
- <0c083639-eb30-2830-0938-20684db3914a@huaweicloud.com>
- <2025081804-gloater-brought-c097@gregkh>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <e0fef2d7-9c72-495e-4c62-7c4fd766c84d@huaweicloud.com>
-Date: Mon, 18 Aug 2025 15:13:11 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+	s=arc-20240116; t=1755503276; c=relaxed/simple;
+	bh=ke/70mwNuZMQ4uUVMWKNowY7SVljptpZBjnzkw07fTo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=smHnBxj5OQbPah6ilLMnnwCYtwJHdTdXdGc1i5BdfdP1zTuNSBaQ8v2wLeGct1Sn92dcOqsRKrVUXk5deURk5hj/5dWh3E0S6jFqhkq7xaA5xfQo1PL3wZpuVwh6YG500eHYjpX9W/Xb8M823+hDz66BPbx689srtDyWSnh61hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XVle09w6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755503273;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=yKouifB7G5rcBd40ZGRdNWHNyUYJpa/6R/7rwWgxaNU=;
+	b=XVle09w677mML4zl4ckHmP+KEelydPKilolIXKpTfeYR+I2jKQo5z52ABH2ysvE+IhuIvp
+	QwLopuLCf/QZW8nrg8/uXFQucYI+94DUcuDKau6/g3hIQT90dZ8XL741LTbMAt4Bk+R5V9
+	1PVMCqkiHVbG5+Q4NkJLcHNaBWUG3Js=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-396-FX6YYEQsPsu-O0ZaUvW1wA-1; Mon, 18 Aug 2025 03:47:51 -0400
+X-MC-Unique: FX6YYEQsPsu-O0ZaUvW1wA-1
+X-Mimecast-MFC-AGG-ID: FX6YYEQsPsu-O0ZaUvW1wA_1755503270
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a256a20fcso6262935e9.2
+        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 00:47:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755503270; x=1756108070;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yKouifB7G5rcBd40ZGRdNWHNyUYJpa/6R/7rwWgxaNU=;
+        b=Xk7j+Z9fPjWCf6tMnj6MpMhP4SVaKED3HeZBMS77UjN43JGArkTTacMUQoxa+9Nf0k
+         aOIkTLDE+9j98FltdtXPNELK6bIhOsMw51uridQTGMnBen+qqPhNenflWIvUBvoQNFYd
+         EvRYmCegoSwKf7DO/tqkUS8ZO50T2+f4goRJxutWT3bgEEB/KuVEguMmpwQEFyOfhWeh
+         eA2lF8ueYUj7wyeYGz14r3VSUFzG7tj7y4UaZ9PJyNRhmDWw2iN7jpfU7qPhfBP3ZN7q
+         XuoY2OKbktXCKFauW1Jd26HrDFOTIN1pbfQhukkC4OJanwjiJN4YM5TeepXuqYHERJWE
+         U6ug==
+X-Forwarded-Encrypted: i=1; AJvYcCXoXl+pHLM59woaGaMOibrjfiNdqxyg9zx5/7NOYfV5pXW0cl80CCvnBmehUhuoRWmwO49L5pg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6+epAu9kaIGNXR07rbKvGey+tRjCpRYbpEj015OsOZF+LpxPg
+	DQhEkeD3Rq3efMKTTCimi3pAV44TZlOG9EIUkW75DcloFDT3RxkxvBZJCPAYIysYsd6ZdbV0QdG
+	Z4T2JI6BBnDVL8uuPR3rnggQp6nOM+ZDscuwIrhxXum/6PfDjfLhoUFbIWg==
+X-Gm-Gg: ASbGnctSidMXmKTHOTs4e5Gj8CDsuX3KKDkJTzCVuaDCCfThZR/59zxpIGCpfjNAwS7
+	jvvtr99/6Nc3ymmLUr1a9RW8IYHz82nZQ4jtK061ba2W/++XwMergtZYshqViP+i1EKfbDqz19d
+	5ZmknwaRm7kNAtTXaVjLIgIEwLwxh100gXxKyRSBenMlzEer+q9UtpQtxoCCFVfr+0PX8VUPnw1
+	ayhE6zcOAVIVHi/bz1qHpWJwqdYplBZw1oXIypk/yjgTUh8QU5bC4ADLusWr+ePyWc6oOVp07ok
+	Z6AVdn/if+D4i7qWhlyHjqvGA4cCGiyCaz+5tt3nh9y+jqrcjXbrk4x3JyKPNtbcEumy5lUNQWv
+	GC7KCSkpFMxc6rFQg2+HJJxtriiyRgJ0XD+XYd+kB+2/GAHcwLT9z4q5MVeYAOkAo
+X-Received: by 2002:a05:600c:154d:b0:459:db5a:b097 with SMTP id 5b1f17b1804b1-45a26784890mr58197425e9.16.1755503270215;
+        Mon, 18 Aug 2025 00:47:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8vuz2TuDec3PC8OQ2oalVcrssQL/Ez40NgjEUbWnLchljSNogxqDtuxCMN5BdLp0bZtq2rQ==
+X-Received: by 2002:a05:600c:154d:b0:459:db5a:b097 with SMTP id 5b1f17b1804b1-45a26784890mr58196695e9.16.1755503269634;
+        Mon, 18 Aug 2025 00:47:49 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f22:600:53c7:df43:7dc3:ae39? (p200300d82f22060053c7df437dc3ae39.dip0.t-ipconnect.de. [2003:d8:2f22:600:53c7:df43:7dc3:ae39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3bb68079da7sm11738572f8f.56.2025.08.18.00.47.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Aug 2025 00:47:49 -0700 (PDT)
+Message-ID: <def7364e-ef77-4734-b870-278f9975e9c0@redhat.com>
+Date: Mon, 18 Aug 2025 09:47:46 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2025081804-gloater-brought-c097@gregkh>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDXUxSH0qJozDNQEA--.20983S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw4kKF4UCFW5Ar1xAr48tFb_yoW8KF4Upa
-	4IyFsayrs5Jr1IkwnIvw40vryIqw47J345Wwn8Jr1rA3s0vF1xZr4IgrZI9F9Fgw1qgr17
-	tFW2q3s7trWUZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7I2V7IY0VAS07AlzVAY
-	IcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUf8nOUUUUU=
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 mm-hotfixes 1/3] mm: move page table sync declarations
+ to linux/pgtable.h
+To: Harry Yoo <harry.yoo@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ "H . Peter Anvin" <hpa@zyccr.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Juergen Gross
+ <jgross@suse.de>, Kevin Brodsky <kevin.brodsky@arm.com>,
+ Oscar Salvador <osalvador@suse.de>, Joao Martins
+ <joao.m.martins@oracle.com>, Lorenzo Sccakes <lorenzo.stoakes@oracle.com>,
+ Jane Chu <jane.chu@oracle.com>, Alistair Popple <apopple@nvidia.com>,
+ Mike Rapoport <rppt@kernel.org>, Gwan-gyeong Mun
+ <gwan-gyeong.mun@intel.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@linux.ibm.com>, Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Thomas Huth <thuth@redhat.com>,
+ John Hubbard <jhubbard@nvidia.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Peter Xu <peterx@redhat.com>, Dev Jain <dev.jain@arm.com>,
+ Bibo Mao <maobibo@loongson.cn>, Anshuman Khandual
+ <anshuman.khandual@arm.com>, Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
+References: <20250818020206.4517-1-harry.yoo@oracle.com>
+ <20250818020206.4517-2-harry.yoo@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250818020206.4517-2-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 18.08.25 04:02, Harry Yoo wrote:
+> Move ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to
+> linux/pgtable.h so that they can be used outside of vmalloc and ioremap.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+> Acked-by: Kiryl Shutsemau <kas@kernel.org>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
 
-在 2025/08/18 14:38, Greg KH 写道:
-> On Mon, Aug 18, 2025 at 02:26:23PM +0800, Yu Kuai wrote:
->> Hi,
->>
->> 在 2025/08/18 13:55, Greg KH 写道:
->>> On Mon, Aug 18, 2025 at 09:03:39AM +0800, Yu Kuai wrote:
->>>> Hi,
->>>>
->>>> 在 2025/08/17 22:18, Sasha Levin 写道:
->>>>> This is a note to let you know that I've just added the patch titled
->>>>>
->>>>>        md: call del_gendisk in control path
->>>>>
->>>>> to the 6.6-stable tree which can be found at:
->>>>>        http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>>>
->>>>> The filename of the patch is:
->>>>>         md-call-del_gendisk-in-control-path.patch
->>>>> and it can be found in the queue-6.6 subdirectory.
->>>>>
->>>>> If you, or anyone else, feels it should not be added to the stable tree,
->>>>> please let <stable@vger.kernel.org> know about it.
->>>>>
->>>>>
->>>> This patch should be be backported to any stable kernel, this change
->>>> will break user tools mdadm:
->>>>
->>>> https://lore.kernel.org/all/f654db67-a5a5-114b-09b8-00db303daab7@redhat.com/
->>>
->>> Is it reverted in Linus's tree?
->>>
->>
->> No, we'll not revert it, this is an improvement. In order to keep user
->> tools compatibility, we added a switch in the kernel. As discussed in
->> the thread, for old tools + new kernel, functionality is the same,
->> however, there will be kernel warning about deprecated behaviour to
->> inform user upgrading user tools.
->>
->> However, I feel this new warning messages is not acceptable for
->> stable kernels.
-> 
-> Why?  What is so special about stable kernels that taking the same
-> functionality in newer kernels is not ok?
-> 
-> Why not just "warn" the same here if you want to fix an issue where
-> userspace should be also updating some tools.  As long as you aren't
-> breaking anything, it should be fine, right?
+Acked-by: David Hildenbrand <david@redhat.com>
 
-Yes, it's fine, just in downstream kernels, people won't be happy about
-new warnings.
+-- 
+Cheers
 
-> 
-> Or are you breaking existing workflows?  You should be able to take a
-> new kernel without any userspace changes and all should work the same.
-> Why make new kernel users change userspace tools at all?
-
-There is a pending fix in mdraid that will be pushed soon, with this
-nothing will be broken.
-
-And because user tools have problems in this case as well, both kernel
-and user tools have to be fixed to make things better.
-
-Thanks,
-Kuai
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> .
-> 
+David / dhildenb
 
 
