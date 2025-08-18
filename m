@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E62B2A660
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A78B3B2A31A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B55496858D7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8DE9622D21
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D861335BCB;
-	Mon, 18 Aug 2025 13:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3197B12DDA1;
+	Mon, 18 Aug 2025 13:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHzYdZT3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn8IM4Ch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AD2335BC6;
-	Mon, 18 Aug 2025 13:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E172C1EFFB4;
+	Mon, 18 Aug 2025 13:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523652; cv=none; b=oHsOvhoDxirlAAq5ltbhJOMVsP7PK/nF4ottBrTCCczPV7Fp658suYRR3jVky4ToQsAaHD+Et4khVxnDcS1AyNEIw7VnyBamAjHfcmfaRVTUYR9gsuTjxA/ARNYFQS4g17ksIo3PZzdvQpfgwirDW9PtwZU+/rgFGR9xWvO0LoY=
+	t=1755522043; cv=none; b=pGcCOboAiKg3Mm9FW7/o73VQ2wgEaMaPmXEbcPwDrjJjlG4jJ2MOuVBDrxhomOp1V2Mh3BHmjzfvkIZwblUR9fhgQLrfQvZZjL35QbpnM6PWqJhwEl0s2Jqt2mGoMsNbbE1NDdx6RNIKpGwiQaWo+VKgBFpmcKPgZ4Rq+l1M/vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523652; c=relaxed/simple;
-	bh=ZN+J6xGSGSnzj9EaQ/n2QBhWIbm+VKSBKlsDUgkXOTk=;
+	s=arc-20240116; t=1755522043; c=relaxed/simple;
+	bh=NfaKOmXzhphGVuuYUqFpJXo1ioc2sf07y0TEUEbjaOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=emDuGF1OUW7I0DMvrg24T0HM1gdncJdZIZALXcjMykYyKFwamKdeLnsxYgb1bmMcX6jYDnBGDOYIBRJb5mWL5tzhJhaZHiIBk9SZWbjEZCVALBNbH/sGFuKxNw0DqUhu9x2552yVehcO/Ok08ZmHf19QgVhDIAdrnT4ZRDJACec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHzYdZT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCDDC4CEEB;
-	Mon, 18 Aug 2025 13:27:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jYMx2A0GudqwlDmbFTjP1U2sPYo26uHGFphR/kyG4czzSxUlwgagpOCMqru+I+E4Yti2A3flDvv8MbKAxydRiAkIoXsEhPndjkbmVc/LHRg2lvcx/P4/PlVLWso6PQ80SLDYFKGhjnpkF4yfToOG/0YN7fi9kfXz/yAC8x+LzSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn8IM4Ch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA6FC4CEEB;
+	Mon, 18 Aug 2025 13:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523652;
-	bh=ZN+J6xGSGSnzj9EaQ/n2QBhWIbm+VKSBKlsDUgkXOTk=;
+	s=korg; t=1755522042;
+	bh=NfaKOmXzhphGVuuYUqFpJXo1ioc2sf07y0TEUEbjaOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHzYdZT3UpYYEJvifpNqLI1QpcEKk05clYF+lwlZHQDQXzsHC1o/zs2OmH7juxpc4
-	 XKUYBY443EnalF3pOZ1DxejY4H3ygUWuhJYmhRxAURRgyKLZX007AO3ooGNc411o67
-	 yNjiLqHOymes4S964ByyLSfruMBWlGmcmUVd3x8A=
+	b=Fn8IM4Chijhg0qRQMWWjwUTZDmR0hrHIct3mYHzv46+Mev7V87leBUA7sDPeEAXrK
+	 j/QcpXKul6re5bMGT16RlRI0wAMbGgzbnkfgwG6Y2N/i4qSRH9tkkz8/XtJ/6t7ln/
+	 XBt/w5VrTP1QYkd1T3JbWpX1KNMGOXoZmRVObHoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Philipp Stanner <phasta@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nam Cao <namcao@linutronix.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 238/515] drm/sched: Avoid memory leaks with cancel_job() callback
+Subject: [PATCH 6.12 198/444] um: Re-evaluate thread flags repeatedly
 Date: Mon, 18 Aug 2025 14:43:44 +0200
-Message-ID: <20250818124507.547385284@linuxfoundation.org>
+Message-ID: <20250818124456.289572932@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +64,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit bf8bbaefaa6ae0a07971ea57b3208df60e8ad0a4 ]
+[ Upstream commit b9e2f2246eb2b5617d53af7b5e4e1b8c916f26a8 ]
 
-Since its inception, the GPU scheduler can leak memory if the driver
-calls drm_sched_fini() while there are still jobs in flight.
+The thread flags may change during their processing.
+For example a task_work can queue a new signal to be sent.
+This signal should be delivered before returning to usespace again.
 
-The simplest way to solve this in a backwards compatible manner is by
-adding a new callback, drm_sched_backend_ops.cancel_job(), which
-instructs the driver to signal the hardware fence associated with the
-job. Afterwards, the scheduler can safely use the established free_job()
-callback for freeing the job.
+Evaluate the flags repeatedly similar to other architectures.
 
-Implement the new backend_ops callback cancel_job().
-
-Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Link: https://lore.kernel.org/dri-devel/20250418113211.69956-1-tvrtko.ursulin@igalia.com/
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250710125412.128476-4-phasta@kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Link: https://patch.msgid.link/20250704-uml-thread_flags-v1-1-0e293fd8d627@linutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/sched_main.c | 34 ++++++++++++++++----------
- include/drm/gpu_scheduler.h            | 18 ++++++++++++++
- 2 files changed, 39 insertions(+), 13 deletions(-)
+ arch/um/include/asm/thread_info.h |  4 ++++
+ arch/um/kernel/process.c          | 20 ++++++++++++--------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
-index bfea608a7106..40eaedd433a7 100644
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -1335,6 +1335,18 @@ int drm_sched_init(struct drm_gpu_scheduler *sched, const struct drm_sched_init_
- }
- EXPORT_SYMBOL(drm_sched_init);
+diff --git a/arch/um/include/asm/thread_info.h b/arch/um/include/asm/thread_info.h
+index c7b4b49826a2..40d823f36c09 100644
+--- a/arch/um/include/asm/thread_info.h
++++ b/arch/um/include/asm/thread_info.h
+@@ -68,7 +68,11 @@ static inline struct thread_info *current_thread_info(void)
+ #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
+ #define _TIF_MEMDIE		(1 << TIF_MEMDIE)
+ #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
++#define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
+ #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
+ #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
  
-+static void drm_sched_cancel_remaining_jobs(struct drm_gpu_scheduler *sched)
-+{
-+	struct drm_sched_job *job, *tmp;
++#define _TIF_WORK_MASK		(_TIF_NEED_RESCHED | _TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL | \
++				 _TIF_NOTIFY_RESUME)
 +
-+	/* All other accessors are stopped. No locking necessary. */
-+	list_for_each_entry_safe_reverse(job, tmp, &sched->pending_list, list) {
-+		sched->ops->cancel_job(job);
-+		list_del(&job->list);
-+		sched->ops->free_job(job);
-+	}
-+}
-+
- /**
-  * drm_sched_fini - Destroy a gpu scheduler
-  *
-@@ -1342,19 +1354,11 @@ EXPORT_SYMBOL(drm_sched_init);
-  *
-  * Tears down and cleans up the scheduler.
-  *
-- * This stops submission of new jobs to the hardware through
-- * drm_sched_backend_ops.run_job(). Consequently, drm_sched_backend_ops.free_job()
-- * will not be called for all jobs still in drm_gpu_scheduler.pending_list.
-- * There is no solution for this currently. Thus, it is up to the driver to make
-- * sure that:
-- *
-- *  a) drm_sched_fini() is only called after for all submitted jobs
-- *     drm_sched_backend_ops.free_job() has been called or that
-- *  b) the jobs for which drm_sched_backend_ops.free_job() has not been called
-- *     after drm_sched_fini() ran are freed manually.
-- *
-- * FIXME: Take care of the above problem and prevent this function from leaking
-- * the jobs in drm_gpu_scheduler.pending_list under any circumstances.
-+ * This stops submission of new jobs to the hardware through &struct
-+ * drm_sched_backend_ops.run_job. If &struct drm_sched_backend_ops.cancel_job
-+ * is implemented, all jobs will be canceled through it and afterwards cleaned
-+ * up through &struct drm_sched_backend_ops.free_job. If cancel_job is not
-+ * implemented, memory could leak.
-  */
- void drm_sched_fini(struct drm_gpu_scheduler *sched)
+ #endif
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index 9c6cf03ed02b..eaeeedd62930 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -81,14 +81,18 @@ struct task_struct *__switch_to(struct task_struct *from, struct task_struct *to
+ void interrupt_end(void)
  {
-@@ -1384,6 +1388,10 @@ void drm_sched_fini(struct drm_gpu_scheduler *sched)
- 	/* Confirm no work left behind accessing device structures */
- 	cancel_delayed_work_sync(&sched->work_tdr);
- 
-+	/* Avoid memory leaks if supported by the driver. */
-+	if (sched->ops->cancel_job)
-+		drm_sched_cancel_remaining_jobs(sched);
+ 	struct pt_regs *regs = &current->thread.regs;
+-
+-	if (need_resched())
+-		schedule();
+-	if (test_thread_flag(TIF_SIGPENDING) ||
+-	    test_thread_flag(TIF_NOTIFY_SIGNAL))
+-		do_signal(regs);
+-	if (test_thread_flag(TIF_NOTIFY_RESUME))
+-		resume_user_mode_work(regs);
++	unsigned long thread_flags;
 +
- 	if (sched->own_submit_wq)
- 		destroy_workqueue(sched->submit_wq);
- 	sched->ready = false;
-diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
-index 50928a7ae98e..b8742bd569d8 100644
---- a/include/drm/gpu_scheduler.h
-+++ b/include/drm/gpu_scheduler.h
-@@ -466,6 +466,24 @@ struct drm_sched_backend_ops {
-          * and it's time to clean it up.
- 	 */
- 	void (*free_job)(struct drm_sched_job *sched_job);
-+
-+	/**
-+	 * @cancel_job: Used by the scheduler to guarantee remaining jobs' fences
-+	 * get signaled in drm_sched_fini().
-+	 *
-+	 * Used by the scheduler to cancel all jobs that have not been executed
-+	 * with &struct drm_sched_backend_ops.run_job by the time
-+	 * drm_sched_fini() gets invoked.
-+	 *
-+	 * Drivers need to signal the passed job's hardware fence with an
-+	 * appropriate error code (e.g., -ECANCELED) in this callback. They
-+	 * must not free the job.
-+	 *
-+	 * The scheduler will only call this callback once it stopped calling
-+	 * all other callbacks forever, with the exception of &struct
-+	 * drm_sched_backend_ops.free_job.
-+	 */
-+	void (*cancel_job)(struct drm_sched_job *sched_job);
- };
++	thread_flags = read_thread_flags();
++	while (thread_flags & _TIF_WORK_MASK) {
++		if (thread_flags & _TIF_NEED_RESCHED)
++			schedule();
++		if (thread_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
++			do_signal(regs);
++		if (thread_flags & _TIF_NOTIFY_RESUME)
++			resume_user_mode_work(regs);
++		thread_flags = read_thread_flags();
++	}
+ }
  
- /**
+ int get_current_pid(void)
 -- 
 2.39.5
 
