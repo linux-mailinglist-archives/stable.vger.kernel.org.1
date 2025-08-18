@@ -1,214 +1,179 @@
-Return-Path: <stable+bounces-169999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41422B29FAC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFA0B29FC1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F51B5E34E5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:54:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A60101686F4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030C530FF1E;
-	Mon, 18 Aug 2025 10:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD2C3176F0;
+	Mon, 18 Aug 2025 10:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snG3R4IB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oM8ryQTW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61CD30F7F4
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7567315792
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755514436; cv=none; b=FzXsvqb8l4X3vCf4m4B64euDe3BLo/B/z5uYfjFRsVrX4t8yrE88WFoc34p5NKAytyzEyUE4dU8ipSxSwT9B1L0jDrn499eUB4pJxjBucZiiW82o79FV+iPA0z1WZKMabJS+FlBF+EuagXMTCrigD7qxexH8BdbdAm2CNg2wqTU=
+	t=1755514553; cv=none; b=XkZalDTw1wnz7c41h9PQaxpoAHFRCwpO0E5ps2Q55k+PHYDjioO8JoZ/XsFjnFRECqcGwMe3BlkgJ2vA2WPfP2bvQCoyusGbnUU8i9ZK3kPZJYkYNCjyaZ4zDu0COn/lNCenJHpbGKk3O6aPGaUdEZRJtkKf47gNHmTTeuwVZUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755514436; c=relaxed/simple;
-	bh=5Az1BN0FgQ7UDlxOy5G7s+yq4ZdrJpWWpraq16IjlPM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qj4kZMcSULCdyNuX4YsNFxxK+qjO/VKum9KO3EP2PYrJ0AooUSc6Qyhf6+lrVJbOyXzIEAx93cGmtKKIDtogKaaxNLbC9MLTwPdpqk/fb4UeoIYuzm93QsjhfNiL6vrykITw5x9/T8AhKXKOimnuhTj1eJjxFN1RtIzCe4Z2eWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snG3R4IB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862DAC4CEED;
-	Mon, 18 Aug 2025 10:53:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755514436;
-	bh=5Az1BN0FgQ7UDlxOy5G7s+yq4ZdrJpWWpraq16IjlPM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=snG3R4IBFj3Cnm77x2RGswTG+3r+PY+SmW4oEXJDkGynWN7xubUrt0j94FojDw3xq
-	 iRNWr/y4sojoK+LosSNAxc+VbqHP1+94JJqTt6PC+tzD3abUV7z0kravqSOQMl7z+s
-	 FtPlXb1H+36bg27BUU+VxClpYLluU9uPlrIAOuF4=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: reserve data_reloc block group on mount" failed to apply to 6.6-stable tree
-To: johannes.thumshirn@wdc.com,dsterba@suse.com,fdmanana@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 12:53:52 +0200
-Message-ID: <2025081852-urgent-evacuate-28f1@gregkh>
+	s=arc-20240116; t=1755514553; c=relaxed/simple;
+	bh=6uPzar8fnz6L8ml82QStz50hbQ5nxpvVN3h1tUdJAos=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nk4lr6VIfQ/eSYHHbQFW/V36ABYzoTc07a2EJDMkgwkjhiNDDcH/MHJhLmpraDSaUflMOQqj/LjhjZiMhrYAxkqA/NBHSJ5DX8+wKLQe+415EHHu2eB7mT0hT9nGHOD3Tpdj681Plli0PJFy4EgFJuDIK8KeI+Sa1y6cdDhtIiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oM8ryQTW; arc=none smtp.client-ip=209.85.219.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e934595701eso1184287276.0
+        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 03:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1755514551; x=1756119351; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dSUcJw1TXruqA7NYhOWlsQiZC/PcevLoh3jJ9TCLJxk=;
+        b=oM8ryQTWNOMISk6HXymQy6AyJP4wzGxSJf2DGG172ok6NREbSEoF5v0uW6e7t1NhJL
+         x/MRkwuVpqTfSdhRec8erU6JaxZ0NOCPSmuHyPa58WLt+Q41Q1D4wCX+hcqG/CWFEGLW
+         8MbNwYfja9A4pO9j4zMhcIaQ6FdjeLwa8HMePpExcfgSogwNPM9DWGua36rdg8jiZu05
+         XxxA450TrqNuFamAID/qk7rXwRSOrOQYcs6F2fd+T0gCwlKdQD4jXMf8qyeyd0QljI2Z
+         LMCdt/p2n7A3WeTI0LHe5rtCawZ4NrMvVmH+XsR4Zkhuslne+bOlMVpfBjka9mcJmqBr
+         NxJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755514551; x=1756119351;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dSUcJw1TXruqA7NYhOWlsQiZC/PcevLoh3jJ9TCLJxk=;
+        b=MjJei3gQTu35WFAsm4hizlISN66OYW8REbalg24H2Tei2uVyUyy9V9tjAfri/uU4a1
+         0TD6itlgTVvpvachQYvNnrphI7OHOaPCrf6Oad/xq5M4Hx3ZE7VSfOl9QYT2wX6CXwXx
+         5UxTDdhXJryNLyQjhWTibdVyGaFPmaAShTiigq5VVuwjzmRlbQaLBOHlmWweT3DcB5hJ
+         FPPYid/NNQSkCwct2nlzcha/SDEgndEb6bXfq7Lb6cBGMjxXLp4LmSs1SHo+RRp6Vbnb
+         mkRIUNwaaJmdODuYZxVeHa3gZU8/MEmoj+5Tc60OFOONJcVzleStMxolg90J2SeqH4fr
+         2nMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXdDFPEc7mxvm2WOXhSDCvy0y8ehI6SZiyJNHh0I+DDUR5bF+58tF2i9iE9uShez+YY22Uw3uU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8146LxGmaePB9/nWJY2w5yGQnkU9/mldPXnlWEDAVCWNaErg4
+	HfFQBH/suLEEoRAKsMmzcgl0F1M1vBoQYtGXc86dT+0/1LO+fraL5BxzUFxkwGrid0xUpkIuYH9
+	rdneSJZx22bls7iS0pPEf/rBO3x/9fW87h1GkLFTwgw==
+X-Gm-Gg: ASbGncvLqWS70vSUUEvZN1OHJN+ceKALXx9jUu2406cDVkzPdgzCo24v/AX29OZhL7p
+	2f++kFiKONZUxgi0s28+HbiRlcmt/EXVFTYxfaEq14mJooantn6FhoaSWxyiAyR7V4FN+MHWsIt
+	hXQyBuNDqJNPRzUfGNlgBK8RfWuiqVdmLzLFezsP4Bgx4I7wYkHlry7UpHEyPmeQps9p1HAXR6/
+	muni9YP
+X-Google-Smtp-Source: AGHT+IGh7RVez0cYblanpn7QsvQTnxPk0VxeHoWXwhEM0PY4fYruJQmra/PgvlN67LU1aBTvJBYNVkGUDhr8hRBfu3Y=
+X-Received: by 2002:a05:6902:18ca:b0:e93:4df7:6889 with SMTP id
+ 3f1490d57ef6-e934df76df2mr4130536276.5.1755514550706; Mon, 18 Aug 2025
+ 03:55:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20250804013604.1311218-1-lijiayi@kylinos.cn>
+In-Reply-To: <20250804013604.1311218-1-lijiayi@kylinos.cn>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 18 Aug 2025 12:55:14 +0200
+X-Gm-Features: Ac12FXyqwG0c8SLIENypbwfR6jFFJ-FTW3VAEPm1_XbocLArGkOzSh1HDj0UOQA
+Message-ID: <CAPDyKFp4a_y-Om3CxEn2zO_s9yBeMmyMpgVL04j_xLEt7HtNqA@mail.gmail.com>
+Subject: Re: [PATCH v2] memstick: Fix deadlock by moving removing flag earlier
+To: Jiayi Li <lijiayi@kylinos.cn>
+Cc: maximlevitsky@gmail.com, gregkh@linuxfoundation.org, 
+	kai.heng.feng@canonical.com, oakad@yahoo.com, luoqiu@kylinsec.com.cn, 
+	viro@zeniv.linux.org.uk, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, jiayi_dec@163.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+On Mon, 4 Aug 2025 at 03:36, Jiayi Li <lijiayi@kylinos.cn> wrote:
+>
+> The existing memstick core patch: commit 62c59a8786e6 ("memstick: Skip
+> allocating card when removing host") sets host->removing in
+> memstick_remove_host(),but still exists a critical time window where
+> memstick_check can run after host->eject is set but before removing is set.
+>
+> In the rtsx_usb_ms driver, the problematic sequence is:
+>
+> rtsx_usb_ms_drv_remove:          memstick_check:
+>   host->eject = true
+>   cancel_work_sync(handle_req)     if(!host->removing)
+>   ...                              memstick_alloc_card()
+>                                      memstick_set_rw_addr()
+>                                        memstick_new_req()
+>                                          rtsx_usb_ms_request()
+>                                            if(!host->eject)
+>                                            skip schedule_work
+>                                        wait_for_completion()
+>   memstick_remove_host:                [blocks indefinitely]
+>     host->removing = true
+>     flush_workqueue()
+>     [block]
+>
+> 1. rtsx_usb_ms_drv_remove sets host->eject = true
+> 2. cancel_work_sync(&host->handle_req) runs
+> 3. memstick_check work may be executed here <-- danger window
+> 4. memstick_remove_host sets removing = 1
+>
+> During this window (step 3), memstick_check calls memstick_alloc_card,
+> which may indefinitely waiting for mrq_complete completion that will
+> never occur because rtsx_usb_ms_request sees eject=true and skips
+> scheduling work, memstick_set_rw_addr waits forever for completion.
+>
+> This causes a deadlock when memstick_remove_host tries to flush_workqueue,
+> waiting for memstick_check to complete, while memstick_check is blocked
+> waiting for mrq_complete completion.
+>
+> Fix this by setting removing=true at the start of rtsx_usb_ms_drv_remove,
+> before any work cancellation. This ensures memstick_check will see the
+> removing flag immediately and exit early, avoiding the deadlock.
+>
+> Fixes: 62c59a8786e6 ("memstick: Skip allocating card when removing host")
+> Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+> Cc: stable@vger.kernel.org
+
+Applied for fixes, thanks!
+
+Kind regards
+Uffe
 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 694ce5e143d67267ad26b04463e790a597500b00
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081852-urgent-evacuate-28f1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 694ce5e143d67267ad26b04463e790a597500b00 Mon Sep 17 00:00:00 2001
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Date: Tue, 3 Jun 2025 08:14:01 +0200
-Subject: [PATCH] btrfs: zoned: reserve data_reloc block group on mount
-
-Create a block group dedicated for data relocation on mount of a zoned
-filesystem.
-
-If there is already more than one empty DATA block group on mount, this
-one is picked for the data relocation block group, instead of a newly
-created one.
-
-This is done to ensure, there is always space for performing garbage
-collection and the filesystem is not hitting ENOSPC under heavy overwrite
-workloads.
-
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 0d6ad7512f21..4cfcd879dc5e 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -3561,6 +3561,7 @@ int __cold open_ctree(struct super_block *sb, struct btrfs_fs_devices *fs_device
- 		goto fail_sysfs;
- 	}
- 
-+	btrfs_zoned_reserve_data_reloc_bg(fs_info);
- 	btrfs_free_zone_cache(fs_info);
- 
- 	btrfs_check_active_zone_reservation(fs_info);
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 805f2eca20e9..4ab7808bca62 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -17,6 +17,7 @@
- #include "fs.h"
- #include "accessors.h"
- #include "bio.h"
-+#include "transaction.h"
- 
- /* Maximum number of zones to report per blkdev_report_zones() call */
- #define BTRFS_REPORT_NR_ZONES   4096
-@@ -2501,6 +2502,66 @@ void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg)
- 	spin_unlock(&fs_info->relocation_bg_lock);
- }
- 
-+void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
-+{
-+	struct btrfs_space_info *data_sinfo = fs_info->data_sinfo;
-+	struct btrfs_space_info *space_info = data_sinfo->sub_group[0];
-+	struct btrfs_trans_handle *trans;
-+	struct btrfs_block_group *bg;
-+	struct list_head *bg_list;
-+	u64 alloc_flags;
-+	bool initial = false;
-+	bool did_chunk_alloc = false;
-+	int index;
-+	int ret;
-+
-+	if (!btrfs_is_zoned(fs_info))
-+		return;
-+
-+	if (fs_info->data_reloc_bg)
-+		return;
-+
-+	if (sb_rdonly(fs_info->sb))
-+		return;
-+
-+	ASSERT(space_info->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
-+	alloc_flags = btrfs_get_alloc_profile(fs_info, space_info->flags);
-+	index = btrfs_bg_flags_to_raid_index(alloc_flags);
-+
-+	bg_list = &data_sinfo->block_groups[index];
-+again:
-+	list_for_each_entry(bg, bg_list, list) {
-+		if (bg->used > 0)
-+			continue;
-+
-+		if (!initial) {
-+			initial = true;
-+			continue;
-+		}
-+
-+		fs_info->data_reloc_bg = bg->start;
-+		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &bg->runtime_flags);
-+		btrfs_zone_activate(bg);
-+
-+		return;
-+	}
-+
-+	if (did_chunk_alloc)
-+		return;
-+
-+	trans = btrfs_join_transaction(fs_info->tree_root);
-+	if (IS_ERR(trans))
-+		return;
-+
-+	ret = btrfs_chunk_alloc(trans, space_info, alloc_flags, CHUNK_ALLOC_FORCE);
-+	btrfs_end_transaction(trans);
-+	if (ret == 1) {
-+		did_chunk_alloc = true;
-+		bg_list = &space_info->block_groups[index];
-+		goto again;
-+	}
-+}
-+
- void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info)
- {
- 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
-diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
-index 9672bf4c3335..6e11533b8e14 100644
---- a/fs/btrfs/zoned.h
-+++ b/fs/btrfs/zoned.h
-@@ -88,6 +88,7 @@ void btrfs_zone_finish_endio(struct btrfs_fs_info *fs_info, u64 logical,
- void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 				   struct extent_buffer *eb);
- void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg);
-+void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info);
- void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info);
- bool btrfs_zoned_should_reclaim(const struct btrfs_fs_info *fs_info);
- void btrfs_zoned_release_data_reloc_bg(struct btrfs_fs_info *fs_info, u64 logical,
-@@ -241,6 +242,8 @@ static inline void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 
- static inline void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg) { }
- 
-+static inline void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info) { }
-+
- static inline void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info) { }
- 
- static inline bool btrfs_zoned_should_reclaim(const struct btrfs_fs_info *fs_info)
-
+>
+> ---
+> v1 -> v2:
+> Added Cc: stable@vger.kernel.org
+> ---
+>  drivers/memstick/core/memstick.c    | 1 -
+>  drivers/memstick/host/rtsx_usb_ms.c | 1 +
+>  2 files changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
+> index 043b9ec756ff..95e65f4958f2 100644
+> --- a/drivers/memstick/core/memstick.c
+> +++ b/drivers/memstick/core/memstick.c
+> @@ -555,7 +555,6 @@ EXPORT_SYMBOL(memstick_add_host);
+>   */
+>  void memstick_remove_host(struct memstick_host *host)
+>  {
+> -       host->removing = 1;
+>         flush_workqueue(workqueue);
+>         mutex_lock(&host->lock);
+>         if (host->card)
+> diff --git a/drivers/memstick/host/rtsx_usb_ms.c b/drivers/memstick/host/rtsx_usb_ms.c
+> index 3878136227e4..5b5e9354fb2e 100644
+> --- a/drivers/memstick/host/rtsx_usb_ms.c
+> +++ b/drivers/memstick/host/rtsx_usb_ms.c
+> @@ -812,6 +812,7 @@ static void rtsx_usb_ms_drv_remove(struct platform_device *pdev)
+>         int err;
+>
+>         host->eject = true;
+> +       msh->removing = true;
+>         cancel_work_sync(&host->handle_req);
+>         cancel_delayed_work_sync(&host->poll_card);
+>
+> --
+> 2.47.1
+>
 
