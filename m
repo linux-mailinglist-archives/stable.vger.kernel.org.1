@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BF8B2A590
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8E2B2A27A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D34716FECC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95103B4367
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697AC340DBB;
-	Mon, 18 Aug 2025 13:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EC43203A7;
+	Mon, 18 Aug 2025 12:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbkQRAyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4HaGObk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D37340DA0;
-	Mon, 18 Aug 2025 13:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FA9320397;
+	Mon, 18 Aug 2025 12:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523293; cv=none; b=oWEjw4ZC7Jb0SmsUWC/dvFeujsCk4hjmrIOrB5XGs7ZF9W0yXeRN86D5Jk0xjav3szECjlpn3Qe6EFDMptcgqgXK2Jvbz+T5Y95moXQm6vuQjysIsEexyMrlIpxK3y7gtsZlftOnA5nYdno3seMFfI0ZYJ6tmpPJoVsDswyQsCA=
+	t=1755521665; cv=none; b=pJTnWaQrRCgSIwMOW6Kz+gmjKMTimtIo4TulqC33Yhiy5gn/UNHFRptrdXwWvH+Q7HmdsScnMa+BshySuE06I+gsUkCAEky59VYj+4FnBYT+s3QzYgHq1e+TiyQW9NLUCVbqb18pHD7RK+DMkAAmrHyH4k2T8CXcpgqZ4wlVQ4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523293; c=relaxed/simple;
-	bh=7N5mlooCat4rAHy1oqWRWGvA0NxVi4WFnxP6Hx9VUzs=;
+	s=arc-20240116; t=1755521665; c=relaxed/simple;
+	bh=ULN4++o3IdN7usMPjS0YfL1iC7+FZrg2J3UEEObDCzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3y7CD2GyjAbKAb/yLH4rWg5/TGjjPv0dDGylgqQy5S+JfgJejHolTyvTZ3ZsfZQcf6uPMj9DRq55dAan9gsduA/3/3Ea5/vk1wELmAWRVpg5VZX/ok9n/l9Zl6Ho8fk+lKyUe6qCWAa+Ms2cdWP7hQtYn9gUYSu+qHzphO4MC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbkQRAyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAD0C4CEF1;
-	Mon, 18 Aug 2025 13:21:32 +0000 (UTC)
+	 MIME-Version; b=e62JOkQEH9FhEx6BaPZsc52cq8LMUHKvdhIOIXABzhNVNosz2ITg8Gcj+JQrGCOgWWAmXFQ18ltF8jsyWyA+5As5sxxG3MI1uSTMvLJxWt5Zp3SOdY5PMbLphJ7abQA4hEwNC/I+XF53qSQdFruQFtC90jsyL5RILV7lBR6Eqrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4HaGObk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C07C113D0;
+	Mon, 18 Aug 2025 12:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523292;
-	bh=7N5mlooCat4rAHy1oqWRWGvA0NxVi4WFnxP6Hx9VUzs=;
+	s=korg; t=1755521665;
+	bh=ULN4++o3IdN7usMPjS0YfL1iC7+FZrg2J3UEEObDCzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbkQRAyrj65TUezB4Y7c89jUkwLYln4VqEnByVn9kkw2FN7YrfGw4RGxWLYbzXfVG
-	 qElmIG31hRfev7AlTVRI8Na8WNLUvNvrTVPYP2bpz70CRq304ExWNvJyiYd06VQgd4
-	 Gr8fLb5WxZDP0DULiv4yyK/0+yDs9Z6xHmcqJVQQ=
+	b=D4HaGObkLtfDxFaHA690yYnx+3k7OtaXJ9rjaEfWQ/i0kKNYQwVilBrIWcO0kLh8e
+	 1ph4fx2CFhF6HSD9CEXyPw4XQTrxIKxPznT/OSVJ88rbqSBsKc+HEnEA+87DIQ0+vz
+	 qK6VGX0HCeCImJXkTdc3rBvQSaN12wj3umRwJL+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiffany Yang <ynaffit@google.com>,
-	Carlos Llamas <cmllamas@google.com>,
+	syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 127/515] binder: Fix selftest page indexing
+Subject: [PATCH 6.12 087/444] fs/ntfs3: Add sanity check for file name
 Date: Mon, 18 Aug 2025 14:41:53 +0200
-Message-ID: <20250818124503.289973063@linuxfoundation.org>
+Message-ID: <20250818124452.210156350@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiffany Yang <ynaffit@google.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit bea3e7bfa2957d986683543cbf57092715f9a91b ]
+[ Upstream commit e841ecb139339602bc1853f5f09daa5d1ea920a2 ]
 
-The binder allocator selftest was only checking the last page of buffers
-that ended on a page boundary. Correct the page indexing to account for
-buffers that are not page-aligned.
+The length of the file name should be smaller than the directory entry size.
 
-Signed-off-by: Tiffany Yang <ynaffit@google.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20250714185321.2417234-2-ynaffit@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=598057afa0f49e62bd23
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc_selftest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/dir.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/android/binder_alloc_selftest.c b/drivers/android/binder_alloc_selftest.c
-index c88735c54848..486af3ec3c02 100644
---- a/drivers/android/binder_alloc_selftest.c
-+++ b/drivers/android/binder_alloc_selftest.c
-@@ -142,12 +142,12 @@ static void binder_selftest_free_buf(struct binder_alloc *alloc,
- 	for (i = 0; i < BUFFER_NUM; i++)
- 		binder_alloc_free_buf(alloc, buffers[seq[i]]);
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index b6da80c69ca6..600e66035c1b 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -304,6 +304,9 @@ static inline bool ntfs_dir_emit(struct ntfs_sb_info *sbi,
+ 	if (sbi->options->nohidden && (fname->dup.fa & FILE_ATTRIBUTE_HIDDEN))
+ 		return true;
  
--	for (i = 0; i < end / PAGE_SIZE; i++) {
- 		/**
- 		 * Error message on a free page can be false positive
- 		 * if binder shrinker ran during binder_alloc_free_buf
- 		 * calls above.
- 		 */
-+	for (i = 0; i <= (end - 1) / PAGE_SIZE; i++) {
- 		if (list_empty(page_to_lru(alloc->pages[i]))) {
- 			pr_err_size_seq(sizes, seq);
- 			pr_err("expect lru but is %s at page index %d\n",
++	if (fname->name_len + sizeof(struct NTFS_DE) > le16_to_cpu(e->size))
++		return true;
++
+ 	name_len = ntfs_utf16_to_nls(sbi, fname->name, fname->name_len, name,
+ 				     PATH_MAX);
+ 	if (name_len <= 0) {
 -- 
 2.39.5
 
