@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40148B2A429
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43921B2AA77
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A24663A2853
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C4BD6E1EDB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A126310627;
-	Mon, 18 Aug 2025 13:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DAB3218CB;
+	Mon, 18 Aug 2025 14:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hR0bq2ad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRSQsyjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1898BEC;
-	Mon, 18 Aug 2025 13:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DBC3218B2;
+	Mon, 18 Aug 2025 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522690; cv=none; b=a0w2NgotFcYTd4F66/NtAMXvi0UJ07t3sUZ50vjRjhy2ffrLMmk7ULBMKFuo9qVENtqlKP+9zEWDSbk+qh/9qLcSvhbBjOfwicnR9uGI9pWscbuXHyiwSFSfmI5GPqtqfpHPBNXxiy7ditzVxQbIGc3uxaT7yzCzOjlanPc6dt8=
+	t=1755525998; cv=none; b=Vi5jjhhbG4vnSyqyz2zBm+7soOWYKAZFoEbgQ+Nk9LCCKa2Yznb3N6ThJt33sEeqJdcLXWiIQnAjEVo4YIa/C6GS6VKfXwfL3EiYvLZ84QjhvtX5w3rBqavitDDtOACQPe3shfioN85PPG5K77qmXuEp488T+WLOEqcqBPz1gTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522690; c=relaxed/simple;
-	bh=JBfrEdOq/e3b69O2efy+OfgHu+8DF+LkEvqqqVFyPbk=;
+	s=arc-20240116; t=1755525998; c=relaxed/simple;
+	bh=sLjCnFa7DMctnpia6Kw7wlKToDYKRURPeoGNBKtIgJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ek25rf0VCGhaXJf6cOnIo5WuO+ZVimslyr8f6Jkf68XTt2rAbd+uJgRtGngCP35zjntat0V151C9dOrkQ76GUCkmk4UBj6W2S9Vk/hnohgPnMtJU+ZeKxMQr9QN65kcD6KCV3pFRr3BRrORs2yJxK7ft1s5d8s2LQJ8arECA1rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hR0bq2ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF344C4CEEB;
-	Mon, 18 Aug 2025 13:11:29 +0000 (UTC)
+	 MIME-Version; b=dPlHGCCu2HIcS66FA7cgnxON14rAP4epYUONql7qhyFKPhuLEOWBZapj22Hgjwc8OotIJhINYY5XYtVzVrndnmr8MHJIoPc3ZxUk2bZ4Hzt/+2jo0KjL6a2kSMcS6J4N9RlgW0mBu9Cxu9sZrkUxoJItxuwKr4gAC4CO1TYl0lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRSQsyjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57493C4CEEB;
+	Mon, 18 Aug 2025 14:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522690;
-	bh=JBfrEdOq/e3b69O2efy+OfgHu+8DF+LkEvqqqVFyPbk=;
+	s=korg; t=1755525997;
+	bh=sLjCnFa7DMctnpia6Kw7wlKToDYKRURPeoGNBKtIgJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hR0bq2adPJvHc+oLICBKN6+e5fFpYkDNi7ZWundK/nEdRPGQxwolgbX59K9TwC7QJ
-	 KKmpSrj2h2yFV071XeCYRZjeZmYseQ1/qnb5ffJfH42EAul+hPLYa0ammANuO+DJt/
-	 tjILj/dJ3JGN7yglOCnsgkFBiNGgY9xnMaD/J028=
+	b=SRSQsyjUhoMWcnw4HOgyGQyHOSVN3zvRaOYSoiOQIql51HzuP4tOhBN8l2UROuCKf
+	 hchWW4kKrpjNuJBx7/2fASveBBhePu94F58jc80tdaNKm+nXbRhlJg3z4jfharFJlS
+	 agKtoBSl3cL9ffIY+0q2+4hJ8zCbQF8fGSZzDuww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.12 390/444] cdc-acm: fix race between initial clearing halt and open
+	Jorge Marques <jorge.marques@analog.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 429/570] i3c: master: Initialize ret in i3c_i2c_notifier_call()
 Date: Mon, 18 Aug 2025 14:46:56 +0200
-Message-ID: <20250818124503.525158936@linuxfoundation.org>
+Message-ID: <20250818124522.362270129@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Jorge Marques <jorge.marques@analog.com>
 
-commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 upstream.
+[ Upstream commit 290ce8b2d0745e45a3155268184523a8c75996f1 ]
 
-On the devices that need their endpoints to get an
-initial clear_halt, this needs to be done before
-the devices can be opened. That means it needs to be
-before the devices are registered.
+Set ret to -EINVAL if i3c_i2c_notifier_call() receives an invalid
+action, resolving uninitialized warning.
 
-Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250622-i3c-master-ret-uninitialized-v1-1-aabb5625c932@analog.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-acm.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/i3c/master.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1520,6 +1520,12 @@ skip_countries:
- 			goto err_remove_files;
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index e53c69d24873..dfa0bad991cf 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2467,6 +2467,8 @@ static int i3c_i2c_notifier_call(struct notifier_block *nb, unsigned long action
+ 	case BUS_NOTIFY_DEL_DEVICE:
+ 		ret = i3c_master_i2c_detach(adap, client);
+ 		break;
++	default:
++		ret = -EINVAL;
  	}
+ 	i3c_bus_maintenance_unlock(&master->bus);
  
-+	if (quirks & CLEAR_HALT_CONDITIONS) {
-+		/* errors intentionally ignored */
-+		usb_clear_halt(usb_dev, acm->in);
-+		usb_clear_halt(usb_dev, acm->out);
-+	}
-+
- 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
- 			&control_interface->dev);
- 	if (IS_ERR(tty_dev)) {
-@@ -1527,11 +1533,6 @@ skip_countries:
- 		goto err_release_data_interface;
- 	}
- 
--	if (quirks & CLEAR_HALT_CONDITIONS) {
--		usb_clear_halt(usb_dev, acm->in);
--		usb_clear_halt(usb_dev, acm->out);
--	}
--
- 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
- 
- 	return 0;
+-- 
+2.39.5
+
 
 
 
