@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4A2B2A33B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B75DB2A881
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD1C170B26
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43C8F68036C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7035027B330;
-	Mon, 18 Aug 2025 12:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61C9335BC1;
+	Mon, 18 Aug 2025 13:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVz8aOTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xS2oCVvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3BE3218C0;
-	Mon, 18 Aug 2025 12:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C3C335BA3;
+	Mon, 18 Aug 2025 13:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521874; cv=none; b=AVP40JsuAUmTKvsFfG2z4NRDP5kkwmHfmxec/u5hBODlngvSYW4+roqCnRU37TEdPxwopKOkaeZ7ceJePDEfPvWJpVdW0j4mnRyZWjnI6Dyas1m3upLM75BYveDywm+MOJEtznj238C+c7CMrqffGrH7m4ZzmnJJBSgsRuRzHwE=
+	t=1755525087; cv=none; b=XtSg9A9JnrepDWuhDU98E0+wB+SRMaaODEZknL8d6hUZRO84+IweAB252XZRaEJe+QVuV0Mqxk994ZUnSqp+Jpwkt27vpODFKFoUIPHAXCoxoUtXC8HuJsklKounyxSHpIfYcBpr0BOqV0ZD0RBAY+Ss3mRTH0uGCuNM3tr9zRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521874; c=relaxed/simple;
-	bh=0XHeeSL4cVyeQbarNEiQyQewM2X1e1tvRpKvvwBrUdQ=;
+	s=arc-20240116; t=1755525087; c=relaxed/simple;
+	bh=JHCiqtYPKPvf93Z75QBJMSi/qCXtSNe3AFDOXgwkqEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9GorWbJEoTzlMaNOuXkCp5NITUQkSxeT+4Ng/pO0sjca6RDs54tb9nFs8qYTKw7yjYVYplVryyHsM11LLCMmy+zTcFkSBQb1lyVHMa1LAtJD5ojk0C80hJlg5Ao28UCVup5ocoLQjwp+8xAX/RAIaarYnR8fy0LbR21/y0cExQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVz8aOTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9ACC4CEEB;
-	Mon, 18 Aug 2025 12:57:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AQu8aHOUVABvmhvg4pOudhh1QE9b35iLWWUEeIMHbFXToKQ5a+W8FIrxf3K7kL4clldXa/FGbng5qX04TW9APy472wtaPRqyX0Z+nCen8a67+eskCXqUTDFJBLctFwXAKHf8TEhGDUftMf0oce+wOcNg6jCPvPmI3DKCD+tuCGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xS2oCVvg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D1FC4CEEB;
+	Mon, 18 Aug 2025 13:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521874;
-	bh=0XHeeSL4cVyeQbarNEiQyQewM2X1e1tvRpKvvwBrUdQ=;
+	s=korg; t=1755525087;
+	bh=JHCiqtYPKPvf93Z75QBJMSi/qCXtSNe3AFDOXgwkqEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVz8aOTz2GfUCOQ9OHlc7/B7/fBXbtXQ7yC06hxAZUqXhAocFIpy5AsjQLbsYGXIC
-	 agjgtzKf+LrRHhx39TzWWN0s6t50W2EgY2CELWb4hu4LCP6E2Mj5b3eovZ9A7f7c/+
-	 F1j1MvOG0ZU8Uo4OkHrmiLUwjljhdAv8MFdJWDVw=
+	b=xS2oCVvgQkmBZbTfHp8kT5o42wRsRK/npTGAe1IL/YfneqcgWm/KbL+7E+v5qu0u4
+	 xJRc+It5VutBdhBCRp/T6yf78sLmvapIMpsPlkIjn9VhBNjv+TFepdA6grD0myb9AO
+	 hSBpJM87jjZ5yNnP2AryU3vRgw7N2AjRqNZ5ns1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/444] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
+Subject: [PATCH 6.16 154/570] iio: adc: ad_sigma_delta: dont overallocate scan buffer
 Date: Mon, 18 Aug 2025 14:42:21 +0200
-Message-ID: <20250818124453.238405098@linuxfoundation.org>
+Message-ID: <20250818124511.747179880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
+[ Upstream commit 5a2f15c5a8e017d0951e6dc62aa7b5b634f56881 ]
 
-ASoC has 2 functions to set bias level.
-	(A) snd_soc_dapm_force_bias_level()
-	(B) snd_soc_dapm_set_bias_level()
+Fix overallocating the size of the scan buffer by converting bits to
+bytes. The size is meant to be in bytes, so scanbits needs to be
+divided by 8.
 
-snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
-successed.
-
-(A)	int snd_soc_dapm_force_bias_level(...)
-	{
-		...
-		if (ret == 0)
-(a)			dapm->bias_level = level;
-		...
-	}
-
-snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
-It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
-set dapm->bias_level by itself. One note is that (A) might not be called.
-
-(B)	static int snd_soc_dapm_set_bias_level(...)
-	{
-		...
-		ret = snd_soc_card_set_bias_level(...);
-		...
-		if (dapm != &card->dapm)
-(A)			ret = snd_soc_dapm_force_bias_level(...);
-		...
-		ret = snd_soc_card_set_bias_level_post(...);
-		...
-	}
-
-dapm->bias_level will be set if (A) was called, but might not be set
-if (B) was called, even though it calles set_bias_level() function.
-
-We should set dapm->bias_level if we calls
-snd_soc_dapm_set_bias_level() (B), too.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250701-iio-adc-ad7173-add-spi-offload-support-v3-1-42abb83e3dac@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dapm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/adc/ad_sigma_delta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
-index 99521c784a9b..196799b2fe24 100644
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -740,6 +740,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
- out:
- 	trace_snd_soc_bias_level_done(dapm, level);
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 4c5f8d29a559..6b3ef7ef403e 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -489,7 +489,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
+ 			return ret;
+ 	}
  
-+	/* success */
-+	if (ret == 0)
-+		snd_soc_dapm_init_bias_level(dapm, level);
-+
- 	return ret;
- }
- 
+-	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits, 8);
++	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits / 8, 8);
+ 	samples_buf_size += sizeof(int64_t);
+ 	samples_buf = devm_krealloc(&sigma_delta->spi->dev, sigma_delta->samples_buf,
+ 				    samples_buf_size, GFP_KERNEL);
 -- 
 2.39.5
 
