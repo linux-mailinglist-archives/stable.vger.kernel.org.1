@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F67B2A8F1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:12:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71314B2A64F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398A55A43FB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:03:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46A0563CB3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A15343D9D;
-	Mon, 18 Aug 2025 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216C92E717D;
+	Mon, 18 Aug 2025 13:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/sCouS+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rctK4Fxe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECD6343D97;
-	Mon, 18 Aug 2025 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BDA22A7E0;
+	Mon, 18 Aug 2025 13:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525430; cv=none; b=eypl/ZInmLmDL0yICCv0SwGJPkd+4PoV2apkV3a/CH6QAYsx0pgWTLeTnW9QwMUkfSxIaX/ehwkLIGcygAav0GsmHyNacryUcNjgRpsGwY4obT0Y9P/v7x0F9rJX6qwUapHKJ5A6lYeYsnbp3dS1qHsDsAJLZHd73CZ8L62MOWw=
+	t=1755523855; cv=none; b=AzFb/rFeMwPrfdN8haGxrAqkRFnHRHAGeVup1fpuoevOKZCruYd8khXcPE1sHu63XYe1Na5pFjhovLUfgMY7p/tsXhajHghw65A2T6gITJKE5YT1mNXabmSVoOjzPX14Nmf/Z8MSmsKwVQJUlWkHoT85wp6vBDKOvpEI9yJj1Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525430; c=relaxed/simple;
-	bh=WDAZOQjTXLY0x/rQyzOgXATD60+P7kZDepZmUXs8Ujw=;
+	s=arc-20240116; t=1755523855; c=relaxed/simple;
+	bh=aA25WD4uNjeTRql57BX2I4XTriD2zitYYJwu67ATZaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qyiz02foMHexmPsmz1yfTEe7XI/OMHOvwJUaZpqx6plzI948rkDFypHh+Lauabi2BpT9mTbNmKVf2Yi0Oix4BqDFQyneT4YESZ0zzYlGDQSKj5yPyfNalvO7iXbj8+v194paCLQYZfdfRXFu4uwbnP4Z18Bek6n3H8fE3iOyisY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/sCouS+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C57C4CEEB;
-	Mon, 18 Aug 2025 13:57:09 +0000 (UTC)
+	 MIME-Version; b=kDtl/8p0i4UsbIYrJNiaJyHqb7DorYcnL2CbF6CeZ2DX6/shdSvV0f4hoT/c3MxM+vITSihVoa0EM+qWQyhlrKPdIqYWBRuo2WayIaJ9lDnBd02Uy5d6fwY4AQgg8WMFEzAlPZP5wqBGzsgX/1RaFaLSuJURY4WSKws8YLB1yLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rctK4Fxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533A6C4CEEB;
+	Mon, 18 Aug 2025 13:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525430;
-	bh=WDAZOQjTXLY0x/rQyzOgXATD60+P7kZDepZmUXs8Ujw=;
+	s=korg; t=1755523855;
+	bh=aA25WD4uNjeTRql57BX2I4XTriD2zitYYJwu67ATZaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/sCouS+KNNLE5G78hx5YshKdy1wcWTa3aG2ZBhdjm4q9s7Xgt7r9pGuOU2WGyS2d
-	 vZcHjh6hlKKwAnl492dx+Ed3ADR6XlSsiZCdLWKBw3nrh1xP+AyrTXUggnHi4oCC7g
-	 davciJnn9lPBnJr7YlGhuCRgmaeCXLSGZhq0mkMc=
+	b=rctK4FxexXADZ11kIVO4qwkmYrvyBURCmFFK/o71yxWVKNoELMqhYyRvSVOfFMXTE
+	 uczf/i+WO04AX5cvMTrGNaGAuCFv//ZWy+bskhHjqeZHkvQm6kQzqra4nSDLSRg85E
+	 9CRQh0zso8xmCGZROHna3UB4M9C64xu33CGnQeEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mason <clm@fb.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	David Bauer <mail@david-bauer.net>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 260/570] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
+Subject: [PATCH 6.15 261/515] wifi: mt76: mt7915: mcu: increase eeprom command timeout
 Date: Mon, 18 Aug 2025 14:44:07 +0200
-Message-ID: <20250818124515.838144158@linuxfoundation.org>
+Message-ID: <20250818124508.470814430@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Mason <clm@fb.com>
+From: David Bauer <mail@david-bauer.net>
 
-[ Upstream commit 155213a2aed42c85361bf4f5c817f5cb68951c3b ]
+[ Upstream commit efd31873cdb3e5580fb76eeded6314856f52b06e ]
 
-schbench (https://github.com/masoncl/schbench.git) is showing a
-regression from previous production kernels that bisected down to:
+Increase the timeout for MCU_EXT_CMD_EFUSE_BUFFER_MODE command.
 
-sched/fair: Remove sysctl_sched_migration_cost condition (c5b0a7eefc)
+Regular retries upon hardware-recovery have been observed. Increasing
+the timeout slightly remedies this problem.
 
-The schbench command line was:
-
-schbench -L -m 4 -M auto -t 256 -n 0 -r 0 -s 0
-
-This creates 4 message threads pinned to CPUs 0-3, and 256x4 worker
-threads spread across the rest of the CPUs.  Neither the worker threads
-or the message threads do any work, they just wake each other up and go
-back to sleep as soon as possible.
-
-The end result is the first 4 CPUs are pegged waking up those 1024
-workers, and the rest of the CPUs are constantly banging in and out of
-idle.  If I take a v6.9 Linus kernel and revert that one commit,
-performance goes from 3.4M RPS to 5.4M RPS.
-
-schedstat shows there are ~100x  more new idle balance operations, and
-profiling shows the worker threads are spending ~20% of their CPU time
-on new idle balance.  schedstats also shows that almost all of these new
-idle balance attemps are failing to find busy groups.
-
-The fix used here is to crank up the cost of the newidle balance whenever it
-fails.  Since we don't want sd->max_newidle_lb_cost to grow out of
-control, this also changes update_newidle_cost() to use
-sysctl_sched_migration_cost as the upper limit on max_newidle_lb_cost.
-
-Signed-off-by: Chris Mason <clm@fb.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Link: https://patch.msgid.link/20250402004528.1036715-2-mail@david-bauer.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7a14da5396fb..042ab0863ccc 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -12174,8 +12174,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
- 		 * next wakeup on the CPU.
-+		 *
-+		 * sched_balance_newidle() bumps the cost whenever newidle
-+		 * balance fails, and we don't want things to grow out of
-+		 * control.  Use the sysctl_sched_migration_cost as the upper
-+		 * limit, plus a litle extra to avoid off by ones.
- 		 */
--		sd->max_newidle_lb_cost = cost;
-+		sd->max_newidle_lb_cost =
-+			min(cost, sysctl_sched_migration_cost + 200);
- 		sd->last_decay_max_lb_cost = jiffies;
- 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
- 		/*
-@@ -12867,10 +12873,17 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
- 
- 			t1 = sched_clock_cpu(this_cpu);
- 			domain_cost = t1 - t0;
--			update_newidle_cost(sd, domain_cost);
--
- 			curr_cost += domain_cost;
- 			t0 = t1;
-+
-+			/*
-+			 * Failing newidle means it is not effective;
-+			 * bump the cost so we end up doing less of it.
-+			 */
-+			if (!pulled_task)
-+				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
-+
-+			update_newidle_cost(sd, domain_cost);
- 		}
- 
- 		/*
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 45dd444ce360..cac176ee5152 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -208,6 +208,9 @@ mt7915_mcu_set_timeout(struct mt76_dev *mdev, int cmd)
+ 	case MCU_EXT_CMD_BSS_INFO_UPDATE:
+ 		mdev->mcu.timeout = 2 * HZ;
+ 		return;
++	case MCU_EXT_CMD_EFUSE_BUFFER_MODE:
++		mdev->mcu.timeout = 10 * HZ;
++		return;
+ 	default:
+ 		break;
+ 	}
 -- 
 2.39.5
 
