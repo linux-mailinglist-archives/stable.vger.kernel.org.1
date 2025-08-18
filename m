@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774A2B2A5C4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E42B2A890
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4550567B61
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 652F81BA4769
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1791320CD4;
-	Mon, 18 Aug 2025 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9611E48A;
+	Mon, 18 Aug 2025 13:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iaaczN2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aF74xvnV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2D522A7E0;
-	Mon, 18 Aug 2025 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE69335BCA;
+	Mon, 18 Aug 2025 13:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523439; cv=none; b=BeH1gS40+JvlERGWR96yGRtIwiQ8qTCLRNEu9I2ri0o6BSpQZW89+qab0Ai8bDBIUi4Zb5ohrtwbWLK6xERBG9l6hTNeB3Ygs+h1E+otK1WqOg2Id6SuxZ6S2lt+gjL7lzhawiV6/HBKEPnciHmzzITT/URFIidHQb+sCkhRy8k=
+	t=1755525242; cv=none; b=bVdL1u7WY1m2syQpyNOt5k7kee3n+Ktq3uk0yhmJWLzg3vRWDIj56wPbVs8M9KmMwkunoK+fDtOQOb/dWhx2vjvd2hATnusOed4C/SpHoiIG1iP8lb9bvAV3wy3j5aeGatW1GDxz/MtrfBa/Z0ZNlSoFdKdaT01+Xoj0QI3h6QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523439; c=relaxed/simple;
-	bh=v/kHnaSbWkmMw8mBeG/o6a1AWtp2T+mVjrWTWjxjN2E=;
+	s=arc-20240116; t=1755525242; c=relaxed/simple;
+	bh=ddt0wY1YmCZ13wEEAITusbkyIypPOpT9nfHPdqcfmsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doUYqK0LmqyP8w+CBZ1s8egCXiDxaQH82R5ayh11eUO+JiWTRuduhmmZqE40+Qovf0/Zdds5jiMGW5x6pUv4doooJBAWMOSLwno7IVV3TCpygEc6Gn6D2qm7YG2nKcirGRmzKG3jtWxLW9/dE5XrmtfsDH498dpJfxpGf1Zr7+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iaaczN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169FAC4CEEB;
-	Mon, 18 Aug 2025 13:23:58 +0000 (UTC)
+	 MIME-Version; b=WaSba9LIB6B3j10hjYHvl0jscoSianTsVO1f3VLWs2DYTHVt938CcHERPyxgmKuJpiBufFX4ZgoutiBzc64tm/jGTV9XPXl7ezdzQalx3zBIO0AMUqNXxgYyGdxIu+8AWqACYt3fVJ6VjtuAHVTWXMDMRycsBturHBEE6FmjW1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aF74xvnV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC76C4CEEB;
+	Mon, 18 Aug 2025 13:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523439;
-	bh=v/kHnaSbWkmMw8mBeG/o6a1AWtp2T+mVjrWTWjxjN2E=;
+	s=korg; t=1755525242;
+	bh=ddt0wY1YmCZ13wEEAITusbkyIypPOpT9nfHPdqcfmsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1iaaczN2ska792FAlbJp+S++rhjAvLWbDGm3SyG9uc4Lpv97ywbiQ+L4hbDnbM9ns
-	 XNFxCA0BBh7yx7iTJdk0NTzDhs1UgIbZoDYm6v75XlFt4ecP4iHuh/So8DxsDnBugm
-	 qRS87Nsf983FzfCPgDaWT22lEHw+6DgGfsA2M23k=
+	b=aF74xvnVL+SpjvszCOo/WAP/hTFkhKnIElp0jGTwfK8YlizEEw4mmxLKYlUrZq5nE
+	 aF6ODcrCdbdR3QiKcEwf0maH6QS+rP1Pi7TUXSKbinACKwO/ZkbnJc9yw1VietknWS
+	 u2t1st+5jY4K81QuV4+4KvrTHZ1IgFARdf5V+tus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Gottschall <s.gottschall@dd-wrt.com>,
-	Markus Stockhausen <markus.stockhausen@gmx.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 171/515] irqchip/mips-gic: Allow forced affinity
+Subject: [PATCH 6.16 170/570] irqchip/renesas-rzv2h: Enable SKIP_SET_WAKE and MASK_ON_SUSPEND
 Date: Mon, 18 Aug 2025 14:42:37 +0200
-Message-ID: <20250818124504.949448054@linuxfoundation.org>
+Message-ID: <20250818124512.347113923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 2250db8628a0d8293ad2e0671138b848a185fba1 ]
+[ Upstream commit de2942828e7670526289f098df7e50b112e8ff1e ]
 
-Devices of the Realtek MIPS Otto platform use the official rtl-otto-timer
-as clock event generator and CPU clocksource. It is registered for each CPU
-startup via cpuhp_setup_state() and forces the affinity of the clockevent
-interrupts to the appropriate CPU via irq_force_affinity().
+The interrupt controller found on RZ/G3E doesn't provide any facility to
+configure the wakeup sources. That's the reason why the driver lacks the
+irq_set_wake() callback for the interrupt chip.
 
-On the "smaller" devices with a vendor specific interrupt controller
-(supported by irq-realtek-rtl) the registration works fine. The "larger"
-RTL931x series is based on a MIPS interAptiv dual core with a MIPS GIC
-controller. Interrupt routing setup is cancelled because gic_set_affinity()
-does not accept the current (not yet online) CPU as a target.
+But this prevent to properly enter power management states like "suspend to
+idle".
 
-Relax the checks by evaluating the force parameter that is provided for
-exactly this purpose like in other drivers. With this the affinity can be
-set as follows:
+Enable the flags IRQCHIP_SKIP_SET_WAKE and IRQCHIP_MASK_ON_SUSPEND so the
+interrupt suspend logic can handle the chip correctly.
 
- - force = false: allow to set affinity to any online cpu
- - force = true:  allow to set affinity to any cpu
-
-Co-developed-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250621054952.380374-1-markus.stockhausen@gmx.de
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/all/20250701105923.52151-1-biju.das.jz@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mips-gic.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-renesas-rzv2h.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index bca8053864b2..1c2284297354 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -375,9 +375,13 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 	/*
- 	 * The GIC specifies that we can only route an interrupt to one VP(E),
- 	 * ie. CPU in Linux parlance, at a time. Therefore we always route to
--	 * the first online CPU in the mask.
-+	 * the first forced or online CPU in the mask.
- 	 */
--	cpu = cpumask_first_and(cpumask, cpu_online_mask);
-+	if (force)
-+		cpu = cpumask_first(cpumask);
-+	else
-+		cpu = cpumask_first_and(cpumask, cpu_online_mask);
-+
- 	if (cpu >= NR_CPUS)
- 		return -EINVAL;
+diff --git a/drivers/irqchip/irq-renesas-rzv2h.c b/drivers/irqchip/irq-renesas-rzv2h.c
+index 69b32c19e8ff..76fb1354e2aa 100644
+--- a/drivers/irqchip/irq-renesas-rzv2h.c
++++ b/drivers/irqchip/irq-renesas-rzv2h.c
+@@ -427,7 +427,9 @@ static const struct irq_chip rzv2h_icu_chip = {
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_set_type		= rzv2h_icu_set_type,
+ 	.irq_set_affinity	= irq_chip_set_affinity_parent,
+-	.flags			= IRQCHIP_SET_TYPE_MASKED,
++	.flags			= IRQCHIP_MASK_ON_SUSPEND |
++				  IRQCHIP_SET_TYPE_MASKED |
++				  IRQCHIP_SKIP_SET_WAKE,
+ };
  
+ static int rzv2h_icu_alloc(struct irq_domain *domain, unsigned int virq, unsigned int nr_irqs,
 -- 
 2.39.5
 
