@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-170762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B666B2A59B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61995B2A32C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABA537B219C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D623ABE39
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DE6320CBF;
-	Mon, 18 Aug 2025 13:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73DE286D5E;
+	Mon, 18 Aug 2025 13:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjXipJ25"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsDuLxJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB41031E0EB;
-	Mon, 18 Aug 2025 13:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767B812DDA1;
+	Mon, 18 Aug 2025 13:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523692; cv=none; b=ZlXugYbgMgCsRNExNTsYMDQIUGYwC1MRyIrxitsoD5pGd1lyPZl98OclDeGVjkv0DOrUVSLb4xWlLf09z1oFSSuCe+QY2Kp8a4gKJEdlXkWb3u4IOQPvLdCtn4k+b0mFmN2pOhC0eEvh2GIjxnbe0BsiJQhx02LT3S2luuBlFpE=
+	t=1755522082; cv=none; b=AagLi/3/sZQgtO0Ov+ZWcpnSNr2abw6mbesMMUx+Uqw9Kx2cN/ocGCfVZjoJbKJfp8gLSQT71LbLKt73XJORWhF+OMqrSmmzcNtIcvrNsdF8qJZsonFD3e836L8C/mBDC2gGjkvRVHo7yeNiowndAgdTVWvh6zqgsjgQ4n5DGpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523692; c=relaxed/simple;
-	bh=jBO6kAMJW29OlQh1iyHkzujPafBTkNsjNoBJDtKBX08=;
+	s=arc-20240116; t=1755522082; c=relaxed/simple;
+	bh=32XH64Rrjoy8s5SNGkGg1GYD7/ckUlTm/81VrCk/8X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aK1BxVUiEeJ/kyBoxnAOMNR/4ERIN5v+m2o07KnIxTgssmoiIC1VuvH+ytyiEF75eNvLQqKwhB6sEEvqVA6NmDzUc2rXY5t/UF7H8BXDuxXzhr8yxaCL8uVRgim5atpWQ3Dmw/GuYSV8rm1i+i3AhDg+oppFGpA/r7YA0PDfSlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjXipJ25; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A5EC4CEEB;
-	Mon, 18 Aug 2025 13:28:11 +0000 (UTC)
+	 MIME-Version; b=WgYvIxJ1grMcqGRbzloMxI7TASwCjWQkyLpdizZU9X0eSYoMrjdoD8XvMqT5o9TaKNYvBFDWTNuV+V0V5BTCBu8aAlTyotS/JHeNPQZW4yFXZjP9hN50tTcVvEMyoqvDYjg8PbM1oBreWDlprpd9cGsagocWxXH6qQK46b8zGxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsDuLxJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C6FC113D0;
+	Mon, 18 Aug 2025 13:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523692;
-	bh=jBO6kAMJW29OlQh1iyHkzujPafBTkNsjNoBJDtKBX08=;
+	s=korg; t=1755522082;
+	bh=32XH64Rrjoy8s5SNGkGg1GYD7/ckUlTm/81VrCk/8X0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjXipJ25W9DqCatPLYvj08rHitZ5PqFC77YRgI5MXpIHTYuCCj1dacPFDB4aBp2ZJ
-	 SfHxAnmhvbLBH05TekRfIcqhhjEEQd+Ovauwyj/L7CFozV5KusvtM7Bvg8mvr2bM0J
-	 x3c4O48s/5ZpGKW7kfWDUdZ/5UhQZUXpQAQ6vHYo=
+	b=HsDuLxJl0MIUtWyX4WvISui8aC1rsuCQDVbHdLd0RVH11gBDN6gF3BtiTt2w76y4Q
+	 5iFw+p6L0QNPqhA1FRQGRe/NnK4FoumaSVv5rqvixJN5EvQng1wdXMgk2g6Vk3HQtt
+	 QcoZ/Zv7yCR4VeyahVCeFf0njIbiUlx+EJ4Msk8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sarika Sharma <quic_sarishar@quicinc.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 249/515] wifi: mac80211: fix rx link assignment for non-MLO stations
+Subject: [PATCH 6.12 209/444] wifi: mac80211: fix rx link assignment for non-MLO stations
 Date: Mon, 18 Aug 2025 14:43:55 +0200
-Message-ID: <20250818124507.981193488@linuxfoundation.org>
+Message-ID: <20250818124456.690439953@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 8ec06cf0a9f0..7b801dd3f569 100644
+index 8e1d00efa62e..8c0d91dfd7e2 100644
 --- a/net/mac80211/rx.c
 +++ b/net/mac80211/rx.c
-@@ -4211,10 +4211,16 @@ static bool ieee80211_rx_data_set_sta(struct ieee80211_rx_data *rx,
+@@ -4283,10 +4283,16 @@ static bool ieee80211_rx_data_set_sta(struct ieee80211_rx_data *rx,
  		rx->link_sta = NULL;
  	}
  
