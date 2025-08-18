@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB4EB2A356
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882BAB2A4E9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C52566271
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 233324E310D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D5831E0F4;
-	Mon, 18 Aug 2025 12:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18833203BE;
+	Mon, 18 Aug 2025 13:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3C3H6c0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3mcMFDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648F731A068;
-	Mon, 18 Aug 2025 12:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2622253F2;
+	Mon, 18 Aug 2025 13:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521771; cv=none; b=DFpvnV2QiFRMj0dsTMxcN4k8yge7SBSpKQwhtxXz4xo+TF8bCD6rKr/Zt3LhfnmLiGjGxrkLzC/IHsOP2kJwte2rJ1Wp2STCVirZCXToGoOzFVZa2XwhrGxhOq9qSvF9Nxxq4VOYGpkNpJNrR2g/sM9TVEAvUcInIhfjqa6JwXc=
+	t=1755523280; cv=none; b=OTux4TqHBfwt+AAUCOOsU0rZ5SXB6Kjq2Fbw7r9XxEIIPDJGwvMpnMYZ9AlLFLF8mq1iDbzScADbSsGVwIv4p3DGfBeHOt11FBX7arPSBhoAPTvvtmiDKlOy7Rf250T7+w6IuWmDtL6Rw8dfc8BkG8DGSSodXt6h01JA7auO6Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521771; c=relaxed/simple;
-	bh=stkdx/eShTkSPisV+ra+AajdEhCDAOSgXXrHN+e1vUU=;
+	s=arc-20240116; t=1755523280; c=relaxed/simple;
+	bh=tJMcw8U90GzYlPEye22Uc+IbrZSvf4ytu6CGUDuYBH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gvlg5iB07Mzq+VYrvEMRfaFBGrJVjzZP7MR72VWuD5ANApXov8J0n8q6mWoQw71zj9TqVkjGrH5+1LIIRWDvO1e2EZSpUoIRtsZpKx6cTrg/i7IN+MrcZRMV+EImQy2FS5KHiZlG006vwLVidUlDkRFOJgcneSToOLkRxdgSvmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3C3H6c0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17D8C4CEEB;
-	Mon, 18 Aug 2025 12:56:10 +0000 (UTC)
+	 MIME-Version; b=ruiLxKbhCPcGklM0AmmWRorE2jSsbNbhgXg57e0uG3MQV+pmMHPokNm5OwsSCSANvcE6V6ZGLM/zhPPi6nznINKumpGDoTmBkmYGpoFpmoR+xYpc9gC+mBjYCDEk4oaqEkLeTK7i596+puH0fORZHF6mJG9sb2H9BQUsheTFcGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3mcMFDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4844EC4CEEB;
+	Mon, 18 Aug 2025 13:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521771;
-	bh=stkdx/eShTkSPisV+ra+AajdEhCDAOSgXXrHN+e1vUU=;
+	s=korg; t=1755523280;
+	bh=tJMcw8U90GzYlPEye22Uc+IbrZSvf4ytu6CGUDuYBH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V3C3H6c0iprnje/I4MMQ6iMZZ0z9htZicrcv9xpQNyKtLBM9VjAmMqy6aIa5LfWT+
-	 aklPEHAigu2WPtIs+WedaCtV6XN7/G+PmXqCQunyge74Ut7mnUB9h0z7ubRdGeh+si
-	 OjzOo5byGKtDrszecpyPDotBRU79ONxVzx7SbaVg=
+	b=r3mcMFDChj0BULSul6REo5BL16XH7m8H+y47ty9wvYLb8X1wuXnylcV4cZVnn3G4/
+	 yjWPLu1VS4+aa2Em076u1I5q6Ns+0dWUEn3tOgEfSlMyNWgq9yrvDzf4e7sP1qz2JB
+	 YjxdZ2XTWWK8VKUMIIfeInAMMdGIX3ys09Cd23Dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Prashant Malani <pmalani@google.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/444] nvme-tcp: log TLS handshake failures at error level
+Subject: [PATCH 6.15 115/515] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
 Date: Mon, 18 Aug 2025 14:41:41 +0200
-Message-ID: <20250818124451.767171654@linuxfoundation.org>
+Message-ID: <20250818124502.780137208@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Prashant Malani <pmalani@google.com>
 
-[ Upstream commit 5a58ac9bfc412a58c3cf26c6a7e54d4308e9d109 ]
+[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
 
-Update the nvme_tcp_start_tls() function to use dev_err() instead of
-dev_dbg() when a TLS error is detected. This ensures that handshake
-failures are visible by default, aiding in debugging.
+AMU counters on certain CPPC-based platforms tend to yield inaccurate
+delivered performance measurements on systems that are idle/mostly idle.
+This results in an inaccurate frequency being stored by cpufreq in its
+policy structure when the CPU is brought online. [1]
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Consequently, if the userspace governor tries to set the frequency to a
+new value, there is a possibility that it would be the erroneous value
+stored earlier. In such a scenario, cpufreq would assume that the
+requested frequency has already been set and return early, resulting in
+the correct/new frequency request never making it to the hardware.
+
+Since the operating frequency is liable to this sort of inconsistency,
+mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
+invoked when a target frequency update is requested.
+
+Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
+Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Prashant Malani <pmalani@google.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 25e486e6e805..83a6b18b01ad 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1777,9 +1777,14 @@ static int nvme_tcp_start_tls(struct nvme_ctrl *nctrl,
- 			qid, ret);
- 		tls_handshake_cancel(queue->sock->sk);
- 	} else {
--		dev_dbg(nctrl->device,
--			"queue %d: TLS handshake complete, error %d\n",
--			qid, queue->tls_err);
-+		if (queue->tls_err) {
-+			dev_err(nctrl->device,
-+				"queue %d: TLS handshake complete, error %d\n",
-+				qid, queue->tls_err);
-+		} else {
-+			dev_dbg(nctrl->device,
-+				"queue %d: TLS handshake complete\n", qid);
-+		}
- 		ret = queue->tls_err;
- 	}
- 	return ret;
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index cb93f00bafdb..156c1e516cc8 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -816,7 +816,7 @@ static struct freq_attr *cppc_cpufreq_attr[] = {
+ };
+ 
+ static struct cpufreq_driver cppc_cpufreq_driver = {
+-	.flags = CPUFREQ_CONST_LOOPS,
++	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
+ 	.verify = cppc_verify_policy,
+ 	.target = cppc_cpufreq_set_target,
+ 	.get = cppc_cpufreq_get_rate,
 -- 
 2.39.5
 
