@@ -1,118 +1,152 @@
-Return-Path: <stable+bounces-169928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED218B299D3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 08:38:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC6BB29A08
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 08:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4602203B8D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 06:38:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969464E0AD7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 06:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B93275878;
-	Mon, 18 Aug 2025 06:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E592701D2;
+	Mon, 18 Aug 2025 06:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm+NY5O7"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Q0tN71tK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F191DF982;
-	Mon, 18 Aug 2025 06:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655BE262FF3
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 06:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755499127; cv=none; b=suRfA+9CAUF00Lf1b15AB3nz2MtJP6qSN3bw++c2LGU/FbXMiC38Efw+YV0Wrmmmisaevxo4NmfQM9FwzX2ok1ryyKQKG95pi8MRZGVYPjvwL6yWiDDx0/exwMwwRUPF9M5rmwuEi3lvmsVstvGZCQXF2/1xvWv55bqO7Nl2Bg8=
+	t=1755499682; cv=none; b=Ns1khXdexpp/lYSa7B3NgVGTUiYjGdrTgu3mR8g2djXcGTXabLymz5IL4P7E/C8ywwp/pEUm+zRYQCW/qgWLVMaAc3t2v7gvUf82lm7REVvmAFiGLGj0Vkex0HCzEAKLeHHXTzqexxdLPbI6hVh00IyaYUauSSnjHjdReW1nJak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755499127; c=relaxed/simple;
-	bh=ZKis/lHHsil3+qxS9LXL9kurPk/4dJofbMX32NI6bl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Re9PwbL2PAOKvQ7w4iANOtPk9FlVg4cNDXhmJHBDbJmhJs8vsFpzWl0O8joYNR4VcQ81dwhZFlJTdQLCNZK4dcEzmTdKdTpGY7D/eLmiMAQXe8iXJYYvKy7RKGdJMBT/q/XL5UX5qkS1BWj2tEwGVnPIcnW5V2bLxDhg6yr3ugY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm+NY5O7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2878C4CEEB;
-	Mon, 18 Aug 2025 06:38:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755499127;
-	bh=ZKis/lHHsil3+qxS9LXL9kurPk/4dJofbMX32NI6bl4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dm+NY5O7idMn1bzkulgc8bGD8Wss6RrmER9++RFLZQNgDHUdZ+4O2ZA3hyYk6RSep
-	 IaveUimOYfOhHRu/kcyONCc34KE+gySVQlK1k1pEeHh+MsPr/vEsQP8bRc2a7QRy9T
-	 cY6W8OvZkcreHF+LvRQxf7lKM7A6DckNflqV69gQ=
-Date: Mon, 18 Aug 2025 08:38:44 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Yu Kuai <yukuai1@huaweicloud.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, xni@redhat.com,
-	Song Liu <song@kernel.org>, "yukuai (C)" <yukuai3@huawei.com>
-Subject: Re: Patch "md: call del_gendisk in control path" has been added to
- the 6.6-stable tree
-Message-ID: <2025081804-gloater-brought-c097@gregkh>
-References: <20250817141818.2370452-1-sashal@kernel.org>
- <7748b907-8279-c222-d4e4-b94c3216408b@huaweicloud.com>
- <2025081846-veneering-radish-498d@gregkh>
- <0c083639-eb30-2830-0938-20684db3914a@huaweicloud.com>
+	s=arc-20240116; t=1755499682; c=relaxed/simple;
+	bh=4f6LJZiRndmUfvc5xeffNXg78yFNRvxk90kZiuVnZPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VB+Qon9zUCwc0Xp44SAC8VxSZbShDuycQZqCm5Gi/SxUhdy1bELbyik7eNQpkMVdnQWpaiccVqLbf9zzPjThHNNBPcIxbxqXwgGnKsVJkrXquWPBsjaLUzf1mrwPIEc/aLEaVxtRjllrd0K1FwkG1MJABQld3txWJahHvdX5YhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Q0tN71tK; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.95.64.75] (unknown [167.220.238.11])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0CC072113343;
+	Sun, 17 Aug 2025 23:47:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0CC072113343
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1755499680;
+	bh=AJvrjplhI4XgVj15uOIDsZ9E1MSOHTMWF+jfyprUxbk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Q0tN71tKJGZv2Fo4TL+Tp2ywMwcSJrXeYrLgOZgOyf/EwtJsC+/t22OLYKkkdpptJ
+	 Sl62RW6qH3wqQDnlpvpECFxiGy0+4SOK4IGFtjHqhRhuB0TLBKEUPq0mYx1MHmh+NO
+	 KoLwu3+W6C/44470wMFIW0JsDZleFTSQ3uDwnxR0=
+Message-ID: <fbf3a795-bf18-4970-a320-ec06e0758d3b@linux.microsoft.com>
+Date: Mon, 18 Aug 2025 12:17:56 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0c083639-eb30-2830-0938-20684db3914a@huaweicloud.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
+ size of ring buffer
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ Saurabh Sengar <ssengar@linux.microsoft.com>, Long Li
+ <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>
+References: <20250722134340.596340262@linuxfoundation.org>
+ <20250722134341.490321531@linuxfoundation.org>
+ <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
+ <2025072316-mop-manhood-b63e@gregkh>
+ <08158da3-82a0-4eb0-a805-87afe34e288a@linux.microsoft.com>
+ <2025081834-bullfrog-elixir-6a96@gregkh>
+Content-Language: en-US
+From: Naman Jain <namjain@linux.microsoft.com>
+In-Reply-To: <2025081834-bullfrog-elixir-6a96@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 18, 2025 at 02:26:23PM +0800, Yu Kuai wrote:
-> Hi,
+
+
+On 8/18/2025 11:22 AM, Greg Kroah-Hartman wrote:
+> On Mon, Aug 18, 2025 at 10:54:10AM +0530, Naman Jain wrote:
+>>
+>>
+>> On 7/23/2025 12:12 PM, Greg Kroah-Hartman wrote:
+>>> On Tue, Jul 22, 2025 at 08:29:07PM +0530, Naman Jain wrote:
+>>>>
+>>>>
+>>>> On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
+>>>>> 6.12-stable review patch.  If anyone has any objections, please let me know.
+>>>>>
+>>>>> ------------------
+>>>>>
+>>>>> From: Naman Jain <namjain@linux.microsoft.com>
+>>>>>
+>>>>> commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
+>>>>>
+>>>>> Size of ring buffer, as defined in uio_hv_generic driver, is no longer
+>>>>> fixed to 16 KB. This creates a problem in fcopy, since this size was
+>>>>> hardcoded. With the change in place to make ring sysfs node actually
+>>>>> reflect the size of underlying ring buffer, it is safe to get the size
+>>>>> of ring sysfs file and use it for ring buffer size in fcopy daemon.
+>>>>> Fix the issue of disparity in ring buffer size, by making it dynamic
+>>>>> in fcopy uio daemon.
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+>>>>> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+>>>>> Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+>>>>> Reviewed-by: Long Li <longli@microsoft.com>
+>>>>> Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
+>>>>> Signed-off-by: Wei Liu <wei.liu@kernel.org>
+>>>>> Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
+>>>>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>>>> ---
+>>>>
+>>>>
+>>>> Hello Greg,
+>>>> Please don't pick this change yet. I have shared the reason in the other
+>>>> thread:
+>>>> "Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring buffer"
+>>>> has been added to the 6.12-stable tree"
+>>>
+>>> Ok, I have dropped this from the 6.12.y tree now.
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>
+>> Hello Greg,
+>> Can you please consider picking this change for next release of 6.12 kernel.
+>> The dependent change [1] is now part of 6.12 kernel, so we need this change
+>> to fix fcopy in 6.12 kernel.
+>>
+>> [1]: Drivers: hv: Make the sysfs node size for the ring buffer dynamic
 > 
-> 在 2025/08/18 13:55, Greg KH 写道:
-> > On Mon, Aug 18, 2025 at 09:03:39AM +0800, Yu Kuai wrote:
-> > > Hi,
-> > > 
-> > > 在 2025/08/17 22:18, Sasha Levin 写道:
-> > > > This is a note to let you know that I've just added the patch titled
-> > > > 
-> > > >       md: call del_gendisk in control path
-> > > > 
-> > > > to the 6.6-stable tree which can be found at:
-> > > >       http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > > > 
-> > > > The filename of the patch is:
-> > > >        md-call-del_gendisk-in-control-path.patch
-> > > > and it can be found in the queue-6.6 subdirectory.
-> > > > 
-> > > > If you, or anyone else, feels it should not be added to the stable tree,
-> > > > please let <stable@vger.kernel.org> know about it.
-> > > > 
-> > > > 
-> > > This patch should be be backported to any stable kernel, this change
-> > > will break user tools mdadm:
-> > > 
-> > > https://lore.kernel.org/all/f654db67-a5a5-114b-09b8-00db303daab7@redhat.com/
-> > 
-> > Is it reverted in Linus's tree?
-> > 
+> What are the exact git commit ids you want to have applied here?  [1]
+> does not reference much to me :)
 > 
-> No, we'll not revert it, this is an improvement. In order to keep user
-> tools compatibility, we added a switch in the kernel. As discussed in
-> the thread, for old tools + new kernel, functionality is the same,
-> however, there will be kernel warning about deprecated behaviour to
-> inform user upgrading user tools.
+> thanks,
 > 
-> However, I feel this new warning messages is not acceptable for
-> stable kernels.
+> greg k-h
 
-Why?  What is so special about stable kernels that taking the same
-functionality in newer kernels is not ok?
+My bad :)
 
-Why not just "warn" the same here if you want to fix an issue where
-userspace should be also updating some tools.  As long as you aren't
-breaking anything, it should be fine, right?
+Please pick the commit a4131a50d072 ("tools/hv: fcopy: Fix 
+irregularities with size of ring buffer") in next 6.12 release, which is 
+supposed to fix fcopy.
 
-Or are you breaking existing workflows?  You should be able to take a
-new kernel without any userspace changes and all should work the same.
-Why make new kernel users change userspace tools at all?
 
-thanks,
+The commit which added the missing dependency is now already part of 
+v6.12.42 kernel
+c7f864d34529 ("Drivers: hv: Make the sysfs node size for the ring buffer 
+dynamic")
 
-greg k-h
+Earlier, when I requested you to drop the change from backport list 
+because above change was not part of latest 6.12 kernel.
+
+Regards,
+Naman
 
