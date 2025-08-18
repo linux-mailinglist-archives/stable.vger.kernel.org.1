@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D059EB2A99A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068BAB2A69B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E9AF588141
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1688A58475A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EB933473A;
-	Mon, 18 Aug 2025 14:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DD6322A3F;
+	Mon, 18 Aug 2025 13:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iW+mRvB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKtTL9n4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A8E33769A;
-	Mon, 18 Aug 2025 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF622206AF;
+	Mon, 18 Aug 2025 13:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525665; cv=none; b=nbHePsjfPWJIKzwpxVdYVwH4OHrCiuwlpV/a2fGqRy8u0QUSje4jk/3uETRiw7R7b5aSyQZ6y2b+KxhmnfVWwf5oPPTSXF52bSqDTGbKzPwOFf/YlNw9vop/uIC54nnFOap1r7GcBmCy5uzC/4MpsfFrx8rqZi22e+Q0tkZrR+o=
+	t=1755524086; cv=none; b=AEqGloN3xWbqhLE1DmSe2nYFXonLv7pui4P6sJgCNNIXakd2Nu5onbsmdwj9TNQ9T1YFw1AHDaIWzCJBqAY5Cl09CCUPvRipru4SXt+fVh5hdORxUw/hGfJesyiJ/+TB4NcHTkpcC6W/BnZtkKgXMRF97J2+4iMmNtWIU+kiWbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525665; c=relaxed/simple;
-	bh=db3x4Tb/up85YdTwhVlxNedjUZ8hfn+2yKQDORz0+s0=;
+	s=arc-20240116; t=1755524086; c=relaxed/simple;
+	bh=G4YpPxfAYoHFnBGKnYSx5O08SuhVVqVEC/xmsyF3Prs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aR9KxPBnuW9ig8pmaSRerGs+qfuZejUjSMFVk5CWOM1GAsJkQkmvlD5F++1+9qV3SdxR1yhX875Sp+Tb61xGDUcOhpp6LSBDwS43hAgPRF18jo++d4JTrStp6e0wgctRM+wnHLF1ugq7V0a7KGAGOXhcgPZuvYRYyGOGwBm5ntU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iW+mRvB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C494C4CEEB;
-	Mon, 18 Aug 2025 14:01:05 +0000 (UTC)
+	 MIME-Version; b=mo5OQczCsn46skh1buZUoJdNRtJd1LfU2VJslSw4TWdnFKd3jz+Xbl/EWsYS7BwsBGwTaYeMPgu5Uqlfc6yyafkS4vQ1QQI0SDhTK+jVgl9fLaISVfE56Xp74t7TRC3TQQ5OYUyaNCGsO/wAt90NCGIZh5zuR9ozy2sjcMgE5zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKtTL9n4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87202C4CEEB;
+	Mon, 18 Aug 2025 13:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525665;
-	bh=db3x4Tb/up85YdTwhVlxNedjUZ8hfn+2yKQDORz0+s0=;
+	s=korg; t=1755524085;
+	bh=G4YpPxfAYoHFnBGKnYSx5O08SuhVVqVEC/xmsyF3Prs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iW+mRvB0YoSV/aN7RBpyhanCOY52TxDw3OnhGzS+R/4lXM6uF8JKwrIAAmtG6+r9P
-	 wuqI/YnLJKYb8RKeGkHNh5Ae5ZziJrXV6L2TS2WjYKboiqg5VHR+2i08vsv3X4Elpc
-	 M/1hU/Ly0Ct8yX+zOPAi6tOJex00yz0Q8+60oTx4=
+	b=XKtTL9n4srVCj3Vqs8WuLm7WVmTq06kJ9dF+H6TBOmSbEKFAaaPIW8ZUBtdpvEnEZ
+	 ncFB147oSfIrE9JslP5VRHjXB++E2PrYG1FwEIbQtuIjtTANnHrEHaquH7+FOyMB1S
+	 gbgLQIsrjTnIgWI2H+RSvkX3t33uNO8MnHIRvoQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aaron Plattner <aplattner@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 330/570] net: dsa: b53: ensure BCM5325 PHYs are enabled
+Subject: [PATCH 6.15 331/515] watchdog: sbsa: Adjust keepalive timeout to avoid MediaTek WS0 race condition
 Date: Mon, 18 Aug 2025 14:45:17 +0200
-Message-ID: <20250818124518.567069070@linuxfoundation.org>
+Message-ID: <20250818124511.173906209@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Aaron Plattner <aplattner@nvidia.com>
 
-[ Upstream commit 966a83df36c6f27476ac3501771422e7852098bc ]
+[ Upstream commit 48defdf6b083f74a44e1f742db284960d3444aec ]
 
-According to the datasheet, BCM5325 uses B53_PD_MODE_CTRL_25 register to
-disable clocking to individual PHYs.
-Only ports 1-4 can be enabled or disabled and the datasheet is explicit
-about not toggling BIT(0) since it disables the PLL power and the switch.
+The MediaTek implementation of the sbsa_gwdt watchdog has a race
+condition where a write to SBSA_GWDT_WRR is ignored if it occurs while
+the hardware is processing a timeout refresh that asserts WS0.
 
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250614080000.1884236-15-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Detect this based on the hardware implementer and adjust
+wdd->min_hw_heartbeat_ms to avoid the race by forcing the keepalive ping
+to be one second later.
+
+Signed-off-by: Aaron Plattner <aplattner@nvidia.com>
+Acked-by: Timur Tabi <ttabi@nvidia.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250721230640.2244915-1-aplattner@nvidia.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 13 +++++++++++++
- drivers/net/dsa/b53/b53_regs.h   |  5 ++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/watchdog/sbsa_gwdt.c | 50 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 47 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index dc2f4adac9bc..184946e8cee9 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -615,6 +615,19 @@ int b53_setup_port(struct dsa_switch *ds, int port)
- 	if (dsa_is_user_port(ds, port))
- 		b53_set_eap_mode(dev, port, EAP_MODE_SIMPLIFIED);
+diff --git a/drivers/watchdog/sbsa_gwdt.c b/drivers/watchdog/sbsa_gwdt.c
+index 5f23913ce3b4..6ce1bfb39064 100644
+--- a/drivers/watchdog/sbsa_gwdt.c
++++ b/drivers/watchdog/sbsa_gwdt.c
+@@ -75,11 +75,17 @@
+ #define SBSA_GWDT_VERSION_MASK  0xF
+ #define SBSA_GWDT_VERSION_SHIFT 16
  
-+	if (is5325(dev) &&
-+	    in_range(port, 1, 4)) {
-+		u8 reg;
++#define SBSA_GWDT_IMPL_MASK	0x7FF
++#define SBSA_GWDT_IMPL_SHIFT	0
++#define SBSA_GWDT_IMPL_MEDIATEK	0x426
 +
-+		b53_read8(dev, B53_CTRL_PAGE, B53_PD_MODE_CTRL_25, &reg);
-+		reg &= ~PD_MODE_POWER_DOWN_PORT(0);
-+		if (dsa_is_unused_port(ds, port))
-+			reg |= PD_MODE_POWER_DOWN_PORT(port);
-+		else
-+			reg &= ~PD_MODE_POWER_DOWN_PORT(port);
-+		b53_write8(dev, B53_CTRL_PAGE, B53_PD_MODE_CTRL_25, reg);
-+	}
+ /**
+  * struct sbsa_gwdt - Internal representation of the SBSA GWDT
+  * @wdd:		kernel watchdog_device structure
+  * @clk:		store the System Counter clock frequency, in Hz.
+  * @version:            store the architecture version
++ * @need_ws0_race_workaround:
++ *			indicate whether to adjust wdd->timeout to avoid a race with WS0
+  * @refresh_base:	Virtual address of the watchdog refresh frame
+  * @control_base:	Virtual address of the watchdog control frame
+  */
+@@ -87,6 +93,7 @@ struct sbsa_gwdt {
+ 	struct watchdog_device	wdd;
+ 	u32			clk;
+ 	int			version;
++	bool			need_ws0_race_workaround;
+ 	void __iomem		*refresh_base;
+ 	void __iomem		*control_base;
+ };
+@@ -161,6 +168,31 @@ static int sbsa_gwdt_set_timeout(struct watchdog_device *wdd,
+ 		 */
+ 		sbsa_gwdt_reg_write(((u64)gwdt->clk / 2) * timeout, gwdt);
+ 
++	/*
++	 * Some watchdog hardware has a race condition where it will ignore
++	 * sbsa_gwdt_keepalive() if it is called at the exact moment that a
++	 * timeout occurs and WS0 is being asserted. Unfortunately, the default
++	 * behavior of the watchdog core is very likely to trigger this race
++	 * when action=0 because it programs WOR to be half of the desired
++	 * timeout, and watchdog_next_keepalive() chooses the exact same time to
++	 * send keepalive pings.
++	 *
++	 * This triggers a race where sbsa_gwdt_keepalive() can be called right
++	 * as WS0 is being asserted, and affected hardware will ignore that
++	 * write and continue to assert WS0. After another (timeout / 2)
++	 * seconds, the same race happens again. If the driver wins then the
++	 * explicit refresh will reset WS0 to false but if the hardware wins,
++	 * then WS1 is asserted and the system resets.
++	 *
++	 * Avoid the problem by scheduling keepalive heartbeats one second later
++	 * than the WOR timeout.
++	 *
++	 * This workaround might not be needed in a future revision of the
++	 * hardware.
++	 */
++	if (gwdt->need_ws0_race_workaround)
++		wdd->min_hw_heartbeat_ms = timeout * 500 + 1000;
 +
  	return 0;
  }
- EXPORT_SYMBOL(b53_setup_port);
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 1fbc5a204bc7..d31c8ad9a9b6 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -101,8 +101,11 @@
- #define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
- #define   PORT_OVERRIDE_EN		BIT(7) /* Use the register contents */
  
--/* Power-down mode control */
-+/* Power-down mode control (8 bit) */
- #define B53_PD_MODE_CTRL_25		0x0f
-+#define  PD_MODE_PORT_MASK		0x1f
-+/* Bit 0 also powers down the switch. */
-+#define  PD_MODE_POWER_DOWN_PORT(i)	BIT(i)
+@@ -202,12 +234,15 @@ static int sbsa_gwdt_keepalive(struct watchdog_device *wdd)
+ static void sbsa_gwdt_get_version(struct watchdog_device *wdd)
+ {
+ 	struct sbsa_gwdt *gwdt = watchdog_get_drvdata(wdd);
+-	int ver;
++	int iidr, ver, impl;
  
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
+-	ver = readl(gwdt->control_base + SBSA_GWDT_W_IIDR);
+-	ver = (ver >> SBSA_GWDT_VERSION_SHIFT) & SBSA_GWDT_VERSION_MASK;
++	iidr = readl(gwdt->control_base + SBSA_GWDT_W_IIDR);
++	ver = (iidr >> SBSA_GWDT_VERSION_SHIFT) & SBSA_GWDT_VERSION_MASK;
++	impl = (iidr >> SBSA_GWDT_IMPL_SHIFT) & SBSA_GWDT_IMPL_MASK;
+ 
+ 	gwdt->version = ver;
++	gwdt->need_ws0_race_workaround =
++		!action && (impl == SBSA_GWDT_IMPL_MEDIATEK);
+ }
+ 
+ static int sbsa_gwdt_start(struct watchdog_device *wdd)
+@@ -299,6 +334,15 @@ static int sbsa_gwdt_probe(struct platform_device *pdev)
+ 	else
+ 		wdd->max_hw_heartbeat_ms = GENMASK_ULL(47, 0) / gwdt->clk * 1000;
+ 
++	if (gwdt->need_ws0_race_workaround) {
++		/*
++		 * A timeout of 3 seconds means that WOR will be set to 1.5
++		 * seconds and the heartbeat will be scheduled every 2.5
++		 * seconds.
++		 */
++		wdd->min_timeout = 3;
++	}
++
+ 	status = readl(cf_base + SBSA_GWDT_WCS);
+ 	if (status & SBSA_GWDT_WCS_WS1) {
+ 		dev_warn(dev, "System reset by WDT.\n");
 -- 
 2.39.5
 
