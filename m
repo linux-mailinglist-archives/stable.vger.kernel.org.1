@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C362EB2A79F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33639B2A2FC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5614D7A84A6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17F506210FC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DFA335BC5;
-	Mon, 18 Aug 2025 13:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1452147E6;
+	Mon, 18 Aug 2025 13:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSDLXzcm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THT6qOlH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E486335BA9;
-	Mon, 18 Aug 2025 13:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D6F27B324;
+	Mon, 18 Aug 2025 13:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525212; cv=none; b=ayk8z5y9QgGZXQpgaE415KNxskXNMClytOlgijk+zlRXM6qmGu2GAHRhWlVKw/LD2IwxzBvfvut5t4S30bOqfxXWWYltHseRqAmlsUrDfF676Srf/t/VifbJPwBgqCZLQFIhKMxGFUvnqJ23ZebP2Lcs5kNvFI8wn9DdJKA5NF4=
+	t=1755522006; cv=none; b=fz2eFitQG9pTLqoNecNL+HzK/3dS9RY2QyiHMmlRjtLz9FsHtYLz4/N0fF0FG+inGKgRxRHzg5g1glHU/fS+xaPL695lL+r3DwK/vgu0FKUDH3NzxeP8ZjJqaYhyls+ecjR+EIj90U2JKzDoNBzc254nYkHkGVx37s8f2gc7CrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525212; c=relaxed/simple;
-	bh=01NtwRO61eDq3ZYOWLVjQ8ZmfmS5j1/Pr/6ibXH1ZoM=;
+	s=arc-20240116; t=1755522006; c=relaxed/simple;
+	bh=DFy8OvAyX0pD7lU2lM9xzItnluDj8KEqN7i5W5akke0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TShKJlcrY0JIo9XhpFZo8YE3KgPxf1kHrsVdUBop/39bof/hrHtF+nvlckfJckH6xh0x9wd1QZD5Zcd9bTI5QPvZupaGktTfct4vZ4HIgYjUCCdDFC9oSNd3AoUDJmRZj/4JrrSSRPyVtmA8xufxd/wSRv6t12pP5oZR00N1FKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSDLXzcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A422EC4CEEB;
-	Mon, 18 Aug 2025 13:53:31 +0000 (UTC)
+	 MIME-Version; b=K6MbIpsdbtW5v5IhEkcwlHZiC7N2lWyBz+yXBFoT24zABejUYieTPvJ8Utu03b2mS8YdsKjwwFsi1tu+TCNat71P90dKsDWStFKujM8VWQMTQxwLeYFBmmHnaWEuenK+ImqIFfQPgC4JPkayow5J1VUxRnl1DR4F9ph5u7dezpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THT6qOlH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5FDC4CEEB;
+	Mon, 18 Aug 2025 13:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525212;
-	bh=01NtwRO61eDq3ZYOWLVjQ8ZmfmS5j1/Pr/6ibXH1ZoM=;
+	s=korg; t=1755522006;
+	bh=DFy8OvAyX0pD7lU2lM9xzItnluDj8KEqN7i5W5akke0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSDLXzcmOCZo3Mpl9W0ERnbi8lgnunB8HQTAZJ0fYRw4B6YqnuQbWDTXWWREcDQBL
-	 AYluwe87z855PVUmtTlJGs3Ftixz+JL2mQFMbWgivZ7+pYklL0HeOd9y0lp2HbaFJ6
-	 MI7oGMNw74CbtpwjoAKiLFD/SDng5wZOhh3e1nzY=
+	b=THT6qOlHLKxqTTiF5JlQfiw57AjhaJwVe2nUaV4p19rGTRxNXaaLH77G+XXsM1KDS
+	 1ab+iEhxyy4+mbod2X8hXtnNfYjiXZrUjDIUhzUP/rTDdUyH5y/B1w+R8wI1DA9Oki
+	 F6OsPfgwDq/YPGZBveiVq7EyuvGnob0EaEOHAIvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Tomasz Michalec <tmichalec@google.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 193/570] usb: dwc3: xilinx: add shutdown callback
+Subject: [PATCH 6.12 154/444] platform/chrome: cros_ec_typec: Defer probe on missing EC parent
 Date: Mon, 18 Aug 2025 14:43:00 +0200
-Message-ID: <20250818124513.236204155@linuxfoundation.org>
+Message-ID: <20250818124454.676797356@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-[ Upstream commit 70627bf82e36e61c40c3315e1206e4ea4c02e668 ]
+[ Upstream commit 8866f4e557eba43e991f99711515217a95f62d2e ]
 
-Adds a shutdown callback to ensure that the XHCI stack is properly
-shutdown in reboot/shutdown path.
+If cros_typec_probe is called before EC device is registered,
+cros_typec_probe will fail. It may happen when cros-ec-typec.ko is
+loaded before EC bus layer module (e.g. cros_ec_lpcs.ko,
+cros_ec_spi.ko).
 
-In kexec flow, kernel_restart_prepare() performs actions necessary
-to prepare the system for a restart and invokes device_shutdown. To
-ensure proper shutdown attach the dwc3 shutdown implementation which
-mirrors the remove method.
+Return -EPROBE_DEFER when cros_typec_probe doesn't get EC device, so
+the probe function can be called again after EC device is registered.
 
-$ kexec -e
-
-<snip>
-xhci-hcd xhci-hcd.0.auto: remove, state 1
-usb usb1: USB disconnect, device number 1
-usb 1-1: USB disconnect, device number 6
-xhci-hcd xhci-hcd.0.auto: USB bus 1 deregistered
-kexec_core: Starting new kernel
-
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/1748977771-714153-1-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Link: https://lore.kernel.org/r/20250610153748.1858519-1-tmichalec@google.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/chrome/cros_ec_typec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-xilinx.c b/drivers/usb/dwc3/dwc3-xilinx.c
-index 4ca7f6240d07..09c3c5c226ab 100644
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -422,6 +422,7 @@ static const struct dev_pm_ops dwc3_xlnx_dev_pm_ops = {
- static struct platform_driver dwc3_xlnx_driver = {
- 	.probe		= dwc3_xlnx_probe,
- 	.remove		= dwc3_xlnx_remove,
-+	.shutdown	= dwc3_xlnx_remove,
- 	.driver		= {
- 		.name		= "dwc3-xilinx",
- 		.of_match_table	= dwc3_xlnx_of_match,
+diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
+index f1324466efac..ca665b901010 100644
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -1226,8 +1226,8 @@ static int cros_typec_probe(struct platform_device *pdev)
+ 
+ 	typec->ec = dev_get_drvdata(pdev->dev.parent);
+ 	if (!typec->ec) {
+-		dev_err(dev, "couldn't find parent EC device\n");
+-		return -ENODEV;
++		dev_warn(dev, "couldn't find parent EC device\n");
++		return -EPROBE_DEFER;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, typec);
 -- 
 2.39.5
 
