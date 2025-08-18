@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C94B2A61E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655EAB2A33C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD971B66630
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2B37196004B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36828335BB7;
-	Mon, 18 Aug 2025 13:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44336286D5E;
+	Mon, 18 Aug 2025 13:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4vXYK37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0yHuboz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91E5335BA1;
-	Mon, 18 Aug 2025 13:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0018B217F3D;
+	Mon, 18 Aug 2025 13:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523640; cv=none; b=o951Be8yK7gnfi8Hjjy53ZgT3aybAuUT35gv/zny+cSccImhcK1T/7Lk2Zqzsy4715EjVld9MyeeN8NxuLCaO3xwfPj/xSPmOcCbsx3JZ0G45gpKzBA2+Kc/kv6dQHboSWfism849k6daRkX/38HI3fRBAjiVxErgh4vTCKhC7w=
+	t=1755522033; cv=none; b=Q3dvi4fRY9rnKiFJJSm0vIvXjr1FQQh9JnPpueYcgZ531an9CeF+h9jFzYkm/W42nvsbApmSllsrjOcjSByfr6G5VASV/rAgBUMUfmHYKDtRcM0R1/cPeKhJHwAcQk+1qM3AT+f9Xo5gZ13rPhaYgoN/466Z77aHFQnKP6TsC00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523640; c=relaxed/simple;
-	bh=1RxYCdG/8BK5BFGEC4dMF/TEURT3zHdKacg4CBNN3mY=;
+	s=arc-20240116; t=1755522033; c=relaxed/simple;
+	bh=zwsT0Q341VQEVB3oeJ/X6lNoElUrixqk058lLjgWUEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJbMKQ+0/bjRfR22Mc3Bz8lhZP3Dt+9ZSu7zGsiacISNed3UIw9r3MoPxnqX1XFwz9Cr8F56A6xdEDpQjXwSnvpBDZANvKYIdF2ocEl9XKSSIfY4JAVPgwe24/7VQVcxQJ+2LKPu5wtIde2/Qh6SzZuu05ZLgoVeyOEAfkXxw2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4vXYK37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61770C4CEEB;
-	Mon, 18 Aug 2025 13:27:19 +0000 (UTC)
+	 MIME-Version; b=n5T+ktNxCft3Doz+iQLdqtuE5IwEoLN1Y7SsmNgXvpY4lBgMJAuV2vSamx5L4Ktvw8Ok3RjvB58I/KN+RWRymPQrNghdTBtSmmL4/6cfbM6raVxhISdVfYJX+PEjPOWpmqOkd8F4cXrT2FhQNPbM2kTIlM9zyQNf1NPBa/Ufqz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0yHuboz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638A8C4CEEB;
+	Mon, 18 Aug 2025 13:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523639;
-	bh=1RxYCdG/8BK5BFGEC4dMF/TEURT3zHdKacg4CBNN3mY=;
+	s=korg; t=1755522032;
+	bh=zwsT0Q341VQEVB3oeJ/X6lNoElUrixqk058lLjgWUEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4vXYK37gFEwnUOIeYGXRysxFJiRc9rX2K6b3ZEIXndALf4fpM1aOYKYONfFRs5C+
-	 C/+beTe2PwqOUgFijReCY5ibxJkURYfbXcqUvVwOtIgcBuUw4qul+m/koyg5XYjKT5
-	 2Mtw0qVDviloL5R0Gz+JVuBfYmjtE9JvX9A4AbkA=
+	b=z0yHubozZkEuJQcWt77k5MthMZkiCu4rpe/SvmmyFKXQU07wEHjr1mwVeNKoUDklk
+	 R3bFlmYFeAULhek9Iw44N+uPEM+h1cW2VrParwtrmHvj9uCfTpMa0vUDIbM94O1Gj2
+	 dubVykaZhxJFsRV5OxsELACqENj/E8Z9NP/KOko8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 234/515] wifi: iwlwifi: mvm: set gtk id also in older FWs
-Date: Mon, 18 Aug 2025 14:43:40 +0200
-Message-ID: <20250818124507.386502328@linuxfoundation.org>
+Subject: [PATCH 6.12 195/444] sched/deadline: Fix accounting after global limits change
+Date: Mon, 18 Aug 2025 14:43:41 +0200
+Message-ID: <20250818124456.178304502@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Juri Lelli <juri.lelli@redhat.com>
 
-[ Upstream commit 61be9803f322ab46f31ba944c6ef7de195891f64 ]
+[ Upstream commit 440989c10f4e32620e9e2717ca52c3ed7ae11048 ]
 
-We use gtk[i].id, but it is not even set in older FW APIs
-(iwl_wowlan_status_v6 and iwl_wowlan_status_v7).
-Set it also in older FWs.
+A global limits change (sched_rt_handler() logic) currently leaves stale
+and/or incorrect values in variables related to accounting (e.g.
+extra_bw).
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250710212632.e91e49590414.I27d2fdbed1c54aee59929fa11ec169f07e159406@changeid
+Properly clean up per runqueue variables before implementing the change
+and rebuild scheduling domains (so that accounting is also properly
+restored) after such a change is complete.
+
+Reported-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk> # nuc & rock5b
+Link: https://lore.kernel.org/r/20250627115118.438797-4-juri.lelli@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/deadline.c | 4 +++-
+ kernel/sched/rt.c       | 6 ++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 3e8b7168af01..a30ef33525ec 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2387,6 +2387,7 @@ static void iwl_mvm_convert_gtk_v2(struct iwl_wowlan_status_data *status,
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 0a47e5155897..53e3670fbb1e 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -3227,6 +3227,9 @@ void sched_dl_do_global(void)
+ 	if (global_rt_runtime() != RUNTIME_INF)
+ 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
  
- 	status->gtk[0].len = data->key_len;
- 	status->gtk[0].flags = data->key_flags;
-+	status->gtk[0].id = status->gtk[0].flags & IWL_WOWLAN_GTK_IDX_MASK;
++	for_each_possible_cpu(cpu)
++		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
++
+ 	for_each_possible_cpu(cpu) {
+ 		rcu_read_lock_sched();
  
- 	memcpy(status->gtk[0].key, data->key, sizeof(data->key));
+@@ -3242,7 +3245,6 @@ void sched_dl_do_global(void)
+ 		raw_spin_unlock_irqrestore(&dl_b->lock, flags);
  
-@@ -2737,6 +2738,7 @@ iwl_mvm_send_wowlan_get_status(struct iwl_mvm *mvm, u8 sta_id)
- 		 * currently used key.
- 		 */
- 		status->gtk[0].flags = v6->gtk.key_index | BIT(7);
-+		status->gtk[0].id = v6->gtk.key_index;
- 	} else if (notif_ver == 7) {
- 		struct iwl_wowlan_status_v7 *v7 = (void *)cmd.resp_pkt->data;
+ 		rcu_read_unlock_sched();
+-		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
+ 	}
+ }
+ 
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 172c588de542..6ad6717084ed 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2951,6 +2951,12 @@ static int sched_rt_handler(const struct ctl_table *table, int write, void *buff
+ 	}
+ 	mutex_unlock(&mutex);
+ 
++	/*
++	 * After changing maximum available bandwidth for DEADLINE, we need to
++	 * recompute per root domain and per cpus variables accordingly.
++	 */
++	rebuild_sched_domains();
++
+ 	return ret;
+ }
  
 -- 
 2.39.5
