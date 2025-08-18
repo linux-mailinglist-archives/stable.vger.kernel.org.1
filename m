@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D107B2A896
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BACBBB2A370
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B63B5847D5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D82316F7A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A627F19E82A;
-	Mon, 18 Aug 2025 13:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AE426F283;
+	Mon, 18 Aug 2025 12:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLSoQg3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWIJtZwq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6423F1D88D7;
-	Mon, 18 Aug 2025 13:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80431E51FE;
+	Mon, 18 Aug 2025 12:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525278; cv=none; b=NrMsbbOPOpx6eZmo7c2BEYLgovz5qYHfMU0sGAr0VrbK+NklwWuAV8uR1thtIqcDcCdYvVVz8ueOw+ZqIH5S9xG63Uvape2/hr4pTXw7Ve8Bmcpjd6USjfZBHxJimVrJQag95d5c66/TfdWrehIhmQ/8xoi6ZcAuYdhpDIQSn0U=
+	t=1755521968; cv=none; b=ruIOMjkn57IKHuNm7VRtmQ6Kz0I0N+yZxoDS64n/rGTAbOshn1ycNg2fyJCur4SNjG0SCuznH+LZVx70dxbTVQjs16jPhBX1Ma2pXR2fihHbZtrYYgxpSW73SzA4kMYtMb6V3WaXpHQ5cborWIuPZnpj078oJYQYtI0FYF7Ptt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525278; c=relaxed/simple;
-	bh=vvAjKLsBCxiUOVHoObh0ymp36CMliIcOYPeYAvmI9YU=;
+	s=arc-20240116; t=1755521968; c=relaxed/simple;
+	bh=jgkYcCgqLPq/KJFooc/Dvxv2kXPuqCo9HyjqGT36W1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsXTcjGiGnMqtLsQ7sjs52xjrVEDj7DjD0YvvxOlZHnRPihbOgEfFo9DHpXUxCbRXAwEnlYaMVkflr1wVY5224fcrxszFhTjAQnMqzZ/1r5mujo+0Mv12drDVcLT8x/NO4JCwAfgQEz0/1aAIQ3BhjPkruTrbi9hWU0bJV6j3xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLSoQg3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3485C4CEEB;
-	Mon, 18 Aug 2025 13:54:37 +0000 (UTC)
+	 MIME-Version; b=D59cjaAvl4ktIxVZFF8PEOJmwAOzdiJHwg2TnTaYrduoaX6p57DFeBULQVTzqs1daIZSI59S07Y3QlGeFaZg+LMrJaP63mbE0SZDcKDJ1Pej6or8C55ZLabF0QnjprBq3MITxNyQISozp1GP++zkPbyu36DysDvMAn8CbRVcTTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWIJtZwq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127AFC4CEEB;
+	Mon, 18 Aug 2025 12:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525278;
-	bh=vvAjKLsBCxiUOVHoObh0ymp36CMliIcOYPeYAvmI9YU=;
+	s=korg; t=1755521967;
+	bh=jgkYcCgqLPq/KJFooc/Dvxv2kXPuqCo9HyjqGT36W1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yLSoQg3QNN3opXr60526WBttoKEHOXyzWQj7h6/52uaCNIDm2mS8kAW96U1vRp3SE
-	 jsRqSrZNPlUbjx/eyJYjakLMvz7UEStu+OOTElZRrJ7WiEizXPff+E6aas5SDZW3St
-	 CSNwjHtpkZYrpLHTTxvL3kMY68AmHHa3k2wuf6Mo=
+	b=MWIJtZwqlVeEwZtHXYN11/2sTZB3lqVpoSU4fFFmgKzBqXWa7SF1DsQhZiPPgKsSA
+	 9uEjGQyeZ1Msq3fQn2PgM8294jdq4+uaUiIwqH2MtFWSkT3omuk1eQRpGaYwj/4ghN
+	 Ay7pMZuA/zrb1SGfdGWFhNwft1AfAPK26GOfzSgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
-	Juergen Gross <jgross@suse.com>,
-	Elliott Mitchell <ehem+xen@m5p.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 214/570] xen/netfront: Fix TX response spurious interrupts
+Subject: [PATCH 6.12 175/444] libbpf: Verify that arena map exists when adding arena relocations
 Date: Mon, 18 Aug 2025 14:43:21 +0200
-Message-ID: <20250818124514.043996301@linuxfoundation.org>
+Message-ID: <20250818124455.443794877@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 114a2de6fa86d99ed9546cc9113a3cad58beef79 ]
+[ Upstream commit 42be23e8f2dcb100cb9944b2b54b6bf41aff943d ]
 
-We found at Vates that there are lot of spurious interrupts when
-benchmarking the xen-net PV driver frontend. This issue appeared with a
-patch that addresses security issue XSA-391 (b27d47950e48 "xen/netfront:
-harden netfront against event channel storms"). On an iperf benchmark,
-spurious interrupts can represent up to 50% of the interrupts.
+Fuzzer reported a memory access error in bpf_program__record_reloc()
+that happens when:
+- ".addr_space.1" section exists
+- there is a relocation referencing this section
+- there are no arena maps defined in BTF.
 
-Spurious interrupts are interrupts that are rised for nothing, there is
-no work to do. This appends because the function that handles the
-interrupts ("xennet_tx_buf_gc") is also called at the end of the request
-path to garbage collect the responses received during the transmission
-load.
+Sanity checks for maps existence are already present in
+bpf_program__record_reloc(), hence this commit adds another one.
 
-The request path is doing the work that the interrupt handler should
-have done otherwise. This is particurary true when there is more than
-one vcpu and get worse linearly with the number of vcpu/queue.
+[1] https://github.com/libbpf/libbpf/actions/runs/16375110681/job/46272998064
 
-Moreover, this problem is amplifyed by the penalty imposed by a spurious
-interrupt. When an interrupt is found spurious the interrupt chip will
-delay the EOI to slowdown the backend. This delay will allow more
-responses to be handled by the request path and then there will be more
-chance the next interrupt will not find any work to do, creating a new
-spurious interrupt.
-
-This causes performance issue. The solution here is to remove the calls
-from the request path and let the interrupt handler do the processing of
-the responses. This approch removes most of the spurious interrupts
-(<0.05%) and also has the benefit of freeing up cycles in the request
-path, allowing it to process more work, which improves performance
-compared to masking the spurious interrupt one way or another.
-
-This optimization changes a part of the code that is present since the
-net frontend driver was upstreamed. There is no similar pattern in the
-other xen PV drivers. Since the first commit of xen-netfront is a blob
-that doesn't explain all the design choices I can only guess why this
-specific mecanism was here. This could have been introduce to compensate
-a slow backend at the time (maybe the backend was fixed or optimize
-later) or a small queue. In 18 years, both frontend and backend gain lot
-of features and optimizations that could have obsolete the feature of
-reaping completions from the TX path.
-
-Some vif throughput performance figures from a 8 vCPUs, 4GB of RAM HVM
-guest(s):
-
-Without this patch on the :
-vm -> dom0: 4.5Gb/s
-vm -> vm:   7.0Gb/s
-
-Without XSA-391 patch (revert of b27d47950e48):
-vm -> dom0: 8.3Gb/s
-vm -> vm:   8.7Gb/s
-
-With XSA-391 and this patch:
-vm -> dom0: 11.5Gb/s
-vm -> vm:   12.6Gb/s
-
-v2:
-- add revewed and tested by tags
-- resend with the maintainers in the recipients list
-
-v3:
-- remove Fixes tag but keep the commit ref in the explanation
-- add a paragraph on why this code was here
-
-Signed-off-by: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Elliott Mitchell <ehem+xen@m5p.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250721093316.23560-1-anthoine.bourgeois@vates.tech>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250718222059.281526-1-eddyz87@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netfront.c | 5 -----
- 1 file changed, 5 deletions(-)
+ tools/lib/bpf/libbpf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index 9bac50963477..a11a0e949400 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -638,8 +638,6 @@ static int xennet_xdp_xmit_one(struct net_device *dev,
- 	tx_stats->packets++;
- 	u64_stats_update_end(&tx_stats->syncp);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 747cef47e685..e33cf3caf8b6 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -4546,6 +4546,11 @@ static int bpf_program__record_reloc(struct bpf_program *prog,
  
--	xennet_tx_buf_gc(queue);
--
- 	return 0;
- }
- 
-@@ -849,9 +847,6 @@ static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev
- 	tx_stats->packets++;
- 	u64_stats_update_end(&tx_stats->syncp);
- 
--	/* Note: It is not safe to access skb after xennet_tx_buf_gc()! */
--	xennet_tx_buf_gc(queue);
--
- 	if (!netfront_tx_slot_available(queue))
- 		netif_tx_stop_queue(netdev_get_tx_queue(dev, queue->id));
- 
+ 	/* arena data relocation */
+ 	if (shdr_idx == obj->efile.arena_data_shndx) {
++		if (obj->arena_map_idx < 0) {
++			pr_warn("prog '%s': bad arena data relocation at insn %u, no arena maps defined\n",
++				prog->name, insn_idx);
++			return -LIBBPF_ERRNO__RELOC;
++		}
+ 		reloc_desc->type = RELO_DATA;
+ 		reloc_desc->insn_idx = insn_idx;
+ 		reloc_desc->map_idx = obj->arena_map_idx;
 -- 
 2.39.5
 
