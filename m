@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0F9B2A673
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C250BB2AAB9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:35:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A749A4E387E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84061BC23A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7587B319847;
-	Mon, 18 Aug 2025 13:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092E9207A0B;
+	Mon, 18 Aug 2025 14:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8+rZ6E0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+NGhLKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EC530C37D;
-	Mon, 18 Aug 2025 13:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3B8183CC3;
+	Mon, 18 Aug 2025 14:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524543; cv=none; b=Fjr4mMi7CgIJ2BjWwrwfS6OWD4kWfTEskB5uNKH/uXF7DEpVbVf5KSzasPqPIV4Kk/Yzg772cDmSq3an9ShGwaszc4LUsbAiE+5S7DWrM+lFq6tJrHLX83fh2gp8PTyz9P7f8ojiDLbT1ILRv8gY7AbRaCxohULren/TRzmAK7o=
+	t=1755526149; cv=none; b=KDOQjYu0Lxzg5/sb/zKKsSAd7LO1s8lFj5NQiYW+vBiQYyQX0c+mjXmUQ+L3yio3MonjnZNwFWfQuyAcAgQkUyju03j1ikoVsLmwYsk7Z9hDw5tU2h/DrbEyhcPb/qzFyrY+qo7zaQmXPy4JTV1Dq0UauO35kaCGmKQhLSKOT9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524543; c=relaxed/simple;
-	bh=nOMz0oUsC5FS8HGxH0jH0CuEdMR5BHk3ZZxqTyc4DVM=;
+	s=arc-20240116; t=1755526149; c=relaxed/simple;
+	bh=9ZgJvsKaVoqy3S0uTjnwONYurjj7B7ueIdheciTM04w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOHlQJxFBR0RdghHqyQ+HiOhJRr9I4Ye40HKtBlwhOvpF7+F5nFQ4uAlmcGFN9VXJbxKxBxwrzYe7KOlU9pwb9U7CI9FXAzObBLfzYlvGza59gWE/fhZy9kBNiRDOu2DheIsYXM9TMx5DynEKkDTllyA1UutKyPniWWhsDOoCXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8+rZ6E0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD3CC4CEF1;
-	Mon, 18 Aug 2025 13:42:22 +0000 (UTC)
+	 MIME-Version; b=LaYyaHjxXq40bxxqiM1EQ+pEffQM6xTeFKfeVJmk6McHJND4TZ/5T2L7qo8kYxS48IU3qB/5Qv3wpYNuymIkkXJNeQDeMWXidAO/0knRf6NbqjHMBiW6sdVq7AHgdz8ekf5jSa5CK/yZxc8/dS3rAoUvIP+h0yVP5Y7z776W9MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+NGhLKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1213C4CEEB;
+	Mon, 18 Aug 2025 14:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524543;
-	bh=nOMz0oUsC5FS8HGxH0jH0CuEdMR5BHk3ZZxqTyc4DVM=;
+	s=korg; t=1755526149;
+	bh=9ZgJvsKaVoqy3S0uTjnwONYurjj7B7ueIdheciTM04w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q8+rZ6E0TWZcFPrHS3lgyX6S/g4tXcwHHXUgivS0OCu6i4HlWNlAliVlsCuaLNmMO
-	 1xjcz2pCmJpoXiVZ0POUfdUL0+nx/HSXnl93p/r6zJq3903r8bMIDZBtckrX4hlndf
-	 HalUvz5Qi+IJMCvqxJermOf6lzw9oJNBH3Buz+bE=
+	b=A+NGhLKrIiRFvUA2Zr+DVPldE2+pfEvTmYkSHGbd8LUgU/OvzCOJyLwmTqHrwxMcb
+	 r2frxH58KAgft2C/cIxWmG9cnWaFFM+5vnNXPoYXQNGo6dxaCwlEKXYnY34tSKsdaK
+	 F7A9rQEx4s42hWbFM8ItysKh1bvO90uHLkoC6TTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 473/515] btrfs: dont skip remaining extrefs if dir not found during log replay
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 472/570] ublk: check for unprivileged daemon on each I/O fetch
 Date: Mon, 18 Aug 2025 14:47:39 +0200
-Message-ID: <20250818124516.629531986@linuxfoundation.org>
+Message-ID: <20250818124524.061576070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-commit 24e066ded45b8147b79c7455ac43a5bff7b5f378 upstream.
+[ Upstream commit 5058a62875e1916e5133a1639f0207ea2148c0bc ]
 
-During log replay, at add_inode_ref(), if we have an extref item that
-contains multiple extrefs and one of them points to a directory that does
-not exist in the subvolume tree, we are supposed to ignore it and process
-the remaining extrefs encoded in the extref item, since each extref can
-point to a different parent inode. However when that happens we just
-return from the function and ignore the remaining extrefs.
+Commit ab03a61c6614 ("ublk: have a per-io daemon instead of a per-queue
+daemon") allowed each ublk I/O to have an independent daemon task.
+However, nr_privileged_daemon is only computed based on whether the last
+I/O fetched in each ublk queue has an unprivileged daemon task.
+Fix this by checking whether every fetched I/O's daemon is privileged.
+Change nr_privileged_daemon from a count of queues to a boolean
+indicating whether any I/Os have an unprivileged daemon.
 
-The problem has been around since extrefs were introduced, in commit
-f186373fef00 ("btrfs: extended inode refs"), but it's hard to hit in
-practice because getting extref items encoding multiple extref requires
-getting a hash collision when computing the offset of the extref's
-key. The offset if computed like this:
-
-  key.offset = btrfs_extref_hash(dir_ino, name->name, name->len);
-
-and btrfs_extref_hash() is just a wrapper around crc32c().
-
-Fix this by moving to next iteration of the loop when we don't find
-the parent directory that an extref points to.
-
-Fixes: f186373fef00 ("btrfs: extended inode refs")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Fixes: ab03a61c6614 ("ublk: have a per-io daemon instead of a per-queue daemon")
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250808155216.296170-1-csander@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/block/ublk_drv.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1397,6 +1397,8 @@ static noinline int add_inode_ref(struct
- 		if (log_ref_ver) {
- 			ret = extref_get_fields(eb, ref_ptr, &name,
- 						&ref_index, &parent_objectid);
-+			if (ret)
-+				goto out;
- 			/*
- 			 * parent object can change from one array
- 			 * item to another.
-@@ -1413,16 +1415,23 @@ static noinline int add_inode_ref(struct
- 					 * the loop when getting the first
- 					 * parent dir.
- 					 */
--					if (ret == -ENOENT)
-+					if (ret == -ENOENT) {
-+						/*
-+						 * The next extref may refer to
-+						 * another parent dir that
-+						 * exists, so continue.
-+						 */
- 						ret = 0;
-+						goto next;
-+					}
- 					goto out;
- 				}
- 			}
- 		} else {
- 			ret = ref_get_fields(eb, ref_ptr, &name, &ref_index);
-+			if (ret)
-+				goto out;
- 		}
--		if (ret)
--			goto out;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 3e60558bf525..dabb468fa0b9 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -215,7 +215,7 @@ struct ublk_device {
  
- 		ret = inode_in_dir(root, path, btrfs_ino(dir), btrfs_ino(inode),
- 				   ref_index, &name);
-@@ -1456,10 +1465,11 @@ static noinline int add_inode_ref(struct
- 		}
- 		/* Else, ret == 1, we already have a perfect match, we're done. */
+ 	struct completion	completion;
+ 	unsigned int		nr_queues_ready;
+-	unsigned int		nr_privileged_daemon;
++	bool 			unprivileged_daemons;
+ 	struct mutex cancel_mutex;
+ 	bool canceling;
+ 	pid_t 	ublksrv_tgid;
+@@ -1532,7 +1532,7 @@ static void ublk_reset_ch_dev(struct ublk_device *ub)
+ 	/* set to NULL, otherwise new tasks cannot mmap io_cmd_buf */
+ 	ub->mm = NULL;
+ 	ub->nr_queues_ready = 0;
+-	ub->nr_privileged_daemon = 0;
++	ub->unprivileged_daemons = false;
+ 	ub->ublksrv_tgid = -1;
+ }
  
-+next:
- 		ref_ptr = (unsigned long)(ref_ptr + ref_struct_size) + name.len;
- 		kfree(name.name);
- 		name.name = NULL;
--		if (log_ref_ver) {
-+		if (log_ref_ver && dir) {
- 			iput(&dir->vfs_inode);
- 			dir = NULL;
- 		}
+@@ -1945,12 +1945,10 @@ static void ublk_mark_io_ready(struct ublk_device *ub, struct ublk_queue *ubq)
+ 	__must_hold(&ub->mutex)
+ {
+ 	ubq->nr_io_ready++;
+-	if (ublk_queue_ready(ubq)) {
++	if (ublk_queue_ready(ubq))
+ 		ub->nr_queues_ready++;
+-
+-		if (capable(CAP_SYS_ADMIN))
+-			ub->nr_privileged_daemon++;
+-	}
++	if (!ub->unprivileged_daemons && !capable(CAP_SYS_ADMIN))
++		ub->unprivileged_daemons = true;
+ 
+ 	if (ub->nr_queues_ready == ub->dev_info.nr_hw_queues) {
+ 		/* now we are ready for handling ublk io request */
+@@ -2759,8 +2757,8 @@ static int ublk_ctrl_start_dev(struct ublk_device *ub,
+ 
+ 	ublk_apply_params(ub);
+ 
+-	/* don't probe partitions if any one ubq daemon is un-trusted */
+-	if (ub->nr_privileged_daemon != ub->nr_queues_ready)
++	/* don't probe partitions if any daemon task is un-trusted */
++	if (ub->unprivileged_daemons)
+ 		set_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
+ 
+ 	ublk_get_device(ub);
+-- 
+2.50.1
+
 
 
 
