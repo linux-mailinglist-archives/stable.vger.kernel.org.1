@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F029B2A895
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336B9B2A306
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D15401BA4D32
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6DD13A1C9F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649E426F286;
-	Mon, 18 Aug 2025 13:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A3D31A044;
+	Mon, 18 Aug 2025 13:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOe0rv1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT6sUAvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224F9335BC5;
-	Mon, 18 Aug 2025 13:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480E6286D5E;
+	Mon, 18 Aug 2025 13:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525344; cv=none; b=k1pdHUrnOp4f9pDPv6KIIE+3/EGcVfowuOlmebhgD9dGNvbIRU+jhA1vOXyjv+V9iU7/rEmyCFEp5nAki9wIaC3lq8EdC3kfAUduKMPN2TxTfoO6Qp3DZENTFyoENmBZGNXoBbzBwCmC413HVRatuitwdH7t7SRGxc/FDJsBkVU=
+	t=1755522026; cv=none; b=ld33LQdIZepXVxaL6AMOHbY8ZERSq5wcbQ4WGzxezSkf621sn6jWnVkBUXtyzCras5vT6sH32rVX5SlbFt2+vDpZSuHkuuYU07sUPUCkrhHIzGU4JmKdGLXXZgydTamXQD859JeA+B0b6hxW+WnKb2EvbqwuHF2IZXJhbEVHO7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525344; c=relaxed/simple;
-	bh=CVe0bCzVPUvSpXZlqFdAl7A1B8+ZXdkRC1xGyqP8h5k=;
+	s=arc-20240116; t=1755522026; c=relaxed/simple;
+	bh=DfwGwnaDa/2TB66R/w5P/evGP/KzLxcAH9LJjTRZvEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtlLbuSu9zix79KYN1DOOHkBFG0h79/Tns2yWoL7iirOPnP0VBB1pzxRYQCi6PJlDFvGthRSDSZGd6V2uvgoGHOd+lzEN08W2A+zK9QRjybzvBc6suoAxFW5nekdSSpiXFxDa+IbZfKt2PHZZrQXj9u8YHKggFh3mrzx42gN6TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOe0rv1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8C5C4CEF1;
-	Mon, 18 Aug 2025 13:55:43 +0000 (UTC)
+	 MIME-Version; b=h2sfO0OJfNSB3Cj6mu+DeNb6KHxdU3F1xvXuBgwg1C5X6J69AH9i/SMDqIxasAftdDWGRMuDPhODm0T87t0EqI00szTg2LrkrsTpnzJiHjqOURr1X5BwUsLX+fYDvLyXHAhlAe6h+0BGzur3vynRM46nS5nSYZVrKJSSGc/hQDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT6sUAvw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AE9C4CEEB;
+	Mon, 18 Aug 2025 13:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525343;
-	bh=CVe0bCzVPUvSpXZlqFdAl7A1B8+ZXdkRC1xGyqP8h5k=;
+	s=korg; t=1755522026;
+	bh=DfwGwnaDa/2TB66R/w5P/evGP/KzLxcAH9LJjTRZvEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOe0rv1B4R3a3Y4QRAFsLgvSJQLstj3XS++XfF9vSZdINjD/QkgeFD462xXRVkWxs
-	 dxJNLuNDyTfKofc6yuG2D3q5KLt3eJtnUN3smaEGMXCihZ1tjgAIei4cMi6mbE5Epx
-	 SBaCaObzr0qByWYICsRGGMsTBn4nn7cdal7Or+50=
+	b=AT6sUAvw1D9WQed8AqJYtDZKi6xjAOCc4A5emrd7Z3VAnG9GeGE8w/Rf42q11/oEJ
+	 4pV8QwN+JRcMvH4T0TuYhFK7YBqxvg7IFAbfH2Yl2cqgP483VYWnyJ60r0Os4rx8bf
+	 keyRSqUFrVzc6kXKqIARz4YOFt14/AjHZ+h0j5VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 232/570] net/mlx5e: Properly access RCU protected qdisc_sleeping variable
+Subject: [PATCH 6.12 193/444] net: phy: micrel: Add ksz9131_resume()
 Date: Mon, 18 Aug 2025 14:43:39 +0200
-Message-ID: <20250818124514.767112186@linuxfoundation.org>
+Message-ID: <20250818124456.105479832@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 2a601b2d35623065d31ebaf697b07502d54878c9 ]
+[ Upstream commit f25a7eaa897f21396e99f90809af82ca553c9d14 ]
 
-qdisc_sleeping variable is declared as "struct Qdisc __rcu" and
-as such needs proper annotation while accessing it.
+The Renesas RZ/G3E SMARC EVK uses KSZ9131RNXC phy. On deep power state,
+PHY loses the power and on wakeup the rgmii delays are not reconfigured
+causing it to fail.
 
-Without rtnl_dereference(), the following error is generated by sparse:
+Replace the callback kszphy_resume()->ksz9131_resume() for reconfiguring
+the rgmii_delay when it exits from PM suspend state.
 
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40: warning:
-  incorrect type in initializer (different address spaces)
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    expected
-  struct Qdisc *qdisc
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    got struct
-  Qdisc [noderef] __rcu *qdisc_sleeping
-
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1752675472-201445-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250711054029.48536-1-biju.das.jz@bp.renesas.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/qos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/micrel.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-index f0744a45db92..4e461cb03b83 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-@@ -374,7 +374,7 @@ void mlx5e_reactivate_qos_sq(struct mlx5e_priv *priv, u16 qid, struct netdev_que
- void mlx5e_reset_qdisc(struct net_device *dev, u16 qid)
- {
- 	struct netdev_queue *dev_queue = netdev_get_tx_queue(dev, qid);
--	struct Qdisc *qdisc = dev_queue->qdisc_sleeping;
-+	struct Qdisc *qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 88a3c18f82ae..92e9eb4146d9 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -5394,6 +5394,14 @@ static int lan8841_suspend(struct phy_device *phydev)
+ 	return kszphy_generic_suspend(phydev);
+ }
  
- 	if (!qdisc)
- 		return;
++static int ksz9131_resume(struct phy_device *phydev)
++{
++	if (phydev->suspended && phy_interface_is_rgmii(phydev))
++		ksz9131_config_rgmii_delay(phydev);
++
++	return kszphy_resume(phydev);
++}
++
+ static struct phy_driver ksphy_driver[] = {
+ {
+ 	.phy_id		= PHY_ID_KS8737,
+@@ -5639,7 +5647,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.get_strings	= kszphy_get_strings,
+ 	.get_stats	= kszphy_get_stats,
+ 	.suspend	= kszphy_suspend,
+-	.resume		= kszphy_resume,
++	.resume		= ksz9131_resume,
+ 	.cable_test_start	= ksz9x31_cable_test_start,
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ 	.get_features	= ksz9477_get_features,
 -- 
 2.39.5
 
