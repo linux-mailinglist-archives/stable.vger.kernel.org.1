@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09ACB2A2E7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 506F3B2A9C0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB2367B1D53
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD123683669
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672CB31A055;
-	Mon, 18 Aug 2025 13:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA27B1A5B92;
+	Mon, 18 Aug 2025 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+oyNcMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPrxMz8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2011131CA62;
-	Mon, 18 Aug 2025 13:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CE73218C0;
+	Mon, 18 Aug 2025 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522213; cv=none; b=gLrPe0Mz9NK6Vf24I2O9xt6BL90jMEmpoCQoc4VHVRbFJ8FYWSDCCgI3CWu9k8/r1fVrUCUyRVa7ufICZSoWJdpYV6lloKCaZ7FMSYVHs9ciQrM1JKRmZI9AEhyNzz5XIVh4KjvKQAjw8wVF9G/S2OU7zKwDFsUXXkB0F6CEXvo=
+	t=1755525517; cv=none; b=gvcYYTZ90Vaj9DNiCou0ejWJ3OGjlc5LgxdlmEx5dWob98NCOu6fJcsLKQ27Jvz6ykM8yuyqpfOGucJ50P+YBzy85v2i6N3L4tp7dnkOcJAYBOgQw0l6x0h9Fl/BgQalftDssqGeBymG8fAzi1n3ip5eokSLDumA18YxBrk60rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522213; c=relaxed/simple;
-	bh=Q2vyzFlfoftMSGhzhLjK9UGv40kImzXx2eZJeEJF3Gw=;
+	s=arc-20240116; t=1755525517; c=relaxed/simple;
+	bh=hJ3aeUd7cwIhgG1ckdEl+HHJ+JmBKcnytlf35IRZ16c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fmepHRrmvWAAdQNQF+5XRIKjvumA9DdrcMB6YKcDmyZskCQTPTIRElH138o5Vr2XsMQ+nmhXBG6uhfCHkmemBL+XG5rKkbj1pcG05o4q97Rzs2VAh6jTZjb8MzWj7bm4SJ6e5sKqrthRdQheYnMDtUyjXF2nE9eir4CZBmmSZzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+oyNcMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DDCC4CEEB;
-	Mon, 18 Aug 2025 13:03:32 +0000 (UTC)
+	 MIME-Version; b=iiROv3xvPMw9fjchoZdFsqc0WyvewE9dgeC6HwH1ZbUxYh5NK+nmN9UxlM3z7clLJg5uC2VocUjcOIuK23KK+kKhD8IWM0biBiY8icX3ei7MFZ31N+5L3BiUM2WImYdpDHOcm+gDPsd9vgBigN8J/gJcSmEnoZf8wd392+4hAYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPrxMz8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922BBC4CEEB;
+	Mon, 18 Aug 2025 13:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522213;
-	bh=Q2vyzFlfoftMSGhzhLjK9UGv40kImzXx2eZJeEJF3Gw=;
+	s=korg; t=1755525517;
+	bh=hJ3aeUd7cwIhgG1ckdEl+HHJ+JmBKcnytlf35IRZ16c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+oyNcMMsJDbC+4UvSw1ULxUJL0xsn5+63GluWIpGOftcNBv+WmisrumQdgjoRex1
-	 UT1b0/MVyolEvGL3zVL+4ub9B2wPUwSLJ79ba9BC2W7EEBAeYOPCNx6lEXQzSeyNec
-	 rpCz2y2CGHf85i//iJ++04zLUg4DZEWrnSihuYWQ=
+	b=lPrxMz8GJSFJy8HJJkAxdtNbHav/a6RuyF0Djp/Celgdu2F25DoUrgXTlv1/zwXiD
+	 7cRyPWIBPo2w2GN469fZPh0GAxD7GOl4ciF76Amz/2XzhtuAYBWuNCYd9yBYgXWKF/
+	 rNuTYHlXoZCWIFow4IU28ZT04X1R84mnzH2O327A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li Chen <chenl311@chinatelecom.cn>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 248/444] net: dsa: b53: ensure BCM5325 PHYs are enabled
+Subject: [PATCH 6.16 287/570] ACPI: Suppress misleading SPCR console message when SPCR table is absent
 Date: Mon, 18 Aug 2025 14:44:34 +0200
-Message-ID: <20250818124458.124393030@linuxfoundation.org>
+Message-ID: <20250818124516.901655140@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Li Chen <chenl311@chinatelecom.cn>
 
-[ Upstream commit 966a83df36c6f27476ac3501771422e7852098bc ]
+[ Upstream commit bad3fa2fb9206f4dcec6ddef094ec2fbf6e8dcb2 ]
 
-According to the datasheet, BCM5325 uses B53_PD_MODE_CTRL_25 register to
-disable clocking to individual PHYs.
-Only ports 1-4 can be enabled or disabled and the datasheet is explicit
-about not toggling BIT(0) since it disables the PLL power and the switch.
+The kernel currently alway prints:
+"Use ACPI SPCR as default console: No/Yes "
 
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250614080000.1884236-15-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+even on systems that lack an SPCR table. This can
+mislead users into thinking the SPCR table exists
+on the machines without SPCR.
+
+With this change, the "Yes" is only printed if
+the SPCR table is present, parsed and !param_acpi_nospcr.
+This avoids user confusion on SPCR-less systems.
+
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/20250620131309.126555-3-me@linux.beauty
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 13 +++++++++++++
- drivers/net/dsa/b53/b53_regs.h   |  5 ++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/acpi.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 71c30a81c36d..eacd7c325530 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -613,6 +613,19 @@ int b53_setup_port(struct dsa_switch *ds, int port)
- 	if (dsa_is_user_port(ds, port))
- 		b53_set_eap_mode(dev, port, EAP_MODE_SIMPLIFIED);
- 
-+	if (is5325(dev) &&
-+	    in_range(port, 1, 4)) {
-+		u8 reg;
+diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+index b9a66fc146c9..4d529ff7ba51 100644
+--- a/arch/arm64/kernel/acpi.c
++++ b/arch/arm64/kernel/acpi.c
+@@ -197,6 +197,8 @@ static int __init acpi_fadt_sanity_check(void)
+  */
+ void __init acpi_boot_table_init(void)
+ {
++	int ret;
 +
-+		b53_read8(dev, B53_CTRL_PAGE, B53_PD_MODE_CTRL_25, &reg);
-+		reg &= ~PD_MODE_POWER_DOWN_PORT(0);
-+		if (dsa_is_unused_port(ds, port))
-+			reg |= PD_MODE_POWER_DOWN_PORT(port);
+ 	/*
+ 	 * Enable ACPI instead of device tree unless
+ 	 * - ACPI has been disabled explicitly (acpi=off), or
+@@ -250,10 +252,12 @@ void __init acpi_boot_table_init(void)
+ 		 * behaviour, use acpi=nospcr to disable console in ACPI SPCR
+ 		 * table as default serial console.
+ 		 */
+-		acpi_parse_spcr(earlycon_acpi_spcr_enable,
++		ret = acpi_parse_spcr(earlycon_acpi_spcr_enable,
+ 			!param_acpi_nospcr);
+-		pr_info("Use ACPI SPCR as default console: %s\n",
+-				param_acpi_nospcr ? "No" : "Yes");
++		if (!ret || param_acpi_nospcr || !IS_ENABLED(CONFIG_ACPI_SPCR_TABLE))
++			pr_info("Use ACPI SPCR as default console: No\n");
 +		else
-+			reg &= ~PD_MODE_POWER_DOWN_PORT(port);
-+		b53_write8(dev, B53_CTRL_PAGE, B53_PD_MODE_CTRL_25, reg);
-+	}
-+
- 	return 0;
- }
- EXPORT_SYMBOL(b53_setup_port);
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 5f7a0e5c5709..d8900aa433e5 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -101,8 +101,11 @@
- #define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
- #define   PORT_OVERRIDE_EN		BIT(7) /* Use the register contents */
++			pr_info("Use ACPI SPCR as default console: Yes\n");
  
--/* Power-down mode control */
-+/* Power-down mode control (8 bit) */
- #define B53_PD_MODE_CTRL_25		0x0f
-+#define  PD_MODE_PORT_MASK		0x1f
-+/* Bit 0 also powers down the switch. */
-+#define  PD_MODE_POWER_DOWN_PORT(i)	BIT(i)
- 
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
+ 		if (IS_ENABLED(CONFIG_ACPI_BGRT))
+ 			acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
 -- 
 2.39.5
 
