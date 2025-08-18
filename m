@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-171317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07293B2A8AE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE0DB2A971
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:20:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 982DE7B5275
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A28B685B2E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CEB32254D;
-	Mon, 18 Aug 2025 13:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B98322550;
+	Mon, 18 Aug 2025 13:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+aYxmjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/Db/7AB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A352B322547;
-	Mon, 18 Aug 2025 13:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4B227F4C7;
+	Mon, 18 Aug 2025 13:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525523; cv=none; b=aaxFvkW2xcVpoebE2oJzS9DaRaQnfd80fSm9ffSJooz3YYHyqcHJUVwBtDA0ZxbIBOse9IGRYw8QbcWPTwgvrmoiN2d8BKARQj/eXUvn4qsTwXFmnDMCD0BvYQOKT2Uzoi85KdQEb0r5Fkv+rojngUQvfDwufRJjtPyRZa5BEnM=
+	t=1755525530; cv=none; b=nKEsBW2Nuy7wfvVXkGbuoeF8Ix79xXUjpY0cW/NDxy/ZebMpRim25qUSt80IvspBo2IER10hYV1SCFqtWyHukD00UwAL//M2oArWy8RkFbR9rP0hoAbwWYtwgTAnT+A0vCqKfx6Xj8uPgm2jD/JXcOSHgiJ9N0Z4AVLUFhotx6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525523; c=relaxed/simple;
-	bh=/Ip08QfkOD2/hradlHhlGtHBvZdK2+bzcJFSto5RGCI=;
+	s=arc-20240116; t=1755525530; c=relaxed/simple;
+	bh=IbG9LtWLRcKhnlDTBjMaoa/Wbp/Tou++ziugwNK53Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZSXv+02AHethpGnsxe/+Gg4rebFKDleewJDrlA7ou+D8eKDkLMjFW4BbAv3I1oxi7ZSn7V4q6XhNZuzITd3ua0stbXkWiQNWlidLVyOTN5kraIVQrlQEDCwRnF4GC+TuTbxQiIXJX0ockQPQIw2/ctuhyCoYWRnIh0iRVxzoSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+aYxmjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13110C4CEEB;
-	Mon, 18 Aug 2025 13:58:42 +0000 (UTC)
+	 MIME-Version; b=gg8JkBTgjeOZyAuIebqAKM/QjuGLiTv/Ura0veTQj4vrarqvIYFYThgPUEIo257nXdk8hfIBTfWY/5EfcRjp6RRkM91AiVERcnRIuEFnoOU2KA9iixOL69Rc//Kh5hVDKP6JjeTJdzD6K2EldsA6iK57MoMP/W6k203ubFWX4go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/Db/7AB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA44CC4CEEB;
+	Mon, 18 Aug 2025 13:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525523;
-	bh=/Ip08QfkOD2/hradlHhlGtHBvZdK2+bzcJFSto5RGCI=;
+	s=korg; t=1755525530;
+	bh=IbG9LtWLRcKhnlDTBjMaoa/Wbp/Tou++ziugwNK53Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+aYxmjMeV47wv/KV8raHRMxNsU+aaZcd0yC3G5h4/69uJSXwy4UgbFjfk2cEIFiw
-	 u/CQUYIrnnmALdHdJSr+8bz7dqZ+S/6WmJlLSfCifLUoDjqsm5RofFPoWCHa+Ri/gt
-	 fv+rOZymIrPPApqgAUC1OJpU9Y5ji5Ywn8GVkagM=
+	b=T/Db/7ABx9Eswj0BsvsSMnyFnES13PKEzklCIRxWZ1tmh9yTAqKmdDVgnR3Ot+EZ+
+	 HCSYq3V9Z5s4j7ykMxq+YiKb7BI29bO1BlQyfJo1PIamd/Kmx89Jvztth4++xqutQ8
+	 ZpB6YhKEBTW4lYuwFZClNpNT8hL90B0brZMFsPkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jonas Rebmann <jre@pengutronix.de>,
 	Wei Fang <wei.fang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 289/570] net: enetc: separate 64-bit counters from enetc_port_counters
-Date: Mon, 18 Aug 2025 14:44:36 +0200
-Message-ID: <20250818124516.976702926@linuxfoundation.org>
+Subject: [PATCH 6.16 290/570] net: fec: allow disable coalescing
+Date: Mon, 18 Aug 2025 14:44:37 +0200
+Message-ID: <20250818124517.013334515@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -69,94 +67,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Jonas Rebmann <jre@pengutronix.de>
 
-[ Upstream commit 9fe5f7145ad746e1b8e7522b8a955f642ff1b404 ]
+[ Upstream commit b7ad21258f9e9a7f58b19595d5ceed2cde3bed68 ]
 
-Some counters in enetc_port_counters are 32-bit registers, and some are
-64-bit registers. But in the current driver, they are all read through
-enetc_port_rd(), which can only read a 32-bit value. Therefore, separate
-64-bit counters (enetc_pm_counters) from enetc_port_counters and use
-enetc_port_rd64() to read the 64-bit statistics.
+In the current implementation, IP coalescing is always enabled and
+cannot be disabled.
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Claudiu Manoil <claudiu.manoil@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250627021108.3359642-3-wei.fang@nxp.com
+As setting maximum frames to 0 or 1, or setting delay to zero implies
+immediate delivery of single packets/IRQs, disable coalescing in
+hardware in these cases.
+
+This also guarantees that coalescing is never enabled with ICFT or ICTT
+set to zero, a configuration that could lead to unpredictable behaviour
+according to i.MX8MP reference manual.
+
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/enetc/enetc_ethtool.c  | 15 ++++++++++++++-
- drivers/net/ethernet/freescale/enetc/enetc_hw.h   |  1 +
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index d38cd36be4a6..c0773dfbfb18 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -142,7 +142,7 @@ static const struct {
- static const struct {
- 	int reg;
- 	char name[ETH_GSTRING_LEN] __nonstring;
--} enetc_port_counters[] = {
-+} enetc_pm_counters[] = {
- 	{ ENETC_PM_REOCT(0),	"MAC rx ethernet octets" },
- 	{ ENETC_PM_RALN(0),	"MAC rx alignment errors" },
- 	{ ENETC_PM_RXPF(0),	"MAC rx valid pause frames" },
-@@ -194,6 +194,12 @@ static const struct {
- 	{ ENETC_PM_TSCOL(0),	"MAC tx single collisions" },
- 	{ ENETC_PM_TLCOL(0),	"MAC tx late collisions" },
- 	{ ENETC_PM_TECOL(0),	"MAC tx excessive collisions" },
-+};
-+
-+static const struct {
-+	int reg;
-+	char name[ETH_GSTRING_LEN] __nonstring;
-+} enetc_port_counters[] = {
- 	{ ENETC_UFDMF,		"SI MAC nomatch u-cast discards" },
- 	{ ENETC_MFDMF,		"SI MAC nomatch m-cast discards" },
- 	{ ENETC_PBFDSIR,	"SI MAC nomatch b-cast discards" },
-@@ -240,6 +246,7 @@ static int enetc_get_sset_count(struct net_device *ndev, int sset)
- 		return len;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 17e9bddb9ddd..651b73163b6e 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3124,27 +3124,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
+ static void fec_enet_itr_coal_set(struct net_device *ndev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	int rx_itr, tx_itr;
++	u32 rx_itr = 0, tx_itr = 0;
++	int rx_ictt, tx_ictt;
  
- 	len += ARRAY_SIZE(enetc_port_counters);
-+	len += ARRAY_SIZE(enetc_pm_counters);
+-	/* Must be greater than zero to avoid unpredictable behavior */
+-	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
+-	    !fep->tx_time_itr || !fep->tx_pkts_itr)
+-		return;
+-
+-	/* Select enet system clock as Interrupt Coalescing
+-	 * timer Clock Source
+-	 */
+-	rx_itr = FEC_ITR_CLK_SEL;
+-	tx_itr = FEC_ITR_CLK_SEL;
++	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
++	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
  
- 	return len;
- }
-@@ -266,6 +273,9 @@ static void enetc_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- 		for (i = 0; i < ARRAY_SIZE(enetc_port_counters); i++)
- 			ethtool_cpy(&data, enetc_port_counters[i].name);
+-	/* set ICFT and ICTT */
+-	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
+-	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
+-	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
+-	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
++	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
++		rx_itr |= FEC_ITR_ICTT(rx_ictt);
++	}
  
-+		for (i = 0; i < ARRAY_SIZE(enetc_pm_counters); i++)
-+			ethtool_cpy(&data, enetc_pm_counters[i].name);
-+
- 		break;
- 	}
- }
-@@ -302,6 +312,9 @@ static void enetc_get_ethtool_stats(struct net_device *ndev,
+-	rx_itr |= FEC_ITR_EN;
+-	tx_itr |= FEC_ITR_EN;
++	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
++		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
++		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
++		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
++		tx_itr |= FEC_ITR_ICTT(tx_ictt);
++	}
  
- 	for (i = 0; i < ARRAY_SIZE(enetc_port_counters); i++)
- 		data[o++] = enetc_port_rd(hw, enetc_port_counters[i].reg);
-+
-+	for (i = 0; i < ARRAY_SIZE(enetc_pm_counters); i++)
-+		data[o++] = enetc_port_rd64(hw, enetc_pm_counters[i].reg);
- }
- 
- static void enetc_pause_stats(struct enetc_hw *hw, int mac,
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-index 53e8d18c7a34..c84872ab6c8f 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-@@ -533,6 +533,7 @@ static inline u64 _enetc_rd_reg64_wa(void __iomem *reg)
- /* port register accessors - PF only */
- #define enetc_port_rd(hw, off)		enetc_rd_reg((hw)->port + (off))
- #define enetc_port_wr(hw, off, val)	enetc_wr_reg((hw)->port + (off), val)
-+#define enetc_port_rd64(hw, off)	_enetc_rd_reg64_wa((hw)->port + (off))
- #define enetc_port_rd_mdio(hw, off)	_enetc_rd_mdio_reg_wa((hw)->port + (off))
- #define enetc_port_wr_mdio(hw, off, val)	_enetc_wr_mdio_reg_wa(\
- 							(hw)->port + (off), val)
+ 	writel(tx_itr, fep->hwp + FEC_TXIC0);
+ 	writel(rx_itr, fep->hwp + FEC_RXIC0);
 -- 
 2.39.5
 
