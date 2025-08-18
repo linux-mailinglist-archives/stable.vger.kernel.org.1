@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B503B2A50A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15AF3B2A82B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55D2C4E3345
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 016815681E2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A116322DB9;
-	Mon, 18 Aug 2025 13:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFF0335BC1;
+	Mon, 18 Aug 2025 13:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2dO7I58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLHmxWkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F97322DB1;
-	Mon, 18 Aug 2025 13:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6770E335BA9;
+	Mon, 18 Aug 2025 13:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523359; cv=none; b=J5vhGKbFnpILygzwDQg6ZIwjjBIhl01GBQ7BHH6PaL+ikZPsZfPSK60OiPGyyPdSGjHlideWLZuOGGZTF25Z64g0jbezbpZ0h4USAgGpiIyZqYFPeqpYmgO6Afon9GSkeVWbZRHwjBXJx/MVPDjMxmIld06uV9pt8TO3eK8Pzmg=
+	t=1755525058; cv=none; b=upv35hR5YTtWcbccqXgdyjCIFTd7BttbMQcHkfYzQOjD4mtp5fATZbWjHlBN1A86Ps9eaVpk4etPNLKvjrnHPlqGUObStb0HQ/T8bJ0+RdFtlwFtJQiLbH5VEgrkE+Md6RiqDEnmPS6sx30y2HXYqNZxiGs3UqMdQ6byzlC/wjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523359; c=relaxed/simple;
-	bh=8ehFnlFy/eBzkMqM4T/tK8uN74bcSbWxA8rzOeUwSm0=;
+	s=arc-20240116; t=1755525058; c=relaxed/simple;
+	bh=gDkQPI+JvC2spzmrXHCrTHVOBBQ3V/wYsm9UA7zBIOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHge8ICt3u4mBwe7aLUr0deIny9MxNhxKIoMpslSyEDz77F8F0TsuMJkEH+jk196ifFkxvmefE2YBzf3FGZPQy0FzfSS6sWO0EEToB4ub1B9RnKSZNdvqJPrJjltsaL1Uhz8PnXQDqhquldO1j4lr603A24JZijqnx041QcqR+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2dO7I58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EAFC113D0;
-	Mon, 18 Aug 2025 13:22:38 +0000 (UTC)
+	 MIME-Version; b=Ni3/ZkgK9w9y5mBx8eq0sXUhmROpUG9DfE7lhiKmpuvSjyTXC/BToQJdlXR4omgEg7xz1PaNWFg1N38ndhQoS8S8gF/aUqjq2M+9kh7gwHE2SAG8ZtgbTkTuNNdC6tnbXU6/xe8+X2iZcij0i31nltWR9Vq+TFcP+nmgzG/autk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLHmxWkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8717C4CEF1;
+	Mon, 18 Aug 2025 13:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523359;
-	bh=8ehFnlFy/eBzkMqM4T/tK8uN74bcSbWxA8rzOeUwSm0=;
+	s=korg; t=1755525058;
+	bh=gDkQPI+JvC2spzmrXHCrTHVOBBQ3V/wYsm9UA7zBIOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2dO7I58CpTBC/frKWmKZt9SgJmFDvItidMZPzGw3i4cLMkhHLO/PW6h2CVGk7qs8
-	 HbKrwCyQMmXPVy3yiJKoMUaAElp26POLUoDhOVzqvK9pJSGFyaIg/Kaz4PARRaO3Ij
-	 IMfqF07uXgWWLVc5ED6iPMFRV9bSwt/6teIe7F+o=
+	b=dLHmxWkxAys0xvnmS+44dE9vD+L+ig3sbt/dAj7VrlQgG6tSg5nu0ZBWQL0V443Bj
+	 jNZ8aOmysRR+745JH2w5Hf4lowigDB+yQF49rSaWe635u6/4+EPwg8Mm1YvMz0Qjzl
+	 Xr2arkgBnvzGyqBNXD5bEzk39oZVjwbIjlqcjmNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 146/515] selftests: tracing: Use mutex_unlock for testing glob filter
-Date: Mon, 18 Aug 2025 14:42:12 +0200
-Message-ID: <20250818124504.006135671@linuxfoundation.org>
+Subject: [PATCH 6.16 146/570] cpufreq: Exit governor when failed to start old governor
+Date: Mon, 18 Aug 2025 14:42:13 +0200
+Message-ID: <20250818124511.446427460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
+[ Upstream commit 0ae204405095abfbc2d694ee0fbb49bcbbe55c57 ]
 
-Since commit c5b6ababd21a ("locking/mutex: implement
-mutex_trylock_nested") makes mutex_trylock() as an inlined
-function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
-mutex_trylock() for testing the glob filter of ftrace.
+Detect the result of starting old governor in cpufreq_set_policy(). If it
+fails, exit the governor and clear policy->governor.
 
-Use mutex_unlock instead.
-
-Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://patch.msgid.link/20250709104145.2348017-5-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-index 4b994b6df5ac..ed81eaf2afd6 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
-@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
- ftrace_filter_check '*pin*lock' '.*pin.*lock$'
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index c1c6f11ac551..628f5b633b61 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2716,10 +2716,12 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
+ 	pr_debug("starting governor %s failed\n", policy->governor->name);
+ 	if (old_gov) {
+ 		policy->governor = old_gov;
+-		if (cpufreq_init_governor(policy))
++		if (cpufreq_init_governor(policy)) {
+ 			policy->governor = NULL;
+-		else
+-			cpufreq_start_governor(policy);
++		} else if (cpufreq_start_governor(policy)) {
++			cpufreq_exit_governor(policy);
++			policy->governor = NULL;
++		}
+ 	}
  
- # filter by start*mid*
--ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
-+ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
- 
- # Advanced full-glob matching feature is recently supported.
- # Skip the tests if we are sure the kernel does not support it.
+ 	return ret;
 -- 
 2.39.5
 
