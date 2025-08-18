@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-170411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7938AB2A3B2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86B9B2A990
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 535937B3B48
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E7751BA2CD4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAEF31E0FD;
-	Mon, 18 Aug 2025 13:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69AE6343D81;
+	Mon, 18 Aug 2025 14:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYi29nkT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ro+LIAr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90B03218CA;
-	Mon, 18 Aug 2025 13:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28568320399;
+	Mon, 18 Aug 2025 14:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522547; cv=none; b=j/JVxXKYurNRuEU9XnjinhhHSWO+BAC1tM+28xWoNy6r/pbQ2An6YDwlgiuG10dUS49a4d5TCG2nrbv1qp3Awc3Z7YWzw2hFok3np4ggMeTTo9VcLhXYYPKy39r2Ozv2H+M0/KVWFQGFXRum1l2tyTo1bdTLWoTtm8dxzvWknsY=
+	t=1755525856; cv=none; b=q/rWV+LK9oN4FlQOSRl+tVVVb7DP4rdeIEPXgUezso1M60Mk4cnLo7pmNfKPKv/0Wh3mrX7a+6Z+SUUAGIA3J1X60Jka8y0vf9s4mcSyrKpdT12rfK7GnaeArL5rrSwDRwJSe7OP465f+CcIm2KGSjz9Sv2klh19tMrXbY27BB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522547; c=relaxed/simple;
-	bh=QXAn6BCsfEqmNf6JHSOpNlBgkY4WCMeqnTTfH4l2PLM=;
+	s=arc-20240116; t=1755525856; c=relaxed/simple;
+	bh=NbyJV8dZbY2uHQVq4Bm1AUjhS5+DaUc4cQIOvEEg3Fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpiLPgEjaJmo/aP/Ipegd5pNfi5+YWDW+bk0PDDxLY9cJxNfzd5ehn0opQhd+ay+WjIM6VouvM4x4Liwg5WmEK/sLEsyiVtVU0pg/nTni0Tyzqp5Y+2HxUhL0jHYA5cZBerzd7a0BsDnGGgv746ybfD5KKL5clW0z4VpdoGRkXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYi29nkT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B29C4CEEB;
-	Mon, 18 Aug 2025 13:09:06 +0000 (UTC)
+	 MIME-Version; b=YVAbQ1OwZADpJW4fSvbex+kB9wR/WACZVYm44c0qCeZNui2Gv3e+d0p2mFzrExQhGFNxegl0HT6cWEzT77pZ1OuiWC+IFBG7TBLIIjTMZMFmDZxoRNPPxSgDx5Zd250k3Pbl71bumpDCfze6//Syvf65pHczRZe+2GKfg/cydJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ro+LIAr/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C41CC19421;
+	Mon, 18 Aug 2025 14:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522547;
-	bh=QXAn6BCsfEqmNf6JHSOpNlBgkY4WCMeqnTTfH4l2PLM=;
+	s=korg; t=1755525856;
+	bh=NbyJV8dZbY2uHQVq4Bm1AUjhS5+DaUc4cQIOvEEg3Fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYi29nkTIYOTSc/1w80uy3ZSxd4aglcBLodAUikYsCqrXJr/PN0JfT+h6bISlvZ5K
-	 d52ekkK9KV0Edkk3u4avqOcRywYDIYH6/IzDNKt9NzPHIZVFmTi+mqhfMcDLXwTa7g
-	 TSVMC/inLMWYi+l3UOz50649axp10XE9awU87gI4=
+	b=Ro+LIAr/Nl1NJPPkGhpQnv4fSMzWRiVujokATs0Ue8yEnzo5vtza+92/JS3I+Niyu
+	 yrpjWSRbkVlqK+36uIL23H3VBLOgTwBg6aIOacbE/Vy+3xRRpo7+4AmlgFHe75OpFk
+	 Dho30WHIwdr6Ml47rk2woSXFnfAVoYrq1QnLJD2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 348/444] vfio/mlx5: fix possible overflow in tracking max message size
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.16 387/570] media: iris: Add handling for corrupt and drop frames
 Date: Mon, 18 Aug 2025 14:46:14 +0200
-Message-ID: <20250818124501.973455056@linuxfoundation.org>
+Message-ID: <20250818124520.751969194@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +66,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
 
-[ Upstream commit b3060198483bac43ec113c62ae3837076f61f5de ]
+[ Upstream commit b791dcfcba3a0c46fb3e2decab31d2340c5dc313 ]
 
-MLX cap pg_track_log_max_msg_size consists of 5 bits, value of which is
-used as power of 2 for max_msg_size. This can lead to multiplication
-overflow between max_msg_size (u32) and integer constant, and afterwards
-incorrect value is being written to rq_size.
+Firmware attach DATACORRUPT/DROP buffer flags for the frames which
+needs to be dropped, handle it by setting VB2_BUF_STATE_ERROR for these
+buffers before calling buf_done.
 
-Fix this issue by extending integer constant to u64 type.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://lore.kernel.org/r/20250701144017.2410-2-a.sadovnikov@ispras.ru
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Tested-by: Vikash Garodia <quic_vgarodia@quicinc.com> # on sa8775p-ride
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/mlx5/cmd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/iris/iris_buffer.c        | 11 ++++++++---
+ .../media/platform/qcom/iris/iris_hfi_gen1_defines.h  |  2 ++
+ .../media/platform/qcom/iris/iris_hfi_gen1_response.c |  6 ++++++
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
-index eb7387ee6ebd..e7d2251db626 100644
---- a/drivers/vfio/pci/mlx5/cmd.c
-+++ b/drivers/vfio/pci/mlx5/cmd.c
-@@ -1538,8 +1538,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
- 	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
- 	max_msg_size = (1ULL << log_max_msg_size);
- 	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
--	if (rq_size < 4 * max_msg_size)
--		rq_size = 4 * max_msg_size;
-+	if (rq_size < 4ULL * max_msg_size)
-+		rq_size = 4ULL * max_msg_size;
+diff --git a/drivers/media/platform/qcom/iris/iris_buffer.c b/drivers/media/platform/qcom/iris/iris_buffer.c
+index e5c5a564fcb8..7dd5730a867a 100644
+--- a/drivers/media/platform/qcom/iris/iris_buffer.c
++++ b/drivers/media/platform/qcom/iris/iris_buffer.c
+@@ -593,10 +593,13 @@ int iris_vb2_buffer_done(struct iris_inst *inst, struct iris_buffer *buf)
  
- 	memset(tracker, 0, sizeof(*tracker));
- 	tracker->uar = mlx5_get_uars_page(mdev);
+ 	vb2 = &vbuf->vb2_buf;
+ 
+-	if (buf->flags & V4L2_BUF_FLAG_ERROR)
++	if (buf->flags & V4L2_BUF_FLAG_ERROR) {
+ 		state = VB2_BUF_STATE_ERROR;
+-	else
+-		state = VB2_BUF_STATE_DONE;
++		vb2_set_plane_payload(vb2, 0, 0);
++		vb2->timestamp = 0;
++		v4l2_m2m_buf_done(vbuf, state);
++		return 0;
++	}
+ 
+ 	vbuf->flags |= buf->flags;
+ 
+@@ -616,6 +619,8 @@ int iris_vb2_buffer_done(struct iris_inst *inst, struct iris_buffer *buf)
+ 			v4l2_m2m_mark_stopped(m2m_ctx);
+ 		}
+ 	}
++
++	state = VB2_BUF_STATE_DONE;
+ 	vb2->timestamp = buf->timestamp;
+ 	v4l2_m2m_buf_done(vbuf, state);
+ 
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_defines.h b/drivers/media/platform/qcom/iris/iris_hfi_gen1_defines.h
+index 9f246816a286..93b5f838c290 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_defines.h
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_defines.h
+@@ -117,6 +117,8 @@
+ #define HFI_FRAME_NOTCODED				0x7f002000
+ #define HFI_FRAME_YUV					0x7f004000
+ #define HFI_UNUSED_PICT					0x10000000
++#define HFI_BUFFERFLAG_DATACORRUPT			0x00000008
++#define HFI_BUFFERFLAG_DROP_FRAME			0x20000000
+ 
+ struct hfi_pkt_hdr {
+ 	u32 size;
+diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
+index b72d503dd740..91d95eed68aa 100644
+--- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
++++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
+@@ -481,6 +481,12 @@ static void iris_hfi_gen1_session_ftb_done(struct iris_inst *inst, void *packet)
+ 	buf->attr |= BUF_ATTR_DEQUEUED;
+ 	buf->attr |= BUF_ATTR_BUFFER_DONE;
+ 
++	if (hfi_flags & HFI_BUFFERFLAG_DATACORRUPT)
++		flags |= V4L2_BUF_FLAG_ERROR;
++
++	if (hfi_flags & HFI_BUFFERFLAG_DROP_FRAME)
++		flags |= V4L2_BUF_FLAG_ERROR;
++
+ 	buf->flags |= flags;
+ 
+ 	iris_vb2_buffer_done(inst, buf);
 -- 
 2.39.5
 
