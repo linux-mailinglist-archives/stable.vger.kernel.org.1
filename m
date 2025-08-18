@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366EBB2A875
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F7CB2A68D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA27C1B6801A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2531B6708F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D38B2D8DD4;
-	Mon, 18 Aug 2025 13:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543BB3375C0;
+	Mon, 18 Aug 2025 13:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8rztPhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZRtNYFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBE913C8E8;
-	Mon, 18 Aug 2025 13:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126AC3375B9;
+	Mon, 18 Aug 2025 13:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525326; cv=none; b=Ew2Qj4A+tewsSMHbSj4HwyCHqvlDMvAGnZ6gFiUpnnpPo3VKkYKZiH904tH0+DETVuwLm9zYgOTTqADWsdcldgqUQGw9h/J/Fz33Uf3ViL/moKdg3StQYpBc/Ob3uXnhxqR5bZ4En8cAir4/fKmAbfE6h8JBr2jgsqaheRv/6qs=
+	t=1755523746; cv=none; b=hwSb7+OcrhB+Tl4U7DAzNx7Uy1+MVQORyVXpjjoe7D0r4v+TCPECVqq0d/4Dq+FRT2TEamM2uSVP8wJBDrNqOeOAJfvNllRPGDhAU278ZneqDo8K9YUb9jwox4UFU3Ai6wMM2yyM5fHdMKPJPQfGUCARRrZF3I2W60mQeA8O+Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525326; c=relaxed/simple;
-	bh=Z8XtEVgPgnQHIpZIdU1a+v6RpGwH8BzFT/AFO663Ucg=;
+	s=arc-20240116; t=1755523746; c=relaxed/simple;
+	bh=jzd5oyXmpcNucH1ja+nXNvw3T4/p2GvyZ98GrUwkl2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nwzp5WV5Pnv6jQyowCMpV7AGOmI8kwkcvl9byezofHRBojFbNw/qIJ4pkWDg/SKFEW7teD5qiSekoJVqTSYY+B+QlAwxxdHFQyfUmpn/9wB7jiFSuS4WK87uAtVlCWM5tHAYpS8p1tCAEd9gVIwEJzM7TbnEFE0vw1ysT+UMmm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8rztPhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B126C4CEEB;
-	Mon, 18 Aug 2025 13:55:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GRWuYYeGpcLOXbP9jQ4Dzt8P2nIuZYrA0O+ZAA5ipm5Zyq8IYKJyDhB+G29DOGn5Rg1E6ONDauciCZ/EMCHtDg7hOEPWs0SPlU64f5IYpQKw7/1NrGT6D7sGaLlUXOc+26IiUhOPmTG3kr1NQok91iM9Gby/1uPKEjP3C9eEfEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZRtNYFW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76141C4CEEB;
+	Mon, 18 Aug 2025 13:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525326;
-	bh=Z8XtEVgPgnQHIpZIdU1a+v6RpGwH8BzFT/AFO663Ucg=;
+	s=korg; t=1755523745;
+	bh=jzd5oyXmpcNucH1ja+nXNvw3T4/p2GvyZ98GrUwkl2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8rztPhFwPctddhF5GTUCLu+LQs7lzbjincJE61pAAC1KjNhhLFkJrcVIRs6ITPSc
-	 rx8wADWukyav+x6cR6eb+VBLMv9k+MGsqsgdxTklgSMpcFuFnRh2MZcuQ+ED5ydJrR
-	 WlKmfWt9MbHxc/jNDhfL4o86yjy0No2LBR8uysDQ=
+	b=IZRtNYFW/W+4A4fszUXwaiSIDuHfbtXtuYOG2xqZ/Ikg/yGI0CJdq5aIfDMGAZpNz
+	 own7AEI7sxMLEgoKHSdr5R5gBGhaQjff34GjzOTx9YRzZFboXy2rRRCadowU4T9wVC
+	 +zb+KH2MZxdawFrlMUaaqNwO+86aWF8T3YUqsWUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chin-Yen Lee <timlee@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 228/570] wifi: rtw89: wow: Add Basic Rate IE to probe request in scheduled scan mode
+Subject: [PATCH 6.15 229/515] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
 Date: Mon, 18 Aug 2025 14:43:35 +0200
-Message-ID: <20250818124514.607680243@linuxfoundation.org>
+Message-ID: <20250818124507.186115136@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chin-Yen Lee <timlee@realtek.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 37c23874d13eb369d8b384a1ce5992ff6c23d56f ]
+[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
 
-In scheduled scan mode, the current probe request only includes the SSID
-IE, but omits the Basic Rate IE. Some APs do not respond to such
-incomplete probe requests, causing net-detect failures. To improve
-interoperability and ensure APs respond correctly, add the Basic Rate IE
-to the probe request in driver.
+The buffer bgx_sel used in snprintf() was too small to safely hold
+the formatted string "BGX%d" for all valid bgx_id values. This caused
+a -Wformat-truncation warning with `Werror` enabled during build.
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250716122926.6709-1-pkshih@realtek.com
+Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
+snprintf() to ensure safety and suppress the warning.
+
+Build warning:
+  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
+‘bgx_acpi_match_id’:
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
+directive output may be truncated writing between 1 and 3 bytes into a
+region of size 2 [-Werror=format-truncation=]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                             ^~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
+directive argument in the range [0, 255]
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+                         ^~~~~~~
+  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
+‘snprintf’ output between 5 and 7 bytes into a destination of size 5
+    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
+
+compiler warning due to insufficient snprintf buffer size.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/wow.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 34a0ab49bd7a..b6df7900fdc8 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -1412,6 +1412,8 @@ static void rtw89_fw_release_pno_pkt_list(struct rtw89_dev *rtwdev,
- static int rtw89_pno_scan_update_probe_req(struct rtw89_dev *rtwdev,
- 					   struct rtw89_vif_link *rtwvif_link)
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index 608cc6af5af1..aa80c3702232 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1429,9 +1429,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
  {
-+	static const u8 basic_rate_ie[] = {WLAN_EID_SUPP_RATES, 0x08,
-+		 0x0c, 0x12, 0x18, 0x24, 0x30, 0x48, 0x60, 0x6c};
- 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
- 	struct cfg80211_sched_scan_request *nd_config = rtw_wow->nd_config;
- 	u8 num = nd_config->n_match_sets, i;
-@@ -1423,10 +1425,11 @@ static int rtw89_pno_scan_update_probe_req(struct rtw89_dev *rtwdev,
- 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif_link->mac_addr,
- 					     nd_config->match_sets[i].ssid.ssid,
- 					     nd_config->match_sets[i].ssid.ssid_len,
--					     nd_config->ie_len);
-+					     nd_config->ie_len + sizeof(basic_rate_ie));
- 		if (!skb)
- 			return -ENOMEM;
+ 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct bgx *bgx = context;
+-	char bgx_sel[5];
++	char bgx_sel[7];
  
-+		skb_put_data(skb, basic_rate_ie, sizeof(basic_rate_ie));
- 		skb_put_data(skb, nd_config->ie, nd_config->ie_len);
- 
- 		info = kzalloc(sizeof(*info), GFP_KERNEL);
+-	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
++	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
+ 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
+ 		pr_warn("Invalid link device\n");
+ 		return AE_OK;
 -- 
 2.39.5
 
