@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1D4B2A66E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D86B2AA0A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 249D64E387C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521CF625D04
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61EC131AF00;
-	Mon, 18 Aug 2025 13:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F441E8836;
+	Mon, 18 Aug 2025 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7SZr1n3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjAUdfVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6A02206AF;
-	Mon, 18 Aug 2025 13:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BCD2D8DD4;
+	Mon, 18 Aug 2025 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524520; cv=none; b=Q/Y99YUfUlEDC8ww5RoqlnoWMxlhNBNFRujYmcoyxmLif3bzvPT0V+7uASJTCKDRXfTbqE8JsOpoedg8S6a+K/g7Ntrk2iaDR5lS+lKoV4D17Toh11qTZaBgciLn0Qx6jDeqc+J+zarY5xjYpqnOy3NWP96GH3SBONTxzR+2HbM=
+	t=1755526228; cv=none; b=mOE13Q4XuDPwktJ7/HQLMhJV1k9WbE4o4G98oXZqSeZIS3fgfcle4dVO6zZOU3YyTDOlFKzBFBD48flpvv9YxarqjqligFJN58uC+ipNCvA24ICpzVMjlVhA1Ko+q2Mumt77RU7w5wsiFC9Xa1n6mKlz9Q8VGcL13EyXqjxKus4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524520; c=relaxed/simple;
-	bh=dxXYJtnYkTnmZ95CxB186+glatw9JIlw5nPPZx44LKs=;
+	s=arc-20240116; t=1755526228; c=relaxed/simple;
+	bh=yMoLUeZWjyHJsd5fzuUhhVwyzVLrH/gfMoi6iosredc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVCeay64P53QQltH3NwF7AI5xqFEyn+1pGroDNtWskvfklkqM+48hfSaTL421vOy+Sofhfdss0QidAP1j4RSLJa8nY1uGIsASuIcjIBhgaf35jJtJnB+xg1XL2TZNfZN5RVagselT3Z4J4tlYS5m7lGb/TJrxE0NDSVI9SJNmSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7SZr1n3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B9AC4CEF1;
-	Mon, 18 Aug 2025 13:41:59 +0000 (UTC)
+	 MIME-Version; b=RCmfdkIp7VHGXYuZVnkzuoKRzC7fl21tDuPTaVmu8la4WAZjgHyOw+g9j5SLlu4Z5wxQoIy60gchX/73TYCiatBMX8HL6AAjRAO0lIysriN2kR3C5+JrMh9iOFyniAztKwZ/eTcHz/PXh33OnYB0nfh3FFriCAKuWUJ56Kl9MkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjAUdfVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88406C4CEEB;
+	Mon, 18 Aug 2025 14:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524520;
-	bh=dxXYJtnYkTnmZ95CxB186+glatw9JIlw5nPPZx44LKs=;
+	s=korg; t=1755526228;
+	bh=yMoLUeZWjyHJsd5fzuUhhVwyzVLrH/gfMoi6iosredc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7SZr1n3h4vOs1dW9lW63Z94o9RKMalguXPnJLJfNnDB/T3kcSeJveuEyelUaFckx
-	 ugQ5sGlAhwhQsXadGGRwEyM7rfsiiurFKsdU80Eay/oj082Zp1QHrBgFB+yFh7elah
-	 2f683DN3MG7FNFi3+aHYC9SmimIoRSdty5SxC4AI=
+	b=HjAUdfVszF+4Ozf1fcBtkBSu+dCmvfBjP8rI3PHGvLihOXoX7RJVBn7Hii/g5DnTi
+	 bRmJRYabQTvLDVQErNTTx4W1gYiL84zIAicYul6x6TREtCwfP9FU0ipUSaVGSMvy1U
+	 U+97SfI5MuWUa3kyLL4vEmoFnOPgzBbo9tlf2vbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Lee <yjjuny.lee@samsung.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.15 496/515] media: uvcvideo: Fix 1-byte out-of-bounds read in uvc_parse_format()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.16 495/570] clk: qcom: dispcc-sm8750: Fix setting rate byte and pixel clocks
 Date: Mon, 18 Aug 2025 14:48:02 +0200
-Message-ID: <20250818124517.541802025@linuxfoundation.org>
+Message-ID: <20250818124524.937212191@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Lee <yjjuny.lee@samsung.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 782b6a718651eda3478b1824b37a8b3185d2740c upstream.
+commit 0acf9e65a47d1e489c8b24c45a64436e30bcccf4 upstream.
 
-The buffer length check before calling uvc_parse_format() only ensured
-that the buffer has at least 3 bytes (buflen > 2), buf the function
-accesses buffer[3], requiring at least 4 bytes.
+On SM8750 the setting rate of pixel and byte clocks, while the parent
+DSI PHY PLL, fails with:
 
-This can lead to an out-of-bounds read if the buffer has exactly 3 bytes.
+  disp_cc_mdss_byte0_clk_src: rcg didn't update its configuration.
 
-Fix it by checking that the buffer has at least 4 bytes in
-uvc_parse_format().
+DSI PHY PLL has to be unprepared and its "PLL Power Down" bits in
+CMN_CTRL_0 asserted.
 
-Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Mark these clocks with CLK_OPS_PARENT_ENABLE to ensure the parent is
+enabled during rate changes.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250610124107.37360-1-yjjuny.lee@samsung.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: f1080d8dab0f ("clk: qcom: dispcc-sm8750: Add SM8750 Display clock controller")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250520090741.45820-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/dispcc-sm8750.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -344,6 +344,9 @@ static int uvc_parse_format(struct uvc_d
- 	u8 ftype;
- 	int ret;
- 
-+	if (buflen < 4)
-+		return -EINVAL;
-+
- 	format->type = buffer[2];
- 	format->index = buffer[3];
- 	format->frames = frames;
+--- a/drivers/clk/qcom/dispcc-sm8750.c
++++ b/drivers/clk/qcom/dispcc-sm8750.c
+@@ -393,7 +393,7 @@ static struct clk_rcg2 disp_cc_mdss_byte
+ 		.name = "disp_cc_mdss_byte0_clk_src",
+ 		.parent_data = disp_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_byte2_ops,
+ 	},
+ };
+@@ -408,7 +408,7 @@ static struct clk_rcg2 disp_cc_mdss_byte
+ 		.name = "disp_cc_mdss_byte1_clk_src",
+ 		.parent_data = disp_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_byte2_ops,
+ 	},
+ };
+@@ -712,7 +712,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk
+ 		.name = "disp_cc_mdss_pclk0_clk_src",
+ 		.parent_data = disp_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
+@@ -727,7 +727,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk
+ 		.name = "disp_cc_mdss_pclk1_clk_src",
+ 		.parent_data = disp_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
+@@ -742,7 +742,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk
+ 		.name = "disp_cc_mdss_pclk2_clk_src",
+ 		.parent_data = disp_cc_parent_data_1,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_1),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
 
 
 
