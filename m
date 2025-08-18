@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34849B2AA1C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207E7B2A360
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02BE818A2B03
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FFF07B40E9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806E3343D73;
-	Mon, 18 Aug 2025 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7CC32274C;
+	Mon, 18 Aug 2025 13:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mpz179fT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fthDjQtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6FC31E0FE;
-	Mon, 18 Aug 2025 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD554322746;
+	Mon, 18 Aug 2025 13:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525835; cv=none; b=Mm6VGeu8Nj8WHKEF4SEJGY1kaC+9w8AfntDXjKHCgsdEGzm0dDt5YxIKscRnR4rl8HQs8gW878GB/bnaax0CJLiu2agtRiWEHku1OYP/WgVBsNXYftrJf+fyZ8aB0beJCbKim896wR5fSP9XSVHFFZ3/wjgxk26eWiaQ5+oeu70=
+	t=1755522414; cv=none; b=H5CuYjn64mcwG5HR3hAoWFRYF22bFIj2JA/X8q2SAWxGxvv5bpLiXE7jL/mjcM2XwAmz4fPerhNWHiXfQ04nz+xvw9TC3xZqWc+3kHUuCHZjInPigCl37ZKQEM6R/AgeC8yGxmzglnW79mFB/f3aZxuEpjdFJQGFziVu6zDhUBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525835; c=relaxed/simple;
-	bh=OH5vpt1Y1lNXfEMZoWchq0SjfuoYZBDna7Gr1Abt+zU=;
+	s=arc-20240116; t=1755522414; c=relaxed/simple;
+	bh=u28pbMEeVseTvunkxDEnF5uHqqVQI4XJ4J3c8HHkupg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9b0Mc8sVpyuCQPTpbl20p763bnoqMYJpGCiR3j5yucCTvtwEYVlQzOfinDWlWuXlD3Fph7iaqKuXb8YD7bxzk5Ciy+0eOMCzl3c+B4YFLec4u3QpcZNK37CAkJ7V7xE4V19D/Tqyay8mO7HrIXlLTXVoQbbXb/9TCjatFqJUBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mpz179fT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78A7C4CEEB;
-	Mon, 18 Aug 2025 14:03:54 +0000 (UTC)
+	 MIME-Version; b=unicTnWhW0x7e9cgDues27mUKKsRGdLM4f8+5K2aB98mkwX3rWkRvruTNiHHYeNsUVbnHVFgJ+/xMTxeL86uVP2BkX9KwGwQiuzkb6eayJSriEpjP+tN2pobmuQivZkabXP1OquOAAE3XgEHDO/0AMn0SSZi9Obsz6rDOVQt9T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fthDjQtx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1D9C4CEF1;
+	Mon, 18 Aug 2025 13:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525835;
-	bh=OH5vpt1Y1lNXfEMZoWchq0SjfuoYZBDna7Gr1Abt+zU=;
+	s=korg; t=1755522414;
+	bh=u28pbMEeVseTvunkxDEnF5uHqqVQI4XJ4J3c8HHkupg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mpz179fTUOdDhRkNg53PLEIq+Py9FoV8zlWUM+dK4Egf+UQWC1vsxTQ4Vhmcw735I
-	 T1+PWtOXggty7Qt0X2Wifk4KZg+OJXdAv+uQZ6LiR+e2CHhzEjK6mR/CsvcRjbGkGL
-	 yiYbpU2UBAqBiGg4NNsvGYAWdBwN8fQi4CtMZLps=
+	b=fthDjQtxR0ZVzjd/8EplAJtVt2yrRWNQe0szrVZfLp0Nu4xvXb0tgY0huYSpq8TfQ
+	 KU8s4szE42OSLQJiqv1qrR2N1UwlXHE9CPL0Z7WPkz3jw8ol5sOPodiEKWCGMoMdXe
+	 BZHyG5rUit1ykvgxy6hK2PnYOVPqkMLTQYLUJ1AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 348/570] selftests/bpf: Fix a user_ringbuf failure with arm64 64KB page size
+Subject: [PATCH 6.12 309/444] power: supply: qcom_battmgr: Add lithium-polymer entry
 Date: Mon, 18 Aug 2025 14:45:35 +0200
-Message-ID: <20250818124519.263094996@linuxfoundation.org>
+Message-ID: <20250818124500.537149218@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit bbc7bd658ddc662083639b9e9a280b90225ecd9a ]
+[ Upstream commit 202ac22b8e2e015e6c196fd8113f3d2a62dd1afc ]
 
-The ringbuf max_entries must be PAGE_ALIGNED. See kernel function
-ringbuf_map_alloc(). So for arm64 64KB page size, adjust max_entries
-properly.
+On some Dell XPS 13 (9345) variants, the battery used is lithium-polymer
+based. Currently, this is reported as unknown technology due to the entry
+missing.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250607013626.1553001-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[ 4083.135325] Unknown battery technology 'LIP'
+
+Add another check for lithium-polymer in the technology parsing callback
+and return that instead of unknown.
+
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250523-psy-qcom-battmgr-add-lipo-entry-v1-1-938c20a43a25@linaro.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/user_ringbuf.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/power/supply/qcom_battmgr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-index d424e7ecbd12..9fd3ae987321 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-@@ -21,8 +21,7 @@
- #include "../progs/test_user_ringbuf.h"
- 
- static const long c_sample_size = sizeof(struct sample) + BPF_RINGBUF_HDR_SZ;
--static const long c_ringbuf_size = 1 << 12; /* 1 small page */
--static const long c_max_entries = c_ringbuf_size / c_sample_size;
-+static long c_ringbuf_size, c_max_entries;
- 
- static void drain_current_samples(void)
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index f0a64c00ddaa..c2037b58fbcd 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -980,6 +980,8 @@ static unsigned int qcom_battmgr_sc8280xp_parse_technology(const char *chemistry
  {
-@@ -424,7 +423,9 @@ static void test_user_ringbuf_loop(void)
- 	uint32_t remaining_samples = total_samples;
- 	int err;
+ 	if (!strncmp(chemistry, "LIO", BATTMGR_CHEMISTRY_LEN))
+ 		return POWER_SUPPLY_TECHNOLOGY_LION;
++	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN))
++		return POWER_SUPPLY_TECHNOLOGY_LIPO;
  
--	BUILD_BUG_ON(total_samples <= c_max_entries);
-+	if (!ASSERT_LT(c_max_entries, total_samples, "compare_c_max_entries"))
-+		return;
-+
- 	err = load_skel_create_user_ringbuf(&skel, &ringbuf);
- 	if (err)
- 		return;
-@@ -686,6 +687,9 @@ void test_user_ringbuf(void)
- {
- 	int i;
- 
-+	c_ringbuf_size = getpagesize(); /* 1 page */
-+	c_max_entries = c_ringbuf_size / c_sample_size;
-+
- 	for (i = 0; i < ARRAY_SIZE(success_tests); i++) {
- 		if (!test__start_subtest(success_tests[i].test_name))
- 			continue;
+ 	pr_err("Unknown battery technology '%s'\n", chemistry);
+ 	return POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
 -- 
 2.39.5
 
