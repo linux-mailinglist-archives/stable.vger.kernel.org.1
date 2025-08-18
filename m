@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4DAB2A3DA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A228AB2AA29
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53ABD1B233FB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE7696831F6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB4431E0F9;
-	Mon, 18 Aug 2025 13:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D24340D8C;
+	Mon, 18 Aug 2025 14:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnebwR/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kkbEW2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B1E31B117;
-	Mon, 18 Aug 2025 13:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147C5340D88;
+	Mon, 18 Aug 2025 14:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522437; cv=none; b=q098Vl2IUDvTfwEoKwzR6T6m31jEbreuNjAzCaORxXvtOfU2EvdyD+IZjPl2SIO2SUHQvdcN/OiYAr9AYvV+IjRRjwDfICsQ5MwGGbcCbl9sd/7C+vvnssiusqA7k2hBnVEc5mgEFHegVaiLWwAlX2WbI+uUaWo6pVXQ25c/Cjs=
+	t=1755525746; cv=none; b=YAeTsnDo9otWfOwnLF+V6lYUIXmxYRruWgYezHVH/yRkIdQz8R7e9WYTPPPnkmRJZnpF19qDP8Mag+ULmyVPxzRJruQ7Bj6KB7Hw6l8UCPjGs+S9PoBoNgf+5KTRh4RmxfVgqeO7mfWR8X8G/I+R/QwY3+vfllAeX72kPtqUgWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522437; c=relaxed/simple;
-	bh=jfEX3CLvtP9ZPBpUdc84+kewEepfGBMHHIhZC7fIIj4=;
+	s=arc-20240116; t=1755525746; c=relaxed/simple;
+	bh=DuUxAijdx6LjyPDeeXZiZNEopiUWPMWKQ0X6RaUoDZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJBowphgW0Ay69OLeF8ICh5dZVl2TMApk2jj0ZD6D6J8VdLiwgun0E//2K5LjTg+SzAZ+M8ZBRmjBan8ALXa9KjiPabN1q2Fx8wDNEHRkwB8ZN0nU1NvELfJLgRPhlpK0RU/IPO4uD/gHCuVNFF0nJgMpjxlbfcTLKKufcoCozU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnebwR/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35E3C4CEEB;
-	Mon, 18 Aug 2025 13:07:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b1qAFbQ3gosADNsZhUSpNmcZPGS6y8py1hlJh6Hosv9FUqlChkBx0LpqB1IDHU41uD9hh/IqouKqCFlYZuE+0G9wR2cp6kgJFi3RhQQhCAh8bJgvlr44aykXp0WxoTQIBsxnoNuz+Kskgu6T1JXeKiUTxMA5e9IE/5coOMNcCK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kkbEW2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C24C4CEEB;
+	Mon, 18 Aug 2025 14:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522437;
-	bh=jfEX3CLvtP9ZPBpUdc84+kewEepfGBMHHIhZC7fIIj4=;
+	s=korg; t=1755525746;
+	bh=DuUxAijdx6LjyPDeeXZiZNEopiUWPMWKQ0X6RaUoDZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FnebwR/T1Vvd/BrJFhV8pVHu8guvZpqoJiFR7+oiNzmGCEalKyvj0rX33mxWBXzPL
-	 oLh0SUP6X/kpcpPbMqnH+KrsIlFDTJuH1BA+gmXP4yp5z4NqNPVPf9vKCqqQURr4Bf
-	 M8uZIuC8ta6MQvMeONuGkhZRHOIIeDLz8vZEOjR0=
+	b=1kkbEW2DeKJFfMhErt08/1FxFdlR6+hyF5AephHu2/d3XcNhK4z8QqYoYadN66orx
+	 ZP88BfzuXU1XXWVMJICwDXMzi7aosUZ2GsIA1I6X33I9ol4JeKEtMYcceC1udh9myA
+	 Qi7dotRvEDF8XmWrL4FzlzPPn+QPPeP3IwrxbYBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 316/444] media: usb: hdpvr: disable zero-length read messages
+Subject: [PATCH 6.16 355/570] vhost: fail early when __vhost_add_used() fails
 Date: Mon, 18 Aug 2025 14:45:42 +0200
-Message-ID: <20250818124500.798753720@linuxfoundation.org>
+Message-ID: <20250818124519.536366842@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Jason Wang <jasowang@redhat.com>
 
-[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
+[ Upstream commit b4ba1207d45adaafa2982c035898b36af2d3e518 ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+This patch fails vhost_add_used_n() early when __vhost_add_used()
+fails to make sure used idx is not updated with stale used ring
+information.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20250714084755.11921-2-jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/vhost/vhost.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-index 070559b01b01..54956a8ff15e 100644
---- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
-+++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
- 	.functionality = hdpvr_functionality,
- };
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 84c9bdf9aedd..478eca3cf113 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2983,6 +2983,9 @@ int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem *heads,
+ 	}
+ 	r = __vhost_add_used_n(vq, heads, count);
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks hdpvr_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
++	if (r < 0)
++		return r;
 +
- static const struct i2c_adapter hdpvr_i2c_adapter_template = {
- 	.name   = "Hauppauge HD PVR I2C",
- 	.owner  = THIS_MODULE,
- 	.algo   = &hdpvr_algo,
-+	.quirks = &hdpvr_quirks,
- };
- 
- static int hdpvr_activate_ir(struct hdpvr_device *dev)
+ 	/* Make sure buffer is written before we update index. */
+ 	smp_wmb();
+ 	if (vhost_put_used_idx(vq)) {
 -- 
 2.39.5
 
