@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3949EB2A391
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC24B2A925
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15E041899999
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D971626F2D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4384931E0FE;
-	Mon, 18 Aug 2025 13:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46ED532A3DE;
+	Mon, 18 Aug 2025 14:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHVlnoJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5MTU/z4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E828C31B11A;
-	Mon, 18 Aug 2025 13:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C1721FF3B;
+	Mon, 18 Aug 2025 14:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522308; cv=none; b=ovsZdrxMCH7c1rIBnNtcjyObBn8EoTM/7dOwza9VbnKnjeHzbx+U1UVVOE9zCg/18Qjf0SSiFDnn8Qs/jHfU5S/uXE9jloxl0lNmcTaO2KY01dJN/5G/ryhf8H1+4BPvaXJn/zzldJoEqCn7p8VhtZSMduAuospxlpEGSoCfYzk=
+	t=1755525615; cv=none; b=n8+VOZk5cumByF0WgeQzJwOjtotonlLgggEwHLgz6R92sSzi0K6ZF8ZUKzdAP4FfXgrEM+BDrH1BDfB3gSdDL+LAZW+tnpZiYk4B+22zXpGVWbk5qsA3I1lKKUVIlcFimAuxSonI9APQBSi33e++mqOwsFtNeVmyJO4bEiLIQH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522308; c=relaxed/simple;
-	bh=oseI7lf0wIF97CxgBo2Y/1FcC9wd1r4wYfs8fpX7AZw=;
+	s=arc-20240116; t=1755525615; c=relaxed/simple;
+	bh=eTk6Gs/nZL57WyJNaacvQ4q9KsLHq6PhQirwkpsun3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HY0HRl0mo7F7GFuQWH42wqjjaehmGqhwn2IsoO4NtNpiH8MmIcWUynwuVWHGIZx30s8qx7pvg+AWgG/EPLfcrixiS5tRprej7r9xPX1nlzceh3aK55jaFESC2qTiLOMYmSHaP8zI/346DxuB7a9qmlpT8PovijScmG1VSD2SUnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHVlnoJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58515C4CEEB;
-	Mon, 18 Aug 2025 13:05:07 +0000 (UTC)
+	 MIME-Version; b=erp8xmk5xjVw0xYCvSX/fA4458UiNuLht/UDp+xBBnVc7NXmTKZT3JYlRjCx50jD4oyqSUsuTjtsE0YN2mHSLm3WqgU3RK71HUGqDZKQM2VqO18cgzpQ4AWY92pwtuMrBnXJQPkOQ0CGKrP2vQspZxdCkKS3OP5Lp3lIP/rmfcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5MTU/z4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1876EC4CEEB;
+	Mon, 18 Aug 2025 14:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522307;
-	bh=oseI7lf0wIF97CxgBo2Y/1FcC9wd1r4wYfs8fpX7AZw=;
+	s=korg; t=1755525614;
+	bh=eTk6Gs/nZL57WyJNaacvQ4q9KsLHq6PhQirwkpsun3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHVlnoJAHWnpLcTEY/gRvoHPgxAnauXVxnD15kKhbIRz4XcFxNJ0R7leSK6LBpemJ
-	 NY/znaVsW6iRXQH9BLzuyI6+Wg4GZqL93gKifG6+RqTPOXybWE+0RtO8l8FApiAW0A
-	 XPle/lCEHEFK9+RHoQLQwke7/ACMkTREr5aHzyLI=
+	b=z5MTU/z4eYmHM3vhLHb0i46N3QFATl1ZXIPDnUtdKcaO1UMEsbjSODnM5HGAmxmAf
+	 I8Q7LIDM9ekgko3alX8F8iuy2Dhkkw7CsybX/qXg7xeSLmds5eiQokN2hOeTcCvK3g
+	 9cYYnddQJgjtC2HpzEKmeu3cIJww9B6GBrDbUar0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 277/444] cifs: Fix calling CIFSFindFirst() for root path without msearch
+Subject: [PATCH 6.16 316/570] wifi: ath12k: Decrement TID on RX peer frag setup error handling
 Date: Mon, 18 Aug 2025 14:45:03 +0200
-Message-ID: <20250818124459.357021073@linuxfoundation.org>
+Message-ID: <20250818124518.038980643@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 
-[ Upstream commit b460249b9a1dab7a9f58483e5349d045ad6d585c ]
+[ Upstream commit 7c0884fcd2ddde0544d2e77f297ae461e1f53f58 ]
 
-To query root path (without msearch wildcard) it is needed to
-send pattern '\' instead of '' (empty string).
+Currently, TID is not decremented before peer cleanup, during error
+handling path of ath12k_dp_rx_peer_frag_setup(). This could lead to
+out-of-bounds access in peer->rx_tid[].
 
-This allows to use CIFSFindFirst() to query information about root path
-which is being used in followup changes.
+Hence, add a decrement operation for TID, before peer cleanup to
+ensures proper cleanup and prevents out-of-bounds access issues when
+the RX peer frag setup fails.
 
-This change fixes the stat() syscall called on the root path on the mount.
-It is because stat() syscall uses the cifs_query_path_info() function and
-it can fallback to the CIFSFindFirst() usage with msearch=false.
+Found during code review. Compile tested only.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250526034713.712592-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index e3d9367eaec3..8a257cb29c95 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -4028,6 +4028,12 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = 0;
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			pSMB->FileName[2] = 0;
-+			pSMB->FileName[3] = 0;
-+			name_len = 4;
- 		}
- 	} else {
- 		name_len = copy_path_name(pSMB->FileName, searchName);
-@@ -4039,6 +4045,10 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = '*';
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			name_len = 2;
- 		}
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index dd26ed8d7d96..12e35d5a744e 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -84,6 +84,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
+ 	ret = ath12k_dp_rx_peer_frag_setup(ar, addr, vdev_id);
+ 	if (ret) {
+ 		ath12k_warn(ab, "failed to setup rx defrag context\n");
++		tid--;
+ 		goto peer_clean;
  	}
  
 -- 
