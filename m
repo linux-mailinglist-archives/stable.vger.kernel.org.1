@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3747AB2A418
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57584B2A9D5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97ED01B279DE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7FC56E21C1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACA831B13A;
-	Mon, 18 Aug 2025 13:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8320E321F34;
+	Mon, 18 Aug 2025 14:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRDUubZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8Kva2H0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2181E3DCD;
-	Mon, 18 Aug 2025 13:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D92321F2F;
+	Mon, 18 Aug 2025 14:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522628; cv=none; b=jKxjaN8pncN4+bem93wE3PJFmaE0Yh7OZpHohCSmxlf16BheZBjsrRZM0sRjfdQES79PD1FEMniebvLn5ZzbetlJHrDUijKWSSAgF5d+bLUV0BLBvM/pGnROcNMZzOxRC+4dFaLD9FyuiHJI6li9BXEHZ3tM0ZhuNNrtGsLv//s=
+	t=1755526001; cv=none; b=bn4DOkPtz+aG1eb22wh4vmx+AEpboJDaGUjBG9yPCRsvlRTw/Qn7CWIeuczSw5DUDraXNJXSl3P3TGXKP54UEBB8tTlf+lnpesOD/CG5j3L1fCA1u7NY6G4l1gomBLi9GulEmt9n42VNsOhsjffbhoVVINykhiLamaW2VNUuhzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522628; c=relaxed/simple;
-	bh=CNmZZgGKOl8fEUov2zvY+LMuHkFJTPbqbxlLXt6MOdg=;
+	s=arc-20240116; t=1755526001; c=relaxed/simple;
+	bh=R2fE6NlI20T3vHkeVxa4Y0DcgPqy9D/5eRg0qFCsqAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYS5DNhc+DDIdMOLATm1GsJFPtUkxwOo1KH5yU8JgDVmBnZAZODFhmvAMqeZwTAyYIHdetYsV5PHjZJsrfIoZ1UAsvPt8Q5X90mkxYGf0AP4TPxT87HaXHwJSzbXRcugkLHXmsYhw8bLZJl4rUr3JkBAWF0V1MRAjebrgs9nnxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRDUubZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2960AC4CEEB;
-	Mon, 18 Aug 2025 13:10:27 +0000 (UTC)
+	 MIME-Version; b=jNRyluJ3CsVG/oKnTkM9OTTE6N27Cy0V7sa0p/5cV/OqsSnCyaJCZG/CT065f6akz92w5BZB+1id2eTdzlL/akR/xacSzlvEFUY31/Dpf27ZuITROvoJZVz6vZA8f3xOEtq3PDCYdsWBoRzXDzXdUww+Tyf+TEfsWrNJ8p3Ario=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8Kva2H0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74982C2BCB9;
+	Mon, 18 Aug 2025 14:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522628;
-	bh=CNmZZgGKOl8fEUov2zvY+LMuHkFJTPbqbxlLXt6MOdg=;
+	s=korg; t=1755526000;
+	bh=R2fE6NlI20T3vHkeVxa4Y0DcgPqy9D/5eRg0qFCsqAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRDUubZCxX9r7Ch96eIWm2HvqZXw1YqvZMMgdLd7d28JRPU5keT3xcsc9cNBV7doi
-	 njce31C+3DsiTjhLEL/kUAqm+UCG8A/Efzn2leqBh6qi4luziiGN4quleXmbyaJLZY
-	 tHZ+Gi5KhR0wcqap9SfsEYA53V+GIrl7hy94aluA=
+	b=l8Kva2H0iFke/gYE1WpfnsStfAw/V3LrKbRqm1L3Wu0Tv6xF1nPwVirAJVV6/bO5E
+	 Mn5/PVRkLhc9jNjM6MqsXDqOb4t/YwpTyXj/3yfzGKPTlNAd5pWhqEKGI1upE1rZ3y
+	 Whgy9em0wZOGsSUcmNd6X3aw221whsevL9Gr7a9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bijan Tabatabai <bijantabatab@micron.com>,
-	SeongJae Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Ravi Shankar Jonnalagadda <ravis.opensrc@micron.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 373/444] mm/damon/core: commit damos->target_nid
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 412/570] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
 Date: Mon, 18 Aug 2025 14:46:39 +0200
-Message-ID: <20250818124502.880545757@linuxfoundation.org>
+Message-ID: <20250818124521.719797037@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bijan Tabatabai <bijantabatab@micron.com>
+From: Alex Guo <alexguo1023@gmail.com>
 
-commit 579bd5006fe7f4a7abb32da0160d376476cab67d upstream.
+[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
 
-When committing new scheme parameters from the sysfs, the target_nid field
-of the damos struct would not be copied.  This would result in the
-target_nid field to retain its original value, despite being updated in
-the sysfs interface.
+In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
+msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
+msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash. Similar issue occurs when access
+msg[1].buf[0] and msg[1].buf[1].
 
-This patch fixes this issue by copying target_nid in damos_commit().
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-Link: https://lkml.kernel.org/r/20250709004729.17252-1-bijan311@gmail.com
-Fixes: 83dc7bbaecae ("mm/damon/sysfs: use damon_commit_ctx()")
-Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Ravi Shankar Jonnalagadda <ravis.opensrc@micron.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -837,6 +837,7 @@ static int damos_commit(struct damos *ds
- 		return err;
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index b40daf242046..360a2d7dd3ed 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2256,8 +2256,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
+ 	u16 word;
  
- 	dst->wmarks = src->wmarks;
-+	dst->target_nid = src->target_nid;
- 
- 	err = damos_commit_filters(dst, src);
- 	return err;
+ 	if (num == 1) {		/* write */
++		if (msg[0].len < 3)
++			return -EOPNOTSUPP;
+ 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
+ 	} else {
++		if (msg[1].len < 2)
++			return -EOPNOTSUPP;
+ 		word = dib7000p_read_word(state, apb_address);
+ 		msg[1].buf[0] = (word >> 8) & 0xff;
+ 		msg[1].buf[1] = (word) & 0xff;
+-- 
+2.39.5
+
 
 
 
