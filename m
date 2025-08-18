@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EE2B2A445
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBB3B2A9E5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1704F566A2E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0CB683984
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F4731A055;
-	Mon, 18 Aug 2025 13:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB99322C9E;
+	Mon, 18 Aug 2025 14:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGP3jlCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4ZOlBJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CAA3218CA;
-	Mon, 18 Aug 2025 13:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE58322C97;
+	Mon, 18 Aug 2025 14:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522527; cv=none; b=i3KEVEYOxL5zV1AaFG+hT1I6SYlkaPHXXZsnu4En+OuFkwNix+oSlbyidljE2h6NTRbQUeCCrKsuJdY8tRrlYYLbM979ndcSQCm1PmmJmVdaNbnfhvrUvS6Ohjcn23PgYqD0NxY3t42h5ePj3yrH7CA6yt+CP2o+MnB3/VybYcA=
+	t=1755525954; cv=none; b=qf0Jc/fc8JLeR4VY3kF6RNUezExDk6UUVRvk3Z26PbAjPEom3/t4m+ORE4J8mP0bopGFzTe04FIrzHQHuI40STQKYdxYFq72Qi5erYL2YRniDDA3pLOggmIg7fU9UkNeEU+vwfMnGsdcJ1r6Uct+ebW+N5BzuuRUCTG9cR9V8TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522527; c=relaxed/simple;
-	bh=oMbUCmBrymL2c5mDcjXFaX5JYZhz3m6LFPgM4rt/fcg=;
+	s=arc-20240116; t=1755525954; c=relaxed/simple;
+	bh=j0fX1OEgoeaRxIYrkdYgvrApW4BPBxqHAQHUWF0SOl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKp21PL1c4hAbK3pD+VXdFFrZ+g9IPKdKKnikwLyD3cc9L9nMGMK9P7lD0PRa4AkEZL5H06ybm9837NHZE9ayxvkf9pkn1/sIMiU19H+llx9djI2Np7ixMsi64924EYpRiN/ba6XT2Kd3CZVvkz+SGBv3HeKa2m3Y7s+11U/p40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGP3jlCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B79C4CEF1;
-	Mon, 18 Aug 2025 13:08:46 +0000 (UTC)
+	 MIME-Version; b=edNMqPl7aeD35L+n2xMLV5XohRSQ+Gurvk9iOwkdZ/0DPEVxuSBsNWiEq2dGBFFkg0KQ/NEbuBYl9gpZ+8YHZWCm7q86wz+A17XKoZ9ZJeq7aNc9pcUvbkcQBXGcXpzvRNfGqK6tq+mW4f3Gn9LevevdcrIjTE6Bu+xE477rTyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4ZOlBJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEA3C4CEEB;
+	Mon, 18 Aug 2025 14:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522526;
-	bh=oMbUCmBrymL2c5mDcjXFaX5JYZhz3m6LFPgM4rt/fcg=;
+	s=korg; t=1755525954;
+	bh=j0fX1OEgoeaRxIYrkdYgvrApW4BPBxqHAQHUWF0SOl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGP3jlCoc27bcTTTeyR0E22SZB0O6OVYOIbI79tDpaFInxtp5mWvS3pRKMmYsPQkx
-	 r5lAYQjAHZRzbTkuXhOTS5B9VlmaePTlnopKo4cDTe3K3ezGXuuMz9U/eQzkg7QslW
-	 Hz53XWB31ZLOxbegyArKuwJRy7ta0Y6SC+1oEomc=
+	b=a4ZOlBJK3AknbPOa9/NMzGCt+N3JuRWVPam2bpEbQF2J9wBE9ocNjcbAUeCcNHUh4
+	 v7GxhwhQtSJlUnWAjKzn+wzzG99913xsSZDmML2OLP/F6NgRgfzWGo5MRzJOUQx6iN
+	 7wXSSC7JEgUixd6UvIOScC26UlcwwZbj2lTi9cYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 343/444] vfio/type1: conditional rescheduling while pinning
+Subject: [PATCH 6.16 382/570] media: hi556: Fix reset GPIO timings
 Date: Mon, 18 Aug 2025 14:46:09 +0200
-Message-ID: <20250818124501.787891295@linuxfoundation.org>
+Message-ID: <20250818124520.566302195@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b1779e4f209c7ff7e32f3c79d69bca4e3a3a68b6 ]
+[ Upstream commit 99f2211a9d89fe34b3fa847fd7a4475171406cd0 ]
 
-A large DMA mapping request can loop through dma address pinning for
-many pages. In cases where THP can not be used, the repeated vmf_insert_pfn can
-be costly, so let the task reschedule as need to prevent CPU stalls. Failure to
-do so has potential harmful side effects, like increased memory pressure
-as unrelated rcu tasks are unable to make their reclaim callbacks and
-result in OOM conditions.
+probe() requests the reset GPIO to be set to high when getting it.
+Immeditately after this hi556_resume() is called and sets the GPIO low.
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:   36-....: (20999 ticks this GP) idle=b01c/1/0x4000000000000000 softirq=35839/35839 fqs=3538
- rcu:            hardirqs   softirqs   csw/system
- rcu:    number:        0        107            0
- rcu:   cputime:       50          0        10446   ==> 10556(ms)
- rcu:   (t=21075 jiffies g=377761 q=204059 ncpus=384)
-...
-  <TASK>
-  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-  ? walk_system_ram_range+0x63/0x120
-  ? walk_system_ram_range+0x46/0x120
-  ? pgprot_writethrough+0x20/0x20
-  lookup_memtype+0x67/0xf0
-  track_pfn_insert+0x20/0x40
-  vmf_insert_pfn_prot+0x88/0x140
-  vfio_pci_mmap_huge_fault+0xf9/0x1b0 [vfio_pci_core]
-  __do_fault+0x28/0x1b0
-  handle_mm_fault+0xef1/0x2560
-  fixup_user_fault+0xf5/0x270
-  vaddr_get_pfns+0x169/0x2f0 [vfio_iommu_type1]
-  vfio_pin_pages_remote+0x162/0x8e0 [vfio_iommu_type1]
-  vfio_iommu_type1_ioctl+0x1121/0x1810 [vfio_iommu_type1]
-  ? futex_wake+0x1c1/0x260
-  x64_sys_call+0x234/0x17a0
-  do_syscall_64+0x63/0x130
-  ? exc_page_fault+0x63/0x130
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+If the GPIO was low before requesting it this will result in the GPIO
+only very briefly spiking high and the sensor not being properly reset.
+The same problem also happens on back to back runtime suspend + resume.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/20250715184622.3561598-1-kbusch@meta.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fix this by adding a sleep of 2 ms in hi556_resume() before setting
+the GPIO low (if there is a reset GPIO).
+
+The final sleep is kept unconditional, because if there is e.g. no reset
+GPIO but a controllable clock then the sensor also needs some time after
+enabling the clock.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/i2c/hi556.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 8338cfd61fe1..124997ce00d6 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -619,6 +619,13 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
+diff --git a/drivers/media/i2c/hi556.c b/drivers/media/i2c/hi556.c
+index aed258211b8a..d3cc65b67855 100644
+--- a/drivers/media/i2c/hi556.c
++++ b/drivers/media/i2c/hi556.c
+@@ -1321,7 +1321,12 @@ static int hi556_resume(struct device *dev)
+ 		return ret;
+ 	}
  
- 	while (npage) {
- 		if (!batch->size) {
-+			/*
-+			 * Large mappings may take a while to repeatedly refill
-+			 * the batch, so conditionally relinquish the CPU when
-+			 * needed to avoid stalls.
-+			 */
-+			cond_resched();
+-	gpiod_set_value_cansleep(hi556->reset_gpio, 0);
++	if (hi556->reset_gpio) {
++		/* Assert reset for at least 2ms on back to back off-on */
++		usleep_range(2000, 2200);
++		gpiod_set_value_cansleep(hi556->reset_gpio, 0);
++	}
 +
- 			/* Empty batch, so refill it. */
- 			long req_pages = min_t(long, npage, batch->capacity);
- 
+ 	usleep_range(5000, 5500);
+ 	return 0;
+ }
 -- 
 2.39.5
 
