@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8151EB2A973
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:20:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34219B2A75C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56E82B6140D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27753628181
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859FB32A3DB;
-	Mon, 18 Aug 2025 14:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711FB335BBA;
+	Mon, 18 Aug 2025 13:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tcl4KLhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oABdzeER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427E82C2340;
-	Mon, 18 Aug 2025 14:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22094335BB7;
+	Mon, 18 Aug 2025 13:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526167; cv=none; b=nX2hlmUVSFaRau4nGdoog1Jlp7H31oDdl4FmYHrdRtruCyi+CI2VczszmU0MjfUC6rm1KZzhEFki3k9Ics2eJu1ZgztApzMOlLqq3OXHv/B3kGqkP9trBilBqeSctEkO7Cth+T7N07tgcu6a8np+62RoBQkeZNIntXV8/uVqx5c=
+	t=1755524453; cv=none; b=M8SIzkTfYtIXKrvG72K7/02jnCu3+TWj6s7e6U/IQ2YFwxoDFfW7G2TrTKrdI0Nq27cl2+SwNNQ/F9/s7V6+YcZK3k3jYv3KcKzeYM3cWIyMrPb28cEFTQvp3EW+nm6uIyuSu0mzIg1C/mi1FEKImipXj6ZvVig50oJCv7o0PSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526167; c=relaxed/simple;
-	bh=hUZ36xEjuEBool6wGkZqYxu4In8ypDo1J9i1Nafz2ac=;
+	s=arc-20240116; t=1755524453; c=relaxed/simple;
+	bh=xVOXYV+xmgBvYvlEdB2dq5KCHia/AdyOds7N9ZR3s5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E01kr8OeQu4M91FzihQK3W6Jr92cQquGyGZNyojCHGhcjMb2vqbSVhpjDKoXUn6csA3Rpde6jzDXEd8gVj67M+bOldNGhxnobaGb+CylULGPXpwpTXH/8v9KLMD4gam3nJP2eWG3V+jPNCBhTD2y4KDMFWntIVR5onhG4k4Kg9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tcl4KLhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DE2C4CEEB;
-	Mon, 18 Aug 2025 14:09:25 +0000 (UTC)
+	 MIME-Version; b=tCn8Q6CabdzxbKXyKnxGyIxFwmF59QGbsAYLPA7NAfOWUNRuJTW1Q+ChL0VsRKM4ymfNAHZZOq21xmKy5rMAnT3k2NCrMcsSBul5O8pN+iZPx68pZS1z7uZLLTh3fWU6VdA6GPVcYbagqnIPLGYM/Q4d25ZfP5xpD+vh+Y5QnDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oABdzeER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE16C4CEF1;
+	Mon, 18 Aug 2025 13:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526166;
-	bh=hUZ36xEjuEBool6wGkZqYxu4In8ypDo1J9i1Nafz2ac=;
+	s=korg; t=1755524452;
+	bh=xVOXYV+xmgBvYvlEdB2dq5KCHia/AdyOds7N9ZR3s5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tcl4KLhACH4BzArst8dUjJHVWpb+tFcCD9igO9RXdRyCAsot/I2sJdflg8Ux0r27A
-	 mna3Z8708RUk0meVV/BbIK2FL2OqC7QzkRMh63QiWTqIJHsymgDhAgTDiMzSd6XiUd
-	 x2tfTkepzPfADQHNoTkLNqCNN7wRu6ywsHey6YYg=
+	b=oABdzeERUL0FlAcc9QSZLSdAPiiDI8d7TRukxN6J5TDUZsMOxrgkBY3PRNSKxG/Et
+	 LCjhoaJp7evPep+pKe/8wVmP6QpY7zgY3w7n/3Rg5ZfSVyWYkO03Zl00+CR2a+fjVh
+	 yBpL7bDwxwB1L0EU/zV7LeUjTYpKXSaXbvXCnAKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janna Martl <janna.martl109@gmail.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 476/570] drm/i915/psr: Do not trigger Frame Change events from frontbuffer flush
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 477/515] btrfs: error on missing block group when unaccounting log tree extent buffers
 Date: Mon, 18 Aug 2025 14:47:43 +0200
-Message-ID: <20250818124524.223804187@linuxfoundation.org>
+Message-ID: <20250818124516.784092357@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 184889dfe0568528fd6d14bba864dd57ed45bbf2 ]
+commit fc5799986fbca957e2e3c0480027f249951b7bcf upstream.
 
-We want to get rid of triggering "Frame Change" events from
-frontbuffer flush calls. We are about to move using TRANS_PUSH
-register for this on LunarLake and onwards. Touching TRANS_PUSH
-register from fronbuffer flush would be problematic as it's written by
-DSB as well.
+Currently we only log an error message if we can't find the block group
+for a log tree extent buffer when unaccounting it (while freeing a log
+tree). A missing block group means something is seriously wrong and we
+end up leaking space from the metadata space info. So return -ENOENT in
+case we don't find the block group.
 
-Fix this by using intel_psr_exit when flush or invalidate is done on
-LunarLake and onwards. This is not possible on AlderLake and
-MeteorLake due to HW bug in PSR2 disable.
-
-This patch is also fixing problems with cursor plane where cursor is
-disappearing or duplicate cursor is seen on the screen.
-
-v2: Commit message updated
-
-Bspec: 68927, 68934, 66624
-Reported-by: Janna Martl <janna.martl109@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5522
-Fixes: 411ad63877bb ("drm/i915/psr: Use SFF_CTL on invalidate/flush for LunarLake onwards")
-Tested-by: Janna Martl <janna.martl109@gmail.com>
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://lore.kernel.org/r/20250801062905.564453-1-jouni.hogander@intel.com
-(cherry picked from commit 46fb38cb20c0d185a6391ab524b23e0e0219c41f)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/btrfs/tree-log.c |   19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 430ad4ef7146..7da0ad854ed2 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -3250,7 +3250,9 @@ static void intel_psr_configure_full_frame_update(struct intel_dp *intel_dp)
- 
- static void _psr_invalidate_handle(struct intel_dp *intel_dp)
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -2571,14 +2571,14 @@ static int replay_one_buffer(struct btrf
+ /*
+  * Correctly adjust the reserved bytes occupied by a log tree extent buffer
+  */
+-static void unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
++static int unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
  {
--	if (intel_dp->psr.psr2_sel_fetch_enabled) {
-+	struct intel_display *display = to_intel_display(intel_dp);
+ 	struct btrfs_block_group *cache;
+ 
+ 	cache = btrfs_lookup_block_group(fs_info, start);
+ 	if (!cache) {
+ 		btrfs_err(fs_info, "unable to find block group for %llu", start);
+-		return;
++		return -ENOENT;
+ 	}
+ 
+ 	spin_lock(&cache->space_info->lock);
+@@ -2589,27 +2589,22 @@ static void unaccount_log_buffer(struct
+ 	spin_unlock(&cache->space_info->lock);
+ 
+ 	btrfs_put_block_group(cache);
 +
-+	if (DISPLAY_VER(display) < 20 && intel_dp->psr.psr2_sel_fetch_enabled) {
- 		if (!intel_dp->psr.psr2_sel_fetch_cff_enabled) {
- 			intel_dp->psr.psr2_sel_fetch_cff_enabled = true;
- 			intel_psr_configure_full_frame_update(intel_dp);
-@@ -3338,7 +3340,7 @@ static void _psr_flush_handle(struct intel_dp *intel_dp)
- 	struct intel_display *display = to_intel_display(intel_dp);
- 	struct drm_i915_private *dev_priv = to_i915(display->drm);
- 
--	if (intel_dp->psr.psr2_sel_fetch_enabled) {
-+	if (DISPLAY_VER(display) < 20 && intel_dp->psr.psr2_sel_fetch_enabled) {
- 		if (intel_dp->psr.psr2_sel_fetch_cff_enabled) {
- 			/* can we turn CFF off? */
- 			if (intel_dp->psr.busy_frontbuffer_bits == 0)
-@@ -3355,11 +3357,13 @@ static void _psr_flush_handle(struct intel_dp *intel_dp)
- 		 * existing SU configuration
- 		 */
- 		intel_psr_configure_full_frame_update(intel_dp);
--	}
- 
--	intel_psr_force_update(intel_dp);
-+		intel_psr_force_update(intel_dp);
-+	} else {
-+		intel_psr_exit(intel_dp);
-+	}
- 
--	if (!intel_dp->psr.psr2_sel_fetch_enabled && !intel_dp->psr.active &&
-+	if ((!intel_dp->psr.psr2_sel_fetch_enabled || DISPLAY_VER(display) >= 20) &&
- 	    !intel_dp->psr.busy_frontbuffer_bits)
- 		queue_work(dev_priv->unordered_wq, &intel_dp->psr.work);
++	return 0;
  }
--- 
-2.50.1
-
+ 
+ static int clean_log_buffer(struct btrfs_trans_handle *trans,
+ 			    struct extent_buffer *eb)
+ {
+-	int ret;
+-
+ 	btrfs_tree_lock(eb);
+ 	btrfs_clear_buffer_dirty(trans, eb);
+ 	wait_on_extent_buffer_writeback(eb);
+ 	btrfs_tree_unlock(eb);
+ 
+-	if (trans) {
+-		ret = btrfs_pin_reserved_extent(trans, eb);
+-		if (ret)
+-			return ret;
+-	} else {
+-		unaccount_log_buffer(eb->fs_info, eb->start);
+-	}
++	if (trans)
++		return btrfs_pin_reserved_extent(trans, eb);
+ 
+-	return 0;
++	return unaccount_log_buffer(eb->fs_info, eb->start);
+ }
+ 
+ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
 
 
 
