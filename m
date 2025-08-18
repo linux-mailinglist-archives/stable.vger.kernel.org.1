@@ -1,57 +1,72 @@
-Return-Path: <stable+bounces-170076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863DEB2A21E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C564B2A7D8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD0A5E4634
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91EC16E1327
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FDA30DD2C;
-	Mon, 18 Aug 2025 12:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18FB335BCB;
+	Mon, 18 Aug 2025 13:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyV1zmAQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOTEE0x+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9550C3218D7;
-	Mon, 18 Aug 2025 12:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1F0335BA3;
+	Mon, 18 Aug 2025 13:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521436; cv=none; b=s6qAmbxspLbUmdhGli1xfHEjNE2taZhSV0Ec05HX7KizNMWX5AELwBX4wJb5Aa2sJaxUt6ak2I8RTmM2ujYnzid2NRERL7WVOK7hjNEfTbrXXhQyVr5jONDxiSUyYjqNtxN74M+3LueGUBiCqW2sKuL9GAUq+lFbOMNCScKEMqQ=
+	t=1755524783; cv=none; b=GXOTk46n4wr1MK5m0zKbEqLy4YlbEYAEpCDtrkbThLTUTSklJskdlXOfKB34Syn3F/vURpaRP5TlVClYu0YQiGIffow2tjRU9rNWStxplCmoNwz2DlSqrfpWPwD0K4eXYx12NvZtV6s0A/xKsSbqm0NCH4DHPw6PM3AFe25OGA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521436; c=relaxed/simple;
-	bh=NuNqZfoKwjs3NbCuwVxMnfAFYvsRv0bFU7tMJmOempg=;
+	s=arc-20240116; t=1755524783; c=relaxed/simple;
+	bh=3QwDQPp6nFDFoQDgKeay8LwwUeoxnSenNiYaQLp/HZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UL72m/1mWPBP8fD0oq+xlVjy/b4rtA+lucmuZ7lh92Gqlg775z7Qed0y9IcPCZqA0266S/jqswYmy9Ilu0PbOj1sO2kWpncTTB9lOIyHkTTAw5GYlTllK2FmTQrq/ImoywWrwD24DK6O+LUR/I5crxk12vZsDd27+36rC/g0rkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyV1zmAQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7666C4CEEB;
-	Mon, 18 Aug 2025 12:50:35 +0000 (UTC)
+	 MIME-Version; b=qZWz7FiWvvUBtFeMxzVRrpLWLdqhRfqgqaKpVAG2rhbuNJyagylA2cQiR2f4qqEYHaVLWEQ8/g0nqgITxxORA/0SuIOaKfgQx6aKSskouN6478lxX9+Jm9HReMU5goCq1VRokIuvWaiqAYdxSD295yzn+QtAAEXWDgh9SuNvFIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOTEE0x+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0531C4CEEB;
+	Mon, 18 Aug 2025 13:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521436;
-	bh=NuNqZfoKwjs3NbCuwVxMnfAFYvsRv0bFU7tMJmOempg=;
+	s=korg; t=1755524783;
+	bh=3QwDQPp6nFDFoQDgKeay8LwwUeoxnSenNiYaQLp/HZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyV1zmAQqsCrqjUcRRhuys0SizbjGW7HanKNCFnu60PUATHRQCvu5PKjo9GJK24Pp
-	 /gytyK87vCTJ66ouCj6a1XkRrQlDYTQZkIzwYPQIyZNOujEmpOmu1Rl+A5SmmHlVYs
-	 oadAnFY0hdAHYobLxlRkGKZqtU9HfmP//nk4x5Jo=
+	b=KOTEE0x+dbQj+AMaK7t16pR3RwM/HsarwiVo+XYYnwReZgJuIS/YbPmHtGKbAsdXB
+	 zlcHkdol5u8D4q33AGXrKgGrqrnOK8UD3sjMkAxxNFsJwxvankm7pVyzJl4qEv8Hpu
+	 qL/UDcfU4jyKcr+c+PlQSirui1gOCO9g1LZyTqsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 020/444] net: ti: icss-iep: fix device and OF node leaks at probe
-Date: Mon, 18 Aug 2025 14:40:46 +0200
-Message-ID: <20250818124449.672856939@linuxfoundation.org>
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	David Rientjes <rientjes@google.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Joern Engel <joern@logfs.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 060/570] mm/smaps: fix race between smaps_hugetlb_range and migration
+Date: Mon, 18 Aug 2025 14:40:47 +0200
+Message-ID: <20250818124508.132494514@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +78,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-commit e05c54974a05ab19658433545d6ced88d9075cf0 upstream.
+[ Upstream commit 45d19b4b6c2d422771c29b83462d84afcbb33f01 ]
 
-Make sure to drop the references to the IEP OF node and device taken by
-of_parse_phandle() and of_find_device_by_node() when looking up IEP
-devices during probe.
+smaps_hugetlb_range() handles the pte without holdling ptl, and may be
+concurrenct with migration, leaing to BUG_ON in pfn_swap_entry_to_page().
+The race is as follows.
 
-Drop the bogus additional reference taken on successful lookup so that
-the device is released correctly by icss_iep_put().
+smaps_hugetlb_range              migrate_pages
+  huge_ptep_get
+                                   remove_migration_ptes
+				   folio_unlock
+  pfn_swap_entry_folio
+    BUG_ON
 
-Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
-Cc: stable@vger.kernel.org	# 6.6
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-6-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix it, hold ptl lock in smaps_hugetlb_range().
+
+Link: https://lkml.kernel.org/r/20250724090958.455887-1-tujinjiang@huawei.com
+Link: https://lkml.kernel.org/r/20250724090958.455887-2-tujinjiang@huawei.com
+Fixes: 25ee01a2fca0 ("mm: hugetlb: proc: add hugetlb-related fields to /proc/PID/smaps")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Brahmajit Das <brahmajit.xyz@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Joern Engel <joern@logfs.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ fs/proc/task_mmu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -685,11 +685,17 @@ struct icss_iep *icss_iep_get_idx(struct
- 	struct platform_device *pdev;
- 	struct device_node *iep_np;
- 	struct icss_iep *iep;
-+	int ret;
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 751479eb128f..0102ab3aaec1 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1020,10 +1020,13 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
+ {
+ 	struct mem_size_stats *mss = walk->private;
+ 	struct vm_area_struct *vma = walk->vma;
+-	pte_t ptent = huge_ptep_get(walk->mm, addr, pte);
+ 	struct folio *folio = NULL;
+ 	bool present = false;
++	spinlock_t *ptl;
++	pte_t ptent;
  
- 	iep_np = of_parse_phandle(np, "ti,iep", idx);
--	if (!iep_np || !of_device_is_available(iep_np))
-+	if (!iep_np)
- 		return ERR_PTR(-ENODEV);
- 
-+	if (!of_device_is_available(iep_np)) {
-+		of_node_put(iep_np);
-+		return ERR_PTR(-ENODEV);
-+	}
-+
- 	pdev = of_find_device_by_node(iep_np);
- 	of_node_put(iep_np);
- 
-@@ -698,21 +704,28 @@ struct icss_iep *icss_iep_get_idx(struct
- 		return ERR_PTR(-EPROBE_DEFER);
- 
- 	iep = platform_get_drvdata(pdev);
--	if (!iep)
--		return ERR_PTR(-EPROBE_DEFER);
-+	if (!iep) {
-+		ret = -EPROBE_DEFER;
-+		goto err_put_pdev;
-+	}
- 
- 	device_lock(iep->dev);
- 	if (iep->client_np) {
- 		device_unlock(iep->dev);
- 		dev_err(iep->dev, "IEP is already acquired by %s",
- 			iep->client_np->name);
--		return ERR_PTR(-EBUSY);
-+		ret = -EBUSY;
-+		goto err_put_pdev;
++	ptl = huge_pte_lock(hstate_vma(vma), walk->mm, pte);
++	ptent = huge_ptep_get(walk->mm, addr, pte);
+ 	if (pte_present(ptent)) {
+ 		folio = page_folio(pte_page(ptent));
+ 		present = true;
+@@ -1042,6 +1045,7 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
+ 		else
+ 			mss->private_hugetlb += huge_page_size(hstate_vma(vma));
  	}
- 	iep->client_np = np;
- 	device_unlock(iep->dev);
--	get_device(iep->dev);
- 
- 	return iep;
-+
-+err_put_pdev:
-+	put_device(&pdev->dev);
-+
-+	return ERR_PTR(ret);
++	spin_unlock(ptl);
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(icss_iep_get_idx);
- 
+ #else
+-- 
+2.50.1
+
 
 
 
