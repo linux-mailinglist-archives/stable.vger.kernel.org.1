@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-171151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AACB2A7C3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4501BB2A60E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15F8687504
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FB88684A2A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F2B335BC4;
-	Mon, 18 Aug 2025 13:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDEE321F26;
+	Mon, 18 Aug 2025 13:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lN7zzGqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8xI3Lxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CF219E82A;
-	Mon, 18 Aug 2025 13:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9F1226D1F;
+	Mon, 18 Aug 2025 13:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524981; cv=none; b=MmK/3xKGiV6cB75u/ONu/MIS1VmzEwxMoosqfdA73PICLLnZ60J+17xw+yvbgZp1q4HqCDfD5VqqZB25UIxAfPx1b4PCoQ66Q6uq+ZOhp1JanH14fjCxl8Vpm8oKerQ/lBvNvom1XhubwKXoML/4qr/tMIDRFYbZPxpjaGi87kM=
+	t=1755523389; cv=none; b=r7TfByNp3AdkfMkd3uhBQpfTXcAYkQACUxU6J1hz0l/ol79Q3mevCU5MAgYQ6waRuBU/KxFAFumdwid+ETL3oXpaLg8tZtmaoq4fYVSRRTyjCaO7bM8ttgJBAwMxEl584WYDrkIPyPkexj1oYyTd4gqoYVhcc35E5vzNGX1jcf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524981; c=relaxed/simple;
-	bh=uP0NmnB2rM9xAK9MUO0OWYSSfk/HRzn+l9rsho1FiTM=;
+	s=arc-20240116; t=1755523389; c=relaxed/simple;
+	bh=bmu2qWxYs8gvDMHJe6vhFwKZ11Q/CWMNzTX6nrsjzLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC131jvjTsYJ/g+UYfgu/je5XTycWMn6uOZSjfBdwMFA7ksWZbctxert4YapQUGYH553hnLB/Pc4pPSS9Vv5F4/eFctMCbRkOV6gjGCaewz0asqJovt6GSmNwPgMkCO74GA9HZZi6aQsHrSrDqMBtpKh6x5WHTJ/mT108nQODhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lN7zzGqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22864C4CEEB;
-	Mon, 18 Aug 2025 13:49:40 +0000 (UTC)
+	 MIME-Version; b=tZjOxgy3JwjarjgSx8vGQ1WHCibuQkGykEZVxe8ziBSda9GOt4aEXSCJyfd1TJFwXNY8GkZ1Vw6t434/eatU8AEObPsaC57ir9dtqca8/s0+EVx7HLxddkKF4GytrWB/tcFUYqy8lXMKtvKDLEbg8GzyeC7l/iHI52JugpniUJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8xI3Lxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E489C4CEEB;
+	Mon, 18 Aug 2025 13:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524981;
-	bh=uP0NmnB2rM9xAK9MUO0OWYSSfk/HRzn+l9rsho1FiTM=;
+	s=korg; t=1755523389;
+	bh=bmu2qWxYs8gvDMHJe6vhFwKZ11Q/CWMNzTX6nrsjzLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lN7zzGqgRdoup++xP+fYjy/hQ9dmVzveVkczSeYh/q7Nt5NCkS+TTsrRNgUlCQAgw
-	 cZbvcsg8ntj1FonGgKk4FNIT6ttyG8UxjK+nlIHhPJ6MesOAAEP/mAnrEAMV4T/hwz
-	 /NakS6X1VYn5ALTwzkrrS3uKJigGPlMwZ+urIzyk=
+	b=F8xI3LxoKewMxFMoR6S/udoybgbLgPooRIrjt4kNUPVUxe2PKYlBgTbwJ6cpY+PFn
+	 AgNVmk1dwDOY0ZSX725G9xIcCxO/2EXvEyOpulfOj/dwWKA8anA2SiKZlASiq84nFa
+	 J9xi8SeFNb9ia+83x4dwgfnygtnghLmMmEzbDx2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 122/570] securityfs: dont pin dentries twice, once is enough...
+Subject: [PATCH 6.15 123/515] firmware: qcom: scm: initialize tzmem before marking SCM as available
 Date: Mon, 18 Aug 2025 14:41:49 +0200
-Message-ID: <20250818124510.523979720@linuxfoundation.org>
+Message-ID: <20250818124503.087760340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 27cd1bf1240d482e4f02ca4f9812e748f3106e4f ]
+[ Upstream commit 87be3e7a2d0030cda6314d2ec96b37991f636ccd ]
 
-incidentally, securityfs_recursive_remove() is broken without that -
-it leaks dentries, since simple_recursive_removal() does not expect
-anything of that sort.  It could be worked around by dput() in
-remove_one() callback, but it's easier to just drop that double-get
-stuff.
+Now that qcom_scm_shm_bridge_enable() uses the struct device passed to
+it as argument to make the QCOM_SCM_MP_SHM_BRIDGE_ENABLE SCM call, we
+can move the TZMem initialization before the assignment of the __scm
+pointer in the SCM driver (which marks SCM as ready to users) thus
+fixing the potential race between consumer calls and the memory pool
+initialization.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/all/20250120151000.13870-1-johan+linaro@kernel.org/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20250630-qcom-scm-race-v2-3-fa3851c98611@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/inode.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/firmware/qcom/qcom_scm.c | 53 ++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 27 deletions(-)
 
-diff --git a/security/inode.c b/security/inode.c
-index 3913501621fa..93460eab8216 100644
---- a/security/inode.c
-+++ b/security/inode.c
-@@ -159,7 +159,6 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
- 		inode->i_fop = fops;
- 	}
- 	d_instantiate(dentry, inode);
--	dget(dentry);
- 	inode_unlock(dir);
- 	return dentry;
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index fc4d67e4c4a6..9032c8a317f9 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -2247,7 +2247,32 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
-@@ -306,7 +305,6 @@ void securityfs_remove(struct dentry *dentry)
- 			simple_rmdir(dir, dentry);
- 		else
- 			simple_unlink(dir, dentry);
--		dput(dentry);
- 	}
- 	inode_unlock(dir);
- 	simple_release_fs(&mount, &mount_count);
+-	/* Paired with smp_load_acquire() in qcom_scm_is_available(). */
++	ret = of_reserved_mem_device_init(scm->dev);
++	if (ret && ret != -ENODEV)
++		return dev_err_probe(scm->dev, ret,
++				     "Failed to setup the reserved memory region for TZ mem\n");
++
++	ret = qcom_tzmem_enable(scm->dev);
++	if (ret)
++		return dev_err_probe(scm->dev, ret,
++				     "Failed to enable the TrustZone memory allocator\n");
++
++	memset(&pool_config, 0, sizeof(pool_config));
++	pool_config.initial_size = 0;
++	pool_config.policy = QCOM_TZMEM_POLICY_ON_DEMAND;
++	pool_config.max_size = SZ_256K;
++
++	scm->mempool = devm_qcom_tzmem_pool_new(scm->dev, &pool_config);
++	if (IS_ERR(scm->mempool))
++		return dev_err_probe(scm->dev, PTR_ERR(scm->mempool),
++				     "Failed to create the SCM memory pool\n");
++
++	/*
++	 * Paired with smp_load_acquire() in qcom_scm_is_available().
++	 *
++	 * This marks the SCM API as ready to accept user calls and can only
++	 * be called after the TrustZone memory pool is initialized.
++	 */
+ 	smp_store_release(&__scm, scm);
+ 
+ 	irq = platform_get_irq_optional(pdev, 0);
+@@ -2280,32 +2305,6 @@ static int qcom_scm_probe(struct platform_device *pdev)
+ 	if (of_property_read_bool(pdev->dev.of_node, "qcom,sdi-enabled") || !download_mode)
+ 		qcom_scm_disable_sdi();
+ 
+-	ret = of_reserved_mem_device_init(__scm->dev);
+-	if (ret && ret != -ENODEV) {
+-		dev_err_probe(__scm->dev, ret,
+-			      "Failed to setup the reserved memory region for TZ mem\n");
+-		goto err;
+-	}
+-
+-	ret = qcom_tzmem_enable(__scm->dev);
+-	if (ret) {
+-		dev_err_probe(__scm->dev, ret,
+-			      "Failed to enable the TrustZone memory allocator\n");
+-		goto err;
+-	}
+-
+-	memset(&pool_config, 0, sizeof(pool_config));
+-	pool_config.initial_size = 0;
+-	pool_config.policy = QCOM_TZMEM_POLICY_ON_DEMAND;
+-	pool_config.max_size = SZ_256K;
+-
+-	__scm->mempool = devm_qcom_tzmem_pool_new(__scm->dev, &pool_config);
+-	if (IS_ERR(__scm->mempool)) {
+-		ret = dev_err_probe(__scm->dev, PTR_ERR(__scm->mempool),
+-				    "Failed to create the SCM memory pool\n");
+-		goto err;
+-	}
+-
+ 	/*
+ 	 * Initialize the QSEECOM interface.
+ 	 *
 -- 
 2.39.5
 
