@@ -1,204 +1,209 @@
-Return-Path: <stable+bounces-170007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4358FB29FD7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB09B29FDE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D8017A308C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:58:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 489FD1897AF3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8274261B8C;
-	Mon, 18 Aug 2025 10:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647FC261B8D;
+	Mon, 18 Aug 2025 10:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KDtMuP0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLTh5TyJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1056261B62
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24441261B8A
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755514768; cv=none; b=ZlXuFrVJdM3W7UtE1hH0MPVuiAjCiXVfkDN8AgCM/D3jS/rwuaW3XGNiJhvkFLSPorg91uy9Y8K3q/QOi2uFaDWec/yEkfGF3IYi5c6IPGNQc1sWJK2RLhrtaGbKLZ7XcVXCvMtAmWHE7W6VvFm3Mhmg4Y1lq/KJg+8YgHape/c=
+	t=1755514794; cv=none; b=aAGc+dQVBiJN8c2Qf/MZEPhC/hsh1/ruNEWZCuxzBQZUGArrB0lFMtCDCcY0qVwrffbGPEwH57eAtiwU8av46IHM3coCp0NY4H3uKN8L61HNPOY9NCnh1DoOvmul+nbIW6OvvyDQ7J7c1utlBWcFxqdtikY7uN6rgNs7bqgG4pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755514768; c=relaxed/simple;
-	bh=TWI4NDV7omZnoybzWvZw4G7KXwDtlIFuMmatVEKdooU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pfRgtNsXd7ed6TGE8RYfkLfz62ybAMegkfteomAUoKsyBbl+k8gBNqIg+7MRVqT5VSQ7tocCSm90KTEPjVgaMhAmaV9HFj4K0Whd6xb+iybz/N/4151jMtrjPXPXtxZ6iTEwOkOWWEAcRr7tF2Cic1ktX7aRsv0EiP/f1uCeSlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KDtMuP0O; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57I7VApt026395
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=lYQqNeoRMH/Jf573LZ3mZJ5yNeY8aFkKqVi
-	voDveUck=; b=KDtMuP0Or4TnxGnW+uXqSnD8SVHyQK1ai3x1jySqQvbuH/BIPgO
-	zkwTpiofaxFbp2LnIjDuFKq64G+B4VbDOvr1SSFyNLXipOqtwf+sWfdyIk0eWgB5
-	MCol3U/2XiNrTwdwnu579MdT9Ev2yEuBYdzdE9NRRPX/geWehGFuuBWug6AJAulP
-	aq/QmNMeYaZ/w/COnKQp6KQCC+bE6GE+6wXdKsbwKDkfuB0910f2Njpo4JVW0itj
-	FwLfP/OcS1zF/Goa778koEhELMPYWe43W7BZ0ZSSBtaBspJM96gIm7V+qJDd2BZM
-	wHwzP62AB/4bxH3YjN6q+AWfnvh0n5vGd5Q==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48kyunrkna-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:25 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 57IAxM80022860
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:22 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 48jk2krdkc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:22 +0000
-Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57IAxMC7022857
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:22 GMT
-Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-anupkulk-hyd.qualcomm.com [10.147.252.186])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 57IAxMJM022856
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Aug 2025 10:59:22 +0000
-Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 4405423)
-	id 036695CB; Mon, 18 Aug 2025 16:29:20 +0530 (+0530)
-From: Anup Kulkarni <quic_anupkulk@quicinc.com>
-To: kernel@oss.qualcomm.com, periph.upstream.reviewers@quicinc.com
-Cc: quic_msavaliy@quicinc.com, quic_vdadhani@quicinc.com,
-        Anup Kulkarni <quic_anupkulk@quicinc.com>, stable@vger.kernel.org
-Subject: [PATCH v4] tty: serial: qcom_geni_serial: Improve error handling for RS485 mode
-Date: Mon, 18 Aug 2025 16:29:18 +0530
-Message-Id: <20250818105918.1012694-1-quic_anupkulk@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1755514794; c=relaxed/simple;
+	bh=MnWoLKs0KkT1v8ahxwpivMYUPRrVEYGC/Qp0jX37i6c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DqArcsbHc3dX4Iq+WIAsoTz1LjlgLYL53zXR14JcLPF3k5Pyk0I6ayYT/rgWkg2clZY8GDpJxPz8/ealJkScX64jBk+0fDIWkTzUjqGmqie4MO3oW051gWZK9wcmQ2tyIp0DyW2r8zLdSa9xP0AkuMoB/VJ3xkWsjFttayKRbNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLTh5TyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52658C4CEEB;
+	Mon, 18 Aug 2025 10:59:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755514794;
+	bh=MnWoLKs0KkT1v8ahxwpivMYUPRrVEYGC/Qp0jX37i6c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=zLTh5TyJo7VrdzIDPUjnqPa0U//w7NYlYDdJalsxGDrOmg0UMR0YIXg/gysX3+wRf
+	 5uBnQLB9bkcr4JuLf8AEUbJ/ROjepyPh0AIAqG4F9HJRQm8aloRfE2R7sLuY8vnkzl
+	 xiT4/tBAdLnPciVSlLzd4L5Rjh2cL908XN0F0rwE=
+Subject: FAILED: patch "[PATCH] btrfs: fix ssd_spread overallocation" failed to apply to 6.6-stable tree
+To: boris@bur.io,dsterba@suse.com,fdmanana@suse.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 18 Aug 2025 12:59:32 +0200
+Message-ID: <2025081832-unearned-monopoly-13b1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: lvoLeqBqA001LEBZsmuqglJVDzw-Pdp4
-X-Authority-Analysis: v=2.4 cv=N6UpF39B c=1 sm=1 tr=0 ts=68a3078d cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=bGVla3ei2X7EtWq2w9IA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE4MDA3MSBTYWx0ZWRfX3fVHJ8XxDcOC
- GBaWEfsMd14cyG/5/dxDj02xBnUpUSpIuflDYEqk3yA7Qmo/06XBG72Kjd6WEV5KT9xG12glCLK
- RqDM6nzPH+zNYqG1HyDTuAls1azASdFPFUqhVH+QtLZJE4a6WE9q8gRbCI9yP0v5EX3Sgh9129+
- tlm3bvVEufRQa7Kq7Q9gf+2VZaevRzGDDi8Ha2u5N2FmOdDcIeWiXcsnI2EKwtHoS3QAJlM0ZZV
- R3JQWvN06IoLAMNrf8vIWWZj1y3AjoWDbr/vB8cF/Oc4A+Od3ts4x/dc68INy4cg/NVt6nyh+O+
- lXJltxO+Z4UJs7gBkqrJKmq28GP7it/C038w/dos62us7a5sA1wOIMuIwbqlY+6nixdmDh4/XgL
- gP7PP13F
-X-Proofpoint-ORIG-GUID: lvoLeqBqA001LEBZsmuqglJVDzw-Pdp4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-18_04,2025-08-14_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 clxscore=1011 malwarescore=0 impostorscore=0
- suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508180071
 
-Fix  error handling issues of  `uart_get_rs485_mode()` function by
-reordering resources_init() to occur after uart_get_rs485_mode. Remove
-multiple goto paths and use dev_err_probe to simplify error paths.
 
-Fixes: 4fcc287f3c69 ("serial: qcom-geni: Enable support for half-duplex mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anup Kulkarni <quic_anupkulk@quicinc.com>
----
-v3->v4
-- Added Fixes and Cc tag.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-v2->v3
-- Reordered the function resources_init.
-- Removed goto.
-- Added dev_err_probe.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-v1->v2
-- Updated commit message.
----
- drivers/tty/serial/qcom_geni_serial.c | 38 ++++++++++-----------------
- 1 file changed, 14 insertions(+), 24 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 807d9023e75fc20bfd6dd2ac0408ce4af53f1648
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081832-unearned-monopoly-13b1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index 32ec632fd080..be998dd45968 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1882,15 +1882,9 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
- 	port->se.dev = &pdev->dev;
- 	port->se.wrapper = dev_get_drvdata(pdev->dev.parent);
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 807d9023e75fc20bfd6dd2ac0408ce4af53f1648 Mon Sep 17 00:00:00 2001
+From: Boris Burkov <boris@bur.io>
+Date: Mon, 14 Jul 2025 16:44:28 -0700
+Subject: [PATCH] btrfs: fix ssd_spread overallocation
+
+If the ssd_spread mount option is enabled, then we run the so called
+clustered allocator for data block groups. In practice, this results in
+creating a btrfs_free_cluster which caches a block_group and borrows its
+free extents for allocation.
+
+Since the introduction of allocation size classes in 6.1, there has been
+a bug in the interaction between that feature and ssd_spread.
+find_free_extent() has a number of nested loops. The loop going over the
+allocation stages, stored in ffe_ctl->loop and managed by
+find_free_extent_update_loop(), the loop over the raid levels, and the
+loop over all the block_groups in a space_info. The size class feature
+relies on the block_group loop to ensure it gets a chance to see a
+block_group of a given size class.  However, the clustered allocator
+uses the cached cluster block_group and breaks that loop. Each call to
+do_allocation() will really just go back to the same cached block_group.
+Normally, this is OK, as the allocation either succeeds and we don't
+want to loop any more or it fails, and we clear the cluster and return
+its space to the block_group.
+
+But with size classes, the allocation can succeed, then later fail,
+outside of do_allocation() due to size class mismatch. That latter
+failure is not properly handled due to the highly complex multi loop
+logic. The result is a painful loop where we continue to allocate the
+same num_bytes from the cluster in a tight loop until it fails and
+releases the cluster and lets us try a new block_group. But by then, we
+have skipped great swaths of the available block_groups and are likely
+to fail to allocate, looping the outer loop. In pathological cases like
+the reproducer below, the cached block_group is often the very last one,
+in which case we don't perform this tight bg loop but instead rip
+through the ffe stages to LOOP_CHUNK_ALLOC and allocate a chunk, which
+is now the last one, and we enter the tight inner loop until an
+allocation failure. Then allocation succeeds on the final block_group
+and if the next allocation is a size mismatch, the exact same thing
+happens again.
+
+Triggering this is as easy as mounting with -o ssd_spread and then
+running:
+
+  mount -o ssd_spread $dev $mnt
+  dd if=/dev/zero of=$mnt/big bs=16M count=1 &>/dev/null
+  dd if=/dev/zero of=$mnt/med bs=4M count=1 &>/dev/null
+  sync
+
+if you do the two writes + sync in a loop, you can force btrfs to spin
+an excessive amount on semi-successful clustered allocations, before
+ultimately failing and advancing to the stage where we force a chunk
+allocation. This results in 2G of data allocated per iteration, despite
+only using ~20M of data. By using a small size classed extent, the inner
+loop takes longer and we can spin for longer.
+
+The simplest, shortest term fix to unbreak this is to make the clustered
+allocator size_class aware in the dumbest way, where it fails on size
+class mismatch. This may hinder the operation of the clustered
+allocator, but better hindered than completely broken and terribly
+overallocating.
+
+Further re-design improvements are also in the works.
+
+Fixes: 52bb7a2166af ("btrfs: introduce size class to block group allocator")
+CC: stable@vger.kernel.org # 6.1+
+Reported-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 85833bf216de..97d517cdf2df 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -3651,6 +3651,21 @@ btrfs_release_block_group(struct btrfs_block_group *cache,
+ 	btrfs_put_block_group(cache);
+ }
  
--	ret = port->dev_data->resources_init(uport);
--	if (ret)
--		return ret;
--
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		ret = -EINVAL;
--		goto error;
--	}
-+	if (!res)
-+		return -EINVAL;
- 
- 	uport->mapbase = res->start;
- 
-@@ -1903,25 +1897,19 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
- 	if (!data->console) {
- 		port->rx_buf = devm_kzalloc(uport->dev,
- 					    DMA_RX_BUF_SIZE, GFP_KERNEL);
--		if (!port->rx_buf) {
--			ret = -ENOMEM;
--			goto error;
--		}
-+		if (!port->rx_buf)
-+			return -ENOMEM;
- 	}
- 
- 	port->name = devm_kasprintf(uport->dev, GFP_KERNEL,
- 			"qcom_geni_serial_%s%d",
- 			uart_console(uport) ? "console" : "uart", uport->line);
--	if (!port->name) {
--		ret = -ENOMEM;
--		goto error;
--	}
-+	if (!port->name)
-+		return -ENOMEM;
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto error;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	uport->irq = irq;
- 	uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_QCOM_GENI_CONSOLE);
-@@ -1942,12 +1930,14 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
- 	irq_set_status_flags(uport->irq, IRQ_NOAUTOEN);
- 	ret = devm_request_irq(uport->dev, uport->irq, qcom_geni_serial_isr,
- 			IRQF_TRIGGER_HIGH, port->name, uport);
--	if (ret) {
--		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
--		goto error;
--	}
-+	if (ret)
-+		return dev_err_probe(uport->dev, ret, "Failed to get IRQ\n");
- 
- 	ret = uart_get_rs485_mode(uport);
-+	if (ret)
-+		return dev_err_probe(uport->dev, ret, "Failed to get rs485 mode\n");
++static bool find_free_extent_check_size_class(const struct find_free_extent_ctl *ffe_ctl,
++					      const struct btrfs_block_group *bg)
++{
++	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
++		return true;
++	if (!btrfs_block_group_should_use_size_class(bg))
++		return true;
++	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
++		return true;
++	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
++	    bg->size_class == BTRFS_BG_SZ_NONE)
++		return true;
++	return ffe_ctl->size_class == bg->size_class;
++}
 +
-+	ret = port->dev_data->resources_init(uport);
- 	if (ret)
- 		return ret;
+ /*
+  * Helper function for find_free_extent().
+  *
+@@ -3672,7 +3687,8 @@ static int find_free_extent_clustered(struct btrfs_block_group *bg,
+ 	if (!cluster_bg)
+ 		goto refill_cluster;
+ 	if (cluster_bg != bg && (cluster_bg->ro ||
+-	    !block_group_bits(cluster_bg, ffe_ctl->flags)))
++	    !block_group_bits(cluster_bg, ffe_ctl->flags) ||
++	    !find_free_extent_check_size_class(ffe_ctl, cluster_bg)))
+ 		goto release_cluster;
  
--- 
-2.34.1
+ 	offset = btrfs_alloc_from_cluster(cluster_bg, last_ptr,
+@@ -4229,21 +4245,6 @@ static int find_free_extent_update_loop(struct btrfs_fs_info *fs_info,
+ 	return -ENOSPC;
+ }
+ 
+-static bool find_free_extent_check_size_class(struct find_free_extent_ctl *ffe_ctl,
+-					      struct btrfs_block_group *bg)
+-{
+-	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
+-		return true;
+-	if (!btrfs_block_group_should_use_size_class(bg))
+-		return true;
+-	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
+-		return true;
+-	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
+-	    bg->size_class == BTRFS_BG_SZ_NONE)
+-		return true;
+-	return ffe_ctl->size_class == bg->size_class;
+-}
+-
+ static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
+ 					struct find_free_extent_ctl *ffe_ctl,
+ 					struct btrfs_space_info *space_info,
 
 
