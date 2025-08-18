@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B3DB2A6FC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5FDB2A500
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 892D84E3B72
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15AFF7BE070
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DB5335BA8;
-	Mon, 18 Aug 2025 13:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EE932252C;
+	Mon, 18 Aug 2025 13:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgcKVsla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvDY2cYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74CD1D88D7;
-	Mon, 18 Aug 2025 13:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95B7322524;
+	Mon, 18 Aug 2025 13:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524918; cv=none; b=Rn7DnAh1YMY+9xLw4emw5xLgdg/hhwMXTRB8O+JITUDPwSy5ewE7BEFWbR3lC2EOJ51BVb8sKQDA/d4cSDXtEBGO/PMAWapg7JUPR7dgrHf57TZOjVhPVRXfemlvYf1W/jVLomhWMIv21gux+7db4IFHtBrke8dZJ+jn55ifmaE=
+	t=1755523068; cv=none; b=CNPlEJtcbhTeA1Nmv3TQJgv5Q2uxpvs+yyjRjZ6ZROZxyM8Hg6D3xT7SL5PvWdXjNrtOZR+5A5f2X93vE1FSO4CEC+6q6cTeFntLQeEq1anMuT7y3pMbQYbPI8YpT6Pog4WyLnYkOYCwq52nYjWUdhTdpeuuTvCihcVr6gicbLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524918; c=relaxed/simple;
-	bh=Z3MLSg+CN3odnzFLH4H4WIOd15K8/OH3JE9Kt/lAnAQ=;
+	s=arc-20240116; t=1755523068; c=relaxed/simple;
+	bh=FoQlQB5WjUhC0B04GtlLDxaX2gmcmL/yGFzWIxNg1fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/Br0Tzu8leG9Dthe+AC13z7vCcseugZpEr9S9MhpnivQMQiBNMqzSItEvtVcGpEQT3dkRAblLh1fucMHbVMKspXRvPeIYL1vuoM6sc0FFk8J/YFmmvzVxINQ6c7UJCy2DRyP0tQ3cPT2ew0HgfsMf9gNt8/gzDNXRbH9edeBjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgcKVsla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D6FC4CEEB;
-	Mon, 18 Aug 2025 13:48:38 +0000 (UTC)
+	 MIME-Version; b=KKLLFrGwG4oeYk3HPnohjZFrbdEjNNu4tzsIgTbES3xWXX/t045r3dJLUQXSefNNCUkYnUBv4d8VUrxEh+cTn8KddWI11jxOQ0QIbKpcn/xbuw9lIgIf70XbQbkUbTiQ/xvq50wD+eMrnJO2f4MuNyhyjUFyevGuCgjITvn5/tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvDY2cYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5DFC4CEEB;
+	Mon, 18 Aug 2025 13:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524918;
-	bh=Z3MLSg+CN3odnzFLH4H4WIOd15K8/OH3JE9Kt/lAnAQ=;
+	s=korg; t=1755523068;
+	bh=FoQlQB5WjUhC0B04GtlLDxaX2gmcmL/yGFzWIxNg1fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgcKVslaogjsx0sO6RB+CUAVNl9ewFdCB3mEtYny3HDCHNMn7DcvxBHwQCXTRyxct
-	 cAsn3Dt6DcVkI/wjylxxZYBAWYqU7TqNLkjiQUjLNJ4VhmjPbDJqKViDXZ10QCC43n
-	 KLLBoW6Cz5xkxI4ANSBS2agtn6OLblyEqV0eGeIU=
+	b=nvDY2cYqL/+DKifFzsBJBC6kLwGObj+WsENFuOlx9LJpuLVHqqBMrwMEBK8ktGrYh
+	 SOzoVo1clNc66z0JEfE7I/IFbSD6W49t7sYgS0UumbEEwSv2CDPswgjUFGl7Iv4tae
+	 QoH1yoEBYP0T/izne+eJawf9F117c689JBIdR6Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 061/570] xfrm: flush all states in xfrm_state_fini
+Subject: [PATCH 6.15 062/515] net: hibmcge: fix the np_link_fail error reporting issue
 Date: Mon, 18 Aug 2025 14:40:48 +0200
-Message-ID: <20250818124508.171797110@linuxfoundation.org>
+Message-ID: <20250818124500.797591472@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 42e42562c9cfcdacf000f1b42284a4fad24f8546 ]
+[ Upstream commit 62c50180ffda01468e640ac14925503796f255e2 ]
 
-While reverting commit f75a2804da39 ("xfrm: destroy xfrm_state
-synchronously on net exit path"), I incorrectly changed
-xfrm_state_flush's "proto" argument back to IPSEC_PROTO_ANY. This
-reverts some of the changes in commit dbb2483b2a46 ("xfrm: clean up
-xfrm protocol checks"), and leads to some states not being removed
-when we exit the netns.
+Currently, after modifying device port mode, the np_link_ok state
+is immediately checked. At this point, the device may not yet ready,
+leading to the querying of an intermediate state.
 
-Pass 0 instead of IPSEC_PROTO_ANY from both xfrm_state_fini
-xfrm6_tunnel_net_exit, so that xfrm_state_flush deletes all states.
+This patch will poll to check if np_link is ok after
+modifying device port mode, and only report np_link_fail upon timeout.
 
-Fixes: 2a198bbec691 ("Revert "xfrm: destroy xfrm_state synchronously on net exit path"")
-Reported-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6641a61fe0e2e89ae8c5
-Tested-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Fixes: e0306637e85d ("net: hibmcge: Add support for mac link exception handling feature")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/xfrm6_tunnel.c | 2 +-
- net/xfrm/xfrm_state.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
-index 5120a763da0d..0a0eeaed0591 100644
---- a/net/ipv6/xfrm6_tunnel.c
-+++ b/net/ipv6/xfrm6_tunnel.c
-@@ -334,7 +334,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
- 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
- 	unsigned int i;
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+index 9b65eef62b3f..2844124f306d 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+@@ -12,6 +12,8 @@
  
--	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
-+	xfrm_state_flush(net, 0, false);
- 	xfrm_flush_gc();
+ #define HBG_HW_EVENT_WAIT_TIMEOUT_US	(2 * 1000 * 1000)
+ #define HBG_HW_EVENT_WAIT_INTERVAL_US	(10 * 1000)
++#define HBG_MAC_LINK_WAIT_TIMEOUT_US	(500 * 1000)
++#define HBG_MAC_LINK_WAIT_INTERVAL_US	(5 * 1000)
+ /* little endian or big endian.
+  * ctrl means packet description, data means skb packet data
+  */
+@@ -213,6 +215,9 @@ void hbg_hw_fill_buffer(struct hbg_priv *priv, u32 buffer_dma_addr)
  
- 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 97ff756191ba..5f1da305eea8 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -3278,7 +3278,7 @@ void xfrm_state_fini(struct net *net)
- 	unsigned int sz;
+ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
+ {
++	u32 link_status;
++	int ret;
++
+ 	hbg_hw_mac_enable(priv, HBG_STATUS_DISABLE);
  
- 	flush_work(&net->xfrm.state_hash_work);
--	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
-+	xfrm_state_flush(net, 0, false);
- 	flush_work(&xfrm_state_gc_work);
+ 	hbg_reg_write_field(priv, HBG_REG_PORT_MODE_ADDR,
+@@ -224,8 +229,14 @@ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
  
- 	WARN_ON(!list_empty(&net->xfrm.state_all));
+ 	hbg_hw_mac_enable(priv, HBG_STATUS_ENABLE);
+ 
+-	if (!hbg_reg_read_field(priv, HBG_REG_AN_NEG_STATE_ADDR,
+-				HBG_REG_AN_NEG_STATE_NP_LINK_OK_B))
++	/* wait MAC link up */
++	ret = readl_poll_timeout(priv->io_base + HBG_REG_AN_NEG_STATE_ADDR,
++				 link_status,
++				 FIELD_GET(HBG_REG_AN_NEG_STATE_NP_LINK_OK_B,
++					   link_status),
++				 HBG_MAC_LINK_WAIT_INTERVAL_US,
++				 HBG_MAC_LINK_WAIT_TIMEOUT_US);
++	if (ret)
+ 		hbg_np_link_fail_task_schedule(priv);
+ }
+ 
 -- 
 2.50.1
 
