@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB97B2A94D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C7CB2A62F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4D5F5A52D6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0D3D17D787
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D853469F6;
-	Mon, 18 Aug 2025 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28DC27B333;
+	Mon, 18 Aug 2025 13:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbJ237mC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoaCh/qj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBD53469E7;
-	Mon, 18 Aug 2025 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA2128C014;
+	Mon, 18 Aug 2025 13:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525443; cv=none; b=Wqu1oUH4uubsgL1n80KGixm3jETbog0QrSfZeGqmt2+DfcEXCirW19JXtHQKewFl0Y+jwKdZI3W2JXCzDpk9rk9AwMPsXM/I4Pk54dcWRLVWy1fDnTSk2XtFNLMmsA902gMgINYvi0f3/UmuEEetr4jIT1Ze/cArBxyXNKOsZE8=
+	t=1755523762; cv=none; b=uZOmMhplDXbWZ3daTX+bBcss0qDCXDZ4khGF1ne9Tm1vPN3dBKm1oyEqaII02VFc+lI9K67JZy17b+Gb60AESMgXxhbuay9PUCQK4MqPT98dnG+K7vhCdHQwGOCFX9ZiWOMdcP+uAbLmVKU6SWcwX5JESF1vdb6XBxT30UDP9Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525443; c=relaxed/simple;
-	bh=fGmPVZkQMVrcPjgDVVtRvqpfxTBUqGghTQgZ1wQnieo=;
+	s=arc-20240116; t=1755523762; c=relaxed/simple;
+	bh=FUIMpPWK/vYBUZc0VofBwem/KrPC7Bw9ssnb3n7/o9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEDQ4eaJih9KlSHfz/ozV73jbL9BK9GfRcnp+dMDkJzjqAtBLw+3kRcwdgvvJ/kNpmJpIB06fZvIW1Zw8IaagV+UYqTD41UOgFre09z74jThi5g2C33vDdLpJDnXSqWuk1vPCGXwK6Q6NL+83nA0pLWlWMYlEIjRCVJx5dGmfzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbJ237mC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1201C113D0;
-	Mon, 18 Aug 2025 13:57:22 +0000 (UTC)
+	 MIME-Version; b=bIsgHD4tXXbA9JtgRbY5/rb4UbjKQeCkvkNNMMkCF5WT8+Z96kp2qtweFg1kbnH7+g/tdfqANVwIiWF3wgu2FS7IkpTl1LCHDa90qxEs1IyaakIFq17bllc30+4p0bKyB+FnfQN5NwmOfd4enNRa51qAX59kqJw2WEWg/gnytnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoaCh/qj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E9DC4CEF1;
+	Mon, 18 Aug 2025 13:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525443;
-	bh=fGmPVZkQMVrcPjgDVVtRvqpfxTBUqGghTQgZ1wQnieo=;
+	s=korg; t=1755523762;
+	bh=FUIMpPWK/vYBUZc0VofBwem/KrPC7Bw9ssnb3n7/o9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbJ237mC9mi/5FOmQiWSi1sW5DjY/170sdPRFrWZpp7hmCwhR48lIpHHrwOF6IYO+
-	 8l4tfmQY/Hxtyq+zRGbYluaCqamHPJ1NCpH2dfE3M2e4ot83L4Vj2xeojL3/Rdo67L
-	 xdw+4TD/B8T3Y9wcQ22B3pRMjBCfTi9TOzzNuEi0=
+	b=WoaCh/qjBO1b3EQgEMy9J3M94PGFGUHsWUzEuEKeaOjXE6chkALHlaELlDUMw17/J
+	 XiDDBsBvr2ZYZVqtEuPIAhD/t5mQNCNQQOtrIJwl2T9X4cHRSfmoTA0Tou6yTfOpl1
+	 tlEAagwdbfe/8tYXRxRitx7eYr92iEItAa2d1rpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Aakash Kumar S <saakashkumar@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 264/570] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
-Date: Mon, 18 Aug 2025 14:44:11 +0200
-Message-ID: <20250818124516.003413347@linuxfoundation.org>
+Subject: [PATCH 6.15 266/515] xfrm: Duplicate SPI Handling
+Date: Mon, 18 Aug 2025 14:44:12 +0200
+Message-ID: <20250818124508.662555179@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Aakash Kumar S <saakashkumar@marvell.com>
 
-[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
+[ Upstream commit 94f39804d891cffe4ce17737d295f3b195bc7299 ]
 
-If the device configuration fails (if `dma_dev->device_config()`),
-`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
-leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
+The issue originates when Strongswan initiates an XFRM_MSG_ALLOCSPI
+Netlink message, which triggers the kernel function xfrm_alloc_spi().
+This function is expected to ensure uniqueness of the Security Parameter
+Index (SPI) for inbound Security Associations (SAs). However, it can
+return success even when the requested SPI is already in use, leading
+to duplicate SPIs assigned to multiple inbound SAs, differentiated
+only by their destination addresses.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
+This behavior causes inconsistencies during SPI lookups for inbound packets.
+Since the lookup may return an arbitrary SA among those with the same SPI,
+packet processing can fail, resulting in packet drops.
+
+According to RFC 4301 section 4.4.2 , for inbound processing a unicast SA
+is uniquely identified by the SPI and optionally protocol.
+
+Reproducing the Issue Reliably:
+To consistently reproduce the problem, restrict the available SPI range in
+charon.conf : spi_min = 0x10000000 spi_max = 0x10000002
+This limits the system to only 2 usable SPI values.
+Next, create more than 2 Child SA. each using unique pair of src/dst address.
+As soon as the 3rd Child SA is initiated, it will be assigned a duplicate
+SPI, since the SPI pool is already exhausted.
+With a narrow SPI range, the issue is consistently reproducible.
+With a broader/default range, it becomes rare and unpredictable.
+
+Current implementation:
+xfrm_spi_hash() lookup function computes hash using daddr, proto, and family.
+So if two SAs have the same SPI but different destination addresses, then
+they will:
+a. Hash into different buckets
+b. Be stored in different linked lists (byspi + h)
+c. Not be seen in the same hlist_for_each_entry_rcu() iteration.
+As a result, the lookup will result in NULL and kernel allows that Duplicate SPI
+
+Proposed Change:
+xfrm_state_lookup_spi_proto() does a truly global search - across all states,
+regardless of hash bucket and matches SPI and proto.
+
+Signed-off-by: Aakash Kumar S <saakashkumar@marvell.com>
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_state.c | 72 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 43 insertions(+), 29 deletions(-)
 
-diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-index 9668b052cd4b..f251e0f68262 100644
---- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-+++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
-@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
- 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 0cf516b4e6d9..f57bb78fb12a 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -1702,6 +1702,26 @@ struct xfrm_state *xfrm_state_lookup_byspi(struct net *net, __be32 spi,
+ }
+ EXPORT_SYMBOL(xfrm_state_lookup_byspi);
  
- 	/* Make DMA channel work with LPB FIFO data register */
--	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
--		ret = -EINVAL;
--		goto err_dma_prep;
++static struct xfrm_state *xfrm_state_lookup_spi_proto(struct net *net, __be32 spi, u8 proto)
++{
++	struct xfrm_state *x;
++	unsigned int i;
++
++	rcu_read_lock();
++	for (i = 0; i <= net->xfrm.state_hmask; i++) {
++		hlist_for_each_entry_rcu(x, &net->xfrm.state_byspi[i], byspi) {
++			if (x->id.spi == spi && x->id.proto == proto) {
++				if (!xfrm_state_hold_rcu(x))
++					continue;
++				rcu_read_unlock();
++				return x;
++			}
++		}
++	}
++	rcu_read_unlock();
++	return NULL;
++}
++
+ static void __xfrm_state_insert(struct xfrm_state *x)
+ {
+ 	struct net *net = xs_net(x);
+@@ -2538,10 +2558,8 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
+ 	unsigned int h;
+ 	struct xfrm_state *x0;
+ 	int err = -ENOENT;
+-	__be32 minspi = htonl(low);
+-	__be32 maxspi = htonl(high);
++	u32 range = high - low + 1;
+ 	__be32 newspi = 0;
+-	u32 mark = x->mark.v & x->mark.m;
+ 
+ 	spin_lock_bh(&x->lock);
+ 	if (x->km.state == XFRM_STATE_DEAD) {
+@@ -2555,38 +2573,34 @@ int xfrm_alloc_spi(struct xfrm_state *x, u32 low, u32 high,
+ 
+ 	err = -ENOENT;
+ 
+-	if (minspi == maxspi) {
+-		x0 = xfrm_state_lookup(net, mark, &x->id.daddr, minspi, x->id.proto, x->props.family);
+-		if (x0) {
+-			NL_SET_ERR_MSG(extack, "Requested SPI is already in use");
+-			xfrm_state_put(x0);
++	for (h = 0; h < range; h++) {
++		u32 spi = (low == high) ? low : get_random_u32_inclusive(low, high);
++		newspi = htonl(spi);
++
++		spin_lock_bh(&net->xfrm.xfrm_state_lock);
++		x0 = xfrm_state_lookup_spi_proto(net, newspi, x->id.proto);
++		if (!x0) {
++			x->id.spi = newspi;
++			h = xfrm_spi_hash(net, &x->id.daddr, newspi, x->id.proto, x->props.family);
++			XFRM_STATE_INSERT(byspi, &x->byspi, net->xfrm.state_byspi + h, x->xso.type);
++			spin_unlock_bh(&net->xfrm.xfrm_state_lock);
++			err = 0;
+ 			goto unlock;
+ 		}
+-		newspi = minspi;
+-	} else {
+-		u32 spi = 0;
+-		for (h = 0; h < high-low+1; h++) {
+-			spi = get_random_u32_inclusive(low, high);
+-			x0 = xfrm_state_lookup(net, mark, &x->id.daddr, htonl(spi), x->id.proto, x->props.family);
+-			if (x0 == NULL) {
+-				newspi = htonl(spi);
+-				break;
+-			}
+-			xfrm_state_put(x0);
++		xfrm_state_put(x0);
++		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
++
++		if (signal_pending(current)) {
++			err = -ERESTARTSYS;
++			goto unlock;
+ 		}
++
++		if (low == high)
++			break;
+ 	}
+-	if (newspi) {
+-		spin_lock_bh(&net->xfrm.xfrm_state_lock);
+-		x->id.spi = newspi;
+-		h = xfrm_spi_hash(net, &x->id.daddr, x->id.spi, x->id.proto, x->props.family);
+-		XFRM_STATE_INSERT(byspi, &x->byspi, net->xfrm.state_byspi + h,
+-				  x->xso.type);
+-		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
+ 
+-		err = 0;
+-	} else {
++	if (err)
+ 		NL_SET_ERR_MSG(extack, "No SPI available in the requested range");
 -	}
-+	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
-+		return -EINVAL;
  
- 	sg_init_table(&sg, 1);
- 
+ unlock:
+ 	spin_unlock_bh(&x->lock);
 -- 
 2.39.5
 
