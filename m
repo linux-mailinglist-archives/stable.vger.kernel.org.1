@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432BFB2A386
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26584B2A6BE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258C0189FB37
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98E6068466A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D62431CA76;
-	Mon, 18 Aug 2025 13:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0947D321F54;
+	Mon, 18 Aug 2025 13:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2j83Y1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZE51DSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA803218CA;
-	Mon, 18 Aug 2025 13:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9889320CDC;
+	Mon, 18 Aug 2025 13:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522273; cv=none; b=SxhQItoqmzq/90I1tqLplH1qhzj6GQqbitdL2ftk3pf+fWPSlgVB7Kow4Le09HFjao4I1FBf/MebLI+8PNnxLVnTFDnwZGJ183ZvCKp151oALZHCjwT82/E4RIizTQxHwwgDOoaN70T9y+LJw9FDugJBmlCY/rkyUiE3eR6CjmE=
+	t=1755523901; cv=none; b=DQCCY40s62/FcgWpbP8ddWL+yloo5P8GXUz9hwBumk246GNbEXhZqzG3FyoWlf5x6fm5dwU7JiFVhFgRQDp9HdvgkQw50orc/ypBSzwcgVpFRUKGx89JP+sKIamHO9Ha3XghzN0+Ii6FjjtBC+JaGhclr2Kz/OcWowHJRRoVWy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522273; c=relaxed/simple;
-	bh=kHDtW7+dchgBqhr0JZuojWV/0rxQfaDg21lxw8Dad9k=;
+	s=arc-20240116; t=1755523901; c=relaxed/simple;
+	bh=YpS5FfSFbGuwKB8BU0BlnKv4tU+BavGJegnnNkygYVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EHcdBBitaFFvGFsD7InWXAu0xzHylpDJKbnwrd19VAxf1a61kDS3Ljhg7I2PdwAU6CemUkg5ARkb6NnichRCI2MqBQSys9/ozzdATtpqCXHvMciZg02ibuE7rjVbzAuVLMQRoN228bf4B9kt5227awmcalQ9+r+lH3WdSfQS+Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2j83Y1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CD7C113D0;
-	Mon, 18 Aug 2025 13:04:32 +0000 (UTC)
+	 MIME-Version; b=UiepAlqdxweA+7n11s233o9Z4ux2yl1D97xPlZStfIT3JT7uEbfI479z3XVDIBnq+KhUmMPAzucRi9SSNDwQMVVBE85MKH6O1rgNHflR62lGNpyeOoE022cJcv+tvrbmBjGSneZOukgy4mx9aoi0iY1zgwd45EiAkrJ94b82+bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZE51DSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E25C4CEF1;
+	Mon, 18 Aug 2025 13:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522273;
-	bh=kHDtW7+dchgBqhr0JZuojWV/0rxQfaDg21lxw8Dad9k=;
+	s=korg; t=1755523901;
+	bh=YpS5FfSFbGuwKB8BU0BlnKv4tU+BavGJegnnNkygYVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2j83Y1jeIADTnmCPha7pap8A9sznGBllY4Dwvc/YGVj1lSakAyo4nloCuv//mdcn
-	 FoKAHa68k8fvz3WcDK0YVD9WMqqgV8cLHJrfmyWplTtyEa6iPR5GEzWzMhMIq80uZn
-	 zKeIDQMAAk4GO4XzKg119J3z+LVLNwBmMyYZnapk=
+	b=zZE51DSmjB57ypSpXKuLkIyEaXdWlXiDJ/k2q2JNlT7JdsXtDIGSntauNuYW73LmR
+	 5BxE6UZH6d4P76WvNDm1ZQCNIgFwmc4lMVNXXjRK/mhM+1hcitKyUe4Q3oh4X8uBuD
+	 CRR25eiYZenZad2vCaBNGF36Y5a1iR0L9llgNaL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Quentin Monnet <qmo@kernel.org>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 268/444] drm/ttm: Respect the shrinker core free target
+Subject: [PATCH 6.15 308/515] bpftool: Fix JSON writer resource leak in version command
 Date: Mon, 18 Aug 2025 14:44:54 +0200
-Message-ID: <20250818124458.878897300@linuxfoundation.org>
+Message-ID: <20250818124510.295617661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit eac21f8ebeb4f84d703cf41dc3f81d16fa9dc00a ]
+[ Upstream commit 85cd83fed8267cde0dd1cea719808aad95ae4de7 ]
 
-Currently the TTM shrinker aborts shrinking as soon as it frees pages from
-any of the page order pools and by doing so it can fail to respect the
-freeing target which was configured by the shrinker core.
+When using `bpftool --version -j/-p`, the JSON writer object
+created in do_version() was not properly destroyed after use.
+This caused a memory leak each time the version command was
+executed with JSON output.
 
-We use the wording "can fail" because the number of freed pages will
-depend on the presence of pages in the pools and the order of the pools on
-the LRU list. For example if there are no free pages in the high order
-pools the shrinker core may require multiple passes over the TTM shrinker
-before it will free the default target of 128 pages (assuming there are
-free pages in the low order pools). This inefficiency can be compounded by
-the pool LRU where multiple further calls into the TTM shrinker are
-required to end up looking at the pool with pages.
+Fix: 004b45c0e51a (tools: bpftool: provide JSON output for all possible commands)
 
-Improve this by never freeing less than the shrinker core has requested.
-
-At the same time we start reporting the number of scanned pages (freed in
-this case), which prevents the core shrinker from giving up on the TTM
-shrinker too soon and moving on.
-
-v2:
- * Simplify loop logic. (Christian)
- * Improve commit message.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Link: https://lore.kernel.org/r/20250603112750.34997-2-tvrtko.ursulin@igalia.com
+Suggested-by: Quentin Monnet <qmo@kernel.org>
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250617132442.9998-1-chenyuan_fl@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_pool.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/bpf/bpftool/main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-index 8504dbe19c1a..4ae9d33cf485 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -630,7 +630,6 @@ void ttm_pool_fini(struct ttm_pool *pool)
- }
- EXPORT_SYMBOL(ttm_pool_fini);
+diff --git a/tools/bpf/bpftool/main.c b/tools/bpf/bpftool/main.c
+index cd5963cb6058..2b7f2bd3a7db 100644
+--- a/tools/bpf/bpftool/main.c
++++ b/tools/bpf/bpftool/main.c
+@@ -534,9 +534,9 @@ int main(int argc, char **argv)
+ 		usage();
  
--/* As long as pages are available make sure to release at least one */
- static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
- 					    struct shrink_control *sc)
- {
-@@ -638,9 +637,12 @@ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
+ 	if (version_requested)
+-		return do_version(argc, argv);
+-
+-	ret = cmd_select(commands, argc, argv, do_help);
++		ret = do_version(argc, argv);
++	else
++		ret = cmd_select(commands, argc, argv, do_help);
  
- 	do
- 		num_freed += ttm_pool_shrink();
--	while (!num_freed && atomic_long_read(&allocated_pages));
-+	while (num_freed < sc->nr_to_scan &&
-+	       atomic_long_read(&allocated_pages));
- 
--	return num_freed;
-+	sc->nr_scanned = num_freed;
-+
-+	return num_freed ?: SHRINK_STOP;
- }
- 
- /* Return the number of pages available or SHRINK_EMPTY if we have none */
+ 	if (json_output)
+ 		jsonw_destroy(&json_wtr);
 -- 
 2.39.5
 
