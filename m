@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B579B2A2EA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD245B2A61B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7158C4E6A88
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E1A81B65DE1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC4A31A04F;
-	Mon, 18 Aug 2025 12:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762D730C37D;
+	Mon, 18 Aug 2025 13:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aja4dUH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzJnQObA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB1E26F283;
-	Mon, 18 Aug 2025 12:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351BF32A3D2;
+	Mon, 18 Aug 2025 13:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521929; cv=none; b=h1q4PGa8s9/7qRpYogp8VmEJ2wD8CSHjJ5UpY7cUhD0FRo8Rjp/86na23+VQyTvftNs6sNQj0+RBVIZEA57u7iZ6wi/XkVVUvKEbSFP7jHAd6WB+3m32p8B+V8jZusXpihNm3d2zxKEEjfykMs6wrjw7JrKtqOHgHPpZ0dMna9s=
+	t=1755523554; cv=none; b=qZqbjtbLf3h7VcuFLe8I7zaIWBPeQ7w8C08P7CxfFhDO9At3GUvnE4nHA4ABDui897xlZlwAdZOnChWG1sZYtm9hHbzucfbAEgAtf0pfXHfa4SNTcW2qfMas1Cp2iu5BDwdD/QfYCceXJYUQlzY9I1CnmgrqblnDsJhOuZmoBc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521929; c=relaxed/simple;
-	bh=FqqKRO1li257K6m5AKY987EdaxRbRESvcpSmZ7+4Gbg=;
+	s=arc-20240116; t=1755523554; c=relaxed/simple;
+	bh=M8xIW8MEa7ZOxJ95rjrJJgr6k715PBwCP32dStf/5jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RXyGmD/aq0t/snKGAnaOT+6vrh4nNtxoXOA+YHRik9nb8SxSQCBDQTv/Xbvr5xBey51QFWiayIgiVUuyDzw022OieH46rbi0UeDRmIA+ia7to5Z33EaKrd8N7DcDEYGQ//HT/+N8ieDLfQY78J32nB7VVtEo5bL1UsEh8LVaJrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aja4dUH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12C2C4CEEB;
-	Mon, 18 Aug 2025 12:58:48 +0000 (UTC)
+	 MIME-Version; b=Pdj+w870GwcGqme9Gl9wpoDGGo8WHzIxFdPqy20vOHD6WbEyGzxXj5m7iypwXgrn+KRgj3fzK7yQqXZFjaVNDbePBzB8pvZtvQfhAMdEsURCcGOADjDediBRuoFOS7s4zR/5iojpAsvAsoaHUJrxZo96X9fauzieHt4b4tGeuz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzJnQObA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8071C4CEEB;
+	Mon, 18 Aug 2025 13:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521929;
-	bh=FqqKRO1li257K6m5AKY987EdaxRbRESvcpSmZ7+4Gbg=;
+	s=korg; t=1755523554;
+	bh=M8xIW8MEa7ZOxJ95rjrJJgr6k715PBwCP32dStf/5jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aja4dUH/NtaesbnzFCx5mdt13uPLQv6CE/dbfxAL12gj+E21AH5pPgrHTYOVD4jAU
-	 ztg4Dr3msZKnAAULxug+TyF/P59UdIyo1/TWViDRC62VFPgDhKpPWyVDE6tpW3X7Do
-	 +NCWaJKrqnOFwA0W0+BPREwM+3Bnl39pj7Fuvf/U=
+	b=YzJnQObAc20oK0T+M9bWCvPRzChsM0Prdtitd8s9klcvyLnVrCzZw713h7EQeVb14
+	 at6qg+EyiIZVpaF8jRTTF/cz2giKRe3cougB8n0gnf2ZHroxwpP1gmBVPdeZa12ydN
+	 ccPM8amDK7vK0qDNSwIcfsVIp8+rcL/3FOTVorUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/444] Bluetooth: btusb: Add new VID/PID 0489/e14e for MT7925
-Date: Mon, 18 Aug 2025 14:43:11 +0200
-Message-ID: <20250818124455.080494696@linuxfoundation.org>
+Subject: [PATCH 6.15 206/515] s390/sclp: Use monotonic clock in sclp_sync_wait()
+Date: Mon, 18 Aug 2025 14:43:12 +0200
+Message-ID: <20250818124506.295928003@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 942873c8137fe0015ab37f62f159d88079859c5e ]
+[ Upstream commit 925f0707a67cae0a974c4bd5b718f0263dc56824 ]
 
-Add VID 0489 & PID e14e for MediaTek MT7925 USB Bluetooth chip.
+sclp_sync_wait() should use the monotonic clock for the delay loop.
+Otherwise the code won't work correctly when the clock is changed.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
-
-T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e14e Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:* If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
-
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/s390/char/sclp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 1d2e85b41820..d7aaaeb4fe32 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -702,6 +702,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe139), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe14e), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe14f), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe150), .driver_info = BTUSB_MEDIATEK |
+diff --git a/drivers/s390/char/sclp.c b/drivers/s390/char/sclp.c
+index 840be75e75d4..9a55e2d04e63 100644
+--- a/drivers/s390/char/sclp.c
++++ b/drivers/s390/char/sclp.c
+@@ -719,7 +719,7 @@ sclp_sync_wait(void)
+ 	timeout = 0;
+ 	if (timer_pending(&sclp_request_timer)) {
+ 		/* Get timeout TOD value */
+-		timeout = get_tod_clock_fast() +
++		timeout = get_tod_clock_monotonic() +
+ 			  sclp_tod_from_jiffies(sclp_request_timer.expires -
+ 						jiffies);
+ 	}
+@@ -739,7 +739,7 @@ sclp_sync_wait(void)
+ 	/* Loop until driver state indicates finished request */
+ 	while (sclp_running_state != sclp_running_state_idle) {
+ 		/* Check for expired request timer */
+-		if (get_tod_clock_fast() > timeout && timer_delete(&sclp_request_timer))
++		if (get_tod_clock_monotonic() > timeout && timer_delete(&sclp_request_timer))
+ 			sclp_request_timer.function(&sclp_request_timer);
+ 		cpu_relax();
+ 	}
 -- 
 2.39.5
 
