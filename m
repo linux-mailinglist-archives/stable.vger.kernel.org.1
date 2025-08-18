@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5652B2A66B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6AEFB2A9A4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A9037B3735
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A8F41BA5FA8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C64E322520;
-	Mon, 18 Aug 2025 13:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B463F343D90;
+	Mon, 18 Aug 2025 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYQZTZPM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I50kvWKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F83321F5C;
-	Mon, 18 Aug 2025 13:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CD2343D8C;
+	Mon, 18 Aug 2025 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524175; cv=none; b=je0B6tSN6c1N1174ZR7X2kf97YROxxBpJMtpKlOb1YOizm6jwKiGi+ODhZZRzhj8UHSwrYKyyV2xC0vmPhrwZfVpltqXOg7JGPemWiH6vl2nVfpGfWJD8ly0m2DdDMsiFogJAnyfeW61BD++XOmj3g+DlA1SAzrsscHRYN9NRbE=
+	t=1755525860; cv=none; b=cUCpxqJfUj7NvsvbvTo/DcljSvzvowLHZvDEna8SmKiV51BvSK5PXQiqtkkMCfaUVlnc8cLZEZoPziMOOdsj5SMixoKuHCqIwi2KqzI+Vbb1/+NA9vMvi3Z+rl/p3kZ2apCELzT6ERKth2+slvDi3RBNJM8VloMYXfNXzAf8/Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524175; c=relaxed/simple;
-	bh=1mOcYS8+7O3dGC8WgwIm3Fz1AJ4ZLfl5hpRTXsNho/I=;
+	s=arc-20240116; t=1755525860; c=relaxed/simple;
+	bh=WPy16ivYc0SwzR1WLaAOsaglN9RFYvuTLgyqUyukXqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxL9+uWeqKCLeKhf26/aeRKeJHCdJLWnSN11JqpV2OlMg4KF8pFB+8M11CR7KMAaCpYuEjXCWTXP5ossMcdV64+/ZZXf+59XzruNBId8mHLuX3YEFoXUrtHSLv0qD6T2Hk75G434ELtG4A354hgZDGQ3UsG58oyNQ7p9WvPBYVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYQZTZPM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316FAC4CEEB;
-	Mon, 18 Aug 2025 13:36:15 +0000 (UTC)
+	 MIME-Version; b=YPctLW9CCHbTukdSYfkq5FZSsfPVw7p/YSS7HTo8aOexI1WIY6wgBhLIq33Ic0HALtEYrxEmIYwdnB1bGuGDPsu3VcIpYVqXMtnSdQpMD+n6mDW88l7uh0DFN2+L0XSIC+S/CYgInDOxUbSrCX8E4+Dvav9mlJMphN4OP8o9hDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I50kvWKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8662BC4CEEB;
+	Mon, 18 Aug 2025 14:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524175;
-	bh=1mOcYS8+7O3dGC8WgwIm3Fz1AJ4ZLfl5hpRTXsNho/I=;
+	s=korg; t=1755525860;
+	bh=WPy16ivYc0SwzR1WLaAOsaglN9RFYvuTLgyqUyukXqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYQZTZPMtgmDbqRtI54Q6IvgXr86d8tLHfuX6Bec+acEotK5C5SYaHoO4+hrvvyWM
-	 BrtN7fiQoSRZwCovxzLwhsoRvloILmJldAz2YUTDn+aJzTBRp45H055X6V5VVl9L7S
-	 3YAAlRxYysiuhSc8QPJdzGdDxRhO7Zs/QiqW0fks=
+	b=I50kvWKTedynayoJO+euNI5aSFvjKe/7/LFsu7LWZlulfoG+Lx5Fa3xcXD9fKwy/p
+	 QlVnpqyES/2WQRlra+O8uKw23h1rYGi4V1RkfyYdS0iCwwCfbcAWVUgVySh3MMGcX+
+	 njPdZT/v9Vkmp4Ige0YPMuUhkSuSXYXEkjHoSCOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Drew Fustini <drew@pdp7.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 389/515] soundwire: Move handle_nested_irq outside of sdw_dev_lock
+Subject: [PATCH 6.16 388/570] clk: thead: Mark essential bus clocks as CLK_IGNORE_UNUSED
 Date: Mon, 18 Aug 2025 14:46:15 +0200
-Message-ID: <20250818124513.392242486@linuxfoundation.org>
+Message-ID: <20250818124520.791710106@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Michal Wilczynski <m.wilczynski@samsung.com>
 
-[ Upstream commit ccb7bb13c00bcc3178d270da052635c56148bc16 ]
+[ Upstream commit 0370395d45ca6dd53bb931978f0e91ac8dd6f1c5 ]
 
-The sdw_dev_lock protects the SoundWire driver callbacks against
-the probed flag, which is used to skip the callbacks if the
-driver gets removed. For more information see commit bd29c00edd0a
-("soundwire: revisit driver bind/unbind and callbacks").
+Probing peripherals in the AON and PERI domains, such as the PVT thermal
+sensor and the PWM controller, can lead to boot hangs or unresponsive
+devices on the LPi4A board. The root cause is that their parent bus
+clocks ('CLK_CPU2AON_X2H' and the 'CLK_PERISYS_APB' clocks) are
+automatically gated by the kernel's power-saving mechanisms when the bus
+is perceived as idle.
 
-However, this lock is a frequent source of mutex inversions.
-Many audio operations eventually hit the hardware resulting in a
-SoundWire callback, this means that typically the driver has the
-locking order ALSA/ASoC locks -> sdw_dev_lock. Conversely, the IRQ
-comes in directly from the SoundWire hardware, but then will often
-want to access ALSA/ASoC, such as updating something in DAPM or
-an ALSA control. This gives the other lock order sdw_dev_lock ->
-ALSA/ASoC locks.
+Alternative solutions were investigated, including modeling the parent
+bus in the Device Tree with 'simple-pm-bus' or refactoring the clock
+driver's parentage. The 'simple-pm-bus' approach is not viable due to
+the lack of defined bus address ranges in the hardware manual and its
+creation of improper dependencies on the 'pm_runtime' API for consumer
+drivers.
 
-When the IRQ handling was initially added to SoundWire this was
-through a callback mechanism. As such it required being covered by
-the lock because the callbacks are part of the sdw_driver structure
-and are thus present regardless of if the driver is currently
-probed.
+Therefore, applying the'`CLK_IGNORE_UNUSED' flag directly to the
+essential bus clocks is the most direct and targeted fix. This prevents
+the kernel from auto-gating these buses and ensures peripherals remain
+accessible.
 
-Since then a newer mechanism using the IRQ framework has been
-added, which is currently covered by the same lock but this isn't
-actually required. Handlers for the IRQ framework are registered in
-probe and should by released during remove, thus the IRQ framework
-will have already unbound the IRQ before the slave driver is
-removed. Avoid the aforementioned mutex inversion by moving the
-handle_nested_irq call outside of the sdw_dev_lock.
+This change fixes the boot hang associated with the PVT sensor and
+resolves the functional issues with the PWM controller.
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250609143041.495049-3-ckeepax@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/all/9e8a12db-236d-474c-b110-b3be96edf057@samsung.com/ [1]
+
+Reviewed-by: Drew Fustini <drew@pdp7.com>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Signed-off-by: Drew Fustini <drew@pdp7.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/bus.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/thead/clk-th1520-ap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index 39aecd34c641..1a70f80c2514 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -1756,15 +1756,15 @@ static int sdw_handle_slave_alerts(struct sdw_slave *slave)
- 
- 		/* Update the Slave driver */
- 		if (slave_notify) {
-+			if (slave->prop.use_domain_irq && slave->irq)
-+				handle_nested_irq(slave->irq);
-+
- 			mutex_lock(&slave->sdw_dev_lock);
- 
- 			if (slave->probed) {
- 				struct device *dev = &slave->dev;
- 				struct sdw_driver *drv = drv_to_sdw_driver(dev->driver);
- 
--				if (slave->prop.use_domain_irq && slave->irq)
--					handle_nested_irq(slave->irq);
--
- 				if (drv->ops && drv->ops->interrupt_callback) {
- 					slave_intr.sdca_cascade = sdca_cascade;
- 					slave_intr.control_port = clear;
+diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
+index 485b1d5cfd18..cf1bba58f641 100644
+--- a/drivers/clk/thead/clk-th1520-ap.c
++++ b/drivers/clk/thead/clk-th1520-ap.c
+@@ -792,11 +792,12 @@ static CCU_GATE(CLK_AON2CPU_A2X, aon2cpu_a2x_clk, "aon2cpu-a2x", axi4_cpusys2_ac
+ 		0x134, BIT(8), 0);
+ static CCU_GATE(CLK_X2X_CPUSYS, x2x_cpusys_clk, "x2x-cpusys", axi4_cpusys2_aclk_pd,
+ 		0x134, BIT(7), 0);
+-static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd, 0x138, BIT(8), 0);
++static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd,
++		0x138, BIT(8), CLK_IGNORE_UNUSED);
+ static CCU_GATE(CLK_CPU2PERI_X2H, cpu2peri_x2h_clk, "cpu2peri-x2h", axi4_cpusys2_aclk_pd,
+ 		0x140, BIT(9), CLK_IGNORE_UNUSED);
+ static CCU_GATE(CLK_PERISYS_APB1_HCLK, perisys_apb1_hclk, "perisys-apb1-hclk", perisys_ahb_hclk_pd,
+-		0x150, BIT(9), 0);
++		0x150, BIT(9), CLK_IGNORE_UNUSED);
+ static CCU_GATE(CLK_PERISYS_APB2_HCLK, perisys_apb2_hclk, "perisys-apb2-hclk", perisys_ahb_hclk_pd,
+ 		0x150, BIT(10), CLK_IGNORE_UNUSED);
+ static CCU_GATE(CLK_PERISYS_APB3_HCLK, perisys_apb3_hclk, "perisys-apb3-hclk", perisys_ahb_hclk_pd,
 -- 
 2.39.5
 
