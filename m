@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-171134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7B8B2A7C8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB1CB2A2BF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8CE05880FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4775F18993F3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF84721CC55;
-	Mon, 18 Aug 2025 13:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA9E31CA5B;
+	Mon, 18 Aug 2025 12:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgxr2XI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szE4Czje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D07C1E48A;
-	Mon, 18 Aug 2025 13:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC67C31B120;
+	Mon, 18 Aug 2025 12:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524925; cv=none; b=Lb5ScQDurLcpqsFmHMQmbZ7XTwIhjYOGqf8lo2LzD9ulpezkpAO4Y756bkjx8+7kUEV0J+6UAgTilC1Xw04Sejptbnm+44YQa5gRBh8qvv4H2CtA+Qg4Z/FUvF4v4BbuUZYGCQswApnM18ms9WifEpH99Fry9+6IVcaM16BMgMY=
+	t=1755521594; cv=none; b=Hm9cKLIs/P2ltuqD3hYEIfFZZS+1P1YsecBmL9xC02z9HVH9Yn1RfEYZX/KIpWzEjdmuLlZS0PxEwBbvAsGxEceFGtG7gog3ibOSycANDbnI50Hd69JVZ9IgR+bXyFBoeeM7wgtvmiI71maBNIOJTfypYW1C0ZvX8Cj9Rs/xy3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524925; c=relaxed/simple;
-	bh=6eLygwi+eSDNGepirZf7ynWnXNCj770u6caBHR6o5rQ=;
+	s=arc-20240116; t=1755521594; c=relaxed/simple;
+	bh=oqCopS5ao4+4alk2zDMmyE0yzpGiN9Iv4TPq2IVjwCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DV2hZAUPRn2cRG6wMuSXYunA0VgIGJj6Kg7/FVjWHsqp+pCHu3CMvQ8DHeF/+CMlZomEECwa8/FyMOjaIvz4MLm4lRU5Ij7nqYagDGpdQk4l2Zeevpj8yv6T+6en7ZHru4vrwXS6mic+7cJjC1CjT66kKvtABryc+BKNythHyFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sgxr2XI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD66C4CEEB;
-	Mon, 18 Aug 2025 13:48:44 +0000 (UTC)
+	 MIME-Version; b=fe0fwiDDKaupeXqOZ/qb9c8mzEDJOS/zh0sXgMExlVmibMzyG9SkXZNYipXdmrOzCOyFjNQOBq3T7w94E7dDaMPjQ2ZxvlPIsRfVcO13c8AOBjMgVeqwA0zDm+mwzdYJCiIgHiR9y4tn6YO7gGWA3ELo2kEbO0c5BYJD8OlCcvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szE4Czje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABDCC4CEEB;
+	Mon, 18 Aug 2025 12:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524925;
-	bh=6eLygwi+eSDNGepirZf7ynWnXNCj770u6caBHR6o5rQ=;
+	s=korg; t=1755521594;
+	bh=oqCopS5ao4+4alk2zDMmyE0yzpGiN9Iv4TPq2IVjwCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgxr2XI3HwX45W8a4hgqOvUZkrOkN0dqHjbooqS0bEyhBHgb0tGa56IGcXDM1LXGb
-	 aqIwZGGKZVurau0JhcoMQwMU97+Eg3fF8pPxh4Mn6Q85Of20W/8IKyvb5FVLAFyYg/
-	 BRr0HQEYy1/g1/RwmDOrvU16N1ZCEMxcZSbfelQM=
+	b=szE4CzjeGHJf2IW7YgSNGiZBf5Kd1k9BimwYRPC+0TK2aOuDvmyCG5AQpAMaRQWev
+	 B99WfA8lynq2qWOhnVlR+X77a70bhoKi6grFbAf03F2g4o3OLNvs4rHiWVOkoLr3I6
+	 fRmOshCG+U+TfsTS/EY0UX8MsSTdwCTj/CEDA31U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
+	Wenzhi Wang <wenzhi.wang@uwaterloo.ca>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 106/570] md: call del_gendisk in control path
+Subject: [PATCH 6.12 067/444] hfsplus: fix slab-out-of-bounds read in hfsplus_uni2asc()
 Date: Mon, 18 Aug 2025 14:41:33 +0200
-Message-ID: <20250818124509.890618243@linuxfoundation.org>
+Message-ID: <20250818124451.459342641@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,190 +66,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Ni <xni@redhat.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 9e59d609763f70a992a8f3808dabcce60f14eb5c ]
+[ Upstream commit 94458781aee6045bd3d0ad4b80b02886b9e2219b ]
 
-Now del_gendisk and put_disk are called asynchronously in workqueue work.
-The asynchronous way has a problem that the device node can still exist
-after mdadm --stop command returns in a short window. So udev rule can
-open this device node and create the struct mddev in kernel again. So put
-del_gendisk in control path and still leave put_disk in md_kobj_release
-to avoid uaf of gendisk.
+The hfsplus_readdir() method is capable to crash by calling
+hfsplus_uni2asc():
 
-Function del_gendisk can't be called with reconfig_mutex. If it's called
-with reconfig mutex, a deadlock can happen. del_gendisk waits all sysfs
-files access to finish and sysfs file access waits reconfig mutex. So
-put del_gendisk after releasing reconfig mutex.
+[  667.121659][ T9805] ==================================================================
+[  667.122651][ T9805] BUG: KASAN: slab-out-of-bounds in hfsplus_uni2asc+0x902/0xa10
+[  667.123627][ T9805] Read of size 2 at addr ffff88802592f40c by task repro/9805
+[  667.124578][ T9805]
+[  667.124876][ T9805] CPU: 3 UID: 0 PID: 9805 Comm: repro Not tainted 6.16.0-rc3 #1 PREEMPT(full)
+[  667.124886][ T9805] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  667.124890][ T9805] Call Trace:
+[  667.124893][ T9805]  <TASK>
+[  667.124896][ T9805]  dump_stack_lvl+0x10e/0x1f0
+[  667.124911][ T9805]  print_report+0xd0/0x660
+[  667.124920][ T9805]  ? __virt_addr_valid+0x81/0x610
+[  667.124928][ T9805]  ? __phys_addr+0xe8/0x180
+[  667.124934][ T9805]  ? hfsplus_uni2asc+0x902/0xa10
+[  667.124942][ T9805]  kasan_report+0xc6/0x100
+[  667.124950][ T9805]  ? hfsplus_uni2asc+0x902/0xa10
+[  667.124959][ T9805]  hfsplus_uni2asc+0x902/0xa10
+[  667.124966][ T9805]  ? hfsplus_bnode_read+0x14b/0x360
+[  667.124974][ T9805]  hfsplus_readdir+0x845/0xfc0
+[  667.124984][ T9805]  ? __pfx_hfsplus_readdir+0x10/0x10
+[  667.124994][ T9805]  ? stack_trace_save+0x8e/0xc0
+[  667.125008][ T9805]  ? iterate_dir+0x18b/0xb20
+[  667.125015][ T9805]  ? trace_lock_acquire+0x85/0xd0
+[  667.125022][ T9805]  ? lock_acquire+0x30/0x80
+[  667.125029][ T9805]  ? iterate_dir+0x18b/0xb20
+[  667.125037][ T9805]  ? down_read_killable+0x1ed/0x4c0
+[  667.125044][ T9805]  ? putname+0x154/0x1a0
+[  667.125051][ T9805]  ? __pfx_down_read_killable+0x10/0x10
+[  667.125058][ T9805]  ? apparmor_file_permission+0x239/0x3e0
+[  667.125069][ T9805]  iterate_dir+0x296/0xb20
+[  667.125076][ T9805]  __x64_sys_getdents64+0x13c/0x2c0
+[  667.125084][ T9805]  ? __pfx___x64_sys_getdents64+0x10/0x10
+[  667.125091][ T9805]  ? __x64_sys_openat+0x141/0x200
+[  667.125126][ T9805]  ? __pfx_filldir64+0x10/0x10
+[  667.125134][ T9805]  ? do_user_addr_fault+0x7fe/0x12f0
+[  667.125143][ T9805]  do_syscall_64+0xc9/0x480
+[  667.125151][ T9805]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  667.125158][ T9805] RIP: 0033:0x7fa8753b2fc9
+[  667.125164][ T9805] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 48
+[  667.125172][ T9805] RSP: 002b:00007ffe96f8e0f8 EFLAGS: 00000217 ORIG_RAX: 00000000000000d9
+[  667.125181][ T9805] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fa8753b2fc9
+[  667.125185][ T9805] RDX: 0000000000000400 RSI: 00002000000063c0 RDI: 0000000000000004
+[  667.125190][ T9805] RBP: 00007ffe96f8e110 R08: 00007ffe96f8e110 R09: 00007ffe96f8e110
+[  667.125195][ T9805] R10: 0000000000000000 R11: 0000000000000217 R12: 0000556b1e3b4260
+[  667.125199][ T9805] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+[  667.125207][ T9805]  </TASK>
+[  667.125210][ T9805]
+[  667.145632][ T9805] Allocated by task 9805:
+[  667.145991][ T9805]  kasan_save_stack+0x20/0x40
+[  667.146352][ T9805]  kasan_save_track+0x14/0x30
+[  667.146717][ T9805]  __kasan_kmalloc+0xaa/0xb0
+[  667.147065][ T9805]  __kmalloc_noprof+0x205/0x550
+[  667.147448][ T9805]  hfsplus_find_init+0x95/0x1f0
+[  667.147813][ T9805]  hfsplus_readdir+0x220/0xfc0
+[  667.148174][ T9805]  iterate_dir+0x296/0xb20
+[  667.148549][ T9805]  __x64_sys_getdents64+0x13c/0x2c0
+[  667.148937][ T9805]  do_syscall_64+0xc9/0x480
+[  667.149291][ T9805]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  667.149809][ T9805]
+[  667.150030][ T9805] The buggy address belongs to the object at ffff88802592f000
+[  667.150030][ T9805]  which belongs to the cache kmalloc-2k of size 2048
+[  667.151282][ T9805] The buggy address is located 0 bytes to the right of
+[  667.151282][ T9805]  allocated 1036-byte region [ffff88802592f000, ffff88802592f40c)
+[  667.152580][ T9805]
+[  667.152798][ T9805] The buggy address belongs to the physical page:
+[  667.153373][ T9805] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x25928
+[  667.154157][ T9805] head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[  667.154916][ T9805] anon flags: 0xfff00000000040(head|node=0|zone=1|lastcpupid=0x7ff)
+[  667.155631][ T9805] page_type: f5(slab)
+[  667.155997][ T9805] raw: 00fff00000000040 ffff88801b442f00 0000000000000000 dead000000000001
+[  667.156770][ T9805] raw: 0000000000000000 0000000080080008 00000000f5000000 0000000000000000
+[  667.157536][ T9805] head: 00fff00000000040 ffff88801b442f00 0000000000000000 dead000000000001
+[  667.158317][ T9805] head: 0000000000000000 0000000080080008 00000000f5000000 0000000000000000
+[  667.159088][ T9805] head: 00fff00000000003 ffffea0000964a01 00000000ffffffff 00000000ffffffff
+[  667.159865][ T9805] head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+[  667.160643][ T9805] page dumped because: kasan: bad access detected
+[  667.161216][ T9805] page_owner tracks the page as allocated
+[  667.161732][ T9805] page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN9
+[  667.163566][ T9805]  post_alloc_hook+0x1c0/0x230
+[  667.164003][ T9805]  get_page_from_freelist+0xdeb/0x3b30
+[  667.164503][ T9805]  __alloc_frozen_pages_noprof+0x25c/0x2460
+[  667.165040][ T9805]  alloc_pages_mpol+0x1fb/0x550
+[  667.165489][ T9805]  new_slab+0x23b/0x340
+[  667.165872][ T9805]  ___slab_alloc+0xd81/0x1960
+[  667.166313][ T9805]  __slab_alloc.isra.0+0x56/0xb0
+[  667.166767][ T9805]  __kmalloc_cache_noprof+0x255/0x3e0
+[  667.167255][ T9805]  psi_cgroup_alloc+0x52/0x2d0
+[  667.167693][ T9805]  cgroup_mkdir+0x694/0x1210
+[  667.168118][ T9805]  kernfs_iop_mkdir+0x111/0x190
+[  667.168568][ T9805]  vfs_mkdir+0x59b/0x8d0
+[  667.168956][ T9805]  do_mkdirat+0x2ed/0x3d0
+[  667.169353][ T9805]  __x64_sys_mkdir+0xef/0x140
+[  667.169784][ T9805]  do_syscall_64+0xc9/0x480
+[  667.170195][ T9805]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  667.170730][ T9805] page last free pid 1257 tgid 1257 stack trace:
+[  667.171304][ T9805]  __free_frozen_pages+0x80c/0x1250
+[  667.171770][ T9805]  vfree.part.0+0x12b/0xab0
+[  667.172182][ T9805]  delayed_vfree_work+0x93/0xd0
+[  667.172612][ T9805]  process_one_work+0x9b5/0x1b80
+[  667.173067][ T9805]  worker_thread+0x630/0xe60
+[  667.173486][ T9805]  kthread+0x3a8/0x770
+[  667.173857][ T9805]  ret_from_fork+0x517/0x6e0
+[  667.174278][ T9805]  ret_from_fork_asm+0x1a/0x30
+[  667.174703][ T9805]
+[  667.174917][ T9805] Memory state around the buggy address:
+[  667.175411][ T9805]  ffff88802592f300: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[  667.176114][ T9805]  ffff88802592f380: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[  667.176830][ T9805] >ffff88802592f400: 00 04 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  667.177547][ T9805]                       ^
+[  667.177933][ T9805]  ffff88802592f480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  667.178640][ T9805]  ffff88802592f500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  667.179350][ T9805] ==================================================================
 
-But there is still a window that sysfs can be accessed between mddev_unlock
-and del_gendisk. So some actions (add disk, change level, .e.g) can happen
-which lead unexpected results. MD_DELETED is used to resolve this problem.
-MD_DELETED is set before releasing reconfig mutex and it should be checked
-for these sysfs access which need reconfig mutex. For sysfs access which
-don't need reconfig mutex, del_gendisk will wait them to finish.
+The hfsplus_uni2asc() method operates by struct hfsplus_unistr:
 
-But it doesn't need to do this in function mddev_lock_nointr. There are
-ten places that call it.
-* Five of them are in dm raid which we don't need to care. MD_DELETED is
-only used for md raid.
-* stop_sync_thread, md_do_sync and md_start_sync are related sync request,
-and it needs to wait sync thread to finish before stopping an array.
-* md_ioctl: md_open is called before md_ioctl, so ->openers is added. It
-will fail to stop the array. So it doesn't need to check MD_DELETED here
-* md_set_readonly:
-It needs to call mddev_set_closing_and_sync_blockdev when setting readonly
-or read_auto. So it will fail to stop the array too because MD_CLOSING is
-already set.
+struct hfsplus_unistr {
+	__be16 length;
+	hfsplus_unichr unicode[HFSPLUS_MAX_STRLEN];
+} __packed;
 
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Link: https://lore.kernel.org/linux-raid/20250611073108.25463-2-xni@redhat.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+where HFSPLUS_MAX_STRLEN is 255 bytes. The issue happens if length
+of the structure instance has value bigger than 255 (for example,
+65283). In such case, pointer on unicode buffer is going beyond of
+the allocated memory.
+
+The patch fixes the issue by checking the length value of
+hfsplus_unistr instance and using 255 value in the case if length
+value is bigger than HFSPLUS_MAX_STRLEN. Potential reason of such
+situation could be a corruption of Catalog File b-tree's node.
+
+Reported-by: Wenzhi Wang <wenzhi.wang@uwaterloo.ca>
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Reviewed-by: Yangtao Li <frank.li@vivo.com>
+Link: https://lore.kernel.org/r/20250710230830.110500-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 33 +++++++++++++++++++++++----------
- drivers/md/md.h | 26 ++++++++++++++++++++++++--
- 2 files changed, 47 insertions(+), 12 deletions(-)
+ fs/hfsplus/unicode.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 10670c62b09e..c16c7feb6034 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -636,9 +636,6 @@ static void __mddev_put(struct mddev *mddev)
- 	    mddev->ctime || mddev->hold_active)
- 		return;
+diff --git a/fs/hfsplus/unicode.c b/fs/hfsplus/unicode.c
+index 73342c925a4b..36b6cf2a3abb 100644
+--- a/fs/hfsplus/unicode.c
++++ b/fs/hfsplus/unicode.c
+@@ -132,7 +132,14 @@ int hfsplus_uni2asc(struct super_block *sb,
  
--	/* Array is not configured at all, and not held active, so destroy it */
--	set_bit(MD_DELETED, &mddev->flags);
--
- 	/*
- 	 * Call queue_work inside the spinlock so that flush_workqueue() after
- 	 * mddev_find will succeed in waiting for the work to be done.
-@@ -873,6 +870,16 @@ void mddev_unlock(struct mddev *mddev)
- 		kobject_del(&rdev->kobj);
- 		export_rdev(rdev, mddev);
- 	}
+ 	op = astr;
+ 	ip = ustr->unicode;
 +
-+	/* Call del_gendisk after release reconfig_mutex to avoid
-+	 * deadlock (e.g. call del_gendisk under the lock and an
-+	 * access to sysfs files waits the lock)
-+	 * And MD_DELETED is only used for md raid which is set in
-+	 * do_md_stop. dm raid only uses md_stop to stop. So dm raid
-+	 * doesn't need to check MD_DELETED when getting reconfig lock
-+	 */
-+	if (test_bit(MD_DELETED, &mddev->flags))
-+		del_gendisk(mddev->gendisk);
- }
- EXPORT_SYMBOL_GPL(mddev_unlock);
- 
-@@ -5774,19 +5781,30 @@ md_attr_store(struct kobject *kobj, struct attribute *attr,
- 	struct md_sysfs_entry *entry = container_of(attr, struct md_sysfs_entry, attr);
- 	struct mddev *mddev = container_of(kobj, struct mddev, kobj);
- 	ssize_t rv;
-+	struct kernfs_node *kn = NULL;
- 
- 	if (!entry->store)
- 		return -EIO;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
-+
-+	if (entry->store == array_state_store && cmd_match(page, "clear"))
-+		kn = sysfs_break_active_protection(kobj, attr);
-+
- 	spin_lock(&all_mddevs_lock);
- 	if (!mddev_get(mddev)) {
- 		spin_unlock(&all_mddevs_lock);
-+		if (kn)
-+			sysfs_unbreak_active_protection(kn);
- 		return -EBUSY;
- 	}
- 	spin_unlock(&all_mddevs_lock);
- 	rv = entry->store(mddev, page, length);
- 	mddev_put(mddev);
-+
-+	if (kn)
-+		sysfs_unbreak_active_protection(kn);
-+
- 	return rv;
- }
- 
-@@ -5794,12 +5812,6 @@ static void md_kobj_release(struct kobject *ko)
- {
- 	struct mddev *mddev = container_of(ko, struct mddev, kobj);
- 
--	if (mddev->sysfs_state)
--		sysfs_put(mddev->sysfs_state);
--	if (mddev->sysfs_level)
--		sysfs_put(mddev->sysfs_level);
--
--	del_gendisk(mddev->gendisk);
- 	put_disk(mddev->gendisk);
- }
- 
-@@ -6646,8 +6658,9 @@ static int do_md_stop(struct mddev *mddev, int mode)
- 		mddev->bitmap_info.offset = 0;
- 
- 		export_array(mddev);
--
- 		md_clean(mddev);
-+		set_bit(MD_DELETED, &mddev->flags);
-+
- 		if (mddev->hold_active == UNTIL_STOP)
- 			mddev->hold_active = 0;
- 	}
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index d45a9e6ead80..67b365621507 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -700,11 +700,26 @@ static inline bool reshape_interrupted(struct mddev *mddev)
- 
- static inline int __must_check mddev_lock(struct mddev *mddev)
- {
--	return mutex_lock_interruptible(&mddev->reconfig_mutex);
-+	int ret;
-+
-+	ret = mutex_lock_interruptible(&mddev->reconfig_mutex);
-+
-+	/* MD_DELETED is set in do_md_stop with reconfig_mutex.
-+	 * So check it here.
-+	 */
-+	if (!ret && test_bit(MD_DELETED, &mddev->flags)) {
-+		ret = -ENODEV;
-+		mutex_unlock(&mddev->reconfig_mutex);
+ 	ustrlen = be16_to_cpu(ustr->length);
++	if (ustrlen > HFSPLUS_MAX_STRLEN) {
++		ustrlen = HFSPLUS_MAX_STRLEN;
++		pr_err("invalid length %u has been corrected to %d\n",
++			be16_to_cpu(ustr->length), ustrlen);
 +	}
 +
-+	return ret;
- }
- 
- /* Sometimes we need to take the lock in a situation where
-  * failure due to interrupts is not acceptable.
-+ * It doesn't need to check MD_DELETED here, the owner which
-+ * holds the lock here can't be stopped. And all paths can't
-+ * call this function after do_md_stop.
-  */
- static inline void mddev_lock_nointr(struct mddev *mddev)
- {
-@@ -713,7 +728,14 @@ static inline void mddev_lock_nointr(struct mddev *mddev)
- 
- static inline int mddev_trylock(struct mddev *mddev)
- {
--	return mutex_trylock(&mddev->reconfig_mutex);
-+	int ret;
-+
-+	ret = mutex_trylock(&mddev->reconfig_mutex);
-+	if (!ret && test_bit(MD_DELETED, &mddev->flags)) {
-+		ret = -ENODEV;
-+		mutex_unlock(&mddev->reconfig_mutex);
-+	}
-+	return ret;
- }
- extern void mddev_unlock(struct mddev *mddev);
- 
+ 	len = *len_p;
+ 	ce1 = NULL;
+ 	compose = !test_bit(HFSPLUS_SB_NODECOMPOSE, &HFSPLUS_SB(sb)->flags);
 -- 
 2.39.5
 
