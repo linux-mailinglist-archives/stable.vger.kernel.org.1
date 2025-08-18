@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-170295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A83B2A3D3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7A2B2A66F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1893E5631CA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77B321B624B8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8721612DDA1;
-	Mon, 18 Aug 2025 13:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5FE22AE7A;
+	Mon, 18 Aug 2025 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7Nv8U1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzyaX3Nz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457343074AE;
-	Mon, 18 Aug 2025 13:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE2D3218B2;
+	Mon, 18 Aug 2025 13:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522173; cv=none; b=O8zR2ocyIZ7SDJzgJf4Uo/GoeXP7WKwaHpN5Ci04EdfuElYaQiU3aYNVtmJLVLtpY7bGLlNRXaPTtBYYbjuKU/BDaT2d5Xq4q9bMyUe9bO323ryHeVmKwGPt7O1moYLwQo/HQl6RkYFlzYn0KsKa6qoGZkDB41ZneILGNfbGYvs=
+	t=1755523803; cv=none; b=hzhoZYifvQW7mOnfkv061x9TRZVdz+PwXKoBSkCpX7nq96SVCc76So7pjYPUe+s6v20fbGcZoDAV6jFrX/Q4SD7F4alHu5VMG9+Qv3ulC0g8vTE9C/wORVwtn7g55KSWattqStfXQ5yK+HEGFT3Lm5ubxqjbQt+17eSaajzSvGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522173; c=relaxed/simple;
-	bh=HWFYFjO2lBCaOeVG+J/R6ofmHHPGZnw5fclJrEdLvaY=;
+	s=arc-20240116; t=1755523803; c=relaxed/simple;
+	bh=wBQ6ZqhRNFestYz7m0GIo6LJroZgr8fkbTvIsfuc69E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBEI4W3yQwM1ONS64dWpLuwfllYEjUz335fy70G2TIiA0Qof3RtKoraBmrQAa66iNi26k5TG5/A6Tv3XdiMY8N10EvHdYekPUAmy2JlyqKQzUpyv94hSyjDNKXPcxPmcXkFvhNZ7mVu1va9gt4fUOsi6BgsR57SOa0XmlnfXCgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7Nv8U1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C119DC4CEEB;
-	Mon, 18 Aug 2025 13:02:52 +0000 (UTC)
+	 MIME-Version; b=FxUl6JkuDoeUMlPfodoD4PNm0MPmN54Kc+/ruwcVrwEUhl6LMCNZuIxrVZrvUboAzPeC1+dkYqFSQpS87Jx5qDV/GDxC41gvZ+xKYX41ndG7J41nSy3tIcPLDwRMyBZUcJib5wNyENdaCyGHZRZrSUFdtwXBiejIWDBu0zcBgC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzyaX3Nz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FAFC4CEEB;
+	Mon, 18 Aug 2025 13:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522173;
-	bh=HWFYFjO2lBCaOeVG+J/R6ofmHHPGZnw5fclJrEdLvaY=;
+	s=korg; t=1755523803;
+	bh=wBQ6ZqhRNFestYz7m0GIo6LJroZgr8fkbTvIsfuc69E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u7Nv8U1FBe9bWqg1N0tMHHNgZ6byqmxeqqVfr3ndu91l/QidWWqzJBg6ek+Da7ejh
-	 HMbfCBza/oK04zLxj/K91nft8/zTgHuEIpLoFNxLznK8KnX15jDt1OxbYstz947S+H
-	 NwQnhG0Hj3OX0eRVaZ9xq75mtdkX1NfkMrLBM9q4=
+	b=tzyaX3Nz7uvknq/fPmGrzmElK2hA9Bt+ktT9LGkSnVZUe3kNPdjx4wakqnhUCrlHl
+	 bMww70vVLGbzuMuOZA5RsRiixBCIpeJ3Dajt85x/gp+Xa2762f6J2HHXi1YrSOU9Kc
+	 jqWYTi5b4Bt0fXZ9A9WgHE9b29auQ1N8uy1RQlEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Hari Chandrakanthan <quic_haric@quicinc.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
 	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/444] wifi: ath12k: Decrement TID on RX peer frag setup error handling
+Subject: [PATCH 6.15 277/515] wifi: ath12k: Fix station association with MBSSID Non-TX BSS
 Date: Mon, 18 Aug 2025 14:44:23 +0200
-Message-ID: <20250818124457.718932761@linuxfoundation.org>
+Message-ID: <20250818124509.093215196@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+From: Hari Chandrakanthan <quic_haric@quicinc.com>
 
-[ Upstream commit 7c0884fcd2ddde0544d2e77f297ae461e1f53f58 ]
+[ Upstream commit 70eeacc1a92a444f4b5777ab19e1c378a5edc8dd ]
 
-Currently, TID is not decremented before peer cleanup, during error
-handling path of ath12k_dp_rx_peer_frag_setup(). This could lead to
-out-of-bounds access in peer->rx_tid[].
+ath12k station is unable to associate with non-transmitting BSSes
+in a Multiple BSS set because the user-space does not receive
+information about the non-transmitting BSSes from mac80211's
+scan results.
 
-Hence, add a decrement operation for TID, before peer cleanup to
-ensures proper cleanup and prevents out-of-bounds access issues when
-the RX peer frag setup fails.
+The ath12k driver does not advertise its MBSSID capability to mac80211,
+resulting in wiphy->support_mbssid not being set. Consequently, the
+information about non-transmitting BSS is not parsed from received
+Beacon/Probe response frames and is therefore not included in the
+scan results.
 
-Found during code review. Compile tested only.
+Fix this by advertising the MBSSID capability of ath12k driver to
+mac80211.
 
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250526034713.712592-1-quic_sarishar@quicinc.com
+Link: https://patch.msgid.link/20250530035615.3178480-2-rameshkumar.sundaram@oss.qualcomm.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c | 1 +
+ drivers/net/wireless/ath/ath12k/mac.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index cfb17f16b081..3244f7c3ca4f 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -79,6 +79,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
- 	ret = ath12k_dp_rx_peer_frag_setup(ar, addr, vdev_id);
- 	if (ret) {
- 		ath12k_warn(ab, "failed to setup rx defrag context\n");
-+		tid--;
- 		goto peer_clean;
- 	}
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 029376c57496..cb0232113f5f 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -11337,6 +11337,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
  
+ 	wiphy->mbssid_max_interfaces = mbssid_max_interfaces;
+ 	wiphy->ema_max_profile_periodicity = TARGET_EMA_MAX_PROFILE_PERIOD;
++	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
+ 
+ 	if (is_6ghz) {
+ 		wiphy_ext_feature_set(wiphy,
 -- 
 2.39.5
 
