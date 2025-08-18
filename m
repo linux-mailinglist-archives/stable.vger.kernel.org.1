@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24F2B2A494
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48198B2A750
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34E72624CE2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECE71B60441
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA2231CA6E;
-	Mon, 18 Aug 2025 13:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3876132145C;
+	Mon, 18 Aug 2025 13:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fOZJ1acH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMxz2xhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B7427A44A;
-	Mon, 18 Aug 2025 13:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE54021CC55;
+	Mon, 18 Aug 2025 13:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522897; cv=none; b=IR9r0o0Tk11U08Kqk/v8B1sIekHAUv1e1fNG+li5Z7UE2/D58+1TKAaLST6NKBGqBeNsB5+Fm+YX3cnKRdrQKeRnVUKB2WCaxt9i2cjlo9J1TGn8vJGhBdrDROIxOCtmo2uVXHLVQydGMl1xWg7tn/q5Fksczrh55h+UcPq5ZIM=
+	t=1755524610; cv=none; b=UNCduROlUXnqRy2uPt25FGWCk9LjAvoOPL+X4YPc8XK485TImIe9DuKseuaF9Yq2ZKYrOCO1m93KPN9bbbQkqnG/WSP62Vvr/5owGxh5+dYebCuA+GWidT101xprDzygPsseeDI3D/QTR+qWKhIi2Gpbn6BQ9nYNC4s9ndOyvLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522897; c=relaxed/simple;
-	bh=ZMPO9zWuact3TxBCHK05anKduXBC2UolYuoD8Dfb0qc=;
+	s=arc-20240116; t=1755524610; c=relaxed/simple;
+	bh=uBqSiWFj2r5/nIHhkAghlzJuM0XMHyeq2G2hsAv9xYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qeabg7Bl9YfwBePHgkVUvg6Q4RsiP+juUSz6TOwNRU4X1YIyir5WHyRVjdbzIRMd8M/12D32bIpLlw64IJTahYNlcfyhA2rQk2DloIqkO4ew1tuJpAyu/ey1QrnZD2FIIHP8uhIim2eHPdpPH1DuMqmbLe9rRMC+fX8FUJ5ek3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fOZJ1acH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9C6C4CEEB;
-	Mon, 18 Aug 2025 13:14:56 +0000 (UTC)
+	 MIME-Version; b=VkAmign06A71EtKt3pn2LUqdxtO1OZyNKmNuuJ/0ZAopWGNkcS4teQUpsKmnmLPkdZnFDbmjogzM5rgajdZJTVAiyDhXnlRfth55MO4sHKWiXBFEikM5NdHUk586EqFnqpO+0XywIE5c8cRWnR3jWREt/McBcKQT2aufwJHDKzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMxz2xhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8C9C4CEEB;
+	Mon, 18 Aug 2025 13:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522896;
-	bh=ZMPO9zWuact3TxBCHK05anKduXBC2UolYuoD8Dfb0qc=;
+	s=korg; t=1755524610;
+	bh=uBqSiWFj2r5/nIHhkAghlzJuM0XMHyeq2G2hsAv9xYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOZJ1acHpA4I3wpwj+jbOXaHcKdYJLDscDOU2/m1z01ek6nawVBEZ07eGN2t+C1dk
-	 Y2MNDkdFse2HTpGwa7FN8BqSkGxJxogsDqfG/E9otgX6oycQ+DVjlpjjcUG1kTQnH2
-	 XM/kL/6zuL9dppCkfRKbAmwuhEUVUfDJJQuv9fo0=
+	b=BMxz2xhG6V3seJFTEGxhDY6BqpSdFY6ByLUsqt2rIfExc7ktccJ/JZzOi3mLZP1X6
+	 PKAxKJHOYeh4roi55wDLhnzKSQsgVFVAz2Qlu1tsLF67JemxKE00fqyHDsx4AowE4U
+	 ML+RjvW0624Tcy6866C5lhBDQqICe2+Ea9ZmRh2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pavel Begunkov <asml.silence@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 001/515] io_uring: dont use int for ABI
-Date: Mon, 18 Aug 2025 14:39:47 +0200
-Message-ID: <20250818124458.395360436@linuxfoundation.org>
+Subject: [PATCH 6.16 001/570] io_uring: dont use int for ABI
+Date: Mon, 18 Aug 2025 14:39:48 +0200
+Message-ID: <20250818124505.845116922@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
