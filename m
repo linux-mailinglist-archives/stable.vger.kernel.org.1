@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2268DB2A532
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B05FDB2A7B9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AF99580606
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5938E588037
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7987322557;
-	Mon, 18 Aug 2025 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE92335BD4;
+	Mon, 18 Aug 2025 13:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukHWDEpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez8J/5tL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BBE320CDB;
-	Mon, 18 Aug 2025 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B55B335BA3;
+	Mon, 18 Aug 2025 13:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523096; cv=none; b=AAuskx023Ousn+XNJQoP+IoBVDQmmEXR+azNCKLBB0EdLdXa1jaNcW9u4VpmawKeZhFDKrxToaL5KPOhUCcAs72HruiOPzuTkvItQFUvezKLxhnnv49c3cKfwBF/cLMUn+XgmosuOGFnbScNh7gIdz0dmEvZV/IcOLZv3nm4ULo=
+	t=1755524909; cv=none; b=hHlixQHbfmlFvD135rpWtRMqN5I1lMFh9H1SQucERjhtI03VwqvyfQKy9wyiVy35UfR4W+h1Kb4VdEQcEdYbAEbz0bWnAO94VZKXJlAQX3x6DPrWQd0XayOhzJ7cepR5JaE/B0bLj3HXiwpLXFY7h7firbTdl+e7ZDjJkV07hAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523096; c=relaxed/simple;
-	bh=k9R5dw89WnMdRXi1D3XsR0HuyWVts8VVe+Bk5xo2olw=;
+	s=arc-20240116; t=1755524909; c=relaxed/simple;
+	bh=qzdtJziQ2GXhffLAzPKDDZcc5prK5BliasrvIT7zUPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThT8HbIuRpKE9pkxUmWap84mcn5XEb5dMgNLLPB92Rgilt5SChSvXZYTNyCNLMb70LwBvOHdsZTXzVLN3J4huVr4WkVfp8xFQCej50zyDG2PXJgC5+tNo83yJWKbX5nJL20TpOnyvr7dZVRgy+OiCLGbY4QRtqIBNGaIpXvtgJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukHWDEpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25206C113D0;
-	Mon, 18 Aug 2025 13:18:15 +0000 (UTC)
+	 MIME-Version; b=pXOR4XBN3puEeCNPz9y0Wv3V3VP5v9zzv3gdijIGEiA2vmM6Ryl/DZaZ4GzrE2uZ3qbCoP7EfZlb3btDCXIGtAmQObCxJm0PWOxvmIKf0Hf6dLpxaSLRGv/xj2RNEi4sJ0mkwGc5QYqfa0YhxINqmJ6nKmKCki13lRKiRVKX0hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ez8J/5tL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74A8C4CEEB;
+	Mon, 18 Aug 2025 13:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523096;
-	bh=k9R5dw89WnMdRXi1D3XsR0HuyWVts8VVe+Bk5xo2olw=;
+	s=korg; t=1755524909;
+	bh=qzdtJziQ2GXhffLAzPKDDZcc5prK5BliasrvIT7zUPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukHWDEpO+UjWN3hFSMJ1syRTDGari92/WmUehAgxQKYf4uBsLCbQxmEBa7W1UdzAj
-	 kw0qgzdcW0ybrm92Gffhfy6Qdg4A85w9kKXXE1pGfGiajwwf9aCP45kty2vNK+E6C0
-	 0LzyLwyhMe13M0Zo/+GMGZBG9mQ3hrZyYkVGTJu8=
+	b=ez8J/5tLXzWNNucBEIpY5sy7Qrue7XuarvX0GSF2vq49q3qAyRxPo/3OMSTcV6YuB
+	 IzEcjolX+3sZipfO4pVJlc3B5WSDJOuN1fJFknTkDuYu4gW9GqrIBg0C03dhl4S8ov
+	 13d+fgXbTMJRty3BWjjmHpaHTDmRO2n5TbqacNf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 069/515] erofs: fix block count report when 48-bit layout is on
+Subject: [PATCH 6.16 068/570] net: hibmcge: fix the division by zero issue
 Date: Mon, 18 Aug 2025 14:40:55 +0200
-Message-ID: <20250818124501.051577161@linuxfoundation.org>
+Message-ID: <20250818124508.432341812@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 0b96d9bed324a1c1b7d02bfb9596351ef178428d ]
+[ Upstream commit 7004b26f0b64331143eb0b312e77a357a11427ce ]
 
-Fix incorrect shift order when combining the 48-bit block count.
+When the network port is down, the queue is released, and ring->len is 0.
+In debugfs, hbg_get_queue_used_num() will be called,
+which may lead to a division by zero issue.
 
-Fixes: 2e1473d5195f ("erofs: implement 48-bit block addressing for unencoded inodes")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250807082019.3093539-1-hsiangkao@linux.alibaba.com
+This patch adds a check, if ring->len is 0,
+hbg_get_queue_used_num() directly returns 0.
+
+Fixes: 40735e7543f9 ("net: hibmcge: Implement .ndo_start_xmit function")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/super.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index 6e57b9cc6ed2..cfe454dbf415 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -313,8 +313,8 @@ static int erofs_read_superblock(struct super_block *sb)
- 	sbi->islotbits = ilog2(sizeof(struct erofs_inode_compact));
- 	if (erofs_sb_has_48bit(sbi) && dsb->rootnid_8b) {
- 		sbi->root_nid = le64_to_cpu(dsb->rootnid_8b);
--		sbi->dif0.blocks = (sbi->dif0.blocks << 32) |
--				le16_to_cpu(dsb->rb.blocks_hi);
-+		sbi->dif0.blocks = sbi->dif0.blocks |
-+				((u64)le16_to_cpu(dsb->rb.blocks_hi) << 32);
- 	} else {
- 		sbi->root_nid = le16_to_cpu(dsb->rb.rootnid_2b);
- 	}
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
+index 2883a5899ae2..8b6110599e10 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
+@@ -29,7 +29,12 @@ static inline bool hbg_fifo_is_full(struct hbg_priv *priv, enum hbg_dir dir)
+ 
+ static inline u32 hbg_get_queue_used_num(struct hbg_ring *ring)
+ {
+-	return (ring->ntu + ring->len - ring->ntc) % ring->len;
++	u32 len = READ_ONCE(ring->len);
++
++	if (!len)
++		return 0;
++
++	return (READ_ONCE(ring->ntu) + len - READ_ONCE(ring->ntc)) % len;
+ }
+ 
+ netdev_tx_t hbg_net_start_xmit(struct sk_buff *skb, struct net_device *netdev);
 -- 
 2.50.1
 
