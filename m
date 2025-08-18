@@ -1,128 +1,113 @@
-Return-Path: <stable+bounces-169918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD32B298DD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:24:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0ED8B29920
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9C0D7A5606
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:22:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DB412060AE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4724F26561D;
-	Mon, 18 Aug 2025 05:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6C7270ED2;
+	Mon, 18 Aug 2025 05:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PXxm8rsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJ4TIkY+"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D5821770C
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 05:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A11272E68
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 05:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755494656; cv=none; b=f8UUTXS+qbKFDHYzYDzD+Gm8HCvcd9F8ZhldQh07Y3hakcEO5VWtos+pCLQ752IucwCAmLjVl5Jm25oyUQu6zDE84bnJgVRajifjT2RQ22zIfaOBKu6ozIN71V9bT+7pTo1UtNG6PdmBNBgSdmEcvfJf7hxWn8VqI+FA/TTT1j8=
+	t=1755496330; cv=none; b=nn9UuoGnDfMxAVgx8t/juXv7+7ecyTHde989YJKEDOGGsHwnxr/iVn0e9CqYVm951LEK5jm5Z1gZS6TOCXOCI/xAuv2+K+cd+0bTghqsGMJ/VQBE+nadhWUsIB52cOfDK4aC7TMESA+682ywU+WFtChh8ITSDv6gPEt6ufYXLn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755494656; c=relaxed/simple;
-	bh=8wiTb8fNRCyJIgqWCW1b/sRAjqR2MPIo8lU+lkseZwo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wgbbkf65RF8RFMg+nwYyr1UFs266nWu4rjPlGPApDYsAFv/V7FUyfHvhw/1kLLTxz2EUC9tQWVkKEGMVcPkZ88ZA0gWzaN7tmbJ1S+EBjkLBPyezS5QUFMBLtuWQ5oyN8OUdvcKix4H8wK8KoFX2Yo1kThQQUY+AGjwEz+rh8ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PXxm8rsX; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.95.64.75] (unknown [167.220.238.11])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4955A2054677;
-	Sun, 17 Aug 2025 22:24:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4955A2054677
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1755494653;
-	bh=w32BJLaKNHTQrrElu97ALQTnN3hLaYFd8VqACkOW/7c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PXxm8rsXcylV2Dq1hm91H6anT1vqFiJM4T8mFAgoD0D2ty6CKE9vDNLiWXLgNuiVP
-	 aGKu66s6oJGc3TTFB+VYZS9PcMQx9UpVt1+P5zteza2qgoi2FGAKjegi85f/kZpJAp
-	 SAsUTHs/an7JrVn+NR4aFPAYc+itFaDk9WCNBNkA=
-Message-ID: <08158da3-82a0-4eb0-a805-87afe34e288a@linux.microsoft.com>
-Date: Mon, 18 Aug 2025 10:54:10 +0530
+	s=arc-20240116; t=1755496330; c=relaxed/simple;
+	bh=5CKsuQdGTLRS/tKuMHAv/0cXQVwl3bhT4nd9GOJbh8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TzJA0FqKmLIwM5YMnkVN7aL3cv0rM7eOd9ZdI86Rbk7AegxcmlgIUocetTW2fTiCvguhdOcMZzhnTrEdxyVT6cGZb8+KbViPI47EfupA6/y7jqq/FbfebFKovKLgAzuaD9ZP7kTYr7k7tWzeD9Yy75HWKJJv9/fI5uE0d92Go/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJ4TIkY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1FFC19423;
+	Mon, 18 Aug 2025 05:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755496329;
+	bh=5CKsuQdGTLRS/tKuMHAv/0cXQVwl3bhT4nd9GOJbh8M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WJ4TIkY+c97g1rHdbr1/jakbM1GTUkpK5oUI/kZb4Aj1fMLNQ7L3XB6Tg0lnvn2Ty
+	 qdNCE2XVA77BClfRZksuFiLg1rNqCg2Alp+MmzqJ/Ws3YxgfC8lCf0Ng125Z4bYxRb
+	 TDXycZiu1C35gCfOup7TfgC0omwO8erahKvLM8+Y=
+Date: Mon, 18 Aug 2025 07:52:06 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Chuck Lever <cel@kernel.org>
+Subject: Re: queue/5.15 kernel build failure
+Message-ID: <2025081837-rascal-unsafe-d1e1@gregkh>
+References: <1f29bdc8-986c-4765-ba82-9d7ca2181968@oracle.com>
+ <aKI1SJ6YrFiQpR9o@laps>
+ <caef2fc2-8e80-4fc8-9e88-f5d030542534@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
- size of ring buffer
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Saurabh Sengar <ssengar@linux.microsoft.com>, Long Li
- <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Naman Jain <namjain@linux.microsoft.com>
-References: <20250722134340.596340262@linuxfoundation.org>
- <20250722134341.490321531@linuxfoundation.org>
- <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
- <2025072316-mop-manhood-b63e@gregkh>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <2025072316-mop-manhood-b63e@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <caef2fc2-8e80-4fc8-9e88-f5d030542534@oracle.com>
 
-
-
-On 7/23/2025 12:12 PM, Greg Kroah-Hartman wrote:
-> On Tue, Jul 22, 2025 at 08:29:07PM +0530, Naman Jain wrote:
->>
->>
->> On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
->>> 6.12-stable review patch.  If anyone has any objections, please let me know.
->>>
->>> ------------------
->>>
->>> From: Naman Jain <namjain@linux.microsoft.com>
->>>
->>> commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
->>>
->>> Size of ring buffer, as defined in uio_hv_generic driver, is no longer
->>> fixed to 16 KB. This creates a problem in fcopy, since this size was
->>> hardcoded. With the change in place to make ring sysfs node actually
->>> reflect the size of underlying ring buffer, it is safe to get the size
->>> of ring sysfs file and use it for ring buffer size in fcopy daemon.
->>> Fix the issue of disparity in ring buffer size, by making it dynamic
->>> in fcopy uio daemon.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
->>> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
->>> Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
->>> Reviewed-by: Long Li <longli@microsoft.com>
->>> Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
->>> Signed-off-by: Wei Liu <wei.liu@kernel.org>
->>> Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
->>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> ---
->>
->>
->> Hello Greg,
->> Please don't pick this change yet. I have shared the reason in the other
->> thread:
->> "Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring buffer"
->> has been added to the 6.12-stable tree"
+On Sun, Aug 17, 2025 at 04:05:18PM -0400, Chuck Lever wrote:
+> On 8/17/25 4:02 PM, Sasha Levin wrote:
+> > On Sun, Aug 17, 2025 at 01:11:14PM -0400, Chuck Lever wrote:
+> >> Hi-
+> >>
+> >> Building on RHEL 9.6, I encountered this build failure:
+> >>
+> >> arch/x86/kernel/smp.o: warning: objtool: fred_sysvec_reboot()+0x52:
+> >> unreachable instruction
+> >> drivers/gpu/drm/vmwgfx/vmwgfx_msg.o: warning: objtool:
+> >> vmw_port_hb_out()+0xbf: stack state mismatch: cfa1=5+16 cfa2=4+8
+> >> drivers/gpu/drm/vmwgfx/vmwgfx_msg.o: warning: objtool:
+> >> vmw_port_hb_in()+0xb4: stack state mismatch: cfa1=5+16 cfa2=4+8
+> >> drivers/vfio/vfio_iommu_type1.c: In function ‘vfio_pin_pages_remote’:
+> >> drivers/vfio/vfio_iommu_type1.c:707:25: error: ISO C90 forbids mixed
+> >> declarations and code [-Werror=declaration-after-statement]
+> >>  707 |                         long req_pages = min_t(long, npage,
+> >> batch->capacity);
+> >>      |                         ^~~~
+> >> cc1: all warnings being treated as errors
+> >> gmake[2]: *** [scripts/Makefile.build:289:
+> >> drivers/vfio/vfio_iommu_type1.o] Error 1
+> >> gmake[1]: *** [scripts/Makefile.build:552: drivers/vfio] Error 2
+> >> gmake[1]: *** Waiting for unfinished jobs....
+> >> gmake: *** [Makefile:1926: drivers] Error 2
+> >>
+> >> Appears to be due to:
+> >>
+> >> commit 5c87f3aff907e72fa6759c9dc66eb609dec1815c
+> > 
+> > I've dropped this, thanks for the report.
+> > 
+> > It's a bit funny - my version of gcc treats it as a warning, and it
+> > actually
+> > gives me quite a few mote "mixed decrlataions" warnings in the 5.15
+> > allmodconfig build.
+> > 
+> > Compilers are hard :)
+> > 
 > 
-> Ok, I have dropped this from the 6.12.y tree now.
-> 
-> thanks,
-> 
-> greg k-h
+> Additional context: I copied the RHEL 9.6 /boot/config to do the build.
+> I think Red Hat likes to keep the "treat warnings as errors" setting
+> enabled in their builds.
 
-Hello Greg,
-Can you please consider picking this change for next release of 6.12 
-kernel. The dependent change [1] is now part of 6.12 kernel, so we need 
-this change to fix fcopy in 6.12 kernel.
+It's a good warning to have, 'allmodconfig' enables it, and so my builds
+show these as failures too, so you aren't alone.
 
-[1]: Drivers: hv: Make the sysfs node size for the ring buffer dynamic
+thanks for pointing it out.
 
-Please let me know if you want me to send a patch for back-port separately.
-
-Regards,
-Naman
-
+greg k-h
 
