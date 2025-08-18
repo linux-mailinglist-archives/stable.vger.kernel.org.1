@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6022DB2A36B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E3FB2A633
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 554514E7392
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48E2B7AA8FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99E431E108;
-	Mon, 18 Aug 2025 13:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52944335BBE;
+	Mon, 18 Aug 2025 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMJsPB2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OckEcrXb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9537831E0FE;
-	Mon, 18 Aug 2025 13:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1164C335BA1;
+	Mon, 18 Aug 2025 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522216; cv=none; b=rMSCkjpaAMymrY+3xRyDU+27s6OUzAUHKOSBzZKtkznOqO8bjeKCp9WWkpa6kmIj6vqSfFUveLrrbXmuFfURj8V7KaTUHlNXTlGJ+VH3RdeNLLxjQKV/9kRMtBnEh5FOru0FU0fbaNHEFuKhOxdCyzERxaWjM0//YdfC9cngHII=
+	t=1755523980; cv=none; b=jU2u1aEXjLU9rcGKfpKwTJJYwAEjdVTZwWua3U7U5xXSLGEmYHFve44PwygFjyUztHgCSKbv1TwjUvafu9BTTyWLO3rbQ0cvU8vnrsopxH2YrMY9OdYR/BVwutHJLxKKY9eyLa2q4wS1E/QtOjTcyTpZcAnCTJlI1wbyBHWJwB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522216; c=relaxed/simple;
-	bh=6xy+AKv1DbFl2sJUD8fEdcj0KODhR17Yd7BrWIteH78=;
+	s=arc-20240116; t=1755523980; c=relaxed/simple;
+	bh=ZXtMayDGtzxU2wtDl391l/ZnqiEw6qUumHAK0rwDGvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nTThJIg7fDpjcWO8XulZu1fTt8vsASAMNcOiCqD8hu77P+8QhuZcdqY5xI4mGOKLzLVUX+jp+2aAivI2Nu8kRbAum2NWi5sNINEGVxEhzN+kOmJfXRXnJbpTgZR5N9WpG+U37+y/UOcFr3dc3tF9WdDmv21J6gR3RkBZoLRc0us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMJsPB2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0422FC116D0;
-	Mon, 18 Aug 2025 13:03:35 +0000 (UTC)
+	 MIME-Version; b=i0Qdxqq8zUTrzbLiPjZWDvW0z60JhXzBP9JV/6d0Z4dVAqadcLnCi+90zF1WZ989XM6UIEYlKmx5iZFOQTGN/RVKA00yzm/0Jss0q7jdilJwn/GXtqvLd0q9CoRlGTor5/51bYjiLgYh8JbsYduGMoeRr9Gdx5IdUhwpJzoXGzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OckEcrXb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732B1C4CEEB;
+	Mon, 18 Aug 2025 13:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522216;
-	bh=6xy+AKv1DbFl2sJUD8fEdcj0KODhR17Yd7BrWIteH78=;
+	s=korg; t=1755523979;
+	bh=ZXtMayDGtzxU2wtDl391l/ZnqiEw6qUumHAK0rwDGvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMJsPB2Y9Y4Aur+Jqbvce03xJS68f0unawCw6MS0ea7Kr0imTvIzpkN5BxLcWcOVv
-	 Jo3Vu7iLiCzS5cNALiprh7X1SON4N+JL2uoT/eImceDerALEATZEPiQVqdMRju5tKK
-	 J554E1kYrVrrvF1LboL2bbE2HPStdQpaHFkxrzEM=
+	b=OckEcrXb6qYjn6XMuGrcZiOKAwpGfc+zGpG+fwOJtKXdLDNY+mdFNc6zYkTOIaETl
+	 HAKMQ3wk76PeesOnGiUY/y2aa9oaNGIAJELTLq6X/rYETfhpZwsiCF8ZtS5y3KlzsY
+	 GioEQmKc6HG+wLObPGTfmWX6jrGyfzzQznjcOXUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/444] net: dsa: b53: fix b53_imp_vlan_setup for BCM5325
+Subject: [PATCH 6.15 289/515] wifi: ath12k: Enable REO queue lookup table feature on QCN9274 hw2.0
 Date: Mon, 18 Aug 2025 14:44:35 +0200
-Message-ID: <20250818124458.160320915@linuxfoundation.org>
+Message-ID: <20250818124509.537565841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 
-[ Upstream commit c00df1018791185ea398f78af415a2a0aaa0c79c ]
+[ Upstream commit b79742b84e16e41c4a09f3126436f39f36e75c06 ]
 
-CPU port should be B53_CPU_PORT instead of B53_CPU_PORT_25 for
-B53_PVLAN_PORT_MASK register.
+The commit 89ac53e96217 ("wifi: ath12k: Enable REO queue lookup table
+feature on QCN9274") originally intended to enable the reoq_lut_support
+hardware parameter flag for both QCN9274 hw1.0 and hw2.0. However,
+it enabled it only for QCN9274 hw1.0.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-14-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Hence, enable REO queue lookup table feature on QCN9274 hw2.0.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250609-qcn9274-reoq-v1-1-a92c91abc9b9@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/ath/ath12k/hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index eacd7c325530..fef265521e8a 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -527,6 +527,10 @@ void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
- 	unsigned int i;
- 	u16 pvlan;
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+index a5fa3b6a831a..e0e766a0b6d6 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.c
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -1090,7 +1090,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 		.download_calib = true,
+ 		.supports_suspend = false,
+ 		.tcl_ring_retry = true,
+-		.reoq_lut_support = false,
++		.reoq_lut_support = true,
+ 		.supports_shadow_regs = false,
  
-+	/* BCM5325 CPU port is at 8 */
-+	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
-+		cpu_port = B53_CPU_PORT;
-+
- 	/* Enable the IMP port to be in the same VLAN as the other ports
- 	 * on a per-port basis such that we only have Port i and IMP in
- 	 * the same VLAN.
+ 		.num_tcl_banks = 48,
 -- 
 2.39.5
 
