@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-171053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB74EB2A801
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABB9B2A4FA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7108189DD4C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C98661BA15A9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7819C320CD2;
-	Mon, 18 Aug 2025 13:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78077342C8E;
+	Mon, 18 Aug 2025 13:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWZouown"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leI2djG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A2C320CC3;
-	Mon, 18 Aug 2025 13:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A35342C85;
+	Mon, 18 Aug 2025 13:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524664; cv=none; b=Ei0SrfKaj/4SJHhQ5GKt+Gj94+11orPpgqUROb8WpYne/oEfTq2V2ZldlHBMx8AHiJASUtP+iuZtFQYYdNpefYzxJPa5vL0Wfe8WvQ0i6BbrBQ/KpEPcpvFuuKWpKKr21jfPFwC9X+xi0M5vjajHEdOftU5kTlU5akkdnI5tmvs=
+	t=1755522954; cv=none; b=MHyTkYGpKo+eI7ZRj2kkihNKuuBmLjeCOekOr0LWwO8mfT7/8z7Kr4fqpYAr3HTIryouaWFNLmqDEm0m9dRh7swRuk32xydaEbC0SBQNRezeyj6kQdEGTNfGbN6zeTEpp4THCUs6AcDvVLMoQTOcSb49pSM/k13IiRDyPwxfhNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524664; c=relaxed/simple;
-	bh=H9Cb2HatwdVMhYZOeAZgrSMw7ZyNu508FySmvQ+cokk=;
+	s=arc-20240116; t=1755522954; c=relaxed/simple;
+	bh=7Tgk9yaMZVf/ogzHy+QRAoxnvrMPx7NoIbA7JoViHxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfW1uSCO0ye2qoWas0za2NH/U0Sw5FeNvccJogIJVOmJAIrk43ANCohiNzyODwU3pnXgl7vwb9Zq6LgcOy+eErduTD+tudBE5tUxpg/KHXEwkACJcCe0fGRKuKQKtqkK7xg5G5ujqXGZvWEKjGMCV9TO7o6DcR4rci3dMSdDmG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWZouown; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97419C4CEF1;
-	Mon, 18 Aug 2025 13:44:23 +0000 (UTC)
+	 MIME-Version; b=ebTUq2/66FycrQzBm41/P+zdOM5L2XQw4HnP/1oe4cXNfgyyK6q6s8XIQcypwfEor2zpJQDQSJU4Ts6OAA79KT2s1wFQGMY/razakwgKX6qSEWLPT4VYT7/qYV5Rv7ROYbFpxzZMNHyS42Ncj1vl0bbzHGp4MH7G3GCm+ml2YBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leI2djG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629E2C4CEEB;
+	Mon, 18 Aug 2025 13:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524664;
-	bh=H9Cb2HatwdVMhYZOeAZgrSMw7ZyNu508FySmvQ+cokk=;
+	s=korg; t=1755522953;
+	bh=7Tgk9yaMZVf/ogzHy+QRAoxnvrMPx7NoIbA7JoViHxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IWZouownD51cNtCOSr4xt3GJkaELUUYsOOeL4aVn16BmNmU4Hgk2vvQd2EfAVQFXY
-	 GON/VU/uwowo6QGRHz65G/k5NnHmO0+u/jPL71lVMPUPJlcHDOW1ZYu9VsLW2RKlvl
-	 brYqJynGssRR1O0tryapSI7KzuCf/xShO6Xl4a2Y=
+	b=leI2djG7SgU5v16D4iOZRjWDTqZi7yNoptfR2b9N5pSGzwGLuWJxI8RTFr7XISjJ7
+	 ppJdG2A7kRonW2PbEjmbwgzRqs213K+BdE4Kpxy6LKWgi6oyAa86nuDgCTzagmh0tW
+	 GjhnH3WTeYj+Vv560ke/K8JdsuyTqfGC4uGiDI5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johan Hovold <johan@kernel.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 024/570] net: gianfar: fix device leak when querying time stamp info
-Date: Mon, 18 Aug 2025 14:40:11 +0200
-Message-ID: <20250818124506.738526771@linuxfoundation.org>
+Subject: [PATCH 6.15 026/515] net: dpaa: fix device leak when querying time stamp info
+Date: Mon, 18 Aug 2025 14:40:12 +0200
+Message-ID: <20250818124459.468711800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,13 +63,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit da717540acd34e5056e3fa35791d50f6b3303f55 upstream.
+commit 3fa840230f534385b34a4f39c8dd313fbe723f05 upstream.
 
 Make sure to drop the reference to the ptp device taken by
 of_find_device_by_node() when querying the time stamping capabilities.
@@ -77,32 +77,32 @@ of_find_device_by_node() when querying the time stamping capabilities.
 Note that holding a reference to the ptp device does not prevent its
 driver data from going away.
 
-Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
-Cc: stable@vger.kernel.org	# 4.18
+Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
+Cc: stable@vger.kernel.org	# 4.19
 Cc: Yangbo Lu <yangbo.lu@nxp.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-4-johan@kernel.org
+Link: https://patch.msgid.link/20250725171213.880-2-johan@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/gianfar_ethtool.c |    4 +++-
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
-+++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
-@@ -1466,8 +1466,10 @@ static int gfar_get_ts_info(struct net_d
- 	if (ptp_node) {
- 		ptp_dev = of_find_device_by_node(ptp_node);
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -401,8 +401,10 @@ static int dpaa_get_ts_info(struct net_d
  		of_node_put(ptp_node);
--		if (ptp_dev)
-+		if (ptp_dev) {
- 			ptp = platform_get_drvdata(ptp_dev);
-+			put_device(&ptp_dev->dev);
-+		}
  	}
  
+-	if (ptp_dev)
++	if (ptp_dev) {
+ 		ptp = platform_get_drvdata(ptp_dev);
++		put_device(&ptp_dev->dev);
++	}
+ 
  	if (ptp)
+ 		info->phc_index = ptp->phc_index;
 
 
 
