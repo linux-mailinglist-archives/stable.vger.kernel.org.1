@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B33B2AA99
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:33:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F435B2A46C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19CA31BA7F92
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31CC63BBA00
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE78B322542;
-	Mon, 18 Aug 2025 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFC431E0E4;
+	Mon, 18 Aug 2025 13:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcQC4VYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgtsqhyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AC21D88D7;
-	Mon, 18 Aug 2025 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F3729E112;
+	Mon, 18 Aug 2025 13:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526048; cv=none; b=C8WHMMcko6TlAN6Oi22sVlh8fmBKFZmrRMh212+OJzIUM5oZjWArOrCnnmTOv7eC1m5+lr1Bnet0eIcUlitb6Mwd+klTT2dLNsBUNgy2hLfHEegLp4bMKu0K4QTXrbyydG5M/z19UCoeU/MPwxSFKLzSzSjLiJHGPaIvWA0sIao=
+	t=1755522835; cv=none; b=dxSWrDBJ3LJSsla7HA+0rEwIf8hlb9ACegs7lLiw9wVYgI6Tr3EEOqpY/6inhZraJzMnCmtNbK+q8Sl2EY2s+Znv2Wc05sOwzkGf7gyL6B3mfzO41AMsEp2XO4Eww6uZmzdXLIYcQtHFJPOpiaMtPFJAdypCbaWxOPLYREzdclc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526048; c=relaxed/simple;
-	bh=tDTaxzHv0AzTeGqREZh8FF8MHtIUCcfLuD/5H5zwCQE=;
+	s=arc-20240116; t=1755522835; c=relaxed/simple;
+	bh=nP106C1PB8SGh7yj/4MdYPajI/wsZ/sppKIw304z5U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUCbiZqouzJ4ivRlja+lQMavw4+LvvtNMSqkG48woOjsIJPlhndDmcLOX+rwe1zZJj2fei5Z39rW5b8H+A3eJPNmGwpK1kex6xYlYr1JXkEfpd3DrA2aWdkNYmQzGsmF5vHTkhGDO91BV5IKAfWgPc0a4EwwsO+F0nIA8OhvM+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcQC4VYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF13C19421;
-	Mon, 18 Aug 2025 14:07:27 +0000 (UTC)
+	 MIME-Version; b=BEVnSHisR24aEHDmPH/603Lu4ZKVsAjW3UT0KLXVt5HSYgoJwXqCXmWwVjy6OtrRxFY4jALsC7yatp5CjFdr6l2sbpeoUk+JmbVvyUzgFOONdCwFwQ7l9Ay83AzMl/NsPYU92SOcgiOwu58jlwlcs1Kbww3iwg3Gc10m8e3w2H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgtsqhyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB9DC4CEEB;
+	Mon, 18 Aug 2025 13:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526048;
-	bh=tDTaxzHv0AzTeGqREZh8FF8MHtIUCcfLuD/5H5zwCQE=;
+	s=korg; t=1755522835;
+	bh=nP106C1PB8SGh7yj/4MdYPajI/wsZ/sppKIw304z5U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcQC4VYgly88QooNBzh7xCbkbCvQ/Z6Y7Zj1kum8JgjSzHi/kVgfcyRnatadZBAVP
-	 wvTrW+PpWh/GNxI3I8b9eW38II8TdGshKcajVIJG5RF076RRyMnwRQ7v9NGk04X/6N
-	 9DzEI3oeTZVVP4UVrUm72jTqj3YDozfb7xB9YMqU=
+	b=EgtsqhyJxVgz/HMl64pvjpYiw2nx83TMO6Vev5TMm6CBSgScIYAtiMzlVwtUcuftz
+	 jjYvlS8GWX7gCDv9vOYbJfo/c889E7c5td/8UktfMsYoMXDyfRl8Jj/J33YoSHIu7o
+	 xGwGXJpAHg5EHHSFGasEWZTIf6uvQ4mDeK78ulsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 442/570] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 403/444] btrfs: zoned: do not select metadata BG as finish target
 Date: Mon, 18 Aug 2025 14:47:09 +0200
-Message-ID: <20250818124522.843703128@linuxfoundation.org>
+Message-ID: <20250818124504.040802967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,141 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
+commit 3a931e9b39c7ff8066657042f5f00d3b7e6ad315 upstream.
 
-sas_user_scan() did not fully process wildcard channel scans
-(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
-present. Only channel 0 would be scanned via user_scan(), while the
-remaining channels were skipped, potentially missing devices.
+We call btrfs_zone_finish_one_bg() to zone finish one block group and make
+room to activate another block group. Currently, we can choose a metadata
+block group as a target. But, as we reserve an active metadata block group,
+we no longer want to select a metadata block group. So, skip it in the
+loop.
 
-user_scan() invokes updated sas_user_scan() for channel 0, and if
-successful, iteratively scans remaining channels (1 to
-shost->max_channel) via scsi_scan_host_selected().  This ensures complete
-wildcard scanning without affecting transport-specific scanning behavior.
-
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_scan.c          |  2 +-
- drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
- 2 files changed, 49 insertions(+), 13 deletions(-)
+ fs/btrfs/zoned.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
-index 4833b8fe251b..396fcf194b6b 100644
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -1899,7 +1899,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2523,7 +2523,7 @@ int btrfs_zone_finish_one_bg(struct btrf
  
- 	return 0;
- }
--
-+EXPORT_SYMBOL(scsi_scan_host_selected);
- static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
- {
- 	struct scsi_device *sdev;
-diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
-index 351b028ef893..d69c7c444a31 100644
---- a/drivers/scsi/scsi_transport_sas.c
-+++ b/drivers/scsi/scsi_transport_sas.c
-@@ -40,6 +40,8 @@
- #include <scsi/scsi_transport_sas.h>
- 
- #include "scsi_sas_internal.h"
-+#include "scsi_priv.h"
-+
- struct sas_host_attrs {
- 	struct list_head rphy_list;
- 	struct mutex lock;
-@@ -1683,32 +1685,66 @@ int scsi_is_sas_rphy(const struct device *dev)
- }
- EXPORT_SYMBOL(scsi_is_sas_rphy);
- 
--
--/*
-- * SCSI scan helper
-- */
--
--static int sas_user_scan(struct Scsi_Host *shost, uint channel,
--		uint id, u64 lun)
-+static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
- {
- 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
- 	struct sas_rphy *rphy;
- 
--	mutex_lock(&sas_host->lock);
- 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
- 		if (rphy->identify.device_type != SAS_END_DEVICE ||
- 		    rphy->scsi_target_id == -1)
+ 		spin_lock(&block_group->lock);
+ 		if (block_group->reserved || block_group->alloc_offset == 0 ||
+-		    (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM) ||
++		    !(block_group->flags & BTRFS_BLOCK_GROUP_DATA) ||
+ 		    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
+ 			spin_unlock(&block_group->lock);
  			continue;
- 
--		if ((channel == SCAN_WILD_CARD || channel == 0) &&
--		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
-+		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
- 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
- 					 lun, SCSI_SCAN_MANUAL);
- 		}
- 	}
--	mutex_unlock(&sas_host->lock);
-+}
- 
--	return 0;
-+/*
-+ * SCSI scan helper
-+ */
-+
-+static int sas_user_scan(struct Scsi_Host *shost, uint channel,
-+		uint id, u64 lun)
-+{
-+	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
-+	int res = 0;
-+	int i;
-+
-+	switch (channel) {
-+	case 0:
-+		mutex_lock(&sas_host->lock);
-+		scan_channel_zero(shost, id, lun);
-+		mutex_unlock(&sas_host->lock);
-+		break;
-+
-+	case SCAN_WILD_CARD:
-+		mutex_lock(&sas_host->lock);
-+		scan_channel_zero(shost, id, lun);
-+		mutex_unlock(&sas_host->lock);
-+
-+		for (i = 1; i <= shost->max_channel; i++) {
-+			res = scsi_scan_host_selected(shost, i, id, lun,
-+						      SCSI_SCAN_MANUAL);
-+			if (res)
-+				goto exit_scan;
-+		}
-+		break;
-+
-+	default:
-+		if (channel < shost->max_channel) {
-+			res = scsi_scan_host_selected(shost, channel, id, lun,
-+						      SCSI_SCAN_MANUAL);
-+		} else {
-+			res = -EINVAL;
-+		}
-+		break;
-+	}
-+
-+exit_scan:
-+	return res;
- }
- 
- 
--- 
-2.39.5
-
 
 
 
