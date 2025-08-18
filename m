@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D723EB2A6D0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F65B2A3B4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 467B8687007
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A38537B9120
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EBB322DAB;
-	Mon, 18 Aug 2025 13:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6F331E11D;
+	Mon, 18 Aug 2025 13:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCSQ5aEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkfPIn+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FF9322A3B;
-	Mon, 18 Aug 2025 13:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4C731E117;
+	Mon, 18 Aug 2025 13:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524089; cv=none; b=A9nokB8BCJOzrwK6xWzPfLQEIVv+k62inClQDtHwMh28N/KZmcYH1Z+vdLTLD8QzkrAZwRq4FMl+q2TJCEBBAG4ig40plo8f+oos+9zEbuklWF7RGMGQWC6JMZw7oj3+7eAGCys0hc1q3TKBIz/tGe9iU26p1B8XG7L1KPxW0X8=
+	t=1755522468; cv=none; b=sL7lVlLr8IKVYyIqZFbUVbt2qRzIKt5H+cn6PJWUFqTOvL8RanLhO5qbiZ5H4GF3+GXuTacoE+6tpdknjeQoba+Q8Zxyjlz9FnQWBwvZzpUjO2Fr+exMmepVIEPkSjImS/+RY0rbl7uZORSrql/md6d7VMxPNtuKkxTaH2tsDiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524089; c=relaxed/simple;
-	bh=d249Xq/0KMFhKiOcBfcIjX5dtUuDLjkFVRKgPsdongE=;
+	s=arc-20240116; t=1755522468; c=relaxed/simple;
+	bh=Ge8VfWk94QfeGZ5Tkg/K0eUnib/yN2pwnFMVwZdqer8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rgZ8N6TyO/KOw9Jx6yloE1ck0M49Qq1rfY/dM8W3fsy1Y7wHDzbSbbM8cpDLcWTgg9sxCmK4X49DWzb4EcyhODZB/xR4fIim4gh6VSO6CLf6p3O7a4afL2bKQ9QbNqTIJ6FeTJlcSkqCt16bYrtWw9AlHhmiqN29URm6nw3KzPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCSQ5aEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76843C4CEF1;
-	Mon, 18 Aug 2025 13:34:48 +0000 (UTC)
+	 MIME-Version; b=CNYan1DuusIrNBMstYoPbSuvmQZ9z8sGyp47lIA+3jrzD3n1f/5keiPW7RBAalSbz2bDMEPAt79mr8V0QCysXNtdbQNu/y4DlNhZkzV6Rud3jMFU2u0ybnQudZhJ6UuNJUBZmVcVSIbZIiGKm2KVkTEXv0lGVRdcjk6o4LIhLQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkfPIn+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD60AC4CEEB;
+	Mon, 18 Aug 2025 13:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524088;
-	bh=d249Xq/0KMFhKiOcBfcIjX5dtUuDLjkFVRKgPsdongE=;
+	s=korg; t=1755522468;
+	bh=Ge8VfWk94QfeGZ5Tkg/K0eUnib/yN2pwnFMVwZdqer8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCSQ5aEgvkO0ON3Fpn7ANmCY1c/cXArUuWXr7UM/xojrgCeVO+EEtBJo5HPCrDWtA
-	 8N/LgG7rb5/wwNXGBWX2aIlcoE8CzcF2bxvMcKWVhbsUpL9hV6as6KQJTVLjTlN/z0
-	 9yNufv3o1/GQmu6KtHfvSfEVsXPg42DW1+2pAiP8=
+	b=dkfPIn+9KT7p5bcoG0CmCLB+xsVTPYmYrZ818XgnRWXaoGPkMLVx0hUu2fttylCq5
+	 HlLv/fw76/2K7n8tDOsM7mqX3M3FGN4xEJLvX+PxkzKkgD+86nzqwQZ5XtAHjkVeGd
+	 HkFoWoQ/3qO1wat5NETMb0YZFm/GYA4NBD8j2TsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 332/515] cifs: Fix calling CIFSFindFirst() for root path without msearch
+Subject: [PATCH 6.12 292/444] jfs: truncate good inode pages when hard link is 0
 Date: Mon, 18 Aug 2025 14:45:18 +0200
-Message-ID: <20250818124511.212077996@linuxfoundation.org>
+Message-ID: <20250818124459.905104660@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit b460249b9a1dab7a9f58483e5349d045ad6d585c ]
+[ Upstream commit 2d91b3765cd05016335cd5df5e5c6a29708ec058 ]
 
-To query root path (without msearch wildcard) it is needed to
-send pattern '\' instead of '' (empty string).
+The fileset value of the inode copy from the disk by the reproducer is
+AGGR_RESERVED_I. When executing evict, its hard link number is 0, so its
+inode pages are not truncated. This causes the bugon to be triggered when
+executing clear_inode() because nrpages is greater than 0.
 
-This allows to use CIFSFindFirst() to query information about root path
-which is being used in followup changes.
-
-This change fixes the stat() syscall called on the root path on the mount.
-It is because stat() syscall uses the cifs_query_path_info() function and
-it can fallback to the CIFSFindFirst() usage with msearch=false.
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+6e516bb515d93230bc7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6e516bb515d93230bc7b
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifssmb.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/jfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 0e509a0433fb..4a6d1d83630f 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -4000,6 +4000,12 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = 0;
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			pSMB->FileName[2] = 0;
-+			pSMB->FileName[3] = 0;
-+			name_len = 4;
- 		}
- 	} else {
- 		name_len = copy_path_name(pSMB->FileName, searchName);
-@@ -4011,6 +4017,10 @@ CIFSFindFirst(const unsigned int xid, struct cifs_tcon *tcon,
- 			pSMB->FileName[name_len] = '*';
- 			pSMB->FileName[name_len+1] = 0;
- 			name_len += 2;
-+		} else if (!searchName[0]) {
-+			pSMB->FileName[0] = CIFS_DIR_SEP(cifs_sb);
-+			pSMB->FileName[1] = 0;
-+			name_len = 2;
- 		}
- 	}
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index 07cfdc440596..5fe8cb4742c2 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -145,9 +145,9 @@ void jfs_evict_inode(struct inode *inode)
+ 	if (!inode->i_nlink && !is_bad_inode(inode)) {
+ 		dquot_initialize(inode);
  
++		truncate_inode_pages_final(&inode->i_data);
+ 		if (JFS_IP(inode)->fileset == FILESYSTEM_I) {
+ 			struct inode *ipimap = JFS_SBI(inode->i_sb)->ipimap;
+-			truncate_inode_pages_final(&inode->i_data);
+ 
+ 			if (test_cflag(COMMIT_Freewmap, inode))
+ 				jfs_free_zero_link(inode);
 -- 
 2.39.5
 
