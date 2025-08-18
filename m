@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-171199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC929B2A80D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FC8B2A2E4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E6AC5A1894
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A1A05659E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFED235C01;
-	Mon, 18 Aug 2025 13:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0B931CA57;
+	Mon, 18 Aug 2025 12:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0jBfBzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwrLuoJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB52335BA7;
-	Mon, 18 Aug 2025 13:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0994C21ABAA;
+	Mon, 18 Aug 2025 12:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525139; cv=none; b=VtdtD5w+JplZneEPf2aJ9x7IbKCcIecxpVoE/aabSXE8E1DunUWtjB6ALyx5fl5YRcMlE/nn1tNA7fNn3pVCTQVfArH1A/vqmtjK6UXmzZZjtaR5Ka5wp6su7x5Jt0rjjdk9lX3oRbF5iZ0TarQ+3LmdKRJHBsRlsR6uUIZ3DFQ=
+	t=1755521709; cv=none; b=cRcHEjXjXZOTsIV5Yx4q9fNCA84c97elluVdPnKZ3OG9UxQ6ybsLKi5S3Ce0RPQFgkqO4+hOyv1jFhHOjMfl8mm980pG6YonKRFcPHjlEZRSb271Kp8dyigk/oyZG/c00K4JKkfE9wRj5ybSusORve3aekbUV+p8dQHmQOWCw9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525139; c=relaxed/simple;
-	bh=sZeAPqqVSGuDVFP+ULeKRMHp/U/XWU8XaHobUw1b1HY=;
+	s=arc-20240116; t=1755521709; c=relaxed/simple;
+	bh=VAKRdiGlUU3UhyD+3HAjLKiz5Yq9D6ssE3wgogXsLAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKMx/GKOEBWN3WGEi6IL5jW3gfkyVFP6tN+EJbyG0I6OQLY7binzROutw9t5Cb5xNIDQcUAY01zo1FjrTmXP9F7MysTh0jBPMLCYv9VJZZ1fEmczR7tgWID7nLGSrLwRn5/s5efyOhL27ZimC8vnDFBvma284nTrMEOpexS22YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0jBfBzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CA8C113D0;
-	Mon, 18 Aug 2025 13:52:18 +0000 (UTC)
+	 MIME-Version; b=o/UkB7kvdAHkF/APotm5vp82CVHYzHenjpuQvNLnd7uv8X2j1fGcNaAYFNYgb7vHCTdshJL7jBUx98AmR1JscfJ0cpYm7dOr/ET4otC3l4SkF7irDSkTL1Wso4BeGKF1RaBRx9jbmwlqvsXIxNWtJCJVDB+6qGh/kSHodtCkSu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwrLuoJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B9AC4CEEB;
+	Mon, 18 Aug 2025 12:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525138;
-	bh=sZeAPqqVSGuDVFP+ULeKRMHp/U/XWU8XaHobUw1b1HY=;
+	s=korg; t=1755521708;
+	bh=VAKRdiGlUU3UhyD+3HAjLKiz5Yq9D6ssE3wgogXsLAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0jBfBzRSIW34ktwXk8F40uV9ekRbYezXwVKcxiHMIZXMiMsLE350davvg3xu19OJ
-	 XBTgUMFxRCuuytGlivDRJ51Q2AU8gdDLu6poF60t5n1w7+n8ZppTAYgfzZ4BEt2uqF
-	 2TOTyL0S6f+jm/ggvVltNsUKAig47vzjtzlwD7Ps=
+	b=XwrLuoJQF4yAHWT3Yn547CSjiyX6kIQVDD+u6JZd5iBkd7cy46oGq2SsCQr2yIfyQ
+	 ewydmeZk96kPz7mqeYhF0bMnzRRwM3aVf+MpczghuenB39jVV2NBnyWhbT+6BSV0/n
+	 j3nlDZkJ79QIDz90oEDrU/xX/yZLxneIboAuySdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 138/570] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
+Subject: [PATCH 6.12 099/444] usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default
 Date: Mon, 18 Aug 2025 14:42:05 +0200
-Message-ID: <20250818124511.138074816@linuxfoundation.org>
+Message-ID: <20250818124452.659471543@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,68 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Benson Leung <bleung@chromium.org>
 
-[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
+[ Upstream commit af833e7f7db3cf4c82f063668e1b52297a30ec18 ]
 
-If a synchronous error is detected as a result of user-space process
-triggering a 2-bit uncorrected error, the CPU will take a synchronous
-error exception such as Synchronous External Abort (SEA) on Arm64. The
-kernel will queue a memory_failure() work which poisons the related
-page, unmaps the page, and then sends a SIGBUS to the process, so that
-a system wide panic can be avoided.
+ucsi_psy_get_current_max would return 0mA as the maximum current if
+UCSI detected a BC or a Default USB Power sporce.
 
-However, no memory_failure() work will be queued when abnormal
-synchronous errors occur. These errors can include situations like
-invalid PA, unexpected severity, no memory failure config support,
-invalid GUID section, etc. In such a case, the user-space process will
-trigger SEA again.  This loop can potentially exceed the platform
-firmware threshold or even trigger a kernel hard lockup, leading to a
-system reboot.
+The comment in this function is true that we can't tell the difference
+between DCP/CDP or SDP chargers, but we can guarantee that at least 1-unit
+of USB 1.1/2.0 power is available, which is 100mA, which is a better
+fallback value than 0, which causes some userspaces, including the ChromeOS
+power manager, to regard this as a power source that is not providing
+any power.
 
-Fix it by performing a force kill if no memory_failure() work is queued
-for synchronous errors.
+In reality, 100mA is guaranteed from all sources in these classes.
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Reviewed-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20250717200805.3710473-1-bleung@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/usb/typec/ucsi/psy.c  | 2 +-
+ drivers/usb/typec/ucsi/ucsi.h | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index f0584ccad451..281a0a2f6730 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -902,6 +902,17 @@ static bool ghes_do_proc(struct ghes *ghes,
- 		}
+diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
+index 1c631c7855a9..9447a50716ec 100644
+--- a/drivers/usb/typec/ucsi/psy.c
++++ b/drivers/usb/typec/ucsi/psy.c
+@@ -164,7 +164,7 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
+ 	case UCSI_CONSTAT_PWR_OPMODE_DEFAULT:
+ 	/* UCSI can't tell b/w DCP/CDP or USB2/3x1/3x2 SDP chargers */
+ 	default:
+-		val->intval = 0;
++		val->intval = UCSI_TYPEC_DEFAULT_CURRENT * 1000;
+ 		break;
  	}
+ 	return 0;
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 0568e643e844..25cff9658966 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -412,9 +412,10 @@ struct ucsi {
+ #define UCSI_MAX_SVID		5
+ #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
  
-+	/*
-+	 * If no memory failure work is queued for abnormal synchronous
-+	 * errors, do a force kill.
-+	 */
-+	if (sync && !queued) {
-+		dev_err(ghes->dev,
-+			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
-+			current->comm, task_pid_nr(current));
-+		force_sig(SIGBUS);
-+	}
-+
- 	return queued;
- }
+-#define UCSI_TYPEC_VSAFE5V	5000
+-#define UCSI_TYPEC_1_5_CURRENT	1500
+-#define UCSI_TYPEC_3_0_CURRENT	3000
++#define UCSI_TYPEC_VSAFE5V		5000
++#define UCSI_TYPEC_DEFAULT_CURRENT	 100
++#define UCSI_TYPEC_1_5_CURRENT		1500
++#define UCSI_TYPEC_3_0_CURRENT		3000
  
+ struct ucsi_connector {
+ 	int num;
 -- 
 2.39.5
 
