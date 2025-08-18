@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E5AB2A625
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E46B2A34E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AAAE1B6545C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F3C5173647
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED1A322740;
-	Mon, 18 Aug 2025 13:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB6B31CA58;
+	Mon, 18 Aug 2025 12:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkU6Tc2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHiM5s1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D67C27A93D;
-	Mon, 18 Aug 2025 13:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD6931B13E;
+	Mon, 18 Aug 2025 12:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523502; cv=none; b=GM6lONhb0NaUKSyzeQOZgKbMU4lcc4XaRlxIfzUiH1mA5zZsk4mgJTZctdmcVBx2lOdctcxDEC07k1sQhSzW6WtgfAJEIP4gedkXsqwGsn+0v6s9mwAXkZ01lblw673/skHZmbEN2Y0YUi0yUGmx+NZfW9nbv3cwv89ScG65c7c=
+	t=1755521888; cv=none; b=REtZU6C++/ezwo1xddaiWFaNmZCzrkUKkWu0UOWmGhHKKA85P+HTI+/0BcMfHtvOKI3NBEVkAm4rrp1y+DJ79aiMFuAUyCF0zYFyZ1u2rKYFStgJlJQvHqw+3j14Bz0x4FrrPqhAI8tYUtIAaBrhFlEUzEnXlqb8OpBOvPjZkwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523502; c=relaxed/simple;
-	bh=G3oU6pC2Dy4y77YsIneY/o/iDclry1Jt93TGzxpSrTc=;
+	s=arc-20240116; t=1755521888; c=relaxed/simple;
+	bh=2k70UraitaKesaZTrViFuHxApoKIqFrURY6QAxyUzsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dZaOsgmx2HV5TUzpG9SFUPd1rOkSS9tgW8soxW8/zNjCjpPtM2cPwRKWauOw69icajkcD4dOj7IhDANoW7QFNKZyJErupQ7r4VH3Qh1foKqtI9Bc+guhEAgPbWPtnC4iXT5dh/tdtYmoL7+6AXc7PQDrpnDV6wm34hf1JGyfgBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkU6Tc2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1251BC4CEEB;
-	Mon, 18 Aug 2025 13:25:01 +0000 (UTC)
+	 MIME-Version; b=ceeXhyvSg1FJQkVYWpEHUratTg9/LS9HJokS9x7/FVYU9cumF65wm/nqysLvn+mt0FZKkCWq8zk5pIzsr1JScYsAk5CK4AAg4VxxlmkTGwQBe3BAo1YIuleaRpoY6XxbrtJyEGZl5Sg9ziigfKDUwiEm+KZYSxP6JN5CeJ2Unbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHiM5s1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF41C4CEEB;
+	Mon, 18 Aug 2025 12:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523502;
-	bh=G3oU6pC2Dy4y77YsIneY/o/iDclry1Jt93TGzxpSrTc=;
+	s=korg; t=1755521888;
+	bh=2k70UraitaKesaZTrViFuHxApoKIqFrURY6QAxyUzsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkU6Tc2x/7CD7nvYGC1l0Aihk4Huyjnt7+pDX/eZeMvTq6vk0ih6Y1WcZTBSgxlZ7
-	 m96/eSJ6YNp3lsX/TpCLdzOQRHV8VuGk3OOj4EJYUTyhGmooxM56jOg+6/HFrW9hRR
-	 icC1/N+bqW41PinkMOJKgf8/Sosxvmmhp3UUyMf4=
+	b=oHiM5s1NLBzd9hySC4vV3MkvzCheq+QbmG5amHmdDLMbXUPbw9+n7DsqQ4d3Ttqqx
+	 wdOcf/UEcXKFYcoAFNKAViIPHNtpswysEm1x4uM6yi9TvEks/XBsgM1YiDtZv6RI3q
+	 KKwXLHjxm2jIrx1sCii8mJerfbWuFuonpBJzdjbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 158/515] selftests: vDSO: vdso_test_getrandom: Always print TAP header
-Date: Mon, 18 Aug 2025 14:42:24 +0200
-Message-ID: <20250818124504.467869153@linuxfoundation.org>
+Subject: [PATCH 6.12 119/444] gpio: tps65912: check the return value of regmap_update_bits()
+Date: Mon, 18 Aug 2025 14:42:25 +0200
+Message-ID: <20250818124453.384235669@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 1158220b24674edaf885433153deb4f0e5c7d331 ]
+[ Upstream commit a0b2a6bbff8c26aafdecd320f38f52c341d5cafa ]
 
-The TAP specification requires that the output begins with a header line.
-If vgetrandom_init() fails and skips the test, that header line is missing.
+regmap_update_bits() can fail, check its return value like we do
+elsewhere in the driver.
 
-Call vgetrandom_init() after ksft_print_header().
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250611-selftests-vdso-fixes-v3-8-e62e37a6bcf5@linutronix.de
+Link: https://lore.kernel.org/r/20250707-gpiochip-set-rv-gpio-round4-v1-2-35668aaaf6d2@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/vdso_test_getrandom.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-tps65912.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_test_getrandom.c b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-index 95057f7567db..ff8d5675da2b 100644
---- a/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-@@ -242,6 +242,7 @@ static void kselftest(void)
- 	pid_t child;
- 
- 	ksft_print_header();
-+	vgetrandom_init();
- 	ksft_set_plan(2);
- 
- 	for (size_t i = 0; i < 1000; ++i) {
-@@ -295,8 +296,6 @@ static void usage(const char *argv0)
- 
- int main(int argc, char *argv[])
+diff --git a/drivers/gpio/gpio-tps65912.c b/drivers/gpio/gpio-tps65912.c
+index fab771cb6a87..bac757c191c2 100644
+--- a/drivers/gpio/gpio-tps65912.c
++++ b/drivers/gpio/gpio-tps65912.c
+@@ -49,10 +49,13 @@ static int tps65912_gpio_direction_output(struct gpio_chip *gc,
+ 					  unsigned offset, int value)
  {
--	vgetrandom_init();
--
- 	if (argc == 1) {
- 		kselftest();
- 		return 0;
-@@ -306,6 +305,9 @@ int main(int argc, char *argv[])
- 		usage(argv[0]);
- 		return 1;
- 	}
-+
-+	vgetrandom_init();
-+
- 	if (!strcmp(argv[1], "bench-single"))
- 		bench_single();
- 	else if (!strcmp(argv[1], "bench-multi"))
+ 	struct tps65912_gpio *gpio = gpiochip_get_data(gc);
++	int ret;
+ 
+ 	/* Set the initial value */
+-	regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
+-			   GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
++	ret = regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
++				 GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
++	if (ret)
++		return ret;
+ 
+ 	return regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
+ 				  GPIO_CFG_MASK, GPIO_CFG_MASK);
 -- 
 2.39.5
 
