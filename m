@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-170600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A50AB2A571
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CCCB2A826
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 053BB681D98
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1846B6E196A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514353375B9;
-	Mon, 18 Aug 2025 13:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7499B27B344;
+	Mon, 18 Aug 2025 13:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5E2i7yP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRWDiA2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDF7258EEE;
-	Mon, 18 Aug 2025 13:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C8727B32F;
+	Mon, 18 Aug 2025 13:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523163; cv=none; b=DMehm+UjOtrJPRKeCds5/xI8SL8Uz62LuxyxvA8JW50Pk2x9NFK0pN34rP6r60iIg1GTWOvBRUp9yoL633Djm/tlkoJTyb5OX+6G6BJ+gH0a6k0PVub8UppTLDd7BrLKAmkAqkjhoRQEIemHDQoZkK8HEcGwfJj/CdHFPFA675E=
+	t=1755524877; cv=none; b=F+DQ4+9QsYDVlajm26ktvGfukFnyYpL4KU7EjPhZL5lYCxVNE/YHhCWTLXcZK6uKVCN6SBY0WlJglGeAd6dT8J6PDiyObnUWfwruy6U7yC/9cwZffb0CvnkjkuiqhU0vdO+mTMDDa7rxbBGksqMakoDNQjnx28Dhx1uMn6YE10U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523163; c=relaxed/simple;
-	bh=HaxSj4MjrGDlj36cHGK4LnvOL85sukE9oS03vH3aF2M=;
+	s=arc-20240116; t=1755524877; c=relaxed/simple;
+	bh=Po5kMb6OetIiTk8e2sBv5WXm6LREnBUHGGt44ZIOuWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gDO8cO3pw9IsljwwqBvtwKqUN+YniTqPCcst9cLmvCLnnraakewf8pyDYdyWRasXb0OnCRXNH8Ml2gRc2N9vnZ0FVOMt+LzR/q/Wsj+bFez7olxjIs7ejeHPJd59s/fnAaV+0EuQRmeSLlYh0M6JwcEDTflz2mFdg3vtGWolxts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5E2i7yP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7DCC4CEEB;
-	Mon, 18 Aug 2025 13:19:22 +0000 (UTC)
+	 MIME-Version; b=h7TQGLQCjTdb1PEoe3rvWkx4o6W3qROfPayfFASVmMOtEzG5TNma6//j6X5puK9sVjcf5TlAR7GInrO/zj96+9v26VNfP4pkBV30lRB3MH3AG0hMCVtIycz1D0ICssmkyHyaj4iTd3q07s7ZmMOFiEooMYvfIML5Fy/4jzTT8fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRWDiA2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE53C4CEEB;
+	Mon, 18 Aug 2025 13:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523162;
-	bh=HaxSj4MjrGDlj36cHGK4LnvOL85sukE9oS03vH3aF2M=;
+	s=korg; t=1755524877;
+	bh=Po5kMb6OetIiTk8e2sBv5WXm6LREnBUHGGt44ZIOuWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5E2i7yPOcHXlcquxFSizVZMAaDShf+eBpeag2J3oQD31bTDEUEF62vYMYPx5IwLG
-	 Z7fpMAlGo6vstdr+6Ssnqjo0Y1pPTurlQBH1JF4BGwXvfC2JlpT9AkKO7x0+Pln77z
-	 AdVjNG8fnU1Y38DT5rSQFbtjrngiV39hkDuzz948=
+	b=KRWDiA2MC5ScyiujX25Ap8UPelcRm8Lk25RRjw0RLgsXMP09vYdka2d1na/eIRQz+
+	 1+BhcPCpoBV7tnOsjZ9kX2S6fZDG/X7PQVA7WgAM/NHpXAN3RzI1gR1ucXupfH/7QT
+	 SlornDEsYEDDWtaSoQZuV3HPrZksIwfdyO2EwKl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 090/515] md/raid10: set chunk_sectors limit
-Date: Mon, 18 Aug 2025 14:41:16 +0200
-Message-ID: <20250818124501.838639599@linuxfoundation.org>
+Subject: [PATCH 6.16 090/570] hfs: fix slab-out-of-bounds in hfs_bnode_read()
+Date: Mon, 18 Aug 2025 14:41:17 +0200
+Message-ID: <20250818124509.277473260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +61,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 7ef50c4c6a9c36fa3ea6f1681a80c0bf9a797345 ]
+[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
 
-Same as done for raid0, set chunk_sectors limit to appropriately set the
-atomic write size limit.
+This patch introduces is_bnode_offset_valid() method that checks
+the requested offset value. Also, it introduces
+check_and_correct_requested_length() method that checks and
+correct the requested length (if it is necessary). These methods
+are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
+hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
+the access out of allocated memory and triggering the crash.
 
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20250711105258.3135198-5-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 92 insertions(+)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 6a55374a6ba3..e946abe62084 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -4019,6 +4019,7 @@ static int raid10_set_queue_limits(struct mddev *mddev)
- 	md_init_stacking_limits(&lim);
- 	lim.max_write_zeroes_sectors = 0;
- 	lim.io_min = mddev->chunk_sectors << 9;
-+	lim.chunk_sectors = mddev->chunk_sectors;
- 	lim.io_opt = lim.io_min * raid10_nr_stripes(conf);
- 	lim.features |= BLK_FEAT_ATOMIC_WRITES;
- 	err = mddev_stack_rdev_limits(mddev, &lim, MDDEV_STACK_INTEGRITY);
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index cb823a8a6ba9..1dac5d9c055f 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -15,6 +15,48 @@
+ 
+ #include "btree.h"
+ 
++static inline
++bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++{
++	bool is_valid = off < node->tree->node_size;
++
++	if (!is_valid) {
++		pr_err("requested invalid offset: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off);
++	}
++
++	return is_valid;
++}
++
++static inline
++int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
++{
++	unsigned int node_size;
++
++	if (!is_bnode_offset_valid(node, off))
++		return 0;
++
++	node_size = node->tree->node_size;
++
++	if ((off + len) > node_size) {
++		int new_len = (int)node_size - off;
++
++		pr_err("requested length has been corrected: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, "
++		       "requested_len %d, corrected_len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len, new_len);
++
++		return new_len;
++	}
++
++	return len;
++}
++
+ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+@@ -22,6 +64,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 	int bytes_read;
+ 	int bytes_to_read;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	pagenum = off >> PAGE_SHIFT;
+ 	off &= ~PAGE_MASK; /* compute page offset for the first page */
+@@ -80,6 +136,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -104,6 +174,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
+ {
+ 	struct page *page;
+ 
++	if (!is_bnode_offset_valid(node, off))
++		return;
++
++	if (len == 0) {
++		pr_err("requested zero length: "
++		       "NODE: id %u, type %#x, height %u, "
++		       "node_size %u, offset %d, len %d\n",
++		       node->this, node->type, node->height,
++		       node->tree->node_size, off, len);
++		return;
++	}
++
++	len = check_and_correct_requested_length(node, off, len);
++
+ 	off += node->page_offset;
+ 	page = node->page[0];
+ 
+@@ -119,6 +203,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(src_node, src, len);
++	len = check_and_correct_requested_length(dst_node, dst, len);
++
+ 	src += src_node->page_offset;
+ 	dst += dst_node->page_offset;
+ 	src_page = src_node->page[0];
+@@ -136,6 +224,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
+ 	if (!len)
+ 		return;
++
++	len = check_and_correct_requested_length(node, src, len);
++	len = check_and_correct_requested_length(node, dst, len);
++
+ 	src += node->page_offset;
+ 	dst += node->page_offset;
+ 	page = node->page[0];
 -- 
 2.39.5
 
