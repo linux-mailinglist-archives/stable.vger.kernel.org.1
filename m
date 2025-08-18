@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610DFB2A576
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFA7B2A7C5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D11A56059E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AFB8680E08
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BCA335BC4;
-	Mon, 18 Aug 2025 13:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8A4220696;
+	Mon, 18 Aug 2025 13:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdZSVRti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3stehsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28628335BAA;
-	Mon, 18 Aug 2025 13:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCDB1E48A;
+	Mon, 18 Aug 2025 13:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523226; cv=none; b=VRDzQ42EZE6LDUUIjSNogqIz09fyC4LhyilBV2ocW6thNHzCtM5yKwhrIjyTD/72YetwDWbhDVW1hHbmD8F4FNTJJ8vfb+lfDX4wjThUVp81XtaIWRiotrcALMYYJZW9nO+1nSLFmAW7BpvZNQjlKru0uiKJIbtuJGkcljNBuMo=
+	t=1755524929; cv=none; b=UWc/GjTaS0fNT1r1ADQ/d8QlMgNyPmAgPj6+MmGPGEnMQkSA0AK2ePgnfh7QtiZobBV7Nt4DsWbbAwuEOUhdKS+FwtZ4H2vUEzx8Orj3fY1RkDKj8OVWB1Ifd07WmQzVotHAEki0+5vR2WUclh4LpmnE5J1hvx+By9t1J2uAjkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523226; c=relaxed/simple;
-	bh=xfbET6pvnQ+cQdEyXyJ7XMxD8PFKKhha1y/InO/+G0c=;
+	s=arc-20240116; t=1755524929; c=relaxed/simple;
+	bh=e2uFqvL7P6VwbUQIngjEAE4lApd95npFbXmC8VFe1/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEUwlu5ImGFipnjuEIbViWxwflrmOamZ21yDAKSbCxz9Qo30KwMXT1bh26XoYFJ1LP+7LZ6/mfeiMlyPGDNxtIzU9NGZg9C+k+dZdIf5T4N4FCByt2G62rWKbZBDXRgXvh2hxpPno3tkv5sAi5TP7JbL1i0vE0sAbHcMEOd1Oqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdZSVRti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09A2C4CEEB;
-	Mon, 18 Aug 2025 13:20:25 +0000 (UTC)
+	 MIME-Version; b=rqFXNUZrYmpZtWrPTrv2PnIcZ+9d+KwUKSa2jXSfNAipcODfuk+Q5HjNPGca/lOn/1vOLrlguqz4yi/giy0cWjVtsVGV7eUWVmpROsXFhcuC+kmFekaHCtu1uhcry3AwgVSZacH0A7GeNd7kABIE/E2H1OxRRZJ4X/ELSR0zsdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3stehsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F9CC4CEEB;
+	Mon, 18 Aug 2025 13:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523226;
-	bh=xfbET6pvnQ+cQdEyXyJ7XMxD8PFKKhha1y/InO/+G0c=;
+	s=korg; t=1755524928;
+	bh=e2uFqvL7P6VwbUQIngjEAE4lApd95npFbXmC8VFe1/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdZSVRti3gc58HBejD7Pr/Dlh3Ha48Jm5ATwsa0n5q0EFDiD6NnJ3heOvpRa0S51P
-	 GSRME5V9A9KbnZazpb9ajt1Y/nAPw0GDP9t4e/1RGOly3c4gcnCVr4tUfwoHckYqop
-	 Tja2UaTl0uQ9MIDwZSkxDZ9VupiQ52xYO7pIDACw=
+	b=Q3stehsXTJlrbF4FeEJsbnynvFpcAGrdTLQuAuRm/OG/o38EzKfvoIPRsps574RLx
+	 8FnUnlTIwsXZL2mUkpbfyXWCx6vGGUv3CxzyjXwTZPedIzDi6fBFcIOWeL/vIIwsyB
+	 9QId3/rCaXUUOQr4n9qLuDvZ9UVQUtpbH0IcTOX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Gao <wegao@suse.com>,
+	syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com,
 	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 108/515] ext2: Handle fiemap on empty files to prevent EINVAL
+Subject: [PATCH 6.16 107/570] loop: Avoid updating block size under exclusive owner
 Date: Mon, 18 Aug 2025 14:41:34 +0200
-Message-ID: <20250818124502.519368757@linuxfoundation.org>
+Message-ID: <20250818124509.927433834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Gao <wegao@suse.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
+[ Upstream commit 7e49538288e523427beedd26993d446afef1a6fb ]
 
-Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
-i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
-would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
-then result in an -EINVAL error, even for valid queries on empty files.
+Syzbot came up with a reproducer where a loop device block size is
+changed underneath a mounted filesystem. This causes a mismatch between
+the block device block size and the block size stored in the superblock
+causing confusion in various places such as fs/buffer.c. The particular
+issue triggered by syzbot was a warning in __getblk_slow() due to
+requested buffer size not matching block device block size.
 
-Link: https://github.com/linux-test-project/ltp/issues/1246
-Signed-off-by: Wei Gao <wegao@suse.com>
+Fix the problem by getting exclusive hold of the loop device to change
+its block size. This fails if somebody (such as filesystem) has already
+an exclusive ownership of the block device and thus prevents modifying
+the loop device under some exclusive owner which doesn't expect it.
+
+Reported-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
 Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
+Tested-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/20250711163202.19623-2-jack@suse.cz
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/inode.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/block/loop.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
-diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-index 30f8201c155f..177b1f852b63 100644
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -895,9 +895,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 		u64 start, u64 len)
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 8d994cae3b83..1b6ee91f8eb9 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1431,17 +1431,34 @@ static int loop_set_dio(struct loop_device *lo, unsigned long arg)
+ 	return 0;
+ }
+ 
+-static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
++static int loop_set_block_size(struct loop_device *lo, blk_mode_t mode,
++			       struct block_device *bdev, unsigned long arg)
  {
- 	int ret;
-+	loff_t i_size;
+ 	struct queue_limits lim;
+ 	unsigned int memflags;
+ 	int err = 0;
  
- 	inode_lock(inode);
--	len = min_t(u64, len, i_size_read(inode));
-+	i_size = i_size_read(inode);
+-	if (lo->lo_state != Lo_bound)
+-		return -ENXIO;
 +	/*
-+	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
-+	 * length to 0 but still trim the range as much as possible since
-+	 * ext2_get_blocks() iterates unmapped space block by block which is
-+	 * slow.
++	 * If we don't hold exclusive handle for the device, upgrade to it
++	 * here to avoid changing device under exclusive owner.
 +	 */
-+	if (i_size == 0)
-+		i_size = 1;
-+	len = min_t(u64, len, i_size);
- 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
- 	inode_unlock(inode);
++	if (!(mode & BLK_OPEN_EXCL)) {
++		err = bd_prepare_to_claim(bdev, loop_set_block_size, NULL);
++		if (err)
++			return err;
++	}
++
++	err = mutex_lock_killable(&lo->lo_mutex);
++	if (err)
++		goto abort_claim;
++
++	if (lo->lo_state != Lo_bound) {
++		err = -ENXIO;
++		goto unlock;
++	}
  
+ 	if (lo->lo_queue->limits.logical_block_size == arg)
+-		return 0;
++		goto unlock;
+ 
+ 	sync_blockdev(lo->lo_device);
+ 	invalidate_bdev(lo->lo_device);
+@@ -1454,6 +1471,11 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
+ 	loop_update_dio(lo);
+ 	blk_mq_unfreeze_queue(lo->lo_queue, memflags);
+ 
++unlock:
++	mutex_unlock(&lo->lo_mutex);
++abort_claim:
++	if (!(mode & BLK_OPEN_EXCL))
++		bd_abort_claiming(bdev, loop_set_block_size);
+ 	return err;
+ }
+ 
+@@ -1472,9 +1494,6 @@ static int lo_simple_ioctl(struct loop_device *lo, unsigned int cmd,
+ 	case LOOP_SET_DIRECT_IO:
+ 		err = loop_set_dio(lo, arg);
+ 		break;
+-	case LOOP_SET_BLOCK_SIZE:
+-		err = loop_set_block_size(lo, arg);
+-		break;
+ 	default:
+ 		err = -EINVAL;
+ 	}
+@@ -1529,9 +1548,12 @@ static int lo_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 		break;
+ 	case LOOP_GET_STATUS64:
+ 		return loop_get_status64(lo, argp);
++	case LOOP_SET_BLOCK_SIZE:
++		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
++			return -EPERM;
++		return loop_set_block_size(lo, mode, bdev, arg);
+ 	case LOOP_SET_CAPACITY:
+ 	case LOOP_SET_DIRECT_IO:
+-	case LOOP_SET_BLOCK_SIZE:
+ 		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
+ 			return -EPERM;
+ 		fallthrough;
 -- 
 2.39.5
 
