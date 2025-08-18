@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA33B2A47D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3016B2A9B3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DE73169B16
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDBCB6349A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A823310627;
-	Mon, 18 Aug 2025 13:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8771A32A3E1;
+	Mon, 18 Aug 2025 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aj39rzZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozkwH3Rt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282062727E2;
-	Mon, 18 Aug 2025 13:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45407288C1F;
+	Mon, 18 Aug 2025 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522849; cv=none; b=DqDHBRY22GOQqLrUtkbY3zeIazIQoiIXxF2+XzPcZVXfGtVEVHEC6he1tf1LR1m7mi/6isP6N4iOazHpOpewUGgxU13pasZOw/POxFvtSiFonawSfuiQmHwt9jMQCHux5DMSrzlr5Am5CROIPur/0Mj5iclFGctEX/qtfreY3Wc=
+	t=1755526177; cv=none; b=Fkrfd0KFUPhxqpdzgdPc9wg2h7BgO0Q4SS8Xv50nWnPHPgIFp0TZcj1wFJlUGkk80wVgDK8dVvEBS7bThL+FvIs2whLyErb30aiCrobQT/efnfpBzI68apyVz6nGiDFk1s2Ew5RiibybKhuAF0JltraIy63l8k8nLr3hak7ws0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522849; c=relaxed/simple;
-	bh=E4YwzDfbuF9o6OIpjlBhvlR7qGr/L0hoa4wjqTzQZ0w=;
+	s=arc-20240116; t=1755526177; c=relaxed/simple;
+	bh=ahsuBlpgvSvGeuuM0e9LV4+V/rYVVm6xYdGKhAsLpDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLHVycif55aJ6t5vFdjohtdvZl9rE8ftasPLziDtzXG58qI/IDuHTQbpIXJ7bcRxJcjgEuyG4QThltSo6vlBB4fCR3R/40qLVI7e4taTKyE0sm/nJJ9LbFMnjR+OVStEKFGbGHIZsm/0d0hbepdWK1SO/mcdrvyH0WU2ZyWn8N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aj39rzZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871D8C4CEEB;
-	Mon, 18 Aug 2025 13:14:08 +0000 (UTC)
+	 MIME-Version; b=Bzwfi6TjxDOS5Idl7VRmzHkhTMMLyAfUxcc9dPL2DVN0z6Ctn4arTJaXBUqXbmPGv6GgX6bTKoN50L3k0rPdN0MUSMiZ9sz+eYMYU/m51+/gHqrw1iCcPYZaOBiuctmgjW+Qv7saj4VW/OMYMRBpdkKNQz9ezwDyM5eRmyuHR4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozkwH3Rt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB196C4CEEB;
+	Mon, 18 Aug 2025 14:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522849;
-	bh=E4YwzDfbuF9o6OIpjlBhvlR7qGr/L0hoa4wjqTzQZ0w=;
+	s=korg; t=1755526177;
+	bh=ahsuBlpgvSvGeuuM0e9LV4+V/rYVVm6xYdGKhAsLpDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aj39rzZPEgM/nu6qr0nxcJDNEqBPhVZ12wRwqG+r4sFcZhDvLrHtMAbPtt0IZt9Vl
-	 aA5js9cBp/VpcfntBxUdpkfGnPnZRz/u2k08yanUE2Ww6MxE2RdKzZec/CKxlCYjJl
-	 Au3WTAVYhtdEuU+HZoQhJkbLQ8QsYC7LM8KcfWV0=
+	b=ozkwH3RteAXWdWcyfvtG1HgVcWKcWm1qnVJ+MUOBQz02OBG3avhJWKTVKL0pik4gp
+	 pcvhk17o3VvGz07b2m9TeMFkcPN2bw8B2pYBFtz8ANzRlPma4smm9xEAw0KKiw9Y/H
+	 VQLwXR/NF3opadik5e0dXCVwFGNaCWeM1xmJNKoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 440/444] drm/amd/display: Allow DCN301 to clear update flags
+	Matthew Auld <matthew.auld@intel.com>,
+	Maciej Patelczyk <maciej.patelczyk@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 479/570] drm/xe/migrate: prevent potential UAF
 Date: Mon, 18 Aug 2025 14:47:46 +0200
-Message-ID: <20250818124505.461267397@linuxfoundation.org>
+Message-ID: <20250818124524.337467323@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Lipski <ivan.lipski@amd.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 2d418e4fd9f1eca7dfce80de86dd702d36a06a25 upstream.
+[ Upstream commit 145832fbdd17b1d77ffd6cdd1642259e101d1b7e ]
 
-[Why & How]
-Not letting DCN301 to clear after surface/stream update results
-in artifacts when switching between active overlay planes. The issue
-is known and has been solved initially. See below:
-(https://gitlab.freedesktop.org/drm/amd/-/issues/3441)
+If we hit the error path, the previous fence (if there is one) has
+already been put() prior to this, so doing a fence_wait could lead to
+UAF. Tweak the flow to do to the put() until after we do the wait.
 
-Fixes: f354556e29f4 ("drm/amd/display: limit clear_update_flags t dcn32 and above")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 270172f64b11 ("drm/xe: Update xe_ttm_access_memory to use GPU for non-visible access")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Maciej Patelczyk <maciej.patelczyk@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250731093807.207572-8-matthew.auld@intel.com
+(cherry picked from commit 9b7ca35ed28fe5fad86e9d9c24ebd1271e4c9c3e)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_migrate.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -5121,7 +5121,8 @@ bool dc_update_planes_and_stream(struct
- 	else
- 		ret = update_planes_and_stream_v2(dc, srf_updates,
- 			surface_count, stream, stream_update);
--	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
-+	if (ret && (dc->ctx->dce_version >= DCN_VERSION_3_2 ||
-+		dc->ctx->dce_version == DCN_VERSION_3_01))
- 		clear_update_flags(srf_updates, surface_count, stream);
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index 02c0a4a7372c..1e3fd139dfcb 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -1893,9 +1893,6 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
+ 			current_bytes = min_t(int, current_bytes, S16_MAX * pitch);
+ 		}
  
- 	return ret;
+-		if (fence)
+-			dma_fence_put(fence);
+-
+ 		__fence = xe_migrate_vram(m, current_bytes,
+ 					  (unsigned long)buf & ~PAGE_MASK,
+ 					  dma_addr + current_page,
+@@ -1903,11 +1900,15 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
+ 					  XE_MIGRATE_COPY_TO_VRAM :
+ 					  XE_MIGRATE_COPY_TO_SRAM);
+ 		if (IS_ERR(__fence)) {
+-			if (fence)
++			if (fence) {
+ 				dma_fence_wait(fence, false);
++				dma_fence_put(fence);
++			}
+ 			fence = __fence;
+ 			goto out_err;
+ 		}
++
++		dma_fence_put(fence);
+ 		fence = __fence;
+ 
+ 		buf += current_bytes;
+-- 
+2.50.1
+
 
 
 
