@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-171527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D616B2AA4C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B09B2A786
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFC881960DCB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F39576880B5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D10334718;
-	Mon, 18 Aug 2025 14:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE47216E23;
+	Mon, 18 Aug 2025 13:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B34bwLjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0R8KtGUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F098334713;
-	Mon, 18 Aug 2025 14:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3FE2D8DD4;
+	Mon, 18 Aug 2025 13:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526232; cv=none; b=pthBfugstg6jSv3Vh2v0wDQ/Ezb8r07txJEd3fJRW6n3DEOiXNHpaUtBJ6G/6UoZ5fniMrMX6DtDRbbRUX8Y9dDTEtLqt9H1SXUgz6XBxDgTMcaURbRTHdXIWwUXqo1UU24smdlIB1Hw1ZhnG6OKrN85maAAljb5UNs2Cq8iGV0=
+	t=1755524523; cv=none; b=Uo7LkuqBF2z3O3tQeSE6bInlLhOUynPLTa9NJ+frZESdljob+IQIF5Ib9NtseKR3XZCW9LKgADmJoezQ80PCUg93NpIIPzbT4s4qcSXHxDQmSQ1NQTs1MX6o30ofwxS8IOvhD1sCDKuHSRLgqy2tcMD1J1qBVmA4Mb6FfewTPZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526232; c=relaxed/simple;
-	bh=S0rRFw56JLoKkAoVGNfaSFWaaHFZcBKLKoIRCvBXkb8=;
+	s=arc-20240116; t=1755524523; c=relaxed/simple;
+	bh=ff4WbomxZNyGghe6h7v+zUoHdvhARxbL77CpX9HIKLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5EZU6uM5UVADu4bS/YnC5lyK0mxUj5hX11g0+Sg0l6PNS9noZVUhJim4Htk17kzk4qhpCOy60HEwUqZexjdSMv+lvsX38sH897TKVBkXEJ0fFAtzlIBReE70oo8mZtY9DO0jQ+BMQMSUpUUVxDhEaNRbVUhIMmDDfonHOFGW4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B34bwLjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7449BC4CEEB;
-	Mon, 18 Aug 2025 14:10:31 +0000 (UTC)
+	 MIME-Version; b=iUgHpY3j3fWk3Z2SF8TQexy6K2SNrf0BcykN+g01+87FOhB3TFUNJ5pfrPHu1CYVR+Nzr9TZuILrJZFUBGBe0XHefrQqfThJqCariJ6VdMbzJ3xxqVbuGaRWKFLJAxG1GNRFbKnQvDRvLjvcriwSyqsPYU0qa2T7yIGyb5T69Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0R8KtGUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8579C4CEF1;
+	Mon, 18 Aug 2025 13:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526231;
-	bh=S0rRFw56JLoKkAoVGNfaSFWaaHFZcBKLKoIRCvBXkb8=;
+	s=korg; t=1755524523;
+	bh=ff4WbomxZNyGghe6h7v+zUoHdvhARxbL77CpX9HIKLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B34bwLjqlEMKWUGGrPR/G7Dcv03O8CqAZNPGWHHZhc6jbtR8lddQLJibFzh58pW+a
-	 qg8MPObsVOHzfktEs9nweU9ZLlAzivjU/glN1tpVkTQDCKYqrqmFWggjAb20h5IV05
-	 RJfZjn1CKfIIHVRtO2ezHYfQ3P5c0nnbloZnpagw=
+	b=0R8KtGUouLW0Q7j4qMnws0mK6vNu96PF6Fxkhgndik+R/v1Ncedy0WLLwHtypVQMW
+	 zC9biadDHu7qvuOzbtZY9EwGKlsMyQlq367rZk9rNoNtPQXr0nWGx4KfTA10dfLeKV
+	 UJUx7fCU5CBjytd8Y7OfNZ6H7jLPbajkjzTq2DEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.16 496/570] cifs: reset iface weights when we cannot find a candidate
+	Vedang Nagar <quic_vnagar@quicinc.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.15 497/515] media: venus: Fix OOB read due to missing payload bound check
 Date: Mon, 18 Aug 2025 14:48:03 +0200
-Message-ID: <20250818124524.975838944@linuxfoundation.org>
+Message-ID: <20250818124517.579177063@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +65,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Vedang Nagar <quic_vnagar@quicinc.com>
 
-commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 upstream.
+commit 06d6770ff0d8cc8dfd392329a8cc03e2a83e7289 upstream.
 
-We now do a weighted selection of server interfaces when allocating
-new channels. The weights are decided based on the speed advertised.
-The fulfilled weight for an interface is a counter that is used to
-track the interface selection. It should be reset back to zero once
-all interfaces fulfilling their weight.
+Currently, The event_seq_changed() handler processes a variable number
+of properties sent by the firmware. The number of properties is indicated
+by the firmware and used to iterate over the payload. However, the
+payload size is not being validated against the actual message length.
 
-In cifs_chan_update_iface, this reset logic was missing. As a result
-when the server interface list changes, the client may not be able
-to find a new candidate for other channels after all interfaces have
-been fulfilled.
+This can lead to out-of-bounds memory access if the firmware provides a
+property count that exceeds the data available in the payload. Such a
+condition can result in kernel crashes or potential information leaks if
+memory beyond the buffer is accessed.
 
-Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this by properly validating the remaining size of the payload before
+each property access and updating bounds accordingly as properties are
+parsed.
+
+This ensures that property parsing is safely bounded within the received
+message buffer and protects against malformed or malicious firmware
+behavior.
+
+Fixes: 09c2845e8fe4 ("[media] media: venus: hfi: add Host Firmware Interface (HFI)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vedang Nagar <quic_vnagar@quicinc.com>
+Reviewed-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Co-developed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/sess.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/media/platform/qcom/venus/hfi_msgs.c |   83 ++++++++++++++++++---------
+ 1 file changed, 58 insertions(+), 25 deletions(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -332,6 +332,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 	struct cifs_server_iface *old_iface = NULL;
- 	struct cifs_server_iface *last_iface = NULL;
- 	struct sockaddr_storage ss;
-+	int retry = 0;
+--- a/drivers/media/platform/qcom/venus/hfi_msgs.c
++++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
+@@ -33,8 +33,9 @@ static void event_seq_changed(struct ven
+ 	struct hfi_buffer_requirements *bufreq;
+ 	struct hfi_extradata_input_crop *crop;
+ 	struct hfi_dpb_counts *dpb_count;
++	u32 ptype, rem_bytes;
++	u32 size_read = 0;
+ 	u8 *data_ptr;
+-	u32 ptype;
  
- 	spin_lock(&ses->chan_lock);
- 	chan_index = cifs_ses_get_chan_index(ses, server);
-@@ -360,6 +361,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 		return;
+ 	inst->error = HFI_ERR_NONE;
+ 
+@@ -44,86 +45,118 @@ static void event_seq_changed(struct ven
+ 		break;
+ 	default:
+ 		inst->error = HFI_ERR_SESSION_INVALID_PARAMETER;
+-		goto done;
++		inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
++		return;
  	}
  
-+try_again:
- 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
- 				     iface_head);
- 	iface_min_speed = last_iface->speed;
-@@ -397,6 +399,13 @@ cifs_chan_update_iface(struct cifs_ses *
- 	}
+ 	event.event_type = pkt->event_data1;
  
- 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
-+		list_for_each_entry(iface, &ses->iface_list, iface_head)
-+			iface->weight_fulfilled = 0;
+ 	num_properties_changed = pkt->event_data2;
+-	if (!num_properties_changed) {
+-		inst->error = HFI_ERR_SESSION_INSUFFICIENT_RESOURCES;
+-		goto done;
+-	}
++	if (!num_properties_changed)
++		goto error;
+ 
+ 	data_ptr = (u8 *)&pkt->ext_event_data[0];
++	rem_bytes = pkt->shdr.hdr.size - sizeof(*pkt);
 +
-+		/* see if it can be satisfied in second attempt */
-+		if (!retry++)
-+			goto try_again;
+ 	do {
++		if (rem_bytes < sizeof(u32))
++			goto error;
+ 		ptype = *((u32 *)data_ptr);
 +
- 		iface = NULL;
- 		cifs_dbg(FYI, "unable to find a suitable iface\n");
- 	}
++		data_ptr += sizeof(u32);
++		rem_bytes -= sizeof(u32);
++
+ 		switch (ptype) {
+ 		case HFI_PROPERTY_PARAM_FRAME_SIZE:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_framesize))
++				goto error;
++
+ 			frame_sz = (struct hfi_framesize *)data_ptr;
+ 			event.width = frame_sz->width;
+ 			event.height = frame_sz->height;
+-			data_ptr += sizeof(*frame_sz);
++			size_read = sizeof(struct hfi_framesize);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_PROFILE_LEVEL_CURRENT:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_profile_level))
++				goto error;
++
+ 			profile_level = (struct hfi_profile_level *)data_ptr;
+ 			event.profile = profile_level->profile;
+ 			event.level = profile_level->level;
+-			data_ptr += sizeof(*profile_level);
++			size_read = sizeof(struct hfi_profile_level);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_PIXEL_BITDEPTH:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_bit_depth))
++				goto error;
++
+ 			pixel_depth = (struct hfi_bit_depth *)data_ptr;
+ 			event.bit_depth = pixel_depth->bit_depth;
+-			data_ptr += sizeof(*pixel_depth);
++			size_read = sizeof(struct hfi_bit_depth);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_PIC_STRUCT:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_pic_struct))
++				goto error;
++
+ 			pic_struct = (struct hfi_pic_struct *)data_ptr;
+ 			event.pic_struct = pic_struct->progressive_only;
+-			data_ptr += sizeof(*pic_struct);
++			size_read = sizeof(struct hfi_pic_struct);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_COLOUR_SPACE:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_colour_space))
++				goto error;
++
+ 			colour_info = (struct hfi_colour_space *)data_ptr;
+ 			event.colour_space = colour_info->colour_space;
+-			data_ptr += sizeof(*colour_info);
++			size_read = sizeof(struct hfi_colour_space);
+ 			break;
+ 		case HFI_PROPERTY_CONFIG_VDEC_ENTROPY:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(u32))
++				goto error;
++
+ 			event.entropy_mode = *(u32 *)data_ptr;
+-			data_ptr += sizeof(u32);
++			size_read = sizeof(u32);
+ 			break;
+ 		case HFI_PROPERTY_CONFIG_BUFFER_REQUIREMENTS:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_buffer_requirements))
++				goto error;
++
+ 			bufreq = (struct hfi_buffer_requirements *)data_ptr;
+ 			event.buf_count = hfi_bufreq_get_count_min(bufreq, ver);
+-			data_ptr += sizeof(*bufreq);
++			size_read = sizeof(struct hfi_buffer_requirements);
+ 			break;
+ 		case HFI_INDEX_EXTRADATA_INPUT_CROP:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_extradata_input_crop))
++				goto error;
++
+ 			crop = (struct hfi_extradata_input_crop *)data_ptr;
+ 			event.input_crop.left = crop->left;
+ 			event.input_crop.top = crop->top;
+ 			event.input_crop.width = crop->width;
+ 			event.input_crop.height = crop->height;
+-			data_ptr += sizeof(*crop);
++			size_read = sizeof(struct hfi_extradata_input_crop);
+ 			break;
+ 		case HFI_PROPERTY_PARAM_VDEC_DPB_COUNTS:
+-			data_ptr += sizeof(u32);
++			if (rem_bytes < sizeof(struct hfi_dpb_counts))
++				goto error;
++
+ 			dpb_count = (struct hfi_dpb_counts *)data_ptr;
+ 			event.buf_count = dpb_count->fw_min_cnt;
+-			data_ptr += sizeof(*dpb_count);
++			size_read = sizeof(struct hfi_dpb_counts);
+ 			break;
+ 		default:
++			size_read = 0;
+ 			break;
+ 		}
++		data_ptr += size_read;
++		rem_bytes -= size_read;
+ 		num_properties_changed--;
+ 	} while (num_properties_changed > 0);
+ 
+-done:
++	inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
++	return;
++
++error:
++	inst->error = HFI_ERR_SESSION_INSUFFICIENT_RESOURCES;
+ 	inst->ops->event_notify(inst, EVT_SYS_EVENT_CHANGE, &event);
+ }
+ 
 
 
 
