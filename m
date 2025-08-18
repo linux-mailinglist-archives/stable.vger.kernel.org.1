@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CA2B2A817
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:53 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D6CB2A26E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C52358630D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E731F4E2E29
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2327F335BC4;
-	Mon, 18 Aug 2025 13:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330B930E0F4;
+	Mon, 18 Aug 2025 12:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnXt4z75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8qJWCC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D409E335BA3;
-	Mon, 18 Aug 2025 13:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E457527B330;
+	Mon, 18 Aug 2025 12:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525184; cv=none; b=AtqMZSn7GnDkmD7iQkMLZINCuMhILDOtrSILwWqjUJtVIujGlMk4yU7lag3Z0PK+96OCEnl69nptVRcmRBoaRUZ6q5f1K3+eyPpeyc8/jkdKZTfQ9z7azzJ5AF7vRJShtryLlv+7Zxuo73HydYxR6/lt7vjze06TuG76j5q+TN4=
+	t=1755521806; cv=none; b=Wu1c0gBmwoUeZW8SJmUlBFJfWTUR65FQzztBZ7DjfsCSlZKMnghxTOgf7g/X8Tp08+OZETCQa8+OFwqo2+XvJ1OZuuKcFvJgCnYUCLaaXeaP3dcIvF8kzdQ/hIsJ+8Km1tteTDp2v7ITEDLbbnEzIu7yrSHN8Sb1ITAgAVWFoi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525184; c=relaxed/simple;
-	bh=dzX5Fy+5McRwrgj/ytbRh13InOiK+bGCYmx85TTNslQ=;
+	s=arc-20240116; t=1755521806; c=relaxed/simple;
+	bh=W6S3cnjR7+lbT97ZY96Ag3UVByX+3aIaDJ2LKpiGt0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDN4PsvKpj9/KiZQp0sNH7Tlegh8lJrJbpyVzthhaWuYQUQiAvTF3QR1Igs+wT6/8Gct2EMz+ybndAB71vS9lqZa70ASGhhxbI65QPZhQBeiezkr8F6gtNl6K6c8UN7xewOsyGSTN53I/tMliEy7F0C6Ut/kRvwyycgStSF1buA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnXt4z75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE98C4CEEB;
-	Mon, 18 Aug 2025 13:53:03 +0000 (UTC)
+	 MIME-Version; b=nB3ZRiZOgQcpBYjHyLtWKbLjp8C9DU6DUN8souw6+n5wtApRTyTDs1dh7O3zVntiCemTWO/oocvBLF28xDQaFfZoQkzOvOR/mUHMxa19wQRDCHiCaLUZBklIApE7ZKc70vmSesDXmnZkWGoVMGETc18EYWh8URlkohONit21cAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8qJWCC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA64C4CEF1;
+	Mon, 18 Aug 2025 12:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525184;
-	bh=dzX5Fy+5McRwrgj/ytbRh13InOiK+bGCYmx85TTNslQ=;
+	s=korg; t=1755521805;
+	bh=W6S3cnjR7+lbT97ZY96Ag3UVByX+3aIaDJ2LKpiGt0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZnXt4z7584NTjeUb/emVfb0XGivfQLSubD1tDwK+cpmwVm/UKLySK71n6XintAqDB
-	 QrvN6gi03eDiuii+qyBDVGOom2tVWICWn3+8DaKZWqloxsqGqjOjuPTjvNQuAeRRJp
-	 PBanTSydGwgss2gJ0PcVrN7iRo3Qg9GEw0GHsK38=
+	b=Q8qJWCC4jCItGq9A02ZFshvFqEgTznDU6WcpeWgYpR2eZYXP3h4cymxPU34LNxZlI
+	 IatDRP3J1YSCoA5OHKIi9qHHcHxo4EnpKYN194SSUy00q5i58Rx/jBd3zrPeDNCnle
+	 +aLcZ+hcCbo5vQXx4Rpr3rTy1pWf47CHM3HFYTL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ott <sebott@redhat.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 167/570] ACPI: processor: fix acpi_object initialization
+Subject: [PATCH 6.12 128/444] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
 Date: Mon, 18 Aug 2025 14:42:34 +0200
-Message-ID: <20250818124512.236316793@linuxfoundation.org>
+Message-ID: <20250818124453.718108285@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
+[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
 
-Initialization of the local acpi_object in acpi_processor_get_info()
-only sets the first 4 bytes to zero and is thus incomplete. This is
-indicated by messages like:
-	acpi ACPI0007:be: Invalid PBLK length [166288104]
+According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
+means the read would block. Hence, the common implementation in
+nonblocking model will poll the file when the nonblocking read returns
+EAGAIN. However, when the target file is thermal zone, this mechanism
+will totally malfunction because thermal zone doesn't implement sysfs
+notification and thus the poll will never return.
 
-Fix this by initializing all 16 bytes of the processor member of that
-union.
+For example, the read in Golang implemnts such method and sometimes
+hangs at reading some thermal zones via sysfs.
 
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
+Change to return -ENODATA instead of -EAGAIN to userspace.
+
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/thermal_sysfs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 7cf6101cb4c7..2a99f5eb6962 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -275,7 +275,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
+index 1838aa729bb5..c58c53d4ecc6 100644
+--- a/drivers/thermal/thermal_sysfs.c
++++ b/drivers/thermal/thermal_sysfs.c
+@@ -40,10 +40,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
  
- static int acpi_processor_get_info(struct acpi_device *device)
- {
--	union acpi_object object = { 0 };
-+	union acpi_object object = { .processor = { 0 } };
- 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
- 	struct acpi_processor *pr = acpi_driver_data(device);
- 	int device_declaration = 0;
+ 	ret = thermal_zone_get_temp(tz, &temperature);
+ 
+-	if (ret)
+-		return ret;
++	if (!ret)
++		return sprintf(buf, "%d\n", temperature);
+ 
+-	return sprintf(buf, "%d\n", temperature);
++	if (ret == -EAGAIN)
++		return -ENODATA;
++
++	return ret;
+ }
+ 
+ static ssize_t
 -- 
 2.39.5
 
