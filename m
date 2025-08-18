@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45210B2A6DC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7662DB2AA18
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D35BC1B66A28
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BD9E6E76B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6B632277A;
-	Mon, 18 Aug 2025 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5160350850;
+	Mon, 18 Aug 2025 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCm66K01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFrFOX9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943E832254B;
-	Mon, 18 Aug 2025 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ED9350847;
+	Mon, 18 Aug 2025 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524213; cv=none; b=aSF6nN9FMg4DIYA+qgMtkBg6KhfM5OOrP52hYVrklRJ1n3cKYObWwPD4vibSybVaAN4QD8ctmXWtgkCY2J9EbWSW8VlwL8JkhOtGMQvPuiCeAgl0zn63xT2FE8GRMcjKkMS/95QqkrYznPrq+2q1zbbIqjJqnxZffqqpuuvFk8Y=
+	t=1755525883; cv=none; b=J229IAL48kR6mPOOdTJaz6FLBfhW3M7T+3XKphHneaIKh1qDSGTnCQgDvG9qDoMIRthyQegXqX/bwp0pmpgbHvkxdUMtfnFIaPVECeQfq/Oq2E++JzzadHBtkeEat+gI1bE6A2wu9dRcD4XEw1BUzVIBXegTeWxmZnicqb1oj9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524213; c=relaxed/simple;
-	bh=VrcFrztr9oENubPqFT/YRg8jbJlnWmF0PwOTf/+vTDc=;
+	s=arc-20240116; t=1755525883; c=relaxed/simple;
+	bh=u4tzslceDC1RFfZgNmun+qiSma9uC6iOIl/yK+4hZEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBQQEHd/WnO1wj2uc7HwgJmXqW2n7Bc/a0TjmYOH9C6o+jBRAfaKAtMB6RjcHqEtqhBWWTHSS4qDGJ05TE2qay1Me4T9prW3ZJghpCY2n7acYMtikqmNktLzi731B+tQXZad403aC3pLG1kLWNXemdXnuZq7eb/B2eY+b9env9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCm66K01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D845C4CEEB;
-	Mon, 18 Aug 2025 13:36:52 +0000 (UTC)
+	 MIME-Version; b=Lod/wBklFtJM88sh20sl0DGjWxfPZyo5CePtZoqyF9o4zTff+xlxP0WFHctTGi3jllMw0ElmQ2ruh+pQR4i0y8jG8YozZSA0MFyJ3FWu3AewLEFgI4YFxJ52OphlYkQlIZ9VbjIDcpUp62SHIgRh5gkwethBKpYUxpBKfSgR/O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFrFOX9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B791AC4CEEB;
+	Mon, 18 Aug 2025 14:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524213;
-	bh=VrcFrztr9oENubPqFT/YRg8jbJlnWmF0PwOTf/+vTDc=;
+	s=korg; t=1755525883;
+	bh=u4tzslceDC1RFfZgNmun+qiSma9uC6iOIl/yK+4hZEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vCm66K01HnbmWGDqD/xDJh5+r8VZG2FOozY+HctU5SYbfVzaWIiL37sWIqM3qTGJO
-	 Gpgpi2NHeMZWwQ5VZmEabDkFCFjyEtIRhEoDwMow/eRp0X5Ib4djUmbrkHIf+p4x3l
-	 I9cQCD7WWTqWpHpZZczXIbheUk0I5fcu+kNBQ+Tk=
+	b=oFrFOX9b1jf269M5r/jaL9xbJb2dDhlxffvsTG06+5sqqe6WcgPiX34AboJ9fODyF
+	 kV560l6uPh2BE7YxVqN1wlf7eBIlKpK95HSUc2oNpd1604+N2GSvqg+Cnw6OBoSCDj
+	 U2sp7uxX3CGmgOOZnMvpCP7mmt3Fprz0Fh42ovJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 395/515] i3c: dont fail if GETHDRCAP is unsupported
+Subject: [PATCH 6.16 394/570] dmaengine: stm32-dma: configure next sg only if there are more than 2 sgs
 Date: Mon, 18 Aug 2025 14:46:21 +0200
-Message-ID: <20250818124513.618380265@linuxfoundation.org>
+Message-ID: <20250818124521.034434219@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit 447270cdb41b1c8c3621bb14b93a6749f942556e ]
+[ Upstream commit e19bdbaa31082b43dab1d936e20efcebc30aa73d ]
 
-'I3C_BCR_HDR_CAP' is still spec v1.0 and has been renamed to 'advanced
-capabilities' in v1.1 onwards. The ST pressure sensor LPS22DF does not
-have HDR, but has the 'advanced cap' bit set. The core still wants to
-get additional information using the CCC 'GETHDRCAP' (or GETCAPS in v1.1
-onwards). Not all controllers support this CCC and will notify the upper
-layers about it. For instantiating the device, we can ignore this
-unsupported CCC as standard communication will work. Without this patch,
-the device will not be instantiated at all.
+DMA operates in Double Buffer Mode (DBM) when the transfer is cyclic and
+there are at least two periods.
+When DBM is enabled, the DMA toggles between two memory targets (SxM0AR and
+SxM1AR), indicated by the SxSCR.CT bit (Current Target).
+There is no need to update the next memory address if two periods are
+configured, as SxM0AR and SxM1AR are already properly set up before the
+transfer begins in the stm32_dma_start_transfer() function.
+This avoids unnecessary updates to SxM0AR/SxM1AR, thereby preventing
+potential Transfer Errors. Specifically, when the channel is enabled,
+SxM0AR and SxM1AR can only be written if SxSCR.CT=1 and SxSCR.CT=0,
+respectively. Otherwise, a Transfer Error interrupt is triggered, and the
+stream is automatically disabled.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250704204524.6124-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Link: https://lore.kernel.org/r/20250624-stm32_dma_dbm_fix-v1-1-337c40d6c93e@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 2 +-
+ drivers/dma/stm32/stm32-dma.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index fd81871609d9..e53c69d24873 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1439,7 +1439,7 @@ static int i3c_master_retrieve_dev_info(struct i3c_dev_desc *dev)
- 
- 	if (dev->info.bcr & I3C_BCR_HDR_CAP) {
- 		ret = i3c_master_gethdrcap_locked(master, &dev->info);
--		if (ret)
-+		if (ret && ret != -ENOTSUPP)
- 			return ret;
- 	}
- 
+diff --git a/drivers/dma/stm32/stm32-dma.c b/drivers/dma/stm32/stm32-dma.c
+index 917f8e922373..0e39f99bce8b 100644
+--- a/drivers/dma/stm32/stm32-dma.c
++++ b/drivers/dma/stm32/stm32-dma.c
+@@ -744,7 +744,7 @@ static void stm32_dma_handle_chan_done(struct stm32_dma_chan *chan, u32 scr)
+ 		/* cyclic while CIRC/DBM disable => post resume reconfiguration needed */
+ 		if (!(scr & (STM32_DMA_SCR_CIRC | STM32_DMA_SCR_DBM)))
+ 			stm32_dma_post_resume_reconfigure(chan);
+-		else if (scr & STM32_DMA_SCR_DBM)
++		else if (scr & STM32_DMA_SCR_DBM && chan->desc->num_sgs > 2)
+ 			stm32_dma_configure_next_sg(chan);
+ 	} else {
+ 		chan->busy = false;
 -- 
 2.39.5
 
