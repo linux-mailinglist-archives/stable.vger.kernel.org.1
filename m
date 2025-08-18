@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7A5B2A2EE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9476CB2A607
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BF9D5E0156
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB366685510
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF39D1E51FE;
-	Mon, 18 Aug 2025 12:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8574E322A0E;
+	Mon, 18 Aug 2025 13:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ+XEV6x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0HsE8tD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698E43218CA;
-	Mon, 18 Aug 2025 12:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42006322A08;
+	Mon, 18 Aug 2025 13:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521957; cv=none; b=gxxWgDTFIg20zCD+yqdSYD+kba3y1FkLxhKM9dbpX/5Hpjg9TIguPSQRCKOZ79nU6GkeY7Hxx9FA0TDaSs8yKegnHzYHe4yoiOCaoJK3F5+TV7u7M85rbwXtUquHUkGCK9DB4/BsXz26iJuAR+XCm0V3e4AAAwsVLNb1u0woG8o=
+	t=1755523576; cv=none; b=XvnijZl1jEvjvbJylrEUtm2sdsTd+62f6l+8o7uelVJra04gx5cHdSGS41LKC63aKT6qorDOxGtZsVJ8/DbdMFqSd9ub+zj1ZWTkeToPQlEcf8XQwic+CHc+MTOppkMwo4fXYBZj4wfyyv3F2h7Tg7tpUJOb2YyXGbRbvKQYQw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521957; c=relaxed/simple;
-	bh=9pLd7l8wjASEZJIApjWK+J60zhabCydcVNdxiecU6Kk=;
+	s=arc-20240116; t=1755523576; c=relaxed/simple;
+	bh=gySG+9QaGJcXvHC5vPFRjbZRm1rgA8HobtXGfrtM90c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avcoXRif7BIk7Tm4qrOlqGjiHcvxARxTggagonQQANLyyzcy8lBT0OGLkcNxbPIlHqr0vs2dISnmmXPmCSS/nhktwUgGxMsU1l5dqLGKGSHGLJcq0S+52GKRoyLGHpJImquHWLY8j+9RsNjEyxpxqBhsvvgRUAssmVc+FRBE81Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ+XEV6x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F83AC4CEEB;
-	Mon, 18 Aug 2025 12:59:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fkm1boPIBL7sJafst/ZyhOp+yGTua1Z8DBlAWNmw6T5yglscWPKHl/G+wo/ykPNtFZTwUJ/RFCmoOOo6bAMJzb3y4635N44B5xFu1g4PnO74F5GSM1HkK8NqyrJHeFJ5FfLo4d0M53l6DbU7PExLsb2o++3G/lmVh0Vyk3R5sj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0HsE8tD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5D2C4CEEB;
+	Mon, 18 Aug 2025 13:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521957;
-	bh=9pLd7l8wjASEZJIApjWK+J60zhabCydcVNdxiecU6Kk=;
+	s=korg; t=1755523576;
+	bh=gySG+9QaGJcXvHC5vPFRjbZRm1rgA8HobtXGfrtM90c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJ+XEV6xpXfUZ42B/UkTFFKeSGgUL20juE4HFSaQ6NH46IJ0BnplXPR/PQ1oZKqjC
-	 wHqVJ3+iQtEhSMyJXXeUHtlB+KhtYE6CwhcZLslJKd+RlBaGJ+dM8rGWsFq2lH++uC
-	 yP9m2AlwUubtmKWx6BJSQneYkj5V2LVBvNE8XCvQ=
+	b=Q0HsE8tDqoUwqmDZrXq7RcJrpgASniENQz3wtIZcJqqO13I3oSkxBXaxOx5P5YYdC
+	 uY22lVBD6+By16oWulnv3YKria/UVQazQtzQT+mZiBka/ApuDSoxkrCZiGjYUNXbDS
+	 UeMUOknRKCBH8uHLTcEo5gUiSJcxMwN+JWRAoTCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 172/444] wifi: cfg80211: reject HTC bit for management frames
-Date: Mon, 18 Aug 2025 14:43:18 +0200
-Message-ID: <20250818124455.333850594@linuxfoundation.org>
+Subject: [PATCH 6.15 213/515] wifi: rtw89: Lower the timeout in rtw89_fw_read_c2h_reg() for USB
+Date: Mon, 18 Aug 2025 14:43:19 +0200
+Message-ID: <20250818124506.568452243@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+[ Upstream commit 671be46afd1f03de9dc6e4679c88e1a7a81cdff6 ]
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+This read_poll_timeout_atomic() with a delay of 1 µs and a timeout of
+1000000 µs can take ~250 seconds in the worst case because sending a
+USB control message takes ~250 µs.
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Lower the timeout to 4000 for USB in order to reduce the maximum polling
+time to ~1 second.
+
+This problem was observed with RTL8851BU while suspending to RAM with
+WOWLAN enabled. The computer sat for 4 minutes with a black screen
+before suspending.
+
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/09313da6-c865-4e91-b758-4cb38a878796@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 9 +++++++--
+ drivers/net/wireless/realtek/rtw89/fw.h | 2 ++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index a5eb92d93074..d1a66410b9c5 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -843,7 +843,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 6c52b0425f2e..4d7d0197736f 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -6446,13 +6446,18 @@ static int rtw89_fw_read_c2h_reg(struct rtw89_dev *rtwdev,
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	struct rtw89_fw_info *fw_info = &rtwdev->fw;
+ 	const u32 *c2h_reg = chip->c2h_regs;
+-	u32 ret;
++	u32 ret, timeout;
+ 	u8 i, val;
  
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
+ 	info->id = RTW89_FWCMD_C2HREG_FUNC_NULL;
  
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
++	if (rtwdev->hci.type == RTW89_HCI_TYPE_USB)
++		timeout = RTW89_C2H_TIMEOUT_USB;
++	else
++		timeout = RTW89_C2H_TIMEOUT;
++
+ 	ret = read_poll_timeout_atomic(rtw89_read8, val, val, 1,
+-				       RTW89_C2H_TIMEOUT, false, rtwdev,
++				       timeout, false, rtwdev,
+ 				       chip->c2h_ctrl_reg);
+ 	if (ret) {
+ 		rtw89_warn(rtwdev, "c2h reg timeout\n");
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 55255b48bdb7..43e569b90e18 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -112,6 +112,8 @@ struct rtw89_h2creg_sch_tx_en {
+ #define RTW89_C2HREG_HDR_LEN 2
+ #define RTW89_H2CREG_HDR_LEN 2
+ #define RTW89_C2H_TIMEOUT 1000000
++#define RTW89_C2H_TIMEOUT_USB 4000
++
+ struct rtw89_mac_c2h_info {
+ 	u8 id;
+ 	u8 content_len;
 -- 
 2.39.5
 
