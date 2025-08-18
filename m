@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-170518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25AF4B2A492
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175E3B2A491
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9232E624C71
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC15D564048
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89AE31E0E4;
-	Mon, 18 Aug 2025 13:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0217261B9E;
+	Mon, 18 Aug 2025 13:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcWCE3KZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyLnZ88y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9733831CA60;
-	Mon, 18 Aug 2025 13:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D159320CCA;
+	Mon, 18 Aug 2025 13:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522900; cv=none; b=U7Yq332xhtR4DIv2rs9NH2m41XxgM3+N0GbfOkbb1uugDFwcQq4SfXHsuibePrmjyDmyOfqHekSlcudp75kaCDZfqfhVgNjnKJUxY95HRKrmav3fbOMjO36LXPl4v+Pn5L0zLHs4F3MGZeHnhu5wOLH3+LzxomYGRxE/sf8Kb1Q=
+	t=1755522903; cv=none; b=RLe5A0DxJlUKGh4aDGsxx6Z7WSbtrpyHk2bc9B4/2TVmpQ5V8hIBHe/cEwS+2uT7n8XATXpaAfLtfoOV4jGhi2TodG9tYrYFnHDZuFo8z8r6cuMfM232k1b1jZ1eQcQDBLBxV/bE0SrRtvwWWY/j5qpgcwABktJ6OFM8T+mNOxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522900; c=relaxed/simple;
-	bh=8kix8Sc95lutV767cZoyDI8M5nKSSvc8AY9AtWYVLCI=;
+	s=arc-20240116; t=1755522903; c=relaxed/simple;
+	bh=dWMfGUfyM5kesF9Frf2WsCScVJALtybvl86V+1tTL1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LvK6jcLTjztJOReBjYRivJHRiLJT6SkOE7cAUMiIDGTqOh85C7hPIbB7eBLtF7bbfFc0YNG6Eq8jDmwNL+gbhS8JtraaT0fPKMhPCu8xeOtoUa5Nl54WqWjGGb1+ne/wYTkMAGX7dQ2Xw+4aJTcCfroWvBxkjxj7qMmi7NeiIdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcWCE3KZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C85FC4CEEB;
-	Mon, 18 Aug 2025 13:14:59 +0000 (UTC)
+	 MIME-Version; b=YTJ2wi3GhgMaeXUm7Wa79qzmCfKOLtb+fkQc3z3D/gUVPTFVYkwIHQnp9ensgNCcXjX5vTJvIWUC8VP/ug8lfF8MMpJC7qGtedLoylfaIx4a5itmleJNpjcLaCiQ8TeNPkvkW01za3dFZ5VENaQ6JmYViCprAhh/2lb61lh/6+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyLnZ88y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25F6C4CEEB;
+	Mon, 18 Aug 2025 13:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522900;
-	bh=8kix8Sc95lutV767cZoyDI8M5nKSSvc8AY9AtWYVLCI=;
+	s=korg; t=1755522903;
+	bh=dWMfGUfyM5kesF9Frf2WsCScVJALtybvl86V+1tTL1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcWCE3KZqX62Hz20MX+GC6GbyKBJNUQO9bshLGYLZNJyyuKLx8PoYL10fyYrLiXv7
-	 XtgnHqocrTY2otFaZopaByjcQMg4tpZvfEdXlOvvV0Glo2cGq36dusV0EDQ4zeXWMA
-	 RPEYeAAKJ37sovki2B76M54IeAdTP+1CLRz2Wm7A=
+	b=LyLnZ88yrwptIBlNL9UuuZVzSwBZD6RMyV8vHhhCcurXP0X9aatg+1GfidDjm0ppO
+	 SGNe4vuqCQXY06nxFXOY1xOx3r70TaoDPo/MrfjMBnDG5VCtOp0MJzFl7k21Y+BCZ4
+	 9MtzNACRQCHLEbCFkGnN6OvThbK2j3lg6/jSq/Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
+	syzbot+23727438116feb13df15@syzkaller.appspotmail.com,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 002/515] io_uring: export io_[un]account_mem
-Date: Mon, 18 Aug 2025 14:39:48 +0200
-Message-ID: <20250818124458.431817960@linuxfoundation.org>
+Subject: [PATCH 6.15 003/515] io_uring/memmap: cast nr_pages to size_t before shifting
+Date: Mon, 18 Aug 2025 14:39:49 +0200
+Message-ID: <20250818124458.468092545@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -65,55 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 11fbada7184f9e19bcdfa2f6b15828a78b8897a6 upstream.
+commit 33503c083fda048c77903460ac0429e1e2c0e341 upstream.
 
-Export pinned memory accounting helpers, they'll be used by zcrx
-shortly.
+If the allocated size exceeds UINT_MAX, then it's necessary to cast
+the mr->nr_pages value to size_t to prevent it from overflowing. In
+practice this isn't much of a concern as the required memory size will
+have been validated upfront, and accounted to the user. And > 4GB sizes
+will be necessary to make the lack of a cast a problem, which greatly
+exceeds normal user locked_vm settings that are generally in the kb to
+mb range. However, if root is used, then accounting isn't done, and
+then it's possible to hit this issue.
 
+Link: https://lore.kernel.org/all/6895b298.050a0220.7f033.0059.GAE@google.com/
 Cc: stable@vger.kernel.org
-Fixes: cf96310c5f9a0 ("io_uring/zcrx: add io_zcrx_area")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/9a61e54bd89289b39570ae02fe620e12487439e4.1752699568.git.asml.silence@gmail.com
+Reported-by: syzbot+23727438116feb13df15@syzkaller.appspotmail.com
+Fixes: 087f997870a9 ("io_uring/memmap: implement mmap for regions")
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rsrc.c |    4 ++--
- io_uring/rsrc.h |    2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ io_uring/memmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -55,7 +55,7 @@ int __io_account_mem(struct user_struct
- 	return 0;
- }
- 
--static void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
-+void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
+--- a/io_uring/memmap.c
++++ b/io_uring/memmap.c
+@@ -155,7 +155,7 @@ static int io_region_allocate_pages(stru
+ 				    unsigned long mmap_offset)
  {
- 	if (ctx->user)
- 		__io_unaccount_mem(ctx->user, nr_pages);
-@@ -64,7 +64,7 @@ static void io_unaccount_mem(struct io_r
- 		atomic64_sub(nr_pages, &ctx->mm_account->pinned_vm);
- }
- 
--static int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
-+int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
- {
- 	int ret;
- 
---- a/io_uring/rsrc.h
-+++ b/io_uring/rsrc.h
-@@ -146,6 +146,8 @@ int io_files_update(struct io_kiocb *req
- int io_files_update_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
- 
- int __io_account_mem(struct user_struct *user, unsigned long nr_pages);
-+int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages);
-+void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages);
- 
- static inline void __io_unaccount_mem(struct user_struct *user,
- 				      unsigned long nr_pages)
+ 	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN;
+-	unsigned long size = mr->nr_pages << PAGE_SHIFT;
++	size_t size = (size_t) mr->nr_pages << PAGE_SHIFT;
+ 	unsigned long nr_allocated;
+ 	struct page **pages;
+ 	void *p;
 
 
 
