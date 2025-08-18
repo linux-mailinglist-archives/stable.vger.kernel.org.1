@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA56B2A537
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB19BB2A84A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5FC94E3418
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E981B627F7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C76322DA7;
-	Mon, 18 Aug 2025 13:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A921F1A5B92;
+	Mon, 18 Aug 2025 13:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TantPckm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEkxUHbo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4E132277A;
-	Mon, 18 Aug 2025 13:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652B1335BD4;
+	Mon, 18 Aug 2025 13:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523518; cv=none; b=sYPf/B9TPnocksvWqU9ST6YmjAdWq6u/N7685utsKUiLrJJcaHxdwzB0knonlok8R1yjJ05/h9al3ihTqmo6+ihHPXtHeNOCv6D3TofBLx+dqYzoToy439hfJmv7YuMFdK6H0XMm92yoAWoGh/iP0qXnBHFb2JDvps3dTbOP97E=
+	t=1755525222; cv=none; b=Y+Dt9V9CvMkIsyBAPSpk3IgWDVeXHr1gb8JLJG4MVOZwXEKTsir9UeF65ja3HXF12NxKeIQKtyWLxZ8ORYfcISw5t2CrDelZQjNjmnM09ioD058LKyG3MihMhyLWfcGDliRdNFG0Du/NAuh+B4o/TSnz2Go5YIPxOFXAZqPMyBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523518; c=relaxed/simple;
-	bh=z7MuMhBOjbRQ2ggUE3CtE1PMbMqxaqjV9biErAMkXCQ=;
+	s=arc-20240116; t=1755525222; c=relaxed/simple;
+	bh=JAIXG6+2etU7O0+ofvWTwWDFsiJkxvhuzK9mfXUHNGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPVGtbQ62FAoTqivbie1Nq3HoFtXzJ3MKHhIQYKZ1JEPesTsnliouczt+LNjTfjKby3zbQqvvmHpt2AolWBJ9xiL+h6Dsnn7xrBCo/DSIfqVkLvzrb5CAcH9cRng3OzV7vvpvF0uq9WsblcHr6LfoMoy9b36iu+UGy+SOnvn6po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TantPckm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E026DC4CEEB;
-	Mon, 18 Aug 2025 13:25:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EwzOKOMiMACW5pv88WEqgJ/ccPbu8fH7Imng0+UL+djkzE7DqxeLKDoIsMkpUXA1B9dVeySRWaDprmlP9u2o8XT68Fq3ARUKjUBAg3uxISGUnfK/gc+r0q6zVoE+AlFDLvW/Tfbtm41B3vr0uxSCdKFUShLc0rNzir1/R8mFhLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEkxUHbo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D8DC4CEEB;
+	Mon, 18 Aug 2025 13:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523518;
-	bh=z7MuMhBOjbRQ2ggUE3CtE1PMbMqxaqjV9biErAMkXCQ=;
+	s=korg; t=1755525222;
+	bh=JAIXG6+2etU7O0+ofvWTwWDFsiJkxvhuzK9mfXUHNGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TantPckmPR1oTp5ONa/NopS0194tEAIr3M6u6h1q8QZzECAVV/WRLD1U2+t6L8C52
-	 +xqQSz0XSg/cM/GSKRYUSKbhlGj6t78dPtYL8wJ7+5r6r8V2PvTu5qIZXY6JljlCFK
-	 QOKRTo6Nn63lbg50QgG1AHXcl9XgHbeL0p/XS6TA=
+	b=nEkxUHboIbq9vRetqE1ubqcVEGFBkgPO/4PL5jPoegSlFBExWc5kI+DneUnV6O5Q2
+	 /VJfJzlLF122mXupk6Dp6M78rqU+GddKtTWOopS2cgpDc0ceezrOIpM8SxOoA1pVe4
+	 6nL41KNqaWfN0jCTnUM5QoYIGNEbacyVN3sZH7Ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 196/515] Bluetooth: hci_sock: Reset cookie to zero in hci_sock_free_cookie()
+Subject: [PATCH 6.16 195/570] imx8m-blk-ctrl: set ISI panic write hurry level
 Date: Mon, 18 Aug 2025 14:43:02 +0200
-Message-ID: <20250818124505.916446700@linuxfoundation.org>
+Message-ID: <20250818124513.312839829@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Krzysztof Hałasa <khalasa@piap.pl>
 
-[ Upstream commit 4d7936e8a5b1fa803f4a631d2da4a80fa4f0f37f ]
+[ Upstream commit c01fba0b4869cada5403fffff416cd1675dba078 ]
 
-Reset cookie value to 0 instead of 0xffffffff in hci_sock_free_cookie()
-since:
-0         :  means cookie has not been assigned yet
-0xffffffff:  means cookie assignment failure
+Apparently, ISI needs cache settings similar to LCDIF.
+Otherwise we get artefacts in the image.
+Tested on i.MX8MP.
 
-Also fix generating cookie failure with usage shown below:
-hci_sock_gen_cookie(sk)   // generate cookie
-hci_sock_free_cookie(sk)  // free cookie
-hci_sock_gen_cookie(sk)   // Can't generate cookie any more
-
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
+Link: https://lore.kernel.org/r/m3ldr69lsw.fsf@t19.piap.pl
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 022b86797acd..4ad5296d7934 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -118,7 +118,7 @@ static void hci_sock_free_cookie(struct sock *sk)
- 	int id = hci_pi(sk)->cookie;
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 912802b5215b..5c83e5599f1e 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -665,6 +665,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_blk_ctl_dev_data = {
+ #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
+ #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
  
- 	if (id) {
--		hci_pi(sk)->cookie = 0xffffffff;
-+		hci_pi(sk)->cookie = 0;
- 		ida_free(&sock_cookie_ida, id);
++#define ISI_CACHE_CTRL		0x50
++#define  ISI_V_WR_HURRY		GENMASK(28, 26)
++#define  ISI_U_WR_HURRY		GENMASK(25, 23)
++#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
++
+ static int imx8mp_media_power_notifier(struct notifier_block *nb,
+ 				unsigned long action, void *data)
+ {
+@@ -694,6 +699,11 @@ static int imx8mp_media_power_notifier(struct notifier_block *nb,
+ 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
+ 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
+ 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
++		/* Same here for ISI */
++		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
++				FIELD_PREP(ISI_V_WR_HURRY, 7) |
++				FIELD_PREP(ISI_U_WR_HURRY, 7) |
++				FIELD_PREP(ISI_Y_WR_HURRY, 7));
  	}
- }
+ 
+ 	return NOTIFY_OK;
 -- 
 2.39.5
 
