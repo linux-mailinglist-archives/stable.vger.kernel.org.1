@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-170260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6BBB2A31D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0788BB2A627
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9DA03A8620
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE9B188FA86
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E13318144;
-	Mon, 18 Aug 2025 13:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1852421CC59;
+	Mon, 18 Aug 2025 13:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIGMIrMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KF3dIEt0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EB712DDA1;
-	Mon, 18 Aug 2025 13:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C0F335BB3;
+	Mon, 18 Aug 2025 13:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522059; cv=none; b=Z98BYudbLIJR9TBpuQ1A01XI1/cXS+paN1BoIXKrvDteblnML8ucfa/RcrDalt+86WHeDDJo45Pn5S8nOiLWkHC/gfTKVdKY5W639neo2eYQXIHiYjYFWIfiCRojc1Xkg41RL2KeMKYNpn6d7cqnMsaRe5j2W+b5WTW0yUl2VZ4=
+	t=1755523669; cv=none; b=dvBfayyEXfJOILwANw25kQIPwHVImaYJvJJslZEXQkxmSYapt9hhqzdmgvL0jz9Lhxw/Ugr/fzBtFTM15Bq6zgtmUxlwa7voaRQNgA+WAyOFIi8k8QRc94sIKTldjvCBVoOXDzJ0W58aEpjcA5Ofwd18JeqWFr99lHXvyLd2gYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522059; c=relaxed/simple;
-	bh=gGYQxuBor/9Sav/5spXqDo++qfUsDVFMZZmFqM4gEvI=;
+	s=arc-20240116; t=1755523669; c=relaxed/simple;
+	bh=4B1lTsiTmLxBrYvxs69u1QDStprWNUAPUPmMM0I5daA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHP6SupCDpMDH2CcxS6rEZbadbJAkVNSLUkvAEnQm9jw1hcxRvwCUv0bsOg63UjAbo8AXmY9r3CHyj9lxEYX3W/jscQ8lv6Cmz2FHoi8eXGcPai57i/9GioAtIRGqD0qVa7NWYvwCFZhjvixObOVGGtSZcdq0nTWK2bxqffRLYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIGMIrMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4E9C4CEEB;
-	Mon, 18 Aug 2025 13:00:58 +0000 (UTC)
+	 MIME-Version; b=qq4HTQEeEAG8DUqJjVCAxTdo+sjhJmL9oAl9u0PfO/zvyA9A3Qk1+D7g1he02JVgg/+WxM1BMwi+SJ3sVeihAIJF2+FRjTkgV7SV5ZXfQZhlcjfFVKw4mvUvrziVM6gvxosva0IOvZ63rHp9D292c8/4lfP2myb8tPQMr+Kh9vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KF3dIEt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0834C4CEEB;
+	Mon, 18 Aug 2025 13:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522059;
-	bh=gGYQxuBor/9Sav/5spXqDo++qfUsDVFMZZmFqM4gEvI=;
+	s=korg; t=1755523669;
+	bh=4B1lTsiTmLxBrYvxs69u1QDStprWNUAPUPmMM0I5daA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RIGMIrMnrEetGzfa1h5njtW/fR9oOSMhYmObukBgA+zXaHJ/46zn1Nk7v66Rz3uhH
-	 oqmXuHskpkaIJq22zF7kMLeUIArn3Ee42nSjvLUhQx6/bCAwaMhi0Yt8y9kvKWWinV
-	 4S0e3n4bbSylYWaRW9o8xa5lmRQzIHWXwelsi7Lo=
+	b=KF3dIEt0k5xaX/5IoFhCrHAvHWiFpa2gA8BK5X9CPI6+p3xEV/LF87ot6xX5ZKx6y
+	 41Nu+RYm6jyQNZn+gfE+BjNQzcpkmFigcwOrRcvFHk9UWC9TlEIA+Fy4yGAUs6M8hn
+	 EK07qmHPJwWIIXaTxSqnsZivY2fiZd7naXw5m6E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/444] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
+Subject: [PATCH 6.15 242/515] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
 Date: Mon, 18 Aug 2025 14:43:48 +0200
-Message-ID: <20250818124456.434747042@linuxfoundation.org>
+Message-ID: <20250818124507.702364864@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -110,10 +110,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 7280ed04c96c..af61769b1d50 100644
+index 138d9f4658d5..23264fe111e5 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -12220,8 +12220,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+@@ -12170,8 +12170,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
  		/*
  		 * Track max cost of a domain to make sure to not delay the
  		 * next wakeup on the CPU.
@@ -129,7 +129,7 @@ index 7280ed04c96c..af61769b1d50 100644
  		sd->last_decay_max_lb_cost = jiffies;
  	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
  		/*
-@@ -12926,10 +12932,17 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
+@@ -12863,10 +12869,17 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
  
  			t1 = sched_clock_cpu(this_cpu);
  			domain_cost = t1 - t0;
