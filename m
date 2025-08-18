@@ -1,234 +1,138 @@
-Return-Path: <stable+bounces-171661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079C9B2B2A4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 22:43:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6F5B2B31E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 23:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2A984E34DD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 20:43:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E57052038D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 20:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FBF274FD0;
-	Mon, 18 Aug 2025 20:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8AC274B3D;
+	Mon, 18 Aug 2025 20:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Gi/16nbL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyY0MN2a"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479C927464F;
-	Mon, 18 Aug 2025 20:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBD12737FB;
+	Mon, 18 Aug 2025 20:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755549746; cv=none; b=jAnpig9AJvBSnXOz5atpCv90WvW9yQx+tj43F1t90nY8FijoMaE4FO15yNf+qe+MEpfK3shOobkdh+0zTxC+g0+r8A0RDBH1ZpzzRMmiYyN5Fwtrlc59gt9POc011IOBgL+wKvkSo9lAvJaE5GIOAkaXdlN95gZSHvy4cnIlzsM=
+	t=1755550639; cv=none; b=oz8spKRBdRLxyLvIh/RIiryFMgJHBYo98gpdKpTVV9Lvi6Rz9FhSTIIEBRK7UPnO4dInlf1D8WhJkpBqGpHWZEBqCDXrW9VkIhoUs4Jv7lnAwqS3qOIu3kX/xDCFT36xTwJ9t8kixjJCMW4E/APf4vTTvjLay0p+2Y/a6FUgSLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755549746; c=relaxed/simple;
-	bh=pASaZZUa8G/kSzlS/eDqbEmaIuYle5Tg6zJNQzxv4+w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pFyMitQJx5hBTfdVLKg0SWtF4+Af8c6JLKsgCgccFEEkroEUnpsY54iRwXPXOSrX4OV5IufBsW57uC49vdflGLIIKRsDXvQaSq6AQepKyeNYd0FJstbyF7OFXB+/Kyg6KusngWoC1phjdmwDjaMMuN/7PdU51vbkJJs+yozX1+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Gi/16nbL; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.1.106] (mob-5-90-52-92.net.vodafone.it [5.90.52.92])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 052B811EB;
-	Mon, 18 Aug 2025 22:41:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755549682;
-	bh=pASaZZUa8G/kSzlS/eDqbEmaIuYle5Tg6zJNQzxv4+w=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Gi/16nbLZUP/QS5ixbof3mx1iEnbOylMFFv/mp857+sKrOFrznaEiPO4Z/iEpWD3p
-	 xePUXUzxFGZCy+1SLwbPpGAkYrTvdoKW7AEjuFsAjjtZFwuGmeENxH7JsV756lvjHF
-	 NPiATQsQ7HMhh0ECn1G1r2XihTJpIee/68Gaum0Y=
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Date: Mon, 18 Aug 2025 22:39:37 +0200
-Subject: [PATCH v3 2/2] media: ivtv: Fix invalid access to file *
+	s=arc-20240116; t=1755550639; c=relaxed/simple;
+	bh=hemVKD6Np66HkPp6f8nWyquNzdmm4lwZm5EWfMVFXvg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TSVkamlcpWRIDb0Um8x2mnEYyuY/1kgdrphGKiW3C7Zjd97Eyj3sliGblg9p3wc2Z9oi1573V+YDEMuDlnUlokcbSbVytosbYDxpKeCIHB8dX4+Ny2qxlnF/ApGg/hulrVmpKPTmgStmU7J8HRIjv13qANvt59ZOENgEIbI96Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyY0MN2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121CFC116B1;
+	Mon, 18 Aug 2025 20:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755550639;
+	bh=hemVKD6Np66HkPp6f8nWyquNzdmm4lwZm5EWfMVFXvg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CyY0MN2awMtY8pHhkCz8via2MJTYZGoD2me232CH8E6zMZmz27/RmXv6J0k2wiHDX
+	 hSNub/H/r9zWyEtHNsD7fDOO4oDY/Q5P5EtOkjPVOWlnDbGAhLN8VPihL/bvJPbZBk
+	 Vkf/6ORhqeCj+uLmeOGZ3zchIcg8uCkSC/CNOL9jHkZifeW6sDg/bh/PszUPvvl34t
+	 jhwbb0CU6KXLBa415nmBwchhSLhY1Ap5dPf4OVuoAfpCoNV60v5r++7ChVNvxwezKj
+	 yYhB1y53j/amEqJKGINlVzCDJaIGFU3Pi6BFWZyuKhTW76SQ9B7v1uiPBcWuvXgRmK
+	 voRT0eXLV8qaA==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Cc: linux-crypto@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH net-next v3 2/5] sctp: Fix MAC comparison to be constant-time
+Date: Mon, 18 Aug 2025 13:54:23 -0700
+Message-ID: <20250818205426.30222-3-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250818205426.30222-1-ebiggers@kernel.org>
+References: <20250818205426.30222-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250818-cx18-v4l2-fh-v3-2-5e2f08f3cadc@ideasonboard.com>
-References: <20250818-cx18-v4l2-fh-v3-0-5e2f08f3cadc@ideasonboard.com>
-In-Reply-To: <20250818-cx18-v4l2-fh-v3-0-5e2f08f3cadc@ideasonboard.com>
-To: Andy Walls <awalls@md.metrocast.net>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5849;
- i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
- bh=pASaZZUa8G/kSzlS/eDqbEmaIuYle5Tg6zJNQzxv4+w=;
- b=kA0DAAoBcjQGjxahVjwByyZiAGijkCWiszx0ya1IUjfDJzAXDwMl1n8tOhzS/7s3TRw8gLXJd
- 4kCMwQAAQoAHRYhBLXEPUiAmiCKj1g4wHI0Bo8WoVY8BQJoo5AlAAoJEHI0Bo8WoVY8icIP/18e
- V0aTRZ6D3TZYaEWMLp41bKXBT4ks36jTn0o0kp/dn//rCeYHUOyWuS+/ICoUcpAIcEtC0BWFJCp
- clL9tYpGexwitrUW05WLFlAVLOAvEr/bW+OV8vnKVzzY8//HDAALLsh/H/vACKz37wGNV77CuqZ
- bL5QlaEwJbcXubllVx/ylzgusmF5q+pTBj2xLXetFdepGS6m2XjHmgYzTG2KQE+S2lJSwCbwc2v
- bNMNTGQjNLMLz9pvs5TBqH2N4rHggqRzUWSQzdjCM7sRZ9yTsygbuG/0B85yjXAUnrTLscatPcB
- zXtATIo0ZDkvnLcfyeoYkYMksorQdtN0wxw1+5vqSjjU1HhpAvadByqwpHS6AGjFsW/ZPnikatb
- JbvzIUiEgXYh6IqtVFWDEHH5LjAo89lVGO7vacFEIAkFm5ellTNpzHUISuSsksaa3p0hNdwvPM1
- HV4lnyM0PqveN1eR2wCDXW6nBxlq659iJCUND7oJZkLXIPj4o14cl920TD6n068HnofH030uV8W
- ZwPgzH0ghJhonCyT4b7ZS07snG7WHr79DdM3VVdo6KLGwfnZRV/VIrejND/VzqSn2v0paw8LyvF
- aHtrzEOmUXOrufKeYPjsrG7qT21WjNNd2346H+c1iFeb2V6Jn5iksSJ+/TIvXEw9EwnZ5lplpll
- BRrQl
-X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
- fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+Content-Transfer-Encoding: 8bit
 
-Since commit 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-all ioctl handlers have been ported to operate on the file * first
-function argument.
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-The ivtv DVB layer calls ivtv_init_on_first_open() when the driver
-needs to start streaming. This function calls the s_input() and
-s_frequency() ioctl handlers directly, but being called from the driver
-context, it doesn't have a valid file * to pass them. This causes the
-ioctl handlers to deference an invalid pointer.
-
-Fix this by wrapping the ioctl handlers implementation in helper
-functions.
-
-The ivtv_do_s_input() helper accepts a struct ivtv * as first argument,
-which is easily accessible from the DVB layer as well as from the file *
-argument of the ioctl handler.
-
-The ivtv_s_frequency() takes an ivtv_stream * instead. The stream * can
-safely be accessed from the DVB layer which hard-codes it to the
-IVTV_ENC_STREAM_TYPE_MPG stream type, as well as from the ioctl handler
-a valid stream type is associated to each open file handle depending on
-which video device node has been opened in the ivtv_open() file
-operation.
-
-The bug has been reported by Smatch.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aKL4OMWsESUdX8KQ@stanley.mountain/
-Fixes: 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
+Fixes: bbd0d59809f9 ("[SCTP]: Implement the receive and verification of AUTH chunk")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- drivers/media/pci/ivtv/ivtv-driver.c | 11 ++++-------
- drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
- drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
- 3 files changed, 25 insertions(+), 14 deletions(-)
+ net/sctp/sm_make_chunk.c | 3 ++-
+ net/sctp/sm_statefuns.c  | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtv-driver.c b/drivers/media/pci/ivtv/ivtv-driver.c
-index ecc20cd89926fe2ce4e472526a6b5fc0857615dd..7e2fb98cfccf02f701ceb4484dd1d330dd1dc867 100644
---- a/drivers/media/pci/ivtv/ivtv-driver.c
-+++ b/drivers/media/pci/ivtv/ivtv-driver.c
-@@ -1260,15 +1260,12 @@ static int ivtv_probe(struct pci_dev *pdev, const struct pci_device_id *pci_id)
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 3ead591c72fd3..d099b605e44a7 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -29,10 +29,11 @@
+  */
  
- int ivtv_init_on_first_open(struct ivtv *itv)
- {
--	struct v4l2_frequency vf;
- 	/* Needed to call ioctls later */
--	struct ivtv_open_id fh;
-+	struct ivtv_stream *s = &itv->streams[IVTV_ENC_STREAM_TYPE_MPG];
-+	struct v4l2_frequency vf;
- 	int fw_retry_count = 3;
- 	int video_input;
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
--	fh.itv = itv;
--	fh.type = IVTV_ENC_STREAM_TYPE_MPG;
--
- 	if (test_bit(IVTV_F_I_FAILED, &itv->i_flags))
- 		return -ENXIO;
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
+ #include <linux/net.h>
+@@ -1786,11 +1787,11 @@ struct sctp_association *sctp_unpack_cookie(
+ 			*error = -SCTP_IERROR_NOMEM;
+ 			goto fail;
+ 		}
+ 	}
  
-@@ -1310,13 +1307,13 @@ int ivtv_init_on_first_open(struct ivtv *itv)
+-	if (memcmp(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
++	if (crypto_memneq(digest, cookie->signature, SCTP_SIGNATURE_SIZE)) {
+ 		*error = -SCTP_IERROR_BAD_SIG;
+ 		goto fail;
+ 	}
  
- 	video_input = itv->active_input;
- 	itv->active_input++;	/* Force update of input */
--	ivtv_s_input(NULL, &fh, video_input);
-+	ivtv_do_s_input(itv, video_input);
+ no_hmac:
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index a0524ba8d7878..d4d5b14b49b3f 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -28,10 +28,11 @@
+  *    Kevin Gao		    <kevin.gao@intel.com>
+  */
  
- 	/* Let the VIDIOC_S_STD ioctl do all the work, keeps the code
- 	   in one place. */
- 	itv->std++;		/* Force full standard initialization */
- 	itv->std_out = itv->std;
--	ivtv_s_frequency(NULL, &fh, &vf);
-+	ivtv_do_s_frequency(s, &vf);
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- 	if (itv->card->v4l2_capabilities & V4L2_CAP_VIDEO_OUTPUT) {
- 		/* Turn on the TV-out: ivtv_init_mpeg_decoder() initializes
-diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.c b/drivers/media/pci/ivtv/ivtv-ioctl.c
-index 8077a71d4850ec773caa20c3fca08f92f3117d69..dfbc842b22453868a2075935a81db7ae313ee46c 100644
---- a/drivers/media/pci/ivtv/ivtv-ioctl.c
-+++ b/drivers/media/pci/ivtv/ivtv-ioctl.c
-@@ -974,9 +974,8 @@ static int ivtv_g_input(struct file *file, void *fh, unsigned int *i)
- 	return 0;
- }
++#include <crypto/utils.h>
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/ip.h>
+ #include <linux/ipv6.h>
+ #include <linux/net.h>
+@@ -4414,11 +4415,11 @@ static enum sctp_ierror sctp_sf_authenticate(
+ 	sctp_auth_calculate_hmac(asoc, chunk->skb,
+ 				 (struct sctp_auth_chunk *)chunk->chunk_hdr,
+ 				 sh_key, GFP_ATOMIC);
  
--int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-+int ivtv_do_s_input(struct ivtv *itv, unsigned int inp)
- {
--	struct ivtv *itv = file2id(file)->itv;
- 	v4l2_std_id std;
- 	int i;
+ 	/* Discard the packet if the digests do not match */
+-	if (memcmp(save_digest, digest, sig_len)) {
++	if (crypto_memneq(save_digest, digest, sig_len)) {
+ 		kfree(save_digest);
+ 		return SCTP_IERROR_BAD_SIG;
+ 	}
  
-@@ -1017,6 +1016,11 @@ int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
- 	return 0;
- }
- 
-+static int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-+{
-+	return ivtv_do_s_input(file2id(file)->itv, inp);
-+}
-+
- static int ivtv_g_output(struct file *file, void *fh, unsigned int *i)
- {
- 	struct ivtv *itv = file2id(file)->itv;
-@@ -1065,10 +1069,9 @@ static int ivtv_g_frequency(struct file *file, void *fh, struct v4l2_frequency *
- 	return 0;
- }
- 
--int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf)
-+int ivtv_do_s_frequency(struct ivtv_stream *s, const struct v4l2_frequency *vf)
- {
--	struct ivtv *itv = file2id(file)->itv;
--	struct ivtv_stream *s = &itv->streams[file2id(file)->type];
-+	struct ivtv *itv = s->itv;
- 
- 	if (s->vdev.vfl_dir)
- 		return -ENOTTY;
-@@ -1082,6 +1085,15 @@ int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *v
- 	return 0;
- }
- 
-+static int ivtv_s_frequency(struct file *file, void *fh,
-+			    const struct v4l2_frequency *vf)
-+{
-+	struct ivtv_open_id *id = file2id(file);
-+	struct ivtv *itv = id->itv;
-+
-+	return ivtv_do_s_frequency(&itv->streams[id->type], vf);
-+}
-+
- static int ivtv_g_std(struct file *file, void *fh, v4l2_std_id *std)
- {
- 	struct ivtv *itv = file2id(file)->itv;
-diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.h b/drivers/media/pci/ivtv/ivtv-ioctl.h
-index 42c2516379fcbbd0640820ab0e3abe9bf00b57ea..dd713a6b095e5ebca45a234dd6c9a90df0928596 100644
---- a/drivers/media/pci/ivtv/ivtv-ioctl.h
-+++ b/drivers/media/pci/ivtv/ivtv-ioctl.h
-@@ -17,7 +17,9 @@ int ivtv_set_speed(struct ivtv *itv, int speed);
- void ivtv_set_funcs(struct video_device *vdev);
- void ivtv_s_std_enc(struct ivtv *itv, v4l2_std_id std);
- void ivtv_s_std_dec(struct ivtv *itv, v4l2_std_id std);
--int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf);
--int ivtv_s_input(struct file *file, void *fh, unsigned int inp);
-+
-+struct ivtv;
-+int ivtv_do_s_frequency(struct ivtv_stream *s, const struct v4l2_frequency *vf);
-+int ivtv_do_s_input(struct ivtv *itv, unsigned int inp);
- 
- #endif
-
+ 	kfree(save_digest);
 -- 
 2.50.1
 
