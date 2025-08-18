@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1761B2A600
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83963B2A916
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44AAD7B50AA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10A19189CC04
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535393218D1;
-	Mon, 18 Aug 2025 13:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF89322769;
+	Mon, 18 Aug 2025 13:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdtkz/ey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuMRdjNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED0B224AF9;
-	Mon, 18 Aug 2025 13:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAD4322760;
+	Mon, 18 Aug 2025 13:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523882; cv=none; b=cigRMGvQouxUnx2CfLO2HlNwZtwl4T5cdGG+qAVbxmmqWLWoBZ+KcH6VxMTah2AI4/7ZnRAy2DfL3EFBz39l7B1+E+HeK/ndgX7GBOvxDYvuz5paXpFHu51Ta5x3yOlkanoyNY5mh1BGIHzH7y3w8yEw8r9GIhMs+QLOSDaa9xw=
+	t=1755525569; cv=none; b=WqFZcSrA2uJq2YxEBKEscxyzRnTz39JRUQLlYQjlVZEWalwMo1NMDiBHM0U3/2m04/8dQD1EepP7Z6fZIBn7YuER7zRZfybul6XYY6BfCaoDEwMhcEu3FfClQDOH8ljKCiB0sBfxS1JUQcujsscWbnh4XJskX4h/REUdaIy90x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523882; c=relaxed/simple;
-	bh=5+tjLzFlkbzeywd09XtkDNJFc9TRCTvAXX6N3glXdbU=;
+	s=arc-20240116; t=1755525569; c=relaxed/simple;
+	bh=3jb6NtrIRc6pqp40mAkL8Lkg+VIG5V5VGDytvT57fgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9GTavdhyL89LFZtAfPrj8wXmLDjL6yt9+cM2m6HZf5f7q2nvgDQEEoTQyJLsBTU2kK4Dp/x6YtJEJfIzdwqmECdo4GQMd03EFanX/coKlDkWkKCV12Jk0t8TvjgxqTBMBGujQlvT/ctHjmJrukEUbndb+2HYW23JtO+YmV9h0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdtkz/ey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721E3C113D0;
-	Mon, 18 Aug 2025 13:31:21 +0000 (UTC)
+	 MIME-Version; b=WtsX0y+An7w/WJZg1MxgxnMXQLjIkL6P8zRqugeDNYpCJ/7ncdqU1m7PTsfw/+a8JjBRMqfweoKiLN8zk43x4ISkBbmxfeSXBU6stH2ZCPPE6WmtXwUbXGPUFrKwz10R/B8L74KwwgFe49ss+riKmDiGsyUm7L6Iey4eZoAVRo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuMRdjNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EA7C4CEEB;
+	Mon, 18 Aug 2025 13:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523881;
-	bh=5+tjLzFlkbzeywd09XtkDNJFc9TRCTvAXX6N3glXdbU=;
+	s=korg; t=1755525569;
+	bh=3jb6NtrIRc6pqp40mAkL8Lkg+VIG5V5VGDytvT57fgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bdtkz/eyjoqMHprgAmQXr59UmCGRB6dWS4K0CttOK198S/huK3EvxwQKf1HXub1NO
-	 JeSTtiuNSdKotjZoB5/sXCJ3vG4Yh2gOGNgLZTwrY8g4VbQoyP8oJ5k9j+cFVnlz4n
-	 VGYuwm6mldw1NJT0m2qUy+Kxfa89E4iRKrghtOJI=
+	b=zuMRdjNSa8gsDbivIHOaP93jZ3VNj+zyWH4RiVuZJhcJfrnvcVwY7iqMaXgTA0ZsG
+	 AX07x8zigl/DjtaqRCbCErcey8DxM4ZcY069/ZdNJhWV9ZNty36W6ZGsf1NzrqIIX2
+	 TqUN2Km8hhHqHGc/NsSG3DaXFqRqjxV8QETUXEdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 302/515] gve: Return error for unknown admin queue command
+Subject: [PATCH 6.16 301/570] lib: packing: Include necessary headers
 Date: Mon, 18 Aug 2025 14:44:48 +0200
-Message-ID: <20250818124510.062247804@linuxfoundation.org>
+Message-ID: <20250818124517.457007341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Nathan Lynch <nathan.lynch@amd.com>
 
-[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
+[ Upstream commit 8bd0af3154b2206ce19f8b1410339f7a2a56d0c3 ]
 
-In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
-admin queue command opcode is encountered.
+packing.h uses ARRAY_SIZE(), BUILD_BUG_ON_MSG(), min(), max(), and
+sizeof_field() without including the headers where they are defined,
+potentially causing build failures.
 
-This prevents the function from silently succeeding on invalid input
-and prevents undefined behavior by ensuring the function fails gracefully
-when an unrecognized opcode is provided.
+Fix this in packing.h and sort the result.
 
-These changes improve error handling.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
+Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250624-packing-includes-v1-1-c23c81fab508@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/packing.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index 3e8fc33cc11f..7f2334006f9f 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -564,6 +564,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
- 		break;
- 	default:
- 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
-+		return -EINVAL;
- 	}
+diff --git a/include/linux/packing.h b/include/linux/packing.h
+index 0589d70bbe04..20ae4d452c7b 100644
+--- a/include/linux/packing.h
++++ b/include/linux/packing.h
+@@ -5,8 +5,12 @@
+ #ifndef _LINUX_PACKING_H
+ #define _LINUX_PACKING_H
  
- 	return 0;
+-#include <linux/types.h>
++#include <linux/array_size.h>
+ #include <linux/bitops.h>
++#include <linux/build_bug.h>
++#include <linux/minmax.h>
++#include <linux/stddef.h>
++#include <linux/types.h>
+ 
+ #define GEN_PACKED_FIELD_STRUCT(__type) \
+ 	struct packed_field_ ## __type { \
 -- 
 2.39.5
 
