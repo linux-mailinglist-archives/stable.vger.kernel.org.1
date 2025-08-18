@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE36B2A682
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EB5B2A98B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 993F0686AFC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3D7C2A0C9C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4502335BCE;
-	Mon, 18 Aug 2025 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5BF34AB10;
+	Mon, 18 Aug 2025 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC79cFD7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYXvJDqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F47335BA3;
-	Mon, 18 Aug 2025 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA20934AAE2;
+	Mon, 18 Aug 2025 14:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523993; cv=none; b=kAhffTV/BHTpnvySsTNhPYcPxIB3slTbj9nR7t3yOHakO6Xw48xLwOeC5khs2Yx/W88UO5e5fQpaIkEveeAhwHFybmYlBn3RzlFL5SuGASMtskV7acIVwc3qsQv1YYUAtS644qkVdXtGJfAve+dLGnqTCTlMjTlFb8o0yVLgHMY=
+	t=1755525685; cv=none; b=kqcBanby55bT918erP7uW5DPxN+Rr3isxxCdOTaxv2qfxV0WcJAwwWgj2CcbaFybm8Un81Q7Og3IGJNn9d4lppzcSxZqMOXY8LhnFe+u90Y8NFZ0Hf2ajWuBSsrhL9d6yduf0QI0VkqOuT1bY22J+tGC68EyUq9P6FkvDYrYcuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523993; c=relaxed/simple;
-	bh=7VS534ik33nZd3E51QLILRFLf1n2v/NH0I8Pns+6sqQ=;
+	s=arc-20240116; t=1755525685; c=relaxed/simple;
+	bh=JWZCnHlI4lf/qBc1wi8HwySYRAHmzLMc3KD+21FKja8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtnqW6O2oT/ZnFNOW45RU9stqGVAWaynDilLDK1Cf85uKim2aMTXXwlo8ssrzWt/wHN1XGnT+eN5DMvFODsqGo4Pu3hGjXEMjAUQ6ftI4nBiThhO68wtbRrnhbgN9atzuWgTwUUCp2wuGLphWBzOqLfgwxNF+yEIXQxaj2JxfkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC79cFD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F338C4CEEB;
-	Mon, 18 Aug 2025 13:33:12 +0000 (UTC)
+	 MIME-Version; b=N4NCug9uhLhis170oOJwz3oPampAGGEbm1uu9IJGvc3w63Kkhmkji8N48XRT9d91ZgmHcWI+5zRzOmkVcRQcnFK+B20dWCQev3uu5/Y7IjMmfvKrAKAb+8giKqRVyUJ3rnLqi9wu/wtH4LiooYq6RafXT2S+zo2iAM2yj/DG9kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYXvJDqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD46C113D0;
+	Mon, 18 Aug 2025 14:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523993;
-	bh=7VS534ik33nZd3E51QLILRFLf1n2v/NH0I8Pns+6sqQ=;
+	s=korg; t=1755525685;
+	bh=JWZCnHlI4lf/qBc1wi8HwySYRAHmzLMc3KD+21FKja8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PC79cFD7FrsAInph8Mufbbgg6yJCgOpt3Q71HC2ZYUS//JnCDiZQYbz8F3ilUMhrX
-	 p/gUQSn6+bphQTTOvVTAlyNW5qKYzJKA9ZvCelvFJtI4m5/IrwNup0EDHUvuL0+U7i
-	 yxF57P7m0WrZ/xWBsmkJ8jokn9HshVWvutXpye70=
+	b=vYXvJDqWEtHMuAPWz859N11ramZqggAhQNKs4hi2XOFW3zFCNvoeH07mvM5FRYioY
+	 BxpfSKix3e0oNZpLk6hDKZf8buXpHxrmW5xuMj9kLEoX6ubAE154OnPr6zt9Cr3dcP
+	 FIByPwSYwNi+NODc6yrQrkACpQA5gQk6pwaWSPyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
-	Theodore Tso <tytso@mit.edu>,
+	Quentin Monnet <qmo@kernel.org>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 336/515] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
+Subject: [PATCH 6.16 335/570] bpftool: Fix JSON writer resource leak in version command
 Date: Mon, 18 Aug 2025 14:45:22 +0200
-Message-ID: <20250818124511.371625252@linuxfoundation.org>
+Message-ID: <20250818124518.755483505@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
+[ Upstream commit 85cd83fed8267cde0dd1cea719808aad95ae4de7 ]
 
-A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
-when an inode had the INLINE_DATA_FL flag set but was missing the
-system.data extended attribute.
+When using `bpftool --version -j/-p`, the JSON writer object
+created in do_version() was not properly destroyed after use.
+This caused a memory leak each time the version command was
+executed with JSON output.
 
-Since this can happen due to a maiciouly fuzzed file system, we
-shouldn't BUG, but rather, report it as a corrupted file system.
+Fix: 004b45c0e51a (tools: bpftool: provide JSON output for all possible commands)
 
-Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
-ext4_create_inline_data() and ext4_inline_data_truncate().
-
-Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Suggested-by: Quentin Monnet <qmo@kernel.org>
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250617132442.9998-1-chenyuan_fl@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ tools/bpf/bpftool/main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index f27d9da53fb7..372058706cce 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -303,7 +303,11 @@ static int ext4_create_inline_data(handle_t *handle,
- 	if (error)
- 		goto out;
+diff --git a/tools/bpf/bpftool/main.c b/tools/bpf/bpftool/main.c
+index cd5963cb6058..2b7f2bd3a7db 100644
+--- a/tools/bpf/bpftool/main.c
++++ b/tools/bpf/bpftool/main.c
+@@ -534,9 +534,9 @@ int main(int argc, char **argv)
+ 		usage();
  
--	BUG_ON(!is.s.not_found);
-+	if (!is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
+ 	if (version_requested)
+-		return do_version(argc, argv);
+-
+-	ret = cmd_select(commands, argc, argv, do_help);
++		ret = do_version(argc, argv);
++	else
++		ret = cmd_select(commands, argc, argv, do_help);
  
- 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
- 	if (error) {
-@@ -354,7 +358,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
- 	if (error)
- 		goto out;
- 
--	BUG_ON(is.s.not_found);
-+	if (is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "missing inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
- 
- 	len -= EXT4_MIN_INLINE_DATA_SIZE;
- 	value = kzalloc(len, GFP_NOFS);
-@@ -1904,7 +1912,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
- 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
- 				goto out_error;
- 
--			BUG_ON(is.s.not_found);
-+			if (is.s.not_found) {
-+				EXT4_ERROR_INODE(inode,
-+						 "missing inline data xattr");
-+				err = -EFSCORRUPTED;
-+				goto out_error;
-+			}
- 
- 			value_len = le32_to_cpu(is.s.here->e_value_size);
- 			value = kmalloc(value_len, GFP_NOFS);
+ 	if (json_output)
+ 		jsonw_destroy(&json_wtr);
 -- 
 2.39.5
 
