@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91073B2A459
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3884B2A9CF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82EFF566AE2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E46FE3BBB49
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E92A31CA61;
-	Mon, 18 Aug 2025 13:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC012343D8C;
+	Mon, 18 Aug 2025 14:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nxUClUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okPYKyE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B43D3218CA;
-	Mon, 18 Aug 2025 13:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906B343D80;
+	Mon, 18 Aug 2025 14:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522551; cv=none; b=h5zi8dW591fkhBKPEyLEMuwYRR7251Y35zIYgjsXFxxxvZOFrWTtALZMrs8b2rSyDdwoLwFw5B3+G125CVOeBUYYdNdFfOdV2rAaZ641zd4dzqMyPcT+jRbZ8Fj4Kv3PeukhYQZkkK5H1saVS8jKho2fkVnkwR7Ry1zvPn34LS8=
+	t=1755525863; cv=none; b=ZU0hkRuuDhb8Lf1Fdx1x17grE17K8DlIXAmpP1+OjvSFoZNkEvuGL4YQA7tIe3rv36FxsayY10kHQtGqD0dWV35IXGIIdnCtto4XYviVTcn3RtYSD7fi9BXVc2SE67oLxDy5HQETvXN+iO9mPzx4FvqBS2NBj6Z69wjcC39yym0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522551; c=relaxed/simple;
-	bh=u/3ElNYB7qyEyDvS3YiXjeJc9d8gj6qmxuQ9zW6qeN8=;
+	s=arc-20240116; t=1755525863; c=relaxed/simple;
+	bh=qybBR+FG+SRgCP1evoBxMGj4DDHLQLh9BIT7jMD5Wy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxY+lMnZJXqovf0VUMv5AF0D6f4WZp+uY17DClYDWf/PAXuyDVL5pb+LUHAWCJJFVLltUkNWukX4cA/Aow0kV8KvPzUeP+cW8okrxtgNR0V5mQEWykNtNNGikE/ityHKZZBy8j9o1tc5vfE1wKD/dmQbUhJOOXmoVZPLL8AuBCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nxUClUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA78C4CEEB;
-	Mon, 18 Aug 2025 13:09:10 +0000 (UTC)
+	 MIME-Version; b=fjTvquSe932yx2F2OJKCcmG6ihtn1qI6QpyjnCeH30S2YHpdvSri3G7I0KCxiqar0jnnJ7k+jErvNiXrRGPigJ9ZDABEpwUESKETXU9NRh4DCZojP0sLg/KOcRrnXaq+t2Vt+SPU/WOiolrCgB8Yt8erL121AAnRy2boJkokAS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okPYKyE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDED7C4CEEB;
+	Mon, 18 Aug 2025 14:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522550;
-	bh=u/3ElNYB7qyEyDvS3YiXjeJc9d8gj6qmxuQ9zW6qeN8=;
+	s=korg; t=1755525863;
+	bh=qybBR+FG+SRgCP1evoBxMGj4DDHLQLh9BIT7jMD5Wy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nxUClUV8T4DNnye/cEU+qheXbDhZ/d/2f5N/He30POpPgI3ImceAPKIh9bz3uJca
-	 hEHYctlcBnF4Dc+bcFheL+kf2tmXbL8ew7erfDgYfDM1W44t+AYSi7PyB4+S3rOG5P
-	 6upu0ADrUk28yKmJOQvmapQ8bGZkkmpyVlckDkEc=
+	b=okPYKyE71jAYBE7YPGl/AoUn/rxf5RWgHvsCOQrg0QsxRCOgVS8WhDqYIxOtaMatI
+	 OtK7SS5X9VjZgaeYIquVB3sFWbI2lnBloXVhjyyRs08x/2IHuhBE7bZytigyueUE6O
+	 pcwENuhgFhXhMQJ7hAlzxHDsvZtuap+2ts68BDA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Corey Minyard <corey@minyard.net>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 349/444] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
-Date: Mon, 18 Aug 2025 14:46:15 +0200
-Message-ID: <20250818124502.008876061@linuxfoundation.org>
+Subject: [PATCH 6.16 389/570] media: i2c: vd55g1: Setup sensor external clock before patching
+Date: Mon, 18 Aug 2025 14:46:16 +0200
+Message-ID: <20250818124520.831180269@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
 
-[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
+[ Upstream commit df2f8fd91bde57d5d5aca6adddf7e988f2e8c60e ]
 
-During BMC firmware upgrades on live systems, the ipmi_msghandler
-generates excessive "BMC returned incorrect response" warnings
-while the BMC is temporarily offline. This can flood system logs
-in large deployments.
+Proper clock configuration is required to advance through FSM states.
+Prior than this having a different clock value than default sensor's
+value was used (12 MHz) could prevent the sensor from booting.
 
-Replace dev_warn() with dev_warn_ratelimited() to throttle these
-warnings and prevent log spam during BMC maintenance operations.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/i2c/vd55g1.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 6a4a8ecd0edd..09405668ebb3 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4617,10 +4617,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
- 		 * The NetFN and Command in the response is not even
- 		 * marginally correct.
- 		 */
--		dev_warn(intf->si_dev,
--			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
--			 (msg->data[0] >> 2) | 1, msg->data[1],
--			 msg->rsp[0] >> 2, msg->rsp[1]);
-+		dev_warn_ratelimited(intf->si_dev,
-+				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
-+				     (msg->data[0] >> 2) | 1, msg->data[1],
-+				     msg->rsp[0] >> 2, msg->rsp[1]);
+diff --git a/drivers/media/i2c/vd55g1.c b/drivers/media/i2c/vd55g1.c
+index 25e2fc88a036..8552ce75e1aa 100644
+--- a/drivers/media/i2c/vd55g1.c
++++ b/drivers/media/i2c/vd55g1.c
+@@ -1038,8 +1038,6 @@ static int vd55g1_enable_streams(struct v4l2_subdev *sd,
+ 	if (ret < 0)
+ 		return ret;
  
- 		goto return_unspecified;
+-	vd55g1_write(sensor, VD55G1_REG_EXT_CLOCK, sensor->xclk_freq, &ret);
+-
+ 	/* Configure output */
+ 	vd55g1_write(sensor, VD55G1_REG_MIPI_DATA_RATE,
+ 		     sensor->mipi_rate, &ret);
+@@ -1613,6 +1611,9 @@ static int vd55g1_power_on(struct device *dev)
+ 		goto disable_clock;
  	}
+ 
++	/* Setup clock now to advance through system FSM states */
++	vd55g1_write(sensor, VD55G1_REG_EXT_CLOCK, sensor->xclk_freq, &ret);
++
+ 	ret = vd55g1_patch(sensor);
+ 	if (ret) {
+ 		dev_err(dev, "Sensor patch failed %d\n", ret);
 -- 
 2.39.5
 
