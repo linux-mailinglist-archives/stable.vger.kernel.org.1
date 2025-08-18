@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BA9B2A44E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C99B2A9C9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310AF562182
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65CB45868DF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF30631E10C;
-	Mon, 18 Aug 2025 13:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144F5345740;
+	Mon, 18 Aug 2025 14:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QldutMkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8sz4+WB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8106531E103;
-	Mon, 18 Aug 2025 13:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C661C345739;
+	Mon, 18 Aug 2025 14:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522554; cv=none; b=RbLEuCtUsqGfktBJTMVXxmcTqwkXt50wvSRSjIJHwjmhRsCKYmEYot14HOTUDKNx8f7O2U9NBUMy49hgcRGzCQrUfedZyUqLG9JlA0neoINuS1hZH2bqG8PVJZb2G6So5Lm1y2TTDbklQ2Xy2+4laimpR2H6l7Eu1je94V4MB/I=
+	t=1755525866; cv=none; b=nfBARXkzIvuqCAl5s8pD4F37o2z4tbmj9EydNDzkJykPLt4OvcOVXfXTDIdrBdT31eAKMMWRhXlsFaAW/6o65GauFEqeCF3Qw93WTjJDoggh8gjhlnYoeAp5tXkP3vJAJK/NKWbBbzYUFzOZ5lCi1aPdy+uwgUVexniZ3R4oV1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522554; c=relaxed/simple;
-	bh=fE2SSmAQcEuI/8GVV1Jdph6vvY88GOLXGZ+bWEDyUbE=;
+	s=arc-20240116; t=1755525866; c=relaxed/simple;
+	bh=z9fInwTmPxEDvfhxnkuYOovrQsXFqxLniAIGODzz9qY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wt3dX1DYElDrWN7eiXugPPTLHLX/ngXEtDEegYsbJ9UiqRWofiS1XuguK031g2M7Om7k+l+csBXK2YcD2JfRWiJ/exFH9aqyDDHbkdv5tvvIjwXMLq59t4DOhodyW6zOu6mmyyEvP4nnRrxcx+eGZic1CMl7F5dhssfUqg22U9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QldutMkt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57ECC4CEEB;
-	Mon, 18 Aug 2025 13:09:13 +0000 (UTC)
+	 MIME-Version; b=YRnKXRQs8d+OxZMhoNLAlBWFaT22/GX2r2DWxJ0P11Kwoa+2E2Ditn8puFq0ry0cWKQ4ZVqh2K9uTyvH64AnTHu1ZG9+qcH/3qn10uZBHgmZJ/rrpb8670cr8j1r35a6Ug0dsUoA1OZzu+6CBmc6d+0sqXTgngXzgTzpPWoeZuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8sz4+WB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36339C116C6;
+	Mon, 18 Aug 2025 14:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522554;
-	bh=fE2SSmAQcEuI/8GVV1Jdph6vvY88GOLXGZ+bWEDyUbE=;
+	s=korg; t=1755525866;
+	bh=z9fInwTmPxEDvfhxnkuYOovrQsXFqxLniAIGODzz9qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QldutMkt0XhV5QscRCd+t45g90qe/1pX2DXOCnbCzN6fOP0COjX5Sb77W7twsmoXj
-	 /yajbvwNN7QqFInT5OHm53WFdnl7PyAkg6EnyU3dG9pLdEPBsPPiuvjP79cw53nKzr
-	 +nzvKq5bQ7S0lmh41YnVBqFIgnQcexr6qzFT3JOk=
+	b=u8sz4+WBaGQgB59fZ2QhdJLXL+gNuDSxl7ZY6i8Sq0CywGOeDhXciqv03VIFQfrp3
+	 ENFAioub5E6DzdufxrLyZ4OaEgY6VFX9194j3JUUHCTVVGJcRPOFMNzcAYF1uiUr+G
+	 8qllS2DyKgYXAGlWiYfuMvxv4q9fpbcm1DnwLyXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 350/444] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
-Date: Mon, 18 Aug 2025 14:46:16 +0200
-Message-ID: <20250818124502.043704458@linuxfoundation.org>
+Subject: [PATCH 6.16 390/570] media: i2c: vd55g1: Fix RATE macros not being expressed in bps
+Date: Mon, 18 Aug 2025 14:46:17 +0200
+Message-ID: <20250818124520.874774252@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
 
-[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
+[ Upstream commit 5b69a84005b686365e9cacb2ca942271ed74867a ]
 
-The on_treeview2_cursor_changed() handler is connected to both the left
-and right tree views, but it hardcodes model2 (the GtkTreeModel of the
-right tree view). This is incorrect. Get the associated model from the
-view.
+As a bit rate is expressed in bps, use MEGA instead of HZ_PER_MHZ.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/i2c/vd55g1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index c0f46f189060..abe4cfe66b14 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -942,13 +942,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
- void
- on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
- {
-+	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
- 	GtkTreeSelection *selection;
- 	GtkTreeIter iter;
- 	struct menu *menu;
+diff --git a/drivers/media/i2c/vd55g1.c b/drivers/media/i2c/vd55g1.c
+index 8552ce75e1aa..d00daf89be96 100644
+--- a/drivers/media/i2c/vd55g1.c
++++ b/drivers/media/i2c/vd55g1.c
+@@ -129,8 +129,8 @@
+ #define VD55G1_FWPATCH_REVISION_MINOR			9
+ #define VD55G1_XCLK_FREQ_MIN				(6 * HZ_PER_MHZ)
+ #define VD55G1_XCLK_FREQ_MAX				(27 * HZ_PER_MHZ)
+-#define VD55G1_MIPI_RATE_MIN				(250 * HZ_PER_MHZ)
+-#define VD55G1_MIPI_RATE_MAX				(1200 * HZ_PER_MHZ)
++#define VD55G1_MIPI_RATE_MIN				(250 * MEGA)
++#define VD55G1_MIPI_RATE_MAX				(1200 * MEGA)
  
- 	selection = gtk_tree_view_get_selection(treeview);
--	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
--		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
-+	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-+		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
- 		text_insert_help(menu);
- 	}
- }
+ static const u8 patch_array[] = {
+ 	0x44, 0x03, 0x09, 0x02, 0xe6, 0x01, 0x42, 0x00, 0xea, 0x01, 0x42, 0x00,
 -- 
 2.39.5
 
