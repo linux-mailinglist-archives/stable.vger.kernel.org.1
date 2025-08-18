@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614B1B2A5C7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C61DB2A329
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A7605655A7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A22BE176C34
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B7B321F24;
-	Mon, 18 Aug 2025 13:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C533931CA61;
+	Mon, 18 Aug 2025 12:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLhyvJVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDXLSw5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504C8321F22;
-	Mon, 18 Aug 2025 13:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D9E31CA5E;
+	Mon, 18 Aug 2025 12:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523386; cv=none; b=Mb5azbo/w7gBGGmSZ28m4WJJY3RuNCS6a5UzxLcubbota41s/gO2tjhlT1c1A3eIjSSfm/GGOO9hzGKZ13pky2+RyWBcetpXsU1YM1xdoxHtuK7KXnAJLG2gwLgYSLAbRCwQ30nqo3pKcshCklu8PgFapcULTP3Zr3/Wy5hNzW4=
+	t=1755521761; cv=none; b=kfqqVu41+4TzD3KXMtGtIGEQfXYncUqV4pH9iM2icBnRWHyaIGxsvJLpV/lBcLXaka+iVdb1LD4VJqbP2V4PprSK1XJWw5+nBIL3F2reii1UMVdjkc+OCcI3eNvFqABZpfHU8cN0MkHH9j7JUl+OIg5CHc5rTdfTbNqP2QCx0cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523386; c=relaxed/simple;
-	bh=Jsf4DuWJvpzMUmEivupzEIWHEGwFPo4G8icVciS2sBo=;
+	s=arc-20240116; t=1755521761; c=relaxed/simple;
+	bh=TS/gF3d71nZNKD75teGxRpzDKEV4tMa3v/k7VZvO8Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8ngDg91zGudCP26YgLPiUIemWwRpAeWex/BxpBOwsJ4EiLrViIAqocxVzYb3uVd7F2MCPAnxPm6U+7ALv5z77lFgwThDlqFxWzmu7MDzlv6QfM5z2vfAcXMcPn/YS9P3qPNEhQSzVgRa4i0IhEv8HHDa7wkTQ22O55Xl+r8rWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLhyvJVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1A8C4CEEB;
-	Mon, 18 Aug 2025 13:23:05 +0000 (UTC)
+	 MIME-Version; b=CE3BXRLcKDgXRl9dnk8oKSWvN3JTTZJyq5TE4pSbSPd9oVnfii3EOi3KOWchv4qEWADGGAnL4TA16Ca2Wwx7nqqyN7QcjswPDddblXjxCmUHqmEskSObrSkmIGFeIYDVXeHb0dqSes8CJLJS7Zm1CNkSR2T+hbQ6OH4OVWnvajk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDXLSw5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BFCC4CEEB;
+	Mon, 18 Aug 2025 12:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523386;
-	bh=Jsf4DuWJvpzMUmEivupzEIWHEGwFPo4G8icVciS2sBo=;
+	s=korg; t=1755521761;
+	bh=TS/gF3d71nZNKD75teGxRpzDKEV4tMa3v/k7VZvO8Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLhyvJVARl13pNF42kcPYxsCL0kCh2kb6ikUrR1pbhi163wwuY/Sjd8wB6nJKUu7X
-	 JrlXRv5F7Gl40GkT+kMDwmBz7G2rfrErU12SoM95v/UJ1HPricGu+CqfXRPt5tdigz
-	 N8YPCDHPsIHNBt/HCFLHHLb4fRseh+hl6qudhvf0=
+	b=sDXLSw5rZr6zmetqDk42aFmKCBNjkz6LiEIxqcEOZgud0eZ8uzqFnMwcjnoMpyyV8
+	 WWXP1zf0Dkkx+y2VXJ0bn5iBB3I1kfuEurOLIxqPlVPJGbu5fmzIijdZI4kcV7W9GK
+	 Ok5orKvcinbNJyXYPyjRBylhn5jYtflsqODMZ5KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 122/515] usb: xhci: Avoid showing errors during surprise removal
+Subject: [PATCH 6.12 082/444] hfs: fix not erasing deleted b-tree node issue
 Date: Mon, 18 Aug 2025 14:41:48 +0200
-Message-ID: <20250818124503.050722078@linuxfoundation.org>
+Message-ID: <20250818124452.028886711@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
+[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
 
-When a USB4 dock is unplugged from a system it won't respond to ring
-events. The PCI core handles the surprise removal event and notifies
-all PCI drivers. The XHCI PCI driver sets a flag that the device is
-being removed as well.
+The generic/001 test of xfstests suite fails and corrupts
+the HFS volume:
 
-When that flag is set don't show messages in the cleanup path for
-marking the controller dead.
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
+(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
+
+Ran: generic/001
+Failures: generic/001
+Failed 1 of 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+   Unused node is not erased (node = 2)
+   Unused node is not erased (node = 4)
+<skipped>
+   Unused node is not erased (node = 253)
+   Unused node is not erased (node = 254)
+   Unused node is not erased (node = 255)
+   Unused node is not erased (node = 256)
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+                  CBTStat = 0x0004 CatStat = 0x00000000
+** The volume untitled was found corrupt and needs to be repaired.
+	volume type is HFS
+	primary MDB is at block 2 0x02
+	alternate MDB is at block 20971518 0x13ffffe
+	primary VHB is at block 0 0x00
+	alternate VHB is at block 0 0x00
+	sector size = 512 0x200
+	VolumeObject flags = 0x19
+	total sectors for volume = 20971520 0x1400000
+	total sectors for embedded volume = 0 0x00
+
+This patch adds logic of clearing the deleted b-tree node.
+
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/001 9s ...  32s
+Ran: generic/001
+Passed all 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled appears to be OK.
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/hfs/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 8be033f1877d..fc3ae7318046 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1376,12 +1376,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
-  */
- void xhci_hc_died(struct xhci_hcd *xhci)
- {
-+	bool notify;
- 	int i, j;
- 
- 	if (xhci->xhc_state & XHCI_STATE_DYING)
- 		return;
- 
--	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
-+	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
-+	if (notify)
-+		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
- 	xhci->xhc_state |= XHCI_STATE_DYING;
- 
- 	xhci_cleanup_command_queue(xhci);
-@@ -1395,7 +1398,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
- 	}
- 
- 	/* inform usb core hc died if PCI remove isn't already handling it */
--	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
-+	if (notify)
- 		usb_hc_died(xhci_to_hcd(xhci));
- }
- 
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index 1dac5d9c055f..e8cd1a31f247 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -574,6 +574,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
+ 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
+ 			hfs_bnode_unhash(node);
+ 			spin_unlock(&tree->hash_lock);
++			hfs_bnode_clear(node, 0, tree->node_size);
+ 			hfs_bmap_free(node);
+ 			hfs_bnode_free(node);
+ 			return;
 -- 
 2.39.5
 
