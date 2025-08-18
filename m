@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8787B2A865
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E98DB2A60D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59B625A1E97
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50CD21B66366
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B47A335BDE;
-	Mon, 18 Aug 2025 13:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7A4322765;
+	Mon, 18 Aug 2025 13:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYOPImPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdD6PMBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DBF335BD4;
-	Mon, 18 Aug 2025 13:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8D427B344;
+	Mon, 18 Aug 2025 13:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525193; cv=none; b=GqrYm8vxfSGyHHIC8I4GNo/9UtZxdhrUQMrLfyxlFCJ27KbzbiSiJCc7+4UVahd1nWesLaruuk8lIeuj+yOwabnpxGyMz9KIEiiXMd+XSz5cw5G8ccrIgIwYanisRqP/I9Iy0udMkhbtQTY5IoJE4sR7zx4JmLX7ywo9C8pmOI4=
+	t=1755523601; cv=none; b=XYjIPz/SHnzz07gmJjomPwjJ17tVtnNjTGW3/IdMSt7y2MMctkgMtTwj1QYhCujJSMDG3YFPllfcdlPVqK1Nts/diUEqDGpjMhEEMbn2mMQ/YZASD1y/iW4RXdMI1zzm+VVXFsj8xsXyWICu+nQnlBqTZAHn8/SQ6uMZ5pys6+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525193; c=relaxed/simple;
-	bh=0tsVrmYPSNOQdXtT4uBiUduVN3aM02WDHneOtvqfab8=;
+	s=arc-20240116; t=1755523601; c=relaxed/simple;
+	bh=8Vvt4qFcK2kxrI81rSuXKiaxwm/A3yf+d9ENCmgLxkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIkN6ttSx01VakFE0+T7ubNbNp4cs+wnUZ1Y/RHYx1s8OMoWywufFbh8Lvx1PgMVzc+TF1QBGJwPOMNGOQiF8zIHSCX39sxWizVZk7v15eVoomzTxJCilgESkGc+2sAQtbo0CdqUFM9+rcIbCxWQXvJWZbfdz418txA6ac2x28U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYOPImPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A693C4CEF1;
-	Mon, 18 Aug 2025 13:53:12 +0000 (UTC)
+	 MIME-Version; b=c5Rk57ATx58Z8XjweNKGPcC+AEGYN3Emq0AU0hQNDVH3Hegtofgx/aLHtS/XsYltbfZObcF4zHivNhkAnyzzyDPSWNZdAwh1Fue+4zpOtUXetV8wJX9ph788sO0GvZ8b1Ichsf+TsOzTL1/BWH7n+XA5HZf3qjpSIL1XxFfrGgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdD6PMBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904EEC4CEEB;
+	Mon, 18 Aug 2025 13:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525193;
-	bh=0tsVrmYPSNOQdXtT4uBiUduVN3aM02WDHneOtvqfab8=;
+	s=korg; t=1755523601;
+	bh=8Vvt4qFcK2kxrI81rSuXKiaxwm/A3yf+d9ENCmgLxkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYOPImPitHgodt586TSovMRY+nq0t4JBTkhVaADDoHLdu76DYiCkqUZBvXt0I2f1O
-	 ouQq+2O7V0eTiAf4ZwZpWmZFeJeNVSSjiEfWjWh4VqujT18ImQUPFFZsRWi4Qq0KeQ
-	 ior1RSmhT4AnV5nh9aFja++Kod2aQ1ELS5zF2HQI=
+	b=JdD6PMBSLY0d69vIQIyLLUl8bs9NKnD+fY/q9FiEU4edZG2y/+9xqF0euW0ZtxUFT
+	 qTSOGFx2NCJCmA7uvOJHdyCHkGGFmJm2B6DPk4UeRUjrfTMB90UEdmCW3kOtA0WYLc
+	 AscaGSnRBbc0CzpgEDltfbEAcMEFu2aBFpQbncCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Gottschall <s.gottschall@dd-wrt.com>,
-	Markus Stockhausen <markus.stockhausen@gmx.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 187/570] irqchip/mips-gic: Allow forced affinity
-Date: Mon, 18 Aug 2025 14:42:54 +0200
-Message-ID: <20250818124513.012307042@linuxfoundation.org>
+Subject: [PATCH 6.15 189/515] netfilter: nft_set_pipapo: prefer kvmalloc for scratch maps
+Date: Mon, 18 Aug 2025 14:42:55 +0200
+Message-ID: <20250818124505.649888727@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 2250db8628a0d8293ad2e0671138b848a185fba1 ]
+[ Upstream commit 897eefee2eb73ec6c119a0ca357d7b4a3e92c5ef ]
 
-Devices of the Realtek MIPS Otto platform use the official rtl-otto-timer
-as clock event generator and CPU clocksource. It is registered for each CPU
-startup via cpuhp_setup_state() and forces the affinity of the clockevent
-interrupts to the appropriate CPU via irq_force_affinity().
+The scratchmap size depends on the number of elements in the set.
+For huge sets, each scratch map can easily require very large
+allocations, e.g. for 100k entries each scratch map will require
+close to 64kbyte of memory.
 
-On the "smaller" devices with a vendor specific interrupt controller
-(supported by irq-realtek-rtl) the registration works fine. The "larger"
-RTL931x series is based on a MIPS interAptiv dual core with a MIPS GIC
-controller. Interrupt routing setup is cancelled because gic_set_affinity()
-does not accept the current (not yet online) CPU as a target.
-
-Relax the checks by evaluating the force parameter that is provided for
-exactly this purpose like in other drivers. With this the affinity can be
-set as follows:
-
- - force = false: allow to set affinity to any online cpu
- - force = true:  allow to set affinity to any cpu
-
-Co-developed-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250621054952.380374-1-markus.stockhausen@gmx.de
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mips-gic.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 34e8d09c12a0..19a57c5e2b2e 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -375,9 +375,13 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 	/*
- 	 * The GIC specifies that we can only route an interrupt to one VP(E),
- 	 * ie. CPU in Linux parlance, at a time. Therefore we always route to
--	 * the first online CPU in the mask.
-+	 * the first forced or online CPU in the mask.
- 	 */
--	cpu = cpumask_first_and(cpumask, cpu_online_mask);
-+	if (force)
-+		cpu = cpumask_first(cpumask);
-+	else
-+		cpu = cpumask_first_and(cpumask, cpu_online_mask);
-+
- 	if (cpu >= NR_CPUS)
- 		return -EINVAL;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index c5855069bdab..9e4e25f2458f 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1219,7 +1219,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
  
+ 	mem = s;
+ 	mem -= s->align_off;
+-	kfree(mem);
++	kvfree(mem);
+ }
+ 
+ /**
+@@ -1240,10 +1240,9 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+ 		void *scratch_aligned;
+ 		u32 align_off;
+ #endif
+-		scratch = kzalloc_node(struct_size(scratch, map,
+-						   bsize_max * 2) +
+-				       NFT_PIPAPO_ALIGN_HEADROOM,
+-				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
++		scratch = kvzalloc_node(struct_size(scratch, map, bsize_max * 2) +
++					NFT_PIPAPO_ALIGN_HEADROOM,
++					GFP_KERNEL_ACCOUNT, cpu_to_node(i));
+ 		if (!scratch) {
+ 			/* On failure, there's no need to undo previous
+ 			 * allocations: this means that some scratch maps have
 -- 
 2.39.5
 
