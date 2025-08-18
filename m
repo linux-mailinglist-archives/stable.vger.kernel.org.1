@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CF7B2A253
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3925EB2A52F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3746F189BB5C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 935D2622119
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0339B31A04F;
-	Mon, 18 Aug 2025 12:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941C732274C;
+	Mon, 18 Aug 2025 13:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXVJDZ1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6WBrK1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E4131770C;
-	Mon, 18 Aug 2025 12:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EC3218C0;
+	Mon, 18 Aug 2025 13:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521425; cv=none; b=TQDGLHbDq0dCcWWEpwqUz47qLXmP+I44Fp7gsB22JAUTWYmCuLgtpT+1/GUGiEJTdV94v8COxEB7OxH3xXEG7kspgwajmhsyjMPA/JYOF7lELt+XYaQO7CkFY8QEWxIyfO0Cz6x1GGGJwgM4r3wZ3eTY1E6vnA0lcobH/jbUZEs=
+	t=1755523056; cv=none; b=mAoJWk3hMFtTrrjRRwuutPeI+4lZ0Bwf43GVooYn9FZJvLPvRUEDHcoZRfOSk1Ckm/CMPS89wlhxdrXpvhVsFR8v/NVQpDwmzOx+zvcqgDDFUVc2sQr0IrIwurbKyJ0CH6k7r8ES+Idxrt0rTaltLnNoNgRD23ltoxvlC3phgks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521425; c=relaxed/simple;
-	bh=qqANDpMXvlhCzgwUpsnJp/+kCP9fHqz+wrBBzcAlUgI=;
+	s=arc-20240116; t=1755523056; c=relaxed/simple;
+	bh=3QtItzwadrzmUAKoA8AeFwzMhLphp6316hvr3fOicts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qj3h3dZkHi+b0I3I9K8v5qUMeuLyEXXm4Cl9kCLP3GUt/5wxW6Lfg+ayY9lCb/d2VD9fxlJ8k+oodx3y/1H3vx8kgkgoM9LQeHbBnV2qn4A4B00+CkkLl3ixkSIqrTxJWKoCU822LeQnpnNmQyYdQyc/Tg9yygYHWao2YY8zw0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXVJDZ1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA49DC4CEEB;
-	Mon, 18 Aug 2025 12:50:24 +0000 (UTC)
+	 MIME-Version; b=euHAR/wCvF3C1qM5TBJDx5pR+MJRYhqZKMgQvIN1l6b8TXE+ig8wr2jX2LvHO72mxGlf/nTUUyOqjs8RWqYLcgJjJT+OX9UIu4BOGol7o9UCPL2wtwlWkdmBIrlVoDdvuUIsGuGN1lbw+1Tm+iHHJ9ny8U6wx7S6y2ceNL3hjNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6WBrK1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6990C4CEF1;
+	Mon, 18 Aug 2025 13:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521425;
-	bh=qqANDpMXvlhCzgwUpsnJp/+kCP9fHqz+wrBBzcAlUgI=;
+	s=korg; t=1755523056;
+	bh=3QtItzwadrzmUAKoA8AeFwzMhLphp6316hvr3fOicts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXVJDZ1g995j1sGWsoFyvS48ITb5fwcsNL8icc9C0bLX2WMLREi2qK++2MMTQ7rIx
-	 XevAKC6ujprAh8tLfsxR0TZGK+FRYpWRU8BHiZ92oiCQetwGqGVqZyey5QtLyIizX7
-	 5M/bivSqvCqeKpTzhTGnUCXlgYescHjGRBdMi0gY=
+	b=a6WBrK1X3ZsiAijxMh0hJ2BejAJLeFW6Vo0yf7WLkOzX7AACVaMlonktLvCB8cVX0
+	 KBNyj5L4gbtAt5t+cLl9Rze9VYkR7Ru5twZj4RNPS6Ul5gMmPPgccQ9yVp3GKtH6aM
+	 Z1njG0T24l8Uk35CcPgXzCMp0matFIVJzCVcRAuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangbo Lu <yangbo.lu@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 017/444] net: gianfar: fix device leak when querying time stamp info
-Date: Mon, 18 Aug 2025 14:40:43 +0200
-Message-ID: <20250818124449.547061153@linuxfoundation.org>
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 058/515] udp: also consider secpath when evaluating ipsec use for checksumming
+Date: Mon, 18 Aug 2025 14:40:44 +0200
+Message-ID: <20250818124500.651353349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit da717540acd34e5056e3fa35791d50f6b3303f55 upstream.
+[ Upstream commit 1118aaa3b35157777890fffab91d8c1da841b20b ]
 
-Make sure to drop the reference to the ptp device taken by
-of_find_device_by_node() when querying the time stamping capabilities.
+Commit b40c5f4fde22 ("udp: disable inner UDP checksum offloads in
+IPsec case") tried to fix checksumming in UFO when the packets are
+going through IPsec, so that we can't rely on offloads because the UDP
+header and payload will be encrypted.
 
-Note that holding a reference to the ptp device does not prevent its
-driver data from going away.
+But when doing a TCP test over VXLAN going through IPsec transport
+mode with GSO enabled (esp4_offload module loaded), I'm seeing broken
+UDP checksums on the encap after successful decryption.
 
-Fixes: 7349a74ea75c ("net: ethernet: gianfar_ethtool: get phc index through drvdata")
-Cc: stable@vger.kernel.org	# 4.18
-Cc: Yangbo Lu <yangbo.lu@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-4-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The skbs get to udp4_ufo_fragment/__skb_udp_tunnel_segment via
+__dev_queue_xmit -> validate_xmit_skb -> skb_gso_segment and at this
+point we've already dropped the dst (unless the device sets
+IFF_XMIT_DST_RELEASE, which is not common), so need_ipsec is false and
+we proceed with checksum offload.
+
+Make need_ipsec also check the secpath, which is not dropped on this
+callpath.
+
+Fixes: b40c5f4fde22 ("udp: disable inner UDP checksum offloads in IPsec case")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/gianfar_ethtool.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv4/udp_offload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
-+++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
-@@ -1464,8 +1464,10 @@ static int gfar_get_ts_info(struct net_d
- 	if (ptp_node) {
- 		ptp_dev = of_find_device_by_node(ptp_node);
- 		of_node_put(ptp_node);
--		if (ptp_dev)
-+		if (ptp_dev) {
- 			ptp = platform_get_drvdata(ptp_dev);
-+			put_device(&ptp_dev->dev);
-+		}
- 	}
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index a1aca6308677..4245522d4201 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -61,7 +61,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
+ 	remcsum = !!(skb_shinfo(skb)->gso_type & SKB_GSO_TUNNEL_REMCSUM);
+ 	skb->remcsum_offload = remcsum;
  
- 	if (ptp)
+-	need_ipsec = skb_dst(skb) && dst_xfrm(skb_dst(skb));
++	need_ipsec = (skb_dst(skb) && dst_xfrm(skb_dst(skb))) || skb_sec_path(skb);
+ 	/* Try to offload checksum if possible */
+ 	offload_csum = !!(need_csum &&
+ 			  !need_ipsec &&
+-- 
+2.50.1
+
 
 
 
