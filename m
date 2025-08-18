@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877C2B2A338
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B1EB2A5C8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A929A177F59
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39B2B171020
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151AB2C235F;
-	Mon, 18 Aug 2025 12:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AE422A7E0;
+	Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK29BKlh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slnn8lIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75CB1E51FE;
-	Mon, 18 Aug 2025 12:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00B6321F56;
+	Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521841; cv=none; b=PWfFla1JsI141IXbeUqp40UCuOBivSFNAJJDTENNSCuViVfD2WZi6WrkMhCLLL7S5sHYGba1N03MGnCBtHWgaZG94CYIAgg9IZI9ZpK0+b0E93jDPqYfsbRhaTQearDhP9B+rzZMglmOQkF5jRS7/fr79t5kAfcLkEczSeQhJwg=
+	t=1755523462; cv=none; b=RYEKWzzqne8nRNIRCrx8bOAEYGoTzTi4yishuWBywA1ZDoJCtst+VCZs5RLK5K9TJKt6uULNa+2Xj6x4TcEAxK1vA45MnT8gDAktQwvD1B+rpNcQMQIH/AmgEC0DvIOZKB089DziDc3i84iHBg/mMSdIELSWr2pOgILVkKBkJU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521841; c=relaxed/simple;
-	bh=NUpl1UyN++ohICrLKuKIdiss7HNZhVRDrTCWLH31fzg=;
+	s=arc-20240116; t=1755523462; c=relaxed/simple;
+	bh=AXoz0UBU1wMnMabt9I+4TRFyLvg5zkLv9cGtLQDRSmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gz4t+XNPQAk3oYGI+PrqM5b4KeCk5IiRVGZfFjEhkykceQto63CF5y2tmOOWMRjIJKnIVc94ptaMfW1fNut2zbkhHj+Sa3oGf3KWx2BHrIavrZDLbQzPlkZWxezAwEvoVWIZvn0A5IrRc/TEppcp6P8bS3Uogd4mQEBRPGgusSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK29BKlh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4098BC4CEEB;
-	Mon, 18 Aug 2025 12:57:21 +0000 (UTC)
+	 MIME-Version; b=jWQpNxT0xBOX2VD5BMk/5wcitJkJyh7QMS2+JTYyHwu6pTNoGZdsdEabhPTq/+18vx60BuSch/mqk7V/eipqP7rLkuu1b2kLZH2RONqqr7gRflFG+7lUyBtNr1/nMY6rvVrD9K7OkQ/uRiKm6fi1O/MwOQ84AMbT2z/lvCNH8xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slnn8lIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33845C4CEEB;
+	Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521841;
-	bh=NUpl1UyN++ohICrLKuKIdiss7HNZhVRDrTCWLH31fzg=;
+	s=korg; t=1755523462;
+	bh=AXoz0UBU1wMnMabt9I+4TRFyLvg5zkLv9cGtLQDRSmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK29BKlh0rTIO40Xjj70p+f1rExO7qxX1SqoWuTjArKpBuiV+qruqqT/9T1NY/72t
-	 G77kCdTPRJTEBPDLimkNWydB6t6b33UvzQPD2B/Xpdf+75tfm6VKFEzKytHNuIyfrF
-	 /JnUbsPBwojAUmZNVwS+QsMyqD86tAEo++lMqCZI=
+	b=slnn8lIE6KT+YqMkhPmpA2UxwBpqRdui5qw3SiHncuSozxUD6nvtTISZEfblJQaN2
+	 1VNhEJdlXjOR2EVA8ZA4BN9OQpksd4xIyjl13EbEwfIO0eb1gFA/fK7OvX79vLQrdb
+	 sWQhLV0af5whf8HOrGyeyXeuno/6phSL/CTGFt4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Ricky Wu <ricky_wu@realtek.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/444] mmc: rtsx_usb_sdmmc: Fix error-path in sd_set_power_mode()
+Subject: [PATCH 6.15 178/515] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
 Date: Mon, 18 Aug 2025 14:42:44 +0200
-Message-ID: <20250818124454.080695962@linuxfoundation.org>
+Message-ID: <20250818124505.218947102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 47a255f7d2eabee06cfbf5b1c2379749442fd01d ]
+[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
 
-In the error path of sd_set_power_mode() we don't update host->power_mode,
-which could lead to an imbalance of the runtime PM usage count. Fix this by
-always updating host->power_mode.
+In the function mperf_start(), mperf_monitor snapshots the time, tsc
+and finally the aperf,mperf MSRs. However, this order of snapshotting
+in is reversed in mperf_stop(). As a result, the C0 residency (which
+is computed as delta_mperf * 100 / delta_tsc) is under-reported on
+CPUs that is 100% busy.
 
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Acked-by: Ricky Wu <ricky_wu@realtek.com>
-Link: https://lore.kernel.org/r/20250610111633.504366-2-ulf.hansson@linaro.org
+Fix this by snapshotting time, tsc and then aperf,mperf in
+mperf_stop() in the same order as in mperf_start().
+
+Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/rtsx_usb_sdmmc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/rtsx_usb_sdmmc.c b/drivers/mmc/host/rtsx_usb_sdmmc.c
-index 4e86f0a705b6..2bf51fe11a09 100644
---- a/drivers/mmc/host/rtsx_usb_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_usb_sdmmc.c
-@@ -1032,9 +1032,7 @@ static int sd_set_power_mode(struct rtsx_usb_sdmmc *host,
- 		err = sd_power_on(host);
+diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+index 73b6b10cbdd2..5ae02c3d5b64 100644
+--- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
++++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+@@ -240,9 +240,9 @@ static int mperf_stop(void)
+ 	int cpu;
+ 
+ 	for (cpu = 0; cpu < cpu_count; cpu++) {
+-		mperf_measure_stats(cpu);
+-		mperf_get_tsc(&tsc_at_measure_end[cpu]);
+ 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
++		mperf_get_tsc(&tsc_at_measure_end[cpu]);
++		mperf_measure_stats(cpu);
  	}
  
--	if (!err)
--		host->power_mode = power_mode;
--
-+	host->power_mode = power_mode;
- 	return err;
- }
- 
+ 	return 0;
 -- 
 2.39.5
 
