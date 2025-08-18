@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19B3B2A5F4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A83F4B2A2C6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 811505E1846
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F1463B4209
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F8E32255D;
-	Mon, 18 Aug 2025 13:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E4E30E83F;
+	Mon, 18 Aug 2025 12:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skJ/GdmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+eRfgRH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F52322558;
-	Mon, 18 Aug 2025 13:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2BE3218C0;
+	Mon, 18 Aug 2025 12:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523492; cv=none; b=BYE0ktfFMA1x5Cd3kxmkb3nU5uZ+u0a6e9un6StCQtEeYhqUWh1LAp6GCSO950i1qQt5QEp0l2L8rIEYdhFuUt+exegnc2TvT8sPfSNX5JizE+QiiUWxGYauwOkGrbVp1tyod/pTFI4LO3jJwdl/GH0AN1Y84Sbk+OfAbkT3PrY=
+	t=1755521877; cv=none; b=mt+NiHOxbjdoaT144PKpCL4IQtTZf+Ikpdk3AUs7N1oO2aqcxGySaAYM4bKFK1jwrPNet78trUPHdjGrHN6Oy+3xbeu2kaP1TkErN7QyW6v3a9BI9GL1TKlqiacVPIxv8P3TkVOHNwszSEe248MMRNcUic8LLtrzGGfwdDjfNio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523492; c=relaxed/simple;
-	bh=LFvvM8SIJTKs3BacMzDqb4o+J5RcwpqNEyZNMBa7tZs=;
+	s=arc-20240116; t=1755521877; c=relaxed/simple;
+	bh=6rJhOztf8C+Tdk+wGSKRJlu9jVxS1VNBicHAMZlSCdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpssxO91YIxxzBoSyweJXArP5KI+bOiu5ZKNDTb4E8awUtFUeJclcAEZ0atlOSRa22QnBxOQCC6lY9VYbwCIbmoYOSBMg9GsfYP7TO6lVHsDhDJm3PoytIXn2K5OWkTfPQS4CZfsCwoBE9yEp2BENrVdirFp/K8pR4cVcBaauks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skJ/GdmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37724C4CEEB;
-	Mon, 18 Aug 2025 13:24:52 +0000 (UTC)
+	 MIME-Version; b=oFqsbxpkTiaLnZsPXfDZgruB3MORuCSM32bTaxZM0WG4scWkLzpEumYb512qvw+9+G+b7b8clAdEIaa4QP0pBz8Uqu+hSF6UNV0cf6d2E4Fhzi0SRatkrFkxEIPT7PcVsVGvITxJHetn+g7Yrn/VrBRlSA1GM4EjFRDkMO6iS04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+eRfgRH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BBAC4CEEB;
+	Mon, 18 Aug 2025 12:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523492;
-	bh=LFvvM8SIJTKs3BacMzDqb4o+J5RcwpqNEyZNMBa7tZs=;
+	s=korg; t=1755521877;
+	bh=6rJhOztf8C+Tdk+wGSKRJlu9jVxS1VNBicHAMZlSCdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skJ/GdmP1eIrSWt7/ixYYl/LnN24iDBFf5YJFlf1Zc1hdjuKRuzVB1tWol5bGRBS3
-	 yOK2JSW5imkqE/S1sgcnFLO+U8fXYWwxDKTnjXEel4NhJx3PqnMovhNQpI+Id2x26l
-	 p7HZg051lc7Dyt0d0iYw46ZNm2PUiit0DDjTgBeQ=
+	b=y+eRfgRHv0zu1ZLvsmQK4odp7OUV6MWnQq2Db4Bs0AlgExwjsqA3jbSZpofOZZek1
+	 SzHKP55ssCNKVzCnRol+MoWKhqPNgITK5e8DwnJb3IhkntenF1ebi4ID50Ete7vQVO
+	 DRLubNkJh7u+XhimShXgOipzxKT6/Rx4/AO+wbfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <quic_sartgarg@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	David Collins <david.collins@oss.qualcomm.com>,
+	Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 155/515] mmc: sdhci-msm: Ensure SD card power isnt ON when card removed
-Date: Mon, 18 Aug 2025 14:42:21 +0200
-Message-ID: <20250818124504.354909522@linuxfoundation.org>
+Subject: [PATCH 6.12 116/444] thermal/drivers/qcom-spmi-temp-alarm: Enable stage 2 shutdown when required
+Date: Mon, 18 Aug 2025 14:42:22 +0200
+Message-ID: <20250818124453.274336625@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <quic_sartgarg@quicinc.com>
+From: David Collins <david.collins@oss.qualcomm.com>
 
-[ Upstream commit db58532188ebf51d52b1d7693d9e94c76b926e9f ]
+[ Upstream commit f8e157ff2df46ddabd930815d196895976227831 ]
 
-Many mobile phones feature multi-card tray designs, where the same
-tray is used for both SD and SIM cards. If the SD card is placed
-at the outermost location in the tray, the SIM card may come in
-contact with SD card power-supply while removing the tray, possibly
-resulting in SIM damage.
+Certain TEMP_ALARM GEN2 PMIC peripherals need over-temperature stage 2
+automatic PMIC partial shutdown. This will ensure that in the event of
+reaching the hotter stage 3 over-temperature threshold, repeated faults
+will be avoided during the automatic PMIC hardware full shutdown.
+Modify the stage 2 shutdown control logic to ensure that stage 2
+shutdown is enabled on all affected PMICs. Read the digital major
+and minor revision registers to identify these PMICs.
 
-To prevent that, make sure the SD card is really inserted by reading
-the Card Detect pin state. If it's not, turn off the power in
-sdhci_msm_check_power_status() and also set the BUS_FAIL power state
-on the controller as part of pwr_irq handling for BUS_ON request.
-
-Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250701100659.3310386-1-quic_sartgarg@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: David Collins <david.collins@oss.qualcomm.com>
+Signed-off-by: Anjelique Melendez <anjelique.melendez@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250710224555.3047790-2-anjelique.melendez@oss.qualcomm.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c | 43 ++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 57bd49eea777..20cee9f44b4c 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -1564,6 +1564,7 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	struct mmc_host *mmc = host->mmc;
- 	bool done = false;
- 	u32 val = SWITCHABLE_SIGNALING_VOLTAGE;
- 	const struct sdhci_msm_offset *msm_offset =
-@@ -1621,6 +1622,12 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
- 				 "%s: pwr_irq for req: (%d) timed out\n",
- 				 mmc_hostname(host->mmc), req_type);
- 	}
-+
-+	if ((req_type & REQ_BUS_ON) && mmc->card && !mmc->ops->get_cd(mmc)) {
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+		host->pwr = 0;
-+	}
-+
- 	pr_debug("%s: %s: request %d done\n", mmc_hostname(host->mmc),
- 			__func__, req_type);
- }
-@@ -1679,6 +1686,13 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
- 		udelay(10);
- 	}
+diff --git a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+index c2d59cbfaea9..a575585c737b 100644
+--- a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
++++ b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+  * Copyright (c) 2011-2015, 2017, 2020, The Linux Foundation. All rights reserved.
++ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+  */
  
-+	if ((irq_status & CORE_PWRCTL_BUS_ON) && mmc->card &&
-+	    !mmc->ops->get_cd(mmc)) {
-+		msm_host_writel(msm_host, CORE_PWRCTL_BUS_FAIL, host,
-+				msm_offset->core_pwrctl_ctl);
-+		return;
+ #include <linux/bitops.h>
+@@ -16,6 +17,7 @@
+ 
+ #include "../thermal_hwmon.h"
+ 
++#define QPNP_TM_REG_DIG_MINOR		0x00
+ #define QPNP_TM_REG_DIG_MAJOR		0x01
+ #define QPNP_TM_REG_TYPE		0x04
+ #define QPNP_TM_REG_SUBTYPE		0x05
+@@ -31,7 +33,7 @@
+ #define STATUS_GEN2_STATE_MASK		GENMASK(6, 4)
+ #define STATUS_GEN2_STATE_SHIFT		4
+ 
+-#define SHUTDOWN_CTRL1_OVERRIDE_S2	BIT(6)
++#define SHUTDOWN_CTRL1_OVERRIDE_STAGE2	BIT(6)
+ #define SHUTDOWN_CTRL1_THRESHOLD_MASK	GENMASK(1, 0)
+ 
+ #define SHUTDOWN_CTRL1_RATE_25HZ	BIT(3)
+@@ -78,6 +80,7 @@ struct qpnp_tm_chip {
+ 	/* protects .thresh, .stage and chip registers */
+ 	struct mutex			lock;
+ 	bool				initialized;
++	bool				require_stage2_shutdown;
+ 
+ 	struct iio_channel		*adc;
+ 	const long			(*temp_map)[THRESH_COUNT][STAGE_COUNT];
+@@ -220,13 +223,13 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
+ {
+ 	long stage2_threshold_min = (*chip->temp_map)[THRESH_MIN][1];
+ 	long stage2_threshold_max = (*chip->temp_map)[THRESH_MAX][1];
+-	bool disable_s2_shutdown = false;
++	bool disable_stage2_shutdown = false;
+ 	u8 reg;
+ 
+ 	WARN_ON(!mutex_is_locked(&chip->lock));
+ 
+ 	/*
+-	 * Default: S2 and S3 shutdown enabled, thresholds at
++	 * Default: Stage 2 and Stage 3 shutdown enabled, thresholds at
+ 	 * lowest threshold set, monitoring at 25Hz
+ 	 */
+ 	reg = SHUTDOWN_CTRL1_RATE_25HZ;
+@@ -241,12 +244,12 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
+ 		chip->thresh = THRESH_MAX -
+ 			((stage2_threshold_max - temp) /
+ 			 TEMP_THRESH_STEP);
+-		disable_s2_shutdown = true;
++		disable_stage2_shutdown = true;
+ 	} else {
+ 		chip->thresh = THRESH_MAX;
+ 
+ 		if (chip->adc)
+-			disable_s2_shutdown = true;
++			disable_stage2_shutdown = true;
+ 		else
+ 			dev_warn(chip->dev,
+ 				 "No ADC is configured and critical temperature %d mC is above the maximum stage 2 threshold of %ld mC! Configuring stage 2 shutdown at %ld mC.\n",
+@@ -255,8 +258,8 @@ static int qpnp_tm_update_critical_trip_temp(struct qpnp_tm_chip *chip,
+ 
+ skip:
+ 	reg |= chip->thresh;
+-	if (disable_s2_shutdown)
+-		reg |= SHUTDOWN_CTRL1_OVERRIDE_S2;
++	if (disable_stage2_shutdown && !chip->require_stage2_shutdown)
++		reg |= SHUTDOWN_CTRL1_OVERRIDE_STAGE2;
+ 
+ 	return qpnp_tm_write(chip, QPNP_TM_REG_SHUTDOWN_CTRL1, reg);
+ }
+@@ -350,8 +353,8 @@ static int qpnp_tm_probe(struct platform_device *pdev)
+ {
+ 	struct qpnp_tm_chip *chip;
+ 	struct device_node *node;
+-	u8 type, subtype, dig_major;
+-	u32 res;
++	u8 type, subtype, dig_major, dig_minor;
++	u32 res, dig_revision;
+ 	int ret, irq;
+ 
+ 	node = pdev->dev.of_node;
+@@ -403,6 +406,11 @@ static int qpnp_tm_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, ret,
+ 				     "could not read dig_major\n");
+ 
++	ret = qpnp_tm_read(chip, QPNP_TM_REG_DIG_MINOR, &dig_minor);
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret,
++				     "could not read dig_minor\n");
++
+ 	if (type != QPNP_TM_TYPE || (subtype != QPNP_TM_SUBTYPE_GEN1
+ 				     && subtype != QPNP_TM_SUBTYPE_GEN2)) {
+ 		dev_err(&pdev->dev, "invalid type 0x%02x or subtype 0x%02x\n",
+@@ -416,6 +424,23 @@ static int qpnp_tm_probe(struct platform_device *pdev)
+ 	else
+ 		chip->temp_map = &temp_map_gen1;
+ 
++	if (chip->subtype == QPNP_TM_SUBTYPE_GEN2) {
++		dig_revision = (dig_major << 8) | dig_minor;
++		/*
++		 * Check if stage 2 automatic partial shutdown must remain
++		 * enabled to avoid potential repeated faults upon reaching
++		 * over-temperature stage 3.
++		 */
++		switch (dig_revision) {
++		case 0x0001:
++		case 0x0002:
++		case 0x0100:
++		case 0x0101:
++			chip->require_stage2_shutdown = true;
++			break;
++		}
 +	}
 +
- 	/* Handle BUS ON/OFF*/
- 	if (irq_status & CORE_PWRCTL_BUS_ON) {
- 		pwr_state = REQ_BUS_ON;
+ 	/*
+ 	 * Register the sensor before initializing the hardware to be able to
+ 	 * read the trip points. get_temp() returns the default temperature
 -- 
 2.39.5
 
