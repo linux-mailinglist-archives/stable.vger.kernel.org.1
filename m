@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4B2B2A5E9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A95FB2A952
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 394397B37E6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2BA15A5B54
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5836C321F23;
-	Mon, 18 Aug 2025 13:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABA432254A;
+	Mon, 18 Aug 2025 13:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po7RvYzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjJLx/On"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AAC226D18;
-	Mon, 18 Aug 2025 13:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092F932253D;
+	Mon, 18 Aug 2025 13:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523787; cv=none; b=nH5EVVxzuLLz2kYnNxb/F8/vF+59L8reFKvaAHIXaTRM3f0lz+kWmNcqgC1BuwqFFN49UOdQIp59k+fSO75GeqJp/vP9mCe+MsnPqaHjtLTueRNar632/ogIyZDgHWi/os/VCHSZOMlrFe5K7cMlSF6wxnbeGW2by5kRSDt5GeQ=
+	t=1755525527; cv=none; b=asikWc9XekU3bQbMjHnAliVNJKfph0/bqHy1hYcErX0b676tLCdtlmLjtPiLC9LQ37nZN6JvdPPx8ES8vyzd18GTaX5qDLLeadlfpf8l7O+7UZmmiKQHi/Wy1/rqjc7YbwkhSbHqjcylHQue+uhLXKNvp7RpNduWRjNOGqUEcuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523787; c=relaxed/simple;
-	bh=6NL+uRW92AhhKi4hEL+snRvTE/kRrw13BkTXpXEoJDY=;
+	s=arc-20240116; t=1755525527; c=relaxed/simple;
+	bh=/wFT6xAyV8JNvuK3815Qh/RGKhEhtxJ3pPHk+IBdLmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qaipi6bLkVQSTXICsOVJu4gtfmsgyWozPXksvzL7eP0Z5D7AXOzjiK4xmv4T8Gl90d7m/KqUEmtNKv+WNUHvPO4jrcoYK3OJLXkSCC0ZRccn1ULeieYyOC5k0nkzTFVQKxosC8ObX1z0xvAd4BvbOn/VY5NlkixKfJA3bGlNAF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=po7RvYzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6B5C4CEEB;
-	Mon, 18 Aug 2025 13:29:44 +0000 (UTC)
+	 MIME-Version; b=MqGZPhKjdrCafTZ19Ms//FizMU2w1yl5kB9o4nHJq/5viLeLqZsZ0QnT2cj7SksvhOSAD5uHSz1KlTiSAsWS6ltvv7clGTAGsh6Z16ebdWm1T6iKsc5nyiN2RcuBdTqmjB9K9uAZx/pc/Ksakc/5Ry0ajwv7CCa1UXmYQBjpj98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjJLx/On; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF20C4CEEB;
+	Mon, 18 Aug 2025 13:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523785;
-	bh=6NL+uRW92AhhKi4hEL+snRvTE/kRrw13BkTXpXEoJDY=;
+	s=korg; t=1755525526;
+	bh=/wFT6xAyV8JNvuK3815Qh/RGKhEhtxJ3pPHk+IBdLmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=po7RvYzRXplbFARySHc1YhWjltbdWEEQaFtHRkvon63vsfdnoWpcjQYGFA3Vawwvl
-	 GS7uvjDWwedOCB11CpxabiW3jOZHPCpng7olfVTlQtmGvLpziqY0K8o1K+xuCGjzV1
-	 myS04RQFcFQmNzOKPx2cu4LU9RMNs7rvIkILV3EU=
+	b=sjJLx/OnUm8aslzIGeNPEedT+DhK8iA+OUe7+k/A8yxQ+pUeseRzrnL37LAfqhhQV
+	 T3pNzE/L6K5jeHNw7mtipM2ondVkNMGUbpymnNEozJBGmkJlzfWjfDVYids9iNHNnk
+	 snbusUtEGTWwGyEuarUkJD1iSMCkxD/+C1cORILw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cruise Hung <cruise.hung@amd.com>,
-	Peichen Huang <PeiChen.Huang@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Antonino Maniscalco <antomani103@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 273/515] drm/amd/display: add null check
+Subject: [PATCH 6.16 272/570] drm/msm: use trylock for debugfs
 Date: Mon, 18 Aug 2025 14:44:19 +0200
-Message-ID: <20250818124508.929544587@linuxfoundation.org>
+Message-ID: <20250818124516.333750253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peichen Huang <PeiChen.Huang@amd.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 158b9201c17fc93ed4253c2f03b77fd2671669a1 ]
+[ Upstream commit 0a1ff88ec5b60b41ba830c5bf08b6cd8f45ab411 ]
 
-[WHY]
-Prevents null pointer dereferences to enhance function robustness
+This resolves a potential deadlock vs msm_gem_vm_close().  Otherwise for
+_NO_SHARE buffers msm_gem_describe() could be trying to acquire the
+shared vm resv, while already holding priv->obj_lock.  But _vm_close()
+might drop the last reference to a GEM obj while already holding the vm
+resv, and msm_gem_free_object() needs to grab priv->obj_lock, a locking
+inversion.
 
-[HOW]
-Adds early null check and return false if invalid.
+OTOH this is only for debugfs and it isn't critical if we undercount by
+skipping a locked obj.  So just use trylock() and move along if we can't
+get the lock.
 
-Reviewed-by: Cruise Hung <cruise.hung@amd.com>
-Signed-off-by: Peichen Huang <PeiChen.Huang@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Tested-by: Antonino Maniscalco <antomani103@gmail.com>
+Reviewed-by: Antonino Maniscalco <antomani103@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/661525/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_gem.c | 3 ++-
+ drivers/gpu/drm/msm/msm_gem.h | 6 ++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index d6f0c82d8dda..ff94ceea2218 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -6265,11 +6265,13 @@ struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state
-  */
- bool dc_get_host_router_index(const struct dc_link *link, unsigned int *host_router_index)
- {
--	struct dc *dc = link->ctx->dc;
-+	struct dc *dc;
+diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+index 2995e80fec3b..ebd8a3603359 100644
+--- a/drivers/gpu/drm/msm/msm_gem.c
++++ b/drivers/gpu/drm/msm/msm_gem.c
+@@ -963,7 +963,8 @@ void msm_gem_describe(struct drm_gem_object *obj, struct seq_file *m,
+ 	uint64_t off = drm_vma_node_start(&obj->vma_node);
+ 	const char *madv;
  
--	if (link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
-+	if (!link || !host_router_index || link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
- 		return false;
+-	msm_gem_lock(obj);
++	if (!msm_gem_trylock(obj))
++		return;
  
-+	dc = link->ctx->dc;
+ 	stats->all.count++;
+ 	stats->all.size += obj->size;
+diff --git a/drivers/gpu/drm/msm/msm_gem.h b/drivers/gpu/drm/msm/msm_gem.h
+index ba5c4ff76292..ea001b0a6b64 100644
+--- a/drivers/gpu/drm/msm/msm_gem.h
++++ b/drivers/gpu/drm/msm/msm_gem.h
+@@ -188,6 +188,12 @@ msm_gem_lock(struct drm_gem_object *obj)
+ 	dma_resv_lock(obj->resv, NULL);
+ }
+ 
++static inline bool __must_check
++msm_gem_trylock(struct drm_gem_object *obj)
++{
++	return dma_resv_trylock(obj->resv);
++}
 +
- 	if (link->link_index < dc->lowest_dpia_link_index)
- 		return false;
- 
+ static inline int
+ msm_gem_lock_interruptible(struct drm_gem_object *obj)
+ {
 -- 
 2.39.5
 
