@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D26B2A454
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B867AB2A684
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B4218940A4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5CC07B58A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6CD31B13A;
-	Mon, 18 Aug 2025 13:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F276320CD2;
+	Mon, 18 Aug 2025 13:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhfBR3WN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ/5VJ+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2709525F79A;
-	Mon, 18 Aug 2025 13:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05A7320CA0;
+	Mon, 18 Aug 2025 13:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522765; cv=none; b=cc8AZGbxHP8JdkiKS7zl5qUwP8/VG0OdwPvUvn8CH/2JAWk5/9l2ExhSkxLJnMNXZEtc6imo6icuxnvmLqrNl311/19nGygBxfU/E3lsrACujQzbEILu3vZWj2wwgIeWBzfbbIU4M5pD5PaSL+i/Ejk7Zql8Hl3rV8bOq7KfOV4=
+	t=1755524381; cv=none; b=In3ny47UbZeIPAKfr0liKp7fFvRH2mcnPrwEX9bRMqyBuYFvh9reb21HrECvfmInI8R18EbXq/Jnxuvth1BxlwiVbsSbQCYA/HPT9J9fJvbjKjFlQzkG35jQ8lsTzkA3g0Hu27Fmzv4AdVL5c2FUzQ+RgDQSzvIzY8LahQhBO5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522765; c=relaxed/simple;
-	bh=/nZ18a9c1Y6MdgsHYtyRok7sV180fSKZCMqQa1AiEiw=;
+	s=arc-20240116; t=1755524381; c=relaxed/simple;
+	bh=Vt62sD6yXxfkv8kfnW+SgvfEDRWYE092D9JAIH4+lOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZjlnangKiKgVzdRxI7AI5m7GZojVUOa11RLeGiqL4M2oz5x7pr6ar0IgovlDKUyQPC5EFcu3XxHBtduxIlO/fvQBEr/Ee9vUWKB7M9+tFTxBgS8hGcRjPpkui13LtNLT5SA+n71v6wmEBcm/mUc0U+pjNleRhBKTPnJPCTj3Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhfBR3WN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FDFC4CEEB;
-	Mon, 18 Aug 2025 13:12:44 +0000 (UTC)
+	 MIME-Version; b=Ze1LU1DKdkqEJFx/1CIJFjSLtnrPqQK69eFpmj2w1AqHKNxMrHsN9Mz7dGuM3ZHbDKJ93qXvHdp0Cpi2Qw29EMCI9ZO1N9KftUTKrKi+ethzUQx//pxDfARnKjbHt2P9fUL1AdXhnSen22IlVq9vhKweIUmnddXI9MxJsRsZulg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ/5VJ+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FA1C4CEEB;
+	Mon, 18 Aug 2025 13:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522765;
-	bh=/nZ18a9c1Y6MdgsHYtyRok7sV180fSKZCMqQa1AiEiw=;
+	s=korg; t=1755524380;
+	bh=Vt62sD6yXxfkv8kfnW+SgvfEDRWYE092D9JAIH4+lOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhfBR3WNlyVgQzFm100piacAtcdQ/9ftmSQCjdgZ6ABt2aiZ7oEY5C3RkXfnhBS+5
-	 HiuBof0vbMoWgNB9yYVbxzI459up6cieh2ZrXYPn9G2tyVzPpgF7SHiZhb2jjibn8/
-	 bpD5onKwLYZkWHe/xoVmW4QfutrQ+I+3UNcd19DQ=
+	b=lJ/5VJ+fC6xGtS5wyNL9UIqjz47C+hKRZThCAvKC6tYOpEM9IrZkHmRyZBgudaBuG
+	 ++8f1jyNJQT/K6mpZvcQblVRShnH4IyVqet34Xa8DbOFqlY77ksAoBOzwziicRJ/hm
+	 7vd7d3T2iZ+DxVOSnOnTU+RHaVGrH+3KTaeMe13U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 414/444] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
+	Guenter Roeck <linux@roeck-us.net>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.15 454/515] ext4: initialize superblock fields in the kballoc-test.c kunit tests
 Date: Mon, 18 Aug 2025 14:47:20 +0200
-Message-ID: <20250818124504.450688130@linuxfoundation.org>
+Message-ID: <20250818124515.897538978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
+commit 82e6381e23f1ea7a14f418215068aaa2ca046c84 upstream.
 
-A soft lockup warning was observed on a relative small system x86-64
-system with 16 GB of memory when running a debug kernel with kmemleak
-enabled.
+Various changes in the "ext4: better scalability for ext4 block
+allocation" patch series have resulted in kunit test failures, most
+notably in the test_new_blocks_simple and the test_mb_mark_used tests.
+The root cause of these failures is that various in-memory ext4 data
+structures were not getting initialized, and while previous versions
+of the functions exercised by the unit tests didn't use these
+structure members, this was arguably a test bug.
 
-  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
+Since one of the patches in the block allocation scalability patches
+is a fix which is has a cc:stable tag, this commit also has a
+cc:stable tag.
 
-The test system was running a workload with hot unplug happening in
-parallel.  Then kemleak decided to disable itself due to its inability to
-allocate more kmemleak objects.  The debug kernel has its
-CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
-
-The soft lockup happened in kmemleak_do_cleanup() when the existing
-kmemleak objects were being removed and deleted one-by-one in a loop via a
-workqueue.  In this particular case, there are at least 40,000 objects
-that need to be processed and given the slowness of a debug kernel and the
-fact that a raw_spinlock has to be acquired and released in
-__delete_object(), it could take a while to properly handle all these
-objects.
-
-As kmemleak has been disabled in this case, the object removal and
-deletion process can be further optimized as locking isn't really needed.
-However, it is probably not worth the effort to optimize for such an edge
-case that should rarely happen.  So the simple solution is to call
-cond_resched() at periodic interval in the iteration loop to avoid soft
-lockup.
-
-Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250714130327.1830534-1-libaokun1@huawei.com
+Link: https://patch.msgid.link/20250725021550.3177573-1-yi.zhang@huaweicloud.com
+Link: https://patch.msgid.link/20250725021654.3188798-1-yi.zhang@huaweicloud.com
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/linux-ext4/b0635ad0-7ebf-4152-a69b-58e7e87d5085@roeck-us.net/
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmemleak.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ext4/mballoc-test.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -2107,6 +2107,7 @@ static const struct file_operations kmem
- static void __kmemleak_do_cleanup(void)
- {
- 	struct kmemleak_object *object, *tmp;
-+	unsigned int cnt = 0;
+--- a/fs/ext4/mballoc-test.c
++++ b/fs/ext4/mballoc-test.c
+@@ -155,6 +155,7 @@ static struct super_block *mbt_ext4_allo
+ 	bgl_lock_init(sbi->s_blockgroup_lock);
  
- 	/*
- 	 * Kmemleak has already been disabled, no need for RCU list traversal
-@@ -2115,6 +2116,10 @@ static void __kmemleak_do_cleanup(void)
- 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
- 		__remove_object(object);
- 		__delete_object(object);
-+
-+		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
-+		if (!(++cnt & 0x3f))
-+			cond_resched();
- 	}
- }
+ 	sbi->s_es = &fsb->es;
++	sbi->s_sb = sb;
+ 	sb->s_fs_info = sbi;
  
+ 	up_write(&sb->s_umount);
+@@ -802,6 +803,10 @@ static void test_mb_mark_used(struct kun
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+ 
+ 	grp->bb_free = EXT4_CLUSTERS_PER_GROUP(sb);
++	grp->bb_largest_free_order = -1;
++	grp->bb_avg_fragment_size_order = -1;
++	INIT_LIST_HEAD(&grp->bb_largest_free_order_node);
++	INIT_LIST_HEAD(&grp->bb_avg_fragment_size_node);
+ 	mbt_generate_test_ranges(sb, ranges, TEST_RANGE_COUNT);
+ 	for (i = 0; i < TEST_RANGE_COUNT; i++)
+ 		test_mb_mark_used_range(test, &e4b, ranges[i].start,
+@@ -875,6 +880,10 @@ static void test_mb_free_blocks(struct k
+ 	ext4_unlock_group(sb, TEST_GOAL_GROUP);
+ 
+ 	grp->bb_free = 0;
++	grp->bb_largest_free_order = -1;
++	grp->bb_avg_fragment_size_order = -1;
++	INIT_LIST_HEAD(&grp->bb_largest_free_order_node);
++	INIT_LIST_HEAD(&grp->bb_avg_fragment_size_node);
+ 	memset(bitmap, 0xff, sb->s_blocksize);
+ 
+ 	mbt_generate_test_ranges(sb, ranges, TEST_RANGE_COUNT);
 
 
 
