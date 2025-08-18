@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01215B2A5BB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B89B2A25A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A725B566FF9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 28F104E2DC6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A9F221F15;
-	Mon, 18 Aug 2025 13:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BF9258ED7;
+	Mon, 18 Aug 2025 12:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRXEnwzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgbEsYX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920951DC997;
-	Mon, 18 Aug 2025 13:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795E11E51FE;
+	Mon, 18 Aug 2025 12:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523337; cv=none; b=IhOTEiBpoTti8Pm48rxiLJjoPW0m8NoJZDO2uez+mcKgRe21y+BwLqgme5MNov6/obIJQrdIzdPrLJsS+NORAWBZ6RzU2RK0xjRrmmx7b+H/XbIVKJ634aGaa067qsZF3oAQIiSFw4bTbWg5/mpxWneJFRhDKcC1uFUPNPgii/c=
+	t=1755521712; cv=none; b=gQNn4QtOtRH0IDs0EZTBHMylXq/nISrG0lBYQ/c06l/yHu6wCAmF9fN2zpUqjivfDEoyuZ7XUmnLP5WFhMls9C9hxshUucB9wZEdFORFlqmbdjU8thoW09dHfCwfnmwElUCy58YVaSMa/rF/zSObVoQPhP7iKVp5nRA8KBuWvlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523337; c=relaxed/simple;
-	bh=wVTpvkLeqfTNSnV8y6OOaWUSYXj5hCjUyEOqYRQgg6k=;
+	s=arc-20240116; t=1755521712; c=relaxed/simple;
+	bh=2NsON+6RLou/5bM8rBBGQ5Y73aQcHDbFKCvwMsoKkHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sOHgTUnXuRELhLsoyqLyoTjaT94bhyHr+F22VWKOxB7TQqyp/08JpP+GSGZXQ5uqQyxOSkjmc3y35R1Q+yyisbm2B3JfTEX2uNW8yEhVlxrKegTz2WICjBXPYImE0F/wTgiTTIhpUl7vjCtw78TBNx9tGss8e3Rk5s5rr1E+Mvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRXEnwzw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEF2C4CEF1;
-	Mon, 18 Aug 2025 13:22:16 +0000 (UTC)
+	 MIME-Version; b=o+5ihzB/au3RLV/h9iF+StC+kTSN6dRw2I1SK6d5Vln1+qxgglWUjD+PrQP1rDVP9BPsZqkle3iWBjzkFrEpfT/o/O8c+GPh3aZilTDP8MmIwuoTTpZ0oYJUaMvP/nmXVDjvPn7tHwu3nodlV0Tu+0xTZzfE1+86FEBWcEpICTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgbEsYX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA34AC4CEEB;
+	Mon, 18 Aug 2025 12:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523337;
-	bh=wVTpvkLeqfTNSnV8y6OOaWUSYXj5hCjUyEOqYRQgg6k=;
+	s=korg; t=1755521712;
+	bh=2NsON+6RLou/5bM8rBBGQ5Y73aQcHDbFKCvwMsoKkHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRXEnwzwgR504V9fPC9TzIIWuoyqHepyGzSrZRP0n7SZeOqCLRaUJ7H5w0KOQFE5f
-	 wsNPx15G9CYfyp+KnGT4X3HyGpsRHxLWC58vH5hiU9rB/l1A9JkB265j3W5AE+LljH
-	 snA6j+yJSHE1tF5O6TH/hV3HqvYQ0o82OGMyo91g=
+	b=QgbEsYX6PnAr4kVpL5cjusk5740P6rm8jj6HtaDX6hZ5opG2DkUX8B7a98IezsnWs
+	 VYYkwkWchz1lf8SKzT46UAnhb4Q4IylcbgOffaQZ+QEsPT2C78afHBC4FypqlIU+6Q
+	 0KoZNCN3C/52QFfy51dNyc65XhbLhlnIJsWCPRjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 140/515] tools/nolibc: define time_t in terms of __kernel_old_time_t
+Subject: [PATCH 6.12 100/444] usb: xhci: Avoid showing warnings for dying controller
 Date: Mon, 18 Aug 2025 14:42:06 +0200
-Message-ID: <20250818124503.780569027@linuxfoundation.org>
+Message-ID: <20250818124452.696265627@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
+[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
 
-Nolibc assumes that the kernel ABI is using a time values that are as
-large as a long integer. For most ABIs this holds true.
-But for x32 this is not correct, as it uses 32bit longs but 64bit times.
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed, and when the device stops responding a flag is also
+added to indicate it's dying.
 
-Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
-and time_t being the same type. While timespec::tv_sec comes from the
-kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
+When that flag is set don't bother to show warnings about a missing
+controller.
 
-Switch to the __kernel_old_time_t to always get the correct type.
-
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
-Acked-by: Willy Tarreau <w@1wt.eu>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/std.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
-index 933bc0be7e1c..a9d8b5b51f37 100644
---- a/tools/include/nolibc/std.h
-+++ b/tools/include/nolibc/std.h
-@@ -20,6 +20,8 @@
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 09a5a6604962..e399638d6000 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -119,7 +119,8 @@ int xhci_halt(struct xhci_hcd *xhci)
+ 	ret = xhci_handshake(&xhci->op_regs->status,
+ 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
+ 	if (ret) {
+-		xhci_warn(xhci, "Host halt failed, %d\n", ret);
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host halt failed, %d\n", ret);
+ 		return ret;
+ 	}
  
- #include "stdint.h"
+@@ -178,7 +179,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
+ 	state = readl(&xhci->op_regs->status);
  
-+#include <linux/types.h>
-+
- /* those are commonly provided by sys/types.h */
- typedef unsigned int          dev_t;
- typedef unsigned long         ino_t;
-@@ -31,6 +33,6 @@ typedef unsigned long       nlink_t;
- typedef   signed long         off_t;
- typedef   signed long     blksize_t;
- typedef   signed long      blkcnt_t;
--typedef   signed long        time_t;
-+typedef __kernel_old_time_t  time_t;
+ 	if (state == ~(u32)0) {
+-		xhci_warn(xhci, "Host not accessible, reset failed.\n");
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host not accessible, reset failed.\n");
+ 		return -ENODEV;
+ 	}
  
- #endif /* _NOLIBC_STD_H */
 -- 
 2.39.5
 
