@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2901B2A40E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:41 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8F0B2A624
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CAF618A109E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4CDB74E37DF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A6C21B199;
-	Mon, 18 Aug 2025 13:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDEE21CC58;
+	Mon, 18 Aug 2025 13:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDdEcD33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGRYUz3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45D53218C2;
-	Mon, 18 Aug 2025 13:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B49A335BC9;
+	Mon, 18 Aug 2025 13:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522612; cv=none; b=YnZlOXW5dT2ePD3E9Cj+zclVx/0sSKpOjJDAR8gVnTZKfNEFUUfqrcqRhZqP1fNOc1JpVoevnvQ2YZ/xZz0wBgi0ELEhlSr5YPLQDD3I0AdDPm/PmrNoVh52BZBXdKqhUoFfd+UMpX4KhZwKptX7KcomGBumu3ziRBqgEA6PMFI=
+	t=1755524315; cv=none; b=iwdD0XAWbw7s/1yR/rNWTzzLt/xOy3SjZrEwEp1OUhWyWrXHYtcjzOa36bw1mIvUmjL81iu+usSdR5xDWRSTGiHxWSgBs7zZOMUDDa3ZfyxxIwuBK36dr10VRZNWVz70spj2qozOac9yrrSfpW9Rz3CItWn8kxACSMgJhyxlFWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522612; c=relaxed/simple;
-	bh=dE4sytdHcp7yQnPreS6mmG5UQrLts0e2Mm4W6thv+KA=;
+	s=arc-20240116; t=1755524315; c=relaxed/simple;
+	bh=D97fOiiKJf7Ev3rJAH3YVhLDm+PsQs99n1ZHQqy/vMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nIuV5SQeufMGEMxmjsDN52A3T0rN2/gBjttJ33w7+XT26G9rvnWCsBNGNITo0QaPNPqCLyPNOqmNrS4DvHgPXVZ611PpPOncDcSSOhXEQZRrl6j+iqZHkYroswCi0RS2JTcVdTqxHArjvy3OuQO1F+DlfRhDw+SKVl0Iwl9IWAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDdEcD33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF4FC4CEF1;
-	Mon, 18 Aug 2025 13:10:11 +0000 (UTC)
+	 MIME-Version; b=LFFUyjO1zEfa5LcJVW/irVA9Uao1Nk6DOJqY8ZmadeC8+V3Hp7V5lGvmLW9vUWID+TWZP1plfBgSgg8jFZaMynz10GObrvgH3S5IbnxKbwMayJoUWC/Ts1pevfOpKKbLvug8G6tHsFoBUpRVVRw27/q3kJaUfaxfsIEp2PsA/Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGRYUz3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8248AC113D0;
+	Mon, 18 Aug 2025 13:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522612;
-	bh=dE4sytdHcp7yQnPreS6mmG5UQrLts0e2Mm4W6thv+KA=;
+	s=korg; t=1755524315;
+	bh=D97fOiiKJf7Ev3rJAH3YVhLDm+PsQs99n1ZHQqy/vMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDdEcD33v/b3oBRhNfG3OJLx/FycpQzDBAQBm1UwBQkRii0rLszdKatrWEeWTqm0S
-	 DPOIh+L8GcI3qcMhK537g79AcAKkt1P0IHq+1i+kleJCJ3ov1KiYw9VzAoLt2dj2Fb
-	 bBlAVzq60FVYq3sSe7VHxLB+8ZiEjIh7cJgvDXDI=
+	b=HGRYUz3u7eYqy9v4kXvk77Jmp9yCdhXp/6UdwOEgAoNl+KSSUOEOHmYo6gJg+mHwz
+	 wtL7TCClJ2EXpwwuMGSg9ih6VYN5QiRB6bLeP73q42HSWcMfEicAm//xYOxI71bdUQ
+	 e9xGA+14HT0dS3T7k/inZSf++AciHBIVbtpYrQf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Buday Csaba <buday.csaba@prolan.hu>,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"fangzhong.zhou" <myth5@myth5.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 360/444] net: phy: smsc: add proper reset flags for LAN8710A
-Date: Mon, 18 Aug 2025 14:46:26 +0200
-Message-ID: <20250818124502.407349883@linuxfoundation.org>
+Subject: [PATCH 6.15 401/515] i2c: Force DLL0945 touchpad i2c freq to 100khz
+Date: Mon, 18 Aug 2025 14:46:27 +0200
+Message-ID: <20250818124513.846804949@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+From: fangzhong.zhou <myth5@myth5.com>
 
-[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
+[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
 
-According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
-reset is required after power-on, and the reference clock (REF_CLK) must be
-established before asserting reset.
+This patch fixes an issue where the touchpad cursor movement becomes
+slow on the Dell Precision 5560. Force the touchpad freq to 100khz
+as a workaround.
 
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Cc: Csókás Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
+is now smooth and responsive.
+
+Signed-off-by: fangzhong.zhou <myth5@myth5.com>
+[wsa: kept sorting and removed unnecessary parts from commit msg]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/smsc.c | 1 +
+ drivers/i2c/i2c-core-acpi.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
-index 6a43f6d6e85c..de66b621eb99 100644
---- a/drivers/net/phy/smsc.c
-+++ b/drivers/net/phy/smsc.c
-@@ -784,6 +784,7 @@ static struct phy_driver smsc_phy_driver[] = {
- 
- 	/* PHY_BASIC_FEATURES */
- 
-+	.flags		= PHY_RST_AFTER_CLK_EN,
- 	.probe		= smsc_phy_probe,
- 
- 	/* basic functions */
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d2499f302b50..f43067f6797e 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -370,6 +370,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
+ 	 * the device works without issues on Windows at what is expected to be
+ 	 * a 400KHz frequency. The root cause of the issue is not known.
+ 	 */
++	{ "DLL0945", 0 },
+ 	{ "ELAN06FA", 0 },
+ 	{}
+ };
 -- 
 2.39.5
 
