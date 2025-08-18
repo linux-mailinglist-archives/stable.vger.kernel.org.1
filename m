@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85A0B2A4B9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:24:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DFAB2A7F0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1253F681886
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:18:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E20F1899417
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F87532255D;
-	Mon, 18 Aug 2025 13:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A113331B11A;
+	Mon, 18 Aug 2025 13:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXGyij0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KesXLr3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B8B32253D;
-	Mon, 18 Aug 2025 13:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3482C235C;
+	Mon, 18 Aug 2025 13:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522934; cv=none; b=r1waPqZ8HWgvd529mAEt/+glm+aSjTqROOYVuNWwysEZP7uBa51GOXv9WW+HzgXY5vvnIsVvnWQskbKR++FB+lSTvbyRj8xR606e4HUj5GaoG+5Dd3EwY2xPRhduGJ8ynF16AJmb0G5c/PkqAv07uT9f+saj7OoF3b1SSribS/g=
+	t=1755524650; cv=none; b=NqVMrnDXCov1z2YfY30ik2oc46qWy4ZGHeSpx6gpxd4PTMDEfh6Jl4yMIHNQyQpiteJcRtAV40BTJWRd35NQKP+Z1W9Mdk3cyd+TyZZzNFYgXtCTnGjJj3ME4+dfOouG8yto83IhYcrifaZw1NZlxj4oqPRGy5pGS2PkvUEM9kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522934; c=relaxed/simple;
-	bh=tAriAgQqG1yfrYTs6DPRZ3tWoM4k6J53T1kTyq2W3Do=;
+	s=arc-20240116; t=1755524650; c=relaxed/simple;
+	bh=nDnncTnffQOWOAhvcuHSG7KXhKIpZu1ihgN8b+I3oE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRUwWLGSU5foXXjBf8x8g0GNWvNronHc2dBPTd40bwy4PD/cxLfjZOylnj8kioWYrHgZrkZDGUiFv2PYYtFusE/VeaPsfFuoFvJkNY3PmYkcVkonqwlvWG0PHtbhMwvmSTwbKActksuK+YjeEEAChUI3+M7TYTkXx2HVftNjFbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXGyij0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9B4C113D0;
-	Mon, 18 Aug 2025 13:15:32 +0000 (UTC)
+	 MIME-Version; b=mClJgtBY51fR657gZ+9ccMT4afW7TK/VhvSFq0qRpSvnKFpAI+QgNHge4T+fdM6zFChqzHVj1y79G3MzNf7TTrmM/wMekwKVoj+waPO597P4pbsF4IqZUpvhCeKTLndjkUg8srQhM7NZaoyYWwUex5C9PEh8X38PfTG/DvAZKEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KesXLr3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57E2C4CEEB;
+	Mon, 18 Aug 2025 13:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522933;
-	bh=tAriAgQqG1yfrYTs6DPRZ3tWoM4k6J53T1kTyq2W3Do=;
+	s=korg; t=1755524650;
+	bh=nDnncTnffQOWOAhvcuHSG7KXhKIpZu1ihgN8b+I3oE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXGyij0JtsfVj1ircG6+vBDY3/P20WJ4MGPOV3UsyQGoRo79gFlY5VBdsqQVyydKv
-	 UTWRYS56zpczUm06QufTPj/oAX7z4MiNNT8umuNLEfiXCd3VZPCoWj3LhZ16/ZEhAn
-	 phSyJFu3fx+013redmqWRx9MMv0rLG/3yn2EhNsY=
+	b=KesXLr3JxbjGR8yC2UWnSsr4J4zFoAx9RVWKnBEJ5JvYHQJa0+MPes9eiuA78PlA3
+	 lM8m81wp7XC6I5hLX/rZ+at9JuM18aLItP1t0nXxfe4//wZRDAS34fJigftU7CgkQF
+	 1K7JiAbuEyJxAfTTf7vI0Axdx/X08Z7jKLwXTGok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Larysch <fl@n621.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 020/515] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
-Date: Mon, 18 Aug 2025 14:40:06 +0200
-Message-ID: <20250818124459.248057180@linuxfoundation.org>
+	Andrew Lunn <andrew@lunn.ch>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.16 020/570] Revert "leds: trigger: netdev: Configure LED blink interval for HW offload"
+Date: Mon, 18 Aug 2025 14:40:07 +0200
+Message-ID: <20250818124506.576029706@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Larysch <fl@n621.de>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 49db61c27c4bbd24364086dc0892bd3e14c1502e upstream.
+commit 26f732791f2bcab18f59c61915bbe35225f30136 upstream.
 
-Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
-phy") introduced cable_test support for the LAN8814 that reuses parts of
-the KSZ886x logic and introduced the cable_diag_reg and pair_mask
-parameters to account for differences between those chips.
+This reverts commit c629c972b310af41e9e072febb6dae9a299edde6.
 
-However, it did not update the ksz8081_type struct, so those members are
-now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
-and ksz886x_cable_test_wait_for_completion to poll the wrong register
-for the affected PHYs (Basic Control/Reset, which is 0 in normal
-operation) and exit immediately.
+While .led_blink_set() would previously put an LED into an unconditional
+permanently blinking state, the offending commit now uses same operation
+to (also?) set the blink timing of the netdev trigger when offloading.
 
-Fix this by setting both struct members accordingly.
+This breaks many if not all of the existing PHY drivers which offer
+offloading LED operations, as those drivers would just put the LED into
+blinking state after .led_blink_set() has been called.
 
-Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
+Unfortunately the change even made it into stable kernels for unknown
+reasons, so it should be reverted there as well.
+
+Fixes: c629c972b310a ("leds: trigger: netdev: Configure LED blink interval for HW offload")
+Link: https://lore.kernel.org/linux-leds/c6134e26-2e45-4121-aa15-58aaef327201@lunn.ch/T/#m9d6fe81bbcb273e59f12bbedbd633edd32118387
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
 Cc: stable@vger.kernel.org
-Signed-off-by: Florian Larysch <fl@n621.de>
-Link: https://patch.msgid.link/20250723222250.13960-1-fl@n621.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/6dcc77ee1c9676891d6250d8994850f521426a0f.1752334655.git.daniel@makrotopia.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/leds/trigger/ledtrig-netdev.c |   16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -472,6 +472,8 @@ static const struct kszphy_type ksz8051_
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -68,7 +68,6 @@ struct led_netdev_data {
+ 	unsigned int last_activity;
  
- static const struct kszphy_type ksz8081_type = {
- 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
-+	.cable_diag_reg		= KSZ8081_LMD,
-+	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
- 	.has_broadcast_disable	= true,
- 	.has_nand_tree_disable	= true,
- 	.has_rmii_ref_clk_sel	= true,
+ 	unsigned long mode;
+-	unsigned long blink_delay;
+ 	int link_speed;
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported_link_modes);
+ 	u8 duplex;
+@@ -87,10 +86,6 @@ static void set_baseline_state(struct le
+ 	/* Already validated, hw control is possible with the requested mode */
+ 	if (trigger_data->hw_control) {
+ 		led_cdev->hw_control_set(led_cdev, trigger_data->mode);
+-		if (led_cdev->blink_set) {
+-			led_cdev->blink_set(led_cdev, &trigger_data->blink_delay,
+-					    &trigger_data->blink_delay);
+-		}
+ 
+ 		return;
+ 	}
+@@ -459,11 +454,10 @@ static ssize_t interval_store(struct dev
+ 			      size_t size)
+ {
+ 	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
+-	struct led_classdev *led_cdev = trigger_data->led_cdev;
+ 	unsigned long value;
+ 	int ret;
+ 
+-	if (trigger_data->hw_control && !led_cdev->blink_set)
++	if (trigger_data->hw_control)
+ 		return -EINVAL;
+ 
+ 	ret = kstrtoul(buf, 0, &value);
+@@ -472,13 +466,9 @@ static ssize_t interval_store(struct dev
+ 
+ 	/* impose some basic bounds on the timer interval */
+ 	if (value >= 5 && value <= 10000) {
+-		if (trigger_data->hw_control) {
+-			trigger_data->blink_delay = value;
+-		} else {
+-			cancel_delayed_work_sync(&trigger_data->work);
++		cancel_delayed_work_sync(&trigger_data->work);
+ 
+-			atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
+-		}
++		atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
+ 		set_baseline_state(trigger_data);	/* resets timer */
+ 	}
+ 
 
 
 
