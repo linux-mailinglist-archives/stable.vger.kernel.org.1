@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D58B2A423
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2818B2A65F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1932E1894F1D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64C067B429C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09F631B100;
-	Mon, 18 Aug 2025 13:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F691335BC1;
+	Mon, 18 Aug 2025 13:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0zGPAVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1Cl3Fqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8821B199;
-	Mon, 18 Aug 2025 13:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEF6335BCF;
+	Mon, 18 Aug 2025 13:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522642; cv=none; b=TtZbFR9AqWXywFiieYuFDG0QlY8jSXK74aBQF4TBdUw9nIYlriGqBg5vt7E+zdIO57XBczLw3PDYWJN4EwqO3kBN5bKFOw3sMXpZ799pVKll0gZUVhSWIZe0hSn2q0VWoqn4k0mI3C2tZHeR1YNZzBiohOZNRkv6kiSSD42kLzo=
+	t=1755524261; cv=none; b=ZZAdUytPLyBtlFA0u5DaeSusqzM5Kf+2e1PC1faTF+IPEnCw4RceCb5Y9qmGelfghUScEsChGjCWQWdzn0W4tJtMXh0ImDw5kOHhj5Y9DK9KUGsaUK+czDIEny9Ld+8s1pDYUAkAxqrWxFTkGXn1AhHNmJuGqTvkYbBNTpv45Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522642; c=relaxed/simple;
-	bh=oGmlzHwuN/bCiJjsXjI+2k/flfnLl/zTXayGQSqBNTA=;
+	s=arc-20240116; t=1755524261; c=relaxed/simple;
+	bh=KbXpWfhsR4m7SRqTmywFNxW3+UOgUDrQq3VyN05iG1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8qn2gtXpoitFmZBwZYo1D4z7xMZDQbJo9oPII5y6srzg7RP5tpOtho/OHBmeUbFPjdCSsJ5BSOdNTytIjdc7IBvHw+L2FKxo+Zv2VfZNLLFTEn8Grs0Zu/xow2iQ4h+selmCwUDpFVkoSbIFHQyuy5O6aEv/vFSNtcaIK79IdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0zGPAVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C086FC4CEEB;
-	Mon, 18 Aug 2025 13:10:41 +0000 (UTC)
+	 MIME-Version; b=PQe9MG/v4BR/KEUeofV5B2JtjNMpVPCF2Kbqfq9R7faDhQd6DbOeDDbPqPH6tB8l1Wkb79eRGxF/WRVXNs+2J3XXeA/sJWrKPP5pOXNTJ7IcB0+G2lXFo9b4UQ6+uz8gfBIsGGyEOhEXUNaqQXEOHFEz5fV4+ECY4hEgj4NB2fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1Cl3Fqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1980DC113D0;
+	Mon, 18 Aug 2025 13:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522642;
-	bh=oGmlzHwuN/bCiJjsXjI+2k/flfnLl/zTXayGQSqBNTA=;
+	s=korg; t=1755524260;
+	bh=KbXpWfhsR4m7SRqTmywFNxW3+UOgUDrQq3VyN05iG1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0zGPAVjPqqoobRaAfuVMA916kB+Zs/1RkiQYce2+UNjZNkKbXy1vx1x2q+i7vgP+
-	 z/JsDETXp6BXRQeoLgTReqOxc7Z31UQSrNprpLtL5JiogzQMIKRJcFdK6wjmrJuZuo
-	 XaiL/2GzW8qe+Lq0fI/ju7/z2xy4pHbYYFv0CiO0=
+	b=o1Cl3FqhNHQ8MpJeIaIDaRsQWY9e/J+RsrqXFrd9lG0GdxBA2QDwV0hEnzpcLTasl
+	 sDnNGEXU/QdZv1S5tChGs2LUM5655cuzSU6E5W78/55Bq0T4JHAGgeWrzuOG+n0mFG
+	 Yzw8Tv+vmaERqZDjOmBP0qFNaUNeeW0mMYmnkKFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 377/444] cifs: reset iface weights when we cannot find a candidate
+	kernel test robot <lkp@intel.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 417/515] ipmi: Fix strcpy source and destination the same
 Date: Mon, 18 Aug 2025 14:46:43 +0200
-Message-ID: <20250818124503.024581263@linuxfoundation.org>
+Message-ID: <20250818124514.478937543@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 upstream.
+[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
 
-We now do a weighted selection of server interfaces when allocating
-new channels. The weights are decided based on the speed advertised.
-The fulfilled weight for an interface is a counter that is used to
-track the interface selection. It should be reset back to zero once
-all interfaces fulfilling their weight.
+The source and destination of some strcpy operations was the same.
+Split out the part of the operations that needed to be done for those
+particular calls so the unnecessary copy wasn't done.
 
-In cifs_chan_update_iface, this reset logic was missing. As a result
-when the server interface list changes, the client may not be able
-to find a new candidate for other channels after all interfaces have
-been fulfilled.
-
-Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -360,6 +360,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 	struct cifs_server_iface *old_iface = NULL;
- 	struct cifs_server_iface *last_iface = NULL;
- 	struct sockaddr_storage ss;
-+	int retry = 0;
+diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
+index f1875b2bebbc..f798d4cbf8a7 100644
+--- a/drivers/char/ipmi/ipmi_watchdog.c
++++ b/drivers/char/ipmi/ipmi_watchdog.c
+@@ -1186,14 +1186,8 @@ static struct ipmi_smi_watcher smi_watcher = {
+ 	.smi_gone = ipmi_smi_gone
+ };
  
- 	spin_lock(&ses->chan_lock);
- 	chan_index = cifs_ses_get_chan_index(ses, server);
-@@ -388,6 +389,7 @@ cifs_chan_update_iface(struct cifs_ses *
- 		return;
- 	}
+-static int action_op(const char *inval, char *outval)
++static int action_op_set_val(const char *inval)
+ {
+-	if (outval)
+-		strcpy(outval, action);
+-
+-	if (!inval)
+-		return 0;
+-
+ 	if (strcmp(inval, "reset") == 0)
+ 		action_val = WDOG_TIMEOUT_RESET;
+ 	else if (strcmp(inval, "none") == 0)
+@@ -1204,18 +1198,26 @@ static int action_op(const char *inval, char *outval)
+ 		action_val = WDOG_TIMEOUT_POWER_DOWN;
+ 	else
+ 		return -EINVAL;
+-	strcpy(action, inval);
+ 	return 0;
+ }
  
-+try_again:
- 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
- 				     iface_head);
- 	iface_min_speed = last_iface->speed;
-@@ -425,6 +427,13 @@ cifs_chan_update_iface(struct cifs_ses *
- 	}
- 
- 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
-+		list_for_each_entry(iface, &ses->iface_list, iface_head)
-+			iface->weight_fulfilled = 0;
+-static int preaction_op(const char *inval, char *outval)
++static int action_op(const char *inval, char *outval)
+ {
++	int rv;
 +
-+		/* see if it can be satisfied in second attempt */
-+		if (!retry++)
-+			goto try_again;
+ 	if (outval)
+-		strcpy(outval, preaction);
++		strcpy(outval, action);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = action_op_set_val(inval);
++	if (!rv)
++		strcpy(action, inval);
++	return rv;
++}
+ 
++static int preaction_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "pre_none") == 0)
+ 		preaction_val = WDOG_PRETIMEOUT_NONE;
+ 	else if (strcmp(inval, "pre_smi") == 0)
+@@ -1228,18 +1230,26 @@ static int preaction_op(const char *inval, char *outval)
+ 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preaction, inval);
+ 	return 0;
+ }
+ 
+-static int preop_op(const char *inval, char *outval)
++static int preaction_op(const char *inval, char *outval)
+ {
++	int rv;
 +
- 		iface = NULL;
- 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	if (outval)
+-		strcpy(outval, preop);
++		strcpy(outval, preaction);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = preaction_op_set_val(inval);
++	if (!rv)
++		strcpy(preaction, inval);
++	return 0;
++}
+ 
++static int preop_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "preop_none") == 0)
+ 		preop_val = WDOG_PREOP_NONE;
+ 	else if (strcmp(inval, "preop_panic") == 0)
+@@ -1248,7 +1258,22 @@ static int preop_op(const char *inval, char *outval)
+ 		preop_val = WDOG_PREOP_GIVE_DATA;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preop, inval);
++	return 0;
++}
++
++static int preop_op(const char *inval, char *outval)
++{
++	int rv;
++
++	if (outval)
++		strcpy(outval, preop);
++
++	if (!inval)
++		return 0;
++
++	rv = preop_op_set_val(inval);
++	if (!rv)
++		strcpy(preop, inval);
+ 	return 0;
+ }
+ 
+@@ -1285,18 +1310,18 @@ static int __init ipmi_wdog_init(void)
+ {
+ 	int rv;
+ 
+-	if (action_op(action, NULL)) {
++	if (action_op_set_val(action)) {
+ 		action_op("reset", NULL);
+ 		pr_info("Unknown action '%s', defaulting to reset\n", action);
  	}
+ 
+-	if (preaction_op(preaction, NULL)) {
++	if (preaction_op_set_val(preaction)) {
+ 		preaction_op("pre_none", NULL);
+ 		pr_info("Unknown preaction '%s', defaulting to none\n",
+ 			preaction);
+ 	}
+ 
+-	if (preop_op(preop, NULL)) {
++	if (preop_op_set_val(preop)) {
+ 		preop_op("preop_none", NULL);
+ 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
+ 	}
+-- 
+2.39.5
+
 
 
 
