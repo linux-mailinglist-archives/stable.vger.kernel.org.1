@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34A5B2A886
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDE5B2A60C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033A56E064E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D7E1B6699A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7D0224247;
-	Mon, 18 Aug 2025 13:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA81531CA48;
+	Mon, 18 Aug 2025 13:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nK0DArTh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMouQyQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C04413C8E8;
-	Mon, 18 Aug 2025 13:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A792013C8E8;
+	Mon, 18 Aug 2025 13:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525385; cv=none; b=V5/2nFkTJ3npUatVlAjXZnyY2AbE9F1505jN95iFv8LDp96IlB7nr8p+/StZJu0oUUgb8aCYCgumo7OzVPBUPSwQzpdOsXkwJkh/qKjblRXUN4/on2j+a5afSZo2RFxPYbq9XLTxtg/B0ifKrOoR4tpeBN8LXTMhLrm7NmOTcjk=
+	t=1755523689; cv=none; b=ZpwCGl9vxWzBn0L/xWKKnYICWLfvyiGMdq45D8sG/TQD4VYfh2riUhjFUa5Wes1b8rx97uNlLltOrmmYHLxpUsfARoJhfGqiMkXTo7IJw201S4mltIYn+tx6Ssb+G4wFhExzgEgQB4h5HXwoKU/910MgSOUjXsyqEKbMSOsDwOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525385; c=relaxed/simple;
-	bh=duaxUwLPm/j+CgBK3OlQLm06yV91zVTV2MbmmPQytXY=;
+	s=arc-20240116; t=1755523689; c=relaxed/simple;
+	bh=URtdvqASFaXzRckEMvP3XjUNZTMnp67MoajcI1jIoco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctuxkzH30X0ildqjGncYfB68f2+M8dhhVOja4OZthZi95Re2qeoiHW8FC70O/Cm65H5No9Xivlpd8WVnR3vu5+VGB2p4gI96wlkwch4PtbXrluKv6E1/JMt4bLFC3Na31BTo320iFFnugQow3w2rJlB9NJs1Cn7USzP+4SxC7wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nK0DArTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA1AC4CEEB;
-	Mon, 18 Aug 2025 13:56:24 +0000 (UTC)
+	 MIME-Version; b=fFVqTF8TrLLya1r0E87eJHi0moHrYckfGMJrfk16QU6sQaWFNhheIacAwAUoLBEUSXWuABVgTOf55iSiHTBCY3dTYkBrpzbZ9C/bO+XCzAn9nlilGbCj2vYyL/XjWRLBeGV6n3rtiApd5AcF0KZODks/EWf4MRnbF7czGv2o6mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMouQyQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F96C4CEEB;
+	Mon, 18 Aug 2025 13:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525385;
-	bh=duaxUwLPm/j+CgBK3OlQLm06yV91zVTV2MbmmPQytXY=;
+	s=korg; t=1755523689;
+	bh=URtdvqASFaXzRckEMvP3XjUNZTMnp67MoajcI1jIoco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nK0DArThaPVrDmrBBgojYVxvw/8K/5DNJ7+LLbZm8s+F8Swn4VAiDy3WVee1Q6abH
-	 buX4zoiy8ZbxH6cNdy/h1ZDc222FZTa9N0YebWonioaajAtRr6iuHK/p/fR6IwxVx4
-	 BB0i6yyE9D9gtaocTsISxUOoGslybLJo7eLfop4Y=
+	b=bMouQyQyly8eCViOUjCWU+Xiw35zFfvKIfvYMMIib3JNfbT0U5KE8umXHGxAAZVWI
+	 o0MoMXXamd8yLF+h62dBtvhM/c464I/Cpyn+ZIrOrSsKC43NyIAzmSSwt+gKThvQui
+	 e1lB2u+0MXfycbl4EhlR1xvF038EorMNo4rQItCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Will Deacon <will@kernel.org>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 247/570] perf/cxlpmu: Remove unintended newline from IRQ name format string
+Subject: [PATCH 6.15 248/515] rcu/nocb: Fix possible invalid rdps->nocb_cb_kthread pointer access
 Date: Mon, 18 Aug 2025 14:43:54 +0200
-Message-ID: <20250818124515.332621192@linuxfoundation.org>
+Message-ID: <20250818124507.942087362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 3e870815ccf5bc75274158f0b5e234fce6f93229 ]
+[ Upstream commit 1bba3900ca18bdae28d1b9fa10f16a8f8cb2ada1 ]
 
-The IRQ name format string used in devm_kasprintf() mistakenly included
-a newline character "\n".
-This could lead to confusing log output or misformatted names in sysfs
-or debug messages.
+In the preparation stage of CPU online, if the corresponding
+the rdp's->nocb_cb_kthread does not exist, will be created,
+there is a situation where the rdp's rcuop kthreads creation fails,
+and then de-offload this CPU's rdp, does not assign this CPU's
+rdp->nocb_cb_kthread pointer, but this rdp's->nocb_gp_rdp and
+rdp's->rdp_gp->nocb_gp_kthread is still valid.
 
-This fix removes the newline to ensure proper IRQ naming.
+This will cause the subsequent re-offload operation of this offline
+CPU, which will pass the conditional check and the kthread_unpark()
+will access invalid rdp's->nocb_cb_kthread pointer.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://lore.kernel.org/r/20250624194350.109790-3-alok.a.tiwari@oracle.com
-Signed-off-by: Will Deacon <will@kernel.org>
+This commit therefore use rdp's->nocb_gp_kthread instead of
+rdp_gp's->nocb_gp_kthread for safety check.
+
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/cxl_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/rcu/tree_nocb.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
-index d6693519eaee..948e7c067dd2 100644
---- a/drivers/perf/cxl_pmu.c
-+++ b/drivers/perf/cxl_pmu.c
-@@ -873,7 +873,7 @@ static int cxl_pmu_probe(struct device *dev)
- 		return rc;
- 	irq = rc;
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 6b3118a4dde3..2083d2343bd4 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -1152,7 +1152,6 @@ static bool rcu_nocb_rdp_offload_wait_cond(struct rcu_data *rdp)
+ static int rcu_nocb_rdp_offload(struct rcu_data *rdp)
+ {
+ 	int wake_gp;
+-	struct rcu_data *rdp_gp = rdp->nocb_gp_rdp;
  
--	irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_overflow\n", dev_name);
-+	irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_overflow", dev_name);
- 	if (!irq_name)
- 		return -ENOMEM;
+ 	WARN_ON_ONCE(cpu_online(rdp->cpu));
+ 	/*
+@@ -1162,7 +1161,7 @@ static int rcu_nocb_rdp_offload(struct rcu_data *rdp)
+ 	if (!rdp->nocb_gp_rdp)
+ 		return -EINVAL;
  
+-	if (WARN_ON_ONCE(!rdp_gp->nocb_gp_kthread))
++	if (WARN_ON_ONCE(!rdp->nocb_gp_kthread))
+ 		return -EINVAL;
+ 
+ 	pr_info("Offloading %d\n", rdp->cpu);
+@@ -1172,7 +1171,7 @@ static int rcu_nocb_rdp_offload(struct rcu_data *rdp)
+ 
+ 	wake_gp = rcu_nocb_queue_toggle_rdp(rdp);
+ 	if (wake_gp)
+-		wake_up_process(rdp_gp->nocb_gp_kthread);
++		wake_up_process(rdp->nocb_gp_kthread);
+ 
+ 	swait_event_exclusive(rdp->nocb_state_wq,
+ 			      rcu_nocb_rdp_offload_wait_cond(rdp));
 -- 
 2.39.5
 
