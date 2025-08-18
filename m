@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BD7B2A5E8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:13 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6404B2A2A7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EEB4681614
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B43D94E2EF7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B45322A17;
-	Mon, 18 Aug 2025 13:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8DB3218CF;
+	Mon, 18 Aug 2025 12:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZIp3QLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkZLG7VT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0B131A04F;
-	Mon, 18 Aug 2025 13:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B093218D1;
+	Mon, 18 Aug 2025 12:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523610; cv=none; b=F1CO8ABV/POU34ND93NUM++TsFdibL3MaJ57Y4xXgkT/cVv/FyPBv4j+H0ByGaSEAq/NonZ43eCGAG4IohpLeyJ6NKEZ9W7nIDuRwoLM4eySsSFaQWyFtnpB6+J8BYcnE0cBGGv+CKn0Td1n8eQ49mhItqc+39DD8+G1lwtm++w=
+	t=1755521997; cv=none; b=fzw/ISG/V78bAdLaYELMt+OnkUMSAxmmGH4ELT0G2vuODfqC923OoS4ETAjdzvhkpM1U2CLZGaYmCo77MQU0UwyIdTp9PmA8dn8647CLzaP45NEJcJ4w/iQeSduWYQNINZ4wWy5cZ5PcO98Rtixo5MxcBVXfzvSyjMqsuLGJFMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523610; c=relaxed/simple;
-	bh=NsPfWvJy5RUBXP44+BZmAq26B3Pm0WuzI1P6UVC3pTg=;
+	s=arc-20240116; t=1755521997; c=relaxed/simple;
+	bh=/vHCrMPVTCAR08S6C202eAjl32yLxhynA04061KplVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGf9F9W+2UR6mpfPzZh7T6ZJxYNwWUZNiNF37VwrUMsuFYMm1JMqcP0S5ak77mayXfNJccIVoWGODnj5mPdA/2hhrcTirAmdkIdv93ecNlcI8JxtMQ8pPWZ8K1Ans0xp0W5SYuRw5M1pb9xpgb671kdzwrac4RWSYvqV6SICGiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZIp3QLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C06C4CEEB;
-	Mon, 18 Aug 2025 13:26:49 +0000 (UTC)
+	 MIME-Version; b=G9ckApJLGPrWxf7XvA0YsAhkQb4pJ1bW6MMxT67sR8zTxBKrPEizBHzaKp1BRU4i6PaWCj6mEoAwnmdmKVjMmdW4RVOmtQRkbPXCL3Ma5yKrAZrGAf2cqRcqtB6zCDVXYubTrQ7UYZqPEPo1L6fJSmSAfJzntAF/0Nwfpx3PHpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkZLG7VT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BA2C4CEEB;
+	Mon, 18 Aug 2025 12:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523610;
-	bh=NsPfWvJy5RUBXP44+BZmAq26B3Pm0WuzI1P6UVC3pTg=;
+	s=korg; t=1755521997;
+	bh=/vHCrMPVTCAR08S6C202eAjl32yLxhynA04061KplVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZIp3QLyG5lxX1p8M8Wvu20qjIl8+AhoykisxslJTvv8ZINuiIZGF25Z8qXrksAp5
-	 NrcM+k0tP7rVKBeR5UB23QQBYFvf2k1bffBvnpcy0Nyufb4/42RHd5Yquvuuq76yOC
-	 vZLg59tiMR5ms1U88lcjWx/uzjrSZdK27B9OR6hE=
+	b=HkZLG7VTUPInO6De7E6wylx/BCTRxT4fEh5minIWwFsz5Ronstj7jRPnsMUZAJHMS
+	 mdEJ278NDf2660WLcz52t6sjoPgl1vuZRpFIm56NnFl4XT/WeQgMTKwICXPzbBgdNs
+	 NKpWaU2702cKyJh9ShOq16lvkopkV91hwD69L05c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Nam Cao <namcao@linutronix.de>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 192/515] verification/dot2k: Make a separate dot2k_templates/Kconfig_container
+Subject: [PATCH 6.12 152/444] soc: qcom: mdt_loader: Actually use the e_phoff
 Date: Mon, 18 Aug 2025 14:42:58 +0200
-Message-ID: <20250818124505.762225788@linuxfoundation.org>
+Message-ID: <20250818124454.604914964@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 214459699fd202c28b7b9f787e674acbd3af724a ]
+[ Upstream commit 47e339cac89143709e84a3b71ba8bd9b2fdd2368 ]
 
-A generated container's Kconfig has an incorrect line:
+Rather than relying/assuming that the tools generating the firmware
+places the program headers immediately following the ELF header, use
+e_phoff as intended to find the program headers.
 
-    select DA_MON_EVENTS_IMPLICIT
-
-This is due to container generation uses the same template Kconfig file as
-deterministic automaton monitor.
-
-Therefore, make a separate Kconfig template for container which has only
-the necessaries for container.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/d54fd7ee120785bec5695220e837dbbd6efb30e5.1751634289.git.namcao@linutronix.de
-Reviewed-by: Gabriele Monaco <gmonaco@redhat.com>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-3-f7073e9ab899@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/verification/dot2/dot2k.py                          | 3 ++-
- tools/verification/dot2/dot2k_templates/Kconfig_container | 5 +++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
- create mode 100644 tools/verification/dot2/dot2k_templates/Kconfig_container
+ drivers/soc/qcom/mdt_loader.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/verification/dot2/dot2k.py b/tools/verification/dot2/dot2k.py
-index 745d35a4a379..dd4b5528a4f2 100644
---- a/tools/verification/dot2/dot2k.py
-+++ b/tools/verification/dot2/dot2k.py
-@@ -35,6 +35,7 @@ class dot2k(Dot2c):
-             self.states = []
-             self.main_c = self.__read_file(self.monitor_templates_dir + "main_container.c")
-             self.main_h = self.__read_file(self.monitor_templates_dir + "main_container.h")
-+            self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig_container")
-         else:
-             super().__init__(file_path, extra_params.get("model_name"))
+diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+index b2c0fb55d4ae..44589d10b15b 100644
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -83,7 +83,7 @@ ssize_t qcom_mdt_get_size(const struct firmware *fw)
+ 	int i;
  
-@@ -44,7 +45,7 @@ class dot2k(Dot2c):
-             self.monitor_type = MonitorType
-             self.main_c = self.__read_file(self.monitor_templates_dir + "main.c")
-             self.trace_h = self.__read_file(self.monitor_templates_dir + "trace.h")
--        self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig")
-+            self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig")
-         self.enum_suffix = "_%s" % self.name
-         self.description = extra_params.get("description", self.name) or "auto-generated"
-         self.auto_patch = extra_params.get("auto_patch")
-diff --git a/tools/verification/dot2/dot2k_templates/Kconfig_container b/tools/verification/dot2/dot2k_templates/Kconfig_container
-new file mode 100644
-index 000000000000..a606111949c2
---- /dev/null
-+++ b/tools/verification/dot2/dot2k_templates/Kconfig_container
-@@ -0,0 +1,5 @@
-+config RV_MON_%%MODEL_NAME_UP%%
-+	depends on RV
-+	bool "%%MODEL_NAME%% monitor"
-+	help
-+	  %%DESCRIPTION%%
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
+@@ -135,7 +135,7 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
+ 	void *data;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	if (ehdr->e_phnum < 2)
+ 		return ERR_PTR(-EINVAL);
+@@ -215,7 +215,7 @@ int qcom_mdt_pas_init(struct device *dev, const struct firmware *fw,
+ 	int i;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
+@@ -270,7 +270,7 @@ static bool qcom_mdt_bins_are_split(const struct firmware *fw, const char *fw_na
+ 	int i;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		/*
+@@ -312,7 +312,7 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+ 
+ 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
 -- 
 2.39.5
 
