@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-170596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3F6B2A587
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDD7B2A53C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A304F1B603E8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AAA56259D1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F84B3375AB;
-	Mon, 18 Aug 2025 13:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2359A32144E;
+	Mon, 18 Aug 2025 13:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0WDs1km"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVfqh+So"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B71F30C37D;
-	Mon, 18 Aug 2025 13:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D655330DD34;
+	Mon, 18 Aug 2025 13:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523152; cv=none; b=dpu/Qa5AgiDgHV+wKyE4vsZXZKeuh3MeZ95iLzmTGg0vzDIVVL9ye4YfMo68YnTgbnTRQQBqsqvOM5fuFkcmtx6D8uBmeCis55AjQhxhVBjiNN2imocrt6jQfq7z2NR8HzvRDbErct7yEQmXtgRu6R+gePFNrUwQVFCLV9tFHsA=
+	t=1755523046; cv=none; b=a3fyUjFQbe20XUg7UetOgMYtZHQGY/+Osi+s+l6VKbXvg00Db/rR/tCgxfnpjzw6t7b1CgGICdcy0/QA1W3TBRqKZ2XfeN2SXQPULI7PAy/fE1eZalCFN3mJaXcMZo9Nb4Tgrjt+NRko4glwUj0PJJmFSYHV7PY7WOBOZy0WSUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523152; c=relaxed/simple;
-	bh=njnO65N1FUdQsTPZZA0jmoNzSulQnCmYwm6RgIUOLHA=;
+	s=arc-20240116; t=1755523046; c=relaxed/simple;
+	bh=xLI0gX5JJe53qYyPd6fZ7pCVtgk4APXXTTq4QNbVkJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pd/elinJ3ECSiZlNO6/XyNjPx/hb0XrTjrEfE+rBJK7nGYuiFTY1jmYO72Cd44DcoBD1ngsln3MSp1WxR5cPVyI3v6MVau7P0ZcOBUnPPIiDwBb2FXgeErIWzYEcnhQjx8l0CZK+TeCSSFcL4NT+bA5xpgTd0PGKES+l2u+3EHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0WDs1km; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF9CC4CEEB;
-	Mon, 18 Aug 2025 13:19:09 +0000 (UTC)
+	 MIME-Version; b=FubR3lXNLmXQuwZvnLCXEKp0ZKcwHdwUdYhfRcHQAUMCAGuHnJ2W4eHCqq8iwTvFrJgl+WLc7rPZQol7sSPYaJ0mRx5PzXa5Xabw7Ch8Ngm0sLH5mgZjhaD2xzMCQ8spjafhWczsBiCZtBbt6qELjWSEDLXTV+DEMOLGgCSDSac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVfqh+So; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4634EC4CEEB;
+	Mon, 18 Aug 2025 13:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523149;
-	bh=njnO65N1FUdQsTPZZA0jmoNzSulQnCmYwm6RgIUOLHA=;
+	s=korg; t=1755523046;
+	bh=xLI0gX5JJe53qYyPd6fZ7pCVtgk4APXXTTq4QNbVkJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0WDs1kmFyHNK0f+5pJvveuKJ+LDaseghEMVAEsa6eyTJ0EXcmewmPiD2mzRqushk
-	 NA7ypPJJbKUuWINqMv78uR4h0vPuFUzX2xEq2njjMOiNQPLZAot+3GQfwaTLEs+SpG
-	 6y6W/JPi4naYR76mcVfkKlHVIveiGltsY5czr+k8=
+	b=BVfqh+Soupis7vvQFJv8VmLOxbUfv8cUWSLDaDXWVDyVt5fX4dLoEmtSPk02ZO1qO
+	 3cnzGRjUmcMfSP61UuEqEp0Tf7M45ZyXNIGfEnG3p08TgDYunlC56XKSnaewkw4KWB
+	 JerrZPoo4YZQ2GFguVEIokbNJ9WKNZPcwLxqz55I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 054/515] smb: client: dont wait for info->send_pending == 0 on error
-Date: Mon, 18 Aug 2025 14:40:40 +0200
-Message-ID: <20250818124500.498960157@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 055/515] habanalabs: fix UAF in export_dmabuf()
+Date: Mon, 18 Aug 2025 14:40:41 +0200
+Message-ID: <20250818124500.535773250@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -70,55 +65,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 8c48e1c7520321cc87ff651e96093e2f412785fb upstream.
+[ Upstream commit 33927f3d0ecdcff06326d6e4edb6166aed42811c ]
 
-We already called ib_drain_qp() before and that makes sure
-send_done() was called with IB_WC_WR_FLUSH_ERR, but
-didn't called atomic_dec_and_test(&sc->send_io.pending.count)
+As soon as we'd inserted a file reference into descriptor table, another
+thread could close it.  That's fine for the case when all we are doing is
+returning that descriptor to userland (it's a race, but it's a userland
+race and there's nothing the kernel can do about it).  However, if we
+follow fd_install() with any kind of access to objects that would be
+destroyed on close (be it the struct file itself or anything destroyed
+by its ->release()), we have a UAF.
 
-So we may never reach the info->send_pending == 0 condition.
+dma_buf_fd() is a combination of reserving a descriptor and fd_install().
+habanalabs export_dmabuf() calls it and then proceeds to access the
+objects destroyed on close.  In particular, it grabs an extra reference to
+another struct file that will be dropped as part of ->release() for ours;
+that "will be" is actually "might have already been".
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix that by reserving descriptor before anything else and do fd_install()
+only when everything had been set up.  As a side benefit, we no longer
+have the failure exit with file already created, but reference to
+underlying file (as well as ->dmabuf_export_cnt, etc.) not grabbed yet;
+unlike dma_buf_fd(), fd_install() can't fail.
+
+Fixes: db1a8dd916aa ("habanalabs: add support for dma-buf exporter")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/accel/habanalabs/common/memory.c | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1316,10 +1316,6 @@ void smbd_destroy(struct TCP_Server_Info
- 	log_rdma_event(INFO, "cancelling idle timer\n");
- 	cancel_delayed_work_sync(&info->idle_timer_work);
+diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
+index 601fdbe70179..61472a381904 100644
+--- a/drivers/accel/habanalabs/common/memory.c
++++ b/drivers/accel/habanalabs/common/memory.c
+@@ -1829,9 +1829,6 @@ static void hl_release_dmabuf(struct dma_buf *dmabuf)
+ 	struct hl_dmabuf_priv *hl_dmabuf = dmabuf->priv;
+ 	struct hl_ctx *ctx;
  
--	log_rdma_event(INFO, "wait for all send posted to IB to finish\n");
--	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
+-	if (!hl_dmabuf)
+-		return;
 -
- 	/* It's not possible for upper layer to get to reassembly */
- 	log_rdma_event(INFO, "drain the reassembly queue\n");
- 	do {
-@@ -1965,7 +1961,11 @@ int smbd_send(struct TCP_Server_Info *se
- 	 */
+ 	ctx = hl_dmabuf->ctx;
  
- 	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
-+		atomic_read(&info->send_pending) == 0 ||
-+		sc->status != SMBDIRECT_SOCKET_CONNECTED);
+ 	if (hl_dmabuf->memhash_hnode)
+@@ -1859,7 +1856,12 @@ static int export_dmabuf(struct hl_ctx *ctx,
+ {
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	struct hl_device *hdev = ctx->hdev;
+-	int rc, fd;
++	CLASS(get_unused_fd, fd)(flags);
 +
-+	if (sc->status != SMBDIRECT_SOCKET_CONNECTED && rc == 0)
-+		rc = -EAGAIN;
++	if (fd < 0) {
++		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", fd);
++		return fd;
++	}
  
- 	return rc;
+ 	exp_info.ops = &habanalabs_dmabuf_ops;
+ 	exp_info.size = total_size;
+@@ -1872,13 +1874,6 @@ static int export_dmabuf(struct hl_ctx *ctx,
+ 		return PTR_ERR(hl_dmabuf->dmabuf);
+ 	}
+ 
+-	fd = dma_buf_fd(hl_dmabuf->dmabuf, flags);
+-	if (fd < 0) {
+-		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", fd);
+-		rc = fd;
+-		goto err_dma_buf_put;
+-	}
+-
+ 	hl_dmabuf->ctx = ctx;
+ 	hl_ctx_get(hl_dmabuf->ctx);
+ 	atomic_inc(&ctx->hdev->dmabuf_export_cnt);
+@@ -1890,13 +1885,9 @@ static int export_dmabuf(struct hl_ctx *ctx,
+ 	get_file(ctx->hpriv->file_priv->filp);
+ 
+ 	*dmabuf_fd = fd;
++	fd_install(take_fd(fd), hl_dmabuf->dmabuf->file);
+ 
+ 	return 0;
+-
+-err_dma_buf_put:
+-	hl_dmabuf->dmabuf->priv = NULL;
+-	dma_buf_put(hl_dmabuf->dmabuf);
+-	return rc;
  }
+ 
+ static int validate_export_params_common(struct hl_device *hdev, u64 addr, u64 size, u64 offset)
+-- 
+2.50.1
+
 
 
 
