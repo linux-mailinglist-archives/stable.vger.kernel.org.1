@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2400FB2A831
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFABB2A2FB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E491B67F43
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F018B4E3DF8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9D0335BAF;
-	Mon, 18 Aug 2025 13:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B27F318126;
+	Mon, 18 Aug 2025 13:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEdagibO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqCILdZ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17A3335BBE;
-	Mon, 18 Aug 2025 13:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3B130E83F;
+	Mon, 18 Aug 2025 13:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525209; cv=none; b=ZRGmV6NRsHeu+aSZMhcFEOm9IX50P2hyNMf+IZX4jQZiIvTMXdHy3BTVyR7h2ITYpg2M3UiKY/zDpdghQx910baeVDSM9ShMhB+lXvXeGrLO7vNSdU96+D+W6Oz+pZoLhw6+5DvFWgqnVhw2bZkuwDwg1jLHI1exts4WHI5Btpc=
+	t=1755522003; cv=none; b=PQupArSZxab+2Dm2cLP4BFPHZuZiTI2EmE76tY0LiPoVdw8/M1GI/2kj6o1ybwglkXkPCcqjnhZ57wxxb4MWXyoYFO213D5yn1w4XQmsvkhQgYho+XRmMPZ10kr0i6eDvEsjNfzFGs6Qng+YRFC6cIcxi6Tp2URUlGZudh/tkNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525209; c=relaxed/simple;
-	bh=zNrbLxmZrcA5yRb8sku/g1/nEOrcCQaixOclCTN+Pjo=;
+	s=arc-20240116; t=1755522003; c=relaxed/simple;
+	bh=pyzUB/Ta4JTc5JhdqflzO4W60jwc22g+3e9GeV2kZ0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dos7maLra2UDte0zPE0M/XWAZ3LjE56EjNJbtDLKEE/TzGCGobvI/2tbIyoqNbS1axqqAg5QVTAzTQ8qmLJOmIPqS841vQZ5YhcirFKtixCgB4c1q87/RzG9jfG8GtI0jYVI4Y3JAs506PGCW1hvx4dWFI984YYTuu+UCLMXnjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEdagibO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7C3C4CEEB;
-	Mon, 18 Aug 2025 13:53:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Spn6VvelL+AuB9Nn+8IpmP8HzWzGERUIx3ZfgeE3kizGCzth09EWdaKKHfkcML/x9rcX+OXJT5lsFAowYpx1VKhgZw2kfYkUw4fECyEwSiPeVWv3sWFXuPr8/MfUhMR0L0mvpJ0eub3yzbP30La4hqX9mgmrdXLuSbsRckg+m9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqCILdZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F994C4CEEB;
+	Mon, 18 Aug 2025 13:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525208;
-	bh=zNrbLxmZrcA5yRb8sku/g1/nEOrcCQaixOclCTN+Pjo=;
+	s=korg; t=1755522002;
+	bh=pyzUB/Ta4JTc5JhdqflzO4W60jwc22g+3e9GeV2kZ0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEdagibOObdZa/sYT48QY4dxuq3LGD9DD8xt4G/x5zRSQJQA7NIJw11kFCnapP7fV
-	 4z5751zNcYLv60HJE/YtTEJjegRONPEoDF2dJl530ANOAvNmDlaifCitNa+aAnmVq0
-	 BH/dcCl7rkNNgJ0ks2jSPNnY4IY/0DCOyZaK9hzs=
+	b=lqCILdZ9Ab29Eh5Bpzv72azluK9zn7KrO+fO3M2Ee9z8Oe6KPRDS+51bIiglx3XR9
+	 /SYeoFDJNZxMS2yvt+3uk1NN2vFzbkNJskG2fyZAV63xRpKKtMZDyF/HrIP0+PUkK+
+	 fgIcDXlwFDn3xxqtKVAEf5qE7zWvmv4KnPK2nSII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Kees Cook <kees@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 192/570] usb: core: usb_submit_urb: downgrade type check
+Subject: [PATCH 6.12 153/444] platform/x86: thinkpad_acpi: Handle KCOV __init vs inline mismatches
 Date: Mon, 18 Aug 2025 14:42:59 +0200
-Message-ID: <20250818124513.199794084@linuxfoundation.org>
+Message-ID: <20250818124454.640498671@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 503bbde34cc3dd2acd231f277ba70c3f9ed22e59 ]
+[ Upstream commit 6418a8504187dc7f5b6f9d0649c03e362cb0664b ]
 
-Checking for the endpoint type is no reason for a WARN, as that can
-cause a reboot. A driver not checking the endpoint type must not cause a
-reboot, as there is just no point in this.  We cannot prevent a device
-from doing something incorrect as a reaction to a transfer. Hence
-warning for a mere assumption being wrong is not sensible.
+When KCOV is enabled all functions get instrumented, unless the
+__no_sanitize_coverage attribute is used. To prepare for
+__no_sanitize_coverage being applied to __init functions[1], we have
+to handle differences in how GCC's inline optimizations get resolved.
+For thinkpad_acpi routines, this means forcing two functions to be
+inline with __always_inline.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20250612122149.2559724-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/lkml/20250523043935.2009972-11-kees@kernel.org/ [1]
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20250529181831.work.439-kees@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/urb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
-index 5e52a35486af..120de3c499d2 100644
---- a/drivers/usb/core/urb.c
-+++ b/drivers/usb/core/urb.c
-@@ -500,7 +500,7 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 0528af4ed8d6..2c67d9758e6b 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -561,12 +561,12 @@ static unsigned long __init tpacpi_check_quirks(
+ 	return 0;
+ }
  
- 	/* Check that the pipe's type matches the endpoint's type */
- 	if (usb_pipe_type_check(urb->dev, urb->pipe))
--		dev_WARN(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
-+		dev_warn_once(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
- 			usb_pipetype(urb->pipe), pipetypes[xfertype]);
+-static inline bool __pure __init tpacpi_is_lenovo(void)
++static __always_inline bool __pure __init tpacpi_is_lenovo(void)
+ {
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_LENOVO;
+ }
  
- 	/* Check against a simple/standard policy */
+-static inline bool __pure __init tpacpi_is_ibm(void)
++static __always_inline bool __pure __init tpacpi_is_ibm(void)
+ {
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_IBM;
+ }
 -- 
 2.39.5
 
