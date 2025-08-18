@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711CEB2A2F0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B69DBB2A58A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB50D18A10D4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 386CB171459
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D372B31CA5F;
-	Mon, 18 Aug 2025 12:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C5B335BAD;
+	Mon, 18 Aug 2025 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1Pw6N3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gq4YrxCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CB531B108;
-	Mon, 18 Aug 2025 12:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6388331B13A;
+	Mon, 18 Aug 2025 13:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521764; cv=none; b=qOMb96JJO3YpPcHj2uLnqlrXtuv9u5/Z52B5WoOOLgyzfhKodJWY1ZvHUES4eP5I8gW3OOma976Rm/EMx8FIaQ/e0rZyatr+g0g+KMgA3ek7NBREzZHVU1CLUostXV0qUk6PPLYYpMpNbrdruxRTdYpUy79m3V+clLamdGpB5Pw=
+	t=1755523283; cv=none; b=Fa0uqdytcng1UmZXGFWl/mzpZM6nJkmexotoWj1dqSKhWPZuCq+8JZQpx64TvF1Dm63g1P6RDEF1UsTYZeq25s9CyCwL2jQYlpyVzMhGibzfBKAxht4ydYHPfj/+kfrvjyFnlzPO16YqGntDzrIuY3mBV9ytgOKnyJi8I0FmRB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521764; c=relaxed/simple;
-	bh=+cyADRyfY2yfcgCGQf6aXzBOEYLDqJTr+voVoEzesv4=;
+	s=arc-20240116; t=1755523283; c=relaxed/simple;
+	bh=N4fmo9/fOg9Gmbm860xTuSDfDx+jPfNszRFlTWVzuzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpbrgk6XzQummrVrQbXX7Zp7t+kq7Zvxxclf3FRfvHqJE2VXaWhLIjIqg2nUeUWWog8IWOc1fAc/uy+HlqtwG6xA9K4NohQ5BFoT28Pg8xZ2dz3T83+6Ed3BkcZdUwXD2l8bVOeM9LAT3XGv5r1TyyCfvUzv4IolsHM62IwIq9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1Pw6N3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166D0C4CEEB;
-	Mon, 18 Aug 2025 12:56:03 +0000 (UTC)
+	 MIME-Version; b=TCk2Ukr0vMV+0xN4YJvCbO/yjKSUfZt4kUMNpYizIf9hkW/+TB6vxyjtUWQE3kp8n3/Y7JStHsSNnINqMIyFbE5+SHRaleeHs9SK60pxnFVSYcsT3W/H1xpu3rFlEq3/0lWvx5MqbKGA3/UjzpVNl+LpERTD3d3qgATadC6NmJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gq4YrxCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAB4C4CEF1;
+	Mon, 18 Aug 2025 13:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521764;
-	bh=+cyADRyfY2yfcgCGQf6aXzBOEYLDqJTr+voVoEzesv4=;
+	s=korg; t=1755523283;
+	bh=N4fmo9/fOg9Gmbm860xTuSDfDx+jPfNszRFlTWVzuzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1Pw6N3H+MQBY0bRTFohFUPyd4Z18qoej8vZ/arFcd3f/y1bwnltTGYE9gry9BncX
-	 VOTvgYlEi7AqYscEV5LSJmwp1piaDQ988ahwozrdbtthpo4vVi1j2pIueM/ufTjf4E
-	 TiuIIW45TD5kmNfOKcqPdNmzadbAaWNwAAn8b4uA=
+	b=gq4YrxCm1ZSKA9ctqRrq5pFToarVVFcv+RWRIx95RiHh2bCoZU20tpzTIlq23FdL+
+	 HnDy/njb9TzhpUuA106/gc/ouOwZjgvOiOpFklDMBKxgumLGhFUYhh42+sM4/suoDn
+	 EfU+Jr/qWPsxtdj8DznsW7BH/lmNZfCAChJnJW1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Maulik Shah <maulik.shah@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/444] better lockdep annotations for simple_recursive_removal()
-Date: Mon, 18 Aug 2025 14:41:49 +0200
-Message-ID: <20250818124452.064848007@linuxfoundation.org>
+Subject: [PATCH 6.15 124/515] soc: qcom: rpmh-rsc: Add RSC version 4 support
+Date: Mon, 18 Aug 2025 14:41:50 +0200
+Message-ID: <20250818124503.138884452@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Maulik Shah <maulik.shah@oss.qualcomm.com>
 
-[ Upstream commit 2a8061ee5e41034eb14170ec4517b5583dbeff9f ]
+[ Upstream commit 84684c57c9cd47b86c883a7170dd68222d97ef13 ]
 
-We want a class that nests outside of I_MUTEX_NORMAL (for the sake of
-callbacks that might want to lock the victim) and inside I_MUTEX_PARENT
-(so that a variant of that could be used with parent of the victim
-held locked by the caller).
+Register offsets for v3 and v4 versions are backward compatible. Assign v3
+offsets for v4 and all higher versions to avoid end up using v2 offsets.
 
-In reality, simple_recursive_removal()
-	* never holds two locks at once
-	* holds the lock on parent of dentry passed to callback
-	* is used only on the trees with fixed topology, so the depths
-are not changing.
-
-So the locking order is actually fine.
-
-AFAICS, the best solution is to assign I_MUTEX_CHILD to the locks
-grabbed by that thing.
-
-Reported-by: syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250623-rsc_v4-v1-1-275b27bc5e3c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/libfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/rpmh-rsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 3cb49463a849..874324167849 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -608,7 +608,7 @@ void simple_recursive_removal(struct dentry *dentry,
- 		struct dentry *victim = NULL, *child;
- 		struct inode *inode = this->d_inode;
+diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
+index cb82e887b51d..fdab2b1067db 100644
+--- a/drivers/soc/qcom/rpmh-rsc.c
++++ b/drivers/soc/qcom/rpmh-rsc.c
+@@ -1072,7 +1072,7 @@ static int rpmh_rsc_probe(struct platform_device *pdev)
+ 	drv->ver.minor = rsc_id & (MINOR_VER_MASK << MINOR_VER_SHIFT);
+ 	drv->ver.minor >>= MINOR_VER_SHIFT;
  
--		inode_lock(inode);
-+		inode_lock_nested(inode, I_MUTEX_CHILD);
- 		if (d_is_dir(this))
- 			inode->i_flags |= S_DEAD;
- 		while ((child = find_next_child(this, victim)) == NULL) {
-@@ -620,7 +620,7 @@ void simple_recursive_removal(struct dentry *dentry,
- 			victim = this;
- 			this = this->d_parent;
- 			inode = this->d_inode;
--			inode_lock(inode);
-+			inode_lock_nested(inode, I_MUTEX_CHILD);
- 			if (simple_positive(victim)) {
- 				d_invalidate(victim);	// avoid lost mounts
- 				if (d_is_dir(victim))
+-	if (drv->ver.major == 3)
++	if (drv->ver.major >= 3)
+ 		drv->regs = rpmh_rsc_reg_offset_ver_3_0;
+ 	else
+ 		drv->regs = rpmh_rsc_reg_offset_ver_2_7;
 -- 
 2.39.5
 
