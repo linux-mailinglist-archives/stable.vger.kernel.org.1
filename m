@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-170592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51F6B2A583
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:40 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A137B2A6C5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3391B60944
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71B3F4E3A44
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD6E33473F;
-	Mon, 18 Aug 2025 13:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDCB2C235D;
+	Mon, 18 Aug 2025 13:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPA0MAo3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmF+y0g6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC572C234A;
-	Mon, 18 Aug 2025 13:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2313090C5;
+	Mon, 18 Aug 2025 13:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523137; cv=none; b=P/zDKcjK27uPzJF7Mu+chx0E5AGEG1QqP0YvtQANWZARgahZXBvotbAHvqaG0Eie8LUwxXlffPaKpjSYLqebTE8RyM1p60w7iJ+eFuv0+q7PgeAx0ZTbiSbr0EmEqpkLIuLGh6JaKt6lpgMgHdPpPN398Q2qv1JOsHN+RPd+u24=
+	t=1755524748; cv=none; b=jKd9qXhKVUqN0gEPGiKOqQLhgqNcs3fGASW56x8cI7YuB6uYeErBgi2W1yghVBkDNElzArhUH0ZT3yY4WNM9stfBhVVhbbEgahBi6itvSWU4AJn7bRH2I75jemKFs/7G8k+uzC0/eLD2TLPKiIRIfmhLVM3wPcMlQCKuToZUUro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523137; c=relaxed/simple;
-	bh=eEQmEsN36PWICiB3xZW5k9NyzvCF4Fa+IJHYXFzbQvo=;
+	s=arc-20240116; t=1755524748; c=relaxed/simple;
+	bh=t0GHapbK5dS2q1niyIvCFURZCgmLdmn/9Vj+7sY3a6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8Nh5ueoj/CZ23mHRtKhkoEeDu9kSVz5mLppsIcSFPwZ2g7G0FancF/xUaUcxjKgaAe23+yv0u1z9PK3+FVvEQzYTWxo1RHGjYFl7OOwGugYVWPEd9br1IxhX5Q1X09EfDXNXVG5yHKPVseAF21rrIyGCTRZJh1iGZewV6c85lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPA0MAo3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00E7C4CEEB;
-	Mon, 18 Aug 2025 13:18:55 +0000 (UTC)
+	 MIME-Version; b=bdNvy6yk0UoslQyhZIU82dET5I/3HtZRJkGXLNcMZy0qqiJ/ao3vpidmz0Vv37laSM6l/EhFYk6uQ+4gF2GAQ2Xhk3qdndDGD66URacZCEO0EtM99YtBEN3M76bnav/rytZeZWoTnPuhsVf1m6kmkPfS0Ptfe+UB9+AHC7Vb+mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmF+y0g6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4BEC4CEEB;
+	Mon, 18 Aug 2025 13:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523136;
-	bh=eEQmEsN36PWICiB3xZW5k9NyzvCF4Fa+IJHYXFzbQvo=;
+	s=korg; t=1755524748;
+	bh=t0GHapbK5dS2q1niyIvCFURZCgmLdmn/9Vj+7sY3a6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPA0MAo3lVaiuGk29/pCSieBedRSxwMwsYoUK0B3Z/tdfnVX2FydLk5tbz7Y5wvrE
-	 pWjIoq4xUslhf2is8lEl4t/CN4joZDcvzJo1Ktngqzn/DXY2YFIUjHiY59iEXs5aYb
-	 7FeIHKbbpzKPIdsEnvnouekbngdAHO9OBq3rgfos=
+	b=qmF+y0g6U8IaKAt8RJwDlyrKLvp4ZGRjJWwT38TsxAzcVoKH5RXnZ9Y9h6d8ySLFd
+	 42tTHmMXTvkz0kicK2JhP0BEgZNfyvu9We/9ADUOGdtVIoqwWLsKdWNjEv/UYtQi8e
+	 AZnklGtJsPLomchCVh2++DDQKHVniioPwtj1KEyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 050/515] block: Make REQ_OP_ZONE_FINISH a write operation
-Date: Mon, 18 Aug 2025 14:40:36 +0200
-Message-ID: <20250818124500.348104643@linuxfoundation.org>
+	Jiayi Li <lijiayi@kylinos.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.16 050/570] ACPI: processor: perflib: Fix initial _PPC limit application
+Date: Mon, 18 Aug 2025 14:40:37 +0200
+Message-ID: <20250818124507.741654000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-commit 3f66ccbaaef3a0c5bd844eab04e3207b4061c546 upstream.
+commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
 
-REQ_OP_ZONE_FINISH is defined as "12", which makes
-op_is_write(REQ_OP_ZONE_FINISH) return false, despite the fact that a
-zone finish operation is an operation that modifies a zone (transition
-it to full) and so should be considered as a write operation (albeit
-one that does not transfer any data to the device).
+If the BIOS sets a _PPC frequency limit upfront, it will fail to take
+effect due to a call ordering issue.  Namely, freq_qos_update_request()
+is called before freq_qos_add_request() for the given request causing
+the constraint update to be ignored.  The call sequence in question is
+as follows:
 
-Fix this by redefining REQ_OP_ZONE_FINISH to be an odd number (13), and
-redefine REQ_OP_ZONE_RESET and REQ_OP_ZONE_RESET_ALL using sequential
-odd numbers from that new value.
+cpufreq_policy_online()
+  acpi_cpufreq_cpu_init()
+    acpi_processor_register_performance()
+      acpi_processor_get_performance_info()
+        acpi_processor_get_platform_limit()
+         freq_qos_update_request(&perflib_req) <- inactive QoS request
+  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
+                               CPUFREQ_CREATE_POLICY)
+    acpi_processor_notifier()
+      acpi_processor_ppc_init()
+        freq_qos_add_request(&perflib_req) <- QoS request activation
 
-Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250625093327.548866-2-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Address this by adding an acpi_processor_get_platform_limit() call
+to acpi_processor_ppc_init(), after the perflib_req activation via
+freq_qos_add_request(), which causes the initial _PPC limit to be
+picked up as appropriate.  However, also ensure that the _PPC limit
+will not be picked up in the cases when the cpufreq driver does not
+call acpi_processor_register_performance() by adding a pr->performance
+check to the related_cpus loop in acpi_processor_ppc_init().
+
+Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
+[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
+[ rjw: Subject and changelog adjustments ]
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk_types.h |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/processor_perflib.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -342,11 +342,11 @@ enum req_op {
- 	/* Close a zone */
- 	REQ_OP_ZONE_CLOSE	= (__force blk_opf_t)11,
- 	/* Transition a zone to full */
--	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)12,
-+	REQ_OP_ZONE_FINISH	= (__force blk_opf_t)13,
- 	/* reset a zone write pointer */
--	REQ_OP_ZONE_RESET	= (__force blk_opf_t)13,
-+	REQ_OP_ZONE_RESET	= (__force blk_opf_t)15,
- 	/* reset all the zone present on the device */
--	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)15,
-+	REQ_OP_ZONE_RESET_ALL	= (__force blk_opf_t)17,
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -173,11 +173,14 @@ void acpi_processor_ppc_init(struct cpuf
+ {
+ 	unsigned int cpu;
  
- 	/* Driver private requests */
- 	REQ_OP_DRV_IN		= (__force blk_opf_t)34,
++	if (ignore_ppc == 1)
++		return;
++
+ 	for_each_cpu(cpu, policy->related_cpus) {
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
+ 
+-		if (!pr)
++		if (!pr || !pr->performance)
+ 			continue;
+ 
+ 		/*
+@@ -193,6 +196,11 @@ void acpi_processor_ppc_init(struct cpuf
+ 		if (ret < 0)
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
++
++		ret = acpi_processor_get_platform_limit(pr);
++		if (ret)
++			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
++			       cpu, ret);
+ 	}
+ }
+ 
 
 
 
