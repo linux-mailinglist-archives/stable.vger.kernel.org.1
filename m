@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-170383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097F5B2A3DC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A174CB2A9D4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3717B6241E6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F2B56276F6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED953203B0;
-	Mon, 18 Aug 2025 13:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3AC340D90;
+	Mon, 18 Aug 2025 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrxYc72r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DljcBkb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5F03203A7;
-	Mon, 18 Aug 2025 13:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2659B21507C;
+	Mon, 18 Aug 2025 14:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522452; cv=none; b=SFAiRmXJHblFCOAnHaGil1weOKoa7G2TtqcTPOW0Bw+bGsW9n1zQ4gFbBJmm/85co81EO72QdLQuWGvlh9rN6b/V5Ih64E55G/mxoJBOsWCPtMst3jCl2cOHdTcLyP6PxNDKVKmI/QuVRLrGjpV+a9MrRKEaaHBSY+qIyRMRSMg=
+	t=1755525756; cv=none; b=AVikyU+YfJDwSvGsSEke4xOhKugpmPt38dJnfFy8xX24uuhUmqTeQSJj4yrRsruJoNNGhVchEnh2B3JIlg3Mmu795ozgRZhZONWvl0kYOH8oTIzN987vE64Ob8+Eh5VVjlX/UU0I7Ul+it5gSHOeQbK1RCsEryCZxV4c6HeOArQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522452; c=relaxed/simple;
-	bh=lucKVIpN7sJATzMc5ucVQb021+SzY5yKN2WV1iysBUY=;
+	s=arc-20240116; t=1755525756; c=relaxed/simple;
+	bh=K3ozS63WcWLtk8a4A5/B+L5Z8pNCn2h49rFWiyMS4PI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F8MDBsb2A7MsVPoNw/xhhDvpqcr9tFL062qD/P+ESbdfYCNP0iSb4tXW/bqA+Y1vmJ9B4t2xsHstDvlstPTvTkWAW6Jd4DmFPs9C4sjTbwtgFy0vH0LXjHQJRzwE2d1FK6DFNCWKUPGpFaTgI1TS+vmjXpLh/I4oBdhAJAJbrww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrxYc72r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC87C116B1;
-	Mon, 18 Aug 2025 13:07:30 +0000 (UTC)
+	 MIME-Version; b=o86yml7GBypPmvbqovSgmnsfiCCiK5Puds9ADsjlegA8SZBARq3CmNwUYw0UxbPD3cEDjUAnUuSejkhkzbaJEMXQQxol0/Z1a/adGjxGjsynWwQI1Z0xyzv8ZaCqB7eXU1zGaeG0QGuSI0R11RuCjFj0llKsvpktkrPQ9V+GMYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DljcBkb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B268C4CEEB;
+	Mon, 18 Aug 2025 14:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522451;
-	bh=lucKVIpN7sJATzMc5ucVQb021+SzY5yKN2WV1iysBUY=;
+	s=korg; t=1755525755;
+	bh=K3ozS63WcWLtk8a4A5/B+L5Z8pNCn2h49rFWiyMS4PI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrxYc72rSRUyJ3ad8ckUF7yEZ3a0hA9FvHXJl5jV8e/iDqXXey7Jdqv3rE0MrWnjX
-	 RoDVH08Go8nEPElcNIJhzzgWDUPtBHIkJH6+vMDZ0rchUcbORB/6Zdy3rOc9z1jU8o
-	 WrbZ6lTA4mkndCZp/6WlsY9GnZluqbBfJ770q0ns=
+	b=DljcBkb2xHW9h/0gPMrp1FMNjRU46xET27zViri1FLhsDuBnqbjWqDVZZSALExNmv
+	 WtyNDDAfvfyoRT3oIcCjrR60l9eQPCZU9u9+2F+obZF6WW9GAN1qnJGVAQangUgsIm
+	 kymrpq4aulm09ZkP5vIFCEbLKdLIvltF5JS9Pbwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C3=ABl=20Melchiore?= <rohel01@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 319/444] media: uvcvideo: Add quirk for HP Webcam HD 2300
+Subject: [PATCH 6.16 358/570] drm/amd/display: Disable dsc_power_gate for dcn314 by default
 Date: Mon, 18 Aug 2025 14:45:45 +0200
-Message-ID: <20250818124500.907391673@linuxfoundation.org>
+Message-ID: <20250818124519.646514199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Roman Li <Roman.Li@amd.com>
 
-[ Upstream commit 53b0b80e5240fec7c5a420bffb310edc83faf4fd ]
+[ Upstream commit 02f3ec53177243d32ee8b6f8ba99136d7887ee3a ]
 
-HP Webcam HD 2300 does not seem to flip the FID bit according to spec.
+[Why]
+"REG_WAIT timeout 1us * 1000 tries - dcn314_dsc_pg_control line"
+warnings seen after resuming from s2idle.
+DCN314 has issues with DSC power gating that cause REG_WAIT timeouts
+when attempting to power down DSC blocks.
 
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 [unknown]
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x03f0 HP, Inc
-  idProduct          0xe207 HP Webcam HD 2300
-  bcdDevice           10.20
-  iManufacturer           3 Hewlett Packard
-  iProduct                1 HP Webcam HD 2300
-  iSerial                 0
-  bNumConfigurations      1
+[How]
+Disable dsc_power_gate for dcn314 by default.
 
-Reported-by: Michaël Melchiore <rohel01@gmail.com>
-Closes: https://lore.kernel.org/linux-media/CA+q66aRvTigH15cUyfvzPJ2mfsDFMt=CjuYNwvAZb29w8b1KDA@mail.gmail.com
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250602-uvc-hp-quirk-v1-1-7047d94d679f@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 241b3f95f327..2396e582fc9d 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2487,6 +2487,15 @@ static const struct uvc_device_info uvc_quirk_force_y8 = {
-  * Sort these by vendor/product ID.
-  */
- static const struct usb_device_id uvc_ids[] = {
-+	/* HP Webcam HD 2300 */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x03f0,
-+	  .idProduct		= 0xe207,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= (kernel_ulong_t)&uvc_quirk_stream_no_fid },
- 	/* Quanta ACER HD User Facing */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+index 8383e2e59be5..eed64b05bc60 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+@@ -926,6 +926,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ 	.seamless_boot_odm_combine = true,
+ 	.enable_legacy_fast_update = true,
+ 	.using_dml2 = false,
++	.disable_dsc_power_gate = true,
+ };
+ 
+ static const struct dc_panel_config panel_config_defaults = {
 -- 
 2.39.5
 
