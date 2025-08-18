@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E17AB2A9CD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797BEB2A7BE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98F23B63BEF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E470E627294
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309D7337686;
-	Mon, 18 Aug 2025 14:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CAB321455;
+	Mon, 18 Aug 2025 13:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtRCeMI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kS/p7xS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12DB3375B8;
-	Mon, 18 Aug 2025 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5055D320CAB;
+	Mon, 18 Aug 2025 13:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526254; cv=none; b=ff8P+2xV+8MRQ71HHJ7wBoq0b3MlAlpqZRnMVKyaavV4qvVulrOlyophIKwtlAVLd96B6YBxf3+5wVRXpncUki7a3pddTUzsxfADBnRb6UkVGdQ7igGzytK7P4k6jwAjGieHQKeTM8YXwHBmR0d90GvlAbh6J0ifJ/t+wmqsFIs=
+	t=1755524583; cv=none; b=MB4tKwtuPc+1UZNt18PR+35vD53rcmZnkvuAxa63xcnrbrE5LxLg0Vdx6yMEuRAQ3PwjuAVqh0xsVpcGUDm9eSmirpHvUfSug6HWHEuVMvz8CNxJw7VZGQE11+7tO/Di7oKSeSTriSEJnChBo5tkFHOvuctqVY9CX8LY+IycDEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526254; c=relaxed/simple;
-	bh=Orbxn3B5E9enzOL9ri/D6253EGPsAqFDl4mVboDLgcQ=;
+	s=arc-20240116; t=1755524583; c=relaxed/simple;
+	bh=FFz94kBgo0KQg4oSjyMBX5yMEDnRe/0QqBwAIIVsvUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRsMwGvCB/jsCgH8YF3RjqlhUUNZCCbgzMFfyyN17JF9l1jJTMh4fUzEPucyqCSL3qF6kBH+bMHsB7Exp0FK/8Y7P4/ga6Bbuvar5iPHNw5yEghdAJoIOE9UmroGTdLhlEldcHnzwQoRF7wyO8jxQy+RvNa59TvqQ5Ypc5t73Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtRCeMI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382BDC4CEEB;
-	Mon, 18 Aug 2025 14:10:52 +0000 (UTC)
+	 MIME-Version; b=p8IgGjJMGdfnpW5m/vQtjPTwXPa6k+KOJl3oIlanNvE/Piw5IFlSC4/3dcAxSlOz8IK/uedKovhsZRpGspRqejPPzg1ywgP3Ok57/KR6U5FeFgXfm34ry6qNB1ZWXnMNywNY9Tv11eZ5NzV2e3dpcH4WO1RVpjXE48eNCUs0e6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kS/p7xS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C12DC113D0;
+	Mon, 18 Aug 2025 13:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526253;
-	bh=Orbxn3B5E9enzOL9ri/D6253EGPsAqFDl4mVboDLgcQ=;
+	s=korg; t=1755524583;
+	bh=FFz94kBgo0KQg4oSjyMBX5yMEDnRe/0QqBwAIIVsvUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rtRCeMI/CkFHhjxTwLiD9yZZy3tCXdYVg+WlqH26ae/rVZ+PD9xfaF3JMjIERNwvg
-	 BjrVEaDcuKVvSQz2nv06LEtiNQ7LkvdYXhA2n3dL3+dIPYZ+n7LNClU4jSFjiwC3PB
-	 szTMTOs6vDSGBNvIliHIADCukoHdbBBJ4kPHZE/E=
+	b=1kS/p7xScHNCOFW6kI9JxZIlwus9NNS9au3gddWZq4Ni1o4gnY+7syK43LzH79SlQ
+	 MZFEuWcnDtLX2oLRsGBkMQK6+wj9/UFvX880XaysloOOHegPe1owJ7d/8FnROlfa84
+	 eUVubJwL+/tsKyp4LrM4WtXt4V5ANkE9BhctBjAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com,
-	Yi Liu <yi.l.liu@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Bernard Metzler <bernard.metzler@linux.dev>,
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.16 501/570] iommufd: Prevent ALIGN() overflow
+Subject: [PATCH 6.15 502/515] RDMA/siw: Fix the sendmsg byte count in siw_tcp_sendpages
 Date: Mon, 18 Aug 2025 14:48:08 +0200
-Message-ID: <20250818124525.160301161@linuxfoundation.org>
+Message-ID: <20250818124517.771857609@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Pedro Falcato <pfalcato@suse.de>
 
-commit b42497e3c0e74db061eafad41c0cd7243c46436b upstream.
+commit c18646248fed07683d4cee8a8af933fc4fe83c0d upstream.
 
-When allocating IOVA the candidate range gets aligned to the target
-alignment. If the range is close to ULONG_MAX then the ALIGN() can
-wrap resulting in a corrupted iova.
+Ever since commit c2ff29e99a76 ("siw: Inline do_tcp_sendpages()"),
+we have been doing this:
 
-Open code the ALIGN() using get_add_overflow() to prevent this.
-This simplifies the checks as we don't need to check for length earlier
-either.
+static int siw_tcp_sendpages(struct socket *s, struct page **page, int offset,
+                             size_t size)
+[...]
+        /* Calculate the number of bytes we need to push, for this page
+         * specifically */
+        size_t bytes = min_t(size_t, PAGE_SIZE - offset, size);
+        /* If we can't splice it, then copy it in, as normal */
+        if (!sendpage_ok(page[i]))
+                msg.msg_flags &= ~MSG_SPLICE_PAGES;
+        /* Set the bvec pointing to the page, with len $bytes */
+        bvec_set_page(&bvec, page[i], bytes, offset);
+        /* Set the iter to $size, aka the size of the whole sendpages (!!!) */
+        iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
+try_page_again:
+        lock_sock(sk);
+        /* Sendmsg with $size size (!!!) */
+        rv = tcp_sendmsg_locked(sk, &msg, size);
 
-Consolidate the two copies of this code under a single helper.
+This means we've been sending oversized iov_iters and tcp_sendmsg calls
+for a while. This has a been a benign bug because sendpage_ok() always
+returned true. With the recent slab allocator changes being slowly
+introduced into next (that disallow sendpage on large kmalloc
+allocations), we have recently hit out-of-bounds crashes, due to slight
+differences in iov_iter behavior between the MSG_SPLICE_PAGES and
+"regular" copy paths:
 
-This bug would allow userspace to create a mapping that overlaps with some
-other mapping or a reserved range.
+(MSG_SPLICE_PAGES)
+skb_splice_from_iter
+  iov_iter_extract_pages
+    iov_iter_extract_bvec_pages
+      uses i->nr_segs to correctly stop in its tracks before OoB'ing everywhere
+  skb_splice_from_iter gets a "short" read
 
+(!MSG_SPLICE_PAGES)
+skb_copy_to_page_nocache copy=iov_iter_count
+ [...]
+   copy_from_iter
+        /* this doesn't help */
+        if (unlikely(iter->count < len))
+                len = iter->count;
+          iterate_bvec
+            ... and we run off the bvecs
+
+Fix this by properly setting the iov_iter's byte count, plus sending the
+correct byte count to tcp_sendmsg_locked.
+
+Link: https://patch.msgid.link/r/20250729120348.495568-1-pfalcato@suse.de
 Cc: stable@vger.kernel.org
-Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-Reported-by: syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/685af644.a00a0220.2e5631.0094.GAE@google.com
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://patch.msgid.link/all/1-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com/
+Fixes: c2ff29e99a76 ("siw: Inline do_tcp_sendpages()")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202507220801.50a7210-lkp@intel.com
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |   41 +++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 16 deletions(-)
+ drivers/infiniband/sw/siw/siw_qp_tx.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -70,36 +70,45 @@ struct iopt_area *iopt_area_contig_next(
- 	return iter->area;
- }
+--- a/drivers/infiniband/sw/siw/siw_qp_tx.c
++++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+@@ -332,18 +332,17 @@ static int siw_tcp_sendpages(struct sock
+ 		if (!sendpage_ok(page[i]))
+ 			msg.msg_flags &= ~MSG_SPLICE_PAGES;
+ 		bvec_set_page(&bvec, page[i], bytes, offset);
+-		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
++		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, bytes);
  
--static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
--				    unsigned long length,
--				    unsigned long iova_alignment,
--				    unsigned long page_offset)
-+static bool __alloc_iova_check_range(unsigned long *start, unsigned long last,
-+				     unsigned long length,
-+				     unsigned long iova_alignment,
-+				     unsigned long page_offset)
- {
--	if (span->is_used || span->last_hole - span->start_hole < length - 1)
-+	unsigned long aligned_start;
-+
-+	/* ALIGN_UP() */
-+	if (check_add_overflow(*start, iova_alignment - 1, &aligned_start))
- 		return false;
-+	aligned_start &= ~(iova_alignment - 1);
-+	aligned_start |= page_offset;
+ try_page_again:
+ 		lock_sock(sk);
+-		rv = tcp_sendmsg_locked(sk, &msg, size);
++		rv = tcp_sendmsg_locked(sk, &msg, bytes);
+ 		release_sock(sk);
  
--	span->start_hole = ALIGN(span->start_hole, iova_alignment) |
--			   page_offset;
--	if (span->start_hole > span->last_hole ||
--	    span->last_hole - span->start_hole < length - 1)
-+	if (aligned_start >= last || last - aligned_start < length - 1)
- 		return false;
-+	*start = aligned_start;
- 	return true;
- }
- 
--static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
-+static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
- 				    unsigned long length,
- 				    unsigned long iova_alignment,
- 				    unsigned long page_offset)
- {
--	if (span->is_hole || span->last_used - span->start_used < length - 1)
-+	if (span->is_used)
- 		return false;
-+	return __alloc_iova_check_range(&span->start_hole, span->last_hole,
-+					length, iova_alignment, page_offset);
-+}
- 
--	span->start_used = ALIGN(span->start_used, iova_alignment) |
--			   page_offset;
--	if (span->start_used > span->last_used ||
--	    span->last_used - span->start_used < length - 1)
-+static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
-+				    unsigned long length,
-+				    unsigned long iova_alignment,
-+				    unsigned long page_offset)
-+{
-+	if (span->is_hole)
- 		return false;
--	return true;
-+	return __alloc_iova_check_range(&span->start_used, span->last_used,
-+					length, iova_alignment, page_offset);
- }
- 
- /*
+ 		if (rv > 0) {
+ 			size -= rv;
+ 			sent += rv;
+ 			if (rv != bytes) {
+-				offset += rv;
+ 				bytes -= rv;
+ 				goto try_page_again;
+ 			}
 
 
 
