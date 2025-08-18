@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-170623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC250B2A5B0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDCCB2A83C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3ED1B624A9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B948E6E1C74
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B37335BCB;
-	Mon, 18 Aug 2025 13:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7072206B8;
+	Mon, 18 Aug 2025 13:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtmYrhTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/NmTcC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44381335BCF;
-	Mon, 18 Aug 2025 13:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B635335BCE;
+	Mon, 18 Aug 2025 13:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523237; cv=none; b=hbGQwek6YtEYs5I3XMBh0Hv4buRzaLOrzuhlMxqa+FU6KdsNA4zPCIiSQi6jEKxO+CBVm/hrJCTtiDGIP0YLcaulAAR7PDdpwQDkid2H/Rw39pVGuuFzNLUGiA3TiRviZoluOOcSdMjs1N693OqPvzz+1CiN1msynL+2rpEWF6g=
+	t=1755524935; cv=none; b=dIliSbSEK7VE0QPG3BSBuoVrInj3MINWHVwws3a0IBu4zk9aR27NU0QCQn6bgIo+ltfsUJSfc+jEa4MXpQO8k2Qamwx244p8QVPsU8832pO/tyuCs4dQNybhAZ1XV11ItmpVBha6a/rC6bHIaodD/4lvXRESazitalr8BkNwiL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523237; c=relaxed/simple;
-	bh=8efvjH2oFPIuLGvAZooN2BlDZ/vzup5vw0rhH0AC9T4=;
+	s=arc-20240116; t=1755524935; c=relaxed/simple;
+	bh=ARmU8zgW2r7t1gohITtcNd0NZyVlWx+GpSNsEq2u3Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beGq1M3KP9lXD90GBz/J7L33jABPYl6NkIt+GX2MC484+VOPK3NvsIIW5GoPFZE3S5ZTFopVPbwGMktUsvYaXj+mss3VUGtusiV8wgbR/c5qb1XRzYitKKfKQEJMngxVkgAG3Grxx/n70g0sGwixWlctYdK9+iHSBLk2bZZe9pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtmYrhTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC1DC4CEEB;
-	Mon, 18 Aug 2025 13:20:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MJVI/WnfGE8gMELlhdlvGisI6m3lOKihlpc6LxY5aLsLpcgyfhydG7DNDHdVL0ayA+RHBE0umX+gVZ9Kat93CIyL0rBtytJ1C+QWB4MNdBVAH7QNXC8JkNQuuDZeFGJB5M0eCYOzwN5LigfbBrMsLRvynm3fXRFx4YfMJakqdRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/NmTcC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09353C4CEEB;
+	Mon, 18 Aug 2025 13:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523237;
-	bh=8efvjH2oFPIuLGvAZooN2BlDZ/vzup5vw0rhH0AC9T4=;
+	s=korg; t=1755524935;
+	bh=ARmU8zgW2r7t1gohITtcNd0NZyVlWx+GpSNsEq2u3Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtmYrhTBwzfA9dd+I/W2H7h9iDGykPi2Qr5Rk0ZCcPN2qNf3q/vtJItx09+xI8sth
-	 CoEDnR7VSb/UQk0a6Ysh7XJt5vtpV5O1tpOgMzgwzbaHVWVUJl3imX0KKlbobHcw8s
-	 qNomUBxjR3dY0f6b1ofLmhN50OJVLR+2b1H7B35g=
+	b=S/NmTcC+t62C7RH5grANAk+dXf84ldghA+JKExuDdoWI36krrMP6kNGcY/pfh7HRe
+	 TLAKQw+RBHLl+oiMuy+LZiT0NcJoQ/kOOkCw7tjSMz0EOto+Jfsn7lSHxTILOfrp0y
+	 OsMey49Pb87glJnSY5Rean2SkxcbBVdtNxAp06Jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Sarah Newman <srn@prgmr.com>,
+	Lars Ellenberg <lars@linbit.com>,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 110/515] securityfs: dont pin dentries twice, once is enough...
+Subject: [PATCH 6.16 109/570] drbd: add missing kref_get in handle_write_conflicts
 Date: Mon, 18 Aug 2025 14:41:36 +0200
-Message-ID: <20250818124502.592765102@linuxfoundation.org>
+Message-ID: <20250818124510.004075890@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Sarah Newman <srn@prgmr.com>
 
-[ Upstream commit 27cd1bf1240d482e4f02ca4f9812e748f3106e4f ]
+[ Upstream commit 00c9c9628b49e368d140cfa61d7df9b8922ec2a8 ]
 
-incidentally, securityfs_recursive_remove() is broken without that -
-it leaks dentries, since simple_recursive_removal() does not expect
-anything of that sort.  It could be worked around by dput() in
-remove_one() callback, but it's easier to just drop that double-get
-stuff.
+With `two-primaries` enabled, DRBD tries to detect "concurrent" writes
+and handle write conflicts, so that even if you write to the same sector
+simultaneously on both nodes, they end up with the identical data once
+the writes are completed.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+In handling "superseeded" writes, we forgot a kref_get,
+resulting in a premature drbd_destroy_device and use after free,
+and further to kernel crashes with symptoms.
+
+Relevance: No one should use DRBD as a random data generator, and apparently
+all users of "two-primaries" handle concurrent writes correctly on layer up.
+That is cluster file systems use some distributed lock manager,
+and live migration in virtualization environments stops writes on one node
+before starting writes on the other node.
+
+Which means that other than for "test cases",
+this code path is never taken in real life.
+
+FYI, in DRBD 9, things are handled differently nowadays.  We still detect
+"write conflicts", but no longer try to be smart about them.
+We decided to disconnect hard instead: upper layers must not submit concurrent
+writes. If they do, that's their fault.
+
+Signed-off-by: Sarah Newman <srn@prgmr.com>
+Signed-off-by: Lars Ellenberg <lars@linbit.com>
+Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Link: https://lore.kernel.org/r/20250627095728.800688-1-christoph.boehmwalder@linbit.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/inode.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/block/drbd/drbd_receiver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/security/inode.c b/security/inode.c
-index da3ab44c8e57..58cc60c50498 100644
---- a/security/inode.c
-+++ b/security/inode.c
-@@ -159,7 +159,6 @@ static struct dentry *securityfs_create_dentry(const char *name, umode_t mode,
- 		inode->i_fop = fops;
- 	}
- 	d_instantiate(dentry, inode);
--	dget(dentry);
- 	inode_unlock(dir);
- 	return dentry;
+diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
+index e5a2e5f7887b..975024cf03c5 100644
+--- a/drivers/block/drbd/drbd_receiver.c
++++ b/drivers/block/drbd/drbd_receiver.c
+@@ -2500,7 +2500,11 @@ static int handle_write_conflicts(struct drbd_device *device,
+ 			peer_req->w.cb = superseded ? e_send_superseded :
+ 						   e_send_retry_write;
+ 			list_add_tail(&peer_req->w.list, &device->done_ee);
+-			queue_work(connection->ack_sender, &peer_req->peer_device->send_acks_work);
++			/* put is in drbd_send_acks_wf() */
++			kref_get(&device->kref);
++			if (!queue_work(connection->ack_sender,
++					&peer_req->peer_device->send_acks_work))
++				kref_put(&device->kref, drbd_destroy_device);
  
-@@ -306,7 +305,6 @@ void securityfs_remove(struct dentry *dentry)
- 			simple_rmdir(dir, dentry);
- 		else
- 			simple_unlink(dir, dentry);
--		dput(dentry);
- 	}
- 	inode_unlock(dir);
- 	simple_release_fs(&mount, &mount_count);
+ 			err = -ENOENT;
+ 			goto out;
 -- 
 2.39.5
 
