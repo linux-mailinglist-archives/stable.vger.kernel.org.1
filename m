@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-171194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A67B2A867
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEF4B2A87B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E75DF6E0416
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FD5F1B63EC3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B24335BCE;
-	Mon, 18 Aug 2025 13:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8F2192598;
+	Mon, 18 Aug 2025 13:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTC6/+tm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuPdu2En"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D0F335BAA;
-	Mon, 18 Aug 2025 13:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEE3335BCD;
+	Mon, 18 Aug 2025 13:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525123; cv=none; b=s4vM3nnGOtHXelEf8JszRc4+mMAaT6JMvRwhVtHz46wGUN4ZDwpyu4f43/pSVfwwoqTQqU4QDD413ZFkP03MyuVhgBD0rbBRIkYEy2EmUvDV4DYNOi+WjqjSs23cUU11sMdLlyNR03DDJPWmoEQh2BaVFgzJTf+X+QFc24zD2Us=
+	t=1755525259; cv=none; b=qT3/qEjtiweCkSjxRVmLdGR1OiMHbfOiQFlQD6wFqxS+cWRZ1zKKZ8CSAy1EevNKA3rJaRZ8NjfbL/d4VmVJqzRu5ZH6fC6PoX9iIeC6v37gr7mCxLM4U8G2wDexAZfuNU9RuS8ruDFUuSBerHAILn8v94SdmkwDv1glHRp9fm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525123; c=relaxed/simple;
-	bh=hsrwDM33Pcb2oqokXTlUOvrJBoK2tddqMSQNlCRwtdE=;
+	s=arc-20240116; t=1755525259; c=relaxed/simple;
+	bh=Rilij5UYE76r8Mrz8szJRtJQA+SJPaBCRfiVh1wu4Ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzvvseDnw93tned6zOFW2bg5C8odERCd3CG8vn3l8AH4M+ffSQSKgiZXudLV3qSjvb8DxV2Ps0r4gGjd9UsmNT1CZQrADgaEbId96GGJ4fjjnCCDYNDze3Kx7Q1pbuxTk5dOYA25ns7g/dAAOuQYK/e0R5QH2CB8Yhmz/I6gYlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTC6/+tm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBADCC4CEEB;
-	Mon, 18 Aug 2025 13:52:02 +0000 (UTC)
+	 MIME-Version; b=Jl2aTjsAHfkpKul1Nvz3c6+P6ZTTn7jSyQZlw9DZW5gadGEbJ5HJn11ZY1u7qCPzosZqxG4Huqun3f14a6teVZ7H+Uu0e1RvaCMpePwTMmBndT2qqc0Y9gT7OFyzFmk+m0jyBlFjCfBF2xP5vO/iBXzHRnfot5DSYiD0Ljp79rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuPdu2En; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E186C4CEEB;
+	Mon, 18 Aug 2025 13:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525123;
-	bh=hsrwDM33Pcb2oqokXTlUOvrJBoK2tddqMSQNlCRwtdE=;
+	s=korg; t=1755525258;
+	bh=Rilij5UYE76r8Mrz8szJRtJQA+SJPaBCRfiVh1wu4Ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTC6/+tmTcNc+NcxlB0VQ8/rHrFM/rGWejr1i+y46+j7NFfOYXyrF99HMxoOAigBo
-	 piZGP3vySnnhTUa8ueUec0fKBzNT4nKoOVQ3N6+5+/HkgxBy3sLVRI1boyO2rf8ImT
-	 OfGb0xB3QVtTW6UATrj2rPaMgCuzjQbozlmkb+xE=
+	b=yuPdu2EnRarsFNIGO+laYYyeDMSrmYIhLLN+E7xj+xj0OuAbECVGKGar7rG84DVM4
+	 wVX8rUZhB4kge90PEEqLlBPFE15sI+uvK4pg8wMQSDicwld4Mk/oB3N4hKnicc/T2E
+	 4yM1+YOIpX9hU/64TGvSSfqAeHG4oKKlwLLfRNVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 164/570] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
-Date: Mon, 18 Aug 2025 14:42:31 +0200
-Message-ID: <20250818124512.124180745@linuxfoundation.org>
+Subject: [PATCH 6.16 165/570] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
+Date: Mon, 18 Aug 2025 14:42:32 +0200
+Message-ID: <20250818124512.162021124@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -66,39 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
+[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
 
-Clear power.needs_force_resume in pm_runtime_reinit() in case it has
-been set by pm_runtime_force_suspend() invoked from a driver remove
-callback.
+According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
+means the read would block. Hence, the common implementation in
+nonblocking model will poll the file when the nonblocking read returns
+EAGAIN. However, when the target file is thermal zone, this mechanism
+will totally malfunction because thermal zone doesn't implement sysfs
+notification and thus the poll will never return.
 
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+For example, the read in Golang implemnts such method and sometimes
+hangs at reading some thermal zones via sysfs.
+
+Change to return -ENODATA instead of -EAGAIN to userspace.
+
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/thermal/thermal_sysfs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index c55a7c70bc1a..1ef26216f971 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1854,6 +1854,11 @@ void pm_runtime_reinit(struct device *dev)
- 				pm_runtime_put(dev->parent);
- 		}
- 	}
-+	/*
-+	 * Clear power.needs_force_resume in case it has been set by
-+	 * pm_runtime_force_suspend() invoked from a driver remove callback.
-+	 */
-+	dev->power.needs_force_resume = false;
+diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
+index 24b9055a0b6c..d80612506a33 100644
+--- a/drivers/thermal/thermal_sysfs.c
++++ b/drivers/thermal/thermal_sysfs.c
+@@ -40,10 +40,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
+ 
+ 	ret = thermal_zone_get_temp(tz, &temperature);
+ 
+-	if (ret)
+-		return ret;
++	if (!ret)
++		return sprintf(buf, "%d\n", temperature);
+ 
+-	return sprintf(buf, "%d\n", temperature);
++	if (ret == -EAGAIN)
++		return -ENODATA;
++
++	return ret;
  }
  
- /**
+ static ssize_t
 -- 
 2.39.5
 
