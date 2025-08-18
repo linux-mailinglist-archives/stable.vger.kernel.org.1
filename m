@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBC9B2A859
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292E8B2A542
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF8C66245F0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D5667B1C79
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D0B335BD9;
-	Mon, 18 Aug 2025 13:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0068227EB9;
+	Mon, 18 Aug 2025 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHNsuIGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fddb7I1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D443F335BBA;
-	Mon, 18 Aug 2025 13:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0A6226D0F;
+	Mon, 18 Aug 2025 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524968; cv=none; b=bNQZPOPU/MSJrdV/9cmdqh1JCwIxRYD5cOCPENuY7wdIt9CLFFhgEOXBroclH0Lc/uIRuPlxlmu3l0TTXFN0UO5yJNChUjSYLVCKG9TfFwvqz1r3HCOF64P1tvqB0W5IWg1dUPDpXnLsCAMT2MksPYSpozeVP1FHPwWLKjHkryQ=
+	t=1755523379; cv=none; b=axGZIclYjdZaqECtiKeN99pUZ2EJDgCQ+ZiIK/SiojCMsqO2SGBQWVq30eCWeT4gQLhaBTxR1gOTIn8yntfUCEmI/A115ZDO0JvOFT2VcggNGvNgtlyS7P9x18onGGAg940eQRHKW3b4Z5R8oYHL7rC6GrWmgooJ4vhqdkVuV2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524968; c=relaxed/simple;
-	bh=0zMNUoekzUs14v/zUjDzIZPhYUcl8AbaBE280Ko2nu0=;
+	s=arc-20240116; t=1755523379; c=relaxed/simple;
+	bh=F/FLW75PcioWZYR9KLJnrE9qkssvrFvSV5pvtYW021I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5lpzZwKxL7UTEbYWIbs0c6yxg+YoXlUyy0LsXpbU4Q3nbCAcJ4y/zGLOdXCQ/h3s4ePlbU5asZF0Y7B7aZovzfCIJuPVpSgCFvsq61sI0jEgP3vPjj9vIjtvaAqNpmyH7qz0atROhaEWIkFYZ2TJdOSKhZgN3G3SQj9KsKqMxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHNsuIGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E867EC4CEEB;
-	Mon, 18 Aug 2025 13:49:27 +0000 (UTC)
+	 MIME-Version; b=phx62n4qfIYSgYjT5sEJ8oQ4GDBsctgQDsG1pJcn5d+s9n+VgWj/0QTDJqXi7DQtM262AEiEzVw3PQEMx7AVBrVgyuuSiyuITvAjL0K7z93vlGqR2uiQFgpsEaroAYj6ppEWXoBctS1vtyPE18TP6y4V1rniWEBQBMTZQ/BHk2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fddb7I1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1435C4CEEB;
+	Mon, 18 Aug 2025 13:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524968;
-	bh=0zMNUoekzUs14v/zUjDzIZPhYUcl8AbaBE280Ko2nu0=;
+	s=korg; t=1755523379;
+	bh=F/FLW75PcioWZYR9KLJnrE9qkssvrFvSV5pvtYW021I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHNsuIGNMw93mnJX3dcgiG8CM8DAVMA1B4W5ivRqa3CEsROawE/tz7KbE5lbadFgg
-	 w3jdJZqP4kqvnV4A/C0oXRA+hnismX4V2tPbebw9QjHOuQEjcb6RjkDdBa3Lj5lYfn
-	 OzCVBbjIt6xQeNn29Jba3+/dRjHpQbR1wE9v9y8w=
+	b=Fddb7I1KOBbVawA6J6maY6RzgBjsC/b7QGc4eLML5f4SOJiO43YycwWDwRPJhrO3l
+	 CEgHcUcgvcjePaFdt+2V16ai47xmjDoQOGlSk0mYrxZh6ximq6DO35Ib0Zkv9E/P7J
+	 rdaqI6gHetFojqEDG4k42FVNpHwKDo8N0GQw86rQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 118/570] pidfs: raise SB_I_NODEV and SB_I_NOEXEC
-Date: Mon, 18 Aug 2025 14:41:45 +0200
-Message-ID: <20250818124510.364135434@linuxfoundation.org>
+Subject: [PATCH 6.15 120/515] usb: xhci: Avoid showing warnings for dying controller
+Date: Mon, 18 Aug 2025 14:41:46 +0200
+Message-ID: <20250818124502.968825421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 1a1ad73aa1a66787f05f7f10f686b74bab77be72 ]
+[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
 
-Similar to commit 1ed95281c0c7 ("anon_inode: raise SB_I_NODEV and SB_I_NOEXEC"):
-it shouldn't be possible to execute pidfds via
-execveat(fd_anon_inode, "", NULL, NULL, AT_EMPTY_PATH)
-so raise SB_I_NOEXEC so that no one gets any creative ideas.
+When a USB4 dock is unplugged from a system it won't respond to ring
+events. The PCI core handles the surprise removal event and notifies
+all PCI drivers. The XHCI PCI driver sets a flag that the device is
+being removed, and when the device stops responding a flag is also
+added to indicate it's dying.
 
-Also raise SB_I_NODEV as we don't expect or support any devices on pidfs.
+When that flag is set don't bother to show warnings about a missing
+controller.
 
-Link: https://lore.kernel.org/20250618-work-pidfs-persistent-v2-1-98f3456fd552@kernel.org
-Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pidfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/xhci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index 4625e097e3a0..4c551bfa8927 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -891,6 +891,8 @@ static int pidfs_init_fs_context(struct fs_context *fc)
- 	if (!ctx)
- 		return -ENOMEM;
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index cb9f35acb1f9..cb29aa49ceba 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -120,7 +120,8 @@ int xhci_halt(struct xhci_hcd *xhci)
+ 	ret = xhci_handshake(&xhci->op_regs->status,
+ 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
+ 	if (ret) {
+-		xhci_warn(xhci, "Host halt failed, %d\n", ret);
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host halt failed, %d\n", ret);
+ 		return ret;
+ 	}
  
-+	fc->s_iflags |= SB_I_NOEXEC;
-+	fc->s_iflags |= SB_I_NODEV;
- 	ctx->ops = &pidfs_sops;
- 	ctx->eops = &pidfs_export_operations;
- 	ctx->dops = &pidfs_dentry_operations;
+@@ -179,7 +180,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
+ 	state = readl(&xhci->op_regs->status);
+ 
+ 	if (state == ~(u32)0) {
+-		xhci_warn(xhci, "Host not accessible, reset failed.\n");
++		if (!(xhci->xhc_state & XHCI_STATE_DYING))
++			xhci_warn(xhci, "Host not accessible, reset failed.\n");
+ 		return -ENODEV;
+ 	}
+ 
 -- 
 2.39.5
 
