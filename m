@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2FFB2A981
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0982CB2A65A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AD861BA6BCC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE121B61D1C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C2934AB1D;
-	Mon, 18 Aug 2025 14:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A64322535;
+	Mon, 18 Aug 2025 13:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUdfbNst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxXDj6JB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E4234AB12;
-	Mon, 18 Aug 2025 14:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD82E321F59;
+	Mon, 18 Aug 2025 13:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525699; cv=none; b=iNMUxksvMCixGe3qK62LW++DjQz0N9NuIAjJHLQYAuvcfdSzmZpJfZ7+fVcGGbJZXRAz/RHmt8TnarIZ6kn/g+/DCP5LDlsjBRDmtMRrzYywtZJXR07hsXan0eltvQlSm4prIDXgKxMYLOKUs/3YStuCVwi+g4vMpxo3UfeW40w=
+	t=1755523908; cv=none; b=f5Sg8HMXeHcK2zooJXEy31WuFKRZRIxB429DfdY4pWhXeHVp/v2MrAF56UOYWsjZpdVhXcIQ9o3ZBJg2k/5cdzxvQpB9D4TgH4qK1zyag28QQrhMZ8gb8oY7LEvQGjAt0t6OXfC7YC1B1Fnm+zMC4WFrpe0TI18mTmc68VXMn8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525699; c=relaxed/simple;
-	bh=dDjsH4FMrPsfi1oK42WtABQO5wCfEzsP0AtuzmWgxsM=;
+	s=arc-20240116; t=1755523908; c=relaxed/simple;
+	bh=WRS0GIm1JDt6825izcPW4tkH5t+3YLUfJgR1nV7ne7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZywsG5VHPcdc8yCra8yhcbH1TV9ek36s9pgOP7c8qRRII+8HE9HYoI3lOGWA5PCiU8SBVGZLJwlXVXwKcQvQQllpXyfCBH8iq3O+FYkG3ljXQ1/smgTerqk89HrVNzAA9gj3jBFrHY/lw1SMrGgWXlc/vjBGLNBqiicaHNkM90w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUdfbNst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E41C4CEEB;
-	Mon, 18 Aug 2025 14:01:38 +0000 (UTC)
+	 MIME-Version; b=MyrwfdAuVQTTTTlFPI9I11vMAd8VHAzy1rshsxbzQ+srpCsXhxtAOUX4Hkyt98+oGkTYHZpLYztnxZWfq0duqtr8Tb2Dxozgmi+1mVGHb/GX+xXtBbKEBMX1LALZ7O2d+PTnPJcVkNh7ERLmBxoz7SHUyyLMZMemsZhMnmNDIpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxXDj6JB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324C0C4CEF1;
+	Mon, 18 Aug 2025 13:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525699;
-	bh=dDjsH4FMrPsfi1oK42WtABQO5wCfEzsP0AtuzmWgxsM=;
+	s=korg; t=1755523908;
+	bh=WRS0GIm1JDt6825izcPW4tkH5t+3YLUfJgR1nV7ne7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUdfbNstw9nhblMBFH9PmvpZzz8j4juJ4fH2RjH0SWmGvTZHaOkOntP4QXxKcEcxZ
-	 MLOB1eKuA4KN+9y1ckXYHOyse8VomQ3npfYzfZ7Mh8il4mG2YMzPgBReXt5ftFePLU
-	 vVQ4QSyqpVx+ItezDSyRCzrPxq5Uoovd3ZJRNOgE=
+	b=PxXDj6JBWTFw8Epn5f/BaBeT+7/jL4jmFXLnDzleT89iwASe/br92XMUDWI+OvHlR
+	 fhTQgrsICJRkYH0VSpINe0XMhLNjVy2ST2XuU1jrqrgHwwGNfbItmdx3J+bP9ZRmjo
+	 d9/M2YXy6BEIsDw5+xW/WXOTulAnLF/S5SYED/ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 308/570] rcutorture: Fix rcutorture_one_extend_check() splat in RT kernels
+Subject: [PATCH 6.15 309/515] ptp: Use ratelimite for freerun error message
 Date: Mon, 18 Aug 2025 14:44:55 +0200
-Message-ID: <20250818124517.738636363@linuxfoundation.org>
+Message-ID: <20250818124510.331933593@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 8d71351d88e478d3c4e945e3218e97ec677fd807 ]
+[ Upstream commit e9a7795e75b78b56997fb0070c18d6e1057b6462 ]
 
-For built with CONFIG_PREEMPT_RT=y kernels, running rcutorture
-tests resulted in the following splat:
+Replace pr_err() with pr_err_ratelimited() in ptp_clock_settime() to
+prevent log flooding when the physical clock is free running, which
+happens on some of my hosts. This ensures error messages are
+rate-limited and improves kernel log readability.
 
-[   68.797425] rcutorture_one_extend_check during change: Current 0x1  To add 0x1  To remove 0x0  preempt_count() 0x0
-[   68.797533] WARNING: CPU: 2 PID: 512 at kernel/rcu/rcutorture.c:1993 rcutorture_one_extend_check+0x419/0x560 [rcutorture]
-[   68.797601] Call Trace:
-[   68.797602]  <TASK>
-[   68.797619]  ? lockdep_softirqs_off+0xa5/0x160
-[   68.797631]  rcutorture_one_extend+0x18e/0xcc0 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797646]  ? local_clock+0x19/0x40
-[   68.797659]  rcu_torture_one_read+0xf0/0x280 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797678]  ? __pfx_rcu_torture_one_read+0x10/0x10 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797804]  ? __pfx_rcu_torture_timer+0x10/0x10 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797815] rcu-torture: rcu_torture_reader task started
-[   68.797824] rcu-torture: Creating rcu_torture_reader task
-[   68.797824]  rcu_torture_reader+0x238/0x580 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797836]  ? kvm_sched_clock_read+0x15/0x30
-
-Disable BH does not change the SOFTIRQ corresponding bits in
-preempt_count() for RT kernels, this commit therefore use
-softirq_count() to check the if BH is disabled.
-
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250613-ptp-v1-1-ee44260ce9e2@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/ptp/ptp_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 70ec0f21abc3..1d4635f8bb43 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -464,7 +464,7 @@ rcu_read_delay(struct torture_random_state *rrsp, struct rt_read_seg *rtrsp)
- 	    !(torture_random(rrsp) % (nrealreaders * 2000 * longdelay_ms))) {
- 		started = cur_ops->get_gp_seq();
- 		ts = rcu_trace_clock_local();
--		if (preempt_count() & (SOFTIRQ_MASK | HARDIRQ_MASK))
-+		if ((preempt_count() & HARDIRQ_MASK) || softirq_count())
- 			longdelay_ms = 5; /* Avoid triggering BH limits. */
- 		mdelay(longdelay_ms);
- 		rtrsp->rt_delay_ms = longdelay_ms;
-@@ -1930,7 +1930,7 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
- 		return;
+diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+index 36f57d7b4a66..1cc06b7cb17e 100644
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -96,7 +96,7 @@ static int ptp_clock_settime(struct posix_clock *pc, const struct timespec64 *tp
+ 	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
  
- 	WARN_ONCE((curstate & (RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH)) &&
--		  !(preempt_count() & SOFTIRQ_MASK), ROEC_ARGS);
-+		  !softirq_count(), ROEC_ARGS);
- 	WARN_ONCE((curstate & (RCUTORTURE_RDR_PREEMPT | RCUTORTURE_RDR_SCHED)) &&
- 		  !(preempt_count() & PREEMPT_MASK), ROEC_ARGS);
- 	WARN_ONCE(cur_ops->readlock_nesting &&
-@@ -1944,7 +1944,7 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
+ 	if (ptp_clock_freerun(ptp)) {
+-		pr_err("ptp: physical clock is free running\n");
++		pr_err_ratelimited("ptp: physical clock is free running\n");
+ 		return -EBUSY;
+ 	}
  
- 	WARN_ONCE(cur_ops->extendables &&
- 		  !(curstate & (RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH)) &&
--		  (preempt_count() & SOFTIRQ_MASK), ROEC_ARGS);
-+		  softirq_count(), ROEC_ARGS);
- 
- 	/*
- 	 * non-preemptible RCU in a preemptible kernel uses preempt_disable()
-@@ -1965,6 +1965,9 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
- 	if (!IS_ENABLED(CONFIG_PREEMPT_RCU))
- 		mask |= RCUTORTURE_RDR_PREEMPT | RCUTORTURE_RDR_SCHED;
- 
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && softirq_count())
-+		mask |= RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH;
-+
- 	WARN_ONCE(cur_ops->readlock_nesting && !(curstate & mask) &&
- 		  cur_ops->readlock_nesting() > 0, ROEC_ARGS);
- }
 -- 
 2.39.5
 
