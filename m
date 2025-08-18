@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-171322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F21B2A91C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:15:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B15DB2A380
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5D13587630
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E57C11B27A62
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC36A322556;
-	Mon, 18 Aug 2025 13:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257E131E0F4;
+	Mon, 18 Aug 2025 13:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqmocDcm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIVnM/rj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9D7234984;
-	Mon, 18 Aug 2025 13:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D399431B107;
+	Mon, 18 Aug 2025 13:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525540; cv=none; b=tZKwbCDoE6Q/OJBGM88gDkVpeXigEOQ3x0+Ela7y1984VkMi1b9zDitERHcBpsUFa+lWgVLvpQryweJrW+LTuvf/+068MY92hCsR2n/juNguVGjqPuuI4K1WPmaz5nePDhf8W/U5Y9lPNuHeOJkUsy6cXkXUaARrAYT26Y2YK5g=
+	t=1755522253; cv=none; b=KxEprbK7tn3ziVqnLd8wtXLhBBMpboVnZEZUtfmVsIVBs4zvBRgfhhDPDAOxhNg0eOrcFHUun3ZL6CXZIQ6QNF+Mbu8SDdTW8ZPLJ0UG3qte532081s/xO1sWKPpFbBLU1o8U4+c/vsrDVGvkSi9vEoxY8O1JwoZ6OsEcEUfMEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525540; c=relaxed/simple;
-	bh=iJ6oi0x/p7B3RnSHVD5ijc1EzMbwxJyDasH6QQEid/8=;
+	s=arc-20240116; t=1755522253; c=relaxed/simple;
+	bh=Hwb+6dlsG1KxbPGnRY/NYuADPzDeoqUxhYLXQRs74xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WF+Y7gRuQebroHWK7M9ItFUOgCK9tBMbb7KV0NrOCRCKquWF3ZE1PXjCIt64Z/QOI3EH+Kt/7/Q7L65HcOoHTp6912Bkt+WXUdVI/NCQ4GFNi3/NDguJuyEpFojCId7znzOcaeZtrPCk+ZuEiIepzkymF7wi1ZbUR3T7BolZ7Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqmocDcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE1FC4CEEB;
-	Mon, 18 Aug 2025 13:58:59 +0000 (UTC)
+	 MIME-Version; b=jAAsaQRpCGp7LSCeCsyOQZVhfW3VlfdaB2umGGFWPj89CpkDoQAF6k4CXPyDdBkaaMhJCvgn40DbMkTmT9/2QWyYAjC6/XmGM3Ylg3jgyC4EpKEDEmytThwk4jGzT3JrpiHL8aZCZnp1RqU/fJoHQqM8oz4CfYs2F+EX8T6igl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIVnM/rj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471CFC113D0;
+	Mon, 18 Aug 2025 13:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525540;
-	bh=iJ6oi0x/p7B3RnSHVD5ijc1EzMbwxJyDasH6QQEid/8=;
+	s=korg; t=1755522253;
+	bh=Hwb+6dlsG1KxbPGnRY/NYuADPzDeoqUxhYLXQRs74xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqmocDcmIGvfW3RWgjd/lwFe6Yr8js7zTRB9IBHGjkOFgD14gIGSI5lCJioFLrn9B
-	 x2KxD3G9YQ4Ff2vA8Z9S9R0GSPm8iBMIc2xFc42lt8alQmvWMn0vckeZ+ikMebm8Mr
-	 aW1UjjoQKi8jJlux0nQoqpCRG+rPsk5LgAt41Zao=
+	b=wIVnM/rjlKnQYnzRMB3cDLTn1Rs686gtZrUZws8PSZGl1keXPHI36LNGZsx/boNUl
+	 W0nE4fN8mjphDrfFJwbOX2CZR3gTWsQ0lKGIIUcqq9WPNDEoNJYxCtYAkm1k3Dir2v
+	 yWirCT5fuki3KshAci/fYScZhgIztSkSqwNhHVMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cruise Hung <cruise.hung@amd.com>,
-	Peichen Huang <PeiChen.Huang@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 293/570] drm/amd/display: add null check
+Subject: [PATCH 6.12 254/444] ptp: Use ratelimite for freerun error message
 Date: Mon, 18 Aug 2025 14:44:40 +0200
-Message-ID: <20250818124517.134347750@linuxfoundation.org>
+Message-ID: <20250818124458.344702661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peichen Huang <PeiChen.Huang@amd.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 158b9201c17fc93ed4253c2f03b77fd2671669a1 ]
+[ Upstream commit e9a7795e75b78b56997fb0070c18d6e1057b6462 ]
 
-[WHY]
-Prevents null pointer dereferences to enhance function robustness
+Replace pr_err() with pr_err_ratelimited() in ptp_clock_settime() to
+prevent log flooding when the physical clock is free running, which
+happens on some of my hosts. This ensures error messages are
+rate-limited and improves kernel log readability.
 
-[HOW]
-Adds early null check and return false if invalid.
-
-Reviewed-by: Cruise Hung <cruise.hung@amd.com>
-Signed-off-by: Peichen Huang <PeiChen.Huang@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250613-ptp-v1-1-ee44260ce9e2@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ptp/ptp_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 3dd7e2b6d530..943ebd5c79e3 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -6394,11 +6394,13 @@ unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context)
-  */
- bool dc_get_host_router_index(const struct dc_link *link, unsigned int *host_router_index)
- {
--	struct dc *dc = link->ctx->dc;
-+	struct dc *dc;
+diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
+index b892a7323084..642a540861d4 100644
+--- a/drivers/ptp/ptp_clock.c
++++ b/drivers/ptp/ptp_clock.c
+@@ -96,7 +96,7 @@ static int ptp_clock_settime(struct posix_clock *pc, const struct timespec64 *tp
+ 	struct ptp_clock *ptp = container_of(pc, struct ptp_clock, clock);
  
--	if (link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
-+	if (!link || !host_router_index || link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
- 		return false;
- 
-+	dc = link->ctx->dc;
-+
- 	if (link->link_index < dc->lowest_dpia_link_index)
- 		return false;
+ 	if (ptp_clock_freerun(ptp)) {
+-		pr_err("ptp: physical clock is free running\n");
++		pr_err_ratelimited("ptp: physical clock is free running\n");
+ 		return -EBUSY;
+ 	}
  
 -- 
 2.39.5
