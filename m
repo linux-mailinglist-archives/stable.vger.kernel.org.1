@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3006B2AA24
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813E4B2A7B2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0605A799E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86017682913
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716EA3375D8;
-	Mon, 18 Aug 2025 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8345E207A26;
+	Mon, 18 Aug 2025 13:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2wxTN0E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AaWPbbf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231E72E22B0;
-	Mon, 18 Aug 2025 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422E1335BA0;
+	Mon, 18 Aug 2025 13:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526286; cv=none; b=fiovbkI7FveUphwCjiFlFu+VTAeIH52ahGz+Lef4uEwZj9CIXYo1WLEOHIDZJAIpP/nXS8mfPB273S/CVeSYEKTUh9fRo7GGTUbSOq26qMTL41hM/1JCgDPOzyAEVf2MDdjKRG7ca7Kw8j19kw8LDuXzpbXYW2jaUT4yfDBXew0=
+	t=1755524475; cv=none; b=mDWcZrrrEI0HQDQVqOg3uShfCrdNtPFTP9/G3zj5nsPs/BkpjiScuiIAxY9um/c5aHREXqWNGZAqBg5rjH7F06nDlJKwZJVEBgIoHOl97EfikVY6tVvmeNKQlQ0P76vb8OWhVBgClhKLOG81oUo5CvZ/lWW6KB9533wsdu/qJxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526286; c=relaxed/simple;
-	bh=iI/AbgmJs5/hniUYGRJoLDVvoMJ/DG4N0nRTruDLr+E=;
+	s=arc-20240116; t=1755524475; c=relaxed/simple;
+	bh=zh+WbuBsNHywc1w+1vQAWCABG5r+2Ccf7JbZ65KLW8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OoBD/+7kPmFL3nSCMCJzLynF6OAFhNNjdcIJvjFd3lFayEJaVOLxamPAngYbsVk63ypl0ntPHMdV0dlrMgDh5JlTdoFS9f+xTehenVQc+8GHcO5FL+NY3oEC2dmIAiSrIBh1vHBvNvcAdc2eRALly9H6AKNbyPo8TverW56IMF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2wxTN0E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94024C4CEEB;
-	Mon, 18 Aug 2025 14:11:25 +0000 (UTC)
+	 MIME-Version; b=tMGASONEjXfa4aq/v0smlQmkWDvMSqSFJjcZqB37xYa9oQaItL1V3M883pak0IlOx3ilDeoaew9izq9OJDKbKXkqo7CqsPhiM4mBkVHHsRJKAsUkLqhpptBb8gsCI/Cb5hRrcZky8Fk+nCf4JxYay3R2u/xcd/w6hgwDNQJtWZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AaWPbbf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4369CC4CEEB;
+	Mon, 18 Aug 2025 13:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526286;
-	bh=iI/AbgmJs5/hniUYGRJoLDVvoMJ/DG4N0nRTruDLr+E=;
+	s=korg; t=1755524474;
+	bh=zh+WbuBsNHywc1w+1vQAWCABG5r+2Ccf7JbZ65KLW8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2wxTN0E7IaDUKWOBcznTiOy12BMpm0Ao424cyx7zBBo3uKGpccd6FfKAyxn8H0cL
-	 iD0TclIAWJ6WM7c/gS6Itge0sMHuM5zkxB4+obx7HN0hP62KGG8rTqz9ahqgfdMX3w
-	 JPo2hNqQ8RHhbw8kn1kbBF6kzfmvn2ToRg3uBF50=
+	b=AaWPbbf2YR+eoeHDOWmq0nk/AXBnNuSKHnopWHbw/01szjErtR/ciXun0Rqi5dd8J
+	 dI2CEtHQ74gjAOC5WHoOwEhTIf6npG+mghiQNZTZAibVfWldMwRbri5Q2mtZU2beZG
+	 49WYetePYAQOl5ADsmNtsFjKrqX5VvjiuL+5K6vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 483/570] x86/sev: Improve handling of writes to intercepted TSC MSRs
+	Sravan Kumar Gundu <sravankumarlpu@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
+Subject: [PATCH 6.15 484/515] fbdev: Fix vmalloc out-of-bounds write in fast_imageblit
 Date: Mon, 18 Aug 2025 14:47:50 +0200
-Message-ID: <20250818124524.490094761@linuxfoundation.org>
+Message-ID: <20250818124517.058375336@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikunj A Dadhania <nikunj@amd.com>
+From: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
 
-[ Upstream commit 5eb1bcdb6a8c088514019c3a9bda5d565beed1af ]
+commit af0db3c1f898144846d4c172531a199bb3ca375d upstream.
 
-Currently, when a Secure TSC enabled SNP guest attempts to write to the
-intercepted GUEST_TSC_FREQ MSR (a read-only MSR), the guest kernel response
-incorrectly implies a VMM configuration error, when in fact it is the usual
-VMM configuration to intercept writes to read-only MSRs, unless explicitly
-documented.
+This issue triggers when a userspace program does an ioctl
+FBIOPUT_CON2FBMAP by passing console number and frame buffer number.
+Ideally this maps console to frame buffer and updates the screen if
+console is visible.
 
-Modify the intercepted TSC MSR #VC handling:
-* Write to GUEST_TSC_FREQ will generate a #GP instead of terminating the
-  guest
-* Write to MSR_IA32_TSC will generate a #GP instead of silently ignoring it
+As part of mapping it has to do resize of console according to frame
+buffer info. if this resize fails and returns from vc_do_resize() and
+continues further. At this point console and new frame buffer are mapped
+and sets display vars. Despite failure still it continue to proceed
+updating the screen at later stages where vc_data is related to previous
+frame buffer and frame buffer info and display vars are mapped to new
+frame buffer and eventully leading to out-of-bounds write in
+fast_imageblit(). This bheviour is excepted only when fg_console is
+equal to requested console which is a visible console and updates screen
+with invalid struct references in fbcon_putcs().
 
-However, continue to terminate the guest when reading from intercepted
-GUEST_TSC_FREQ MSR with Secure TSC enabled, as intercepted reads indicate an
-improper VMM configuration for Secure TSC enabled SNP guests.
-
-  [ bp: simplify comment. ]
-
-Fixes: 38cc6495cdec ("x86/sev: Prevent GUEST_TSC_FREQ MSR interception for Secure TSC enabled guests")
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/20250722074853.22253-1-nikunj@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: syzbot+c4b7aa0513823e2ea880@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c4b7aa0513823e2ea880
+Signed-off-by: Sravan Kumar Gundu <sravankumarlpu@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/coco/sev/vc-handle.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/video/fbdev/core/fbcon.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-index faf1fce89ed4..c3b4acbde0d8 100644
---- a/arch/x86/coco/sev/vc-handle.c
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -371,29 +371,30 @@ static enum es_result __vc_handle_msr_caa(struct pt_regs *regs, bool write)
-  * executing with Secure TSC enabled, so special handling is required for
-  * accesses of MSR_IA32_TSC and MSR_AMD64_GUEST_TSC_FREQ.
-  */
--static enum es_result __vc_handle_secure_tsc_msrs(struct pt_regs *regs, bool write)
-+static enum es_result __vc_handle_secure_tsc_msrs(struct es_em_ctxt *ctxt, bool write)
- {
-+	struct pt_regs *regs = ctxt->regs;
- 	u64 tsc;
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -825,7 +825,8 @@ static void con2fb_init_display(struct v
+ 				   fg_vc->vc_rows);
+ 	}
  
- 	/*
--	 * GUEST_TSC_FREQ should not be intercepted when Secure TSC is enabled.
--	 * Terminate the SNP guest when the interception is enabled.
-+	 * Writing to MSR_IA32_TSC can cause subsequent reads of the TSC to
-+	 * return undefined values, and GUEST_TSC_FREQ is read-only. Generate
-+	 * a #GP on all writes.
- 	 */
--	if (regs->cx == MSR_AMD64_GUEST_TSC_FREQ)
--		return ES_VMM_ERROR;
-+	if (write) {
-+		ctxt->fi.vector = X86_TRAP_GP;
-+		ctxt->fi.error_code = 0;
-+		return ES_EXCEPTION;
-+	}
+-	update_screen(vc_cons[fg_console].d);
++	if (fg_console != unit)
++		update_screen(vc_cons[fg_console].d);
+ }
  
- 	/*
--	 * Writes: Writing to MSR_IA32_TSC can cause subsequent reads of the TSC
--	 *         to return undefined values, so ignore all writes.
--	 *
--	 * Reads: Reads of MSR_IA32_TSC should return the current TSC value, use
--	 *        the value returned by rdtsc_ordered().
-+	 * GUEST_TSC_FREQ read should not be intercepted when Secure TSC is
-+	 * enabled. Terminate the guest if a read is attempted.
- 	 */
--	if (write) {
--		WARN_ONCE(1, "TSC MSR writes are verboten!\n");
--		return ES_OK;
+ /**
+@@ -1362,6 +1363,7 @@ static void fbcon_set_disp(struct fb_inf
+ 	struct vc_data *svc;
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	int rows, cols;
++	unsigned long ret = 0;
+ 
+ 	p = &fb_display[unit];
+ 
+@@ -1412,11 +1414,10 @@ static void fbcon_set_disp(struct fb_inf
+ 	rows = FBCON_SWAP(ops->rotate, info->var.yres, info->var.xres);
+ 	cols /= vc->vc_font.width;
+ 	rows /= vc->vc_font.height;
+-	vc_resize(vc, cols, rows);
++	ret = vc_resize(vc, cols, rows);
+ 
+-	if (con_is_visible(vc)) {
++	if (con_is_visible(vc) && !ret)
+ 		update_screen(vc);
 -	}
-+	if (regs->cx == MSR_AMD64_GUEST_TSC_FREQ)
-+		return ES_VMM_ERROR;
+ }
  
-+	/* Reads of MSR_IA32_TSC should return the current TSC value. */
- 	tsc = rdtsc_ordered();
- 	regs->ax = lower_32_bits(tsc);
- 	regs->dx = upper_32_bits(tsc);
-@@ -416,7 +417,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- 	case MSR_IA32_TSC:
- 	case MSR_AMD64_GUEST_TSC_FREQ:
- 		if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
--			return __vc_handle_secure_tsc_msrs(regs, write);
-+			return __vc_handle_secure_tsc_msrs(ctxt, write);
- 		break;
- 	default:
- 		break;
--- 
-2.50.1
-
+ static __inline__ void ywrap_up(struct vc_data *vc, int count)
 
 
 
