@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A1DB2A654
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D33B2A8F7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C53B5581F0F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7FE0586B51
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7939F31CA62;
-	Mon, 18 Aug 2025 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7824F340DB8;
+	Mon, 18 Aug 2025 13:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1kirx4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYujHtT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BAF2E717D;
-	Mon, 18 Aug 2025 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3477E30F52C;
+	Mon, 18 Aug 2025 13:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523849; cv=none; b=Wj94BudDN2DMxeagVbjClslmHfCYf4BkNrrzRluRJqWxNHFZzZ8YrpDNhsWBe2COpSaPRTTCEwGbX8j/kNHPUoyP0gkDK+xxlZmI5TQINyjLdlq31B9TkcxRyXeIiyzBt1CgaJDVfHion4isq1r+NPg+TS6QKDUHZlmz1zV9rIU=
+	t=1755525424; cv=none; b=NTOw/LzTk43GIeUmyhoRYYsj/Jk0KVcleOfkK58KUi5MzNXVERukhCs55Jfhl54QNChFS2GJlszIbr4kH7WbeGJwAAerFooBsdGReuSak+urSLJYZ09Abv7MdUCuQv/wwIGTS3R4QRkoe5gvzU+0+7rQOtUAS9WnSvWOn3dVZ9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523849; c=relaxed/simple;
-	bh=EHXc2gTDGE6EQWO3hypoo68kh9t4KHRfLFWtv+vLH5E=;
+	s=arc-20240116; t=1755525424; c=relaxed/simple;
+	bh=j0y7GH0CxLUvxze6UjznqpKiFAddU09sqvcHl+KXn68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPgofOXVB0M/i8DRVvdYaa46ddwRy2gGqccFzEa31cblVRwxqmu5tytCQMDqWGEIEMj94L0GZ9JX1p5LLafKawHNl42efAn+hYDEf92UbYprkOJza6GNybp+H1pgqJozqr7mbaNdHrXF2bdWXD3Lhz0Mb4ZX7JRr/6XxT9pAxpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1kirx4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FCCC4CEEB;
-	Mon, 18 Aug 2025 13:30:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q55q9eL04qnnGXOtJH/M4m1AdCZoMK2STjGgm+Q/NjpiZ1dHDmiVdPuRXY+nKnoLFFu73hvbs2+bJEIEgUSabzZnxN54RrnBvfMvLRUHwXinjttp8PUMZ0qlu0lmIOgtQOW8J9ir254kZASM9GKlKih7vZ2LDBEM/IlLyQJ/DWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYujHtT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CD2C113D0;
+	Mon, 18 Aug 2025 13:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523849;
-	bh=EHXc2gTDGE6EQWO3hypoo68kh9t4KHRfLFWtv+vLH5E=;
+	s=korg; t=1755525423;
+	bh=j0y7GH0CxLUvxze6UjznqpKiFAddU09sqvcHl+KXn68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1kirx4h7tama0LZIvNgyDh/hhdYyyMXfFXlVvB3pN27ScVExmNkXb+z6xdGoVl21
-	 NrRJIIYJfqbzyMvX36DDxFJSzGeDUDjhz4AzJiLcbV3K5SW7i9LVy+YaerZ83VynFd
-	 PPL1Nno5/LIJBi31afPTYTlGBnKvfa1+Ao/teT8E=
+	b=JYujHtT6ZwUiF23LgJf5YIPls3/HegOy4NnEc1ckYTQT74yFz40it4w0dEH4kUmT2
+	 WnRB03RSvrAu0n15MjlSugxV1zfUUiL+o2M63l5XrjAep1hW3bqhvX+y7RNIDhdp2y
+	 WULVA/kPA5JX8gA18zZ9AEu//CeUUD1DLg9Kmpk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	=?UTF-8?q?Kamil=20Hor=C3=A1k=20-=202N?= <kamilh@axis.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 259/515] wifi: rtw89: Disable deep power saving for USB/SDIO
+Subject: [PATCH 6.16 258/570] net: phy: bcm54811: PHY initialization
 Date: Mon, 18 Aug 2025 14:44:05 +0200
-Message-ID: <20250818124508.388367196@linuxfoundation.org>
+Message-ID: <20250818124515.760835307@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Kamil Horák - 2N <kamilh@axis.com>
 
-[ Upstream commit a3b871a0f7c083c2a632a31da8bc3de554ae8550 ]
+[ Upstream commit 3117a11fff5af9e74f4946f07cb3ca083cbbdf4b ]
 
-Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
-is called in atomic context and accessing hardware registers results in
-"scheduling while atomic" errors.
+Reset the bit 12 in PHY's LRE Control register upon initialization.
+According to the datasheet, this bit must be written to zero after
+every device reset.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com
+Signed-off-by: Kamil Horák - 2N <kamilh@axis.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250708090140.61355-5-kamilh@axis.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/broadcom.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 69546a039494..628b64457a17 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2788,6 +2788,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
+index 9b1de54fd483..f871f11d1921 100644
+--- a/drivers/net/phy/broadcom.c
++++ b/drivers/net/phy/broadcom.c
+@@ -655,7 +655,7 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
  {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	struct device_node *np = phydev->mdio.dev.of_node;
+ 	struct bcm54xx_phy_priv *priv = phydev->priv;
+-	int i, val, err;
++	int i, val, err, aneg;
  
-+	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
-+		return RTW89_PS_MODE_NONE;
+ 	for (i = 0; i < ARRAY_SIZE(bcm54811_linkmodes); i++)
+ 		linkmode_clear_bit(bcm54811_linkmodes[i], phydev->supported);
+@@ -676,9 +676,19 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
+ 		if (val < 0)
+ 			return val;
+ 
++		/* BCM54811 is not capable of LDS but the corresponding bit
++		 * in LRESR is set to 1 and marked "Ignore" in the datasheet.
++		 * So we must read the bcm54811 as unable to auto-negotiate
++		 * in BroadR-Reach mode.
++		 */
++		if (BRCM_PHY_MODEL(phydev) == PHY_ID_BCM54811)
++			aneg = 0;
++		else
++			aneg = val & LRESR_LDSABILITY;
 +
- 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
- 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
- 		return RTW89_PS_MODE_NONE;
+ 		linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
+ 				 phydev->supported,
+-				 val & LRESR_LDSABILITY);
++				 aneg);
+ 		linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT1_Full_BIT,
+ 				 phydev->supported,
+ 				 val & LRESR_100_1PAIR);
+@@ -735,8 +745,15 @@ static int bcm54811_config_aneg(struct phy_device *phydev)
+ 
+ 	/* Aneg firstly. */
+ 	if (priv->brr_mode) {
+-		/* BCM54811 is only capable of autonegotiation in IEEE mode */
+-		phydev->autoneg = 0;
++		/* BCM54811 is only capable of autonegotiation in IEEE mode.
++		 * In BroadR-Reach mode, disable the Long Distance Signaling,
++		 * the BRR mode autoneg as supported in other Broadcom PHYs.
++		 * This bit is marked as "Reserved" and "Default 1, must be
++		 *  written to 0 after every device reset" in the datasheet.
++		 */
++		ret = phy_modify(phydev, MII_BCM54XX_LRECR, LRECR_LDSEN, 0);
++		if (ret < 0)
++			return ret;
+ 		ret = bcm_config_lre_aneg(phydev, false);
+ 	} else {
+ 		ret = genphy_config_aneg(phydev);
 -- 
 2.39.5
 
