@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 462F8B2A597
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B26BDB2A927
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3F9164E3697
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C48686E3F64
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB85C321F35;
-	Mon, 18 Aug 2025 13:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D0232276D;
+	Mon, 18 Aug 2025 13:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1FR8xCf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRqX1KrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9863131AF15;
-	Mon, 18 Aug 2025 13:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0F320380;
+	Mon, 18 Aug 2025 13:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523888; cv=none; b=HQI2SWCYAx4fPZ+uf51iOmypwLDgGGxDCEuDYetc3DN69crl86GmHmg2HRQl+4wm+go7csU0ZI2siKILhkNZydWys/UL7nPARIV1PEqSolMit/qnzYhqzWyFt/qginp0isydmIeRyXGbKXWvNEVsm3PJucTeRZefK69+HSNI94M=
+	t=1755525576; cv=none; b=rncd8G5FnLhwSqe7+XNP5HbDQIG722VahadWf6p0KoSZT8ak5ZMbFHtzRSWtOkT6knNUHJNijyGymkdCjQarKnF2CdU4ws7KEclta0sOQ0n0hMnOZfFD79vJyAc+Kntqud9hoHFAiiAs3FK6nfk/EZQ61GQD4vUPdJ0au2UBUVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523888; c=relaxed/simple;
-	bh=CCxUmdaizfa9kV827qYskSGsdCphnOTGyC8eS0EjjbM=;
+	s=arc-20240116; t=1755525576; c=relaxed/simple;
+	bh=vDnhjm7GZSNwxqqFYYNSN1yjFAXN8Yb5mR0Q84kR9lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IYvCguqhGse6AAhQ17a8IlwtNmxc7UzE8iLbl03g92esNwkcUfjYSc4LXeqAF6GCzwzzvkj8lxd0XICunq0Mq1Xw0MBx8IJtWYG45d/clbEWPGZsBC1lLd4wjOi7ENe022jAYXJnGU4c0mG5xOKDuwvPCzI4OW+Expjws2UtKBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1FR8xCf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A83C4CEEB;
-	Mon, 18 Aug 2025 13:31:27 +0000 (UTC)
+	 MIME-Version; b=DQwYqHBQ18qxG2x9rtnXf++J8C0AMuP8Fz9TvhndN0IEh2vzsRBtlUdu1qujzinnfmpjBPjdQ9Np0cVXaXo3Sn13x89Opu04X4hr9silSq8EPI0LrE6uWTCUc+qF6L0JrFqc4nnnAaQHS8VNauUHU7H0rutl3aDfrzwZe5fL/94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRqX1KrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92612C4CEEB;
+	Mon, 18 Aug 2025 13:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523888;
-	bh=CCxUmdaizfa9kV827qYskSGsdCphnOTGyC8eS0EjjbM=;
+	s=korg; t=1755525576;
+	bh=vDnhjm7GZSNwxqqFYYNSN1yjFAXN8Yb5mR0Q84kR9lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1FR8xCfsLdF4p4NNBXZED4Pht+nxrH4eBL1vfkTxx7SpjD/MsUeHnbYaQmKNI2IH
-	 aglgiqye5bHPlbVcmbc22GkTbiNXCm2JIBjWVAoeQXs/y2OmzdNZxi/APuLzGsQEIz
-	 WdnljAl9jskWl5tb5VwDxnAMMcYzWhVkzs2l0EPg=
+	b=wRqX1KrTWZeihb38NYET/4RVZEvAkcyIQnb2Q51/hf8h7ptTu6OBdB/5yMU2vWA+i
+	 5VSB7ZdHfRjhyn1ywcISNyBlG286FU1FioX7nHOj7pPEGzWzf2Sy2NAyJPfSXYEHoG
+	 jF+hqMT/P7CSlBoWxXGX9OgmQikEumDlm9fWZXWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 304/515] net: dsa: b53: fix b53_imp_vlan_setup for BCM5325
+Subject: [PATCH 6.16 303/570] wifi: iwlwifi: mld: dont exit EMLSR when we shouldnt
 Date: Mon, 18 Aug 2025 14:44:50 +0200
-Message-ID: <20250818124510.140703945@linuxfoundation.org>
+Message-ID: <20250818124517.534176762@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit c00df1018791185ea398f78af415a2a0aaa0c79c ]
+[ Upstream commit 0cdb8ff6ebbac55f38933f4621215784887b400e ]
 
-CPU port should be B53_CPU_PORT instead of B53_CPU_PORT_25 for
-B53_PVLAN_PORT_MASK register.
+There is a requirement to exit EMLSR if there wasn't enough throughput
+in the secondary link.
+This is checked in check_tpt_wk, which runs every 5 seconds in a high
+throughput scenario (when the throughput blocker isn't set)
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-14-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+It can happen that this worker is running immediately after we entered
+EMLSR, and in that case the secondary link didn't have a chance to have
+throughput. In that case we will exit EMLSR for no good reason.
+
+Fix this by tracking the time we entered EMLSR, and in the worker make
+sure that 5 seconds passed from when we entered EMLSR. If not, don't
+check the secondary link throughput.
+
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250612144708.c680f8d7dc37.I8a02d1e8d99df3789da8d5714f19b31a865a61ff@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mld/iface.h    | 3 +++
+ drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 1 +
+ drivers/net/wireless/intel/iwlwifi/mld/mlo.c      | 8 +++++---
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 184946e8cee9..55e1844a5e9c 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -529,6 +529,10 @@ void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
- 	unsigned int i;
- 	u16 pvlan;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/iface.h b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
+index 49e2ce65557d..f64d0dcbb178 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/iface.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/iface.h
+@@ -87,6 +87,8 @@ enum iwl_mld_emlsr_exit {
+  * @last_exit_reason: Reason for the last EMLSR exit
+  * @last_exit_ts: Time of the last EMLSR exit (if @last_exit_reason is non-zero)
+  * @exit_repeat_count: Number of times EMLSR was exited for the same reason
++ * @last_entry_ts: the time of the last EMLSR entry (if iwl_mld_emlsr_active()
++ *	is true)
+  * @unblock_tpt_wk: Unblock EMLSR because the throughput limit was reached
+  * @check_tpt_wk: a worker to check if IWL_MLD_EMLSR_BLOCKED_TPT should be
+  *	added, for example if there is no longer enough traffic.
+@@ -105,6 +107,7 @@ struct iwl_mld_emlsr {
+ 		enum iwl_mld_emlsr_exit last_exit_reason;
+ 		unsigned long last_exit_ts;
+ 		u8 exit_repeat_count;
++		unsigned long last_entry_ts;
+ 	);
  
-+	/* BCM5325 CPU port is at 8 */
-+	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
-+		cpu_port = B53_CPU_PORT;
-+
- 	/* Enable the IMP port to be in the same VLAN as the other ports
- 	 * on a per-port basis such that we only have Port i and IMP in
- 	 * the same VLAN.
+ 	struct wiphy_work unblock_tpt_wk;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+index 4ba050397632..c1e56c4010da 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
+@@ -1002,6 +1002,7 @@ int iwl_mld_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 
+ 		/* Indicate to mac80211 that EML is enabled */
+ 		vif->driver_flags |= IEEE80211_VIF_EML_ACTIVE;
++		mld_vif->emlsr.last_entry_ts = jiffies;
+ 
+ 		if (vif->active_links & BIT(mld_vif->emlsr.selected_links))
+ 			mld_vif->emlsr.primary = mld_vif->emlsr.selected_primary;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+index dba5379ed009..d71259ce1db1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/mlo.c
+@@ -530,10 +530,12 @@ void iwl_mld_emlsr_check_tpt(struct wiphy *wiphy, struct wiphy_work *wk)
+ 	/*
+ 	 * TPT is unblocked, need to check if the TPT criteria is still met.
+ 	 *
+-	 * If EMLSR is active, then we also need to check the secondar link
+-	 * requirements.
++	 * If EMLSR is active for at least 5 seconds, then we also
++	 * need to check the secondary link requirements.
+ 	 */
+-	if (iwl_mld_emlsr_active(vif)) {
++	if (iwl_mld_emlsr_active(vif) &&
++	    time_is_before_jiffies(mld_vif->emlsr.last_entry_ts +
++				   IWL_MLD_TPT_COUNT_WINDOW)) {
+ 		sec_link_id = iwl_mld_get_other_link(vif, iwl_mld_get_primary_link(vif));
+ 		sec_link = iwl_mld_link_dereference_check(mld_vif, sec_link_id);
+ 		if (WARN_ON_ONCE(!sec_link))
 -- 
 2.39.5
 
