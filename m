@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-170327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9E2B2A37F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2FFB2A981
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C56DD6216AF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AD861BA6BCC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DA13218CA;
-	Mon, 18 Aug 2025 13:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C2934AB1D;
+	Mon, 18 Aug 2025 14:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYWFUEqn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUdfbNst"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051B1218AAB;
-	Mon, 18 Aug 2025 13:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E4234AB12;
+	Mon, 18 Aug 2025 14:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522277; cv=none; b=vGdIvEtdo9KUZHNiK04atxLzzGMNGK9muVkziF3U7k0pRjnfUEccGvSn+05AGy0UEa8jVN9S2eVcz9COIAZfsiBQkHddgzDUagY8m3dCAu9PQQ6BgIpe84ISXuvIeVeCg4L3oDO7M/c8aPtgVZbcbHX1WRdxwZ7g/sFmZSSkrI8=
+	t=1755525699; cv=none; b=iNMUxksvMCixGe3qK62LW++DjQz0N9NuIAjJHLQYAuvcfdSzmZpJfZ7+fVcGGbJZXRAz/RHmt8TnarIZ6kn/g+/DCP5LDlsjBRDmtMRrzYywtZJXR07hsXan0eltvQlSm4prIDXgKxMYLOKUs/3YStuCVwi+g4vMpxo3UfeW40w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522277; c=relaxed/simple;
-	bh=JxhvUy1otdYHP84+h2fhnIF2EVbGx174ymEyNsM05Wk=;
+	s=arc-20240116; t=1755525699; c=relaxed/simple;
+	bh=dDjsH4FMrPsfi1oK42WtABQO5wCfEzsP0AtuzmWgxsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fON2KHtr8+UFZHlXbrxc/rvxtl6KdJKriOKjHAjhqMNY+ut0y9N/NUaiG+kzDtHoygkggsKJclaZfgx1Lv5XSPwnlZPDTXOvOy5w3a1zHEh8zbdzC7qgKu541M0DJbaPwInyrMCfkC7qseP+cHk9zbfpT+m6eM/cHdobVmAltKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYWFUEqn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6972DC4CEEB;
-	Mon, 18 Aug 2025 13:04:36 +0000 (UTC)
+	 MIME-Version; b=ZywsG5VHPcdc8yCra8yhcbH1TV9ek36s9pgOP7c8qRRII+8HE9HYoI3lOGWA5PCiU8SBVGZLJwlXVXwKcQvQQllpXyfCBH8iq3O+FYkG3ljXQ1/smgTerqk89HrVNzAA9gj3jBFrHY/lw1SMrGgWXlc/vjBGLNBqiicaHNkM90w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUdfbNst; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E41C4CEEB;
+	Mon, 18 Aug 2025 14:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522276;
-	bh=JxhvUy1otdYHP84+h2fhnIF2EVbGx174ymEyNsM05Wk=;
+	s=korg; t=1755525699;
+	bh=dDjsH4FMrPsfi1oK42WtABQO5wCfEzsP0AtuzmWgxsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYWFUEqnhAT8qb7KKNvzWThmh7X+a9Q97TLeaK5R7tfP7vUWnTkwy1Flx66qJyFSl
-	 DxQsiFK+oivgm0kX8YMVoj35qrAkT1g25Uk+0oynja+UlkCN070DlQ07/hoCMLsK1W
-	 0whjX/78M8pevrhVRNojuZRcR1CMEiDEsJnUFnzk=
+	b=EUdfbNstw9nhblMBFH9PmvpZzz8j4juJ4fH2RjH0SWmGvTZHaOkOntP4QXxKcEcxZ
+	 MLOB1eKuA4KN+9y1ckXYHOyse8VomQ3npfYzfZ7Mh8il4mG2YMzPgBReXt5ftFePLU
+	 vVQ4QSyqpVx+ItezDSyRCzrPxq5Uoovd3ZJRNOgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-	Qi Xi <xiqi2@huawei.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 269/444] rcu: Fix rcu_read_unlock() deadloop due to IRQ work
+Subject: [PATCH 6.16 308/570] rcutorture: Fix rcutorture_one_extend_check() splat in RT kernels
 Date: Mon, 18 Aug 2025 14:44:55 +0200
-Message-ID: <20250818124458.914310816@linuxfoundation.org>
+Message-ID: <20250818124517.738636363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,161 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes <joelagnelf@nvidia.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit b41642c87716bbd09797b1e4ea7d904f06c39b7b ]
+[ Upstream commit 8d71351d88e478d3c4e945e3218e97ec677fd807 ]
 
-During rcu_read_unlock_special(), if this happens during irq_exit(), we
-can lockup if an IPI is issued. This is because the IPI itself triggers
-the irq_exit() path causing a recursive lock up.
+For built with CONFIG_PREEMPT_RT=y kernels, running rcutorture
+tests resulted in the following splat:
 
-This is precisely what Xiongfeng found when invoking a BPF program on
-the trace_tick_stop() tracepoint As shown in the trace below. Fix by
-managing the irq_work state correctly.
+[   68.797425] rcutorture_one_extend_check during change: Current 0x1  To add 0x1  To remove 0x0  preempt_count() 0x0
+[   68.797533] WARNING: CPU: 2 PID: 512 at kernel/rcu/rcutorture.c:1993 rcutorture_one_extend_check+0x419/0x560 [rcutorture]
+[   68.797601] Call Trace:
+[   68.797602]  <TASK>
+[   68.797619]  ? lockdep_softirqs_off+0xa5/0x160
+[   68.797631]  rcutorture_one_extend+0x18e/0xcc0 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
+[   68.797646]  ? local_clock+0x19/0x40
+[   68.797659]  rcu_torture_one_read+0xf0/0x280 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
+[   68.797678]  ? __pfx_rcu_torture_one_read+0x10/0x10 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
+[   68.797804]  ? __pfx_rcu_torture_timer+0x10/0x10 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
+[   68.797815] rcu-torture: rcu_torture_reader task started
+[   68.797824] rcu-torture: Creating rcu_torture_reader task
+[   68.797824]  rcu_torture_reader+0x238/0x580 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
+[   68.797836]  ? kvm_sched_clock_read+0x15/0x30
 
-irq_exit()
-  __irq_exit_rcu()
-    /* in_hardirq() returns false after this */
-    preempt_count_sub(HARDIRQ_OFFSET)
-    tick_irq_exit()
-      tick_nohz_irq_exit()
-	    tick_nohz_stop_sched_tick()
-	      trace_tick_stop()  /* a bpf prog is hooked on this trace point */
-		   __bpf_trace_tick_stop()
-		      bpf_trace_run2()
-			    rcu_read_unlock_special()
-                              /* will send a IPI to itself */
-			      irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
+Disable BH does not change the SOFTIRQ corresponding bits in
+preempt_count() for RT kernels, this commit therefore use
+softirq_count() to check the if BH is disabled.
 
-A simple reproducer can also be obtained by doing the following in
-tick_irq_exit(). It will hang on boot without the patch:
-
-  static inline void tick_irq_exit(void)
-  {
- +	rcu_read_lock();
- +	WRITE_ONCE(current->rcu_read_unlock_special.b.need_qs, true);
- +	rcu_read_unlock();
- +
-
-Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Closes: https://lore.kernel.org/all/9acd5f9f-6732-7701-6880-4b51190aa070@huawei.com/
-Tested-by: Qi Xi <xiqi2@huawei.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
 Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Reviewed-by: "Paul E. McKenney" <paulmck@kernel.org>
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-[neeraj: Apply Frederic's suggested fix for PREEMPT_RT]
 Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree.h        | 13 ++++++++++++-
- kernel/rcu/tree_plugin.h | 37 ++++++++++++++++++++++++++-----------
- 2 files changed, 38 insertions(+), 12 deletions(-)
+ kernel/rcu/rcutorture.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index 1bba2225e744..f99677bf97ca 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -174,6 +174,17 @@ struct rcu_snap_record {
- 	unsigned long   jiffies;	/* Track jiffies value */
- };
- 
-+/*
-+ * An IRQ work (deferred_qs_iw) is used by RCU to get the scheduler's attention.
-+ * to report quiescent states at the soonest possible time.
-+ * The request can be in one of the following states:
-+ * - DEFER_QS_IDLE: An IRQ work is yet to be scheduled.
-+ * - DEFER_QS_PENDING: An IRQ work was scheduled but either not yet run, or it
-+ *                     ran and we still haven't reported a quiescent state.
-+ */
-+#define DEFER_QS_IDLE		0
-+#define DEFER_QS_PENDING	1
-+
- /* Per-CPU data for read-copy update. */
- struct rcu_data {
- 	/* 1) quiescent-state and grace-period handling : */
-@@ -191,7 +202,7 @@ struct rcu_data {
- 					/*  during and after the last grace */
- 					/* period it is aware of. */
- 	struct irq_work defer_qs_iw;	/* Obtain later scheduler attention. */
--	bool defer_qs_iw_pending;	/* Scheduler attention pending? */
-+	int defer_qs_iw_pending;	/* Scheduler attention pending? */
- 	struct work_struct strict_work;	/* Schedule readers for strict GPs. */
- 
- 	/* 2) batch handling */
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 27ab715569f2..edcf534fe082 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -485,13 +485,16 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
- 	struct rcu_node *rnp;
- 	union rcu_special special;
- 
-+	rdp = this_cpu_ptr(&rcu_data);
-+	if (rdp->defer_qs_iw_pending == DEFER_QS_PENDING)
-+		rdp->defer_qs_iw_pending = DEFER_QS_IDLE;
-+
- 	/*
- 	 * If RCU core is waiting for this CPU to exit its critical section,
- 	 * report the fact that it has exited.  Because irqs are disabled,
- 	 * t->rcu_read_unlock_special cannot change.
- 	 */
- 	special = t->rcu_read_unlock_special;
--	rdp = this_cpu_ptr(&rcu_data);
- 	if (!special.s && !rdp->cpu_no_qs.b.exp) {
- 		local_irq_restore(flags);
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 70ec0f21abc3..1d4635f8bb43 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -464,7 +464,7 @@ rcu_read_delay(struct torture_random_state *rrsp, struct rt_read_seg *rtrsp)
+ 	    !(torture_random(rrsp) % (nrealreaders * 2000 * longdelay_ms))) {
+ 		started = cur_ops->get_gp_seq();
+ 		ts = rcu_trace_clock_local();
+-		if (preempt_count() & (SOFTIRQ_MASK | HARDIRQ_MASK))
++		if ((preempt_count() & HARDIRQ_MASK) || softirq_count())
+ 			longdelay_ms = 5; /* Avoid triggering BH limits. */
+ 		mdelay(longdelay_ms);
+ 		rtrsp->rt_delay_ms = longdelay_ms;
+@@ -1930,7 +1930,7 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
  		return;
-@@ -628,7 +631,23 @@ static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
  
- 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
- 	local_irq_save(flags);
--	rdp->defer_qs_iw_pending = false;
+ 	WARN_ONCE((curstate & (RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH)) &&
+-		  !(preempt_count() & SOFTIRQ_MASK), ROEC_ARGS);
++		  !softirq_count(), ROEC_ARGS);
+ 	WARN_ONCE((curstate & (RCUTORTURE_RDR_PREEMPT | RCUTORTURE_RDR_SCHED)) &&
+ 		  !(preempt_count() & PREEMPT_MASK), ROEC_ARGS);
+ 	WARN_ONCE(cur_ops->readlock_nesting &&
+@@ -1944,7 +1944,7 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
+ 
+ 	WARN_ONCE(cur_ops->extendables &&
+ 		  !(curstate & (RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH)) &&
+-		  (preempt_count() & SOFTIRQ_MASK), ROEC_ARGS);
++		  softirq_count(), ROEC_ARGS);
+ 
+ 	/*
+ 	 * non-preemptible RCU in a preemptible kernel uses preempt_disable()
+@@ -1965,6 +1965,9 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
+ 	if (!IS_ENABLED(CONFIG_PREEMPT_RCU))
+ 		mask |= RCUTORTURE_RDR_PREEMPT | RCUTORTURE_RDR_SCHED;
+ 
++	if (IS_ENABLED(CONFIG_PREEMPT_RT) && softirq_count())
++		mask |= RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH;
 +
-+	/*
-+	 * If the IRQ work handler happens to run in the middle of RCU read-side
-+	 * critical section, it could be ineffective in getting the scheduler's
-+	 * attention to report a deferred quiescent state (the whole point of the
-+	 * IRQ work). For this reason, requeue the IRQ work.
-+	 *
-+	 * Basically, we want to avoid following situation:
-+	 * 1. rcu_read_unlock() queues IRQ work (state -> DEFER_QS_PENDING)
-+	 * 2. CPU enters new rcu_read_lock()
-+	 * 3. IRQ work runs but cannot report QS due to rcu_preempt_depth() > 0
-+	 * 4. rcu_read_unlock() does not re-queue work (state still PENDING)
-+	 * 5. Deferred QS reporting does not happen.
-+	 */
-+	if (rcu_preempt_depth() > 0)
-+		WRITE_ONCE(rdp->defer_qs_iw_pending, DEFER_QS_IDLE);
-+
- 	local_irq_restore(flags);
+ 	WARN_ONCE(cur_ops->readlock_nesting && !(curstate & mask) &&
+ 		  cur_ops->readlock_nesting() > 0, ROEC_ARGS);
  }
- 
-@@ -675,17 +694,13 @@ static void rcu_read_unlock_special(struct task_struct *t)
- 			set_tsk_need_resched(current);
- 			set_preempt_need_resched();
- 			if (IS_ENABLED(CONFIG_IRQ_WORK) && irqs_were_disabled &&
--			    expboost && !rdp->defer_qs_iw_pending && cpu_online(rdp->cpu)) {
-+			    expboost && rdp->defer_qs_iw_pending != DEFER_QS_PENDING &&
-+			    cpu_online(rdp->cpu)) {
- 				// Get scheduler to re-evaluate and call hooks.
- 				// If !IRQ_WORK, FQS scan will eventually IPI.
--				if (IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD) &&
--				    IS_ENABLED(CONFIG_PREEMPT_RT))
--					rdp->defer_qs_iw = IRQ_WORK_INIT_HARD(
--								rcu_preempt_deferred_qs_handler);
--				else
--					init_irq_work(&rdp->defer_qs_iw,
--						      rcu_preempt_deferred_qs_handler);
--				rdp->defer_qs_iw_pending = true;
-+				rdp->defer_qs_iw =
-+					IRQ_WORK_INIT_HARD(rcu_preempt_deferred_qs_handler);
-+				rdp->defer_qs_iw_pending = DEFER_QS_PENDING;
- 				irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
- 			}
- 		}
 -- 
 2.39.5
 
