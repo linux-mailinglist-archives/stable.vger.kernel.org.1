@@ -1,55 +1,70 @@
-Return-Path: <stable+bounces-171521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B46B2AA68
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:32:03 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F907B2A664
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450355A3DCE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F65E4E3653
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F834334706;
-	Mon, 18 Aug 2025 14:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD7F224B05;
+	Mon, 18 Aug 2025 13:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxMXsq38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+mE40Du"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A46F334700;
-	Mon, 18 Aug 2025 14:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63910335BA0;
+	Mon, 18 Aug 2025 13:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526210; cv=none; b=HiA8zclahzk58zy4xKV308/bpi8ijwv6nDBblHuk5K9nigzxkzXeP8dD0bhCVQ+LZbvSw8Rqy6dB7k542cWyMAil+c6MZoBAOwsAeXPCC70F7XW7ajlZJwcGVRNuZzUeZreENFKMlNxyCFYORB5xC23prOGwl35X0at+xOPJrSE=
+	t=1755524500; cv=none; b=s2a09oCgqpM0esmUuASB6A/pAw3cTAu1JZ0kvyPoyzTclTjK+Hqa3laRP1mxexcirO2vvjTVAp6uoibQn2/3x54mOI6w3CeJxJnGwdXtgkTBdmj+NXZrnKpFabgaZCj4gNw5PKRipD6gcCe2uSYzE5AQiVU1PnxBiaae4vtS3RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526210; c=relaxed/simple;
-	bh=edy7oyT8Usr9ZC61e72XcdVnnUeiqRb3j/KTKiEMoj8=;
+	s=arc-20240116; t=1755524500; c=relaxed/simple;
+	bh=/eSPlJrwaHnUjs4D/EeIAjsurSn80KmJPOBRPG8oHRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqT1faK/W+uH/gh8oIiMUVHnT9k3X+0rm0LTH5Akk3ZE73Hb/R48G88BJpj1iB0fnCt2B9z2MEAdgL3jZMOsFrDY5S9698aRM9UIPYXBGEXilxGY+w7+SOJBXUTYu+6XH/bEuyAc8s/Zs3zrnJEA0DvgKXEbL+GyW9niwCmKcfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxMXsq38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C102C4CEEB;
-	Mon, 18 Aug 2025 14:10:09 +0000 (UTC)
+	 MIME-Version; b=G2umSwvfWzjWcKtuFdxETuUyh3VVUGNla9C+pCzEPJgHyEQGdV28OgboKpzC3L0990SiNuvoL2YYax7Qjl0EuyPabeRHVKrV0QKxB5/OsA0gA3TFwwDce6y8uLCTd+5QtmCgAhGHdPKR27rCgKaozR3/hDqT2ExTzvQLx2BaSws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+mE40Du; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72BFC116B1;
+	Mon, 18 Aug 2025 13:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526210;
-	bh=edy7oyT8Usr9ZC61e72XcdVnnUeiqRb3j/KTKiEMoj8=;
+	s=korg; t=1755524500;
+	bh=/eSPlJrwaHnUjs4D/EeIAjsurSn80KmJPOBRPG8oHRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxMXsq38U9A8OkXHSrXE+IOYRVcVSNsJvIIK4VLDDWGM/tu96PeCpn9bDmYre7qFk
-	 Pnz01o/CMo3ZPONy2CDTuQy35q4dtZnCgDVp4jhnLP8oR4JjI9CtNDZQ0RDzqo1Ad8
-	 +eUVJussHqrHza6MSMGqzwZmiGHP2txThBWfgktI=
+	b=r+mE40DumWNIBSG+AAHmuX3yKgAEYuxmh6kGGS0H38zHpRlSN/GcoRMhAN8ipx2Hy
+	 Vtz3XEU6IjiCxKSvDUDCTZ8ai7Rmt9SKhokscy8n/W4MJXP/+goZevUrKajsUHIlRx
+	 abi5qRA1a74gD32xQt9u3VFQ7wD28anFXjD+0tmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Alistair Popple <apopple@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Mariano Pache <npache@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 490/570] samples/damon/mtier: support boot time enable setup
+Subject: [PATCH 6.15 491/515] mm/huge_memory: dont ignore queried cachemode in vmf_insert_pfn_pud()
 Date: Mon, 18 Aug 2025 14:47:57 +0200
-Message-ID: <20250818124524.753272322@linuxfoundation.org>
+Message-ID: <20250818124517.338155682@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +76,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 964314344eab7bc43e38a32be281c5ea0609773b upstream.
+commit 09fefdca80aebd1023e827cb0ee174983d829d18 upstream.
 
-If 'enable' parameter of the 'mtier' DAMON sample module is set at boot
-time via the kernel command line, memory allocation is tried before the
-slab is initialized.  As a result kernel NULL pointer dereference BUG can
-happen.  Fix it by checking the initialization status.
+Patch series "mm/huge_memory: vmf_insert_folio_*() and
+vmf_insert_pfn_pud() fixes", v3.
 
-Link: https://lkml.kernel.org/r/20250706193207.39810-4-sj@kernel.org
-Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
-Signed-off-by: SeongJae Park <sj@kernel.org>
+While working on improving vm_normal_page() and friends, I stumbled over
+this issues: refcounted "normal" folios must not be marked using
+pmd_special() / pud_special().  Otherwise, we're effectively telling the
+system that these folios are no "normal", violating the rules we
+documented for vm_normal_page().
+
+Fortunately, there are not many pmd_special()/pud_special() users yet.  So
+far there doesn't seem to be serious damage.
+
+Tested using the ndctl tests ("ndctl:dax" suite).
+
+
+This patch (of 3):
+
+We set up the cache mode but ...  don't forward the updated pgprot to
+insert_pfn_pud().
+
+Only a problem on x86-64 PAT when mapping PFNs using PUDs that require a
+special cachemode.
+
+Fix it by using the proper pgprot where the cachemode was setup.
+
+It is unclear in which configurations we would get the cachemode wrong:
+through vfio seems possible.  Getting cachemodes wrong is usually ...
+bad.  As the fix is easy, let's backport it to stable.
+
+Identified by code inspection.
+
+Link: https://lkml.kernel.org/r/20250613092702.1943533-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20250613092702.1943533-2-david@redhat.com
+Fixes: 7b806d229ef1 ("mm: remove vmf_insert_pfn_xxx_prot() for huge page-table entries")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Tested-by: Dan Williams <dan.j.williams@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Mariano Pache <npache@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/damon/mtier.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ mm/huge_memory.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -151,6 +151,8 @@ static void damon_sample_mtier_stop(void
- 	damon_destroy_ctx(ctxs[1]);
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1516,10 +1516,9 @@ static pud_t maybe_pud_mkwrite(pud_t pud
  }
  
-+static bool init_called;
-+
- static int damon_sample_mtier_enable_store(
- 		const char *val, const struct kernel_param *kp)
+ static void insert_pfn_pud(struct vm_area_struct *vma, unsigned long addr,
+-		pud_t *pud, pfn_t pfn, bool write)
++		pud_t *pud, pfn_t pfn, pgprot_t prot, bool write)
  {
-@@ -176,6 +178,14 @@ static int damon_sample_mtier_enable_sto
+ 	struct mm_struct *mm = vma->vm_mm;
+-	pgprot_t prot = vma->vm_page_prot;
+ 	pud_t entry;
  
- static int __init damon_sample_mtier_init(void)
- {
-+	int err = 0;
-+
-+	init_called = true;
-+	if (enable) {
-+		err = damon_sample_mtier_start();
-+		if (err)
-+			enable = false;
-+	}
- 	return 0;
- }
+ 	if (!pud_none(*pud)) {
+@@ -1581,7 +1580,7 @@ vm_fault_t vmf_insert_pfn_pud(struct vm_
+ 	track_pfn_insert(vma, &pgprot, pfn);
  
+ 	ptl = pud_lock(vma->vm_mm, vmf->pud);
+-	insert_pfn_pud(vma, addr, vmf->pud, pfn, write);
++	insert_pfn_pud(vma, addr, vmf->pud, pfn, pgprot, write);
+ 	spin_unlock(ptl);
+ 
+ 	return VM_FAULT_NOPAGE;
+@@ -1625,7 +1624,7 @@ vm_fault_t vmf_insert_folio_pud(struct v
+ 		add_mm_counter(mm, mm_counter_file(folio), HPAGE_PUD_NR);
+ 	}
+ 	insert_pfn_pud(vma, addr, vmf->pud, pfn_to_pfn_t(folio_pfn(folio)),
+-		write);
++		       vma->vm_page_prot, write);
+ 	spin_unlock(ptl);
+ 
+ 	return VM_FAULT_NOPAGE;
 
 
 
