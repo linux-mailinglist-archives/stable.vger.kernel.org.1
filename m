@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-171472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F31FB2A94C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7735B2AA88
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44B31B624B6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4ED6E0E03
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3443322548;
-	Mon, 18 Aug 2025 14:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CDA322A0B;
+	Mon, 18 Aug 2025 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHxHCFpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQ7S5lhi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AD234984;
-	Mon, 18 Aug 2025 14:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42922321F43;
+	Mon, 18 Aug 2025 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526038; cv=none; b=bdMpnrP85c78OLTFMtXWSWbvyHd5LyfMQgxMdij2Sf+Co+KAD/9TOwtCnIgA3w5M3toQXZxqFsz20PdOhhSJRYg6wMjil6180MhloNnLmPTzMcCZbRDd6HzWGn23966K1Jt3SIrTd/PkUb+DaRmcVK9CGErHleB68yzcJUDdnRI=
+	t=1755526059; cv=none; b=slVPW/4FuB2SuX3An63CX23MdZcjEfRwbR/QyRtPEEdZSg3YYrQ7KMSSCYWWNp0NWxZaXmlzswQvPH9neH25Mv6TwuwMLBZ+lkz+8ijPrIn/i4MDm49pY96Rh3yy5N9Cshi8eaLRYMMyQNldG2fUf1cWsBHQp3iBGiRYOcWalYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526038; c=relaxed/simple;
-	bh=C76PeATUBMEAnu/b9miGHNvLkm7bdENGZ7dGRN/sxBw=;
+	s=arc-20240116; t=1755526059; c=relaxed/simple;
+	bh=4VuVLXAvx81QmyjiGPEm8LD9VK3wLJT2KoHlfTyfFlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dy/ws0INW1LJvPqHdehONuH9hQNpbA0W5mQ07b4CkRXLFQMtYONFKp2PHngUt9Sva8SxTVVBs8wVyxCttzBLBpe4ik9Q4ABMmoJcTvC7jbGfVbq4+HVJBx5mWUyf5bHhiKc99j/Yru7Rh+a0RsezM4uxJNDnv2ffJGk/q/ZsRWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHxHCFpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD66C4CEEB;
-	Mon, 18 Aug 2025 14:07:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S/rih0w9ZDH3yS/ta7U9WERecySc0DxH4z+D2yFZ3o/YqfB+vX75rK8soau4GNPZDwlbIKcOiGFxFe7aLyE51U5AB47mly5R4IFruD9066d+75gFJIdZtqbsdvZgaPDaIebDwIYB3kMAqe3CO1Z/HbH9qKSaYzvg88keNHLeBCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQ7S5lhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203A6C4CEEB;
+	Mon, 18 Aug 2025 14:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526038;
-	bh=C76PeATUBMEAnu/b9miGHNvLkm7bdENGZ7dGRN/sxBw=;
+	s=korg; t=1755526059;
+	bh=4VuVLXAvx81QmyjiGPEm8LD9VK3wLJT2KoHlfTyfFlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHxHCFpK+quyzNgNUiqm07wQ4y658m4FMCsl+S2otEOLWizETIdF1uhcvoOaqN+xO
-	 Ljwvh4+hK7KQD8ChlKJhQwqlYB8Qjqgw2q2WEnjAHlShihi4Uj5kJvPOrofU7iTt5C
-	 oOEJ62RJnvigrBsrK6/BJUC5fZpOE+9fiZPDEQ/E=
+	b=YQ7S5lhihtz2pRaP8WQVjkQb3h9SGBRBLIXeVKwoK0k5mdymzNP1hFEFz47t2o2/9
+	 +Q6FiMZZi/qibyGEviBZR5Ht7PGDANgvm6zybs3oLDXs03boc5m1dMOmLVvtYvewHh
+	 g7MBqEbyV5OWKBg6rUyy1kK/TlXxFLrCzIGz80gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	=?UTF-8?q?Micha=C3=ABl=20Melchiore?= <rohel01@gmail.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 413/570] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
-Date: Mon, 18 Aug 2025 14:46:40 +0200
-Message-ID: <20250818124521.755800897@linuxfoundation.org>
+Subject: [PATCH 6.16 414/570] media: uvcvideo: Add quirk for HP Webcam HD 2300
+Date: Mon, 18 Aug 2025 14:46:41 +0200
+Message-ID: <20250818124521.794003252@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -60,51 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
+[ Upstream commit 53b0b80e5240fec7c5a420bffb310edc83faf4fd ]
 
-In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash.
+HP Webcam HD 2300 does not seem to flip the FID bit according to spec.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          239 Miscellaneous Device
+  bDeviceSubClass         2 [unknown]
+  bDeviceProtocol         1 Interface Association
+  bMaxPacketSize0        64
+  idVendor           0x03f0 HP, Inc
+  idProduct          0xe207 HP Webcam HD 2300
+  bcdDevice           10.20
+  iManufacturer           3 Hewlett Packard
+  iProduct                1 HP Webcam HD 2300
+  iSerial                 0
+  bNumConfigurations      1
 
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reported-by: Michaël Melchiore <rohel01@gmail.com>
+Closes: https://lore.kernel.org/linux-media/CA+q66aRvTigH15cUyfvzPJ2mfsDFMt=CjuYNwvAZb29w8b1KDA@mail.gmail.com
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250602-uvc-hp-quirk-v1-1-7047d94d679f@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index 360a2d7dd3ed..7d3a994b7cc4 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2193,6 +2193,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1;
- 	u16 i = 1000;
-+	if (msg[0].len < 3)
-+		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
- 
- 	while (n_overflow == 1 && i) {
-@@ -2212,6 +2214,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
- 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
- 	u8 n_overflow = 1, n_empty = 1;
- 	u16 i = 1000;
-+	if (msg[0].len < 1 || msg[1].len < 2)
-+		return -EOPNOTSUPP;
- 	u16 serpar_num = msg[0].buf[0];
- 	u16 read_word;
- 
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index da24a655ab68..bd875d35ec81 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2514,6 +2514,15 @@ static const struct uvc_device_info uvc_quirk_force_y8 = {
+  * Sort these by vendor/product ID.
+  */
+ static const struct usb_device_id uvc_ids[] = {
++	/* HP Webcam HD 2300 */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x03f0,
++	  .idProduct		= 0xe207,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= (kernel_ulong_t)&uvc_quirk_stream_no_fid },
+ 	/* Quanta ACER HD User Facing */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
 -- 
 2.39.5
 
