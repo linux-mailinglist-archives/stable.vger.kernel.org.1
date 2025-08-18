@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62D8B2A254
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5D4B2A4E3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41E3164DA2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:49:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C53097BDB7A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A673218D7;
-	Mon, 18 Aug 2025 12:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3BD21FF23;
+	Mon, 18 Aug 2025 13:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qs7DAnzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+Y1NViq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C6929B0;
-	Mon, 18 Aug 2025 12:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D2221507C;
+	Mon, 18 Aug 2025 13:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521396; cv=none; b=pFmNWVTDj6bZS3gwrVbIu4mZ+xeR1L+GDB2oyif9ouAOUmNbeSggsOVhZsMMDMfbFMn4sTThMV07oaT0Egao0tQJmJF/nbfDnCuNrcCP51Q5o5dsM0EPAqQcZ+FcVZ672oPS7QjP3I5tFcMd+83e31xnfRuL/eIlXbvXSV6kWZc=
+	t=1755523009; cv=none; b=SA58mUbvpCKSIYsYn2potcWEXrDw7TdCqDtMKXFSvKUd2iK8TviFiArpn8acLMSEIuvtwJGpLnYFDfIxNT4bOh5aMQNKsrNDY2BzTO8xSUdByUa3Qk7zxvs0WedVS4pDTE1dQmBxVBfii/mFprd4xhoEq4y5icBLKZKPoGHRKZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521396; c=relaxed/simple;
-	bh=fLtlrlUK+sLikI+OI1sYqwpYROMbFh2lsk/RqTlrlTU=;
+	s=arc-20240116; t=1755523009; c=relaxed/simple;
+	bh=dOZfL15U59E8KVITkrA6oZt6xgxV5mRmAAgHiGzqIOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibW3G5nG5QluC89h/reZXJHzU1aw7QDdnXjeK4sJ9DKFoPZKTnjWkmz8RhdH2R2/AR5kwTPkwC8FFamhfT48qCOeeE9uTEdRJbuaOel+EhjyhgvGi6pUorKduWKWFxEtdnwL+f8G4HC3b7LRF3f3uUce3Z/yvl5FPmwBXGf1Z6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qs7DAnzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39198C4CEEB;
-	Mon, 18 Aug 2025 12:49:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PpudGMFpltIRHiuXGQ1bV/jtFl0KayMddFVobW6Wk0T+NHtFT8g7T+YtWOjqkXg3hkOid3UFsQ2j4AbHXOI/1kMNZaPRHeCmkVYkJtVs8c32ylRGUGV3+B/au+j2SP+xhHLV/odfBn7L429mhGhaBfma5S2x6KstFUoYm6TPCG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+Y1NViq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0EFC4CEEB;
+	Mon, 18 Aug 2025 13:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521395;
-	bh=fLtlrlUK+sLikI+OI1sYqwpYROMbFh2lsk/RqTlrlTU=;
+	s=korg; t=1755523009;
+	bh=dOZfL15U59E8KVITkrA6oZt6xgxV5mRmAAgHiGzqIOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qs7DAnzFJ0V4T8Ys9l7xFS2dhYJi0XwTpEe/9CrTM9abxl46lqFx3aNeYAEDTWiIu
-	 xubWs5XhCMO8AScuNoyxr6Y6m6/faQG9l4rXdsJyMnSaAe1EVxcahUk5bjzZqmWHIk
-	 xXHCEx2TV3VQGHY2CWxKEtTlU6f6mpgi+fpI6bZQ=
+	b=U+Y1NViq054xX9T/8WhgdUCtEiyapDatk7m1z26QUOmqqE0ju9fdjKOpFV7UIZ3d7
+	 XtFPp7jVrb7sSgK8/+9NEj6LQsaY2FIxw/Q3kfJ712+5HOuJT2u3okneo/6pQwhNFT
+	 a+dSZRmF0Tor4QnFFCVyx6WRHn5dhFdZDT7x+Pnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 001/444] io_uring: dont use int for ABI
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.15 041/515] clk: samsung: gs101: fix CLK_DOUT_CMU_G3D_BUSD
 Date: Mon, 18 Aug 2025 14:40:27 +0200
-Message-ID: <20250818124448.940529531@linuxfoundation.org>
+Message-ID: <20250818124500.016999666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit cf73d9970ea4f8cace5d8f02d2565a2723003112 upstream.
+commit 29a9361f0b50be2b16d308695e30ee030fedea2c upstream.
 
-__kernel_rwf_t is defined as int, the actual size of which is
-implementation defined. It won't go well if some compiler / archs
-ever defines it as i64, so replace it with __u32, hoping that
-there is no one using i16 for it.
+Use the correct Linux clock ID when instantiating the G3D_BUSD
+div_clock.
 
+Fixes: 2c597bb7d66a ("clk: samsung: clk-gs101: Add cmu_top, cmu_misc and cmu_apm support")
 Cc: stable@vger.kernel.org
-Fixes: 2b188cc1bb857 ("Add io_uring IO interface")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/47c666c4ee1df2018863af3a2028af18feef11ed.1751412511.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-1-49daf1ff4592@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/io_uring.h |    2 +-
+ drivers/clk/samsung/clk-gs101.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -50,7 +50,7 @@ struct io_uring_sqe {
- 	};
- 	__u32	len;		/* buffer size or number of iovecs */
- 	union {
--		__kernel_rwf_t	rw_flags;
-+		__u32		rw_flags;
- 		__u32		fsync_flags;
- 		__u16		poll_events;	/* compatibility */
- 		__u32		poll32_events;	/* word-reversed for BE */
+--- a/drivers/clk/samsung/clk-gs101.c
++++ b/drivers/clk/samsung/clk-gs101.c
+@@ -1154,7 +1154,7 @@ static const struct samsung_div_clock cm
+ 	    CLK_CON_DIV_CLKCMU_G2D_MSCL, 0, 4),
+ 	DIV(CLK_DOUT_CMU_G3AA_G3AA, "dout_cmu_g3aa_g3aa", "gout_cmu_g3aa_g3aa",
+ 	    CLK_CON_DIV_CLKCMU_G3AA_G3AA, 0, 4),
+-	DIV(CLK_DOUT_CMU_G3D_SWITCH, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
++	DIV(CLK_DOUT_CMU_G3D_BUSD, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
+ 	    CLK_CON_DIV_CLKCMU_G3D_BUSD, 0, 4),
+ 	DIV(CLK_DOUT_CMU_G3D_GLB, "dout_cmu_g3d_glb", "gout_cmu_g3d_glb",
+ 	    CLK_CON_DIV_CLKCMU_G3D_GLB, 0, 4),
 
 
 
