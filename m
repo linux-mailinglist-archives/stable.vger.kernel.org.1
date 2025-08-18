@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56A8B2A7A9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE0FB2A248
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99C9D202BB7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38C53188D1AB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B5226FD9D;
-	Mon, 18 Aug 2025 13:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90433258ED7;
+	Mon, 18 Aug 2025 12:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0A416vmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wceiSKk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4637821D3DC;
-	Mon, 18 Aug 2025 13:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5421ABAA;
+	Mon, 18 Aug 2025 12:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524714; cv=none; b=L59b9NRcbMjEgUw7Khde80g3shIuYU6GhejmKwr+o9tsDyQQLVGbAvWnZqvGHWtmZwZ1cxc2gdyWPCEGAOXT/SfH18xxjZEH0OpLI0gugQoZsQyPUoPYyhgucmcuV/OxBKltcDRA8Bx2i0vyAVQNkAKwqS7qvQDId59o1AqHxUM=
+	t=1755521399; cv=none; b=K8jXfU5jFEdqN8MbPtfp7OFaZNTaxVRXCfDZphICdwhiChMrrpVFHadWFm5Y+y9Zbly5dCioFXWXgzLAsCVnVIcUeoBVmZAXvSa1gCB37uuFZZYEiALf9xC/mxFik2XkTthUwMb1Sz3JJ9qwkYbK48+BeqJ+MAU9k6T6FlJCegQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524714; c=relaxed/simple;
-	bh=tBhMnoe1lrRbIh/zve1vSTmx8BRKNxBZwimgCle28mg=;
+	s=arc-20240116; t=1755521399; c=relaxed/simple;
+	bh=2U0qhL68EeJxioRzFglX7aabtB2pvir/Oji2J0Vn1X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gjHso6UVHB4JXR6eC165l+mMXjbmLQ4ZEC5PWzzUkljVUq6qO24s5HNtpSQf8gK0yD6k2zVnRy94kP+pZKOiop7FWQPHLNx/a+4ZK2vYIrm45GzC+FrXbRu97M9b0bJFvqzOcSW+AUeUMZsdfra25jgg/tzxySg6fgY6EfoBL6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0A416vmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C167CC4CEEB;
-	Mon, 18 Aug 2025 13:45:13 +0000 (UTC)
+	 MIME-Version; b=tf9boqezHIhUDE8LvkYH3gMkCANqQojrcdDHrQN+2LOm0piSGaGN6LBH/EnIAd7gfNHXgF0XnfEjr18ddK32uYTBhLISToEnQgRnaYNvTtIda2vwp2oWPigYAww/EhbeZMs0ziiXR65spxLiEy1yMonVjXSnEkNQ9aA5KGjkp8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wceiSKk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E5DC4CEEB;
+	Mon, 18 Aug 2025 12:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524714;
-	bh=tBhMnoe1lrRbIh/zve1vSTmx8BRKNxBZwimgCle28mg=;
+	s=korg; t=1755521398;
+	bh=2U0qhL68EeJxioRzFglX7aabtB2pvir/Oji2J0Vn1X0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0A416vmRhJ3X07ZcsGX9qZaVIpHk8iXPe2rl0sb+ZTidkamOnVSey87HeLSF9snAY
-	 Bm83zOyeM66P4Mg1eZdwUCx4E/0wyrxJ3mbjI/lQWRGExQpd8zqKZ6qacUL5n+qVgQ
-	 YryVNclgYD8sk06YvB65Djkj9csV9gcTx7sBkh5w=
+	b=wceiSKk6fI4GtrRekrj9aJT8RQaaux+AM/5wAaMW5pJ/MMigSL/pRTzDKV3EGWDpd
+	 PksG/gMf0xGk2ISQVD9qfFJvFetv04+K/P2BC+ddsZ+03nfgQ328RxfTmdeEd64V5C
+	 WCIG8ANmzAQKdzEPu2/IRSGfW9R5R0qhksD0ePO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <siyanteng@cqsoftware.com.cn>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.16 040/570] LoongArch: vDSO: Remove -nostdlib complier flag
-Date: Mon, 18 Aug 2025 14:40:27 +0200
-Message-ID: <20250818124507.360643113@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 6.12 002/444] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
+Date: Mon, 18 Aug 2025 14:40:28 +0200
+Message-ID: <20250818124448.976701428@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit d35ec48fa6c8fe0cfa4a03155109fec7677911d4 upstream.
+commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
 
-Since $(LD) is directly used, hence -nostdlib is unneeded, MIPS has
-removed this, we should remove it too.
+UAC3 power domain descriptors need to be verified with its variable
+bLength for avoiding the unexpected OOB accesses by malicious
+firmware, too.
 
-bdbf2038fbf4 ("MIPS: VDSO: remove -nostdlib compiler flag").
-
-In fact, other architectures also use $(LD) now.
-
-fe00e50b2db8 ("ARM: 8858/1: vdso: use $(LD) instead of $(CC) to link VDSO")
-691efbedc60d ("arm64: vdso: use $(LD) instead of $(CC) to link VDSO")
-2ff906994b6c ("MIPS: VDSO: Use $(LD) instead of $(CC) to link VDSO")
-2b2a25845d53 ("s390/vdso: Use $(LD) instead of $(CC) to link vDSO")
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Yanteng Si <siyanteng@cqsoftware.com.cn>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/vdso/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/validate.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -36,7 +36,7 @@ endif
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
+ 	return d->bLength >= sizeof(*d) + 4 + 2;
+ }
  
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -nostdlib -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
++static bool validate_uac3_power_domain_unit(const void *p,
++					    const struct usb_desc_validator *v)
++{
++	const struct uac3_power_domain_descriptor *d = p;
++
++	if (d->bLength < sizeof(*d))
++		return false;
++	/* baEntities[] + wPDomainDescrStr */
++	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
++}
++
+ static bool validate_midi_out_jack(const void *p,
+ 				   const struct usb_desc_validator *v)
+ {
+@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
+ 	      struct uac3_clock_multiplier_descriptor),
+ 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
+ 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
++	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
+ 	{ } /* terminator */
+ };
  
- #
- # Shared build commands.
 
 
 
