@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498B0B2A9EE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A09D3B2A37E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F040C6E72D6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:13:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33C247B89A5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09328343D63;
-	Mon, 18 Aug 2025 14:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F78E31E0E4;
+	Mon, 18 Aug 2025 13:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="askemrNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/1tTv4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6C934E1B9;
-	Mon, 18 Aug 2025 14:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0613218D5;
+	Mon, 18 Aug 2025 13:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525817; cv=none; b=Zap6O87ITlCw7ihMOMF6MZUfyUimmOuzF0je0fPt/VLaZfQ8MSWeM6enXdnfq1V2b2qnUi3vKB7qqFIRkEt/wqmzo0I3biDN/BiZy3otXheM8tQiRT/giT0jNHVeWIsS4HJXKTFb1vKmMavO4nB+CDtNSdkb1pHMSXMWaUSBdnI=
+	t=1755522398; cv=none; b=IWCCTWELQB3yOhWgqLIxK1JLhoQsiNYM1DiHvF9MkeNGE7AGCn1LanHga3MTtRCJkf9JBuekNi/jK053nR0OJ5MbToAtE2XoQRFJ4Acg9CSLwtml6qVFOJccnaxZHm5o0Ods92+xOZ2XB4fo55ckQ8LYecalPh9fAlWHFC0kvGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525817; c=relaxed/simple;
-	bh=e56MxLzooYjlLaC8sISHTB8dPdz5Ai5lSMaP4Q/lVjA=;
+	s=arc-20240116; t=1755522398; c=relaxed/simple;
+	bh=EcrhdVbPiitH3S8G7XYUkIniCmXqU7FFZSNVYtD4Wsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FPUXs5zCQyqxMQVDt3l2CrBPzYC8koYeZhFe45AEtve6FoH33nZgYLE8Y6iRNOl+A2ff/+1LpgRXBwkpmsEeuMlixz9YI3wgtWZx7jpUIGXifb7MRt/soXoTwMSqcLmDpKwtNA9GAdhjp/US8ig+SxJdB3CqQpuc6dXkcPbTy08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=askemrNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2ACBC4CEEB;
-	Mon, 18 Aug 2025 14:03:36 +0000 (UTC)
+	 MIME-Version; b=HxG8da5lQeMVPAv6IXtAuVguCgFwR3BeUzthxDfP4DS05Pja+1cbSldkOkl64rC5usONfK4gbVoDnxNXrxU+aIrgSLtxQoup8GSQ2S4L7UaiU45gOwt11KUF69GZZj7U2e5B2USyFehHsgqZe43eBpS6wo0D8HU6/rwnm0Fz178=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/1tTv4F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB810C4CEEB;
+	Mon, 18 Aug 2025 13:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525817;
-	bh=e56MxLzooYjlLaC8sISHTB8dPdz5Ai5lSMaP4Q/lVjA=;
+	s=korg; t=1755522398;
+	bh=EcrhdVbPiitH3S8G7XYUkIniCmXqU7FFZSNVYtD4Wsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=askemrNSXY22ymvyIPRGX/Fov6w/xEbY65ngNa5al4DOzhoNslUGsCkFIElk3yGKL
-	 0lbBSjv+CKlkv3xXDnyrhlAXbPHVWcP62FAXbKjksUYOXWG8ubPzwdA0T7YQazZi/R
-	 PAAYL9iDVG9Sz1Klgf6SJkY4Rr7CyUVgmvQwtkiA=
+	b=S/1tTv4FbhZYaylzm9oS2LVIgrdLHn1zFrAxtfmUGAn2RJVWpE0ww1f+0/eK7xadx
+	 S7/Ftkeg2N38GCqeP3Fq+OZLhkUDHfDOGG8UzCkw1NeG2Z4aEnyjr0WygPES3Uf6ly
+	 C2u9QtiGQWIaDYTHwp5oR1h1N3RBfltQ60AK4Bgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emily Deng <Emily.Deng@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 343/570] drm/ttm: Should to return the evict error
-Date: Mon, 18 Aug 2025 14:45:30 +0200
-Message-ID: <20250818124519.075150941@linuxfoundation.org>
+Subject: [PATCH 6.12 305/444] RDMA: hfi1: fix possible divide-by-zero in find_hw_thread_mask()
+Date: Mon, 18 Aug 2025 14:45:31 +0200
+Message-ID: <20250818124500.382160242@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emily Deng <Emily.Deng@amd.com>
+From: Yury Norov [NVIDIA] <yury.norov@gmail.com>
 
-[ Upstream commit 4e16a9a00239db5d819197b9a00f70665951bf50 ]
+[ Upstream commit 59f7d2138591ef8f0e4e4ab5f1ab674e8181ad3a ]
 
-For the evict fail case, the evict error should be returned.
+The function divides number of online CPUs by num_core_siblings, and
+later checks the divider by zero. This implies a possibility to get
+and divide-by-zero runtime error. Fix it by moving the check prior to
+division. This also helps to save one indentation level.
 
-v2: Consider ENOENT case.
-
-v3: Abort directly when the eviction failed for some reason (except for -ENOENT)
- and not wait for the move to finish
-
-Signed-off-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250603091154.3472646-1-Emily.Deng@amd.com
+Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
+Link: https://patch.msgid.link/20250604193947.11834-3-yury.norov@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_resource.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/hfi1/affinity.c | 44 +++++++++++++++------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
-index 769b0ca9be47..006202fcd3c2 100644
---- a/drivers/gpu/drm/ttm/ttm_resource.c
-+++ b/drivers/gpu/drm/ttm/ttm_resource.c
-@@ -557,6 +557,9 @@ int ttm_resource_manager_evict_all(struct ttm_device *bdev,
- 		cond_resched();
- 	} while (!ret);
- 
-+	if (ret && ret != -ENOENT)
-+		return ret;
+diff --git a/drivers/infiniband/hw/hfi1/affinity.c b/drivers/infiniband/hw/hfi1/affinity.c
+index 7ead8746b79b..f2c530ab85a5 100644
+--- a/drivers/infiniband/hw/hfi1/affinity.c
++++ b/drivers/infiniband/hw/hfi1/affinity.c
+@@ -964,31 +964,35 @@ static void find_hw_thread_mask(uint hw_thread_no, cpumask_var_t hw_thread_mask,
+ 				struct hfi1_affinity_node_list *affinity)
+ {
+ 	int possible, curr_cpu, i;
+-	uint num_cores_per_socket = node_affinity.num_online_cpus /
++	uint num_cores_per_socket;
 +
- 	spin_lock(&man->move_lock);
- 	fence = dma_fence_get(man->move);
- 	spin_unlock(&man->move_lock);
++	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
++
++	if (affinity->num_core_siblings == 0)
++		return;
++
++	num_cores_per_socket = node_affinity.num_online_cpus /
+ 					affinity->num_core_siblings /
+ 						node_affinity.num_online_nodes;
+ 
+-	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
+-	if (affinity->num_core_siblings > 0) {
+-		/* Removing other siblings not needed for now */
+-		possible = cpumask_weight(hw_thread_mask);
+-		curr_cpu = cpumask_first(hw_thread_mask);
+-		for (i = 0;
+-		     i < num_cores_per_socket * node_affinity.num_online_nodes;
+-		     i++)
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-
+-		for (; i < possible; i++) {
+-			cpumask_clear_cpu(curr_cpu, hw_thread_mask);
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-		}
++	/* Removing other siblings not needed for now */
++	possible = cpumask_weight(hw_thread_mask);
++	curr_cpu = cpumask_first(hw_thread_mask);
++	for (i = 0;
++	     i < num_cores_per_socket * node_affinity.num_online_nodes;
++	     i++)
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+ 
+-		/* Identifying correct HW threads within physical cores */
+-		cpumask_shift_left(hw_thread_mask, hw_thread_mask,
+-				   num_cores_per_socket *
+-				   node_affinity.num_online_nodes *
+-				   hw_thread_no);
++	for (; i < possible; i++) {
++		cpumask_clear_cpu(curr_cpu, hw_thread_mask);
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+ 	}
++
++	/* Identifying correct HW threads within physical cores */
++	cpumask_shift_left(hw_thread_mask, hw_thread_mask,
++			   num_cores_per_socket *
++			   node_affinity.num_online_nodes *
++			   hw_thread_no);
+ }
+ 
+ int hfi1_get_proc_affinity(int node)
 -- 
 2.39.5
 
