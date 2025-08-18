@@ -1,126 +1,146 @@
-Return-Path: <stable+bounces-171640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C31B2B16C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 236BFB2B179
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BDE3A4BD4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB0D3B3D98
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEA73451B3;
-	Mon, 18 Aug 2025 19:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6F7288A2;
+	Mon, 18 Aug 2025 19:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/cz9r+F"
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="SDkGGXoh";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="vUO5nwf5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7833451AA
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 19:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738391DDA14;
+	Mon, 18 Aug 2025 19:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755544496; cv=none; b=HUjt6bD7ODu5l2VujmA3AquKIVquehkMY0Y3uGHiuMmOujdlw09D1/DtJpVgRVBW+pNO0L5Lnzkqg4o5v+JwigUerYlPHPmLB4OdjckZzKfxX1eMDi4eQrqCpNLdZhnPGvKqahkMSfOoi7juPoZhgWW+t2HtPYnEVXz09spakPM=
+	t=1755544809; cv=none; b=MbA0UBXrDbVAoEasrO9UvCR9bIoYH7P6FQwr13L0Bb4ym/kxMOmKAElbO7n6axFYBcMNkAkI3mat2lsQnb135kRA4Trwt20GP8BzmmnHYTTaHIskN7m06zZy/6h8QzHG7JDdbX5RHnZy2kzPxS4bcmTpBpSHI3rfqKmXjsJ8qFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755544496; c=relaxed/simple;
-	bh=uOEhxqOUWi1lhposCqSA2yzaCWNLRQUm0gqgXo1mHY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIiEjOS/p+9aaSCUOBr92addGj32j2sRdOIlB7hqkT2Nu6yc7cX93k3IAfCRbqTMP/ngBnEVkAlPPxPsI2YSKXaeEgrXHxK5oQRIpL8i2UqW38LYmVFOaOSsq1589yLknkUJU0rqb4XcGb7vb6csLh6SDTpEj6NlFIU/oMaLLCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/cz9r+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79624C4CEEB;
-	Mon, 18 Aug 2025 19:14:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755544494;
-	bh=uOEhxqOUWi1lhposCqSA2yzaCWNLRQUm0gqgXo1mHY0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/cz9r+Fs0TTnW0Ge8FRRPCJs99JLukZNObGwsjJhGQtsQAeQcfJv4YWjkIY2UohG
-	 TMtZU7flt4s6m7sOkgH8Y8s5BpWPWptsC0ay84GNHnbaYDNRJ40boO2Gtc+xDRNNgq
-	 1PbMFkpSfoBtZuTw5rNMaZ9FVGSQsHp0mM2KdYxJSxC6hcqJmFdrDPthuL/+LCVQuY
-	 lP7IkoqZ+8vIXM5/V+svBv3sTLk/Rs2qLTrFvw/2NnXu9M413EPKntW5gm7zoY1lMC
-	 Fwad3CyPrS1HG2cLp1mNz7WF3nmevFxHkIGA0LcaA2tddsvjEgX6wA0Vk1wkQJ1qYi
-	 0XLM8TWy81Opg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15.y] serial: 8250: fix panic due to PSLVERR
-Date: Mon, 18 Aug 2025 15:14:51 -0400
-Message-ID: <20250818191451.40769-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081845-enlarging-goldsmith-455a@gregkh>
-References: <2025081845-enlarging-goldsmith-455a@gregkh>
+	s=arc-20240116; t=1755544809; c=relaxed/simple;
+	bh=Wza6qtvZhTFrsjhfzsFGqK4N3FfU9M1gdnS7kNEhwZI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=u+YvgZNb+bg9fZTna76fyve2n/XmLDagqHATs8PvTsXbzSJkWGuAHONK4dv7t4MIFM+g8i0PcMXlbCJiu6dew4QIMUCGWw1ekxOhHK0X3veVqEeL3JHF7zfafhiqcr/OxhA8aCaHMWbQPDHYOtGHzyA92uZUqhS5fShIB+nxBz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=SDkGGXoh; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=vUO5nwf5; arc=none smtp.client-ip=160.80.4.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 57IJGC2e003941;
+	Mon, 18 Aug 2025 21:16:17 +0200
+Received: from lubuntu-18.04 (unknown [160.80.103.126])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 800BF120537;
+	Mon, 18 Aug 2025 21:16:07 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1755544567; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pdX4L3NmB2YU0Xr//TXuddy8lAr+NTspye2ibC+fj3o=;
+	b=SDkGGXoh28iXoHQ6mSz9HlZasWoXW8YZJMZieYprVE52A1fsb0jpX0658NbzUDnaN1L/Xb
+	/Dh4TFAPv7IiDyBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1755544567; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pdX4L3NmB2YU0Xr//TXuddy8lAr+NTspye2ibC+fj3o=;
+	b=vUO5nwf5L5rmgxp/B2En7sHsGZTLV5/yiwSHCfVI1Hzgenz2puhEkvC0VEXA6sw1akBNHI
+	o8VuxnH8RHY3katDlVOs1kW4vE6H+Y7hP1huK0bE4RwMqfG8gdO6FRgM3AgcgRzss+BYHX
+	ewJTb5lP+LxyxlRm1/xqdSUlOLXvYOWVD3BR6L1loS2Wz/kNjlmuCsAYSWIxn/QHUwyb0Q
+	kR8ueb/5xCVRK+M3rP3mOn2VYFRfhpNs1+d+zHVtuDBhir/gB8Ukv8J8hxRoEFqJiR7mn0
+	JJSl2z3DWN8xgwNRHKtUgmifyvMVRlH5Sk+qGNOgpvIMkZTEjI5R/OcYbM9R+w==
+Date: Mon, 18 Aug 2025 21:16:07 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: netdev@vger.kernel.org, David Lebrun <dlebrun@google.com>,
+        stable@vger.kernel.org, stefano.salsano@uniroma2.it,
+        Paolo Lungaroni
+ <paolo.lungaroni@uniroma2.it>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net-next 1/3] ipv6: sr: Fix MAC comparison to be
+ constant-time
+Message-Id: <20250818211607.c8eb87fbac2f81774022b54b@uniroma2.it>
+In-Reply-To: <20250816031136.482400-2-ebiggers@kernel.org>
+References: <20250816031136.482400-1-ebiggers@kernel.org>
+	<20250816031136.482400-2-ebiggers@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+On Fri, 15 Aug 2025 20:11:34 -0700
+Eric Biggers <ebiggers@kernel.org> wrote:
 
-[ Upstream commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 ]
+> To prevent timing attacks, MACs need to be compared in constant time.
+> Use the appropriate helper function for this.
+> 
+> Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>  net/ipv6/seg6_hmac.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
 
-When the PSLVERR_RESP_EN parameter is set to 1, the device generates
-an error response if an attempt is made to read an empty RBR (Receive
-Buffer Register) while the FIFO is enabled.
+Hi Eric,
 
-In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
-UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
-dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
-function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
-Execution proceeds to the serial_port_in(port, UART_RX).
-This satisfies the PSLVERR trigger condition.
+Thanks for the fix!
 
-When another CPU (e.g., using printk()) is accessing the UART (UART
-is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
-(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
-dw8250_force_idle().
+I believe it would be best to submit this fix separately from the current patch
+set. Since this addresses a bug rather than an enhancement or cleanup, sending
+it individually with the 'net' tag will help facilitate applying this patch to
+the net tree.
 
-Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
-to fix this issue.
+Ciao,
+Andrea
 
-Panic backtrace:
-[    0.442336] Oops - unknown exception [#1]
-[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
-[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
-...
-[    0.442416] console_on_rootfs+0x26/0x70
-
-Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
-Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted to inline code structure without separate serial8250_initialize helper function ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/tty/serial/8250/8250_port.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 8ac452cea36c..3b93b6e502b9 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2380,9 +2380,8 @@ int serial8250_do_startup(struct uart_port *port)
- 	/*
- 	 * Now, initialize the UART
- 	 */
--	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
--
- 	uart_port_lock_irqsave(port, &flags);
-+	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
- 	if (up->port.flags & UPF_FOURPORT) {
- 		if (!up->port.irq)
- 			up->port.mctrl |= TIOCM_OUT1;
--- 
-2.50.1
-
+> diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+> index f78ecb6ad8383..5dae892bbc73b 100644
+> --- a/net/ipv6/seg6_hmac.c
+> +++ b/net/ipv6/seg6_hmac.c
+> @@ -33,10 +33,11 @@
+>  #include <net/ip6_route.h>
+>  #include <net/addrconf.h>
+>  #include <net/xfrm.h>
+>  
+>  #include <crypto/hash.h>
+> +#include <crypto/utils.h>
+>  #include <net/seg6.h>
+>  #include <net/genetlink.h>
+>  #include <net/seg6_hmac.h>
+>  #include <linux/random.h>
+>  
+> @@ -278,11 +279,11 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+>  		return false;
+>  
+>  	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
+>  		return false;
+>  
+> -	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
+> +	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
+>  		return false;
+>  
+>  	return true;
+>  }
+>  EXPORT_SYMBOL(seg6_hmac_validate_skb);
+> -- 
+> 2.50.1
+> 
 
