@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBB3B2A9E5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAAAB2A3FA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0CB683984
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B43F1B618BC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB99322C9E;
-	Mon, 18 Aug 2025 14:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1B83218C9;
+	Mon, 18 Aug 2025 13:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4ZOlBJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UL7YUpXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE58322C97;
-	Mon, 18 Aug 2025 14:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEB63218CA;
+	Mon, 18 Aug 2025 13:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525954; cv=none; b=qf0Jc/fc8JLeR4VY3kF6RNUezExDk6UUVRvk3Z26PbAjPEom3/t4m+ORE4J8mP0bopGFzTe04FIrzHQHuI40STQKYdxYFq72Qi5erYL2YRniDDA3pLOggmIg7fU9UkNeEU+vwfMnGsdcJ1r6Uct+ebW+N5BzuuRUCTG9cR9V8TQ=
+	t=1755522533; cv=none; b=KsTNmyMFrY/Cc2tCQszh4bjw5DTVD2otIjol9WmI2lD5bVtyQl9js7ZQbPoHej83cLfCAd4fKFVRFLRFWa0yBH39c36OF9RwdrbunAyioM5cnjfGzBMRwlEtSe9dRWuFSrQrtN+fYmB/3E+mZ5SCqBsZo0ZVbhI5dS4mKvuUHO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525954; c=relaxed/simple;
-	bh=j0fX1OEgoeaRxIYrkdYgvrApW4BPBxqHAQHUWF0SOl8=;
+	s=arc-20240116; t=1755522533; c=relaxed/simple;
+	bh=KyH/XZH812HYI74nJpca9gc0ng2BO301rD5tWnb1p08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edNMqPl7aeD35L+n2xMLV5XohRSQ+Gurvk9iOwkdZ/0DPEVxuSBsNWiEq2dGBFFkg0KQ/NEbuBYl9gpZ+8YHZWCm7q86wz+A17XKoZ9ZJeq7aNc9pcUvbkcQBXGcXpzvRNfGqK6tq+mW4f3Gn9LevevdcrIjTE6Bu+xE477rTyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4ZOlBJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEA3C4CEEB;
-	Mon, 18 Aug 2025 14:05:53 +0000 (UTC)
+	 MIME-Version; b=dG36QJcMYFv/81EIqWwwqFiRzPRLX+PxSxljAKHrfLSFiTDE1z4bj6BhMUKFgyyVcSvEFA9I/4gM6OZyuo0PTdyv9DNVIsE0VKg548ZGzekVG5Cujx86Y2ncYLscxSjluHsHFP4zlvIhLniTC3s3SGvg8Z/Oae5TcuutB+/KJvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UL7YUpXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAA5C4CEEB;
+	Mon, 18 Aug 2025 13:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525954;
-	bh=j0fX1OEgoeaRxIYrkdYgvrApW4BPBxqHAQHUWF0SOl8=;
+	s=korg; t=1755522533;
+	bh=KyH/XZH812HYI74nJpca9gc0ng2BO301rD5tWnb1p08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4ZOlBJK3AknbPOa9/NMzGCt+N3JuRWVPam2bpEbQF2J9wBE9ocNjcbAUeCcNHUh4
-	 v7GxhwhQtSJlUnWAjKzn+wzzG99913xsSZDmML2OLP/F6NgRgfzWGo5MRzJOUQx6iN
-	 7wXSSC7JEgUixd6UvIOScC26UlcwwZbj2lTi9cYI=
+	b=UL7YUpXYwGX2yTwVvRkGZRU14A3xs2DUN9pyHCZr0TakNFTInxQQc4upcXKfFV3ll
+	 A22KwEueZpB/0LkCmPV8jAleQ/8q4haQaIzlGL0V25md/eBYSGCarPb4xYFnTC03cp
+	 xOAOdZmo6nD4De6rfCWF61ZwcRwz1NU6f+Q0owew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Nicolas Schier <n.schier@avm.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 382/570] media: hi556: Fix reset GPIO timings
-Date: Mon, 18 Aug 2025 14:46:09 +0200
-Message-ID: <20250818124520.566302195@linuxfoundation.org>
+Subject: [PATCH 6.12 344/444] kconfig: nconf: Ensure null termination where strncpy is used
+Date: Mon, 18 Aug 2025 14:46:10 +0200
+Message-ID: <20250818124501.824856728@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Shankari Anand <shankari.ak0208@gmail.com>
 
-[ Upstream commit 99f2211a9d89fe34b3fa847fd7a4475171406cd0 ]
+[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
 
-probe() requests the reset GPIO to be set to high when getting it.
-Immeditately after this hi556_resume() is called and sets the GPIO low.
+strncpy() does not guarantee null-termination if the source string is
+longer than the destination buffer.
 
-If the GPIO was low before requesting it this will result in the GPIO
-only very briefly spiking high and the sensor not being properly reset.
-The same problem also happens on back to back runtime suspend + resume.
+Ensure the buffer is explicitly null-terminated to prevent potential
+string overflows or undefined behavior.
 
-Fix this by adding a sleep of 2 ms in hi556_resume() before setting
-the GPIO low (if there is a reset GPIO).
-
-The final sleep is kept unconditional, because if there is e.g. no reset
-GPIO but a controllable clock then the sensor also needs some time after
-enabling the clock.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Nicolas Schier <n.schier@avm.de>
+Acked-by: Nicolas Schier <n.schier@avm.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/hi556.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ scripts/kconfig/nconf.c     | 2 ++
+ scripts/kconfig/nconf.gui.c | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/media/i2c/hi556.c b/drivers/media/i2c/hi556.c
-index aed258211b8a..d3cc65b67855 100644
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -1321,7 +1321,12 @@ static int hi556_resume(struct device *dev)
- 		return ret;
- 	}
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index 063b4f7ccbdb..5f484422278e 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -593,6 +593,8 @@ static void item_add_str(const char *fmt, ...)
+ 		tmp_str,
+ 		sizeof(k_menu_items[index].str));
  
--	gpiod_set_value_cansleep(hi556->reset_gpio, 0);
-+	if (hi556->reset_gpio) {
-+		/* Assert reset for at least 2ms on back to back off-on */
-+		usleep_range(2000, 2200);
-+		gpiod_set_value_cansleep(hi556->reset_gpio, 0);
-+	}
++	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
 +
- 	usleep_range(5000, 5500);
- 	return 0;
- }
+ 	free_item(curses_menu_items[index]);
+ 	curses_menu_items[index] = new_item(
+ 			k_menu_items[index].str,
+diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
+index 72b605efe549..1526c52bc34c 100644
+--- a/scripts/kconfig/nconf.gui.c
++++ b/scripts/kconfig/nconf.gui.c
+@@ -350,6 +350,7 @@ int dialog_inputbox(WINDOW *main_window,
+ 	x = (columns-win_cols)/2;
+ 
+ 	strncpy(result, init, *result_len);
++	result[*result_len - 1] = '\0';
+ 
+ 	/* create the windows */
+ 	win = newwin(win_lines, win_cols, y, x);
 -- 
 2.39.5
 
