@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C01B2A3D5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65790B2A9F3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42BDF1B615AC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625A01B6785B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFC231E0F4;
-	Mon, 18 Aug 2025 13:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B6733A02A;
+	Mon, 18 Aug 2025 14:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fasTUX09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xh8nFUIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F6431CA57;
-	Mon, 18 Aug 2025 13:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276533A00E;
+	Mon, 18 Aug 2025 14:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522424; cv=none; b=YCeF4KOqNOKHpPeRJVePkvHi2p5Ly7NGjNJs4cD+EQm/lOF4mOPd9CsdrIuveqMXpPL/2WjxqxOXTifhr9thOcfUbZ8UUFZtJQ3/QdJthA6Hl1mmfWWWYw2gra3ppApIsdISwodOQbVeuDPkO1NokIuZKkbTFNWcnWdUuD2imMU=
+	t=1755525732; cv=none; b=DTV27LYjpf8QACx+OvWYSIqUr8GR8QXnqOTS+q2doeZLg0dK5j8ZDi1KAGTqcH6iYjl9uZnUkgCdKLnIYkDaPTgORUUd54ce5MCcM8roVlKHoCVnWPS6k/hF0JJjDMO3NNN1JivcGi3cJi4w+7xZHScdgj/WrM+8lIe/40MLisM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522424; c=relaxed/simple;
-	bh=oUZgIIX/UEUmMztdsVUMp1tajVy4ISBeiTXPRAa0Ias=;
+	s=arc-20240116; t=1755525732; c=relaxed/simple;
+	bh=pM285kOwZDw/HGxAVKFukAxfkPms6/kiH4vbU74iilM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4VW8+pRzhlJTZciZL3LWp56xjgeVBpHFOG+mHxC3/fgbNmIS4UoziiOmxHuxqhl+25z0J9jhSLlbpaOmhT5lrDLpQ9IaWGwpGfaL6hEzpC+ukJatqLMK3GYERvDuX9Gga7OaoHfTEfuBl4lWD2tKJpoPspiDEJ3GCYaTLiyPVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fasTUX09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BB2C4CEEB;
-	Mon, 18 Aug 2025 13:07:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JfQdHaoKkKCoXRzDGlShhOzH6smLK7JjLeBDpZi5sQiQSP7z0avTYshmwWE+CT6w/J/6Vuazg6tjMao8lou8XXUQOy2/zm/03vaWII+hS6AcIBaGHjezUctlCfghUHiiOmbDXC+lzPi5DPPdfZ7YFVIcHY/JQrVatrFkVSWB9Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xh8nFUIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11909C4CEEB;
+	Mon, 18 Aug 2025 14:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522424;
-	bh=oUZgIIX/UEUmMztdsVUMp1tajVy4ISBeiTXPRAa0Ias=;
+	s=korg; t=1755525732;
+	bh=pM285kOwZDw/HGxAVKFukAxfkPms6/kiH4vbU74iilM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fasTUX099rKL0ik3iFFP8vLfxeDEmwNVahE3n5eX1EDdyUaqXIkutSVwJTPXk6IHr
-	 uRbILB/HYXPD7XoW9m+rdocZ8g5XdtDM2LoU483qLNAmZJtGvSN6WIMSQshKDgpQCZ
-	 wsxiMgQJ/hh7TxxMFUuCvLw2paXCVat/Q/MXkMag=
+	b=Xh8nFUIvvpPla2UAlRk9PlpTG8iT6VSvx0/074U9MucJbmvidzeCb2m3+HGy05JMV
+	 xD/qfrgasSNv8rvxl4Wq15e+Tcx81JAccdnq0fRPxJVKXlzlAzifPgN+2ekqHVYiNK
+	 kttl8oer3WwDLVKiu6MvVmfqmDkvohiedaAvXrnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheick Traore <cheick.traore@foss.st.com>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/444] pinctrl: stm32: Manage irq affinity settings
+Subject: [PATCH 6.16 351/570] drm/ttm: Respect the shrinker core free target
 Date: Mon, 18 Aug 2025 14:45:38 +0200
-Message-ID: <20250818124500.646191279@linuxfoundation.org>
+Message-ID: <20250818124519.384624998@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheick Traore <cheick.traore@foss.st.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 4c5cc2f65386e22166ce006efe515c667aa075e4 ]
+[ Upstream commit eac21f8ebeb4f84d703cf41dc3f81d16fa9dc00a ]
 
-Trying to set the affinity of the interrupts associated to stm32
-pinctrl results in a write error.
+Currently the TTM shrinker aborts shrinking as soon as it frees pages from
+any of the page order pools and by doing so it can fail to respect the
+freeing target which was configured by the shrinker core.
 
-Fill struct irq_chip::irq_set_affinity to use the default helper
-function.
+We use the wording "can fail" because the number of freed pages will
+depend on the presence of pages in the pools and the order of the pools on
+the LRU list. For example if there are no free pages in the high order
+pools the shrinker core may require multiple passes over the TTM shrinker
+before it will free the default target of 128 pages (assuming there are
+free pages in the low order pools). This inefficiency can be compounded by
+the pool LRU where multiple further calls into the TTM shrinker are
+required to end up looking at the pool with pages.
 
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Link: https://lore.kernel.org/20250610143042.295376-3-antonio.borneo@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Improve this by never freeing less than the shrinker core has requested.
+
+At the same time we start reporting the number of scanned pages (freed in
+this case), which prevents the core shrinker from giving up on the TTM
+shrinker too soon and moving on.
+
+v2:
+ * Simplify loop logic. (Christian)
+ * Improve commit message.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20250603112750.34997-2-tvrtko.ursulin@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/ttm/ttm_pool.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 03f3f707d275..2659a854a514 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -407,6 +407,7 @@ static struct irq_chip stm32_gpio_irq_chip = {
- 	.irq_set_wake	= irq_chip_set_wake_parent,
- 	.irq_request_resources = stm32_gpio_irq_request_resources,
- 	.irq_release_resources = stm32_gpio_irq_release_resources,
-+	.irq_set_affinity = IS_ENABLED(CONFIG_SMP) ? irq_chip_set_affinity_parent : NULL,
- };
+diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+index c2ea865be657..c060c90b89c0 100644
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -1132,7 +1132,6 @@ void ttm_pool_fini(struct ttm_pool *pool)
+ }
+ EXPORT_SYMBOL(ttm_pool_fini);
  
- static int stm32_gpio_domain_translate(struct irq_domain *d,
+-/* As long as pages are available make sure to release at least one */
+ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
+ 					    struct shrink_control *sc)
+ {
+@@ -1140,9 +1139,12 @@ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
+ 
+ 	do
+ 		num_freed += ttm_pool_shrink();
+-	while (!num_freed && atomic_long_read(&allocated_pages));
++	while (num_freed < sc->nr_to_scan &&
++	       atomic_long_read(&allocated_pages));
+ 
+-	return num_freed;
++	sc->nr_scanned = num_freed;
++
++	return num_freed ?: SHRINK_STOP;
+ }
+ 
+ /* Return the number of pages available or SHRINK_EMPTY if we have none */
 -- 
 2.39.5
 
