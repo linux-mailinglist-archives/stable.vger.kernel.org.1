@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3186CB2A7E4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91D6B2A236
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9891BA3881
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15A567A8ECC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FC222A4E9;
-	Mon, 18 Aug 2025 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B7B30FF29;
+	Mon, 18 Aug 2025 12:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awChgCwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/3n9Qlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D0F335BAA;
-	Mon, 18 Aug 2025 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6296C31CA72;
+	Mon, 18 Aug 2025 12:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524828; cv=none; b=OEvijvZDhv01xA5sKtG6aGI5OnVwzw9bEKJ7+4xGhRVm7ZhjH2GrMZkzGDGV4Ao1SL6MDcvO2kOaHbOgpiuYRXVcpCpL+dbEx5SKKvqnLfX6d2QFihhgqqN3wcDUKr+Sb5MmhgqSnyx5FjhRDYS7rG1WR09Qpk9aeSLUTzPFYZM=
+	t=1755521497; cv=none; b=NRNQ6DY9dk9n/o2Qs4Yn+Fpv4unuqNLcnbrQWH+Ot3HdfO93Jn2DvTHzYKcX16PHs08f6XlXOuDIOrakxXQ2KnjSK+GSYy8q4rxzFXYazwDYRjVpAJKfLjOKoeKksegcsZF6f19mAXnJ9nI8nyI8zA2TeAIgymBm3gCOiyd5qCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524828; c=relaxed/simple;
-	bh=5Ke9Qe4Hgr0M1GS19/+G9pXSCIZhZWWkAOqUe9dXoDs=;
+	s=arc-20240116; t=1755521497; c=relaxed/simple;
+	bh=qbivW+S6+96HoVPlEX6nqSkDpPS9BWqtqVh1k2A/dto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tiZm/UAhtgJW3dsTsHMMS6KdRj4JHg7UyyljnPkzNP4UD2HUiepczawtcx08mIV4JZgyTgxoDUyIx772X9FaddVKIx7lRkajxqUpjtsVmmmZxGj86LZc2c2OPR/8CLZBTyC6iQ+0vhdcOToiEDbYp1qOSAZMrEgfykorUrKn3II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awChgCwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12856C4CEEB;
-	Mon, 18 Aug 2025 13:47:07 +0000 (UTC)
+	 MIME-Version; b=NJNNB4nhufSwyrDAOd0OYj5HIHyNGSj3FL/laUXlsDlGmr33bSlKiyUBRcFVAUNjj1d064f9SMQPScw5SQ9u7bsF/C1tEvlWNvVZ09B08q6Q+92mFtnTOzv3OxILeSmXRc1EVQCnGCbv7mjqnDXzQlE9mn+edbsZ4E0ZjCMmSR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/3n9Qlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7BFC4CEEB;
+	Mon, 18 Aug 2025 12:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524828;
-	bh=5Ke9Qe4Hgr0M1GS19/+G9pXSCIZhZWWkAOqUe9dXoDs=;
+	s=korg; t=1755521497;
+	bh=qbivW+S6+96HoVPlEX6nqSkDpPS9BWqtqVh1k2A/dto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=awChgCwYCzb4b5nxjhPeJtxoeHKcME0wUq7BlIPlioybNQyVP2nJnaCu0Gs5lQzrg
-	 PxqK7iNucEmH4TbYPlEODBG5MQWVC/UamzP9gQxjI4qhzwgRiF1ykCEsqkag6brR9Y
-	 rf0yJCpkaREoNezTDHWT5JtLcSVcUuDc5ruAdYjM=
+	b=u/3n9Qlr+JfNCbDtQ6/c+UpbWz8Y+bM+4RBwMvHYYqTxO6142zNS+0pyKK47dTSuH
+	 zwjguEUhHwm7aXmkNXF8mhnarknDkoTC8L8CeoVKIvSNaoSjiMUGbE3QTEkduosIBR
+	 n8pIznjKqhnN0CtvhAObK1hU8254VTtZqSirY7vY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 076/570] erofs: fix block count report when 48-bit layout is on
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 037/444] eventpoll: Fix semi-unbounded recursion
 Date: Mon, 18 Aug 2025 14:41:03 +0200
-Message-ID: <20250818124508.754006993@linuxfoundation.org>
+Message-ID: <20250818124450.329666167@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 0b96d9bed324a1c1b7d02bfb9596351ef178428d ]
+commit f2e467a48287c868818085aa35389a224d226732 upstream.
 
-Fix incorrect shift order when combining the 48-bit block count.
+Ensure that epoll instances can never form a graph deeper than
+EP_MAX_NESTS+1 links.
 
-Fixes: 2e1473d5195f ("erofs: implement 48-bit block addressing for unencoded inodes")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250807082019.3093539-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, ep_loop_check_proc() ensures that the graph is loop-free and
+does some recursion depth checks, but those recursion depth checks don't
+limit the depth of the resulting tree for two reasons:
+
+ - They don't look upwards in the tree.
+ - If there are multiple downwards paths of different lengths, only one of
+   the paths is actually considered for the depth check since commit
+   28d82dc1c4ed ("epoll: limit paths").
+
+Essentially, the current recursion depth check in ep_loop_check_proc() just
+serves to prevent it from recursing too deeply while checking for loops.
+
+A more thorough check is done in reverse_path_check() after the new graph
+edge has already been created; this checks, among other things, that no
+paths going upwards from any non-epoll file with a length of more than 5
+edges exist. However, this check does not apply to non-epoll files.
+
+As a result, it is possible to recurse to a depth of at least roughly 500,
+tested on v6.15. (I am unsure if deeper recursion is possible; and this may
+have changed with commit 8c44dac8add7 ("eventpoll: Fix priority inversion
+problem").)
+
+To fix it:
+
+1. In ep_loop_check_proc(), note the subtree depth of each visited node,
+and use subtree depths for the total depth calculation even when a subtree
+has already been visited.
+2. Add ep_get_upwards_depth_proc() for similarly determining the maximum
+depth of an upwards walk.
+3. In ep_loop_check(), use these values to limit the total path length
+between epoll nodes to EP_MAX_NESTS edges.
+
+Fixes: 22bacca48a17 ("epoll: prevent creating circular epoll structures")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/20250711-epoll-recursion-fix-v1-1-fb2457c33292@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/super.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/eventpoll.c |   60 +++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 14 deletions(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index e1e9f06e8342..799fef437aa8 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -313,8 +313,8 @@ static int erofs_read_superblock(struct super_block *sb)
- 	sbi->islotbits = ilog2(sizeof(struct erofs_inode_compact));
- 	if (erofs_sb_has_48bit(sbi) && dsb->rootnid_8b) {
- 		sbi->root_nid = le64_to_cpu(dsb->rootnid_8b);
--		sbi->dif0.blocks = (sbi->dif0.blocks << 32) |
--				le16_to_cpu(dsb->rb.blocks_hi);
-+		sbi->dif0.blocks = sbi->dif0.blocks |
-+				((u64)le16_to_cpu(dsb->rb.blocks_hi) << 32);
- 	} else {
- 		sbi->root_nid = le16_to_cpu(dsb->rb.rootnid_2b);
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -218,6 +218,7 @@ struct eventpoll {
+ 	/* used to optimize loop detection check */
+ 	u64 gen;
+ 	struct hlist_head refs;
++	u8 loop_check_depth;
+ 
+ 	/*
+ 	 * usage count, used together with epitem->dying to
+@@ -2091,23 +2092,24 @@ static int ep_poll(struct eventpoll *ep,
+ }
+ 
+ /**
+- * ep_loop_check_proc - verify that adding an epoll file inside another
+- *                      epoll structure does not violate the constraints, in
+- *                      terms of closed loops, or too deep chains (which can
+- *                      result in excessive stack usage).
++ * ep_loop_check_proc - verify that adding an epoll file @ep inside another
++ *                      epoll file does not create closed loops, and
++ *                      determine the depth of the subtree starting at @ep
+  *
+  * @ep: the &struct eventpoll to be currently checked.
+  * @depth: Current depth of the path being checked.
+  *
+- * Return: %zero if adding the epoll @file inside current epoll
+- *          structure @ep does not violate the constraints, or %-1 otherwise.
++ * Return: depth of the subtree, or INT_MAX if we found a loop or went too deep.
+  */
+ static int ep_loop_check_proc(struct eventpoll *ep, int depth)
+ {
+-	int error = 0;
++	int result = 0;
+ 	struct rb_node *rbp;
+ 	struct epitem *epi;
+ 
++	if (ep->gen == loop_check_gen)
++		return ep->loop_check_depth;
++
+ 	mutex_lock_nested(&ep->mtx, depth + 1);
+ 	ep->gen = loop_check_gen;
+ 	for (rbp = rb_first_cached(&ep->rbr); rbp; rbp = rb_next(rbp)) {
+@@ -2115,13 +2117,11 @@ static int ep_loop_check_proc(struct eve
+ 		if (unlikely(is_file_epoll(epi->ffd.file))) {
+ 			struct eventpoll *ep_tovisit;
+ 			ep_tovisit = epi->ffd.file->private_data;
+-			if (ep_tovisit->gen == loop_check_gen)
+-				continue;
+ 			if (ep_tovisit == inserting_into || depth > EP_MAX_NESTS)
+-				error = -1;
++				result = INT_MAX;
+ 			else
+-				error = ep_loop_check_proc(ep_tovisit, depth + 1);
+-			if (error != 0)
++				result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1);
++			if (result > EP_MAX_NESTS)
+ 				break;
+ 		} else {
+ 			/*
+@@ -2135,9 +2135,27 @@ static int ep_loop_check_proc(struct eve
+ 			list_file(epi->ffd.file);
+ 		}
  	}
--- 
-2.50.1
-
++	ep->loop_check_depth = result;
+ 	mutex_unlock(&ep->mtx);
+ 
+-	return error;
++	return result;
++}
++
++/**
++ * ep_get_upwards_depth_proc - determine depth of @ep when traversed upwards
++ */
++static int ep_get_upwards_depth_proc(struct eventpoll *ep, int depth)
++{
++	int result = 0;
++	struct epitem *epi;
++
++	if (ep->gen == loop_check_gen)
++		return ep->loop_check_depth;
++	hlist_for_each_entry_rcu(epi, &ep->refs, fllink)
++		result = max(result, ep_get_upwards_depth_proc(epi->ep, depth + 1) + 1);
++	ep->gen = loop_check_gen;
++	ep->loop_check_depth = result;
++	return result;
+ }
+ 
+ /**
+@@ -2153,8 +2171,22 @@ static int ep_loop_check_proc(struct eve
+  */
+ static int ep_loop_check(struct eventpoll *ep, struct eventpoll *to)
+ {
++	int depth, upwards_depth;
++
+ 	inserting_into = ep;
+-	return ep_loop_check_proc(to, 0);
++	/*
++	 * Check how deep down we can get from @to, and whether it is possible
++	 * to loop up to @ep.
++	 */
++	depth = ep_loop_check_proc(to, 0);
++	if (depth > EP_MAX_NESTS)
++		return -1;
++	/* Check how far up we can go from @ep. */
++	rcu_read_lock();
++	upwards_depth = ep_get_upwards_depth_proc(ep, 0);
++	rcu_read_unlock();
++
++	return (depth+1+upwards_depth > EP_MAX_NESTS) ? -1 : 0;
+ }
+ 
+ static void clear_tfile_check_list(void)
 
 
 
