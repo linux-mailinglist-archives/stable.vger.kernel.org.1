@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84101B2A586
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56587B2A2BD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:01:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47D1A3BA183
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73FFA5603F3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA73633472A;
-	Mon, 18 Aug 2025 13:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9056231E0F0;
+	Mon, 18 Aug 2025 12:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9FFOqx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN6Xsy4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892EE322764;
-	Mon, 18 Aug 2025 13:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F70D33F3;
+	Mon, 18 Aug 2025 12:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523166; cv=none; b=gAwhLaxOMwbXRpSKHL+TuFhD2f06SJjSRQ1z9jyArZSwrfFzpCqh76vPWEHcEsUpcx+caXDu8SWmSjpSEWfODkRw4Oi1zGSLzgLw1O1Zk3SrS12w9GUh6ypaV4gidnn3Dg/o+CBGux+lxgJlUVu/AI+Coyt3+G3yfFYgIpK+A2E=
+	t=1755521538; cv=none; b=ThJxpxiAhjKtk2QuVZ+LQH4b8RBTIpmayvPBFTuIis2V82Hjw/JZMAjRnNKjc0uAMb7r0fnLkajK2KGLkdvCsABhdCXM903sGU1o9Z2jMtVLU6mgbdrRdYzQb5jJ3dF0eBcAjggGqwdtIiqrog8hDj3P9+xghkX5VIQZH3B6Dd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523166; c=relaxed/simple;
-	bh=UVBz/5zbfsdZbGUaORDTLekfgersHTrJMSzJuUIkAFQ=;
+	s=arc-20240116; t=1755521538; c=relaxed/simple;
+	bh=DJlRBr5Kje+HxdV3Zh90Pa9Ag1G9LP3QZ/8tmrgBVK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLD7d4iJy35mZfUaqA64gouQcacGBAqHwSLPwTw4qtFFrz43YRSKkAJLDOzBH7Cp9T6pPG7vY+YIbwSnn2y0GvrN2YiTFD9+2ZT/2Nnj9ckr2plxXoA+ZlhJkP5I0ykUdwC/nYw+qhcGsbmlaUVYly7UA9MYuAypnu2UXtSctdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9FFOqx7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7135C4CEEB;
-	Mon, 18 Aug 2025 13:19:25 +0000 (UTC)
+	 MIME-Version; b=dudHnty6+BpwhdRn9uQhpSmyz0MWk6RLT92t8N8QCLyHFthsQQzaLwq20Y9iFRqfja7mBSmxvtLbhGPNCXkw6aXWDEgybmKXbPPGW4O+TYhojy3TciEhhU9ZOggiVL2rSl1bFMCAUfQpD5gWDcez8TnPo6t9Vvy2+zb55xiY/vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN6Xsy4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FB0C4CEEB;
+	Mon, 18 Aug 2025 12:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523166;
-	bh=UVBz/5zbfsdZbGUaORDTLekfgersHTrJMSzJuUIkAFQ=;
+	s=korg; t=1755521538;
+	bh=DJlRBr5Kje+HxdV3Zh90Pa9Ag1G9LP3QZ/8tmrgBVK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9FFOqx7iobQWhlRxlR3yZKaLeZb0sJCfs66lP70cBxV6P/T8UiMct5hpKlSBFTbS
-	 AhrBkGCE3/9bVIcPXFk8T6UI3w43WhjfH2bRzwJvcgwSpDfAv/H/8zc191PqlQxcQw
-	 yHlRT34YPvGE6Aj/fzC4DqkQPZzxXcKsxxEjW1rY=
+	b=vN6Xsy4rqtBW1VeKvbdiQy3+CU51dV+sWRP+8cay7W8j7JXZa2Vn6hOffbzB3C7ZF
+	 W+9qv+kaSnL8IwzXWtM1CkHAu1RuwV1+gwyZ5I7Z9wr5A9hlfx3u6FIyAVLg/Qsb3y
+	 LN89H23cQ/JYdjgojRMhXSOqEoSsgHMTAq11RoiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 091/515] nvme-tcp: log TLS handshake failures at error level
+Subject: [PATCH 6.12 051/444] KVM: VMX: Preserve hosts DEBUGCTLMSR_FREEZE_IN_SMM while running the guest
 Date: Mon, 18 Aug 2025 14:41:17 +0200
-Message-ID: <20250818124501.877476947@linuxfoundation.org>
+Message-ID: <20250818124450.843856913@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit 5a58ac9bfc412a58c3cf26c6a7e54d4308e9d109 ]
+[ Upstream commit 6b1dd26544d045f6a79e8c73572c0c0db3ef3c1a ]
 
-Update the nvme_tcp_start_tls() function to use dev_err() instead of
-dev_dbg() when a TLS error is detected. This ensures that handshake
-failures are visible by default, aiding in debugging.
+Set/clear DEBUGCTLMSR_FREEZE_IN_SMM in GUEST_IA32_DEBUGCTL based on the
+host's pre-VM-Enter value, i.e. preserve the host's FREEZE_IN_SMM setting
+while running the guest.  When running with the "default treatment of SMIs"
+in effect (the only mode KVM supports), SMIs do not generate a VM-Exit that
+is visible to host (non-SMM) software, and instead transitions directly
+from VMX non-root to SMM.  And critically, DEBUGCTL isn't context switched
+by hardware on SMI or RSM, i.e. SMM will run with whatever value was
+resident in hardware at the time of the SMI.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Failure to preserve FREEZE_IN_SMM results in the PMU unexpectedly counting
+events while the CPU is executing in SMM, which can pollute profiling and
+potentially leak information into the guest.
+
+Check for changes in FREEZE_IN_SMM prior to every entry into KVM's inner
+run loop, as the bit can be toggled in IRQ context via IPI callback (SMP
+function call), by way of /sys/devices/cpu/freeze_on_smi.
+
+Add a field in kvm_x86_ops to communicate which DEBUGCTL bits need to be
+preserved, as FREEZE_IN_SMM is only supported and defined for Intel CPUs,
+i.e. explicitly checking FREEZE_IN_SMM in common x86 is at best weird, and
+at worst could lead to undesirable behavior in the future if AMD CPUs ever
+happened to pick up a collision with the bit.
+
+Exempt TDX vCPUs, i.e. protected guests, from the check, as the TDX Module
+owns and controls GUEST_IA32_DEBUGCTL.
+
+WARN in SVM if KVM_RUN_LOAD_DEBUGCTL is set, mostly to document that the
+lack of handling isn't a KVM bug (TDX already WARNs on any run_flag).
+
+Lastly, explicitly reload GUEST_IA32_DEBUGCTL on a VM-Fail that is missed
+by KVM but detected by hardware, i.e. in nested_vmx_restore_host_state().
+Doing so avoids the need to track host_debugctl on a per-VMCS basis, as
+GUEST_IA32_DEBUGCTL is unconditionally written by prepare_vmcs02() and
+load_vmcs12_host_state().  For the VM-Fail case, even though KVM won't
+have actually entered the guest, vcpu_enter_guest() will have run with
+vmcs02 active and thus could result in vmcs01 being run with a stale value.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250610232010.162191-9-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[sean: resolve syntactic conflict in vt_x86_ops definition]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  7 +++++++
+ arch/x86/kvm/vmx/main.c         |  2 ++
+ arch/x86/kvm/vmx/nested.c       |  3 +++
+ arch/x86/kvm/vmx/vmx.c          |  3 +++
+ arch/x86/kvm/vmx/vmx.h          | 15 ++++++++++++++-
+ arch/x86/kvm/x86.c              | 14 ++++++++++++--
+ 6 files changed, 41 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index b882ee6ef40f..d0ee9e2a3294 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1776,9 +1776,14 @@ static int nvme_tcp_start_tls(struct nvme_ctrl *nctrl,
- 			qid, ret);
- 		tls_handshake_cancel(queue->sock->sk);
- 	} else {
--		dev_dbg(nctrl->device,
--			"queue %d: TLS handshake complete, error %d\n",
--			qid, queue->tls_err);
-+		if (queue->tls_err) {
-+			dev_err(nctrl->device,
-+				"queue %d: TLS handshake complete, error %d\n",
-+				qid, queue->tls_err);
-+		} else {
-+			dev_dbg(nctrl->device,
-+				"queue %d: TLS handshake complete\n", qid);
-+		}
- 		ret = queue->tls_err;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 2ed05925d9d5..d27df86aa62c 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1630,6 +1630,7 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
+ enum kvm_x86_run_flags {
+ 	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
+ 	KVM_RUN_LOAD_GUEST_DR6		= BIT(1),
++	KVM_RUN_LOAD_DEBUGCTL		= BIT(2),
+ };
+ 
+ struct kvm_x86_ops {
+@@ -1659,6 +1660,12 @@ struct kvm_x86_ops {
+ 	void (*vcpu_load)(struct kvm_vcpu *vcpu, int cpu);
+ 	void (*vcpu_put)(struct kvm_vcpu *vcpu);
+ 
++	/*
++	 * Mask of DEBUGCTL bits that are owned by the host, i.e. that need to
++	 * match the host's value even while the guest is active.
++	 */
++	const u64 HOST_OWNED_DEBUGCTL;
++
+ 	void (*update_exception_bitmap)(struct kvm_vcpu *vcpu);
+ 	int (*get_msr)(struct kvm_vcpu *vcpu, struct msr_data *msr);
+ 	int (*set_msr)(struct kvm_vcpu *vcpu, struct msr_data *msr);
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index 7668e2fb8043..3f83e36a657b 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -42,6 +42,8 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ 	.vcpu_load = vmx_vcpu_load,
+ 	.vcpu_put = vmx_vcpu_put,
+ 
++	.HOST_OWNED_DEBUGCTL = DEBUGCTLMSR_FREEZE_IN_SMM,
++
+ 	.update_exception_bitmap = vmx_update_exception_bitmap,
+ 	.get_feature_msr = vmx_get_feature_msr,
+ 	.get_msr = vmx_get_msr,
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 9a336f661fc6..60bd2791d933 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4829,6 +4829,9 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
+ 			WARN_ON(kvm_set_dr(vcpu, 7, vmcs_readl(GUEST_DR7)));
  	}
- 	return ret;
+ 
++	/* Reload DEBUGCTL to ensure vmcs01 has a fresh FREEZE_IN_SMM value. */
++	vmx_reload_guest_debugctl(vcpu);
++
+ 	/*
+ 	 * Note that calling vmx_set_{efer,cr0,cr4} is important as they
+ 	 * handle a variety of side effects to KVM's software model.
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 4bb25519e7ce..6c185a260c5b 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7407,6 +7407,9 @@ fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 	if (run_flags & KVM_RUN_LOAD_GUEST_DR6)
+ 		set_debugreg(vcpu->arch.dr6, 6);
+ 
++	if (run_flags & KVM_RUN_LOAD_DEBUGCTL)
++		vmx_reload_guest_debugctl(vcpu);
++
+ 	/*
+ 	 * Refresh vmcs.HOST_CR3 if necessary.  This must be done immediately
+ 	 * prior to VM-Enter, as the kernel may load a new ASID (PCID) any time
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 5b2c5cb5e32e..a7e2de50d27f 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -440,12 +440,25 @@ bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated)
+ 
+ static inline void vmx_guest_debugctl_write(struct kvm_vcpu *vcpu, u64 val)
+ {
++	WARN_ON_ONCE(val & DEBUGCTLMSR_FREEZE_IN_SMM);
++
++	val |= vcpu->arch.host_debugctl & DEBUGCTLMSR_FREEZE_IN_SMM;
+ 	vmcs_write64(GUEST_IA32_DEBUGCTL, val);
+ }
+ 
+ static inline u64 vmx_guest_debugctl_read(void)
+ {
+-	return vmcs_read64(GUEST_IA32_DEBUGCTL);
++	return vmcs_read64(GUEST_IA32_DEBUGCTL) & ~DEBUGCTLMSR_FREEZE_IN_SMM;
++}
++
++static inline void vmx_reload_guest_debugctl(struct kvm_vcpu *vcpu)
++{
++	u64 val = vmcs_read64(GUEST_IA32_DEBUGCTL);
++
++	if (!((val ^ vcpu->arch.host_debugctl) & DEBUGCTLMSR_FREEZE_IN_SMM))
++		return;
++
++	vmx_guest_debugctl_write(vcpu, val & ~DEBUGCTLMSR_FREEZE_IN_SMM);
+ }
+ 
+ /*
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 7beea8fb6ea6..dbd295ef3eba 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10711,7 +10711,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		dm_request_for_irq_injection(vcpu) &&
+ 		kvm_cpu_accept_dm_intr(vcpu);
+ 	fastpath_t exit_fastpath;
+-	u64 run_flags;
++	u64 run_flags, debug_ctl;
+ 
+ 	bool req_immediate_exit = false;
+ 
+@@ -10982,7 +10982,17 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		set_debugreg(DR7_FIXED_1, 7);
+ 	}
+ 
+-	vcpu->arch.host_debugctl = get_debugctlmsr();
++	/*
++	 * Refresh the host DEBUGCTL snapshot after disabling IRQs, as DEBUGCTL
++	 * can be modified in IRQ context, e.g. via SMP function calls.  Inform
++	 * vendor code if any host-owned bits were changed, e.g. so that the
++	 * value loaded into hardware while running the guest can be updated.
++	 */
++	debug_ctl = get_debugctlmsr();
++	if ((debug_ctl ^ vcpu->arch.host_debugctl) & kvm_x86_ops.HOST_OWNED_DEBUGCTL &&
++	    !vcpu->arch.guest_state_protected)
++		run_flags |= KVM_RUN_LOAD_DEBUGCTL;
++	vcpu->arch.host_debugctl = debug_ctl;
+ 
+ 	guest_timing_enter_irqoff();
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
