@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38219B2A9E2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4B5B2A703
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32B4F6E7778
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A6431BA1A9C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D658735085E;
-	Mon, 18 Aug 2025 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33C719E82A;
+	Mon, 18 Aug 2025 13:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2rh7RwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSkaloQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93663350843;
-	Mon, 18 Aug 2025 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714BD1E86E;
+	Mon, 18 Aug 2025 13:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525896; cv=none; b=hHJRQmnWtbwm7lGQN+eRhPTFtseVSOX/91tfTGMHtPSzcuXM7tnFENIdRwZ034ab77vVFmWp223eF2sLJzAnuV6nsuRmwHDRSi9DY0OC8pEVgeGXBZZ1nw3nVreThQELEj6T7/CJhs0tBbxFM2jtH+bfzpUaGClgtsSvKmADghk=
+	t=1755524308; cv=none; b=BQWLU2WlOmVref3NkEUnwvthORcFOgcrhfvcllDYppoaiUmlwNJ9CRmhUurMArZS6wL2mrOJ00+u8E5yVa5dSUWOXd4B6N9ghuEaDSKLAO+so5tBgQSvl9N0yUV5A741z+zsk5QgqLOob/oJUYUSKtEmS7VzPKk94gURTbKpxUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525896; c=relaxed/simple;
-	bh=/+sdwEyU7ldpVmhBRiHeRy/BoMTFQ+OSP41rX2prXBM=;
+	s=arc-20240116; t=1755524308; c=relaxed/simple;
+	bh=NpCvuVFq3AY4tJNlJu6EwrcQv588WfUUXL4QlVBCDGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ts4MDxjQ0AbtgX54nPmypLgSaLS3YXcjuNKUuzSbqxdM4RtL/w1jURSpvFSUrixruNx2+cOPDNUJ8cupMKOnfSjpLlJ8yMSN10MTY9XU6d6tmfnz2WvYZ/qYbNcyY8TnG8t90+Nyd1KVDNsHxr3iaFJxNe5HDGdCbsQ00rj3OFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2rh7RwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191F2C4CEEB;
-	Mon, 18 Aug 2025 14:04:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LllgoAGUUg5ZJY2RcpBbtiWx14Y9qfiKm9EsQooGYwl/M2QyH6DQMZ6AGwIvAjqMXvjwQIITgmiqbiGWFVi6/BZBNgJUCdCfg5W6RrffhRUN1j+n/446CUWXCZqo8KUayLExD0TY9v+aULWbLyP6Vum2NQ5tmUvQzQYzSqOIO9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSkaloQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B74C113D0;
+	Mon, 18 Aug 2025 13:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525896;
-	bh=/+sdwEyU7ldpVmhBRiHeRy/BoMTFQ+OSP41rX2prXBM=;
+	s=korg; t=1755524308;
+	bh=NpCvuVFq3AY4tJNlJu6EwrcQv588WfUUXL4QlVBCDGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2rh7RwEF4fSkZ3Wj3o30pDaDYL2bIAYedWv3Nd8PMgSN+2zJFRqjgNBJQuf2Lscs
-	 U47e9fXjDVUrp4VC+pzn/q6G0hi4oDptzDAoh4hh66EfR8rGgys/gNFeQN7jxc15ab
-	 tbFvCmdH2VxFPZ3YQfdF95JoGU3k90ER6zBF3p9Y=
+	b=RSkaloQa6CZb/KLznZF2GAbq35dQUnKQfjBmLNV1dkDR+rn9mWL0qYyqgH5Fwr0vs
+	 ZjrLbXhgL5nVbxx/DQd2/rbu9gTn/oICYC2NxZzcnGZQJA/NYaNpmmL79DjgABqbjv
+	 f4mbAArn6enJXjQbR/dtcQH9NunvEI3x3Z36v6P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 398/570] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
+Subject: [PATCH 6.15 399/515] apparmor: use the condition in AA_BUG_FMT even with debug disabled
 Date: Mon, 18 Aug 2025 14:46:25 +0200
-Message-ID: <20250818124521.189461115@linuxfoundation.org>
+Message-ID: <20250818124513.770520755@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Mateusz Guzik <mjguzik@gmail.com>
 
-[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
+[ Upstream commit 67e370aa7f968f6a4f3573ed61a77b36d1b26475 ]
 
-If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
-resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
-occur before sli4_hba.hdwqs are allocated.  This may result in a null
-pointer dereference when attempting to take the abts_io_buf_list_lock for
-the first hardware queue.  Fix by adding a null ptr check on
-phba->sli4_hba.hdwq and early return because this situation means there
-must have been an error during port initialization.
+This follows the established practice and fixes a build failure for me:
+security/apparmor/file.c: In function ‘__file_sock_perm’:
+security/apparmor/file.c:544:24: error: unused variable ‘sock’ [-Werror=unused-variable]
+  544 |         struct socket *sock = (struct socket *) file->private_data;
+      |                        ^~~~
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ security/apparmor/include/lib.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 8acb744febcd..31a9f142bcb9 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -390,6 +390,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
- 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
- 		return;
+diff --git a/security/apparmor/include/lib.h b/security/apparmor/include/lib.h
+index f11a0db7f51d..e83f45e936a7 100644
+--- a/security/apparmor/include/lib.h
++++ b/security/apparmor/include/lib.h
+@@ -48,7 +48,11 @@ extern struct aa_dfa *stacksplitdfa;
+ #define AA_BUG_FMT(X, fmt, args...)					\
+ 	WARN((X), "AppArmor WARN %s: (" #X "): " fmt, __func__, ##args)
+ #else
+-#define AA_BUG_FMT(X, fmt, args...) no_printk(fmt, ##args)
++#define AA_BUG_FMT(X, fmt, args...)					\
++	do {								\
++		BUILD_BUG_ON_INVALID(X);				\
++		no_printk(fmt, ##args);					\
++	} while (0)
+ #endif
  
-+	/* may be called before queues established if hba_setup fails */
-+	if (!phba->sli4_hba.hdwq)
-+		return;
-+
- 	spin_lock_irqsave(&phba->hbalock, iflag);
- 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
- 		qp = &phba->sli4_hba.hdwq[idx];
+ #define AA_ERROR(fmt, args...)						\
 -- 
 2.39.5
 
