@@ -1,139 +1,148 @@
-Return-Path: <stable+bounces-170046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0BBB2A084
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E868B2A0AB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5260B7B4BD7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:32:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9951562615
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A63B2E2293;
-	Mon, 18 Aug 2025 11:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0853246BC6;
+	Mon, 18 Aug 2025 11:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RqMP/AJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9sd1N9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2C52E2290
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 11:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760891C4A20;
+	Mon, 18 Aug 2025 11:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755516635; cv=none; b=TfDSCtdbCLXq8q/qYbfUaViZpKA9c/OhgAlXOVLy09tzmfD5/ZQ9AeXWLh8QjpL8tcid/b0HrDQf1gw0xkzPyebcLqwoMpC2/wj+A9RkMr17qH15idpTL5kKdeBJags74xx2eWwov9T8PUIZsQBpAJTnkPVTpfDPwyTJo5f7yeA=
+	t=1755516755; cv=none; b=jXeFSb5AMHXz1Ag57BCn7dr4ZmBcpy+dz7g46wREocO/MtGPFPW9xBcza+ngVdsrNbUPtqQWqsTGjrs5OoOs5D3KZe7BNkoC5Y2jPRVtT5EMgablj+SmFncxMB9/epXcWeq6kc31mUat4UDi2ammyut3rPrdMxOTg4VTABTRiVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755516635; c=relaxed/simple;
-	bh=f1VLnziEchSqIKSHjNXeno1l34dCi5Rr4Bgm5603OrE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNie71ZAjxyMx/7c/eAOfn3sx+LtODsi/5T7q25Y0dgs5TsZ+yTBHKkolt+r59Ckddog60HEi7hmIZfsKl2Rc9YNYHP8uKGB1uXBDoq1PYNTD6zGPAthTeuVZ2ZdWoGd2COBeLFzYzN+aZGNYdknwJeC7D6jspmDrZgmQx5sHDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RqMP/AJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84C8C4CEF1;
-	Mon, 18 Aug 2025 11:30:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755516634;
-	bh=f1VLnziEchSqIKSHjNXeno1l34dCi5Rr4Bgm5603OrE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqMP/AJuPchnotxzXVcbwCNzaUEC5oFvH2kEK6MHE96ax8+xem9idGAJzc3Sy25op
-	 OWubpmd4HFoEsVhoT7EmeMRGWTubotL22GrPAPgyr662Ss2AotsDkNAcUkvKIV/ubF
-	 vpP6dH+7JTQgoDbpMs0OK9EbTCrZy8gsNf/YOonQHJIbzqi9dDwDuWtMaLIxqJuebe
-	 krl0AcahLcWBhDWew++y0cVu5YwNDFake6dGMXQ9VdPFLgq4NXtRq1qkxIGkNZBhcW
-	 iuE3W4f7L3lnyZNxBc6eT4CypsM1xqODCHdCf4SSsKRLLOaSTgg64aRkc2ojueJSG5
-	 oexrlL0PzHWsw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: stable@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.12.y] rust: workaround `rustdoc` target modifiers bug
-Date: Mon, 18 Aug 2025 13:30:25 +0200
-Message-ID: <20250818113025.2845480-1-ojeda@kernel.org>
-In-Reply-To: <2025081813-overhand-resolute-c0f3@gregkh>
-References: <2025081813-overhand-resolute-c0f3@gregkh>
+	s=arc-20240116; t=1755516755; c=relaxed/simple;
+	bh=OEyi5yHREVDomYliCb+RiP5YrndamhvCmhCRx40LSP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ub7qiQv9fzVBPeuk63d5FOTzXOi0S8tNDq82xGx9ePYIhjHRPLn+0XfDlfVdzj6iPz76A2XYc9om17kJk4sulr3u/64KeRjsA3Zrpm3Rpf5DuajXtIhlr9WK5SV4lcg4ZnHSdbtKB26DrmC6iBdPnG0aDs56S8JMVtKeoWNYtEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9sd1N9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5340FC4CEEB;
+	Mon, 18 Aug 2025 11:32:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755516755;
+	bh=OEyi5yHREVDomYliCb+RiP5YrndamhvCmhCRx40LSP4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u9sd1N9OkQ4EfKniJMRHqKpeFy+xxWE/m1rcGVex96M+ssNTEUrZVgTlSd3u9oUQI
+	 ewchyMlP4xFtzbLdA3WcfO6pOb9BIDER7hfWjszyUVE4rPND83vFOHSHz+iXqwfPu1
+	 drBMjAyMvDEH/7ZNwVkzWEdvTeV2KQfG6PfjLeSs=
+Date: Mon, 18 Aug 2025 13:32:31 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Naman Jain <namjain@linux.microsoft.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Long Li <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
+ size of ring buffer
+Message-ID: <2025081825-freezing-feisty-9978@gregkh>
+References: <20250722134340.596340262@linuxfoundation.org>
+ <20250722134341.490321531@linuxfoundation.org>
+ <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
+ <2025072316-mop-manhood-b63e@gregkh>
+ <08158da3-82a0-4eb0-a805-87afe34e288a@linux.microsoft.com>
+ <2025081834-bullfrog-elixir-6a96@gregkh>
+ <fbf3a795-bf18-4970-a320-ec06e0758d3b@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fbf3a795-bf18-4970-a320-ec06e0758d3b@linux.microsoft.com>
 
-Starting with Rust 1.88.0 (released 2025-06-26), `rustdoc` complains
-about a target modifier mismatch in configurations where `-Zfixed-x18`
-is passed:
+On Mon, Aug 18, 2025 at 12:17:56PM +0530, Naman Jain wrote:
+> 
+> 
+> On 8/18/2025 11:22 AM, Greg Kroah-Hartman wrote:
+> > On Mon, Aug 18, 2025 at 10:54:10AM +0530, Naman Jain wrote:
+> > > 
+> > > 
+> > > On 7/23/2025 12:12 PM, Greg Kroah-Hartman wrote:
+> > > > On Tue, Jul 22, 2025 at 08:29:07PM +0530, Naman Jain wrote:
+> > > > > 
+> > > > > 
+> > > > > On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
+> > > > > > 6.12-stable review patch.  If anyone has any objections, please let me know.
+> > > > > > 
+> > > > > > ------------------
+> > > > > > 
+> > > > > > From: Naman Jain <namjain@linux.microsoft.com>
+> > > > > > 
+> > > > > > commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
+> > > > > > 
+> > > > > > Size of ring buffer, as defined in uio_hv_generic driver, is no longer
+> > > > > > fixed to 16 KB. This creates a problem in fcopy, since this size was
+> > > > > > hardcoded. With the change in place to make ring sysfs node actually
+> > > > > > reflect the size of underlying ring buffer, it is safe to get the size
+> > > > > > of ring sysfs file and use it for ring buffer size in fcopy daemon.
+> > > > > > Fix the issue of disparity in ring buffer size, by making it dynamic
+> > > > > > in fcopy uio daemon.
+> > > > > > 
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+> > > > > > Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+> > > > > > Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> > > > > > Reviewed-by: Long Li <longli@microsoft.com>
+> > > > > > Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
+> > > > > > Signed-off-by: Wei Liu <wei.liu@kernel.org>
+> > > > > > Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
+> > > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > > > ---
+> > > > > 
+> > > > > 
+> > > > > Hello Greg,
+> > > > > Please don't pick this change yet. I have shared the reason in the other
+> > > > > thread:
+> > > > > "Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring buffer"
+> > > > > has been added to the 6.12-stable tree"
+> > > > 
+> > > > Ok, I have dropped this from the 6.12.y tree now.
+> > > > 
+> > > > thanks,
+> > > > 
+> > > > greg k-h
+> > > 
+> > > Hello Greg,
+> > > Can you please consider picking this change for next release of 6.12 kernel.
+> > > The dependent change [1] is now part of 6.12 kernel, so we need this change
+> > > to fix fcopy in 6.12 kernel.
+> > > 
+> > > [1]: Drivers: hv: Make the sysfs node size for the ring buffer dynamic
+> > 
+> > What are the exact git commit ids you want to have applied here?  [1]
+> > does not reference much to me :)
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> My bad :)
+> 
+> Please pick the commit a4131a50d072 ("tools/hv: fcopy: Fix irregularities
+> with size of ring buffer") in next 6.12 release, which is supposed to fix
+> fcopy.
+> 
+> 
+> The commit which added the missing dependency is now already part of
+> v6.12.42 kernel
+> c7f864d34529 ("Drivers: hv: Make the sysfs node size for the ring buffer
+> dynamic")
 
-    error: mixing `-Zfixed-x18` will cause an ABI mismatch in crate `rust_out`
-      |
-      = help: the `-Zfixed-x18` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
-      = note: unset `-Zfixed-x18` in this crate is incompatible with `-Zfixed-x18=` in dependency `core`
-      = help: set `-Zfixed-x18=` in this crate or unset `-Zfixed-x18` in `core`
-      = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=fixed-x18` to silence this error
+Now queued up, thanks.
 
-The reason is that `rustdoc` was not passing the target modifiers when
-configuring the session options, and thus it would report a mismatch
-that did not exist as soon as a target modifier is used in a dependency.
-
-We did not notice it in the kernel until now because `-Zfixed-x18` has
-been a target modifier only since 1.88.0 (and it is the only one we use
-so far).
-
-The issue has been reported upstream [1] and a fix has been submitted
-[2], including a test similar to the kernel case.
-
-  [ This is now fixed upstream (thanks Guillaume for the quick review),
-    so it will be fixed in Rust 1.90.0 (expected 2025-09-18).
-
-      - Miguel ]
-
-Meanwhile, conditionally pass `-Cunsafe-allow-abi-mismatch=fixed-x18`
-to workaround the issue on our side.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Closes: https://lore.kernel.org/rust-for-linux/36cdc798-524f-4910-8b77-d7b9fac08d77@oss.qualcomm.com/
-Link: https://github.com/rust-lang/rust/issues/144521 [1]
-Link: https://github.com/rust-lang/rust/pull/144523 [2]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250727092317.2930617-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-(cherry picked from commit abbf9a44944171ca99c150adad9361a2f517d3b6)
----
- rust/Makefile | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 17491d8229a4..dc1ec2e077e1 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -55,6 +55,10 @@ core-cfgs = \
- 
- core-edition := $(if $(call rustc-min-version,108700),2024,2021)
- 
-+# `rustdoc` did not save the target modifiers, thus workaround for
-+# the time being (https://github.com/rust-lang/rust/issues/144521).
-+rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
-+
- quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
-       cmd_rustdoc = \
- 	OBJTREE=$(abspath $(objtree)) \
-@@ -63,6 +67,7 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
- 		-Zunstable-options --generate-link-to-definition \
- 		--output $(rustdoc_output) \
- 		--crate-name $(subst rustdoc-,,$@) \
-+		$(rustdoc_modifiers_workaround) \
- 		$(if $(rustdoc_host),,--sysroot=/dev/null) \
- 		@$(objtree)/include/generated/rustc_cfg $<
- 
-@@ -175,6 +180,7 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
- 		--extern bindings --extern uapi \
- 		--no-run --crate-name kernel -Zunstable-options \
- 		--sysroot=/dev/null \
-+		$(rustdoc_modifiers_workaround) \
- 		--test-builder $(objtree)/scripts/rustdoc_test_builder \
- 		$< $(rustdoc_test_kernel_quiet); \
- 	$(objtree)/scripts/rustdoc_test_gen
--- 
-2.50.1
-
+greg k-h
 
