@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9434BB2A99D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6631FB2A6AC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A99D1BC0864
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58801B633E5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7545734AB15;
-	Mon, 18 Aug 2025 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1477D279351;
+	Mon, 18 Aug 2025 13:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+5DDdPt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afvSJjjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BEB34AAE2;
-	Mon, 18 Aug 2025 14:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FE731B13A;
+	Mon, 18 Aug 2025 13:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525692; cv=none; b=qnfvkyyoZQ5NLD8g969HGC+jJjWy4nN6n7kcJlOco8OHwZwq7wBR1iv8+6fRUpNkUGvXWjeV0AEE4XAagwoKcEeDsPFtF6OO9WC0SSteIbUkF37eKk8fP348jLmCCEcxKZfUTAFWeS0Up000clUeVpSUYkeMjL/P5sN+p0oSOdA=
+	t=1755524002; cv=none; b=G6WZOeNfIsJuH/vB8uxWb1iZk5JtJAHwjDLQ8/wfxGnJIatnAdcC8WmPD3uLT19WcoRYRBnBX1V1fVEbRdaNYDD254p5Xa3T0baIeD1lQr/KRhwdQ4tFppyKifmSaHEnykxWddiZMp6C/r/7aaXz7sb2HtQdcgpxOE9tvSXM8lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525692; c=relaxed/simple;
-	bh=Hy1kX7nJhCMXcERJ/EpFy/BqoSxM3X2ChMdDqwuHL9E=;
+	s=arc-20240116; t=1755524002; c=relaxed/simple;
+	bh=v+8fonYjABuqq4/d8b0MfPquQDFKZoi4Vja/w0B6bhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3I/9oCO2dCMFoAQVkqMrPVLh8ACA0ktu1NOfGFToml6fTT5FzN5hlKbYiR+rADUHigHBp8XqqgdBb9L5L2LhxIhnGKsV3jLR1TIpxGfOKcndiADnbkHlyioY6RZ0heTv3E4ZWLcZ8X0c+vajrQ4nL9TBCmcTllttoAayc+veck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+5DDdPt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1AAC4CEEB;
-	Mon, 18 Aug 2025 14:01:31 +0000 (UTC)
+	 MIME-Version; b=pkxSriUbI1PuXXgcBTEcJx+A7OtVPlQnY2Nc2ogfWgN8kSiM/HPqt874USA+4i+IvxtQybWMagqanK68HiyjKMZuV6GDsrR9/Ug46RrSfuTs2Zekf2LWrkhMW6QrHsV7XO4TRJIiAMSqBOL458qjuGwfxgcZdYr1I0Zex8BosYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afvSJjjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335E9C4CEEB;
+	Mon, 18 Aug 2025 13:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525692;
-	bh=Hy1kX7nJhCMXcERJ/EpFy/BqoSxM3X2ChMdDqwuHL9E=;
+	s=korg; t=1755524002;
+	bh=v+8fonYjABuqq4/d8b0MfPquQDFKZoi4Vja/w0B6bhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+5DDdPtkxmSWrd1K4mR3R+kNeI3DwXyPaR/LIg8dhosc33bf6hXkFvDcz59JKWPo
-	 V8VO8RgIRpKPLQE/svU7RdFPcHaDhUGHnECsw7lP+NQhCcagYOIrrdE5R8Ikp5i5vE
-	 ca35AKkM6Yp9G97bvQM1tAmZ6fvhEibu1OaO1QnM=
+	b=afvSJjjXVTrePgJwxnK9Wwbm/nbq3hjdiZ+c9/elpyaJPru+WEsY4z+smIxdcHM5B
+	 aavKTb2I0tV7Dpe+vmj4hDppxvn9k1XM57KTgvNZwG+Lw6EiizIeqakQlyWn/tXJCy
+	 Ek2YmmoLXrt2ErvyWQbV4mTehurG06ULgUMklQK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 337/570] wifi: rtw89: scan abort when assign/unassign_vif
-Date: Mon, 18 Aug 2025 14:45:24 +0200
-Message-ID: <20250818124518.830452070@linuxfoundation.org>
+Subject: [PATCH 6.15 339/515] mfd: axp20x: Set explicit ID for AXP313 regulator
+Date: Mon, 18 Aug 2025 14:45:25 +0200
+Message-ID: <20250818124511.482509382@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit 3db8563bac6c34018cbb96b14549a95c368b0304 ]
+[ Upstream commit 88828c7e940dd45d139ad4a39d702b23840a37c5 ]
 
-If scan happen during start_ap, the register which control TX might be
-turned off during scan. Additionally, if set_channel occurs during scan
-will backup this register and set to firmware after set_channel done.
-When scan complete, firmware will also set TX by this register, causing
-TX to be disabled and beacon can't be TX. Therefore, in assign/unassign_vif
-call scan abort before set_channel to avoid scan racing with set_channel.
+On newer boards featuring the A523 SoC, the AXP323 (related to the
+AXP313) is paired with the AXP717 and serves as a secondary PMIC
+providing additional regulator outputs. However the MFD cells are all
+registered with PLATFORM_DEVID_NONE, which causes the regulator cells
+to conflict with each other.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250610130034.14692-13-pkshih@realtek.com
+Commit e37ec3218870 ("mfd: axp20x: Allow multiple regulators") attempted
+to fix this by switching to PLATFORM_DEVID_AUTO so that the device names
+would all be different, however that broke IIO channel mapping, which is
+also tied to the device names. As a result the change was later reverted.
+
+Instead, here we attempt to make sure the AXP313/AXP323 regulator cell
+does not conflict by explicitly giving it an ID number. This was
+previously done for the AXP809+AXP806 pair used with the A80 SoC.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20250619173207.3367126-1-wens@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mfd/axp20x.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index 806f42429a29..b18019b53181 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.c
-+++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -2816,6 +2816,9 @@ int rtw89_chanctx_ops_assign_vif(struct rtw89_dev *rtwdev,
- 	rtwvif_link->chanctx_assigned = true;
- 	cfg->ref_count++;
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index e9914e8a29a3..25c639b348cd 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -1053,7 +1053,8 @@ static const struct mfd_cell axp152_cells[] = {
+ };
  
-+	if (rtwdev->scanning)
-+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
-+
- 	if (list_empty(&rtwvif->mgnt_entry))
- 		list_add_tail(&rtwvif->mgnt_entry, &mgnt->active_list);
- 
-@@ -2855,6 +2858,9 @@ void rtw89_chanctx_ops_unassign_vif(struct rtw89_dev *rtwdev,
- 	rtwvif_link->chanctx_assigned = false;
- 	cfg->ref_count--;
- 
-+	if (rtwdev->scanning)
-+		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
-+
- 	if (!rtw89_vif_is_active_role(rtwvif))
- 		list_del_init(&rtwvif->mgnt_entry);
+ static struct mfd_cell axp313a_cells[] = {
+-	MFD_CELL_NAME("axp20x-regulator"),
++	/* AXP323 is sometimes paired with AXP717 as sub-PMIC */
++	MFD_CELL_BASIC("axp20x-regulator", NULL, NULL, 0, 1),
+ 	MFD_CELL_RES("axp313a-pek", axp313a_pek_resources),
+ };
  
 -- 
 2.39.5
