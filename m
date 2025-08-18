@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A67B2A772
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F7B2A5B2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80B847A2008
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B2AA17356B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68D2335BCE;
-	Mon, 18 Aug 2025 13:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E122C322DAC;
+	Mon, 18 Aug 2025 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em2t/8e2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mC27/FjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95638335BBB;
-	Mon, 18 Aug 2025 13:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E829322DBC;
+	Mon, 18 Aug 2025 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525061; cv=none; b=PDYj9UOEKryG3kbM0vzyA9YZP4AIaOFxAGGxf50C1WIrzAig/7hzxMkNWxjpXw0L958ozqgZOXheaRL5wOIrvienqo347hsHHVHCgutfQo2RiNXF9bMMFqrQjWMItze0OIlFWBahOLcJVuERUFjgBKP1JAaNh3Gcw72xNMLdmQg=
+	t=1755523366; cv=none; b=sPNf58rwS13Lb6crUz1WxxHz1qmIR7/I/KmK450Jn+UcSoGd3w+i9t7nXYHVg4UNpD/1x5LTZhmS8q0NTXn7M5qI1F8dW2PK+QVVbEFcnn4oep58w6TMwiK6WlfN8VbVPDKZ5LDVbXHHhqWHh5hCs2PSwkO7km7y6Jy6RZoy/Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525061; c=relaxed/simple;
-	bh=KOsfORvGshTI06uxeQelGdibS8Btebg/hpzZ0nANLNQ=;
+	s=arc-20240116; t=1755523366; c=relaxed/simple;
+	bh=2x1WGwFtpf5wTbbdXNCuJTjcBk7VK3mMdknEvgoKD6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGNEX/sEICF3ySUr7OkJRyR6HOQ5trtCW0YhfY1myVf3FAZL0O/4K2InYXfDV2vc20aPO4dA38k2+orZ/lRKUf63uv9RpMLw6CyUpu/D/ip6nnGWVNlDK2kUxzjLHFXwG4qkjs9HP3AdkTI+lJsO6mNlmVTIw5twaum0y76pCHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em2t/8e2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091F8C4CEEB;
-	Mon, 18 Aug 2025 13:51:00 +0000 (UTC)
+	 MIME-Version; b=VYX5hm+du1CECGSu0djcWAy8c+d9/ejHD+JF28P6vLVtpvXmWUAld0n1wHVAjDoDnJUpiSG7MTzxDnTU5fkmrm4zrA33q1GQUU66xJI1ZPBlyxP0eTGnwOqfS6vKzHGYT/0fcMZBhxJAPE4MR0bfq8w7RMS9zpW4ZYYOHIJyIpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mC27/FjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0B1C4CEF1;
+	Mon, 18 Aug 2025 13:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525061;
-	bh=KOsfORvGshTI06uxeQelGdibS8Btebg/hpzZ0nANLNQ=;
+	s=korg; t=1755523366;
+	bh=2x1WGwFtpf5wTbbdXNCuJTjcBk7VK3mMdknEvgoKD6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=em2t/8e23ID2qyWulUVC1NPjD8GFGkoxXmE07rOiSCbfw/Im/QTn088jhVo9J8/9J
-	 dpmiWfkyS3sdoiCO/gKVSUA27qNYV/tPAKkHVRlefjSNx9f9ag8l8RmXSOqc9C5IA9
-	 vbQDPIHWeM32mzh0ByQ0SPAnjmhrt3k96QhEqKB4=
+	b=mC27/FjAFJOTngAkgtP9YqMPar8N0oTW+84oqAUKHWBar7MjUhUflE/czbir5kY6G
+	 hbYeXUawL/7sLNo8A7KtJ7eubebCGx/PtI/HEHGtXlEWlwmnaoKx6FSKw+2WWUbpF2
+	 8IIDbsRyznAb/CmmlpQ2Mj+qQxReqNEY/ccu0hg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 147/570] cpufreq: intel_pstate: Add Granite Rapids support in no-HWP mode
+Subject: [PATCH 6.15 148/515] firmware: arm_scmi: power_control: Ensure SCMI_SYSPOWER_IDLE is set early during resume
 Date: Mon, 18 Aug 2025 14:42:14 +0200
-Message-ID: <20250818124511.483760400@linuxfoundation.org>
+Message-ID: <20250818124504.078078039@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit fc64e0421598aaa87d61184f6777b52614a095be ]
+[ Upstream commit 9a0658d3991e6c82df87584b253454842f22f965 ]
 
-Users may disable HWP in firmware, in which case intel_pstate
-wouldn't load unless the CPU model is explicitly supported.
+Fix a race condition where a second suspend notification from another
+SCMI agent wakes the system before SCMI_SYSPOWER_IDLE is set, leading
+to ignored suspend requests. This is due to interrupts triggering early
+execution of `scmi_userspace_notifier()` before the SCMI state is updated.
 
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Link: https://patch.msgid.link/20250623105601.3924-1-lirongqing@baidu.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+To resolve this, set SCMI_SYSPOWER_IDLE earlier in the device resume
+path, prior to `thaw_processes()`. This ensures the SCMI state is
+correct when the notifier runs, allowing the system to suspend again
+as expected.
+
+On some platforms using SCMI, SCP cannot distinguish between CPU idle
+and suspend since both result in cluster power-off. By explicitly setting
+the idle state early, the Linux SCMI agent can correctly re-suspend in
+response to external notifications.
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Message-Id: <20250704-scmi-pm-v2-2-9316cec2f9cc@nxp.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../firmware/arm_scmi/scmi_power_control.c    | 22 ++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 60326ab5475f..06a1c7dd081f 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2775,6 +2775,8 @@ static const struct x86_cpu_id intel_pstate_cpu_ids[] = {
- 	X86_MATCH(INTEL_TIGERLAKE,		core_funcs),
- 	X86_MATCH(INTEL_SAPPHIRERAPIDS_X,	core_funcs),
- 	X86_MATCH(INTEL_EMERALDRAPIDS_X,	core_funcs),
-+	X86_MATCH(INTEL_GRANITERAPIDS_D,	core_funcs),
-+	X86_MATCH(INTEL_GRANITERAPIDS_X,	core_funcs),
- 	{}
- };
- MODULE_DEVICE_TABLE(x86cpu, intel_pstate_cpu_ids);
+diff --git a/drivers/firmware/arm_scmi/scmi_power_control.c b/drivers/firmware/arm_scmi/scmi_power_control.c
+index 21f467a92942..ab0cee0d4bec 100644
+--- a/drivers/firmware/arm_scmi/scmi_power_control.c
++++ b/drivers/firmware/arm_scmi/scmi_power_control.c
+@@ -46,6 +46,7 @@
+ #include <linux/math.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/pm.h>
+ #include <linux/printk.h>
+ #include <linux/reboot.h>
+ #include <linux/scmi_protocol.h>
+@@ -324,12 +325,7 @@ static int scmi_userspace_notifier(struct notifier_block *nb,
+ 
+ static void scmi_suspend_work_func(struct work_struct *work)
+ {
+-	struct scmi_syspower_conf *sc =
+-		container_of(work, struct scmi_syspower_conf, suspend_work);
+-
+ 	pm_suspend(PM_SUSPEND_MEM);
+-
+-	sc->state = SCMI_SYSPOWER_IDLE;
+ }
+ 
+ static int scmi_syspower_probe(struct scmi_device *sdev)
+@@ -354,6 +350,7 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
+ 	sc->required_transition = SCMI_SYSTEM_MAX;
+ 	sc->userspace_nb.notifier_call = &scmi_userspace_notifier;
+ 	sc->dev = &sdev->dev;
++	dev_set_drvdata(&sdev->dev, sc);
+ 
+ 	INIT_WORK(&sc->suspend_work, scmi_suspend_work_func);
+ 
+@@ -363,6 +360,18 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
+ 						       NULL, &sc->userspace_nb);
+ }
+ 
++static int scmi_system_power_resume(struct device *dev)
++{
++	struct scmi_syspower_conf *sc = dev_get_drvdata(dev);
++
++	sc->state = SCMI_SYSPOWER_IDLE;
++	return 0;
++}
++
++static const struct dev_pm_ops scmi_system_power_pmops = {
++	SET_SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
++};
++
+ static const struct scmi_device_id scmi_id_table[] = {
+ 	{ SCMI_PROTOCOL_SYSTEM, "syspower" },
+ 	{ },
+@@ -370,6 +379,9 @@ static const struct scmi_device_id scmi_id_table[] = {
+ MODULE_DEVICE_TABLE(scmi, scmi_id_table);
+ 
+ static struct scmi_driver scmi_system_power_driver = {
++	.driver	= {
++		.pm = &scmi_system_power_pmops,
++	},
+ 	.name = "scmi-system-power",
+ 	.probe = scmi_syspower_probe,
+ 	.id_table = scmi_id_table,
 -- 
 2.39.5
 
