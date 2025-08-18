@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7AA7B2A7A0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74D3B2A558
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA32687007
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AADD683AE2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9B6261B97;
-	Mon, 18 Aug 2025 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8495832252D;
+	Mon, 18 Aug 2025 13:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByTbuNjJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPxHDPz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1BC225397;
-	Mon, 18 Aug 2025 13:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421A2322524;
+	Mon, 18 Aug 2025 13:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524810; cv=none; b=DEp8dXnQUj/m1l4ZRMGOfLJIBj0Ilb0K/z6bro5J9iscLd4w69+aarCgHzuKWLI8iQzo8uZt8Bbl5WTpGaIKZAYe7gs1/pib1hC2i/kJXM1frt6Q6NoTrpBB7kRDHtIEiHx9Nl0xkDJCoA1xxB35V3TlSxLoTCGW4oGnCWGlYtE=
+	t=1755523072; cv=none; b=MDkfmNIGkgeDyKbvYV8cgd2P71caEY/+58Pb/A8yLtwEh/pyP/IAO9bM7EZlGCNMBO9HRxJK4Gt5Y1DZu/FTxqOy15XXaoz0iE1r4uEHGFB61rI3pizVcqtmWiU5hYjUDTd29oKX71cLJCbJC5OA6WzsSH24lQFLMdHKJjzQd4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524810; c=relaxed/simple;
-	bh=GCaOvX7vSgoE3sBrAwW4/3+F31CP9eyNrwUWKpVaSns=;
+	s=arc-20240116; t=1755523072; c=relaxed/simple;
+	bh=E/nIv9U7dyBInUs9ktNzuWz1/gLxS/1lU4Z8SUy5ZfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAkwCQ+/7sbfbZE0KBhu7PFqkYO350g0cOS4EdK2B+h+Ph90AmX1q6eSvfk/d+bSiPuMPT9eNqc7kug0Am9CMCPjv/k973z7SeJW4S4Ulwmc6GhhFd5fsXfXwFWX21Yv1nxPPkqwbvfZWNGUW8Q9kKE7ZgELOeG/WNxni5mQNHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByTbuNjJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E1AC4CEF1;
-	Mon, 18 Aug 2025 13:46:48 +0000 (UTC)
+	 MIME-Version; b=AhQtKMdVj0xbuqxxIuONE9o6XBCu2qMvr5h1rQ+ZIooXXG4poa4q2YX34Pk7uFscfgmKpkw2s5n4Cnx56Z5iPSLRvvAxdTUd7PvKXs5Ls/bZoqfMdv1uLzyYlgkoqf1cmVby7qAWiKCFbr9EVOWRgWr/PaR2uUH8e7KxsA5nnXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPxHDPz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A8DC113D0;
+	Mon, 18 Aug 2025 13:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524809;
-	bh=GCaOvX7vSgoE3sBrAwW4/3+F31CP9eyNrwUWKpVaSns=;
+	s=korg; t=1755523072;
+	bh=E/nIv9U7dyBInUs9ktNzuWz1/gLxS/1lU4Z8SUy5ZfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByTbuNjJ9LlXgq/tyupiC2YbJkfLAMl2GvYThSuIyrW/WB3/66Jy8JLwkp6SSVLSp
-	 9x/lEHDvdaHCxsMGIxIUQpkSxI3ZD9r8tW7lm1elV7zE99Sc+O9xJjiZFPdJsqUgKv
-	 psKcjUkaTURSx1tjRuyrYA02W8ivlpylRZMsGE34=
+	b=mPxHDPz3lf/mzEm+73h9xxq1uk2Af0Id2RC85UwOHsTZCV2YeyDAoZQjjapBMF+Yf
+	 h4TxsM7oweIgNIQ3pDT+b662x7SssBYBVYuRSKpNbdGgWEorN08AjiZwoq8VsQ97Px
+	 8USAuy2AxfelPG+0HrRyyVAsnY8I3IZMT8lRZOK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 062/570] xfrm: restore GSO for SW crypto
+Subject: [PATCH 6.15 063/515] net: ti: icssg-prueth: Fix emac link speed handling
 Date: Mon, 18 Aug 2025 14:40:49 +0200
-Message-ID: <20250818124508.208178502@linuxfoundation.org>
+Message-ID: <20250818124500.834119196@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: MD Danish Anwar <danishanwar@ti.com>
 
-[ Upstream commit 234d1eff5d4987024be9d40ac07b918a5ae8db1a ]
+[ Upstream commit 06feac15406f4f66f4c0c6ea60b10d44775d4133 ]
 
-Commit 49431af6c4ef incorrectly assumes that the GSO path is only used
-by HW offload, but it's also useful for SW crypto.
+When link settings are changed emac->speed is populated by
+emac_adjust_link(). The link speed and other settings are then written into
+the DRAM. However if both ports are brought down after this and brought up
+again or if the operating mode is changed and a firmware reload is needed,
+the DRAM is cleared by icssg_config(). As a result the link settings are
+lost.
 
-This patch re-enables GSO for SW crypto. It's not an exact revert to
-preserve the other changes made to xfrm_dev_offload_ok afterwards, but
-it reverts all of its effects.
+Fix this by calling emac_adjust_link() after icssg_config(). This re
+populates the settings in the DRAM after a new firmware load.
 
-Fixes: 49431af6c4ef ("xfrm: rely on XFRM offload")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 9facce84f406 ("net: ti: icssg-prueth: Fix firmware load sequence.")
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Message-ID: <20250805173812.2183161-1-danishanwar@ti.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_device.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index d2819baea414..1f88472aaac0 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -415,10 +415,12 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	struct net_device *dev = x->xso.dev;
- 	bool check_tunnel_size;
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 2f5c4335dec3..008d77727400 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -50,6 +50,8 @@
+ /* CTRLMMR_ICSSG_RGMII_CTRL register bits */
+ #define ICSSG_CTRL_RGMII_ID_MODE                BIT(24)
  
--	if (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED)
-+	if (!x->type_offload ||
-+	    (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED && x->encap))
- 		return false;
- 
--	if ((dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm) {
-+	if ((!dev || dev == xfrm_dst_path(dst)->dev) &&
-+	    !xdst->child->xfrm) {
- 		mtu = xfrm_state_mtu(x, xdst->child_mtu_cached);
- 		if (skb->len <= mtu)
- 			goto ok;
-@@ -430,6 +432,9 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	return false;
- 
- ok:
-+	if (!dev)
-+		return true;
++static void emac_adjust_link(struct net_device *ndev);
 +
- 	check_tunnel_size = x->xso.type == XFRM_DEV_OFFLOAD_PACKET &&
- 			    x->props.mode == XFRM_MODE_TUNNEL;
- 	switch (x->props.family) {
+ static int emac_get_tx_ts(struct prueth_emac *emac,
+ 			  struct emac_tx_ts_response *rsp)
+ {
+@@ -266,6 +268,10 @@ static int prueth_emac_common_start(struct prueth *prueth)
+ 		ret = icssg_config(prueth, emac, slice);
+ 		if (ret)
+ 			goto disable_class;
++
++		mutex_lock(&emac->ndev->phydev->lock);
++		emac_adjust_link(emac->ndev);
++		mutex_unlock(&emac->ndev->phydev->lock);
+ 	}
+ 
+ 	ret = prueth_emac_start(prueth);
 -- 
 2.50.1
 
