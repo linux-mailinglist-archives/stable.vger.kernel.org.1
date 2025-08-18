@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-170999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F165DB2A756
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21878B2AA41
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 338CA685ADB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50863585285
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0401E86E;
-	Mon, 18 Aug 2025 13:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE90337697;
+	Mon, 18 Aug 2025 14:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VovXalm1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2PWZmeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C034335BA9;
-	Mon, 18 Aug 2025 13:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB6533470A;
+	Mon, 18 Aug 2025 14:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524484; cv=none; b=sRWFr7AmQIRIUJUYVCn05onQoKkwLh3lPGVJO/wmdCsu+uuy7IoaJRIMVE4kXznrKfKdP+dZNapcPvC9msUAk2qlRZ6RuWnBMhel7ohsIpHlY8UFxAkx1YsIpmNJj+4Q9O3moWWI6BLKHARBknmY1fNkL1R4uz13+RnAq/cqiZY=
+	t=1755526309; cv=none; b=Cqo5qHu4yASx1k/8JXAjBPY50V74N9Cp7xRqRyXIBSn7DI6IUVG+mRKWgdXyFvU8p+ODdLReCbGgd43v5xUTiSO2cb1XrENhwUmBiTISPgBAoctWAhgperBoDh74Byq9UxAwraMkBFtDi0nsBFNHqC6Fwzsh2ajJC0yQdt1iZKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524484; c=relaxed/simple;
-	bh=SkVwGIOAIr7m8FlQyYs6X5suepNzUJ94o+kx7z0nuDk=;
+	s=arc-20240116; t=1755526309; c=relaxed/simple;
+	bh=FnC3SvXWNQZvmYHFNSc3XWiosumSOslWb9NScxTZfHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+ip2mXYY1GiYM+2Ub1jw8+Hww9V2+MqMuBZWPMBU0w7M8c4pU/8CXnTFdCjurXStdU2PJGBnJzRmz+4pcgGl6YYsl7ArOWT5s7YVLCd6aaU6n4BZAY+9FH2Xl5pgGbXWs50uePRZoSetD6vfCDjPDEcCYCQxp0wsT8rTO+M9/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VovXalm1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92095C116B1;
-	Mon, 18 Aug 2025 13:41:23 +0000 (UTC)
+	 MIME-Version; b=dO/l9odmqG30Amc0KXG/TD9BzDDljrZxdM1zEdQpNQknVoEmT9FLa/n+v3zH1bqF9r9fTJhNyfku2oLFnibVTZMcHXnTW2Vd2crc1GQzsZbqbjAhto3KoJsDRAUO3mH3u5ADED3V5HHsWM1EdmKPgKM+C3xW+GyZBKDg7PKhzoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2PWZmeK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97F5C4CEEB;
+	Mon, 18 Aug 2025 14:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524484;
-	bh=SkVwGIOAIr7m8FlQyYs6X5suepNzUJ94o+kx7z0nuDk=;
+	s=korg; t=1755526309;
+	bh=FnC3SvXWNQZvmYHFNSc3XWiosumSOslWb9NScxTZfHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VovXalm1fTAzAoxK8DUIjylM+zq1bn4uMxQI/GlqZPcmfSIIq32UK+sJlfnZnv832
-	 aNiOnPkwWJtGYH/IxikMOXIEHdr1/5cED8p8pNovgJpqdRtLBlS6kLlqX3LMXQ7JVL
-	 80VNZKzqwXJQm6HQE+BWgCOemgmXuNy9HX+XzK8Y=
+	b=J2PWZmeKOVae86Ln5B1GyD4Unox6LsRD5cmq2j8PNYAmIrOhq4UGvViswn1yEOxfs
+	 OqJt2erRaBr/wletFJJGhj3a2txnb/P9siHjSvkzKH+JwQ5hAcCuH10k53UjwlaD5e
+	 mqXLP7jdmnHngQUb4hv5KyKXicF28olyTxzHELFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c2ea94ae47cd7e3881ec@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 486/515] ocfs2: reset folio to NULL when get folio fails
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	stable@kernel.org
+Subject: [PATCH 6.16 485/570] x86/sev: Ensure SVSM reserved fields in a page validation entry are initialized to zero
 Date: Mon, 18 Aug 2025 14:47:52 +0200
-Message-ID: <20250818124517.134425129@linuxfoundation.org>
+Message-ID: <20250818124524.566335451@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,48 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-commit 2ae826799932ff89409f56636ad3c25578fe7cf5 upstream.
+commit 3ee9cebd0a5e7ea47eb35cec95eaa1a866af982d upstream.
 
-The reproducer uses FAULT_INJECTION to make memory allocation fail, which
-causes __filemap_get_folio() to fail, when initializing w_folios[i] in
-ocfs2_grab_folios_for_write(), it only returns an error code and the value
-of w_folios[i] is the error code, which causes
-ocfs2_unlock_and_free_folios() to recycle the invalid w_folios[i] when
-releasing folios.
+In order to support future versions of the SVSM_CORE_PVALIDATE call, all
+reserved fields within a PVALIDATE entry must be set to zero as an SVSM should
+be ensuring all reserved fields are zero in order to support future usage of
+reserved areas based on the protocol version.
 
-Link: https://lkml.kernel.org/r/20250616013140.3602219-1-lizhi.xu@windriver.com
-Reported-by: syzbot+c2ea94ae47cd7e3881ec@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c2ea94ae47cd7e3881ec
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Joerg Roedel <joerg.roedel@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/7cde412f8b057ea13a646fb166b1ca023f6a5031.1755098819.git.thomas.lendacky@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/aops.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/boot/startup/sev-shared.c |    1 +
+ arch/x86/coco/sev/core.c           |    2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -1071,6 +1071,7 @@ static int ocfs2_grab_folios_for_write(s
- 			if (IS_ERR(wc->w_folios[i])) {
- 				ret = PTR_ERR(wc->w_folios[i]);
- 				mlog_errno(ret);
-+				wc->w_folios[i] = NULL;
- 				goto out;
- 			}
- 		}
+--- a/arch/x86/boot/startup/sev-shared.c
++++ b/arch/x86/boot/startup/sev-shared.c
+@@ -785,6 +785,7 @@ static void __head svsm_pval_4k_page(uns
+ 	pc->entry[0].page_size = RMP_PG_SIZE_4K;
+ 	pc->entry[0].action    = validate;
+ 	pc->entry[0].ignore_cf = 0;
++	pc->entry[0].rsvd      = 0;
+ 	pc->entry[0].pfn       = paddr >> PAGE_SHIFT;
+ 
+ 	/* Protocol 0, Call ID 1 */
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -227,6 +227,7 @@ static u64 svsm_build_ca_from_pfn_range(
+ 		pe->page_size = RMP_PG_SIZE_4K;
+ 		pe->action    = action;
+ 		pe->ignore_cf = 0;
++		pe->rsvd      = 0;
+ 		pe->pfn       = pfn;
+ 
+ 		pe++;
+@@ -257,6 +258,7 @@ static int svsm_build_ca_from_psc_desc(s
+ 		pe->page_size = e->pagesize ? RMP_PG_SIZE_2M : RMP_PG_SIZE_4K;
+ 		pe->action    = e->operation == SNP_PAGE_STATE_PRIVATE;
+ 		pe->ignore_cf = 0;
++		pe->rsvd      = 0;
+ 		pe->pfn       = e->gfn;
+ 
+ 		pe++;
 
 
 
