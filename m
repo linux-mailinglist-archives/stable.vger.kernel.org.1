@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3A8B2A433
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C4CB2A98A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 036291784A3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E5255A1573
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F77320385;
-	Mon, 18 Aug 2025 13:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE94134AB09;
+	Mon, 18 Aug 2025 14:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmBiH6Kp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JgsfJwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E997C31E115;
-	Mon, 18 Aug 2025 13:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2A534AB01;
+	Mon, 18 Aug 2025 14:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522479; cv=none; b=ljYHVXZYG6P77QGjoA/ViXyWPqXkxj0vg5FXlIgPd5jwxByuT7iw0rEiCCdCafY+kE7zJFj3xDTHWoqUeURqTQ0cjMj+++JlzWRfgcF50o56mnbl1EBH39eaaB27WnSL9XdCadq+e2TFoteL646iZHYnms5FfahalDVNVFXDoeU=
+	t=1755525682; cv=none; b=cjxOGMBeOwIDyQJWJZ4AtBTyydCcz4/j72I2ukhxOVb9+8mwa3FF3fAHChLw10ciEgYIJ/qoHEU+yBOCOuDbodghiMp0qLh+ikSFFWuTorvKLGvokeuHwjqx2O9AVTstI22q77iSIX+kj615Q8D8YTLeVA/lVOUopaj+7jUabSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522479; c=relaxed/simple;
-	bh=R6Z6JdZZPBW5IMg1CC3DVqp5eLMuT9BxKsMucs/5ZDY=;
+	s=arc-20240116; t=1755525682; c=relaxed/simple;
+	bh=3/x6A2GdN34xHKKFyr8fPqMWQluhcNEphgsdgobOinA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpzfUu7qzyXlGHWZXhtTvAFdJ2eBWkip88bc2d9mYZnBxIER5sdRrg2FJ0p/m0PxZZHCD93304YEts2DvcfJcjE3akkOLJZnAfBwAVZoUWfkPbQDWbNW1veGaa4mmvfNrqWEc+ga2SWrqhuH0rzgkKTTz0IGc/ppWICLjyze+Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmBiH6Kp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4CDC4CEEB;
-	Mon, 18 Aug 2025 13:07:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Je9cfcFxYwcFJPzakQ8XRN1RAAqcdMDCt4EQuXc7sxe5s++oGeYGiAD+BNqpyi1ZCmDCbjDUIvqyNq3YszdPezeDHI2K9HyKt3sI4d/PsZCl4cVKUFrygMZP6vjps35/5VB/lD9I6HM7TV+LamLUEkNcn1oqIe2+5Ec+wNlCoxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JgsfJwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90874C4CEEB;
+	Mon, 18 Aug 2025 14:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522478;
-	bh=R6Z6JdZZPBW5IMg1CC3DVqp5eLMuT9BxKsMucs/5ZDY=;
+	s=korg; t=1755525682;
+	bh=3/x6A2GdN34xHKKFyr8fPqMWQluhcNEphgsdgobOinA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmBiH6KpJlem3zRw00LBzwvQAOp49w80ymOLYxF2dnpyR/ClVTKSm/8zlFTxX7qLb
-	 tSalVj1Q8Bxqf7Y6l9TZOpySwBVa48LKXN95++YkxBtBT0XCPjiqly60pqeY3dLWea
-	 zQbjbBbNpEO2/XNYW+CL2rFiEj0l1atQiGPL9o9A=
+	b=1JgsfJwjgw0bGaeOxp681DeuZyvd1li4V/WZcNVG657BpEoeKTXI4juCM2NXOgAGM
+	 KgsrJPkHxO0NRz6bHVlftYwUeFFBFSoG3kZfOqOtxMXv4c0uwsoY0UDtuVOPuWdLjU
+	 Hz5e6ZW2vv1+KGM/+tM24uDv5gyCrmywMRuol0Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 295/444] media: hi556: Fix reset GPIO timings
+Subject: [PATCH 6.16 334/570] net: dsa: b53: prevent SWITCH_CTRL access on BCM5325
 Date: Mon, 18 Aug 2025 14:45:21 +0200
-Message-ID: <20250818124500.019315721@linuxfoundation.org>
+Message-ID: <20250818124518.718399247@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 99f2211a9d89fe34b3fa847fd7a4475171406cd0 ]
+[ Upstream commit 22ccaaca43440e90a3b68d2183045b42247dc4be ]
 
-probe() requests the reset GPIO to be set to high when getting it.
-Immeditately after this hi556_resume() is called and sets the GPIO low.
+BCM5325 doesn't implement SWITCH_CTRL register so we should avoid reading
+or writing it.
 
-If the GPIO was low before requesting it this will result in the GPIO
-only very briefly spiking high and the sensor not being properly reset.
-The same problem also happens on back to back runtime suspend + resume.
-
-Fix this by adding a sleep of 2 ms in hi556_resume() before setting
-the GPIO low (if there is a reset GPIO).
-
-The final sleep is kept unconditional, because if there is e.g. no reset
-GPIO but a controllable clock then the sensor also needs some time after
-enabling the clock.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-8-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/hi556.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/i2c/hi556.c b/drivers/media/i2c/hi556.c
-index 0e89aff9c664..3c84cf07275f 100644
---- a/drivers/media/i2c/hi556.c
-+++ b/drivers/media/i2c/hi556.c
-@@ -1321,7 +1321,12 @@ static int hi556_resume(struct device *dev)
- 		return ret;
- 	}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 990d21fad939..bb0a5fd6a372 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -361,11 +361,12 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
  
--	gpiod_set_value_cansleep(hi556->reset_gpio, 0);
-+	if (hi556->reset_gpio) {
-+		/* Assert reset for at least 2ms on back to back off-on */
-+		usleep_range(2000, 2200);
-+		gpiod_set_value_cansleep(hi556->reset_gpio, 0);
+ 	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, mgmt);
+ 
+-	/* Include IMP port in dumb forwarding mode
+-	 */
+-	b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
+-	mgmt |= B53_MII_DUMB_FWDG_EN;
+-	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
++	if (!is5325(dev)) {
++		/* Include IMP port in dumb forwarding mode */
++		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
++		mgmt |= B53_MII_DUMB_FWDG_EN;
++		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
 +	}
-+
- 	usleep_range(5000, 5500);
- 	return 0;
- }
+ 
+ 	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
+ 	 * frames should be flooded or not.
 -- 
 2.39.5
 
