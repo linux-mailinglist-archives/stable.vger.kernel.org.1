@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-170210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4B1B2A319
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC586B2A29E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9837E1892BA3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BE073A236B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0838B27B330;
-	Mon, 18 Aug 2025 12:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC1C31E0FD;
+	Mon, 18 Aug 2025 12:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Plo0suiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmnkL48+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFF926F2A7;
-	Mon, 18 Aug 2025 12:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270E631A04F;
+	Mon, 18 Aug 2025 12:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521891; cv=none; b=RfYoJbJGHOlEe1G0cWepZ8D+M2h8OiKDJOG/etn9McZgHrnztzWnUyv8XeOdfrJqixYxB4r1z4gYXx0N9t8+otA1rUeBRk3bV97Zh7XfNPJCZpMmJa/VGpJAYUQUdB6BXIfl5DT3sqAXAk5VXnRQTi74F8g5KjSyRD4yPsZYGDU=
+	t=1755521775; cv=none; b=tnXoxaszo+0xXAHO2nYP8WfElVaC8pSqn1GVu6i3IOKyCCDDh5PLvXbEYtxi6VOmy+eEe9zFrK/jjpP6a6XoSGJQXup13vZ78hA5yAWsKms/mxgb3cBRthE9Ae3NGQo5CjkZu1dpFFNJumYH6CXpu+8ZrMTtbOkObq5c7jm+DDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521891; c=relaxed/simple;
-	bh=1CdeQAkF6YBMXg96O2iw7r3eOFGsUG+FipFz+Ri6ftg=;
+	s=arc-20240116; t=1755521775; c=relaxed/simple;
+	bh=JTTlQpB7KIL+NzUM1fICSiBiCzJ0UZofqukCh6ux3xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0Xa6qL19wJZrHdIOdTpk2DZhtkd/kSeSBTLILhYfO+oIpbpzBxqWiOzKzml1gFcZgm+dUGk0mZqe+T9na0wDAFJro/QkJOU0cbCs1Tsx7S747KmQdmUFrNz09MHQ2+IixqAG8XIqWLTAbIHHXsXZBduVITDXUhIFczG3lOkaxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Plo0suiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E020BC4CEEB;
-	Mon, 18 Aug 2025 12:58:10 +0000 (UTC)
+	 MIME-Version; b=HKYsyYXw9PVAh0fU0eyt37VfokjzlVm3IYic6rKO7Dcl24bewJVz3UGHcCGfnpm7wGJHzO3X/FXBwnO2FxLBXDfRwF0aYqcDYq8tlLt8wDUPhLrfUjxyiInwGkqKlOgRLAGHE64d7IFq9/IYmmyLznnpAsf17KCCqQAvyjrzBGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmnkL48+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC90C4CEEB;
+	Mon, 18 Aug 2025 12:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521891;
-	bh=1CdeQAkF6YBMXg96O2iw7r3eOFGsUG+FipFz+Ri6ftg=;
+	s=korg; t=1755521774;
+	bh=JTTlQpB7KIL+NzUM1fICSiBiCzJ0UZofqukCh6ux3xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Plo0suiT+VK4ujdRAqRq55dx9eBXKd5RWHJUjBor4uq+fJM4haKTfpYH26yOOnjcz
-	 xXrNebdqD9SSrEV2mHghk/GWlR9FQpwtlICjFkGSYzGzKdPxtG2Qhj+ZavkQArRbAU
-	 Dg2rzTBq3HIltyo/M5aHaiD8rzmJHNLIFbwfIGfA=
+	b=YmnkL48+TfrTO6HKHzL1N+oS8O885UuYz0wpW+mQkhT9OpzqRqFLxrT39Ss0nuxBu
+	 QxoQ9mnKCQ2SmRgcY6ZUtF8uUTAZ+X8K50rigSUlX8YJ0f8zV+4hx0SVeGfnSft96Q
+	 g2dXoRsxY2oM6mn6toMnMtIKQP0COid7ToFi1vCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Li RongQing <lirongqing@baidu.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/444] cpufreq: Exit governor when failed to start old governor
-Date: Mon, 18 Aug 2025 14:42:16 +0200
-Message-ID: <20250818124453.060406903@linuxfoundation.org>
+Subject: [PATCH 6.12 111/444] cpufreq: intel_pstate: Add Granite Rapids support in no-HWP mode
+Date: Mon, 18 Aug 2025 14:42:17 +0200
+Message-ID: <20250818124453.096195440@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
 References: <20250818124448.879659024@linuxfoundation.org>
@@ -66,41 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lifeng Zheng <zhenglifeng1@huawei.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 0ae204405095abfbc2d694ee0fbb49bcbbe55c57 ]
+[ Upstream commit fc64e0421598aaa87d61184f6777b52614a095be ]
 
-Detect the result of starting old governor in cpufreq_set_policy(). If it
-fails, exit the governor and clear policy->governor.
+Users may disable HWP in firmware, in which case intel_pstate
+wouldn't load unless the CPU model is explicitly supported.
 
-Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/20250709104145.2348017-5-zhenglifeng1@huawei.com
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Link: https://patch.msgid.link/20250623105601.3924-1-lirongqing@baidu.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index fab94ffcb22c..bd55c2356303 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2724,10 +2724,12 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
- 	pr_debug("starting governor %s failed\n", policy->governor->name);
- 	if (old_gov) {
- 		policy->governor = old_gov;
--		if (cpufreq_init_governor(policy))
-+		if (cpufreq_init_governor(policy)) {
- 			policy->governor = NULL;
--		else
--			cpufreq_start_governor(policy);
-+		} else if (cpufreq_start_governor(policy)) {
-+			cpufreq_exit_governor(policy);
-+			policy->governor = NULL;
-+		}
- 	}
- 
- 	return ret;
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index b86372aa341d..e90871092038 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2654,6 +2654,8 @@ static const struct x86_cpu_id intel_pstate_cpu_ids[] = {
+ 	X86_MATCH(INTEL_TIGERLAKE,		core_funcs),
+ 	X86_MATCH(INTEL_SAPPHIRERAPIDS_X,	core_funcs),
+ 	X86_MATCH(INTEL_EMERALDRAPIDS_X,	core_funcs),
++	X86_MATCH(INTEL_GRANITERAPIDS_D,	core_funcs),
++	X86_MATCH(INTEL_GRANITERAPIDS_X,	core_funcs),
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(x86cpu, intel_pstate_cpu_ids);
 -- 
 2.39.5
 
