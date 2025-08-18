@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-170980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59870B2A723
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24216B2A96A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A3CB680AD6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB71EB621BA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C0C32253A;
-	Mon, 18 Aug 2025 13:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AF2321F5B;
+	Mon, 18 Aug 2025 14:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O53Bp0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4nIGK80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4876431E115;
-	Mon, 18 Aug 2025 13:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D53E321455;
+	Mon, 18 Aug 2025 14:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524423; cv=none; b=NWAu0BddLGTZizKra9x9zhdWW2XiiCkmlD6SmpPPaNmCx8/8AmieWlUS+5csOmN3eoyKIS7gKji7rL3tbUFIKltHC4qDKTvl48RBCZHkxfyMJ+NFZX2SC5irLDXHIDXKzXi0YNy2cNO8vclwXJlKwse8VzODf7pg3OJZF8Pn+KY=
+	t=1755526021; cv=none; b=p0XTKKsFtlOUJVEJJvaHN7REVRDzTexm65z8TPpWkD09GnaMk+DTrZWZ02J0Bak5Vl6J7eq3WVr4C9gkUDqW6HrqObIl4av8o4rWZrqWo8sy++jT7pGgJ6freubgNYg1dtTmzD/6rBiHCNKnMQAG61NC8aL1SKfciDq335Hfd2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524423; c=relaxed/simple;
-	bh=8nIojMQm2ypYmC9hdDff95GxIbCA8jCk0PdU0t7NsGc=;
+	s=arc-20240116; t=1755526021; c=relaxed/simple;
+	bh=bd1nwHPNvCxJXqAZ5LDy6ePqmc0TXje+r1jiUjGObyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Re+GypXoeDqXvE1X59/ZrmGuJz8EvnCnqZHmOmL/j3E3zFLUUggEXBDbJQaaPZ6TOXTmHsdbg+AP50Zo15+PHjsBluWM8DNSRrhCtvUq4O0DUqbumNP9iE6jlNQSyBaTDCedkPn7JnEHkPJRyW4rTAHBoP/HSO+3YtvYuO16KbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O53Bp0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898A5C4CEF1;
-	Mon, 18 Aug 2025 13:40:22 +0000 (UTC)
+	 MIME-Version; b=hWt90wecbI0Nr1C4Z5Dfp/iDwYuEcQSBvERIqkDJ3e8vmH6Im3PZG1ljibhnpRqTRe7/KwMV2iPgTEpzoo5FDtrHJk+j87HsIcSq2Bt0P63tzt8W0TjAm7skCPVmNsPz2JZAP2Bsr08Coe/Y5XB1O7GuL5PeHJLlijtBuvlkhSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4nIGK80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D072AC113D0;
+	Mon, 18 Aug 2025 14:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524422;
-	bh=8nIojMQm2ypYmC9hdDff95GxIbCA8jCk0PdU0t7NsGc=;
+	s=korg; t=1755526021;
+	bh=bd1nwHPNvCxJXqAZ5LDy6ePqmc0TXje+r1jiUjGObyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2O53Bp0tQreXjOfaL5yrDl+a1dykpEpzOi27T7SoKOKOkKBkyb8gLjtyzx7n5o6Wk
-	 08CWHZ9nE4jTEGzlo3x4LUC0WvuEtU8dQQvIUTYmgz+3P+N2DmjW9c/Usxq7/ZgxL7
-	 mz4YzWIAoFiPZok7ql0F23GdZYMAOeoKsdOt/rJQ=
+	b=G4nIGK80+AGjVjYI+fcBw/WDtMraBlkof1mur+v6vPM4JGwWRXcbswbvVCDrxbYmT
+	 2Hex0mOoIPaq5t1xm88TJt4XD+URmrxOQYX5ru2wtd3NpXzKMuiUCPzZcL22yNR3vg
+	 kwagTGnleaFiMuhDTBLK5T6Mj3BvxsyRo2VRmtpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 435/515] cifs: Fix collect_sample() to handle any iterator type
-Date: Mon, 18 Aug 2025 14:47:01 +0200
-Message-ID: <20250818124515.174262128@linuxfoundation.org>
+Subject: [PATCH 6.16 435/570] exfat: add cluster chain loop check for dir
+Date: Mon, 18 Aug 2025 14:47:02 +0200
+Message-ID: <20250818124522.585037403@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,134 +62,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit b63335fb3d32579c5ff0b7038b9cc23688fff528 ]
+[ Upstream commit 99f9a97dce39ad413c39b92c90393bbd6778f3fd ]
 
-collect_sample() is used to gather samples of the data in a Write op for
-analysis to try and determine if the compression algorithm is likely to
-achieve anything more quickly than actually running the compression
-algorithm.
+An infinite loop may occur if the following conditions occur due to
+file system corruption.
 
-However, collect_sample() assumes that the data it is going to be sampling
-is stored in an ITER_XARRAY-type iterator (which it now should never be)
-and doesn't actually check that it is before accessing the underlying
-xarray directly.
+(1) Condition for exfat_count_dir_entries() to loop infinitely.
+    - The cluster chain includes a loop.
+    - There is no UNUSED entry in the cluster chain.
 
-Fix this by replacing the code with a loop that just uses the standard
-iterator functions to sample every other 2KiB block, skipping the
-intervening ones.  It's not quite the same as the previous algorithm as it
-doesn't necessarily align to the pages within an ordinary write from the
-pagecache.
+(2) Condition for exfat_create_upcase_table() to loop infinitely.
+    - The cluster chain of the root directory includes a loop.
+    - There are no UNUSED entry and up-case table entry in the cluster
+      chain of the root directory.
 
-Note that the btrfs code from which this was derived samples the inode's
-pagecache directly rather than the iterator - but that doesn't necessarily
-work for network filesystems if O_DIRECT is in operation.
+(3) Condition for exfat_load_bitmap() to loop infinitely.
+    - The cluster chain of the root directory includes a loop.
+    - There are no UNUSED entry and bitmap entry in the cluster chain
+      of the root directory.
 
-Fixes: 94ae8c3fee94 ("smb: client: compress: LZ77 code improvements cleanup")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Enzo Matsumiya <ematsumiya@suse.de>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: Tom Talpey <tom@talpey.com>
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+(4) Condition for exfat_find_dir_entry() to loop infinitely.
+    - The cluster chain includes a loop.
+    - The unused directory entries were exhausted by some operation.
+
+(5) Condition for exfat_check_dir_empty() to loop infinitely.
+    - The cluster chain includes a loop.
+    - The unused directory entries were exhausted by some operation.
+    - All files and sub-directories under the directory are deleted.
+
+This commit adds checks to break the above infinite loop.
+
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/compress.c | 71 ++++++++++++----------------------------
- 1 file changed, 21 insertions(+), 50 deletions(-)
+ fs/exfat/dir.c    | 12 ++++++++++++
+ fs/exfat/fatent.c | 10 ++++++++++
+ fs/exfat/namei.c  |  5 +++++
+ fs/exfat/super.c  | 32 +++++++++++++++++++++-----------
+ 4 files changed, 48 insertions(+), 11 deletions(-)
 
-diff --git a/fs/smb/client/compress.c b/fs/smb/client/compress.c
-index 766b4de13da7..db709f5cd2e1 100644
---- a/fs/smb/client/compress.c
-+++ b/fs/smb/client/compress.c
-@@ -155,58 +155,29 @@ static int cmp_bkt(const void *_a, const void *_b)
- }
+diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
+index 3103b932b674..ee060e26f51d 100644
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -996,6 +996,7 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
+ 	struct exfat_hint_femp candi_empty;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	int num_entries = exfat_calc_num_entries(p_uniname);
++	unsigned int clu_count = 0;
  
- /*
-- * TODO:
-- * Support other iter types, if required.
-- * Only ITER_XARRAY is supported for now.
-+ * Collect some 2K samples with 2K gaps between.
-  */
--static int collect_sample(const struct iov_iter *iter, ssize_t max, u8 *sample)
-+static int collect_sample(const struct iov_iter *source, ssize_t max, u8 *sample)
- {
--	struct folio *folios[16], *folio;
--	unsigned int nr, i, j, npages;
--	loff_t start = iter->xarray_start + iter->iov_offset;
--	pgoff_t last, index = start / PAGE_SIZE;
--	size_t len, off, foff;
--	void *p;
--	int s = 0;
--
--	last = (start + max - 1) / PAGE_SIZE;
--	do {
--		nr = xa_extract(iter->xarray, (void **)folios, index, last, ARRAY_SIZE(folios),
--				XA_PRESENT);
--		if (nr == 0)
--			return -EIO;
--
--		for (i = 0; i < nr; i++) {
--			folio = folios[i];
--			npages = folio_nr_pages(folio);
--			foff = start - folio_pos(folio);
--			off = foff % PAGE_SIZE;
--
--			for (j = foff / PAGE_SIZE; j < npages; j++) {
--				size_t len2;
--
--				len = min_t(size_t, max, PAGE_SIZE - off);
--				len2 = min_t(size_t, len, SZ_2K);
--
--				p = kmap_local_page(folio_page(folio, j));
--				memcpy(&sample[s], p, len2);
--				kunmap_local(p);
--
--				s += len2;
--
--				if (len2 < SZ_2K || s >= max - SZ_2K)
--					return s;
--
--				max -= len;
--				if (max <= 0)
--					return s;
--
--				start += len;
--				off = 0;
--				index++;
--			}
--		}
--	} while (nr == ARRAY_SIZE(folios));
-+	struct iov_iter iter = *source;
-+	size_t s = 0;
+ 	if (num_entries < 0)
+ 		return num_entries;
+@@ -1133,6 +1134,10 @@ int exfat_find_dir_entry(struct super_block *sb, struct exfat_inode_info *ei,
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &clu.dir))
+ 				return -EIO;
 +
-+	while (iov_iter_count(&iter) >= SZ_2K) {
-+		size_t part = umin(umin(iov_iter_count(&iter), SZ_2K), max);
-+		size_t n;
++			/* break if the cluster chain includes a loop */
++			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
++				goto not_found;
+ 		}
+ 	}
+ 
+@@ -1195,6 +1200,7 @@ int exfat_count_dir_entries(struct super_block *sb, struct exfat_chain *p_dir)
+ 	int i, count = 0;
+ 	int dentries_per_clu;
+ 	unsigned int entry_type;
++	unsigned int clu_count = 0;
+ 	struct exfat_chain clu;
+ 	struct exfat_dentry *ep;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -1227,6 +1233,12 @@ int exfat_count_dir_entries(struct super_block *sb, struct exfat_chain *p_dir)
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &(clu.dir)))
+ 				return -EIO;
 +
-+		n = copy_from_iter(sample + s, part, &iter);
-+		if (n != part)
-+			return -EFAULT;
++			if (unlikely(++clu_count > sbi->used_clusters)) {
++				exfat_fs_error(sb, "FAT or bitmap is corrupted");
++				return -EIO;
++			}
 +
-+		s += n;
-+		max -= n;
+ 		}
+ 	}
+ 
+diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
+index 23065f948ae7..232cc7f8ab92 100644
+--- a/fs/exfat/fatent.c
++++ b/fs/exfat/fatent.c
+@@ -490,5 +490,15 @@ int exfat_count_num_clusters(struct super_block *sb,
+ 	}
+ 
+ 	*ret_count = count;
 +
-+		if (iov_iter_count(&iter) < PAGE_SIZE - SZ_2K)
-+			break;
-+
-+		iov_iter_advance(&iter, SZ_2K);
++	/*
++	 * since exfat_count_used_clusters() is not called, sbi->used_clusters
++	 * cannot be used here.
++	 */
++	if (unlikely(i == sbi->num_clusters && clu != EXFAT_EOF_CLUSTER)) {
++		exfat_fs_error(sb, "The cluster chain has a loop");
++		return -EIO;
 +	}
- 
- 	return s;
++
+ 	return 0;
  }
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index fede0283d6e2..f5f1c4e8a29f 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -890,6 +890,7 @@ static int exfat_check_dir_empty(struct super_block *sb,
+ {
+ 	int i, dentries_per_clu;
+ 	unsigned int type;
++	unsigned int clu_count = 0;
+ 	struct exfat_chain clu;
+ 	struct exfat_dentry *ep;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -926,6 +927,10 @@ static int exfat_check_dir_empty(struct super_block *sb,
+ 		} else {
+ 			if (exfat_get_next_cluster(sb, &(clu.dir)))
+ 				return -EIO;
++
++			/* break if the cluster chain includes a loop */
++			if (unlikely(++clu_count > EXFAT_DATA_CLUSTER_COUNT(sbi)))
++				break;
+ 		}
+ 	}
+ 
+diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+index 7ed858937d45..3a9ec75ab452 100644
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -341,13 +341,12 @@ static void exfat_hash_init(struct super_block *sb)
+ 		INIT_HLIST_HEAD(&sbi->inode_hashtable[i]);
+ }
+ 
+-static int exfat_read_root(struct inode *inode)
++static int exfat_read_root(struct inode *inode, struct exfat_chain *root_clu)
+ {
+ 	struct super_block *sb = inode->i_sb;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+ 	struct exfat_inode_info *ei = EXFAT_I(inode);
+-	struct exfat_chain cdir;
+-	int num_subdirs, num_clu = 0;
++	int num_subdirs;
+ 
+ 	exfat_chain_set(&ei->dir, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
+ 	ei->entry = -1;
+@@ -360,12 +359,9 @@ static int exfat_read_root(struct inode *inode)
+ 	ei->hint_stat.clu = sbi->root_dir;
+ 	ei->hint_femp.eidx = EXFAT_HINT_NONE;
+ 
+-	exfat_chain_set(&cdir, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
+-	if (exfat_count_num_clusters(sb, &cdir, &num_clu))
+-		return -EIO;
+-	i_size_write(inode, num_clu << sbi->cluster_size_bits);
++	i_size_write(inode, EXFAT_CLU_TO_B(root_clu->size, sbi));
+ 
+-	num_subdirs = exfat_count_dir_entries(sb, &cdir);
++	num_subdirs = exfat_count_dir_entries(sb, root_clu);
+ 	if (num_subdirs < 0)
+ 		return -EIO;
+ 	set_nlink(inode, num_subdirs + EXFAT_MIN_SUBDIR);
+@@ -578,7 +574,8 @@ static int exfat_verify_boot_region(struct super_block *sb)
+ }
+ 
+ /* mount the file system volume */
+-static int __exfat_fill_super(struct super_block *sb)
++static int __exfat_fill_super(struct super_block *sb,
++		struct exfat_chain *root_clu)
+ {
+ 	int ret;
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+@@ -595,6 +592,18 @@ static int __exfat_fill_super(struct super_block *sb)
+ 		goto free_bh;
+ 	}
+ 
++	/*
++	 * Call exfat_count_num_cluster() before searching for up-case and
++	 * bitmap directory entries to avoid infinite loop if they are missing
++	 * and the cluster chain includes a loop.
++	 */
++	exfat_chain_set(root_clu, sbi->root_dir, 0, ALLOC_FAT_CHAIN);
++	ret = exfat_count_num_clusters(sb, root_clu, &root_clu->size);
++	if (ret) {
++		exfat_err(sb, "failed to count the number of clusters in root");
++		goto free_bh;
++	}
++
+ 	ret = exfat_create_upcase_table(sb);
+ 	if (ret) {
+ 		exfat_err(sb, "failed to load upcase table");
+@@ -627,6 +636,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	struct exfat_sb_info *sbi = sb->s_fs_info;
+ 	struct exfat_mount_options *opts = &sbi->options;
+ 	struct inode *root_inode;
++	struct exfat_chain root_clu;
+ 	int err;
+ 
+ 	if (opts->allow_utime == (unsigned short)-1)
+@@ -645,7 +655,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sb->s_time_min = EXFAT_MIN_TIMESTAMP_SECS;
+ 	sb->s_time_max = EXFAT_MAX_TIMESTAMP_SECS;
+ 
+-	err = __exfat_fill_super(sb);
++	err = __exfat_fill_super(sb, &root_clu);
+ 	if (err) {
+ 		exfat_err(sb, "failed to recognize exfat type");
+ 		goto check_nls_io;
+@@ -680,7 +690,7 @@ static int exfat_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	root_inode->i_ino = EXFAT_ROOT_INO;
+ 	inode_set_iversion(root_inode, 1);
+-	err = exfat_read_root(root_inode);
++	err = exfat_read_root(root_inode, &root_clu);
+ 	if (err) {
+ 		exfat_err(sb, "failed to initialize root inode");
+ 		goto put_inode;
 -- 
-2.50.1
+2.39.5
 
 
 
