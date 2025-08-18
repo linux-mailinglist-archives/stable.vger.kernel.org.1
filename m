@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04A2B2AA35
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384BEB2A770
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0819687517
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4BA1BA22B5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFAA3218C0;
-	Mon, 18 Aug 2025 14:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9B322540;
+	Mon, 18 Aug 2025 13:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvqVA1g9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="178rxHzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABDF321F50;
-	Mon, 18 Aug 2025 14:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE0D322534;
+	Mon, 18 Aug 2025 13:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526010; cv=none; b=NHaYHLfVxclDQvhGwR9Rbemh43K1T9U0IbM+as1gpGVCmBidUM/7zQVQtAl502Gs1pvaSjxu9d87mspg1iKm3D+YMUJ6I7zARONclxucQKEGVtoK0phaYfkv4bDUB/zvzcDzeWr1RMmL7B9QbfvE7TBbCuD15a0Yu8Eng2DnDnM=
+	t=1755524420; cv=none; b=Mfypue6KvM69KQg5UCTsghyrhA+tUx25dnd3uga8NwhehjepJ4U+JtINrCzRx5uVP2PQeh9eRruukiGhQWXaaSLtMnmZ2OOQXGuEdPlfs8YUkSl2HHFUaz6h1Qmfh6MyIgOcyRc7runXjzFSC1LtXtq9lpiYYJ0wAd6LX32/nCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526010; c=relaxed/simple;
-	bh=its41i0EzvSb47UHP0c8iYPJEvcAxgH7H4YfLu4xUPA=;
+	s=arc-20240116; t=1755524420; c=relaxed/simple;
+	bh=bD0N63tNPwIqy/WsL5bvow8+UiWZPqduMlfbqLRQQHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P8qnisIiBAobotnLF7BBBgjhxVp8Cyk9wJ/guIgC1ma9UO03QYbl2SyGfDDFeZRz/649Q83qBhjsI4PV1863UMErB0mRKN8QqWoq/gt3KufBgDbYPfS81vHzYfJx+cFvNfMSQ0EdTn6NzYawhU6uRflHMow6xvgSJpDNm9ZiJyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvqVA1g9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135ABC4CEEB;
-	Mon, 18 Aug 2025 14:06:49 +0000 (UTC)
+	 MIME-Version; b=PEvW2szvgqDqRKJVt50jEiQkixHaUYW2qUcpfFl1FEFbfwD/JxbsKuwqKcz5YHjO6r2kk2LgBYwulzrukHRT51vFvtUhPdugwACSipGlDgj7nCwn2EdckqgqRFEfnPcaV5ZTOB6WojFZlP33Lc7cdUdgE0lgGfru9jyjg4seGco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=178rxHzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91C4C4CEEB;
+	Mon, 18 Aug 2025 13:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526010;
-	bh=its41i0EzvSb47UHP0c8iYPJEvcAxgH7H4YfLu4xUPA=;
+	s=korg; t=1755524419;
+	bh=bD0N63tNPwIqy/WsL5bvow8+UiWZPqduMlfbqLRQQHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvqVA1g9sepZRc/DpuLxZK7g5Ik/oc0A5lTooVLMUR8tWiFHV0wu/6yjcFgaoU94L
-	 G5zmbbJklIVhklcbVGKyaIQYZ5LJwamdNABeKK7hxUy7IMOzPXoQwR9ZPoxiN2QrEz
-	 cPeFIWcpXaq24/8WdRTEQ9NETIvDlTLI0TvhEmOA=
+	b=178rxHzFLxX6xAwQcjoVs8lMW31d2tx4o29R1hDPeiqi2xE3ZLpsXbdk3ELKAa8SY
+	 YxJqO3adB6C1AhI3oPhSmWDkXM3k9icsYTdOCtYOpHF6vd8boGF7Tmd5impO3gyZZh
+	 Jc9Y/OUD/IN6ikvtMyemV+NVSREo1QiIQei/4lY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	John Johansen <john.johansen@canonical.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 432/570] apparmor: use the condition in AA_BUG_FMT even with debug disabled
-Date: Mon, 18 Aug 2025 14:46:59 +0200
-Message-ID: <20250818124522.474003150@linuxfoundation.org>
+Subject: [PATCH 6.15 434/515] ASoC: fsl_sai: replace regmap_write with regmap_update_bits
+Date: Mon, 18 Aug 2025 14:47:00 +0200
+Message-ID: <20250818124515.133638997@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Guzik <mjguzik@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 67e370aa7f968f6a4f3573ed61a77b36d1b26475 ]
+[ Upstream commit 0e270f32975fd21874185ba53653630dd40bf560 ]
 
-This follows the established practice and fixes a build failure for me:
-security/apparmor/file.c: In function ‘__file_sock_perm’:
-security/apparmor/file.c:544:24: error: unused variable ‘sock’ [-Werror=unused-variable]
-  544 |         struct socket *sock = (struct socket *) file->private_data;
-      |                        ^~~~
+Use the regmap_write() for software reset in fsl_sai_config_disable would
+cause the FSL_SAI_CSR_BCE bit to be cleared. Refer to
+commit 197c53c8ecb34 ("ASoC: fsl_sai: Don't disable bitclock for i.MX8MP")
+FSL_SAI_CSR_BCE should not be cleared. So need to use regmap_update_bits()
+instead of regmap_write() for these bit operations.
 
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: dc78f7e59169d ("ASoC: fsl_sai: Force a software reset when starting in consumer mode")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250807020318.2143219-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/lib.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_sai.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/security/apparmor/include/lib.h b/security/apparmor/include/lib.h
-index f11a0db7f51d..e83f45e936a7 100644
---- a/security/apparmor/include/lib.h
-+++ b/security/apparmor/include/lib.h
-@@ -48,7 +48,11 @@ extern struct aa_dfa *stacksplitdfa;
- #define AA_BUG_FMT(X, fmt, args...)					\
- 	WARN((X), "AppArmor WARN %s: (" #X "): " fmt, __func__, ##args)
- #else
--#define AA_BUG_FMT(X, fmt, args...) no_printk(fmt, ##args)
-+#define AA_BUG_FMT(X, fmt, args...)					\
-+	do {								\
-+		BUILD_BUG_ON_INVALID(X);				\
-+		no_printk(fmt, ##args);					\
-+	} while (0)
- #endif
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index f244e3679975..01944860a264 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -777,9 +777,9 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
+ 	 * are running concurrently.
+ 	 */
+ 	/* Software Reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, 0);
+ }
  
- #define AA_ERROR(fmt, args...)						\
+ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -898,11 +898,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
+ 	unsigned int ofs = sai->soc_data->reg_offset;
+ 
+ 	/* Software Reset for both Tx and Rx */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
+ 
+ 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
+ 			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
+@@ -1790,11 +1790,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
+ 
+ 	regcache_cache_only(sai->regmap, false);
+ 	regcache_mark_dirty(sai->regmap);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	usleep_range(1000, 2000);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
+ 
+ 	ret = regcache_sync(sai->regmap);
+ 	if (ret)
 -- 
-2.39.5
+2.50.1
 
 
 
