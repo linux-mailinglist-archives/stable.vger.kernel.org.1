@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137F7B2A368
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5666EB2A60F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 722FA188D749
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FE2CB60507
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136B731CA60;
-	Mon, 18 Aug 2025 13:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19396221577;
+	Mon, 18 Aug 2025 13:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJ4N3vaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1X7eLm1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F7F31CA5B;
-	Mon, 18 Aug 2025 13:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD3D205AA1;
+	Mon, 18 Aug 2025 13:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522186; cv=none; b=Pv1b32KT6qMHT+LbgVegUFyR4XthAPhbCTsQGUB4+vWNd/rDJp3ISUHrridvi2kDfeuij0N0UQDR0sxgQWF2GjuV+YnxcNXiliylq/W6D4Vt5n8GMhjdxosDOMvAuTgCUZjKsVe8Ez6hO4P5pZscWkqWKXLn+WkHcIoUTUqNf8c=
+	t=1755523816; cv=none; b=LmcXWUEtzGorlm9QS5pKzuwk+NuBKq9i1O5BtDIsKBaP4CbqZYDpfJUvs111djRHh35fO7g+YZ/QH2afUsskVo1Uwr/WGZ2HpuAo3Wo8QfhEiIoqH8SKtAtjWEs30gG21bUdQ8a99hNuqt+w7dwY/3EnUIlc8HqQS61bYRoPwQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522186; c=relaxed/simple;
-	bh=p2WA4bg0yiVi2uuW+EqQlNnvYMcrOa+TxCfCLlsU6/0=;
+	s=arc-20240116; t=1755523816; c=relaxed/simple;
+	bh=LWom5YdR7PcyCRIYJOaH4mmgL213knB2x8gNJ2ZLbNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbDZmAjC4Xf9SYaCdnANByTrpTpS3NU6je0Jf+VPAG2/Lw94kOA9udj7p++s2FXwepQae4RqNHNG919T4ZSYVpRy6qUIA0pcQpBL2Sr2asMZ/fg5Y87HGMA2cxwsJ8kvTEuxHjRYDD6Huqoc2ssb82t7QI1ec2dbAhHY6lWfyQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJ4N3vaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33869C4CEEB;
-	Mon, 18 Aug 2025 13:03:06 +0000 (UTC)
+	 MIME-Version; b=SOGilJI9DChMX2/KSjcnbb58z0Vko0Xpd6CF3HVQkTmOXNbzL/hIxRkrWbn30kwTAnTPSfWQIyN3Qzeoyy+yBQ9SoYenDBuDt4FyxJR+zbmPO4dyuswsNYvWm1D1Lkg8wFJHnbzVGa823ycfn7js7Zh4yq36O7pRE7g0LDssAw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1X7eLm1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3751C4CEEB;
+	Mon, 18 Aug 2025 13:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522186;
-	bh=p2WA4bg0yiVi2uuW+EqQlNnvYMcrOa+TxCfCLlsU6/0=;
+	s=korg; t=1755523816;
+	bh=LWom5YdR7PcyCRIYJOaH4mmgL213knB2x8gNJ2ZLbNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJ4N3vazwAKV1oQgKS1p2U2GKmeebt7ptFtC0bSWSbcLk9FmpIvVaMeuIJC3JZZrk
-	 EjEpxbERK2fCP5o8eeCvBG0opGltGqnMaa4y+PtPxXKs1RykG1EsUa0/+6eDpz2Y8Y
-	 buh6P0pxkjuqZ5Og+KMRYgz6ZWv1mCd3sNWZveoI=
+	b=W1X7eLm1J62szGvbhp+WWycTc5Ni/OJn9gvGVkExkQr+I/3oUcu5DRMHgNL+uCVi3
+	 cESjritsFHj/g0oaaiUS6RE7SMqajnkHOfHhf19MmeVhqm/0FUnx1lS2OOrG+v8JK7
+	 DigrUMT9i+ovB/Q9rxanWsf6ekCDcSNpf8VPuOZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexei Safin <a.safin@rosa.ru>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
 	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 241/444] wifi: iwlegacy: Check rate_idx range after addition
+Subject: [PATCH 6.15 281/515] wifi: iwlwifi: mld: fix last_mlo_scan_time type
 Date: Mon, 18 Aug 2025 14:44:27 +0200
-Message-ID: <20250818124457.872741612@linuxfoundation.org>
+Message-ID: <20250818124509.241201618@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stf_xl@wp.pl>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
+[ Upstream commit f26281c1b727b90ec18ae90044d5f429d2250e82 ]
 
-Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
-the index is incorrect.
+This should be u64, otherwise it rolls over quickly on 32-bit
+systems.
 
-Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reported-by: Alexei Safin <a.safin@rosa.ru>
-Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250611222325.5381030253cd.I4e3a7bca5b52fc826e26311055286421508c4d1b@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mld/scan.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-index 05c4af41bdb9..a94cf27ffe4b 100644
---- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-+++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
-@@ -1575,8 +1575,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
- 	    || rate_idx > RATE_COUNT_LEGACY)
- 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
- 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
--	if (info->band == NL80211_BAND_5GHZ)
-+	if (info->band == NL80211_BAND_5GHZ) {
- 		rate_idx += IL_FIRST_OFDM_RATE;
-+		if (rate_idx > IL_LAST_OFDM_RATE)
-+			rate_idx = IL_LAST_OFDM_RATE;
-+	}
- 	/* Get PLCP rate for tx_cmd->rate_n_flags */
- 	rate_plcp = il_rates[rate_idx].plcp;
- 	/* Zero out flags for this packet */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.h b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
+index 3ae940d55065..4044cac3f086 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/scan.h
++++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
+@@ -130,7 +130,7 @@ struct iwl_mld_scan {
+ 	void *cmd;
+ 	unsigned long last_6ghz_passive_jiffies;
+ 	unsigned long last_start_time_jiffies;
+-	unsigned long last_mlo_scan_time;
++	u64 last_mlo_scan_time;
+ };
+ 
+ #endif /* __iwl_mld_scan_h__ */
 -- 
 2.39.5
 
