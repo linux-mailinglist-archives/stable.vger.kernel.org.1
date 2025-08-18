@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E594B2A323
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488ADB2A9C5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73B137B7EAA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D23680FDA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6C931B11A;
-	Mon, 18 Aug 2025 13:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8C12E22BA;
+	Mon, 18 Aug 2025 14:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSlXM3WK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/gtsHpj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF0A20126A;
-	Mon, 18 Aug 2025 13:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082CF334728;
+	Mon, 18 Aug 2025 14:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522338; cv=none; b=XppTJm2l9D1mX28SOqXfDkQkWjfnzIKM7eBScq3h0qkRoX9sdShkE666rWiFf1CZ6EMozPBI424s+aFpaE+0HQKb7SMbSBGppI6T4XuipB0kaGzDipqKyBAqSdC9cgYq67wcLu2yOc5OMK4ojecIjvRLVHRes3oeI1x6fVxQoEM=
+	t=1755525645; cv=none; b=TxYMjVByG85/7CU5o7XXx5UKoKbY3sCyCUbJ6vVpxmmZsTzVYr1ibaojQPO9Gm516qm8xD2iFKqj60+Dep7Oyi10d0stEoaSHBIJ97w3rmSl+vQ6daUGKiHCIwE5HLNpSwM5klPpKmExBI26FPeqwN7/E9O6Wuifk0zaVF1omUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522338; c=relaxed/simple;
-	bh=L5eURaOevlBzYlMkHLolnjBRMBxcLd6tlx3KWgv3qwk=;
+	s=arc-20240116; t=1755525645; c=relaxed/simple;
+	bh=BQpt/CcAHXOIz8UMetjQBCU7y4iA+FbBfzfsZjxXKoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pk25gPr0C+g/ltlOxBiRDIJBlG3nbzJw/DythDELqaRGzvN0EwonCWsxb0jfkqVkFtwywwAuo6VCERXUiQSh8HiAZRw523KJPiG2J32UFb52WlhtH3ekZiv4h6nEUECtUUJe3O8gBkvIfCXs7X5YNxNLK9ViZgpxgo7U7UYaKg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSlXM3WK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1BCC4CEEB;
-	Mon, 18 Aug 2025 13:05:37 +0000 (UTC)
+	 MIME-Version; b=kNtwY2MIUlWH1OMToIibl29+VzRlEpkhoBkf4HfhxD08Fe+egmmb6b6f1//fNhsbW3BX5LyrepOvhCPJMYXlvo8sWZwz3plcElT6JF5+z6A7yC0Zjy3oxb8Gaehw1AzQSEDPTVkZLscFeaZ9TP+cTIDdWGd05jtgbKyoM/GzFEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/gtsHpj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8053DC4CEEB;
+	Mon, 18 Aug 2025 14:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522338;
-	bh=L5eURaOevlBzYlMkHLolnjBRMBxcLd6tlx3KWgv3qwk=;
+	s=korg; t=1755525644;
+	bh=BQpt/CcAHXOIz8UMetjQBCU7y4iA+FbBfzfsZjxXKoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSlXM3WKXEeisGL7XIJY/POglWI3vqqXJsK7rtkH9rx4ndzC/dEhEtdkkcLAxLgQi
-	 zYn0z/popFwVtmfE9EXsoK8RzJl8z+eOyd+11ADtP7y8dJNNsI2XEe3VMaH5ynH7aP
-	 vGZzteaZMgNXYGl6k7fs5fCMJpfI14epSWgpdGpo=
+	b=v/gtsHpjVXeBVdCL3KXvMjKbmsrfon79l6okWXEemM81+q/+83t+erXKOqwVP4oS8
+	 2gbobd+tz7w/w2JRfNU/qvjV94b8HxpkC4QRXiahlc0e68rJOR2BsFHYbJurE3IEBG
+	 QFtznCCWJIaBSoi7AvGBVS8/9Yvf4eCx4rfwRyHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	Mike Marshall <hubcap@omnibond.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 285/444] fs/orangefs: use snprintf() instead of sprintf()
+Subject: [PATCH 6.16 324/570] drm/amd/display: Stop storing failures into adev->dm.cached_state
 Date: Mon, 18 Aug 2025 14:45:11 +0200
-Message-ID: <20250818124459.650717391@linuxfoundation.org>
+Message-ID: <20250818124518.338638023@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
+[ Upstream commit 709a37ab9c63297da2194dc36f604537f9d2d417 ]
 
-sprintf() is discouraged for use with bounded destination buffers
-as it does not prevent buffer overflows when the formatted output
-exceeds the destination buffer size. snprintf() is a safer
-alternative as it limits the number of bytes written and ensures
-NUL-termination.
+If drm_atomic_helper_suspend() has failed for any reason, it's stored
+in adev->dm.cached_state.  This isn't expected because the resume
+(or complete()) sequence will attempt to use the stored state to
+resume.
 
-Replace sprintf() with snprintf() for copying the debug string
-into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
-the maximum size to ensure safe formatting and prevent memory
-corruption in edge cases.
-
-EDIT: After this patch sat on linux-next for a few days, Dan
-Carpenter saw it and suggested that I use scnprintf instead of
-snprintf. I made the change and retested.
-
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Link: https://lore.kernel.org/r/20250602014432.3538345-3-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 25 +++++++++++++------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index b57140ebfad0..cd4bfd92ebd6 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -354,7 +354,7 @@ static ssize_t orangefs_debug_read(struct file *file,
- 		goto out;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index f58fa5da7fe5..5be8c0bf8880 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3060,6 +3060,19 @@ static void hpd_rx_irq_work_suspend(struct amdgpu_display_manager *dm)
+ 	}
+ }
  
- 	mutex_lock(&orangefs_debug_lock);
--	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
-+	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
- 	mutex_unlock(&orangefs_debug_lock);
++static int dm_cache_state(struct amdgpu_device *adev)
++{
++	int r;
++
++	adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
++	if (IS_ERR(adev->dm.cached_state)) {
++		r = PTR_ERR(adev->dm.cached_state);
++		adev->dm.cached_state = NULL;
++	}
++
++	return adev->dm.cached_state ? 0 : r;
++}
++
+ static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
+ {
+ 	struct amdgpu_device *adev = ip_block->adev;
+@@ -3068,11 +3081,8 @@ static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
+ 		return 0;
  
- 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
+ 	WARN_ON(adev->dm.cached_state);
+-	adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
+-	if (IS_ERR(adev->dm.cached_state))
+-		return PTR_ERR(adev->dm.cached_state);
+ 
+-	return 0;
++	return dm_cache_state(adev);
+ }
+ 
+ static int dm_suspend(struct amdgpu_ip_block *ip_block)
+@@ -3106,9 +3116,10 @@ static int dm_suspend(struct amdgpu_ip_block *ip_block)
+ 	}
+ 
+ 	if (!adev->dm.cached_state) {
+-		adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
+-		if (IS_ERR(adev->dm.cached_state))
+-			return PTR_ERR(adev->dm.cached_state);
++		int r = dm_cache_state(adev);
++
++		if (r)
++			return r;
+ 	}
+ 
+ 	s3_handle_hdmi_cec(adev_to_drm(adev), true);
 -- 
 2.39.5
 
