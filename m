@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99249B2A296
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9A3B2A56F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 795BA1896268
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13941681B67
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031D631B102;
-	Mon, 18 Aug 2025 12:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6E632A3E3;
+	Mon, 18 Aug 2025 13:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSmYHg2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2HlJ4wY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35502F28E0;
-	Mon, 18 Aug 2025 12:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0358320CDB;
+	Mon, 18 Aug 2025 13:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521484; cv=none; b=CE9tynLWZXOhiLD+b9TeiqpYUhIPLjgPwIWLmhC5Ve2pec+dcXMY9i+O6gOiwvwMkGSEq1eUpVdt6LiZ68d/ARUJjJ0nSInaksoOwOOdCpscIvFlALgBw6u2SKuOYO4NuyuOJ/P9jBx6c8aQDHnxyW28UBIEVJImDdpywV4irCQ=
+	t=1755523109; cv=none; b=YJGwSRl9dZ/PP1/xkA0HI56L52St6ECU8PwNQf4893XamXbIQxOsfJXpxgeExSKeBlClmHNEUQUVSg34wHKBDyFgXg7zrGHFZH2feuLd8TYl1/EPTsLH+aiJLc8oQPXL0nRjZNbFHSwTE6qgwSUUQt97icFVl+8EXRFYIySFYHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521484; c=relaxed/simple;
-	bh=agNwrwHi2bkIJbrilG+Eihj+PGCBndowCfc1gpkA344=;
+	s=arc-20240116; t=1755523109; c=relaxed/simple;
+	bh=uHfFmg+/oq6XatJGSyZ8B8DRmbUXM44kXVoL9ULYDzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PeFV4F2RyqJjtnB2s9CYaQl5MXKpSeIaWkJ0arouRGrVVRYXMKIy5pjlwjIybtXkRWPqq7zhRft4DiU2EX45k4Snhs2C+L8NCjRWDdc5w30zPukYii3RFJXJvN7ZwyaE4w3Kc25X6cNWFnNRBmWxJYJ+xl6ji0Vf2jFddDMtkxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSmYHg2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFE8C4CEEB;
-	Mon, 18 Aug 2025 12:51:23 +0000 (UTC)
+	 MIME-Version; b=hIOdAVBcV0ManPT9Ya10fSjDb7eryxCFCGTpjuLQwFyjvNiX3sufCp3kTbMqc//4VMCH1RL1JXtXqEEzFlSJnOl4qfowsG4iFgZv8q/1AvFAbuh1w2y+lsJVOvOxwnwAinS0obNAalTpShudZmcqEaduhpI+BV+XPXrhBypwfb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2HlJ4wY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4023EC4CEEB;
+	Mon, 18 Aug 2025 13:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521484;
-	bh=agNwrwHi2bkIJbrilG+Eihj+PGCBndowCfc1gpkA344=;
+	s=korg; t=1755523109;
+	bh=uHfFmg+/oq6XatJGSyZ8B8DRmbUXM44kXVoL9ULYDzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSmYHg2AZV/iAnd0CoBzP7CSBrfGK1HLc2kgs1+LYnW+8H9aRxpogt4xWptp4S7v4
-	 cPVrTZBNjC7QTIYAUV+nqz2rIlUrzyckOq4omoyY2i25VkICyTs0EyjMkRM/1loCPC
-	 bjydSUpaSx9P2CGk/5TPoSBTqt2cY0MPw6BQYrMU=
+	b=m2HlJ4wYijdvutVTrlNqgj1zvPD5YTlcGtOce7hNTQHbjadNpkXjtZPa3vfF9dmed
+	 nDNFOTkRfxpI/iDhvmRLTqdtsI5sSsHyk+QxAMBxhbbewdDbTni0HRV+SPN/v3LlKZ
+	 GHXDtU2s0ozSzx8gtEm/COGByo4yoYK4O2Yd4WSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.12 033/444] clk: samsung: gs101: fix CLK_DOUT_CMU_G3D_BUSD
+	Yao Zi <ziyao@disroot.org>,
+	Drew Fustini <fustini@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 073/515] riscv: dts: thead: Add APB clocks for TH1520 GMACs
 Date: Mon, 18 Aug 2025 14:40:59 +0200
-Message-ID: <20250818124450.168973704@linuxfoundation.org>
+Message-ID: <20250818124501.197429454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Yao Zi <ziyao@disroot.org>
 
-commit 29a9361f0b50be2b16d308695e30ee030fedea2c upstream.
+[ Upstream commit a7f75e2883c4bd57b12c3be61bb926929adad9c0 ]
 
-Use the correct Linux clock ID when instantiating the G3D_BUSD
-div_clock.
+Describe perisys-apb4-hclk as the APB clock for TH1520 SoC, which is
+essential for accessing GMAC glue registers.
 
-Fixes: 2c597bb7d66a ("clk: samsung: clk-gs101: Add cmu_top, cmu_misc and cmu_apm support")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-1-49daf1ff4592@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7e756671a664 ("riscv: dts: thead: Add TH1520 ethernet nodes")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Reviewed-by: Drew Fustini <fustini@kernel.org>
+Tested-by: Drew Fustini <fustini@kernel.org>
+Link: https://patch.msgid.link/20250808093655.48074-5-ziyao@disroot.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/samsung/clk-gs101.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/boot/dts/thead/th1520.dtsi | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/clk/samsung/clk-gs101.c
-+++ b/drivers/clk/samsung/clk-gs101.c
-@@ -1154,7 +1154,7 @@ static const struct samsung_div_clock cm
- 	    CLK_CON_DIV_CLKCMU_G2D_MSCL, 0, 4),
- 	DIV(CLK_DOUT_CMU_G3AA_G3AA, "dout_cmu_g3aa_g3aa", "gout_cmu_g3aa_g3aa",
- 	    CLK_CON_DIV_CLKCMU_G3AA_G3AA, 0, 4),
--	DIV(CLK_DOUT_CMU_G3D_SWITCH, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
-+	DIV(CLK_DOUT_CMU_G3D_BUSD, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
- 	    CLK_CON_DIV_CLKCMU_G3D_BUSD, 0, 4),
- 	DIV(CLK_DOUT_CMU_G3D_GLB, "dout_cmu_g3d_glb", "gout_cmu_g3d_glb",
- 	    CLK_CON_DIV_CLKCMU_G3D_GLB, 0, 4),
+diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
+index 527336417765..0aae4e6a5b33 100644
+--- a/arch/riscv/boot/dts/thead/th1520.dtsi
++++ b/arch/riscv/boot/dts/thead/th1520.dtsi
+@@ -286,8 +286,9 @@ gmac1: ethernet@ffe7060000 {
+ 			reg-names = "dwmac", "apb";
+ 			interrupts = <67 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "macirq";
+-			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC1>;
+-			clock-names = "stmmaceth", "pclk";
++			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC1>,
++				 <&clk CLK_PERISYS_APB4_HCLK>;
++			clock-names = "stmmaceth", "pclk", "apb";
+ 			snps,pbl = <32>;
+ 			snps,fixed-burst;
+ 			snps,multicast-filter-bins = <64>;
+@@ -308,8 +309,9 @@ gmac0: ethernet@ffe7070000 {
+ 			reg-names = "dwmac", "apb";
+ 			interrupts = <66 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "macirq";
+-			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC0>;
+-			clock-names = "stmmaceth", "pclk";
++			clocks = <&clk CLK_GMAC_AXI>, <&clk CLK_GMAC0>,
++				 <&clk CLK_PERISYS_APB4_HCLK>;
++			clock-names = "stmmaceth", "pclk", "apb";
+ 			snps,pbl = <32>;
+ 			snps,fixed-burst;
+ 			snps,multicast-filter-bins = <64>;
+-- 
+2.50.1
+
 
 
 
