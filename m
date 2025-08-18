@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-170075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE362B2A259
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FC2B2A805
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D81D11764DA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314836E129F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E44258ED7;
-	Mon, 18 Aug 2025 12:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D5E335BC4;
+	Mon, 18 Aug 2025 13:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+oFJLUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PY7Tx+KZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C2829B0;
-	Mon, 18 Aug 2025 12:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40977335BA8;
+	Mon, 18 Aug 2025 13:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521433; cv=none; b=jMlVpxXGHZEBjbD4NYN1kHAe+9GiJcEvHOqiqYmmNAaCpjBXMIk5DvKQ4rCV8YERvZxYBRZFd7qlrTCgyON6Oth+m0PfMVUwYRg9F89YEWKM5tpqPeHAG+BemV9DUnPx1qFeuu8VthS249uY1T81ewKQkplVNlK+6qdxNZuqBQs=
+	t=1755524777; cv=none; b=CVPndgPIKq9cT3mrK34BOsIKHXa8BhBv/m+zkdrQtE3MrncnjSqMtZtGohPUU4MofFDYUn0ioCdST9Qvrjz/Vu6RxYCcdhokWSjo09eu7t+EorPplU+6qkGvHSrd7pEgvTbkC4w/KQeJ7/bB0+Nf0mlxRLU/Cs4wLq9T6SJYupY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521433; c=relaxed/simple;
-	bh=bxS97ooVNYm8C/EGLgxBLywtDlir0pRT3XpGpjICUHU=;
+	s=arc-20240116; t=1755524777; c=relaxed/simple;
+	bh=Irl1Q3zWD7beWeBCIqryy/sBIJ62M789UOylayvbAFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Utsiih894kBBe0E0qzoQ2oxTJi3AKYGolZ0Mi+Dl2ojm50ZtFp/f3a/zSw5XzN1ns3pKUkQfd9PCPkT5U9iZe/yQLvuNRWCoJSPVs5tK5+jMXFYxS/VQLVvIod5MbUiH46iP9+S6sQRJhNl5m6bJkvgC+/u8o+NymOFqS9IjdF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+oFJLUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2443C4CEEB;
-	Mon, 18 Aug 2025 12:50:31 +0000 (UTC)
+	 MIME-Version; b=KComt+dhNUM1qzXHfgmV+hPMoeTMFW0ohukqYLBlXWkmJ1eLTwuKH3pvM57Y48N7gUncyfgIZ385ZyvHeg6eby8pAWR4sqyegrOsO3DK+RncJRkaxlFWu7+9skNUYa3vjoB2YJMyPJx+/IqYrv1S5g2oEU2MBWURf/r+A8B+A3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PY7Tx+KZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44870C4CEEB;
+	Mon, 18 Aug 2025 13:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521432;
-	bh=bxS97ooVNYm8C/EGLgxBLywtDlir0pRT3XpGpjICUHU=;
+	s=korg; t=1755524777;
+	bh=Irl1Q3zWD7beWeBCIqryy/sBIJ62M789UOylayvbAFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+oFJLUNSTwAYi6cibUw7qQt1/72u6k46khahnBL7oTT+W6LRwSDIUKna2nxzZriR
-	 S02GhJ1teK8BD50pUhzmoNyFabySPRP6XPWGCDZ6EOQlA8sgcrgRDi4pXWGB55rZBp
-	 WlSDGoCpx7LEPRgpIiUlYtB2P8X7JLgJ1A2wgdVs=
+	b=PY7Tx+KZbkbJK8Kxa0/iYILeoTEsOfRTOIsRg0FlXUwbjKOunHP/troITBPkgJc2h
+	 br8JzFeMlxef0AzWnJFSocX6PEBfr/9FDsDX1jJeyIVEfbHatrBNXociDQLSgEOp53
+	 oC015NAWsM7DGhVppcgWoUIvSWmELMse3uEz60nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 019/444] net: mtk_eth_soc: fix device leak at probe
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 058/570] smb: client: dont wait for info->send_pending == 0 on error
 Date: Mon, 18 Aug 2025 14:40:45 +0200
-Message-ID: <20250818124449.636439803@linuxfoundation.org>
+Message-ID: <20250818124508.049939641@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 3e13274ca8750823e8b68181bdf185d238febe0d upstream.
+commit 8c48e1c7520321cc87ff651e96093e2f412785fb upstream.
 
-The reference count to the WED devices has already been incremented when
-looking them up using of_find_device_by_node() so drop the bogus
-additional reference taken during probe.
+We already called ib_drain_qp() before and that makes sure
+send_done() was called with IB_WC_WR_FLUSH_ERR, but
+didn't called atomic_dec_and_test(&sc->send_io.pending.count)
 
-Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
-Cc: stable@vger.kernel.org	# 5.19
-Cc: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-5-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+So we may never reach the info->send_pending == 0 condition.
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/smb/client/smbdirect.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -2794,7 +2794,6 @@ void mtk_wed_add_hw(struct device_node *
- 	if (!pdev)
- 		goto err_of_node_put;
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1316,10 +1316,6 @@ void smbd_destroy(struct TCP_Server_Info
+ 	log_rdma_event(INFO, "cancelling idle timer\n");
+ 	cancel_delayed_work_sync(&info->idle_timer_work);
  
--	get_device(&pdev->dev);
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		goto err_put_device;
+-	log_rdma_event(INFO, "wait for all send posted to IB to finish\n");
+-	wait_event(info->wait_send_pending,
+-		atomic_read(&info->send_pending) == 0);
+-
+ 	/* It's not possible for upper layer to get to reassembly */
+ 	log_rdma_event(INFO, "drain the reassembly queue\n");
+ 	do {
+@@ -1965,7 +1961,11 @@ int smbd_send(struct TCP_Server_Info *se
+ 	 */
+ 
+ 	wait_event(info->wait_send_pending,
+-		atomic_read(&info->send_pending) == 0);
++		atomic_read(&info->send_pending) == 0 ||
++		sc->status != SMBDIRECT_SOCKET_CONNECTED);
++
++	if (sc->status != SMBDIRECT_SOCKET_CONNECTED && rc == 0)
++		rc = -EAGAIN;
+ 
+ 	return rc;
+ }
 
 
 
