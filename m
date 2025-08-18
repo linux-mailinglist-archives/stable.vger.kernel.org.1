@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E93BB2A377
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E80B2A99E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9BC17ACD6B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6136A1B669DC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63D43203B5;
-	Mon, 18 Aug 2025 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9030733EB07;
+	Mon, 18 Aug 2025 14:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5BsvxxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrck1OwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835BC31E0E4;
-	Mon, 18 Aug 2025 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD7833EAFB;
+	Mon, 18 Aug 2025 14:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522388; cv=none; b=sP+cvWNfh1Cc0iXTpvBsMTQz1SgRhRCa92Oue00pDVwe4sejm6KSKebMmUOQgOSjaCgDx67rNd5b9WeoI8D1pTldmPZnSm+TEXicJG/gk+mvPWmx9c7iHqcI564MLHTPU/gegXdmyTfTzraH8leFe+jBvb6uiXhGHPhdWQs5ayo=
+	t=1755525797; cv=none; b=N3IaAj0rCnfZc/r/rtv3KzbF8GrmfjTHhqYXiwDHobu4qvsmnouZtK/3JMhjhDUIVrS4CSQBHhdmBzj3b+aM1rDCbBtjKt1BmmNgDiegKjU9aW7GlulKi0/gZYWgLmG9mT/Pa7s1XU2HSdAqtV6LLxCsWrzyy67odJb3mZB6ShM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522388; c=relaxed/simple;
-	bh=ftbjlEgpZNGzv92HEuLRZ4sOp5mfs497wRKOQ2rG5+M=;
+	s=arc-20240116; t=1755525797; c=relaxed/simple;
+	bh=dV0+H/kyLZNQmpUd6XS2XjGD675gDe3vk77xwRie34U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pjDdAr0SqmVwdq4bgtA4MRFOUoZ54mSusclS5marGl+8fk2p/77rHkb0FrK51UWEx5qcJgF1UeTEvfdMd24sIEt54MTKhw1ZsZ1mnCfxUySzZpgdPPMUggzYdOLhq0b8LNS+xbYvVBaHOn032/UeD2RCyyaeZLQ8qrYIlco7P/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5BsvxxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9485C4CEEB;
-	Mon, 18 Aug 2025 13:06:27 +0000 (UTC)
+	 MIME-Version; b=ZEt+X46SX/qbaNL653rYOfQ9RDc/Dtq2MqZ2QHWFjSErUXqE73dmc95Ac2XB4eR3zCLvbdTNAZEnKxtSUiqyi+U1nikRXr8d6JiaJtKFCZR9QmfGM6pE1qjlM6usjHUrnw9cOtUeAnuNDEciGmiZdt+WEkhrDxCXlt7xW2tuyPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrck1OwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE05C2BCC6;
+	Mon, 18 Aug 2025 14:03:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522388;
-	bh=ftbjlEgpZNGzv92HEuLRZ4sOp5mfs497wRKOQ2rG5+M=;
+	s=korg; t=1755525796;
+	bh=dV0+H/kyLZNQmpUd6XS2XjGD675gDe3vk77xwRie34U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5BsvxxNanAGiyjHRhaO9EVUJXgtrhjq+LzcIm+nhygTB0x1TCIRzpDeghuxIZjph
-	 n2oIxvuc7YA++z8SEoB7UkZDMa9DRqbU5OH5G+7fSF1eiJ+5GDY7THPUm56oNhvjxw
-	 tXVYJqVVM61373c4GaTkHjMDV/kch3xR9W+eJmd4=
+	b=yrck1OwGlEwyL3tgybjV1KGCADIaJlvVFuaYFSaIJj//0og37a6Yk2HVjM1xSIqtp
+	 bH/coahYJ0fwvAwKGjXoCNY/HbGwNpB/tZa4KrK+F4q6elEnF8HU4i/wHLqEjpGXMI
+	 6Swk+Jz4jb9wCF+cb9b0noADdeGntDUefovcE/Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 302/444] media: v4l2-common: Reduce warnings about missing V4L2_CID_LINK_FREQ control
-Date: Mon, 18 Aug 2025 14:45:28 +0200
-Message-ID: <20250818124500.273455759@linuxfoundation.org>
+Subject: [PATCH 6.16 342/570] drm: renesas: rz-du: mipi_dsi: Add min check for VCLK range
+Date: Mon, 18 Aug 2025 14:45:29 +0200
+Message-ID: <20250818124519.035279239@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 5a0abb8909b9dcf347fce1d201ac6686ac33fd64 ]
+[ Upstream commit e37a95d01d5acce211da8446fefbd8684c67f516 ]
 
-When operating a pipeline with a missing V4L2_CID_LINK_FREQ control this
-two line warning is printed each time the pipeline is started. Reduce
-this excessive logging by only warning once for the missing control.
+The VCLK range for Renesas RZ/G2L SoC is 5.803 MHz to 148.5 MHz. Add a
+minimum clock check in the mode_valid callback to ensure that the clock
+value does not fall below the valid range.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250609225630.502888-2-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
-index 0a2f4f0d0a07..807894af9057 100644
---- a/drivers/media/v4l2-core/v4l2-common.c
-+++ b/drivers/media/v4l2-core/v4l2-common.c
-@@ -494,10 +494,10 @@ s64 v4l2_get_link_freq(struct v4l2_ctrl_handler *handler, unsigned int mul,
+diff --git a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
+index dc6ab012cdb6..6aca10920c8e 100644
+--- a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
++++ b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
+@@ -585,6 +585,9 @@ rzg2l_mipi_dsi_bridge_mode_valid(struct drm_bridge *bridge,
+ 	if (mode->clock > 148500)
+ 		return MODE_CLOCK_HIGH;
  
- 		freq = div_u64(v4l2_ctrl_g_ctrl_int64(ctrl) * mul, div);
++	if (mode->clock < 5803)
++		return MODE_CLOCK_LOW;
++
+ 	return MODE_OK;
+ }
  
--		pr_warn("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
--			__func__);
--		pr_warn("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
--			__func__);
-+		pr_warn_once("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
-+			     __func__);
-+		pr_warn_once("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
-+			     __func__);
- 	}
- 
- 	return freq > 0 ? freq : -EINVAL;
 -- 
 2.39.5
 
