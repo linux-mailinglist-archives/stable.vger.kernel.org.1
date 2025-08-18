@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-171478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7735B2AA88
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:33:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ADF0B2A6E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4ED6E0E03
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75AFB17C881
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CDA322A0B;
-	Mon, 18 Aug 2025 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8927C335BC5;
+	Mon, 18 Aug 2025 13:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQ7S5lhi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yn3JywiL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42922321F43;
-	Mon, 18 Aug 2025 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466F3335BB3;
+	Mon, 18 Aug 2025 13:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526059; cv=none; b=slVPW/4FuB2SuX3An63CX23MdZcjEfRwbR/QyRtPEEdZSg3YYrQ7KMSSCYWWNp0NWxZaXmlzswQvPH9neH25Mv6TwuwMLBZ+lkz+8ijPrIn/i4MDm49pY96Rh3yy5N9Cshi8eaLRYMMyQNldG2fUf1cWsBHQp3iBGiRYOcWalYw=
+	t=1755524254; cv=none; b=maT99JdIQjBTXbZQzZaPT6/8rFjHpPxhF6yHUQpS7FdLOfnIjZZ3CddjheVsvPWkQm37u5gOJ5MXE1dGox95TaS1bjClhXB5XOGuXivreEJMMcjt7Z84GyKFshPCKSjjJPPEvhqP8ky5zYKlR3KIszMPkHevS2LmKMMebWRHm6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526059; c=relaxed/simple;
-	bh=4VuVLXAvx81QmyjiGPEm8LD9VK3wLJT2KoHlfTyfFlg=;
+	s=arc-20240116; t=1755524254; c=relaxed/simple;
+	bh=RiiYEEHCBNL9l3/k2lzQlL8yMg2IBhydi1OGOWsXWF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S/rih0w9ZDH3yS/ta7U9WERecySc0DxH4z+D2yFZ3o/YqfB+vX75rK8soau4GNPZDwlbIKcOiGFxFe7aLyE51U5AB47mly5R4IFruD9066d+75gFJIdZtqbsdvZgaPDaIebDwIYB3kMAqe3CO1Z/HbH9qKSaYzvg88keNHLeBCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQ7S5lhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203A6C4CEEB;
-	Mon, 18 Aug 2025 14:07:37 +0000 (UTC)
+	 MIME-Version; b=sbJDEk9BsnkNXxntiMzfuePXLfE6/u0mjL0fivWd//P/25E/LBmrbvXY4Fmhn7pSS3+jCc99HvWiY66E78CGJB5QXYg0B8GwcvI1SoyDZFNyqwtyFF4rXAqQAqCwhJ2hOm/KfRoFGsdw23/veJiEtk8oTniSuVxEJ80t1M68uLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yn3JywiL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB57C116B1;
+	Mon, 18 Aug 2025 13:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526059;
-	bh=4VuVLXAvx81QmyjiGPEm8LD9VK3wLJT2KoHlfTyfFlg=;
+	s=korg; t=1755524254;
+	bh=RiiYEEHCBNL9l3/k2lzQlL8yMg2IBhydi1OGOWsXWF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQ7S5lhihtz2pRaP8WQVjkQb3h9SGBRBLIXeVKwoK0k5mdymzNP1hFEFz47t2o2/9
-	 +Q6FiMZZi/qibyGEviBZR5Ht7PGDANgvm6zybs3oLDXs03boc5m1dMOmLVvtYvewHh
-	 g7MBqEbyV5OWKBg6rUyy1kK/TlXxFLrCzIGz80gQ=
+	b=Yn3JywiLnjgHExPFfynvZNOLT+oigTJ1QrvP1+AZ7LrtPnRcMIRPuSmKnX39wu6Gz
+	 YotYaXmMAnqaFtOyWrE4vzaptpnRiWEYAaWPccmvgmK/LZK78cPA1HmGclp7Dn5D2O
+	 s2lo5bo1Kt2PXlEB8/CfheoK8COtLEqDeZqla03c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C3=ABl=20Melchiore?= <rohel01@gmail.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 414/570] media: uvcvideo: Add quirk for HP Webcam HD 2300
+Subject: [PATCH 6.15 415/515] kheaders: rebuild kheaders_data.tar.xz when a file is modified within a minute
 Date: Mon, 18 Aug 2025 14:46:41 +0200
-Message-ID: <20250818124521.794003252@linuxfoundation.org>
+Message-ID: <20250818124514.391710813@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +59,250 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 53b0b80e5240fec7c5a420bffb310edc83faf4fd ]
+[ Upstream commit 626c54af35764b0b8a4ed5c446458ba6ddfe9cc8 ]
 
-HP Webcam HD 2300 does not seem to flip the FID bit according to spec.
+When a header file is changed, kernel/gen_kheaders.sh may fail to update
+kernel/kheaders_data.tar.xz.
 
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 [unknown]
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x03f0 HP, Inc
-  idProduct          0xe207 HP Webcam HD 2300
-  bcdDevice           10.20
-  iManufacturer           3 Hewlett Packard
-  iProduct                1 HP Webcam HD 2300
-  iSerial                 0
-  bNumConfigurations      1
+[steps to reproduce]
 
-Reported-by: Michaël Melchiore <rohel01@gmail.com>
-Closes: https://lore.kernel.org/linux-media/CA+q66aRvTigH15cUyfvzPJ2mfsDFMt=CjuYNwvAZb29w8b1KDA@mail.gmail.com
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250602-uvc-hp-quirk-v1-1-7047d94d679f@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[1] Build kernel/kheaders_data.tar.xz
+
+  $ make -j$(nproc) kernel/kheaders.o
+    DESCEND objtool
+    INSTALL libsubcmd_headers
+    CALL    scripts/checksyscalls.sh
+    CHK     kernel/kheaders_data.tar.xz
+    GEN     kernel/kheaders_data.tar.xz
+    CC      kernel/kheaders.o
+
+[2] Modify a header without changing the file size
+
+  $ sed -i s/0xdeadbeef/0xfeedbeef/ include/linux/elfnote.h
+
+[3] Rebuild kernel/kheaders_data.tar.xz
+
+  $ make -j$(nproc) kernel/kheaders.o
+    DESCEND objtool
+    INSTALL libsubcmd_headers
+    CALL    scripts/checksyscalls.sh
+    CHK     kernel/kheaders_data.tar.xz
+
+kernel/kheaders_data.tar.xz is not updated if steps [1] - [3] are run
+within the same minute.
+
+The headers_md5 variable stores the MD5 hash of the 'ls -l' output
+for all header files. This hash value is used to determine whether
+kheaders_data.tar.xz needs to be rebuilt. However, 'ls -l' prints the
+modification times with minute-level granularity. If a file is modified
+within the same minute and its size remains the same, the MD5 hash does
+not change.
+
+To reliably detect file modifications, this commit rewrites
+kernel/gen_kheaders.sh to output header dependencies to
+kernel/.kheaders_data.tar.xz.cmd. Then, Make compares the timestamps
+and reruns kernel/gen_kheaders.sh when necessary. This is the standard
+mechanism used by Make and Kbuild.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/.gitignore      |  2 +
+ kernel/Makefile        | 47 ++++++++++++++++++---
+ kernel/gen_kheaders.sh | 94 ++++++++++--------------------------------
+ 3 files changed, 66 insertions(+), 77 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index da24a655ab68..bd875d35ec81 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2514,6 +2514,15 @@ static const struct uvc_device_info uvc_quirk_force_y8 = {
-  * Sort these by vendor/product ID.
-  */
- static const struct usb_device_id uvc_ids[] = {
-+	/* HP Webcam HD 2300 */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x03f0,
-+	  .idProduct		= 0xe207,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= (kernel_ulong_t)&uvc_quirk_stream_no_fid },
- 	/* Quanta ACER HD User Facing */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/kernel/.gitignore b/kernel/.gitignore
+index c6b299a6b786..a501bfc80694 100644
+--- a/kernel/.gitignore
++++ b/kernel/.gitignore
+@@ -1,3 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ /config_data
+ /kheaders.md5
++/kheaders-objlist
++/kheaders-srclist
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 434929de17ef..96a8798c9c64 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -156,11 +156,48 @@ filechk_cat = cat $<
+ $(obj)/config_data: $(KCONFIG_CONFIG) FORCE
+ 	$(call filechk,cat)
+ 
++# kheaders_data.tar.xz
+ $(obj)/kheaders.o: $(obj)/kheaders_data.tar.xz
+ 
+-quiet_cmd_genikh = CHK     $(obj)/kheaders_data.tar.xz
+-      cmd_genikh = $(CONFIG_SHELL) $(srctree)/kernel/gen_kheaders.sh $@
+-$(obj)/kheaders_data.tar.xz: FORCE
+-	$(call cmd,genikh)
++quiet_cmd_kheaders_data = GEN     $@
++      cmd_kheaders_data = "$<" "$@" "$(obj)/kheaders-srclist" "$(obj)/kheaders-objlist"
++      cmd_kheaders_data_dep = cat $(depfile) >> $(dot-target).cmd; rm -f $(depfile)
+ 
+-clean-files := kheaders_data.tar.xz kheaders.md5
++define rule_kheaders_data
++	$(call cmd_and_savecmd,kheaders_data)
++	$(call cmd,kheaders_data_dep)
++endef
++
++targets += kheaders_data.tar.xz
++$(obj)/kheaders_data.tar.xz: $(src)/gen_kheaders.sh $(obj)/kheaders-srclist $(obj)/kheaders-objlist $(obj)/kheaders.md5 FORCE
++	$(call if_changed_rule,kheaders_data)
++
++# generated headers in objtree
++#
++# include/generated/utsversion.h is ignored because it is generated
++# after gen_kheaders.sh is executed. (utsversion.h is unneeded for kheaders)
++filechk_kheaders_objlist = \
++	for d in include "arch/$(SRCARCH)/include"; do \
++		find "$${d}/generated" ! -path "include/generated/utsversion.h" -a -name "*.h" -print; \
++	done
++
++$(obj)/kheaders-objlist: FORCE
++	$(call filechk,kheaders_objlist)
++
++# non-generated headers in srctree
++filechk_kheaders_srclist = \
++	for d in include "arch/$(SRCARCH)/include"; do \
++		find "$(srctree)/$${d}" -path "$(srctree)/$${d}/generated" -prune -o -name "*.h" -print; \
++	done
++
++$(obj)/kheaders-srclist: FORCE
++	$(call filechk,kheaders_srclist)
++
++# Some files are symlinks. If symlinks are changed, kheaders_data.tar.xz should
++# be rebuilt.
++filechk_kheaders_md5sum = xargs -r -a $< stat -c %N | md5sum
++
++$(obj)/kheaders.md5: $(obj)/kheaders-srclist FORCE
++	$(call filechk,kheaders_md5sum)
++
++clean-files := kheaders.md5 kheaders-srclist kheaders-objlist
+diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
+index c9e5dc068e85..0ff7beabb21a 100755
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -4,79 +4,33 @@
+ # This script generates an archive consisting of kernel headers
+ # for CONFIG_IKHEADERS.
+ set -e
+-sfile="$(readlink -f "$0")"
+-outdir="$(pwd)"
+ tarfile=$1
+-tmpdir=$outdir/${tarfile%/*}/.tmp_dir
+-
+-dir_list="
+-include/
+-arch/$SRCARCH/include/
+-"
+-
+-# Support incremental builds by skipping archive generation
+-# if timestamps of files being archived are not changed.
+-
+-# This block is useful for debugging the incremental builds.
+-# Uncomment it for debugging.
+-# if [ ! -f /tmp/iter ]; then iter=1; echo 1 > /tmp/iter;
+-# else iter=$(($(cat /tmp/iter) + 1)); echo $iter > /tmp/iter; fi
+-# find $all_dirs -name "*.h" | xargs ls -l > /tmp/ls-$iter
+-
+-all_dirs=
+-if [ "$building_out_of_srctree" ]; then
+-	for d in $dir_list; do
+-		all_dirs="$all_dirs $srctree/$d"
+-	done
+-fi
+-all_dirs="$all_dirs $dir_list"
+-
+-# include/generated/utsversion.h is ignored because it is generated after this
+-# script is executed. (utsversion.h is unneeded for kheaders)
+-#
+-# When Kconfig regenerates include/generated/autoconf.h, its timestamp is
+-# updated, but the contents might be still the same. When any CONFIG option is
+-# changed, Kconfig touches the corresponding timestamp file include/config/*.
+-# Hence, the md5sum detects the configuration change anyway. We do not need to
+-# check include/generated/autoconf.h explicitly.
+-#
+-# Ignore them for md5 calculation to avoid pointless regeneration.
+-headers_md5="$(find $all_dirs -name "*.h" -a			\
+-		! -path include/generated/utsversion.h -a	\
+-		! -path include/generated/autoconf.h		|
+-		xargs ls -l | md5sum | cut -d ' ' -f1)"
+-
+-# Any changes to this script will also cause a rebuild of the archive.
+-this_file_md5="$(ls -l $sfile | md5sum | cut -d ' ' -f1)"
+-if [ -f $tarfile ]; then tarfile_md5="$(md5sum $tarfile | cut -d ' ' -f1)"; fi
+-if [ -f kernel/kheaders.md5 ] &&
+-	[ "$(head -n 1 kernel/kheaders.md5)" = "$headers_md5" ] &&
+-	[ "$(head -n 2 kernel/kheaders.md5 | tail -n 1)" = "$this_file_md5" ] &&
+-	[ "$(tail -n 1 kernel/kheaders.md5)" = "$tarfile_md5" ]; then
+-		exit
+-fi
+-
+-echo "  GEN     $tarfile"
++srclist=$2
++objlist=$3
++
++dir=$(dirname "${tarfile}")
++tmpdir=${dir}/.tmp_dir
++depfile=${dir}/.$(basename "${tarfile}").d
++
++# generate dependency list.
++{
++	echo
++	echo "deps_${tarfile} := \\"
++	sed 's:\(.*\):  \1 \\:' "${srclist}"
++	sed -n '/^include\/generated\/autoconf\.h$/!s:\(.*\):  \1 \\:p' "${objlist}"
++	echo
++	echo "${tarfile}: \$(deps_${tarfile})"
++	echo
++	echo "\$(deps_${tarfile}):"
++
++} > "${depfile}"
+ 
+ rm -rf "${tmpdir}"
+ mkdir "${tmpdir}"
+ 
+-if [ "$building_out_of_srctree" ]; then
+-	(
+-		cd $srctree
+-		for f in $dir_list
+-			do find "$f" -name "*.h";
+-		done | tar -c -f - -T - | tar -xf - -C "${tmpdir}"
+-	)
+-fi
+-
+-for f in $dir_list;
+-	do find "$f" -name "*.h";
+-done | tar -c -f - -T - | tar -xf - -C "${tmpdir}"
+-
+-# Always exclude include/generated/utsversion.h
+-# Otherwise, the contents of the tarball may vary depending on the build steps.
+-rm -f "${tmpdir}/include/generated/utsversion.h"
++# shellcheck disable=SC2154 # srctree is passed as an env variable
++sed "s:^${srctree}/::" "${srclist}" | tar -c -f - -C "${srctree}" -T - | tar -xf - -C "${tmpdir}"
++tar -c -f - -T "${objlist}" | tar -xf - -C "${tmpdir}"
+ 
+ # Remove comments except SDPX lines
+ # Use a temporary file to store directory contents to prevent find/xargs from
+@@ -92,8 +46,4 @@ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
+     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C "${tmpdir}/" . > /dev/null
+ 
+-echo $headers_md5 > kernel/kheaders.md5
+-echo "$this_file_md5" >> kernel/kheaders.md5
+-echo "$(md5sum $tarfile | cut -d ' ' -f1)" >> kernel/kheaders.md5
+-
+ rm -rf "${tmpdir}"
 -- 
 2.39.5
 
