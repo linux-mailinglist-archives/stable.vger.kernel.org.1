@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF27DB2A73D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12C6B2A442
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5852F6854CC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F4A5665C2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FA331E116;
-	Mon, 18 Aug 2025 13:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0350731E10E;
+	Mon, 18 Aug 2025 13:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWF4iBzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCQo/6Yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C9F219A7E;
-	Mon, 18 Aug 2025 13:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EA131B102;
+	Mon, 18 Aug 2025 13:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524136; cv=none; b=ATR6fGP2uNXnwsGHYqNhk2fG8gV3dosUqu+2/DvAcSvxYdSEirYAUC5g1HRMWL3wLZrNhcGiSliDPf0CR6MYvo5GIfUjiSe3Nxe6DyO3a6b8QglZHuSCDI/2s4Xtvz7yC2ubGQmcew9oCU3K1eP0HW14aZf5m/dtmnYwybO2KOE=
+	t=1755522458; cv=none; b=a0IUq/WDVKiwE31W1lcFL6AAH/XPhWebowE96CmreLX7gLOEvh5Ke9j53VCfS14zCFqY87O0bbKzVieT6zOQf6rCE/LKZswQntZpvkmXhYtIZR0WStfkVsnZJG6ggal7MTe1vIo5VBu11UoWtvMA+5z6ix6wB9vQvRaVUnN2COk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524136; c=relaxed/simple;
-	bh=860MXo3kAl6KkA3RDZDG9KLv9jI9XrpAXKUe4XTs93o=;
+	s=arc-20240116; t=1755522458; c=relaxed/simple;
+	bh=3mUlfk0cVRiCUK8MirVrgaoq07WCZRPJcKCp0Eto4HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a2wBYHRc3fqE/WU8a8+4dA2oahWzlDDSdvaChdP6WJ66ic+Tgd1ksVPUi+E7UUIIfZojIaCXT8M0fHAKCinF1PUOT7v47VxwB9I58fMvUxo5dWGY5lJ2xft+XGj11WXcCk93V9joFtH73HUwuAdgUOKT/nIF3USQMPROZhYahGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWF4iBzi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51540C4CEEB;
-	Mon, 18 Aug 2025 13:35:35 +0000 (UTC)
+	 MIME-Version; b=GKER5uWFc9CZ51Ts8GIm8r8UTB46P5lydifv4IngrdEuaZti9IAhchTZeHgAuN9Y1vbXbx8pxaMCqiYrVcppwvJz6vRDQ8DF0HqaJIujia1akxesc3oGx0dnb44m+1juei/YFvbX1ePnp80ehH7vp2TnLlCMkpGnPeYaH4hg5uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCQo/6Yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18ABFC4CEEB;
+	Mon, 18 Aug 2025 13:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524135;
-	bh=860MXo3kAl6KkA3RDZDG9KLv9jI9XrpAXKUe4XTs93o=;
+	s=korg; t=1755522458;
+	bh=3mUlfk0cVRiCUK8MirVrgaoq07WCZRPJcKCp0Eto4HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWF4iBzimOdp5EoZWVoH3oD1Z9l+7sURwI1TKJZLXXQiK/J3ojj4qwH5bXL1REKao
-	 Zt8Jraqw6fSAcxw6beKH63UPC8cSo+JIeKsAsXnwgeyOVWlSPkFFdk4sdy5d7nxdfH
-	 uPdzGZrpnmIYgrxs+0rfyIrhCeUr5SexLA5ilbNY=
+	b=aCQo/6YqYg0JmY0mXU57jPbHeM1TNQttEo0ThHH3F+APzsgnJQZPho6gsHvDx/dWf
+	 TiSAUImYJdvReNJ6XVT651wI2B66r6QAKO1wzjBR27+vkXeUrPjkHjFneMpDjxh2se
+	 k8+EdhDe08SRvM73uS6gtsZX0mz/S6AUZqLFQb1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Srujana Challa <schalla@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 361/515] media: v4l2-common: Reduce warnings about missing V4L2_CID_LINK_FREQ control
+Subject: [PATCH 6.12 321/444] crypto: octeontx2 - add timeout for load_fvc completion poll
 Date: Mon, 18 Aug 2025 14:45:47 +0200
-Message-ID: <20250818124512.304530205@linuxfoundation.org>
+Message-ID: <20250818124500.980609129@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Bharat Bhushan <bbhushan2@marvell.com>
 
-[ Upstream commit 5a0abb8909b9dcf347fce1d201ac6686ac33fd64 ]
+[ Upstream commit 2157e50f65d2030f07ea27ef7ac4cfba772e98ac ]
 
-When operating a pipeline with a missing V4L2_CID_LINK_FREQ control this
-two line warning is printed each time the pipeline is started. Reduce
-this excessive logging by only warning once for the missing control.
+Adds timeout to exit from possible infinite loop, which polls
+on CPT instruction(load_fvc) completion.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Srujana Challa <schalla@marvell.com>
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../crypto/marvell/octeontx2/otx2_cptpf_ucode.c  | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
-index e4b2de3833ee..841cd9e196c3 100644
---- a/drivers/media/v4l2-core/v4l2-common.c
-+++ b/drivers/media/v4l2-core/v4l2-common.c
-@@ -494,10 +494,10 @@ s64 __v4l2_get_link_freq_ctrl(struct v4l2_ctrl_handler *handler,
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+index 5c9484646172..357a7c6ac837 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
+@@ -1493,6 +1493,7 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 	dma_addr_t rptr_baddr;
+ 	struct pci_dev *pdev;
+ 	u32 len, compl_rlen;
++	int timeout = 10000;
+ 	int ret, etype;
+ 	void *rptr;
  
- 		freq = div_u64(v4l2_ctrl_g_ctrl_int64(ctrl) * mul, div);
+@@ -1555,16 +1556,27 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
+ 							 etype);
+ 		otx2_cpt_fill_inst(&inst, &iq_cmd, rptr_baddr);
+ 		lfs->ops->send_cmd(&inst, 1, &cptpf->lfs.lf[0]);
++		timeout = 10000;
  
--		pr_warn("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
--			__func__);
--		pr_warn("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
--			__func__);
-+		pr_warn_once("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
-+			     __func__);
-+		pr_warn_once("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
-+			     __func__);
+ 		while (lfs->ops->cpt_get_compcode(result) ==
+-						OTX2_CPT_COMPLETION_CODE_INIT)
++						OTX2_CPT_COMPLETION_CODE_INIT) {
+ 			cpu_relax();
++			udelay(1);
++			timeout--;
++			if (!timeout) {
++				ret = -ENODEV;
++				cptpf->is_eng_caps_discovered = false;
++				dev_warn(&pdev->dev, "Timeout on CPT load_fvc completion poll\n");
++				goto error_no_response;
++			}
++		}
+ 
+ 		cptpf->eng_caps[etype].u = be64_to_cpup(rptr);
  	}
+-	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
+ 	cptpf->is_eng_caps_discovered = true;
  
- 	return freq > 0 ? freq : -EINVAL;
++error_no_response:
++	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
+ free_result:
+ 	kfree(result);
+ lf_cleanup:
 -- 
 2.39.5
 
