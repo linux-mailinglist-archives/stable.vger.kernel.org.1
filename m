@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F93EB2A77A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00EBB2A46B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8506C1B65D93
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC4AF6802BA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364E5227BB5;
-	Mon, 18 Aug 2025 13:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F4B31E105;
+	Mon, 18 Aug 2025 13:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXUZeAsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4UYXerp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE0221577;
-	Mon, 18 Aug 2025 13:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5735931E10D;
+	Mon, 18 Aug 2025 13:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524338; cv=none; b=DzVWf2AW+DhxpBFnhkRwlzbpKkDI044GpOyykJdiI9S1MbdAI14KSr9PIyEKlaL+kseBx/dP8jZtA9VFYDIgs2YIvnHaLCOQ77/d/QLFe4CcE7Lx1R3qp01foC27yxyQikt2R4gxHgxsfRzLBe47qwy/7rP3wyvR4KXzwcU2SiU=
+	t=1755522832; cv=none; b=Xvn9wSishLLgWl3FkQPA0/YWyfz9X4cWG/uzMEyT7tyctWApoS9jpaU0n/AMVL/sS0jaPXVwKsfQ7uFTbt0BT3vsjnLkANDHHpUVOwRh4zfrP50xM1QXKM4BF0boKF1QEmaNr8EEhaIpzObltae7gnUdE6FljqRMLP3oJa58Ryw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524338; c=relaxed/simple;
-	bh=3jfnXbgWuNvFRC38Md3WmRzn2bBBnepL7jba4qwBKHk=;
+	s=arc-20240116; t=1755522832; c=relaxed/simple;
+	bh=/lxTeV3HmhM+Irp+bonLsJzYwHG2EzwPqvj3UV7/Qu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XK9dTC2zrY6dquFytGf8Ek6PXjqpMhYc8DmZnoqbwGS2x6L0OWB/+KMvTE38lIeRG6Unu5hvSx3v+rSxkPxvzmeiy/cyEuFR++bUG75bMI5tAL4LOCJYZj+1wuXUPaZ2cVKoVGmjO4BQMZG9i0UvN+bwetHcl843CCamdRTd0E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXUZeAsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF19C116C6;
-	Mon, 18 Aug 2025 13:38:57 +0000 (UTC)
+	 MIME-Version; b=NMOlxLEqctlpcCFlnF7S8zrEnwUgeidI4B+9Wgf6EhHqOKwQsXh6FhT4LACM7qitAYOj7eWE+ShTuGBlhH6AosDUNUpGfl+OGsgXBlfMiY0S8TLJluR5+cisfwvugi+YIqMWkpnBVH3mTLD766GX2fh0uOK89jQ/cqdtziWX9dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4UYXerp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8883C4CEEB;
+	Mon, 18 Aug 2025 13:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524337;
-	bh=3jfnXbgWuNvFRC38Md3WmRzn2bBBnepL7jba4qwBKHk=;
+	s=korg; t=1755522832;
+	bh=/lxTeV3HmhM+Irp+bonLsJzYwHG2EzwPqvj3UV7/Qu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXUZeAsrgVGkCKcfB9WPYSUntiyn6nya2zB3KZ/M1cdX4fjtMUqsc3ZulMuIAhQyF
-	 5pHg4b7MQhcv70gdUqXoobR7Ei8EB66XlBM1lnRRRikowpicSEf70mCWj44o43hfO8
-	 Uy7J9Kxw6b77vaz7lcsEoNY5kCjT+S/Q2cBINnic=
+	b=A4UYXerpkhFRNF8Tp9mN9hJs1OAeG8u93KeoyaeRK7h6oCpX0OGf8+mm94xnOv6aF
+	 sWnNKSJ8Azq1Y77HTKos2FQWi51Cy4xeygcME3+491tlq44itD54ttm3xzRO5KjR9m
+	 ETJkrBsp/0XGMvORC0e05NZ5hCnQRMLMdgADo+Gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bijan Tabatabai <bijantabatab@micron.com>,
-	SeongJae Park <sj@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Ravi Shankar Jonnalagadda <ravis.opensrc@micron.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 442/515] mm/damon/core: commit damos->target_nid
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 402/444] btrfs: error on missing block group when unaccounting log tree extent buffers
 Date: Mon, 18 Aug 2025 14:47:08 +0200
-Message-ID: <20250818124515.442086343@linuxfoundation.org>
+Message-ID: <20250818124503.996632771@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bijan Tabatabai <bijantabatab@micron.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 579bd5006fe7f4a7abb32da0160d376476cab67d upstream.
+commit fc5799986fbca957e2e3c0480027f249951b7bcf upstream.
 
-When committing new scheme parameters from the sysfs, the target_nid field
-of the damos struct would not be copied.  This would result in the
-target_nid field to retain its original value, despite being updated in
-the sysfs interface.
+Currently we only log an error message if we can't find the block group
+for a log tree extent buffer when unaccounting it (while freeing a log
+tree). A missing block group means something is seriously wrong and we
+end up leaking space from the metadata space info. So return -ENOENT in
+case we don't find the block group.
 
-This patch fixes this issue by copying target_nid in damos_commit().
-
-Link: https://lkml.kernel.org/r/20250709004729.17252-1-bijan311@gmail.com
-Fixes: 83dc7bbaecae ("mm/damon/sysfs: use damon_commit_ctx()")
-Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Ravi Shankar Jonnalagadda <ravis.opensrc@micron.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/tree-log.c |   19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -978,6 +978,7 @@ static int damos_commit(struct damos *ds
- 		return err;
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -2587,14 +2587,14 @@ static int replay_one_buffer(struct btrf
+ /*
+  * Correctly adjust the reserved bytes occupied by a log tree extent buffer
+  */
+-static void unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
++static int unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
+ {
+ 	struct btrfs_block_group *cache;
  
- 	dst->wmarks = src->wmarks;
-+	dst->target_nid = src->target_nid;
+ 	cache = btrfs_lookup_block_group(fs_info, start);
+ 	if (!cache) {
+ 		btrfs_err(fs_info, "unable to find block group for %llu", start);
+-		return;
++		return -ENOENT;
+ 	}
  
- 	err = damos_commit_filters(dst, src);
- 	return err;
+ 	spin_lock(&cache->space_info->lock);
+@@ -2605,27 +2605,22 @@ static void unaccount_log_buffer(struct
+ 	spin_unlock(&cache->space_info->lock);
+ 
+ 	btrfs_put_block_group(cache);
++
++	return 0;
+ }
+ 
+ static int clean_log_buffer(struct btrfs_trans_handle *trans,
+ 			    struct extent_buffer *eb)
+ {
+-	int ret;
+-
+ 	btrfs_tree_lock(eb);
+ 	btrfs_clear_buffer_dirty(trans, eb);
+ 	wait_on_extent_buffer_writeback(eb);
+ 	btrfs_tree_unlock(eb);
+ 
+-	if (trans) {
+-		ret = btrfs_pin_reserved_extent(trans, eb);
+-		if (ret)
+-			return ret;
+-	} else {
+-		unaccount_log_buffer(eb->fs_info, eb->start);
+-	}
++	if (trans)
++		return btrfs_pin_reserved_extent(trans, eb);
+ 
+-	return 0;
++	return unaccount_log_buffer(eb->fs_info, eb->start);
+ }
+ 
+ static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
 
 
 
