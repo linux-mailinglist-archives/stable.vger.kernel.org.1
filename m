@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5726DB29E90
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:57:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68339B29EAD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051D81702CC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:57:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F252C19632CB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B84230FF20;
-	Mon, 18 Aug 2025 09:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB34310627;
+	Mon, 18 Aug 2025 10:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmiJjo1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvcMIIPg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C70530FF1D
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AE7310638
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755511019; cv=none; b=JfKLF/CLkbS+GXwh5RmJq0wZToyxVAfaxAV63Y0cyrQRT/5ZYvggNmMzJCGJ61sEbGfG94HtK6n8CV5Ig9E5kloSW60Ht+Sk0lv6DFRPLA9ao7/+QxedKOeZv2Vr7YDA7VCtOhg+UvPIH5rzjtj/aroZwL1Zc6+Zxavm15BjHwo=
+	t=1755511248; cv=none; b=BGRLe/wuPUavVtWUmqFmCI8AnJeWUjBgBx/HBBjd6FQd2gSClasZ7kMPdhgC7Qrteto7jd1mgFzEKs5lFz+fv6o9G9Y3Rk3ebDdjq5J/5bVnMj+UHJfqwcdaZHOzkm4z6ahL+E/vHHZxFDG4aen3a+PSvf14rzELbhE/0Tv0+6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755511019; c=relaxed/simple;
-	bh=8xl2U/oqt8pd8SqfGOeOThtSHeaulPbD38qPw+MGOL8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O1mh2IoJlm9OiP7VDKk9Q0RHLdW+3zY0h85TdYNMkQSpqiGffgznDsi/Mjnj52jldk01fL2S1IYGv6fOuNTx93WqAiOBRrS9absxkNvmq2+jxYUUynPXTpbj3u2EZX+g8e8oWYgbI9k4WVW9LSF2jAoCAP/j17DiPaHsyQn9UrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmiJjo1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A34C4CEEB;
-	Mon, 18 Aug 2025 09:56:58 +0000 (UTC)
+	s=arc-20240116; t=1755511248; c=relaxed/simple;
+	bh=vtNvv/ex4Cvs/l0DwRGLZd1l96SMlkj7b+hbNbNUX40=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sZtvjpnmwlJNbJD+u/nVNqkX0feEPlof7uktISZoKPQwONqx0A7zSzJ8tsKnBz92A6L/rFLHNokk3259q+4miGnPjXp2rLWet6AQBElyUK8Q725NQLaCu4SLNaYJv6q75lGMFI+GqEaeA4kQRN79wZYLEQ2trrTkb1QmGHQUUEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvcMIIPg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D02C4CEEB;
+	Mon, 18 Aug 2025 10:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755511018;
-	bh=8xl2U/oqt8pd8SqfGOeOThtSHeaulPbD38qPw+MGOL8=;
+	s=korg; t=1755511247;
+	bh=vtNvv/ex4Cvs/l0DwRGLZd1l96SMlkj7b+hbNbNUX40=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tmiJjo1c3i95hw1DyuH5P2MK4aNOyht3SNviTFp2JEeqEcGGY/1Gjyj74Asisv0dN
-	 xPAnVNXlw81Cvp5BZEAfiYsGXrjMpPYnB+IIvzUn6T25zppTEhiiBzHxYhBdKuuq/2
-	 /BKBTtfSkodI/LRwe+ToOQ5o5cvZ7of3pFDYeF9E=
-Subject: FAILED: patch "[PATCH] ext4: fix zombie groups in average fragment size lists" failed to apply to 5.15-stable tree
-To: libaokun1@huawei.com,jack@suse.cz,tytso@mit.edu,yi.zhang@huawei.com
+	b=lvcMIIPgQKVeYwXSp3atZoHLXywW1MUR3eg6Vcu7wtl01yrREQh404HZIwUavhgKK
+	 X+/kaxXIzbPTh8OlSQxJ/daCmxeplL9qoRVTbckc3UbNYTD2GAZgPXzTwWd8o7mH/V
+	 vUl7wnDNWKwsXjkZWKh8XLI/sG3eCugivfzytTtY=
+Subject: FAILED: patch "[PATCH] serial: 8250: fix panic due to PSLVERR" failed to apply to 6.16-stable tree
+To: cuiyunhui@bytedance.com,gregkh@linuxfoundation.org,john.ogness@linutronix.de,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 11:56:55 +0200
-Message-ID: <2025081855-sensation-survivor-0dde@gregkh>
+Date: Mon, 18 Aug 2025 12:00:44 +0200
+Message-ID: <2025081844-wimp-jubilance-539e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.16-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1c320d8e92925bb7615f83a7b6e3f402a5c2ca63
+git cherry-pick -x 7f8fdd4dbffc05982b96caf586f77a014b2a9353
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081855-sensation-survivor-0dde@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081844-wimp-jubilance-539e@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,84 +77,59 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1c320d8e92925bb7615f83a7b6e3f402a5c2ca63 Mon Sep 17 00:00:00 2001
-From: Baokun Li <libaokun1@huawei.com>
-Date: Mon, 14 Jul 2025 21:03:20 +0800
-Subject: [PATCH] ext4: fix zombie groups in average fragment size lists
+From 7f8fdd4dbffc05982b96caf586f77a014b2a9353 Mon Sep 17 00:00:00 2001
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+Date: Wed, 23 Jul 2025 10:33:22 +0800
+Subject: [PATCH] serial: 8250: fix panic due to PSLVERR
 
-Groups with no free blocks shouldn't be in any average fragment size list.
-However, when all blocks in a group are allocated(i.e., bb_fragments or
-bb_free is 0), we currently skip updating the average fragment size, which
-means the group isn't removed from its previous s_mb_avg_fragment_size[old]
-list.
+When the PSLVERR_RESP_EN parameter is set to 1, the device generates
+an error response if an attempt is made to read an empty RBR (Receive
+Buffer Register) while the FIFO is enabled.
 
-This created "zombie" groups that were always skipped during traversal as
-they couldn't satisfy any block allocation requests, negatively impacting
-traversal efficiency.
+In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
+UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
+dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
+function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
+Execution proceeds to the serial_port_in(port, UART_RX).
+This satisfies the PSLVERR trigger condition.
 
-Therefore, when a group becomes completely full, bb_avg_fragment_size_order
-is now set to -1. If the old order was not -1, a removal operation is
-performed; if the new order is not -1, an insertion is performed.
+When another CPU (e.g., using printk()) is accessing the UART (UART
+is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
+(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
+dw8250_force_idle().
 
-Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250714130327.1830534-11-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
+to fix this issue.
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 6d98f2a5afc4..72b20fc52bbf 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -841,30 +841,30 @@ static void
- mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+Panic backtrace:
+[    0.442336] Oops - unknown exception [#1]
+[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
+[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
+...
+[    0.442416] console_on_rootfs+0x26/0x70
+
+Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
+Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 7eddcab318b4..2da9db960d09 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2269,9 +2269,9 @@ static void serial8250_initialize(struct uart_port *port)
  {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	int new_order;
-+	int new, old;
+ 	unsigned long flags;
  
--	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
-+	if (!test_opt2(sb, MB_OPTIMIZE_SCAN))
- 		return;
++	uart_port_lock_irqsave(port, &flags);
+ 	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
  
--	new_order = mb_avg_fragment_size_order(sb,
--					grp->bb_free / grp->bb_fragments);
--	if (new_order == grp->bb_avg_fragment_size_order)
-+	old = grp->bb_avg_fragment_size_order;
-+	new = grp->bb_fragments == 0 ? -1 :
-+	      mb_avg_fragment_size_order(sb, grp->bb_free / grp->bb_fragments);
-+	if (new == old)
- 		return;
- 
--	if (grp->bb_avg_fragment_size_order != -1) {
--		write_lock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
-+	if (old >= 0) {
-+		write_lock(&sbi->s_mb_avg_fragment_size_locks[old]);
- 		list_del(&grp->bb_avg_fragment_size_node);
--		write_unlock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
-+		write_unlock(&sbi->s_mb_avg_fragment_size_locks[old]);
-+	}
-+
-+	grp->bb_avg_fragment_size_order = new;
-+	if (new >= 0) {
-+		write_lock(&sbi->s_mb_avg_fragment_size_locks[new]);
-+		list_add_tail(&grp->bb_avg_fragment_size_node,
-+				&sbi->s_mb_avg_fragment_size[new]);
-+		write_unlock(&sbi->s_mb_avg_fragment_size_locks[new]);
- 	}
--	grp->bb_avg_fragment_size_order = new_order;
--	write_lock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
--	list_add_tail(&grp->bb_avg_fragment_size_node,
--		&sbi->s_mb_avg_fragment_size[grp->bb_avg_fragment_size_order]);
--	write_unlock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
- }
- 
- /*
+-	uart_port_lock_irqsave(port, &flags);
+ 	serial8250_init_mctrl(port);
+ 	serial8250_iir_txen_test(port);
+ 	uart_port_unlock_irqrestore(port, flags);
 
 
