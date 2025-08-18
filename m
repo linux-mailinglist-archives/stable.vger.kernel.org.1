@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D44B2A956
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB6FB2A432
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 543CCB6040A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCD5D1B60553
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC201321F46;
-	Mon, 18 Aug 2025 14:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2FB319847;
+	Mon, 18 Aug 2025 13:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnZw84Py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5Vw+T74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B553218C0;
-	Mon, 18 Aug 2025 14:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8F218AAB;
+	Mon, 18 Aug 2025 13:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526007; cv=none; b=bSyzfBqhgnhKt5bVAswGmxqpHVkrTle7UBYZo3K7DoWVvStPVLxT3SAGtsfjgFiUQ5Vg0zaS7KfRWcoQUqT7l3pwvSCaOWylTcirXAdQ8gTtk7+VlfdP+z1l+lanOWAcMm8zFPTfYXcilCe7NpM1++0WqHGpwXWh76i9JOLsBok=
+	t=1755522700; cv=none; b=E1z5sQ0Dug1J5lpz6ismAP3KaDOu2MJWOI3yEP8agpmutVGHKf0SAoXaSWHbhsvJ8mVmhva0l4n4LGnGr5XiqLPhDA2plGjXl5xSZXXc60rXLX/iDa5Aly0mRCH2S6u2JoegL6IgiyGcnVtvw7KQTykVIIpnP3g0Lg1Kg+dEBUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526007; c=relaxed/simple;
-	bh=aTqbBptv9qMbItI48qahctAfL8NCuIWyphwqOi6azv4=;
+	s=arc-20240116; t=1755522700; c=relaxed/simple;
+	bh=a9CewsEJsTmIjGDvKxwGy5tCBaAaYEAH6PsA7RG6RwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qudyov+glFyJljOnYwgIUbZVselzyBuI0aUi8voDECHsF0PvPtlxgV4nFFtZ3Yi7t2n2eSfAmM9DuFQWKnEI+jeNb6Q8CDeQ+cJc0NedlqfmtcdF4iHbI+uuWJYqIH2CyPL18yB0UHajmPCQmQRPFaRzywFDXqSo9xgUx9xqejU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnZw84Py; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ECBC4CEEB;
-	Mon, 18 Aug 2025 14:06:46 +0000 (UTC)
+	 MIME-Version; b=ks2ftC1aSQHrwmT81eEWWh06omNd+p3cV645sjyqI7peLrfyoJwxOanFyPgv1wcpqtel/v0k0N8Y9nC0IbVRXhmzKWqDyiFxXC7BsIIx/zy275r6CZTvtMIbcnchgHLi3OjmxBrHUyFEHBBHTNyinGlPzK7UZlDMppqT98WVKpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5Vw+T74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60136C4CEEB;
+	Mon, 18 Aug 2025 13:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526007;
-	bh=aTqbBptv9qMbItI48qahctAfL8NCuIWyphwqOi6azv4=;
+	s=korg; t=1755522696;
+	bh=a9CewsEJsTmIjGDvKxwGy5tCBaAaYEAH6PsA7RG6RwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnZw84PyAqxyKqAirzxfhQqaAcnwIISCWZyBof2V8dqp3+uDJppZZneqrYxjMi2ju
-	 OkHDcQK3bo/96pU3xgzwMXu3fA6csk4h1oyrmRfCTz3+mRDU5zLZaD7x30j2le7e/5
-	 XmSoIyCxpwnKc+lyvs5kqUh9lItvJbbLp7XPm3Vg=
+	b=j5Vw+T74DuVvj48ASu41JvCHnS3sTqHcEI++hbXgqs0r0k9V0aRFxbqU2CY/vFvga
+	 CD3zUMzHfYhejIAewI9fPxT5s6lOx+RCAed3uok21ZrXevWv48DZZnRdIJlt9+Bj6V
+	 tLSJ9cbvllIwVgc3VpLr7QekAEdoPIdeysTF+EsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 431/570] dm-table: fix checking for rq stackable devices
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 392/444] btrfs: abort transaction during log replay if walk_log_tree() failed
 Date: Mon, 18 Aug 2025 14:46:58 +0200
-Message-ID: <20250818124522.436893533@linuxfoundation.org>
+Message-ID: <20250818124503.612866041@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 8ca719b81987be690f197e82fdb030580c0a07f3 ]
+commit 2a5898c4aac67494c2f0f7fe38373c95c371c930 upstream.
 
-Due to the semantics of iterate_devices(), the current code allows a
-request-based dm table as long as it includes one request-stackable
-device. It is supposed to only allow tables where there are no
-non-request-stackable devices.
+If we failed walking a log tree during replay, we have a missing
+transaction abort to prevent committing a transaction where we didn't
+fully replay all the changes from a log tree and therefore can leave the
+respective subvolume tree in some inconsistent state. So add the missing
+transaction abort.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-table.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/btrfs/tree-log.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index 24a857ff6d0b..79ba4bacd0f9 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -899,17 +899,17 @@ static bool dm_table_supports_dax(struct dm_table *t,
- 	return true;
- }
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -7295,11 +7295,14 @@ again:
  
--static int device_is_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
--				  sector_t start, sector_t len, void *data)
-+static int device_is_not_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
-+				      sector_t start, sector_t len, void *data)
- {
- 	struct block_device *bdev = dev->bdev;
- 	struct request_queue *q = bdev_get_queue(bdev);
+ 		wc.replay_dest->log_root = log;
+ 		ret = btrfs_record_root_in_trans(trans, wc.replay_dest);
+-		if (ret)
++		if (ret) {
+ 			/* The loop needs to continue due to the root refs */
+ 			btrfs_abort_transaction(trans, ret);
+-		else
++		} else {
+ 			ret = walk_log_tree(trans, log, &wc);
++			if (ret)
++				btrfs_abort_transaction(trans, ret);
++		}
  
- 	/* request-based cannot stack on partitions! */
- 	if (bdev_is_partition(bdev))
--		return false;
-+		return true;
- 
--	return queue_is_mq(q);
-+	return !queue_is_mq(q);
- }
- 
- static int dm_table_determine_type(struct dm_table *t)
-@@ -1005,7 +1005,7 @@ static int dm_table_determine_type(struct dm_table *t)
- 
- 	/* Non-request-stackable devices can't be used for request-based dm */
- 	if (!ti->type->iterate_devices ||
--	    !ti->type->iterate_devices(ti, device_is_rq_stackable, NULL)) {
-+	    ti->type->iterate_devices(ti, device_is_not_rq_stackable, NULL)) {
- 		DMERR("table load rejected: including non-request-stackable devices");
- 		return -EINVAL;
- 	}
--- 
-2.39.5
-
+ 		if (!ret && wc.stage == LOG_WALK_REPLAY_ALL) {
+ 			ret = fixup_inode_link_counts(trans, wc.replay_dest,
 
 
 
