@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB6FB2A432
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E77B2A711
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCD5D1B60553
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DDF01B66C5C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2FB319847;
-	Mon, 18 Aug 2025 13:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB238321F22;
+	Mon, 18 Aug 2025 13:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5Vw+T74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvkIWp9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F8F218AAB;
-	Mon, 18 Aug 2025 13:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D86230D0D;
+	Mon, 18 Aug 2025 13:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522700; cv=none; b=E1z5sQ0Dug1J5lpz6ismAP3KaDOu2MJWOI3yEP8agpmutVGHKf0SAoXaSWHbhsvJ8mVmhva0l4n4LGnGr5XiqLPhDA2plGjXl5xSZXXc60rXLX/iDa5Aly0mRCH2S6u2JoegL6IgiyGcnVtvw7KQTykVIIpnP3g0Lg1Kg+dEBUU=
+	t=1755524400; cv=none; b=jX86ffSF5b6EEGtmt3DYhHeB1F0PDlgmjBugTg+zj2CQJqipI96Ozli1+O18ebHCqdIjrymeiVRqd+Qag8o8EyJsZHvWSesellagZurprU4ZUbMDH9JDdUz9w7lZTOMlo8S4Cz+saqFacAaLXAWh3iPqBCzdrSA+ctTuaDUKfQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522700; c=relaxed/simple;
-	bh=a9CewsEJsTmIjGDvKxwGy5tCBaAaYEAH6PsA7RG6RwI=;
+	s=arc-20240116; t=1755524400; c=relaxed/simple;
+	bh=5VOOnwxZNM5Q+xyVmdGkAdD3f1GggCrmrg0216BhQQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ks2ftC1aSQHrwmT81eEWWh06omNd+p3cV645sjyqI7peLrfyoJwxOanFyPgv1wcpqtel/v0k0N8Y9nC0IbVRXhmzKWqDyiFxXC7BsIIx/zy275r6CZTvtMIbcnchgHLi3OjmxBrHUyFEHBBHTNyinGlPzK7UZlDMppqT98WVKpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5Vw+T74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60136C4CEEB;
-	Mon, 18 Aug 2025 13:11:36 +0000 (UTC)
+	 MIME-Version; b=VdVedPx7OjZNK7rOrA3pl44MDIntd+LWYdSwQ0u23YVxQ4pQuG1C/3vtm8HXnSb3lVWKnaJwIF5L9qZLrYSbVjuDsCAejb4RROd3g3irPLDg53VlzoE+OgqWA9MoIAOP7iM22Pd7F+Qsj03uJoPp7KSMoIiASc7lMKVe3oyptpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvkIWp9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3470C113D0;
+	Mon, 18 Aug 2025 13:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522696;
-	bh=a9CewsEJsTmIjGDvKxwGy5tCBaAaYEAH6PsA7RG6RwI=;
+	s=korg; t=1755524400;
+	bh=5VOOnwxZNM5Q+xyVmdGkAdD3f1GggCrmrg0216BhQQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j5Vw+T74DuVvj48ASu41JvCHnS3sTqHcEI++hbXgqs0r0k9V0aRFxbqU2CY/vFvga
-	 CD3zUMzHfYhejIAewI9fPxT5s6lOx+RCAed3uok21ZrXevWv48DZZnRdIJlt9+Bj6V
-	 tLSJ9cbvllIwVgc3VpLr7QekAEdoPIdeysTF+EsE=
+	b=mvkIWp9tvz4IUmylHuNpzZxH4NBM4K46DYVEOxBfAjSXCP3n7Wm+83AgC75e82qTc
+	 u+aJYgbs5iWzxkhBQRfAAKDs0synCv5JZaA+oyD7LprhWMRuH0Q2v/gOqRZGw0EI4R
+	 /k5VwetoXXFYGzEMACIYn2C8mzxJKwGSom+D7lQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 392/444] btrfs: abort transaction during log replay if walk_log_tree() failed
-Date: Mon, 18 Aug 2025 14:46:58 +0200
-Message-ID: <20250818124503.612866041@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 433/515] scsi: lpfc: Remove redundant assignment to avoid memory leak
+Date: Mon, 18 Aug 2025 14:46:59 +0200
+Message-ID: <20250818124515.095596880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit 2a5898c4aac67494c2f0f7fe38373c95c371c930 upstream.
+[ Upstream commit eea6cafb5890db488fce1c69d05464214616d800 ]
 
-If we failed walking a log tree during replay, we have a missing
-transaction abort to prevent committing a transaction where we didn't
-fully replay all the changes from a log tree and therefore can leave the
-respective subvolume tree in some inconsistent state. So add the missing
-transaction abort.
+Remove the redundant assignment if kzalloc() succeeds to avoid memory
+leak.
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd2cdd5e400f ("scsi: lpfc: NVME Initiator: Add debugfs support")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20250801185202.42631-1-jiashengjiangcool@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_debugfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -7295,11 +7295,14 @@ again:
- 
- 		wc.replay_dest->log_root = log;
- 		ret = btrfs_record_root_in_trans(trans, wc.replay_dest);
--		if (ret)
-+		if (ret) {
- 			/* The loop needs to continue due to the root refs */
- 			btrfs_abort_transaction(trans, ret);
--		else
-+		} else {
- 			ret = walk_log_tree(trans, log, &wc);
-+			if (ret)
-+				btrfs_abort_transaction(trans, ret);
-+		}
- 
- 		if (!ret && wc.stage == LOG_WALK_REPLAY_ALL) {
- 			ret = fixup_inode_link_counts(trans, wc.replay_dest,
+diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
+index 3fd1aa5cc78c..1b601e45bc45 100644
+--- a/drivers/scsi/lpfc/lpfc_debugfs.c
++++ b/drivers/scsi/lpfc/lpfc_debugfs.c
+@@ -6289,7 +6289,6 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
+ 			}
+ 			phba->nvmeio_trc_on = 1;
+ 			phba->nvmeio_trc_output_idx = 0;
+-			phba->nvmeio_trc = NULL;
+ 		} else {
+ nvmeio_off:
+ 			phba->nvmeio_trc_size = 0;
+-- 
+2.50.1
+
 
 
 
