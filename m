@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7400BB2A88C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EECB2A5D7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE181B66317
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:57:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A755B681265
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B65D1A5B92;
-	Mon, 18 Aug 2025 13:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDC2320CDB;
+	Mon, 18 Aug 2025 13:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZczpEmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2wRIzqv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4901E8836;
-	Mon, 18 Aug 2025 13:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1D2320CAB;
+	Mon, 18 Aug 2025 13:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525376; cv=none; b=Ypk3fUqfFKK4yvTTfUqsdlX8dKg5OZ1+5FRHdt1IZEaD7cK/tncOx8iHVtDVo0M0m5+BfxpUPON/Z1u4Jw/9KoHzls8xmozgnjb9OyyqhM+Vim5+4fG9L8aO+ztfyHo6paFwGWGgZG03ckTOtR9eVGlivw4cjTcAbBDCX7y0g+A=
+	t=1755523538; cv=none; b=JI2DNlYYMYWSy7Pb/0uCfXDOZeely0aujA6a1vX5fQ1gho9fz5xEYJHxvsBjVkwbj/ZJJSXSkKyzjJjtmFL8g505dhq6mbujg1dJHO4zwS98pih0khINDjYISnsrUrSrZp2c+T67B8WLtA3gDEUcOD+Oukh+FNEDYJgFbVGGZX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525376; c=relaxed/simple;
-	bh=TI899axCXEMs/dHGeQAL77fEzMD5ZKDoVGM/L525VqA=;
+	s=arc-20240116; t=1755523538; c=relaxed/simple;
+	bh=7JK2NLfgKsHBjYNvSBX8zzuSX0DWY4q1ZfxSg/O1GR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSvbOCygcXLW4ARyhJttm+dqpIJ53S5gTvHmwU1bdiXZaabmEYr5s/AuqDKiizRe/awNSCEc6cbbC5mlqTgoXFBB0f79neQjIyJp42z1Q2HIs2TaG4AMATmNAj09pmjzV8yaKdJf1E38aIe0KFGXL1MyCP3PuUkav+ex348yvyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZczpEmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD3BC4CEEB;
-	Mon, 18 Aug 2025 13:56:15 +0000 (UTC)
+	 MIME-Version; b=chMxRvOph4zHAK08pE5kAQiY/xCpBRwz1Ft8E6VNZmmjRJqqhB+swIxSUCYgh99RcjR3LKiB56ut7T9dKOZXuztnoWJgVS/Q32c73xnIJ0rjF8MQdtm+EalLzKZ3CDEGzIsAu+rJS11whCE9crQJnSpwXwZ+SZVtdvAIARvH/7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2wRIzqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F1FC4CEEB;
+	Mon, 18 Aug 2025 13:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525375;
-	bh=TI899axCXEMs/dHGeQAL77fEzMD5ZKDoVGM/L525VqA=;
+	s=korg; t=1755523537;
+	bh=7JK2NLfgKsHBjYNvSBX8zzuSX0DWY4q1ZfxSg/O1GR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZczpEmcQPG+UCBZBPxb1MIp7KxVvKuYO6XCdhdXuQ7Q+iG0R/fAVqoEto6who5O6
-	 O7sGhUlHXXmQ+HgxGDJZ1E/PfxWNAsdZD8xdM+bqYnCneKmTMqZ06UZPIew/N09QD2
-	 HHoT2mTAMFurHbWbHunIBtXw9O9hZR3n+CILA4aE=
+	b=a2wRIzqvzvRhrCn36LQphPy1cAHAicH4CEpDQILurdf5pEddv5J2N+ReszSeT/F5q
+	 pEN81QcOv7xE4jpYIAJKITeSYxe6k7FTeAo/c85xl3EP3NkfLBqMFHWleX4wmQ1Yar
+	 Dr1lq/kbSkwU/CxXtlQjipWn0MxLWP7NIR7+49sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 200/570] ALSA: pcm: Rewrite recalculate_boundary() to avoid costly loop
-Date: Mon, 18 Aug 2025 14:43:07 +0200
-Message-ID: <20250818124513.506075789@linuxfoundation.org>
+Subject: [PATCH 6.15 202/515] net: usb: cdc-ncm: check for filtering capability
+Date: Mon, 18 Aug 2025 14:43:08 +0200
+Message-ID: <20250818124506.139000487@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 92f59aeb13252265c20e7aef1379a8080c57e0a2 ]
+[ Upstream commit 61c3e8940f2d8b5bfeaeec4bedc2f3e7d873abb3 ]
 
-At the time being recalculate_boundary() is implemented with a
-loop which shows up as costly in a perf profile, as depicted by
-the annotate below:
+If the decice does not support filtering, filtering
+must not be used and all packets delivered for the
+upper layers to sort.
 
-    0.00 :   c057e934:       3d 40 7f ff     lis     r10,32767
-    0.03 :   c057e938:       61 4a ff ff     ori     r10,r10,65535
-    0.21 :   c057e93c:       7d 49 50 50     subf    r10,r9,r10
-    5.39 :   c057e940:       7d 3c 4b 78     mr      r28,r9
-    2.11 :   c057e944:       55 29 08 3c     slwi    r9,r9,1
-    3.04 :   c057e948:       7c 09 50 40     cmplw   r9,r10
-    2.47 :   c057e94c:       40 81 ff f4     ble     c057e940 <snd_pcm_ioctl+0xee0>
-
-Total: 13.2% on that simple loop.
-
-But what the loop does is to multiply the boundary by 2 until it is
-over the wanted border. This can be avoided by using fls() to get the
-boundary value order and shift it by the appropriate number of bits at
-once.
-
-This change provides the following profile:
-
-    0.04 :   c057f6e8:       3d 20 7f ff     lis     r9,32767
-    0.02 :   c057f6ec:       61 29 ff ff     ori     r9,r9,65535
-    0.34 :   c057f6f0:       7d 5a 48 50     subf    r10,r26,r9
-    0.23 :   c057f6f4:       7c 1a 50 40     cmplw   r26,r10
-    0.02 :   c057f6f8:       41 81 00 20     bgt     c057f718 <snd_pcm_ioctl+0xf08>
-    0.26 :   c057f6fc:       7f 47 00 34     cntlzw  r7,r26
-    0.09 :   c057f700:       7d 48 00 34     cntlzw  r8,r10
-    0.22 :   c057f704:       7d 08 38 50     subf    r8,r8,r7
-    0.04 :   c057f708:       7f 5a 40 30     slw     r26,r26,r8
-    0.35 :   c057f70c:       7c 0a d0 40     cmplw   r10,r26
-    0.13 :   c057f710:       40 80 05 f8     bge     c057fd08 <snd_pcm_ioctl+0x14f8>
-    0.00 :   c057f714:       57 5a f8 7e     srwi    r26,r26,1
-
-Total: 1.7% with that loopless alternative.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://patch.msgid.link/4836e2cde653eebaf2709ebe30eec736bb8c67fd.1749202237.git.christophe.leroy@csgroup.eu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20250717120649.2090929-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/usb/cdc_ncm.c   | 20 ++++++++++++++++----
+ include/linux/usb/cdc_ncm.h |  1 +
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 853ac5bb33ff..ecb71bf1859d 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -24,6 +24,7 @@
- #include <sound/minors.h>
- #include <linux/uio.h>
- #include <linux/delay.h>
-+#include <linux/bitops.h>
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 34e82f1e37d9..ea0e5e276cd6 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -892,6 +892,10 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
+ 		}
+ 	}
  
- #include "pcm_local.h"
++	if (ctx->func_desc)
++		ctx->filtering_supported = !!(ctx->func_desc->bmNetworkCapabilities
++			& USB_CDC_NCM_NCAP_ETH_FILTER);
++
+ 	iface_no = ctx->data->cur_altsetting->desc.bInterfaceNumber;
  
-@@ -3130,13 +3131,23 @@ struct snd_pcm_sync_ptr32 {
- static snd_pcm_uframes_t recalculate_boundary(struct snd_pcm_runtime *runtime)
- {
- 	snd_pcm_uframes_t boundary;
-+	snd_pcm_uframes_t border;
-+	int order;
- 
- 	if (! runtime->buffer_size)
- 		return 0;
--	boundary = runtime->buffer_size;
--	while (boundary * 2 <= 0x7fffffffUL - runtime->buffer_size)
--		boundary *= 2;
--	return boundary;
-+
-+	border = 0x7fffffffUL - runtime->buffer_size;
-+	if (runtime->buffer_size > border)
-+		return runtime->buffer_size;
-+
-+	order = __fls(border) - __fls(runtime->buffer_size);
-+	boundary = runtime->buffer_size << order;
-+
-+	if (boundary <= border)
-+		return boundary;
-+	else
-+		return boundary / 2;
+ 	/* Device-specific flags */
+@@ -1898,6 +1902,14 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
+ 	}
  }
  
- static int snd_pcm_ioctl_sync_ptr_compat(struct snd_pcm_substream *substream,
++static void cdc_ncm_update_filter(struct usbnet *dev)
++{
++	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
++
++	if (ctx->filtering_supported)
++		usbnet_cdc_update_filter(dev);
++}
++
+ static const struct driver_info cdc_ncm_info = {
+ 	.description = "CDC NCM (NO ZLP)",
+ 	.flags = FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET
+@@ -1908,7 +1920,7 @@ static const struct driver_info cdc_ncm_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP  */
+@@ -1922,7 +1934,7 @@ static const struct driver_info cdc_ncm_zlp_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP */
+@@ -1964,7 +1976,7 @@ static const struct driver_info wwan_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ /* Same as wwan_info, but with FLAG_NOARP  */
+@@ -1978,7 +1990,7 @@ static const struct driver_info wwan_noarp_info = {
+ 	.status = cdc_ncm_status,
+ 	.rx_fixup = cdc_ncm_rx_fixup,
+ 	.tx_fixup = cdc_ncm_tx_fixup,
+-	.set_rx_mode = usbnet_cdc_update_filter,
++	.set_rx_mode = cdc_ncm_update_filter,
+ };
+ 
+ static const struct usb_device_id cdc_devs[] = {
+diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
+index 2d207cb4837d..4ac082a63173 100644
+--- a/include/linux/usb/cdc_ncm.h
++++ b/include/linux/usb/cdc_ncm.h
+@@ -119,6 +119,7 @@ struct cdc_ncm_ctx {
+ 	u32 timer_interval;
+ 	u32 max_ndp_size;
+ 	u8 is_ndp16;
++	u8 filtering_supported;
+ 	union {
+ 		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
+ 		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
 -- 
 2.39.5
 
