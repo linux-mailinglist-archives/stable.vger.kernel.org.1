@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADF6B29E43
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:45:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DDA1B29E46
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1905A1899A3C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:45:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 147A9188F6EB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5225514AD0D;
-	Mon, 18 Aug 2025 09:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E818C19D08F;
+	Mon, 18 Aug 2025 09:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC8nZZcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDgFP00P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09089302CB9
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D64E30F7F8
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755510304; cv=none; b=TmXoK/C72RPxj4gr1IiL3CJfyoUoBwktFvRVE0GcHFZjU/OGT+ESEdG8qGxrFQBEVkVuvdNcEnfgcn1x/OlTF0v3CpWyMavfisZphouBiwsl5E6XRwzzb75slF2ThaRPfxt3ScyDodBvfQT4xhvpkevQ4CCnkDlk/8O6kayFz78=
+	t=1755510342; cv=none; b=vEfMQih4LTDj+gY+AWpb4Dn1KqzRKrsrIZlNplPBRv35HkC1tJ22ksPltinEDEe4cY7CYlzVQ9OLzPW+Xu4zlvVz/haF1BINPqeZaYMqrJUYu1xV2YSD5RLNuq1OHA2wbZCPiifi67NPUhTGRnFJfETJ4qvBG0HxWAnKNb5ejZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755510304; c=relaxed/simple;
-	bh=Zqq30a5axZZoVfjPE9rlUtdDzBAUdmBk3yS47H9R8lA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QHdrxZlEvqqxZ1yxJmCR2cYf2NpFS1o5zX3+B4L/q1+nI6K+fMi+RZtpp3P7FiGuSpBcKnIHMCZ5+W268Xn2pGjIvX1O1G0VAfq2pmrvE6/258RZF5lLLtU6QoNlENBjNkZA9ciYfuU6TWygh0lX9S1CvNL/fq2RuHwp5rYlhFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC8nZZcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233D1C4CEEB;
-	Mon, 18 Aug 2025 09:45:02 +0000 (UTC)
+	s=arc-20240116; t=1755510342; c=relaxed/simple;
+	bh=NTt1PWNpGVPSUZCvrOGVyCJ0iCS0l9s417+uUhzretM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HBaG5Nf7hoMufvMC3OPLRBOOMY0nQ078LxOBA+zcDyqPBLdtx3JYsMhZbE52YTY/PoLF4FKR+KeT3HIF8egpvDc0/y2t9u8ViOX6FKXBd9ZUb6bSwn1eEzS7DEhGJEecXnd+C9Ltmeq3IHdLCfg9xsSy4Yp28hP7soHkba9KnSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDgFP00P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC43C4CEEB;
+	Mon, 18 Aug 2025 09:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755510303;
-	bh=Zqq30a5axZZoVfjPE9rlUtdDzBAUdmBk3yS47H9R8lA=;
+	s=korg; t=1755510342;
+	bh=NTt1PWNpGVPSUZCvrOGVyCJ0iCS0l9s417+uUhzretM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EC8nZZcEggY9/T9X4BIIGeO71MrQ7Wz9E8szTnAxoSF7shx3novIqiCBa4Z3WL9G8
-	 tSaI+/ayFySc23+ti3QRZFApZZe40EuS6e+I1n2nPXWMhnUhJLkl5G0gKHg0pQEHDZ
-	 vsQuSpUjWzLfhAQlbH4FVyb9IaE6pZhsmCODaVM4=
-Subject: FAILED: patch "[PATCH] x86/sev: Ensure SVSM reserved fields in a page validation" failed to apply to 6.12-stable tree
-To: thomas.lendacky@amd.com,bp@alien8.de,joerg.roedel@amd.com,stable@kernel.org
+	b=tDgFP00PEcPXsX9sKhWVxneBx466QCXjRhpmdy+tve1hcAp/yD6Pnw+t7oRvKkdvf
+	 Od2KKu0O9+SQWBdkyxL0U9yDWT8Sz9yeoVIeA2SKNWB86eyyNokUYT8MizT7EWhvbj
+	 fbWNRSo24bd2SK/UNL2CN68I8rMFMqskgp5wdojo=
+Subject: FAILED: patch "[PATCH] virt: sev-guest: Satisfy linear mapping requirement in" failed to apply to 6.16-stable tree
+To: thomas.lendacky@amd.com,bp@alien8.de,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 11:44:52 +0200
-Message-ID: <2025081852-debtless-penniless-395d@gregkh>
+Date: Mon, 18 Aug 2025 11:45:39 +0200
+Message-ID: <2025081839-unmoral-mulch-990f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.16-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3ee9cebd0a5e7ea47eb35cec95eaa1a866af982d
+git cherry-pick -x c08ba63078dd6046c279df37795cb77e784e1ec9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081852-debtless-penniless-395d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081839-unmoral-mulch-990f@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,55 +77,92 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3ee9cebd0a5e7ea47eb35cec95eaa1a866af982d Mon Sep 17 00:00:00 2001
+From c08ba63078dd6046c279df37795cb77e784e1ec9 Mon Sep 17 00:00:00 2001
 From: Tom Lendacky <thomas.lendacky@amd.com>
-Date: Wed, 13 Aug 2025 10:26:59 -0500
-Subject: [PATCH] x86/sev: Ensure SVSM reserved fields in a page validation
- entry are initialized to zero
+Date: Wed, 16 Jul 2025 15:41:35 -0500
+Subject: [PATCH] virt: sev-guest: Satisfy linear mapping requirement in
+ get_derived_key()
 
-In order to support future versions of the SVSM_CORE_PVALIDATE call, all
-reserved fields within a PVALIDATE entry must be set to zero as an SVSM should
-be ensuring all reserved fields are zero in order to support future usage of
-reserved areas based on the protocol version.
+Commit
 
-Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
+  7ffeb2fc2670 ("x86/sev: Document requirement for linear mapping of guest request buffers")
+
+added a check that requires the guest request buffers to be in the linear
+mapping. The get_derived_key() function was passing a buffer that was
+allocated on the stack, resulting in the call to snp_send_guest_request()
+returning an error.
+
+Update the get_derived_key() function to use an allocated buffer instead
+of a stack buffer.
+
+Fixes: 7ffeb2fc2670 ("x86/sev: Document requirement for linear mapping of guest request buffers")
 Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Joerg Roedel <joerg.roedel@amd.com>
 Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/7cde412f8b057ea13a646fb166b1ca023f6a5031.1755098819.git.thomas.lendacky@amd.com
+Link: https://lore.kernel.org/9b764ca9fc79199a091aac684c4926e2080ca7a8.1752698495.git.thomas.lendacky@amd.com
 
-diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-shared.c
-index 7a706db87b93..4ab0dbd043c6 100644
---- a/arch/x86/boot/startup/sev-shared.c
-+++ b/arch/x86/boot/startup/sev-shared.c
-@@ -785,6 +785,7 @@ static void __head svsm_pval_4k_page(unsigned long paddr, bool validate)
- 	pc->entry[0].page_size = RMP_PG_SIZE_4K;
- 	pc->entry[0].action    = validate;
- 	pc->entry[0].ignore_cf = 0;
-+	pc->entry[0].rsvd      = 0;
- 	pc->entry[0].pfn       = paddr >> PAGE_SHIFT;
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index d2b3ae7113ab..b01ec99106cd 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -116,13 +116,11 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
  
- 	/* Protocol 0, Call ID 1 */
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index fc59ce78c477..43ecc6b9fb9c 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -227,6 +227,7 @@ static u64 svsm_build_ca_from_pfn_range(u64 pfn, u64 pfn_end, bool action,
- 		pe->page_size = RMP_PG_SIZE_4K;
- 		pe->action    = action;
- 		pe->ignore_cf = 0;
-+		pe->rsvd      = 0;
- 		pe->pfn       = pfn;
+ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+ {
++	struct snp_derived_key_resp *derived_key_resp __free(kfree) = NULL;
+ 	struct snp_derived_key_req *derived_key_req __free(kfree) = NULL;
+-	struct snp_derived_key_resp derived_key_resp = {0};
+ 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
+ 	struct snp_guest_req req = {};
+ 	int rc, resp_len;
+-	/* Response data is 64 bytes and max authsize for GCM is 16 bytes. */
+-	u8 buf[64 + 16];
  
- 		pe++;
-@@ -257,6 +258,7 @@ static int svsm_build_ca_from_psc_desc(struct snp_psc_desc *desc, unsigned int d
- 		pe->page_size = e->pagesize ? RMP_PG_SIZE_2M : RMP_PG_SIZE_4K;
- 		pe->action    = e->operation == SNP_PAGE_STATE_PRIVATE;
- 		pe->ignore_cf = 0;
-+		pe->rsvd      = 0;
- 		pe->pfn       = e->gfn;
+ 	if (!arg->req_data || !arg->resp_data)
+ 		return -EINVAL;
+@@ -132,8 +130,9 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
+ 	 * response payload. Make sure that it has enough space to cover the
+ 	 * authtag.
+ 	 */
+-	resp_len = sizeof(derived_key_resp.data) + mdesc->ctx->authsize;
+-	if (sizeof(buf) < resp_len)
++	resp_len = sizeof(derived_key_resp->data) + mdesc->ctx->authsize;
++	derived_key_resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
++	if (!derived_key_resp)
+ 		return -ENOMEM;
  
- 		pe++;
+ 	derived_key_req = kzalloc(sizeof(*derived_key_req), GFP_KERNEL_ACCOUNT);
+@@ -149,23 +148,21 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
+ 	req.vmpck_id = mdesc->vmpck_id;
+ 	req.req_buf = derived_key_req;
+ 	req.req_sz = sizeof(*derived_key_req);
+-	req.resp_buf = buf;
++	req.resp_buf = derived_key_resp;
+ 	req.resp_sz = resp_len;
+ 	req.exit_code = SVM_VMGEXIT_GUEST_REQUEST;
+ 
+ 	rc = snp_send_guest_request(mdesc, &req);
+ 	arg->exitinfo2 = req.exitinfo2;
+-	if (rc)
+-		return rc;
+-
+-	memcpy(derived_key_resp.data, buf, sizeof(derived_key_resp.data));
+-	if (copy_to_user((void __user *)arg->resp_data, &derived_key_resp,
+-			 sizeof(derived_key_resp)))
+-		rc = -EFAULT;
++	if (!rc) {
++		if (copy_to_user((void __user *)arg->resp_data, derived_key_resp,
++				 sizeof(derived_key_resp->data)))
++			rc = -EFAULT;
++	}
+ 
+ 	/* The response buffer contains the sensitive data, explicitly clear it. */
+-	memzero_explicit(buf, sizeof(buf));
+-	memzero_explicit(&derived_key_resp, sizeof(derived_key_resp));
++	memzero_explicit(derived_key_resp, sizeof(*derived_key_resp));
++
+ 	return rc;
+ }
+ 
 
 
