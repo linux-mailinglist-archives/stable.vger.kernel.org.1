@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C86B2A86B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E9AB2A369
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D436E083E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A83917356B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E0E27B358;
-	Mon, 18 Aug 2025 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321EE26F283;
+	Mon, 18 Aug 2025 12:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XglxfI0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wygr+Rg9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BAA261B99;
-	Mon, 18 Aug 2025 13:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CDB3218CF;
+	Mon, 18 Aug 2025 12:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525295; cv=none; b=fDM+6hKIp4AQsv6iFgo2xxNM3JnrvNnGi20ISjiLrQvX40/EBXZ3ORZvHWVyBuklZ7MQDeMl6ciLnwtxIiMcVhR+I84Sk3zGmXD5gL/KnJLw2yiXaTsVFwjeF90cBhLiY9ikUaNe8ihhvFNP5wP2pNDqhp/C/z8RIRja9v5HnlE=
+	t=1755521988; cv=none; b=lCx8WA7D5q57WFbv5QXv4LRPQAgmxTweuIzF9fqRrcuR8WbeRdEM9ZZgow1eYGTA06CBLTbGHUoxHy+o7Wv/w8DQGGj2g2OYAW2gbzh2nUnMhti49+LIBpfZI61EYifzGYu3fIy5vR3TbS0qiMD7dFKLJJd/7yKDUMb/38FlVoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525295; c=relaxed/simple;
-	bh=66DnAOw2HrHqiZTmJQqy/QwmwxEX/6+2d6JgMdSFcFs=;
+	s=arc-20240116; t=1755521988; c=relaxed/simple;
+	bh=eU7vc+gS93dxezLZZs5C/rcS0WiWvig9w3lm+cgN7Cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcOC2tnHycMXkxaur0HTDoeZ7edRa9HpYeFVEC8yb/92S7TsXV/zdaFV2VI0P3BYrMTyVF5TM0czSLDlc/wWRGbd8DAvH4GKU8oFJMHyv14pEp0xNFGyj4k9R51OTvMWdN8er9gY/wlGnUldW0chrFQEm4UaTbS+M1JqFjL3PxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XglxfI0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640A9C4CEEB;
-	Mon, 18 Aug 2025 13:54:54 +0000 (UTC)
+	 MIME-Version; b=iz9V1fP6vwZO7R2ll2w2JEoIf8L5EA+jN7QEyEWJDXTwpZgWimhH+IM76oJ2RIzlReCxozSD30jjrKT6DxMtljkei4bDqNyVSFKeELVQA2zmbbcV9Zfbw0If/iT8SDfkzX0pYQRmxdfLnrjbY2JV1zW2effK4BNl+H7I03O8rmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wygr+Rg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533F1C4CEEB;
+	Mon, 18 Aug 2025 12:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525294;
-	bh=66DnAOw2HrHqiZTmJQqy/QwmwxEX/6+2d6JgMdSFcFs=;
+	s=korg; t=1755521987;
+	bh=eU7vc+gS93dxezLZZs5C/rcS0WiWvig9w3lm+cgN7Cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XglxfI0KMvndOyqcRZHH8gVa91hWMBa/8agw7vJ3e2ZlEL3cAXPIZMO4vJFrmgjLp
-	 lJM2LUGLzG6UqYqOIaVAbgXWd1wx1/LIO5IM5LWWoUYd+uN6VPvjQmmd3lFuyRf9wb
-	 26ZEKpHHEXymAM6IIY/IUQovcpyD/6KxC+qT9j2I=
+	b=wygr+Rg9u/iotBQYmnyw5hflyleSShGbU6/gML08dR7Mabv89P6sO57wybXt4gMO9
+	 NSZSWuTLi9qtJFmuqFUhHW+Ij43zi390u8rWMnugYlxMydkTlkqbeQxQg6XXBL7rt2
+	 iRrpaG6FKvxJrDD0I70Qqr7UkPe0ic9Vrc1OtNtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 219/570] wifi: ath12k: Correct tid cleanup when tid setup fails
+Subject: [PATCH 6.12 180/444] net: ag71xx: Add missing check after DMA map
 Date: Mon, 18 Aug 2025 14:43:26 +0200
-Message-ID: <20250818124514.241945510@linuxfoundation.org>
+Message-ID: <20250818124455.624024256@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 4a2bf707270f897ab8077baee8ed5842a5321686 ]
+[ Upstream commit 96a1e15e60216b52da0e6da5336b6d7f5b0188b0 ]
 
-Currently, if any error occurs during ath12k_dp_rx_peer_tid_setup(),
-the tid value is already incremented, even though the corresponding
-TID is not actually allocated. Proceed to
-ath12k_dp_rx_peer_tid_delete() starting from unallocated tid,
-which might leads to freeing unallocated TID and cause potential
-crash or out-of-bounds access.
+The DMA map functions can fail and should be tested for errors.
 
-Hence, fix by correctly decrementing tid before cleanup to match only
-the successfully allocated TIDs.
-
-Also, remove tid-- from failure case of ath12k_dp_rx_peer_frag_setup(),
-as decrementing the tid before cleanup in loop will take care of this.
-
-Compile tested only.
-
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250721061749.886732-1-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716095733.37452-3-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 6317c6d4c043..dd26ed8d7d96 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -101,7 +101,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
- 		return -ENOENT;
- 	}
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index 9586b6894f7e..bccc7e7b2a84 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1213,6 +1213,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
+ 	buf->rx.rx_buf = data;
+ 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
+ 					  DMA_FROM_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
++		skb_free_frag(data);
++		buf->rx.rx_buf = NULL;
++		return false;
++	}
+ 	desc->data = (u32)buf->rx.dma_addr + offset;
+ 	return true;
+ }
+@@ -1511,6 +1516,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
  
--	for (; tid >= 0; tid--)
-+	for (tid--; tid >= 0; tid--)
- 		ath12k_dp_rx_peer_tid_delete(ar, peer, tid);
+ 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
+ 				  DMA_TO_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
++		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
++		goto err_drop;
++	}
  
- 	spin_unlock_bh(&ab->base_lock);
+ 	i = ring->curr & ring_mask;
+ 	desc = ag71xx_ring_desc(ring, i);
 -- 
 2.39.5
 
