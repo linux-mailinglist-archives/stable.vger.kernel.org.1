@@ -1,156 +1,131 @@
-Return-Path: <stable+bounces-169916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C810B297A2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 06:05:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12779B298BC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:02:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D9EF169FA9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 04:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A3B93A32FB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CADD25C838;
-	Mon, 18 Aug 2025 04:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525101FECD4;
+	Mon, 18 Aug 2025 05:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=honor.com header.i=@honor.com header.b="Ap/zqDUq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoUeQSbQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7141214228
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 04:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.192.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F81C1487E9;
+	Mon, 18 Aug 2025 05:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755489953; cv=none; b=gBkY3up87T8LC4o8Ub7ZMOODChibGGfhTK6bcAS6CeATW2SSICw9LmZ5mgtn19xnPEcoNt23m8HaxKRwju0XLl9VfXTU5EQ8u97iiJfOA9FUbTWK7Kexsz5knA/RqRtoVlxa049Ax5id9oBJLfyf48vna3kPWZ0J5le0tk3rOX0=
+	t=1755493321; cv=none; b=IsHC3DWMV3OAykZa02BDGsVzeVhkY0SjsZQBPa1ugpbg6AmiMr09v36mRS0A4ynpTORIZqdFhXuHlMT9Z9q63dcLdFHRWi+vn9lzkqLO2nwP9HwwhZUzzTrc8UrwGYHd2oT4ul0BXegKrXBdkmiKORmPc/DkECYcY72R+wDQyQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755489953; c=relaxed/simple;
-	bh=241GMDtQFPTad17nsb8K4ns2GfmB8X7VHCtkkfWYmlE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EAWHJG/jNH0h3dVFTczr6WRhJnx+SWUb7ZadBhLXDjR25oKAUWvPEmNUfSX0oDpz6PkA/AEmyb5SaTg8hE9DXiJeAPZ97lZVr8icRA+RwDpTcQBiLYOqbvtVzl+bTBdIYEEYb1CS5DOghiFW/xT15g9MYxUqcPrqdGgTEpEBiO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com; spf=pass smtp.mailfrom=honor.com; dkim=pass (1024-bit key) header.d=honor.com header.i=@honor.com header.b=Ap/zqDUq; arc=none smtp.client-ip=81.70.192.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=honor.com
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=TGr0CJdWjvW6XSRyCCqtBV1odyJvmpfAvpUsJkjheDY=;
-	b=Ap/zqDUq6Mwo8BJ3AavHOtCDWPhi4lUfNglH85EmkiXb8oOt4gf2XfA8OE6KNKAkW30o7YRwd
-	so5NB6hoHxzJ1dLAToP6YCuSYcS2aLR7frOVULr7hNgL0WvkAG2qQjoCvBjCXYJ5jYYy8K/QhW2
-	+yQo6lGUCihhCG4Fh3gPt3M=
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4c4zdj1JpnzYkxfN;
-	Mon, 18 Aug 2025 12:05:29 +0800 (CST)
-Received: from a011.hihonor.com (10.68.31.243) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
- 2025 12:05:37 +0800
-Received: from localhost.localdomain (10.144.23.14) by a011.hihonor.com
- (10.68.31.243) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
- 2025 12:05:36 +0800
-From: wangzijie <wangzijie1@honor.com>
-To: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
-	<adobriyan@gmail.com>, <rick.p.edgecombe@intel.com>, <ast@kernel.org>,
-	<kirill.shutemov@linux.intel.com>
-CC: <polynomial-c@gmx.de>, <gregkh@linuxfoundation.org>,
-	<stable@vger.kernel.org>, <regressions@lists.linux.dev>, wangzijie
-	<wangzijie1@honor.com>
-Subject: [PATCH] proc: fix wrong behavior of FMODE_LSEEK clearing for net related proc file
-Date: Mon, 18 Aug 2025 12:05:35 +0800
-Message-ID: <20250818040535.564611-1-wangzijie1@honor.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1755493321; c=relaxed/simple;
+	bh=Wcbc1iPS4NjS4layzsj+dqbmw7Qj3X12tZY80+4grho=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VT6Ph1E9ae6dJgB+GqwFzjl78w3CbusqoP8IQfUpJnpIH4NnX3hWd7SHRmVzkpIxXRkKpSi/hSfCq3+xtdQ+MpiYPUQRecOc3h7VjtSoMtYGRuuV2MrnmrC+MRdfizqc0egsINUokfOi59kao2RxXhDL246aSFli+IMyp5m6VME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoUeQSbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B14C4CEEB;
+	Mon, 18 Aug 2025 05:01:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755493320;
+	bh=Wcbc1iPS4NjS4layzsj+dqbmw7Qj3X12tZY80+4grho=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MoUeQSbQ53Zr43JPqGRI0UhV9O8Y2f+nP/yHcdpWT0ci5vns2Ct14CcDywbY5Gx1w
+	 +vBRbUSusuXsu3W+VFvge5/OQVIKn2GmSQMcxGWRc4Gc22qSlrvFzs08Fc11dZ8ntb
+	 yvtEMEPjlpB+fpFP4VvEUAHBi++AzPIf65JqM/46Ff8tVpYD6yJpHre6DR9Dvt8rFs
+	 WgqXxxxI7m3/spcuPsDDyjQJ5e+DB3EsVPPSqovwCFHswiVvnKFkrlRs29GsN2SVI/
+	 yD8YoxBtCsiMDjcFdGIwclhZNRwr7RnptyfBAU8AmDu9d47OtePGn1xGPragw4MpaQ
+	 rcodgMxv96H+Q==
+Message-ID: <f2ff00e6-a931-4c61-a43d-fb3e450f7ffd@kernel.org>
+Date: Mon, 18 Aug 2025 07:01:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To a011.hihonor.com
- (10.68.31.243)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] proc: fix wrong behavior of FMODE_LSEEK clearing for net
+ related proc file
+To: wangzijie <wangzijie1@honor.com>, akpm@linux-foundation.org,
+ viro@zeniv.linux.org.uk, adobriyan@gmail.com, rick.p.edgecombe@intel.com,
+ ast@kernel.org, kirill.shutemov@linux.intel.com
+Cc: polynomial-c@gmx.de, gregkh@linuxfoundation.org, stable@vger.kernel.org,
+ regressions@lists.linux.dev
+References: <20250818040535.564611-1-wangzijie1@honor.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20250818040535.564611-1-wangzijie1@honor.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-For avoiding pde->proc_ops->... dereference(which may cause UAF in rmmod race scene),
-we call pde_set_flags() to save this kind of information in PDE itself before
-proc_register() and call pde_has_proc_XXX() to replace pde->proc_ops->... dereference.
-But there has omission of pde_set_flags() in net related proc file create, which cause
-the wroing behavior of FMODE_LSEEK clearing in proc_reg_open() for net related proc file
-after commit ff7ec8dc1b64("proc: use the same treatment to check proc_lseek as ones for
-proc_read_iter et.al"). Lars reported it in this link[1]. So call pde_set_flags() when
-create net related proc file to fix this bug.
+Hi,
 
-[1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
+On 18. 08. 25, 6:05, wangzijie wrote:
+> For avoiding pde->proc_ops->... dereference(which may cause UAF in rmmod race scene),
+> we call pde_set_flags() to save this kind of information in PDE itself before
+> proc_register() and call pde_has_proc_XXX() to replace pde->proc_ops->... dereference.
+> But there has omission of pde_set_flags() in net related proc file create, which cause
+> the wroing behavior of FMODE_LSEEK clearing in proc_reg_open() for net related proc file
+> after commit ff7ec8dc1b64("proc: use the same treatment to check proc_lseek as ones for
+> proc_read_iter et.al"). Lars reported it in this link[1]. So call pde_set_flags() when
+> create net related proc file to fix this bug.
 
-Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
-Signed-off-by: wangzijie <wangzijie1@honor.com>
----
- fs/proc/generic.c  | 2 +-
- fs/proc/internal.h | 1 +
- fs/proc/proc_net.c | 4 ++++
- 3 files changed, 6 insertions(+), 1 deletion(-)
+I wonder, why is pde_set_flags() not a part of proc_register()?
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 76e800e38..57ec5e385 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -561,7 +561,7 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
- 	return p;
- }
- 
--static void pde_set_flags(struct proc_dir_entry *pde)
-+void pde_set_flags(struct proc_dir_entry *pde)
- {
- 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
- 		pde->flags |= PROC_ENTRY_PERMANENT;
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index e737401d7..c4f7cbc7d 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -284,6 +284,7 @@ extern struct dentry *proc_lookup(struct inode *, struct dentry *, unsigned int)
- struct dentry *proc_lookup_de(struct inode *, struct dentry *, struct proc_dir_entry *);
- extern int proc_readdir(struct file *, struct dir_context *);
- int proc_readdir_de(struct file *, struct dir_context *, struct proc_dir_entry *);
-+void pde_set_flags(struct proc_dir_entry *);
- 
- static inline void pde_get(struct proc_dir_entry *pde)
- {
-diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
-index 52f0b75cb..20bc7481b 100644
---- a/fs/proc/proc_net.c
-+++ b/fs/proc/proc_net.c
-@@ -124,6 +124,7 @@ struct proc_dir_entry *proc_create_net_data(const char *name, umode_t mode,
- 	p->proc_ops = &proc_net_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL_GPL(proc_create_net_data);
-@@ -170,6 +171,7 @@ struct proc_dir_entry *proc_create_net_data_write(const char *name, umode_t mode
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
- 	p->write = write;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL_GPL(proc_create_net_data_write);
-@@ -217,6 +219,7 @@ struct proc_dir_entry *proc_create_net_single(const char *name, umode_t mode,
- 	pde_force_lookup(p);
- 	p->proc_ops = &proc_net_single_ops;
- 	p->single_show = show;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL_GPL(proc_create_net_single);
-@@ -261,6 +264,7 @@ struct proc_dir_entry *proc_create_net_single_write(const char *name, umode_t mo
- 	p->proc_ops = &proc_net_single_ops;
- 	p->single_show = show;
- 	p->write = write;
-+	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL_GPL(proc_create_net_single_write);
+Could you also use some LLM to reformat the message into something 
+comprehensible?
+
+thanks,
 -- 
-2.25.1
+js
+suse labs
 
 
