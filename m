@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03933B2A659
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79582B2A9EA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB32F4E10F5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36EF2581F18
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A31E335BC4;
-	Mon, 18 Aug 2025 13:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B867225413;
+	Mon, 18 Aug 2025 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5mmWocu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0fPYlHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD78C335BB3;
-	Mon, 18 Aug 2025 13:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD964288C1F;
+	Mon, 18 Aug 2025 14:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524455; cv=none; b=JPVnpUZSRV/jBxiFxWZQpaF8nWLTldFLUgR/uzQBhxh0buKuAzgmg9SaW55iDpf4Hquji4FB2w+zjzggDI/6mPJAO/xqSvMm/KY2MIcOFnbOVGjiS5zY2BKTK4o1QI6UhJndMzVjNjkV/b2Woh+urKdwUu8Hoqp4u7CgtOFKLXg=
+	t=1755526174; cv=none; b=NFntsPIfuX80r73tYUlMocTHcH36xWPqL2opEwjWz9HtcHKPgBwNSCDHWDohWQwTQvoVXGJURmP9kEvQ7avGVUyEp+MWlQwDJEM4ZZQnJ3ihSV6l6+MWQ4ND0BvqqDFOKjtxHfzJbhAMnHggOuUp2FPi1xDn/PvX36jMAGwv9Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524455; c=relaxed/simple;
-	bh=YyD4TPkFo0frsr4b4tcIa7OcBv/eLCCOV6172wUpCFg=;
+	s=arc-20240116; t=1755526174; c=relaxed/simple;
+	bh=18dyHLGKObF4UVpn7vAHB09KUAPDoQtGBud/FLaeptM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHE2szlKLFE2OupZXz6AIXoEw3vpG0MIsk4MV1A9Oa9oCfRwE/v7BjtBU4kqJZ05yCT6AKh3R/l37UuTKPel41J6GS0APyqJZxJzCAr9C2fRy0d58aQtQvefixYuY9SGF25O5JKoP+JG8NR+bfW8CYeAJezhxcrbjbUJLuV/K2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5mmWocu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CE4C4CEF1;
-	Mon, 18 Aug 2025 13:40:55 +0000 (UTC)
+	 MIME-Version; b=Hc+y1B21S2t3UCt90aHYq1xxvGaxch/3hcbkz8K+e6SJhGunLz3MvHeRU73J0j1vy1TGW6mV1OYsGf0hcQrldvyQWjgCMUK83QFgUtjs3ZjM1R79LvYPwPgU66R1O7tCAm+DkyNeecRbez4PITdHomT7cxt6pSa3nEqf4h7ith8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0fPYlHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3D6C4CEEB;
+	Mon, 18 Aug 2025 14:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524455;
-	bh=YyD4TPkFo0frsr4b4tcIa7OcBv/eLCCOV6172wUpCFg=;
+	s=korg; t=1755526173;
+	bh=18dyHLGKObF4UVpn7vAHB09KUAPDoQtGBud/FLaeptM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J5mmWocucHKKHCRvls33gPuQvFpXH+jA+b3eo0Rq2L0qnddnTbZjSTbaSlFEnYWtw
-	 ++gUOLm5FvUjubUn9gySYd8E25q/GJmaaCQVN4rAt0DIUrtG6ROu+FtHLrxxyFmTtJ
-	 lCyA3A/o225x9dgzej6cYY9Y1rPsaAjpOaRdKCLU=
+	b=Y0fPYlHBTfyrfR/uvfoCBaZYp/dks4tsVq1uDhHfcDymKA7+6yNp6wjaupTz0ckAj
+	 ToMEBHjStS+LwCEZrCwx6KTuZEMq3qGCPwzJDEvlVkCa92ZlXM29dlJWzZRUifdLak
+	 49Aq+jfUOtDKR6kWkWK3kvIFFb7xKEWC2kJ92YEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 478/515] btrfs: zoned: do not select metadata BG as finish target
-Date: Mon, 18 Aug 2025 14:47:44 +0200
-Message-ID: <20250818124516.823151882@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Maciej Patelczyk <maciej.patelczyk@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 478/570] drm/xe/migrate: dont overflow max copy size
+Date: Mon, 18 Aug 2025 14:47:45 +0200
+Message-ID: <20250818124524.299490278@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 3a931e9b39c7ff8066657042f5f00d3b7e6ad315 upstream.
+[ Upstream commit 4126cb327a2e3273c81fcef1c594c5b7b645c44c ]
 
-We call btrfs_zone_finish_one_bg() to zone finish one block group and make
-room to activate another block group. Currently, we can choose a metadata
-block group as a target. But, as we reserve an active metadata block group,
-we no longer want to select a metadata block group. So, skip it in the
-loop.
+With non-page aligned copy, we need to use 4 byte aligned pitch, however
+the size itself might still be close to our maximum of ~8M, and so the
+dimensions of the copy can easily exceed the S16_MAX limit of the copy
+command leading to the following assert:
 
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+xe 0000:03:00.0: [drm] Assertion `size / pitch <= ((s16)(((u16)~0U) >> 1))` failed!
+platform: BATTLEMAGE subplatform: 1
+graphics: Xe2_HPG 20.01 step A0
+media: Xe2_HPM 13.01 step A1
+tile: 0 VRAM 10.0 GiB
+GT: 0 type 1
+
+WARNING: CPU: 23 PID: 10605 at drivers/gpu/drm/xe/xe_migrate.c:673 emit_copy+0x4b5/0x4e0 [xe]
+
+To fix this account for the pitch when calculating the number of current
+bytes to copy.
+
+Fixes: 270172f64b11 ("drm/xe: Update xe_ttm_access_memory to use GPU for non-visible access")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Maciej Patelczyk <maciej.patelczyk@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250731093807.207572-7-matthew.auld@intel.com
+(cherry picked from commit 8c2d61e0e916e077fda7e7b8e67f25ffe0f361fc)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_migrate.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2544,7 +2544,7 @@ int btrfs_zone_finish_one_bg(struct btrf
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index c0e2656a14d2..02c0a4a7372c 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -1887,6 +1887,12 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
+ 		else
+ 			current_bytes = min_t(int, bytes_left, cursor.size);
  
- 		spin_lock(&block_group->lock);
- 		if (block_group->reserved || block_group->alloc_offset == 0 ||
--		    (block_group->flags & BTRFS_BLOCK_GROUP_SYSTEM) ||
-+		    !(block_group->flags & BTRFS_BLOCK_GROUP_DATA) ||
- 		    test_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &block_group->runtime_flags)) {
- 			spin_unlock(&block_group->lock);
- 			continue;
++		if (current_bytes & ~PAGE_MASK) {
++			int pitch = 4;
++
++			current_bytes = min_t(int, current_bytes, S16_MAX * pitch);
++		}
++
+ 		if (fence)
+ 			dma_fence_put(fence);
+ 
+-- 
+2.50.1
+
 
 
 
