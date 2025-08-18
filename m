@@ -1,146 +1,121 @@
-Return-Path: <stable+bounces-171326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DABB2A912
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:14:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3048B2A8F2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D9F65A26DC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAC1D7BC243
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEB5322532;
-	Mon, 18 Aug 2025 13:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906B23375D6;
+	Mon, 18 Aug 2025 14:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="n/KCUeBw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CWLoY4B4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BD4322742
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 13:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB8E308F02;
+	Mon, 18 Aug 2025 14:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525549; cv=none; b=tVEHsAkRRBHine32izTcaXomA9V+YH2R2EVMwZRKd9nZjz2fuNoQgDfD3lvC/Mf0GY8bm69EJMXAe8JkevJZgfRDBvCU0o0T9acU9cHB8goD1v0/JVkdxK2xtNcZImqB5lw9eHeYzyjdYqn/b0e0m9Pk4esWXCAy7lwKkP16q28=
+	t=1755525709; cv=none; b=jrOpoyMpFWvfK02DK8/WN6Q00KAxO4Ob7vXJ1ptRnqY1EnWEUbahvrjnCV/lFCZEOt3eMQF2xcq1VFYmjyOxL4WHB96999UZ72Zx/chuLmHi96kF1/416lg0EZfUboBtU3IWoGnD/KDVDJ+njMyZpOrmkrBSVd8BH+5i+5XKm/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525549; c=relaxed/simple;
-	bh=I96u/IVzBV7nJ4C+1kleMTiS/mzW7xq5+2rf8eNjfE8=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=UVNKxfE1pg5Yuu6A3MVoTNDgYiiNmq/TqIGvS06s1a9aq0djp1XMXeQhh5j4ZLsRTphjE83U4oxLHGQAk3/UsF4KbGAEPzUZdQnDi/qjoaxhw1GDvy3AIqUM5uCbGtex66Q69ERkdjHkl7yUJ+eYbpk5SKg/nVfH5wPQ/1OdWpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=n/KCUeBw; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b47174beb13so3008302a12.2
-        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 06:59:08 -0700 (PDT)
+	s=arc-20240116; t=1755525709; c=relaxed/simple;
+	bh=y2Nw6yRVcmnnk3DER/vCk4B9KctzAxdvSFV70vMgIxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KoQqatGmn/Cwsb1OFWn7xy3OexBOFOdtFF5P5ckXes+Z+xRMirvAM6Vt4YhhdKOFd+R+jCOD+Nrv0inMh3tHtVwghi/d4weDf0Rt6mQtAjDb3G2z+qktLfVBO0c0AovQ22EH7DTzZqr02xLzAKhUWeKpM35Yoa694avpd8rn88M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CWLoY4B4; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45a1b05fe23so24674575e9.1;
+        Mon, 18 Aug 2025 07:01:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1755525548; x=1756130348; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2QL83AuBmlp8rggw/9mmBRQ1e4C/BUotQdlFSuMwcTk=;
-        b=n/KCUeBw46I9mFer3nu7HSLq/WtZzZNsF+kE0U3wJPjBt5+C+B5+AeYGMbyPPw5qBr
-         M5ym7pa5eiG7clyAQrRmbYVwVkpizZCt/Getj77aTv9EvokVNYgHI8+4+p+ALew5pY9W
-         Blg4Q5GuxjwUf6x0Ucdw1dy9xcZKpS31iPS5388YoflTrQBLVNbBgFhpaskckDchtcsk
-         VWuUSL0JR2r2Cw99T9mfvpIaS5gthlj7oRLsLOueDdusLDw522FAp2xjTzxlfQTER8dL
-         SIYNLMUERCYh/v/9Vqg+UDVGgrlD5M3G6Wc0kSDnmkx/Kk9TVUNxsK2LX4FoP3mHhm3/
-         UIEg==
+        d=gmail.com; s=20230601; t=1755525706; x=1756130506; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u7aSm/eI7kfLNdmsL2BItZGDfjAkMGxOsO5FNkHNx+Y=;
+        b=CWLoY4B4P8KdBXyE9lrcLnL2QSpu7dwHtjHTbe7MyI5+ig1tm512UxXtXeghwHyIf4
+         kGyzomKseczkKwcvckCwuq0fYwMoXrY5vQPBwB5DowHtcyKUWihwAM4MO8g+fclj+JNE
+         cyCPMRzjfPLYSlTsLVT6E2/1CRC3lIM5RIRAhnd81DKM9JWcFpf+HJgO5/7J0BHNFOUd
+         QJ0/wautwc1UiEh4JBtVx+8ZLn9YULBj2Ws8tNg7NaiWAmxPruVKa7McMnqLlCBUdstH
+         QtzWuWc2c2NFWQvADg55kcthHVJpRqkaYRX/GS3hHPNLpTA1Irkp+oXMs3A8+Azopplz
+         rTWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755525548; x=1756130348;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=2QL83AuBmlp8rggw/9mmBRQ1e4C/BUotQdlFSuMwcTk=;
-        b=ny1NQJ8n1gqzHp3uOKivEEzd7OGiatcfzL2yOxiPBTh3ipzvBw0ZjBeL3tTja2AUXS
-         2RbSw74yanqvkNyf2YSmuxh0nFeDU1NzI1b4KdOfBrM+qpocySLDPYDmDSD0i99royxJ
-         c7FZnEk+OdTBJj1q6cwjY+BYCEFnv2E6rmvJ67EVrA4E1ANn6eEZOtzkcn+YF06UqNvd
-         XxZD6ALLoKTeac+ywezZb+Q9ZI2T5TlHeq6GXkdX1+iLUnG3O4auwNIWzVODY2BVi//x
-         r8ObBmvwUDcn/IRlHSrREDrDcHkgPNQB+UTXUEXhHHsXG3R+L/ImIj8c7I1IHymxlAwb
-         3InQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+8NnFw3ft83Oh5C+NeKHZAJJe5kM0qlsG03BBocRmIjY85RhPXyTIWyISXp0/fbsL/Ej//FM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhq4s+Ysnsj21YyMFpi5N3ihVzx1K9X/WMBnfO9Thh6xMslXXD
-	QmFcmWPrj70S/0tMdtvpRq7NuwRWkJgOay3Na445wnNysBeDVnQPxpJfOgS8c407pp6y4dMZOs4
-	lEh0e
-X-Gm-Gg: ASbGncun/nNvHnal0EVJ/mwwQOB4U9A385vVGRzoWfP5HeZHtu2dEiRgzmj9FBNOMYU
-	9/lrMZycQMtQ1wfRH2fOZZZ14KXK5N37EnWF0hFdAtXqndC0zFpPG1FrV7n+bS5Sfb94Z4+C2af
-	evL4KM3SdQjBHXWnTW0tnK7FIv4y1Ey8/ysJB7Lp95k3QwyuBKeg3ZycepO/Y/hgGiQEFl7x1ky
-	BtzGaOAjcnt6XXTbbGrjY1B2yPJukBtkUsvizddnVmQrMHylVyGLdMcUTBgLSwc8WtGJBpnjRN2
-	+OlD8QtOqfxR3hFdHLVaDhVhRt7rMA5p8aUUQ66nl2sGBck+RjpuQ579NachtsaePeLIkPBGKIm
-	1IKph0M6ysUCbERnT+nuk0tv56szQsKChzIfL5A==
-X-Google-Smtp-Source: AGHT+IHZ5uPP3sSeP3uo5Irehwp9UanNH8VHnApD4ymC15rZMdYUtl31JAcUDnl8t21FPfX2nZjuEw==
-X-Received: by 2002:a17:902:d509:b0:237:e696:3d56 with SMTP id d9443c01a7336-2446d8c61b8mr207553255ad.32.1755525547729;
-        Mon, 18 Aug 2025 06:59:07 -0700 (PDT)
-Received: from 16ad3c994827 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446d50faf2sm81761735ad.81.2025.08.18.06.59.06
+        d=1e100.net; s=20230601; t=1755525706; x=1756130506;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u7aSm/eI7kfLNdmsL2BItZGDfjAkMGxOsO5FNkHNx+Y=;
+        b=p9+5UgQXB6MsKEKgyP3GH98FnteQHffM7YlioPEDMGTHPG1MGZlrMDVaOcLIGn17fG
+         zxXR85ypkBH5MZaW9OCeMDA7Z0JqjTkyRVf5HyNDhjjirCe8QSuaAU/RQQLoC4LVQ7AK
+         1AgknEofeHEFd+OUNouvV3b0rgVzMf71Zm7by2f0NBV2lDtj9goig30wbL6DfQeEX/vd
+         05wTdKTuJYsncWFt47Zlmm0E9NPR8Bi5G/7MtjwYroIMtpSbOYA01zOSiCW7pXv6po3f
+         l+3gmK1q0l8r9mn6qN7o6diomyy8EkPJghwqt0bz/sJm0May7gF5V41lKfAkZCaxB0wr
+         Nn5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU6Dihqtrco0uzFPF65ciEjH8ftihHUAAn6lHGkWRehQLvfntBwUCbB0szjRzi4eL5T257zXcoXD+mfaDLo@vger.kernel.org, AJvYcCWp83bf5Psb/iw+Oqf3qqQ+P0PKfaxeWwcPM62W8zjh7RiXrwRKL80weXZerurbBS6HBr5KFROs@vger.kernel.org, AJvYcCWwxu2iEuIfKXcu7RoDvR/1kPhfUGzEC53UVr+Tb7GSq9O+ZNJYWvSe64LtEN0Qr+XdWFrAf/HDnvAOrlqV@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfKCFRIwEDYXsoaxgVE04ZKLShAY5K7hOaxLDfJO7DXzL0+LG9
+	eLKOfYDtBH0nngqJGFFJld0EfIeJhiEI8ERXb0BCJ4hnJuELyBNHK5FH
+X-Gm-Gg: ASbGncvZsLSag9YpKZiNSfJW7EtVkyliB95+GXsceJ8RpzYEggg4SiVg3UC5sM2jnHM
+	4K1+HagWYgO7p3nqCWcNfRjxRVXcumcWHu8tuZpNLQAMPq2762Z2y+Q+0WMXg3ZWQLmKJiQc+By
+	ybzHr+vTwuHiyfhcjEf0dl/lP5Do6VaT37Fci95aonoq4u+dXxwoMbYamriyxaAfEiiwdtZn+iq
+	wdd8i8Ts/g6Ttxujs5R/mOoMKlIU7PLKlLegl5g5azVwBy+S6z2WW85sRpYyv6nCr32Nl/KfO6k
+	azxKG9MFi6qMtyd3fCjqTbST1kRRJKR3SNRAyRTbLTgCY4EIPirsUTW6hfEDs4g2JViANtzD4Xj
+	yOzJaThMvvAqI0OBsaxa0hwlIvv+QhUaK69it9Ss7/MsHy3LJf80fC0M=
+X-Google-Smtp-Source: AGHT+IHo1jNpqNRhxvdXmyRhn4pc2gYVNGj28wCYI+06cBtWEKoBFRZ4/BiPgAXoKdGQaE5FzdBuhg==
+X-Received: by 2002:a05:600c:190e:b0:458:bc3f:6a7b with SMTP id 5b1f17b1804b1-45a21859692mr91052485e9.18.1755525705541;
+        Mon, 18 Aug 2025 07:01:45 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45a23323c56sm70600845e9.9.2025.08.18.07.01.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 06:59:07 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Mon, 18 Aug 2025 07:01:44 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id E4231BE2DE0; Mon, 18 Aug 2025 16:01:42 +0200 (CEST)
+Date: Mon, 18 Aug 2025 16:01:42 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Benoit Panizzon <benoit.panizzon@imp.ch>
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Benoit Panizzon <bp@imp.ch>, 1111455@bugs.debian.org,
+	stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [bp@imp.ch: Bug#1111455: linux-image-6.12.41+deb13-amd64: kernel
+ BUG at fs/netfs/read_collect.c:316 netfs: Can't donate prior to front]
+Message-ID: <aKMyRpQig9j1M8gF@eldamar.lan>
+References: <aKMdIgkSWw9koCPC@eldamar.lan>
+ <20250818151814.18d5dcd4@go.imp.ch>
+ <20250818152409.2d2db023@go.imp.ch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: 
- =?utf-8?b?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC01LjQueTogKGJ1aWxkKSDigJhD?=
- =?utf-8?b?UFVGUkVRX05FRURfVVBEQVRFX0xJTUlUU+KAmSB1bmRlY2xhcmVkIGhlcmUgKG5v?=
- =?utf-8?b?dCBpbiBhIGZ1bmN0aW9uKSBpLi4u?=
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Mon, 18 Aug 2025 13:59:06 -0000
-Message-ID: <175552554653.51.2028032983372634371@16ad3c994827>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818152409.2d2db023@go.imp.ch>
 
+Hi,
 
+On Mon, Aug 18, 2025 at 03:24:09PM +0200, Benoit Panizzon wrote:
+> Hi
+> 
+> May be related:
+> https://security-tracker.debian.org/tracker/CVE-2025-21988
 
+This *might* be a different issue. We had the metadata wrong in the
+security-tracker in Debian.
 
+The mentioned commit was specific to 6.13.y and 6.12.y and for 6.12.y
+it landed already in v6.12.20 as 62b9ad7e52d4 ("fs/netfs/read_collect:
+add to next->prev_donated"). 
 
-Hello,
-
-New build issue found on stable-rc/linux-5.4.y:
-
----
- ‘CPUFREQ_NEED_UPDATE_LIMITS’ undeclared here (not in a function) in drivers/cpufreq/cppc_cpufreq.o (drivers/cpufreq/cppc_cpufreq.c) [logspec:kbuild,kbuild.compiler.error]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:dc41002c36bbf28f576cb4cf62779067892fb9db
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  a6319f2fe27b8fefe40757d3797cfca30d43ce3c
-
-
-
-Log excerpt:
-=====================================================
-drivers/cpufreq/cppc_cpufreq.c:410:40: error: ‘CPUFREQ_NEED_UPDATE_LIMITS’ undeclared here (not in a function)
-  410 |         .flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
-      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+arm64-chromebook+kselftest on (arm64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:68a3251d233e484a3f9e9e33
-
-## defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y on (arm64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:68a324d8233e484a3f9e9df2
-
-## defconfig+lab-setup+kselftest on (arm64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:68a32513233e484a3f9e9e2a
-
-
-#kernelci issue maestro:dc41002c36bbf28f576cb4cf62779067892fb9db
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Regards,
+Salvatore
 
