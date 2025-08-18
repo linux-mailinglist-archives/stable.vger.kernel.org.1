@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B40B2A64D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89988B2A8C1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A6C73B9578
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B96111BA1A85
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D2F32A3E7;
-	Mon, 18 Aug 2025 13:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8062E271A6D;
+	Mon, 18 Aug 2025 13:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJToLrVO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5wHWeUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537ED32A3DB;
-	Mon, 18 Aug 2025 13:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2C322AE7A;
+	Mon, 18 Aug 2025 13:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523544; cv=none; b=cnG+BpbDu/FywFXRjcbgVB/53OwSffU1Ms9QiKmi9i6PiBK9NzIWgZTzYb2dTvlvwRMGB8mToC4oylYstP3RoLPD0igTT9vo+W5LLlaBRIMmTrZRdOjgyulDZLXRjxXhOe9DFzLGGqaSFgmIslxJZedes81gUvQpF/HnTa/FZRs=
+	t=1755525356; cv=none; b=UmGIXfllUy2meB2/2Z4kxxw3F6R/9dqY/gDdg0rg4k4ugKUN8XkgjDQcqAWcPaVJlCgbfd/256EOXZZCCjGAJdqXIzUhkoQ4Kh6hGhPRwO3alDW+Fqwc9KNuaVcXd56cJHDdNkSBpWzsG4/wF+tlQIi3zezTkGVSfQQdolY4Yz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523544; c=relaxed/simple;
-	bh=EaaWmzqwZdPQuzrTcL/NQG6BuCkQEb3Vcqlo1Jf/BSQ=;
+	s=arc-20240116; t=1755525356; c=relaxed/simple;
+	bh=7mV94fo5usNWPJqpAIDWlZgVbfqK5Lf96aQ5M51xiOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ub+dmgwPYe2AUW2bl26f50ZiXH3sJ3M24Lsh7DOKJUM+bXeW+PdkyDZagiwSKOFN8nqjfIVmRMq/f7h24Xrbj3textYvxExvWKAWOTzuwWb6DaAGdDDSL9F0qve9lTtoEayAcs1zISJ2AXEdg9Vkpsw3R4kvjeDc4AjcW+zd7sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJToLrVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7885C4CEEB;
-	Mon, 18 Aug 2025 13:25:43 +0000 (UTC)
+	 MIME-Version; b=hx2ncqi2la8mSlkElhvypEZEAWiKrK/ys93o+4ms7wkPY+Yf0+c1tUsCZNnNnySmfVl9MKkv2slSeeQ8xMFUbpD7NY2ZgYl533JZfPIpkaoIqyOMx9DiJn+7GzxfhmMYNrWFZ07xZ5SlKGL/jTlNv9IXpTIZqx3ghMcaCHDkg30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5wHWeUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBB9C4CEEB;
+	Mon, 18 Aug 2025 13:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523544;
-	bh=EaaWmzqwZdPQuzrTcL/NQG6BuCkQEb3Vcqlo1Jf/BSQ=;
+	s=korg; t=1755525356;
+	bh=7mV94fo5usNWPJqpAIDWlZgVbfqK5Lf96aQ5M51xiOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJToLrVOq41FaLlh/0wxguJxs1Gu7TFtU7nDsOVtRfaPdXZqBepBcAKt8gvadgWzC
-	 JoG/T7DnRui4UaNG71Qndl+vCUTPjT/Eh6zsHDe8JN5Kx+V7DUI2yMmSW1r1dmLYMW
-	 CliviD0aYjHm1j3TGTx8EamlG/yIs5GZMxc2ppW0=
+	b=j5wHWeUYWEbkFzA7ozGLkF84Hqk4xFvkkEIETWtEau4PoMvFJguUJpnsvI5QRqHyU
+	 b2+xBORmLN8SHz8vgE9RyLv0IEbyuhm7xyi2YBGBew1KLilyyEtrtqpG5bKRuOKSNV
+	 0KqUs0PX+WPfDtQoeCGhG3EI3gyR6TUF/MwUJiK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"John Warthog9 Hawley" <warthog9@kernel.org>,
-	Dhaval Giani <dhaval.giani@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 204/515] ktest.pl: Prevent recursion of default variable options
-Date: Mon, 18 Aug 2025 14:43:10 +0200
-Message-ID: <20250818124506.223659647@linuxfoundation.org>
+Subject: [PATCH 6.16 204/570] ASoC: qcom: use drvdata instead of component to keep id
+Date: Mon, 18 Aug 2025 14:43:11 +0200
+Message-ID: <20250818124513.668322557@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Srinivas Kandagatla <srini@kernel.org>
 
-[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
+[ Upstream commit 8167f4f42572818fa8153be2b03e4c2120846603 ]
 
-If a default variable contains itself, do not recurse on it.
+Qcom lpass is using component->id to keep DAI ID (A).
 
-For example:
+(S)	static int lpass_platform_pcmops_open(
+				sruct snd_soc_component *component,
+				struct snd_pcm_substream *substream)
+	{			                          ^^^^^^^^^(B0)
+		...
+(B1)		struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
+(B2)		struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
+		...
+(B3)		unsigned int dai_id = cpu_dai->driver->id;
 
-  ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+(A)		component->id = dai_id;
+		...
+	}
 
-The above works because the temp variable ADD_CONFIG (is a temp because it
-is created with ":=") is already defined, it will be substituted in the
-variable option. But if it gets commented out:
+This driver can get dai_id from substream (B0 - B3).
+In this driver, below functions get dai_id from component->id (A).
 
-  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+(X)	lpass_platform_pcmops_suspend()
+(Y)	lpass_platform_pcmops_resume()
+(Z)	lpass_platform_copy()
 
-Then the above will go into a recursive loop where ${ADD_CONFIG} will
-get replaced with the current definition of ADD_CONFIG which contains the
-${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
-after 100 attempts of recursion and fail.
+Here, (Z) can get it from substream (B0 - B3), don't need to use
+component->id (A). On suspend/resume (X)(Y), dai_id can only be obtained
+from component->id (A), because there is no substream (B0) in function
+parameter.
 
-When replacing a variable with the default variable, if the default
-variable contains itself, do not replace it.
+But, component->id (A) itself should not be used for such purpose.
+It is intilialized at snd_soc_component_initialize(), and parsed its ID
+(= component->id) from device name (a).
 
-Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
-Cc: Dhaval Giani <dhaval.giani@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+	int snd_soc_component_initialize(...)
+	{
+		...
+		if (!component->name) {
+(a)			component->name = fmt_single_name(dev, &component->id);
+			...                                     ^^^^^^^^^^^^^
+		}
+		...
+	}
+
+Unfortunately, current code is broken to start with.
+
+There are many regmaps that the driver cares about, however its only
+managing one (either dp or i2s) in component suspend/resume path.
+
+I2S regmap is mandatory however other regmaps are setup based on flags
+like "hdmi_port_enable" and "codec_dma_enable".
+
+Correct thing for suspend/resume path to handle is by checking these
+flags, instead of using component->id.
+
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Suggested-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87a56ouuob.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/qcom/lpass-platform.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index a5f7fdd0c1fb..e1d31e2aa948 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1371,7 +1371,10 @@ sub __eval_option {
- 	# If a variable contains itself, use the default var
- 	if (($var eq $name) && defined($opt{$var})) {
- 	    $o = $opt{$var};
--	    $retval = "$retval$o";
-+	    # Only append if the default doesn't contain itself
-+	    if ($o !~ m/\$\{$var\}/) {
-+		$retval = "$retval$o";
-+	    }
- 	} elsif (defined($opt{$o})) {
- 	    $o = $opt{$o};
- 	    $retval = "$retval$o";
+diff --git a/sound/soc/qcom/lpass-platform.c b/sound/soc/qcom/lpass-platform.c
+index 9946f12254b3..b456e096f138 100644
+--- a/sound/soc/qcom/lpass-platform.c
++++ b/sound/soc/qcom/lpass-platform.c
+@@ -202,7 +202,6 @@ static int lpass_platform_pcmops_open(struct snd_soc_component *component,
+ 	struct regmap *map;
+ 	unsigned int dai_id = cpu_dai->driver->id;
+ 
+-	component->id = dai_id;
+ 	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+@@ -1190,13 +1189,14 @@ static int lpass_platform_pcmops_suspend(struct snd_soc_component *component)
+ {
+ 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
+ 	struct regmap *map;
+-	unsigned int dai_id = component->id;
+ 
+-	if (dai_id == LPASS_DP_RX)
++	if (drvdata->hdmi_port_enable) {
+ 		map = drvdata->hdmiif_map;
+-	else
+-		map = drvdata->lpaif_map;
++		regcache_cache_only(map, true);
++		regcache_mark_dirty(map);
++	}
+ 
++	map = drvdata->lpaif_map;
+ 	regcache_cache_only(map, true);
+ 	regcache_mark_dirty(map);
+ 
+@@ -1207,14 +1207,19 @@ static int lpass_platform_pcmops_resume(struct snd_soc_component *component)
+ {
+ 	struct lpass_data *drvdata = snd_soc_component_get_drvdata(component);
+ 	struct regmap *map;
+-	unsigned int dai_id = component->id;
++	int ret;
+ 
+-	if (dai_id == LPASS_DP_RX)
++	if (drvdata->hdmi_port_enable) {
+ 		map = drvdata->hdmiif_map;
+-	else
+-		map = drvdata->lpaif_map;
++		regcache_cache_only(map, false);
++		ret = regcache_sync(map);
++		if (ret)
++			return ret;
++	}
+ 
++	map = drvdata->lpaif_map;
+ 	regcache_cache_only(map, false);
++
+ 	return regcache_sync(map);
+ }
+ 
+@@ -1224,7 +1229,9 @@ static int lpass_platform_copy(struct snd_soc_component *component,
+ 			       unsigned long bytes)
+ {
+ 	struct snd_pcm_runtime *rt = substream->runtime;
+-	unsigned int dai_id = component->id;
++	struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
++	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(soc_runtime, 0);
++	unsigned int dai_id = cpu_dai->driver->id;
+ 	int ret = 0;
+ 
+ 	void __iomem *dma_buf = (void __iomem *) (rt->dma_area + pos +
 -- 
 2.39.5
 
