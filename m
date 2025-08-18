@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61995B2A32C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7D9B2A8C7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D623ABE39
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E96C624A29
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73DE286D5E;
-	Mon, 18 Aug 2025 13:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C6127F758;
+	Mon, 18 Aug 2025 13:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsDuLxJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UB1ndWz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767B812DDA1;
-	Mon, 18 Aug 2025 13:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC1F21CC55;
+	Mon, 18 Aug 2025 13:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522082; cv=none; b=AagLi/3/sZQgtO0Ov+ZWcpnSNr2abw6mbesMMUx+Uqw9Kx2cN/ocGCfVZjoJbKJfp8gLSQT71LbLKt73XJORWhF+OMqrSmmzcNtIcvrNsdF8qJZsonFD3e836L8C/mBDC2gGjkvRVHo7yeNiowndAgdTVWvh6zqgsjgQ4n5DGpY=
+	t=1755525388; cv=none; b=sDRJUIAStPLAcpYw+xlGAbT5QnZ3L80bYRaFy8EYP5GvrC2uQ9M9giNgsrR4EAItQjJcCcAfOzN/2ZHydpUhaDkWG26jHg6TEFCOUBQF2s2GbF7EKJKNy2+PvWzxAiCQtawAbXPHw6IGcnRh/Ok17FOJHmwnk970/5MgYo3kTBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522082; c=relaxed/simple;
-	bh=32XH64Rrjoy8s5SNGkGg1GYD7/ckUlTm/81VrCk/8X0=;
+	s=arc-20240116; t=1755525388; c=relaxed/simple;
+	bh=8XHhEGYx7500E6zDJn9wz5WtFydVcvQWPQBVovaSJZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgYvIxJ1grMcqGRbzloMxI7TASwCjWQkyLpdizZU9X0eSYoMrjdoD8XvMqT5o9TaKNYvBFDWTNuV+V0V5BTCBu8aAlTyotS/JHeNPQZW4yFXZjP9hN50tTcVvEMyoqvDYjg8PbM1oBreWDlprpd9cGsagocWxXH6qQK46b8zGxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsDuLxJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C6FC113D0;
-	Mon, 18 Aug 2025 13:01:21 +0000 (UTC)
+	 MIME-Version; b=jjwtan0uHTiu0JLkaTrjz10NDHs/bVyDQLuEKNipZNuw+bDnSnDyIxkv5et8sQWPUZN6AEc78C6HW6DAui9NEmLrhbg8x8mON7kjFuGkcEZeeAtvAlkkTdRuEnZCjXdSdUcpbn/QYvE/95M1zI5bbd//OogtiotFEIMShMaFntg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UB1ndWz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE73C4CEEB;
+	Mon, 18 Aug 2025 13:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522082;
-	bh=32XH64Rrjoy8s5SNGkGg1GYD7/ckUlTm/81VrCk/8X0=;
+	s=korg; t=1755525387;
+	bh=8XHhEGYx7500E6zDJn9wz5WtFydVcvQWPQBVovaSJZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsDuLxJl0MIUtWyX4WvISui8aC1rsuCQDVbHdLd0RVH11gBDN6gF3BtiTt2w76y4Q
-	 5iFw+p6L0QNPqhA1FRQGRe/NnK4FoumaSVv5rqvixJN5EvQng1wdXMgk2g6Vk3HQtt
-	 QcoZ/Zv7yCR4VeyahVCeFf0njIbiUlx+EJ4Msk8g=
+	b=UB1ndWz1H9Ljl1g7QFqUfuB8mRAahpxyAbdoONsA/yvpflek/pjIvJ6WWMNLKKYeE
+	 PHrI4PS3Wt4AyKC8hP9+VY0E7MjQbY7nMEBQBG4XiTpdtFZYYtH6XAn7oFeR3Dg5Cj
+	 8u/lakxVGDspSLC56cF+CgbI9tEheiOYbnTvdIxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/444] wifi: mac80211: fix rx link assignment for non-MLO stations
+Subject: [PATCH 6.16 248/570] sched/deadline: Fix accounting after global limits change
 Date: Mon, 18 Aug 2025 14:43:55 +0200
-Message-ID: <20250818124456.690439953@linuxfoundation.org>
+Message-ID: <20250818124515.372335225@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+From: Juri Lelli <juri.lelli@redhat.com>
 
-[ Upstream commit cc2b722132893164bcb3cee4f08ed056e126eb6c ]
+[ Upstream commit 440989c10f4e32620e9e2717ca52c3ed7ae11048 ]
 
-Currently, ieee80211_rx_data_set_sta() does not correctly handle the
-case where the interface supports multiple links (MLO), but the station
-does not (non-MLO). This can lead to incorrect link assignment or
-unexpected warnings when accessing link information.
+A global limits change (sched_rt_handler() logic) currently leaves stale
+and/or incorrect values in variables related to accounting (e.g.
+extra_bw).
 
-Hence, add a fix to check if the station lacks valid link support and
-use its default link ID for rx->link assignment. If the station
-unexpectedly has valid links, fall back to the default link.
+Properly clean up per runqueue variables before implementing the change
+and rebuild scheduling domains (so that accounting is also properly
+restored) after such a change is complete.
 
-This ensures correct link association and prevents potential issues
-in mixed MLO/non-MLO environments.
-
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Link: https://patch.msgid.link/20250630084119.3583593-1-quic_sarishar@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk> # nuc & rock5b
+Link: https://lore.kernel.org/r/20250627115118.438797-4-juri.lelli@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/sched/deadline.c | 4 +++-
+ kernel/sched/rt.c       | 6 ++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 8e1d00efa62e..8c0d91dfd7e2 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4283,10 +4283,16 @@ static bool ieee80211_rx_data_set_sta(struct ieee80211_rx_data *rx,
- 		rx->link_sta = NULL;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 65f3b2cc891d..d86b211f2c14 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -3249,6 +3249,9 @@ void sched_dl_do_global(void)
+ 	if (global_rt_runtime() != RUNTIME_INF)
+ 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
+ 
++	for_each_possible_cpu(cpu)
++		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
++
+ 	for_each_possible_cpu(cpu) {
+ 		rcu_read_lock_sched();
+ 
+@@ -3264,7 +3267,6 @@ void sched_dl_do_global(void)
+ 		raw_spin_unlock_irqrestore(&dl_b->lock, flags);
+ 
+ 		rcu_read_unlock_sched();
+-		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
  	}
- 
--	if (link_id < 0)
--		rx->link = &rx->sdata->deflink;
--	else if (!ieee80211_rx_data_set_link(rx, link_id))
-+	if (link_id < 0) {
-+		if (ieee80211_vif_is_mld(&rx->sdata->vif) &&
-+		    sta && !sta->sta.valid_links)
-+			rx->link =
-+				rcu_dereference(rx->sdata->link[sta->deflink.link_id]);
-+		else
-+			rx->link = &rx->sdata->deflink;
-+	} else if (!ieee80211_rx_data_set_link(rx, link_id)) {
- 		return false;
-+	}
- 
- 	return true;
  }
+ 
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index e40422c37033..507707653312 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2951,6 +2951,12 @@ static int sched_rt_handler(const struct ctl_table *table, int write, void *buff
+ 	sched_domains_mutex_unlock();
+ 	mutex_unlock(&mutex);
+ 
++	/*
++	 * After changing maximum available bandwidth for DEADLINE, we need to
++	 * recompute per root domain and per cpus variables accordingly.
++	 */
++	rebuild_sched_domains();
++
+ 	return ret;
+ }
+ 
 -- 
 2.39.5
 
