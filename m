@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-170934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19A8B2A6DA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEEAB2A426
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DF625852DA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505441B61F33
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95AD270ED2;
-	Mon, 18 Aug 2025 13:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA07631CA61;
+	Mon, 18 Aug 2025 13:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpEgD2OM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsBdN4u4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EF2335BCF;
-	Mon, 18 Aug 2025 13:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A711C31CA59;
+	Mon, 18 Aug 2025 13:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524273; cv=none; b=m4FLH2zQ0fbV68o5Hd7WByOc7wS4hvEUB/Oy8pXKzMJEr+gNsh4EHxpf6/sr2leo5TUbG2rNi5S0qpDksTbQjWoF3YUkAv6nskNPnoC1KJtgWRS2rp6fzsM8ouUktUaGzg5dwR+4kYZHhPLNws5h16OiGmBV1IbqliKoPGOMi8s=
+	t=1755522658; cv=none; b=aFIzS9LL9qf4xZq6UebYAE1KdMTGKWvYls5yOBblsuDvctd7GLBwadiB2DDUFA7W3AjgNSE93vXHlWMFnb2WLmf/BXfpNSJ+owG2K8G6lyv3l4nl+WsrWXdN7twJIoX4V9GHuzv2J78v0GzedccBOwAt0i3dlupzP/rOG/y/dcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524273; c=relaxed/simple;
-	bh=WJr2J+jJPccVCJzrWVPVlwU/UiG7mm7jQgA6jMBcqRg=;
+	s=arc-20240116; t=1755522658; c=relaxed/simple;
+	bh=DFVitzox457sBH8Ib0cY97C1+b7nDYgRqt9tjIac09g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZS7YWBYa1GCP9jk0OsQoY63pnSzqZ5wPhhiCxfppoaAO3AEQjDht60bcw9gN+nlYxoFu8yVJ6maRIFIEacQP9wnI+UlN92dCFYX6fATB0aedFoEeSVjCPQeAPTdE22Rxzjfn/gHLHkshRyBohxLItV7//j6U7aI9yLQv1srMla0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpEgD2OM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D559AC116D0;
-	Mon, 18 Aug 2025 13:37:52 +0000 (UTC)
+	 MIME-Version; b=pVJBhz9wcACfD/hH6+Vr6xqHZwAhTJNT6yGM4F2Vmeu8e24uuupvnF0i/soicNQ91a2VOruQxapXPfyebjTyLh4b4pSjRJoL9GQhqvB+8bMjA+a7yRV3EvyncFkk4AMkIAFeSpipptBZJrEDaumtXmN0BPNwqdPPBbAn9u26lv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsBdN4u4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FF8C4CEEB;
+	Mon, 18 Aug 2025 13:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524273;
-	bh=WJr2J+jJPccVCJzrWVPVlwU/UiG7mm7jQgA6jMBcqRg=;
+	s=korg; t=1755522658;
+	bh=DFVitzox457sBH8Ib0cY97C1+b7nDYgRqt9tjIac09g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BpEgD2OM6O2n777b0lr4rq657C9hz2+OZT+79CrKSPllBIQL+Xfsm14+PnKcN3o5M
-	 4zQGRYLb63ue8/sLqBxlDkG+te0IF4CHryIYM0gemhlCm3a4O5xy+IoqxEGLeO4t2E
-	 QSvUiN4swUXZDf92nB//m+kBVxvfQTE6Hmrg+UGM=
+	b=zsBdN4u4icJRzUCCNDNDHTk8zmCYzODnP/rdq49lo3kdmwM4ooV7O2a2JRzrKYrPz
+	 u1LvlyWTTzgoRDeyTgP+21Kb2tdmtwuAsWm6nl+DTVHf3lcWwPW58thYNz9mdH9rSs
+	 sobNW2tj7WesRFk3hChzd7bkq7acWC8M0fc+gX8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 421/515] smb: client: dont call init_waitqueue_head(&info->conn_wait) twice in _smbd_get_connection
+	syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com,
+	Yi Liu <yi.l.liu@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.12 381/444] iommufd: Prevent ALIGN() overflow
 Date: Mon, 18 Aug 2025 14:46:47 +0200
-Message-ID: <20250818124514.634209165@linuxfoundation.org>
+Message-ID: <20250818124503.182030421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,43 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 550a194c5998e4e77affc6235e80d3766dc2d27e ]
+commit b42497e3c0e74db061eafad41c0cd7243c46436b upstream.
 
-It is already called long before we may hit this cleanup code path.
+When allocating IOVA the candidate range gets aligned to the target
+alignment. If the range is close to ULONG_MAX then the ALIGN() can
+wrap resulting in a corrupted iova.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Open code the ALIGN() using get_add_overflow() to prevent this.
+This simplifies the checks as we don't need to check for length earlier
+either.
+
+Consolidate the two copies of this code under a single helper.
+
+This bug would allow userspace to create a mapping that overlaps with some
+other mapping or a reserved range.
+
+Cc: stable@vger.kernel.org
+Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
+Reported-by: syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/685af644.a00a0220.2e5631.0094.GAE@google.com
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://patch.msgid.link/all/1-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com/
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iommu/iommufd/io_pagetable.c |   41 +++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index cd4c61932cb2..b9bb531717a6 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1689,7 +1689,6 @@ static struct smbd_connection *_smbd_get_connection(
- 	cancel_delayed_work_sync(&info->idle_timer_work);
- 	destroy_caches_and_workqueue(info);
- 	sc->status = SMBDIRECT_SOCKET_NEGOTIATE_FAILED;
--	init_waitqueue_head(&info->conn_wait);
- 	rdma_disconnect(sc->rdma.cm_id);
- 	wait_event(info->conn_wait,
- 		sc->status == SMBDIRECT_SOCKET_DISCONNECTED);
--- 
-2.39.5
-
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -70,36 +70,45 @@ struct iopt_area *iopt_area_contig_next(
+ 	return iter->area;
+ }
+ 
+-static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
+-				    unsigned long length,
+-				    unsigned long iova_alignment,
+-				    unsigned long page_offset)
++static bool __alloc_iova_check_range(unsigned long *start, unsigned long last,
++				     unsigned long length,
++				     unsigned long iova_alignment,
++				     unsigned long page_offset)
+ {
+-	if (span->is_used || span->last_hole - span->start_hole < length - 1)
++	unsigned long aligned_start;
++
++	/* ALIGN_UP() */
++	if (check_add_overflow(*start, iova_alignment - 1, &aligned_start))
+ 		return false;
++	aligned_start &= ~(iova_alignment - 1);
++	aligned_start |= page_offset;
+ 
+-	span->start_hole = ALIGN(span->start_hole, iova_alignment) |
+-			   page_offset;
+-	if (span->start_hole > span->last_hole ||
+-	    span->last_hole - span->start_hole < length - 1)
++	if (aligned_start >= last || last - aligned_start < length - 1)
+ 		return false;
++	*start = aligned_start;
+ 	return true;
+ }
+ 
+-static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
++static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
+ 				    unsigned long length,
+ 				    unsigned long iova_alignment,
+ 				    unsigned long page_offset)
+ {
+-	if (span->is_hole || span->last_used - span->start_used < length - 1)
++	if (span->is_used)
+ 		return false;
++	return __alloc_iova_check_range(&span->start_hole, span->last_hole,
++					length, iova_alignment, page_offset);
++}
+ 
+-	span->start_used = ALIGN(span->start_used, iova_alignment) |
+-			   page_offset;
+-	if (span->start_used > span->last_used ||
+-	    span->last_used - span->start_used < length - 1)
++static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
++				    unsigned long length,
++				    unsigned long iova_alignment,
++				    unsigned long page_offset)
++{
++	if (span->is_hole)
+ 		return false;
+-	return true;
++	return __alloc_iova_check_range(&span->start_used, span->last_used,
++					length, iova_alignment, page_offset);
+ }
+ 
+ /*
 
 
 
