@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFCFB2A54F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D078B2A790
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46CEB1BA2802
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E6A587700
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685B8226D0F;
-	Mon, 18 Aug 2025 13:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954BF335BA7;
+	Mon, 18 Aug 2025 13:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/gXOJMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2R7ape8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F11322DDB;
-	Mon, 18 Aug 2025 13:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BA01E48A;
+	Mon, 18 Aug 2025 13:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522980; cv=none; b=Y933ZzQtX8CXy616x/69HO00l2gNJL76Z1+55NKkJPLyZLhL0hgZxOpAoLiBosHUTngPI9hfA0UdDgUdfdaGaASBOTnpH7vSziYalh0IUIQU5RYWUQYsmsMp2x2d4wAVwwlHNJbSXDZc1+zu+zO+o/86J4qzT415igmA+p2dyKE=
+	t=1755524793; cv=none; b=H9WJYwzgnmN/Mvi7Q/Km4PrqiouoG4rWusA2Qi78zVboCu9/URUDOxZdG5Y6B8BNAZjd7muOL7iXj7vTGa4Zl1+7Wnir2/BN24oRJIGuXLRQHjoFMG4+UxmI8zp9IVh464UmBOcGAf9eviRFW4nnRl3NwBHQ/SNTGagIi9B/O7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522980; c=relaxed/simple;
-	bh=DAirSdcau4lMLnM2MjJueO5sFC9K3kP4U1F7FXlxKrQ=;
+	s=arc-20240116; t=1755524793; c=relaxed/simple;
+	bh=sudwIVv/Gm8cus9IJ0ggHQjOPBEWEIK5j6nwbx2szUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlI2FMaKc/4Z2J6w75tJnxY6KjsDT0vbPbn5Tj3rQCwdur7aDWXyFQt2jJrm0phgDhGXSo7PKMslHI2FSDA4jiUgvq0Z14pYdXmV26h71MXWqqrrU4UDKVCos1O0FiaAk9W19hrawDjM5U0ynOpH6Vudia5bS89twYPUCkIAnGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/gXOJMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B8DC4CEEB;
-	Mon, 18 Aug 2025 13:16:19 +0000 (UTC)
+	 MIME-Version; b=iSOFH01/Arvsw2tGNBw00Rz6dcoRa3IWHbIild0MN1ptevbjzWhBSmUOEK2BW7/Ft4qb2/p/eKU3NldvOT5DFavehyOb6+dRGUnd46mP45+2PDT96PFwqCtKa1OX14rkjCLd4QWrmBbcojsvMnkj/EGR89/5h0elBTdxmRIen1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2R7ape8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDFA1C4CEEB;
+	Mon, 18 Aug 2025 13:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522979;
-	bh=DAirSdcau4lMLnM2MjJueO5sFC9K3kP4U1F7FXlxKrQ=;
+	s=korg; t=1755524793;
+	bh=sudwIVv/Gm8cus9IJ0ggHQjOPBEWEIK5j6nwbx2szUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H/gXOJMgwc7sdEyLykkcmy2UnNFCM77CJ/TvkOp4j5bwdFRXC4+PoU72N0WyThzuv
-	 VdSRZJznBOA5N2IzG73vePdsLUu2tTgAKBfE74+apLBmMmX86ed7gAp3EkGPmTEiS5
-	 rmt55WgNU3rjoYRJKlF47ZuQ2vIqd2s3QMDNYX4k=
+	b=T2R7ape8xzkfmJ84VVAkNjXt/80R3eNFwFJ+mSLIqQ7KFjwwOU7RnLQRnedd4kcCc
+	 GcRWkcUw+T1VWfzdu5evuxAuaMo7j1kasyVgOicffwwXagwiyusjO59RCLqwenBsDV
+	 aiODTW1ZC3FzGnWdD6iRAaTfQ7eisPy65rGxIfSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.15 033/515] PCI: Extend isolated function probing to LoongArch
+	lei lu <llfamsec@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.16 032/570] nfsd: handle get_client_locked() failure in nfsd4_setclientid_confirm()
 Date: Mon, 18 Aug 2025 14:40:19 +0200
-Message-ID: <20250818124459.726277733@linuxfoundation.org>
+Message-ID: <20250818124507.052484251@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit a02fd05661d73a8507dd70dd820e9b984490c545 upstream.
+commit 908e4ead7f757504d8b345452730636e298cbf68 upstream.
 
-Like s390 and the jailhouse hypervisor, LoongArch's PCI architecture allows
-passing isolated PCI functions to a guest OS instance. So it is possible
-that there is a multi-function device without function 0 for the host or
-guest.
+Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
+the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
+race with a confirmed client expiring and fail to get a reference. That
+could later lead to a UAF.
 
-Allow probing such functions by adding a IS_ENABLED(CONFIG_LOONGARCH) case
-in the hypervisor_isolated_pci_functions() helper.
+Fix this by getting a reference early in the case where there is an
+extant confirmed client. If that fails then treat it as if there were no
+confirmed client found at all.
 
-This is similar to commit 189c6c33ff42 ("PCI: Extend isolated function
-probing to s390").
+In the case where the unconfirmed client is expiring, just fail and
+return the result from get_client_locked().
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reported-by: lei lu <llfamsec@gmail.com>
+Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
+Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624062927.4037734-1-chenhuacai@loongson.cn
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hypervisor.h |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfs4state.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/include/linux/hypervisor.h
-+++ b/include/linux/hypervisor.h
-@@ -37,6 +37,9 @@ static inline bool hypervisor_isolated_p
- 	if (IS_ENABLED(CONFIG_S390))
- 		return true;
- 
-+	if (IS_ENABLED(CONFIG_LOONGARCH))
-+		return true;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4697,10 +4697,16 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 	}
+ 	status = nfs_ok;
+ 	if (conf) {
+-		old = unconf;
+-		unhash_client_locked(old);
+-		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
+-	} else {
++		if (get_client_locked(conf) == nfs_ok) {
++			old = unconf;
++			unhash_client_locked(old);
++			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
++		} else {
++			conf = NULL;
++		}
++	}
 +
- 	return jailhouse_paravirt();
- }
- 
++	if (!conf) {
+ 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
+ 		if (old) {
+ 			status = nfserr_clid_inuse;
+@@ -4717,10 +4723,14 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 			}
+ 			trace_nfsd_clid_replaced(&old->cl_clientid);
+ 		}
++		status = get_client_locked(unconf);
++		if (status != nfs_ok) {
++			old = NULL;
++			goto out;
++		}
+ 		move_to_confirmed(unconf);
+ 		conf = unconf;
+ 	}
+-	get_client_locked(conf);
+ 	spin_unlock(&nn->client_lock);
+ 	if (conf == unconf)
+ 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
 
 
 
