@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D19B2A38C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997ABB2A667
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91720189D176
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 973E5177AF0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D8A31B13E;
-	Mon, 18 Aug 2025 13:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B6E321F49;
+	Mon, 18 Aug 2025 13:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsZRLLUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfCLeVDI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E360218AAB;
-	Mon, 18 Aug 2025 13:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEA331AF15;
+	Mon, 18 Aug 2025 13:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522264; cv=none; b=QMNMo1cKhaewDNKEjMwyzFPuQzHCYYn80eXl5ppjx4Jh9O+iYLkIgTccWKF5FXrhnl/GFmBRdA06mpwt0H7jnafI79Tw/1v726sARQTSN4pMd+h00lWVKZx++jX9Km2+77lp/EB70qW+cd/SIz8ku0Q9w31pr7JKODkdxcO1Fqc=
+	t=1755523892; cv=none; b=bBCznldxAilo8FUWv+wI941E/jiNnaJoKQLLrk6w44CEwDrcYt2cnEwVLBwqID93Pfmw5kAJ7J0MQC0BSpWkSI9WaoMbD/na+hSj4T63CJxbiBQ13JAFQmRngxi2iwnffwvZGIGpUWUNctnlnv8Dkn6PuMl7ObGkyqV/NOI/TP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522264; c=relaxed/simple;
-	bh=L5ZDbNfwWlpF8ZqkwBMqPgbs6QltwPtOVMU2WSCRMmI=;
+	s=arc-20240116; t=1755523892; c=relaxed/simple;
+	bh=HvrRzyP2k9nyn0Pmei/u2syi/dLWRlk9KB6BJIIpqKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8Q3SFtpXvo3f9dIML8jC5kmFInk4JL+A7SzGaY8mvQZg7i9d2+9UyuriwKQSbvfM5gwqVUP2Qzgdhm0ObrH+S7AQNpfVesjboLhGbfEPdIAUZL3fG8PtWg7UbVz/KUz9FIoJ247p+YS5beYSH/kmyDrKV1P1khxa5DIFtxPUcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsZRLLUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F0FC4CEEB;
-	Mon, 18 Aug 2025 13:04:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U/broJCvNlsFfesUR6ZFRRd9s0HC5SITiP2t8reAUO07LFacCGVUK7G0y8VRfD0Cq8521j9lDtV0cTexMqS7NXZlkHEkGILIbkvqz/1jMoPGLUHHNf2p+Hq2AsbfQvRav5GCe6/yWBS/ea7y54wHwWnm75bX6aX+UFjWXOmMDDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfCLeVDI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313B7C4CEEB;
+	Mon, 18 Aug 2025 13:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522263;
-	bh=L5ZDbNfwWlpF8ZqkwBMqPgbs6QltwPtOVMU2WSCRMmI=;
+	s=korg; t=1755523891;
+	bh=HvrRzyP2k9nyn0Pmei/u2syi/dLWRlk9KB6BJIIpqKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsZRLLUB/fN6VYT6h16ZpgeQAkJ6Ji9FX7lXQXf4rEo8/CmS1UC+YoBPVGQ7GFdlF
-	 GFEpQ4WTLdbNsfTcyYJy2xtpKVoMlGdGlmUVGRPX1Anebk+p6Tj0x9K/CKI/CqDgf6
-	 yjMqn4FmQknZGTb3vWlVccqbCFMijTTeHmzuOe7U=
+	b=qfCLeVDI1Mv2gwxNiavQStFoTS+9mG0WR11UWESqOhd3HE2Q5n22i1enWIf1Z6+VE
+	 tYgzSesKrmzQcX4P1XCn3A4G1hevwY539oo7Szua2i7ZCHdiiR3IOdxVg/DwxiGTro
+	 YthKXgYAABJtaZBSiMLLdLRLe7fGQ8LjfFrphztA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 265/444] selftests/bpf: Fix a user_ringbuf failure with arm64 64KB page size
+Subject: [PATCH 6.15 305/515] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
 Date: Mon, 18 Aug 2025 14:44:51 +0200
-Message-ID: <20250818124458.760032497@linuxfoundation.org>
+Message-ID: <20250818124510.180639519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit bbc7bd658ddc662083639b9e9a280b90225ecd9a ]
+[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
 
-The ringbuf max_entries must be PAGE_ALIGNED. See kernel function
-ringbuf_map_alloc(). So for arm64 64KB page size, adjust max_entries
-properly.
+BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
+avoid reading or writing it.
+PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
+and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250607013626.1553001-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/user_ringbuf.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-index d424e7ecbd12..9fd3ae987321 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-@@ -21,8 +21,7 @@
- #include "../progs/test_user_ringbuf.h"
- 
- static const long c_sample_size = sizeof(struct sample) + BPF_RINGBUF_HDR_SZ;
--static const long c_ringbuf_size = 1 << 12; /* 1 small page */
--static const long c_max_entries = c_ringbuf_size / c_sample_size;
-+static long c_ringbuf_size, c_max_entries;
- 
- static void drain_current_samples(void)
- {
-@@ -424,7 +423,9 @@ static void test_user_ringbuf_loop(void)
- 	uint32_t remaining_samples = total_samples;
- 	int err;
- 
--	BUILD_BUG_ON(total_samples <= c_max_entries);
-+	if (!ASSERT_LT(c_max_entries, total_samples, "compare_c_max_entries"))
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 55e1844a5e9c..8abbcc588267 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1274,6 +1274,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
 +		return;
-+
- 	err = load_skel_create_user_ringbuf(&skel, &ringbuf);
- 	if (err)
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1298,6 +1300,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1328,10 +1332,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
  		return;
-@@ -686,6 +687,9 @@ void test_user_ringbuf(void)
- {
- 	int i;
+ 	}
  
-+	c_ringbuf_size = getpagesize(); /* 1 page */
-+	c_max_entries = c_ringbuf_size / c_sample_size;
+-	if (rx_pause)
+-		reg |= PORT_OVERRIDE_RX_FLOW;
+-	if (tx_pause)
+-		reg |= PORT_OVERRIDE_TX_FLOW;
++	if (rx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_RX_FLOW;
++	}
 +
- 	for (i = 0; i < ARRAY_SIZE(success_tests); i++) {
- 		if (!test__start_subtest(success_tests[i].test_name))
- 			continue;
++	if (tx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_TX_FLOW;
++	}
+ 
+ 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index d31c8ad9a9b6..25d25bd1071f 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -95,6 +95,7 @@
+ #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
++#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
+ #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
 -- 
 2.39.5
 
