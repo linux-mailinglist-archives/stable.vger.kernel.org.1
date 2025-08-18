@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-170946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840B0B2A672
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD507B2A9BF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72847B4877
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92D9C1BC15F3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6FE31E10D;
-	Mon, 18 Aug 2025 13:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597A8350853;
+	Mon, 18 Aug 2025 14:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9eIqpEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azhGRPnH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3573112AE;
-	Mon, 18 Aug 2025 13:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183CA350847;
+	Mon, 18 Aug 2025 14:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524311; cv=none; b=XpmlLWsFOI9c3qzhQfWN3bqXWjE7U4vzuSelH9gTNUyleftzjzUSdJdO9TfHdlO9GzrgcV61gQJJQiZ1RgW45c8D4dSS6k3gy1VqotYU6cUui73vUUvF6q8KrlF5mYM1oo6YJ7W2ke+hceLBlRZcQ7jZwyDJIVEOhbscsSLWBY0=
+	t=1755525900; cv=none; b=Cw8C0c31PpCA7va2nWPAe5/e8Z5yCXv9WldctkHjdQphSorbjHZym2HXSAJ07HZyGGYFuMD73UZXCe6EhwQKK7k0cOph4YnsO+9vdqk2hwNZI6P8NiDJu9TPCaW9DscqtZpNjzhYr/zNujT1haI9wFO9OvKK2CmzX0LXrblQsac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524311; c=relaxed/simple;
-	bh=NmrDeRAOZlWl/m1ZcCVyn4HSR+voAcLwoxyHuUDVRxA=;
+	s=arc-20240116; t=1755525900; c=relaxed/simple;
+	bh=SXgv9ja0pSBliALUJv/ohwNBp8kEGpaB40o93jtDHP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShT42n9YDY/uAoj839NXv7C9oDHXd2jhv7vRRt+4EUsqhUWz1R8t1LGV0VclTEfCwDul54bNFRAEMPuw1uogCImT7OOo0eapCngtdCe7l16ejmuxb/oe8WdJb9ZJ0q4tiakJ9OfkNVP3AQAvRuLhEdvjC3J1mPI7IPsD4Ou4b1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9eIqpEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D73C4CEF1;
-	Mon, 18 Aug 2025 13:38:30 +0000 (UTC)
+	 MIME-Version; b=RdbjawRx4+oTsikhTstqj/c75Wp15A2mq9aI3rBZYvJSPQhEqgeVJqHeGa8jHZg8TkmxYR8MODZuW+60BdK8fbqsd8XfXHrF4o2pRZ9XxNQz5gmqyUvdkFYalP+rvEb4lqgLueMLxNcQYNQqdGco4s1ql971aUOCuy+80QX133U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azhGRPnH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B31DC4CEEB;
+	Mon, 18 Aug 2025 14:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524311;
-	bh=NmrDeRAOZlWl/m1ZcCVyn4HSR+voAcLwoxyHuUDVRxA=;
+	s=korg; t=1755525900;
+	bh=SXgv9ja0pSBliALUJv/ohwNBp8kEGpaB40o93jtDHP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9eIqpEBgLx+3DElgP1Ccrx4+b+1/gmpFsgh3ytHY2/SElzzGTNmTCfyLh0yfkKYg
-	 zDeROofcR8MjZHvPhH0hcqjpHPBybA2Bma1nlH0kWxBZd4Io6NJmpyy5ezBENCgDOs
-	 N+XpqPEJhDkH2u49pviIsQON2Tk3nF/vUKZe+Qww=
+	b=azhGRPnHzmp36JuZsGBOm1mGmKyUhYPOnjQSE6ViHc+UzslLvLZwWZ7l6gdQg80Tf
+	 Zo/F94gplu3FTyWcGM5mxdHFODdyiQp+k3ylbf3L5uhs/9vPWj0pLy+zgfqPgDMHYs
+	 nUd+Dx87iKZCDXusS3V0Y314RmaZ4+RdMhl0NUY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Johansen <john.johansen@canonical.com>,
+	John Ernberg <john.ernberg@actia.se>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 400/515] apparmor: fix x_table_lookup when stacking is not the first entry
+Subject: [PATCH 6.16 399/570] crypto: caam - Support iMX8QXP and variants thereof
 Date: Mon, 18 Aug 2025 14:46:26 +0200
-Message-ID: <20250818124513.807898484@linuxfoundation.org>
+Message-ID: <20250818124521.226415642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,146 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-[ Upstream commit a9eb185be84e998aa9a99c7760534ccc06216705 ]
+[ Upstream commit ac8aff0035fa58e53b39bd565ad6422a90ccdc87 ]
 
-x_table_lookup currently does stacking during label_parse() if the
-target specifies a stack but its only caller ensures that it will
-never be used with stacking.
+The iMX8QXP (and variants such as the QX, DX, DXP) all identify as iMX8QXP.
 
-Refactor to slightly simplify the code in x_to_label(), this
-also fixes a long standing problem where x_to_labels check on stacking
-is only on the first element to the table option list, instead of
-the element that is found and used.
+They have the exact same restrictions as the supported iMX8QM introduced
+at commit 61bb8db6f682 ("crypto: caam - Add support for i.MX8QM")
 
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Loosen the check a little bit with a wildcard to also match the iMX8QXP
+and its variants.
+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/domain.c | 52 +++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 23 deletions(-)
+ drivers/crypto/caam/ctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/apparmor/domain.c b/security/apparmor/domain.c
-index 5939bd9a9b9b..08ca9057f82b 100644
---- a/security/apparmor/domain.c
-+++ b/security/apparmor/domain.c
-@@ -508,6 +508,7 @@ static const char *next_name(int xtype, const char *name)
-  * @name: returns: name tested to find label (NOT NULL)
-  *
-  * Returns: refcounted label, or NULL on failure (MAYBE NULL)
-+ *          @name will always be set with the last name tried
-  */
- struct aa_label *x_table_lookup(struct aa_profile *profile, u32 xindex,
- 				const char **name)
-@@ -517,6 +518,7 @@ struct aa_label *x_table_lookup(struct aa_profile *profile, u32 xindex,
- 	struct aa_label *label = NULL;
- 	u32 xtype = xindex & AA_X_TYPE_MASK;
- 	int index = xindex & AA_X_INDEX_MASK;
-+	const char *next;
- 
- 	AA_BUG(!name);
- 
-@@ -524,25 +526,27 @@ struct aa_label *x_table_lookup(struct aa_profile *profile, u32 xindex,
- 	/* TODO: move lookup parsing to unpack time so this is a straight
- 	 *       index into the resultant label
- 	 */
--	for (*name = rules->file->trans.table[index]; !label && *name;
--	     *name = next_name(xtype, *name)) {
-+	for (next = rules->file->trans.table[index]; next;
-+	     next = next_name(xtype, next)) {
-+		const char *lookup = (*next == '&') ? next + 1 : next;
-+		*name = next;
- 		if (xindex & AA_X_CHILD) {
--			struct aa_profile *new_profile;
--			/* release by caller */
--			new_profile = aa_find_child(profile, *name);
--			if (new_profile)
--				label = &new_profile->label;
-+			/* TODO: switich to parse to get stack of child */
-+			struct aa_profile *new = aa_find_child(profile, lookup);
-+
-+			if (new)
-+				/* release by caller */
-+				return &new->label;
- 			continue;
- 		}
--		label = aa_label_parse(&profile->label, *name, GFP_KERNEL,
-+		label = aa_label_parse(&profile->label, lookup, GFP_KERNEL,
- 				       true, false);
--		if (IS_ERR(label))
--			label = NULL;
-+		if (!IS_ERR_OR_NULL(label))
-+			/* release by caller */
-+			return label;
- 	}
- 
--	/* released by caller */
--
--	return label;
-+	return NULL;
- }
- 
- /**
-@@ -567,9 +571,9 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 	struct aa_ruleset *rules = list_first_entry(&profile->rules,
- 						    typeof(*rules), list);
- 	struct aa_label *new = NULL;
-+	struct aa_label *stack = NULL;
- 	struct aa_ns *ns = profile->ns;
- 	u32 xtype = xindex & AA_X_TYPE_MASK;
--	const char *stack = NULL;
- 
- 	switch (xtype) {
- 	case AA_X_NONE:
-@@ -578,13 +582,14 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 		break;
- 	case AA_X_TABLE:
- 		/* TODO: fix when perm mapping done at unload */
--		stack = rules->file->trans.table[xindex & AA_X_INDEX_MASK];
--		if (*stack != '&') {
--			/* released by caller */
--			new = x_table_lookup(profile, xindex, lookupname);
--			stack = NULL;
-+		/* released by caller
-+		 * if null for both stack and direct want to try fallback
-+		 */
-+		new = x_table_lookup(profile, xindex, lookupname);
-+		if (!new || **lookupname != '&')
- 			break;
--		}
-+		stack = new;
-+		new = NULL;
- 		fallthrough;	/* to X_NAME */
- 	case AA_X_NAME:
- 		if (xindex & AA_X_CHILD)
-@@ -599,6 +604,7 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 		break;
- 	}
- 
-+	/* fallback transition check */
- 	if (!new) {
- 		if (xindex & AA_X_INHERIT) {
- 			/* (p|c|n)ix - don't change profile but do
-@@ -617,12 +623,12 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 		/* base the stack on post domain transition */
- 		struct aa_label *base = new;
- 
--		new = aa_label_parse(base, stack, GFP_KERNEL, true, false);
--		if (IS_ERR(new))
--			new = NULL;
-+		new = aa_label_merge(base, stack, GFP_KERNEL);
-+		/* null on error */
- 		aa_put_label(base);
- 	}
- 
-+	aa_put_label(stack);
- 	/* released by caller */
- 	return new;
- }
+diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
+index 38ff931059b4..9cd5e3d54d9d 100644
+--- a/drivers/crypto/caam/ctrl.c
++++ b/drivers/crypto/caam/ctrl.c
+@@ -573,7 +573,7 @@ static const struct soc_device_attribute caam_imx_soc_table[] = {
+ 	{ .soc_id = "i.MX7*",  .data = &caam_imx7_data },
+ 	{ .soc_id = "i.MX8M*", .data = &caam_imx7_data },
+ 	{ .soc_id = "i.MX8ULP", .data = &caam_imx8ulp_data },
+-	{ .soc_id = "i.MX8QM", .data = &caam_imx8ulp_data },
++	{ .soc_id = "i.MX8Q*", .data = &caam_imx8ulp_data },
+ 	{ .soc_id = "VF*",     .data = &caam_vf610_data },
+ 	{ .family = "Freescale i.MX" },
+ 	{ /* sentinel */ }
 -- 
 2.39.5
 
