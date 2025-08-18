@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E35B2A568
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329C3B2A854
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FD747B2AC0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064FA1BA467C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E5F321F2F;
-	Mon, 18 Aug 2025 13:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2852C335BAF;
+	Mon, 18 Aug 2025 13:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bU2mFXmA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plTUg2r4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46EC320CD7;
-	Mon, 18 Aug 2025 13:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1603335BA7;
+	Mon, 18 Aug 2025 13:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523433; cv=none; b=GsfBgxYu3KB8p+ziphwn4ZaXSPdGVBe3NtWhUCN6SvbmJMq7NDae3bJMP1ZME983VuJYcLcg4ZSjJj/3DlqyKoRpvosstsq3WU+gP9HjtMll+r9uVsHNv2Wtlg/3RsOI4/mzKCAoo2KLhypt/25tRL+7RYvL+9ultdOpa6KXXIY=
+	t=1755525078; cv=none; b=e8YgS684K2CgN+ck2CTp3eKIxHWQfbVhrddH953V5LeRDkrH2Gp4oUvDQru8drPaMfv0LEN4NMXgfDOnKkOvWZkyQ0woYB2S6E9qPXkOgKz+2t9tAeobIgVhdJtUv5eKydcU9fyViQYcHEDE9tyUhxCO6ck64NwhP8lgqY2QPlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523433; c=relaxed/simple;
-	bh=hjOI1TVhJVe7FAlJ3NYiR7oEKPa5Yb0eTXjTcQOCVhg=;
+	s=arc-20240116; t=1755525078; c=relaxed/simple;
+	bh=B7ONYW15dckmzkpEUyEqCakKBo+ZfSRk87VBdzJXtTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cpn1PWdriEykCkr+V3OIzupreoqCEorGfNQZwRss71skpjr8egT/qjMwJsck4vPqGFVMET2Vta8OCPwnsbPruYz8CNa14NZkwMSvPdrnfp+enzLa3bfDiX1hdwWfhe5Y/XuUwGLKZjSjEHu8N67GfyLRXsYG7P3VJhQku1PTyCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bU2mFXmA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B98C4CEEB;
-	Mon, 18 Aug 2025 13:23:52 +0000 (UTC)
+	 MIME-Version; b=F/9JIs1FBB5e3Jit3MFADTw2kDmNEK2puRp1qGoswPAojNLTocEjeigaocXMHY12dy/dM+p2QrnZwltRvVLCQMNiyNQG1UeBWRNOu8kKwnPS9BZN9JPW/ORDPlwVHrW3tJs6Pwu1HOLjJ+skHmMUkZSSHOXgLQ1IL4camKRqMQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plTUg2r4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFE3C4CEEB;
+	Mon, 18 Aug 2025 13:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523432;
-	bh=hjOI1TVhJVe7FAlJ3NYiR7oEKPa5Yb0eTXjTcQOCVhg=;
+	s=korg; t=1755525078;
+	bh=B7ONYW15dckmzkpEUyEqCakKBo+ZfSRk87VBdzJXtTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bU2mFXmA8bzGpEq2OMjHp1Ldav8GBQNEQNI8QL3AA7b5nNHOIbCcx2DI+659fyYt7
-	 +sy+x+2rVxD9A57RcrpSNfrin9MCtHHZgmG7kkzUeJj7omjQolFU10Yyy8Ze5Nfxsk
-	 EfXsG0tkoPHrsHaKgszkBpEZZsRI3p+CBJJS1PO8=
+	b=plTUg2r4S+0iW0wwsEU/szH+KdQ3g1r8y7w77Gbsc4X2gWCUXoLEXjplJBqwPwq+q
+	 Elu+ySEPbbSJIu+3U9x0hO5dVY3NcIlHh6muEGgS1KZv7PUNVL9ePCBSQWLYGH7aOZ
+	 Tieq+aTa9tYoJHACeUTBTxrg3EUCrjYsvrQHHxF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 152/515] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
+Subject: [PATCH 6.16 151/570] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
 Date: Mon, 18 Aug 2025 14:42:18 +0200
-Message-ID: <20250818124504.234626017@linuxfoundation.org>
+Message-ID: <20250818124511.632615858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
+[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
 
-According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
-means the read would block. Hence, the common implementation in
-nonblocking model will poll the file when the nonblocking read returns
-EAGAIN. However, when the target file is thermal zone, this mechanism
-will totally malfunction because thermal zone doesn't implement sysfs
-notification and thus the poll will never return.
+ASoC has 2 functions to set bias level.
+	(A) snd_soc_dapm_force_bias_level()
+	(B) snd_soc_dapm_set_bias_level()
 
-For example, the read in Golang implemnts such method and sometimes
-hangs at reading some thermal zones via sysfs.
+snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
+successed.
 
-Change to return -ENODATA instead of -EAGAIN to userspace.
+(A)	int snd_soc_dapm_force_bias_level(...)
+	{
+		...
+		if (ret == 0)
+(a)			dapm->bias_level = level;
+		...
+	}
 
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
+It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
+set dapm->bias_level by itself. One note is that (A) might not be called.
+
+(B)	static int snd_soc_dapm_set_bias_level(...)
+	{
+		...
+		ret = snd_soc_card_set_bias_level(...);
+		...
+		if (dapm != &card->dapm)
+(A)			ret = snd_soc_dapm_force_bias_level(...);
+		...
+		ret = snd_soc_card_set_bias_level_post(...);
+		...
+	}
+
+dapm->bias_level will be set if (A) was called, but might not be set
+if (B) was called, even though it calles set_bias_level() function.
+
+We should set dapm->bias_level if we calls
+snd_soc_dapm_set_bias_level() (B), too.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_sysfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/soc-dapm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-index 24b9055a0b6c..d80612506a33 100644
---- a/drivers/thermal/thermal_sysfs.c
-+++ b/drivers/thermal/thermal_sysfs.c
-@@ -40,10 +40,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index f26f9e9d7ce7..7d9c9e8839f6 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -739,6 +739,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
+ out:
+ 	trace_snd_soc_bias_level_done(dapm, level);
  
- 	ret = thermal_zone_get_temp(tz, &temperature);
- 
--	if (ret)
--		return ret;
-+	if (!ret)
-+		return sprintf(buf, "%d\n", temperature);
- 
--	return sprintf(buf, "%d\n", temperature);
-+	if (ret == -EAGAIN)
-+		return -ENODATA;
++	/* success */
++	if (ret == 0)
++		snd_soc_dapm_init_bias_level(dapm, level);
 +
-+	return ret;
+ 	return ret;
  }
  
- static ssize_t
 -- 
 2.39.5
 
