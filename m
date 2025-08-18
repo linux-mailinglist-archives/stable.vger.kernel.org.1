@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070D3B2A262
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617F3B2A814
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49D597AEDBD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8085E56297D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15E331CA4A;
-	Mon, 18 Aug 2025 12:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE47216E23;
+	Mon, 18 Aug 2025 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzfNlEKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9AHWCZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE6C27B355;
-	Mon, 18 Aug 2025 12:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C447335BBB;
+	Mon, 18 Aug 2025 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521755; cv=none; b=rDxy0qXQRVdQAf9KxQRj4IKGLCLOGgLyFVOimmmNowQIUifYqw/WZE/snL92KPIxNdtl9u3pXquesjuR83NuRR85iPm9A9gx4ONoStJZk8mY69UXEJ7ei5rV6E+IkW+zdP8oF7FhiidnHXl+J8GPqHbLjVrwT6Hq0mOlCH+NqDg=
+	t=1755524975; cv=none; b=MunrTYNIoRDCuZGmimyx88sL2S7aPgI2u16DMImzA1yOALwKfW/7+B3YdxdUOhcGss2NYan2mOWiLmQ+jXo+k7I591iSkRn2vg4t9/Atug9d3iLz79aNkAm4yhQRks4IFlYnWnCayo+DiPuM6kytV9CqcNfuowaLzxBewDIuNj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521755; c=relaxed/simple;
-	bh=HYINa91+3YHMXM1NgjK155e45iCBjcSmCLai9NYBDoE=;
+	s=arc-20240116; t=1755524975; c=relaxed/simple;
+	bh=7igTzAr0dbyJOcYt+U9iS3N4XPLpIl79/vCfsl3WZqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dy98PnyA+F7+z5Nke2tV0IZVPPACPRr5L15AifumVRx1I0NBkcZg8IGSqxUYO9okiCkTrRM2VmLQx/a0pEXv0vsbHiUxMYbzEFvF+upVqcSv8J4V2EgA0Cm262F8Caj/LyTTfaUehWdkeEhwpRscsUHUk5Nh94lX7AvNaVc413Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzfNlEKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F84C4CEEB;
-	Mon, 18 Aug 2025 12:55:54 +0000 (UTC)
+	 MIME-Version; b=OlfLdK6urNbWUj9pJ0VjJIFGuvbEtVYdOo6K0K1IZ+L5U3a3yrrxkhdCljkNU9l6n9qFgL9FFU/wo2K1XONGWN9PU7kFve9Xqrdn266/9kMf73ow6a86UJcgP/7kEEsVdprmmiXX0dTUu6osPj4+IqpwAriPCNBLBovU9ee5/gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9AHWCZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76DCC4CEEB;
+	Mon, 18 Aug 2025 13:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521755;
-	bh=HYINa91+3YHMXM1NgjK155e45iCBjcSmCLai9NYBDoE=;
+	s=korg; t=1755524975;
+	bh=7igTzAr0dbyJOcYt+U9iS3N4XPLpIl79/vCfsl3WZqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JzfNlEKBoTPxzTKiSD8RbHOzOnAb9dhigkku8klKbQlY46B0Y2nbjSn35s16+NpLB
-	 9CUEBRcMd/nES68TCkX7cCJOa9PqGrvUwWv97+epaMyGV0GqsXi8umprVtAEEwZX+U
-	 YIWlfe/bO/UUO2HmtOLJcgnC/OEMNhpyQcE6ecb4=
+	b=H9AHWCZPxDAbm6OUUMEzLKKv2Mi72jv+2YhY+gnWYpcS8oTlQAOTMWswPsoKEKP6N
+	 5zVfHPLmOjzG+638RLMKslfj0QLIHoxSror/S1WZAn0Pq4g/wePEfPAFN8/rsmsz94
+	 O56ZJLI1dv6QgEAJeJBrLxFqNCp2RWJnky6YoER4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com,
+	Wei Gao <wegao@suse.com>,
 	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/444] udf: Verify partition map count
-Date: Mon, 18 Aug 2025 14:41:46 +0200
-Message-ID: <20250818124451.955349171@linuxfoundation.org>
+Subject: [PATCH 6.16 120/570] ext2: Handle fiemap on empty files to prevent EINVAL
+Date: Mon, 18 Aug 2025 14:41:47 +0200
+Message-ID: <20250818124510.437856235@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Wei Gao <wegao@suse.com>
 
-[ Upstream commit 1a11201668e8635602577dcf06f2e96c591d8819 ]
+[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
 
-Verify that number of partition maps isn't insanely high which can lead
-to large allocation in udf_sb_alloc_partition_maps(). All partition maps
-have to fit in the LVD which is in a single block.
+Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
+i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
+would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
+then result in an -EINVAL error, even for valid queries on empty files.
 
-Reported-by: syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com
+Link: https://github.com/linux-test-project/ltp/issues/1246
+Signed-off-by: Wei Gao <wegao@suse.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/ext2/inode.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index 1c8a736b3309..b2f168b0a0d1 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1440,7 +1440,7 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 	struct genericPartitionMap *gpm;
- 	uint16_t ident;
- 	struct buffer_head *bh;
--	unsigned int table_len;
-+	unsigned int table_len, part_map_count;
+diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+index 30f8201c155f..177b1f852b63 100644
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -895,9 +895,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		u64 start, u64 len)
+ {
  	int ret;
++	loff_t i_size;
  
- 	bh = udf_read_tagged(sb, block, block, &ident);
-@@ -1461,7 +1461,16 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
- 					   "logical volume");
- 	if (ret)
- 		goto out_bh;
--	ret = udf_sb_alloc_partition_maps(sb, le32_to_cpu(lvd->numPartitionMaps));
-+
-+	part_map_count = le32_to_cpu(lvd->numPartitionMaps);
-+	if (part_map_count > table_len / sizeof(struct genericPartitionMap1)) {
-+		udf_err(sb, "error loading logical volume descriptor: "
-+			"Too many partition maps (%u > %u)\n", part_map_count,
-+			table_len / (unsigned)sizeof(struct genericPartitionMap1));
-+		ret = -EIO;
-+		goto out_bh;
-+	}
-+	ret = udf_sb_alloc_partition_maps(sb, part_map_count);
- 	if (ret)
- 		goto out_bh;
+ 	inode_lock(inode);
+-	len = min_t(u64, len, i_size_read(inode));
++	i_size = i_size_read(inode);
++	/*
++	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
++	 * length to 0 but still trim the range as much as possible since
++	 * ext2_get_blocks() iterates unmapped space block by block which is
++	 * slow.
++	 */
++	if (i_size == 0)
++		i_size = 1;
++	len = min_t(u64, len, i_size);
+ 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
+ 	inode_unlock(inode);
  
 -- 
 2.39.5
