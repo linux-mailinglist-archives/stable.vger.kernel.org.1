@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1944B2AA22
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF05B2A68B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC0606E4E30
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5B431BA0C2B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EA433A026;
-	Mon, 18 Aug 2025 14:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F36220696;
+	Mon, 18 Aug 2025 13:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENJYjv2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T15JjJD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD2733A00E;
-	Mon, 18 Aug 2025 14:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54585322A2D;
+	Mon, 18 Aug 2025 13:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525729; cv=none; b=Y2KsSGkqp3ni8aR3E8J8sPVZzmbh/TEjrsbxHuEyuXkqC3ZdUSIF5n24k5ivg5gqdu+gVNvFxrfqBbhnMvPF72b/0zP/KLw59c/qczpVwdWIqQscMWWicqiPV55v2iAG8SKOTJIt7/gi8MlghNKsZyZ/cyLTTucJ+gibDOaDMDc=
+	t=1755524050; cv=none; b=pcvW+6ml4GLTRI1lugWnumwK3KRslk15nK8tKzbqwoPwIGjTDOrUmD9DxjA4cgPBmXDti35SThXMYXi+BmJLGFr0ilnv/TRzAgj9SwUASRED0W0S4hkNzL2nSnQ1Xzi4dEVwYqNS8SjI5Hy5gXakuYF6lVvCJMEjIh7NLlJroXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525729; c=relaxed/simple;
-	bh=yZQ7HLOiOzlARTu6FlT0AOt95glGzs9p6yu4Co2g6HQ=;
+	s=arc-20240116; t=1755524050; c=relaxed/simple;
+	bh=W7EyGiPL7J883A3lmg/0BRBuOiO7KZuKl6IMk9V30hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPmv1uUN+PZY1/TpkDvxJEQDjZBiIogrW1f0ytlbi9LGH8l9rbN/OdtCYB3VEoCfVOrmUg90b1zljdMvMNkNLnrb3ilhbqQV+p8ykD0N802uDNptTYrudnH2chhG5zA8ACwOqLGSO/NzoxX69TbUTewUNA8pMh6OXnwrE+V5WyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENJYjv2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D734CC4CEEB;
-	Mon, 18 Aug 2025 14:02:08 +0000 (UTC)
+	 MIME-Version; b=hfjn08kwkfQWHDfwiXPLxQIverGHapokjyo4vb3fNPMbmo4Z+mzH77+0Bt+vSVgIbQKUQIMkpxA5YFAt6/CNqbN/3LM0BOoDBVcPIWkLHz1rLgAG9RoV8cYJeHA4HOXw0mBNkiIC0QubX5EU806nrp8HOY+m8QQfFwaYxfXWnTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T15JjJD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01B4C4CEEB;
+	Mon, 18 Aug 2025 13:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525729;
-	bh=yZQ7HLOiOzlARTu6FlT0AOt95glGzs9p6yu4Co2g6HQ=;
+	s=korg; t=1755524050;
+	bh=W7EyGiPL7J883A3lmg/0BRBuOiO7KZuKl6IMk9V30hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENJYjv2yzdwMvnSUCB4eHAr21UjoYMIAGUCCUCA6gz/smUH34kcQ/PLyZ6iKdv6Bh
-	 twHAOQM+8ko+NZ38gVBZShbxFXFsEml+D4U+Ao9DLwkrA4xbwbv91xY0pr0R0tMl3T
-	 YEn7JLjJkDCccfoVWKC5xwBZFu1+7rhdP7I+fydY=
+	b=1T15JjJDP31ZhhRwoTYkhCIwC/dA4N9L2//uPySV10WqMcbcAr7XEY37UxwEJ4zVh
+	 cqcQcw11VSMZ5KANGlllp1SKeOapgcoziJdaNh8WKF1d9mlH+yHgd4XOoSNkY7koig
+	 t0tL3yJuebxrEYdfTasPyqh2sTeUgZoOOmQV0dKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 350/570] drm/amd/display: Avoid trying AUX transactions on disconnected ports
-Date: Mon, 18 Aug 2025 14:45:37 +0200
-Message-ID: <20250818124519.341928492@linuxfoundation.org>
+Subject: [PATCH 6.15 352/515] jfs: upper bound check of tree index in dbAllocAG
+Date: Mon, 18 Aug 2025 14:45:38 +0200
+Message-ID: <20250818124511.972568734@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit deb24e64c8881c462b29e2c69afd9e6669058be5 ]
+[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
 
-[Why & How]
-Observe that we try to access DPCD 0x600h of disconnected DP ports.
-In order not to wasting time on retrying these ports, call
-dpcd_write_rx_power_ctrl() after checking its connection status.
+When computing the tree index in dbAllocAG, we never check if we are
+out of bounds realative to the size of the stree.
+This could happen in a scenario where the filesystem metadata are
+corrupted.
 
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
+Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index 273a3be6d593..f16cba4b9119 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -140,7 +140,8 @@ void link_blank_dp_stream(struct dc_link *link, bool hw_init)
- 				}
- 		}
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 5a877261c3fe..cdfa699cd7c8 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1389,6 +1389,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
+ 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
+ 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
  
--		if ((!link->wa_flags.dp_keep_receiver_powered) || hw_init)
-+		if (((!link->wa_flags.dp_keep_receiver_powered) || hw_init) &&
-+			(link->type != dc_connection_none))
- 			dpcd_write_rx_power_ctrl(link, false);
- 	}
- }
++	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
++		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
++		release_metapage(mp);
++		return -EIO;
++	}
++
+ 	/* dmap control page trees fan-out by 4 and a single allocation
+ 	 * group may be described by 1 or 2 subtrees within the ag level
+ 	 * dmap control page, depending upon the ag size. examine the ag's
 -- 
 2.39.5
 
