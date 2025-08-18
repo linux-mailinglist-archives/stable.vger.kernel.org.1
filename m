@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-170813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FF7B2A6A1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9928EB2A99F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D483682A29
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B73B61BA4235
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788FD22A7E0;
-	Mon, 18 Aug 2025 13:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94FA261B9B;
+	Mon, 18 Aug 2025 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xx1jjE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7Tpv32n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354E7321448;
-	Mon, 18 Aug 2025 13:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BE3322759;
+	Mon, 18 Aug 2025 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523879; cv=none; b=ZngwC7c7BL229RFquDd+fLTTnT677sATgUFAvxr7PZakYBkwgrXciYRdU3zvBk1VvnDEIlijEDLrJlvGfsWZjvHdH65uS9WDOSGm6F8ikwLVb/NdZ5sDxwIDQWUal/GnVPXnSaBgdIV9IDy5u3vU5ItVSi4TJlBvV0a3eOwGEK4=
+	t=1755525566; cv=none; b=HodtI4W5cV0rUjFROUgycsbZsfOkOG0+6UlCrMZGW4JESR+XSJofb6uw1CqVy1d45fw69VYhTKE71RYPTmkdV+oYDHPc4B4mcJAxAJiXmlTHVz5QIfN4Ng3usS3hjma1aGHbSJ5hcAk1uv90LNS12rBkSmqdWD3srm3iRUIspP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523879; c=relaxed/simple;
-	bh=qeitXLSkXM0Gmsbwk2euZtGr69W/vfmRfRqNu3Zs4uw=;
+	s=arc-20240116; t=1755525566; c=relaxed/simple;
+	bh=hIQnPhVSCGnTU1PWv6PzhT3LZxluHMiTqaPFiuqD/FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Np/m41pt8vC+6B5Z28spFkcHdNTOp42IUfZqMPwIdm5wK+DlmIn40LaM85t9tBNXhkiliagjfdKH9LDo+hsrreYGlIDHCs4HtDWMUZWPraYCGuPokE7WCLE2q2mpf65oxZ2cz0tfdUx5+DnbeV+fVIGy4GYvihM4Ax25kEyxl5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xx1jjE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4922FC4CEEB;
-	Mon, 18 Aug 2025 13:31:18 +0000 (UTC)
+	 MIME-Version; b=vBki0f4yrwAf+tvlX6pR5Zb9+dw+rg8xxiWg7jpQiorHocYkBhnGryG5t0jZp8qPOIeUg5S/U8LVhqFa1kaeGv7+YfN2/pN0P9QCls7QO1oZ7kjmvYhgBJD62Dr7xJA6qgPE5pR/Kkc/9YI7M2tSL5ScD30MKhQjmmkXUZaQGQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7Tpv32n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE753C4CEEB;
+	Mon, 18 Aug 2025 13:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523878;
-	bh=qeitXLSkXM0Gmsbwk2euZtGr69W/vfmRfRqNu3Zs4uw=;
+	s=korg; t=1755525566;
+	bh=hIQnPhVSCGnTU1PWv6PzhT3LZxluHMiTqaPFiuqD/FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0xx1jjE+LE3aPzOm0zBFiHkBYNowqLVgN0VLGHn+X6YuNRtwl0oQIjv7kk6/YdU8d
-	 L1NGy9XK5S3CmPOmYoeEVVOZf6ztSRGiawiixx1YLr+RwaewbQ/ng9AKU45lCzhUSl
-	 iVptxog3giIaFNw2f+lgVW2jtJJYURklALOoncwE=
+	b=O7Tpv32nxiTdxb+8LAzqZkV8f3aqayZZ6cwWCQWzIulUS4ALk1C90O6wQAWJkib/I
+	 2bpwDERY5OzH0gDCR4w9Y9+L9YC/PbvXkZNR8YHLg+bbHlxvoFoJcHg70UkYt0G/Yu
+	 hJTeKtnhcgs/b2BidJe07Pl3tfQMyGRqsfahTtU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lazar <alazar@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
+	Daniel Braunwarth <daniel.braunwarth@kuka.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 301/515] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
+Subject: [PATCH 6.16 300/570] net: phy: realtek: add error handling to rtl8211f_get_wol
 Date: Mon, 18 Aug 2025 14:44:47 +0200
-Message-ID: <20250818124510.017330341@linuxfoundation.org>
+Message-ID: <20250818124517.409587765@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Daniel Braunwarth <daniel.braunwarth@kuka.com>
 
-[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
+[ Upstream commit a9b24b3583ae1da7dbda031f141264f2da260219 ]
 
-When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
-helpers use BUG() unconditionally.
+We should check if the WOL settings was successfully read from the PHY.
 
-This code should not be reached, as callers of these functions should
-always check for is_vlan_dev() first, but the usage of BUG() is not
-recommended, replace it with WARN_ON() instead.
+In case this fails we cannot just use the error code and proceed.
 
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
+Signed-off-by: Daniel Braunwarth <daniel.braunwarth@kuka.com>
+Reported-by: Jon Hunter <jonathanh@nvidia.com>
+Closes: https://lore.kernel.org/baaa083b-9a69-460f-ab35-2a7cb3246ffd@nvidia.com
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250624-realtek_fixes-v1-1-02a0b7c369bc@kuka.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_vlan.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/phy/realtek/realtek_main.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index 618a973ff8ee..b9f699799cf6 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -259,19 +259,19 @@ vlan_for_each(struct net_device *dev,
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index c3dcb6257430..dd0d675149ad 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -436,9 +436,15 @@ static irqreturn_t rtl8211f_handle_interrupt(struct phy_device *phydev)
  
- static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
+ static void rtl8211f_get_wol(struct phy_device *dev, struct ethtool_wolinfo *wol)
  {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return NULL;
- }
- 
- static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
- }
- 
- static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
++	int wol_events;
++
+ 	wol->supported = WAKE_MAGIC;
+-	if (phy_read_paged(dev, RTL8211F_WOL_SETTINGS_PAGE, RTL8211F_WOL_SETTINGS_EVENTS)
+-	    & RTL8211F_WOL_EVENT_MAGIC)
++
++	wol_events = phy_read_paged(dev, RTL8211F_WOL_SETTINGS_PAGE, RTL8211F_WOL_SETTINGS_EVENTS);
++	if (wol_events < 0)
++		return;
++
++	if (wol_events & RTL8211F_WOL_EVENT_MAGIC)
+ 		wol->wolopts = WAKE_MAGIC;
  }
  
 -- 
