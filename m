@@ -1,207 +1,102 @@
-Return-Path: <stable+bounces-170063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3CEB2A20E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:48:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2706BB2A78E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F07A51B2634B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:41:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BC3462435D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AEF31CA4A;
-	Mon, 18 Aug 2025 12:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FE6261B9B;
+	Mon, 18 Aug 2025 13:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="gmRvRENN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nb4xfHB"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDE531984A;
-	Mon, 18 Aug 2025 12:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E0D19E82A;
+	Mon, 18 Aug 2025 13:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755520838; cv=none; b=qunm2PiuQnBPqoJlJoY0HWLZM6R24SncaX/Pn3snhOAH6rynl98acHM1ObHq6MgzxdhDO2sojsFTx7hhgE8nhjYLt/gkRbGQ+43kfTwul9qXIuEkdc2qrs5wTNfI73IOq8Bv7oGVFW31ZF80cc9NSvCEFHsLt5V8Fr3umuA/VgM=
+	t=1755524806; cv=none; b=qdIdnBI5CREf+D+l8ZnWEtZt9wF+bEwS1XCjMYO3q4kjABmuzAeutDMRoh2MtchH6EdxZjuJFCwlfL/VrcHgDsLf9Hcc7Qppmykp3mZu+MeJcdbOoQnBtJwshO3kdxWq/7Z4w+uuzDQfhVuumB9xokKtHb3F/bvh1uvWM9r2cI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755520838; c=relaxed/simple;
-	bh=BNXVbwMGm5fu04k6qHCLn60AFGLZaaVlGTtlALJIPzQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TybDCWkXoLvVBe5TRQOcKWcksoS8keAbaoCPuy6zFd0A/1Rrd1dCH8frcEXn+jhQzY7dfzqhYiCSr55IX8fE7DD8CIHuFA5IYdTeRP05yAUJ6QdwmLR2QCIu5+Z3Hm0o7vuYuQradxf3dcHwJUDGWPzYeJVtl5yh0J+6UwaFaKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=gmRvRENN; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.0.172] (mob-5-90-51-68.net.vodafone.it [5.90.51.68])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 878262416;
-	Mon, 18 Aug 2025 14:39:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1755520777;
-	bh=BNXVbwMGm5fu04k6qHCLn60AFGLZaaVlGTtlALJIPzQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=gmRvRENNy/D7xLF/9QiZtAN3ZHS7tHZr+q1ahjybfMTq8LVfBGhZLL9X4jIAR3EnT
-	 o7MLFOQtu1XiR8rmwyVSdxvZ5vFIzA4hyp86/x6vNPItwDkfZ+zl3s1lCLrvvmoNtR
-	 iAjy73IBbNNtn9+W1D2nhznl8i1GGJuET6wIDcDU=
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Date: Mon, 18 Aug 2025 14:40:12 +0200
-Subject: [PATCH 2/2] media: ivtv: Fix invalid access to file *
+	s=arc-20240116; t=1755524806; c=relaxed/simple;
+	bh=gpeEfauk4aerQn4rO2CnugNxHXxzhZnIqESgORBLcW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gkD+cvDIGdzwQ7rglbfSP+7/nSFTrMgMUhiEm0mpGc7wpq46OMPFwxMkimLBhlveTXXpkYC5dU5Ie+auSBZ6rYYN/MYTrskEV4MZ+uXIlybmTRYc1Ua5tFd8urX9woJeGUezuq5mVsjaYiI0Ex24CJaIHk0jHxYxBtWqHt8OmK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nb4xfHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B753AC4CEEB;
+	Mon, 18 Aug 2025 13:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755524806;
+	bh=gpeEfauk4aerQn4rO2CnugNxHXxzhZnIqESgORBLcW4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=2nb4xfHBDVJs/iWXxJyA89GGujtthmQM89tBHkKuUJ5IYF2JAdoBp6EOSCdmF36JM
+	 z7f+kHnVVGNqfN1VXc8zlizH7Y0Zayofz9fj0OfIPO8XD/UYydMDujooNxcpY6AGAk
+	 TmIwNam2DLKwK3iNw6oP+uBCYLB6kND03fVTiw+Y=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Felix Fietkau <nbd@nbd.name>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 026/570] net: mtk_eth_soc: fix device leak at probe
+Date: Mon, 18 Aug 2025 14:40:13 +0200
+Message-ID: <20250818124506.822651591@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250818-cx18-v4l2-fh-v1-2-6fe153760bce@ideasonboard.com>
-References: <20250818-cx18-v4l2-fh-v1-0-6fe153760bce@ideasonboard.com>
-In-Reply-To: <20250818-cx18-v4l2-fh-v1-0-6fe153760bce@ideasonboard.com>
-To: Andy Walls <awalls@md.metrocast.net>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4926;
- i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
- bh=BNXVbwMGm5fu04k6qHCLn60AFGLZaaVlGTtlALJIPzQ=;
- b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBoox88c6zeKhSAFR/KiQVNRLv1/ovYY5TCE+mWr
- LdvJqfDwlmJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaKMfPAAKCRByNAaPFqFW
- PI+wD/0RILKhfdNldYyfXZQEQOpt55dblJA0ON0aU8WolN9oCyzoeHQWoBk3ygbv5OiiUT+Gog2
- cfBzgFhiQjRFRr3hoKUI2Q4e+eDpGpaWsYKJOUrOXOmfOydyzZQ1kVTpeVMc0fIxFUcSd26FVfZ
- lfnuGnfrcCGmvFvUMoU9TA5JgBoCkjtFAttIll8Ut2DLvuMlBdtNK1OAlImr8Mby1YmC3snamSP
- biCIFA2mNwygYSizLKEuKUQp+OiD/d1B2T62lLD3yX7dJcGDgSfJe5hO0W2ZD5LILHs27oiVxii
- ZvJs3xPGVJY8gsZ9XmhQ2Arbpd74t6yeY93kLfSU/JqTrV97LiehcVj+GeWcbI8Z6XeL47M/8jl
- gDxyLYW2lWYsXUxNqgRYObdJl9ShAQrYfPqFDsfi+GrtUAZ+o9f7lQZHzad2CuE822BG4WcmN1S
- 2pZOrykLFeg0t1wkaMX1ADU7kd3xz2ix3TVN8uRXm/OCGXiNiTvbbeu8l5A7fNzATT/TuJK/vlT
- TDbxa9kEN/OCQJZecEdQPaJZdaZHM/Cz+hQU1I1QGP1H92MLyDDD/mjBUdt+oSJe0TAiiqIu1Pi
- EpjLoeM82kaBJ1fP8jP0L7QNRUfWOsTMcaRNOXe7FSs7CDZ48e/m+Jr8F4oHyVLrA0Z5RyelhU8
- bDB4EtubCyL1Mcg==
-X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
- fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
+Content-Transfer-Encoding: 8bit
 
-Since commit 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-all ioctl handlers have been ported to operate on the file * first
-function argument.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
-The ivtv DVB layer calls ivtv_init_on_first_open() when the driver
-needs to start streaming. This function calls the s_input() and
-s_frequency() ioctl handlers directly, but being called from the driver
-context, it doesn't have a valid file * to pass them. This causes the
-ioctl handlers to deference an invalid pointer.
+------------------
 
-Fix this by wrapping the ioctl handlers implementation in helper
-functions which accepts a ivtv_open_id pointer as first argument
-and make the ivtv_init_on_first_open() function call the helpers
-without going through the ioctl handlers.
+From: Johan Hovold <johan@kernel.org>
 
-The bug has been reported by Smatch.
+commit 3e13274ca8750823e8b68181bdf185d238febe0d upstream.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/aKL4OMWsESUdX8KQ@stanley.mountain/
-Fixes: 9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+The reference count to the WED devices has already been incremented when
+looking them up using of_find_device_by_node() so drop the bogus
+additional reference taken during probe.
+
+Fixes: 804775dfc288 ("net: ethernet: mtk_eth_soc: add support for Wireless Ethernet Dispatch (WED)")
+Cc: stable@vger.kernel.org	# 5.19
+Cc: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-5-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/ivtv/ivtv-driver.c |  4 ++--
- drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
- drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
- 3 files changed, 23 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_wed.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtv-driver.c b/drivers/media/pci/ivtv/ivtv-driver.c
-index ecc20cd89926fe2ce4e472526a6b5fc0857615dd..bcbb03271047df9b127039759dbfefbaae67f9c3 100644
---- a/drivers/media/pci/ivtv/ivtv-driver.c
-+++ b/drivers/media/pci/ivtv/ivtv-driver.c
-@@ -1310,13 +1310,13 @@ int ivtv_init_on_first_open(struct ivtv *itv)
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -2794,7 +2794,6 @@ void mtk_wed_add_hw(struct device_node *
+ 	if (!pdev)
+ 		goto err_of_node_put;
  
- 	video_input = itv->active_input;
- 	itv->active_input++;	/* Force update of input */
--	ivtv_s_input(NULL, &fh, video_input);
-+	ivtv_do_s_input(&fh, video_input);
- 
- 	/* Let the VIDIOC_S_STD ioctl do all the work, keeps the code
- 	   in one place. */
- 	itv->std++;		/* Force full standard initialization */
- 	itv->std_out = itv->std;
--	ivtv_s_frequency(NULL, &fh, &vf);
-+	ivtv_do_s_frequency(&fh, &vf);
- 
- 	if (itv->card->v4l2_capabilities & V4L2_CAP_VIDEO_OUTPUT) {
- 		/* Turn on the TV-out: ivtv_init_mpeg_decoder() initializes
-diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.c b/drivers/media/pci/ivtv/ivtv-ioctl.c
-index 8077a71d4850ec773caa20c3fca08f92f3117d69..ba1fce42a8d6d7d9a3779bfc9dfd310060e61103 100644
---- a/drivers/media/pci/ivtv/ivtv-ioctl.c
-+++ b/drivers/media/pci/ivtv/ivtv-ioctl.c
-@@ -974,9 +974,9 @@ static int ivtv_g_input(struct file *file, void *fh, unsigned int *i)
- 	return 0;
- }
- 
--int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-+int ivtv_do_s_input(struct ivtv_open_id *id, unsigned int inp)
- {
--	struct ivtv *itv = file2id(file)->itv;
-+	struct ivtv *itv = id->itv;
- 	v4l2_std_id std;
- 	int i;
- 
-@@ -1017,6 +1017,11 @@ int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
- 	return 0;
- }
- 
-+static int ivtv_s_input(struct file *file, void *fh, unsigned int inp)
-+{
-+	return ivtv_do_s_input(file2id(file), inp);
-+}
-+
- static int ivtv_g_output(struct file *file, void *fh, unsigned int *i)
- {
- 	struct ivtv *itv = file2id(file)->itv;
-@@ -1065,10 +1070,11 @@ static int ivtv_g_frequency(struct file *file, void *fh, struct v4l2_frequency *
- 	return 0;
- }
- 
--int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf)
-+int ivtv_do_s_frequency(struct ivtv_open_id *id,
-+			const struct v4l2_frequency *vf)
- {
--	struct ivtv *itv = file2id(file)->itv;
--	struct ivtv_stream *s = &itv->streams[file2id(file)->type];
-+	struct ivtv *itv = id->itv;
-+	struct ivtv_stream *s = &itv->streams[id->type];
- 
- 	if (s->vdev.vfl_dir)
- 		return -ENOTTY;
-@@ -1082,6 +1088,12 @@ int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *v
- 	return 0;
- }
- 
-+static int ivtv_s_frequency(struct file *file, void *fh,
-+			    const struct v4l2_frequency *vf)
-+{
-+	return ivtv_do_s_frequency(file2id(file), vf);
-+}
-+
- static int ivtv_g_std(struct file *file, void *fh, v4l2_std_id *std)
- {
- 	struct ivtv *itv = file2id(file)->itv;
-diff --git a/drivers/media/pci/ivtv/ivtv-ioctl.h b/drivers/media/pci/ivtv/ivtv-ioctl.h
-index 42c2516379fcbbd0640820ab0e3abe9bf00b57ea..7c91b8963b420761c2afcab1dece4d19a4ec0322 100644
---- a/drivers/media/pci/ivtv/ivtv-ioctl.h
-+++ b/drivers/media/pci/ivtv/ivtv-ioctl.h
-@@ -17,7 +17,9 @@ int ivtv_set_speed(struct ivtv *itv, int speed);
- void ivtv_set_funcs(struct video_device *vdev);
- void ivtv_s_std_enc(struct ivtv *itv, v4l2_std_id std);
- void ivtv_s_std_dec(struct ivtv *itv, v4l2_std_id std);
--int ivtv_s_frequency(struct file *file, void *fh, const struct v4l2_frequency *vf);
--int ivtv_s_input(struct file *file, void *fh, unsigned int inp);
-+
-+struct ivtv_open_id;
-+int ivtv_do_s_frequency(struct ivtv_open_id *id, const struct v4l2_frequency *vf);
-+int ivtv_do_s_input(struct ivtv_open_id *id, unsigned int inp);
- 
- #endif
+-	get_device(&pdev->dev);
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
+ 		goto err_put_device;
 
--- 
-2.50.1
 
 
