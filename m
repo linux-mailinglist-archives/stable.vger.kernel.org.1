@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C994B2A2B4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:01:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4B7B2A56A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ACC4189835F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B655F68230D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14811320CB4;
-	Mon, 18 Aug 2025 12:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0773C322A0F;
+	Mon, 18 Aug 2025 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w62IW3ts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4hTx6PY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B7531E0FB;
-	Mon, 18 Aug 2025 12:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACAD322A07;
+	Mon, 18 Aug 2025 13:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521551; cv=none; b=sB8EyrlzKasTwgqBJFHJY5/opByn7V9qMdx245uMqN4+4YQdIa/Lm6fiEziZDJBzX4d0lhTnysua3+V4G1QG0ysoSWrxfZXXkZctVQc2d+hiCv+YT7lS32NCqJN3ajjGa4Suo8Pg1VhA5FAq3eolxiEYVDFGh/YfoxGDnZ39HTM=
+	t=1755523182; cv=none; b=ZLy4iNJvxZ8YoEQy8BG7tr3I+DNwlIo2H6SICc+89/EW8OGFvc1migrTk7e8eDLIjGRpaQNslpdSX8dXAWGBnjvw4AFa/ieoE+b27q6+UBbirV3Jqzet12sDc5vbMSuD61RqZ0k+dYoFwJXKxUnJmWKFrxJW0hpjNxorZlGZCpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521551; c=relaxed/simple;
-	bh=5hIu3wfjaIBC2jnkXIrNoOMYOBxmDXoY4NMvJMn8jUw=;
+	s=arc-20240116; t=1755523182; c=relaxed/simple;
+	bh=xVQ9DkF6ixBsi1Q7tV4Qjn49sDMaN4YClcPW09dVp3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpvxhEfo76YEFnpTAU1xFJtH4lZjGl6jm5YWXhQ/S4Fr5+TMlWq+WgVzMCNOnPivdPnwYLY5XtfAFAmOiUutsECXA1e0t2z+IJ57hZP+7lJhGVfl5qlHHsOEVKV2ap4aJNmwnTl3UB4aSiFJRU59Np4ZTQjtzuwcvI5hXR6bk3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w62IW3ts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D805BC4CEEB;
-	Mon, 18 Aug 2025 12:52:30 +0000 (UTC)
+	 MIME-Version; b=pA5pNDt32TOQnOMRu3W6JDfjgsMdoYMHawgn18nZSNW9vrASRA07T7GAFOMICU15+U7lHCbwelo0x75kYYflWEsZjdZoFOpcJbL5iZ98WZvF8Uhv/RMaR9P0ab/jguxt3We/Uwobtg9fNCYMSTTCXpgNP3939GEK0EC+m1YgOi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4hTx6PY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4342DC4CEEB;
+	Mon, 18 Aug 2025 13:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521551;
-	bh=5hIu3wfjaIBC2jnkXIrNoOMYOBxmDXoY4NMvJMn8jUw=;
+	s=korg; t=1755523182;
+	bh=xVQ9DkF6ixBsi1Q7tV4Qjn49sDMaN4YClcPW09dVp3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w62IW3tsuBb2xzjYwBLJV3YfQ/VRCfFbm7iVm91pW06x77QEtCzC+OPj582hyyyZS
-	 a7H4Q2/ygVzrS5T224153uUtlgWbTMbuwzTv198nvqEdcmhGhOz5OJHdYa4hypYIIw
-	 V0s1La0do1DVKPx0Q0+/PD41QxFJ/uI71ftg+4Dc=
+	b=n4hTx6PYMQpgzokOIv2BrKdmMaWhAxH7n/vyNMosMlYqQigBVOv3ktelhhfZoC6qN
+	 HygK7CVRQghwtbqav1FbCF0Q0ZzRud4yt46AjGKlY/lG0z4BtNBAGiABTU7b7Jjunb
+	 NKX0HOJURs0J8UPHY3CJcnInUOMfcpZ7mjqbE9YM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/444] netfilter: ctnetlink: fix refcount leak on table dump
-Date: Mon, 18 Aug 2025 14:41:21 +0200
-Message-ID: <20250818124450.991202394@linuxfoundation.org>
+Subject: [PATCH 6.15 096/515] udf: Verify partition map count
+Date: Mon, 18 Aug 2025 14:41:22 +0200
+Message-ID: <20250818124502.077665917@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit de788b2e6227462b6dcd0e07474e72c089008f74 ]
+[ Upstream commit 1a11201668e8635602577dcf06f2e96c591d8819 ]
 
-There is a reference count leak in ctnetlink_dump_table():
-      if (res < 0) {
-                nf_conntrack_get(&ct->ct_general); // HERE
-                cb->args[1] = (unsigned long)ct;
-                ...
+Verify that number of partition maps isn't insanely high which can lead
+to large allocation in udf_sb_alloc_partition_maps(). All partition maps
+have to fit in the LVD which is in a single block.
 
-While its very unlikely, its possible that ct == last.
-If this happens, then the refcount of ct was already incremented.
-This 2nd increment is never undone.
-
-This prevents the conntrack object from being released, which in turn
-keeps prevents cnet->count from dropping back to 0.
-
-This will then block the netns dismantle (or conntrack rmmod) as
-nf_conntrack_cleanup_net_list() will wait forever.
-
-This can be reproduced by running conntrack_resize.sh selftest in a loop.
-It takes ~20 minutes for me on a preemptible kernel on average before
-I see a runaway kworker spinning in nf_conntrack_cleanup_net_list.
-
-One fix would to change this to:
-        if (res < 0) {
-		if (ct != last)
-	                nf_conntrack_get(&ct->ct_general);
-
-But this reference counting isn't needed in the first place.
-We can just store a cookie value instead.
-
-A followup patch will do the same for ctnetlink_exp_dump_table,
-it looks to me as if this has the same problem and like
-ctnetlink_dump_table, we only need a 'skip hint', not the actual
-object so we can apply the same cookie strategy there as well.
-
-Fixes: d205dc40798d ("[NETFILTER]: ctnetlink: fix deadlock in table dumping")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: syzbot+478f2c1a6f0f447a46bb@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ fs/udf/super.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 6a1239433830..18a91c031554 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -860,8 +860,6 @@ ctnetlink_conntrack_event(unsigned int events, const struct nf_ct_event *item)
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 1c8a736b3309..b2f168b0a0d1 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1440,7 +1440,7 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
+ 	struct genericPartitionMap *gpm;
+ 	uint16_t ident;
+ 	struct buffer_head *bh;
+-	unsigned int table_len;
++	unsigned int table_len, part_map_count;
+ 	int ret;
  
- static int ctnetlink_done(struct netlink_callback *cb)
- {
--	if (cb->args[1])
--		nf_ct_put((struct nf_conn *)cb->args[1]);
- 	kfree(cb->data);
- 	return 0;
- }
-@@ -1184,19 +1182,26 @@ static int ctnetlink_filter_match(struct nf_conn *ct, void *data)
- 	return 0;
- }
- 
-+static unsigned long ctnetlink_get_id(const struct nf_conn *ct)
-+{
-+	unsigned long id = nf_ct_get_id(ct);
+ 	bh = udf_read_tagged(sb, block, block, &ident);
+@@ -1461,7 +1461,16 @@ static int udf_load_logicalvol(struct super_block *sb, sector_t block,
+ 					   "logical volume");
+ 	if (ret)
+ 		goto out_bh;
+-	ret = udf_sb_alloc_partition_maps(sb, le32_to_cpu(lvd->numPartitionMaps));
 +
-+	return id ? id : 1;
-+}
-+
- static int
- ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	unsigned int flags = cb->data ? NLM_F_DUMP_FILTERED : 0;
- 	struct net *net = sock_net(skb->sk);
--	struct nf_conn *ct, *last;
-+	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_tuple_hash *h;
- 	struct hlist_nulls_node *n;
- 	struct nf_conn *nf_ct_evict[8];
-+	struct nf_conn *ct;
- 	int res, i;
- 	spinlock_t *lockp;
++	part_map_count = le32_to_cpu(lvd->numPartitionMaps);
++	if (part_map_count > table_len / sizeof(struct genericPartitionMap1)) {
++		udf_err(sb, "error loading logical volume descriptor: "
++			"Too many partition maps (%u > %u)\n", part_map_count,
++			table_len / (unsigned)sizeof(struct genericPartitionMap1));
++		ret = -EIO;
++		goto out_bh;
++	}
++	ret = udf_sb_alloc_partition_maps(sb, part_map_count);
+ 	if (ret)
+ 		goto out_bh;
  
--	last = (struct nf_conn *)cb->args[1];
- 	i = 0;
- 
- 	local_bh_disable();
-@@ -1233,7 +1238,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 				continue;
- 
- 			if (cb->args[1]) {
--				if (ct != last)
-+				if (ctnetlink_get_id(ct) != last_id)
- 					continue;
- 				cb->args[1] = 0;
- 			}
-@@ -1246,8 +1251,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 					    NFNL_MSG_TYPE(cb->nlh->nlmsg_type),
- 					    ct, true, flags);
- 			if (res < 0) {
--				nf_conntrack_get(&ct->ct_general);
--				cb->args[1] = (unsigned long)ct;
-+				cb->args[1] = ctnetlink_get_id(ct);
- 				spin_unlock(lockp);
- 				goto out;
- 			}
-@@ -1260,12 +1264,10 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- out:
- 	local_bh_enable();
--	if (last) {
-+	if (last_id) {
- 		/* nf ct hash resize happened, now clear the leftover. */
--		if ((struct nf_conn *)cb->args[1] == last)
-+		if (cb->args[1] == last_id)
- 			cb->args[1] = 0;
--
--		nf_ct_put(last);
- 	}
- 
- 	while (i) {
 -- 
-2.50.1
+2.39.5
 
 
 
