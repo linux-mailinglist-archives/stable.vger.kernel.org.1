@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E6FB2A255
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C2EB2A806
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7AB620C72
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BE03585AB2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436E51448E0;
-	Mon, 18 Aug 2025 12:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B30F335BA9;
+	Mon, 18 Aug 2025 13:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyUigFIs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCkgrw60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04FB320CBA;
-	Mon, 18 Aug 2025 12:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58193335BAF;
+	Mon, 18 Aug 2025 13:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521558; cv=none; b=liY6omUgTS3t9xncIM5Shxq9cWepa43vz8noPRscoxHBIZwJE3xUz0Kas2BsFMwbLLaXSxMbfvWrlz2jybTsVPaQbC3JN/l1kSME2wFQx6yjCZ0wV8B0V7asvhoB5vMZ92jOFSvgwo1WvOEIwAvkdvvvuinsv0MSAEuqK/w/MNk=
+	t=1755525032; cv=none; b=T9MEl4UOrDwvRt5Znzry07agXdXHk19SYEGi7zBWkMFSfc2B0t8ojr7Rcqf85fohIsJsOPkT1074P4vwpjPGFMmZGbrO46rrsqCCg6MgkUJIOD5g9lGhiFMxSuEifPEQfZDDFdCp798UL8H5wWr+7VixHjNMJzHAkRTpZR99v/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521558; c=relaxed/simple;
-	bh=gLye1ZNr6bK6UqIqZT+zybdZ8pHdX18fK100TGdoyko=;
+	s=arc-20240116; t=1755525032; c=relaxed/simple;
+	bh=GTdgYIoO1kEFQh3leuF4xCjg9rLJS9lqCXRmTkIVtZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6sA9ozCVKriraSFrujZFTzfUIS3h0Qk0RdYGevdw9D2oVXO+MugS1h+8MseMVim3Vx3D5ER3Sm+4Xw++8WaPu49t16qxxKBdZkWjADLcCouv2X8VosFvdm762bT6KwajQcq6c25obFfv2/lsnz48aeeoYlXDPgBxYALLag/KNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyUigFIs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77045C4CEEB;
-	Mon, 18 Aug 2025 12:52:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IHfE0YcBNX/zT+Y9I3ya+ROpiyXAobR1XYv6aNRCwXyincYAuhKAP4ndA5LQRHSvBeNw4ujZxbx3bKMrLyledcYCXaloh3Bji2BdoIJO8yp12a1mCIvuvuVPqUHsqh7J594g+n7/ZYtHxPXubX+8D84jrmDQQshw4My1EQWQDyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCkgrw60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB643C4CEEB;
+	Mon, 18 Aug 2025 13:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521557;
-	bh=gLye1ZNr6bK6UqIqZT+zybdZ8pHdX18fK100TGdoyko=;
+	s=korg; t=1755525032;
+	bh=GTdgYIoO1kEFQh3leuF4xCjg9rLJS9lqCXRmTkIVtZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yyUigFIslQhbS717h1+9FGW6KoTZv4kT1wbvbJjWYuZrD7ELKRPylG0oizkGHFB5S
-	 K1PIKTbekRmDuR9AdE6DJwQq2ldt/amO+doJjKyapggkdFJ64+6+Gd+w8GWxG0x3j7
-	 3G8jJ2bFku0Ot6Z31XaLJgs5/RJA0fMIN1xam1BY=
+	b=TCkgrw60dSfFIJuu31aHVIyIs0M4eiS9r3e3AAGMxuJly/DqLMxd9baaGPgDJr20c
+	 CzvWUezn+kMsmS/LJPh2u8eEu5O44bXf2ubV3HHjsMYc0Kpo+OkBPfd7zBR68knPox
+	 Y2rXUKFPie8eZE4euUda4tEyAG/SdHRkwqoFaN9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/444] net: ti: icss-iep: Fix incorrect type for return value in extts_enable()
+Subject: [PATCH 6.16 096/570] tpm: tpm_crb_ffa: try to probe tpm_crb_ffa when its built-in
 Date: Mon, 18 Aug 2025 14:41:23 +0200
-Message-ID: <20250818124451.071230171@linuxfoundation.org>
+Message-ID: <20250818124509.512264456@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 5f1d1d14db7dabce9c815e7d7cd351f8d58b8585 ]
+[ Upstream commit 746d9e9f62a6e8ba0eba2b83fc61cfe7fa8797ce ]
 
-The variable ret in icss_iep_extts_enable() was incorrectly declared
-as u32, while the function returns int and may return negative error
-codes. This will cause sign extension issues and incorrect error
-propagation. Update ret to be int to fix error handling.
+To generate the boot_aggregate log in the IMA subsystem using TPM PCR
+values, the TPM driver must be built as built-in and must be probed
+before the IMA subsystem is initialized.
 
-This change corrects the declaration to avoid potential type mismatch.
+However, when the TPM device operates over the FF-A protocol using the
+CRB interface, probing fails and returns -EPROBE_DEFER if the
+tpm_crb_ffa device — an FF-A device that provides the communication
+interface to the tpm_crb driver — has not yet been probed.
 
-Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250805142323.1949406-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This issue occurs because both crb_acpi_driver_init() and
+tpm_crb_ffa_driver_init() are registered with device_initcall.  As a
+result, crb_acpi_driver_init() may be invoked before
+tpm_crb_ffa_driver_init(), which is responsible for probing the
+tpm_crb_ffa device.
+
+When this happens, IMA fails to detect the TPM device and logs the
+following message:
+
+  | ima: No TPM chip found, activating TPM-bypass!
+
+Consequently, it cannot generate the boot_aggregate log with the PCR
+values provided by the TPM.
+
+To resolve this issue, the tpm_crb_ffa_init() function explicitly
+attempts to probe the tpm_crb_ffa by register tpm_crb_ffa driver so that
+when tpm_crb_ffa device is created before tpm_crb_ffa_init(), probe the
+tpm_crb_ffa device in tpm_crb_ffa_init() to finish probe the TPM device
+completely.
+
+This ensures that the TPM device using CRB over FF-A can be successfully
+probed, even if crb_acpi_driver_init() is called first.
+
+[ jarkko: reformatted some of the paragraphs because they were going past
+  the 75 character boundary. ]
+
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/tpm/tpm_crb_ffa.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 50bfbc2779e4..d8c9fe1d98c4 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -621,7 +621,8 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
+diff --git a/drivers/char/tpm/tpm_crb_ffa.c b/drivers/char/tpm/tpm_crb_ffa.c
+index 4ead61f01299..462fcf610020 100644
+--- a/drivers/char/tpm/tpm_crb_ffa.c
++++ b/drivers/char/tpm/tpm_crb_ffa.c
+@@ -115,6 +115,7 @@ struct tpm_crb_ffa {
+ };
  
- static int icss_iep_extts_enable(struct icss_iep *iep, u32 index, int on)
+ static struct tpm_crb_ffa *tpm_crb_ffa;
++static struct ffa_driver tpm_crb_ffa_driver;
+ 
+ static int tpm_crb_ffa_to_linux_errno(int errno)
  {
--	u32 val, cap, ret = 0;
-+	u32 val, cap;
+@@ -168,13 +169,23 @@ static int tpm_crb_ffa_to_linux_errno(int errno)
+  */
+ int tpm_crb_ffa_init(void)
+ {
 +	int ret = 0;
++
++	if (!IS_MODULE(CONFIG_TCG_ARM_CRB_FFA)) {
++		ret = ffa_register(&tpm_crb_ffa_driver);
++		if (ret) {
++			tpm_crb_ffa = ERR_PTR(-ENODEV);
++			return ret;
++		}
++	}
++
+ 	if (!tpm_crb_ffa)
+-		return -ENOENT;
++		ret = -ENOENT;
  
- 	mutex_lock(&iep->ptp_clk_mutex);
+ 	if (IS_ERR_VALUE(tpm_crb_ffa))
+-		return -ENODEV;
++		ret = -ENODEV;
  
+-	return 0;
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(tpm_crb_ffa_init);
+ 
+@@ -369,7 +380,9 @@ static struct ffa_driver tpm_crb_ffa_driver = {
+ 	.id_table = tpm_crb_ffa_device_id,
+ };
+ 
++#ifdef MODULE
+ module_ffa_driver(tpm_crb_ffa_driver);
++#endif
+ 
+ MODULE_AUTHOR("Arm");
+ MODULE_DESCRIPTION("TPM CRB FFA driver");
 -- 
-2.50.1
+2.39.5
 
 
 
