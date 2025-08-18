@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE0CB2A671
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65883B2A42A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34857B60A2F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0544D1B2816D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6809726F2AC;
-	Mon, 18 Aug 2025 13:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F58F31E0F4;
+	Mon, 18 Aug 2025 13:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDnHVILX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFFkEB1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260762253FC;
-	Mon, 18 Aug 2025 13:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4072E22A6;
+	Mon, 18 Aug 2025 13:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524286; cv=none; b=Hj8QbnVbLyRwhokgUDDexnm9edNiOrX4XIpM8QztACCO9ncqWsuW9mZe2C1HHMVSG1YkLRfLB7W0J5Ay8pGDvkC1nuTSVHnocvjsb2YEoeIbnREUtkQSmmfhAW4LDyZJ49YoB0sNjRJ/I+yM5QpMl7+Y+JnH3mNrHiyCIy0sSdM=
+	t=1755522668; cv=none; b=EJgUU86NhF8dKx5PH2bhYpvj1WzlCUfYEs2nffyhxpCdJaC3AmW4TZG/7rmOZo1G8VFsPRRNvXPN0wBKeDeEwdZL7O9yYSfdY4BPL9igTz6J3bT9KSDPTU0PXbzww0hECDFjBTnwSayBhjNQn9wGb3s0VZuev0P0XuIGoe5oNLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524286; c=relaxed/simple;
-	bh=S/rFdGZ/fOtapMkXLCBu/HUvewUqr73cxlsSAycRRDA=;
+	s=arc-20240116; t=1755522668; c=relaxed/simple;
+	bh=izU4lxhtx1gkBtQ/q2i50X0Ox3uRijOgxZo9b9wCq0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmMYTFONCzqi0awOHiH5goIw6gcb3PMWfv3ZgHIUcE5zfkKMoffYxWEI8gsMjGjXUgeaZGMHezvnnbKwRFxLYvsp7+mrPdJAYMz8A4kKOOrPTNucbVD1VsflCVbRcLJiPI3CjLd0oYatUFhtwhTAq2cwAOWK7jZmUl4WuJMCOeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDnHVILX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983BCC113D0;
-	Mon, 18 Aug 2025 13:38:05 +0000 (UTC)
+	 MIME-Version; b=WOiOXkE/p9jTIH/6vtKKjMjRQyfptm07OztMzMOJtj1/1PsHhd9kJgt20P1WHhi35QxWOsIccULBE0insWi3hJsoBMOvwrs1lnf9OSnVVntsOtp4TXj/OthkVatW1ZPwWkAmvL0Ly/iH2qLxI+1cPa8/saxfjyXQ278qGHRCtgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFFkEB1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884EBC4CEEB;
+	Mon, 18 Aug 2025 13:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524286;
-	bh=S/rFdGZ/fOtapMkXLCBu/HUvewUqr73cxlsSAycRRDA=;
+	s=korg; t=1755522668;
+	bh=izU4lxhtx1gkBtQ/q2i50X0Ox3uRijOgxZo9b9wCq0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDnHVILXk4CzOa6eIz+lv6t6IttkAdzWBZHQNPPUkJosBwJ4dgGXg0E0Lb/WOfuDY
-	 7cQbtixhkBNCYKDsTZ6KjI7JpMl3gBP8NAABVPiyO00nFQjT2GU0af5et+oUtz8z1g
-	 gJQOsdUsjKtboGjeIwv2q0XeSl5gFbitdMQ/uORA=
+	b=AFFkEB1BUAZD+3MWk27BPU/1MwUacon0faysSj52IhlktPtk0CkeyRZNQnUMGjh32
+	 F/asnjNL92gLM8jExo154+6Em0XyGLmB25Q1ISTVAcd/5a2vN2bwQ1U8BBjYzxhU83
+	 oO9kA/BN0Ke5RoxV9dsLcRf3tchNq6FKURP7WdmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Jakubek <peterjakubek@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 424/515] ASoC: Intel: sof_sdw: Add quirk for Alienware Area 51 (2025) 0CCC SKU
+	Guenter Roeck <linux@roeck-us.net>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 384/444] ext4: initialize superblock fields in the kballoc-test.c kunit tests
 Date: Mon, 18 Aug 2025 14:46:50 +0200
-Message-ID: <20250818124514.745839412@linuxfoundation.org>
+Message-ID: <20250818124503.297841426@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Jakubek <peterjakubek@gmail.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 1b03391d073dad748636a1ad9668b837cce58265 ]
+commit 82e6381e23f1ea7a14f418215068aaa2ca046c84 upstream.
 
-Add DMI quirk entry for Alienware systems with SKU "0CCC" to enable
-proper speaker codec configuration (SOC_SDW_CODEC_SPKR).
+Various changes in the "ext4: better scalability for ext4 block
+allocation" patch series have resulted in kunit test failures, most
+notably in the test_new_blocks_simple and the test_mb_mark_used tests.
+The root cause of these failures is that various in-memory ext4 data
+structures were not getting initialized, and while previous versions
+of the functions exercised by the unit tests didn't use these
+structure members, this was arguably a test bug.
 
-This system requires the same audio configuration as some existing Dell systems.
-Without this patch, the laptop's speakers and microphone will not work.
+Since one of the patches in the block allocation scalability patches
+is a fix which is has a cc:stable tag, this commit also has a
+cc:stable tag.
 
-Signed-off-by: Peter Jakubek <peterjakubek@gmail.com>
-Link: https://patch.msgid.link/20250731172104.2009007-1-peterjakubek@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250714130327.1830534-1-libaokun1@huawei.com
+Link: https://patch.msgid.link/20250725021550.3177573-1-yi.zhang@huaweicloud.com
+Link: https://patch.msgid.link/20250725021654.3188798-1-yi.zhang@huaweicloud.com
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/linux-ext4/b0635ad0-7ebf-4152-a69b-58e7e87d5085@roeck-us.net/
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ext4/mballoc-test.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 095d08b3fc82..c479b65d73df 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -741,6 +741,14 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		},
- 		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CCC")
-+		},
-+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
-+	},
- 	/* Pantherlake devices*/
- 	{
- 		.callback = sof_sdw_quirk_cb,
--- 
-2.39.5
-
+--- a/fs/ext4/mballoc-test.c
++++ b/fs/ext4/mballoc-test.c
+@@ -155,6 +155,7 @@ static struct super_block *mbt_ext4_allo
+ 	bgl_lock_init(sbi->s_blockgroup_lock);
+ 
+ 	sbi->s_es = &fsb->es;
++	sbi->s_sb = sb;
+ 	sb->s_fs_info = sbi;
+ 
+ 	up_write(&sb->s_umount);
+@@ -801,6 +802,10 @@ static void test_mb_mark_used(struct kun
+ 	KUNIT_ASSERT_EQ(test, ret, 0);
+ 
+ 	grp->bb_free = EXT4_CLUSTERS_PER_GROUP(sb);
++	grp->bb_largest_free_order = -1;
++	grp->bb_avg_fragment_size_order = -1;
++	INIT_LIST_HEAD(&grp->bb_largest_free_order_node);
++	INIT_LIST_HEAD(&grp->bb_avg_fragment_size_node);
+ 	mbt_generate_test_ranges(sb, ranges, TEST_RANGE_COUNT);
+ 	for (i = 0; i < TEST_RANGE_COUNT; i++)
+ 		test_mb_mark_used_range(test, &e4b, ranges[i].start,
+@@ -873,6 +878,10 @@ static void test_mb_free_blocks(struct k
+ 	ext4_unlock_group(sb, TEST_GOAL_GROUP);
+ 
+ 	grp->bb_free = 0;
++	grp->bb_largest_free_order = -1;
++	grp->bb_avg_fragment_size_order = -1;
++	INIT_LIST_HEAD(&grp->bb_largest_free_order_node);
++	INIT_LIST_HEAD(&grp->bb_avg_fragment_size_node);
+ 	memset(bitmap, 0xff, sb->s_blocksize);
+ 
+ 	mbt_generate_test_ranges(sb, ranges, TEST_RANGE_COUNT);
 
 
 
