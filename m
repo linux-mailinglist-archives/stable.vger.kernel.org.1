@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-171555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6882EB2AA4B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7F8B2A9DD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A42836E82B2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEC87B647A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65D830F52C;
-	Mon, 18 Aug 2025 14:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8D83469F8;
+	Mon, 18 Aug 2025 14:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcqPsH/r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XP2ry5pt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C42280CE0;
-	Mon, 18 Aug 2025 14:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60CC342CBB;
+	Mon, 18 Aug 2025 14:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526328; cv=none; b=F5XR20sZmYIAR5zFW2Qah7bsaiQsGNqg2Z1l+wsNIWhP+7AtEZHd+T2RSLJFr7F/hLOARzebPmQBoJTNKn8wZzcHA/HhzE38M3Ny/uLf/fm/Qq0ndQsWrf84BPelrFsKfuylgBSww09BSfhj/OfXChevdvCUq17xUYr8xfwCdiY=
+	t=1755526365; cv=none; b=IYm+5g3jkH72Rl+FKJjot80X96E0E3fJdQ8MjTx53TEFQVfqalKMkGETo8JrW78uan0vIBZVDbQrghfWi+FHJkyqgHDjbvLfx48YbTKrUZkYQ+iWJCXcdLsUThr6e9y+lQxYOFNnZ6xmdrQjjpZNQCA1fFfrkJ3FH9sxAv4jzvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526328; c=relaxed/simple;
-	bh=e9o5zgw0ZPR+dGkH1QGarqd2mTmuGidk0/H9XvbfZp0=;
+	s=arc-20240116; t=1755526365; c=relaxed/simple;
+	bh=0qiGOwJSiCWW7hkVFyXCJ0U9qtjkPo+rR+CxINR76yU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OG8AdeNBiGF4/xVm7RBqBX3X8ggyX/M0CzklDn+jc7DtiS9+8R5dHHdauhsfKbDarQUUrtnHB8FwOPFe/qV6JKPjTEgHP3TcyOK/uDX5Y8iDhz6Tr7v6MjMZGDifALBp+2RyZYVa1oHknSDYawsOT71bcwoBQUuZca5U9cWnOIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcqPsH/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E208DC4CEF1;
-	Mon, 18 Aug 2025 14:12:07 +0000 (UTC)
+	 MIME-Version; b=hb++AXe4oDE0X9jUDKPdb5kVs0EMo59f30XdK5EIaZuynq11QTt4c448VOQV1QXKUgrlDtEgoXz7b89x8rQCuAT6twDL01IOVzdAnhrFlhjPAPmgyiH69NKcUSFl/EBoDTJvL+cS3w+ADeR5zJyzzgOftmBc+eX7x4vLHtqdGEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XP2ry5pt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50A4C4CEEB;
+	Mon, 18 Aug 2025 14:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526328;
-	bh=e9o5zgw0ZPR+dGkH1QGarqd2mTmuGidk0/H9XvbfZp0=;
+	s=korg; t=1755526365;
+	bh=0qiGOwJSiCWW7hkVFyXCJ0U9qtjkPo+rR+CxINR76yU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcqPsH/rwY7yjB/6mseqWXDOHig93iTWwy4w9UNR29U8NhAsofZPtoJ+y4GzokYrf
-	 gJ37y7iuCfjLjJ7j60+pfB7tlacEKElhXr3f5DNPur85A7HsiMFneDPtTRg6WtM6Cz
-	 bySBe86YUNFSG3T19wnawUlYTP7hxzpcPP3TS+x4=
+	b=XP2ry5ptNmeB4LMsl0CRRrdb/DwHEZNjxSyagOqvnWjkNYjFMXyj+GCOWyvaPjiVh
+	 5CW37ZqVBxvyZWqA1kGDPlQ7VNsB2PD5YmZMRQsl6dt/wBSaleMyq1xDVaA2LVrDtQ
+	 58TRJe3Fta9IyPWwTuhYodhQi678leoY+7ow0L20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.16 516/570] btrfs: zoned: do not remove unwritten non-data block group
-Date: Mon, 18 Aug 2025 14:48:23 +0200
-Message-ID: <20250818124525.741438977@linuxfoundation.org>
+Subject: [PATCH 6.16 517/570] btrfs: qgroup: set quota enabled bit if quota disable fails flushing reservations
+Date: Mon, 18 Aug 2025 14:48:24 +0200
+Message-ID: <20250818124525.781957556@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -66,89 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 3061801420469610c8fa6080a950e56770773ef1 upstream.
+commit e41c75ca3189341e76e6af64b857c05b68a1d7db upstream.
 
-There are some reports of "unable to find chunk map for logical 2147483648
-length 16384" error message appears in dmesg. This means some IOs are
-occurring after a block group is removed.
+Before waiting for the rescan worker to finish and flushing reservations,
+we clear the BTRFS_FS_QUOTA_ENABLED flag from fs_info. If we fail flushing
+reservations we leave with the flag not set which is not correct since
+quotas are still enabled - we must set back the flag on error paths, such
+as when we fail to start a transaction, except for error paths that abort
+a transaction. The reservation flushing happens very early before we do
+any operation that actually disables quotas and before we start a
+transaction, so set back BTRFS_FS_QUOTA_ENABLED if it fails.
 
-When a metadata tree node is cleaned on a zoned setup, we keep that node
-still dirty and write it out not to create a write hole. However, this can
-make a block group's used bytes == 0 while there is a dirty region left.
-
-Such an unused block group is moved into the unused_bg list and processed
-for removal. When the removal succeeds, the block group is removed from the
-transaction->dirty_bgs list, so the unused dirty nodes in the block group
-are not sent at the transaction commit time. It will be written at some
-later time e.g, sync or umount, and causes "unable to find chunk map"
-errors.
-
-This can happen relatively easy on SMR whose zone size is 256MB. However,
-calling do_zone_finish() on such block group returns -EAGAIN and keep that
-block group intact, which is why the issue is hidden until now.
-
-Fixes: afba2bc036b0 ("btrfs: zoned: implement active zone tracking")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Fixes: af0e2aab3b70 ("btrfs: qgroup: flush reservations during quota disable")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ fs/btrfs/qgroup.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -34,6 +34,19 @@ int btrfs_should_fragment_free_space(con
- }
- #endif
- 
-+static inline bool has_unwritten_metadata(struct btrfs_block_group *block_group)
-+{
-+	/* The meta_write_pointer is available only on the zoned setup. */
-+	if (!btrfs_is_zoned(block_group->fs_info))
-+		return false;
-+
-+	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
-+		return false;
-+
-+	return block_group->start + block_group->alloc_offset >
-+		block_group->meta_write_pointer;
-+}
-+
- /*
-  * Return target flags in extended format or 0 if restripe for this chunk_type
-  * is not in progress
-@@ -1244,6 +1257,15 @@ int btrfs_remove_block_group(struct btrf
- 		goto out;
- 
- 	spin_lock(&block_group->lock);
-+	/*
-+	 * Hitting this WARN means we removed a block group with an unwritten
-+	 * region. It will cause "unable to find chunk map for logical" errors.
-+	 */
-+	if (WARN_ON(has_unwritten_metadata(block_group)))
-+		btrfs_warn(fs_info,
-+			   "block group %llu is removed before metadata write out",
-+			   block_group->start);
-+
- 	set_bit(BLOCK_GROUP_FLAG_REMOVED, &block_group->runtime_flags);
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1354,11 +1354,14 @@ int btrfs_quota_disable(struct btrfs_fs_
  
  	/*
-@@ -1586,8 +1608,9 @@ void btrfs_delete_unused_bgs(struct btrf
- 		 * needing to allocate extents from the block group.
- 		 */
- 		used = btrfs_space_info_used(space_info, true);
--		if (space_info->total_bytes - block_group->length < used &&
--		    block_group->zone_unusable < block_group->length) {
-+		if ((space_info->total_bytes - block_group->length < used &&
-+		     block_group->zone_unusable < block_group->length) ||
-+		    has_unwritten_metadata(block_group)) {
- 			/*
- 			 * Add a reference for the list, compensate for the ref
- 			 * drop under the "next" label for the
+ 	 * We have nothing held here and no trans handle, just return the error
+-	 * if there is one.
++	 * if there is one and set back the quota enabled bit since we didn't
++	 * actually disable quotas.
+ 	 */
+ 	ret = flush_reservations(fs_info);
+-	if (ret)
++	if (ret) {
++		set_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags);
+ 		return ret;
++	}
+ 
+ 	/*
+ 	 * 1 For the root item
 
 
 
