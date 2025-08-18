@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C19B2A9E7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F763B2A3F6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5796E6ADE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C66B3A34B8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75FE280CE0;
-	Mon, 18 Aug 2025 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A206431B13B;
+	Mon, 18 Aug 2025 13:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXEImhKx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHnAJvl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C50931B11A;
-	Mon, 18 Aug 2025 14:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA2621B199;
+	Mon, 18 Aug 2025 13:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525779; cv=none; b=GZstVr0wWVbw6srT6KUwIei9hUZRF3S5KXqrggmFYsr87pNCYJ5nWu687EW3/pVy2f05HySv4E8o8DHP2Ja0og+/cMSBGMr48eSO91P3B5aemXFLvOZ6s7CxKwZijvilR7ieCBMabq0ySF2dXd+Nk8I5z3AYfpGwWYYzQx9xUcU=
+	t=1755522530; cv=none; b=ZlDHgP9uWbUY+36EGhu2H6lA3NVTBLGFnBe4gj4xnUCqaqS47raXYnK1kb258Zqk+7S4GYYjrRQsqrvLCPLM2Ao3rwz0TQEoRPdeTyIrg9P/05Z1ATaIiXm7OGIE+7StjTCa6NddlvmOtMOdHmbScGZ5jB1hX/GVm1zuxbxUAog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525779; c=relaxed/simple;
-	bh=+GszvICaURZxnrKqNxEptpsdDJl7LbfXdoEA1ni9uew=;
+	s=arc-20240116; t=1755522530; c=relaxed/simple;
+	bh=soXJ5f2uwh7ft7fui84pQmuGzFZLybv4TyLmuQ+qLGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZethvipJdj5SX16DXLCnV9YM9ZfivUy3Ut07yyyu90B4boNYMxY5GaVSrw4mZMR98QCdlaEI6XP89Xziyg2qp9l+BzxHC6i5xzmllxs9kTsK49uJn6hsqmsMrDZ3SR5k6SjTS2Ll6ep3aWIKjyafhI2cbt6gcKcSBm0cjE/4sVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXEImhKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EE3C4CEEB;
-	Mon, 18 Aug 2025 14:02:58 +0000 (UTC)
+	 MIME-Version; b=EwVc2YknzIHCInSvnncgqIp5bVRmxz9PMHPG+O8OeE89TS4CAJDJauZjSDq6nfDr+k7Q+jKm4mhQtOxMZO7xaGond//Xo/ykzUObew8BSsFQy7Q5+/44LsOyKvhGQK2MS4VeO6T5PeOvNK/tVlsu8gjdpMXJ5yZB4BQXWdn79AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHnAJvl9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7ECC4CEEB;
+	Mon, 18 Aug 2025 13:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525779;
-	bh=+GszvICaURZxnrKqNxEptpsdDJl7LbfXdoEA1ni9uew=;
+	s=korg; t=1755522530;
+	bh=soXJ5f2uwh7ft7fui84pQmuGzFZLybv4TyLmuQ+qLGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXEImhKxB1CwRFkHuvp2ZDMmcR8t/VX3y5kxUGBuH3Yqp7iiWUDbnEC0TqYPXxazy
-	 4Sn+PcOqsNs5rFuipNKI/zhh9EgZ0UCEyJzkPBzPFQzu35pVGF8Py/aMR7Rz0Mr6lX
-	 SDAomfu0xNLSK089J+oliSUkBaWcn9iMxNtxMhHw=
+	b=lHnAJvl9Ea4Kkmg6YKsjdd7YWsGrmVBWlp/Qozbuq+cfYTtOACY/4c587xDjc8Lei
+	 zdO4X7j1b42foa/6D8h0lTfbIWdhUfZohrdi170EJXIyIcGjrYVGdHzY+tPyj9quQj
+	 3OCPaeyk/Kt88Q3nTbDYffGYLS9kB14/R+vsDN90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
-	Theodore Tso <tytso@mit.edu>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 364/570] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
-Date: Mon, 18 Aug 2025 14:45:51 +0200
-Message-ID: <20250818124519.886349240@linuxfoundation.org>
+Subject: [PATCH 6.12 326/444] soundwire: Move handle_nested_irq outside of sdw_dev_lock
+Date: Mon, 18 Aug 2025 14:45:52 +0200
+Message-ID: <20250818124501.161884549@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
+[ Upstream commit ccb7bb13c00bcc3178d270da052635c56148bc16 ]
 
-A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
-when an inode had the INLINE_DATA_FL flag set but was missing the
-system.data extended attribute.
+The sdw_dev_lock protects the SoundWire driver callbacks against
+the probed flag, which is used to skip the callbacks if the
+driver gets removed. For more information see commit bd29c00edd0a
+("soundwire: revisit driver bind/unbind and callbacks").
 
-Since this can happen due to a maiciouly fuzzed file system, we
-shouldn't BUG, but rather, report it as a corrupted file system.
+However, this lock is a frequent source of mutex inversions.
+Many audio operations eventually hit the hardware resulting in a
+SoundWire callback, this means that typically the driver has the
+locking order ALSA/ASoC locks -> sdw_dev_lock. Conversely, the IRQ
+comes in directly from the SoundWire hardware, but then will often
+want to access ALSA/ASoC, such as updating something in DAPM or
+an ALSA control. This gives the other lock order sdw_dev_lock ->
+ALSA/ASoC locks.
 
-Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
-ext4_create_inline_data() and ext4_inline_data_truncate().
+When the IRQ handling was initially added to SoundWire this was
+through a callback mechanism. As such it required being covered by
+the lock because the callbacks are part of the sdw_driver structure
+and are thus present regardless of if the driver is currently
+probed.
 
-Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Since then a newer mechanism using the IRQ framework has been
+added, which is currently covered by the same lock but this isn't
+actually required. Handlers for the IRQ framework are registered in
+probe and should by released during remove, thus the IRQ framework
+will have already unbound the IRQ before the slave driver is
+removed. Avoid the aforementioned mutex inversion by moving the
+handle_nested_irq call outside of the sdw_dev_lock.
+
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250609143041.495049-3-ckeepax@opensource.cirrus.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/soundwire/bus.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index 1545846e0e3e..05313c8ffb9c 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -303,7 +303,11 @@ static int ext4_create_inline_data(handle_t *handle,
- 	if (error)
- 		goto out;
+diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
+index 6ca06cce41d3..6c7989e2079e 100644
+--- a/drivers/soundwire/bus.c
++++ b/drivers/soundwire/bus.c
+@@ -1732,15 +1732,15 @@ static int sdw_handle_slave_alerts(struct sdw_slave *slave)
  
--	BUG_ON(!is.s.not_found);
-+	if (!is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
+ 		/* Update the Slave driver */
+ 		if (slave_notify) {
++			if (slave->prop.use_domain_irq && slave->irq)
++				handle_nested_irq(slave->irq);
++
+ 			mutex_lock(&slave->sdw_dev_lock);
  
- 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
- 	if (error) {
-@@ -354,7 +358,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
- 	if (error)
- 		goto out;
+ 			if (slave->probed) {
+ 				struct device *dev = &slave->dev;
+ 				struct sdw_driver *drv = drv_to_sdw_driver(dev->driver);
  
--	BUG_ON(is.s.not_found);
-+	if (is.s.not_found) {
-+		EXT4_ERROR_INODE(inode, "missing inline data xattr");
-+		error = -EFSCORRUPTED;
-+		goto out;
-+	}
- 
- 	len -= EXT4_MIN_INLINE_DATA_SIZE;
- 	value = kzalloc(len, GFP_NOFS);
-@@ -1905,7 +1913,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
- 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
- 				goto out_error;
- 
--			BUG_ON(is.s.not_found);
-+			if (is.s.not_found) {
-+				EXT4_ERROR_INODE(inode,
-+						 "missing inline data xattr");
-+				err = -EFSCORRUPTED;
-+				goto out_error;
-+			}
- 
- 			value_len = le32_to_cpu(is.s.here->e_value_size);
- 			value = kmalloc(value_len, GFP_NOFS);
+-				if (slave->prop.use_domain_irq && slave->irq)
+-					handle_nested_irq(slave->irq);
+-
+ 				if (drv->ops && drv->ops->interrupt_callback) {
+ 					slave_intr.sdca_cascade = sdca_cascade;
+ 					slave_intr.control_port = clear;
 -- 
 2.39.5
 
