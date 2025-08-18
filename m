@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-170593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9ECB2A574
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75176B2A2A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D5C628043
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9015F1B208AD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8632C235C;
-	Mon, 18 Aug 2025 13:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8833231E0E6;
+	Mon, 18 Aug 2025 12:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYk3KZzK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fayDygjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09855334733;
-	Mon, 18 Aug 2025 13:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4247231CA6D;
+	Mon, 18 Aug 2025 12:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523140; cv=none; b=tfcTp7qzVkeypLkGXE8tFikon62png232fwvqMs4RCgyaOfddwB4Ev7Dfx9YgmXb4x/juXMSHP/Q77485l9CFyThH84o/KKj+47znkJYrRpRabuPBE4C2H83nDz9MKGUzLX/0bYYZe3SoUVoA0MvjCxBNdHWmoIEaJsyD5Q3kDw=
+	t=1755521522; cv=none; b=E+c8Mo4l3JVWQi1ggy5LVeCV8tE3fWrTjC7UaRy+nNXrQFU1xV3fUBcTDmPH4sz3jUCuY6QTP4kxO0KiVFMo838bewm4OmkJ5BDLWG4XUGgDkArlmXx4E+UxRTBJVLXdibkFyhTSNmcenBmShORxkj6K/883q15FuUiYUEdM/RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523140; c=relaxed/simple;
-	bh=/CJwod2//hK1/021M/r9nN/mSpYXMpHDY0MsHal4yKk=;
+	s=arc-20240116; t=1755521522; c=relaxed/simple;
+	bh=nSAmPPZr8kEn90V/6+yCnZVJfANzJ4QMQu2ksKczATE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iV976Vx0RAfhLboq472Pm0jbjA+74cWq5a7D8SY77HfEryu4zGmu+VlWGaJvvr8ZrJJnM1K1PxHokSwbFPrhaxg51D7K6xMgl3G2pTUsezyL1Jtae0bdb41oSBdjJW4QT20L+N1Pr+TBm6rDlCf6ZldMoKwVXwRetOBJRHOl/0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYk3KZzK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE0EC4CEEB;
-	Mon, 18 Aug 2025 13:18:58 +0000 (UTC)
+	 MIME-Version; b=qt8GGnQMM2Q9R2W6F/ReoRx7Iur9Nh39oT3l73xJjSNU3HdPzKdsUKrWtuDvv6xm86yj6C4ZeViG1De0PA1eZyfR0v146hKNABkOUQ3uWYgs+KNPK+GoG/s9TVPeRY+P2St4HDFuij2eQwi+sQ3pMqg7hPebkCwMRfPHOl6AKH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fayDygjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C18C4CEEB;
+	Mon, 18 Aug 2025 12:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523139;
-	bh=/CJwod2//hK1/021M/r9nN/mSpYXMpHDY0MsHal4yKk=;
+	s=korg; t=1755521522;
+	bh=nSAmPPZr8kEn90V/6+yCnZVJfANzJ4QMQu2ksKczATE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYk3KZzKW3K7+AFHSGmJgmJORRsUcOo/XM8xTlYyeReILr1D+FBLacV71KxGSlaoO
-	 Fcj4lKw3TPbjfa6Z3hUMhTnQdXjXkrBk6hnqGwfDq+r8/XnhMwwNjvRMdb0P1Xuq4G
-	 P67hIfTnJ/REdXiaa+XCK9fwLEV+XsU0WG9YMP78=
+	b=fayDygjRWXJQ1iv3tMT9y6w33+2tzYk35cfIt63TooNUq5TKmijEno1U/+Ynmu4fc
+	 /aJVKScO9HSnE6ELr3k7CCT3ms8C9QKyg7n7agxVokESuYaoAvxH8qaA5CBZGlL/sO
+	 iSv5WHgXdFVlM1nIgH29vbGKpgyTWEEqObAkuTCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 051/515] mm/memory-tier: fix abstract distance calculation overflow
+	David Thompson <davthompson@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.12 011/444] gpio: mlxbf3: use platform_get_irq_optional()
 Date: Mon, 18 Aug 2025 14:40:37 +0200
-Message-ID: <20250818124500.384756167@linuxfoundation.org>
+Message-ID: <20250818124449.327796147@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: David Thompson <davthompson@nvidia.com>
 
-commit cce35103135c7ffc7bebc32ebfc74fe1f2c3cb5d upstream.
+commit 810bd9066fb1871b8a9528f31f2fdbf2a8b73bf2 upstream.
 
-In mt_perf_to_adistance(), the calculation of abstract distance (adist)
-involves multiplying several int values including
-MEMTIER_ADISTANCE_DRAM.
+The gpio-mlxbf3 driver interfaces with two GPIO controllers,
+device instance 0 and 1. There is a single IRQ resource shared
+between the two controllers, and it is found in the ACPI table for
+device instance 0. The driver should not use platform_get_irq(),
+otherwise this error is logged when probing instance 1:
+    mlxbf3_gpio MLNXBF33:01: error -ENXIO: IRQ index 0 not found
 
-*adist = MEMTIER_ADISTANCE_DRAM *
-		(perf->read_latency + perf->write_latency) /
-		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
-		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
-		(perf->read_bandwidth + perf->write_bandwidth);
-
-Since these values can be large, the multiplication may exceed the
-maximum value of an int (INT_MAX) and overflow (Our platform did),
-leading to an incorrect adist.
-
-User-visible impact:
-The memory tiering subsystem will misinterpret slow memory (like CXL)
-as faster than DRAM, causing inappropriate demotion of pages from
-CXL (slow memory) to DRAM (fast memory).
-
-For example, we will see the following demotion chains from the dmesg, where
-Node0,1 are DRAM, and Node2,3 are CXL node:
- Demotion targets for Node 0: null
- Demotion targets for Node 1: null
- Demotion targets for Node 2: preferred: 0-1, fallback: 0-1
- Demotion targets for Node 3: preferred: 0-1, fallback: 0-1
-
-Change MEMTIER_ADISTANCE_DRAM to be a long constant by writing it with
-the 'L' suffix.  This prevents the overflow because the multiplication
-will then be done in the long type which has a larger range.
-
-Link: https://lkml.kernel.org/r/20250611023439.2845785-1-lizhijian@fujitsu.com
-Link: https://lkml.kernel.org/r/20250610062751.2365436-1-lizhijian@fujitsu.com
-Fixes: 3718c02dbd4c ("acpi, hmat: calculate abstract distance with HMAT")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Acked-by: Balbir Singh <balbirs@nvidia.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: cd33f216d241 ("gpio: mlxbf3: Add gpio driver support")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/ce70b98a201ce82b9df9aa80ac7a5eeaa2268e52.1754928650.git.davthompson@nvidia.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/memory-tiers.h |    2 +-
+ drivers/gpio/gpio-mlxbf3.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -18,7 +18,7 @@
-  * adistance value (slightly faster) than default DRAM adistance to be part of
-  * the same memory tier.
-  */
--#define MEMTIER_ADISTANCE_DRAM	((4 * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
-+#define MEMTIER_ADISTANCE_DRAM	((4L * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
+--- a/drivers/gpio/gpio-mlxbf3.c
++++ b/drivers/gpio/gpio-mlxbf3.c
+@@ -227,7 +227,7 @@ static int mlxbf3_gpio_probe(struct plat
+ 	gc->owner = THIS_MODULE;
+ 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
  
- struct memory_tier;
- struct memory_dev_type {
+-	irq = platform_get_irq(pdev, 0);
++	irq = platform_get_irq_optional(pdev, 0);
+ 	if (irq >= 0) {
+ 		girq = &gs->gc.irq;
+ 		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
 
 
 
