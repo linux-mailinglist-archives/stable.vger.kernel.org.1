@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3D7B2A585
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0863B2A7BD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E49B174B4A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D2D11BA20BF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECAD335BDA;
-	Mon, 18 Aug 2025 13:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0568335BC5;
+	Mon, 18 Aug 2025 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwiu8uIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/8hCBPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCC5335BD6;
-	Mon, 18 Aug 2025 13:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D306261B97;
+	Mon, 18 Aug 2025 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523244; cv=none; b=BR07E1lUD0JYhBc0CvbMY6lFNsmiMP5pctva5U6oPLNxo6tdBubUJ2pdUewC3FSOUeDymwMQNfGHtYbdk021WCPKXQb9dKCn9+y6TDLfSCG/MLXSsfwQXGdDIVjlaTYfUKaXmVCJssrHBJzWX36XKxkTbj+SSj0fV6Y5NW2fO+8=
+	t=1755524942; cv=none; b=YOuFdd3Fqbd1xASoNDRbJDErmSpqhQiaY/a2XZoMZcAIT8PavpFQZZx8W6IpnWcPIlJ7V1lkYYkAOZ8FqLmMAcoie5CTCzud/OwAv8jWxfEQdrzluLWBjrGKYWCmoomXPlamNRw5+wLX2G8UG1lCBl/P4jxOaZA11ajvt4pZH4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523244; c=relaxed/simple;
-	bh=rDmwndWNjmpZkeDs0sRpHuxQzLJVQcJ0EZa9mGM5SXU=;
+	s=arc-20240116; t=1755524942; c=relaxed/simple;
+	bh=KcuREEYYg9cGjxj3lw8GstM6psQyxJXs8tXUO15Dqz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4QfoJkVs9YXhXMew4yNUykYGYEwEJZbHsxOELV/F17YfOk82Ab8glXlxD3/4Il2Ll8UCk2K+RSzlWkgTLTvzsCJNAgoIfdqAate9Xj1Sc7erR5KfYj4kR/1TS6poLjIu/rM7MGJOaBy06CpTDwxtk7U7uILbaDQnWJSgByAz7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwiu8uIA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D179C4CEEB;
-	Mon, 18 Aug 2025 13:20:43 +0000 (UTC)
+	 MIME-Version; b=GQhwxbZQ5BPJMNk2/FyxTdO4ufinIp0sUQ5vbEqdzX9MdSLKpp4lOIOl6O+e+k2iR1fZxKxvL+lA1V6rVON953b4T+Y0+0ZlMK/0hnRV9gEAD/YKw+lqEEmmzP3Vefo5VVPCfwW8j2BcRGJbuvF7oDG1cpf2NyE6mhkXhPDqbn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/8hCBPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6E8C4CEF1;
+	Mon, 18 Aug 2025 13:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523243;
-	bh=rDmwndWNjmpZkeDs0sRpHuxQzLJVQcJ0EZa9mGM5SXU=;
+	s=korg; t=1755524942;
+	bh=KcuREEYYg9cGjxj3lw8GstM6psQyxJXs8tXUO15Dqz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwiu8uIAh30jE2Bm7xSoIsL7/22fB29iFzo6Zcm81fLSNFzsj86Q1yeH0eYFWBP9+
-	 ThRughGYymB/t0sKQTxC0acG/v2ddAts2LfH1eGIbHmKEvAe5UBE163CWuikkkWWAE
-	 QiwLigFF7EDT/nXZF/VslN9HYTgnbKlVGzq/3JmY=
+	b=K/8hCBPBe4n8HteW3gWdlY6Vkfzhx5y2vwRcSERtvUHAi50FAR7qeJ8jjF79kc49V
+	 zKye2I0BsgFFyODP0qsNij0x4OhFfwhKsnUzMlZ8Fa2BdQoTlEKmc1DorRlvbXpCAh
+	 E1Dt6m+FZNSHYOzlhUAIv/NARDAzeoKUlp8aBphk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
+	syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 112/515] usb: xhci: print xhci->xhc_state when queue_command failed
+Subject: [PATCH 6.16 111/570] better lockdep annotations for simple_recursive_removal()
 Date: Mon, 18 Aug 2025 14:41:38 +0200
-Message-ID: <20250818124502.666678887@linuxfoundation.org>
+Message-ID: <20250818124510.081282823@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
+[ Upstream commit 2a8061ee5e41034eb14170ec4517b5583dbeff9f ]
 
-When encounters some errors like these:
-xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
-usb usb5-port6: couldn't allocate usb_device
+We want a class that nests outside of I_MUTEX_NORMAL (for the sake of
+callbacks that might want to lock the victim) and inside I_MUTEX_PARENT
+(so that a variant of that could be used with parent of the victim
+held locked by the caller).
 
-It's hard to know whether xhc_state is dying or halted. So it's better
-to print xhc_state's value which can help locate the resaon of the bug.
+In reality, simple_recursive_removal()
+	* never holds two locks at once
+	* holds the lock on parent of dentry passed to callback
+	* is used only on the trees with fixed topology, so the depths
+are not changing.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So the locking order is actually fine.
+
+AFAICS, the best solution is to assign I_MUTEX_CHILD to the locks
+grabbed by that thing.
+
+Reported-by: syzbot+169de184e9defe7fe709@syzkaller.appspotmail.com
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/libfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index b720e04ce7d8..8be033f1877d 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -4337,7 +4337,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 6f487fc6be34..972b95cc7433 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -613,7 +613,7 @@ void simple_recursive_removal(struct dentry *dentry,
+ 		struct dentry *victim = NULL, *child;
+ 		struct inode *inode = this->d_inode;
  
- 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
- 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
--		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
-+		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
-+			 xhci->xhc_state);
- 		return -ESHUTDOWN;
- 	}
- 
+-		inode_lock(inode);
++		inode_lock_nested(inode, I_MUTEX_CHILD);
+ 		if (d_is_dir(this))
+ 			inode->i_flags |= S_DEAD;
+ 		while ((child = find_next_child(this, victim)) == NULL) {
+@@ -625,7 +625,7 @@ void simple_recursive_removal(struct dentry *dentry,
+ 			victim = this;
+ 			this = this->d_parent;
+ 			inode = this->d_inode;
+-			inode_lock(inode);
++			inode_lock_nested(inode, I_MUTEX_CHILD);
+ 			if (simple_positive(victim)) {
+ 				d_invalidate(victim);	// avoid lost mounts
+ 				if (d_is_dir(victim))
 -- 
 2.39.5
 
