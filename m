@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C0CB2A5A7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 399CFB2A2CA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 296096241D2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74427188676F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D117D322774;
-	Mon, 18 Aug 2025 13:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E8E31B11A;
+	Mon, 18 Aug 2025 12:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrYJezHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5g7dUjK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E300322773;
-	Mon, 18 Aug 2025 13:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9620631984A;
+	Mon, 18 Aug 2025 12:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523265; cv=none; b=KuabZcvA4u8NwKsvKLi3FeZ0JMtsGTRL3uTPTGL/oZxTc5il9HxXSjwqaPClnZ3/+mssAjYzUsYHMWUuvFtypSSdcsMWPifslN7KFxsTz0pz0fnVLnEewZOha/ue5LRyYppwcEIuceNqfwobRQuy/4QZrmu5aKiMCocdkKBOHoA=
+	t=1755521641; cv=none; b=BCeleYbtJB6bF8AqhvGQjOk4fzZyzqKES+zn5hcQXsnea0TiADxnSoFZ9DCtn6tyKm2IluMRgBIIjQ8hcwPEuyqwTpZPcvsCL0Cs+5EfGGh7XTUCH9TSR4bM3LrY5IxYXpcoNtFw8QeabKljTY2Ss92oGWpwjUPgf+q/llNTgv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523265; c=relaxed/simple;
-	bh=EDnf9Vb5Cgaymnu8jn2VJEwhXxZ6Vt5fXSQb/kkQdoM=;
+	s=arc-20240116; t=1755521641; c=relaxed/simple;
+	bh=keST+cXd6IW9hj3d2bhz9m+OP8HzoREJOaQiF6Ai/II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBFAEOyya910TUEFykdFxaSZd7I169bAeD5BGsU1cti23vLziSrXI6gLKR+XWyZyHG3QGLbrtgJ1171VLEfmffZYtU8F/NbOXtpOkWwOeNJauc6FjmsdFuAyLbiiR216NZ+yB9rt9ul1RPMEU3kTnNtBSqU1A1dCbWqPSnweVlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrYJezHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57588C113D0;
-	Mon, 18 Aug 2025 13:21:03 +0000 (UTC)
+	 MIME-Version; b=jOa9/jhaYa5LyDl9a4Xs4LOiAu8ohcTQmVFTqWEoM1jfaNadjB22UKo/IxqSJwCuMBt0k0r+7iA/gtaX8TYBG5mQnMt0yr92K1udnsVb88hIFZlt9u0neBNVW6IO+EmQVBGiJJZ6NoNmLJWx3qyWbiCs0VmcHztDB1TY7IaZx7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5g7dUjK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64E9C4CEEB;
+	Mon, 18 Aug 2025 12:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523265;
-	bh=EDnf9Vb5Cgaymnu8jn2VJEwhXxZ6Vt5fXSQb/kkQdoM=;
+	s=korg; t=1755521641;
+	bh=keST+cXd6IW9hj3d2bhz9m+OP8HzoREJOaQiF6Ai/II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrYJezHgt2ANZt2QkeXLUy+udolyAWyfncsuqwmpkyi6yUQEkqYQCqfDyDK7lSXXt
-	 3NZPEIlF7PTIrIQSf5TUtiLauTGFoxy5z+a3fX3BbWwxib68aTAwatKE/QHgHWsXlm
-	 /I0QRTfwOqKsJJZFLiqDqX07g78eYbGuJz/DwaA8=
+	b=i5g7dUjKbGc0eoePVSPVCyo+GQpF47b5hgpEtin+gmUve55ki7lgEJjcKEu8QhxZz
+	 P3VPEJ+7lyoMSZF4TG3+JGvL8zTpH8w/aUZVcW1bsbIAjOi6npK0uYwek0CZRLLW/M
+	 /LpOvQFLPUgoWm8XrBPJ7VsHQO0BmFx7Gl025VkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 087/515] smb/server: avoid deadlock when linking with ReplaceIfExists
+	Sasha Levin <sashal@kernel.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 047/444] KVM: VMX: Allow guest to set DEBUGCTL.RTM_DEBUG if RTM is supported
 Date: Mon, 18 Aug 2025 14:41:13 +0200
-Message-ID: <20250818124501.727067863@linuxfoundation.org>
+Message-ID: <20250818124450.699060487@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit d5fc1400a34b4ea5e8f2ce296ea12bf8c8421694 ]
+[ Upstream commit 17ec2f965344ee3fd6620bef7ef68792f4ac3af0 ]
 
-If smb2_create_link() is called with ReplaceIfExists set and the name
-does exist then a deadlock will happen.
+Let the guest set DEBUGCTL.RTM_DEBUG if RTM is supported according to the
+guest CPUID model, as debug support is supposed to be available if RTM is
+supported, and there are no known downsides to letting the guest debug RTM
+aborts.
 
-ksmbd_vfs_kern_path_locked() will return with success and the parent
-directory will be locked.  ksmbd_vfs_remove_file() will then remove the
-file.  ksmbd_vfs_link() will then be called while the parent is still
-locked.  It will try to lock the same parent and will deadlock.
+Note, there are no known bug reports related to RTM_DEBUG, the primary
+motivation is to reduce the probability of breaking existing guests when a
+future change adds a missing consistency check on vmcs12.GUEST_DEBUGCTL
+(KVM currently lets L2 run with whatever hardware supports; whoops).
 
-This patch moves the ksmbd_vfs_kern_path_unlock() call to *before*
-ksmbd_vfs_link() and then simplifies the code, removing the file_present
-flag variable.
+Note #2, KVM already emulates DR6.RTM, and doesn't restrict access to
+DR7.RTM.
 
-Signed-off-by: NeilBrown <neil@brown.name>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 83c529151ab0 ("KVM: x86: expose Intel cpu new features (HLE, RTM) to guest")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250610232010.162191-5-seanjc@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/msr-index.h | 1 +
+ arch/x86/kvm/vmx/vmx.c           | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 55a7887fdad7..1e379de6b22b 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6035,7 +6035,6 @@ static int smb2_create_link(struct ksmbd_work *work,
- {
- 	char *link_name = NULL, *target_name = NULL, *pathname = NULL;
- 	struct path path, parent_path;
--	bool file_present = false;
- 	int rc;
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 7ebe76f69417..2b6e3127ef4e 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -417,6 +417,7 @@
+ #define DEBUGCTLMSR_FREEZE_PERFMON_ON_PMI	(1UL << 12)
+ #define DEBUGCTLMSR_FREEZE_IN_SMM_BIT	14
+ #define DEBUGCTLMSR_FREEZE_IN_SMM	(1UL << DEBUGCTLMSR_FREEZE_IN_SMM_BIT)
++#define DEBUGCTLMSR_RTM_DEBUG		BIT(15)
  
- 	if (buf_len < (u64)sizeof(struct smb2_file_link_info) +
-@@ -6068,11 +6067,8 @@ static int smb2_create_link(struct ksmbd_work *work,
- 	if (rc) {
- 		if (rc != -ENOENT)
- 			goto out;
--	} else
--		file_present = true;
--
--	if (file_info->ReplaceIfExists) {
--		if (file_present) {
-+	} else {
-+		if (file_info->ReplaceIfExists) {
- 			rc = ksmbd_vfs_remove_file(work, &path);
- 			if (rc) {
- 				rc = -EINVAL;
-@@ -6080,21 +6076,17 @@ static int smb2_create_link(struct ksmbd_work *work,
- 					    link_name);
- 				goto out;
- 			}
--		}
--	} else {
--		if (file_present) {
-+		} else {
- 			rc = -EEXIST;
- 			ksmbd_debug(SMB, "link already exists\n");
- 			goto out;
- 		}
-+		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
- 	}
--
- 	rc = ksmbd_vfs_link(work, target_name, link_name);
- 	if (rc)
- 		rc = -EINVAL;
- out:
--	if (file_present)
--		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ #define MSR_PEBS_FRONTEND		0x000003f7
  
- 	if (!IS_ERR(link_name))
- 		kfree(link_name);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index b9c7940feac6..529a10bba056 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -2185,6 +2185,10 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
+ 	    (host_initiated || intel_pmu_lbr_is_enabled(vcpu)))
+ 		debugctl |= DEBUGCTLMSR_LBR | DEBUGCTLMSR_FREEZE_LBRS_ON_PMI;
+ 
++	if (boot_cpu_has(X86_FEATURE_RTM) &&
++	    (host_initiated || guest_cpuid_has(vcpu, X86_FEATURE_RTM)))
++		debugctl |= DEBUGCTLMSR_RTM_DEBUG;
++
+ 	return debugctl;
+ }
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
