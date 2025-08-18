@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33965B2A638
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF72B2A379
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADA791B61ABE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57CBA189AF59
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ECC321F27;
-	Mon, 18 Aug 2025 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C9431E109;
+	Mon, 18 Aug 2025 13:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D38isLaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vW6RxYB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688AA321F24;
-	Mon, 18 Aug 2025 13:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF8831E0F9;
+	Mon, 18 Aug 2025 13:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523789; cv=none; b=gBRVAGGO58am2yOZ5cFPDlk6LlndS4leD2IuenCZcTPoZy3KWr/1ugnHYUjJAvtOCB8ja6RTTU1c/CvBg/0r6yQVr5O4nyIYQvoKxTl5sRGTz/o8jwUITfY/oZvTI+ntXjdmiBwYRtMOloYyiajCDVoO9juLTFuqVpGqndmhIDY=
+	t=1755522250; cv=none; b=AlRl0G6x03uPjyy7HwsWpPC+wy+df2CfWD0VG7dxBRuB3rzqUeWvVErE4f3bglfY3VpETl0ATiTvFFiCOU/SdzT1FMOxcLhNQzEA/c8DwzJohqX1JeSAbJxb24atyvJ6AsbIolj7hwihwSdaVPg0n050XWPX0sQN3h9Orj2mvgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523789; c=relaxed/simple;
-	bh=UfH5Ew04ZOiF9eM+VVvyIC2ckBnMqjU31tESCHyDuuw=;
+	s=arc-20240116; t=1755522250; c=relaxed/simple;
+	bh=wTaJeD0bIWeJ/ly0CeiOukIsK1l8Zc+5TcjsVLKItkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+PCu8h4Oc2hFLRW9ga1Ihtt+jNnGcvwTbiL1Qxo4kpkhgj1jRxAviTU+u85+uHX105JGrQ8s5iYwWybIbUur4KMDKw0XERpX8Dcm7gzL4pNpPtquWf4kNS+1kzmaVrlQbbU9qUtVRfFeCLmHIo9i8ShI4iAuSZTH44WovVkXgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D38isLaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD52C4CEEB;
-	Mon, 18 Aug 2025 13:29:48 +0000 (UTC)
+	 MIME-Version; b=K/19WJE2bEbUANyoInQ7BWXh2N9q4EAKnFkbvuHhciRKgYZMmLgOvdJ/KlLY7GvcdME/uOo6UnpbV7RAOnl+igvqwU6yS+YoL5l3rjJ7RQszXFo9CDbg3N5MO/ceZYrta/sGE+s6aCGpLmrv0aN5ce3nTqHTbi9le9p7mSTa/uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vW6RxYB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE98AC4CEEB;
+	Mon, 18 Aug 2025 13:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523788;
-	bh=UfH5Ew04ZOiF9eM+VVvyIC2ckBnMqjU31tESCHyDuuw=;
+	s=korg; t=1755522250;
+	bh=wTaJeD0bIWeJ/ly0CeiOukIsK1l8Zc+5TcjsVLKItkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D38isLaHL9SXxjo8XJeN2QDFWvlBBPOZ0n2EludAAIl/jwVSFRhDbNqZrtp+DkJq2
-	 q3GwHWntZLxiG0BhPrb8Erb1TXEN/yphEz37SIY1zsO8ZXvZ5SkrHQ8uRR6EMLpQXD
-	 wgCAV0cxl7xamYEvxtokTZfNsrM3jLmGiIi/4VhE=
+	b=vW6RxYB2B/YG7ktzdA9+T4vmwNCRVwFQSAa2581xGFT7cT0jcx8qLgzyDO/SlS30d
+	 Ehk4AWm0cgnOSZpIwokxiQhI6p0qODGbrfSdm/Ze3hlqtFEH+meK3sHhnlpEltz+V6
+	 WDlndW1bNbP+Nwq7Hc3Cvii+5cquDPHNpKUrJPeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 256/515] perf/arm: Add missing .suppress_bind_attrs
-Date: Mon, 18 Aug 2025 14:44:02 +0200
-Message-ID: <20250818124508.269490141@linuxfoundation.org>
+Subject: [PATCH 6.12 217/444] drm/xe/xe_query: Use separate iterator while filling GT list
+Date: Mon, 18 Aug 2025 14:44:03 +0200
+Message-ID: <20250818124456.982468739@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit 860a831de138a7ad6bc86019adaf10eb84c02655 ]
+[ Upstream commit d4eb4a010262ea7801e576d1033b355910f2f7d4 ]
 
-PMU drivers should set .suppress_bind_attrs so that userspace is denied
-the opportunity to pull the driver out from underneath an in-use PMU
-(with predictably unpleasant consequences). Somehow both the CMN and NI
-drivers have managed to miss this; put that right.
+The 'id' value updated by for_each_gt() is the uapi GT ID of the GTs
+being iterated over, and may skip over values if a GT is not present on
+the device.  Use a separate iterator for GT list array assignments to
+ensure that the array will be filled properly on future platforms where
+index in the GT query list may not match the uapi ID.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Link: https://lore.kernel.org/r/acd48c341b33b96804a3969ee00b355d40c546e2.1751465293.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+v2:
+ - Include the missing increment of the iterator.  (Jonathan)
+
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250701201320.2514369-16-matthew.d.roper@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c | 1 +
- drivers/perf/arm-ni.c  | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/gpu/drm/xe/xe_query.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index 403850b1040d..e4bf181842fa 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2662,6 +2662,7 @@ static struct platform_driver arm_cmn_driver = {
- 		.name = "arm-cmn",
- 		.of_match_table = of_match_ptr(arm_cmn_of_match),
- 		.acpi_match_table = ACPI_PTR(arm_cmn_acpi_match),
-+		.suppress_bind_attrs = true,
- 	},
- 	.probe = arm_cmn_probe,
- 	.remove = arm_cmn_remove,
-diff --git a/drivers/perf/arm-ni.c b/drivers/perf/arm-ni.c
-index 9396d243415f..c30a67fe2ae3 100644
---- a/drivers/perf/arm-ni.c
-+++ b/drivers/perf/arm-ni.c
-@@ -709,6 +709,7 @@ static struct platform_driver arm_ni_driver = {
- 		.name = "arm-ni",
- 		.of_match_table = of_match_ptr(arm_ni_of_match),
- 		.acpi_match_table = ACPI_PTR(arm_ni_acpi_match),
-+		.suppress_bind_attrs = true,
- 	},
- 	.probe = arm_ni_probe,
- 	.remove = arm_ni_remove,
+diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
+index 6fec5d1a1eb4..6e7c940d7e22 100644
+--- a/drivers/gpu/drm/xe/xe_query.c
++++ b/drivers/gpu/drm/xe/xe_query.c
+@@ -366,6 +366,7 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 	struct drm_xe_query_gt_list __user *query_ptr =
+ 		u64_to_user_ptr(query->data);
+ 	struct drm_xe_query_gt_list *gt_list;
++	int iter = 0;
+ 	u8 id;
+ 
+ 	if (query->size == 0) {
+@@ -383,12 +384,12 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 
+ 	for_each_gt(gt, xe, id) {
+ 		if (xe_gt_is_media_type(gt))
+-			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
++			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
+ 		else
+-			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MAIN;
+-		gt_list->gt_list[id].tile_id = gt_to_tile(gt)->id;
+-		gt_list->gt_list[id].gt_id = gt->info.id;
+-		gt_list->gt_list[id].reference_clock = gt->info.reference_clock;
++			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MAIN;
++		gt_list->gt_list[iter].tile_id = gt_to_tile(gt)->id;
++		gt_list->gt_list[iter].gt_id = gt->info.id;
++		gt_list->gt_list[iter].reference_clock = gt->info.reference_clock;
+ 		/*
+ 		 * The mem_regions indexes in the mask below need to
+ 		 * directly identify the struct
+@@ -404,19 +405,21 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 		 * assumption.
+ 		 */
+ 		if (!IS_DGFX(xe))
+-			gt_list->gt_list[id].near_mem_regions = 0x1;
++			gt_list->gt_list[iter].near_mem_regions = 0x1;
+ 		else
+-			gt_list->gt_list[id].near_mem_regions =
++			gt_list->gt_list[iter].near_mem_regions =
+ 				BIT(gt_to_tile(gt)->id) << 1;
+-		gt_list->gt_list[id].far_mem_regions = xe->info.mem_region_mask ^
+-			gt_list->gt_list[id].near_mem_regions;
++		gt_list->gt_list[iter].far_mem_regions = xe->info.mem_region_mask ^
++			gt_list->gt_list[iter].near_mem_regions;
+ 
+-		gt_list->gt_list[id].ip_ver_major =
++		gt_list->gt_list[iter].ip_ver_major =
+ 			REG_FIELD_GET(GMD_ID_ARCH_MASK, gt->info.gmdid);
+-		gt_list->gt_list[id].ip_ver_minor =
++		gt_list->gt_list[iter].ip_ver_minor =
+ 			REG_FIELD_GET(GMD_ID_RELEASE_MASK, gt->info.gmdid);
+-		gt_list->gt_list[id].ip_ver_rev =
++		gt_list->gt_list[iter].ip_ver_rev =
+ 			REG_FIELD_GET(GMD_ID_REVID, gt->info.gmdid);
++
++		iter++;
+ 	}
+ 
+ 	if (copy_to_user(query_ptr, gt_list, size)) {
 -- 
 2.39.5
 
