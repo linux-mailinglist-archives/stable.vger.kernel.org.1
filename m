@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B945DB2A9FC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:26:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E340EB2A713
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10A6118948BE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F5B1895978
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01C431E11F;
-	Mon, 18 Aug 2025 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8C6322DAC;
+	Mon, 18 Aug 2025 13:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTPxm3Vx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny3C3XYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D86D3203AD;
-	Mon, 18 Aug 2025 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC72322754;
+	Mon, 18 Aug 2025 13:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525927; cv=none; b=kb3baOd880Uwha0gBSHhw8JCqu3/QHzsqv/k5vk5I5vhccOh0L2fo5TEM9Qrg+PRQrSLqXgUbcP5np4sdCnv/I0E9gM09jyVic20kOt8j7+PXzqOS7132HStTmoY4dH6I21W+CSRRoy3PabTgvOKsOmr/ppcyvLseER7/2uR4Fc=
+	t=1755524226; cv=none; b=AmwJo4NWN4KO87txJB4Wbs6eIoVpN6zKEuJnbIU4YJs5TcMVp+0f62YPQ+SrxGpvXedsOl26SQxoq+XfGzzUvfLVj/WwQllZcDf1a2AJMkosFWwXOkbdp8ni3Po48jAIb+J+k0SGvY4aVgWtf3KCUVsJMLQzXmXjkCmYxzz6LSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525927; c=relaxed/simple;
-	bh=/gtzECWCY87Py4TBD9lPoTSsMHXeQ9rrH3AzqCi8Yu8=;
+	s=arc-20240116; t=1755524226; c=relaxed/simple;
+	bh=h502uA5glZLFnWJ8UTnyyi7hwvEurRcNuCEmmmayIjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btkx6hF/Z5wcgovAIakn5w3JnGk6md+RR/Zmj2nS7ZZM9RjaldXFcLRzXFG+LwEBsfqBJyA0+ccfPokGA8PxC8XYmg5wEMrr3u9wHxbQiD4vfjoCwA2AZbjp2sn37WOLMTNDs8aIGUtX24Krc5TOkyNl/gwC2io69tdxD17jCQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTPxm3Vx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7B9C4CEEB;
-	Mon, 18 Aug 2025 14:05:26 +0000 (UTC)
+	 MIME-Version; b=IdfhnfacS8EI59ap2ynwJg8c90WzHr0Ejyxoa2d8bi6jB5+TvIqnGpdrwTLu6+H/BKVcp8Fv3rbrjnxzxsxHG+5uzAY6cBPi+Ji2tC51DCOK6feFC/ePBPt2NX9ePuaVz8QV/6dWojJkFPfRzHU4X2Zabaafoax7KN0z5MqG69I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny3C3XYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CD5C4CEEB;
+	Mon, 18 Aug 2025 13:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525927;
-	bh=/gtzECWCY87Py4TBD9lPoTSsMHXeQ9rrH3AzqCi8Yu8=;
+	s=korg; t=1755524226;
+	bh=h502uA5glZLFnWJ8UTnyyi7hwvEurRcNuCEmmmayIjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTPxm3VxPTg891wW3+WEr1eNH16Tk2vG3mizpmdNIAdmLYxbVDadQU45TukvwKRZq
-	 EaVkEIaEr+RjPHfH10K6EUNGDzaXzlUDsi3MKxCDUtIIFU2TXW0y5MukG2KYhfK2Le
-	 JXT7FQwT1eHoKNg0Eyiyn7ikYoPoVjOKRfnshSfQ=
+	b=ny3C3XYVIPmbKma11xNUr23bEr0MgiIfV9Q2y4CTzXgudtN3xqEozfA9F//nbsCTI
+	 TAS0cWES5mlnR2gkZAD++VyLJcIlhmxUc55URI52zKhpHHJaP7l4G3d8+0LUiSN1kJ
+	 L0eZ54bQwSZIy/jQN8W3dLAdqa/3o6GRiI7gcRi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheick Traore <cheick.traore@foss.st.com>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Nicolas Schier <n.schier@avm.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 406/570] pinctrl: stm32: Manage irq affinity settings
+Subject: [PATCH 6.15 407/515] kconfig: nconf: Ensure null termination where strncpy is used
 Date: Mon, 18 Aug 2025 14:46:33 +0200
-Message-ID: <20250818124521.488607460@linuxfoundation.org>
+Message-ID: <20250818124514.083254535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheick Traore <cheick.traore@foss.st.com>
+From: Shankari Anand <shankari.ak0208@gmail.com>
 
-[ Upstream commit 4c5cc2f65386e22166ce006efe515c667aa075e4 ]
+[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
 
-Trying to set the affinity of the interrupts associated to stm32
-pinctrl results in a write error.
+strncpy() does not guarantee null-termination if the source string is
+longer than the destination buffer.
 
-Fill struct irq_chip::irq_set_affinity to use the default helper
-function.
+Ensure the buffer is explicitly null-terminated to prevent potential
+string overflows or undefined behavior.
 
-Signed-off-by: Cheick Traore <cheick.traore@foss.st.com>
-Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Link: https://lore.kernel.org/20250610143042.295376-3-antonio.borneo@foss.st.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Nicolas Schier <n.schier@avm.de>
+Acked-by: Nicolas Schier <n.schier@avm.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/kconfig/nconf.c     | 2 ++
+ scripts/kconfig/nconf.gui.c | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index ba49d48c3a1d..e6ad63df82b7 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -411,6 +411,7 @@ static struct irq_chip stm32_gpio_irq_chip = {
- 	.irq_set_wake	= irq_chip_set_wake_parent,
- 	.irq_request_resources = stm32_gpio_irq_request_resources,
- 	.irq_release_resources = stm32_gpio_irq_release_resources,
-+	.irq_set_affinity = IS_ENABLED(CONFIG_SMP) ? irq_chip_set_affinity_parent : NULL,
- };
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index c0b2dabf6c89..ae1fe5f60327 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -593,6 +593,8 @@ static void item_add_str(const char *fmt, ...)
+ 		tmp_str,
+ 		sizeof(k_menu_items[index].str));
  
- static int stm32_gpio_domain_translate(struct irq_domain *d,
++	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
++
+ 	free_item(curses_menu_items[index]);
+ 	curses_menu_items[index] = new_item(
+ 			k_menu_items[index].str,
+diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
+index 4bfdf8ac2a9a..7206437e784a 100644
+--- a/scripts/kconfig/nconf.gui.c
++++ b/scripts/kconfig/nconf.gui.c
+@@ -359,6 +359,7 @@ int dialog_inputbox(WINDOW *main_window,
+ 	x = (columns-win_cols)/2;
+ 
+ 	strncpy(result, init, *result_len);
++	result[*result_len - 1] = '\0';
+ 
+ 	/* create the windows */
+ 	win = newwin(win_lines, win_cols, y, x);
 -- 
 2.39.5
 
