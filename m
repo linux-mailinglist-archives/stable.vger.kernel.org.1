@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-170074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539B8B2A21C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:50:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD67B2A72B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F063AE440
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F17B7B88AC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FA52FF15F;
-	Mon, 18 Aug 2025 12:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB21335BBE;
+	Mon, 18 Aug 2025 13:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbX9hBGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKxaybWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ABC20126A;
-	Mon, 18 Aug 2025 12:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52A4335BA8;
+	Mon, 18 Aug 2025 13:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521428; cv=none; b=pb2YxmJnPdHnKgy3S4qIAvAv8lD85hjPLOa8BGPCiXNFnvbTfOxr5C3hNzXO2P8sczjfYmOKP2b7QVjx9FD90SVSwnPSFAiTHvu4L0sjXPAwi9hr6xo+YqjasO/H83iCToLZ9BBcAoXoDbPiITB1g+eGe5BhLJYK7bR4GOwmgZs=
+	t=1755524774; cv=none; b=JGgiXU44wzaEbl7/WB23BARskGenWBVxliBWCXa3BywMoo0EeUBH9I59jcoGpax3zY3MG7v8tIXwjz3bCdkjlZMnlrvR/JmHvwBJwoU6BAflo0McxiXzNtSFlOLwUSCC9d0sfKtxs+/VU+ZYRJXjULt9MYqpSsfLSQ38px8JYsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521428; c=relaxed/simple;
-	bh=xRQSvhcTRCr3MjZx+fM4bTY9qP1EuCDj6nmLGyOB2xY=;
+	s=arc-20240116; t=1755524774; c=relaxed/simple;
+	bh=EIAAQKGbmcvxbgaEIe9HenLnyUbAPXv+GK1GARJ9dvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxHQXWIcbOvDEKGZRvaJvoMSZkrNFX2vWHD3tycWXFPIKBEG0ll8uV6LIXV0+w44OWeQ0uM2hPY/itIZvBFsXlJDruLLlFCqQsOLUAsEP/xqI1DeWsna4Jb0WYE4DIaxPBWGuReBlXnKyiPD6yAqPbUwAzVuAhZZPrRPfmWFcCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbX9hBGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA546C4CEEB;
-	Mon, 18 Aug 2025 12:50:27 +0000 (UTC)
+	 MIME-Version; b=GUrmT0LmiHJbd0MKlie7kpZdUn8MGnszo9126DFCj2D/z9g+SiTI0JrU0uAxxwiAeQQ89xTAv+6o7FubVrP7CACjvrkcNRhd5hcvN1VsYU37ghzjdQInsAWr1E5XqSPYapAtjAXJUkyT8Pe6LD6bqs+hrEpsIQBjWVg9SVS/tvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKxaybWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520B1C4CEEB;
+	Mon, 18 Aug 2025 13:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521428;
-	bh=xRQSvhcTRCr3MjZx+fM4bTY9qP1EuCDj6nmLGyOB2xY=;
+	s=korg; t=1755524773;
+	bh=EIAAQKGbmcvxbgaEIe9HenLnyUbAPXv+GK1GARJ9dvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbX9hBGOZITtvsY2oBrqjmIuTiPzYRur/xHVB3KKTRP3qnvOwP+X7u+smNY8KlRTz
-	 DxuMusPoR3v3qjt0iYhMSjDuH3w9iDG2X1eM0XF1/lZbKNSBBKK49c7IFIWML64ll+
-	 iKQe4kUS1SqiLmHXrrdWlBWaLDEDAXKwUPao6tWw=
+	b=MKxaybWwiDBoVq3P/UBWnWxKaiu0di3THR4fTLZprFyvrr/pcsxp0CNj0AXKRFE8E
+	 QRg9AtwL+fbaDhNXKP0XmG6vqIGoJqKUZ7TQ/KcyK7ESM4WGjoDjK0pomQ+2xukC9r
+	 1M+0Eywr3Qe2ViE/NW/uUVI+LGDiIpcoWWkGz14U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 018/444] net: enetc: fix device and OF node leak at probe
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 057/570] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
 Date: Mon, 18 Aug 2025 14:40:44 +0200
-Message-ID: <20250818124449.597388242@linuxfoundation.org>
+Message-ID: <20250818124508.009465778@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed upstream.
+commit 5349ae5e05fa37409fd48a1eb483b199c32c889b upstream.
 
-Make sure to drop the references to the IERB OF node and platform device
-taken by of_parse_phandle() and of_find_device_by_node() during probe.
+We should call ib_dma_unmap_single() and mempool_free() before calling
+smbd_disconnect_rdma_connection().
 
-Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-3-johan@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+And smbd_disconnect_rdma_connection() needs to be the last function to
+call as all other state might already be gone after it returns.
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pf.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -1182,19 +1182,29 @@ static int enetc_pf_register_with_ierb(s
- {
- 	struct platform_device *ierb_pdev;
- 	struct device_node *ierb_node;
-+	int ret;
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -277,18 +277,20 @@ static void send_done(struct ib_cq *cq,
+ 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
+ 		request, wc->status);
  
- 	ierb_node = of_find_compatible_node(NULL, NULL,
- 					    "fsl,ls1028a-enetc-ierb");
--	if (!ierb_node || !of_device_is_available(ierb_node))
-+	if (!ierb_node)
- 		return -ENODEV;
+-	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
+-		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
+-			wc->status, wc->opcode);
+-		smbd_disconnect_rdma_connection(request->info);
+-	}
+-
+ 	for (i = 0; i < request->num_sge; i++)
+ 		ib_dma_unmap_single(sc->ib.dev,
+ 			request->sge[i].addr,
+ 			request->sge[i].length,
+ 			DMA_TO_DEVICE);
  
-+	if (!of_device_is_available(ierb_node)) {
-+		of_node_put(ierb_node);
-+		return -ENODEV;
++	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
++		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
++			wc->status, wc->opcode);
++		mempool_free(request, info->request_mempool);
++		smbd_disconnect_rdma_connection(info);
++		return;
 +	}
 +
- 	ierb_pdev = of_find_device_by_node(ierb_node);
- 	of_node_put(ierb_node);
+ 	if (atomic_dec_and_test(&request->info->send_pending))
+ 		wake_up(&request->info->wait_send_pending);
  
- 	if (!ierb_pdev)
- 		return -EPROBE_DEFER;
- 
--	return enetc_ierb_register_pf(ierb_pdev, pdev);
-+	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
-+
-+	put_device(&ierb_pdev->dev);
-+
-+	return ret;
- }
- 
- static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
 
 
 
