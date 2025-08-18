@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D569B2AA48
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123CDB2A6C8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C8F41BA7306
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA1A56681B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53193322C62;
-	Mon, 18 Aug 2025 14:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A05332253C;
+	Mon, 18 Aug 2025 13:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/6L7MRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJmgHJVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B1E345728;
-	Mon, 18 Aug 2025 14:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58140321F4C;
+	Mon, 18 Aug 2025 13:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525870; cv=none; b=ZMYAFLE0zaGrS8rUbPLvCgcTOb+ER2EI2hzvpzVbDgnXCBzIdhhFrNxSLNiTI3qsxIhVNH4W9FkbTlOTxYFFBw9oDU6Ru7DXdn8NOSJAWLJ2cvVyFC6Tz1N8Mg5tSyFTmB4JN8KyFy3gdhLy7te662sFePwQg8YRpTI7evC9y2Y=
+	t=1755524188; cv=none; b=mik5UWTR5cDcEDENJA9PjgtlKtlQuLRF8bngMomOZuIIyEGU8GMH4Pl233d+yId2KTDBuL8jUfO3Cofm0+SKXkWZAbIXrXDKg2f4+ZVCZBbikH3pEbQZvwiaCEdHCv4zpPikDHhWV8P++6VfRCl1uTWMyZLDcmnrjwIh86CzHn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525870; c=relaxed/simple;
-	bh=U5N/9v+dT/9+GJuq2ok7KJFztAOkV7X0VjR1yqgjxmA=;
+	s=arc-20240116; t=1755524188; c=relaxed/simple;
+	bh=ESmhZ2YFRx/N/fG9NxeBJ8T7CC52L3aHvbX095jSx40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ayFOC1O4/74PEnTZQs+ZGplNVMtS2wf5JnzMpJRl5oOR0ZqbsMODOzlPONHzgVXKHNr1fG4AOjIgJKrqHXyJ9xu7woetGzfoi8H9m3lX0xw//A6Ts3mBb3gneSC5wpvTK9JOP+w2Jex93dfQjGm35/qiLCe5GOhoFIvH5wocLyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/6L7MRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94491C4CEF1;
-	Mon, 18 Aug 2025 14:04:29 +0000 (UTC)
+	 MIME-Version; b=fq1oS2mr5186uVMkOSkKiDMnK1S2sLqXQElF+Gv4mt+c9XZHoBwh7V8ur04sxm3wC5moEZEHbJqXROTHe+HqNLFrsOBXteNl+aCHFWYRAf0Tg4Ux/g0Ij9IutJur2OAp9ixZ32NzFMlfCn8IfNNGuC4Ii28Qhqt3GTaHWZnww0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJmgHJVT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87FEC4CEEB;
+	Mon, 18 Aug 2025 13:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525869;
-	bh=U5N/9v+dT/9+GJuq2ok7KJFztAOkV7X0VjR1yqgjxmA=;
+	s=korg; t=1755524188;
+	bh=ESmhZ2YFRx/N/fG9NxeBJ8T7CC52L3aHvbX095jSx40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/6L7MRrrIwUdUae8fjmj5LjnEt/m97orPzepNhrWRhavX4hxEXqQZnvxL3xiPgtQ
-	 PEtj7FP5iWWd4BVxdVfaoqb30bTdU5e1FLAYCFgoRMrRXBZwjLucJBw/AolqXxUseM
-	 HpfxQ7xbrmdwVOXFKfOxLAeooiHy+TcH7KbpKOXc=
+	b=XJmgHJVTCPMFXfVUVSBJ/ij+v3BClb0zLPoJ0/Ju2j52+aJD45P8z04zzBglm4z4s
+	 dYHJ2RSyWT36J18kzlFGloZHdPbEI0fud/eyTFlpjg8+oFwc2LftGUPZcgEg8BYRIr
+	 Iq7zWAcpcH44CZsjR5Ebmy5QeYfZA8AA3l2FFmak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
+	Tyler Hicks <code@tyhicks.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 391/570] media: ipu-bridge: Add _HID for OV5670
-Date: Mon, 18 Aug 2025 14:46:18 +0200
-Message-ID: <20250818124520.922323277@linuxfoundation.org>
+Subject: [PATCH 6.15 393/515] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+Date: Mon, 18 Aug 2025 14:46:19 +0200
+Message-ID: <20250818124513.543200809@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Scally <dan.scally@ideasonboard.com>
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
 
-[ Upstream commit 484f8bec3ddb453321ef0b8621c25de6ce3d0302 ]
+[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
 
-The OV5670 is found on Dell 7212 tablets paired with an IPU3 ISP
-and needs to be connected by the ipu-bridge. Add it to the list
-of supported devices.
+In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
+kernel time as long as rtc_read_time() succeeds. In some power loss
+situations, our supercapacitor-backed DS1342 RTC comes up with either an
+unpredictable future time or the default 01/01/00 from the datasheet.
+The oscillator stop flag (OSF) is set in these scenarios due to the
+power loss and can be used to determine the validity of the RTC data.
 
-Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+This change expands the oscillator stop flag (OSF) handling that has
+already been implemented for some chips to the ds1341 chip (DS1341 and
+DS1342 share a datasheet). This handling manages the validity of the RTC
+data in .read_time and .set_time based on the OSF.
+
+Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+Reviewed-by: Tyler Hicks <code@tyhicks.com>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu-bridge.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rtc/rtc-ds1307.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
-index 83e682e1a4b7..73560c2c67c1 100644
---- a/drivers/media/pci/intel/ipu-bridge.c
-+++ b/drivers/media/pci/intel/ipu-bridge.c
-@@ -60,6 +60,8 @@ static const struct ipu_sensor_config ipu_supported_sensors[] = {
- 	IPU_SENSOR_CONFIG("INT33BE", 1, 419200000),
- 	/* Omnivision OV2740 */
- 	IPU_SENSOR_CONFIG("INT3474", 1, 180000000),
-+	/* Omnivision OV5670 */
-+	IPU_SENSOR_CONFIG("INT3479", 1, 422400000),
- 	/* Omnivision OV8865 */
- 	IPU_SENSOR_CONFIG("INT347A", 1, 360000000),
- 	/* Omnivision OV7251 */
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index c8a666de9cbe..c6d388bb4a19 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -279,6 +279,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
+ 		if (tmp & DS1340_BIT_OSF)
+ 			return -EINVAL;
+ 		break;
++	case ds_1341:
++		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
++		if (ret)
++			return ret;
++		if (tmp & DS1337_BIT_OSF)
++			return -EINVAL;
++		break;
+ 	case ds_1388:
+ 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
+ 		if (ret)
+@@ -377,6 +384,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
+ 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
+ 				   DS1340_BIT_OSF, 0);
+ 		break;
++	case ds_1341:
++		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
++				   DS1337_BIT_OSF, 0);
++		break;
+ 	case ds_1388:
+ 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
+ 				   DS1388_BIT_OSF, 0);
 -- 
 2.39.5
 
