@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C120B2AA14
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4548EB2A669
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 291C41BA6FBD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9AF87B3D56
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8ADC343D85;
-	Mon, 18 Aug 2025 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281E3321F35;
+	Mon, 18 Aug 2025 13:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Di7YPU0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUQhFNxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654F0343D80;
-	Mon, 18 Aug 2025 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FA231E0F8;
+	Mon, 18 Aug 2025 13:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525845; cv=none; b=LE8R1mOH+n+uUGd3yKwnqWcsa30oJjL5sHljSTcUTsMXJu/0ifRqDga+98u1sI1okQiuW24Onf2wbEAh+4HikSwfAgdavTcY4bQoCg1ukHIyKjNLYXWAoAhsLmziMyhM+PBIr8GNsCRj17Fc3sTyStVdAkPsxq8iZPCCggCnzvs=
+	t=1755524158; cv=none; b=MnfF4vMr/I6iNEzqDpM0H+A2DcNftu8ksJ5U+Ni2GLwow0nJCn1kN9DIJs5ClUID7AgVafDC+aOpwGCJNAchq5hUUNuCxunME5ZGQ7B6P79w5xPGkdv4zeAHOyZQKWCQ0ECXFZqZxP+bFSkcB+VAf6r27CkDtnU9AA6wkBrSQYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525845; c=relaxed/simple;
-	bh=RCxzd0Mkk+7sofUPMpVnHFuiS2CGclxspP3bHqyRq1E=;
+	s=arc-20240116; t=1755524158; c=relaxed/simple;
+	bh=TROAZPoJgFZhfFSHfsGifs/IHDrb43B8ckoy9rHSj6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQiXPPjyMGlzgOsoI05UgB2V4ryBIU1ogwmCwrAHxCdqHFqHQmLCiDljrwVF5NTx08wIjrqIc1dnSKYP4tNUv9JhAQISu/3tW3VXo2GUsmznZrbskC5/vIxvmvyyGairI0wa3/3jbGym7noHa6dj/qp1X/wFZCgF32+mBUuFQNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Di7YPU0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7ADAC4CEF1;
-	Mon, 18 Aug 2025 14:04:04 +0000 (UTC)
+	 MIME-Version; b=gXXOPObDUlAep2gu8uzXKrQYMNU1CySh6/FJCdyjleVidK3wDbgxtp+5IOQvpgMtEci6Lz0SXUDMY1z1hvxuJLECP1XoAQlcE5cC7qNNOt80DExHWNIm0fYNJ6P9dRLNesheOuV8uDpnmOhxk7Sw4FNQf2FVvVJhZv5wB4NPlWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUQhFNxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480C2C4CEEB;
+	Mon, 18 Aug 2025 13:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525845;
-	bh=RCxzd0Mkk+7sofUPMpVnHFuiS2CGclxspP3bHqyRq1E=;
+	s=korg; t=1755524158;
+	bh=TROAZPoJgFZhfFSHfsGifs/IHDrb43B8ckoy9rHSj6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Di7YPU0R8TdryaagSTjrfkUPUwRPYLe0vQ6neg+YZtNz7AdhOe80jZ3n3XXkAbHsT
-	 YenKC0yk+G/v76SURSHhba0m3dau1mmvKTWd5ZWQlBuM7hi+FwOIblDjZ8bAYwn9ir
-	 l6n9yfDtmJlmaZCazQbb1EgBNRbH2zaGs/mAuQ+Y=
+	b=OUQhFNxmbi21p+b5VD+w4xVwQd0olxQ3H3YppHPcjIH8iOSpKvpWfooRtFpP8W/jZ
+	 QMeUtk0AL2vWOaiUXHVPgLqUZ1Sonp1kI0DUQefruWpEk1BfcuQqgc07hLDJxBWMVw
+	 3EIzRFpblH6dbW7FFiDJZfgAwG4I5I0Hcg7ZUUAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Mueller <smueller@chronox.de>,
-	Markus Theil <theil.markus@gmail.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 384/570] crypto: jitter - fix intermediary handling
+Subject: [PATCH 6.15 385/515] crypto: ccp - Add missing bootloader info reg for pspv6
 Date: Mon, 18 Aug 2025 14:46:11 +0200
-Message-ID: <20250818124520.640184512@linuxfoundation.org>
+Message-ID: <20250818124513.238418071@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Theil <theil.markus@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 735b72568c73875269a6b73ab9543a70f6ac8a9f ]
+[ Upstream commit aaeff14688d0254b39731d9bb303c79bfd610f7d ]
 
-The intermediary value was included in the wrong
-hash state. While there, adapt to user-space by
-setting the timestamp to 0 if stuck and inserting
-the values nevertheless.
+The bootloader info reg for pspv6 is the same as pspv4 and pspv5.
 
-Acked-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Markus Theil <theil.markus@gmail.com>
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/jitterentropy-kcapi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/crypto/ccp/sp-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
-index c24d4ff2b4a8..1266eb790708 100644
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -144,7 +144,7 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * Inject the data from the previous loop into the pool. This data is
- 	 * not considered to contain any entropy, but it stirs the pool a bit.
- 	 */
--	ret = crypto_shash_update(desc, intermediary, sizeof(intermediary));
-+	ret = crypto_shash_update(hash_state_desc, intermediary, sizeof(intermediary));
- 	if (ret)
- 		goto err;
- 
-@@ -157,11 +157,12 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * conditioning operation to have an identical amount of input data
- 	 * according to section 3.1.5.
- 	 */
--	if (!stuck) {
--		ret = crypto_shash_update(hash_state_desc, (u8 *)&time,
--					  sizeof(__u64));
-+	if (stuck) {
-+		time = 0;
- 	}
- 
-+	ret = crypto_shash_update(hash_state_desc, (u8 *)&time, sizeof(__u64));
-+
- err:
- 	shash_desc_zero(desc);
- 	memzero_explicit(intermediary, sizeof(intermediary));
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index 2ebc878da160..224edaaa737b 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -451,6 +451,7 @@ static const struct psp_vdata pspv6 = {
+ 	.cmdresp_reg		= 0x10944,	/* C2PMSG_17 */
+ 	.cmdbuff_addr_lo_reg	= 0x10948,	/* C2PMSG_18 */
+ 	.cmdbuff_addr_hi_reg	= 0x1094c,	/* C2PMSG_19 */
++	.bootloader_info_reg	= 0x109ec,	/* C2PMSG_59 */
+ 	.feature_reg            = 0x109fc,	/* C2PMSG_63 */
+ 	.inten_reg              = 0x10510,	/* P2CMSG_INTEN */
+ 	.intsts_reg             = 0x10514,	/* P2CMSG_INTSTS */
 -- 
 2.39.5
 
