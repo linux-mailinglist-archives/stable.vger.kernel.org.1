@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B6BB2A28C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1877CB2A5A9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 386456222EE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E75491B64007
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1932320CC0;
-	Mon, 18 Aug 2025 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738021DC997;
+	Mon, 18 Aug 2025 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3u4leLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCPDui1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB8331CA57;
-	Mon, 18 Aug 2025 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1BB21CC55;
+	Mon, 18 Aug 2025 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521692; cv=none; b=tHDFUVhwA/6zpo0eXHkn4CdP4qMUco6Jf26A7mcns3DSE/OttvkSDrPLYDuH5xsTF2fn/DDc9N/oPDKRAWM4w2VKbza71CfIYeHYbSvpKIHgOa2df/aZ8r5iCLkcxX/NZW6iV/Fjs5E2+vVPpd3ScvfD2T2P1u1re+VR79EOgzc=
+	t=1755523350; cv=none; b=pLGxgqM4Xeo6FMbZEW1SPNC/fa96/Zx0CHKU9EsV1WxuK3Ppni5Pi3jaMHX63oYzX/X3ZqkJ/DFtTrXZ2PAfla2LVf16ZeN7ZL7EBltVumTrAPd1URn2GAF/xtFvsoQ5cshQ5DMtWkwD7CkQ0HgzOeOPFJZfadsPvmmoi82DoV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521692; c=relaxed/simple;
-	bh=IvOinnXXIJUhCbwdCzco16WccVtYYvwAzsiaUpg9us8=;
+	s=arc-20240116; t=1755523350; c=relaxed/simple;
+	bh=6TndZ+jJaHr+21FgZb5S287LkFxfxudPPyQWMPIEU/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xo6sTQbnk344KYPjslXMXIzVnUIJPQJLM4rfQNSTpXgs+7QpgJdX4W3ePJ7KJZDqjRhcxaA1/f/K2fNmb1GYjVoit8RpgkTaoEAMhXvysSbfTEsLQOQVnG0+2HBgaIQuthHccmauWfhcwb95F4IFRBJjZLhLO8dvbLAnnZZ+rBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3u4leLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15F8C4CEEB;
-	Mon, 18 Aug 2025 12:54:51 +0000 (UTC)
+	 MIME-Version; b=DpRdmmA1OXCZuugYDADYm15ZMYW0+lIaO4ByZKAHz4sZ29wffzxY/AwnpWw95ZnZUbX8KlnI9iwTTL1EOWSEiU5K2YmGQY5aj27zqEytvn8bHJ7HMWuXLJvizcRAHTbGxb9Vb0Njz8ergfGtpl4oBN7S40n7IcIIRz4x0JEPbnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCPDui1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA41CC4CEEB;
+	Mon, 18 Aug 2025 13:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521692;
-	bh=IvOinnXXIJUhCbwdCzco16WccVtYYvwAzsiaUpg9us8=;
+	s=korg; t=1755523350;
+	bh=6TndZ+jJaHr+21FgZb5S287LkFxfxudPPyQWMPIEU/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3u4leLLlHu69wbQd2EeSiKYEx69z1bi8HA52GgpxjPCMER8EeicoCRjQGKex2Fu8
-	 3RyARppzIBRJHaynhM0/f7jc0PyCQxR0RxjbWgGYiF3q+s3Hk8YthNvkzW7EPXiZaT
-	 4WBtocjjjPbDg2fowTkcSLuyeQ7gFCdvVYf1wVFg=
+	b=pCPDui1sq8n0n0YubAsUaPLAvjogVEgRZnhF909hxldYvK7ONxs+BuEMygQTbig3E
+	 6q67p5g1jnJF1E1+eqFnEc1n3IwXuDNtPvOwN6enUDOtovZvsBswxI+DqLYhlhFcb7
+	 mUveS4aDsRlhiPtqM/ZT35ekMsyViWE3o3dEm2B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/444] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
+Subject: [PATCH 6.15 117/515] usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default
 Date: Mon, 18 Aug 2025 14:41:43 +0200
-Message-ID: <20250818124451.837904860@linuxfoundation.org>
+Message-ID: <20250818124502.851982167@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Benson Leung <bleung@chromium.org>
 
-[ Upstream commit 5c8f12cf1e64e0e8e6cb80b0c935389973e8be8d ]
+[ Upstream commit af833e7f7db3cf4c82f063668e1b52297a30ec18 ]
 
-Clears up the warning added in 7ee3647243e5 ("migrate: Remove call to
-->writepage") that occurs in various xfstests, causing "something found
-in dmesg" failures.
+ucsi_psy_get_current_max would return 0mA as the maximum current if
+UCSI detected a BC or a Default USB Power sporce.
 
-[  341.136573] gfs2_meta_aops does not implement migrate_folio
-[  341.136953] WARNING: CPU: 1 PID: 36 at mm/migrate.c:944 move_to_new_folio+0x2f8/0x300
+The comment in this function is true that we can't tell the difference
+between DCP/CDP or SDP chargers, but we can guarantee that at least 1-unit
+of USB 1.1/2.0 power is available, which is 100mA, which is a better
+fallback value than 0, which causes some userspaces, including the ChromeOS
+power manager, to regard this as a power source that is not providing
+any power.
 
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+In reality, 100mA is guaranteed from all sources in these classes.
+
+Signed-off-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20250717200805.3710473-1-bleung@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/meta_io.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/typec/ucsi/psy.c  | 2 +-
+ drivers/usb/typec/ucsi/ucsi.h | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
-index 960d6afcdfad..b795ca7765cd 100644
---- a/fs/gfs2/meta_io.c
-+++ b/fs/gfs2/meta_io.c
-@@ -103,6 +103,7 @@ const struct address_space_operations gfs2_meta_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
+diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
+index 62ac69730405..62a9d68bb66d 100644
+--- a/drivers/usb/typec/ucsi/psy.c
++++ b/drivers/usb/typec/ucsi/psy.c
+@@ -164,7 +164,7 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
+ 	case UCSI_CONSTAT_PWR_OPMODE_DEFAULT:
+ 	/* UCSI can't tell b/w DCP/CDP or USB2/3x1/3x2 SDP chargers */
+ 	default:
+-		val->intval = 0;
++		val->intval = UCSI_TYPEC_DEFAULT_CURRENT * 1000;
+ 		break;
+ 	}
+ 	return 0;
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 70910232a05d..1ae068a92844 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -479,9 +479,10 @@ struct ucsi {
+ #define UCSI_MAX_SVID		5
+ #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
  
- const struct address_space_operations gfs2_rgrp_aops = {
-@@ -110,6 +111,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
+-#define UCSI_TYPEC_VSAFE5V	5000
+-#define UCSI_TYPEC_1_5_CURRENT	1500
+-#define UCSI_TYPEC_3_0_CURRENT	3000
++#define UCSI_TYPEC_VSAFE5V		5000
++#define UCSI_TYPEC_DEFAULT_CURRENT	 100
++#define UCSI_TYPEC_1_5_CURRENT		1500
++#define UCSI_TYPEC_3_0_CURRENT		3000
  
- /**
+ struct ucsi_connector {
+ 	int num;
 -- 
 2.39.5
 
