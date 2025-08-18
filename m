@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-171523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92BDBB2AA56
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:31:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFC8B2A7B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD1A5A623D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A868687E5B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F0733470C;
-	Mon, 18 Aug 2025 14:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F9D226D18;
+	Mon, 18 Aug 2025 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDmt62Cr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kwl8Z917"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5003731B139;
-	Mon, 18 Aug 2025 14:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95280216E23;
+	Mon, 18 Aug 2025 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526217; cv=none; b=PxhFoLSkfrXt2eZq2GG/c0i8k8eCO1giA7oHAl1bLfwQxaAI1KmPHjBtxY5l+U7Cz/qE4GQaZK6tGFNeGOSPDPJEcABWayNH1tgcVsaf5rcb13h7fcADnxYSe5500eM+wmZJAgK/zzPEoruLJ56FidwZCC7bKzkyBd084arpvPY=
+	t=1755524506; cv=none; b=hwJDoViGlPzr+Nc+vSNyuZFg8H+cIpg44TS5zlJ4qS5TPS3Lro+3SHsRRPZzzuA3n76xN7zuFan94VVCn7iXzH3/aX5PDcu05QchB4F3tMP1Z3wg5x/F7baEty02UGFC4CgG9mtVNZ2ZGdT2vCIYaxFg2DObzi7nR49ywSU3zY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526217; c=relaxed/simple;
-	bh=vFuEsjN1Hrf1VYZ7NGPgWUF2/lCQbvsSmC08BvcTS54=;
+	s=arc-20240116; t=1755524506; c=relaxed/simple;
+	bh=0rvZ4HTDrQWHeW6Po44J6SkxW9sLxVGT00lQ8Q9nOy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnWo5MqW1Po06HqITgl79CKI3ozzFMJdNRQfc9I7zv6I2iiXxw/qpBXejK7HemNjoIErWYoeP2wQHSptDclLx7ms/FWRxjIIcc/iwOKh43q6oU90E655WUP5x/6RwXnKTnKJ++fYiySUni5XSUE3BooiShKkA8JBQcoSG9k6c3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDmt62Cr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1F5C4CEEB;
-	Mon, 18 Aug 2025 14:10:16 +0000 (UTC)
+	 MIME-Version; b=PubjVIHAYll+ZApcy7V66BLOinRqEyzHS0RH5edKonPgk/9ims9nh/XWOzJqzaaaGHEUn8x51kNjdbrp9vC8FxQJ7ac4nYvE8WdspT2SgRf5sdn2I9tpVaK5lOTTZ4QthIJesKnfhYHpz5GSnIl2wW0fVzHvh146ki4q/uhWKSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kwl8Z917; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF436C4CEEB;
+	Mon, 18 Aug 2025 13:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526216;
-	bh=vFuEsjN1Hrf1VYZ7NGPgWUF2/lCQbvsSmC08BvcTS54=;
+	s=korg; t=1755524506;
+	bh=0rvZ4HTDrQWHeW6Po44J6SkxW9sLxVGT00lQ8Q9nOy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDmt62CrZ5ummJie8dmmyNibE8V5xWuSgD7sOSnA3V7BNHAcQTx6fUuSinL1FekYX
-	 /0I1CJvAd8hqgnIxcahy0gJPlSZ0b6KnRYBNwixsfvtv1x3JRMGH0SU/FxZ0UwUU7E
-	 QVc6iJwvb1eKMxNtTPKyt0D7Q0mMg1so2DiaCHMs=
+	b=Kwl8Z9174GHAqnGcPcG1fiwQ8hCoreiDRKUIHxdcC23yljY/nsdPDLNRYjtYjv27/
+	 Yh+GeCQPRTYhYb7Wj0hzqASBineT0W0LZ1vETmqLk1ALouHa+PHg30kO6aqDGML1v8
+	 CnGIwr1ykJY95c9B1RWu7f9waTKm5awjYH9LuUko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 492/570] block: Introduce bio_needs_zone_write_plugging()
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 493/515] mm/shmem, swap: improve cached mTHP handling and fix potential hang
 Date: Mon, 18 Aug 2025 14:47:59 +0200
-Message-ID: <20250818124524.827714846@linuxfoundation.org>
+Message-ID: <20250818124517.417646087@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,167 +70,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Kairui Song <kasong@tencent.com>
 
-commit f70291411ba20d50008db90a6f0731efac27872c upstream.
+commit 5c241ed8d031693dadf33dd98ed2e7cc363e9b66 upstream.
 
-In preparation for fixing device mapper zone write handling, introduce
-the inline helper function bio_needs_zone_write_plugging() to test if a
-BIO requires handling through zone write plugging using the function
-blk_zone_plug_bio(). This function returns true for any write
-(op_is_write(bio) == true) operation directed at a zoned block device
-using zone write plugging, that is, a block device with a disk that has
-a zone write plug hash table.
+The current swap-in code assumes that, when a swap entry in shmem mapping
+is order 0, its cached folios (if present) must be order 0 too, which
+turns out not always correct.
 
-This helper allows simplifying the check on entry to blk_zone_plug_bio()
-and used in to protect calls to it for blk-mq devices and DM devices.
+The problem is shmem_split_large_entry is called before verifying the
+folio will eventually be swapped in, one possible race is:
 
-Fixes: f211268ed1f9 ("dm: Use the block layer zone append emulation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250625093327.548866-3-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+    CPU1                          CPU2
+shmem_swapin_folio
+/* swap in of order > 0 swap entry S1 */
+  folio = swap_cache_get_folio
+  /* folio = NULL */
+  order = xa_get_order
+  /* order > 0 */
+  folio = shmem_swap_alloc_folio
+  /* mTHP alloc failure, folio = NULL */
+  <... Interrupted ...>
+                                 shmem_swapin_folio
+                                 /* S1 is swapped in */
+                                 shmem_writeout
+                                 /* S1 is swapped out, folio cached */
+  shmem_split_large_entry(..., S1)
+  /* S1 is split, but the folio covering it has order > 0 now */
+
+Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
+folio lookup will return a folio with order > 0.  The
+`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
+return false causing swap-in to return -EEXIST.
+
+And this looks fragile.  So fix this up by allowing seeing a larger folio
+in swap cache, and check the whole shmem mapping range covered by the
+swapin have the right swap value upon inserting the folio.  And drop the
+redundant tree walks before the insertion.
+
+This will actually improve performance, as it avoids two redundant Xarray
+tree walks in the hot path, and the only side effect is that in the
+failure path, shmem may redundantly reallocate a few folios causing
+temporary slight memory pressure.
+
+And worth noting, it may seems the order and value check before inserting
+might help reducing the lock contention, which is not true.  The swap
+cache layer ensures raced swapin will either see a swap cache folio or
+failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
+bypassed), so holding the folio lock and checking the folio flag is
+already good enough for avoiding the lock contention.  The chance that a
+folio passes the swap entry value check but the shmem mapping slot has
+changed should be very low.
+
+Link: https://lkml.kernel.org/r/20250728075306.12704-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20250728075306.12704-2-ryncsn@gmail.com
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c         |    6 +++--
- block/blk-zoned.c      |   20 -----------------
- drivers/md/dm.c        |    4 ++-
- include/linux/blkdev.h |   55 +++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 63 insertions(+), 22 deletions(-)
+ mm/shmem.c |   39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3169,8 +3169,10 @@ void blk_mq_submit_bio(struct bio *bio)
- 	if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
- 		goto queue_exit;
- 
--	if (blk_queue_is_zoned(q) && blk_zone_plug_bio(bio, nr_segs))
--		goto queue_exit;
-+	if (bio_needs_zone_write_plugging(bio)) {
-+		if (blk_zone_plug_bio(bio, nr_segs))
-+			goto queue_exit;
-+	}
- 
- new_request:
- 	if (rq) {
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -1116,25 +1116,7 @@ bool blk_zone_plug_bio(struct bio *bio,
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struc
+ 				   pgoff_t index, void *expected, gfp_t gfp)
  {
- 	struct block_device *bdev = bio->bi_bdev;
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
+-	long nr = folio_nr_pages(folio);
++	unsigned long nr = folio_nr_pages(folio);
++	swp_entry_t iter, swap;
++	void *entry;
  
--	if (!bdev->bd_disk->zone_wplugs_hash)
--		return false;
--
--	/*
--	 * If the BIO already has the plugging flag set, then it was already
--	 * handled through this path and this is a submission from the zone
--	 * plug bio submit work.
--	 */
--	if (bio_flagged(bio, BIO_ZONE_WRITE_PLUGGING))
--		return false;
--
--	/*
--	 * We do not need to do anything special for empty flush BIOs, e.g
--	 * BIOs such as issued by blkdev_issue_flush(). The is because it is
--	 * the responsibility of the user to first wait for the completion of
--	 * write operations for flush to have any effect on the persistence of
--	 * the written data.
--	 */
--	if (op_is_flush(bio->bi_opf) && !bio_sectors(bio))
-+	if (WARN_ON_ONCE(!bdev->bd_disk->zone_wplugs_hash))
- 		return false;
+ 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -896,14 +898,25 @@ static int shmem_add_to_page_cache(struc
  
- 	/*
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1788,7 +1788,9 @@ static inline bool dm_zone_bio_needs_spl
- }
- static inline bool dm_zone_plug_bio(struct mapped_device *md, struct bio *bio)
- {
--	return dm_emulate_zone_append(md) && blk_zone_plug_bio(bio, 0);
-+	if (!bio_needs_zone_write_plugging(bio))
-+		return false;
-+	return blk_zone_plug_bio(bio, 0);
- }
+ 	gfp &= GFP_RECLAIM_MASK;
+ 	folio_throttle_swaprate(folio, gfp);
++	swap = radix_to_swp_entry(expected);
  
- static blk_status_t __send_zone_reset_all_emulated(struct clone_info *ci,
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -842,6 +842,55 @@ static inline unsigned int disk_nr_zones
- {
- 	return disk->nr_zones;
- }
-+
-+/**
-+ * bio_needs_zone_write_plugging - Check if a BIO needs to be handled with zone
-+ *				   write plugging
-+ * @bio: The BIO being submitted
-+ *
-+ * Return true whenever @bio execution needs to be handled through zone
-+ * write plugging (using blk_zone_plug_bio()). Return false otherwise.
-+ */
-+static inline bool bio_needs_zone_write_plugging(struct bio *bio)
-+{
-+	enum req_op op = bio_op(bio);
-+
+ 	do {
++		iter = swap;
+ 		xas_lock_irq(&xas);
+-		if (expected != xas_find_conflict(&xas)) {
+-			xas_set_err(&xas, -EEXIST);
+-			goto unlock;
++		xas_for_each_conflict(&xas, entry) {
++			/*
++			 * The range must either be empty, or filled with
++			 * expected swap entries. Shmem swap entries are never
++			 * partially freed without split of both entry and
++			 * folio, so there shouldn't be any holes.
++			 */
++			if (!expected || entry != swp_to_radix_entry(iter)) {
++				xas_set_err(&xas, -EEXIST);
++				goto unlock;
++			}
++			iter.val += 1 << xas_get_order(&xas);
+ 		}
+-		if (expected && xas_find_conflict(&xas)) {
++		if (expected && iter.val - nr != swap.val) {
+ 			xas_set_err(&xas, -EEXIST);
+ 			goto unlock;
+ 		}
+@@ -2330,7 +2343,7 @@ static int shmem_swapin_folio(struct ino
+ 			error = -ENOMEM;
+ 			goto failed;
+ 		}
+-	} else if (order != folio_order(folio)) {
++	} else if (order > folio_order(folio)) {
+ 		/*
+ 		 * Swap readahead may swap in order 0 folios into swapcache
+ 		 * asynchronously, while the shmem mapping can still stores
+@@ -2353,15 +2366,23 @@ static int shmem_swapin_folio(struct ino
+ 
+ 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
+ 		}
++	} else if (order < folio_order(folio)) {
++		swap.val = round_down(swap.val, 1 << folio_order(folio));
++		index = round_down(index, 1 << folio_order(folio));
+ 	}
+ 
+ alloced:
+-	/* We have to do this with folio locked to prevent races */
 +	/*
-+	 * Only zoned block devices have a zone write plug hash table. But not
-+	 * all of them have one (e.g. DM devices may not need one).
++	 * We have to do this with the folio locked to prevent races.
++	 * The shmem_confirm_swap below only checks if the first swap
++	 * entry matches the folio, that's enough to ensure the folio
++	 * is not used outside of shmem, as shmem swap entries
++	 * and swap cache folios are never partially freed.
 +	 */
-+	if (!bio->bi_bdev->bd_disk->zone_wplugs_hash)
-+		return false;
-+
-+	/* Only write operations need zone write plugging. */
-+	if (!op_is_write(op))
-+		return false;
-+
-+	/* Ignore empty flush */
-+	if (op_is_flush(bio->bi_opf) && !bio_sectors(bio))
-+		return false;
-+
-+	/* Ignore BIOs that already have been handled by zone write plugging. */
-+	if (bio_flagged(bio, BIO_ZONE_WRITE_PLUGGING))
-+		return false;
-+
-+	/*
-+	 * All zone write operations must be handled through zone write plugging
-+	 * using blk_zone_plug_bio().
-+	 */
-+	switch (op) {
-+	case REQ_OP_ZONE_APPEND:
-+	case REQ_OP_WRITE:
-+	case REQ_OP_WRITE_ZEROES:
-+	case REQ_OP_ZONE_FINISH:
-+	case REQ_OP_ZONE_RESET:
-+	case REQ_OP_ZONE_RESET_ALL:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs);
- 
- /**
-@@ -871,6 +920,12 @@ static inline unsigned int disk_nr_zones
- {
- 	return 0;
- }
-+
-+static inline bool bio_needs_zone_write_plugging(struct bio *bio)
-+{
-+	return false;
-+}
-+
- static inline bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs)
- {
- 	return false;
+ 	folio_lock(folio);
+ 	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
+-	    folio->swap.val != swap.val ||
+ 	    !shmem_confirm_swap(mapping, index, swap) ||
+-	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
++	    folio->swap.val != swap.val) {
+ 		error = -EEXIST;
+ 		goto unlock;
+ 	}
 
 
 
