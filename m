@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D3CB2A6E6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C19B2A9E7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606F31B63C8A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5796E6ADE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DC7322544;
-	Mon, 18 Aug 2025 13:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75FE280CE0;
+	Mon, 18 Aug 2025 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVt9iogT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXEImhKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AD8321F59;
-	Mon, 18 Aug 2025 13:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C50931B11A;
+	Mon, 18 Aug 2025 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524197; cv=none; b=ZHHz+XCO5ftyUr8E4HOlKUAZuBvOUOIqVFddsiDd+0Jenz9uWXpEWBZ855otrH5MSQB8K5X1h+1EF0umGdagQRgYOm5HIfUkYBJAG2bXJB1StA1Aic7W0RkSn+TEokmaJa5vwU8udPiRSwPHgVO5c+CYClYqyJT0Nb8bA51SPiw=
+	t=1755525779; cv=none; b=GZstVr0wWVbw6srT6KUwIei9hUZRF3S5KXqrggmFYsr87pNCYJ5nWu687EW3/pVy2f05HySv4E8o8DHP2Ja0og+/cMSBGMr48eSO91P3B5aemXFLvOZ6s7CxKwZijvilR7ieCBMabq0ySF2dXd+Nk8I5z3AYfpGwWYYzQx9xUcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524197; c=relaxed/simple;
-	bh=hnojKPC7Yr9wopum1OZdXVujkGgYUKSs0kGDTfyGlNM=;
+	s=arc-20240116; t=1755525779; c=relaxed/simple;
+	bh=+GszvICaURZxnrKqNxEptpsdDJl7LbfXdoEA1ni9uew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgjNX90xzlgSMAdg6NTqPBpovrJ7Y/zYxZha4h6Uof1pbgmkb9p9WoArjD3wSAdzUxxowJWY10XF53BnusE9BJUcjWj8RfSBnHrldtS9kcWkGss3TdetIf0MhEBeNXy3NA2PwXiaudNywMrRXvsWFyKK4IfhWgzPScLUXLzMxeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVt9iogT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FB8C4CEEB;
-	Mon, 18 Aug 2025 13:36:37 +0000 (UTC)
+	 MIME-Version; b=ZethvipJdj5SX16DXLCnV9YM9ZfivUy3Ut07yyyu90B4boNYMxY5GaVSrw4mZMR98QCdlaEI6XP89Xziyg2qp9l+BzxHC6i5xzmllxs9kTsK49uJn6hsqmsMrDZ3SR5k6SjTS2Ll6ep3aWIKjyafhI2cbt6gcKcSBm0cjE/4sVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXEImhKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EE3C4CEEB;
+	Mon, 18 Aug 2025 14:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524197;
-	bh=hnojKPC7Yr9wopum1OZdXVujkGgYUKSs0kGDTfyGlNM=;
+	s=korg; t=1755525779;
+	bh=+GszvICaURZxnrKqNxEptpsdDJl7LbfXdoEA1ni9uew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVt9iogTnWqyYfGWTX8P4ssFEYfMyfuahryylGmHwEVGKfGQqB/BkuuEMNc+o9r8r
-	 e8sacV5fToLEcXMpOPSXJ2KTrxi0s55GjMedQhXdtAIU4Cu3EW0OVUqmhDJcbeUNwB
-	 x+PtzWeR57OypShv7Ew6P4FY5/KbASu+ZcR8crC0=
+	b=vXEImhKxB1CwRFkHuvp2ZDMmcR8t/VX3y5kxUGBuH3Yqp7iiWUDbnEC0TqYPXxazy
+	 4Sn+PcOqsNs5rFuipNKI/zhh9EgZ0UCEyJzkPBzPFQzu35pVGF8Py/aMR7Rz0Mr6lX
+	 SDAomfu0xNLSK089J+oliSUkBaWcn9iMxNtxMhHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+544248a761451c0df72f@syzkaller.appspotmail.com,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 365/515] RDMA/core: reduce stack using in nldev_stat_get_doit()
+Subject: [PATCH 6.16 364/570] ext4: do not BUG when INLINE_DATA_FL lacks system.data xattr
 Date: Mon, 18 Aug 2025 14:45:51 +0200
-Message-ID: <20250818124512.461156786@linuxfoundation.org>
+Message-ID: <20250818124519.886349240@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
+[ Upstream commit 099b847ccc6c1ad2f805d13cfbcc83f5b6d4bc42 ]
 
-In the s390 defconfig, gcc-10 and earlier end up inlining three functions
-into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
+A syzbot fuzzed image triggered a BUG_ON in ext4_update_inline_data()
+when an inode had the INLINE_DATA_FL flag set but was missing the
+system.data extended attribute.
 
-The result is a function with an overly large stack frame and a warning:
+Since this can happen due to a maiciouly fuzzed file system, we
+shouldn't BUG, but rather, report it as a corrupted file system.
 
-drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+Add similar replacements of BUG_ON with EXT4_ERROR_INODE() ii
+ext4_create_inline_data() and ext4_inline_data_truncate().
 
-Mark the three functions noinline_for_stack to prevent this, ensuring
-that only one copy of the nlattr array is on the stack of each function.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: syzbot+544248a761451c0df72f@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ fs/ext4/inline.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index a872643e8039..e9b7a6419291 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -1469,10 +1469,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
+diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
+index 1545846e0e3e..05313c8ffb9c 100644
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -303,7 +303,11 @@ static int ext4_create_inline_data(handle_t *handle,
+ 	if (error)
+ 		goto out;
  
- };
+-	BUG_ON(!is.s.not_found);
++	if (!is.s.not_found) {
++		EXT4_ERROR_INODE(inode, "unexpected inline data xattr");
++		error = -EFSCORRUPTED;
++		goto out;
++	}
  
--static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
--			       struct netlink_ext_ack *extack,
--			       enum rdma_restrack_type res_type,
--			       res_fill_func_t fill_func)
-+static noinline_for_stack int
-+res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		    struct netlink_ext_ack *extack,
-+		    enum rdma_restrack_type res_type,
-+		    res_fill_func_t fill_func)
- {
- 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
- 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
-@@ -2263,10 +2264,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return ret;
- }
+ 	error = ext4_xattr_ibody_set(handle, inode, &i, &is);
+ 	if (error) {
+@@ -354,7 +358,11 @@ static int ext4_update_inline_data(handle_t *handle, struct inode *inode,
+ 	if (error)
+ 		goto out;
  
--static int stat_get_doit_default_counter(struct sk_buff *skb,
--					 struct nlmsghdr *nlh,
--					 struct netlink_ext_ack *extack,
--					 struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			      struct netlink_ext_ack *extack,
-+			      struct nlattr *tb[])
- {
- 	struct rdma_hw_stats *stats;
- 	struct nlattr *table_attr;
-@@ -2356,8 +2357,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
- 	return ret;
- }
+-	BUG_ON(is.s.not_found);
++	if (is.s.not_found) {
++		EXT4_ERROR_INODE(inode, "missing inline data xattr");
++		error = -EFSCORRUPTED;
++		goto out;
++	}
  
--static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
--			    struct netlink_ext_ack *extack, struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		 struct netlink_ext_ack *extack, struct nlattr *tb[])
+ 	len -= EXT4_MIN_INLINE_DATA_SIZE;
+ 	value = kzalloc(len, GFP_NOFS);
+@@ -1905,7 +1913,12 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
+ 			if ((err = ext4_xattr_ibody_find(inode, &i, &is)) != 0)
+ 				goto out_error;
  
- {
- 	static enum rdma_nl_counter_mode mode;
+-			BUG_ON(is.s.not_found);
++			if (is.s.not_found) {
++				EXT4_ERROR_INODE(inode,
++						 "missing inline data xattr");
++				err = -EFSCORRUPTED;
++				goto out_error;
++			}
+ 
+ 			value_len = le32_to_cpu(is.s.here->e_value_size);
+ 			value = kmalloc(value_len, GFP_NOFS);
 -- 
 2.39.5
 
