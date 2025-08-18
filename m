@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C37B2A90B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:14:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44C4B2A396
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87043581083
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFFA5622856
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7742F322552;
-	Mon, 18 Aug 2025 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B18731E0E4;
+	Mon, 18 Aug 2025 13:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWHswkYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLQJqGH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3520927B358;
-	Mon, 18 Aug 2025 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EEE31E0F2;
+	Mon, 18 Aug 2025 13:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525547; cv=none; b=rwjYnCNF1MKT+WJs+Hjsl23uCcM5r9q51qW8hETG03/fKCcgnDa0M8SxIt8kvE1a1ieE8NzZjAmlLGDEO7MhH3cUxXiUrKCJCoBY+iMNorRIqHbFnPy5E8ueFS8REy6CKXuPMJzGhCHdUB2D6zoOcNXBk8hi968n3VX8551MvOs=
+	t=1755522328; cv=none; b=J95sA9EmVQNNb9/9gdqMIVu63RvFD3BOnW3xlyhtzWiB0GA6boRFCCJ8nhNi8WFTm0w3jWWiAU6onzZ7fT0wVfBxtAefxDimJk/1BUVViyXtb8yAfJO7rb2fO6Eu0BUFMPPzlkwx5WDAZj5htQEWb/Ajr5Z6vKSytZLx0iAFBKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525547; c=relaxed/simple;
-	bh=Gk16XEps7z2W5oGGPkWamH1dP9b+KopYJg8HZn75R10=;
+	s=arc-20240116; t=1755522328; c=relaxed/simple;
+	bh=jyFzuMAG6WmVNF0BPNRguU1BqccO17jNULPynGhTiek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAbwTPe7GZg3jw56KeWL9ue4yG+yI7MRwUewDE+RHwwUgfkqlKBM4eIle9+AK6Xr5adFdl3m992Q0x1YDE0YKjarC+QxQVFDghSrasU+eTUy+iMhdEkvZ1DRWGu2RIUBcFh5a7hgZPm02UEU3vUXBMhZKK/pVEaBioNC8oSCeR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWHswkYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987C5C4CEEB;
-	Mon, 18 Aug 2025 13:59:06 +0000 (UTC)
+	 MIME-Version; b=AjGxtfsQw2ITjomJ40l68vHK8yrNg7v7FfI8cYw9kGLdcHxQ/s/vBHSaYD0xf6xep1nX0u4TBuoP3exCgJ8jBgZnrzoYV7k2XW/Gmay8G+GWwfOqZMUv+dBvJ9RFKiZ+LF4DQesVhl3lrluiQu15MPLCse9z6qDTTILX55nEurk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLQJqGH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A729C4CEEB;
+	Mon, 18 Aug 2025 13:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525547;
-	bh=Gk16XEps7z2W5oGGPkWamH1dP9b+KopYJg8HZn75R10=;
+	s=korg; t=1755522328;
+	bh=jyFzuMAG6WmVNF0BPNRguU1BqccO17jNULPynGhTiek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWHswkYzm9qT1WD8G9Yww/LgQBgsRcHRJf0L35vg04ZHbfYAtK1cwSRSDXrvti1XK
-	 YCKHyeer2GqXZUqOfehgqD+8V1qBpGrI9nPjA8Cpg9ZMCTawccUUWCT1ZO4Fqeee/8
-	 d/EXnElOfKts8gRGWIQKcO4C0lplcvuXuTuplHCs=
+	b=kLQJqGH/QB9PS4rpPPdMoesBuhjGDgN46czV6YTkn0OtKrTxZFbi5UuTylvUPbMtr
+	 yeZK2I8RyPqIc/oYZaNJOJ9L2AlxwcxrGFIyyPBbmdrJCm5AMuhUUtrlSwTv7loEOf
+	 gpm7FNDVPiCt2LPZxC+72VWO6eCQzi03h0Fwc/mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 295/570] drm/panel: raydium-rm67200: Move initialization from enable() to prepare stage
+Subject: [PATCH 6.12 256/444] wifi: rtlwifi: fix possible skb memory leak in _rtl_pci_init_one_rxdesc()
 Date: Mon, 18 Aug 2025 14:44:42 +0200
-Message-ID: <20250818124517.215844091@linuxfoundation.org>
+Message-ID: <20250818124458.429571005@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 691674a282bdbf8f8bce4094369a2d1e4b5645e9 ]
+[ Upstream commit 76b3e5078d76f0eeadb7aacf9845399f8473da0d ]
 
-The DSI host has different modes in prepare() and enable() functions,
-prepare() is in LP command mode and enable() is in HS video mode.
+When `dma_mapping_error()` is true, if a new `skb` has been allocated,
+then it must be de-allocated.
 
->From our experience, generally the initialization sequence needs to be
-sent in the LP command mode.
+Compile tested only
 
-Move the setup init function from enable() to prepare() to fix a display
-shift on rk3568 evb.
-
-Tested on rk3568/rk3576/rk3588 EVB.
-
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250618091520.691590-1-andyshrk@163.com
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250613074014.69856-2-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-raydium-rm67200.c | 22 ++++++-------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-raydium-rm67200.c b/drivers/gpu/drm/panel/panel-raydium-rm67200.c
-index 64b685dc11f6..6d4d00d4cd74 100644
---- a/drivers/gpu/drm/panel/panel-raydium-rm67200.c
-+++ b/drivers/gpu/drm/panel/panel-raydium-rm67200.c
-@@ -318,6 +318,7 @@ static void w552793baa_setup(struct mipi_dsi_multi_context *ctx)
- static int raydium_rm67200_prepare(struct drm_panel *panel)
- {
- 	struct raydium_rm67200 *ctx = to_raydium_rm67200(panel);
-+	struct mipi_dsi_multi_context mctx = { .dsi = ctx->dsi };
- 	int ret;
- 
- 	ret = regulator_bulk_enable(ctx->num_supplies, ctx->supplies);
-@@ -328,6 +329,12 @@ static int raydium_rm67200_prepare(struct drm_panel *panel)
- 
- 	msleep(60);
- 
-+	ctx->panel_info->panel_setup(&mctx);
-+	mipi_dsi_dcs_exit_sleep_mode_multi(&mctx);
-+	mipi_dsi_msleep(&mctx, 120);
-+	mipi_dsi_dcs_set_display_on_multi(&mctx);
-+	mipi_dsi_msleep(&mctx, 30);
-+
- 	return 0;
- }
- 
-@@ -343,20 +350,6 @@ static int raydium_rm67200_unprepare(struct drm_panel *panel)
- 	return 0;
- }
- 
--static int raydium_rm67200_enable(struct drm_panel *panel)
--{
--	struct raydium_rm67200 *rm67200 = to_raydium_rm67200(panel);
--	struct mipi_dsi_multi_context ctx = { .dsi = rm67200->dsi };
--
--	rm67200->panel_info->panel_setup(&ctx);
--	mipi_dsi_dcs_exit_sleep_mode_multi(&ctx);
--	mipi_dsi_msleep(&ctx, 120);
--	mipi_dsi_dcs_set_display_on_multi(&ctx);
--	mipi_dsi_msleep(&ctx, 30);
--
--	return ctx.accum_err;
--}
--
- static int raydium_rm67200_disable(struct drm_panel *panel)
- {
- 	struct raydium_rm67200 *rm67200 = to_raydium_rm67200(panel);
-@@ -381,7 +374,6 @@ static const struct drm_panel_funcs raydium_rm67200_funcs = {
- 	.prepare = raydium_rm67200_prepare,
- 	.unprepare = raydium_rm67200_unprepare,
- 	.get_modes = raydium_rm67200_get_modes,
--	.enable = raydium_rm67200_enable,
- 	.disable = raydium_rm67200_disable,
- };
- 
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 2741c3beac4c..d080469264cf 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -572,8 +572,11 @@ static int _rtl_pci_init_one_rxdesc(struct ieee80211_hw *hw,
+ 		dma_map_single(&rtlpci->pdev->dev, skb_tail_pointer(skb),
+ 			       rtlpci->rxbuffersize, DMA_FROM_DEVICE);
+ 	bufferaddress = *((dma_addr_t *)skb->cb);
+-	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress))
++	if (dma_mapping_error(&rtlpci->pdev->dev, bufferaddress)) {
++		if (!new_skb)
++			kfree_skb(skb);
+ 		return 0;
++	}
+ 	rtlpci->rx_ring[rxring_idx].rx_buf[desc_idx] = skb;
+ 	if (rtlpriv->use_new_trx_flow) {
+ 		/* skb->cb may be 64 bit address */
 -- 
 2.39.5
 
