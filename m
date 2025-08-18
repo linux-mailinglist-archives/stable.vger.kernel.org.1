@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-170953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E149BB2A787
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94362B2A46D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF9F1BA1C84
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BCA8623DE6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AA931B13B;
-	Mon, 18 Aug 2025 13:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3843E31B13A;
+	Mon, 18 Aug 2025 13:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTVHKXun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paPnRPGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AF73112AE;
-	Mon, 18 Aug 2025 13:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA62C30F7F8;
+	Mon, 18 Aug 2025 13:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524334; cv=none; b=WQNntcjrqb6+IlaLUsaMSV0QVEuProGPN03wL5C2wvLmSRDCdvU0NMseUKMyMxW2L9jhgIMJtlzZGp0YP16AKx6cI+anQQvAMCjAiYW347E+lmqHY7NjV4r0hk/ylOiSekad8myZi/GQJETwO1tdHiuHf/go0iEdxKGwfgLag44=
+	t=1755522829; cv=none; b=F/Fb4IkLBn4NllVPMSmUcgNx6XO3pSimk4Nq7d3fFJXxX65oiz0WRScULsFjtJxYvKviwtoTvLYX9louM34VoNOAAboVhI1feb9//aDc09mQhy6rmYgouZ0qOPYP8h7uP944AXumVELVCEk0yOKfc3SOCTjGxPM6kLZpeXQMw2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524334; c=relaxed/simple;
-	bh=08yxGWiLxQYiZvHz+VcDOkvuygfJWFHhBlnVLv4N7VM=;
+	s=arc-20240116; t=1755522829; c=relaxed/simple;
+	bh=kfsBTwkvI15NKOg+H5RuV/ZF4+gfgVX4U3FdDIa2i2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0HtceHndbkDH7Ew0YOxF6U0Eynym05dnUBaKVRegmYLfEYJUutiaqBIh6Yh2nFxGrOTi7eUalRgCj5ZTcRabWWeMB7g7vVcNjPE8bQaHqTyCrxEIGCOEP/fAbilwMHYHn6teSVS6FLxVQv1P5/hGkAqQ4hk+Gjo6jUBV0g4cKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTVHKXun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16222C116C6;
-	Mon, 18 Aug 2025 13:38:53 +0000 (UTC)
+	 MIME-Version; b=KfPwSgTDcskMClgbIQlgngdxOGRHdOz1FMyj5EEr6Ntx6m5wjLW9Mr0IBrdpOn+N3kaHz7hqlo+1eyKRbIQc1dU3Y77J1mn5kUlQK3Wpool0GATwCBXToVRWIdvIOt40NbVFN5OWuYrseuG35o7+Sk2NNL6behHdWuY1lv3bWoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paPnRPGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC5CC4CEEB;
+	Mon, 18 Aug 2025 13:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524334;
-	bh=08yxGWiLxQYiZvHz+VcDOkvuygfJWFHhBlnVLv4N7VM=;
+	s=korg; t=1755522828;
+	bh=kfsBTwkvI15NKOg+H5RuV/ZF4+gfgVX4U3FdDIa2i2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTVHKXunQYTvDim+SXxt9Oq5sZlvvhEER6J1am2ViP4k7JG4ksNND7hNMQufyx6s6
-	 kfNM0tmR1y+hUkPPhYtZf51d4A7ClgwNnk3XVXwT/bfkIZYdgac25D+g4M4td1zv5L
-	 TWcg7fNKhnf+hUu7fxMJANFy7yo0EpLVtbc9oAq8=
+	b=paPnRPGvtZghXYFX355UiSm5kKL/5/8lm9cfBIebMimtq9EtMpNENZpswpIrtryKF
+	 vkKmYKknkZbq92AR4Ux1oaQuemqeMl1MsUkbaxdOjJoeNg/uorgXDtkqpUImjEs7nA
+	 NNhgbYUbuG88TMbV1jMyN2Lw1d4F17KsN1glvAVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 441/515] samples/damon/wsse: fix boot time enable handling
+	Peter Jung <ptr1337@cachyos.org>,
+	burneddi <burneddi@protonmail.com>,
+	Russell Haley <yumpusamongus@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 401/444] btrfs: fix log tree replay failure due to file with 0 links and extents
 Date: Mon, 18 Aug 2025 14:47:07 +0200
-Message-ID: <20250818124515.402615199@linuxfoundation.org>
+Message-ID: <20250818124503.959318300@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +65,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 0ed1165c37277822b519f519d0982d36efc30006 upstream.
+commit 0a32e4f0025a74c70dcab4478e9b29c22f5ecf2f upstream.
 
-Patch series "mm/damon: fix misc bugs in DAMON modules".
+If we log a new inode (not persisted in a past transaction) that has 0
+links and extents, then log another inode with an higher inode number, we
+end up with failing to replay the log tree with -EINVAL. The steps for
+this are:
 
->From manual code review, I found below bugs in DAMON modules.
+1) create new file A
+2) write some data to file A
+3) open an fd on file A
+4) unlink file A
+5) fsync file A using the previously open fd
+6) create file B (has higher inode number than file A)
+7) fsync file B
+8) power fail before current transaction commits
 
-DAMON sample modules crash if those are enabled at boot time, via kernel
-command line.  A similar issue was found and fixed on DAMON non-sample
-modules in the past, but we didn't check that for sample modules.
+Now when attempting to mount the fs, the log replay will fail with
+-ENOENT at replay_one_extent() when attempting to replay the first
+extent of file A. The failure comes when trying to open the inode for
+file A in the subvolume tree, since it doesn't exist.
 
-DAMON non-sample modules are not setting 'enabled' parameters accordingly
-when real enabling is failed.  Honggyu found and fixed[1] this type of
-bugs in DAMON sample modules, and my inspection was motivated by the great
-work.  Kudos to Honggyu.
+Before commit 5f61b961599a ("btrfs: fix inode lookup error handling
+during log replay"), the returned error was -EIO instead of -ENOENT,
+since we converted any errors when attempting to read an inode during
+log replay to -EIO.
 
-Finally, DAMON_RECLIAM is mistakenly losing scheme internal status due to
-misuse of damon_commit_ctx().  DAMON_LRU_SORT has a similar misuse, but
-fortunately it is not causing real status loss.
+The reason for this is that the log replay procedure fails to ignore
+the current inode when we are at the stage LOG_WALK_REPLAY_ALL, our
+current inode has 0 links and last inode we processed in the previous
+stage has a non 0 link count. In other words, the issue is that at
+replay_one_extent() we only update wc->ignore_cur_inode if the current
+replay stage is LOG_WALK_REPLAY_INODES.
 
-Fix the bugs.  Since these are similar patterns of bugs that were found in
-the past, it would be better to add tests or refactor the code, in future.
+Fix this by updating wc->ignore_cur_inode whenever we find an inode item
+regardless of the current replay stage. This is a simple solution and easy
+to backport, but later we can do other alternatives like avoid logging
+extents or inode items other than the inode item for inodes with a link
+count of 0.
 
+The problem with the wc->ignore_cur_inode logic has been around since
+commit f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync
+of a tmpfile") but it only became frequent to hit since the more recent
+commit 5e85262e542d ("btrfs: fix fsync of files with no hard links not
+persisting deletion"), because we stopped skipping inodes with a link
+count of 0 when logging, while before the problem would only be triggered
+if trying to replay a log tree created with an older kernel which has a
+logged inode with 0 links.
 
-This patch (of 6):
+A test case for fstests will be submitted soon.
 
-If 'enable' parameter of the 'wsse' DAMON sample module is set at boot
-time via the kernel command line, memory allocation is tried before the
-slab is initialized.  As a result kernel NULL pointer dereference BUG can
-happen.  Fix it by checking the initialization status.
-
-Link: https://lkml.kernel.org/r/20250706193207.39810-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20250706193207.39810-2-sj@kernel.org
-Link: https://lore.kernel.org/20250702000205.1921-1-honggyu.kim@sk.com [1]
-Fixes: b757c6cfc696 ("samples/damon/wsse: start and stop DAMON as the user requests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Peter Jung <ptr1337@cachyos.org>
+Link: https://lore.kernel.org/linux-btrfs/fce139db-4458-4788-bb97-c29acf6cb1df@cachyos.org/
+Reported-by: burneddi <burneddi@protonmail.com>
+Link: https://lore.kernel.org/linux-btrfs/lh4W-Lwc0Mbk-QvBhhQyZxf6VbM3E8VtIvU3fPIQgweP_Q1n7wtlUZQc33sYlCKYd-o6rryJQfhHaNAOWWRKxpAXhM8NZPojzsJPyHMf2qY=@protonmail.com/#t
+Reported-by: Russell Haley <yumpusamongus@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/598ecc75-eb80-41b3-83c2-f2317fbb9864@gmail.com/
+Fixes: f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync of a tmpfile")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/damon/wsse.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/btrfs/tree-log.c |   48 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
-index e20238a249e7..e941958b1032 100644
---- a/samples/damon/wsse.c
-+++ b/samples/damon/wsse.c
-@@ -89,6 +89,8 @@ static void damon_sample_wsse_stop(void)
- 		put_pid(target_pidp);
- }
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -324,8 +324,7 @@ struct walk_control {
  
-+static bool init_called;
+ 	/*
+ 	 * Ignore any items from the inode currently being processed. Needs
+-	 * to be set every time we find a BTRFS_INODE_ITEM_KEY and we are in
+-	 * the LOG_WALK_REPLAY_INODES stage.
++	 * to be set every time we find a BTRFS_INODE_ITEM_KEY.
+ 	 */
+ 	bool ignore_cur_inode;
+ 
+@@ -2447,23 +2446,30 @@ static int replay_one_buffer(struct btrf
+ 
+ 	nritems = btrfs_header_nritems(eb);
+ 	for (i = 0; i < nritems; i++) {
+-		btrfs_item_key_to_cpu(eb, &key, i);
++		struct btrfs_inode_item *inode_item;
+ 
+-		/* inode keys are done during the first stage */
+-		if (key.type == BTRFS_INODE_ITEM_KEY &&
+-		    wc->stage == LOG_WALK_REPLAY_INODES) {
+-			struct btrfs_inode_item *inode_item;
+-			u32 mode;
++		btrfs_item_key_to_cpu(eb, &key, i);
+ 
+-			inode_item = btrfs_item_ptr(eb, i,
+-					    struct btrfs_inode_item);
++		if (key.type == BTRFS_INODE_ITEM_KEY) {
++			inode_item = btrfs_item_ptr(eb, i, struct btrfs_inode_item);
+ 			/*
+-			 * If we have a tmpfile (O_TMPFILE) that got fsync'ed
+-			 * and never got linked before the fsync, skip it, as
+-			 * replaying it is pointless since it would be deleted
+-			 * later. We skip logging tmpfiles, but it's always
+-			 * possible we are replaying a log created with a kernel
+-			 * that used to log tmpfiles.
++			 * An inode with no links is either:
++			 *
++			 * 1) A tmpfile (O_TMPFILE) that got fsync'ed and never
++			 *    got linked before the fsync, skip it, as replaying
++			 *    it is pointless since it would be deleted later.
++			 *    We skip logging tmpfiles, but it's always possible
++			 *    we are replaying a log created with a kernel that
++			 *    used to log tmpfiles;
++			 *
++			 * 2) A non-tmpfile which got its last link deleted
++			 *    while holding an open fd on it and later got
++			 *    fsynced through that fd. We always log the
++			 *    parent inodes when inode->last_unlink_trans is
++			 *    set to the current transaction, so ignore all the
++			 *    inode items for this inode. We will delete the
++			 *    inode when processing the parent directory with
++			 *    replay_dir_deletes().
+ 			 */
+ 			if (btrfs_inode_nlink(eb, inode_item) == 0) {
+ 				wc->ignore_cur_inode = true;
+@@ -2471,8 +2477,14 @@ static int replay_one_buffer(struct btrf
+ 			} else {
+ 				wc->ignore_cur_inode = false;
+ 			}
+-			ret = replay_xattr_deletes(wc->trans, root, log,
+-						   path, key.objectid);
++		}
 +
- static int damon_sample_wsse_enable_store(
- 		const char *val, const struct kernel_param *kp)
- {
-@@ -114,7 +116,15 @@ static int damon_sample_wsse_enable_store(
- 
- static int __init damon_sample_wsse_init(void)
- {
--	return 0;
-+	int err = 0;
++		/* Inode keys are done during the first stage. */
++		if (key.type == BTRFS_INODE_ITEM_KEY &&
++		    wc->stage == LOG_WALK_REPLAY_INODES) {
++			u32 mode;
 +
-+	init_called = true;
-+	if (enable) {
-+		err = damon_sample_wsse_start();
-+		if (err)
-+			enable = false;
-+	}
-+	return err;
- }
- 
- module_init(damon_sample_wsse_init);
--- 
-2.50.1
-
++			ret = replay_xattr_deletes(wc->trans, root, log, path, key.objectid);
+ 			if (ret)
+ 				break;
+ 			mode = btrfs_inode_mode(eb, inode_item);
 
 
 
