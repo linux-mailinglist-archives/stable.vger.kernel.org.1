@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE54B2A3E0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF302B2A705
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16DC1B253CA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727716852E8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73F831E105;
-	Mon, 18 Aug 2025 13:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8B2321F23;
+	Mon, 18 Aug 2025 13:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMrUbrlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMkNPRhJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E0331B11A;
-	Mon, 18 Aug 2025 13:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D03C2C235D;
+	Mon, 18 Aug 2025 13:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522455; cv=none; b=MIihfEbYK76yQo3SLZCjg89ZyG2sEVILfnsI7SzU/vpVUqLJyFeZ3fIFrMuF28Cjd+QjnqYQGWKj9NH5PxX9Yd75gXjmE6cmjcLw+V9qgIhHvhgIPhs1JBLwD40vw16lXDYUrQ6stXRwLuuTa954MqhmiLaTIl5PiPRmW7Bdpzc=
+	t=1755524099; cv=none; b=MXesTSp744JmaAA/QrwGpPe4QnDG/8xGNjMJUkw3mis7wwhAVjMcl8lx//cbJQTj07Oc9SQqrpE9LLDk+QV5D2VkPXxH1xngizGZRL7vTreMYFrt2z5QhbX4FrBjElaVJ5BRNZy6D9mxs3eW+qpAoR2obSjSvN04AFvmtoz5Zu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522455; c=relaxed/simple;
-	bh=VfXCT785GWFOwBJ9u2FbGsgg7N6Biir7UWuEBaKBg2Y=;
+	s=arc-20240116; t=1755524099; c=relaxed/simple;
+	bh=/iQtkEqWwP+KIfmf5vHtNL7CiqJLdY8nEYTEQJ7UiMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEZ092uoXBrVLZdETJWLTpwXA29ZZ93sJaFo/SaZGz0TJrE9MDc+sJs5TYl5XIXo8zAZfHHFRnnyYi7oEfN7iZvPOUJMm36yY1hhQsVwHv6doOx4FYaqaew/b0nyaaFAKmw1lvv5AUseDuwLzSUC60v91lHwDDQeICbma+5FtRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMrUbrlg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81A2C4CEEB;
-	Mon, 18 Aug 2025 13:07:34 +0000 (UTC)
+	 MIME-Version; b=jbJ+88scl55lrv2CxDXkMqWOGxJfc6BktHNe2VVP9YCA/z4xVWS1FHTMpuDmoJuuwLD1/SPINwppFLeTc+/rXujAkDTYt51UtFcyKY/uUxxQ757sGSDpzVqiwRc1VrzyoSOP4T1fKjMvmWyxho9DZeJgFMNczcE5xvWtSkM+HJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMkNPRhJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C13C4CEEB;
+	Mon, 18 Aug 2025 13:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522455;
-	bh=VfXCT785GWFOwBJ9u2FbGsgg7N6Biir7UWuEBaKBg2Y=;
+	s=korg; t=1755524098;
+	bh=/iQtkEqWwP+KIfmf5vHtNL7CiqJLdY8nEYTEQJ7UiMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMrUbrlgSCVgqnfTJHnrGefT50zOTzlNAmAHLM4Yu5JerVQsadDleNOts9fmLVifO
-	 ezMJXO6P7gnIWxw+DcwcbuId6S4rK3/2wx+rzQlUAN9GxCEgLxhKoeGNrg6UdhiYu/
-	 365r26uWe84q+5KOZMbeN537FERCKFhqvYQBzxpU=
+	b=mMkNPRhJukJw3Kx1QGuTN9xGX6ZsG8IiwCBtUM8NXZLnZVAqf/X3+9nY/zQyn5V9b
+	 xL0/0V6N/es3Gyzk6HrHaHiNhggMoX+xsRxDkN5L6PtFCmjnHQatMF8lrENqcfKrhv
+	 nWOeYVOXbj416jLR3AT/D0Em4mkp1+bI4qiZJ5HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenchangcheng <chenchangcheng@kylinos.cn>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 320/444] media: uvcvideo: Fix bandwidth issue for Alcor camera
+Subject: [PATCH 6.15 360/515] media: ipu-bridge: Add _HID for OV5670
 Date: Mon, 18 Aug 2025 14:45:46 +0200
-Message-ID: <20250818124500.942722959@linuxfoundation.org>
+Message-ID: <20250818124512.267138706@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chenchangcheng <chenchangcheng@kylinos.cn>
+From: Daniel Scally <dan.scally@ideasonboard.com>
 
-[ Upstream commit 9764401bf6f8a20eb11c2e78470f20fee91a9ea7 ]
+[ Upstream commit 484f8bec3ddb453321ef0b8621c25de6ce3d0302 ]
 
-Some broken device return wrong dwMaxPayloadTransferSize fields as
-follows:
+The OV5670 is found on Dell 7212 tablets paired with an IPU3 ISP
+and needs to be connected by the ipu-bridge. Add it to the list
+of supported devices.
 
-[  218.632537] uvcvideo: Device requested 2752512 B/frame bandwidth.
-[  218.632598] uvcvideo: No fast enough alt setting for requested bandwidth.
-
-When dwMaxPayloadTransferSize is greater than maxpsize, it will prevent
-the camera from starting. So use the bandwidth of maxpsize.
-
-Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250510061803.811433-1-ccc194101@163.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/media/pci/intel/ipu-bridge.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index eab7b8f55730..17ec298ee4f7 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -258,6 +258,15 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
- 
- 		ctrl->dwMaxPayloadTransferSize = bandwidth;
- 	}
-+
-+	if (stream->intf->num_altsetting > 1 &&
-+	    ctrl->dwMaxPayloadTransferSize > stream->maxpsize) {
-+		dev_warn_ratelimited(&stream->intf->dev,
-+				     "UVC non compliance: the max payload transmission size (%u) exceeds the size of the ep max packet (%u). Using the max size.\n",
-+				     ctrl->dwMaxPayloadTransferSize,
-+				     stream->maxpsize);
-+		ctrl->dwMaxPayloadTransferSize = stream->maxpsize;
-+	}
- }
- 
- static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
+diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
+index 1cb745855600..a081e44d786e 100644
+--- a/drivers/media/pci/intel/ipu-bridge.c
++++ b/drivers/media/pci/intel/ipu-bridge.c
+@@ -60,6 +60,8 @@ static const struct ipu_sensor_config ipu_supported_sensors[] = {
+ 	IPU_SENSOR_CONFIG("INT33BE", 1, 419200000),
+ 	/* Omnivision OV2740 */
+ 	IPU_SENSOR_CONFIG("INT3474", 1, 180000000),
++	/* Omnivision OV5670 */
++	IPU_SENSOR_CONFIG("INT3479", 1, 422400000),
+ 	/* Omnivision OV8865 */
+ 	IPU_SENSOR_CONFIG("INT347A", 1, 360000000),
+ 	/* Omnivision OV7251 */
 -- 
 2.39.5
 
