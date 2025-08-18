@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C21B2A6EE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08F4B2A982
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13F1E68047E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB4B45A2BF3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B36721FF4B;
-	Mon, 18 Aug 2025 13:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AAD337695;
+	Mon, 18 Aug 2025 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtv0GUI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hi12ze5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD53431AF00;
-	Mon, 18 Aug 2025 13:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A6033768F;
+	Mon, 18 Aug 2025 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524057; cv=none; b=rkDUcKz37lSqxTXZrLdrsRhF93wwalty7XOrAjSXPRYZQU6/33qT49k9NyNFM7IzBEIXwgTSxaQnnLNJUsp/492KD7R/LjzAd6zt/eb+GMhAyftG1fyncY/JeFbEkRzQN1wExOYmiPHZbKkQNUo93KQk/fo2MhzEnl9Ld//TYmw=
+	t=1755525651; cv=none; b=NtEco5XCaAzE3QHLsjJXoAieORL+qexbFFCR3vQdE0WF35iDZebbB86kYC7+Yy8VK5LysQto0Ubv/COTY07f0h35fNFrc3ud35jcv4PKk/k53eKCd6EmyOf9m8obXzBdlhflSQYtU9jnDy587J/9JQ5Q5rIpuFRxngdU9WBOkLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524057; c=relaxed/simple;
-	bh=0jkvZRqw9v3ihQbdduQ3gWv6VSzuwedy9tN+mq5gbjY=;
+	s=arc-20240116; t=1755525651; c=relaxed/simple;
+	bh=gCt9as5gVwfvrKvevpnb3pZqlqtB4DQsNawItUMM0hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nlkUJRI30s/qwHfrDZX6nTRLax3uNBOxullVgP1x3x8yLItwBXJulTFHKF7V9GAvq7yO42pEJNu5NDcsYSZ5Vrfbc7V2tZ3JFF4Zi3AoXXLf5dqeNo419b1eAzUQdE/sgsFQzUsd8VPkR5tLfIVW0MojFmJ01drEhZCdfvq7vPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtv0GUI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70F3C4CEEB;
-	Mon, 18 Aug 2025 13:34:16 +0000 (UTC)
+	 MIME-Version; b=twxMN0ZxYxTqVhb6ZcwOEcVFqI4kqAGCFChj6FViDEsvLYvq37TfioeAj2KwVeXRI6B8FAIcn717C8tQLxIoG8eEUW7q3pXqZ0dEEA+2urjR8ZeaefQ8P85z7GD/Y7xcYMZY7GuRMY4pgdhL920bxs86Y4kb4m1psPOzGhZ94HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hi12ze5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23322C4CEEB;
+	Mon, 18 Aug 2025 14:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524057;
-	bh=0jkvZRqw9v3ihQbdduQ3gWv6VSzuwedy9tN+mq5gbjY=;
+	s=korg; t=1755525651;
+	bh=gCt9as5gVwfvrKvevpnb3pZqlqtB4DQsNawItUMM0hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtv0GUI/NLuxJkBH3o6i+Sq1FMj/0KImTxlG2hz1VgwDD07IAm5Lq3s9ZdryHnNFX
-	 Yo6TCLu+Kc/ghqj7q76b13OQplpgYkD7WI20zhO8GAna9yrpg76PG93kiaUFeNBW+u
-	 T7wo+5kSjuye09/vPMCm0eHS1Zaun+3EZQq2cxCw=
+	b=Hi12ze5GsEeqpl/OZskjM2XK913PZKfRzmlo4r1/Ki+F4Hv5aC+2QrMTAGdicbCl5
+	 sqoMvju1emDSuECjbww10HVjzaZ+ecT/EhZrWDd5hxkh3NRQR9VxuCyyM4pjEHjAZo
+	 Lm138yzHJdJNXo7X9wQNTuFGE5M98Ss+5/oFqVc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
+	ganglxie <ganglxie@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 327/515] vhost: fail early when __vhost_add_used() fails
+Subject: [PATCH 6.16 326/570] drm/amdgpu: clear pa and mca record counter when resetting eeprom
 Date: Mon, 18 Aug 2025 14:45:13 +0200
-Message-ID: <20250818124511.023950063@linuxfoundation.org>
+Message-ID: <20250818124518.414072797@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: ganglxie <ganglxie@amd.com>
 
-[ Upstream commit b4ba1207d45adaafa2982c035898b36af2d3e518 ]
+[ Upstream commit d0cc8d2b7df1848f98f0fea8135ba706814b1d13 ]
 
-This patch fails vhost_add_used_n() early when __vhost_add_used()
-fails to make sure used idx is not updated with stale used ring
-information.
+clear pa and mca record counter when resetting eeprom, so that
+ras_num_bad_pages can be calculated correctly
 
-Reported-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20250714084755.11921-2-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
+Signed-off-by: ganglxie <ganglxie@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 79b0b7cd2860..71604668e53f 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2971,6 +2971,9 @@ int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem *heads,
- 	}
- 	r = __vhost_add_used_n(vq, heads, count);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+index 2c58e09e56f9..2ddedf476542 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+@@ -476,6 +476,8 @@ int amdgpu_ras_eeprom_reset_table(struct amdgpu_ras_eeprom_control *control)
  
-+	if (r < 0)
-+		return r;
-+
- 	/* Make sure buffer is written before we update index. */
- 	smp_wmb();
- 	if (vhost_put_used_idx(vq)) {
+ 	control->ras_num_recs = 0;
+ 	control->ras_num_bad_pages = 0;
++	control->ras_num_mca_recs = 0;
++	control->ras_num_pa_recs = 0;
+ 	control->ras_fri = 0;
+ 
+ 	amdgpu_dpm_send_hbm_bad_pages_num(adev, control->ras_num_bad_pages);
 -- 
 2.39.5
 
