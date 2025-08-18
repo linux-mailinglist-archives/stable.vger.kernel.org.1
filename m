@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0EC4B2A72C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AE7B2AA04
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 836E7680C2C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0585058497E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8738E8BEC;
-	Mon, 18 Aug 2025 13:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EED33470A;
+	Mon, 18 Aug 2025 14:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eo1wquTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DBoGU5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43386335BA0;
-	Mon, 18 Aug 2025 13:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D8A337692;
+	Mon, 18 Aug 2025 14:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524487; cv=none; b=AEzXgzyy9NnsbMQJkV+y3kJxpbmzr4PsNXFx62TS9/lBbdZa7ic3E8Igg2vLGPIWDaWws9xjQ8hYcGQhG7iM+2/Ml14E0P6mhDE+2lri4REmSyl374itfFyeKGsw8cjChj0+TIyjId2pUkgoxXM8+0+oy6CRud7NkRiysJxTRnM=
+	t=1755526315; cv=none; b=ueYK5cweZ9cYoaw6GJEgRhDs1dHfLglemthJjIvzPcNPkZB0I2HcChJbouZOSXxmaEos1C8jPQrs8XFYHeTU3EuEAvhL628nvgtSIKgzyJWkagX2qUkDSMobdsGTZ4i3W8PDRC4e3zQGBAIYgOxTMxPoJ166NPgNU6wZIMOQNDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524487; c=relaxed/simple;
-	bh=6dkMk33EiyfdckZzo5Ze+oYXo2CXTlpaD1D5Y57/iKU=;
+	s=arc-20240116; t=1755526315; c=relaxed/simple;
+	bh=LLpPDQSbC6Ru8hlRTPRCahxLciA5XqW/dV+hcYY6DdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7ZRPC+kdA0yGPo1vMJE38OYivbMrba7IMp4KxZdlU8CctOvmV4CzfyT1ppqhH01l9fBrf7i5KwAM3Rw1qwYd2oiK2BpYFgfEtpqPDtOhSJMBiLlYgjMGDLGvoH3qM+FI+voXiaU/QPV1entiYwdDf1obRsqJASiL/ToeAbvy8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eo1wquTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A274EC113D0;
-	Mon, 18 Aug 2025 13:41:26 +0000 (UTC)
+	 MIME-Version; b=YUzrzkrEhCEO/SIVLFxktqYLpSkfQQGQEMeqb91mbDPePM8/a32oZKEyDIK3omDgCH08jqPGwvJsxWf9ZTiSn/BCFzoRZ0CZ0KFwNKKSq7Zy3qbE8l6jrcmS78aqMVzW1XGhNmvNmHoPijvf0SK1kxYVUa210Tjq34KjHYzxOfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DBoGU5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEF4C4CEEB;
+	Mon, 18 Aug 2025 14:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524487;
-	bh=6dkMk33EiyfdckZzo5Ze+oYXo2CXTlpaD1D5Y57/iKU=;
+	s=korg; t=1755526315;
+	bh=LLpPDQSbC6Ru8hlRTPRCahxLciA5XqW/dV+hcYY6DdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eo1wquTLVNPQ6iKTFIMvMSRX3H+scysBoY+AwBCNK0VXMbTYSBQCur2cS5GtwpTU8
-	 2n1FUL34+WYk5kgmJXmInRHHFNnh+0bSrYm4jQJ+ChJ7A+R+JHGzJkdrfMDQMmhArC
-	 Z/997vmvsn5V7L2v+Q4pUINz01meFND6D0xkNMqk=
+	b=2DBoGU5y9WWE74stqhsY4HBjM9T7EaF8RRFiqBobMdiXpV5JhSyDO9c3ZCAy6N0j+
+	 26dkwT69vveDkSGobG80+VbOUyRL+53weVXYzcARlDJCXatpDu4CEivx8Wh9bHxbKh
+	 vWeY00uaafiPYYJLk2XCrW5aKcLxISxKULakeVbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Shuang <shuali@redhat.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 487/515] net/sched: ets: use old nbands while purging unused classes
-Date: Mon, 18 Aug 2025 14:47:53 +0200
-Message-ID: <20250818124517.172829235@linuxfoundation.org>
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.16 487/570] rust: kbuild: clean output before running `rustdoc`
+Date: Mon, 18 Aug 2025 14:47:54 +0200
+Message-ID: <20250818124524.640108046@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 87c6efc5ce9c126ae4a781bc04504b83780e3650 upstream.
+commit 252fea131e15aba2cd487119d1a8f546471199e2 upstream.
 
-Shuang reported sch_ets test-case [1] crashing in ets_class_qlen_notify()
-after recent changes from Lion [2]. The problem is: in ets_qdisc_change()
-we purge unused DWRR queues; the value of 'q->nbands' is the new one, and
-the cleanup should be done with the old one. The problem is here since my
-first attempts to fix ets_qdisc_change(), but it surfaced again after the
-recent qdisc len accounting fixes. Fix it purging idle DWRR queues before
-assigning a new value of 'q->nbands', so that all purge operations find a
-consistent configuration:
+`rustdoc` can get confused when generating documentation into a folder
+that contains generated files from other `rustdoc` versions.
 
- - old 'q->nbands' because it's needed by ets_class_find()
- - old 'q->nstrict' because it's needed by ets_class_is_strict()
+For instance, running something like:
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 62 UID: 0 PID: 39457 Comm: tc Kdump: loaded Not tainted 6.12.0-116.el10.x86_64 #1 PREEMPT(voluntary)
- Hardware name: Dell Inc. PowerEdge R640/06DKY5, BIOS 2.12.2 07/09/2021
- RIP: 0010:__list_del_entry_valid_or_report+0x4/0x80
- Code: ff 4c 39 c7 0f 84 39 19 8e ff b8 01 00 00 00 c3 cc cc cc cc 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <48> 8b 17 48 8b 4f 08 48 85 d2 0f 84 56 19 8e ff 48 85 c9 0f 84 ab
- RSP: 0018:ffffba186009f400 EFLAGS: 00010202
- RAX: 00000000000000d6 RBX: 0000000000000000 RCX: 0000000000000004
- RDX: ffff9f0fa29b69c0 RSI: 0000000000000000 RDI: 0000000000000000
- RBP: ffffffffc12c2400 R08: 0000000000000008 R09: 0000000000000004
- R10: ffffffffffffffff R11: 0000000000000004 R12: 0000000000000000
- R13: ffff9f0f8cfe0000 R14: 0000000000100005 R15: 0000000000000000
- FS:  00007f2154f37480(0000) GS:ffff9f269c1c0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001530be001 CR4: 00000000007726f0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ets_class_qlen_notify+0x65/0x90 [sch_ets]
-  qdisc_tree_reduce_backlog+0x74/0x110
-  ets_qdisc_change+0x630/0xa40 [sch_ets]
-  __tc_modify_qdisc.constprop.0+0x216/0x7f0
-  tc_modify_qdisc+0x7c/0x120
-  rtnetlink_rcv_msg+0x145/0x3f0
-  netlink_rcv_skb+0x53/0x100
-  netlink_unicast+0x245/0x390
-  netlink_sendmsg+0x21b/0x470
-  ____sys_sendmsg+0x39d/0x3d0
-  ___sys_sendmsg+0x9a/0xe0
-  __sys_sendmsg+0x7a/0xd0
-  do_syscall_64+0x7d/0x160
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f2155114084
- Code: 89 02 b8 ff ff ff ff eb bb 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 80 3d 25 f0 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 89 54 24 1c 48 89
- RSP: 002b:00007fff1fd7a988 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000560ec063e5e0 RCX: 00007f2155114084
- RDX: 0000000000000000 RSI: 00007fff1fd7a9f0 RDI: 0000000000000003
- RBP: 00007fff1fd7aa60 R08: 0000000000000010 R09: 000000000000003f
- R10: 0000560ee9b3a010 R11: 0000000000000202 R12: 00007fff1fd7aae0
- R13: 000000006891ccde R14: 0000560ec063e5e0 R15: 00007fff1fd7aad0
-  </TASK>
+    rustup default 1.78.0
+    make LLVM=1 rustdoc
+    rustup default 1.88.0
+    make LLVM=1 rustdoc
 
- [1] https://lore.kernel.org/netdev/e08c7f4a6882f260011909a868311c6e9b54f3e4.1639153474.git.dcaratti@redhat.com/
- [2] https://lore.kernel.org/netdev/d912cbd7-193b-4269-9857-525bee8bbb6a@gmail.com/
+may generate errors like:
 
-Cc: stable@vger.kernel.org
-Fixes: 103406b38c60 ("net/sched: Always pass notifications when child class becomes empty")
-Fixes: c062f2a0b04d ("net/sched: sch_ets: don't remove idle classes from the round-robin list")
-Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
-Reported-by: Li Shuang <shuali@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-108026
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Co-developed-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/7928ff6d17db47a2ae7cc205c44777b1f1950545.1755016081.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    error: couldn't generate documentation: invalid template: last line expected to start with a comment
+      |
+      = note: failed to create or modify "./Documentation/output/rust/rustdoc/src-files.js"
+
+Thus just always clean the output folder before generating the
+documentation -- we are anyway regenerating it every time the `rustdoc`
+target gets called, at least for the time being.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Reported-by: Daniel Almeida <daniel.almeida@collabora.com>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/527201113
+Reviewed-by: Tamir Duberstein <tamird@kernel.org>
+Link: https://lore.kernel.org/r/20250726133435.2460085-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ rust/Makefile |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -651,6 +651,12 @@ static int ets_qdisc_change(struct Qdisc
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -103,14 +103,14 @@ rustdoc: rustdoc-core rustdoc-macros rus
+ rustdoc-macros: private rustdoc_host = yes
+ rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
+     --extern proc_macro
+-rustdoc-macros: $(src)/macros/lib.rs FORCE
++rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean FORCE
+ 	+$(call if_changed,rustdoc)
  
- 	sch_tree_lock(sch);
+ # Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` should
+ # not be needed -- see https://github.com/rust-lang/rust/pull/128307.
+ rustdoc-core: private skip_flags = --edition=2021 -Wrustdoc::unescaped_backticks
+ rustdoc-core: private rustc_target_flags = --edition=$(core-edition) $(core-cfgs)
+-rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
++rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
+ 	+$(call if_changed,rustdoc)
  
-+	for (i = nbands; i < oldbands; i++) {
-+		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-+			list_del_init(&q->classes[i].alist);
-+		qdisc_purge_queue(q->classes[i].qdisc);
-+	}
+ rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
+@@ -122,7 +122,8 @@ rustdoc-ffi: $(src)/ffi.rs rustdoc-core
+ rustdoc-pin_init_internal: private rustdoc_host = yes
+ rustdoc-pin_init_internal: private rustc_target_flags = --cfg kernel \
+     --extern proc_macro --crate-type proc-macro
+-rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
++rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
++    rustdoc-clean FORCE
+ 	+$(call if_changed,rustdoc)
+ 
+ rustdoc-pin_init: private rustdoc_host = yes
+@@ -140,6 +141,9 @@ rustdoc-kernel: $(src)/kernel/lib.rs rus
+     $(obj)/bindings.o FORCE
+ 	+$(call if_changed,rustdoc)
+ 
++rustdoc-clean: FORCE
++	$(Q)rm -rf $(rustdoc_output)
 +
- 	WRITE_ONCE(q->nbands, nbands);
- 	for (i = nstrict; i < q->nstrict; i++) {
- 		if (q->classes[i].qdisc->q.qlen) {
-@@ -658,11 +664,6 @@ static int ets_qdisc_change(struct Qdisc
- 			q->classes[i].deficit = quanta[i];
- 		}
- 	}
--	for (i = q->nbands; i < oldbands; i++) {
--		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
--			list_del_init(&q->classes[i].alist);
--		qdisc_purge_queue(q->classes[i].qdisc);
--	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
- 
+ quiet_cmd_rustc_test_library = $(RUSTC_OR_CLIPPY_QUIET) TL $<
+       cmd_rustc_test_library = \
+ 	OBJTREE=$(abspath $(objtree)) \
 
 
 
