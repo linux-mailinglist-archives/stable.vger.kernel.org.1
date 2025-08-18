@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B417DB2A447
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C116B2AA11
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C496716C525
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2DBA6815F4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E529A3218CB;
-	Mon, 18 Aug 2025 13:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1FD35082A;
+	Mon, 18 Aug 2025 14:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWkGQhDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydMt6OCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30E531E115;
-	Mon, 18 Aug 2025 13:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A0F350827;
+	Mon, 18 Aug 2025 14:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522564; cv=none; b=pBlFjZ6RALXo3vyZodx1xkEX6Lif6OmK5D1EJkpdJ2fjdLm4wBH/KKZdfOjxGIGftUtRNycXppl4VSjxwrYp+YjsQ7Bu0lD/JY0wDQB2ioFkI8l7JyTSCJAqScEBmgccBrkXogwrMQZbehnd6dIigW7G96Q6f3MhHXoX2XTXorQ=
+	t=1755525876; cv=none; b=MZkQaY1yMXWZGQSyduCgkhE5SS70mOeRS92jl9HUfwMy9yc4agYxNLiiDVBcH2j7/jCT1Z2jVuv4M3HctU8ecSG8QfVISdTqqJWu4LpnkQyp1LiKeeSKjOzfYizxiS84dIKhf13wuvtgNo4f0Bci1NU1/3nuxqLqRr/OUSCbRUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522564; c=relaxed/simple;
-	bh=An/tl0ufFxKFD/DSojtNNrn3NAZSGcWZa6jthQKH6nM=;
+	s=arc-20240116; t=1755525876; c=relaxed/simple;
+	bh=xTiiOvyZb4vDKQNa1OdUcW81ICangDipBz0D7YqnsH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ps0KgZ7kk6NrF4CdqRSCYTUQIRinXiHDDUFtczwMaO2jblLcmLxmSZ1MZMRpKbRsAILmSfEYAARV5LSt6Y8Q2aQxsunXayK35nH83WSfbe9sPj1v0voB9CIMubWluam2/XXyT9GyPyw+/kbjVbTn2tArjeX74m9dXmwDgHHU7PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWkGQhDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1371DC4CEEB;
-	Mon, 18 Aug 2025 13:09:23 +0000 (UTC)
+	 MIME-Version; b=sZc5TOKTpJPsKbCwhQm/OtOkwmGiaUVA/obCA01Gt+INPSeBIZbOBAnPyIR854wZzn3QxRU/ov18t0UBF/wLFhNX4fbwbocqFy4QmGqWdSDTc4fNlKUbOshn+Y2M7/mrynDjz2HVrPUtygACcrSr9C5+PDw7pTP91vFslE06hFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydMt6OCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4AFC4CEEB;
+	Mon, 18 Aug 2025 14:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522564;
-	bh=An/tl0ufFxKFD/DSojtNNrn3NAZSGcWZa6jthQKH6nM=;
+	s=korg; t=1755525876;
+	bh=xTiiOvyZb4vDKQNa1OdUcW81ICangDipBz0D7YqnsH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWkGQhDYWw0GunqdATFooTQmnA/uY+rmQYjFhBIwZardtGAiWV95Dz5iLSMmKqbT+
-	 rR43KjEFQziSXpHiO/puQVZIyJ7tcA+10sSaTAvW+3iQ/RjZlB2WfVDiI0s3pEkz2C
-	 7yxxXOQRJT0cRfvam6DnHQRVgzMljCLoBuJUCt7w=
+	b=ydMt6OCQX3bare8aQiJPpCesBRyBT3EfuDnw8uTFPK1FIZRCtrlpEKvlwUHyK6EIE
+	 pQDKpnZItbXuEuuNkP+4TZFFJtN2/Chax68gSZyXENfPX7jgG5gilna4g3HB4wkLaO
+	 pc3LU6pCKtZBnRpR7XJdiimbvKmv8aK/fLZJklzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Corey Minyard <corey@minyard.net>,
+	Johan Adolfsson <johan.adolfsson@axis.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 353/444] ipmi: Fix strcpy source and destination the same
-Date: Mon, 18 Aug 2025 14:46:19 +0200
-Message-ID: <20250818124502.153663737@linuxfoundation.org>
+Subject: [PATCH 6.16 393/570] leds: leds-lp50xx: Handle reg to get correct multi_index
+Date: Mon, 18 Aug 2025 14:46:20 +0200
+Message-ID: <20250818124520.995062936@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Johan Adolfsson <johan.adolfsson@axis.com>
 
-[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
+[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
 
-The source and destination of some strcpy operations was the same.
-Split out the part of the operations that needed to be done for those
-particular calls so the unnecessary copy wasn't done.
+mc_subled used for multi_index needs well defined array indexes,
+to guarantee the desired result, use reg for that.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
-Signed-off-by: Corey Minyard <corey@minyard.net>
+If devicetree child nodes is processed in random or reverse order
+you may end up with multi_index "blue green red" instead of the expected
+"red green blue".
+If user space apps uses multi_index to deduce how to control the leds
+they would most likely be broken without this patch if devicetree
+processing is reversed (which it appears to be).
+
+arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
+but I don't see how it can have worked without this change.
+
+If reg is not set, an error is returned,
+If reg is out of range, an error is returned.
+reg within led child nodes starts with 0, to map to the iout in each bank.
+
+Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 17 deletions(-)
+ drivers/leds/leds-lp50xx.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
-index 335eea80054e..37ab5806b1a4 100644
---- a/drivers/char/ipmi/ipmi_watchdog.c
-+++ b/drivers/char/ipmi/ipmi_watchdog.c
-@@ -1189,14 +1189,8 @@ static struct ipmi_smi_watcher smi_watcher = {
- 	.smi_gone = ipmi_smi_gone
- };
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 02cb1565a9fb..94f8ef6b482c 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -476,6 +476,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 			return -ENOMEM;
  
--static int action_op(const char *inval, char *outval)
-+static int action_op_set_val(const char *inval)
- {
--	if (outval)
--		strcpy(outval, action);
--
--	if (!inval)
--		return 0;
--
- 	if (strcmp(inval, "reset") == 0)
- 		action_val = WDOG_TIMEOUT_RESET;
- 	else if (strcmp(inval, "none") == 0)
-@@ -1207,18 +1201,26 @@ static int action_op(const char *inval, char *outval)
- 		action_val = WDOG_TIMEOUT_POWER_DOWN;
- 	else
- 		return -EINVAL;
--	strcpy(action, inval);
- 	return 0;
- }
+ 		fwnode_for_each_child_node(child, led_node) {
++			int multi_index;
+ 			ret = fwnode_property_read_u32(led_node, "color",
+ 						       &color_id);
+ 			if (ret) {
+@@ -483,8 +484,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 				dev_err(priv->dev, "Cannot read color\n");
+ 				return ret;
+ 			}
++			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
++			if (ret != 0) {
++				dev_err(priv->dev, "reg must be set\n");
++				return -EINVAL;
++			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
++				dev_err(priv->dev, "reg %i out of range\n", multi_index);
++				return -EINVAL;
++			}
  
--static int preaction_op(const char *inval, char *outval)
-+static int action_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preaction);
-+		strcpy(outval, action);
+-			mc_led_info[num_colors].color_index = color_id;
++			mc_led_info[multi_index].color_index = color_id;
+ 			num_colors++;
+ 		}
  
- 	if (!inval)
- 		return 0;
-+	rv = action_op_set_val(inval);
-+	if (!rv)
-+		strcpy(action, inval);
-+	return rv;
-+}
- 
-+static int preaction_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "pre_none") == 0)
- 		preaction_val = WDOG_PRETIMEOUT_NONE;
- 	else if (strcmp(inval, "pre_smi") == 0)
-@@ -1231,18 +1233,26 @@ static int preaction_op(const char *inval, char *outval)
- 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
- 	else
- 		return -EINVAL;
--	strcpy(preaction, inval);
- 	return 0;
- }
- 
--static int preop_op(const char *inval, char *outval)
-+static int preaction_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preop);
-+		strcpy(outval, preaction);
- 
- 	if (!inval)
- 		return 0;
-+	rv = preaction_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preaction, inval);
-+	return 0;
-+}
- 
-+static int preop_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "preop_none") == 0)
- 		preop_val = WDOG_PREOP_NONE;
- 	else if (strcmp(inval, "preop_panic") == 0)
-@@ -1251,7 +1261,22 @@ static int preop_op(const char *inval, char *outval)
- 		preop_val = WDOG_PREOP_GIVE_DATA;
- 	else
- 		return -EINVAL;
--	strcpy(preop, inval);
-+	return 0;
-+}
-+
-+static int preop_op(const char *inval, char *outval)
-+{
-+	int rv;
-+
-+	if (outval)
-+		strcpy(outval, preop);
-+
-+	if (!inval)
-+		return 0;
-+
-+	rv = preop_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preop, inval);
- 	return 0;
- }
- 
-@@ -1288,18 +1313,18 @@ static int __init ipmi_wdog_init(void)
- {
- 	int rv;
- 
--	if (action_op(action, NULL)) {
-+	if (action_op_set_val(action)) {
- 		action_op("reset", NULL);
- 		pr_info("Unknown action '%s', defaulting to reset\n", action);
- 	}
- 
--	if (preaction_op(preaction, NULL)) {
-+	if (preaction_op_set_val(preaction)) {
- 		preaction_op("pre_none", NULL);
- 		pr_info("Unknown preaction '%s', defaulting to none\n",
- 			preaction);
- 	}
- 
--	if (preop_op(preop, NULL)) {
-+	if (preop_op_set_val(preop)) {
- 		preop_op("preop_none", NULL);
- 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
- 	}
 -- 
 2.39.5
 
