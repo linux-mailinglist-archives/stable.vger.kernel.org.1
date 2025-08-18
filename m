@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468C2B2A3B9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B805B2A928
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67E4B5602FA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18BD51BA7A9A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D971531AF15;
-	Mon, 18 Aug 2025 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B633F346A08;
+	Mon, 18 Aug 2025 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftXTdmZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0XSWvVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCED217F3D;
-	Mon, 18 Aug 2025 13:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A743469F4;
+	Mon, 18 Aug 2025 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522056; cv=none; b=mAMU5BrauRlSKGpr1tw5kgrQKdSkmkrBKrdf03RETfn3zmImmUgmGJfClXby2t51brEqqt7dv64rbk2hb1x3LWRiXta+rbLr/qrPpl2wKPk/UUWOqWLoBia0+jF1x0SgHlaNROgR1kObldJumWMJry0hxIf6SbJbX4kDZH10puM=
+	t=1755525466; cv=none; b=kEKEFjOsWaxiJACOlt4R6tfMcAkDQANzC0HPrsU+/D4vIOZTa0EX/RPAzGWHRPW26ZHQbsErd/rD9DyMT7STYY+p52141I36JU1peQkIao0cqaL8b1fdYRP2uXQnVH/60NZ3sFp42Nj84UQdl40KP24/iLH6LNmyy4l8XhReuHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522056; c=relaxed/simple;
-	bh=SCLtdHSagTK0hXONUq1WzfbFnG9M58YelUGElKc/TO4=;
+	s=arc-20240116; t=1755525466; c=relaxed/simple;
+	bh=YO9r5G3U3AO47aiP4qLuE1moU1AESp+gzzoF2RBS5AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ITxrDEtGngoidAobvIsX5T21aUP5dIEn8olPnqm+VQRRdUMI0yqY+VWfqEnrIt6ZgXcoHlUXMaFoX4hbZOaEYhI8PMjO5Uz4MV70OuS3rgb4tqxBqI+9dCH4DwP1JLJmZvbUUhDZN4uii3mjynXNarBOZD+z2NgTGzhymsbvoSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftXTdmZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC95C4CEF1;
-	Mon, 18 Aug 2025 13:00:55 +0000 (UTC)
+	 MIME-Version; b=V/wUdHuZ0nPuu82uzsYurdgRbBdafOBV6IN20n6kib7Z8JvEIiA1OAiwjH/FzllOW0Le9MprmhJDu3qmMpRf//TuTgjqLm2DazqNVBVGp15CLOouhURqX3WmqngpHCMRiRYWm2MO5/LIbktMmuydZokxUC7fV/pl1b/QUsLfRow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0XSWvVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BB0C4CEEB;
+	Mon, 18 Aug 2025 13:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522056;
-	bh=SCLtdHSagTK0hXONUq1WzfbFnG9M58YelUGElKc/TO4=;
+	s=korg; t=1755525466;
+	bh=YO9r5G3U3AO47aiP4qLuE1moU1AESp+gzzoF2RBS5AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftXTdmZxLxCykwNJ+ZeTspPcCQm4ihjnvzY6j6ylIIyNwcInCfy3qoksxd9vhE+9x
-	 2jdqDNDb7Ek2UtP4UuXyUo66AEDjk03weBiEktdKHOyFZjq94ZeuuBDgO+/ZJncxi1
-	 4DlyHOU2D5yuJMwBj33g5p7nf7yfoPk0/AaKbHzM=
+	b=K0XSWvVGXPfcHc+TaAQp5y5GH0PeWtwydA6Lve0irbBwr74ej4dxxhFTx8DeNza4m
+	 I8ead2sit0pLqEvXqZ9Lw9PxMTHkOsOSitCxNFTpzts84uZZ8/s++PSI9H/5AeM5Ke
+	 +lzIi4VfmED/AdrSwduYDz+OEL/QQXC8/9R4ROOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kamil=20Hor=C3=A1k=20-=202N?= <kamilh@axis.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 201/444] net: phy: bcm54811: PHY initialization
+Subject: [PATCH 6.16 240/570] wifi: mac80211: dont use TPE data from assoc response
 Date: Mon, 18 Aug 2025 14:43:47 +0200
-Message-ID: <20250818124456.397220129@linuxfoundation.org>
+Message-ID: <20250818124515.063583650@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Horák - 2N <kamilh@axis.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3117a11fff5af9e74f4946f07cb3ca083cbbdf4b ]
+[ Upstream commit a597432cc9e640439370d9dc95952220cc13fc2b ]
 
-Reset the bit 12 in PHY's LRE Control register upon initialization.
-According to the datasheet, this bit must be written to zero after
-every device reset.
+Since there's no TPE element in the (re)assoc response, trying
+to use the data from it just leads to using the defaults, even
+though the real values had been set during authentication from
+the discovered BSS information.
 
-Signed-off-by: Kamil Horák - 2N <kamilh@axis.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250708090140.61355-5-kamilh@axis.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by simply not handling the TPE data in assoc response
+since it's not intended to be present, if it changes later the
+necessary changes will be made by tracking beacons later.
+
+As a side effect, by passing the real frame subtype, now print
+a correct value for ML reconfiguration responses.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233537.caa1ca853f5a.I588271f386731978163aa9d84ae75d6f79633e16@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/broadcom.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ net/mac80211/mlme.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index d2a9cf3fde5a..9260c822e467 100644
---- a/drivers/net/phy/broadcom.c
-+++ b/drivers/net/phy/broadcom.c
-@@ -655,7 +655,7 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 0ed68182f79b..42bb996157e9 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1218,18 +1218,36 @@ EXPORT_SYMBOL_IF_MAC80211_KUNIT(ieee80211_determine_chan_mode);
+ 
+ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 			       struct ieee802_11_elems *elems,
+-			       bool update, u64 *changed,
+-			       const char *frame)
++			       bool update, u64 *changed, u16 stype)
  {
- 	struct device_node *np = phydev->mdio.dev.of_node;
- 	struct bcm54xx_phy_priv *priv = phydev->priv;
--	int i, val, err;
-+	int i, val, err, aneg;
+ 	struct ieee80211_channel *channel = link->conf->chanreq.oper.chan;
+ 	struct ieee80211_sub_if_data *sdata = link->sdata;
+ 	struct ieee80211_chan_req chanreq = {};
+ 	struct cfg80211_chan_def ap_chandef;
+ 	enum ieee80211_conn_mode ap_mode;
++	const char *frame;
+ 	u32 vht_cap_info = 0;
+ 	u16 ht_opmode;
+ 	int ret;
  
- 	for (i = 0; i < ARRAY_SIZE(bcm54811_linkmodes); i++)
- 		linkmode_clear_bit(bcm54811_linkmodes[i], phydev->supported);
-@@ -676,9 +676,19 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
- 		if (val < 0)
- 			return val;
- 
-+		/* BCM54811 is not capable of LDS but the corresponding bit
-+		 * in LRESR is set to 1 and marked "Ignore" in the datasheet.
-+		 * So we must read the bcm54811 as unable to auto-negotiate
-+		 * in BroadR-Reach mode.
-+		 */
-+		if (BRCM_PHY_MODEL(phydev) == PHY_ID_BCM54811)
-+			aneg = 0;
-+		else
-+			aneg = val & LRESR_LDSABILITY;
++	switch (stype) {
++	case IEEE80211_STYPE_BEACON:
++		frame = "beacon";
++		break;
++	case IEEE80211_STYPE_ASSOC_RESP:
++		frame = "assoc response";
++		break;
++	case IEEE80211_STYPE_REASSOC_RESP:
++		frame = "reassoc response";
++		break;
++	case IEEE80211_STYPE_ACTION:
++		/* the only action frame that gets here */
++		frame = "ML reconf response";
++		break;
++	default:
++		return -EINVAL;
++	}
 +
- 		linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
- 				 phydev->supported,
--				 val & LRESR_LDSABILITY);
-+				 aneg);
- 		linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT1_Full_BIT,
- 				 phydev->supported,
- 				 val & LRESR_100_1PAIR);
-@@ -735,8 +745,15 @@ static int bcm54811_config_aneg(struct phy_device *phydev)
+ 	/* don't track any bandwidth changes in legacy/S1G modes */
+ 	if (link->u.mgd.conn.mode == IEEE80211_CONN_MODE_LEGACY ||
+ 	    link->u.mgd.conn.mode == IEEE80211_CONN_MODE_S1G)
+@@ -1278,7 +1296,9 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+ 			ieee80211_min_bw_limit_from_chandef(&chanreq.oper))
+ 		ieee80211_chandef_downgrade(&chanreq.oper, NULL);
  
- 	/* Aneg firstly. */
- 	if (priv->brr_mode) {
--		/* BCM54811 is only capable of autonegotiation in IEEE mode */
--		phydev->autoneg = 0;
-+		/* BCM54811 is only capable of autonegotiation in IEEE mode.
-+		 * In BroadR-Reach mode, disable the Long Distance Signaling,
-+		 * the BRR mode autoneg as supported in other Broadcom PHYs.
-+		 * This bit is marked as "Reserved" and "Default 1, must be
-+		 *  written to 0 after every device reset" in the datasheet.
-+		 */
-+		ret = phy_modify(phydev, MII_BCM54XX_LRECR, LRECR_LDSEN, 0);
-+		if (ret < 0)
-+			return ret;
- 		ret = bcm_config_lre_aneg(phydev, false);
- 	} else {
- 		ret = genphy_config_aneg(phydev);
+-	if (ap_chandef.chan->band == NL80211_BAND_6GHZ &&
++	/* TPE element is not present in (re)assoc/ML reconfig response */
++	if (stype == IEEE80211_STYPE_BEACON &&
++	    ap_chandef.chan->band == NL80211_BAND_6GHZ &&
+ 	    link->u.mgd.conn.mode >= IEEE80211_CONN_MODE_HE) {
+ 		ieee80211_rearrange_tpe(&elems->tpe, &ap_chandef,
+ 					&chanreq.oper);
+@@ -5294,7 +5314,9 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
+ 	/* check/update if AP changed anything in assoc response vs. scan */
+ 	if (ieee80211_config_bw(link, elems,
+ 				link_id == assoc_data->assoc_link_id,
+-				changed, "assoc response")) {
++				changed,
++				le16_to_cpu(mgmt->frame_control) &
++					IEEE80211_FCTL_STYPE)) {
+ 		ret = false;
+ 		goto out;
+ 	}
+@@ -7482,7 +7504,8 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
+ 
+ 	changed |= ieee80211_recalc_twt_req(sdata, sband, link, link_sta, elems);
+ 
+-	if (ieee80211_config_bw(link, elems, true, &changed, "beacon")) {
++	if (ieee80211_config_bw(link, elems, true, &changed,
++				IEEE80211_STYPE_BEACON)) {
+ 		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
+ 				       WLAN_REASON_DEAUTH_LEAVING,
+ 				       true, deauth_buf);
 -- 
 2.39.5
 
