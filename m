@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BE7B2A710
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9BBB2A9A5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71DA41B62FAB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC8AA686CC9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727D9320CD9;
-	Mon, 18 Aug 2025 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67416322C9D;
+	Mon, 18 Aug 2025 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTmaqF2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGYQ4Op5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E03224AF9;
-	Mon, 18 Aug 2025 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26699350847;
+	Mon, 18 Aug 2025 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524149; cv=none; b=h2ZH0MQgVMAHHM0BmH2TeFvlm5YmI6atZ8nV8B1dxrSyIFoIRhWCoEKKOAP1uPqtPyFrbqLZrNNcG7E0z6ZjxDllfDSeT2kEGaZ4uK12fQoV4H368qJWlZeQHEEGQW6oRyh7A14sXaOdh33yPfVulBQwWndF4r3TscKzSRe6Sv4=
+	t=1755525951; cv=none; b=U0mnlXaZdpDWZGVPC/XTZ7JPH/4IDrpCAjAXh1j7hY8MtuJ2suLbGyC1nZEvIUcsPZ547sXmdUSI4JndX1YF+CYilvYy2npktYLDrYznrnZ3PVIcE5vg3nLsZGZpt0X16z30FTr3mW90AVW3y0qAkfUHqgbLMj81zLwjgsoI/hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524149; c=relaxed/simple;
-	bh=mVHgR5+TxhwsBeptq5I8XWMpuG2fkfaqPsG00FiZe/Q=;
+	s=arc-20240116; t=1755525951; c=relaxed/simple;
+	bh=5foh16Ac4icF+lh5+uSURLAnfZZKqvRVd/yassZaNyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0yYl/O7S503wELZBk6yMr91s6ysV73k5Ln8kbXdOrqjyEUJ3cf0CaSjuDtwaDs3dPfSXkXFjj+EDUE40nQhQmqexov0+d/BZj1qyvbM7Zr3TVPgAwgNGZ1JtIqYRulwskVEG1x0eAG8Z8f/HsdmVZdIKNi8XjORETI0UPIerZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTmaqF2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C511C4CEEB;
-	Mon, 18 Aug 2025 13:35:48 +0000 (UTC)
+	 MIME-Version; b=bUg7POhn8xR7GkoHc3iTUu7wDErsMKpesnHr2RLaBcyQ3xYbhzzKSmQzoY/TK0aP4M8+zYnDhntAREWiilLhJj8EpGfiRcgZKnyN1Xs2OlBFsxwup8WhWOmt9dqDkN/iNj8HfM/vzp+YaWBlvgRnw92RQjLCIrOpbkDcIWZzjYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGYQ4Op5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F328C4CEEB;
+	Mon, 18 Aug 2025 14:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524149;
-	bh=mVHgR5+TxhwsBeptq5I8XWMpuG2fkfaqPsG00FiZe/Q=;
+	s=korg; t=1755525951;
+	bh=5foh16Ac4icF+lh5+uSURLAnfZZKqvRVd/yassZaNyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTmaqF2Q9GlXstPpGqFR/ZEhAyVny065T/gnzhV27LhJ28eCJEA/+3PIv7pPf0ytH
-	 p2XGmv6liK0dy7qfZSwyiHHMKrgWRJAoQJMpoWfEa3+n+XZy/0xUIOl/epKLkMo7Ls
-	 FfydzUT0uCOXzc1IosiPyWX7MLg+c4HUj0O1z8mE=
+	b=aGYQ4Op5vnSKb74kbmgJONweS72omyJweL6L/RQC+By3PL0I2IH/hwoL5zB7LaeVl
+	 qgkyNd4T+T0nyEVu5P4fsdV8MxHvSq2FnFcZH6lPUE4kOobD2fcAcTabT7W1uI1d0I
+	 eB3QXN9SPX5Hyr74y2dFi6ncpvMJhIVpecWvnZJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hansg@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 382/515] media: uvcvideo: Set V4L2_CTRL_FLAG_DISABLED during queryctrl errors
+Subject: [PATCH 6.16 381/570] jfs: upper bound check of tree index in dbAllocAG
 Date: Mon, 18 Aug 2025 14:46:08 +0200
-Message-ID: <20250818124513.123336431@linuxfoundation.org>
+Message-ID: <20250818124520.527205482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,169 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit 649c033711d7fd6e1d5d69e4cfc3fceca7de2867 ]
+[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
 
-To implement VIDIOC_QUERYCTRL, we need to know the minimum, maximum,
-step and flags of the control. For some of the controls, this involves
-querying the actual hardware.
+When computing the tree index in dbAllocAG, we never check if we are
+out of bounds realative to the size of the stree.
+This could happen in a scenario where the filesystem metadata are
+corrupted.
 
-Some non-compliant cameras produce errors when we query them. These
-error can be triggered every time, sometimes, or when other controls do
-not have the "right value". Right now, we populate that error to userspace.
-When an error happens, the v4l2 framework does not copy the v4l2_queryctrl
-struct to userspace. Also, userspace apps are not ready to handle any
-other error than -EINVAL.
-
-One of the main usecases of VIDIOC_QUERYCTRL is enumerating the controls
-of a device. This is done using the V4L2_CTRL_FLAG_NEXT_CTRL flag. In
-that usecase, a non-compliant control will make it almost impossible to
-enumerate all controls of the device.
-
-A control with an invalid max/min/step/flags is better than non being
-able to enumerate the rest of the controls.
-
-This patch:
-- Retries for an extra attempt to read the control, to avoid spurious
-  errors. More attempts do not seem to produce better results in the
-  tested hardware.
-- Makes VIDIOC_QUERYCTRL return 0 for -EIO errors.
-- Introduces a warning in dmesg so we can have a trace of what has happened
-  and sets the V4L2_CTRL_FLAG_DISABLED.
-- Makes sure we keep returning V4L2_CTRL_FLAG_DISABLED for all the next
-  attempts to query that control (other operations have the same
-  functionality as now).
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20250502-uvc-eaccess-v8-1-0b8b58ac1142@chromium.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
+Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c | 55 +++++++++++++++++++++++++++-----
- drivers/media/usb/uvc/uvcvideo.h |  2 ++
- 2 files changed, 49 insertions(+), 8 deletions(-)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-index 44b6513c5264..f24272d483a2 100644
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1483,14 +1483,28 @@ static u32 uvc_get_ctrl_bitmap(struct uvc_control *ctrl,
- 	return ~0;
- }
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 5a877261c3fe..cdfa699cd7c8 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1389,6 +1389,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
+ 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
+ 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
  
-+/*
-+ * Maximum retry count to avoid spurious errors with controls. Increasing this
-+ * value does no seem to produce better results in the tested hardware.
-+ */
-+#define MAX_QUERY_RETRIES 2
-+
- static int __uvc_queryctrl_boundaries(struct uvc_video_chain *chain,
- 				      struct uvc_control *ctrl,
- 				      struct uvc_control_mapping *mapping,
- 				      struct v4l2_query_ext_ctrl *v4l2_ctrl)
- {
- 	if (!ctrl->cached) {
--		int ret = uvc_ctrl_populate_cache(chain, ctrl);
--		if (ret < 0)
-+		unsigned int retries;
-+		int ret;
-+
-+		for (retries = 0; retries < MAX_QUERY_RETRIES; retries++) {
-+			ret = uvc_ctrl_populate_cache(chain, ctrl);
-+			if (ret != -EIO)
-+				break;
-+		}
-+
-+		if (ret)
- 			return ret;
- 	}
- 
-@@ -1567,6 +1581,7 @@ static int __uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
- {
- 	struct uvc_control_mapping *master_map = NULL;
- 	struct uvc_control *master_ctrl = NULL;
-+	int ret;
- 
- 	memset(v4l2_ctrl, 0, sizeof(*v4l2_ctrl));
- 	v4l2_ctrl->id = mapping->id;
-@@ -1587,18 +1602,31 @@ static int __uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
- 		__uvc_find_control(ctrl->entity, mapping->master_id,
- 				   &master_map, &master_ctrl, 0, 0);
- 	if (master_ctrl && (master_ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR)) {
-+		unsigned int retries;
- 		s32 val;
- 		int ret;
- 
- 		if (WARN_ON(uvc_ctrl_mapping_is_compound(master_map)))
- 			return -EIO;
- 
--		ret = __uvc_ctrl_get(chain, master_ctrl, master_map, &val);
--		if (ret < 0)
--			return ret;
-+		for (retries = 0; retries < MAX_QUERY_RETRIES; retries++) {
-+			ret = __uvc_ctrl_get(chain, master_ctrl, master_map,
-+					     &val);
-+			if (!ret)
-+				break;
-+			if (ret < 0 && ret != -EIO)
-+				return ret;
-+		}
- 
--		if (val != mapping->master_manual)
--			v4l2_ctrl->flags |= V4L2_CTRL_FLAG_INACTIVE;
-+		if (ret == -EIO) {
-+			dev_warn_ratelimited(&chain->dev->udev->dev,
-+					     "UVC non compliance: Error %d querying master control %x (%s)\n",
-+					     ret, master_map->id,
-+					     uvc_map_get_name(master_map));
-+		} else {
-+			if (val != mapping->master_manual)
-+				v4l2_ctrl->flags |= V4L2_CTRL_FLAG_INACTIVE;
-+		}
- 	}
- 
- 	v4l2_ctrl->elem_size = uvc_mapping_v4l2_size(mapping);
-@@ -1613,7 +1641,18 @@ static int __uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
- 		return 0;
- 	}
- 
--	return __uvc_queryctrl_boundaries(chain, ctrl, mapping, v4l2_ctrl);
-+	ret = __uvc_queryctrl_boundaries(chain, ctrl, mapping, v4l2_ctrl);
-+	if (ret && !mapping->disabled) {
-+		dev_warn(&chain->dev->udev->dev,
-+			 "UVC non compliance: permanently disabling control %x (%s), due to error %d\n",
-+			 mapping->id, uvc_map_get_name(mapping), ret);
-+		mapping->disabled = true;
++	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
++		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
++		release_metapage(mp);
++		return -EIO;
 +	}
 +
-+	if (mapping->disabled)
-+		v4l2_ctrl->flags |= V4L2_CTRL_FLAG_DISABLED;
-+
-+	return 0;
- }
- 
- int uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index b9f8eb62ba1d..11d6e3c2ebdf 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -134,6 +134,8 @@ struct uvc_control_mapping {
- 	s32 master_manual;
- 	u32 slave_ids[2];
- 
-+	bool disabled;
-+
- 	const struct uvc_control_mapping *(*filter_mapping)
- 				(struct uvc_video_chain *chain,
- 				struct uvc_control *ctrl);
+ 	/* dmap control page trees fan-out by 4 and a single allocation
+ 	 * group may be described by 1 or 2 subtrees within the ag level
+ 	 * dmap control page, depending upon the ag size. examine the ag's
 -- 
 2.39.5
 
