@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654CEB2A6B0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3EDB2A3EE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C105848D6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC1021B261BE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2803223DC0;
-	Mon, 18 Aug 2025 13:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA643203BE;
+	Mon, 18 Aug 2025 13:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq2MMLPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9b+iy3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8E5219A7E;
-	Mon, 18 Aug 2025 13:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D19F320389;
+	Mon, 18 Aug 2025 13:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524119; cv=none; b=qxXRMzanewdXxecQM3pVHpRH5uCocSYpyCqV9nKjVCBWXgSJyU0fSnTLDWGVJIP+/C2MKYhdRMRf1KaZDwuLgP+ovzPhUuFJpHQjZzFoOJaaLxEX+WmEYiyPccF7xX+8hZG+JDAHRBBTf9bjzUZGp5zmQ9NqsdGo5HW9vv5ZUAM=
+	t=1755522499; cv=none; b=gSa4JkK9pG77AwbRQcimOcPLhr/6w3fleS7vmo67ONFBmt1EPnPYZZwLEr1Ya69vVp4yq+xvvvQG6T2cADMjLNNy8922TF3aVc/bmsIYQMETPAjGX3MMPo9gO5aoH9LEiH23U+c5I4lKla5JAE09n5EHdzlqzRcG4zWUKPhWt3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524119; c=relaxed/simple;
-	bh=ynsWwtNCSodI8gv01lME90OJc90A2o94THvQ1T9xK9o=;
+	s=arc-20240116; t=1755522499; c=relaxed/simple;
+	bh=12WKNPSHvJXMMRgrCWg9WVf4SDHqA8ftHb6O+sKL4UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+Jzczv5yML21GpGwSF6yWw1Vnp4AwfswQCFK4o3Uz1ExYdf1K2GKLj3vzcQA7QgBgrDc/otSi4nJIijKUWrjNhSAup2F8rIt+m97rgiJsJoxf2jqNAxtAF4g0F/u8r12mKySaVhPuKOmDL6AfaWxRorpBd+TVymya69YKQP89E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oq2MMLPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C7FC113D0;
-	Mon, 18 Aug 2025 13:35:18 +0000 (UTC)
+	 MIME-Version; b=hI9TcuM82ru3891rMPr8T8tD7c00ERc6mcmw7KJPB+htUmY90odabvdyNVev6EHRDKmFRvwA7BwX/NVhKhSeKVlMK6fsQiWHC1Y4mj84ZyT7vUvS8BwDKwjsUz4QbkIbElOZ7g0r1C2O7Xsx7Dx4LThw/lqywCSNApY9bIO3FvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9b+iy3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6150C113D0;
+	Mon, 18 Aug 2025 13:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524118;
-	bh=ynsWwtNCSodI8gv01lME90OJc90A2o94THvQ1T9xK9o=;
+	s=korg; t=1755522499;
+	bh=12WKNPSHvJXMMRgrCWg9WVf4SDHqA8ftHb6O+sKL4UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oq2MMLPCGL7mA3OI7/nEDa2HD1rWx6vs6RHV3Fo8AAX+lfwWXYvyy9hr9QxrI9ClE
-	 ZK3ca9DyHceBjAmntxMS/2XejvHdPa7OMlwZ0q5/dHHwhk3ChrbBuQznjZMbuV3R22
-	 K1RBH4wTKPqsJeIN7b6aDKigjpBaSsH1rOxUp8Zs=
+	b=N9b+iy3xMBGS5PTvsni5MyfEYdnloFGP+ruinlcm3p178H45qokDss2Fa9BEvE/vl
+	 iOIrMOT5tf4545VzPJBMCrSqenRj9daT8tvszbwT2i6ZPrdKqeBCv+M41qCCh5QbAC
+	 /LWrKIPhzRllr/+qkKpmNMuiCmzR1hagqW2lfHPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 374/515] media: raspberrypi: cfe: Fix min_reqbufs_allocation
-Date: Mon, 18 Aug 2025 14:46:00 +0200
-Message-ID: <20250818124512.813323883@linuxfoundation.org>
+Subject: [PATCH 6.12 335/444] dm-table: fix checking for rq stackable devices
+Date: Mon, 18 Aug 2025 14:46:01 +0200
+Message-ID: <20250818124501.493349003@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 57b5a302b5d529db96ddc52fbccec005092ebb3d ]
+[ Upstream commit 8ca719b81987be690f197e82fdb030580c0a07f3 ]
 
-The driver checks if "vq->max_num_buffers + *nbuffers < 3", but
-vq->max_num_buffers is (by default) 32, so the check is never true. Nor
-does the check make sense.
+Due to the semantics of iterate_devices(), the current code allows a
+request-based dm table as long as it includes one request-stackable
+device. It is supposed to only allow tables where there are no
+non-request-stackable devices.
 
-The original code in the BSP kernel was "vq->num_buffers + *nbuffers <
-3", but got mangled along the way to upstream. The intention was to make
-sure that at least 3 buffers are allocated.
-
-Fix this by removing the bad lines and setting q->min_reqbufs_allocation
-to three.
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/raspberrypi/rp1-cfe/cfe.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/md/dm-table.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
-index 69a5f23e7954..9af9efc0d7e7 100644
---- a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
-+++ b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
-@@ -1025,9 +1025,6 @@ static int cfe_queue_setup(struct vb2_queue *vq, unsigned int *nbuffers,
- 	cfe_dbg(cfe, "%s: [%s] type:%u\n", __func__, node_desc[node->id].name,
- 		node->buffer_queue.type);
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index e45cffdd419a..20b8f560a2da 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -894,17 +894,17 @@ static bool dm_table_supports_dax(struct dm_table *t,
+ 	return true;
+ }
  
--	if (vq->max_num_buffers + *nbuffers < 3)
--		*nbuffers = 3 - vq->max_num_buffers;
--
- 	if (*nplanes) {
- 		if (sizes[0] < size) {
- 			cfe_err(cfe, "sizes[0] %i < size %u\n", sizes[0], size);
-@@ -1999,6 +1996,7 @@ static int cfe_register_node(struct cfe_device *cfe, int id)
- 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
- 	q->lock = &node->lock;
- 	q->min_queued_buffers = 1;
-+	q->min_reqbufs_allocation = 3;
- 	q->dev = &cfe->pdev->dev;
+-static int device_is_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
+-				  sector_t start, sector_t len, void *data)
++static int device_is_not_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
++				      sector_t start, sector_t len, void *data)
+ {
+ 	struct block_device *bdev = dev->bdev;
+ 	struct request_queue *q = bdev_get_queue(bdev);
  
- 	ret = vb2_queue_init(q);
+ 	/* request-based cannot stack on partitions! */
+ 	if (bdev_is_partition(bdev))
+-		return false;
++		return true;
+ 
+-	return queue_is_mq(q);
++	return !queue_is_mq(q);
+ }
+ 
+ static int dm_table_determine_type(struct dm_table *t)
+@@ -1000,7 +1000,7 @@ static int dm_table_determine_type(struct dm_table *t)
+ 
+ 	/* Non-request-stackable devices can't be used for request-based dm */
+ 	if (!ti->type->iterate_devices ||
+-	    !ti->type->iterate_devices(ti, device_is_rq_stackable, NULL)) {
++	    ti->type->iterate_devices(ti, device_is_not_rq_stackable, NULL)) {
+ 		DMERR("table load rejected: including non-request-stackable devices");
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.5
 
