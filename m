@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F7B2A5B2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F7FB2A2E3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B2AA17356B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71D351766F1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E122C322DAC;
-	Mon, 18 Aug 2025 13:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4057E31AF2D;
+	Mon, 18 Aug 2025 12:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mC27/FjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+dvOW8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E829322DBC;
-	Mon, 18 Aug 2025 13:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A8927B355;
+	Mon, 18 Aug 2025 12:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523366; cv=none; b=sPNf58rwS13Lb6crUz1WxxHz1qmIR7/I/KmK450Jn+UcSoGd3w+i9t7nXYHVg4UNpD/1x5LTZhmS8q0NTXn7M5qI1F8dW2PK+QVVbEFcnn4oep58w6TMwiK6WlfN8VbVPDKZ5LDVbXHHhqWHh5hCs2PSwkO7km7y6Jy6RZoy/Xc=
+	t=1755521744; cv=none; b=n2dDHD0xa3y3y8W2d+4qGjN+72Q6Xl8wm1C+4+5S+YTlDtoUvSmNkYuri5/vEIM5qmm8a6unavvaIuF/nYIUOKRNFcn9yTf8+XLM3vK44i13cDbMwsNAQxCzyNl8giswsUNbp5z585m9HyGN05dP8Q9abhGEhmWV9MaN8hq1VQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523366; c=relaxed/simple;
-	bh=2x1WGwFtpf5wTbbdXNCuJTjcBk7VK3mMdknEvgoKD6A=;
+	s=arc-20240116; t=1755521744; c=relaxed/simple;
+	bh=EoTO161H4hhZfQvVeXfugZzhRf606jeNXySFHY3/Ses=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYX5hm+du1CECGSu0djcWAy8c+d9/ejHD+JF28P6vLVtpvXmWUAld0n1wHVAjDoDnJUpiSG7MTzxDnTU5fkmrm4zrA33q1GQUU66xJI1ZPBlyxP0eTGnwOqfS6vKzHGYT/0fcMZBhxJAPE4MR0bfq8w7RMS9zpW4ZYYOHIJyIpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mC27/FjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0B1C4CEF1;
-	Mon, 18 Aug 2025 13:22:45 +0000 (UTC)
+	 MIME-Version; b=s20wA0aKNqDHdA/IFBZL+mHw5y9yMFXrSu1xfB7hOq7zCCxXnWFQPYf6Ih8BzGaTMsroeQjCvUe/jxi+ZD/6J1rW6vn6cGCVWXg0akS6VZRtt4urW+w5jedvp2w9UQhwT9ZAoRHPqgE2W0TK7R9TUmTBdZzA9Gku+o0+O5zYfxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+dvOW8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059E3C4CEEB;
+	Mon, 18 Aug 2025 12:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523366;
-	bh=2x1WGwFtpf5wTbbdXNCuJTjcBk7VK3mMdknEvgoKD6A=;
+	s=korg; t=1755521743;
+	bh=EoTO161H4hhZfQvVeXfugZzhRf606jeNXySFHY3/Ses=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mC27/FjAFJOTngAkgtP9YqMPar8N0oTW+84oqAUKHWBar7MjUhUflE/czbir5kY6G
-	 hbYeXUawL/7sLNo8A7KtJ7eubebCGx/PtI/HEHGtXlEWlwmnaoKx6FSKw+2WWUbpF2
-	 8IIDbsRyznAb/CmmlpQ2Mj+qQxReqNEY/ccu0hg8=
+	b=q+dvOW8OfYh9EghK7m05DGNfPGf6CXMFMC2VF1UMSnzoZJWVSU1zKPNihJiLqBEYu
+	 ouXHiJkJqPsF7OwAw/+YAYKmSVUUg/QAm6qVdtjuIjGklGpNHzScovx1c8GDrRwrir
+	 UF0FDVh6anG2CbQK86bWkykLGz8GKVdh/f0jiCgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Guillaume La Roque <glaroque@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 148/515] firmware: arm_scmi: power_control: Ensure SCMI_SYSPOWER_IDLE is set early during resume
+Subject: [PATCH 6.12 108/444] pmdomain: ti: Select PM_GENERIC_DOMAINS
 Date: Mon, 18 Aug 2025 14:42:14 +0200
-Message-ID: <20250818124504.078078039@linuxfoundation.org>
+Message-ID: <20250818124452.988428960@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Guillaume La Roque <glaroque@baylibre.com>
 
-[ Upstream commit 9a0658d3991e6c82df87584b253454842f22f965 ]
+[ Upstream commit fcddcb7e8f38a40db99f87a962c5d0a153a76566 ]
 
-Fix a race condition where a second suspend notification from another
-SCMI agent wakes the system before SCMI_SYSPOWER_IDLE is set, leading
-to ignored suspend requests. This is due to interrupts triggering early
-execution of `scmi_userspace_notifier()` before the SCMI state is updated.
+Select PM_GENERIC_DOMAINS instead of depending on it to ensure
+it is always enabled when TI_SCI_PM_DOMAINS is selected.
+Since PM_GENERIC_DOMAINS is an implicit symbol, it can only be enabled
+through 'select' and cannot be explicitly enabled in configuration.
+This simplifies the dependency chain and prevents build issues
 
-To resolve this, set SCMI_SYSPOWER_IDLE earlier in the device resume
-path, prior to `thaw_processes()`. This ensures the SCMI state is
-correct when the notifier runs, allowing the system to suspend again
-as expected.
-
-On some platforms using SCMI, SCP cannot distinguish between CPU idle
-and suspend since both result in cluster power-off. By explicitly setting
-the idle state early, the Linux SCMI agent can correctly re-suspend in
-response to external notifications.
-
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Message-Id: <20250704-scmi-pm-v2-2-9316cec2f9cc@nxp.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+Reviewed-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/r/20250715-depspmdomain-v2-1-6f0eda3ce824@baylibre.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../firmware/arm_scmi/scmi_power_control.c    | 22 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/pmdomain/ti/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/scmi_power_control.c b/drivers/firmware/arm_scmi/scmi_power_control.c
-index 21f467a92942..ab0cee0d4bec 100644
---- a/drivers/firmware/arm_scmi/scmi_power_control.c
-+++ b/drivers/firmware/arm_scmi/scmi_power_control.c
-@@ -46,6 +46,7 @@
- #include <linux/math.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/pm.h>
- #include <linux/printk.h>
- #include <linux/reboot.h>
- #include <linux/scmi_protocol.h>
-@@ -324,12 +325,7 @@ static int scmi_userspace_notifier(struct notifier_block *nb,
- 
- static void scmi_suspend_work_func(struct work_struct *work)
- {
--	struct scmi_syspower_conf *sc =
--		container_of(work, struct scmi_syspower_conf, suspend_work);
--
- 	pm_suspend(PM_SUSPEND_MEM);
--
--	sc->state = SCMI_SYSPOWER_IDLE;
- }
- 
- static int scmi_syspower_probe(struct scmi_device *sdev)
-@@ -354,6 +350,7 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
- 	sc->required_transition = SCMI_SYSTEM_MAX;
- 	sc->userspace_nb.notifier_call = &scmi_userspace_notifier;
- 	sc->dev = &sdev->dev;
-+	dev_set_drvdata(&sdev->dev, sc);
- 
- 	INIT_WORK(&sc->suspend_work, scmi_suspend_work_func);
- 
-@@ -363,6 +360,18 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
- 						       NULL, &sc->userspace_nb);
- }
- 
-+static int scmi_system_power_resume(struct device *dev)
-+{
-+	struct scmi_syspower_conf *sc = dev_get_drvdata(dev);
-+
-+	sc->state = SCMI_SYSPOWER_IDLE;
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops scmi_system_power_pmops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
-+};
-+
- static const struct scmi_device_id scmi_id_table[] = {
- 	{ SCMI_PROTOCOL_SYSTEM, "syspower" },
- 	{ },
-@@ -370,6 +379,9 @@ static const struct scmi_device_id scmi_id_table[] = {
- MODULE_DEVICE_TABLE(scmi, scmi_id_table);
- 
- static struct scmi_driver scmi_system_power_driver = {
-+	.driver	= {
-+		.pm = &scmi_system_power_pmops,
-+	},
- 	.name = "scmi-system-power",
- 	.probe = scmi_syspower_probe,
- 	.id_table = scmi_id_table,
+diff --git a/drivers/pmdomain/ti/Kconfig b/drivers/pmdomain/ti/Kconfig
+index 67c608bf7ed0..5386b362a7ab 100644
+--- a/drivers/pmdomain/ti/Kconfig
++++ b/drivers/pmdomain/ti/Kconfig
+@@ -10,7 +10,7 @@ if SOC_TI
+ config TI_SCI_PM_DOMAINS
+ 	tristate "TI SCI PM Domains Driver"
+ 	depends on TI_SCI_PROTOCOL
+-	depends on PM_GENERIC_DOMAINS
++	select PM_GENERIC_DOMAINS if PM
+ 	help
+ 	  Generic power domain implementation for TI device implementing
+ 	  the TI SCI protocol.
 -- 
 2.39.5
 
