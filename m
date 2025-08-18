@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEEAB2A426
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC86B2AA5A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505441B61F33
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD66A62703A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA07631CA61;
-	Mon, 18 Aug 2025 13:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EB8341AC0;
+	Mon, 18 Aug 2025 14:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsBdN4u4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEBdFN/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A711C31CA59;
-	Mon, 18 Aug 2025 13:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5002C235D;
+	Mon, 18 Aug 2025 14:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522658; cv=none; b=aFIzS9LL9qf4xZq6UebYAE1KdMTGKWvYls5yOBblsuDvctd7GLBwadiB2DDUFA7W3AjgNSE93vXHlWMFnb2WLmf/BXfpNSJ+owG2K8G6lyv3l4nl+WsrWXdN7twJIoX4V9GHuzv2J78v0GzedccBOwAt0i3dlupzP/rOG/y/dcY=
+	t=1755525967; cv=none; b=e5z2PM9Iz05wQSMPLV1YIJhjU8MOGLtvGK0grAp7+oTTmm2RAAkwxfWu/P9jI4slIs0WoAgmCD+T6V5qk8r+JXVr99EzlF7vZQYAP4Mjwd9+zLcyNp7R8znfmN5tae+p5+8Z4plQgNNI+q8K0rQraI8bMUYmL43taOdTMk8IKjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522658; c=relaxed/simple;
-	bh=DFVitzox457sBH8Ib0cY97C1+b7nDYgRqt9tjIac09g=;
+	s=arc-20240116; t=1755525967; c=relaxed/simple;
+	bh=umG/+d47Xlsutind0816hQrNKzw93+T6Pd6wMEDnWEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVJBhz9wcACfD/hH6+Vr6xqHZwAhTJNT6yGM4F2Vmeu8e24uuupvnF0i/soicNQ91a2VOruQxapXPfyebjTyLh4b4pSjRJoL9GQhqvB+8bMjA+a7yRV3EvyncFkk4AMkIAFeSpipptBZJrEDaumtXmN0BPNwqdPPBbAn9u26lv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsBdN4u4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FF8C4CEEB;
-	Mon, 18 Aug 2025 13:10:57 +0000 (UTC)
+	 MIME-Version; b=m1RWtZhURQ8BigcM2hu4rRYshE1gCDoqrKU7ZF+vMmelDqE9cg8ZJ/8LdQJ+xMp81oaBUJNTJlLjhoDi7AnPxQ/FL81C9Hju3C8Pbg+zue/5apmwQRhjAJkihp9slT1g5/HWg3J915G7pZYnOeQKD5hxbJ7Z6xgOrUjfa39zk9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEBdFN/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E766FC116C6;
+	Mon, 18 Aug 2025 14:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522658;
-	bh=DFVitzox457sBH8Ib0cY97C1+b7nDYgRqt9tjIac09g=;
+	s=korg; t=1755525967;
+	bh=umG/+d47Xlsutind0816hQrNKzw93+T6Pd6wMEDnWEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zsBdN4u4icJRzUCCNDNDHTk8zmCYzODnP/rdq49lo3kdmwM4ooV7O2a2JRzrKYrPz
-	 u1LvlyWTTzgoRDeyTgP+21Kb2tdmtwuAsWm6nl+DTVHf3lcWwPW58thYNz9mdH9rSs
-	 sobNW2tj7WesRFk3hChzd7bkq7acWC8M0fc+gX8A=
+	b=PEBdFN/LCCibuyLb/sSERqK4xm7bIdn6fGfOp8KkMDIMN03px9tLs0vGQ7h7ZaMi9
+	 7mrFwSCk0tPRJ3zWiUX699aLblg36Z2qBPMzbntZ9E6aMZjz2j7hF5/X2eqe6DcvRz
+	 A//1PjWN6/BA53ES/xvTiX7pJLiRQ3ducNWTmuSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com,
-	Yi Liu <yi.l.liu@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 381/444] iommufd: Prevent ALIGN() overflow
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 420/570] soundwire: amd: serialize amd manager resume sequence during pm_prepare
 Date: Mon, 18 Aug 2025 14:46:47 +0200
-Message-ID: <20250818124503.182030421@linuxfoundation.org>
+Message-ID: <20250818124522.021018929@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-commit b42497e3c0e74db061eafad41c0cd7243c46436b upstream.
+[ Upstream commit 03837341790039d6f1cbf7a1ae7dfa2cb77ef0a4 ]
 
-When allocating IOVA the candidate range gets aligned to the target
-alignment. If the range is close to ULONG_MAX then the ALIGN() can
-wrap resulting in a corrupted iova.
+During pm_prepare callback, pm_request_resume() delays SoundWire manager D0
+entry sequence. Synchronize runtime resume sequence for amd_manager
+instance prior to invoking child devices resume sequence for both the amd
+power modes(ClockStop Mode and Power off mode).
+Change the power_mode_mask check and use pm_runtime_resume() in
+amd_pm_prepare() callback.
 
-Open code the ALIGN() using get_add_overflow() to prevent this.
-This simplifies the checks as we don't need to check for length earlier
-either.
-
-Consolidate the two copies of this code under a single helper.
-
-This bug would allow userspace to create a mapping that overlaps with some
-other mapping or a reserved range.
-
-Cc: stable@vger.kernel.org
-Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-Reported-by: syzbot+c2f65e2801743ca64e08@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/685af644.a00a0220.2e5631.0094.GAE@google.com
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://patch.msgid.link/all/1-v1-7b4a16fc390b+10f4-iommufd_alloc_overflow_jgg@nvidia.com/
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250530054447.1645807-3-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |   41 +++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 16 deletions(-)
+ drivers/soundwire/amd_manager.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -70,36 +70,45 @@ struct iopt_area *iopt_area_contig_next(
- 	return iter->area;
- }
- 
--static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
--				    unsigned long length,
--				    unsigned long iova_alignment,
--				    unsigned long page_offset)
-+static bool __alloc_iova_check_range(unsigned long *start, unsigned long last,
-+				     unsigned long length,
-+				     unsigned long iova_alignment,
-+				     unsigned long page_offset)
- {
--	if (span->is_used || span->last_hole - span->start_hole < length - 1)
-+	unsigned long aligned_start;
-+
-+	/* ALIGN_UP() */
-+	if (check_add_overflow(*start, iova_alignment - 1, &aligned_start))
- 		return false;
-+	aligned_start &= ~(iova_alignment - 1);
-+	aligned_start |= page_offset;
- 
--	span->start_hole = ALIGN(span->start_hole, iova_alignment) |
--			   page_offset;
--	if (span->start_hole > span->last_hole ||
--	    span->last_hole - span->start_hole < length - 1)
-+	if (aligned_start >= last || last - aligned_start < length - 1)
- 		return false;
-+	*start = aligned_start;
- 	return true;
- }
- 
--static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
-+static bool __alloc_iova_check_hole(struct interval_tree_double_span_iter *span,
- 				    unsigned long length,
- 				    unsigned long iova_alignment,
- 				    unsigned long page_offset)
- {
--	if (span->is_hole || span->last_used - span->start_used < length - 1)
-+	if (span->is_used)
- 		return false;
-+	return __alloc_iova_check_range(&span->start_hole, span->last_hole,
-+					length, iova_alignment, page_offset);
-+}
- 
--	span->start_used = ALIGN(span->start_used, iova_alignment) |
--			   page_offset;
--	if (span->start_used > span->last_used ||
--	    span->last_used - span->start_used < length - 1)
-+static bool __alloc_iova_check_used(struct interval_tree_span_iter *span,
-+				    unsigned long length,
-+				    unsigned long iova_alignment,
-+				    unsigned long page_offset)
-+{
-+	if (span->is_hole)
- 		return false;
--	return true;
-+	return __alloc_iova_check_range(&span->start_used, span->last_used,
-+					length, iova_alignment, page_offset);
- }
- 
- /*
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 7a671a786197..3b335d6eaa94 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1178,10 +1178,10 @@ static int __maybe_unused amd_pm_prepare(struct device *dev)
+ 	 * device is not in runtime suspend state, observed that device alerts are missing
+ 	 * without pm_prepare on AMD platforms in clockstop mode0.
+ 	 */
+-	if (amd_manager->power_mode_mask & AMD_SDW_CLK_STOP_MODE) {
+-		ret = pm_request_resume(dev);
++	if (amd_manager->power_mode_mask) {
++		ret = pm_runtime_resume(dev);
+ 		if (ret < 0) {
+-			dev_err(bus->dev, "pm_request_resume failed: %d\n", ret);
++			dev_err(bus->dev, "pm_runtime_resume failed: %d\n", ret);
+ 			return 0;
+ 		}
+ 	}
+-- 
+2.39.5
+
 
 
 
