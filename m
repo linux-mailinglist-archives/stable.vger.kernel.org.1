@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9B2B2A7DE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7D1B2A59A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B19B5A09C6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9687A684317
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005DA335BAA;
-	Mon, 18 Aug 2025 13:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248AB33A03B;
+	Mon, 18 Aug 2025 13:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIK5IQct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu4kU0L5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D16335BA9;
-	Mon, 18 Aug 2025 13:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D517933A037;
+	Mon, 18 Aug 2025 13:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525011; cv=none; b=mP/SphUZcO4O5gked6QKfIVOQrXmA64Zo+kwaH0GEqhPPOYVa1Vh/SmsYTFkRE+DUxDMdMWfQ8/g5lAQ9Kd0esc0adyUZt4EZesPIXwtLvdcFFoTJWuu1UJqPQgU/AF/w1TMzDSUBU47D75Tj1BZfdK9KE0yHBpaP266/jxj+BA=
+	t=1755523202; cv=none; b=QQAADlay5HHCEixcEoPlAjsF1FK86L+Q4bDR8f7RY0H3synmfy8hBYEhig5iHc7XRNbGtB9rXXs0nuE9v4B78NAdztYS+DaQ2+BKyl4LRsmRJ/9vdh1cfy+y7Bh/VWfz36QR/JhSiyhJPtBLBMkXEhKZDpoCJipvnXhfhTh5744=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525011; c=relaxed/simple;
-	bh=MJ2XRpJ4/+y3hy+EwBwFJXlMh1Sav2TNG13dkqdFTR4=;
+	s=arc-20240116; t=1755523202; c=relaxed/simple;
+	bh=0U88I+qHDzwuIEEfBKcU51EZzNma8ad8F9nX3PClBwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HH9i9725BsTpJXaENYmnZnl3RVkWKVzKqiYUxIRySpzglQ5SkRSwZeRnJDS7CU3idNc4TgVb0zRWsSwZiJb+9APPIt1dybriq1Snnk6DgSJ/nHDiOOvDypSDQJfTHc/feYsqEKf3B/K3Y+5A7iqD9vTGJuPeGPp0eBucR/oHEb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIK5IQct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E566C4CEEB;
-	Mon, 18 Aug 2025 13:50:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tV0P9mgB18cxDXkyMEzLWf+0eN6lihxE4f0pX4Xx7Il9ib8s757t1TkdnGN0qZzTwvWQIEJYatmNvA4VN+aGi3ZUPcLRE/RNDBVUjVCwzIMs6AYnPFvSLu5QiKaMmVHPSFamsYB2J5s7lP97nyW8je4X6zlNsmIJ1rUqQwiqs/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu4kU0L5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4278FC4CEF1;
+	Mon, 18 Aug 2025 13:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525011;
-	bh=MJ2XRpJ4/+y3hy+EwBwFJXlMh1Sav2TNG13dkqdFTR4=;
+	s=korg; t=1755523202;
+	bh=0U88I+qHDzwuIEEfBKcU51EZzNma8ad8F9nX3PClBwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIK5IQctQzDSD1q0QAgpEexMZJFwAA0WJoBnuhBPgfCdNnlFe2u0v83Iw4zy+f23B
-	 IofNEoiBzQW1432Dlc8I7z6oFuAx+NY2CoNOg8bUKNeu92Spn462O93g7Kd+GjQPpQ
-	 DKRp5+2lZSsknkJXJXj1h2XVu6H2VzZYwjO6nlv4=
+	b=Qu4kU0L56Jv2pl5tm+EnUixy0EQ//5jKqn1mwO23SpdYXZ5uiL4PdQgsClCV3ZRyT
+	 0yXbENCgk5sLBNWb4bljkdGHpQOk+vBJa8TgIxrYb4ag7oAoHq8uxP6fam0zpKZv8A
+	 rGHJbwA3ffiCbgX3owiqawF47dNzRDCEJiLSsFGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 100/570] nvme-pci: try function level reset on init failure
+Subject: [PATCH 6.15 101/515] ata: ahci: Disable DIPM if host lacks support
 Date: Mon, 18 Aug 2025 14:41:27 +0200
-Message-ID: <20250818124509.665447597@linuxfoundation.org>
+Message-ID: <20250818124502.260887731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 5b2c214a95942f7997d1916a4c44017becbc3cac ]
+[ Upstream commit f7870e8d345cdabfb94bcbdcba6a07e050f8705e ]
 
-NVMe devices from multiple vendors appear to get stuck in a reset state
-that we can't get out of with an NVMe level Controller Reset. The kernel
-would report these with messages that look like:
+The AHCI specification version 1.3.1 section 8.3.1.4 (Software
+Requirements and Precedence) states that:
 
-  Device not ready; aborting reset, CSTS=0x1
+If CAP.SSC or CAP.PSC is cleared to ‘0’, software should disable
+device-initiated power management by issuing the appropriate SET
+FEATURES command to the device.
 
-These have historically required a power cycle to make them usable
-again, but in many cases, a PCIe FLR is sufficient to restart operation
-without a power cycle. Try it if the initial controller reset fails
-during any nvme reset attempt.
+To satisfy this constraint and force ata_dev_configure to disable the
+device DIPM feature, modify ahci_update_initial_lpm_policy() to set the
+ATA_FLAG_NO_DIPM flag on ports that have a host with either the
+ATA_HOST_NO_PART flag set or the ATA_HOST_NO_SSC flag set.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de.>
+Link: https://lore.kernel.org/r/20250701125321.69496-7-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/ata/ahci.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 320aaa41ec39..3ef30c36bf10 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1958,8 +1958,28 @@ static int nvme_pci_configure_admin_queue(struct nvme_dev *dev)
- 	 * might be pointing at!
- 	 */
- 	result = nvme_disable_ctrl(&dev->ctrl, false);
--	if (result < 0)
--		return result;
-+	if (result < 0) {
-+		struct pci_dev *pdev = to_pci_dev(dev->dev);
-+
-+		/*
-+		 * The NVMe Controller Reset method did not get an expected
-+		 * CSTS.RDY transition, so something with the device appears to
-+		 * be stuck. Use the lower level and bigger hammer PCIe
-+		 * Function Level Reset to attempt restoring the device to its
-+		 * initial state, and try again.
-+		 */
-+		result = pcie_reset_flr(pdev, false);
-+		if (result < 0)
-+			return result;
-+
-+		pci_restore_state(pdev);
-+		result = nvme_disable_ctrl(&dev->ctrl, false);
-+		if (result < 0)
-+			return result;
-+
-+		dev_info(dev->ctrl.device,
-+			"controller reset completed after pcie flr\n");
-+	}
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index f52ae776d990..f0c4e225172d 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1784,6 +1784,13 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
+ 		return;
+ 	}
  
- 	result = nvme_alloc_queue(dev, 0, NVME_AQ_DEPTH);
- 	if (result)
++	/* If no Partial or no Slumber, we cannot support DIPM. */
++	if ((ap->host->flags & ATA_HOST_NO_PART) ||
++	    (ap->host->flags & ATA_HOST_NO_SSC)) {
++		ata_port_dbg(ap, "Host does not support DIPM\n");
++		ap->flags |= ATA_FLAG_NO_DIPM;
++	}
++
+ 	/* If no LPM states are supported by the HBA, do not bother with LPM */
+ 	if ((ap->host->flags & ATA_HOST_NO_PART) &&
+ 	    (ap->host->flags & ATA_HOST_NO_SSC) &&
 -- 
 2.39.5
 
