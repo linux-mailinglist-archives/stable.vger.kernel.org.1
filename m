@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-171248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C71B2A89B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9B6B2A321
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 000AB6E18C1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C4FB18A667F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8D02C235D;
-	Mon, 18 Aug 2025 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421EE27E074;
+	Mon, 18 Aug 2025 12:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rjt6iONu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra2p/240"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19532C235B;
-	Mon, 18 Aug 2025 13:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E657C2E228D;
+	Mon, 18 Aug 2025 12:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525298; cv=none; b=e4+T+Tm6iO97nQ9nKfIdWqMP4R9WgIsr++vc0FeJNZ0QOIpahEtrtlp4MB6CJMwAACMleJH7ep00jgNHrTStmPgPwWde3fCejqPEBNCt7jTzt64J5TQShb1FUhougssUAMqWx+7LMLLzoCrwM4CCEq6/eOY+fa7CTnEeDLjmJe8=
+	t=1755521923; cv=none; b=FhrK7zh0LIn2tXjFtTgD3aL56mHcbe5HfHTXD7cGtCuT8VJ2cz/aJo6lbLLgZwtuzve4kSU6w/v5ZxtZm9l+juKmMLPQQnLXUGCkpLrQZkA9RzM/gxe8aSR5zeJihz0GAG94JpdEOd53ej2TU1N6VT5Dr3NKk8joQfE4/N1TKZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525298; c=relaxed/simple;
-	bh=G622/99Y4NUBFoMSOd72DHqtBk8YOJB3CmcJR0AqZfk=;
+	s=arc-20240116; t=1755521923; c=relaxed/simple;
+	bh=EZnSBnexFkPeg4K99aebOD6Sdr0V9gQBRFv2PcWUg4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IShuLmGPfN0hlupccCsmc4u3PUqEMcffUqQweToSP3JkR6R4VqsTPRB6vYI4qcXTkQa3+nj9WjtZl9hqJxb+587VVUwifpjwjpBlsccl3jn5VpCKq+xiQ3HI5SeA+nmy8ub6ORsIC24GERoj8tmQWJM7OXo8UjlcSl/Q70Hr1TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rjt6iONu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76742C4CEF1;
-	Mon, 18 Aug 2025 13:54:57 +0000 (UTC)
+	 MIME-Version; b=Y0+g1tO2Rhfdfjt6oeeKQHYnLA6mHQMJJfZ6uDE6pviL+XDAg7o3Rwoh6P4nyWN59650HFjV2UNX4FcY8sbRltG7D2mH9AfRWBeh4CHo5JxZG/e2g9MARqU1t+CZmCD3wz1Cp4ZkXYX3geUC4saLYFamXNmKfGvhTsxSy7S03Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra2p/240; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC27C4CEEB;
+	Mon, 18 Aug 2025 12:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525297;
-	bh=G622/99Y4NUBFoMSOd72DHqtBk8YOJB3CmcJR0AqZfk=;
+	s=korg; t=1755521922;
+	bh=EZnSBnexFkPeg4K99aebOD6Sdr0V9gQBRFv2PcWUg4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rjt6iONuFUSITZZUrMNeVUIOrDcd0b3OoYUtK49PgR9g4EQxfFBQLOosw0l4bwuvZ
-	 jEGuvg9dqMIDMuE/XCCchoxoD0RpXiTI64CLsM91OP+XQMkeP1afoTbJ8RnR0EyH7x
-	 5Ad9ft6GoJTUIxDsMAVghbXDUB7mGnufjnAceviU=
+	b=ra2p/2408JpB7jFrnhstCiN6UqeF4Xp1MNsKAup9rsEx64C5e/W1p7luntsp+1ayX
+	 iom4ySQTR9EOL6MDUiLKyxJo8jCSgDmI7tDapW7CZU6k2mEQbrugDSV1dPf3/Dqygq
+	 rRIB0zwhY9LMtLhiykC4H8aU55yuUQntWzlbyY8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	David Hildenbrand <david@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 202/570] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
+Subject: [PATCH 6.12 163/444] powerpc/thp: tracing: Hide hugepage events under CONFIG_PPC_BOOK3S_64
 Date: Mon, 18 Aug 2025 14:43:09 +0200
-Message-ID: <20250818124513.582929612@linuxfoundation.org>
+Message-ID: <20250818124455.007950006@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +65,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Santos <Jonathan.Santos@analog.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
+[ Upstream commit 43cf0e05089afe23dac74fa6e1e109d49f2903c4 ]
 
-The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
-~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
-ensure reliable synchronization timing even for the worst-case scenario.
+The events hugepage_set_pmd, hugepage_set_pud, hugepage_update_pmd and
+hugepage_update_pud are only called when CONFIG_PPC_BOOK3S_64 is defined.
+As each event can take up to 5K regardless if they are used or not, it's
+best not to define them when they are not used. Add #ifdef around these
+events when they are not used.
 
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/20250612101259.0ad43e48@batman.local.home
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ include/trace/events/thp.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 51134023534a..8b414a102864 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -252,6 +252,24 @@ static const struct regmap_config ad7768_regmap24_config = {
- 	.max_register = AD7768_REG24_COEFF_DATA,
- };
+diff --git a/include/trace/events/thp.h b/include/trace/events/thp.h
+index f50048af5fcc..c8fe879d5828 100644
+--- a/include/trace/events/thp.h
++++ b/include/trace/events/thp.h
+@@ -8,6 +8,7 @@
+ #include <linux/types.h>
+ #include <linux/tracepoint.h>
  
-+static int ad7768_send_sync_pulse(struct ad7768_state *st)
-+{
-+	/*
-+	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
-+	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
-+	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
-+	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
-+	 *
-+	 * Add a delay to ensure the pulse width is always sufficient to
-+	 * trigger synchronization.
-+	 */
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
-+	fsleep(3);
-+	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
-+
-+	return 0;
-+}
-+
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
-@@ -339,10 +357,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 		return ret;
++#ifdef CONFIG_PPC_BOOK3S_64
+ DECLARE_EVENT_CLASS(hugepage_set,
  
- 	/* A sync-in pulse is required every time the filter dec rate changes */
--	gpiod_set_value(st->gpio_sync_in, 1);
--	gpiod_set_value(st->gpio_sync_in, 0);
--
--	return 0;
-+	return ad7768_send_sync_pulse(st);
- }
+ 	    TP_PROTO(unsigned long addr, unsigned long pte),
+@@ -66,6 +67,7 @@ DEFINE_EVENT(hugepage_update, hugepage_update_pud,
+ 	    TP_PROTO(unsigned long addr, unsigned long pud, unsigned long clr, unsigned long set),
+ 	    TP_ARGS(addr, pud, clr, set)
+ );
++#endif /* CONFIG_PPC_BOOK3S_64 */
  
- static int ad7768_set_freq(struct ad7768_state *st,
+ DECLARE_EVENT_CLASS(migration_pmd,
+ 
 -- 
 2.39.5
 
