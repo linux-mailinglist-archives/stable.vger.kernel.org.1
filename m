@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37C7B2A7C4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE69B2A9CE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7B4168833C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C4E31BA37E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83773203BE;
-	Mon, 18 Aug 2025 13:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA88322DCF;
+	Mon, 18 Aug 2025 14:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LT372SE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSPtrNpH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976993203B7;
-	Mon, 18 Aug 2025 13:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FD1322DC8;
+	Mon, 18 Aug 2025 14:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524549; cv=none; b=t+Uoa0HvfdWUkT86WefU7KXsSrH/FBxwrCP9jB8yYB9nRPHvq6VVMdci3ggyeAHeFiHjG3zUBeL1LFu6CsDl31v471EFlHFxLUBvWpnoqtJu5TyNxIiS/sMYxm6dVbdnFHQTJcMnxEoTjcjP9sn4WRY8s54zfNvW+/3vuh+BfuI=
+	t=1755526118; cv=none; b=TqVfsIym7AdVaYUWU7ybhDB/OfpMBtdpNF7CvgoUlLQceqhEzB0tg4SB6qudtq/sV2P7mW83IjK353/FZ/fkuN7U/Xjt1pkAIDeu/6B9NbpM3JLCbg0VnCa/iabtpAsxfXb3v7bprTyq49Hwdg93qJp36B2V2e1SMRBkdjtBTd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524549; c=relaxed/simple;
-	bh=e9TjkbA+9eamqieWBZS9qwSPCauKec+MM2X+JN71ZQE=;
+	s=arc-20240116; t=1755526118; c=relaxed/simple;
+	bh=2i2wVO4o/GNpC4rQDvnlH09GUGWTveWAHMNVYjpQBCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nf5SzmXmcyUT18Hpw+55vi0NimaYNCIWeNJm1nKyy3jomZq+N94njftkve/hPS1ScSq+XGQ2IYqA4410S1Qf+HYy3hQ8MxnOBLCXOAaCFDTAyoFrjDNwfI7WN/I6calb8wSTls/8oyDGkkIMmqpqjeu4wc0yeatSp4ztK9CwOtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LT372SE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CA9C4CEEB;
-	Mon, 18 Aug 2025 13:42:28 +0000 (UTC)
+	 MIME-Version; b=Spt4yRKGh06z3O3sHV+O0BPcWXPF26zo0I+1JE5PdrA66nVm/6osoKrzHe/Qe0zdXlMp+tZMyqJLiN5aKkzZlicnT4d8kMg76yUumUvXjsobqUIbdlpi8ky1cEA9BduAdBoh2Cw6cR58qVek/9cOL9+DUgZFg99QWmhfKyJTKbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSPtrNpH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0138BC4CEEB;
+	Mon, 18 Aug 2025 14:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524549;
-	bh=e9TjkbA+9eamqieWBZS9qwSPCauKec+MM2X+JN71ZQE=;
+	s=korg; t=1755526118;
+	bh=2i2wVO4o/GNpC4rQDvnlH09GUGWTveWAHMNVYjpQBCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LT372SE9ojt50YJFDyDqLHALFEoQ1OOjvoLNBpGKWqGfPSzrrM1HzlRqmcRH6fpTw
-	 WsDB9zcvug7ApUWh/lsLCPWH+Ic+7arR9FSx5liorn1ue6TRL2dicKH6lNc6HMbOB2
-	 k0l8TuTcJoQuN3EZ1gD1VJnyGchmp0K2cG9tDW6U=
+	b=fSPtrNpHeTzSiN6+GcsqKl7ErE8I+RPxcx1DdbnTghXSf/ERWfnBko2JgtxkbIsoA
+	 Xj7lxzNKYx4d6UgByvEo9iAf3lPqxN1POEmEdzSrxIeAc8W6qAoELCZhwJW+XYGu1q
+	 2cXLFgQqFLmRu3yKDW4u0zZJ2sSBS4yj9zbPr7ZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 465/515] btrfs: zoned: do not remove unwritten non-data block group
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 464/570] pNFS: Fix stripe mapping in block/scsi layout
 Date: Mon, 18 Aug 2025 14:47:31 +0200
-Message-ID: <20250818124516.318382337@linuxfoundation.org>
+Message-ID: <20250818124523.737808663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-commit 3061801420469610c8fa6080a950e56770773ef1 upstream.
+[ Upstream commit 81438498a285759f31e843ac4800f82a5ce6521f ]
 
-There are some reports of "unable to find chunk map for logical 2147483648
-length 16384" error message appears in dmesg. This means some IOs are
-occurring after a block group is removed.
+Because of integer division, we need to carefully calculate the
+disk offset. Consider the example below for a stripe of 6 volumes,
+a chunk size of 4096, and an offset of 70000.
 
-When a metadata tree node is cleaned on a zoned setup, we keep that node
-still dirty and write it out not to create a write hole. However, this can
-make a block group's used bytes == 0 while there is a dirty region left.
+chunk = div_u64(offset, dev->chunk_size) = 70000 / 4096 = 17
+offset = chunk * dev->chunk_size = 17 * 4096 = 69632
+disk_offset_wrong = div_u64(offset, dev->nr_children) = 69632 / 6 = 11605
+disk_chunk = div_u64(chunk, dev->nr_children) = 17 / 6 = 2
+disk_offset = disk_chunk * dev->chunk_size = 2 * 4096 = 8192
 
-Such an unused block group is moved into the unused_bg list and processed
-for removal. When the removal succeeds, the block group is removed from the
-transaction->dirty_bgs list, so the unused dirty nodes in the block group
-are not sent at the transaction commit time. It will be written at some
-later time e.g, sync or umount, and causes "unable to find chunk map"
-errors.
-
-This can happen relatively easy on SMR whose zone size is 256MB. However,
-calling do_zone_finish() on such block group returns -EAGAIN and keep that
-block group intact, which is why the issue is hidden until now.
-
-Fixes: afba2bc036b0 ("btrfs: zoned: implement active zone tracking")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250701122341.199112-1-sergeybashirov@gmail.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c |   27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ fs/nfs/blocklayout/dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -34,6 +34,19 @@ int btrfs_should_fragment_free_space(con
- }
- #endif
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index cab8809f0e0f..44306ac22353 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -257,10 +257,11 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	struct pnfs_block_dev *child;
+ 	u64 chunk;
+ 	u32 chunk_idx;
++	u64 disk_chunk;
+ 	u64 disk_offset;
  
-+static inline bool has_unwritten_metadata(struct btrfs_block_group *block_group)
-+{
-+	/* The meta_write_pointer is available only on the zoned setup. */
-+	if (!btrfs_is_zoned(block_group->fs_info))
-+		return false;
-+
-+	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
-+		return false;
-+
-+	return block_group->start + block_group->alloc_offset >
-+		block_group->meta_write_pointer;
-+}
-+
- /*
-  * Return target flags in extended format or 0 if restripe for this chunk_type
-  * is not in progress
-@@ -1246,6 +1259,15 @@ int btrfs_remove_block_group(struct btrf
- 		goto out;
+ 	chunk = div_u64(offset, dev->chunk_size);
+-	div_u64_rem(chunk, dev->nr_children, &chunk_idx);
++	disk_chunk = div_u64_rem(chunk, dev->nr_children, &chunk_idx);
  
- 	spin_lock(&block_group->lock);
-+	/*
-+	 * Hitting this WARN means we removed a block group with an unwritten
-+	 * region. It will cause "unable to find chunk map for logical" errors.
-+	 */
-+	if (WARN_ON(has_unwritten_metadata(block_group)))
-+		btrfs_warn(fs_info,
-+			   "block group %llu is removed before metadata write out",
-+			   block_group->start);
-+
- 	set_bit(BLOCK_GROUP_FLAG_REMOVED, &block_group->runtime_flags);
+ 	if (chunk_idx >= dev->nr_children) {
+ 		dprintk("%s: invalid chunk idx %d (%lld/%lld)\n",
+@@ -273,7 +274,7 @@ static bool bl_map_stripe(struct pnfs_block_dev *dev, u64 offset,
+ 	offset = chunk * dev->chunk_size;
  
- 	/*
-@@ -1589,8 +1611,9 @@ void btrfs_delete_unused_bgs(struct btrf
- 		 * needing to allocate extents from the block group.
- 		 */
- 		used = btrfs_space_info_used(space_info, true);
--		if (space_info->total_bytes - block_group->length < used &&
--		    block_group->zone_unusable < block_group->length) {
-+		if ((space_info->total_bytes - block_group->length < used &&
-+		     block_group->zone_unusable < block_group->length) ||
-+		    has_unwritten_metadata(block_group)) {
- 			/*
- 			 * Add a reference for the list, compensate for the ref
- 			 * drop under the "next" label for the
+ 	/* disk offset of the stripe */
+-	disk_offset = div_u64(offset, dev->nr_children);
++	disk_offset = disk_chunk * dev->chunk_size;
+ 
+ 	child = &dev->children[chunk_idx];
+ 	child->map(child, disk_offset, map);
+-- 
+2.39.5
+
 
 
 
