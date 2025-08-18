@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623F1B2A417
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E27EB2A6D5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B193318A8160
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE6E583800
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B7131CA5C;
-	Mon, 18 Aug 2025 13:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA24335BA8;
+	Mon, 18 Aug 2025 13:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLFrE6GQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR3XWUgK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C28A30F7F8;
-	Mon, 18 Aug 2025 13:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977D53203BA;
+	Mon, 18 Aug 2025 13:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522622; cv=none; b=NOQyq1nfZGNSHrAIXhsivguvJEC325t1khTV9pptJLNkKy7FrrJwYHmiWVnHBmz+LTSOdRl8+TbIkoLaKMbuKpVU9zfVXy7rwpyiFR8GXt5msv3E2yRx6sHR5wVR89AnDceR8TOMleilgSI2P+QpSQvqwEQjDx5b+6nRLfHqWYs=
+	t=1755524238; cv=none; b=BNdRc6O9B34tpl6BiHb5fkvv7OkrQupy4Zb4CdvdGxa+HRiKkYGRof8GHx6ndLzwSo+GYQgjYT4ZJOZ8enej40wIgYetqY0phA0PGGDQhXcPTGiPSBV/9xOsqGjQh0KhGfmUSIzflrSji86zNCQL92LogaPXUY35NrU36BjY0j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522622; c=relaxed/simple;
-	bh=Vx/bCtmHCiYtWeYFyaLcQk5Hnt5BCY+hWI+NSqLC/JA=;
+	s=arc-20240116; t=1755524238; c=relaxed/simple;
+	bh=LP2SznVFEoWh3mFLzYixVzphMUahhH7IR8K78LVauJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCMj+lgs4mQPxYFUeLfjwsZDzKmUSKuQaI2Ie+YXwE8mhaVElrPeVXqqzwmQtn9vJxE4v2XmEPWw6MRJQMo0IoJ5b1xJkFyxxKWkxobRnfAz55XCSqVAh0Gg9v5ePPj1N2ZRLAY8r2d/01urKVZ6Du5/k9rGvrvLc5Lm2/hom80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLFrE6GQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F31C4CEEB;
-	Mon, 18 Aug 2025 13:10:21 +0000 (UTC)
+	 MIME-Version; b=A7Tn/lQGTMwSiMtE1KUF+3b+9Pn88efcfpYRHMVycv3Pk0S5LdEbB+8e3xbhkutUuBpSG1JF1ErefxJwyUzIoQ2MnmaRRDOVTzdI1EE27zu+IFM7CGqdso4LZF2aB4fMfXRNuN3e3IG3pD8VLTh/TDUuJIuzhRuJ2c7aUlw+nuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR3XWUgK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D007C4CEF1;
+	Mon, 18 Aug 2025 13:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522622;
-	bh=Vx/bCtmHCiYtWeYFyaLcQk5Hnt5BCY+hWI+NSqLC/JA=;
+	s=korg; t=1755524238;
+	bh=LP2SznVFEoWh3mFLzYixVzphMUahhH7IR8K78LVauJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLFrE6GQRyYDbRE+BfkvaDS7LasihDpejkhlc7rfzVXFwyE7r7Q0SB3fXf3Kf8+Aa
-	 4hmQeQVL5snBhgpvQGtvXelx88/tNTY8OKumy1cy53+9ZC1PYPvOfxNbjkeKwQoJnG
-	 m/eSQnnJfkif/22UnQb5bdOAqlECTXFI/6ue+qwY=
+	b=KR3XWUgK2FarrWi5Ozh+pDUWkKwZA3YBhyhhPOXqG93E+2IN9gcaSTFpp+1sRzEE8
+	 J/kZP/GCwPAoSLnvEHGKd0wZCcawc9mfx8/AzYOUNNWnKcI1ZWHXEjsukdZ+rcJt0+
+	 dFSNFnuZLOTEcCmJp2tM6YOB3n3KUAQhdzJy7zOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YiPeng Chai <YiPeng.Chai@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Yishai Hadas <yishaih@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 371/444] drm/amdgpu: fix vram reservation issue
+Subject: [PATCH 6.15 411/515] vfio/mlx5: fix possible overflow in tracking max message size
 Date: Mon, 18 Aug 2025 14:46:37 +0200
-Message-ID: <20250818124502.806056433@linuxfoundation.org>
+Message-ID: <20250818124514.237802429@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YiPeng Chai <YiPeng.Chai@amd.com>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit 10ef476aad1c848449934e7bec2ab2374333c7b6 ]
+[ Upstream commit b3060198483bac43ec113c62ae3837076f61f5de ]
 
-The vram block allocation flag must be cleared
-before making vram reservation, otherwise reserving
-addresses within the currently freed memory range
-will always fail.
+MLX cap pg_track_log_max_msg_size consists of 5 bits, value of which is
+used as power of 2 for max_msg_size. This can lead to multiplication
+overflow between max_msg_size (u32) and integer constant, and afterwards
+incorrect value is being written to rq_size.
 
-Fixes: c9cad937c0c5 ("drm/amdgpu: add drm buddy support to amdgpu")
-Signed-off-by: YiPeng Chai <YiPeng.Chai@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d38eaf27de1b8584f42d6fb3f717b7ec44b3a7a1)
+Fix this issue by extending integer constant to u64 type.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
+Link: https://lore.kernel.org/r/20250701144017.2410-2-a.sadovnikov@ispras.ru
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/vfio/pci/mlx5/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 732c79e201c6..ea4df412decf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -648,9 +648,8 @@ static void amdgpu_vram_mgr_del(struct ttm_resource_manager *man,
- 	list_for_each_entry(block, &vres->blocks, link)
- 		vis_usage += amdgpu_vram_mgr_vis_size(adev, block);
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 11eda6b207f1..6d36b3b4cd30 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1538,8 +1538,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
+ 	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
+ 	max_msg_size = (1ULL << log_max_msg_size);
+ 	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
+-	if (rq_size < 4 * max_msg_size)
+-		rq_size = 4 * max_msg_size;
++	if (rq_size < 4ULL * max_msg_size)
++		rq_size = 4ULL * max_msg_size;
  
--	amdgpu_vram_mgr_do_reserve(man);
--
- 	drm_buddy_free_list(mm, &vres->blocks, vres->flags);
-+	amdgpu_vram_mgr_do_reserve(man);
- 	mutex_unlock(&mgr->lock);
- 
- 	atomic64_sub(vis_usage, &mgr->vis_usage);
+ 	memset(tracker, 0, sizeof(*tracker));
+ 	tracker->uar = mlx5_get_uars_page(mdev);
 -- 
-2.50.1
+2.39.5
 
 
 
