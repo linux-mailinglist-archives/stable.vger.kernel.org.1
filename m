@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572F4B2A7D6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3C7B2A4D7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56011684201
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52BAC7BDBB4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31BB321442;
-	Mon, 18 Aug 2025 13:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0739421507C;
+	Mon, 18 Aug 2025 13:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lkox+taq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DGO1S7U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F755235C01;
-	Mon, 18 Aug 2025 13:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B3B2135CE;
+	Mon, 18 Aug 2025 13:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524717; cv=none; b=iosnzZ+uutOPEtPTnj6iDuA8OB0HWv9phIOYitC4O1Xjjfr/Z//u1ty+eUBifPhyxrRX7MAmL1n+5ieDQwRt48xT2k+aOZlEeejZxN89AFNokXteK7RtNBkoFH0hteIyvulJ9Pk9hl6ubsfnEtOlJIEMdmhyraGej6KsoqZ87WE=
+	t=1755523012; cv=none; b=CoxewKTIJheda5rhKxpRD0nN0Hc8C+Pykg17lmElzL+X9klKqy7igg7VqV1p7lKFQtXc6PpgYX3amaOVaPwpAxBUwOs6/t7S7+Tu8iGjNeCajrT2F9aNGaUHIOEVYnM6bZn0N9vxZlpSgfdSKWDJP9KSgx18GTP7s/gzuS6ZcyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524717; c=relaxed/simple;
-	bh=vDl+qoP45wfHrLdhBXxJw4RnntdDyWbXMrVO5DAvN4k=;
+	s=arc-20240116; t=1755523012; c=relaxed/simple;
+	bh=KvQpXNzs4GpkWL4lfiUV9xklIqeuzFucimhAtSUKJsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vFsP2UAdzP0jT52MsUd+CjeeerwkduzMcTYUbN6B8jL/GjQX8ZOl1o1FppSSgeb2KoTATDSd8cSWvcsZTZPlyWWtLIzLhpUqjDzrNPGieaTSKBhSQTQRLWEAkSz1g6vKIa9sFzcKxHNOgjYLSN/Tz1XRucJB/JdL0RuATJXZUtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lkox+taq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD36AC4CEEB;
-	Mon, 18 Aug 2025 13:45:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ND2YTpNtkRrlsUuci5Z8OZNeFgWWkkxfX/3gnxjl7Mn970K2cPzqDrr9wxdN34cJ8z4DolwCzc8sYWGZNwMsOKpW7ELlLbx0oUI9Csl7dDlENIjobiEUv/+FGzMi6Qo3nf3uUsuU2vQer1AE6M8nDaRYyjw2GuG2grOpctxgFsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DGO1S7U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD775C4CEEB;
+	Mon, 18 Aug 2025 13:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524717;
-	bh=vDl+qoP45wfHrLdhBXxJw4RnntdDyWbXMrVO5DAvN4k=;
+	s=korg; t=1755523012;
+	bh=KvQpXNzs4GpkWL4lfiUV9xklIqeuzFucimhAtSUKJsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lkox+taq4EW+zfsZAmlKM4wT9qqxFDR82XmJvEiHjQbz+fYXBVN7WwzUFxBaXxypk
-	 ftU26NSFR7AcURerwLo3EaENOin8pGGdt2l1sATw7HoHTkt8dOVN3BvtAH4brbObdP
-	 7K6G+JZLWj87uwQ0uWqRS6kBPgcKcFlfkZw2+lQ4=
+	b=0DGO1S7UPjuWMX/D8cUYQb7ebl58PJr3w2zr7+51d5G2gQNO86CHeHAnXQDNTBy1h
+	 Gl1UOD7zhE1xewHicalMRFLVZ6cibuFTcufBlzl3PdFBDEIdEkinguurYwblk488N2
+	 WgP/+EkYxH7GBIMG2WSbWkkrSe3iCwSnQEyVwkVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 041/570] sunvdc: Balance device refcount in vdc_port_mpgroup_check
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.15 042/515] clk: samsung: gs101: fix alternate mout_hsi0_usb20_ref parent clock
 Date: Mon, 18 Aug 2025 14:40:28 +0200
-Message-ID: <20250818124507.397141385@linuxfoundation.org>
+Message-ID: <20250818124500.053219820@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
+commit ca243e653f71d8c4724a68c9033923f945b1084d upstream.
 
-Using device_find_child() to locate a probed virtual-device-port node
-causes a device refcount imbalance, as device_find_child() internally
-calls get_device() to increment the device’s reference count before
-returning its pointer. vdc_port_mpgroup_check() directly returns true
-upon finding a matching device without releasing the reference via
-put_device(). We should call put_device() to decrement refcount.
+The alternate parent clock for this mux is mout_pll_usb, not the pll
+itself.
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
-
-Found by code review.
-
+Fixes: 1891e4d48755 ("clk: samsung: gs101: add support for cmu_hsi0")
 Cc: stable@vger.kernel.org
-Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-2-49daf1ff4592@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/sunvdc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/samsung/clk-gs101.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/block/sunvdc.c
-+++ b/drivers/block/sunvdc.c
-@@ -957,8 +957,10 @@ static bool vdc_port_mpgroup_check(struc
- 	dev = device_find_child(vdev->dev.parent, &port_data,
- 				vdc_device_probed);
- 
--	if (dev)
-+	if (dev) {
-+		put_device(dev);
- 		return true;
-+	}
- 
- 	return false;
- }
+--- a/drivers/clk/samsung/clk-gs101.c
++++ b/drivers/clk/samsung/clk-gs101.c
+@@ -2129,7 +2129,7 @@ PNAME(mout_hsi0_usbdpdbg_user_p)	= { "os
+ 					    "dout_cmu_hsi0_usbdpdbg" };
+ PNAME(mout_hsi0_bus_p)			= { "mout_hsi0_bus_user",
+ 					    "mout_hsi0_alt_user" };
+-PNAME(mout_hsi0_usb20_ref_p)		= { "fout_usb_pll",
++PNAME(mout_hsi0_usb20_ref_p)		= { "mout_pll_usb",
+ 					    "mout_hsi0_tcxo_user" };
+ PNAME(mout_hsi0_usb31drd_p)		= { "fout_usb_pll",
+ 					    "mout_hsi0_usb31drd_user",
 
 
 
