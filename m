@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-170138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A86BB2A2CB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:02:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ADFB2A745
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C42A1899BAD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3646C7B5977
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEFC31CA5E;
-	Mon, 18 Aug 2025 12:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7051B261B9B;
+	Mon, 18 Aug 2025 13:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucRGbNwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGnonUUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2404A31B122;
-	Mon, 18 Aug 2025 12:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E21719E82A;
+	Mon, 18 Aug 2025 13:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521648; cv=none; b=FoPLx6V8r0f7+tyaZEPXeSYt43zdDoNksR/35DluL38FBy7WrSW0Jqg0/TR50z92H7dNuZKWvDJDtzy4Lp0HTSZNoKECiQD4XB6GY7csg3So2POUy4eE2TXPpo3vk2MjNjb92GTFhwl5qGUeY2yapcjCbfpe/O4LuwvT2mkjrDo=
+	t=1755524870; cv=none; b=P+b496Lyq55psHmEmtYskkchNMqFPb3tWAAtpd+/xKfQhmwmiTG1dIEp/MjxsVYXkCqu0zXTopTBhWRW8ZycMPZfiHjf7d3BozhD2wfqsrlFwWYv3Biqoh0IFbtxIT0+MPrzCl/2oxsSZYe9EbbVfMSQMcPJPn0MLpskMJVw9p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521648; c=relaxed/simple;
-	bh=aNn1NaaWKlQygJ7ISsWBJB0DcxvY60jV1gI7ukAPxKc=;
+	s=arc-20240116; t=1755524870; c=relaxed/simple;
+	bh=z2Cq92dLV89A4tmqaGo30rfnvIi5ivd3yxrwOzqAd38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpaY7j0bECm7NtAE0FM06ZItyDMpvjHa/4J9FMVIJguAbgnsBr2sCUrWnP6AqpXpiGNBMD156qoc8FtwMZXvCZQ+/V5eNTRBSdjseP02YU+zVPJG8kNWPLit2qTVaBWWzFUpbPgR93mwMMotsBvAK75ZM4/kDwayTsmASu5e4vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucRGbNwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F836C4CEEB;
-	Mon, 18 Aug 2025 12:54:07 +0000 (UTC)
+	 MIME-Version; b=l6X/6tsd26SvVrCcWlH4TxRUD3iFWS2H4M1GMTVODKwlI7RYgjBlPY7lYo1PuUTvArQdyAZLt2JfREVH0Xiw0Ch10YCsYK6ITwe6aCRDk0fzBHoy1C9Ma9kc9IG37tdZ6tSu3yWNgIlC3Xi6c8U4NMS/uLzm154cHgwYXi7r8jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGnonUUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8A0C4CEEB;
+	Mon, 18 Aug 2025 13:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521648;
-	bh=aNn1NaaWKlQygJ7ISsWBJB0DcxvY60jV1gI7ukAPxKc=;
+	s=korg; t=1755524870;
+	bh=z2Cq92dLV89A4tmqaGo30rfnvIi5ivd3yxrwOzqAd38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucRGbNwfvDOHLU6Fviqi8Np+QHlNb4GQ9Pvm6swOPPThDy0SpryK1JYkrcRJTRjWc
-	 jFYPK/Nv9AMN5eR1qFbudmJJOqdj8F2sNjTyCY36X7hiuOYkgFwACSGO72xu0nit6H
-	 v7PFizGRqPnbK5FH5iAUtvYp9oeExk/1IqxS66Uw=
+	b=SGnonUUS896POiBtgLlkAN3eDSXTK7+VmrQ51MP8iUwMOO9Yreaa3aEVRNRg3zJj1
+	 zrpneZpVHX30yEUEwRZQEOegVXpb837W10LYcGmOQzOJCSMl57ZedWfkW20qZ7Dh9r
+	 jYiKGqCyB211l7a1qML0yOfqS1x1MYDMJNtvIMYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 049/444] KVM: nVMX: Check vmcs12->guest_ia32_debugctl on nested VM-Enter
+	syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com,
+	syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com,
+	syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com,
+	Sven Stegemann <sven@stegemann.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 088/570] net: kcm: Fix race condition in kcm_unattach()
 Date: Mon, 18 Aug 2025 14:41:15 +0200
-Message-ID: <20250818124450.771871559@linuxfoundation.org>
+Message-ID: <20250818124509.204357437@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Sven Stegemann <sven@stegemann.de>
 
-[ Upstream commit 095686e6fcb4150f0a55b1a25987fad3d8af58d6 ]
+[ Upstream commit 52565a935213cd6a8662ddb8efe5b4219343a25d ]
 
-Add a consistency check for L2's guest_ia32_debugctl, as KVM only supports
-a subset of hardware functionality, i.e. KVM can't rely on hardware to
-detect illegal/unsupported values.  Failure to check the vmcs12 value
-would allow the guest to load any harware-supported value while running L2.
+syzbot found a race condition when kcm_unattach(psock)
+and kcm_release(kcm) are executed at the same time.
 
-Take care to exempt BTF and LBR from the validity check in order to match
-KVM's behavior for writes via WRMSR, but without clobbering vmcs12.  Even
-if VM_EXIT_SAVE_DEBUG_CONTROLS is set in vmcs12, L1 can reasonably expect
-that vmcs12->guest_ia32_debugctl will not be modified if writes to the MSR
-are being intercepted.
+kcm_unattach() is missing a check of the flag
+kcm->tx_stopped before calling queue_work().
 
-Arguably, KVM _should_ update vmcs12 if VM_EXIT_SAVE_DEBUG_CONTROLS is set
-*and* writes to MSR_IA32_DEBUGCTLMSR are not being intercepted by L1, but
-that would incur non-trivial complexity and wouldn't change the fact that
-KVM's handling of DEBUGCTL is blatantly broken.  I.e. the extra complexity
-is not worth carrying.
+If the kcm has a reserved psock, kcm_unattach() might get executed
+between cancel_work_sync() and unreserve_psock() in kcm_release(),
+requeuing kcm->tx_work right before kcm gets freed in kcm_done().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-7-seanjc@google.com
-Stable-dep-of: 7d0cce6cbe71 ("KVM: VMX: Wrap all accesses to IA32_DEBUGCTL with getter/setter APIs")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Remove kcm->tx_stopped and replace it by the less
+error-prone disable_work_sync().
+
+Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
+Reported-by: syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e62c9db591c30e174662
+Reported-by: syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d199b52665b6c3069b94
+Reported-by: syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=be6b1fdfeae512726b4e
+Signed-off-by: Sven Stegemann <sven@stegemann.de>
+Link: https://patch.msgid.link/20250812191810.27777-1-sven@stegemann.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/nested.c | 12 ++++++++++--
- arch/x86/kvm/vmx/vmx.c    |  5 ++---
- arch/x86/kvm/vmx/vmx.h    |  3 +++
- 3 files changed, 15 insertions(+), 5 deletions(-)
+ include/net/kcm.h |  1 -
+ net/kcm/kcmsock.c | 10 ++--------
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 903e874041ac..1e0b9f92ff18 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -2653,7 +2653,8 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 	if (vmx->nested.nested_run_pending &&
- 	    (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS)) {
- 		kvm_set_dr(vcpu, 7, vmcs12->guest_dr7);
--		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl);
-+		vmcs_write64(GUEST_IA32_DEBUGCTL, vmcs12->guest_ia32_debugctl &
-+						  vmx_get_supported_debugctl(vcpu, false));
- 	} else {
- 		kvm_set_dr(vcpu, 7, vcpu->arch.dr7);
- 		vmcs_write64(GUEST_IA32_DEBUGCTL, vmx->nested.pre_vmenter_debugctl);
-@@ -3135,7 +3136,8 @@ static int nested_vmx_check_guest_state(struct kvm_vcpu *vcpu,
- 		return -EINVAL;
+diff --git a/include/net/kcm.h b/include/net/kcm.h
+index 441e993be634..d9c35e71ecea 100644
+--- a/include/net/kcm.h
++++ b/include/net/kcm.h
+@@ -71,7 +71,6 @@ struct kcm_sock {
+ 	struct list_head wait_psock_list;
+ 	struct sk_buff *seq_skb;
+ 	struct mutex tx_mutex;
+-	u32 tx_stopped : 1;
  
- 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) &&
--	    CC(!kvm_dr7_valid(vmcs12->guest_dr7)))
-+	    (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
-+	     CC(!vmx_is_valid_debugctl(vcpu, vmcs12->guest_ia32_debugctl, false))))
- 		return -EINVAL;
+ 	/* Don't use bit fields here, these are set under different locks */
+ 	bool tx_wait;
+diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+index c05047dad62d..d0a001ebabfe 100644
+--- a/net/kcm/kcmsock.c
++++ b/net/kcm/kcmsock.c
+@@ -430,7 +430,7 @@ static void psock_write_space(struct sock *sk)
  
- 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_PAT) &&
-@@ -4576,6 +4578,12 @@ static void sync_vmcs02_to_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12)
- 		(vmcs12->vm_entry_controls & ~VM_ENTRY_IA32E_MODE) |
- 		(vm_entry_controls_get(to_vmx(vcpu)) & VM_ENTRY_IA32E_MODE);
+ 	/* Check if the socket is reserved so someone is waiting for sending. */
+ 	kcm = psock->tx_kcm;
+-	if (kcm && !unlikely(kcm->tx_stopped))
++	if (kcm)
+ 		queue_work(kcm_wq, &kcm->tx_work);
  
-+	/*
-+	 * Note!  Save DR7, but intentionally don't grab DEBUGCTL from vmcs02.
-+	 * Writes to DEBUGCTL that aren't intercepted by L1 are immediately
-+	 * propagated to vmcs12 (see vmx_set_msr()), as the value loaded into
-+	 * vmcs02 doesn't strictly track vmcs12.
-+	 */
- 	if (vmcs12->vm_exit_controls & VM_EXIT_SAVE_DEBUG_CONTROLS)
- 		vmcs12->guest_dr7 = vcpu->arch.dr7;
+ 	spin_unlock_bh(&mux->lock);
+@@ -1694,12 +1694,6 @@ static int kcm_release(struct socket *sock)
+ 	 */
+ 	__skb_queue_purge(&sk->sk_write_queue);
  
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index ff61093e9af7..50d45c18fce9 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2173,7 +2173,7 @@ static u64 nested_vmx_truncate_sysenter_addr(struct kvm_vcpu *vcpu,
- 	return (unsigned long)data;
- }
+-	/* Set tx_stopped. This is checked when psock is bound to a kcm and we
+-	 * get a writespace callback. This prevents further work being queued
+-	 * from the callback (unbinding the psock occurs after canceling work.
+-	 */
+-	kcm->tx_stopped = 1;
+-
+ 	release_sock(sk);
  
--static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated)
-+u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated)
- {
- 	u64 debugctl = 0;
+ 	spin_lock_bh(&mux->lock);
+@@ -1715,7 +1709,7 @@ static int kcm_release(struct socket *sock)
+ 	/* Cancel work. After this point there should be no outside references
+ 	 * to the kcm socket.
+ 	 */
+-	cancel_work_sync(&kcm->tx_work);
++	disable_work_sync(&kcm->tx_work);
  
-@@ -2192,8 +2192,7 @@ static u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated
- 	return debugctl;
- }
- 
--static bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data,
--				  bool host_initiated)
-+bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated)
- {
- 	u64 invalid;
- 
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index cf57fbf12104..ee330d14089d 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -435,6 +435,9 @@ static inline void vmx_set_intercept_for_msr(struct kvm_vcpu *vcpu, u32 msr,
- 
- void vmx_update_cpu_dirty_logging(struct kvm_vcpu *vcpu);
- 
-+u64 vmx_get_supported_debugctl(struct kvm_vcpu *vcpu, bool host_initiated);
-+bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data, bool host_initiated);
-+
- /*
-  * Note, early Intel manuals have the write-low and read-high bitmap offsets
-  * the wrong way round.  The bitmaps control MSRs 0x00000000-0x00001fff and
+ 	lock_sock(sk);
+ 	psock = kcm->tx_psock;
 -- 
 2.50.1
 
