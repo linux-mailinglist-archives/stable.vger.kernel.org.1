@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02263B2A30B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB968B2A5E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EE4918A32F9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21C01681B73
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E084261B8D;
-	Mon, 18 Aug 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAC3322A24;
+	Mon, 18 Aug 2025 13:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbZ8Mzd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViUSIpJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA2A31AF2D;
-	Mon, 18 Aug 2025 12:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0431322772;
+	Mon, 18 Aug 2025 13:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521864; cv=none; b=RsXI9ZBAbhj18Ibtpuwc7xEIRBhes3U1HS5XCpcej37O4ex5quRe6asgdhTwm/VYjQAQIarjfiS3aFgkXd5d7e1j29qD+9ENR7AszW7gBZvnik8V9V+DWV71F26K8esZjYjHWfvIPjuPN14ChQG8XptF9iz26CIziaewUoTIf4A=
+	t=1755523620; cv=none; b=UbARhvP2iwUyx0H+4ldLkogkOYrn91fs00/rHkQIwwSq5Sp75JE21EcuSwtY4E9UF5ZLM6W6cr5EBKXWS48asEvv6otlbspgBRVCrSE2bC2sscEV/s2YD9j8zW4lCF5k/WrlMJ6uvFwjwXLuJie8aonzyy7GvAWGADzIx0kfcH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521864; c=relaxed/simple;
-	bh=LGa45sBthclR3bqOELsNJGsGasVYvhkiX+FZqVVRiiQ=;
+	s=arc-20240116; t=1755523620; c=relaxed/simple;
+	bh=RG3LXr5K+3ADGryRoMXt46TyYKQ/qYwMuwcHXtGTxsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzOs85yoF1DUIDFsFSj0UuLce97robornMwAIW4+TAXiz1dYfbgMXf8BHZQC02ywIFrIcep7I6s6o5skzQ80tTljxf+pVODMOqNYkhKRs1LvYTiDPuACKJhUAebm/c2/Xh9lxiwSBjPgeM1zaoN76hUVstm0RBXBwzpXGZFCrso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbZ8Mzd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC7BC4CEF1;
-	Mon, 18 Aug 2025 12:57:43 +0000 (UTC)
+	 MIME-Version; b=Rn4uL9/DSAK5r7p+4ZqYPNnleTawNE7Dk+r/IWJXac+380VqdeiC1h8He8saDeUSSXsMZzKGkKgfa7ZMcbUISNbdBL8yTiOteIQS/NNiKnslOW9pRDd7k3ZilwCtd/3ZrmSkwzx7laIh1iit8h3NDG3j+n7W36RlWywWETT1GAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViUSIpJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB0FC4CEEB;
+	Mon, 18 Aug 2025 13:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521864;
-	bh=LGa45sBthclR3bqOELsNJGsGasVYvhkiX+FZqVVRiiQ=;
+	s=korg; t=1755523620;
+	bh=RG3LXr5K+3ADGryRoMXt46TyYKQ/qYwMuwcHXtGTxsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbZ8Mzd2UgJl+dxpIbdiU0k+Gr8Zn1dPn49rDJljaJLN5RWfz+XmBp4+Ld3HUEuY+
-	 lHU6IwdVAJ7XPbPcEv6v+6LTsT9GYx5anAjzsi6onk7lpJvfv90a4Z+Rfm2aZPGTTj
-	 G3HmB1ROIhbpeTOFFr+yVMWLlbPVvxXNNAj16VLI=
+	b=ViUSIpJbMR3dzuCwAju4IsqM5HRZ9q4AdHNuVXn50Ex6PoONME3gR7XMEK9SNfGMl
+	 73m3IkBDFOo0gdQuotekJPrjqAPrlCL/PekBlCv8zaf2uIONaZFpbbqL7vuEouxo/c
+	 y4sd0TEMDvv0Wi5i1vUi76Avozu7QAqnbYsdfYcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 144/444] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
-Date: Mon, 18 Aug 2025 14:42:50 +0200
-Message-ID: <20250818124454.314705261@linuxfoundation.org>
+Subject: [PATCH 6.15 185/515] ALSA: usb-audio: Avoid precedence issues in mixer_quirks macros
+Date: Mon, 18 Aug 2025 14:42:51 +0200
+Message-ID: <20250818124505.496563852@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
+[ Upstream commit fd3ab72e42e9871a9902b945a2bf8bb87b49c718 ]
 
-code mistakenly used a hardcoded index (codec[1]) instead of
-iterating, over the codec array using the loop variable i.
-Use codec[i] instead of codec[1] to match the loop iteration.
+Fix all macro related issues identified by checkpatch.pl:
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
+  CHECK: Macro argument 'x' may be better as '(x)' to avoid precedence issues
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250526-dualsense-alsa-jack-v1-3-1a821463b632@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/intel8x0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
-index e4bb99f71c2c..95f0bd2e1532 100644
---- a/sound/pci/intel8x0.c
-+++ b/sound/pci/intel8x0.c
-@@ -2249,7 +2249,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
- 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
- 			for (i = 1; i < 4; i++) {
- 				if (pcm->r[0].codec[i]) {
--					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
-+					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
- 					break;
- 				}
- 			}
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index a90673d43822..8435ca833a42 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -2153,15 +2153,15 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
+ #define SND_RME_CLK_FREQMUL_SHIFT		18
+ #define SND_RME_CLK_FREQMUL_MASK		0x7
+ #define SND_RME_CLK_SYSTEM(x) \
+-	((x >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
++	(((x) >> SND_RME_CLK_SYSTEM_SHIFT) & SND_RME_CLK_SYSTEM_MASK)
+ #define SND_RME_CLK_AES(x) \
+-	((x >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
++	(((x) >> SND_RME_CLK_AES_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
+ #define SND_RME_CLK_SPDIF(x) \
+-	((x >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
++	(((x) >> SND_RME_CLK_SPDIF_SHIFT) & SND_RME_CLK_AES_SPDIF_MASK)
+ #define SND_RME_CLK_SYNC(x) \
+-	((x >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
++	(((x) >> SND_RME_CLK_SYNC_SHIFT) & SND_RME_CLK_SYNC_MASK)
+ #define SND_RME_CLK_FREQMUL(x) \
+-	((x >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
++	(((x) >> SND_RME_CLK_FREQMUL_SHIFT) & SND_RME_CLK_FREQMUL_MASK)
+ #define SND_RME_CLK_AES_LOCK			0x1
+ #define SND_RME_CLK_AES_SYNC			0x4
+ #define SND_RME_CLK_SPDIF_LOCK			0x2
+@@ -2170,9 +2170,9 @@ static int dell_dock_mixer_init(struct usb_mixer_interface *mixer)
+ #define SND_RME_SPDIF_FORMAT_SHIFT		5
+ #define SND_RME_BINARY_MASK			0x1
+ #define SND_RME_SPDIF_IF(x) \
+-	((x >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
++	(((x) >> SND_RME_SPDIF_IF_SHIFT) & SND_RME_BINARY_MASK)
+ #define SND_RME_SPDIF_FORMAT(x) \
+-	((x >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
++	(((x) >> SND_RME_SPDIF_FORMAT_SHIFT) & SND_RME_BINARY_MASK)
+ 
+ static const u32 snd_rme_rate_table[] = {
+ 	32000, 44100, 48000, 50000,
 -- 
 2.39.5
 
