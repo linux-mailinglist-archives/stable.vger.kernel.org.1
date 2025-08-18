@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08D1B2A7CE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAA1B2A565
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78FD587CA7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80EBB7BF8CA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A933F261B97;
-	Mon, 18 Aug 2025 13:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53AE31E0EB;
+	Mon, 18 Aug 2025 13:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qc0TDB97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nn6CgO4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67112225397;
-	Mon, 18 Aug 2025 13:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600D6335BDD;
+	Mon, 18 Aug 2025 13:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524867; cv=none; b=uFUzW7jzF6y4MHV7XaPAFlNxjUuQr7zbOQZOjOCz0oxMFemKl8qZKIHDGjmzGkrQjX/6ESdakzHrgY9HCrwZ/m1vzgR0yKpWBLka68swRqSeNWbh4RBgbu+sXLPfBcAMSb7NxWZSUFzmFgbSJf2gyoBowmdNk6OeDDSE5fcOwKg=
+	t=1755523273; cv=none; b=XwDecyHOwAxWx0SAQFH/OEU+LnLiqkeHU/59eYhsIzU2lLYnhGbbWxuIo5aPa2fkEtpFz1XPI/4xqnSZYsURoIGH7BI6Rm3rl03FCT1BYS0fjUqu/kKuN5vGruB9tQfj8OZ+SEuzRJrTigIGU7jojUX0T2mgFYkEd132fdlwMSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524867; c=relaxed/simple;
-	bh=N99DexYOGN/gsq154IgcIcEyE6kvYiB5YHHCqUZ92VU=;
+	s=arc-20240116; t=1755523273; c=relaxed/simple;
+	bh=GogLS+T6ZYHLJhVwSgMuqKrX4/Q34AWMGI/W9SHTsnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qESkE142USA95MNLkYqhWY9pzwSJIPXg0a3GSw8ghyEKgj/uDHQKDK8C1xrMQ2iyD7yywxMJN369OFgbGdjwvqC7EcjP/vWXqMnYn4ivUFFeg1ZoUSbEhUFDyKpfiSJ7SxPNAdp3lzJ0IXxxOblzHfKyD+L6ywGZmMYCeuHIXJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qc0TDB97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41999C4CEEB;
-	Mon, 18 Aug 2025 13:47:46 +0000 (UTC)
+	 MIME-Version; b=t780/YOeiiEV/nKs2aq8H9UJLkgFmH/2z960CXIixd2f9roIgTtobOtpZA7um4gy7ttISbrGxu/HKsOeFBEPN8RRRlljI5ejgVzXzw2K+o9OrVzuyhB8RrGzqeXgf3UgIVMRoLqTrObduQwOEuSenK/Au80lyz+irdg23uyXZB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nn6CgO4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E0DC4CEEB;
+	Mon, 18 Aug 2025 13:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524867;
-	bh=N99DexYOGN/gsq154IgcIcEyE6kvYiB5YHHCqUZ92VU=;
+	s=korg; t=1755523273;
+	bh=GogLS+T6ZYHLJhVwSgMuqKrX4/Q34AWMGI/W9SHTsnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qc0TDB97444p4VUE96pMBpiSVc694SioeYiuUg4IxlKCb09cHRpYaZHEoQQ+Nk2i5
-	 mhbw+MVTyTrznS+2M5FIVI5Y88ly1X7UZVD/UAkrwIEtqkrlwQFCe4uXlA0h0tuuZI
-	 2pt3N0HGS5dulVP8xKnGsHwQ8/k46ud84AES0REk=
+	b=Nn6CgO4g74UQEw/vs5jCARtHvlk6t2+wbmWaPfIyV71wN2bCO3pNMOktvVw6ghMnF
+	 F4rY8L886MDgv/f16KdLHKFNhtkVN/+rSC/91fY0iGAqryPizj6hdf1CAwq6vNvp2X
+	 iVVF9ou5TTCxoD+vXmweBXmkmOuoeNrpzYfYZRPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 087/570] bnxt: fill data page pool with frags if PAGE_SIZE > BNXT_RX_PAGE_SIZE
+Subject: [PATCH 6.15 088/515] nvme-pci: try function level reset on init failure
 Date: Mon, 18 Aug 2025 14:41:14 +0200
-Message-ID: <20250818124509.166598508@linuxfoundation.org>
+Message-ID: <20250818124501.762548538@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 39f8fcda2088382a4aa70b258d6f7225aa386f11 ]
+[ Upstream commit 5b2c214a95942f7997d1916a4c44017becbc3cac ]
 
-The data page pool always fills the HW rx ring with pages. On arm64 with
-64K pages, this will waste _at least_ 32K of memory per entry in the rx
-ring.
+NVMe devices from multiple vendors appear to get stuck in a reset state
+that we can't get out of with an NVMe level Controller Reset. The kernel
+would report these with messages that look like:
 
-Fix by fragmenting the pages if PAGE_SIZE > BNXT_RX_PAGE_SIZE. This
-makes the data page pool the same as the header pool.
+  Device not ready; aborting reset, CSTS=0x1
 
-Tested with iperf3 with a small (64 entries) rx ring to encourage buffer
-circulation.
+These have historically required a power cycle to make them usable
+again, but in many cases, a PCIe FLR is sufficient to restart operation
+without a power cycle. Try it if the initial controller reset fails
+during any nvme reset attempt.
 
-Fixes: cd1fafe7da1f ("eth: bnxt: add support rx side device memory TCP")
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250812182907.1540755-1-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/nvme/host/pci.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 8d950b43846e..e165490af6ac 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -921,15 +921,21 @@ static struct page *__bnxt_alloc_rx_page(struct bnxt *bp, dma_addr_t *mapping,
- 
- static netmem_ref __bnxt_alloc_rx_netmem(struct bnxt *bp, dma_addr_t *mapping,
- 					 struct bnxt_rx_ring_info *rxr,
-+					 unsigned int *offset,
- 					 gfp_t gfp)
- {
- 	netmem_ref netmem;
- 
--	netmem = page_pool_alloc_netmems(rxr->page_pool, gfp);
-+	if (PAGE_SIZE > BNXT_RX_PAGE_SIZE) {
-+		netmem = page_pool_alloc_frag_netmem(rxr->page_pool, offset, BNXT_RX_PAGE_SIZE, gfp);
-+	} else {
-+		netmem = page_pool_alloc_netmems(rxr->page_pool, gfp);
-+		*offset = 0;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 776c867fb64d..5396282015a2 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1888,8 +1888,28 @@ static int nvme_pci_configure_admin_queue(struct nvme_dev *dev)
+ 	 * might be pointing at!
+ 	 */
+ 	result = nvme_disable_ctrl(&dev->ctrl, false);
+-	if (result < 0)
+-		return result;
++	if (result < 0) {
++		struct pci_dev *pdev = to_pci_dev(dev->dev);
++
++		/*
++		 * The NVMe Controller Reset method did not get an expected
++		 * CSTS.RDY transition, so something with the device appears to
++		 * be stuck. Use the lower level and bigger hammer PCIe
++		 * Function Level Reset to attempt restoring the device to its
++		 * initial state, and try again.
++		 */
++		result = pcie_reset_flr(pdev, false);
++		if (result < 0)
++			return result;
++
++		pci_restore_state(pdev);
++		result = nvme_disable_ctrl(&dev->ctrl, false);
++		if (result < 0)
++			return result;
++
++		dev_info(dev->ctrl.device,
++			"controller reset completed after pcie flr\n");
 +	}
- 	if (!netmem)
- 		return 0;
  
--	*mapping = page_pool_get_dma_addr_netmem(netmem);
-+	*mapping = page_pool_get_dma_addr_netmem(netmem) + *offset;
- 	return netmem;
- }
- 
-@@ -1024,7 +1030,7 @@ static int bnxt_alloc_rx_netmem(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
- 	dma_addr_t mapping;
- 	netmem_ref netmem;
- 
--	netmem = __bnxt_alloc_rx_netmem(bp, &mapping, rxr, gfp);
-+	netmem = __bnxt_alloc_rx_netmem(bp, &mapping, rxr, &offset, gfp);
- 	if (!netmem)
- 		return -ENOMEM;
- 
+ 	result = nvme_alloc_queue(dev, 0, NVME_AQ_DEPTH);
+ 	if (result)
 -- 
-2.50.1
+2.39.5
 
 
 
