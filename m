@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-171117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ADFB2A745
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9922EB2A57B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3646C7B5977
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E06181B60B67
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7051B261B9B;
-	Mon, 18 Aug 2025 13:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02C63375B5;
+	Mon, 18 Aug 2025 13:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGnonUUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMA7CbdL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E21719E82A;
-	Mon, 18 Aug 2025 13:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C99F30C37D;
+	Mon, 18 Aug 2025 13:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524870; cv=none; b=P+b496Lyq55psHmEmtYskkchNMqFPb3tWAAtpd+/xKfQhmwmiTG1dIEp/MjxsVYXkCqu0zXTopTBhWRW8ZycMPZfiHjf7d3BozhD2wfqsrlFwWYv3Biqoh0IFbtxIT0+MPrzCl/2oxsSZYe9EbbVfMSQMcPJPn0MLpskMJVw9p4=
+	t=1755523160; cv=none; b=n/6V6dquSYjvy2kYjiauREn0uAHNltKPz6AwWkDXAJadkMbRBoiWdwQljIcKYFs37laLkPbSKAvYF5E0Qq1MlqJvMfuoTKf40B/Bkjmm+0I/0y8dMi0PoTYHHarwV/Q56RXB12iiWatzM5ByA326YNKJOd5VK3LSRyNXzoWTZv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524870; c=relaxed/simple;
-	bh=z2Cq92dLV89A4tmqaGo30rfnvIi5ivd3yxrwOzqAd38=;
+	s=arc-20240116; t=1755523160; c=relaxed/simple;
+	bh=hfULiKHWK/9HpEkMeQkccBMaJUixzA7jUFRekTtieSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6X/6tsd26SvVrCcWlH4TxRUD3iFWS2H4M1GMTVODKwlI7RYgjBlPY7lYo1PuUTvArQdyAZLt2JfREVH0Xiw0Ch10YCsYK6ITwe6aCRDk0fzBHoy1C9Ma9kc9IG37tdZ6tSu3yWNgIlC3Xi6c8U4NMS/uLzm154cHgwYXi7r8jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGnonUUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8A0C4CEEB;
-	Mon, 18 Aug 2025 13:47:49 +0000 (UTC)
+	 MIME-Version; b=kzq1fG22zO/r2SV89arxACKbaPAiOHZ0iHL0x8NDHSIKQd5xDIXNK+pPeLvjvM/osRJH8IplX3wpI72ZTtWQh/pF+bVsjg+WaW8oVF5cbetR5MIzA9cSD2GVsWCQjSDHyy8Og2MIZjYb0t9KwhrMzIPbdO+QQdFcOOqng5ctbHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMA7CbdL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE38C4CEEB;
+	Mon, 18 Aug 2025 13:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524870;
-	bh=z2Cq92dLV89A4tmqaGo30rfnvIi5ivd3yxrwOzqAd38=;
+	s=korg; t=1755523159;
+	bh=hfULiKHWK/9HpEkMeQkccBMaJUixzA7jUFRekTtieSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGnonUUS896POiBtgLlkAN3eDSXTK7+VmrQ51MP8iUwMOO9Yreaa3aEVRNRg3zJj1
-	 zrpneZpVHX30yEUEwRZQEOegVXpb837W10LYcGmOQzOJCSMl57ZedWfkW20qZ7Dh9r
-	 jYiKGqCyB211l7a1qML0yOfqS1x1MYDMJNtvIMYc=
+	b=UMA7CbdL0ViRHbddQC4geDTlcyle6uKZ8Y+A1lwOzH3Zd5qzNLl3kOCM5xfX6H6zG
+	 baW6z7UUXgGq6+M3JRdBv4MUeTpH+4OXO2QY2G30ateBOctT9QU/2Tw3CWhH63OqOJ
+	 kbGy4Qclw+lefjDjdopwL/mlfqGaB1s9FFpxZoeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com,
-	syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com,
-	syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com,
-	Sven Stegemann <sven@stegemann.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 088/570] net: kcm: Fix race condition in kcm_unattach()
+Subject: [PATCH 6.15 089/515] dm-stripe: limit chunk_sectors to the stripe size
 Date: Mon, 18 Aug 2025 14:41:15 +0200
-Message-ID: <20250818124509.204357437@linuxfoundation.org>
+Message-ID: <20250818124501.800754428@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Stegemann <sven@stegemann.de>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit 52565a935213cd6a8662ddb8efe5b4219343a25d ]
+[ Upstream commit 5fb9d4341b782a80eefa0dc1664d131ac3c8885d ]
 
-syzbot found a race condition when kcm_unattach(psock)
-and kcm_release(kcm) are executed at the same time.
+Same as done for raid0, set chunk_sectors limit to appropriately set the
+atomic write size limit.
 
-kcm_unattach() is missing a check of the flag
-kcm->tx_stopped before calling queue_work().
+Setting chunk_sectors limit in this way overrides the stacked limit
+already calculated based on the bottom device limits. This is ok, as
+when any bios are sent to the bottom devices, the block layer will still
+respect the bottom device chunk_sectors.
 
-If the kcm has a reserved psock, kcm_unattach() might get executed
-between cancel_work_sync() and unreserve_psock() in kcm_release(),
-requeuing kcm->tx_work right before kcm gets freed in kcm_done().
-
-Remove kcm->tx_stopped and replace it by the less
-error-prone disable_work_sync().
-
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Reported-by: syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e62c9db591c30e174662
-Reported-by: syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d199b52665b6c3069b94
-Reported-by: syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=be6b1fdfeae512726b4e
-Signed-off-by: Sven Stegemann <sven@stegemann.de>
-Link: https://patch.msgid.link/20250812191810.27777-1-sven@stegemann.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250711105258.3135198-6-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/kcm.h |  1 -
- net/kcm/kcmsock.c | 10 ++--------
- 2 files changed, 2 insertions(+), 9 deletions(-)
+ drivers/md/dm-stripe.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/kcm.h b/include/net/kcm.h
-index 441e993be634..d9c35e71ecea 100644
---- a/include/net/kcm.h
-+++ b/include/net/kcm.h
-@@ -71,7 +71,6 @@ struct kcm_sock {
- 	struct list_head wait_psock_list;
- 	struct sk_buff *seq_skb;
- 	struct mutex tx_mutex;
--	u32 tx_stopped : 1;
+diff --git a/drivers/md/dm-stripe.c b/drivers/md/dm-stripe.c
+index a1b7535c508a..8f61030d3b2d 100644
+--- a/drivers/md/dm-stripe.c
++++ b/drivers/md/dm-stripe.c
+@@ -459,6 +459,7 @@ static void stripe_io_hints(struct dm_target *ti,
+ 	struct stripe_c *sc = ti->private;
+ 	unsigned int chunk_size = sc->chunk_size << SECTOR_SHIFT;
  
- 	/* Don't use bit fields here, these are set under different locks */
- 	bool tx_wait;
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index c05047dad62d..d0a001ebabfe 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -430,7 +430,7 @@ static void psock_write_space(struct sock *sk)
- 
- 	/* Check if the socket is reserved so someone is waiting for sending. */
- 	kcm = psock->tx_kcm;
--	if (kcm && !unlikely(kcm->tx_stopped))
-+	if (kcm)
- 		queue_work(kcm_wq, &kcm->tx_work);
- 
- 	spin_unlock_bh(&mux->lock);
-@@ -1694,12 +1694,6 @@ static int kcm_release(struct socket *sock)
- 	 */
- 	__skb_queue_purge(&sk->sk_write_queue);
- 
--	/* Set tx_stopped. This is checked when psock is bound to a kcm and we
--	 * get a writespace callback. This prevents further work being queued
--	 * from the callback (unbinding the psock occurs after canceling work.
--	 */
--	kcm->tx_stopped = 1;
--
- 	release_sock(sk);
- 
- 	spin_lock_bh(&mux->lock);
-@@ -1715,7 +1709,7 @@ static int kcm_release(struct socket *sock)
- 	/* Cancel work. After this point there should be no outside references
- 	 * to the kcm socket.
- 	 */
--	cancel_work_sync(&kcm->tx_work);
-+	disable_work_sync(&kcm->tx_work);
- 
- 	lock_sock(sk);
- 	psock = kcm->tx_psock;
++	limits->chunk_sectors = sc->chunk_size;
+ 	limits->io_min = chunk_size;
+ 	limits->io_opt = chunk_size * sc->stripes;
+ }
 -- 
-2.50.1
+2.39.5
 
 
 
