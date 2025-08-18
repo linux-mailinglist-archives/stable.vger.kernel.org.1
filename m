@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20257B2A465
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2015BB2AA92
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD650563075
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DE771BA1107
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2A8310627;
-	Mon, 18 Aug 2025 13:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79C632A3F5;
+	Mon, 18 Aug 2025 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRTc447C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+FAEsQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C2031B117;
-	Mon, 18 Aug 2025 13:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E1E288C1F;
+	Mon, 18 Aug 2025 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522769; cv=none; b=JQci+pPjSq00mQfxY170UgtTpRQaxHn0SU7HFyqJzWGDbO22D9RIhNwyphaP5cTFKHMsiltxWArBxOipB1dOLiH4CHy8gh6sARYjlmT/FraCqvC4t3OFS7pXmU6YEX0Uigu2zdv2aK1Bw1S0VV51jUa31GqfyFjoYUMZau9WJ5U=
+	t=1755526199; cv=none; b=sRg6U6SFN1e4Z6DcxwPsk7OcuZqQEycHtaCXeSaY4uINLTCctgSpNygcxUKuoBbvkr4ibHB/xYZR13rncQxsi5qoN6wylgl/UE6tlGNblVaY8EN0Ipv+Vu36K+H9/cZq9s3IQxhNfwmxuBykGO7TjpzxO3nU1mysi9NjinN6niM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522769; c=relaxed/simple;
-	bh=e5emeFhhz5DbXP69MwjMtv9ZRPoLwbLRuEh5cUAAZ8Y=;
+	s=arc-20240116; t=1755526199; c=relaxed/simple;
+	bh=GDUvMl36M58VmyzDnczTRAaPnldPuQyikL7E4t8pzTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uv8F2t7zE3hk8eZ+jnJ+B5Aqec/swtpdf861e9DMNecla0wXzKkjspjwWqTkid+D6+HLALGJYc3ODR8xYYXqiV2KgN0OsmIy073VfwlVUW7ZFCV/UHp1hemIqzMYkM0TaHyGkp4dkTjGDqcNyrWuDfc2Pr0ZyBnP/1DkNagiVzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRTc447C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516F8C4CEEB;
-	Mon, 18 Aug 2025 13:12:47 +0000 (UTC)
+	 MIME-Version; b=jRcSBuTYOgnqAt+P4mi0gUTaKafN5T+t/eWeASa8fFczUSoKVoboIcoGv9Qm2EzBTqeXoR/Q7dKkzmGws/tKqZ1aRrbAGtJAUQfQDfr5tdjiwA1rFw5VkZ2s/i8TYt5kdzKkhiwZKI0EYbeDz6aPX1t0s7BPLSMwokU7raGaVGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+FAEsQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D7FC4CEEB;
+	Mon, 18 Aug 2025 14:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522768;
-	bh=e5emeFhhz5DbXP69MwjMtv9ZRPoLwbLRuEh5cUAAZ8Y=;
+	s=korg; t=1755526199;
+	bh=GDUvMl36M58VmyzDnczTRAaPnldPuQyikL7E4t8pzTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kRTc447C1K1Ii4/RdxaRgJyX/Mg8bbqxQJFT59QkfcmQawB5jH4N8F9yiG0VgfttF
-	 xmoGwco+Q1/V1OLI3zZLio6fXOj57r52LksvxyB1BHIa+WJPnY72fPDYDX8mr6Cgrm
-	 RQXuGa1Alr2MFi/VKb0dFNfNPk8X7k4YofT59ZE8=
+	b=D+FAEsQ2YqbywG8YZ6S0zysNypGegIVI0rf4bjgoZ8l/WvidxpQT6V5bPm31MgtTU
+	 A0/14rTKXqbw3Q00r/DAobEO4m1H0BgD/CiIWmNss36vp5S6v0h/LPWC13gcQgP9SE
+	 vQChnckB7Cq/rSx1sV2tHMK/8DXxpU4R1yq1+IzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 415/444] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
+	Calvin Owens <calvin@wbinvd.org>,
+	Len Brown <len.brown@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 454/570] tools/power turbostat: Handle cap_get_proc() ENOSYS
 Date: Mon, 18 Aug 2025 14:47:21 +0200
-Message-ID: <20250818124504.488781199@linuxfoundation.org>
+Message-ID: <20250818124523.306481116@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Calvin Owens <calvin@wbinvd.org>
 
-commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 upstream.
+[ Upstream commit d34fe509f5f76d9dc36291242d67c6528027ebbd ]
 
-When netpoll is enabled, calling pr_warn_once() while holding
-kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
-inversion with the netconsole subsystem.  This occurs because
-pr_warn_once() may trigger netpoll, which eventually leads to
-__alloc_skb() and back into kmemleak code, attempting to reacquire
-kmemleak_lock.
+Kernels configured with CONFIG_MULTIUSER=n have no cap_get_proc().
+Check for ENOSYS to recognize this case, and continue on to
+attempt to access the requested MSRs (such as temperature).
 
-This is the path for the deadlock.
-
-mem_pool_alloc()
-  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-      -> pr_warn_once()
-          -> netconsole subsystem
-	     -> netpoll
-	         -> __alloc_skb
-		   -> __create_object
-		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
-
-Fix this by setting a flag and issuing the pr_warn_once() after
-kmemleak_lock is released.
-
-Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
-Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kmemleak.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/power/x86/turbostat/turbostat.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -465,6 +465,7 @@ static struct kmemleak_object *mem_pool_
- {
- 	unsigned long flags;
- 	struct kmemleak_object *object;
-+	bool warn = false;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 9eb8e8a850ec..5c747131f155 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -6573,8 +6573,16 @@ int check_for_cap_sys_rawio(void)
+ 	int ret = 0;
  
- 	/* try the slab allocator first */
- 	if (object_cache) {
-@@ -483,8 +484,10 @@ static struct kmemleak_object *mem_pool_
- 	else if (mem_pool_free_count)
- 		object = &mem_pool[--mem_pool_free_count];
- 	else
--		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
-+		warn = true;
- 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
-+	if (warn)
-+		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
+ 	caps = cap_get_proc();
+-	if (caps == NULL)
++	if (caps == NULL) {
++		/*
++		 * CONFIG_MULTIUSER=n kernels have no cap_get_proc()
++		 * Allow them to continue and attempt to access MSRs
++		 */
++		if (errno == ENOSYS)
++			return 0;
++
+ 		return 1;
++	}
  
- 	return object;
- }
+ 	if (cap_get_flag(caps, CAP_SYS_RAWIO, CAP_EFFECTIVE, &cap_flag_value)) {
+ 		ret = 1;
+-- 
+2.39.5
+
 
 
 
