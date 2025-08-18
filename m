@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-170626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554CBB2A582
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E50DAB2A267
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA351562C3E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 029436227DF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C81A335BDF;
-	Mon, 18 Aug 2025 13:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439D2318126;
+	Mon, 18 Aug 2025 12:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+xGBjRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVx91Y9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29087335BDD;
-	Mon, 18 Aug 2025 13:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7827B330;
+	Mon, 18 Aug 2025 12:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523247; cv=none; b=szDE7+e9ki7eLBMd8j52oLTS+0/jtx5ZxYVou2+CXMcEmw/+plHcatHruKr8jXxzrypXG0fcWxpZqtNIyvi/R3i/pGmhpoUmLveS1H4KwmK8RdNjfmg76lnCQN+EzQAxcPp/hvcHDIXmdzkkfbQr9gwwBAFdYS2u9jur+MFkAG8=
+	t=1755521623; cv=none; b=SFDf2I6CEuJg5IPw8YVicMaxwbgNAiev686+Rd6p+i89Pjx1I9EgUvwFVodt1H2O7mzo81SVS5gOBTo1QmguWhEmlV1dT7EGGrJnzfbGJTEw43C+a1mbqw+JvBCKL1WDvcVJ8iNs1aaUOQjg85N5cap0uBSmfRjgLintPwQtdGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523247; c=relaxed/simple;
-	bh=Y2GP4WYfTlakUBxbe1XO2TPJrY7kfewTZlU8i9nE3kE=;
+	s=arc-20240116; t=1755521623; c=relaxed/simple;
+	bh=1ABijm6baDJbTKOhp4Gid9mEwq2stuc0hCEzlyFkxCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r27KHsPGVk8ENvpplBkDI0GGtjq4CzIXkDKNv8CSdlYHhVCvZngP5r0di34+wzeh7p3coDXIOy5bKS4T2Pgh9RMDFiQ2XcqHaAq+6bE9GBeeuMADyf87Na1so0EQhfkcMdJSw7m+Sc9l4mAid6SUdevH6AHGrVy2Ykx58ak1CDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+xGBjRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4D4C4CEEB;
-	Mon, 18 Aug 2025 13:20:46 +0000 (UTC)
+	 MIME-Version; b=cSMj5Ze5DAsuZouNnUTsXV0+RfOpVKJbwjKZoxy/4TvMP8ADbNUKe6P6nTgyrlFSliRm5On/MsZr4oCqHpJXJLL1ZNElJln89El7m+1RZQHK+7cTATa4D61ULmPKC9pf1oJF71MU/sRjeA1zhui12FcXPUSLNWmJ0SvoZ0TAyQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVx91Y9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ACAC4CEEB;
+	Mon, 18 Aug 2025 12:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523247;
-	bh=Y2GP4WYfTlakUBxbe1XO2TPJrY7kfewTZlU8i9nE3kE=;
+	s=korg; t=1755521622;
+	bh=1ABijm6baDJbTKOhp4Gid9mEwq2stuc0hCEzlyFkxCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+xGBjRxnijCbaNWyDbViOXPPbSr57KNrWCkvbAXD+tWrPF9JPEI+iAP4trhwc2ga
-	 dlGLNFT1BJqsko+2vxXsmua0sZdDuyeWqFTHqo4tSWWZ2Yew809GSEtGW6aHsmGh9h
-	 IjXsYf4S36YALi9N+v0C53FWz7BtRttjopeCgP0w=
+	b=xVx91Y9h7QlhSQ4SgU1wAHmHlSwp5SzWdRlm5vv90oUPEkyMHV+JJviGqJI10Q5fj
+	 lDLoRyx7gGHbBFCpD9PUwdGF8dJsVdRk8z2tfKtWkRDretsSgsj7YuUgE63IdWNMiR
+	 TG7ziqtM+doMMOTwxpr7gvX5++OkSrBYbR+4DQSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 113/515] staging: gpib: Add init response codes for new ni-usb-hs+
-Date: Mon, 18 Aug 2025 14:41:39 +0200
-Message-ID: <20250818124502.704153568@linuxfoundation.org>
+Subject: [PATCH 6.12 074/444] md/raid10: set chunk_sectors limit
+Date: Mon, 18 Aug 2025 14:41:40 +0200
+Message-ID: <20250818124451.730891328@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +65,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit f50d5e0c1f80d004510bf77cb0e1759103585c00 ]
+[ Upstream commit 7ef50c4c6a9c36fa3ea6f1681a80c0bf9a797345 ]
 
-A new version of a bona fide genuine NI-USB-HS+ adaptor
-sends new response codes to the initialization sequence.
+Same as done for raid0, set chunk_sectors limit to appropriately set the
+atomic write size limit.
 
-Add the checking for these response codes to suppress
-console warning messages.
-
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250722164810.2621-1-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250711105258.3135198-5-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/ni_usb/ni_usb_gpib.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/md/raid10.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-index 9f1b9927f025..56d3b62249b8 100644
---- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-+++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-@@ -2069,10 +2069,10 @@ static int ni_usb_hs_wait_for_ready(struct ni_usb_priv *ni_priv)
- 		}
- 		if (buffer[++j] != 0x0) { // [6]
- 			ready = 1;
--			// NI-USB-HS+ sends 0xf here
-+			// NI-USB-HS+ sends 0xf or 0x19 here
- 			if (buffer[j] != 0x2 && buffer[j] != 0xe && buffer[j] != 0xf &&
--			    buffer[j] != 0x16)	{
--				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x2, 0xe, 0xf or 0x16\n",
-+			    buffer[j] != 0x16 && buffer[j] != 0x19) {
-+				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x2, 0xe, 0xf, 0x16 or 0x19\n",
- 					j, (int)buffer[j]);
- 				unexpected = 1;
- 			}
-@@ -2100,11 +2100,11 @@ static int ni_usb_hs_wait_for_ready(struct ni_usb_priv *ni_priv)
- 				j, (int)buffer[j]);
- 			unexpected = 1;
- 		}
--		if (buffer[++j] != 0x0) {
-+		if (buffer[++j] != 0x0) { // [10] MC usb-488 sends 0x7 here, new HS+ sends 0x59
- 			ready = 1;
--			if (buffer[j] != 0x96 && buffer[j] != 0x7 && buffer[j] != 0x6e) {
--// [10] MC usb-488 sends 0x7 here
--				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x96, 0x07 or 0x6e\n",
-+			if (buffer[j] != 0x96 && buffer[j] != 0x7 && buffer[j] != 0x6e &&
-+			    buffer[j] != 0x59) {
-+				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x96, 0x07, 0x6e or 0x59\n",
- 					j, (int)buffer[j]);
- 				unexpected = 1;
- 			}
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 5cdc599fcad3..7515a98001ca 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -3968,6 +3968,7 @@ static int raid10_set_queue_limits(struct mddev *mddev)
+ 	md_init_stacking_limits(&lim);
+ 	lim.max_write_zeroes_sectors = 0;
+ 	lim.io_min = mddev->chunk_sectors << 9;
++	lim.chunk_sectors = mddev->chunk_sectors;
+ 	lim.io_opt = lim.io_min * raid10_nr_stripes(conf);
+ 	err = mddev_stack_rdev_limits(mddev, &lim, MDDEV_STACK_INTEGRITY);
+ 	if (err)
 -- 
 2.39.5
 
