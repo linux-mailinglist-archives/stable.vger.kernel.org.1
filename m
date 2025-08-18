@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-170324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B6CB2A37C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F8EB2A983
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CB695E13D2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1606768106E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA6831CA57;
-	Mon, 18 Aug 2025 13:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1764B2C235C;
+	Mon, 18 Aug 2025 14:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+QJntGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8nffxhM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10AE218AAB;
-	Mon, 18 Aug 2025 13:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF981225413;
+	Mon, 18 Aug 2025 14:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522267; cv=none; b=nuV8S1JjZyeXgjh5GmVIwyncS20DEViQqGePHsAl0Q7ltT0jKwnCPj7hWbV/S2s0lf0/bSMwi/pXtXKbGdm6O33w5MUkD/88z4uSf2CFE4TfwbkQQ9S/Rl1xYwGt/mvceAkN38UCcOZp5EYUduTk5Ov2e81JAPHCDKjzIDM6hok=
+	t=1755525641; cv=none; b=MB48uhW6iw0uy9yrJKC5qlUq95nof4gvqkOdJAI+x2OxaJOluCrFRKxZBal/z7lmpk0L+xhiB2vYUlqmPxbdyVBbLcZO+3IU3c6tUoMmhcsgg4fXYVRJ63NJ3Mg278j56hkxsH5dN4TrDkzgGvg3OkxxoEtECovHhA3LGaVUi+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522267; c=relaxed/simple;
-	bh=fKAjy5YlPLC/80BxTAIjibigXh7h6ej+Xrvj1m10Vgw=;
+	s=arc-20240116; t=1755525641; c=relaxed/simple;
+	bh=yjiQmoJuv6gG4YDUnxLyWj7sEZbvusKoDr49Zu2Tb8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHnJ4zDwzkZN1cKC3yj5Q35ud4xNbRrZMTcRNLPaq6AtV9G1VvZXmuws6iGRhIn4NUPxX8+NZXNlsS50lpnqqnN+1FepmTVJoLm9sEaoSf81Pm8iMNKWgvtnARORWRd3L94u7rVjehCcf+/zosAmMHLEgjAUThC9oYmRoFXF5C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+QJntGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB4BC113D0;
-	Mon, 18 Aug 2025 13:04:26 +0000 (UTC)
+	 MIME-Version; b=DXlFuxZVQrkT6vz0TTdgpfe2ORkkQPP51Xl+aQzUXeiaG35ryCIY0R3vYkhhMOSOG3Ra/+3lrOmMOWKndLHmChJOhcfm31dUHAA1mAkOXTkm12f6MOmI7xa6O1siyT8O9fbgTDs5Ko2OvMPFkrCXRy9Gg0D06E7luwWiaW9Cna0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8nffxhM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2428C4CEEB;
+	Mon, 18 Aug 2025 14:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522266;
-	bh=fKAjy5YlPLC/80BxTAIjibigXh7h6ej+Xrvj1m10Vgw=;
+	s=korg; t=1755525641;
+	bh=yjiQmoJuv6gG4YDUnxLyWj7sEZbvusKoDr49Zu2Tb8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+QJntGMN0MPuZKFVsuMKUtoLPV0G/deNE0XZ4zfZlGzeWLz6Zpn6DqnJ9Wqv5eOe
-	 9Qj1PDj+0QemAp1vfsTHzat9p1E+49lOQlr4TnC0U+P0NmaFJpRu8YE8gPAZbCJRsy
-	 769bpHcob7jUqhz7aHp68AazzU8ZWH4bTjir+J4A=
+	b=r8nffxhMa/4fRXXGgoCbMIqIjbrX+z6D22Yad4CP0+994mQZn6CyHb/RRgAXXtsty
+	 mDE+Ikcpnn3O9WZD8jCLz6NEPEE3JLckXIvduvEHpxWwZ6KgNvzyJp3k2e5miKMvSR
+	 6eCS2znCdqRJ8sdJiN7GNyZad7868YiCjx0UNqg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/444] drm/amd/display: Update DMCUB loading sequence for DCN3.5
-Date: Mon, 18 Aug 2025 14:44:52 +0200
-Message-ID: <20250818124458.807381249@linuxfoundation.org>
+Subject: [PATCH 6.16 306/570] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
+Date: Mon, 18 Aug 2025 14:44:53 +0200
+Message-ID: <20250818124517.664577835@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit d42b2331e158fa6bcdc89e4c8c470dc5da20be1f ]
+[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
 
-[Why]
-New sequence from HW for reset and firmware reloading has been
-provided that aims to stabilize the reload sequence in the case the
-firmware is hung or has outstanding requests.
+Ensure descriptor is freed on error to avoid memory leak.
 
-[How]
-Update the sequence to remove the DMUIF reset and the redundant
-writes in the release.
-
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dmub/src/dmub_dcn35.c    | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
-index 4581eb479451..01e83c6ce701 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
-@@ -92,19 +92,15 @@ void dmub_dcn35_reset(struct dmub_srv *dmub)
- 	uint32_t in_reset, is_enabled, scratch, i, pwait_mode;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index ea739ebe7cb0..95a732efce45 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -3008,6 +3008,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	struct iwl_fw_dump_desc *desc;
+ 	unsigned int delay = 0;
+ 	bool monitor_only = false;
++	int ret;
  
- 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
-+	REG_GET(DMCUB_CNTL, DMCUB_ENABLE, &is_enabled);
+ 	if (trigger) {
+ 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
+@@ -3038,7 +3039,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	desc->trig_desc.type = cpu_to_le32(trig);
+ 	memcpy(desc->trig_desc.data, str, len);
  
--	if (in_reset == 0) {
-+	if (in_reset == 0 && is_enabled != 0) {
- 		cmd.bits.status = 1;
- 		cmd.bits.command_code = DMUB_GPINT__STOP_FW;
- 		cmd.bits.param = 0;
- 
- 		dmub->hw_funcs.set_gpint(dmub, cmd);
- 
--		/**
--		 * Timeout covers both the ACK and the wait
--		 * for remaining work to finish.
--		 */
--
- 		for (i = 0; i < timeout; ++i) {
- 			if (dmub->hw_funcs.is_gpint_acked(dmub, cmd))
- 				break;
-@@ -130,11 +126,9 @@ void dmub_dcn35_reset(struct dmub_srv *dmub)
- 		/* Force reset in case we timed out, DMCUB is likely hung. */
- 	}
- 
--	REG_GET(DMCUB_CNTL, DMCUB_ENABLE, &is_enabled);
--
- 	if (is_enabled) {
- 		REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
--		REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
-+		udelay(1);
- 		REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
- 	}
- 
-@@ -160,11 +154,7 @@ void dmub_dcn35_reset_release(struct dmub_srv *dmub)
- 		     LONO_SOCCLK_GATE_DISABLE, 1,
- 		     LONO_DMCUBCLK_GATE_DISABLE, 1);
- 
--	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
--	udelay(1);
- 	REG_UPDATE_2(DMCUB_CNTL, DMCUB_ENABLE, 1, DMCUB_TRACEPORT_EN, 1);
--	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
--	udelay(1);
- 	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 0);
- 	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 0);
+-	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	if (ret)
++		kfree(desc);
++
++	return ret;
  }
+ IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
+ 
 -- 
 2.39.5
 
