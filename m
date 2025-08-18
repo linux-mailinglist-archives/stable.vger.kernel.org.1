@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C86B2A5BC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C546B2A7F1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FC5C1742BC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4791BA44DA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1D021CC55;
-	Mon, 18 Aug 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421AE335BD4;
+	Mon, 18 Aug 2025 13:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xukf4sGI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMZe91+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEDD2264CA;
-	Mon, 18 Aug 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00704335BBF;
+	Mon, 18 Aug 2025 13:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523353; cv=none; b=W6xXmZY0wBbzzsXJdZo4nsHV/yH6oJZygJeN/D6uyoLUEP0HYVtwYfWHv8JQFKJuAFxWu58jbhnnADp++qsfGp5ZjSnIKyG1ZcmQu/qKNZz9vIsj0ObKLCVZ+MXAzsinuR59ln5oX9qTzd3mkyRbQDJUwo/B4feLiGhl/m7A10w=
+	t=1755525052; cv=none; b=kXcjdYkQfw33AijQ23mL+/yjneaRFEba7Z09PLaBo5Ma/Q1Rhd9EqOvUL/C4f9z1SnUYJXyHDgV4tLwc8Ky+QeEEg9b0pqEP7z61vlFbXv2WADFyMiOm6jBNaryAlNycGwfhmC6lO8wiVXptfy752s/oEIp8BKHQRqwblHDTiLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523353; c=relaxed/simple;
-	bh=l0ByJIU/rDDiK03sdHdffvvsauIe2BgWRDd4Ar8QcNA=;
+	s=arc-20240116; t=1755525052; c=relaxed/simple;
+	bh=4bwpGtUCSU6NGqG3GPkj2cdtGJ35vNfzdfkHD7zx8hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJfW3ReL4TWLDq7h44s0KKPuis1lnWF1T6aUb5vu8CmV2VRxKX6K5tUSnNP+t3XrQyWy+lUAAGQMErKM+FJ5nJU8mpq4jAZ5t4q2G+iPoDfD1eIUx9BsLOZPRR9o3J9dsIIzflqoBHk84JX0IksrgjGF3yR3a7ByLRTO7gb3hwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xukf4sGI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F56C4CEEB;
-	Mon, 18 Aug 2025 13:22:32 +0000 (UTC)
+	 MIME-Version; b=YE75uI1nKm1rgqeYyV+ne2jS2QWNFKsDbCVqUF2AkL3t9DgYiRj3/WvZ7GERJQTyQxdTZ0C0IOkgwcBb4Vuzv0P7kG0zuUPP1Ag+GAvoGYMxnctR+CECNB418rnDKV/+Pmrvc/wiNovEczghmv9Gbr4/f0g5kDZAxGUy7r3NTQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMZe91+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6508FC4CEEB;
+	Mon, 18 Aug 2025 13:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523353;
-	bh=l0ByJIU/rDDiK03sdHdffvvsauIe2BgWRDd4Ar8QcNA=;
+	s=korg; t=1755525051;
+	bh=4bwpGtUCSU6NGqG3GPkj2cdtGJ35vNfzdfkHD7zx8hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xukf4sGI5OJfMRfdFeHKtPr0Qxme33de4pL/iX8pqiAFlHey5Dq1QSVHzDpJKHz93
-	 QxVeqfDsdBMUPpKd23u0cI4OqbURTFU01NxqWcEF5xyWfBGD4TZ6XdkxwohFSU2VrM
-	 vg/ahE5WyNoCM0WUCmoweRKq+upE4TrbDeDYUDuM=
+	b=rMZe91+oDIh0kF5+MeavNJ17XzRGQ/kNXyNGC0J448MebkdFHZbhZ5lHvzI3ctEc/
+	 N4T1Yp5NKzz727fdFXCeJ4FYko2KHw3nR4h5rGfF1qs4CQziqcmHeZ1yZXHK4+Z94W
+	 gxVl3xEmQaw7i50hScnCMOFSt1zqWH7cMox7k4Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Guillaume La Roque <glaroque@baylibre.com>,
+	Nishanth Menon <nm@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 144/515] ARM: tegra: Use I/O memcpy to write to IRAM
-Date: Mon, 18 Aug 2025 14:42:10 +0200
-Message-ID: <20250818124503.933679894@linuxfoundation.org>
+Subject: [PATCH 6.16 144/570] pmdomain: ti: Select PM_GENERIC_DOMAINS
+Date: Mon, 18 Aug 2025 14:42:11 +0200
+Message-ID: <20250818124511.370478184@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Guillaume La Roque <glaroque@baylibre.com>
 
-[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
+[ Upstream commit fcddcb7e8f38a40db99f87a962c5d0a153a76566 ]
 
-Kasan crashes the kernel trying to check boundaries when using the
-normal memcpy.
+Select PM_GENERIC_DOMAINS instead of depending on it to ensure
+it is always enabled when TI_SCI_PM_DOMAINS is selected.
+Since PM_GENERIC_DOMAINS is an implicit symbol, it can only be enabled
+through 'select' and cannot be explicitly enabled in configuration.
+This simplifies the dependency chain and prevents build issues
 
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+Reviewed-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/r/20250715-depspmdomain-v2-1-6f0eda3ce824@baylibre.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-tegra/reset.c | 2 +-
+ drivers/pmdomain/ti/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
-index d5c805adf7a8..ea706fac6358 100644
---- a/arch/arm/mach-tegra/reset.c
-+++ b/arch/arm/mach-tegra/reset.c
-@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
- 	BUG_ON(is_enabled);
- 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
- 
--	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
-+	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
- 			tegra_cpu_reset_handler_size);
- 
- 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
+diff --git a/drivers/pmdomain/ti/Kconfig b/drivers/pmdomain/ti/Kconfig
+index 67c608bf7ed0..5386b362a7ab 100644
+--- a/drivers/pmdomain/ti/Kconfig
++++ b/drivers/pmdomain/ti/Kconfig
+@@ -10,7 +10,7 @@ if SOC_TI
+ config TI_SCI_PM_DOMAINS
+ 	tristate "TI SCI PM Domains Driver"
+ 	depends on TI_SCI_PROTOCOL
+-	depends on PM_GENERIC_DOMAINS
++	select PM_GENERIC_DOMAINS if PM
+ 	help
+ 	  Generic power domain implementation for TI device implementing
+ 	  the TI SCI protocol.
 -- 
 2.39.5
 
