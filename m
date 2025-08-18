@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6B9B2A243
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978EEB2A7D4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D82D37A80CD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39F2C6E26EC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2222632145A;
-	Mon, 18 Aug 2025 12:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363CE335BC6;
+	Mon, 18 Aug 2025 13:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9Ibn6+D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOflIub6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1731CA58;
-	Mon, 18 Aug 2025 12:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87BA335BAF;
+	Mon, 18 Aug 2025 13:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521587; cv=none; b=jWG9gRRGGX+pSeFVaVkIqChAlzxREthZDq62gzFGUcMBK+zx9Rb5Sm0c9OKn9BiLGMJItIIaPTBURHlIeQkCS2Yu2++eNM5nQ2NVcxeZXwTajaBdv6Ci9M5N5CBULG+iwvRKhb/1Ql7wspgPHOb0N7YPhMPaGLiT5e4sidpAWWI=
+	t=1755525029; cv=none; b=pV5gleb302v09HkQjUAEw2ZbQr7Nyx8aprOo2vvxhDpuXV/IOlIdm+RS9kInWYdavmt6A5OIKTPjG8JUs8r7qyN5ZzWddRLYKHLZY9p40j3CA/HrMJrYTUYySvx7TVmemycqPeMwBQLko50Gj9ZItgF3zOym2l5dq1Cuv1Mn0uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521587; c=relaxed/simple;
-	bh=F75cNJEbr89CSOoOshQJ/rr4DsMAFoQewFF3xlZlUZ8=;
+	s=arc-20240116; t=1755525029; c=relaxed/simple;
+	bh=VHJ8VzWLuZ6e7MrNbgJaVfAl2S/qPNZaxxSTxmfgNys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2B3HElVb0sbIOgBCGcMnQdhyzGE99ywkZ+1o5KeDiPN4+wmc+CzCrceH1dwPBHQ897jVk3AzmuKTAjZVBRjtogZhRt0SBMgilmLYmlWIKjWVbIXGoAG1mMOO5ncRZlm5wMSE8awKFKw6g4cxlWbaRVqQCi0sghaawNjOZyi/tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9Ibn6+D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4209EC4CEEB;
-	Mon, 18 Aug 2025 12:53:07 +0000 (UTC)
+	 MIME-Version; b=Abtg4blgW/RKu+QVXob9xIeCGIvXKTVPJjCykhPdtdWoAXJhAIxZXXbtcZfDn31iy/Kiscp/jcB/7izDeRcmbgOXYWjk1GdYHoQUDoLU/TC+OR+1jq/vVOv7CvLWIsV40W2CJpig0Am+VqUpB60Rx0f69eKUFnJ8NaI7XtlIfQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOflIub6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E98C4CEEB;
+	Mon, 18 Aug 2025 13:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521587;
-	bh=F75cNJEbr89CSOoOshQJ/rr4DsMAFoQewFF3xlZlUZ8=;
+	s=korg; t=1755525028;
+	bh=VHJ8VzWLuZ6e7MrNbgJaVfAl2S/qPNZaxxSTxmfgNys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9Ibn6+DTWOlGlUgJs3YSpMAB+iy5D1tX6ir6I0O1LcQYnDRDn3331XVpovDEo5iQ
-	 F5mfpgF34E0tJlsWxLrDlaFlt5gnko/pxn2POH2a93GXNVOqo8k1Dl5KzxoALuOnip
-	 JZdYRQC8Fz0GLeqk4PxXj+tr6c86Y7O6mXE1+w/Q=
+	b=ZOflIub6JsCDBuEmt3z15GM6fl4IhO1r5UFUm0mk9zzuSJTi3qqIbhXeSfLqbu4mI
+	 NAHruke5RPMNZPz52KFOhLd3Dwt3bUOfm3y6r//gkxYEb24nFqgeVyfRHXpbjw7axp
+	 psN3TN/f+pR8abpCxRC7cgwk51TZ3PmijQ29+c14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/444] hfs: fix slab-out-of-bounds in hfs_bnode_read()
-Date: Mon, 18 Aug 2025 14:41:31 +0200
-Message-ID: <20250818124451.384373783@linuxfoundation.org>
+Subject: [PATCH 6.16 105/570] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
+Date: Mon, 18 Aug 2025 14:41:32 +0200
+Message-ID: <20250818124509.853293033@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,168 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Andrew Price <anprice@redhat.com>
 
-[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
+[ Upstream commit 5c8f12cf1e64e0e8e6cb80b0c935389973e8be8d ]
 
-This patch introduces is_bnode_offset_valid() method that checks
-the requested offset value. Also, it introduces
-check_and_correct_requested_length() method that checks and
-correct the requested length (if it is necessary). These methods
-are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
-hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
-the access out of allocated memory and triggering the crash.
+Clears up the warning added in 7ee3647243e5 ("migrate: Remove call to
+->writepage") that occurs in various xfstests, causing "something found
+in dmesg" failures.
 
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+[  341.136573] gfs2_meta_aops does not implement migrate_folio
+[  341.136953] WARNING: CPU: 1 PID: 36 at mm/migrate.c:944 move_to_new_folio+0x2f8/0x300
+
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ fs/gfs2/meta_io.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index cb823a8a6ba9..1dac5d9c055f 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -15,6 +15,48 @@
+diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
+index 9dc8885c95d0..66ee10929736 100644
+--- a/fs/gfs2/meta_io.c
++++ b/fs/gfs2/meta_io.c
+@@ -103,6 +103,7 @@ const struct address_space_operations gfs2_meta_aops = {
+ 	.invalidate_folio = block_invalidate_folio,
+ 	.writepages = gfs2_aspace_writepages,
+ 	.release_folio = gfs2_release_folio,
++	.migrate_folio = buffer_migrate_folio_norefs,
+ };
  
- #include "btree.h"
+ const struct address_space_operations gfs2_rgrp_aops = {
+@@ -110,6 +111,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
+ 	.invalidate_folio = block_invalidate_folio,
+ 	.writepages = gfs2_aspace_writepages,
+ 	.release_folio = gfs2_release_folio,
++	.migrate_folio = buffer_migrate_folio_norefs,
+ };
  
-+static inline
-+bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
-+{
-+	bool is_valid = off < node->tree->node_size;
-+
-+	if (!is_valid) {
-+		pr_err("requested invalid offset: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off);
-+	}
-+
-+	return is_valid;
-+}
-+
-+static inline
-+int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
-+{
-+	unsigned int node_size;
-+
-+	if (!is_bnode_offset_valid(node, off))
-+		return 0;
-+
-+	node_size = node->tree->node_size;
-+
-+	if ((off + len) > node_size) {
-+		int new_len = (int)node_size - off;
-+
-+		pr_err("requested length has been corrected: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, "
-+		       "requested_len %d, corrected_len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len, new_len);
-+
-+		return new_len;
-+	}
-+
-+	return len;
-+}
-+
- void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
- {
- 	struct page *page;
-@@ -22,6 +64,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
- 	int bytes_read;
- 	int bytes_to_read;
- 
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagenum = off >> PAGE_SHIFT;
- 	off &= ~PAGE_MASK; /* compute page offset for the first page */
-@@ -80,6 +136,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
- {
- 	struct page *page;
- 
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	page = node->page[0];
- 
-@@ -104,6 +174,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
- {
- 	struct page *page;
- 
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	page = node->page[0];
- 
-@@ -119,6 +203,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
- 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(src_node, src, len);
-+	len = check_and_correct_requested_length(dst_node, dst, len);
-+
- 	src += src_node->page_offset;
- 	dst += dst_node->page_offset;
- 	src_page = src_node->page[0];
-@@ -136,6 +224,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
- 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(node, src, len);
-+	len = check_and_correct_requested_length(node, dst, len);
-+
- 	src += node->page_offset;
- 	dst += node->page_offset;
- 	page = node->page[0];
+ /**
 -- 
 2.39.5
 
