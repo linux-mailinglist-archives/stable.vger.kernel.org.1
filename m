@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3C7B2A4D7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:26:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88614B2A7C7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52BAC7BDBB4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6831BA33E2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0739421507C;
-	Mon, 18 Aug 2025 13:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91399321455;
+	Mon, 18 Aug 2025 13:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DGO1S7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khdq+iB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B3B2135CE;
-	Mon, 18 Aug 2025 13:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAE227B358;
+	Mon, 18 Aug 2025 13:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523012; cv=none; b=CoxewKTIJheda5rhKxpRD0nN0Hc8C+Pykg17lmElzL+X9klKqy7igg7VqV1p7lKFQtXc6PpgYX3amaOVaPwpAxBUwOs6/t7S7+Tu8iGjNeCajrT2F9aNGaUHIOEVYnM6bZn0N9vxZlpSgfdSKWDJP9KSgx18GTP7s/gzuS6ZcyE=
+	t=1755524720; cv=none; b=qNlUIqsVt9dWVWlPIRskuGf7EVpKv2SOOGJfrUDM7EbhWeYNov0f7Nv0WmBpdvuIQQyagoJWZVQm4U3dvhOhcPo3+zB3QSQDGCc9OxDKvMIGK4QEt27vMMbam30ZXmgGPL1aWc5ph1XkX7H1m/U4/x/PCoFQaJWN+/iJueYxD5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523012; c=relaxed/simple;
-	bh=KvQpXNzs4GpkWL4lfiUV9xklIqeuzFucimhAtSUKJsw=;
+	s=arc-20240116; t=1755524720; c=relaxed/simple;
+	bh=tCJfr12E8YbT4lzX2X+oHH986zAMYbwX0cyJIKEpobo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ND2YTpNtkRrlsUuci5Z8OZNeFgWWkkxfX/3gnxjl7Mn970K2cPzqDrr9wxdN34cJ8z4DolwCzc8sYWGZNwMsOKpW7ELlLbx0oUI9Csl7dDlENIjobiEUv/+FGzMi6Qo3nf3uUsuU2vQer1AE6M8nDaRYyjw2GuG2grOpctxgFsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DGO1S7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD775C4CEEB;
-	Mon, 18 Aug 2025 13:16:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KfytFLEi+5+G+ca5GsDit+bgF8TkD3Kc+lYBUAO/h089EyMasnTZrDMUB8RVvwAXmion0b6HMSC8+CirMH3Va9biyftGHJLiHEJOZHvphpvj5h3RezQjd+mago34bVe33rWDkx0kT0S0EE/WJZlEAxz4TrzLVgChTcTu75HjZh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khdq+iB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CD4C113D0;
+	Mon, 18 Aug 2025 13:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523012;
-	bh=KvQpXNzs4GpkWL4lfiUV9xklIqeuzFucimhAtSUKJsw=;
+	s=korg; t=1755524720;
+	bh=tCJfr12E8YbT4lzX2X+oHH986zAMYbwX0cyJIKEpobo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0DGO1S7UPjuWMX/D8cUYQb7ebl58PJr3w2zr7+51d5G2gQNO86CHeHAnXQDNTBy1h
-	 Gl1UOD7zhE1xewHicalMRFLVZ6cibuFTcufBlzl3PdFBDEIdEkinguurYwblk488N2
-	 WgP/+EkYxH7GBIMG2WSbWkkrSe3iCwSnQEyVwkVk=
+	b=khdq+iB2QVJQmHqNw2D6pXZrzllpMi9gJ4t6IEoLEFAr1XqZIaAxNdSkp0uL39LP0
+	 O0FesRpsnbG+SFFb0VD5z59rjl4/V2RaiVQTppxgoGiIZAjCdHNPELV9H6K39ir81T
+	 pcW2K3m0w6wvkvy27ADkyUTOrKOHrotQWctwmiq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.15 042/515] clk: samsung: gs101: fix alternate mout_hsi0_usb20_ref parent clock
-Date: Mon, 18 Aug 2025 14:40:28 +0200
-Message-ID: <20250818124500.053219820@linuxfoundation.org>
+Subject: [PATCH 6.16 042/570] clk: samsung: exynos850: fix a comment
+Date: Mon, 18 Aug 2025 14:40:29 +0200
+Message-ID: <20250818124507.433988237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: André Draszik <andre.draszik@linaro.org>
 
-commit ca243e653f71d8c4724a68c9033923f945b1084d upstream.
+commit 320e7efce30e2613c2c7877acc46a8e71192cdcd upstream.
 
-The alternate parent clock for this mux is mout_pll_usb, not the pll
-itself.
+The code below the updated comment is for CMU_CPUCL1, not CMU_CPUCL0.
 
-Fixes: 1891e4d48755 ("clk: samsung: gs101: add support for cmu_hsi0")
+Fixes: dedf87341ad6 ("clk: samsung: exynos850: Add CMU_CPUCL0 and CMU_CPUCL1")
 Cc: stable@vger.kernel.org
 Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-2-49daf1ff4592@linaro.org
+Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-3-49daf1ff4592@linaro.org
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-gs101.c |    2 +-
+ drivers/clk/samsung/clk-exynos850.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/samsung/clk-gs101.c
-+++ b/drivers/clk/samsung/clk-gs101.c
-@@ -2129,7 +2129,7 @@ PNAME(mout_hsi0_usbdpdbg_user_p)	= { "os
- 					    "dout_cmu_hsi0_usbdpdbg" };
- PNAME(mout_hsi0_bus_p)			= { "mout_hsi0_bus_user",
- 					    "mout_hsi0_alt_user" };
--PNAME(mout_hsi0_usb20_ref_p)		= { "fout_usb_pll",
-+PNAME(mout_hsi0_usb20_ref_p)		= { "mout_pll_usb",
- 					    "mout_hsi0_tcxo_user" };
- PNAME(mout_hsi0_usb31drd_p)		= { "fout_usb_pll",
- 					    "mout_hsi0_usb31drd_user",
+--- a/drivers/clk/samsung/clk-exynos850.c
++++ b/drivers/clk/samsung/clk-exynos850.c
+@@ -1360,7 +1360,7 @@ static const unsigned long cpucl1_clk_re
+ 	CLK_CON_GAT_GATE_CLK_CPUCL1_CPU,
+ };
+ 
+-/* List of parent clocks for Muxes in CMU_CPUCL0 */
++/* List of parent clocks for Muxes in CMU_CPUCL1 */
+ PNAME(mout_pll_cpucl1_p)		 = { "oscclk", "fout_cpucl1_pll" };
+ PNAME(mout_cpucl1_switch_user_p)	 = { "oscclk", "dout_cpucl1_switch" };
+ PNAME(mout_cpucl1_dbg_user_p)		 = { "oscclk", "dout_cpucl1_dbg" };
 
 
 
