@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-171499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71926B2AABF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:35:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B9AB2A460
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A27DC6E0AA7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AD80196041D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04558223DEE;
-	Mon, 18 Aug 2025 14:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB84D30C34E;
+	Mon, 18 Aug 2025 13:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8s2WgR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2UuGmbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63DE20010A;
-	Mon, 18 Aug 2025 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8869430F7F8;
+	Mon, 18 Aug 2025 13:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526132; cv=none; b=fWLDVSnyPMCGXQu/3qQobjf5tQyd6q93pCDuyl6DOZaVwFPhV7u55+op2++vv3ehw4J7tGy+aRS4btk3G5/bmqt5RwfnGt/CdqXed4dTZ8MJVS2NnI0g5nvoweX/ch+2Qp0joy99QIIEY6fTd5hC5IPz9wYN/RPAqaKuGhEVoMg=
+	t=1755522815; cv=none; b=nLmGsrwoeEZp/fc0LgZaN2B/ABYdDCzKRxyH9AnpVOuJBHbz0rW8/muyZF3NOsaK/r6hwsE3e5ufD06s/GXRM6e5aTx7UV+VOk2mDGrxzTCkzVwPPzImLF78SEkpJtjjhiGHFBjECw4qOv5lAEbENbEanwx0OgCZ3wvHmTkV85Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526132; c=relaxed/simple;
-	bh=wFkRHHsfDEX6zMc7ZIui19n/as6m2KjzroRiwA+y6jU=;
+	s=arc-20240116; t=1755522815; c=relaxed/simple;
+	bh=RN/lZZo4EuRpIoX7fksll+dBGwdvuVb9KAawNNhvCdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCLB1ODdl7qlzFeqskKDg/fVKfm/ZK4ahTpX01GeXhglgU66oX1XbthawgCoNPOeMVFlGwdKVKhJPZFrj5wKni/pUI86KEqkE4OLnxZSKglNvbRVNXvIOuLL1NHQ58ChscBvzGFi+SQbQ7Ig+s/LzHsLuo8VAmcR+Xz/2PBlNSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8s2WgR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0815C4CEF1;
-	Mon, 18 Aug 2025 14:08:51 +0000 (UTC)
+	 MIME-Version; b=oskyrW2jdRIzoe/7bKLx+1Q0bB2k71kz7mJaQ9JhepNBYniKuZ6NjW8N8oQIdpffY9kSwPxg68SPbGitv+12BxZ64wwBPpvVeB3B1PqgZADWYLX+7R0Gq/WMl1SPrSxU5ayArYLrwcMwGTlcbVBgiJ9aZOyaEp3mZi5icZ/7zp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2UuGmbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E72C4CEEB;
+	Mon, 18 Aug 2025 13:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526132;
-	bh=wFkRHHsfDEX6zMc7ZIui19n/as6m2KjzroRiwA+y6jU=;
+	s=korg; t=1755522815;
+	bh=RN/lZZo4EuRpIoX7fksll+dBGwdvuVb9KAawNNhvCdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S8s2WgR5pN/rzkNIQuJA10vvLrKPSTXMwsFxwBRsFqUHEkdkeFw+SSkXE6+DGkFNd
-	 ummJMsfdbYPSvhmBDyYW7C2d1az/2DQhldSpUG0hVqhhUvOhI/xVlqwGiSaU3POJq4
-	 IcrNcA3VellLZEl90fOEO0heVTygNmIhmoRsVtWQ=
+	b=m2UuGmbdiZiQxiPM3PpmSOAZur+iu+aTt03GVVFhiJoLhYe20Yv8enZrzdGd15CMh
+	 kvw79M2Ov28fe9FJbywrjDygxpUE/n7ZdYR3IUjMwUGv0AC3oqs7yfbBOfituh+NHI
+	 6FuncZ6kXrTrB+MUnMQKgzjg8BmozUYKcy7dJyw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Evtushenko <koevtushenko@yandex.com>,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	syzbot+30a19e01a97420719891@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 467/570] pNFS: Fix uninited ptr deref in block/scsi layout
+Subject: [PATCH 6.12 428/444] net: better track kernel sockets lifetime
 Date: Mon, 18 Aug 2025 14:47:34 +0200
-Message-ID: <20250818124523.866760355@linuxfoundation.org>
+Message-ID: <20250818124504.996245974@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +64,244 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9768797c219326699778fba9cd3b607b2f1e7950 ]
+[ Upstream commit 5c70eb5c593d64d93b178905da215a9fd288a4b5 ]
 
-The error occurs on the third attempt to encode extents. When function
-ext_tree_prepare_commit() reallocates a larger buffer to retry encoding
-extents, the "layoutupdate_pages" page array is initialized only after the
-retry loop. But ext_tree_free_commitdata() is called on every iteration
-and tries to put pages in the array, thus dereferencing uninitialized
-pointers.
+While kernel sockets are dismantled during pernet_operations->exit(),
+their freeing can be delayed by any tx packets still held in qdisc
+or device queues, due to skb_set_owner_w() prior calls.
 
-An additional problem is that there is no limit on the maximum possible
-buffer_size. When there are too many extents, the client may create a
-layoutcommit that is larger than the maximum possible RPC size accepted
-by the server.
+This then trigger the following warning from ref_tracker_dir_exit() [1]
 
-During testing, we observed two typical scenarios. First, one memory page
-for extents is enough when we work with small files, append data to the
-end of the file, or preallocate extents before writing. But when we fill
-a new large file without preallocating, the number of extents can be huge,
-and counting the number of written extents in ext_tree_encode_commit()
-does not help much. Since this number increases even more between
-unlocking and locking of ext_tree, the reallocated buffer may not be
-large enough again and again.
+To fix this, make sure that kernel sockets own a reference on net->passive.
 
-Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250630183537.196479-2-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Add sk_net_refcnt_upgrade() helper, used whenever a kernel socket
+is converted to a refcounted one.
+
+[1]
+
+[  136.263918][   T35] ref_tracker: net notrefcnt@ffff8880638f01e0 has 1/2 users at
+[  136.263918][   T35]      sk_alloc+0x2b3/0x370
+[  136.263918][   T35]      inet6_create+0x6ce/0x10f0
+[  136.263918][   T35]      __sock_create+0x4c0/0xa30
+[  136.263918][   T35]      inet_ctl_sock_create+0xc2/0x250
+[  136.263918][   T35]      igmp6_net_init+0x39/0x390
+[  136.263918][   T35]      ops_init+0x31e/0x590
+[  136.263918][   T35]      setup_net+0x287/0x9e0
+[  136.263918][   T35]      copy_net_ns+0x33f/0x570
+[  136.263918][   T35]      create_new_namespaces+0x425/0x7b0
+[  136.263918][   T35]      unshare_nsproxy_namespaces+0x124/0x180
+[  136.263918][   T35]      ksys_unshare+0x57d/0xa70
+[  136.263918][   T35]      __x64_sys_unshare+0x38/0x40
+[  136.263918][   T35]      do_syscall_64+0xf3/0x230
+[  136.263918][   T35]      entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  136.263918][   T35]
+[  136.343488][   T35] ref_tracker: net notrefcnt@ffff8880638f01e0 has 1/2 users at
+[  136.343488][   T35]      sk_alloc+0x2b3/0x370
+[  136.343488][   T35]      inet6_create+0x6ce/0x10f0
+[  136.343488][   T35]      __sock_create+0x4c0/0xa30
+[  136.343488][   T35]      inet_ctl_sock_create+0xc2/0x250
+[  136.343488][   T35]      ndisc_net_init+0xa7/0x2b0
+[  136.343488][   T35]      ops_init+0x31e/0x590
+[  136.343488][   T35]      setup_net+0x287/0x9e0
+[  136.343488][   T35]      copy_net_ns+0x33f/0x570
+[  136.343488][   T35]      create_new_namespaces+0x425/0x7b0
+[  136.343488][   T35]      unshare_nsproxy_namespaces+0x124/0x180
+[  136.343488][   T35]      ksys_unshare+0x57d/0xa70
+[  136.343488][   T35]      __x64_sys_unshare+0x38/0x40
+[  136.343488][   T35]      do_syscall_64+0xf3/0x230
+[  136.343488][   T35]      entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 0cafd77dcd03 ("net: add a refcount tracker for kernel sockets")
+Reported-by: syzbot+30a19e01a97420719891@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/67b72aeb.050a0220.14d86d.0283.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250220131854.4048077-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/extent_tree.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ include/net/sock.h       |    1 +
+ net/core/sock.c          |   27 ++++++++++++++++++++++-----
+ net/mptcp/subflow.c      |    5 +----
+ net/netlink/af_netlink.c |   10 ----------
+ net/rds/tcp.c            |    8 ++------
+ net/smc/af_smc.c         |    5 +----
+ net/sunrpc/svcsock.c     |    5 +----
+ net/sunrpc/xprtsock.c    |    8 ++------
+ 8 files changed, 30 insertions(+), 39 deletions(-)
 
-diff --git a/fs/nfs/blocklayout/extent_tree.c b/fs/nfs/blocklayout/extent_tree.c
-index 8f7cff7a4293..0add0f329816 100644
---- a/fs/nfs/blocklayout/extent_tree.c
-+++ b/fs/nfs/blocklayout/extent_tree.c
-@@ -552,6 +552,15 @@ static int ext_tree_encode_commit(struct pnfs_block_layout *bl, __be32 *p,
- 	return ret;
- }
- 
-+/**
-+ * ext_tree_prepare_commit - encode extents that need to be committed
-+ * @arg: layout commit data
-+ *
-+ * Return values:
-+ *   %0: Success, all required extents are encoded
-+ *   %-ENOSPC: Some extents are encoded, but not all, due to RPC size limit
-+ *   %-ENOMEM: Out of memory, extents not encoded
-+ */
- int
- ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
- {
-@@ -568,12 +577,12 @@ ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
- 	start_p = page_address(arg->layoutupdate_page);
- 	arg->layoutupdate_pages = &arg->layoutupdate_page;
- 
--retry:
--	ret = ext_tree_encode_commit(bl, start_p + 1, buffer_size, &count, &arg->lastbytewritten);
-+	ret = ext_tree_encode_commit(bl, start_p + 1, buffer_size,
-+			&count, &arg->lastbytewritten);
- 	if (unlikely(ret)) {
- 		ext_tree_free_commitdata(arg, buffer_size);
- 
--		buffer_size = ext_tree_layoutupdate_size(bl, count);
-+		buffer_size = NFS_SERVER(arg->inode)->wsize;
- 		count = 0;
- 
- 		arg->layoutupdate_pages =
-@@ -588,7 +597,8 @@ ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
- 			return -ENOMEM;
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1780,6 +1780,7 @@ static inline bool sock_allow_reclassifi
+ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
+ 		      struct proto *prot, int kern);
+ void sk_free(struct sock *sk);
++void sk_net_refcnt_upgrade(struct sock *sk);
+ void sk_destruct(struct sock *sk);
+ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority);
+ void sk_free_unlock_clone(struct sock *sk);
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2243,6 +2243,7 @@ struct sock *sk_alloc(struct net *net, i
+ 			get_net_track(net, &sk->ns_tracker, priority);
+ 			sock_inuse_add(net, 1);
+ 		} else {
++			net_passive_inc(net);
+ 			__netns_tracker_alloc(net, &sk->ns_tracker,
+ 					      false, priority);
  		}
+@@ -2267,6 +2268,7 @@ EXPORT_SYMBOL(sk_alloc);
+ static void __sk_destruct(struct rcu_head *head)
+ {
+ 	struct sock *sk = container_of(head, struct sock, sk_rcu);
++	struct net *net = sock_net(sk);
+ 	struct sk_filter *filter;
  
--		goto retry;
-+		ret = ext_tree_encode_commit(bl, start_p + 1, buffer_size,
-+				&count, &arg->lastbytewritten);
- 	}
+ 	if (sk->sk_destruct)
+@@ -2298,14 +2300,28 @@ static void __sk_destruct(struct rcu_hea
+ 	put_cred(sk->sk_peer_cred);
+ 	put_pid(sk->sk_peer_pid);
  
- 	*start_p = cpu_to_be32(count);
-@@ -608,7 +618,7 @@ ext_tree_prepare_commit(struct nfs4_layoutcommit_args *arg)
- 	}
- 
- 	dprintk("%s found %zu ranges\n", __func__, count);
--	return 0;
-+	return ret;
+-	if (likely(sk->sk_net_refcnt))
+-		put_net_track(sock_net(sk), &sk->ns_tracker);
+-	else
+-		__netns_tracker_free(sock_net(sk), &sk->ns_tracker, false);
+-
++	if (likely(sk->sk_net_refcnt)) {
++		put_net_track(net, &sk->ns_tracker);
++	} else {
++		__netns_tracker_free(net, &sk->ns_tracker, false);
++		net_passive_dec(net);
++	}
+ 	sk_prot_free(sk->sk_prot_creator, sk);
  }
  
- void
--- 
-2.39.5
-
++void sk_net_refcnt_upgrade(struct sock *sk)
++{
++	struct net *net = sock_net(sk);
++
++	WARN_ON_ONCE(sk->sk_net_refcnt);
++	__netns_tracker_free(net, &sk->ns_tracker, false);
++	net_passive_dec(net);
++	sk->sk_net_refcnt = 1;
++	get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
++	sock_inuse_add(net, 1);
++}
++EXPORT_SYMBOL_GPL(sk_net_refcnt_upgrade);
++
+ void sk_destruct(struct sock *sk)
+ {
+ 	bool use_call_rcu = sock_flag(sk, SOCK_RCU_FREE);
+@@ -2402,6 +2418,7 @@ struct sock *sk_clone_lock(const struct
+ 		 * is not properly dismantling its kernel sockets at netns
+ 		 * destroy time.
+ 		 */
++		net_passive_inc(sock_net(newsk));
+ 		__netns_tracker_alloc(sock_net(newsk), &newsk->ns_tracker,
+ 				      false, priority);
+ 	}
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1768,10 +1768,7 @@ int mptcp_subflow_create_socket(struct s
+ 	 * needs it.
+ 	 * Update ns_tracker to current stack trace and refcounted tracker.
+ 	 */
+-	__netns_tracker_free(net, &sf->sk->ns_tracker, false);
+-	sf->sk->sk_net_refcnt = 1;
+-	get_net_track(net, &sf->sk->ns_tracker, GFP_KERNEL);
+-	sock_inuse_add(net, 1);
++	sk_net_refcnt_upgrade(sf->sk);
+ 	err = tcp_set_ulp(sf->sk, "mptcp");
+ 	if (err)
+ 		goto err_free;
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -794,16 +794,6 @@ static int netlink_release(struct socket
+ 
+ 	sock_prot_inuse_add(sock_net(sk), &netlink_proto, -1);
+ 
+-	/* Because struct net might disappear soon, do not keep a pointer. */
+-	if (!sk->sk_net_refcnt && sock_net(sk) != &init_net) {
+-		__netns_tracker_free(sock_net(sk), &sk->ns_tracker, false);
+-		/* Because of deferred_put_nlk_sk and use of work queue,
+-		 * it is possible  netns will be freed before this socket.
+-		 */
+-		sock_net_set(sk, &init_net);
+-		__netns_tracker_alloc(&init_net, &sk->ns_tracker,
+-				      false, GFP_KERNEL);
+-	}
+ 	call_rcu(&nlk->rcu, deferred_put_nlk_sk);
+ 	return 0;
+ }
+--- a/net/rds/tcp.c
++++ b/net/rds/tcp.c
+@@ -504,12 +504,8 @@ bool rds_tcp_tune(struct socket *sock)
+ 			release_sock(sk);
+ 			return false;
+ 		}
+-		/* Update ns_tracker to current stack trace and refcounted tracker */
+-		__netns_tracker_free(net, &sk->ns_tracker, false);
+-
+-		sk->sk_net_refcnt = 1;
+-		netns_tracker_alloc(net, &sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(net, 1);
++		sk_net_refcnt_upgrade(sk);
++		put_net(net);
+ 	}
+ 	rtn = net_generic(net, rds_tcp_netid);
+ 	if (rtn->sndbuf_size > 0) {
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -3353,10 +3353,7 @@ int smc_create_clcsk(struct net *net, st
+ 	 * which need net ref.
+ 	 */
+ 	sk = smc->clcsock->sk;
+-	__netns_tracker_free(net, &sk->ns_tracker, false);
+-	sk->sk_net_refcnt = 1;
+-	get_net_track(net, &sk->ns_tracker, GFP_KERNEL);
+-	sock_inuse_add(net, 1);
++	sk_net_refcnt_upgrade(sk);
+ 	return 0;
+ }
+ 
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1568,10 +1568,7 @@ static struct svc_xprt *svc_create_socke
+ 	newlen = error;
+ 
+ 	if (protocol == IPPROTO_TCP) {
+-		__netns_tracker_free(net, &sock->sk->ns_tracker, false);
+-		sock->sk->sk_net_refcnt = 1;
+-		get_net_track(net, &sock->sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(net, 1);
++		sk_net_refcnt_upgrade(sock->sk);
+ 		if ((error = kernel_listen(sock, 64)) < 0)
+ 			goto bummer;
+ 	}
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1960,12 +1960,8 @@ static struct socket *xs_create_sock(str
+ 		goto out;
+ 	}
+ 
+-	if (protocol == IPPROTO_TCP) {
+-		__netns_tracker_free(xprt->xprt_net, &sock->sk->ns_tracker, false);
+-		sock->sk->sk_net_refcnt = 1;
+-		get_net_track(xprt->xprt_net, &sock->sk->ns_tracker, GFP_KERNEL);
+-		sock_inuse_add(xprt->xprt_net, 1);
+-	}
++	if (protocol == IPPROTO_TCP)
++		sk_net_refcnt_upgrade(sock->sk);
+ 
+ 	filp = sock_alloc_file(sock, O_NONBLOCK, NULL);
+ 	if (IS_ERR(filp))
 
 
 
