@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03ADCB2A7E8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0218DB2A2C4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D631587FC0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2EE7562555
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66970335BAA;
-	Mon, 18 Aug 2025 13:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAE43203B4;
+	Mon, 18 Aug 2025 12:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SN+ZQP8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwJnQyOP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240A1335BCB;
-	Mon, 18 Aug 2025 13:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A721B31A068;
+	Mon, 18 Aug 2025 12:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524896; cv=none; b=TCdkp00pUx3R64zWJPKWKauBcU02/thWq7YH58qvyWEBlEYvSBAYOWWRYvQwPWzKH5QllON3ZEx9IwDmzZKpQ8rYBp33bnOZsXWW9h5DYcnXQK/lb7uc84FWNqKConCqUfYUF4/y6Cd4Acpn7jYoe8cn8gnIwTtWMiyEh790npw=
+	t=1755521554; cv=none; b=O8iWwuO1Ak/1LWalNTKpPTTqImteZYJAf4hGl4FmHDsq6kqMZ02iyn4NymYEfLT3jG26mbr2280cVD0wEXS1vwVpOW1B5T/xeek3efe3PonDSYPfyxvSlYHLbFlfI1pptajqZQW3EPJf9Qx88l1t6NdJZefcsowpgvpPL7dhydI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524896; c=relaxed/simple;
-	bh=n1dOHvLzKnFfrXt2e6meTxgoO/8uFxqdw/zCETaLq9k=;
+	s=arc-20240116; t=1755521554; c=relaxed/simple;
+	bh=l6jKvAgwJaiOy+ajoMsw2A6A/+Gb5zwmPb9Fg6DLqMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLEqKdykYmcPkXKDd/DDipbnigqr4REUtGXMx1mUgupW1+hopGo5kQkvdGsxhwh5EOIZ2LlJ6rpjOBrMifSbxiARVJopA5tx2XIyERnEOyXJianvLl4VKPuGIan8HhcI/u3+GAUaIHH626y/zaaH1EqU3LtjEQhFRCBQ+TFUeZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SN+ZQP8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99566C4CEEB;
-	Mon, 18 Aug 2025 13:48:15 +0000 (UTC)
+	 MIME-Version; b=F9bTJ9o2EpPUz2V99lFMgiN9ovbBzf/roSY0nu/0wthKzG/5rRftf4WJL7pNkvAGyw8P65ePUwaZb9h/q7rpphImOk5U3ZBZsyiw/F7fIisjlZu788b/t/Snxf4hw9flVj2LFv7QIjHxtVxfDgfJcKleDgjwir9xSFuIiNqh3JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwJnQyOP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13685C4CEEB;
+	Mon, 18 Aug 2025 12:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524896;
-	bh=n1dOHvLzKnFfrXt2e6meTxgoO/8uFxqdw/zCETaLq9k=;
+	s=korg; t=1755521554;
+	bh=l6jKvAgwJaiOy+ajoMsw2A6A/+Gb5zwmPb9Fg6DLqMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SN+ZQP8/kG1oMJxK7BqediL/XKIqLR4aQGp5VcIoOWIPGjgZjYZvi0087TtTF3NeO
-	 dH/0oE2TLqKmYYe2MW202qTMMyA9KkMj2+8HNa9jftUITRoyFyL4rOtcMelwfml6mO
-	 jTnMvxBTdjFQ/WNbTZVcQ5TSODueMkngkZrBJ36Q=
+	b=KwJnQyOP3xsZC8ejJBToskFT9xOvefTicgDSJxjXqReKUwE5AXXNR4F8eQimXnaPQ
+	 8i2TAUwPrBHo0LDFkgPJGXGcxNngf+rF1OMxl5l5PdN/jobc9kVVDURW/+lTIC6mUG
+	 P1TqHmWz+F5HBg9wVOrieGg6/LCQZMKBkekzD9qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 095/570] tpm: Check for completion after timeout
+Subject: [PATCH 6.12 056/444] net: ti: icssg-prueth: Fix emac link speed handling
 Date: Mon, 18 Aug 2025 14:41:22 +0200
-Message-ID: <20250818124509.474475547@linuxfoundation.org>
+Message-ID: <20250818124451.034593016@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: MD Danish Anwar <danishanwar@ti.com>
 
-[ Upstream commit d4640c394f23b202a89512346cf28f6622a49031 ]
+[ Upstream commit 06feac15406f4f66f4c0c6ea60b10d44775d4133 ]
 
-The current implementation of timeout detection works in the following
-way:
+When link settings are changed emac->speed is populated by
+emac_adjust_link(). The link speed and other settings are then written into
+the DRAM. However if both ports are brought down after this and brought up
+again or if the operating mode is changed and a firmware reload is needed,
+the DRAM is cleared by icssg_config(). As a result the link settings are
+lost.
 
-1. Read completion status. If completed, return the data
-2. Sleep for some time (usleep_range)
-3. Check for timeout using current jiffies value. Return an error if
-   timed out
-4. Goto 1
+Fix this by calling emac_adjust_link() after icssg_config(). This re
+populates the settings in the DRAM after a new firmware load.
 
-usleep_range doesn't guarantee it's always going to wake up strictly in
-(min, max) range, so such a situation is possible:
-
-1. Driver reads completion status. No completion yet
-2. Process sleeps indefinitely. In the meantime, TPM responds
-3. We check for timeout without checking for the completion again.
-   Result is lost.
-
-Such a situation also happens for the guest VMs: if vCPU goes to sleep
-and doesn't get scheduled for some time, the guest TPM driver will
-timeout instantly after waking up without checking for the completion
-(which may already be in place).
-
-Perform the completion check once again after exiting the busy loop in
-order to give the device the last chance to send us some data.
-
-Since now we check for completion in two places, extract this check into
-a separate function.
-
-Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Reviewed-by: Jonathan McDowell <noodles@meta.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 9facce84f406 ("net: ti: icssg-prueth: Fix firmware load sequence.")
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Message-ID: <20250805173812.2183161-1-danishanwar@ti.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm-interface.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-index 8d7e4da6ed53..8d18b33aa62d 100644
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -82,6 +82,13 @@ static bool tpm_chip_req_canceled(struct tpm_chip *chip, u8 status)
- 	return chip->ops->req_canceled(chip, status);
- }
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 0769e1ade30b..ddbc4624ae88 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -50,6 +50,8 @@
+ /* CTRLMMR_ICSSG_RGMII_CTRL register bits */
+ #define ICSSG_CTRL_RGMII_ID_MODE                BIT(24)
  
-+static bool tpm_transmit_completed(u8 status, struct tpm_chip *chip)
-+{
-+	u8 status_masked = status & chip->ops->req_complete_mask;
++static void emac_adjust_link(struct net_device *ndev);
 +
-+	return status_masked == chip->ops->req_complete_val;
-+}
-+
- static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
+ static int emac_get_tx_ts(struct prueth_emac *emac,
+ 			  struct emac_tx_ts_response *rsp)
  {
- 	struct tpm_header *header = buf;
-@@ -129,8 +136,7 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
- 	stop = jiffies + tpm_calc_ordinal_duration(chip, ordinal);
- 	do {
- 		u8 status = tpm_chip_status(chip);
--		if ((status & chip->ops->req_complete_mask) ==
--		    chip->ops->req_complete_val)
-+		if (tpm_transmit_completed(status, chip))
- 			goto out_recv;
- 
- 		if (tpm_chip_req_canceled(chip, status)) {
-@@ -142,6 +148,13 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
- 		rmb();
- 	} while (time_before(jiffies, stop));
- 
-+	/*
-+	 * Check for completion one more time, just in case the device reported
-+	 * it while the driver was sleeping in the busy loop above.
-+	 */
-+	if (tpm_transmit_completed(tpm_chip_status(chip), chip))
-+		goto out_recv;
+@@ -266,6 +268,10 @@ static int prueth_emac_common_start(struct prueth *prueth)
+ 		ret = icssg_config(prueth, emac, slice);
+ 		if (ret)
+ 			goto disable_class;
 +
- 	tpm_chip_cancel(chip);
- 	dev_err(&chip->dev, "Operation Timed out\n");
- 	return -ETIME;
++		mutex_lock(&emac->ndev->phydev->lock);
++		emac_adjust_link(emac->ndev);
++		mutex_unlock(&emac->ndev->phydev->lock);
+ 	}
+ 
+ 	ret = prueth_emac_start(prueth);
 -- 
-2.39.5
+2.50.1
 
 
 
