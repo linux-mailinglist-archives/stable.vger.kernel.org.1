@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124C0B2A86C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2C5B2A32B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8B246E2F1E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A210518A6F90
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A95335BC6;
-	Mon, 18 Aug 2025 13:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3F93218B8;
+	Mon, 18 Aug 2025 12:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdhhXxV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUx1Sqag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4491335BC1;
-	Mon, 18 Aug 2025 13:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3983218CF;
+	Mon, 18 Aug 2025 12:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525197; cv=none; b=c7tnJ42KXyknxhQ3r72d0g+jxSAdDTS6H6/N3wsWxffmr0W9IGQhexA+f00H2ke7m7wC26OURfs0SRfTg4hCwiGsu6niEHht0a1kL92SHBD45qrjgmIibOEL4BSbzI2zEda8ZYuqeNw1CgNYj9tVtIUJJyxuXoKCw9wDhxCId98=
+	t=1755521971; cv=none; b=hXmT/M/BCw/QeU/96ox8JmWL06cYb4GfspBjBFcf7ued8VPJhi1/6asDb1kS41Tq3U9N5KYBy+rgNnAFHDIC33Z7+eTFacUM/pTQLy/oBmVdE6Xv4UdwHzolxSeUWYcsN20f6a8YyMJNC3/pFiNTJsdzHDMl3dJlpFy6Q+w8qp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525197; c=relaxed/simple;
-	bh=RPvHU3cqLa+syShMlcHIGjp/GoAtua2pl88J9jL827E=;
+	s=arc-20240116; t=1755521971; c=relaxed/simple;
+	bh=KalT/mNzhwyLZEJUlGZ8RwVtUT2AfABaa/JUdDBy2WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVAnOx3l7lWeGZfKJTQIsmabP/tFFIG65rVZlfvrwDZ5I280LQsd2ZItlD5clPz9+GfESPfHmQvGZPE00GdpjtuXpKkUdgYtSAGl7evQapPRe11HSZPvbaG7V2N2ulhbbcZPmZcpao7WPDnsJpV7b9sRAUsGm9YW1A+1mk7BSYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdhhXxV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659BAC116C6;
-	Mon, 18 Aug 2025 13:53:16 +0000 (UTC)
+	 MIME-Version; b=RL51kIMuXs7KwraX5roGEIIVKUqSzPjl4QueNxMeGp2iILGYA9vqd8V3EWK0YN4/Ao/cnUmwQYQZ4oA5fqejTB3cz1zON8EWY61wNTVQX+tcguViflQtMb/6VQPcJg7tGhiq/AX9LH5Bx5sAOasBqVgCa/YQUY4DHZ2GEHP++ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUx1Sqag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F965C4CEEB;
+	Mon, 18 Aug 2025 12:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525196;
-	bh=RPvHU3cqLa+syShMlcHIGjp/GoAtua2pl88J9jL827E=;
+	s=korg; t=1755521970;
+	bh=KalT/mNzhwyLZEJUlGZ8RwVtUT2AfABaa/JUdDBy2WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdhhXxV0UnVKtW2KMPAylV6m8BcxJ8eYWGKukKeTR6SOHOoz+ay+fgAF6+Ldd/fWm
-	 0UzTGx9ALD2Jm81onxhHTX57jDIiXs295thInIuVjMLOQymi3edHzvj07V8ChMbs00
-	 EEe16S8cug0XHLaQBOymQa0izB2iVczIQKY0//Vw=
+	b=tUx1SqagDJEorUf6RKBlm6r3H7+umCplhA2Fmq352rUSYI5z33lkENVDQeYS4mhX+
+	 9IMVfBt829nFfHKGOzuNEqLeNHLneFlsP8kJowBRgopE2accX44vWcmtrqq/aTwY0R
+	 lX8qL0t0qOgc2LecPwaHcSj15YcXIw+TJxwnG0VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 188/570] ASoC: SOF: topology: Parse the dapm_widget_tokens in case of DSPless mode
+Subject: [PATCH 6.12 149/444] usb: core: usb_submit_urb: downgrade type check
 Date: Mon, 18 Aug 2025 14:42:55 +0200
-Message-ID: <20250818124513.049982940@linuxfoundation.org>
+Message-ID: <20250818124454.497240566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 6b3cb7f4341cbf62d41ccf6ea906dbe66be8aa3d ]
+[ Upstream commit 503bbde34cc3dd2acd231f277ba70c3f9ed22e59 ]
 
-Parsing the dapm_widget_tokens is also needed for DSPless mode as it is
-setting the snd_soc_dapm_widget.no_wname_in_kcontrol_name flag for the
-kcontrol creation from DAPM widgets.
-Without that flag set, the following warnings might appear because of long
-control names:
-ALSA: Control name 'eqiir.2.1 Post Mixer Analog Playback IIR Eq bytes' truncated to 'eqiir.2.1 Post Mixer Analog Playback IIR Eq'
-ALSA: Control name 'eqfir.2.1 Post Mixer Analog Playback FIR Eq bytes' truncated to 'eqfir.2.1 Post Mixer Analog Playback FIR Eq'
-ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC bytes' truncated to 'drc.2.1 Post Mixer Analog Playback DRC byte'
-ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC switch' truncated to 'drc.2.1 Post Mixer Analog Playback DRC swit'
-ALSA: Control name 'gain.15.1 Pre Mixer Deepbuffer HDA Analog Volume' truncated to 'gain.15.1 Pre Mixer Deepbuffer HDA Analog V'
+Checking for the endpoint type is no reason for a WARN, as that can
+cause a reboot. A driver not checking the endpoint type must not cause a
+reboot, as there is just no point in this.  We cannot prevent a device
+from doing something incorrect as a reaction to a transfer. Hence
+warning for a mere assumption being wrong is not sensible.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://patch.msgid.link/20250619102640.12068-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250612122149.2559724-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/topology.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/usb/core/urb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index d612d693efc3..b6d5c8024f8c 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -2378,14 +2378,25 @@ static int sof_dspless_widget_ready(struct snd_soc_component *scomp, int index,
- 				    struct snd_soc_dapm_widget *w,
- 				    struct snd_soc_tplg_dapm_widget *tw)
- {
-+	struct snd_soc_tplg_private *priv = &tw->priv;
-+	int ret;
-+
-+	/* for snd_soc_dapm_widget.no_wname_in_kcontrol_name */
-+	ret = sof_parse_tokens(scomp, w, dapm_widget_tokens,
-+			       ARRAY_SIZE(dapm_widget_tokens),
-+			       priv->array, le32_to_cpu(priv->size));
-+	if (ret < 0) {
-+		dev_err(scomp->dev, "failed to parse dapm widget tokens for %s\n",
-+			w->name);
-+		return ret;
-+	}
-+
- 	if (WIDGET_IS_DAI(w->id)) {
- 		static const struct sof_topology_token dai_tokens[] = {
- 			{SOF_TKN_DAI_TYPE, SND_SOC_TPLG_TUPLE_TYPE_STRING, get_token_dai_type, 0}};
- 		struct snd_sof_dev *sdev = snd_soc_component_get_drvdata(scomp);
--		struct snd_soc_tplg_private *priv = &tw->priv;
- 		struct snd_sof_widget *swidget;
- 		struct snd_sof_dai *sdai;
--		int ret;
+diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
+index 7576920e2d5a..9f202f575cec 100644
+--- a/drivers/usb/core/urb.c
++++ b/drivers/usb/core/urb.c
+@@ -500,7 +500,7 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
  
- 		swidget = kzalloc(sizeof(*swidget), GFP_KERNEL);
- 		if (!swidget)
+ 	/* Check that the pipe's type matches the endpoint's type */
+ 	if (usb_pipe_type_check(urb->dev, urb->pipe))
+-		dev_WARN(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
++		dev_warn_once(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
+ 			usb_pipetype(urb->pipe), pipetypes[xfertype]);
+ 
+ 	/* Check against a simple/standard policy */
 -- 
 2.39.5
 
