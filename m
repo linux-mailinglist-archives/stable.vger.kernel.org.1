@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741ABB2A56C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDF8B2A7EA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5E50581697
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A24C7581D89
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EB5335BB8;
-	Mon, 18 Aug 2025 13:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFC8192598;
+	Mon, 18 Aug 2025 13:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqm9Z8f3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/hStNJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77405335BAA;
-	Mon, 18 Aug 2025 13:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC05335BBF;
+	Mon, 18 Aug 2025 13:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523209; cv=none; b=bq12khwXH8NmkmTFSvSPcTyX51zll/gpoAy/jOC4hUdBLkgAEKovlchKQeT0jTbhyO52AqhAQtxfOMOtlt3HHsoyeDxoR3wca1vd+s5rIb6YKIgN6JFVbdWlWDdoz/aCpf/6OHQJtpvo64S0lAnp7nQ8GP9a2czhu2JY5cEwcO8=
+	t=1755525021; cv=none; b=UouOe4fI5n/Dsv6PGWTb4riqKk6BayXEsRUOqUFyP7/RtTP2QLHLe5qtbs/guOImGLIP22uodWEA0lOumiD3ZUVqsV8qALyosSyb6zVZux5UgwA0TWQeWCRVx1iG+8OrWs/uyy/EJKZ9qaBr4hsZn9Ic8cJigGxHrQt/ANvUVO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523209; c=relaxed/simple;
-	bh=ehqhilSCW861FksQQawIrBpbwS6bD1Z+a0EjkUwTY5s=;
+	s=arc-20240116; t=1755525021; c=relaxed/simple;
+	bh=8ChRynjqmwz66UI6rPsfK/J86BG9ekSznx4ftjSu7y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZScfZT3UsdzO+umfKTR6IhMLbjON5lmUVrb79Li7+4Hduv+3iTJHQFK6aUale6XLcpb/4r7RuknDuWGkkatRcCRAOsWNWT0KdtOnNYHZRKZ0ClUfrFNjCXxR0SLQC5i1xgl4+CDSOcw5euW7tON3Xdlts73c2aS86EwWociXmgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqm9Z8f3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D49C4CEEB;
-	Mon, 18 Aug 2025 13:20:08 +0000 (UTC)
+	 MIME-Version; b=TGOFzrFJ2TBH+IvvvQq5MTUVb8PE5SU8xIGUlYerZBPcmOqv9HIOkVCefXZvXWps6hObKgYfiBZOM8tt/fPFPhTu3GRvVNhviFZHxhhVMa1MQlaJqJ2Qu+OHIoeq+5ult6r9tvs0YAI3qUyBLBXkPuHj6PaBbBp9SwyFrXzOMT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/hStNJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69DDC4CEEB;
+	Mon, 18 Aug 2025 13:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523209;
-	bh=ehqhilSCW861FksQQawIrBpbwS6bD1Z+a0EjkUwTY5s=;
+	s=korg; t=1755525021;
+	bh=8ChRynjqmwz66UI6rPsfK/J86BG9ekSznx4ftjSu7y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqm9Z8f3EdrFIu9vun3cmwnS8MKdjEbrBOISyx2fN65JqW0nTHXFSe/PzrGZZ7Iww
-	 pYsuvRoa2pOjt5tqVtZR82qRjzWIBUnfBsn3tHztcsmBd9iHFdxN8MwBjF4KHs5Ats
-	 6E+skbhRSNC65auJtxX0QLQ4+rSPddTPjtrtihq8=
+	b=Z/hStNJGor1VKSZRXwWkorQ4kyjWZL+kkEUCT78LLNQRQF4kGD85i6YQf7Olnt5ff
+	 9tkIQJjOS+PeodiQQzDjp7fMBdjGTbccHniGgLyhgMf4A+B1kufv/exhB3/IedRhMf
+	 GbhNmsyoIiUTUKzKmFHt5q0ldaBYVhhQPxgztnmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 103/515] fs/ntfs3: Add sanity check for file name
-Date: Mon, 18 Aug 2025 14:41:29 +0200
-Message-ID: <20250818124502.334357086@linuxfoundation.org>
+Subject: [PATCH 6.16 103/570] nvme-tcp: log TLS handshake failures at error level
+Date: Mon, 18 Aug 2025 14:41:30 +0200
+Message-ID: <20250818124509.778785123@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit e841ecb139339602bc1853f5f09daa5d1ea920a2 ]
+[ Upstream commit 5a58ac9bfc412a58c3cf26c6a7e54d4308e9d109 ]
 
-The length of the file name should be smaller than the directory entry size.
+Update the nvme_tcp_start_tls() function to use dev_err() instead of
+dev_dbg() when a TLS error is detected. This ensures that handshake
+failures are visible by default, aiding in debugging.
 
-Reported-by: syzbot+598057afa0f49e62bd23@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=598057afa0f49e62bd23
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/dir.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/tcp.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index b6da80c69ca6..600e66035c1b 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -304,6 +304,9 @@ static inline bool ntfs_dir_emit(struct ntfs_sb_info *sbi,
- 	if (sbi->options->nohidden && (fname->dup.fa & FILE_ATTRIBUTE_HIDDEN))
- 		return true;
- 
-+	if (fname->name_len + sizeof(struct NTFS_DE) > le16_to_cpu(e->size))
-+		return true;
-+
- 	name_len = ntfs_utf16_to_nls(sbi, fname->name, fname->name_len, name,
- 				     PATH_MAX);
- 	if (name_len <= 0) {
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index d924008c3949..9233f088fac8 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1745,9 +1745,14 @@ static int nvme_tcp_start_tls(struct nvme_ctrl *nctrl,
+ 			qid, ret);
+ 		tls_handshake_cancel(queue->sock->sk);
+ 	} else {
+-		dev_dbg(nctrl->device,
+-			"queue %d: TLS handshake complete, error %d\n",
+-			qid, queue->tls_err);
++		if (queue->tls_err) {
++			dev_err(nctrl->device,
++				"queue %d: TLS handshake complete, error %d\n",
++				qid, queue->tls_err);
++		} else {
++			dev_dbg(nctrl->device,
++				"queue %d: TLS handshake complete\n", qid);
++		}
+ 		ret = queue->tls_err;
+ 	}
+ 	return ret;
 -- 
 2.39.5
 
