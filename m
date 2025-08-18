@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939E2B2A2C0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:02:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC877B2A5FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A863AE9B4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28A3E1B6525B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B6A31A063;
-	Mon, 18 Aug 2025 12:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4AA322534;
+	Mon, 18 Aug 2025 13:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/jz6B67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k87wZYeu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F42831A04A;
-	Mon, 18 Aug 2025 12:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFA0321F49;
+	Mon, 18 Aug 2025 13:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521858; cv=none; b=mHAHw1d7m1I4ariYdorMNov+lMf9qezgkLJHY/NSanipLKbqA56phwFYrY0ezXRqe/UaE+UnSQOYR6jkvx176LESvCmdMdogkPV/sHgQtnP10IrLB3qr8GVJt7EDSYeyUPQcVZXl4qWahyL/ay2+SmpS7cUytGFS677RqrxFkBY=
+	t=1755523479; cv=none; b=CjFBBvPDNsmITy8GCzvChaUFMpt9fPpKuizcm+HUeJmU+zN4MNHMRD4/7F4STU9nkMLwU5/c5AMFqneYGbp8jcoi5MDVZHul4RWwi5esbX2ZUiop4H4B7I/0EYvyXQ9rp2d3DQrGjRim3VjmQEqQf3ImnyBckH/wjFxXQjEJRbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521858; c=relaxed/simple;
-	bh=qEi5C86ktpXL1L1E4KezxwRmpwynOzPFR2Uf4t62n40=;
+	s=arc-20240116; t=1755523479; c=relaxed/simple;
+	bh=afD2gKZTI0vHwtGKkIpMpH1cUzG5792orE4gm6pGp0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgcbRigNdycWPiPyu97h4ifUktipKrU31fbBdM2iqGVcI8QzLuzlyljGuLS4FjOU8CpekqjcE1+yrsvgamK5gOOsvT9WbBmNacxeHc1lvpi/WQd3ZuPqR/bWs8mrm9VX7RUhMT+S64og0lIGVxqCA5/PUmXb/Nnq8n2Vfzhf2ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/jz6B67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67763C4CEF1;
-	Mon, 18 Aug 2025 12:57:37 +0000 (UTC)
+	 MIME-Version; b=s0LEWCqZ+XTv7WKQ0Ts3yQly2IcPMoKgP9BiXS9lJmdXUp/GIZw6Xe16IiYQE5Mw5Sv6V+YJEXixkcVLE/KtahlRwMUGOu1U+IrV9P93sUxJmr3VGzCQ/37TungF/OFzYdbhO+03QE+Iadh6LqaHOmR75o8MzWmyBFcgIF9ZOAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k87wZYeu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7B5C4CEEB;
+	Mon, 18 Aug 2025 13:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521857;
-	bh=qEi5C86ktpXL1L1E4KezxwRmpwynOzPFR2Uf4t62n40=;
+	s=korg; t=1755523479;
+	bh=afD2gKZTI0vHwtGKkIpMpH1cUzG5792orE4gm6pGp0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/jz6B67I9y8EZXR/rLGRbsc04dBzMbVB1fMwaMYI0JT/ylAau0kNlBJ+Yjy1jOTB
-	 JDKbEaAdTSl88Qsn6cjp/iIBoYokxX5gMJ5OyeOMMzDjDDYM9KjjgjrtEgdwd9DsY4
-	 x+Xp2MKNWWTYf522CqWSDlqWrJybjo5vGDiHrF9w=
+	b=k87wZYeuAyTfuc05yP4q878uHDxfd8E2xu81ecFYV+RGSgbTXmMBXLkO0nvpRTSYM
+	 qkQhVxWzYmUqSktfgf0y+3yW7x905JyFCB8tP+QNMPQYX/x5qJu+nA0YWtFHPabajP
+	 5fOvqT7moZhgdreqyUMZIs7ertiFu1tr34fc+XWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Tomasz Michalec <tmichalec@google.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 142/444] x86/bugs: Avoid warning when overriding return thunk
+Subject: [PATCH 6.15 182/515] platform/chrome: cros_ec_typec: Defer probe on missing EC parent
 Date: Mon, 18 Aug 2025 14:42:48 +0200
-Message-ID: <20250818124454.239274796@linuxfoundation.org>
+Message-ID: <20250818124505.383169973@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
+[ Upstream commit 8866f4e557eba43e991f99711515217a95f62d2e ]
 
-The purpose of the warning is to prevent an unexpected change to the return
-thunk mitigation. However, there are legitimate cases where the return
-thunk is intentionally set more than once. For example, ITS and SRSO both
-can set the return thunk after retbleed has set it. In both the cases
-retbleed is still mitigated.
+If cros_typec_probe is called before EC device is registered,
+cros_typec_probe will fail. It may happen when cros-ec-typec.ko is
+loaded before EC bus layer module (e.g. cros_ec_lpcs.ko,
+cros_ec_spi.ko).
 
-Replace the warning with an info about the active return thunk.
+Return -EPROBE_DEFER when cros_typec_probe doesn't get EC device, so
+the probe function can be called again after EC device is registered.
 
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Link: https://lore.kernel.org/r/20250610153748.1858519-1-tmichalec@google.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/platform/chrome/cros_ec_typec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index c2c7b76d953f..31b4b73e5405 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -71,10 +71,9 @@ void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
+diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
+index 7678e3d05fd3..f437b594055c 100644
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -1272,8 +1272,8 @@ static int cros_typec_probe(struct platform_device *pdev)
  
- static void __init set_return_thunk(void *thunk)
- {
--	if (x86_return_thunk != __x86_return_thunk)
--		pr_warn("x86/bugs: return thunk changed\n");
--
- 	x86_return_thunk = thunk;
-+
-+	pr_info("active return thunk: %ps\n", thunk);
- }
+ 	typec->ec = dev_get_drvdata(pdev->dev.parent);
+ 	if (!typec->ec) {
+-		dev_err(dev, "couldn't find parent EC device\n");
+-		return -ENODEV;
++		dev_warn(dev, "couldn't find parent EC device\n");
++		return -EPROBE_DEFER;
+ 	}
  
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ 	platform_set_drvdata(pdev, typec);
 -- 
 2.39.5
 
