@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E665CB2A37B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0974B2A938
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3AFE1B278D7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 266F4563FF3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B496F31CA48;
-	Mon, 18 Aug 2025 13:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303F53469EC;
+	Mon, 18 Aug 2025 13:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9HuL+yU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8b05fpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717B931E0E4;
-	Mon, 18 Aug 2025 13:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06833469E7;
+	Mon, 18 Aug 2025 13:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522240; cv=none; b=FPHWEjjsMmXWZbf6M2/aXx+pNnZh0qCeiDCVLKigFW1r7lilo0EqzG5ZsQZhYA1AHRRAqOOsdeN6M0Oma3Y961qFbmsEc/0HvlfnmGehF5Qou5yIpF52bNmDpEF7CDrLgpOquvDyFIt31jjG7Bun4Gnghvlf/4iqHFQK2+xiOcM=
+	t=1755525440; cv=none; b=HdnO8/D/tILZEHToAxYj3XejnzT7ZegJOUVPuuS+022qpf8Zv3Fhs0GrN9bqtAw3coYoiOepWpvhLooHM8n7cMiUsNZVtIbZXuIj113vOM+y0P9k7lwgptDCQO5FAnOrygA1X3lt5J51ybuZAftPdAnl4/Iivu7ZN0l6sV/R5YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522240; c=relaxed/simple;
-	bh=B3H0TggdmFV211LQOXRA2P4jk5SCPQ6tKZU/EmRN7Zs=;
+	s=arc-20240116; t=1755525440; c=relaxed/simple;
+	bh=w7SpEizt4FKwknpOnqsqg4BDQU5obeLh0qtA7CHLya0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lO4hjMqA77oBgF9IjU0Q6eHbdlsNwqyt3RQ9nxB+l0LuVdbJqfpRJ6qQM2OTAswFBmF8ZVskyKv9biEjsv+1ZeMgCNs9ReIoM+oCnqesHH3I98DKG2n9MiqEgZIFoh2abolfQwPobUPT6EZVRyDXabNMWVEcfobh9yQZid4BHVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9HuL+yU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BEAC4CEEB;
-	Mon, 18 Aug 2025 13:03:59 +0000 (UTC)
+	 MIME-Version; b=mcZOuag6hMq3GpX4NT0cOqytfiQkE1OEai6HZx9BAXzAmm9s9bWfJDAE7TcbvhqfzrxOFalb72JYhYL9I/Gr56c3AqbIgAJP+mYUIUJx7PXTF7gMAq9Q1Ic8lw3jGgYk0XpJ4ynzjunFT7LFVRJWCcEKWzvOJm4OZByoLl5+Kns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8b05fpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0F2C4CEF1;
+	Mon, 18 Aug 2025 13:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522240;
-	bh=B3H0TggdmFV211LQOXRA2P4jk5SCPQ6tKZU/EmRN7Zs=;
+	s=korg; t=1755525439;
+	bh=w7SpEizt4FKwknpOnqsqg4BDQU5obeLh0qtA7CHLya0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9HuL+yUJZar+eGetsNq2/YgfCaVgavW34mquoADiNOe4VyD3BsUpEPMcbN9ey314
-	 gxhciedm63wDYgrAk2z4dVP3xzyWRzs0NR9fiqHxy6ybIoTXAYJoBVUX76RVwSq1im
-	 2n8O1ScKra4FXciFpCb/kVhbFy6Rfr76hVgj9PNg=
+	b=K8b05fpYf/oEKa7vt6d2jyPe+J3rb7c8pi+ltjLF2C5244WA6u0HIqvKCq45RvZe9
+	 HgP+KS5QWPTMet5CNxjweq6o5SNtWeom1S9jLupEqvP4Yt+Ep4ukmxLSIr/10QyoAi
+	 PvldVhhl9NoZhZgGzGmrNPi/rlX/BLGM8g81pR+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Rebmann <jre@pengutronix.de>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/444] net: fec: allow disable coalescing
+Subject: [PATCH 6.16 263/570] s390/early: Copy last breaking event address to pt_regs
 Date: Mon, 18 Aug 2025 14:44:10 +0200
-Message-ID: <20250818124457.245189494@linuxfoundation.org>
+Message-ID: <20250818124515.964066083@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Rebmann <jre@pengutronix.de>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit b7ad21258f9e9a7f58b19595d5ceed2cde3bed68 ]
+[ Upstream commit 7cf636c99b257c1b4b12066ab34fd5f06e8d892f ]
 
-In the current implementation, IP coalescing is always enabled and
-cannot be disabled.
+In case of an early crash the early program check handler also prints the
+last breaking event address which is contained within the pt_regs
+structure. However it is not initialized, and therefore a more or less
+random value is printed in case of a crash.
 
-As setting maximum frames to 0 or 1, or setting delay to zero implies
-immediate delivery of single packets/IRQs, disable coalescing in
-hardware in these cases.
+Copy the last breaking event address from lowcore to pt_regs in case of an
+early program check to address this. This also makes it easier to analyze
+early crashes.
 
-This also guarantees that coalescing is never enabled with ICFT or ICTT
-set to zero, a configuration that could lead to unpredictable behaviour
-according to i.MX8MP reference manual.
-
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ arch/s390/kernel/early.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 479ced24096b..a1cc338cf20f 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3122,27 +3122,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
- static void fec_enet_itr_coal_set(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	int rx_itr, tx_itr;
-+	u32 rx_itr = 0, tx_itr = 0;
-+	int rx_ictt, tx_ictt;
+diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
+index 54cf0923050f..9b4b5ccda323 100644
+--- a/arch/s390/kernel/early.c
++++ b/arch/s390/kernel/early.c
+@@ -154,6 +154,7 @@ void __init __do_early_pgm_check(struct pt_regs *regs)
  
--	/* Must be greater than zero to avoid unpredictable behavior */
--	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
--	    !fep->tx_time_itr || !fep->tx_pkts_itr)
--		return;
--
--	/* Select enet system clock as Interrupt Coalescing
--	 * timer Clock Source
--	 */
--	rx_itr = FEC_ITR_CLK_SEL;
--	tx_itr = FEC_ITR_CLK_SEL;
-+	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
-+	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
+ 	regs->int_code = lc->pgm_int_code;
+ 	regs->int_parm_long = lc->trans_exc_code;
++	regs->last_break = lc->pgm_last_break;
+ 	ip = __rewind_psw(regs->psw, regs->int_code >> 16);
  
--	/* set ICFT and ICTT */
--	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
--	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
--	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
--	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
-+	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
-+		rx_itr |= FEC_ITR_ICTT(rx_ictt);
-+	}
- 
--	rx_itr |= FEC_ITR_EN;
--	tx_itr |= FEC_ITR_EN;
-+	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
-+		tx_itr |= FEC_ITR_ICTT(tx_ictt);
-+	}
- 
- 	writel(tx_itr, fep->hwp + FEC_TXIC0);
- 	writel(rx_itr, fep->hwp + FEC_RXIC0);
+ 	/* Monitor Event? Might be a warning */
 -- 
 2.39.5
 
