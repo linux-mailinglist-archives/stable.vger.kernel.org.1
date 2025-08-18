@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2976B2A3FB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC190B2A77F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8561B4E30B0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:16:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7385847A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA11C21FF4B;
-	Mon, 18 Aug 2025 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53E9335BB9;
+	Mon, 18 Aug 2025 13:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uL4kot4t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elZl7dY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861F330E83F;
-	Mon, 18 Aug 2025 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE67335BA3;
+	Mon, 18 Aug 2025 13:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522913; cv=none; b=fDzvZk4kYl01tf9jN0J0q4gB0D5UFZlFyvI+Vo1DLlKlE0XrqKwkqwCIJH1tv1Y44SuTUrlGHaf9jwJ40Wr2FTKFNUoq6WweeLDRpvZU5yfRGGJiGb4Gp/IZ4dD2noqIQKnlKPbUyAFPNg6TDz+6PMY3ynAUyas5EqCiu4PrhSk=
+	t=1755524678; cv=none; b=UEkKerEq1Uq9M+OTZ+6n7oBwYXATP6ULlfQCjVNVHqdei+qK3rY1pwnl3mEsDN2TUz+JqeD66GJSkmCdAHlX2UOknQzR/I9NthAojfYUsiaa1XrZxiJew7b+3JMc08UcTrMeeSDngsEkL29y5RCrly2/bmOiXeDT7r4hV3gjfLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522913; c=relaxed/simple;
-	bh=rLrSth7dxHJS6CSsjYEbutHM1V2bpLCd8lKxRf1JD/g=;
+	s=arc-20240116; t=1755524678; c=relaxed/simple;
+	bh=xSWZ8cLE4y7A4MEw7VY7gL+qjQznpHw+1VeQndhuOtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mB9sotqBMnZDoEublgiCY3/Jx2TOgSrNyXOyQmgpZ7IVusQPpY+UcIbQ/ssbYmlm604iQsU8qLXLXJpUd2F0Jq0cFgGLHZBaRNe9D5Sdl5NmOSy/dzv27mw6wIUHZJ5QZ0pEGYGj3y+Z/Ot+kBKiASyATp/Koybi4FmoJP5zLLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uL4kot4t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85CBC4CEF1;
-	Mon, 18 Aug 2025 13:15:12 +0000 (UTC)
+	 MIME-Version; b=Ip/fMscgvlxl6q9LXAMMYOWfPkR3mF9lACXCpLvbwtlkFwI66oQNYESFrUjyYSag6sDUZKZEwy3m3xqkyUSjZemlBsLP2BWj2KZH9FSa4MUPKSI/IFokZI2H91a5kufL6aXXoXmvcRfRKQqOqe32K/zHfxhUi5ZLmuTgenDlPwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elZl7dY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EB3C4CEEB;
+	Mon, 18 Aug 2025 13:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522913;
-	bh=rLrSth7dxHJS6CSsjYEbutHM1V2bpLCd8lKxRf1JD/g=;
+	s=korg; t=1755524678;
+	bh=xSWZ8cLE4y7A4MEw7VY7gL+qjQznpHw+1VeQndhuOtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uL4kot4t2ZT37JNT5FPgTKGy6F9KiRBpZH8s+A14WkzJKt/1yyv4eyKnoj6dD3X0Q
-	 iJf5HtksihjoPJFUJdp9eOLJp71PmEvId+9r4OTM9i73bjKCctaWGWp9WkbBhgCawf
-	 WDsfa0c8H2Qr+kM8t1t67Ej8ePCIXnwubCEOAViQ=
+	b=elZl7dY3hTCHyW+w0tIp3YQVApOZzaIH6ncsyu5PrMmPJ625cq1t5PDg1ozSOi+2O
+	 hhiFl8+QGwWKPQV+FlJkxHwRTz+yHzNfGd0jgQ1hEeJFJO9wL+8FfNhoL0rsdOh2S5
+	 sOebRB55Drn20f+HytAv+ihgd9ZeiTfXKwLgFTaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Youngjun Lee <yjjuny.lee@samsung.com>
-Subject: [PATCH 6.15 006/515] ALSA: usb-audio: Validate UAC3 cluster segment descriptors
+	pt x <superman.xpt@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.16 005/570] io_uring/net: commit partial buffers on retry
 Date: Mon, 18 Aug 2025 14:39:52 +0200
-Message-ID: <20250818124458.576772869@linuxfoundation.org>
+Message-ID: <20250818124505.996305841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit ecfd41166b72b67d3bdeb88d224ff445f6163869 upstream.
+commit 41b70df5b38bc80967d2e0ed55cc3c3896bba781 upstream.
 
-UAC3 class segment descriptors need to be verified whether their sizes
-match with the declared lengths and whether they fit with the
-allocated buffer sizes, too.  Otherwise malicious firmware may lead to
-the unexpected OOB accesses.
+Ring provided buffers are potentially only valid within the single
+execution context in which they were acquired. io_uring deals with this
+and invalidates them on retry. But on the networking side, if
+MSG_WAITALL is set, or if the socket is of the streaming type and too
+little was processed, then it will hang on to the buffer rather than
+recycle or commit it. This is problematic for two reasons:
 
-Fixes: 11785ef53228 ("ALSA: usb-audio: Initial Power Domain support")
-Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250814081245.8902-2-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+1) If someone unregisters the provided buffer ring before a later retry,
+   then the req->buf_list will no longer be valid.
+
+2) If multiple sockers are using the same buffer group, then multiple
+   receives can consume the same memory. This can cause data corruption
+   in the application, as either receive could land in the same
+   userspace buffer.
+
+Fix this by disallowing partial retries from pinning a provided buffer
+across multiple executions, if ring provided buffers are used.
+
+Cc: stable@vger.kernel.org
+Reported-by: pt x <superman.xpt@gmail.com>
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ io_uring/net.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -341,20 +341,28 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -477,6 +477,15 @@ static int io_bundle_nbufs(struct io_asy
+ 	return nbufs;
+ }
  
- 	len = le16_to_cpu(cluster->wLength);
- 	c = 0;
--	p += sizeof(struct uac3_cluster_header_descriptor);
-+	p += sizeof(*cluster);
-+	len -= sizeof(*cluster);
- 
--	while (((p - (void *)cluster) < len) && (c < channels)) {
-+	while (len > 0 && (c < channels)) {
- 		struct uac3_cluster_segment_descriptor *cs_desc = p;
- 		u16 cs_len;
- 		u8 cs_type;
- 
-+		if (len < sizeof(*p))
-+			break;
- 		cs_len = le16_to_cpu(cs_desc->wLength);
-+		if (len < cs_len)
-+			break;
- 		cs_type = cs_desc->bSegmentType;
- 
- 		if (cs_type == UAC3_CHANNEL_INFORMATION) {
- 			struct uac3_cluster_information_segment_descriptor *is = p;
- 			unsigned char map;
- 
-+			if (cs_len < sizeof(*is))
-+				break;
++static int io_net_kbuf_recyle(struct io_kiocb *req,
++			      struct io_async_msghdr *kmsg, int len)
++{
++	req->flags |= REQ_F_BL_NO_RECYCLE;
++	if (req->flags & REQ_F_BUFFERS_COMMIT)
++		io_kbuf_commit(req, req->buf_list, len, io_bundle_nbufs(kmsg, len));
++	return IOU_RETRY;
++}
 +
- 			/*
- 			 * TODO: this conversion is not complete, update it
- 			 * after adding UAC3 values to asound.h
-@@ -456,6 +464,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
- 			chmap->map[c++] = map;
+ static inline bool io_send_finish(struct io_kiocb *req, int *ret,
+ 				  struct io_async_msghdr *kmsg,
+ 				  unsigned issue_flags)
+@@ -545,8 +554,7 @@ int io_sendmsg(struct io_kiocb *req, uns
+ 			kmsg->msg.msg_controllen = 0;
+ 			kmsg->msg.msg_control = NULL;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
  		}
- 		p += cs_len;
-+		len -= cs_len;
- 	}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -657,8 +665,7 @@ retry_bundle:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1026,8 +1033,7 @@ retry_multishot:
+ 		}
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return IOU_RETRY;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1168,8 +1174,7 @@ retry_multishot:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1450,8 +1455,7 @@ int io_send_zc(struct io_kiocb *req, uns
+ 			zc->len -= ret;
+ 			zc->buf += ret;
+ 			zc->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1521,8 +1525,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
  
- 	if (channels < c)
-@@ -880,7 +889,7 @@ snd_usb_get_audioformat_uac3(struct snd_
- 	u64 badd_formats = 0;
- 	unsigned int num_channels;
- 	struct audioformat *fp;
--	u16 cluster_id, wLength;
-+	u16 cluster_id, wLength, cluster_wLength;
- 	int clock = 0;
- 	int err;
- 
-@@ -1008,6 +1017,16 @@ snd_usb_get_audioformat_uac3(struct snd_
- 			iface_no, altno);
- 		kfree(cluster);
- 		return ERR_PTR(-EIO);
-+	}
-+
-+	cluster_wLength = le16_to_cpu(cluster->wLength);
-+	if (cluster_wLength < sizeof(*cluster) ||
-+	    cluster_wLength > wLength) {
-+		dev_err(&dev->dev,
-+			"%u:%d : invalid Cluster Descriptor size\n",
-+			iface_no, altno);
-+		kfree(cluster);
-+		return ERR_PTR(-EIO);
- 	}
- 
- 	num_channels = cluster->bNrChannels;
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
 
 
 
