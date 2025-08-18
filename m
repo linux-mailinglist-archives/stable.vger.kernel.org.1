@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B63FB2A245
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:05 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A59B2A6C4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF6FB3AD9AD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A6194E3A69
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B78D31076A;
-	Mon, 18 Aug 2025 12:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A2931B100;
+	Mon, 18 Aug 2025 13:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/5T+oaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hu3xDs5m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC31E26F2A7;
-	Mon, 18 Aug 2025 12:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8729722AE7A;
+	Mon, 18 Aug 2025 13:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521515; cv=none; b=IZwbAFMDc9E50XJ6NQi0HulDxhXTkguruvti5ALsjZq6Bugizl6GyrKkraN9Yc+8g6iuowDHYyuzgjqoIiVldY+Gr/dDQY/bwdvUSQrn/3ljkDeGz0eb3IhBlwL0EMwoIIiJ7O/BRbqLprzoXE5fCwAUzJyGzuLW8iuaZIMt4iA=
+	t=1755524745; cv=none; b=jnUPRswwHwnDeBY7VM85h4Bwk3v12DcFNwgrwyLa50RHUZPHw9vGhhkKtEMIg3LErzT8zrN/GIS15mmp0K56ABl3VddWmYH3X9dwrJONwDB4Mpd8JFz2Y8Rt5IqNcV4hyUq6NUYhERkgAmqPapQJ3jka5/Zl4P3eMyBTH2QLi2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521515; c=relaxed/simple;
-	bh=xIFA2T+d370GFc9BpSRx/OUqysaQBM/ygF4wgizt9g8=;
+	s=arc-20240116; t=1755524745; c=relaxed/simple;
+	bh=I5HNoZ27SVtyZB9FQ1tmtqtvEKE3Nf5gG5cPpfhqBII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkH4n39xHdxvakvuUsUxsXo8lNMyw0BI4i79T1nJ2fp5i9hGWS1Zsg30XnR2ecu8qjfJ44zmFnFmDr+ko3UJwtO5AuSFvmGe5jvTNpi2Fud4GTaPS7kHUYZ1wQTE1gBAGSN7HzOakiMNa484QYrfl9wa6RikklthCcqmMuBsZFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/5T+oaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7DE0C4CEEB;
-	Mon, 18 Aug 2025 12:51:54 +0000 (UTC)
+	 MIME-Version; b=PGbNU7cnsWoM2V9CtxiON/N9zGXoWb/j1j/NomWPlEsMFCiOtW+f/CTtMrBo9NU8EwzJIoJQSw/x1JRlCO7/bOTsMLJNVKkirGuGCJcfxq4vK3TLnPW4ryKpIjVILk8yb2X22IhhNh/BPweFM/FS3PqkxG6yyz1P8U8F2lMFfDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hu3xDs5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF134C4CEEB;
+	Mon, 18 Aug 2025 13:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521515;
-	bh=xIFA2T+d370GFc9BpSRx/OUqysaQBM/ygF4wgizt9g8=;
+	s=korg; t=1755524745;
+	bh=I5HNoZ27SVtyZB9FQ1tmtqtvEKE3Nf5gG5cPpfhqBII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/5T+oaGOUOf6lH7/GDiCNBZhR9uOXFhnTDmWia1oy5zoH+qrZUP5LJsyr8mvF5MZ
-	 n/LTr8RUY68p8uGnrscZTvyd8inCl6eUUJiFH9N5mJGDZz4PjzJAU6XVQ8K6m/D+Qs
-	 A/t0bxpjHOsdgrsjRqkCV5g7EiOUyY+m57kk3gwA=
+	b=Hu3xDs5mTtZDsLCMeUBnEuGMDpgwEcY/3HowGwDx5tJxOkJ3g2gZVfwtMbYZ911a4
+	 F22Gi0Zkuouzc21+1lBNQU1AjpjxRzunv+JU9wfeKIpWaIVMvGFErBqur8g+XagQ5/
+	 NrOQBfHh65X3Ga2bm4hbG+kRpUBxKa/b9QHOw5PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Shravan Kumar Ramani <shravankr@nvidia.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 009/444] gpio: mlxbf2: use platform_get_irq_optional()
-Date: Mon, 18 Aug 2025 14:40:35 +0200
-Message-ID: <20250818124449.254123716@linuxfoundation.org>
+	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.16 049/570] Documentation: ACPI: Fix parent device references
+Date: Mon, 18 Aug 2025 14:40:36 +0200
+Message-ID: <20250818124507.702328644@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 63c7bc53a35e785accdc2ceab8f72d94501931ab upstream.
+commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
 
-The gpio-mlxbf2 driver interfaces with four GPIO controllers,
-device instances 0-3. There are two IRQ resources shared between
-the four controllers, and they are found in the ACPI table for
-instances 0 and 3. The driver should not use platform_get_irq(),
-otherwise this error is logged when probing instances 1 and 2:
-  mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
+The _CRS resources in many cases want to have ResourceSource field
+to be a type of ACPI String. This means that to compile properly
+we need to enclosure the name path into double quotes. This will
+in practice defer the interpretation to a run-time stage, However,
+this may be interpreted differently on different OSes and ACPI
+interpreter implementations. In particular ACPICA might not correctly
+recognize the leading '^' (caret) character and will not resolve
+the relative name path properly. On top of that, this piece may be
+used in SSDTs which are loaded after the DSDT and on itself may also
+not resolve relative name paths outside of their own scopes.
+With this all said, fix documentation to use fully-qualified name
+paths always to avoid any misinterpretations, which is proven to
+work.
 
-Fixes: 2b725265cb08 ("gpio: mlxbf2: Introduce IRQ support")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/r/20250728144619.29894-1-davthompson@nvidia.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
+Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mlxbf2.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpio/gpio-mlxbf2.c
-+++ b/drivers/gpio/gpio-mlxbf2.c
-@@ -397,7 +397,7 @@ mlxbf2_gpio_probe(struct platform_device
- 	gc->ngpio = npins;
- 	gc->owner = THIS_MODULE;
+--- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
++++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
+@@ -14,7 +14,7 @@ Consider this topology::
+     |      |   | 0x70 |--CH01--> i2c client B (0x50)
+     +------+   +------+
  
--	irq = platform_get_irq(pdev, 0);
-+	irq = platform_get_irq_optional(pdev, 0);
- 	if (irq >= 0) {
- 		girq = &gs->gc.irq;
- 		gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chip);
+-which corresponds to the following ASL::
++which corresponds to the following ASL (in the scope of \_SB)::
+ 
+     Device (SMB1)
+     {
+@@ -24,7 +24,7 @@ which corresponds to the following ASL::
+             Name (_HID, ...)
+             Name (_CRS, ResourceTemplate () {
+                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
+-                            AddressingMode7Bit, "^SMB1", 0x00,
++                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
+                             ResourceConsumer,,)
+             }
+ 
+@@ -37,7 +37,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH00", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
+@@ -52,7 +52,7 @@ which corresponds to the following ASL::
+                     Name (_HID, ...)
+                     Name (_CRS, ResourceTemplate () {
+                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
+-                                    AddressingMode7Bit, "^CH01", 0x00,
++                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
+                                     ResourceConsumer,,)
+                     }
+                 }
 
 
 
