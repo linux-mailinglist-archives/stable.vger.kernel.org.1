@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB512B2A5B6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 858C9B2A2ED
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86BF624D09
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FFD718A0AF3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5902E322DB7;
-	Mon, 18 Aug 2025 13:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E610F31AF24;
+	Mon, 18 Aug 2025 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd2nX6rX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXzVQYFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17623322DAC;
-	Mon, 18 Aug 2025 13:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25FA3218C0;
+	Mon, 18 Aug 2025 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523363; cv=none; b=UDsjLEVaUIfHhoYfU72VcPJGzES7R8vqIGv0UiZw7k5uR6NfH9IWfVYrY0xqdmvtph9iCOvBvkqcUv3kcxE2jPnuZtPXXlevmbHAPQ3Txff0KfYLhlg+aZEkTyWI7OJzty3UAvT0QnisoUH9C/rEt7qFFQLSwgtbgPFCZHHEy/w=
+	t=1755521740; cv=none; b=uPAPrctKQRTu9tRlpBOv1wtB1lK57OF1M1gxWwm9QrY8rkO8K/yD9JEugQDzbK8AVm1YOUX+S2Akfakw3G8K3fCKiMW6WQ/xPWn84HKRFlje2/oj0ysnRhOpAjj9aHaqvkekUhXmvY1QAlESL4V5YoiiEErBCe/XxeSAHWRzhCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523363; c=relaxed/simple;
-	bh=tzU4SDjGg2G0+Gn3J9e/nfp/LwbdWtuDwaQfCkXcOo4=;
+	s=arc-20240116; t=1755521740; c=relaxed/simple;
+	bh=1O4BQQTp7WSNqMrKcNt61hIM85jImXKuv9f99J+kUxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SO8SnHGX/MJIYygRW83TJOcvieRtiuo12wbNaUHo3xhf3/SxAl7sHZUU+M+GPdUEdMLatDB1Db/z6YZReF0TzGZexWE88BSsg3g/ZFhE+gFU9++MliFv+eKDWAQ9rHKBQeedzGng0EDH0eF+kLzjGkZS4h1fo3bknfs3Tt9FOls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd2nX6rX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907B8C4CEEB;
-	Mon, 18 Aug 2025 13:22:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ABpBYN997HmnNnoSefOnGeaKkHvOlw2SKWuM56fW1zY30asnlDFsC32bO9QS0JtNsfPn/eTrfGdw/ew4lNTRlfJKk/8PfmvElzp5wjMYFx4wRorD5cvC1yI/DB9A9kKDirdpQ/VvpSg4BcG4uhHVk6uPMeknm3A4Dz6nwDcl9bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXzVQYFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B613DC4CEEB;
+	Mon, 18 Aug 2025 12:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523363;
-	bh=tzU4SDjGg2G0+Gn3J9e/nfp/LwbdWtuDwaQfCkXcOo4=;
+	s=korg; t=1755521740;
+	bh=1O4BQQTp7WSNqMrKcNt61hIM85jImXKuv9f99J+kUxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qd2nX6rXEO0eFNwRWhrLtZLGjrCTkj7t/eBOyDqnMRdbK1DcPwaBwbzjFUTa5DMUY
-	 8ZqheWEfTnQ1Y5PYBDMn9RDRiscd7SftvdB6xv6W+DyNzT5w6UNKf+tT/Og/elS9Qm
-	 7n8AXPn10retJcwSzxDxk+TwoFQb6bnRWjBdXK68=
+	b=qXzVQYFpsO8wOR5+mYmAzLL92XEeNdxxsD2+VFvtqgQVpABGmhcATNBpfJ4ScgPEp
+	 YMXcbrW+cgN08HtLwYavLn282qtH0he8MW9HRJZscTzxQ4Qxj6VuD032DBzk0h5bLn
+	 Z0y2KBBAkcqHWvgahroThxQCkjV2f4i5yGfKYndw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Qiyu <qiyuzhu2@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 147/515] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Subject: [PATCH 6.12 107/444] usb: typec: tcpm/tcpci_maxim: fix irq wake usage
 Date: Mon, 18 Aug 2025 14:42:13 +0200
-Message-ID: <20250818124504.042289334@linuxfoundation.org>
+Message-ID: <20250818124452.950807107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Qiyu <qiyuzhu2@amd.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
+[ Upstream commit 31611223fb34a3e9320cdfc4f4395072a13ea78e ]
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") introduced non-essential printing "Failed to find
-VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
-something wrong is going on while it is not the case.
+This driver calls enable_irq_wake() during probe() unconditionally, and
+never issues the required corresponding disable_irq_wake() to disable
+hardware interrupt wakeup signals.
 
-According to the PRM Spec Section 4.1.2 [1], both static data buffer
-address and ACPI parameter buffer address may be NULL if they are not
-needed, so there is no need to print out the "Failed to find VA ... "
-in those cases.
+Additionally, whether or not a device should wake-up the system is
+meant to be a policy decision based on sysfs (.../power/wakeup) in the
+first place.
 
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
-Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
-[ rjw: Edits in new comments, subject and changelog ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Update the driver to use the standard approach to enable/disable IRQ
+wake during the suspend/resume callbacks. This solves both issues
+described above.
+
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250707-max77759-irq-wake-v1-1-d367f633e4bc@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpci_maxim_core.c | 46 +++++++++++++++--------
+ 1 file changed, 30 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index e549914a636c..be033bbb126a 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- 		}
- 	}
+diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+index 648311f5e3cf..eeaf79e97261 100644
+--- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
++++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+@@ -421,21 +421,6 @@ static irqreturn_t max_tcpci_isr(int irq, void *dev_id)
+ 	return IRQ_WAKE_THREAD;
+ }
  
--	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-static int max_tcpci_init_alert(struct max_tcpci_chip *chip, struct i2c_client *client)
+-{
+-	int ret;
 -
+-	ret = devm_request_threaded_irq(chip->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
+-					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
+-					chip);
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	enable_irq_wake(client->irq);
+-	return 0;
+-}
+-
+ static int max_tcpci_start_toggling(struct tcpci *tcpci, struct tcpci_data *tdata,
+ 				    enum typec_cc_status cc)
+ {
+@@ -532,7 +517,9 @@ static int max_tcpci_probe(struct i2c_client *client)
+ 
+ 	chip->port = tcpci_get_tcpm_port(chip->tcpci);
+ 
+-	ret = max_tcpci_init_alert(chip, client);
++	ret = devm_request_threaded_irq(&client->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
++					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
++					chip);
+ 	if (ret < 0)
+ 		return dev_err_probe(&client->dev, ret,
+ 				     "IRQ initialization failed\n");
+@@ -541,6 +528,32 @@ static int max_tcpci_probe(struct i2c_client *client)
  	return 0;
  }
  
-@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+		/*
-+		 * Print a warning message if handler_addr is zero which is not expected to
-+		 * ever happen.
-+		 */
-+		if (unlikely(!th->handler_addr))
-+			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->handler_address);
- 
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+		/*
-+		 * According to the PRM specification, static_data_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
-+			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->static_data_buffer_address);
- 
- 		th->acpi_param_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
- 
-+		/*
-+		 * According to the PRM specification, acpi_param_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
-+			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->acpi_param_buffer_address);
++#ifdef CONFIG_PM_SLEEP
++static int max_tcpci_resume(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	int ret = 0;
 +
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
++	if (client->irq && device_may_wakeup(dev))
++		ret = disable_irq_wake(client->irq);
++
++	return ret;
++}
++
++static int max_tcpci_suspend(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	int ret = 0;
++
++	if (client->irq && device_may_wakeup(dev))
++		ret = enable_irq_wake(client->irq);
++
++	return ret;
++}
++#endif /* CONFIG_PM_SLEEP */
++
++static SIMPLE_DEV_PM_OPS(max_tcpci_pm_ops, max_tcpci_suspend, max_tcpci_resume);
++
+ static const struct i2c_device_id max_tcpci_id[] = {
+ 	{ "maxtcpc" },
+ 	{ }
+@@ -559,6 +572,7 @@ static struct i2c_driver max_tcpci_i2c_driver = {
+ 	.driver = {
+ 		.name = "maxtcpc",
+ 		.of_match_table = of_match_ptr(max_tcpci_of_match),
++		.pm = &max_tcpci_pm_ops,
+ 	},
+ 	.probe = max_tcpci_probe,
+ 	.id_table = max_tcpci_id,
 -- 
 2.39.5
 
