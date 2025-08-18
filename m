@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D94B2A676
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6F4B2A3A9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9BCAB60C89
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70F2C7B9D10
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35886335BDA;
-	Mon, 18 Aug 2025 13:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9BF3218C9;
+	Mon, 18 Aug 2025 13:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9E4jx9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGYCu2cO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58AF335BD3;
-	Mon, 18 Aug 2025 13:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5972021B199;
+	Mon, 18 Aug 2025 13:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524264; cv=none; b=pTLy4Zwh4fhGiI+1Uh0v1YdwPqc+v6MSidL8y9DRkaUwTGtc4210LNf6smN5BO1XUqTIJtj4AbDNvICjdu2eYKIikZKgzGkyj58LnwnuPNnAnXNzwgictpLmMLQtExqsY8y8r+s9DaWYcjPDUCG1CTja3yifyQmcBlD48mDbNkA=
+	t=1755522645; cv=none; b=WFk1FtqW8M3eggpivA5rdt0O+dSnmY3/mZNON3iKAxZEjssx2DwlNEPLSfF11dFXjZ7O6wPtlPJkstzmSjWB9xXcqjPoSCHRpQuCYURPEHdLjziet61T3xYUKlVsGw3z3WnwFZMicZI6PQpklJyxyi7/XDMYvKPK6Obo0qvT7VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524264; c=relaxed/simple;
-	bh=WbFWR414LiRTgnwFyf7HhGc4c0Gr4ZgajBBb1JSy0BE=;
+	s=arc-20240116; t=1755522645; c=relaxed/simple;
+	bh=KLDFNA61TmJAPasQsM1iX4E6KN02gsdhnz7GPfq5UVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9S+NRChRpd64cUETibVC2Mpbn6VWm9+AJ1nNrRokIXx3VBPsAyxtGyeTSv9NBTy/XKVAy6TTPqIYcyMchUaGBZCHXvLBUIjZ7ae+jruep1/c2bj0KHOtGs2tdUC4tR0/2rYyk0W/7xbB+XSvfJ4FRudEmDX0HOsx0jVbNIvjAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9E4jx9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50034C4AF09;
-	Mon, 18 Aug 2025 13:37:43 +0000 (UTC)
+	 MIME-Version; b=k6hl4JKQKOeklGSmqsTpT44OwQsYg/7V50JP9CaqZNP6Azmx1lq608myMZwmAbKPMWz92jvaPRuKrSEryOwVQ8jONkrSOI+i4hRNlkr8bBt05yZMc3D6Gcx0yN0URf6tamdqmJjn5xIcxRW4+8tBrU2fiT7/FNVojV0tA5WOE84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGYCu2cO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D532BC4CEEB;
+	Mon, 18 Aug 2025 13:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524263;
-	bh=WbFWR414LiRTgnwFyf7HhGc4c0Gr4ZgajBBb1JSy0BE=;
+	s=korg; t=1755522645;
+	bh=KLDFNA61TmJAPasQsM1iX4E6KN02gsdhnz7GPfq5UVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9E4jx9HaPIIiDPS1YTvClrxrjqyNqEMSyXkVR5IYeKoGMOC/ONYShy4YLp2vOcfB
-	 UEGtE4MztwiesKpkFfgy4tuIX6g63OVRcaI8xBwn/7o2r1zvUDYr9j22uIv2Lxmxo9
-	 +B9HTWWAn+ZxHp8juAgGOPI+UqbophXL8J/aOtaI=
+	b=XGYCu2cOqg5oYJaM6xmUZdx5wFfZ+OZg0FeIf5kEjs4MKWgIc1BzQ0GNSZyVRhBoz
+	 CfXVMVL5/fbABiWlWTLdqbzMNt4uJA3g63jaVNcPa0HnBqRY/1Y/FhMxSoEh42lT2e
+	 JN3vvkvUDE4QXloTLm1eBadTZpIyJxZ2t+XtEApI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>
-Subject: [PATCH 6.15 418/515] tools/power turbostat: Handle non-root legacy-uncore sysfs permissions
+	Ioanna Alifieraki <ioanna-maria.alifieraki@canonical.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 378/444] iommu/vt-d: Optimize iotlb_sync_map for non-caching/non-RWBF modes
 Date: Mon, 18 Aug 2025 14:46:44 +0200
-Message-ID: <20250818124514.517451959@linuxfoundation.org>
+Message-ID: <20250818124503.060597017@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit e60a13bcef206795d3ddf82f130fe8f570176d06 ]
+commit 12724ce3fe1a3d8f30d56e48b4f272d8860d1970 upstream.
 
-/sys/devices/system/cpu/intel_uncore_frequency/package_X_die_Y/
-may be readable by all, but
-/sys/devices/system/cpu/intel_uncore_frequency/package_X_die_Y/current_freq_khz
-may be readable only by root.
+The iotlb_sync_map iommu ops allows drivers to perform necessary cache
+flushes when new mappings are established. For the Intel iommu driver,
+this callback specifically serves two purposes:
 
-Non-root turbostat users see complaints in this scenario.
+- To flush caches when a second-stage page table is attached to a device
+  whose iommu is operating in caching mode (CAP_REG.CM==1).
+- To explicitly flush internal write buffers to ensure updates to memory-
+  resident remapping structures are visible to hardware (CAP_REG.RWBF==1).
 
-Fail probe of the interface if we can't read current_freq_khz.
+However, in scenarios where neither caching mode nor the RWBF flag is
+active, the cache_tag_flush_range_np() helper, which is called in the
+iotlb_sync_map path, effectively becomes a no-op.
 
-Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Original-patch-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Despite being a no-op, cache_tag_flush_range_np() involves iterating
+through all cache tags of the iommu's attached to the domain, protected
+by a spinlock. This unnecessary execution path introduces overhead,
+leading to a measurable I/O performance regression. On systems with NVMes
+under the same bridge, performance was observed to drop from approximately
+~6150 MiB/s down to ~4985 MiB/s.
+
+Introduce a flag in the dmar_domain structure. This flag will only be set
+when iotlb_sync_map is required (i.e., when CM or RWBF is set). The
+cache_tag_flush_range_np() is called only for domains where this flag is
+set. This flag, once set, is immutable, given that there won't be mixed
+configurations in real-world scenarios where some IOMMUs in a system
+operate in caching mode while others do not. Theoretically, the
+immutability of this flag does not impact functionality.
+
+Reported-by: Ioanna Alifieraki <ioanna-maria.alifieraki@canonical.com>
+Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2115738
+Link: https://lore.kernel.org/r/20250701171154.52435-1-ioanna-maria.alifieraki@canonical.com
+Fixes: 129dab6e1286 ("iommu/vt-d: Use cache_tag_flush_range_np() in iotlb_sync_map")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20250703031545.3378602-1-baolu.lu@linux.intel.com
+Link: https://lore.kernel.org/r/20250714045028.958850-3-baolu.lu@linux.intel.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/iommu.c |   19 ++++++++++++++++++-
+ drivers/iommu/intel/iommu.h |    3 +++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 444b6bfb4683..3e97b69b1dfb 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -6690,7 +6690,8 @@ static void probe_intel_uncore_frequency_legacy(void)
- 			sprintf(path_base, "/sys/devices/system/cpu/intel_uncore_frequency/package_%02d_die_%02d", i,
- 				j);
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1957,6 +1957,18 @@ static bool dev_is_real_dma_subdevice(st
+ 	       pci_real_dma_dev(to_pci_dev(dev)) != to_pci_dev(dev);
+ }
  
--			if (access(path_base, R_OK))
-+			sprintf(path, "%s/current_freq_khz", path_base);
-+			if (access(path, R_OK))
- 				continue;
++static bool domain_need_iotlb_sync_map(struct dmar_domain *domain,
++				       struct intel_iommu *iommu)
++{
++	if (cap_caching_mode(iommu->cap) && !domain->use_first_level)
++		return true;
++
++	if (rwbf_quirk || cap_rwbf(iommu->cap))
++		return true;
++
++	return false;
++}
++
+ static int dmar_domain_attach_device(struct dmar_domain *domain,
+ 				     struct device *dev)
+ {
+@@ -1994,6 +2006,8 @@ static int dmar_domain_attach_device(str
+ 	if (ret)
+ 		goto out_block_translation;
  
- 			BIC_PRESENT(BIC_UNCORE_MHZ);
--- 
-2.39.5
-
++	domain->iotlb_sync_map |= domain_need_iotlb_sync_map(domain, iommu);
++
+ 	return 0;
+ 
+ out_block_translation:
+@@ -4278,7 +4292,10 @@ static bool risky_device(struct pci_dev
+ static int intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
+ 				      unsigned long iova, size_t size)
+ {
+-	cache_tag_flush_range_np(to_dmar_domain(domain), iova, iova + size - 1);
++	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
++
++	if (dmar_domain->iotlb_sync_map)
++		cache_tag_flush_range_np(dmar_domain, iova, iova + size - 1);
+ 
+ 	return 0;
+ }
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -614,6 +614,9 @@ struct dmar_domain {
+ 	u8 has_mappings:1;		/* Has mappings configured through
+ 					 * iommu_map() interface.
+ 					 */
++	u8 iotlb_sync_map:1;		/* Need to flush IOTLB cache or write
++					 * buffer when creating mappings.
++					 */
+ 
+ 	spinlock_t lock;		/* Protect device tracking lists */
+ 	struct list_head devices;	/* all devices' list */
 
 
 
