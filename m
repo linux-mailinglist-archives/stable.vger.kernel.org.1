@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB32AB2A903
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:14:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8127AB2A6AF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECD125A5662
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7719A18950A8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B904321455;
-	Mon, 18 Aug 2025 13:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277EB271A6D;
+	Mon, 18 Aug 2025 13:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yVjOhdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYtGXLYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD622321425;
-	Mon, 18 Aug 2025 13:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81A522F14C;
+	Mon, 18 Aug 2025 13:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525510; cv=none; b=l72kSoNBfZapqTsjdKdrfDMhGkAussjol/qGPjSuQFM7VevxrQWLt/y/SNMCL42F+MeIqtnAxoHLAAHhDXSqnnxay6/7a84AIDaF3CVqq14T9v78og0pOX04CWuXkpAOJKxE6bunaU9zLxRG6SJKOoJHo3Y9x4sD193gRx8Ar9g=
+	t=1755523839; cv=none; b=oKIafZR2E8nWKO7GyTKWTU44dWGhKWb/6d2fS8+gcD8td1hhuyV5OizWA/5IsUFh8i1KTag3adTK6igwFbZmCKwOn/9+XqcPGQJ6uu0rjK75HBE+6OImPB8viEXkvsKPa2h4TGyUqbXQ0NYeh/Z3wFiM5uMLpt/3u6qLrPe+3Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525510; c=relaxed/simple;
-	bh=UkSa3f+1yAacqqO5cAC15H0goDhXmK9ZaPWatKiUMK8=;
+	s=arc-20240116; t=1755523839; c=relaxed/simple;
+	bh=KAONm0WhqrrqY8RpDXeIUdiZYG/f6lT2sf2du4h5hhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PeSyZflOARnTlbSI9Cwu5G4lG1IX2sA1SSLJ2X9ve8UK3w4ibLqtB5EAAohZdTYTSggdkNDjtNnr2G2CJsikZ2zlSZbKb6wuYajj+X62dPM3twxKtZTcBP8uxJYwiWXspLAaT8HUX5OkZYBM7GAkJUoE7AAaku+T2ghM0hVYNpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yVjOhdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426C6C4CEEB;
-	Mon, 18 Aug 2025 13:58:30 +0000 (UTC)
+	 MIME-Version; b=V6sM0a3K5zN3bKxfqqMvbpFF6O1p15VkC2nWQpKyxZx92YKuoln0P8dJHrp6q0cX/tnl1ahVVVtA9FugXpgyLbo/mytXTEnT7TK5DStSPZIAXAfOe5TW9QiT+AJR0EXmI5ibcuRD1GrqmYoUr6M/ruXltMSfB0lXnXbBGbMK9nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYtGXLYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4679BC4CEEB;
+	Mon, 18 Aug 2025 13:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525510;
-	bh=UkSa3f+1yAacqqO5cAC15H0goDhXmK9ZaPWatKiUMK8=;
+	s=korg; t=1755523839;
+	bh=KAONm0WhqrrqY8RpDXeIUdiZYG/f6lT2sf2du4h5hhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yVjOhdQKIjaaBFOZxjYJDV6DsL6j++DH0ei2AkjAPA1VdpRsZYSf4FX52Vyve+nM
-	 Gibn6eNAd8Hp1DoilfdoTyOzPJ5i7WuY6hBskdEZ8ttUN/6+dqQs1g1oxLxpigC6iO
-	 WU6z6qpFvntmmttc2BKcJxRwrsdxzca7+MuK+QlM=
+	b=EYtGXLYagUqDR/l9IpbS2AKO3GYOmSch0a/XeU/lGm83DZo1cQxTq0pWUiY9Fj9Ov
+	 yNTOF5lNUQ9rblvJ2oDfjGI9QVfrZGHR0tL/LAVXx2ODjmUrSWnEx1QDWhJsi3FsMI
+	 jOdJasd5edh1XaL3roiPlRqwuczN9g4mg7D6QBYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lucien.Jheng" <lucienzx159@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 285/570] net: phy: air_en8811h: Introduce resume/suspend and clk_restore_context to ensure correct CKO settings after network interface reinitialization.
-Date: Mon, 18 Aug 2025 14:44:32 +0200
-Message-ID: <20250818124516.823231262@linuxfoundation.org>
+Subject: [PATCH 6.15 287/515] wifi: rtlwifi: fix possible skb memory leak in `_rtl_pci_rx_interrupt()`.
+Date: Mon, 18 Aug 2025 14:44:33 +0200
+Message-ID: <20250818124509.463412951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucien.Jheng <lucienzx159@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 6b9c9def95cb402374730d51a1f44927f467b774 ]
+[ Upstream commit 44c0e191004f0e3aa1bdee3be248be14dbe5b020 ]
 
-If the user reinitializes the network interface, the PHY will reinitialize,
-and the CKO settings will revert to their initial configuration(be enabled).
-To prevent CKO from being re-enabled,
-en8811h_clk_restore_context and en8811h_resume were added
-to ensure the CKO settings remain correct.
+The function `_rtl_pci_init_one_rxdesc()` can fail even when the new
+`skb` is passed because of a DMA mapping error.  If it fails, the `skb`
+is not saved in the rx ringbuffer and thus lost.
 
-Signed-off-by: Lucien.Jheng <lucienzx159@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250630154147.80388-1-lucienzx159@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Compile tested only
+
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250616105631.444309-4-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/air_en8811h.c | 45 +++++++++++++++++++++++++++++++----
- 1 file changed, 41 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-index 57fbd8df9438..badd65f0ccee 100644
---- a/drivers/net/phy/air_en8811h.c
-+++ b/drivers/net/phy/air_en8811h.c
-@@ -11,6 +11,7 @@
-  * Copyright (C) 2023 Airoha Technology Corp.
-  */
- 
-+#include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/phy.h>
- #include <linux/firmware.h>
-@@ -157,6 +158,7 @@ struct en8811h_priv {
- 	struct led		led[EN8811H_LED_COUNT];
- 	struct clk_hw		hw;
- 	struct phy_device	*phydev;
-+	unsigned int		cko_is_enabled;
- };
- 
- enum {
-@@ -865,11 +867,30 @@ static int en8811h_clk_is_enabled(struct clk_hw *hw)
- 	return (pbus_value & EN8811H_CLK_CGM_CKO);
- }
- 
-+static int en8811h_clk_save_context(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+
-+	priv->cko_is_enabled = en8811h_clk_is_enabled(hw);
-+
-+	return 0;
-+}
-+
-+static void en8811h_clk_restore_context(struct clk_hw *hw)
-+{
-+	struct en8811h_priv *priv = clk_hw_to_en8811h_priv(hw);
-+
-+	if (!priv->cko_is_enabled)
-+		en8811h_clk_disable(hw);
-+}
-+
- static const struct clk_ops en8811h_clk_ops = {
--	.recalc_rate	= en8811h_clk_recalc_rate,
--	.enable		= en8811h_clk_enable,
--	.disable	= en8811h_clk_disable,
--	.is_enabled	= en8811h_clk_is_enabled,
-+	.recalc_rate		= en8811h_clk_recalc_rate,
-+	.enable			= en8811h_clk_enable,
-+	.disable		= en8811h_clk_disable,
-+	.is_enabled		= en8811h_clk_is_enabled,
-+	.save_context		= en8811h_clk_save_context,
-+	.restore_context	= en8811h_clk_restore_context,
- };
- 
- static int en8811h_clk_provider_setup(struct device *dev, struct clk_hw *hw)
-@@ -1149,6 +1170,20 @@ static irqreturn_t en8811h_handle_interrupt(struct phy_device *phydev)
- 	return IRQ_HANDLED;
- }
- 
-+static int en8811h_resume(struct phy_device *phydev)
-+{
-+	clk_restore_context();
-+
-+	return genphy_resume(phydev);
-+}
-+
-+static int en8811h_suspend(struct phy_device *phydev)
-+{
-+	clk_save_context();
-+
-+	return genphy_suspend(phydev);
-+}
-+
- static struct phy_driver en8811h_driver[] = {
- {
- 	PHY_ID_MATCH_MODEL(EN8811H_PHY_ID),
-@@ -1159,6 +1194,8 @@ static struct phy_driver en8811h_driver[] = {
- 	.get_rate_matching	= en8811h_get_rate_matching,
- 	.config_aneg		= en8811h_config_aneg,
- 	.read_status		= en8811h_read_status,
-+	.resume			= en8811h_resume,
-+	.suspend		= en8811h_suspend,
- 	.config_intr		= en8811h_clear_intr,
- 	.handle_interrupt	= en8811h_handle_interrupt,
- 	.led_hw_is_supported	= en8811h_led_hw_is_supported,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 898f597f70a9..2741c3beac4c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -802,13 +802,19 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
+ 		skb = new_skb;
+ no_new:
+ 		if (rtlpriv->use_new_trx_flow) {
+-			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
+-						 rxring_idx,
+-						 rtlpci->rx_ring[rxring_idx].idx);
++			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
++						      rxring_idx,
++						      rtlpci->rx_ring[rxring_idx].idx)) {
++				if (new_skb)
++					dev_kfree_skb_any(skb);
++			}
+ 		} else {
+-			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
+-						 rxring_idx,
+-						 rtlpci->rx_ring[rxring_idx].idx);
++			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
++						      rxring_idx,
++						      rtlpci->rx_ring[rxring_idx].idx)) {
++				if (new_skb)
++					dev_kfree_skb_any(skb);
++			}
+ 			if (rtlpci->rx_ring[rxring_idx].idx ==
+ 			    rtlpci->rxringcount - 1)
+ 				rtlpriv->cfg->ops->set_desc(hw, (u8 *)pdesc,
 -- 
 2.39.5
 
