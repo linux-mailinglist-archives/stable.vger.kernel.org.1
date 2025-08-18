@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065DBB2A5C9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DE0B2A81E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42C6356782C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E71661B61C69
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F69321F34;
-	Mon, 18 Aug 2025 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908CE335BBE;
+	Mon, 18 Aug 2025 13:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVHiYqdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Coz2//+4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9469B321F20;
-	Mon, 18 Aug 2025 13:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE3F335BA3;
+	Mon, 18 Aug 2025 13:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523402; cv=none; b=Pio5KT3UPzNbpQ7H16wr8Ay5xy5IvMbOmY7V2X7TQzuj4HcmIjhqsw+586Cpn038jkHDWwnktuFrH3/WFmCC7tW5aEtU/TlwbfQuePhmPQZIc9eo/KqNJXxVsY9hr7J05i0c/L9XkBBrOaqplK0/Lh+P1TSRay9B5O2lPs54A9Y=
+	t=1755525114; cv=none; b=YyjKQ/wQZZLusiOIYQiCbu/MOzbvx16jrMDGS4O7YiPQjH0zL9Jj3I82M7jC6Bxe7pt/Xsp6THQY3zVZb1VFjHmUsct1/zknXyUSI5f3pvvX4W4tjubWHh9aFtyEM5Cevs3deQRbjBc2T1u+8EL2Tp4zLQMo5GiIicS4wEpEwlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523402; c=relaxed/simple;
-	bh=el5m8y5mGmFYQO+MCZxIVeV1qFSeVQfC+scHDlPW6KA=;
+	s=arc-20240116; t=1755525114; c=relaxed/simple;
+	bh=BDsIDIv4vqp3O7fz/NawRuifzLAy9V1hoxn1XGBemiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igEgX2rCQnKMFpfjbsgrWbwCM4858BtBpZylG0kZA/vY5so1nbcDMtm/hIqR2Zx8mocyM23j3o+2a9bjMkDOnbBuBTXxcPF6T9PaYjc8GbU+eYOqN3XROljt2IWUDZekKDFnj8sVR+LfHyxYQeM7ejEVN2HkRJWVnCA20nkwZ1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVHiYqdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05521C4CEEB;
-	Mon, 18 Aug 2025 13:23:21 +0000 (UTC)
+	 MIME-Version; b=IsB9YPiHnvqhBgzWB/y+JQg19iZDeJTqp9zotq0OKKc0PsCvRh8k74X6jQtA4/gSQIK6yEAYGtcZlPSVsuZua2GjDWZbAXkAJSsA+2yqNQq+Ie6VgDeAAWrx4yRWU6mIxurdSY6+c0o5/S5Uxv8qAAznj/lrVQIL4MuWUDs7bfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Coz2//+4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90C9C4CEEB;
+	Mon, 18 Aug 2025 13:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523402;
-	bh=el5m8y5mGmFYQO+MCZxIVeV1qFSeVQfC+scHDlPW6KA=;
+	s=korg; t=1755525114;
+	bh=BDsIDIv4vqp3O7fz/NawRuifzLAy9V1hoxn1XGBemiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVHiYqdp1kPAGRvagKE6nkGngwLFhDVEUcYnsy6bltNM0jrBR+2qP/ZvZh96EU1xm
-	 mkvzfDz+FO74sTYCCwB9DwiDf21SGMrtZBTY4aiPLFUsbFwo/5li1NyeiGW2MpK6hl
-	 vLVL/idocKY+IwoQAM9vDLZqlVSpJE9YOznAvz9Y=
+	b=Coz2//+494/ZHxBalsKIBLxbZH9sWdJ0Kyw2SjMZUwPl6mmQO48DlkwuXHkAhI24i
+	 IgE9xP5Tl67cAlvmnoUBONNE9iJHeLg951t4svPDlCGVfbTH8agllIqZBMBPDSa4SE
+	 A3w22ID6qqlu1gR+sAAFg9HccJJRowa99NsQOh9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Mark Brown <broonie@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 161/515] ASoC: SDCA: Add flag for unused IRQs
-Date: Mon, 18 Aug 2025 14:42:27 +0200
-Message-ID: <20250818124504.581377603@linuxfoundation.org>
+Subject: [PATCH 6.16 161/570] firmware: arm_scmi: power_control: Ensure SCMI_SYSPOWER_IDLE is set early during resume
+Date: Mon, 18 Aug 2025 14:42:28 +0200
+Message-ID: <20250818124512.011626069@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 775f5729b47d8737f4f98e0141f61b3358245398 ]
+[ Upstream commit 9a0658d3991e6c82df87584b253454842f22f965 ]
 
-Zero is a valid SDCA IRQ interrupt position so add a special value to
-indicate that the IRQ is not used.
+Fix a race condition where a second suspend notification from another
+SCMI agent wakes the system before SCMI_SYSPOWER_IDLE is set, leading
+to ignored suspend requests. This is due to interrupts triggering early
+execution of `scmi_userspace_notifier()` before the SCMI state is updated.
 
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20250624122844.2761627-6-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To resolve this, set SCMI_SYSPOWER_IDLE earlier in the device resume
+path, prior to `thaw_processes()`. This ensures the SCMI state is
+correct when the notifier runs, allowing the system to suspend again
+as expected.
+
+On some platforms using SCMI, SCP cannot distinguish between CPU idle
+and suspend since both result in cluster power-off. By explicitly setting
+the idle state early, the Linux SCMI agent can correctly re-suspend in
+response to external notifications.
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Message-Id: <20250704-scmi-pm-v2-2-9316cec2f9cc@nxp.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/sdca_function.h   | 2 ++
- sound/soc/sdca/sdca_functions.c | 2 ++
- 2 files changed, 4 insertions(+)
+ .../firmware/arm_scmi/scmi_power_control.c    | 22 ++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/include/sound/sdca_function.h b/include/sound/sdca_function.h
-index 253654568a41..1403a9f46976 100644
---- a/include/sound/sdca_function.h
-+++ b/include/sound/sdca_function.h
-@@ -16,6 +16,8 @@ struct device;
- struct sdca_entity;
- struct sdca_function_desc;
+diff --git a/drivers/firmware/arm_scmi/scmi_power_control.c b/drivers/firmware/arm_scmi/scmi_power_control.c
+index 21f467a92942..ab0cee0d4bec 100644
+--- a/drivers/firmware/arm_scmi/scmi_power_control.c
++++ b/drivers/firmware/arm_scmi/scmi_power_control.c
+@@ -46,6 +46,7 @@
+ #include <linux/math.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/pm.h>
+ #include <linux/printk.h>
+ #include <linux/reboot.h>
+ #include <linux/scmi_protocol.h>
+@@ -324,12 +325,7 @@ static int scmi_userspace_notifier(struct notifier_block *nb,
  
-+#define SDCA_NO_INTERRUPT -1
+ static void scmi_suspend_work_func(struct work_struct *work)
+ {
+-	struct scmi_syspower_conf *sc =
+-		container_of(work, struct scmi_syspower_conf, suspend_work);
+-
+ 	pm_suspend(PM_SUSPEND_MEM);
+-
+-	sc->state = SCMI_SYSPOWER_IDLE;
+ }
+ 
+ static int scmi_syspower_probe(struct scmi_device *sdev)
+@@ -354,6 +350,7 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
+ 	sc->required_transition = SCMI_SYSTEM_MAX;
+ 	sc->userspace_nb.notifier_call = &scmi_userspace_notifier;
+ 	sc->dev = &sdev->dev;
++	dev_set_drvdata(&sdev->dev, sc);
+ 
+ 	INIT_WORK(&sc->suspend_work, scmi_suspend_work_func);
+ 
+@@ -363,6 +360,18 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
+ 						       NULL, &sc->userspace_nb);
+ }
+ 
++static int scmi_system_power_resume(struct device *dev)
++{
++	struct scmi_syspower_conf *sc = dev_get_drvdata(dev);
 +
- /*
-  * The addressing space for SDCA relies on 7 bits for Entities, so a
-  * maximum of 128 Entities per function can be represented.
-diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
-index 15aa57a07c73..e1803f0dc590 100644
---- a/sound/soc/sdca/sdca_functions.c
-+++ b/sound/soc/sdca/sdca_functions.c
-@@ -912,6 +912,8 @@ static int find_sdca_entity_control(struct device *dev, struct sdca_entity *enti
- 				       &tmp);
- 	if (!ret)
- 		control->interrupt_position = tmp;
-+	else
-+		control->interrupt_position = SDCA_NO_INTERRUPT;
++	sc->state = SCMI_SYSPOWER_IDLE;
++	return 0;
++}
++
++static const struct dev_pm_ops scmi_system_power_pmops = {
++	SET_SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
++};
++
+ static const struct scmi_device_id scmi_id_table[] = {
+ 	{ SCMI_PROTOCOL_SYSTEM, "syspower" },
+ 	{ },
+@@ -370,6 +379,9 @@ static const struct scmi_device_id scmi_id_table[] = {
+ MODULE_DEVICE_TABLE(scmi, scmi_id_table);
  
- 	control->label = find_sdca_control_label(dev, entity, control);
- 	if (!control->label)
+ static struct scmi_driver scmi_system_power_driver = {
++	.driver	= {
++		.pm = &scmi_system_power_pmops,
++	},
+ 	.name = "scmi-system-power",
+ 	.probe = scmi_syspower_probe,
+ 	.id_table = scmi_id_table,
 -- 
 2.39.5
 
