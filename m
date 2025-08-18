@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00EBB2A46B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BC1B2A9E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC4AF6802BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C52E31BC1B82
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F4B31E105;
-	Mon, 18 Aug 2025 13:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1BF322553;
+	Mon, 18 Aug 2025 14:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4UYXerp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGg6yz9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5735931E10D;
-	Mon, 18 Aug 2025 13:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1D5261B9B;
+	Mon, 18 Aug 2025 14:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522832; cv=none; b=Xvn9wSishLLgWl3FkQPA0/YWyfz9X4cWG/uzMEyT7tyctWApoS9jpaU0n/AMVL/sS0jaPXVwKsfQ7uFTbt0BT3vsjnLkANDHHpUVOwRh4zfrP50xM1QXKM4BF0boKF1QEmaNr8EEhaIpzObltae7gnUdE6FljqRMLP3oJa58Ryw=
+	t=1755526044; cv=none; b=ATM9JTbj3e0WCDRYAywDkQu+O7zpGxrwSM3+nhp5ih/5h4B/UKy7BrjwKwyzuUBxDLukI5GnlPZWxf5LNkiHkNzMvEy50n4h3aQ0NPXRxB1axUk/Ld0+5wrztiImwNFeywOUd+hvLVX9j1JMCTpvCc0gZlGNsxcNqpGqfN0X6xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522832; c=relaxed/simple;
-	bh=/lxTeV3HmhM+Irp+bonLsJzYwHG2EzwPqvj3UV7/Qu4=;
+	s=arc-20240116; t=1755526044; c=relaxed/simple;
+	bh=BxNoBEGXtoN4BHHwaz3DJc5v0YRUAwet/T6iKQzrNdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMOlxLEqctlpcCFlnF7S8zrEnwUgeidI4B+9Wgf6EhHqOKwQsXh6FhT4LACM7qitAYOj7eWE+ShTuGBlhH6AosDUNUpGfl+OGsgXBlfMiY0S8TLJluR5+cisfwvugi+YIqMWkpnBVH3mTLD766GX2fh0uOK89jQ/cqdtziWX9dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4UYXerp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8883C4CEEB;
-	Mon, 18 Aug 2025 13:13:51 +0000 (UTC)
+	 MIME-Version; b=Wc8G9SuB9BKTVi9Zzq7yCnQYAnFqphc1qEpCUm7xVlpuA8M8n3g9aN6xrjyLMDFJwGhgrW0qwVfBpH1iRxJYB8CdVAPZOLhMjhDaAgWQM9sOk+AXBVcISbRVO/WyFmde3EP66CkPcuB6kuV5w+/Bbo5nrsdM2jBM6Yf+goE5rI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGg6yz9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F14FC4CEEB;
+	Mon, 18 Aug 2025 14:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522832;
-	bh=/lxTeV3HmhM+Irp+bonLsJzYwHG2EzwPqvj3UV7/Qu4=;
+	s=korg; t=1755526044;
+	bh=BxNoBEGXtoN4BHHwaz3DJc5v0YRUAwet/T6iKQzrNdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4UYXerpkhFRNF8Tp9mN9hJs1OAeG8u93KeoyaeRK7h6oCpX0OGf8+mm94xnOv6aF
-	 sWnNKSJ8Azq1Y77HTKos2FQWi51Cy4xeygcME3+491tlq44itD54ttm3xzRO5KjR9m
-	 ETJkrBsp/0XGMvORC0e05NZ5hCnQRMLMdgADo+Gg=
+	b=KGg6yz9MDRHzVfmHu+NEcYgVe747fdoNoNSHmbtJtDw3hNdM3+pUddi+J637qgxOD
+	 NhB5Igsxtu8mpQPevMmONmA/gWiHSbW3XHN6whLZxVFkORasamg10zm4AiOjUuoA7s
+	 uz5qEV0YaOMjykfHg91ld2kQhDVocHSXQ4vKHWOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 402/444] btrfs: error on missing block group when unaccounting log tree extent buffers
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Nicolas Schier <n.schier@avm.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 441/570] kconfig: nconf: Ensure null termination where strncpy is used
 Date: Mon, 18 Aug 2025 14:47:08 +0200
-Message-ID: <20250818124503.996632771@linuxfoundation.org>
+Message-ID: <20250818124522.806830759@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Shankari Anand <shankari.ak0208@gmail.com>
 
-commit fc5799986fbca957e2e3c0480027f249951b7bcf upstream.
+[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
 
-Currently we only log an error message if we can't find the block group
-for a log tree extent buffer when unaccounting it (while freeing a log
-tree). A missing block group means something is seriously wrong and we
-end up leaking space from the metadata space info. So return -ENOENT in
-case we don't find the block group.
+strncpy() does not guarantee null-termination if the source string is
+longer than the destination buffer.
 
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Ensure the buffer is explicitly null-terminated to prevent potential
+string overflows or undefined behavior.
+
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Nicolas Schier <n.schier@avm.de>
+Acked-by: Nicolas Schier <n.schier@avm.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c |   19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ scripts/kconfig/nconf.c     | 2 ++
+ scripts/kconfig/nconf.gui.c | 1 +
+ 2 files changed, 3 insertions(+)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -2587,14 +2587,14 @@ static int replay_one_buffer(struct btrf
- /*
-  * Correctly adjust the reserved bytes occupied by a log tree extent buffer
-  */
--static void unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
-+static int unaccount_log_buffer(struct btrfs_fs_info *fs_info, u64 start)
- {
- 	struct btrfs_block_group *cache;
+diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
+index c0b2dabf6c89..ae1fe5f60327 100644
+--- a/scripts/kconfig/nconf.c
++++ b/scripts/kconfig/nconf.c
+@@ -593,6 +593,8 @@ static void item_add_str(const char *fmt, ...)
+ 		tmp_str,
+ 		sizeof(k_menu_items[index].str));
  
- 	cache = btrfs_lookup_block_group(fs_info, start);
- 	if (!cache) {
- 		btrfs_err(fs_info, "unable to find block group for %llu", start);
--		return;
-+		return -ENOENT;
- 	}
- 
- 	spin_lock(&cache->space_info->lock);
-@@ -2605,27 +2605,22 @@ static void unaccount_log_buffer(struct
- 	spin_unlock(&cache->space_info->lock);
- 
- 	btrfs_put_block_group(cache);
++	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
 +
-+	return 0;
- }
+ 	free_item(curses_menu_items[index]);
+ 	curses_menu_items[index] = new_item(
+ 			k_menu_items[index].str,
+diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
+index 4bfdf8ac2a9a..7206437e784a 100644
+--- a/scripts/kconfig/nconf.gui.c
++++ b/scripts/kconfig/nconf.gui.c
+@@ -359,6 +359,7 @@ int dialog_inputbox(WINDOW *main_window,
+ 	x = (columns-win_cols)/2;
  
- static int clean_log_buffer(struct btrfs_trans_handle *trans,
- 			    struct extent_buffer *eb)
- {
--	int ret;
--
- 	btrfs_tree_lock(eb);
- 	btrfs_clear_buffer_dirty(trans, eb);
- 	wait_on_extent_buffer_writeback(eb);
- 	btrfs_tree_unlock(eb);
+ 	strncpy(result, init, *result_len);
++	result[*result_len - 1] = '\0';
  
--	if (trans) {
--		ret = btrfs_pin_reserved_extent(trans, eb);
--		if (ret)
--			return ret;
--	} else {
--		unaccount_log_buffer(eb->fs_info, eb->start);
--	}
-+	if (trans)
-+		return btrfs_pin_reserved_extent(trans, eb);
- 
--	return 0;
-+	return unaccount_log_buffer(eb->fs_info, eb->start);
- }
- 
- static noinline int walk_down_log_tree(struct btrfs_trans_handle *trans,
+ 	/* create the windows */
+ 	win = newwin(win_lines, win_cols, y, x);
+-- 
+2.39.5
+
 
 
 
