@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C116B2AA11
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 107B5B2A6FB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2DBA6815F4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D16A818A134B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1FD35082A;
-	Mon, 18 Aug 2025 14:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A95E216E23;
+	Mon, 18 Aug 2025 13:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydMt6OCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1TAPNsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A0F350827;
-	Mon, 18 Aug 2025 14:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC60C8BEC;
+	Mon, 18 Aug 2025 13:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525876; cv=none; b=MZkQaY1yMXWZGQSyduCgkhE5SS70mOeRS92jl9HUfwMy9yc4agYxNLiiDVBcH2j7/jCT1Z2jVuv4M3HctU8ecSG8QfVISdTqqJWu4LpnkQyp1LiKeeSKjOzfYizxiS84dIKhf13wuvtgNo4f0Bci1NU1/3nuxqLqRr/OUSCbRUY=
+	t=1755524324; cv=none; b=meeYF51qGoZ4xw5kxq+xzTS5+MCbTPVNuWUJCTS55bP+69E1dOvluehSgmtFQyAaEl10HXroiQX7/Ruixq6hGvU52wm5ppX2j/dyUOKT3LpM8+gj75zsvMfJ3pJuu91h+1mpCGkLZa7SywNEM4BTVvplCMTjiLjFd67pjRg3Zf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525876; c=relaxed/simple;
-	bh=xTiiOvyZb4vDKQNa1OdUcW81ICangDipBz0D7YqnsH8=;
+	s=arc-20240116; t=1755524324; c=relaxed/simple;
+	bh=pKftlY3dAd6g1KwTG2MD8h8OGsTms4JbmGVgSe+p59M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZc5TOKTpJPsKbCwhQm/OtOkwmGiaUVA/obCA01Gt+INPSeBIZbOBAnPyIR854wZzn3QxRU/ov18t0UBF/wLFhNX4fbwbocqFy4QmGqWdSDTc4fNlKUbOshn+Y2M7/mrynDjz2HVrPUtygACcrSr9C5+PDw7pTP91vFslE06hFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydMt6OCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4AFC4CEEB;
-	Mon, 18 Aug 2025 14:04:35 +0000 (UTC)
+	 MIME-Version; b=cEEy8WU3sPPjiGRMHacLJqe61CrIZ36AGo58q6AMjXNcLyTsH0qchVajt30fkSVT20hgc0qEuxyJQmKuAUqypy8Tg9qUjj4SQ/8RjSV9rOURvWp+tNsdKuiwgjPqGcLOsypIyz8cPsZYLrlGqTmkLHQgUEkmGtkNuzP5AtQBYUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1TAPNsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556B1C4CEEB;
+	Mon, 18 Aug 2025 13:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525876;
-	bh=xTiiOvyZb4vDKQNa1OdUcW81ICangDipBz0D7YqnsH8=;
+	s=korg; t=1755524324;
+	bh=pKftlY3dAd6g1KwTG2MD8h8OGsTms4JbmGVgSe+p59M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydMt6OCQX3bare8aQiJPpCesBRyBT3EfuDnw8uTFPK1FIZRCtrlpEKvlwUHyK6EIE
-	 pQDKpnZItbXuEuuNkP+4TZFFJtN2/Chax68gSZyXENfPX7jgG5gilna4g3HB4wkLaO
-	 pc3LU6pCKtZBnRpR7XJdiimbvKmv8aK/fLZJklzI=
+	b=k1TAPNspz4z4MvRecwrjwYsOTtwOT3lBJAbh5SW4sfMQAOiy6+zjX+nS9MUxbsVID
+	 64iJpt7KCMgzxUy3JXwCyUrMr9DXO34IXzZ7ebixtExbrmNYIflnsvKNgt/V1dbLl7
+	 mS5OoA9mf9I7KS8tRvlG6Lut11doDOaVj1iaUpfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Adolfsson <johan.adolfsson@axis.com>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Gabriel Totev <gabriel.totev@zetier.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 393/570] leds: leds-lp50xx: Handle reg to get correct multi_index
+Subject: [PATCH 6.15 394/515] apparmor: shift ouid when mediating hard links in userns
 Date: Mon, 18 Aug 2025 14:46:20 +0200
-Message-ID: <20250818124520.995062936@linuxfoundation.org>
+Message-ID: <20250818124513.580063759@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Adolfsson <johan.adolfsson@axis.com>
+From: Gabriel Totev <gabriel.totev@zetier.com>
 
-[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
+[ Upstream commit c5bf96d20fd787e4909b755de4705d52f3458836 ]
 
-mc_subled used for multi_index needs well defined array indexes,
-to guarantee the desired result, use reg for that.
+When using AppArmor profiles inside an unprivileged container,
+the link operation observes an unshifted ouid.
+(tested with LXD and Incus)
 
-If devicetree child nodes is processed in random or reverse order
-you may end up with multi_index "blue green red" instead of the expected
-"red green blue".
-If user space apps uses multi_index to deduce how to control the leds
-they would most likely be broken without this patch if devicetree
-processing is reversed (which it appears to be).
+For example, root inside container and uid 1000000 outside, with
+`owner /root/link l,` profile entry for ln:
 
-arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
-but I don't see how it can have worked without this change.
+/root$ touch chain && ln chain link
+==> dmesg
+apparmor="DENIED" operation="link" class="file"
+namespace="root//lxd-feet_<var-snap-lxd-common-lxd>" profile="linkit"
+name="/root/link" pid=1655 comm="ln" requested_mask="l" denied_mask="l"
+fsuid=1000000 ouid=0 [<== should be 1000000] target="/root/chain"
 
-If reg is not set, an error is returned,
-If reg is out of range, an error is returned.
-reg within led child nodes starts with 0, to map to the iout in each bank.
+Fix by mapping inode uid of old_dentry in aa_path_link() rather than
+using it directly, similarly to how it's mapped in __file_path_perm()
+later in the file.
 
-Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
-Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Gabriel Totev <gabriel.totev@zetier.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp50xx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ security/apparmor/file.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
-index 02cb1565a9fb..94f8ef6b482c 100644
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -476,6 +476,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
- 			return -ENOMEM;
- 
- 		fwnode_for_each_child_node(child, led_node) {
-+			int multi_index;
- 			ret = fwnode_property_read_u32(led_node, "color",
- 						       &color_id);
- 			if (ret) {
-@@ -483,8 +484,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
- 				dev_err(priv->dev, "Cannot read color\n");
- 				return ret;
- 			}
-+			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
-+			if (ret != 0) {
-+				dev_err(priv->dev, "reg must be set\n");
-+				return -EINVAL;
-+			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
-+				dev_err(priv->dev, "reg %i out of range\n", multi_index);
-+				return -EINVAL;
-+			}
- 
--			mc_led_info[num_colors].color_index = color_id;
-+			mc_led_info[multi_index].color_index = color_id;
- 			num_colors++;
- 		}
- 
+diff --git a/security/apparmor/file.c b/security/apparmor/file.c
+index d52a5b14dad4..62bc46e03758 100644
+--- a/security/apparmor/file.c
++++ b/security/apparmor/file.c
+@@ -423,9 +423,11 @@ int aa_path_link(const struct cred *subj_cred,
+ {
+ 	struct path link = { .mnt = new_dir->mnt, .dentry = new_dentry };
+ 	struct path target = { .mnt = new_dir->mnt, .dentry = old_dentry };
++	struct inode *inode = d_backing_inode(old_dentry);
++	vfsuid_t vfsuid = i_uid_into_vfsuid(mnt_idmap(target.mnt), inode);
+ 	struct path_cond cond = {
+-		d_backing_inode(old_dentry)->i_uid,
+-		d_backing_inode(old_dentry)->i_mode
++		.uid = vfsuid_into_kuid(vfsuid),
++		.mode = inode->i_mode,
+ 	};
+ 	char *buffer = NULL, *buffer2 = NULL;
+ 	struct aa_profile *profile;
 -- 
 2.39.5
 
