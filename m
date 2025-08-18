@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED605B2A9F8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:26:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E0DB2A6D9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 828B1681D69
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 648B8173663
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7035F322C88;
-	Mon, 18 Aug 2025 14:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136B031E115;
+	Mon, 18 Aug 2025 13:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/YDXvR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZs+Wmnz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5083203AD;
-	Mon, 18 Aug 2025 14:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38CA322764;
+	Mon, 18 Aug 2025 13:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525924; cv=none; b=iDvWyx4qIBdSfCA/D84ic4Qq+Hv0F9UqYyyR3SdNx6Eqzp1gTFD8M6vIx3ixkRPA8RogNxhEyQuHK9jvZ6MnglH7Ssnz+RX0alh+Auu1tnGbMjkaL29eA/DqDNZS7VqdkgTWtGtug98Ul+KVzB40TY6rbUSaAZ/W/090t9FNUjw=
+	t=1755524223; cv=none; b=aAEwr9c7DHPnq4yC5acmLU/G8oZQAEGel0/Q9p1x6ak/XseI4M7de3lZ5/P1ehFqMUOfagIF/f9ZxweNDL6up3rU0C/uuc+qtWcTbMEYQvwOq8mHgcHMjAMnZb4e2Ga+MHGkWich6hXj5LF4CIDX1I8RyEN4Q2R3qq8zxkF5z5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525924; c=relaxed/simple;
-	bh=fIouvtC3ZIggp8fp21i5ugGfwUQiGMwDX/NIGzF7a3o=;
+	s=arc-20240116; t=1755524223; c=relaxed/simple;
+	bh=pp6lmWFG00JiprghlRuMuBSHeiue9ePLLEdoWLJF6NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmuwbG242zBbmh6UYbx5wpqVukB2p54GwxWDKFtLH79Mq9tctvwfUwpx3FBW7jGCt+YA6TvJWlENG7FlYsWma+ZKYSB2mrnsGf/SHwtJkBazDzkR1oBt5ZoGkFtIiGrD0qSdK3hGHgtpy3NEGWDOtCr+fMko3D+KSc49KlD6ir0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/YDXvR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D24C4CEEB;
-	Mon, 18 Aug 2025 14:05:23 +0000 (UTC)
+	 MIME-Version; b=sI0h0QjARq4KvsRnvSAdu9wB8Qniz6i2gpBeTMx9F+xxgekaq+Xwt1Zuk3slIYx0AnndEdEiWjTwdbbX9QXAIBPuM8xKIXe2MX8KKFgta6c7VHwzfCsthq9oZ7eMyS7yhODZcQdxMjJEQ56lw5JLlQxtJDeIPTsgBqZVg+GlJXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZs+Wmnz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7D2C4CEEB;
+	Mon, 18 Aug 2025 13:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525924;
-	bh=fIouvtC3ZIggp8fp21i5ugGfwUQiGMwDX/NIGzF7a3o=;
+	s=korg; t=1755524223;
+	bh=pp6lmWFG00JiprghlRuMuBSHeiue9ePLLEdoWLJF6NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/YDXvR/PXaFJxTGW3FBhHNyg/tfGhQJ2uT5WQ229ZjJfKGD/CrHGOQdTPKKRmAuE
-	 sRSsRt4sugrPF225imgA2Ia+NNtV+MjmFi6C1la1i05aKAWIVA9w8n4e2eVwASBmnw
-	 iylx+j/QuVIeELIlW0/c2s41NZM7twN7PUCgNljk=
+	b=nZs+Wmnz7AcAlg9UyqGMnC9pEduQRukSwVfwEZYBtV8GyIDY5qSMlCDhS3QW962wT
+	 EvGwI0yO9tFe+LXB7WWmlcuJo9ftcWghK52bWqmfi+IP1ExDZ8gCJrCxQUIsKRzjG8
+	 nnbvkPqSuQc/fL0JCX8Y3howlfNd6o95uk00YsEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Keith Busch <kbusch@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 405/570] PCI: dw-rockchip: Delay link training after hot reset in EP mode
+Subject: [PATCH 6.15 406/515] vfio/type1: conditional rescheduling while pinning
 Date: Mon, 18 Aug 2025 14:46:32 +0200
-Message-ID: <20250818124521.451446633@linuxfoundation.org>
+Message-ID: <20250818124514.038042214@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit c0b93754547dde16c8370b8fdad5f396e7786647 ]
+[ Upstream commit b1779e4f209c7ff7e32f3c79d69bca4e3a3a68b6 ]
 
-RK3588 TRM, section "11.6.1.3.3 Hot Reset and Link-Down Reset" states that:
+A large DMA mapping request can loop through dma address pinning for
+many pages. In cases where THP can not be used, the repeated vmf_insert_pfn can
+be costly, so let the task reschedule as need to prevent CPU stalls. Failure to
+do so has potential harmful side effects, like increased memory pressure
+as unrelated rcu tasks are unable to make their reclaim callbacks and
+result in OOM conditions.
 
-  If you want to delay link re-establishment (after reset) so that you can
-  reprogram some registers through DBI, you must set app_ltssm_enable =0
-  immediately after core_rst_n as shown in above. This can be achieved by
-  enable the app_dly2_en, and end-up the delay by assert app_dly2_done.
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:   36-....: (20999 ticks this GP) idle=b01c/1/0x4000000000000000 softirq=35839/35839 fqs=3538
+ rcu:            hardirqs   softirqs   csw/system
+ rcu:    number:        0        107            0
+ rcu:   cputime:       50          0        10446   ==> 10556(ms)
+ rcu:   (t=21075 jiffies g=377761 q=204059 ncpus=384)
+...
+  <TASK>
+  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+  ? walk_system_ram_range+0x63/0x120
+  ? walk_system_ram_range+0x46/0x120
+  ? pgprot_writethrough+0x20/0x20
+  lookup_memtype+0x67/0xf0
+  track_pfn_insert+0x20/0x40
+  vmf_insert_pfn_prot+0x88/0x140
+  vfio_pci_mmap_huge_fault+0xf9/0x1b0 [vfio_pci_core]
+  __do_fault+0x28/0x1b0
+  handle_mm_fault+0xef1/0x2560
+  fixup_user_fault+0xf5/0x270
+  vaddr_get_pfns+0x169/0x2f0 [vfio_iommu_type1]
+  vfio_pin_pages_remote+0x162/0x8e0 [vfio_iommu_type1]
+  vfio_iommu_type1_ioctl+0x1121/0x1810 [vfio_iommu_type1]
+  ? futex_wake+0x1c1/0x260
+  x64_sys_call+0x234/0x17a0
+  do_syscall_64+0x63/0x130
+  ? exc_page_fault+0x63/0x130
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-I.e. setting app_dly2_en will automatically deassert app_ltssm_enable on
-a hot reset, and setting app_dly2_done will re-assert app_ltssm_enable,
-re-enabling link training.
-
-When receiving a hot reset/link-down IRQ when running in EP mode, we will
-call dw_pcie_ep_linkdown(), which may update registers through DBI. Unless
-link training is inhibited, these register updates race with the link
-training.
-
-To avoid the race, set PCIE_LTSSM_APP_DLY2_EN so the controller never
-automatically trains the link after a link-down or hot reset interrupt.
-That way any DBI updates done in the dw_pcie_ep_linkdown() path will happen
-while the link is still down.  Then allow link training by setting
-PCIE_LTSSM_APP_DLY2_DONE
-
-Co-developed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250613101908.2182053-2-cassel@kernel.org
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20250715184622.3561598-1-kbusch@meta.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-index 108d30637920..b5f5eee5a50e 100644
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -58,6 +58,8 @@
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index ba5d91e576af..a685e01f73f5 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -648,6 +648,13 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
  
- /* Hot Reset Control Register */
- #define PCIE_CLIENT_HOT_RESET_CTRL	0x180
-+#define  PCIE_LTSSM_APP_DLY2_EN		BIT(1)
-+#define  PCIE_LTSSM_APP_DLY2_DONE	BIT(3)
- #define  PCIE_LTSSM_ENABLE_ENHANCE	BIT(4)
- 
- /* LTSSM Status Register */
-@@ -475,7 +477,7 @@ static irqreturn_t rockchip_pcie_ep_sys_irq_thread(int irq, void *arg)
- 	struct rockchip_pcie *rockchip = arg;
- 	struct dw_pcie *pci = &rockchip->pci;
- 	struct device *dev = pci->dev;
--	u32 reg;
-+	u32 reg, val;
- 
- 	reg = rockchip_pcie_readl_apb(rockchip, PCIE_CLIENT_INTR_STATUS_MISC);
- 	rockchip_pcie_writel_apb(rockchip, reg, PCIE_CLIENT_INTR_STATUS_MISC);
-@@ -486,6 +488,10 @@ static irqreturn_t rockchip_pcie_ep_sys_irq_thread(int irq, void *arg)
- 	if (reg & PCIE_LINK_REQ_RST_NOT_INT) {
- 		dev_dbg(dev, "hot reset or link-down reset\n");
- 		dw_pcie_ep_linkdown(&pci->ep);
-+		/* Stop delaying link training. */
-+		val = HIWORD_UPDATE_BIT(PCIE_LTSSM_APP_DLY2_DONE);
-+		rockchip_pcie_writel_apb(rockchip, val,
-+					 PCIE_CLIENT_HOT_RESET_CTRL);
- 	}
- 
- 	if (reg & PCIE_RDLH_LINK_UP_CHGED) {
-@@ -567,8 +573,11 @@ static int rockchip_pcie_configure_ep(struct platform_device *pdev,
- 		return ret;
- 	}
- 
--	/* LTSSM enable control mode */
--	val = HIWORD_UPDATE_BIT(PCIE_LTSSM_ENABLE_ENHANCE);
-+	/*
-+	 * LTSSM enable control mode, and automatically delay link training on
-+	 * hot reset/link-down reset.
-+	 */
-+	val = HIWORD_UPDATE_BIT(PCIE_LTSSM_ENABLE_ENHANCE | PCIE_LTSSM_APP_DLY2_EN);
- 	rockchip_pcie_writel_apb(rockchip, val, PCIE_CLIENT_HOT_RESET_CTRL);
- 
- 	rockchip_pcie_writel_apb(rockchip, PCIE_CLIENT_EP_MODE,
+ 	while (npage) {
+ 		if (!batch->size) {
++			/*
++			 * Large mappings may take a while to repeatedly refill
++			 * the batch, so conditionally relinquish the CPU when
++			 * needed to avoid stalls.
++			 */
++			cond_resched();
++
+ 			/* Empty batch, so refill it. */
+ 			ret = vaddr_get_pfns(mm, vaddr, npage, dma->prot,
+ 					     &pfn, batch);
 -- 
 2.39.5
 
