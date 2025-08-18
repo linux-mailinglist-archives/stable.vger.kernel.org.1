@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336B9B2A306
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08ADB2A618
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6DD13A1C9F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A261583C4E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A3D31A044;
-	Mon, 18 Aug 2025 13:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5FD335BC0;
+	Mon, 18 Aug 2025 13:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT6sUAvw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jvr7opi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480E6286D5E;
-	Mon, 18 Aug 2025 13:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C683A335BA3;
+	Mon, 18 Aug 2025 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522026; cv=none; b=ld33LQdIZepXVxaL6AMOHbY8ZERSq5wcbQ4WGzxezSkf621sn6jWnVkBUXtyzCras5vT6sH32rVX5SlbFt2+vDpZSuHkuuYU07sUPUCkrhHIzGU4JmKdGLXXZgydTamXQD859JeA+B0b6hxW+WnKb2EvbqwuHF2IZXJhbEVHO7g=
+	t=1755523636; cv=none; b=NcjbgOsGhZGIyekLRblD+fs/s1xThx40RjSE5MPuDfg/4wkvqP8XWL+D8CxRJUtqOsvP8uHPXFm2h8UguIALcO0VyKwQWxs6jgGJpi27nQ8g+UtSlspzqBbobAx2aSYvlJpaGVnjeSh4zfRMOpicBIcTIwetaCpJqXTjG+IvQ/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522026; c=relaxed/simple;
-	bh=DfwGwnaDa/2TB66R/w5P/evGP/KzLxcAH9LJjTRZvEw=;
+	s=arc-20240116; t=1755523636; c=relaxed/simple;
+	bh=CWZqlD6dHS2Bw2h7lLMfEX49jZs4MCCcHbJKUyhBhK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2sfO0OJfNSB3Cj6mu+DeNb6KHxdU3F1xvXuBgwg1C5X6J69AH9i/SMDqIxasAftdDWGRMuDPhODm0T87t0EqI00szTg2LrkrsTpnzJiHjqOURr1X5BwUsLX+fYDvLyXHAhlAe6h+0BGzur3vynRM46nS5nSYZVrKJSSGc/hQDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT6sUAvw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AE9C4CEEB;
-	Mon, 18 Aug 2025 13:00:25 +0000 (UTC)
+	 MIME-Version; b=tPXZZyiFTCi23PHgytF21m4CZI2A6PYGaE4WHuQCTuDWQ+pEZjHzAYDRwOeQIqLiTk5Ta8TPcsh/ZAP3ZecHpjvObQNP9/KUIZxax2mZo41p4wnfYMi7d9BqoPbkQqgtD8lFw3ZgD+1LVEsGnkNjX4JuqlEiB2aXH55RHgUmNgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jvr7opi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7FFC4CEEB;
+	Mon, 18 Aug 2025 13:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522026;
-	bh=DfwGwnaDa/2TB66R/w5P/evGP/KzLxcAH9LJjTRZvEw=;
+	s=korg; t=1755523636;
+	bh=CWZqlD6dHS2Bw2h7lLMfEX49jZs4MCCcHbJKUyhBhK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AT6sUAvw1D9WQed8AqJYtDZKi6xjAOCc4A5emrd7Z3VAnG9GeGE8w/Rf42q11/oEJ
-	 4pV8QwN+JRcMvH4T0TuYhFK7YBqxvg7IFAbfH2Yl2cqgP483VYWnyJ60r0Os4rx8bf
-	 keyRSqUFrVzc6kXKqIARz4YOFt14/AjHZ+h0j5VE=
+	b=Jvr7opi2HST8kmnHwvKAURD+vs6W7qwGNiI6ETcczUKyHWyjXw6e2niAtVxvXcAEr
+	 bV5QPkr5Ypi0Q85t2WP34qGL5keaJOtCelZRI9r6mECCG2sW70wacymiMyWYjoHgUx
+	 Jbua0AABpCrrf1Kim6bhd8QUUAXpdvm7bO0AtV38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 193/444] net: phy: micrel: Add ksz9131_resume()
+Subject: [PATCH 6.15 233/515] bpf: Forget ranges when refining tnum after JSET
 Date: Mon, 18 Aug 2025 14:43:39 +0200
-Message-ID: <20250818124456.105479832@linuxfoundation.org>
+Message-ID: <20250818124507.347750641@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit f25a7eaa897f21396e99f90809af82ca553c9d14 ]
+[ Upstream commit 6279846b9b2532e1b04559ef8bd0dec049f29383 ]
 
-The Renesas RZ/G3E SMARC EVK uses KSZ9131RNXC phy. On deep power state,
-PHY loses the power and on wakeup the rgmii delays are not reconfigured
-causing it to fail.
+Syzbot reported a kernel warning due to a range invariant violation on
+the following BPF program.
 
-Replace the callback kszphy_resume()->ksz9131_resume() for reconfiguring
-the rgmii_delay when it exits from PM suspend state.
+  0: call bpf_get_netns_cookie
+  1: if r0 == 0 goto <exit>
+  2: if r0 & Oxffffffff goto <exit>
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250711054029.48536-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The issue is on the path where we fall through both jumps.
+
+That path is unreachable at runtime: after insn 1, we know r0 != 0, but
+with the sign extension on the jset, we would only fallthrough insn 2
+if r0 == 0. Unfortunately, is_branch_taken() isn't currently able to
+figure this out, so the verifier walks all branches. The verifier then
+refines the register bounds using the second condition and we end
+up with inconsistent bounds on this unreachable path:
+
+  1: if r0 == 0 goto <exit>
+    r0: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0xffffffffffffffff)
+  2: if r0 & 0xffffffff goto <exit>
+    r0 before reg_bounds_sync: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0)
+    r0 after reg_bounds_sync:  u64=[0x1, 0] var_off=(0, 0)
+
+Improving the range refinement for JSET to cover all cases is tricky. We
+also don't expect many users to rely on JSET given LLVM doesn't generate
+those instructions. So instead of improving the range refinement for
+JSETs, Eduard suggested we forget the ranges whenever we're narrowing
+tnums after a JSET. This patch implements that approach.
+
+Reported-by: syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com
+Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/9d4fd6432a095d281f815770608fdcd16028ce0b.1752171365.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 88a3c18f82ae..92e9eb4146d9 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -5394,6 +5394,14 @@ static int lan8841_suspend(struct phy_device *phydev)
- 	return kszphy_generic_suspend(phydev);
- }
- 
-+static int ksz9131_resume(struct phy_device *phydev)
-+{
-+	if (phydev->suspended && phy_interface_is_rgmii(phydev))
-+		ksz9131_config_rgmii_delay(phydev);
-+
-+	return kszphy_resume(phydev);
-+}
-+
- static struct phy_driver ksphy_driver[] = {
- {
- 	.phy_id		= PHY_ID_KS8737,
-@@ -5639,7 +5647,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.get_strings	= kszphy_get_strings,
- 	.get_stats	= kszphy_get_stats,
- 	.suspend	= kszphy_suspend,
--	.resume		= kszphy_resume,
-+	.resume		= ksz9131_resume,
- 	.cable_test_start	= ksz9x31_cable_test_start,
- 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
- 	.get_features	= ksz9477_get_features,
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index a1ecad2944a8..bdeed2a24910 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16014,6 +16014,10 @@ static void regs_refine_cond_op(struct bpf_reg_state *reg1, struct bpf_reg_state
+ 		if (!is_reg_const(reg2, is_jmp32))
+ 			break;
+ 		val = reg_const_value(reg2, is_jmp32);
++		/* Forget the ranges before narrowing tnums, to avoid invariant
++		 * violations if we're on a dead branch.
++		 */
++		__mark_reg_unbounded(reg1);
+ 		if (is_jmp32) {
+ 			t = tnum_and(tnum_subreg(reg1->var_off), tnum_const(~val));
+ 			reg1->var_off = tnum_with_subreg(reg1->var_off, t);
 -- 
 2.39.5
 
