@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD44B2A606
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C54B2A891
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F6931B260AE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A499E1BA2E9C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACC7258EC3;
-	Mon, 18 Aug 2025 13:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE21A1D88D7;
+	Mon, 18 Aug 2025 13:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9C7t5j7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIFAjWDl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF8A322A17;
-	Mon, 18 Aug 2025 13:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3CD199EAD;
+	Mon, 18 Aug 2025 13:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523594; cv=none; b=WZU5s4o0jcXZGt7OkUCc4tXpovtOeYPeTdCeolQh04RjyVQVp4/ebqEelt6R2tOZIlyf7lIJpIrYp/q2ZCMaJDzpzNfCGhDTUjdBWasYTh3UTBIcFsqHLPMIbudcSIXFow7vPsAJc+vhrgXGGXJwaddi5IZtSvllalnlqvb5VVs=
+	t=1755525288; cv=none; b=dDFoJEGxrE728dIivKKlTb+2CSwF29xoWqzvjHnAImSbrsD1ifZI6/bof0dxiKgVUXZ16W9eUxqa2IFB0+AyM3WK+NQB7gCek3+poyIJuO7vRNI/vxcE7hdui2C1xPGLKgV9nlb0iS6CxSLTEZz+u2sVEtpGboJnspS2GGtaSVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523594; c=relaxed/simple;
-	bh=UAEqtI4rTMYszST2u6A/ozFCPIvx/njJRap91r99nQQ=;
+	s=arc-20240116; t=1755525288; c=relaxed/simple;
+	bh=up8qeIxbjIhl3PIHkc8V0hpukx5HRSNuAHfAvxQaiOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPdY7Djdyoq/q5Mfm/N4DDtscgMZBQvkHUdoboWBvH0ZD86ZTnVCaeJp5rknOmUQeSXXmlke9xf2909J8bly/qSIa5U+sWoabLa/MkBeALceIVmcjldpnK5JObSu7YsPo63CyBpUAR4QzZ8I/JO+vsLBZ5y5KbmJ2AMMJsVp32Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9C7t5j7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524C0C4CEEB;
-	Mon, 18 Aug 2025 13:26:34 +0000 (UTC)
+	 MIME-Version; b=VQTCIdR9Gz15b4g37HYcocKteOJl1pQNG+bZoUb3hubPqWhRQh8Xv4UA5MxWHK+vxDDO/hsl+kjnGk3dBNJhjksfSkdMvTKc1aD+tdFDAVXf+iVhYWPKPIAMT70HklOWw1U06up6RqjG3ArOzCSRAaEqm6BwSO8X0pMIbJ4xHLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIFAjWDl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC54C4CEEB;
+	Mon, 18 Aug 2025 13:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523594;
-	bh=UAEqtI4rTMYszST2u6A/ozFCPIvx/njJRap91r99nQQ=;
+	s=korg; t=1755525288;
+	bh=up8qeIxbjIhl3PIHkc8V0hpukx5HRSNuAHfAvxQaiOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9C7t5j7UkMYxEmwZuTDXpQ7NFzz+GynXMnsWKFqk1N5bPN1IBdZOtkNdsERMvAiv
-	 pOcxDmKUxm8vkVuH096Bro7LjOK5xMxwX8wMzF/y+7ve9nkgwEMtiXCMgp1ERG4dae
-	 x6+DCe1zTQAT0YuopicLg7IcSDF60PkTUXZPOlsk=
+	b=gIFAjWDlZzhAU0E1ZInD4r37TFYEQJCG0ZF6QCIXyY69Ed9bj9ljIVMiZuFYYGSLl
+	 9BFCh4J3i3N/psm5GNBqQZuhCVRVcWLYjfDhC62rCL3Yay2YQpUI20Db1gIdC1pTdf
+	 eJ5z/+85WSxqRYLCEj1T0pQ7+0kpfXF8Pw6gYpAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 218/515] arm64: Mark kernel as tainted on SAE and SError panic
+Subject: [PATCH 6.16 217/570] wifi: iwlwifi: mvm: avoid outdated reorder buffer head_sn
 Date: Mon, 18 Aug 2025 14:43:24 +0200
-Message-ID: <20250818124506.761175992@linuxfoundation.org>
+Message-ID: <20250818124514.158553831@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
+[ Upstream commit 422850b29e05e67c9145895bfe559940caa0caa8 ]
 
-Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
-interrupts trigger a panic to flag potential hardware faults. This
-tainting mechanism aids in debugging and enables correlation of
-hardware-related crashes in large-scale deployments.
+If no frames are received on a queue for a while, the reorder buffer
+head_sn may be an old one. When the next frame that is received on
+that queue and buffered is a subframe of an AMSDU but not the last
+subframe, it will not update the buffer's head_sn. When the frame
+release notification arrives, it will not release the buffered frame
+because it will look like the notification's NSSN is lower than the
+buffer's head_sn (because of a wraparound).
+Fix it by updating the head_sn when the first frame is buffered.
 
-This change aligns with similar patches[1] that mark machine check
-events when the system crashes due to hardware errors.
-
-Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250723094230.795ec0cb8817.I9ec9a3508e7935e8d1833ea3e086066fdefee644@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/traps.c | 1 +
- arch/arm64/mm/fault.c     | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
-index 529cff825531..35eed1942d85 100644
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -931,6 +931,7 @@ void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigne
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 077aadbf95db..e0f87ebefc18 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -854,10 +854,15 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
+ 	 * already ahead and it will be dropped.
+ 	 * If the last sub-frame is not on this queue - we will get frame
+ 	 * release notification with up to date NSSN.
++	 * If this is the first frame that is stored in the buffer, the head_sn
++	 * may be outdated. Update it based on the last NSSN to make sure it
++	 * will be released when the frame release notification arrives.
+ 	 */
+ 	if (!amsdu || last_subframe)
+ 		iwl_mvm_release_frames(mvm, sta, napi, baid_data,
+ 				       buffer, nssn);
++	else if (buffer->num_stored == 1)
++		buffer->head_sn = nssn;
  
- void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
- {
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
- 	console_verbose();
- 
- 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 11eb8d1adc84..f590dc71ce99 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -838,6 +838,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
- 		 */
- 		siaddr  = untagged_addr(far);
- 	}
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
- 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
- 
- 	return 0;
+ 	spin_unlock_bh(&buffer->lock);
+ 	return true;
 -- 
 2.39.5
 
