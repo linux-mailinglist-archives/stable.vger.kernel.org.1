@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15260B2A82D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A79B2A593
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A17D0584023
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26466582383
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA47335BBB;
-	Mon, 18 Aug 2025 13:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A41B261B9E;
+	Mon, 18 Aug 2025 13:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X24IcC0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ6BFsPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB31335BA7;
-	Mon, 18 Aug 2025 13:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B40258EDE;
+	Mon, 18 Aug 2025 13:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525005; cv=none; b=kTNiJBfX95Z6mLwlh76x5otsu4awXSls9uDVhe8rLw42QeoOmUbIXIfqmt3w6oip2jUr7yOYegIv4KaMSKzMoGFIhjc9eTN0gK/tZiPQXUfrg/9eYhd04e8Oj58Swjyb2dZZMNa+T/6yRhH9cYVJOrmv0E4R/R0ZK2VfjiP35a8=
+	t=1755523300; cv=none; b=cQBvXGnohec8BYKGp4y53Rk1eMfxSJc9v+UadMjsclZge5sqdzIx9E68Y52wbyL0D7E039qG2+TRMg+tJ0cY1FLktgIzGjM0BNosbJJ4bebbo9/NGsh68wXCO2vtkv77z9vjtje/t4VvbOHL5uGFav8vet6G7LIOl21mtMsCNtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525005; c=relaxed/simple;
-	bh=xU3FRGuxHMvwzQNA4mgMP1dyc3ZX7cxP2X+pi86x834=;
+	s=arc-20240116; t=1755523300; c=relaxed/simple;
+	bh=ZwTORpMIObtnuIYLIw6nOWeipw9v7+yRX9DKwsLC5z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zc702vYUFcKIitcVuKQIpHfAMszJ+S+7NNW+YcqIzUrEcOm6Zx/wHOXb4q4mm8fWKCiwyfvqehpzn2/L4RXLdRyrouHQPl0hpv6iPDaLEnV6E+HdG6Zjoua/k+l9TrFySrqAVh9Q2tikT3IHhJQ7hr3X1lYTCIx3SOfW5q4fUsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X24IcC0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1BBC4CEEB;
-	Mon, 18 Aug 2025 13:50:04 +0000 (UTC)
+	 MIME-Version; b=SHOLzaSvdPRMaAu0ldvQMGp9dYa99WyGAbKCcg5Pbo/lPoguFh6zggfPePiriMezmXNQDjJ8mgXoISpytRKM+vY60NF/HUFqtp/+Ri2JrnMARW4Ww7obRJfs4Pbw8n1AcCfq+10QW/MsxoXpr3nk5CGp5olkBtQzfe1YsKap/bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ6BFsPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36978C4CEEB;
+	Mon, 18 Aug 2025 13:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525005;
-	bh=xU3FRGuxHMvwzQNA4mgMP1dyc3ZX7cxP2X+pi86x834=;
+	s=korg; t=1755523299;
+	bh=ZwTORpMIObtnuIYLIw6nOWeipw9v7+yRX9DKwsLC5z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X24IcC0B+fObwHVNjA/+H5L6XN46EX0EEzx+pq1SszrsWNk5wtB8kfdCHrQKqBijv
-	 DwihAiB4LDOcm2lFMOHP5dTUOCfqgJ33aY+1WK9KD9aSm2Vo2iCEZcgHlrjK8hmFAC
-	 Fo7mAOaZUxU9MjkvNwKKnuYIoAZe8mJrpb9v90zM=
+	b=JZ6BFsPOGOPnNpBC7obHMK4qFBUw2F1QL+1xaH3rstv84q3YDZK2OrV241ne2ZBb0
+	 O0O5CEeOotJqlW/PSoUZFB1bbsZJzxlJKby5Hfrd9CbDeklDUqv1nMFEHqep/Gi8bD
+	 Lthbh0r+1C+TStCc6pMhiPXpdkDBrnWHLUguqdIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Prashant Malani <pmalani@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jameson Thies <jthies@google.com>,
+	Benson Leung <bleung@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 128/570] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
+Subject: [PATCH 6.15 129/515] usb: typec: ucsi: Add poll_cci operation to cros_ec_ucsi
 Date: Mon, 18 Aug 2025 14:41:55 +0200
-Message-ID: <20250818124510.754946082@linuxfoundation.org>
+Message-ID: <20250818124503.368539887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashant Malani <pmalani@google.com>
+From: Jameson Thies <jthies@google.com>
 
-[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
+[ Upstream commit 300386d117a98961fc1d612d1f1a61997d731b8a ]
 
-AMU counters on certain CPPC-based platforms tend to yield inaccurate
-delivered performance measurements on systems that are idle/mostly idle.
-This results in an inaccurate frequency being stored by cpufreq in its
-policy structure when the CPU is brought online. [1]
+cros_ec_ucsi fails to allocate a UCSI instance in it's probe function
+because it does not define all operations checked by ucsi_create.
+Update cros_ec_ucsi operations to use the same function for read_cci
+and poll_cci.
 
-Consequently, if the userspace governor tries to set the frequency to a
-new value, there is a possibility that it would be the erroneous value
-stored earlier. In such a scenario, cpufreq would assume that the
-requested frequency has already been set and return early, resulting in
-the correct/new frequency request never making it to the hardware.
-
-Since the operating frequency is liable to this sort of inconsistency,
-mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
-invoked when a target frequency update is requested.
-
-Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Prashant Malani <pmalani@google.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Link: https://lore.kernel.org/r/20250711202033.2201305-1-jthies@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/cros_ec_ucsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index b7c688a5659c..c8e63c7aa9a3 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -925,7 +925,7 @@ static struct freq_attr *cppc_cpufreq_attr[] = {
- };
- 
- static struct cpufreq_driver cppc_cpufreq_driver = {
--	.flags = CPUFREQ_CONST_LOOPS,
-+	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify = cppc_verify_policy,
- 	.target = cppc_cpufreq_set_target,
- 	.get = cppc_cpufreq_get_rate,
+diff --git a/drivers/usb/typec/ucsi/cros_ec_ucsi.c b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
+index 4ec1c6d22310..eed2a7d0ebc6 100644
+--- a/drivers/usb/typec/ucsi/cros_ec_ucsi.c
++++ b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
+@@ -137,6 +137,7 @@ static int cros_ucsi_sync_control(struct ucsi *ucsi, u64 cmd, u32 *cci,
+ static const struct ucsi_operations cros_ucsi_ops = {
+ 	.read_version = cros_ucsi_read_version,
+ 	.read_cci = cros_ucsi_read_cci,
++	.poll_cci = cros_ucsi_read_cci,
+ 	.read_message_in = cros_ucsi_read_message_in,
+ 	.async_control = cros_ucsi_async_control,
+ 	.sync_control = cros_ucsi_sync_control,
 -- 
 2.39.5
 
