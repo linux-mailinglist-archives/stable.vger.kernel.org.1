@@ -1,72 +1,57 @@
-Return-Path: <stable+bounces-171090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C564B2A7D8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A23B2A524
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91EC16E1327
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAD045680A4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18FB335BCB;
-	Mon, 18 Aug 2025 13:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2482A32252A;
+	Mon, 18 Aug 2025 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOTEE0x+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkhBXAL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1F0335BA3;
-	Mon, 18 Aug 2025 13:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57FB31B11A;
+	Mon, 18 Aug 2025 13:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524783; cv=none; b=GXOTk46n4wr1MK5m0zKbEqLy4YlbEYAEpCDtrkbThLTUTSklJskdlXOfKB34Syn3F/vURpaRP5TlVClYu0YQiGIffow2tjRU9rNWStxplCmoNwz2DlSqrfpWPwD0K4eXYx12NvZtV6s0A/xKsSbqm0NCH4DHPw6PM3AFe25OGA4=
+	t=1755523065; cv=none; b=s+E/xPQsooQczw6AAIdTi18A4I2DVMu9UFZVNL/zW4zmn8x/9rn3QIea82uiZNJJwBbXJuiuPqzHv7WBKFxgBtPAHCrl+ts82kdQbPJfvRJ4OEbbB3wk/rV3Z7v4H7N8t5zHGnVN+A/eqMaO359bvTMEZDBNIpKUvQF42nD8QoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524783; c=relaxed/simple;
-	bh=3QwDQPp6nFDFoQDgKeay8LwwUeoxnSenNiYaQLp/HZg=;
+	s=arc-20240116; t=1755523065; c=relaxed/simple;
+	bh=X57BJ8+AxQRJglQ1QMEIY+91XeGFgOnT36Gxu23al6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZWz7FiWvvUBtFeMxzVRrpLWLdqhRfqgqaKpVAG2rhbuNJyagylA2cQiR2f4qqEYHaVLWEQ8/g0nqgITxxORA/0SuIOaKfgQx6aKSskouN6478lxX9+Jm9HReMU5goCq1VRokIuvWaiqAYdxSD295yzn+QtAAEXWDgh9SuNvFIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOTEE0x+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0531C4CEEB;
-	Mon, 18 Aug 2025 13:46:22 +0000 (UTC)
+	 MIME-Version; b=QQfN+WdrCfur49LA8AxwKZxPskCRWcU8E++FB9K+Q3/p8pj56VxvQRx5+tXB5Np/bw/7eg9WyZkqmlRSnJ/zF4/24Aw9WuV/Z/uQDd+3cT/9o2wlbSWt5Ro5Bue2lyugT2wsoYA7qrlvTIjbt0BayexVTV7mzsVic36Hp8AwgVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkhBXAL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEABC4CEEB;
+	Mon, 18 Aug 2025 13:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524783;
-	bh=3QwDQPp6nFDFoQDgKeay8LwwUeoxnSenNiYaQLp/HZg=;
+	s=korg; t=1755523065;
+	bh=X57BJ8+AxQRJglQ1QMEIY+91XeGFgOnT36Gxu23al6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOTEE0x+dbQj+AMaK7t16pR3RwM/HsarwiVo+XYYnwReZgJuIS/YbPmHtGKbAsdXB
-	 zlcHkdol5u8D4q33AGXrKgGrqrnOK8UD3sjMkAxxNFsJwxvankm7pVyzJl4qEv8Hpu
-	 qL/UDcfU4jyKcr+c+PlQSirui1gOCO9g1LZyTqsI=
+	b=SkhBXAL+yl1xRlrtq1Dvtr3UjiB8u6ievK2gJ7FKB2KCQ+N6/bb+rT0brFWEr1wsr
+	 1FLbXw2k/EHtxlxj7V89m/CEr7JcVxagI94sQgLDx2bVzd4vE5EEYpRLPQbGvVy6K6
+	 kPhYGTKiSqp5bRh8NlaiJowZk7yzM7xsDP0Aaapo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrei Vagin <avagin@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	David Rientjes <rientjes@google.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Hugh Dickins <hughd@google.com>,
-	Joern Engel <joern@logfs.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 060/570] mm/smaps: fix race between smaps_hugetlb_range and migration
+Subject: [PATCH 6.15 061/515] net: hibmcge: fix the division by zero issue
 Date: Mon, 18 Aug 2025 14:40:47 +0200
-Message-ID: <20250818124508.132494514@linuxfoundation.org>
+Message-ID: <20250818124500.758701944@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,80 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjiang Tu <tujinjiang@huawei.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 45d19b4b6c2d422771c29b83462d84afcbb33f01 ]
+[ Upstream commit 7004b26f0b64331143eb0b312e77a357a11427ce ]
 
-smaps_hugetlb_range() handles the pte without holdling ptl, and may be
-concurrenct with migration, leaing to BUG_ON in pfn_swap_entry_to_page().
-The race is as follows.
+When the network port is down, the queue is released, and ring->len is 0.
+In debugfs, hbg_get_queue_used_num() will be called,
+which may lead to a division by zero issue.
 
-smaps_hugetlb_range              migrate_pages
-  huge_ptep_get
-                                   remove_migration_ptes
-				   folio_unlock
-  pfn_swap_entry_folio
-    BUG_ON
+This patch adds a check, if ring->len is 0,
+hbg_get_queue_used_num() directly returns 0.
 
-To fix it, hold ptl lock in smaps_hugetlb_range().
-
-Link: https://lkml.kernel.org/r/20250724090958.455887-1-tujinjiang@huawei.com
-Link: https://lkml.kernel.org/r/20250724090958.455887-2-tujinjiang@huawei.com
-Fixes: 25ee01a2fca0 ("mm: hugetlb: proc: add hugetlb-related fields to /proc/PID/smaps")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Brahmajit Das <brahmajit.xyz@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Joern Engel <joern@logfs.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 40735e7543f9 ("net: hibmcge: Implement .ndo_start_xmit function")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 751479eb128f..0102ab3aaec1 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1020,10 +1020,13 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
- {
- 	struct mem_size_stats *mss = walk->private;
- 	struct vm_area_struct *vma = walk->vma;
--	pte_t ptent = huge_ptep_get(walk->mm, addr, pte);
- 	struct folio *folio = NULL;
- 	bool present = false;
-+	spinlock_t *ptl;
-+	pte_t ptent;
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
+index 2883a5899ae2..8b6110599e10 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
+@@ -29,7 +29,12 @@ static inline bool hbg_fifo_is_full(struct hbg_priv *priv, enum hbg_dir dir)
  
-+	ptl = huge_pte_lock(hstate_vma(vma), walk->mm, pte);
-+	ptent = huge_ptep_get(walk->mm, addr, pte);
- 	if (pte_present(ptent)) {
- 		folio = page_folio(pte_page(ptent));
- 		present = true;
-@@ -1042,6 +1045,7 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
- 		else
- 			mss->private_hugetlb += huge_page_size(hstate_vma(vma));
- 	}
-+	spin_unlock(ptl);
- 	return 0;
+ static inline u32 hbg_get_queue_used_num(struct hbg_ring *ring)
+ {
+-	return (ring->ntu + ring->len - ring->ntc) % ring->len;
++	u32 len = READ_ONCE(ring->len);
++
++	if (!len)
++		return 0;
++
++	return (READ_ONCE(ring->ntu) + len - READ_ONCE(ring->ntc)) % len;
  }
- #else
+ 
+ netdev_tx_t hbg_net_start_xmit(struct sk_buff *skb, struct net_device *netdev);
 -- 
 2.50.1
 
