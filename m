@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73203B2A639
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4B1B2A34D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5D31B609E8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DFE71967300
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5582B322A38;
-	Mon, 18 Aug 2025 13:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2771A31CA7D;
+	Mon, 18 Aug 2025 13:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBqOEoxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1DZbZVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06722322A32;
-	Mon, 18 Aug 2025 13:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D4B31B138;
+	Mon, 18 Aug 2025 13:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523703; cv=none; b=qZBzMJX5BPZR+kwB5D/62jZcy7b+BD0jN8UBLfaE1KPJx06UlVmMCIz7oo+HytAIJqJj45Lq3yFeCTWsFc+jvvrXlaCMSh4GyKJlIIgTIgiFaQ6zlKkkbgbEVlGaGEN54KRBNgOfRxDMukXC1iAyuq581NjSx+cw8/JhiY3LTjo=
+	t=1755522094; cv=none; b=E2JLhD4x8HUkiT//MnZbUNdV+nzeTv+3p82EygicKArfkcjZWdeA2cY9ywB+/aVp7++e9TLr1jfIBmc4KcK6/mW/4WgU0osB5gf358oM8RipfnVjVGK6JYxwUyf4t7+zgzB0TihRzDuTLLsLSyFUTZFHbnojbaMLKoVfGVkibNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523703; c=relaxed/simple;
-	bh=zLp4qfuAlv66azCdtTE3QVQ0jFtRGDSq8GT0lQ1USsQ=;
+	s=arc-20240116; t=1755522094; c=relaxed/simple;
+	bh=UfaEnKgWe05u/f8BAAA4yYumQZyvyDz08BXUDox6yOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JW8SK0xLY8qoCBlCJEYWDeesFRhO6bTp6MoT5tVWg1u4/rcAaxg/4eze4RCQadP1D+3r2MJCAm+hdUQIX8F0Edzwrf2Blu0xONKEz4h0pqRt/cRNEBbpXOxiIElkp3Hb5vvCXUrEI/Z3+7J9ht60jgbzHC2layeZBNF2vikSDpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBqOEoxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1A9C4CEEB;
-	Mon, 18 Aug 2025 13:28:21 +0000 (UTC)
+	 MIME-Version; b=WYHkJvwWjXxhUOrq4i5CGtK4a5CXobtvXu0UWPWcedUaDtR0jF1U7skGCcwdlmvBuEgj87+rAlBdw2O5+TQn/J24b2ZZVwtt/yBCOtlGVn/hE/tU6aF2fM40RJqHaMO+WwZSK193EhXjIegYmcbrPQ/QGl1jP6tJdRnwIgv2y1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1DZbZVi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC1FC4CEEB;
+	Mon, 18 Aug 2025 13:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523702;
-	bh=zLp4qfuAlv66azCdtTE3QVQ0jFtRGDSq8GT0lQ1USsQ=;
+	s=korg; t=1755522094;
+	bh=UfaEnKgWe05u/f8BAAA4yYumQZyvyDz08BXUDox6yOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBqOEoxXdBDASUVDKxrkU6d7I7wjJ6EFrwcPbRtiYmCmpvrguFvXA0DZQ7GNfn0Q7
-	 X2l6xful5sIvHWoxpStOXuFTVOkDZb+3A0E+GHgN+2lBn90s9C1BtsHbpyyHEMVE5N
-	 CQez6dN+pjj8shKZ82NUsOo1UQpniOz2cJMviWOY=
+	b=J1DZbZViYMXcwO9qgiuHN4ESEBQsR2NQ55PwBjTIakdNQs6G9WwZi/jAQley+rBLp
+	 lunCm7ZyhgpB6F+9I0jnzSAdBBowY6Ik/eUbeM9kdQB+4aNEYOoj4Ihvzq+0zzPn20
+	 3Wak7nJXmx7pa99IciV0uA5NTKENttWgYLPrE0D0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 251/515] wifi: mt76: fix vif link allocation
-Date: Mon, 18 Aug 2025 14:43:57 +0200
-Message-ID: <20250818124508.056661327@linuxfoundation.org>
+Subject: [PATCH 6.12 212/444] perf/arm: Add missing .suppress_bind_attrs
+Date: Mon, 18 Aug 2025 14:43:58 +0200
+Message-ID: <20250818124456.798521209@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 53a5d72bdd70e262623b6009cc4754927b428bad ]
+[ Upstream commit 860a831de138a7ad6bc86019adaf10eb84c02655 ]
 
-Reuse the vif deflink for link_id = 0 in order to avoid confusion with
-vif->bss_conf, which also gets a link id of 0.
+PMU drivers should set .suppress_bind_attrs so that userspace is denied
+the opportunity to pull the driver out from underneath an in-use PMU
+(with predictably unpleasant consequences). Somehow both the CMN and NI
+drivers have managed to miss this; put that right.
 
-Link: https://patch.msgid.link/20250704-mt7996-mlo-fixes-v1-1-356456c73f43@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/acd48c341b33b96804a3969ee00b355d40c546e2.1751465293.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/channel.c | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt76.h    | 5 ++++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/perf/arm-cmn.c | 1 +
+ drivers/perf/arm-ni.c  | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
-index cc2d888e3f17..77b75792eb48 100644
---- a/drivers/net/wireless/mediatek/mt76/channel.c
-+++ b/drivers/net/wireless/mediatek/mt76/channel.c
-@@ -173,13 +173,13 @@ void mt76_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	if (!mlink)
- 		goto out;
- 
--	if (link_conf != &vif->bss_conf)
-+	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
- 		rcu_assign_pointer(mvif->link[link_id], NULL);
- 
- 	dev->drv->vif_link_remove(phy, vif, link_conf, mlink);
- 	mlink->ctx = NULL;
- 
--	if (link_conf != &vif->bss_conf)
-+	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
- 		kfree_rcu(mlink, rcu_head);
- 
- out:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index d7cd467b812f..cc92eb9e5b1d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1852,6 +1852,9 @@ mt76_vif_link(struct mt76_dev *dev, struct ieee80211_vif *vif, int link_id)
- 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
- 	struct mt76_vif_data *mvif = mlink->mvif;
- 
-+	if (!link_id)
-+		return mlink;
-+
- 	return mt76_dereference(mvif->link[link_id], dev);
- }
- 
-@@ -1862,7 +1865,7 @@ mt76_vif_conf_link(struct mt76_dev *dev, struct ieee80211_vif *vif,
- 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
- 	struct mt76_vif_data *mvif = mlink->mvif;
- 
--	if (link_conf == &vif->bss_conf)
-+	if (link_conf == &vif->bss_conf || !link_conf->link_id)
- 		return mlink;
- 
- 	return mt76_dereference(mvif->link[link_conf->link_id], dev);
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index ff17e0f95fbb..978b239ec10b 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -2661,6 +2661,7 @@ static struct platform_driver arm_cmn_driver = {
+ 		.name = "arm-cmn",
+ 		.of_match_table = of_match_ptr(arm_cmn_of_match),
+ 		.acpi_match_table = ACPI_PTR(arm_cmn_acpi_match),
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = arm_cmn_probe,
+ 	.remove_new = arm_cmn_remove,
+diff --git a/drivers/perf/arm-ni.c b/drivers/perf/arm-ni.c
+index 4b9d53dae897..fb09730a9aa0 100644
+--- a/drivers/perf/arm-ni.c
++++ b/drivers/perf/arm-ni.c
+@@ -710,6 +710,7 @@ static struct platform_driver arm_ni_driver = {
+ 		.name = "arm-ni",
+ 		.of_match_table = of_match_ptr(arm_ni_of_match),
+ 		.acpi_match_table = ACPI_PTR(arm_ni_acpi_match),
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = arm_ni_probe,
+ 	.remove = arm_ni_remove,
 -- 
 2.39.5
 
