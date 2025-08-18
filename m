@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4B2B2A8E5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:11:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6F2B2A330
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37C321B26B0B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:57:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C62A23B9A5D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07BE308F02;
-	Mon, 18 Aug 2025 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0286131CA4A;
+	Mon, 18 Aug 2025 13:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9xERuex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwO2cyTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB9C2E228D;
-	Mon, 18 Aug 2025 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CDC31B13A;
+	Mon, 18 Aug 2025 13:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525394; cv=none; b=YjOpMDDywAq6cElfQxzF0X0MNcq9x+F22dCgj2oI3Umw0P0TbLCs7aXFjP8UP3ffqjE2bWdq9/TpnBUZvfA450Klgbgr5mwWtb6LBZwXj3MUwAo71PVzqgD1NodcRX7Nd1U6iOdnqsF6J34zS3h+Uee5WtKBjtRax7q1w1pa/+w=
+	t=1755522091; cv=none; b=HxEuDjYxneN73jHvSxXitZH/oITSYSHstjGc5aSDAzbCvlqkzIQue5SyAr7xwuFJBqqeS1Z9B8f+mNl+itbTEvN5ytA/qBgrbehtc1BI90oGA0oXSNJ8BnmBRYoC7qeOCYCtG/b4cs8DJ3Zgx+SQ64g+vZHeFYnf+23bTzS7o/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525394; c=relaxed/simple;
-	bh=9c2QgFXapHK6grmOXcLMTdx0+G/gwWDgYW9VeUW63yk=;
+	s=arc-20240116; t=1755522091; c=relaxed/simple;
+	bh=ALrXtLm1kCcMgm/jA+oJToYSkYN8zkaWQfc2hiQINmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qd9NDVzX3aenukK79KcxQnETFjqqBqg4RIpXcd7pRc6lJAvwQnOukHKysWGaPZW+MKiiZlyU9sIHlNXKPZg98zMNDykOK02SqXsTHshrfMNKPpj7aIOwMMKcXgm+D4VYvJOwuneLgmGp4NHTBmh3MaiWQjSRpd8SaniYL8hzbSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9xERuex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C307DC4CEEB;
-	Mon, 18 Aug 2025 13:56:33 +0000 (UTC)
+	 MIME-Version; b=Po9EErpXKvaXSBwshUNq293c0rWjtrhyjQ0eZiHSXFt6BXwcATbViets1R8jGPiTrdqfzzMvMtOJkWt36WfG1QHL0qeqYNiDqptyOtHxwAWliP1TpzY8oORWKOqDTb4vgsk+nBLIIaHNajbEEF0/440dk5i1q9AY2AYHBjf4FLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwO2cyTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327FAC4CEEB;
+	Mon, 18 Aug 2025 13:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525394;
-	bh=9c2QgFXapHK6grmOXcLMTdx0+G/gwWDgYW9VeUW63yk=;
+	s=korg; t=1755522091;
+	bh=ALrXtLm1kCcMgm/jA+oJToYSkYN8zkaWQfc2hiQINmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9xERuexhHZlBMwDG3AhQt3ZoJJYenOyv2Jqz4pLbi+CLKIhRpXpIVN6W/FmI8m4v
-	 IHwjQ3wLMcXov8eGuL2QyNQNNstB/kjlqE5SJbnHkaCstAwPDsYyZjipQ7wzdgZOsv
-	 waUOgoXIlgYGT8m5wKPZxrMrT7rR48OklClRYeLI=
+	b=NwO2cyTUE2PcyzsU+AW3dtihqxGcPKw8iW5kzKRr3LePe5XQv75xAtRyXNi5F09IT
+	 beYxj4Zv0XTA7uO70ebL8a4NSGTgAYGWOpRtkYxXBHxKaQDVqk70aLvJVkM0Ew+UJK
+	 qipObrEroKR3js083i6Xmzj3cf0ggMPyng/2UgoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 250/570] wifi: iwlwifi: mvm: set gtk id also in older FWs
+Subject: [PATCH 6.12 211/444] drm/msm: Add error handling for krealloc in metadata setup
 Date: Mon, 18 Aug 2025 14:43:57 +0200
-Message-ID: <20250818124515.453359468@linuxfoundation.org>
+Message-ID: <20250818124456.761793135@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 61be9803f322ab46f31ba944c6ef7de195891f64 ]
+[ Upstream commit 1c8c354098ea9d4376a58c96ae6b65288a6f15d8 ]
 
-We use gtk[i].id, but it is not even set in older FW APIs
-(iwl_wowlan_status_v6 and iwl_wowlan_status_v7).
-Set it also in older FWs.
+Function msm_ioctl_gem_info_set_metadata() now checks for krealloc
+failure and returns -ENOMEM, avoiding potential NULL pointer dereference.
+Explicitly avoids __GFP_NOFAIL due to deadlock risks and allocation constraints.
 
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250710212632.e91e49590414.I27d2fdbed1c54aee59929fa11ec169f07e159406@changeid
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Patchwork: https://patchwork.freedesktop.org/patch/661235/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/msm_drv.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 507c03198c92..a521da8f1082 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2385,6 +2385,7 @@ static void iwl_mvm_convert_gtk_v2(struct iwl_wowlan_status_data *status,
+diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
+index 8c13b08708d2..197d8d9a421d 100644
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -550,6 +550,7 @@ static int msm_ioctl_gem_info_set_metadata(struct drm_gem_object *obj,
+ 					   u32 metadata_size)
+ {
+ 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
++	void *new_metadata;
+ 	void *buf;
+ 	int ret;
  
- 	status->gtk[0].len = data->key_len;
- 	status->gtk[0].flags = data->key_flags;
-+	status->gtk[0].id = status->gtk[0].flags & IWL_WOWLAN_GTK_IDX_MASK;
+@@ -567,8 +568,14 @@ static int msm_ioctl_gem_info_set_metadata(struct drm_gem_object *obj,
+ 	if (ret)
+ 		goto out;
  
- 	memcpy(status->gtk[0].key, data->key, sizeof(data->key));
- 
-@@ -2735,6 +2736,7 @@ iwl_mvm_send_wowlan_get_status(struct iwl_mvm *mvm, u8 sta_id)
- 		 * currently used key.
- 		 */
- 		status->gtk[0].flags = v6->gtk.key_index | BIT(7);
-+		status->gtk[0].id = v6->gtk.key_index;
- 	} else if (notif_ver == 7) {
- 		struct iwl_wowlan_status_v7 *v7 = (void *)cmd.resp_pkt->data;
+-	msm_obj->metadata =
++	new_metadata =
+ 		krealloc(msm_obj->metadata, metadata_size, GFP_KERNEL);
++	if (!new_metadata) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	msm_obj->metadata = new_metadata;
+ 	msm_obj->metadata_size = metadata_size;
+ 	memcpy(msm_obj->metadata, buf, metadata_size);
  
 -- 
 2.39.5
