@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C61DB2A329
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEFDB2A7DA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A22BE176C34
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E85F017E63C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C533931CA61;
-	Mon, 18 Aug 2025 12:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CBD21CC55;
+	Mon, 18 Aug 2025 13:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDXLSw5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9+6yGIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D9E31CA5E;
-	Mon, 18 Aug 2025 12:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A098B335BA8;
+	Mon, 18 Aug 2025 13:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521761; cv=none; b=kfqqVu41+4TzD3KXMtGtIGEQfXYncUqV4pH9iM2icBnRWHyaIGxsvJLpV/lBcLXaka+iVdb1LD4VJqbP2V4PprSK1XJWw5+nBIL3F2reii1UMVdjkc+OCcI3eNvFqABZpfHU8cN0MkHH9j7JUl+OIg5CHc5rTdfTbNqP2QCx0cY=
+	t=1755524978; cv=none; b=p4gIyclKtBbqT3D5tYl39N0soL40oMMBefEGu41OC9E1ZQLPfXyJfvM3pZlHIoMDacdP87zfqbbjY+SiZBKvrs02dtWxNAVOwlo/vKaIZudlQGKTIQv3KNobwQlugA6oqSbp5LGevhH155/RkzgOkJ7OaW+kjriz06YOlIpFDP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521761; c=relaxed/simple;
-	bh=TS/gF3d71nZNKD75teGxRpzDKEV4tMa3v/k7VZvO8Yg=;
+	s=arc-20240116; t=1755524978; c=relaxed/simple;
+	bh=k8zwIoPG25Ee6WPntgdCTi++W8+sTLMRpaB16GeNE28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CE3BXRLcKDgXRl9dnk8oKSWvN3JTTZJyq5TE4pSbSPd9oVnfii3EOi3KOWchv4qEWADGGAnL4TA16Ca2Wwx7nqqyN7QcjswPDddblXjxCmUHqmEskSObrSkmIGFeIYDVXeHb0dqSes8CJLJS7Zm1CNkSR2T+hbQ6OH4OVWnvajk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDXLSw5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BFCC4CEEB;
-	Mon, 18 Aug 2025 12:56:00 +0000 (UTC)
+	 MIME-Version; b=ehtU0u1T+8j8xjZYXqV4P9fc7wksyh4r9o2i1+eeu64kpfKy0L6t7jW/1cs8cty9H67LaLCDGyUWk/8o7yxVCxdJeCt2V30CtcrfZ16Jzel1Gd5cX8IfPDn6UFllP//aD7p/Q3+/urGf7hjLgVTgFy7Gs5Rsuok9N12iX4MEbck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9+6yGIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28295C4CEEB;
+	Mon, 18 Aug 2025 13:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521761;
-	bh=TS/gF3d71nZNKD75teGxRpzDKEV4tMa3v/k7VZvO8Yg=;
+	s=korg; t=1755524978;
+	bh=k8zwIoPG25Ee6WPntgdCTi++W8+sTLMRpaB16GeNE28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDXLSw5rZr6zmetqDk42aFmKCBNjkz6LiEIxqcEOZgud0eZ8uzqFnMwcjnoMpyyV8
-	 WWXP1zf0Dkkx+y2VXJ0bn5iBB3I1kfuEurOLIxqPlVPJGbu5fmzIijdZI4kcV7W9GK
-	 Ok5orKvcinbNJyXYPyjRBylhn5jYtflsqODMZ5KE=
+	b=Y9+6yGIPl6ZMp51E3n3Uwva2H+KWL3VOUL7/xNlvx/wyW2Pkn5gbh0pumAmj9Lic2
+	 xu06i8O6nyXIQkp7TEvK9b9w8mjN27KEesKFS7+6fFjVbPMQLLKu1TQq9gPZtx4fGx
+	 q9n8QuPVW/gFaIyvIwMkwAEKupPrip3Fj85Ztsds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/444] hfs: fix not erasing deleted b-tree node issue
+Subject: [PATCH 6.16 121/570] fix locking in efi_secret_unlink()
 Date: Mon, 18 Aug 2025 14:41:48 +0200
-Message-ID: <20250818124452.028886711@linuxfoundation.org>
+Message-ID: <20250818124510.475650304@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
+[ Upstream commit 2c58d42de71f9c73e40afacc9d062892d2cc8862 ]
 
-The generic/001 test of xfstests suite fails and corrupts
-the HFS volume:
+We used to need securityfs_remove() to undo simple_pin_fs() done when
+the file had been created and to drop the second extra reference
+taken at the same time.  Now that neither is needed (or done by
+securityfs_remove()), we can simply call simple_unlink() and be done
+with that - the broken games with locking had been there only for the
+sake of securityfs_remove().
 
-sudo ./check generic/001
-FSTYP         -- hfs
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
-(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
-
-Ran: generic/001
-Failures: generic/001
-Failed 1 of 1 tests
-
-fsck.hfs -d -n ./test-image.bin
-** ./test-image.bin (NO WRITE)
-	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-   Executing fsck_hfs (version 540.1-Linux).
-** Checking HFS volume.
-   The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-   Unused node is not erased (node = 2)
-   Unused node is not erased (node = 4)
-<skipped>
-   Unused node is not erased (node = 253)
-   Unused node is not erased (node = 254)
-   Unused node is not erased (node = 255)
-   Unused node is not erased (node = 256)
-** Checking catalog hierarchy.
-** Checking volume bitmap.
-** Checking volume information.
-   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
-                  CBTStat = 0x0004 CatStat = 0x00000000
-** The volume untitled was found corrupt and needs to be repaired.
-	volume type is HFS
-	primary MDB is at block 2 0x02
-	alternate MDB is at block 20971518 0x13ffffe
-	primary VHB is at block 0 0x00
-	alternate VHB is at block 0 0x00
-	sector size = 512 0x200
-	VolumeObject flags = 0x19
-	total sectors for volume = 20971520 0x1400000
-	total sectors for embedded volume = 0 0x00
-
-This patch adds logic of clearing the deleted b-tree node.
-
-sudo ./check generic/001
-FSTYP         -- hfs
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/001 9s ...  32s
-Ran: generic/001
-Passed all 1 tests
-
-fsck.hfs -d -n ./test-image.bin
-** ./test-image.bin (NO WRITE)
-	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-   Executing fsck_hfs (version 540.1-Linux).
-** Checking HFS volume.
-   The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking catalog hierarchy.
-** Checking volume bitmap.
-** Checking volume information.
-** The volume untitled appears to be OK.
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/bnode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/virt/coco/efi_secret/efi_secret.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index 1dac5d9c055f..e8cd1a31f247 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -574,6 +574,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
- 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
- 			hfs_bnode_unhash(node);
- 			spin_unlock(&tree->hash_lock);
-+			hfs_bnode_clear(node, 0, tree->node_size);
- 			hfs_bmap_free(node);
- 			hfs_bnode_free(node);
- 			return;
+diff --git a/drivers/virt/coco/efi_secret/efi_secret.c b/drivers/virt/coco/efi_secret/efi_secret.c
+index 1864f9f80617..f2da4819ec3b 100644
+--- a/drivers/virt/coco/efi_secret/efi_secret.c
++++ b/drivers/virt/coco/efi_secret/efi_secret.c
+@@ -136,15 +136,7 @@ static int efi_secret_unlink(struct inode *dir, struct dentry *dentry)
+ 		if (s->fs_files[i] == dentry)
+ 			s->fs_files[i] = NULL;
+ 
+-	/*
+-	 * securityfs_remove tries to lock the directory's inode, but we reach
+-	 * the unlink callback when it's already locked
+-	 */
+-	inode_unlock(dir);
+-	securityfs_remove(dentry);
+-	inode_lock(dir);
+-
+-	return 0;
++	return simple_unlink(inode, dentry);
+ }
+ 
+ static const struct inode_operations efi_secret_dir_inode_operations = {
 -- 
 2.39.5
 
