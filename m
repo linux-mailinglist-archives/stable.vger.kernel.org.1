@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-171405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8B4B2A9DC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D8FB2A3EB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F5075A45D8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:13:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8492D1B2625C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548A6340DAE;
-	Mon, 18 Aug 2025 14:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A030820126A;
+	Mon, 18 Aug 2025 13:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyBl/BkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Neuh/p29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126FF34E19B;
-	Mon, 18 Aug 2025 14:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0A53218C2;
+	Mon, 18 Aug 2025 13:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525811; cv=none; b=CY/p+pfAt94hf4qw79A97T1JXTU744NJwxeCBoGgoN+cumwUCA8q38Xxk94si+xsxPh3JPdlxo+ewziS/JbsfqAZ2Chb6mFORk28lZP1bG2PN6nd50a4Lwz8vIrN2lIoi8Fmdyfrd0mjMNdEugSpeg45SqVYbDtvoTtVhaBBgyI=
+	t=1755522498; cv=none; b=Q5jw192kTIOYig73YAGq3WuoqmeRbLuN4x8hLzzu1rjZHYblD09fiZjAi7ow1A/eSt6UoupLUcr8IoQRnwMqn4lFEC9y49oTEaQMk+zFCGic+nBzU7r9v3tFU1f50cq+QA4bpkwRCnqWkVLxaKle3SL2yfdDGQ+1BJjqtMmeR+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525811; c=relaxed/simple;
-	bh=nHof4b4gtMY64mbkVsrTcU4WpeUf3EsyEgsG49pem0E=;
+	s=arc-20240116; t=1755522498; c=relaxed/simple;
+	bh=UVGlxAq+AGY1OoHm4j8PLRk260t691h7ivJleLvhnzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBl05REFW18hm96DZuuQI18spSirKv4+RH41PAY/C5ErQTlJQN1TAjdUa1OvNOT2BwEUUi9d1rH9H1HG+SuZPFBM1v8WD/YJJh9Oq0mD5SjDNB7luKjH49tB6POGo9+lswQCLiK/04AGjq4pf3RBWWUGoN4EDzyyVOVvj5TuOEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyBl/BkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A50DC4CEEB;
-	Mon, 18 Aug 2025 14:03:29 +0000 (UTC)
+	 MIME-Version; b=kSRyGOVfwYZ/wXMutcp5YnxkoZL5LB9tMUvwhictFz8NfhHvALbIoZR+b9FX5/F0lH2kKlZB/0uBbjvMt6Fh3q/agBBJghDM07eOT33GJeec4kJ9WZreXYFgkYhDTc3BwiHZy71MQcPGmdMywndhcqcxbBt8wgDKoWLyeNfSDTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Neuh/p29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F34C4CEEB;
+	Mon, 18 Aug 2025 13:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525810;
-	bh=nHof4b4gtMY64mbkVsrTcU4WpeUf3EsyEgsG49pem0E=;
+	s=korg; t=1755522495;
+	bh=UVGlxAq+AGY1OoHm4j8PLRk260t691h7ivJleLvhnzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyBl/BkHD10yFt7plsuVCUIsMwp8sVxRxzTwR68HQzUkDNGP7aQ+sbqLqvEyt1hp8
-	 cKSg5HwDsdP/CBiMnS6LeGrPkX2Zq6DXYL4U4Ne6hgdBN6XwkERZuYS3LH05Mjkbjc
-	 W85UjZWkG1xFhPTxi48FyLbvf3xWYJs/hdmj8V6w=
+	b=Neuh/p298vjL4dsw1Tp7JiHI5k3OcSJ4fMMkP4QzX1iRY0DOZIHtsZdRIq8f6Y2Ps
+	 IH8Q3X8u73Djf00+HXTUnvyOSGAwgwYImfReyh8InRaRXhqbo/rdVwEhaWf7V2Tnhr
+	 oLR99vzKNBbIJyH8TXzSEzS2/3MXuK/83h5TBEFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 372/570] watchdog: dw_wdt: Fix default timeout
-Date: Mon, 18 Aug 2025 14:45:59 +0200
-Message-ID: <20250818124520.181877106@linuxfoundation.org>
+Subject: [PATCH 6.12 334/444] dm-mpath: dont print the "loaded" message if registering fails
+Date: Mon, 18 Aug 2025 14:46:00 +0200
+Message-ID: <20250818124501.457671989@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit ac3dbb91e0167d017f44701dd51c1efe30d0c256 ]
+[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
 
-The Synopsys Watchdog driver sets the default timeout to 30 seconds,
-but on some devices this is not a valid timeout. E.g. on RK3588 the
-actual timeout being used is 44 seconds instead.
+If dm_register_path_selector, don't print the "version X loaded" message.
 
-Once the watchdog is started the value is updated accordingly, but
-it would be better to expose a sensible timeout to userspace without
-the need to first start the watchdog.
-
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250717-dw-wdt-fix-initial-timeout-v1-1-86dc864d48dd@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/dw_wdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-ps-historical-service-time.c | 4 +++-
+ drivers/md/dm-ps-queue-length.c            | 4 +++-
+ drivers/md/dm-ps-round-robin.c             | 4 +++-
+ drivers/md/dm-ps-service-time.c            | 4 +++-
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/watchdog/dw_wdt.c b/drivers/watchdog/dw_wdt.c
-index 26efca9ae0e7..c3fbb6068c52 100644
---- a/drivers/watchdog/dw_wdt.c
-+++ b/drivers/watchdog/dw_wdt.c
-@@ -644,6 +644,8 @@ static int dw_wdt_drv_probe(struct platform_device *pdev)
- 	} else {
- 		wdd->timeout = DW_WDT_DEFAULT_SECONDS;
- 		watchdog_init_timeout(wdd, 0, dev);
-+		/* Limit timeout value to hardware constraints. */
-+		dw_wdt_set_timeout(wdd, wdd->timeout);
- 	}
+diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
+index b49e10d76d03..2c8626a83de4 100644
+--- a/drivers/md/dm-ps-historical-service-time.c
++++ b/drivers/md/dm-ps-historical-service-time.c
+@@ -541,8 +541,10 @@ static int __init dm_hst_init(void)
+ {
+ 	int r = dm_register_path_selector(&hst_ps);
  
- 	platform_set_drvdata(pdev, dw_wdt);
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " HST_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
+index e305f05ad1e5..eb543e6431e0 100644
+--- a/drivers/md/dm-ps-queue-length.c
++++ b/drivers/md/dm-ps-queue-length.c
+@@ -260,8 +260,10 @@ static int __init dm_ql_init(void)
+ {
+ 	int r = dm_register_path_selector(&ql_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " QL_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
+index d1745b123dc1..66a15ac0c22c 100644
+--- a/drivers/md/dm-ps-round-robin.c
++++ b/drivers/md/dm-ps-round-robin.c
+@@ -220,8 +220,10 @@ static int __init dm_rr_init(void)
+ {
+ 	int r = dm_register_path_selector(&rr_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " RR_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
+index 969d31c40272..f8c43aecdb27 100644
+--- a/drivers/md/dm-ps-service-time.c
++++ b/drivers/md/dm-ps-service-time.c
+@@ -341,8 +341,10 @@ static int __init dm_st_init(void)
+ {
+ 	int r = dm_register_path_selector(&st_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " ST_VERSION " loaded");
+ 
 -- 
 2.39.5
 
