@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D40AB2A7D2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0558DB2A989
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5657F1898116
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05C8EB636EE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9B7274650;
-	Mon, 18 Aug 2025 13:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB08B33470F;
+	Mon, 18 Aug 2025 14:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqlYc2uu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+W/hu9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA237270ED2;
-	Mon, 18 Aug 2025 13:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999022D8DD4;
+	Mon, 18 Aug 2025 14:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524509; cv=none; b=RhBOk0Pjbo3d6vKZfJbIcHnPqIhLkMefoAEUxSfv2B8JaDdgcqUhzkcT0z3wAZBOho8cuiCe83d2HdcMfsHZLrKFJUzj6hLB5NPS8/03Ga0aX5oclAoCNcmhW2YOvqfCCPZ0E9FqZvz48OpH0uwrjs52ttvl6UwHCrneQrqySLU=
+	t=1755526224; cv=none; b=Ttf8jySgCM5GqutjdirdsAG/RLNbzM2ExR+Av4fegmUT4JLQweyRaTY6Ge+x3/wT6fQ5g3Tf4H8K8D8lwPuihHQd1/cY/tZvqt+kZBLqBJbCe21EZ2IpAdvP4oHm2uOn/3rWJ7aDJBsY7xJoEMXBWFZ3nHnkknAWoE4K6ern9nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524509; c=relaxed/simple;
-	bh=coaKHVem68sIk50sVTp7mCpA7BlO37zu65Z6iraK3rY=;
+	s=arc-20240116; t=1755526224; c=relaxed/simple;
+	bh=3Hk87/Nq6+8whD9K86QM2jBKlf3YxRYdzl9WZPyJ2Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYGjAP6VaV7BSUtdBssx9K19QJ6QvKOzKrsvZJneaUm41Djto/lDC2Cre71MYb/gTZ8hxtq+XjGL0mwTyEU+x8NnTd5vyh/MNuOSczwXvy64cZfP20zbhT9J0FSEhe2G/I6WvnYkuRU+wBQlGaTqvb4rnj6wEX95BPkQrBrOY5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqlYc2uu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615A9C4CEEB;
-	Mon, 18 Aug 2025 13:41:49 +0000 (UTC)
+	 MIME-Version; b=Aaw82l+UIbsr9HpOsGcq9mitCz8N7Yd/OdTr7wkUhrH/7Q4jhFwMJ4WexwgpOqTXLEYFW4HvyW3aTNfI2ql4mWSSDYqbl8pdFoiJM5a/lo402qHisPBZgo3YLOQgcN8AV3Q3o9kVzDY8lqp7FbHYMeZUG2f51EsByud9viXBp4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+W/hu9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38D7C4CEEB;
+	Mon, 18 Aug 2025 14:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524509;
-	bh=coaKHVem68sIk50sVTp7mCpA7BlO37zu65Z6iraK3rY=;
+	s=korg; t=1755526224;
+	bh=3Hk87/Nq6+8whD9K86QM2jBKlf3YxRYdzl9WZPyJ2Xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqlYc2uuut/jujTfIY1GaxB0SsbfaVAIzOUPnLINFExsPBYqjeEM8gdHxPbuQ7VZM
-	 MpwgFB7LDIW7ehMb+IndPXjc9VAx6ELZmRkD7NpyAB9px/mvaBvClUbqGb9RbpPoof
-	 o8/vMkBPAQ4KkSiVU9KAT5LWGQ4qNH2GrCp9GXeg=
+	b=e+W/hu9O9T9Mm9yk0wuYFEqrXrXDh82mg4s+5qIXokmAh42mp+EhbMhSKJ6NHeez2
+	 t4dEXlJEgljCXZP6kjY99BtJKATvqh3WFc7+EXfOAxC0/2x/N/NWDwbIbh4L0hHQ54
+	 2yeLtACdIrQyZnPIIDnJvZOylk74SYEVc2jyVDO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 494/515] mm/kmemleak: avoid soft lockup in __kmemleak_do_cleanup()
-Date: Mon, 18 Aug 2025 14:48:00 +0200
-Message-ID: <20250818124517.454567116@linuxfoundation.org>
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Robert Marko <robimarko@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.16 494/570] clk: qcom: gcc-ipq8074: fix broken freq table for nss_port6_tx_clk_src
+Date: Mon, 18 Aug 2025 14:48:01 +0200
+Message-ID: <20250818124524.900248284@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-commit d1534ae23c2b6be350c8ab060803fbf6e9682adc upstream.
+commit 077ec7bcec9a8987d2a133afb7e13011878c7576 upstream.
 
-A soft lockup warning was observed on a relative small system x86-64
-system with 16 GB of memory when running a debug kernel with kmemleak
-enabled.
+With the conversion done by commit e88f03230dc0 ("clk: qcom: gcc-ipq8074:
+rework nss_port5/6 clock to multiple conf") a Copy-Paste error was made
+for the nss_port6_tx_clk_src frequency table.
 
-  watchdog: BUG: soft lockup - CPU#8 stuck for 33s! [kworker/8:1:134]
+This was caused by the wrong setting of the parent in
+ftbl_nss_port6_tx_clk_src that was wrongly set to P_UNIPHY1_RX instead
+of P_UNIPHY2_TX.
 
-The test system was running a workload with hot unplug happening in
-parallel.  Then kemleak decided to disable itself due to its inability to
-allocate more kmemleak objects.  The debug kernel has its
-CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE set to 40,000.
+This cause the UNIPHY2 port to malfunction when it needs to be scaled to
+higher clock. The malfunction was observed with the example scenario
+with an Aquantia 10G PHY connected and a speed higher than 1G (example
+2.5G)
 
-The soft lockup happened in kmemleak_do_cleanup() when the existing
-kmemleak objects were being removed and deleted one-by-one in a loop via a
-workqueue.  In this particular case, there are at least 40,000 objects
-that need to be processed and given the slowness of a debug kernel and the
-fact that a raw_spinlock has to be acquired and released in
-__delete_object(), it could take a while to properly handle all these
-objects.
+Fix the broken frequency table to restore original functionality.
 
-As kmemleak has been disabled in this case, the object removal and
-deletion process can be further optimized as locking isn't really needed.
-However, it is probably not worth the effort to optimize for such an edge
-case that should rarely happen.  So the simple solution is to call
-cond_resched() at periodic interval in the iteration loop to avoid soft
-lockup.
-
-Link: https://lkml.kernel.org/r/20250728190248.605750-1-longman@redhat.com
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: e88f03230dc0 ("clk: qcom: gcc-ipq8074: rework nss_port5/6 clock to multiple conf")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Tested-by: Robert Marko <robimarko@gmail.com>
+Link: https://lore.kernel.org/r/20250522202600.4028-1-ansuelsmth@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmemleak.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/clk/qcom/gcc-ipq8074.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -2172,6 +2172,7 @@ static const struct file_operations kmem
- static void __kmemleak_do_cleanup(void)
- {
- 	struct kmemleak_object *object, *tmp;
-+	unsigned int cnt = 0;
- 
- 	/*
- 	 * Kmemleak has already been disabled, no need for RCU list traversal
-@@ -2180,6 +2181,10 @@ static void __kmemleak_do_cleanup(void)
- 	list_for_each_entry_safe(object, tmp, &object_list, object_list) {
- 		__remove_object(object);
- 		__delete_object(object);
-+
-+		/* Call cond_resched() once per 64 iterations to avoid soft lockup */
-+		if (!(++cnt & 0x3f))
-+			cond_resched();
- 	}
- }
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -1895,10 +1895,10 @@ static const struct freq_conf ftbl_nss_p
+ static const struct freq_multi_tbl ftbl_nss_port6_tx_clk_src[] = {
+ 	FMS(19200000, P_XO, 1, 0, 0),
+ 	FM(25000000, ftbl_nss_port6_tx_clk_src_25),
+-	FMS(78125000, P_UNIPHY1_RX, 4, 0, 0),
++	FMS(78125000, P_UNIPHY2_TX, 4, 0, 0),
+ 	FM(125000000, ftbl_nss_port6_tx_clk_src_125),
+-	FMS(156250000, P_UNIPHY1_RX, 2, 0, 0),
+-	FMS(312500000, P_UNIPHY1_RX, 1, 0, 0),
++	FMS(156250000, P_UNIPHY2_TX, 2, 0, 0),
++	FMS(312500000, P_UNIPHY2_TX, 1, 0, 0),
+ 	{ }
+ };
  
 
 
