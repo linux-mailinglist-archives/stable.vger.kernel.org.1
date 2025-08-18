@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908C1B2A5D8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14455B2A8A9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FA73627536
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C32C51B62606
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2CE322DCE;
-	Mon, 18 Aug 2025 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FE91F4177;
+	Mon, 18 Aug 2025 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3jf+7wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/IB3S0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C0320CDB;
-	Mon, 18 Aug 2025 13:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B691192598;
+	Mon, 18 Aug 2025 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523527; cv=none; b=pKqe2IY1vdSTPYVYRgfpR1YWgI355Yrx6h2vanqCrFI+3hPhL6KmYj2CYJQQabOwGtpdswIPCNBnDrR+oC5pPHCN3YWcQgiVdWmLXPBmQICs8j7v3qpl12JUWr1vqd6MI8zN7bXUXZsdXlPNYSbJU60yPQUVer5ty/U8564mKzM=
+	t=1755525235; cv=none; b=m6/tNgF8Iz/Bc4p4KmVULUfRKwHVoSgc9/IRRGygW6eRDUxQsXwwkP11ypD4WbVj6uQ9Hmc8J+SzSpBxbHsJxH/rANtfkQknPpBh0tUC5jbHk0plCWDSbHhD51PFF0z1GtGfNQp3vZJkXGtEpK486JUeSt1xQh5YlLdZxGR99ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523527; c=relaxed/simple;
-	bh=WIVf0MCupzZqXQ59ACVwEDhqszKg9b2p66GjosaW90k=;
+	s=arc-20240116; t=1755525235; c=relaxed/simple;
+	bh=iffVJi0roHmW5nkpKh+cSf9DMTjFOEBwjwOndWihzpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FR8FMXKh44MrP9tyH05qaEIiMncsN75st1vcAt+cMFGc6GPtQjh/ia/kmc04ic2FQfQ+Oxw7Wi1oeiBKk6m92ouCZdVgJrXmNtfBk6EqCCngBtKtSg7lntS5eb2KNl+XGLsnK+uTEmTIUunQ7g/6NxZligGx8BwppBYc4yIgr4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3jf+7wz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1D4C4CEEB;
-	Mon, 18 Aug 2025 13:25:26 +0000 (UTC)
+	 MIME-Version; b=EX6ugzhWw/3Jsan+ux4nKtMxh94NsO1RqcO2LNpqwCemjFV67S7QecffF1riDKbo3sr1ykWKV0e+tgYuHU1cwR7gv4xs7M0m0oYtGnj/ldKoC1l365dJdIvCrmYma4L6QllzLIK4uwc6ADZRTQyOhZu27EByHWPLQ2/WKKK0wJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/IB3S0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09A2C4CEEB;
+	Mon, 18 Aug 2025 13:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523527;
-	bh=WIVf0MCupzZqXQ59ACVwEDhqszKg9b2p66GjosaW90k=;
+	s=korg; t=1755525235;
+	bh=iffVJi0roHmW5nkpKh+cSf9DMTjFOEBwjwOndWihzpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3jf+7wzTHJU7d/aqyTOlTuQJ+GSOtThKDEsmkXR9Cw1l7M79hiQPIUaDr1b8Wepe
-	 zyAfB0YhSyS6OLuBsVmkbGoGskr7iw7qSeJUVVkv7frqYC50nGpnz4u6A+jwErXptr
-	 svEAis5wNGyfzs6l8u9Q4N7PIBm1ZrphN5MSMpbQ=
+	b=Y/IB3S0Y+xOEHZiuewU2FMOosZzLAWwjm7OnA6qXB1tnCK6vJjdzCIDBFC5Ol7TxE
+	 YU7977jFs7N4JqfoyCvVYZrtvMD1cG/Q9Lpeaqi45LvmfyxTgi4HG7Wqlg9zuG/maZ
+	 zmQ6XL2xNFZu8/PceE2xd17l0VVXnXYOBHfGyTiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Lucy Thrun <lucy.thrun@digital-rabbithole.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 199/515] wifi: iwlwifi: mld: use spec link id and not FW link id
-Date: Mon, 18 Aug 2025 14:43:05 +0200
-Message-ID: <20250818124506.027463344@linuxfoundation.org>
+Subject: [PATCH 6.16 199/570] ALSA: hda/ca0132: Fix buffer overflow in add_tuning_control
+Date: Mon, 18 Aug 2025 14:43:06 +0200
+Message-ID: <20250818124513.467134014@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
 
-[ Upstream commit 170db5f873850a04a8eafd3401b2ea36adb20cea ]
+[ Upstream commit a409c60111e6bb98fcabab2aeaa069daa9434ca0 ]
 
-In missed beacon handling, we compare the FW link id to the
-bss_param_ch_cnt_link_id, which is a spec link id. Fix it.
+The 'sprintf' call in 'add_tuning_control' may exceed the 44-byte
+buffer if either string argument is too long. This triggers a compiler
+warning.
+Replaced 'sprintf' with 'snprintf' to limit string lengths to prevent
+overflow.
 
-Reviewed-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250723094230.2104f8cac836.I25ed77c2b87bde82a9153e2aa26e09b8a42f6ee3@changeid
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506100642.95jpuMY1-lkp@intel.com/
+Signed-off-by: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
+Link: https://patch.msgid.link/20250610175012.918-3-lucy.thrun@digital-rabbithole.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/link.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_ca0132.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-index 82a4979a3af3..5f7628c65e3c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-@@ -863,21 +863,23 @@ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
- {
- 	const struct iwl_missed_beacons_notif *notif = (const void *)pkt->data;
- 	union iwl_dbg_tlv_tp_data tp_data = { .fw_pkt = pkt };
--	u32 link_id = le32_to_cpu(notif->link_id);
-+	u32 fw_link_id = le32_to_cpu(notif->link_id);
- 	u32 missed_bcon = le32_to_cpu(notif->consec_missed_beacons);
- 	u32 missed_bcon_since_rx =
- 		le32_to_cpu(notif->consec_missed_beacons_since_last_rx);
- 	u32 scnd_lnk_bcn_lost =
- 		le32_to_cpu(notif->consec_missed_beacons_other_link);
- 	struct ieee80211_bss_conf *link_conf =
--		iwl_mld_fw_id_to_link_conf(mld, link_id);
-+		iwl_mld_fw_id_to_link_conf(mld, fw_link_id);
- 	u32 bss_param_ch_cnt_link_id;
- 	struct ieee80211_vif *vif;
-+	u8 link_id;
+diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
+index 77432e06f3e3..a2f57d7424bb 100644
+--- a/sound/pci/hda/patch_ca0132.c
++++ b/sound/pci/hda/patch_ca0132.c
+@@ -4410,7 +4410,7 @@ static int add_tuning_control(struct hda_codec *codec,
+ 	}
+ 	knew.private_value =
+ 		HDA_COMPOSE_AMP_VAL(nid, 1, 0, type);
+-	sprintf(namestr, "%s %s Volume", name, dirstr[dir]);
++	snprintf(namestr, sizeof(namestr), "%s %s Volume", name, dirstr[dir]);
+ 	return snd_hda_ctl_add(codec, nid, snd_ctl_new1(&knew, codec));
+ }
  
- 	if (WARN_ON(!link_conf))
- 		return;
- 
- 	vif = link_conf->vif;
-+	link_id = link_conf->link_id;
- 	bss_param_ch_cnt_link_id = link_conf->bss_param_ch_cnt_link_id;
- 
- 	IWL_DEBUG_INFO(mld,
-@@ -889,7 +891,7 @@ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
- 
- 	mld->trans->dbg.dump_file_name_ext_valid = true;
- 	snprintf(mld->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
--		 "LinkId_%d_MacType_%d", link_id,
-+		 "LinkId_%d_MacType_%d", fw_link_id,
- 		 iwl_mld_mac80211_iftype_to_fw(vif));
- 
- 	iwl_dbg_tlv_time_point(&mld->fwrt,
 -- 
 2.39.5
 
