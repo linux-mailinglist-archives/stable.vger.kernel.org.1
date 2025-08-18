@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A90B2A628
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52147B2A85D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5733A680E08
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 598E31BA21EB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA68322549;
-	Mon, 18 Aug 2025 13:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66E8335BAA;
+	Mon, 18 Aug 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsDHeDaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYnJv9vz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A067322540;
-	Mon, 18 Aug 2025 13:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E83335BA3;
+	Mon, 18 Aug 2025 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523489; cv=none; b=gvp4iFvJgL6a/1j8s78dB/YnKJFt/Rb8SR6oAp/HvEOcwQNukV6s3PzsgAKze6CNDYPzOYuV6Lkd+B6W/LDrTELSb7qx9CPl9YhiXL02CR5sXiOIZ9tvqd+VHo1g+m2psn+wuMIE5lHugiLdAYVJL16evQ1J+0kaojSmRU0zTr8=
+	t=1755525084; cv=none; b=Oyqa9Uw0XENAMJSlgPnJSgHsXs/YWQoiuLNuNEGve9RVBlqlP8kmnITJUnA0QS+9BgKmbTZBCvh2b38h90DWHR0rScgV7ZxdXyeMSLCSLqxXzpLjGbx7eM+IikHlcClh7Mwuw7XlWUjcFe5OQLbOAlJbfBcbzXudf9SbBk2AZe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523489; c=relaxed/simple;
-	bh=mBtZonrs8yDPaVv6WhWcZK2fiLxlk7mg7fVqg7/kI44=;
+	s=arc-20240116; t=1755525084; c=relaxed/simple;
+	bh=zuC0Pxa3txATwH8lsekoMLMM1pUDqGLx1LHkMRBJkGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+3k3FWZ3LH4ohoW4IqPijcffNC2Nf04y545Zv9rGGgX3gz2oqNsdc7KTPvrkoe51JtcKRUh/dVbAsyERibeH+GtGMfoOmYzFPaJ6COrMkceu9mlLgjxnHcIvxI7nM2hBazFfR8NNbUqD2qqz3/i3gs4IrRrCSiVHznqIlcYGBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsDHeDaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E2EC4CEEB;
-	Mon, 18 Aug 2025 13:24:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jCjJ6feEaqcFESLFnVwINfSV7WAO2S7filGpQjY9a3QfpeIXablMx6fUUglOyH4eFTfUW/HJOU8vg0/1pfYqkgG8biNG+8yj19qdLO55sWJ9Oj7iU+8TH6UaiPcXUnPTnJPkRS6eA15A6ff4I7hFKHtTbIWWFHaaUNAoiHtLsg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYnJv9vz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26485C4CEEB;
+	Mon, 18 Aug 2025 13:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523489;
-	bh=mBtZonrs8yDPaVv6WhWcZK2fiLxlk7mg7fVqg7/kI44=;
+	s=korg; t=1755525084;
+	bh=zuC0Pxa3txATwH8lsekoMLMM1pUDqGLx1LHkMRBJkGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsDHeDaOCnjoqaarv9dXs4TPl6Syu5DHWnTFRS51hX2SzO2PTAsR1r7yKoLnY+LUv
-	 wP7ES+sml6+A3LsTY0/bko4ffl9ztfYCq7TylJlAdFxFJYedOyNrB1Gi9wdFMtDY5e
-	 4pNBmrKRwKQAd+wKpH4aLaZxkDvP+NiwbOwFDeHM=
+	b=tYnJv9vzvtWqE20c2ywRWVD7yHkWXnKhq7QfkKHmqRuKyIxiIDWsiyZI6hdZ+S6LN
+	 2xCDTN658rbmnAH7wkkK9q8/I2AO/dwrdoL6oS1oFmCqD11fZWXENPaZvJWjB6RCmQ
+	 Wd7Ll0gk+6H0TmMplBsDCZ8cqnwrqkTsbviz1tHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ott <sebott@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 154/515] ACPI: processor: fix acpi_object initialization
+Subject: [PATCH 6.16 153/570] tools/nolibc: define time_t in terms of __kernel_old_time_t
 Date: Mon, 18 Aug 2025 14:42:20 +0200
-Message-ID: <20250818124504.318060830@linuxfoundation.org>
+Message-ID: <20250818124511.707241967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 13edf7539211d8f7d0068ce3ed143005f1da3547 ]
+[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
 
-Initialization of the local acpi_object in acpi_processor_get_info()
-only sets the first 4 bytes to zero and is thus incomplete. This is
-indicated by messages like:
-	acpi ACPI0007:be: Invalid PBLK length [166288104]
+Nolibc assumes that the kernel ABI is using a time values that are as
+large as a long integer. For most ABIs this holds true.
+But for x32 this is not correct, as it uses 32bit longs but 64bit times.
 
-Fix this by initializing all 16 bytes of the processor member of that
-union.
+Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
+and time_t being the same type. While timespec::tv_sec comes from the
+kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
 
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Link: https://patch.msgid.link/20250703124215.12522-1-sebott@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Switch to the __kernel_old_time_t to always get the correct type.
+
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
+Acked-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/include/nolibc/std.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 7cf6101cb4c7..2a99f5eb6962 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -275,7 +275,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
+index adda7333d12e..ba950f0e7338 100644
+--- a/tools/include/nolibc/std.h
++++ b/tools/include/nolibc/std.h
+@@ -16,6 +16,8 @@
+ #include "stdint.h"
+ #include "stddef.h"
  
- static int acpi_processor_get_info(struct acpi_device *device)
- {
--	union acpi_object object = { 0 };
-+	union acpi_object object = { .processor = { 0 } };
- 	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
- 	struct acpi_processor *pr = acpi_driver_data(device);
- 	int device_declaration = 0;
++#include <linux/types.h>
++
+ /* those are commonly provided by sys/types.h */
+ typedef unsigned int          dev_t;
+ typedef unsigned long         ino_t;
+@@ -27,6 +29,6 @@ typedef unsigned long       nlink_t;
+ typedef   signed long         off_t;
+ typedef   signed long     blksize_t;
+ typedef   signed long      blkcnt_t;
+-typedef   signed long        time_t;
++typedef __kernel_old_time_t  time_t;
+ 
+ #endif /* _NOLIBC_STD_H */
 -- 
 2.39.5
 
