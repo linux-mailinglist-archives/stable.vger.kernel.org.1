@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CA8B2A2E5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E5BB2A811
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F261B18949FA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 094EF687831
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BC8322756;
-	Mon, 18 Aug 2025 12:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D62335BCE;
+	Mon, 18 Aug 2025 13:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0UGUbre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uqw63zHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A1632274E;
-	Mon, 18 Aug 2025 12:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA21A335BC5;
+	Mon, 18 Aug 2025 13:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521681; cv=none; b=UfOqUbR2EGvFIEdLTTcTYasJAgyv/NRjCPSk/ro3iVOsdTdYnEteDvhoQTSFVWpUzeSWQ/z4x7To9I214nqdKSVqO2/Pal7v8iseAIcCXUwpLbbK6cx17pgTnNy+P3WgyccQCZzFg5MEe/I2e9JLuuV+6jf0y0u+QZauRs8/gpM=
+	t=1755525036; cv=none; b=PRow6fZLFVlVvTAhH0AOgsfJFrw98VBXEQXRhi3Kurrk8OGJgjLMjmPdNAV9XfyDHXRSSipI5rA/m5m5SfY52Lqot70uV5dPzrQZ7ySBw6PNXenBJuyJhENonuc9fbHfNwLaZnhlCsNfvDa3Kc7EetGfhzlHvYIYZ4IkhWWJPfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521681; c=relaxed/simple;
-	bh=6x3YgsUqiFMGXhrXT24+P4AUHBD6Po0fprEROBaeHnQ=;
+	s=arc-20240116; t=1755525036; c=relaxed/simple;
+	bh=BViXiQMkTTLs4LRF2hqYlRdNd41MFZZ9bO/m+65bdII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Co5VQJ0LoU0GFepeKU3vTyWdohpyCsR699PwwN1cFwJzHEj7nMUuJ55AqK0qhgb6los2/i7bAOS9hd0IC1kQ5zDpAlGzlGuw1OsA8HYR2JbwqhL1F5UgV6VC9leSUS1WC6aV3WkIOzzvMe22jFK7vhdFSHS3sj3126Oqm3944bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0UGUbre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16941C4CEEB;
-	Mon, 18 Aug 2025 12:54:40 +0000 (UTC)
+	 MIME-Version; b=twsOfszutaWbmFATjdm28rD9B4eLhwlHXd/fGoBjNVCMHjBIJYijb7PW9d5BMxCj2hycqEsn5OTb40+2V1b6yyK/hPSCjYHtWvIKehUaQwds98bXtvdOspzKMJbvq9TIQpJtDG/cp1Ns/nc9QPmdsrOrKXpk+8iQGibNwemd4uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uqw63zHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E2BC4CEEB;
+	Mon, 18 Aug 2025 13:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521681;
-	bh=6x3YgsUqiFMGXhrXT24+P4AUHBD6Po0fprEROBaeHnQ=;
+	s=korg; t=1755525035;
+	bh=BViXiQMkTTLs4LRF2hqYlRdNd41MFZZ9bO/m+65bdII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0UGUbreBKPJJdv79k/uZC4K/jcyJZ9Z2XmmXvKVSLN/QgbfeJWZqLXKBDJQh/0BY
-	 W7rtA58CgkugoNJnF1Uim+BkI0MmmvGBwH51CW2Dh9D1vGcLfVrEuFdvGPgJbriQ8A
-	 6LxzR64tT2btWflL7Fy4GrV0La2uwoYln4dS1AOc=
+	b=Uqw63zHS8fF/eMq2K7nyI449UAoVaH/all9Vt7w251xHignsGWyPLzNMN4jdca4pW
+	 gtYbhaCN+s9ld5PB11tLGHsmB2cQWcG1kuFY3o4YfdRGjMKB5yRx7YcRctp16loK63
+	 dS812HQzRP3Ryaxd8ruL0FtZZo/+boWXMcL34i3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Daniele Palmas <dnlplm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/444] fix locking in efi_secret_unlink()
+Subject: [PATCH 6.16 131/570] bus: mhi: host: pci_generic: Add Telit FN990B40 modem support
 Date: Mon, 18 Aug 2025 14:41:58 +0200
-Message-ID: <20250818124452.400307642@linuxfoundation.org>
+Message-ID: <20250818124510.870698923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-[ Upstream commit 2c58d42de71f9c73e40afacc9d062892d2cc8862 ]
+[ Upstream commit 00559ba3ae740e7544b48fb509b2b97f56615892 ]
 
-We used to need securityfs_remove() to undo simple_pin_fs() done when
-the file had been created and to drop the second extra reference
-taken at the same time.  Now that neither is needed (or done by
-securityfs_remove()), we can simply call simple_unlink() and be done
-with that - the broken games with locking had been there only for the
-sake of securityfs_remove().
+Add SDX72 based modem Telit FN990B40, reusing FN920C04 configuration.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+01:00.0 Unassigned class [ff00]: Qualcomm Device 0309
+        Subsystem: Device 1c5d:201a
+
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+[mani: added sdx72 in the comment to identify the chipset]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20250716091836.999364-1-dnlplm@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/efi_secret/efi_secret.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/bus/mhi/host/pci_generic.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/virt/coco/efi_secret/efi_secret.c b/drivers/virt/coco/efi_secret/efi_secret.c
-index cd29e66b1543..8482be108e82 100644
---- a/drivers/virt/coco/efi_secret/efi_secret.c
-+++ b/drivers/virt/coco/efi_secret/efi_secret.c
-@@ -136,15 +136,7 @@ static int efi_secret_unlink(struct inode *dir, struct dentry *dentry)
- 		if (s->fs_files[i] == dentry)
- 			s->fs_files[i] = NULL;
+diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
+index 92bd133e7c45..0d9295535bbf 100644
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -818,6 +818,16 @@ static const struct mhi_pci_dev_info mhi_telit_fn920c04_info = {
+ 	.edl_trigger = true,
+ };
  
--	/*
--	 * securityfs_remove tries to lock the directory's inode, but we reach
--	 * the unlink callback when it's already locked
--	 */
--	inode_unlock(dir);
--	securityfs_remove(dentry);
--	inode_lock(dir);
--
--	return 0;
-+	return simple_unlink(inode, dentry);
- }
- 
- static const struct inode_operations efi_secret_dir_inode_operations = {
++static const struct mhi_pci_dev_info mhi_telit_fn990b40_info = {
++	.name = "telit-fn990b40",
++	.config = &modem_telit_fn920c04_config,
++	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
++	.dma_data_width = 32,
++	.sideband_wake = false,
++	.mru_default = 32768,
++	.edl_trigger = true,
++};
++
+ static const struct mhi_pci_dev_info mhi_netprisma_lcur57_info = {
+ 	.name = "netprisma-lcur57",
+ 	.edl = "qcom/prog_firehose_sdx24.mbn",
+@@ -865,6 +875,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
+ 		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
++	/* Telit FN990B40 (sdx72) */
++	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0309, 0x1c5d, 0x201a),
++		.driver_data = (kernel_ulong_t) &mhi_telit_fn990b40_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx75_info },
+ 	/* QDU100, x100-DU */
 -- 
 2.39.5
 
