@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220A4B2A8CC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33965B2A638
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5651F1BA5FB0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:00:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADA791B61ABE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C94832A3CD;
-	Mon, 18 Aug 2025 13:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ECC321F27;
+	Mon, 18 Aug 2025 13:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEARwMVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D38isLaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16306261B97;
-	Mon, 18 Aug 2025 13:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688AA321F24;
+	Mon, 18 Aug 2025 13:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525411; cv=none; b=NZSsBczqUgTaGYZQiHjpr4ri2rrHC6QZTDLtz8JsMs18Nf4NvSWsMIs2bwAODnYO5v0f7bD9hE8dKQhlyQwdVqbnhsyIUb6Grqn6jZZGPHR2cV5/iKvHbiLQ5iGtUBRgIMwKRMoiNIbY0F44d4GeMWx9a/reQXLrQWXToW9B/44=
+	t=1755523789; cv=none; b=gBRVAGGO58am2yOZ5cFPDlk6LlndS4leD2IuenCZcTPoZy3KWr/1ugnHYUjJAvtOCB8ja6RTTU1c/CvBg/0r6yQVr5O4nyIYQvoKxTl5sRGTz/o8jwUITfY/oZvTI+ntXjdmiBwYRtMOloYyiajCDVoO9juLTFuqVpGqndmhIDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525411; c=relaxed/simple;
-	bh=XigxmDx/mC98HOPwtOaAi5KRnHCWgnKU5gC8dr8zU5A=;
+	s=arc-20240116; t=1755523789; c=relaxed/simple;
+	bh=UfH5Ew04ZOiF9eM+VVvyIC2ckBnMqjU31tESCHyDuuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckQW01d9d+S9/ZIOEbRtOjxmgN9G+GfLAhwFiXmyZiQch9dKD0q8i7Jx/oG+DSHI5Atws7c39mP43WwTr+LdaCKk7cMDpCE07w2HRVNgjUE7TXrDsqvpv8chHjxJopRwDrLw8/ggYI/xNLXosb1JFay5N3Yql0vIo7I4YIrm+XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEARwMVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CFBC4CEEB;
-	Mon, 18 Aug 2025 13:56:49 +0000 (UTC)
+	 MIME-Version; b=Y+PCu8h4Oc2hFLRW9ga1Ihtt+jNnGcvwTbiL1Qxo4kpkhgj1jRxAviTU+u85+uHX105JGrQ8s5iYwWybIbUur4KMDKw0XERpX8Dcm7gzL4pNpPtquWf4kNS+1kzmaVrlQbbU9qUtVRfFeCLmHIo9i8ShI4iAuSZTH44WovVkXgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D38isLaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD52C4CEEB;
+	Mon, 18 Aug 2025 13:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525410;
-	bh=XigxmDx/mC98HOPwtOaAi5KRnHCWgnKU5gC8dr8zU5A=;
+	s=korg; t=1755523788;
+	bh=UfH5Ew04ZOiF9eM+VVvyIC2ckBnMqjU31tESCHyDuuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEARwMVVvjS3HE0/8xHudT9ns0w+Hkr8MPzIV1jax5iSpf6PxWImnpJvxhWnImbnX
-	 cSRezuu0JC/TQLKdHX55UdF+BSIYeO5Jwn4RUG1kjuoyEdnWo3fobE/OUa4g1njB9p
-	 u2dbbMdGG7N9WAYtcZf/7AOKKMLOUtpVDMKvVUBM=
+	b=D38isLaHL9SXxjo8XJeN2QDFWvlBBPOZ0n2EludAAIl/jwVSFRhDbNqZrtp+DkJq2
+	 q3GwHWntZLxiG0BhPrb8Erb1TXEN/yphEz37SIY1zsO8ZXvZ5SkrHQ8uRR6EMLpQXD
+	 wgCAV0cxl7xamYEvxtokTZfNsrM3jLmGiIi/4VhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Philipp Stanner <phasta@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 255/570] drm/sched/tests: Add unit test for cancel_job()
+Subject: [PATCH 6.15 256/515] perf/arm: Add missing .suppress_bind_attrs
 Date: Mon, 18 Aug 2025 14:44:02 +0200
-Message-ID: <20250818124515.641232068@linuxfoundation.org>
+Message-ID: <20250818124508.269490141@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit c2668a0e03501a26cedc82e32fe9f3f692d330db ]
+[ Upstream commit 860a831de138a7ad6bc86019adaf10eb84c02655 ]
 
-The scheduler unit tests now provide a new callback, cancel_job(). This
-callback gets used by drm_sched_fini() for all still pending jobs to
-cancel them.
+PMU drivers should set .suppress_bind_attrs so that userspace is denied
+the opportunity to pull the driver out from underneath an in-use PMU
+(with predictably unpleasant consequences). Somehow both the CMN and NI
+drivers have managed to miss this; put that right.
 
-Implement a new unit test to test this.
-
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250710125412.128476-6-phasta@kernel.org
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Link: https://lore.kernel.org/r/acd48c341b33b96804a3969ee00b355d40c546e2.1751465293.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/scheduler/tests/tests_basic.c | 42 +++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/perf/arm-cmn.c | 1 +
+ drivers/perf/arm-ni.c  | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/scheduler/tests/tests_basic.c b/drivers/gpu/drm/scheduler/tests/tests_basic.c
-index 7230057e0594..b1ae10c6bb37 100644
---- a/drivers/gpu/drm/scheduler/tests/tests_basic.c
-+++ b/drivers/gpu/drm/scheduler/tests/tests_basic.c
-@@ -204,6 +204,47 @@ static struct kunit_suite drm_sched_basic = {
- 	.test_cases = drm_sched_basic_tests,
- };
- 
-+static void drm_sched_basic_cancel(struct kunit *test)
-+{
-+	struct drm_mock_sched_entity *entity;
-+	struct drm_mock_scheduler *sched;
-+	struct drm_mock_sched_job *job;
-+	bool done;
-+
-+	/*
-+	 * Check that drm_sched_fini() uses the cancel_job() callback to cancel
-+	 * jobs that are still pending.
-+	 */
-+
-+	sched = drm_mock_sched_new(test, MAX_SCHEDULE_TIMEOUT);
-+	entity = drm_mock_sched_entity_new(test, DRM_SCHED_PRIORITY_NORMAL,
-+					   sched);
-+
-+	job = drm_mock_sched_job_new(test, entity);
-+
-+	drm_mock_sched_job_submit(job);
-+
-+	done = drm_mock_sched_job_wait_scheduled(job, HZ);
-+	KUNIT_ASSERT_TRUE(test, done);
-+
-+	drm_mock_sched_entity_free(entity);
-+	drm_mock_sched_fini(sched);
-+
-+	KUNIT_ASSERT_EQ(test, job->hw_fence.error, -ECANCELED);
-+}
-+
-+static struct kunit_case drm_sched_cancel_tests[] = {
-+	KUNIT_CASE(drm_sched_basic_cancel),
-+	{}
-+};
-+
-+static struct kunit_suite drm_sched_cancel = {
-+	.name = "drm_sched_basic_cancel_tests",
-+	.init = drm_sched_basic_init,
-+	.exit = drm_sched_basic_exit,
-+	.test_cases = drm_sched_cancel_tests,
-+};
-+
- static void drm_sched_basic_timeout(struct kunit *test)
- {
- 	struct drm_mock_scheduler *sched = test->priv;
-@@ -471,6 +512,7 @@ static struct kunit_suite drm_sched_credits = {
- 
- kunit_test_suites(&drm_sched_basic,
- 		  &drm_sched_timeout,
-+		  &drm_sched_cancel,
- 		  &drm_sched_priority,
- 		  &drm_sched_modify_sched,
- 		  &drm_sched_credits);
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index 403850b1040d..e4bf181842fa 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -2662,6 +2662,7 @@ static struct platform_driver arm_cmn_driver = {
+ 		.name = "arm-cmn",
+ 		.of_match_table = of_match_ptr(arm_cmn_of_match),
+ 		.acpi_match_table = ACPI_PTR(arm_cmn_acpi_match),
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = arm_cmn_probe,
+ 	.remove = arm_cmn_remove,
+diff --git a/drivers/perf/arm-ni.c b/drivers/perf/arm-ni.c
+index 9396d243415f..c30a67fe2ae3 100644
+--- a/drivers/perf/arm-ni.c
++++ b/drivers/perf/arm-ni.c
+@@ -709,6 +709,7 @@ static struct platform_driver arm_ni_driver = {
+ 		.name = "arm-ni",
+ 		.of_match_table = of_match_ptr(arm_ni_of_match),
+ 		.acpi_match_table = ACPI_PTR(arm_ni_acpi_match),
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = arm_ni_probe,
+ 	.remove = arm_ni_remove,
 -- 
 2.39.5
 
