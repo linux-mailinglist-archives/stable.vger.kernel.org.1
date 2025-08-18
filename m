@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6FCB2A81D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC77B2A46A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2261BA330C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5D547BABB0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72387335BCD;
-	Mon, 18 Aug 2025 13:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E266521A436;
+	Mon, 18 Aug 2025 13:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByVGDpGS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUobrCTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA1A335BAA;
-	Mon, 18 Aug 2025 13:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09DE1DF265;
+	Mon, 18 Aug 2025 13:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524681; cv=none; b=hzQHxG7R/9LpJHV/lQc//G82959Z6H1e+689nbk2VjxMmSXNDgZozgQYM68+v0jpWzuYzXuGRAwK3yDAqg2nN7+2QkGiS3C6Ex21C2FItKE7HPhk4TNhBUKwKaMlgl93j+hlpcqHqUNplsXQcAxEndzaWB+/BYLDjFACJpDiS14=
+	t=1755522916; cv=none; b=eXkZ5z7kcPrRsDSZXR0ZIIEiSi+QYWomq6hmcxr9y3LBS0kPqSLlkLaVR9sgn13Jp2DwfAofOSQlm/umEQcJdOnrZtBtsx6kIQ4HyeUiSxPDhhuO7Q3X7Fo1Y4iIZWXQKdrs3WFiW6ibzA20opqoiWdU5rapEkG2fVnG6FTMdEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524681; c=relaxed/simple;
-	bh=a0wyPP12id+vWmQndJIynSJPrONYp1YAQ2rjmU6k0y0=;
+	s=arc-20240116; t=1755522916; c=relaxed/simple;
+	bh=/uCUNb+H6oBDmYQlxUu4gaVb2kII+k5kVP3g0a7EwR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prp/SlLKpN10Min6IN6RVsabUVXeHckVnk/lWSYiI88lqBkawY6WPLEE195fCQdRGQB+jVVr007CXJ2HRd3BpkEBT7GErvxKkEoZ3pW57E953shBvkNLkBa9uKc18A1XIVO1A27r+u5ZOEN2zitJcHpHE+xrZ4jarhKcK+bWxnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByVGDpGS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE17C4CEEB;
-	Mon, 18 Aug 2025 13:44:40 +0000 (UTC)
+	 MIME-Version; b=YEP3yRtQZ5jpAbC1yPe/WtfphmV2BV4SLYk9p5zGTzcBejNZnH5d/0WK9YdCrgbdSZXfDNDCyE7U+SVqx4a0QlveHt8uOjDDorZRUeIqaGgAPLe0TK67FY8u0mHskxGrXD9qeagk8EK1SCAnMlZMQQwFSMaWrIS6nySVWTGRxAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUobrCTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E17C4CEEB;
+	Mon, 18 Aug 2025 13:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524681;
-	bh=a0wyPP12id+vWmQndJIynSJPrONYp1YAQ2rjmU6k0y0=;
+	s=korg; t=1755522916;
+	bh=/uCUNb+H6oBDmYQlxUu4gaVb2kII+k5kVP3g0a7EwR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByVGDpGSAZ9fvlYVvB0qgIJvuFKDdpY2pu6ePyVcm7YnU31GcYPprFyN3U/ySw294
-	 8Nb7FVt5JAQGMfl5VM5Ddm5GFtjsC5pyc5zQq00osoIq7PTZFlNiE26/nSVL1sLE/n
-	 qJMW+iOZBCGqt8HuOY1ovbfO9bB4J5Hgq/92FP7E=
+	b=zUobrCTI3beLqD88yuNOUgzwfCIpAAMf21kr87+3gXHyPIOhQ2ybjx471aYZjTaIq
+	 Xdu3dOoyhdiB4j8CMHIVlqQKrw/reHgxmfx5BE76Eg0OJfOBqTK8Gr4pEuTDMrwAQ6
+	 72p1VSkGxePIU9UsPak9al7/Y+RnhhVl12dXvSr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Youngjun Lee <yjjuny.lee@samsung.com>
-Subject: [PATCH 6.16 006/570] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.15 007/515] ALSA: hda/realtek: Fix headset mic on HONOR BRB-X
 Date: Mon, 18 Aug 2025 14:39:53 +0200
-Message-ID: <20250818124506.033071163@linuxfoundation.org>
+Message-ID: <20250818124458.613416082@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
+commit b26e2afb3834d4a61ce54c8484ff6014bef0b4b7 upstream.
 
-UAC3 power domain descriptors need to be verified with its variable
-bLength for avoiding the unexpected OOB accesses by malicious
-firmware, too.
+Add a PCI quirk to enable microphone input on the headphone jack on
+the HONOR BRB-X M1010 laptop.
 
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
+Link: https://patch.msgid.link/20250811132716.45076-1-kovalev@altlinux.org
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/validate.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
- 	return d->bLength >= sizeof(*d) + 4 + 2;
- }
- 
-+static bool validate_uac3_power_domain_unit(const void *p,
-+					    const struct usb_desc_validator *v)
-+{
-+	const struct uac3_power_domain_descriptor *d = p;
-+
-+	if (d->bLength < sizeof(*d))
-+		return false;
-+	/* baEntities[] + wPDomainDescrStr */
-+	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
-+}
-+
- static bool validate_midi_out_jack(const void *p,
- 				   const struct usb_desc_validator *v)
- {
-@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
- 	      struct uac3_clock_multiplier_descriptor),
- 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
- 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
-+	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
- 	{ } /* terminator */
- };
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11405,6 +11405,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1ee7, 0x2078, "HONOR BRB-X M1010", ALC2XX_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1f66, 0x0105, "Ayaneo Portable Game Player", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x2014, 0x800a, "Positivo ARN50", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 
 
 
