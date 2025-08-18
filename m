@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FC8B2AAA0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:34:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA785B2A484
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5514B1BA3116
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E6E17D703
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC221326D46;
-	Mon, 18 Aug 2025 14:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA96320CDD;
+	Mon, 18 Aug 2025 13:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wduEPPiJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmYG6K3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A544183CC3;
-	Mon, 18 Aug 2025 14:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEAC320CD4;
+	Mon, 18 Aug 2025 13:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526146; cv=none; b=efFw5ymLE6/lzzgQOk7xAfzI7zpMwu74rUaDlktQ6SSEMsWItx7fJ71axp1AZS93QRqaqU2sllHZnr53dVcjiVtoy5ED70tVNRU0aYIH3gfqh7y+io0gJ5w7vdHl2tqHnDFec3/dpcBm8KNBESiQEsMTWkSMsFE9OqCkwaNI4lM=
+	t=1755522873; cv=none; b=VvixhVoRs1XqXHJL1mAvqOj/Y2E4z1AWi46Xqkfa0UNGWSOgbp6aK4VtG9vGySbn50aF32B79LVcojK12Gctj7UTZuOKiiZIjht4eVmr04MB4boaQmIRXHmXh/h2YnLfd5znZ2nQtqXI97c6+K965fRB94YcafWzq8QmJagIQ+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526146; c=relaxed/simple;
-	bh=T9DEpHcbMcz/ZmjpqmKrMwanBINLv1uuNj8GbaQv3iQ=;
+	s=arc-20240116; t=1755522873; c=relaxed/simple;
+	bh=yNkNat653nSpSkrmPusKxp3CCqnsACxc0fMQe5z1h54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJNi8dEQByhUZNovQLC9U67Uhzk32IDV42sHirdL++lmUuI4OmPjd80EOHj/t0p+L8hjRPYbG9zIPdeefPVFlYDxDlsrLynJAToFOwZt6xgyLa3Jc+CSjCFbDN9+nUY9+07HNaYpx1+ynCghfQFDcoRIKMWF3dNy1/Hqg4nU8/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wduEPPiJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B104C4CEEB;
-	Mon, 18 Aug 2025 14:09:05 +0000 (UTC)
+	 MIME-Version; b=fZciEkCgJL+ov4urihSDkk/mJXX+CNXkt9yhTh1gpbF5XtFsMsLYFq65uqcMnmfQhrSAgO5BWP6/c6uqL0pZJDnNYhFp04Bjqyvdr1Y0SSLhsOoZ3UnNsGBnnjko+MXFAZTNf9OH3ioMMM8+9q1QwXRADSAjtH/f5ve/c47BROQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmYG6K3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3BDC4CEF1;
+	Mon, 18 Aug 2025 13:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526146;
-	bh=T9DEpHcbMcz/ZmjpqmKrMwanBINLv1uuNj8GbaQv3iQ=;
+	s=korg; t=1755522873;
+	bh=yNkNat653nSpSkrmPusKxp3CCqnsACxc0fMQe5z1h54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wduEPPiJ1IG8uwN5hqBqceu9wjSB24Rok9ylctNvkmpIDFemuS+aRESqEvnX3dXHN
-	 R/jN79Y1mQybsKV+y6/ufWFsJPbuEcsfd3hf6wRkRy6YhUwxROoeiSgQkZr8i3jkSh
-	 18uyo8WAWGP5ctB+SK9dA+/47S5nRezVhXqJLGz0=
+	b=fmYG6K3BPZwOSMSPAlp/S/bGGHHQejZBTmePPlxBGYk/Zq5xVXqV0iMbVfNfrViXU
+	 G/uTsLY9qKTXW9n4LAX7FdV/YaPlA6KnsUbEXHJsShtfNGEhze6VYyG/0dEP8xQWh0
+	 1u4Y4FgxJ4MuWGFKnsx1ZYRKAdx1Bge4Pj3m8OMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hrushikesh Salunke <h-salunke@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 471/570] ASoC: fsl_sai: replace regmap_write with regmap_update_bits
-Date: Mon, 18 Aug 2025 14:47:38 +0200
-Message-ID: <20250818124524.023394116@linuxfoundation.org>
+Subject: [PATCH 6.12 433/444] arm64: dts: ti: k3-j722s-evm: Fix USB2.0_MUX_SEL to select Type-C
+Date: Mon, 18 Aug 2025 14:47:39 +0200
+Message-ID: <20250818124505.192287798@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Hrushikesh Salunke <h-salunke@ti.com>
 
-[ Upstream commit 0e270f32975fd21874185ba53653630dd40bf560 ]
+[ Upstream commit bc8d9e6b5821c40ab5dd3a81e096cb114939de50 ]
 
-Use the regmap_write() for software reset in fsl_sai_config_disable would
-cause the FSL_SAI_CSR_BCE bit to be cleared. Refer to
-commit 197c53c8ecb34 ("ASoC: fsl_sai: Don't disable bitclock for i.MX8MP")
-FSL_SAI_CSR_BCE should not be cleared. So need to use regmap_update_bits()
-instead of regmap_write() for these bit operations.
+J722S SOC has two usb controllers USB0 and USB1. USB0 is brought out on
+the EVM as a stacked USB connector which has one Type-A and one Type-C
+port. These Type-A and Type-C ports are connected to MUX so only
+one of them can be enabled at a time.
 
-Fixes: dc78f7e59169d ("ASoC: fsl_sai: Force a software reset when starting in consumer mode")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250807020318.2143219-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Commit under Fixes, tries to enable the USB0 instance of USB to
+interface with the Type-C port via the USB hub, by configuring the
+USB2.0_MUX_SEL to GPIO_ACTIVE_HIGH. But it is observed on J722S-EVM
+that Type-A port is enabled instead of Type-C port.
+
+Fix this by setting USB2.0_MUX_SEL to GPIO_ACTIVE_LOW to enable Type-C
+port.
+
+Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
+Signed-off-by: Hrushikesh Salunke <h-salunke@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20250116125726.2549489-1-h-salunke@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Stable-dep-of: 65ba2a6e77e9 ("arm64: dts: ti: k3-j722s-evm: Fix USB gpio-hog level for Type-C")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 50af6b725670..10f0633ce68f 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -809,9 +809,9 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
- 	 * are running concurrently.
- 	 */
- 	/* Software Reset */
--	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	/* Clear SR bit to finish the reset */
--	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, 0);
- }
+--- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+@@ -495,7 +495,7 @@
+ 		p05-hog {
+ 			/* P05 - USB2.0_MUX_SEL */
+ 			gpio-hog;
+-			gpios = <5 GPIO_ACTIVE_HIGH>;
++			gpios = <5 GPIO_ACTIVE_LOW>;
+ 			output-high;
+ 		};
  
- static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
-@@ -930,11 +930,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
- 	unsigned int ofs = sai->soc_data->reg_offset;
- 
- 	/* Software Reset for both Tx and Rx */
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	/* Clear SR bit to finish the reset */
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
- 
- 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
- 			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
-@@ -1824,11 +1824,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
- 
- 	regcache_cache_only(sai->regmap, false);
- 	regcache_mark_dirty(sai->regmap);
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	usleep_range(1000, 2000);
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
- 
- 	ret = regcache_sync(sai->regmap);
- 	if (ret)
--- 
-2.50.1
-
 
 
 
