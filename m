@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-171388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1648B2AA0C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78321B2A3D1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C66B4684789
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B173A3B2F77
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8CD3090C5;
-	Mon, 18 Aug 2025 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119BD31E106;
+	Mon, 18 Aug 2025 13:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRAqUWWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5o1jInn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2B03375C0;
-	Mon, 18 Aug 2025 14:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5F03218D6;
+	Mon, 18 Aug 2025 13:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525753; cv=none; b=duJhYPSfkEVfCG/1VlWhP0NrohVX93A/edgFXqOoFuUZBAiLfI1+mwaR6b46pB3877hi3YDefo7+ffR7fXU4dZeM8PQtYEfFSLFlMq/VGRPD+vHDqbjsIY0YtB7PPm2fA7zyvSEOZFtO9x9fmpNxRHWkQOa2WJPCrWb380uGFoE=
+	t=1755522447; cv=none; b=EZnekWXfYjwQqhgysGuzibYpc7RrKiSeKosfBvKhh3QlfvYncgOfAgACoSNiHu5GU7Mx3Va+WoDUrlBg3oj6NnnCiXWhch/pBjO8hyAdm9gtgYyjG+ed7p0/5S/SO0LkNb1H5V2CUh8H5jmIB8T1BUZLEeNqI4W0/kBxBKkYVis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525753; c=relaxed/simple;
-	bh=Alq5anS3oBdQvMzJBY6ycbrFy89gNbtQdAo7bpopJGA=;
+	s=arc-20240116; t=1755522447; c=relaxed/simple;
+	bh=8SzncU8ip9SIfqJqCViTxz0vN9DqmtEi7F+N6V9R1GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxXdyjtPDJ92KMR2SC+W2dRrSAQl5lkDM/g30GgI62sr7u8BxyKMhJ+Eydjk4UXD3P1xz5TkBbBsgJToj8gMtoPotxaYoJRgRd1GljiXo+blZdmrh77PRcSsQnGpdykKcKMM1w5GLC09mkzneM0Y6L01E2Trnnnf9gPhr0qdxGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRAqUWWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5AAC4CEEB;
-	Mon, 18 Aug 2025 14:02:32 +0000 (UTC)
+	 MIME-Version; b=n3KR5n+SEq/kMkMSH0Z4jWrApiTYWZEpQklQ/EHlBu0KpQ8ybCXqy8ZgAHUnusE/ecbBvS9nOAMts7ZSa+WL8L9pQzHby62T5Esc+jRPPS5J/B30p6iyW8bYvXWlmvJamNL3ZZ3Mmv4EE8aH8lf17nnayIcaYI6DMSO8KJmypuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5o1jInn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9601C4CEEB;
+	Mon, 18 Aug 2025 13:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525752;
-	bh=Alq5anS3oBdQvMzJBY6ycbrFy89gNbtQdAo7bpopJGA=;
+	s=korg; t=1755522447;
+	bh=8SzncU8ip9SIfqJqCViTxz0vN9DqmtEi7F+N6V9R1GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRAqUWWl0cFB+OUP8l4A+o4uEP+0kWonU7n5va0IyRvNSMnHO23WeLFRXG2AIciGl
-	 hkY2i61BoV5dIaVRGTyi+KZQomUs3oeEwgz4NAQZn4u4gl3FJm9QyuWRqB1XUIpYt5
-	 Jbb2ezrclrnbBDREQ7Ov92XZqWrmmimYq2Q+xpa0=
+	b=V5o1jInndGacniA1lW9RTWUg5SQO0Rr6l7XfsMiboBerMa6XwsKfzmS4tiUO065Cm
+	 Iiz8lhTQHlEgmzcr4Rn+4XwFapljHD743bPJa7/ZJuNf02ypmdn/DZxMXf52S7rslI
+	 xlaiY1XsTJDJMpnkCXIeC1V+5JYRtNbk5oLkXe18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sun peng (Leo) Li" <sunpeng.li@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 357/570] drm/amd/display: Avoid configuring PSR granularity if PSR-SU not supported
+Subject: [PATCH 6.12 318/444] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
 Date: Mon, 18 Aug 2025 14:45:44 +0200
-Message-ID: <20250818124519.609566671@linuxfoundation.org>
+Message-ID: <20250818124500.869796451@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Alex Guo <alexguo1023@gmail.com>
 
-[ Upstream commit a5ce8695d6d1b40d6960d2d298b579042c158f25 ]
+[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
 
-[Why]
-If PSR-SU is disabled on the link, then configuring su_y granularity in
-mod_power_calc_psr_configs() can lead to assertions in
-psr_su_set_dsc_slice_height().
+In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash.
 
-[How]
-Check the PSR version in amdgpu_dm_link_setup_psr() to determine whether
-or not to configure granularity.
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-index f984cb0cb889..ff7b867ae98b 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
-@@ -119,8 +119,10 @@ bool amdgpu_dm_link_setup_psr(struct dc_stream_state *stream)
- 		psr_config.allow_multi_disp_optimizations =
- 			(amdgpu_dc_feature_mask & DC_PSR_ALLOW_MULTI_DISP_OPT);
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index 24f13a866735..40c5b1dc7d91 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2193,6 +2193,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 3)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
  
--		if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
--			return false;
-+		if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1) {
-+			if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
-+				return false;
-+		}
- 
- 		ret = dc_link_setup_psr(link, stream, &psr_config, &psr_context);
+ 	while (n_overflow == 1 && i) {
+@@ -2212,6 +2214,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1, n_empty = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 1 || msg[1].len < 2)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
+ 	u16 read_word;
  
 -- 
 2.39.5
