@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B1EB2A5C8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BEDB2A78F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39B2B171020
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593817B9CFC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AE422A7E0;
-	Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330AD335BCE;
+	Mon, 18 Aug 2025 13:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slnn8lIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdeFQv4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00B6321F56;
-	Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D78335BA3;
+	Mon, 18 Aug 2025 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523462; cv=none; b=RYEKWzzqne8nRNIRCrx8bOAEYGoTzTi4yishuWBywA1ZDoJCtst+VCZs5RLK5K9TJKt6uULNa+2Xj6x4TcEAxK1vA45MnT8gDAktQwvD1B+rpNcQMQIH/AmgEC0DvIOZKB089DziDc3i84iHBg/mMSdIELSWr2pOgILVkKBkJU0=
+	t=1755525159; cv=none; b=NPWPQ7I5awPUNm+12il7tGFXXmmYAgwZgAIz54f4zWsBRdHT6KOReslEYuEMr+dwHDwgz/HAEKEb2XWdyUYbglBWSw/wQSUwrLj0QCnIQfOfnbHTF9w8W+nQx5OdykCFCOn5jKMgA4mmVWsZB1GzuTNnLJxA7GjGtmG7EBHtGIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523462; c=relaxed/simple;
-	bh=AXoz0UBU1wMnMabt9I+4TRFyLvg5zkLv9cGtLQDRSmI=;
+	s=arc-20240116; t=1755525159; c=relaxed/simple;
+	bh=zguj5kN+ABducMxvpPxFMkhnCkTB1tU/SIQF3vHsz80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWQpNxT0xBOX2VD5BMk/5wcitJkJyh7QMS2+JTYyHwu6pTNoGZdsdEabhPTq/+18vx60BuSch/mqk7V/eipqP7rLkuu1b2kLZH2RONqqr7gRflFG+7lUyBtNr1/nMY6rvVrD9K7OkQ/uRiKm6fi1O/MwOQ84AMbT2z/lvCNH8xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slnn8lIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33845C4CEEB;
-	Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
+	 MIME-Version; b=IaSh7iaDjt3E0vXmBBvjt1aZ0MZlpCdR+acWRDUmHbZ4BiBwLkHd6RcdpVDymAP3kNrhsPpamDOrClGCOP8YDpqd/YQIsmNCXgRY2ZUGfzDCSR+H4nn4WhypJgNm0Eq2Fd89jO70uyStR5mTCb1JmpoiDkjCSdcjcRXwAJWv3OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdeFQv4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00555C4CEEB;
+	Mon, 18 Aug 2025 13:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523462;
-	bh=AXoz0UBU1wMnMabt9I+4TRFyLvg5zkLv9cGtLQDRSmI=;
+	s=korg; t=1755525158;
+	bh=zguj5kN+ABducMxvpPxFMkhnCkTB1tU/SIQF3vHsz80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slnn8lIE6KT+YqMkhPmpA2UxwBpqRdui5qw3SiHncuSozxUD6nvtTISZEfblJQaN2
-	 1VNhEJdlXjOR2EVA8ZA4BN9OQpksd4xIyjl13EbEwfIO0eb1gFA/fK7OvX79vLQrdb
-	 sWQhLV0af5whf8HOrGyeyXeuno/6phSL/CTGFt4Q=
+	b=AdeFQv4AfRTwIfj5syAV/s7XyOp/KTE7k0foMWQB75zx1w27lwtdrgX0Rgec5az3t
+	 I0zj1hlzilWfiKUmS0RFejKnZQIWSqvVO2xHt8ZPUp7HRff8Folo1wugtE9EbOdgyy
+	 bcpJsf+T98Wqf0urGHUR0h8q0C3iwNNBZ/6HSzEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 178/515] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
+Subject: [PATCH 6.16 177/570] mei: bus: Check for still connected devices in mei_cl_bus_dev_release()
 Date: Mon, 18 Aug 2025 14:42:44 +0200
-Message-ID: <20250818124505.218947102@linuxfoundation.org>
+Message-ID: <20250818124512.617983576@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
+[ Upstream commit 35e8a426b16adbecae7a4e0e3c00fc8d0273db53 ]
 
-In the function mperf_start(), mperf_monitor snapshots the time, tsc
-and finally the aperf,mperf MSRs. However, this order of snapshotting
-in is reversed in mperf_stop(). As a result, the C0 residency (which
-is computed as delta_mperf * 100 / delta_tsc) is under-reported on
-CPUs that is 100% busy.
+mei_cl_bus_dev_release() also frees the mei-client (struct mei_cl)
+belonging to the device being released.
 
-Fix this by snapshotting time, tsc and then aperf,mperf in
-mperf_stop() in the same order as in mperf_start().
+If there are bugs like the just fixed bug in the ACE/CSI2 mei drivers,
+the mei-client being freed might still be part of the mei_device's
+file_list and iterating over this list after the freeing will then trigger
+a use-afer-free bug.
 
-Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Add a check to mei_cl_bus_dev_release() to make sure that the to-be-freed
+mei-client is not on the mei_device's file_list.
+
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-11-hansg@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/mei/bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index 73b6b10cbdd2..5ae02c3d5b64 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -240,9 +240,9 @@ static int mperf_stop(void)
- 	int cpu;
+diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
+index 67176caf5416..1958c043ac14 100644
+--- a/drivers/misc/mei/bus.c
++++ b/drivers/misc/mei/bus.c
+@@ -1301,10 +1301,16 @@ static void mei_dev_bus_put(struct mei_device *bus)
+ static void mei_cl_bus_dev_release(struct device *dev)
+ {
+ 	struct mei_cl_device *cldev = to_mei_cl_device(dev);
++	struct mei_device *mdev = cldev->cl->dev;
++	struct mei_cl *cl;
  
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
--		mperf_measure_stats(cpu);
--		mperf_get_tsc(&tsc_at_measure_end[cpu]);
- 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
-+		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+		mperf_measure_stats(cpu);
- 	}
- 
- 	return 0;
+ 	mei_cl_flush_queues(cldev->cl, NULL);
+ 	mei_me_cl_put(cldev->me_cl);
+ 	mei_dev_bus_put(cldev->bus);
++
++	list_for_each_entry(cl, &mdev->file_list, link)
++		WARN_ON(cl == cldev->cl);
++
+ 	kfree(cldev->cl);
+ 	kfree(cldev);
+ }
 -- 
 2.39.5
 
