@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B56B2AA3B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654CEB2A6B0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B035F1BA4228
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C105848D6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C830031E101;
-	Mon, 18 Aug 2025 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2803223DC0;
+	Mon, 18 Aug 2025 13:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJdh32QK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq2MMLPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8710234E19B;
-	Mon, 18 Aug 2025 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8E5219A7E;
+	Mon, 18 Aug 2025 13:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525814; cv=none; b=W8U02GrDvuryPMFaVD3LVLEZjTx6KJ1CPL4rubr/XvORhl+SVLksO9RhPzllhoAk2WfuaDWDSIiHDfmJP3fXbpYI8WPlehSEIqEIxlpdAUMRSyJB3G4RJwXX2n0n3/DTUM0FK16D/IZVPfLuKLQ0dqXQTpgU6BLcVgo4z0MrWxg=
+	t=1755524119; cv=none; b=qxXRMzanewdXxecQM3pVHpRH5uCocSYpyCqV9nKjVCBWXgSJyU0fSnTLDWGVJIP+/C2MKYhdRMRf1KaZDwuLgP+ovzPhUuFJpHQjZzFoOJaaLxEX+WmEYiyPccF7xX+8hZG+JDAHRBBTf9bjzUZGp5zmQ9NqsdGo5HW9vv5ZUAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525814; c=relaxed/simple;
-	bh=9sueY2WCDO9s/Dhxlc2w5TiR8RXGEApG9irsF+al83Y=;
+	s=arc-20240116; t=1755524119; c=relaxed/simple;
+	bh=ynsWwtNCSodI8gv01lME90OJc90A2o94THvQ1T9xK9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsNvW52zaMj5j8eHOs0v5kdKBXEpaT5XCFC3kfnUx3n9zKjvwAX7TRby/V0vgl/qiHAfRflapuEwDsJp1F6dgn9R16gVW7mhaPJvp1uUpUjDBqGG1B66r9WTN+RyUKhj/HaSHPiPnTSxwpvPOlcU4AAVSEssLG8fVPevCOrdUow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJdh32QK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE34C4CEEB;
-	Mon, 18 Aug 2025 14:03:33 +0000 (UTC)
+	 MIME-Version; b=F+Jzczv5yML21GpGwSF6yWw1Vnp4AwfswQCFK4o3Uz1ExYdf1K2GKLj3vzcQA7QgBgrDc/otSi4nJIijKUWrjNhSAup2F8rIt+m97rgiJsJoxf2jqNAxtAF4g0F/u8r12mKySaVhPuKOmDL6AfaWxRorpBd+TVymya69YKQP89E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oq2MMLPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C7FC113D0;
+	Mon, 18 Aug 2025 13:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525814;
-	bh=9sueY2WCDO9s/Dhxlc2w5TiR8RXGEApG9irsF+al83Y=;
+	s=korg; t=1755524118;
+	bh=ynsWwtNCSodI8gv01lME90OJc90A2o94THvQ1T9xK9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJdh32QKNjLng7DQeZZ6YFfie28CmCevcfJw+Jo/t22tGTwrVW8vSoEL9CJOo1Hot
-	 LO/YG1gtJW3kM2TfBu/brnxh3+np52tx7yc2WxGzUTmqXd9qVa53KtjSUJiQfUX4QV
-	 B9fdcGue4Zqll5/ZZe/IymLlEb+NOB66ZSshcBA4=
+	b=Oq2MMLPCGL7mA3OI7/nEDa2HD1rWx6vs6RHV3Fo8AAX+lfwWXYvyy9hr9QxrI9ClE
+	 ZK3ca9DyHceBjAmntxMS/2XejvHdPa7OMlwZ0q5/dHHwhk3ChrbBuQznjZMbuV3R22
+	 K1RBH4wTKPqsJeIN7b6aDKigjpBaSsH1rOxUp8Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florin Leotescu <florin.leotescu@nxp.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 373/570] hwmon: (emc2305) Set initial PWM minimum value during probe based on thermal state
+Subject: [PATCH 6.15 374/515] media: raspberrypi: cfe: Fix min_reqbufs_allocation
 Date: Mon, 18 Aug 2025 14:46:00 +0200
-Message-ID: <20250818124520.219702972@linuxfoundation.org>
+Message-ID: <20250818124512.813323883@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florin Leotescu <florin.leotescu@nxp.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 0429415a084a15466e87d504e8c2a502488184a5 ]
+[ Upstream commit 57b5a302b5d529db96ddc52fbccec005092ebb3d ]
 
-Prevent the PWM value from being set to minimum when thermal zone
-temperature exceeds any trip point during driver probe. Otherwise, the
-PWM fan speed will remains at minimum speed and not respond to
-temperature changes.
+The driver checks if "vq->max_num_buffers + *nbuffers < 3", but
+vq->max_num_buffers is (by default) 32, so the check is never true. Nor
+does the check make sense.
 
-Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-Link: https://lore.kernel.org/r/20250603113125.3175103-5-florin.leotescu@oss.nxp.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+The original code in the BSP kernel was "vq->num_buffers + *nbuffers <
+3", but got mangled along the way to upstream. The intention was to make
+sure that at least 3 buffers are allocated.
+
+Fix this by removing the bad lines and setting q->min_reqbufs_allocation
+to three.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/emc2305.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/platform/raspberrypi/rp1-cfe/cfe.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-index 234c54956a4b..1dbe3f26467d 100644
---- a/drivers/hwmon/emc2305.c
-+++ b/drivers/hwmon/emc2305.c
-@@ -299,6 +299,12 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
- 		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
- 		return PTR_ERR(data->cdev_data[cdev_idx].cdev);
- 	}
-+
-+	if (data->cdev_data[cdev_idx].cur_state > 0)
-+		/* Update pwm when temperature is above trips */
-+		pwm = EMC2305_PWM_STATE2DUTY(data->cdev_data[cdev_idx].cur_state,
-+					     data->max_state, EMC2305_FAN_MAX);
-+
- 	/* Set minimal PWM speed. */
- 	if (data->pwm_separate) {
- 		ret = emc2305_set_pwm(dev, pwm, cdev_idx);
-@@ -312,10 +318,10 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
- 		}
- 	}
- 	data->cdev_data[cdev_idx].cur_state =
--		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
-+		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
- 				       EMC2305_FAN_MAX);
- 	data->cdev_data[cdev_idx].last_hwmon_state =
--		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
-+		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
- 				       EMC2305_FAN_MAX);
- 	return 0;
- }
+diff --git a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
+index 69a5f23e7954..9af9efc0d7e7 100644
+--- a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
++++ b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
+@@ -1025,9 +1025,6 @@ static int cfe_queue_setup(struct vb2_queue *vq, unsigned int *nbuffers,
+ 	cfe_dbg(cfe, "%s: [%s] type:%u\n", __func__, node_desc[node->id].name,
+ 		node->buffer_queue.type);
+ 
+-	if (vq->max_num_buffers + *nbuffers < 3)
+-		*nbuffers = 3 - vq->max_num_buffers;
+-
+ 	if (*nplanes) {
+ 		if (sizes[0] < size) {
+ 			cfe_err(cfe, "sizes[0] %i < size %u\n", sizes[0], size);
+@@ -1999,6 +1996,7 @@ static int cfe_register_node(struct cfe_device *cfe, int id)
+ 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
+ 	q->lock = &node->lock;
+ 	q->min_queued_buffers = 1;
++	q->min_reqbufs_allocation = 3;
+ 	q->dev = &cfe->pdev->dev;
+ 
+ 	ret = vb2_queue_init(q);
 -- 
 2.39.5
 
