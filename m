@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-170376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB6CB2A376
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6B6B2A94A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE7947B8E96
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5CA81BA3B2D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E4531E0E9;
-	Mon, 18 Aug 2025 13:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E84233A02C;
+	Mon, 18 Aug 2025 14:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKGm1EzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCh8+uor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E5031A055;
-	Mon, 18 Aug 2025 13:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A25F30DEC8;
+	Mon, 18 Aug 2025 14:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522427; cv=none; b=ahIku7utJOA3xdmeut7I8lH1zDbAmuSQbxMViV4AI2NE2W1p76oMNfBxVr/x0IA9JIUvWADnuwfw7kn595vulZY8mUwHBOj7cFVLLzaLjcuM4tbvhzXQKOlMkxakjI3T9ia9nKYNRQTOgvdE/r7vn2ogLbsm/q1S2Dj5cikgrTk=
+	t=1755525737; cv=none; b=aGbexMuDFxmSflN8D6yQwNtMxe9EKd83TJ9Tq/5Fq004RTP4HClzqUZToxaa6PNSui5dpsEdqQlCf6awHz1dyYyc+41i9KPbmHwDKeajSUz6I/HD4Xdpapk3rf2AVCBlf0IiNj0+JlY2xhIh4Vxfw6+g3fk+6glZYEcMmQU2MUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522427; c=relaxed/simple;
-	bh=Wogd57kA/IvkSBSgAZIecLC/qxXJptnWPyQd+yVeqwU=;
+	s=arc-20240116; t=1755525737; c=relaxed/simple;
+	bh=vnSaK7XQMvJOIofZbxqIjz0OihTWI9/1DqlvLmJcZ5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvi3xL4tMCYVhUzihuWETCEOlvgAnSjzP0TO8eYMNA1jg9L1SI6HehfAR2p7XsLtRQJFu8esOtPAZEGnyUHOL6ytSfjhZFt0JGr16t/BrR8kfoHiBryQTH4HhIwXH5T6b21vLzJ/Ix7vfy8iwwM0eC9tgd/Ds3Utxt1sRgmaG+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKGm1EzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D9FC4CEEB;
-	Mon, 18 Aug 2025 13:07:07 +0000 (UTC)
+	 MIME-Version; b=EWevco0zzwm+DiepunS3SBU1vcw+eeJd3NOKHyoV7vmQJ1EXEIrsyOEvfuYwiL+d+I8WmAvIJRwQwxkKg5/nFzFQ5FB31oMPSj9Stbje67AODmyVsGu5NWGNPokFH3BiPmozu37eQL1PajN4iamikgdZ2jLpqliUOZKB2y9Lfe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCh8+uor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B44C4CEEB;
+	Mon, 18 Aug 2025 14:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522427;
-	bh=Wogd57kA/IvkSBSgAZIecLC/qxXJptnWPyQd+yVeqwU=;
+	s=korg; t=1755525735;
+	bh=vnSaK7XQMvJOIofZbxqIjz0OihTWI9/1DqlvLmJcZ5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKGm1EzMfx7U86/p5+a/RQbtqv2OaLy028YVHqxOPMvtpkpWIwgdZ7hzqVlpWZspx
-	 i3/G6/F1ZijSikl++wSXG9DNRfYj4qlBgBpsktf5wm6PYpYmv26r7mnJB4U8rBe40H
-	 ycgS0B/BI1+JDTjC8bcdsBi+su8bQMt5ktKYOZrg=
+	b=bCh8+uorszaPpCXTX8wdHYprX2l40CeXjf/tBhVr7HoyVurP+tUDOd2V4AygkDTA/
+	 k5v8xIzprCpscHy+1Hpsw51aAJRFBy1m2SJCIL4o2EUzUIytNv+Mek1RvajYV3orhz
+	 GIr+7l2kFbmCJ3jPbNU6y5J9pI76P41i45rhTQuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/444] media: tc358743: Check I2C succeeded during probe
+Subject: [PATCH 6.16 352/570] rcu: Fix rcu_read_unlock() deadloop due to IRQ work
 Date: Mon, 18 Aug 2025 14:45:39 +0200
-Message-ID: <20250818124500.682978722@linuxfoundation.org>
+Message-ID: <20250818124519.424120620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +66,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Joel Fernandes <joelagnelf@nvidia.com>
 
-[ Upstream commit 303d81635e1d9c949b370215cc94526ed81f2e3d ]
+[ Upstream commit b41642c87716bbd09797b1e4ea7d904f06c39b7b ]
 
-The probe for the TC358743 reads the CHIPID register from
-the device and compares it to the expected value of 0.
-If the I2C request fails then that also returns 0, so
-the driver loads thinking that the device is there.
+During rcu_read_unlock_special(), if this happens during irq_exit(), we
+can lockup if an IPI is issued. This is because the IPI itself triggers
+the irq_exit() path causing a recursive lock up.
 
-Generally I2C communications are reliable so there is
-limited need to check the return value on every transfer,
-therefore only amend the one read during probe to check
-for I2C errors.
+This is precisely what Xiongfeng found when invoking a BPF program on
+the trace_tick_stop() tracepoint As shown in the trace below. Fix by
+managing the irq_work state correctly.
 
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+irq_exit()
+  __irq_exit_rcu()
+    /* in_hardirq() returns false after this */
+    preempt_count_sub(HARDIRQ_OFFSET)
+    tick_irq_exit()
+      tick_nohz_irq_exit()
+	    tick_nohz_stop_sched_tick()
+	      trace_tick_stop()  /* a bpf prog is hooked on this trace point */
+		   __bpf_trace_tick_stop()
+		      bpf_trace_run2()
+			    rcu_read_unlock_special()
+                              /* will send a IPI to itself */
+			      irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
+
+A simple reproducer can also be obtained by doing the following in
+tick_irq_exit(). It will hang on boot without the patch:
+
+  static inline void tick_irq_exit(void)
+  {
+ +	rcu_read_lock();
+ +	WRITE_ONCE(current->rcu_read_unlock_special.b.need_qs, true);
+ +	rcu_read_unlock();
+ +
+
+Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Closes: https://lore.kernel.org/all/9acd5f9f-6732-7701-6880-4b51190aa070@huawei.com/
+Tested-by: Qi Xi <xiqi2@huawei.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Reviewed-by: "Paul E. McKenney" <paulmck@kernel.org>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+[neeraj: Apply Frederic's suggested fix for PREEMPT_RT]
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358743.c | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ kernel/rcu/tree.h        | 13 ++++++++++++-
+ kernel/rcu/tree_plugin.h | 37 ++++++++++++++++++++++++++-----------
+ 2 files changed, 38 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 344a670e732f..621855b3a715 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -110,7 +110,7 @@ static inline struct tc358743_state *to_state(struct v4l2_subdev *sd)
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index 3830c19cf2f6..de6ca13a7b5f 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -174,6 +174,17 @@ struct rcu_snap_record {
+ 	unsigned long   jiffies;	/* Track jiffies value */
+ };
  
- /* --------------- I2C --------------- */
- 
--static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
-+static int i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- {
- 	struct tc358743_state *state = to_state(sd);
- 	struct i2c_client *client = state->i2c_client;
-@@ -136,6 +136,7 @@ static void i2c_rd(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- 		v4l2_err(sd, "%s: reading register 0x%x from 0x%x failed: %d\n",
- 				__func__, reg, client->addr, err);
- 	}
-+	return err != ARRAY_SIZE(msgs);
- }
- 
- static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
-@@ -192,15 +193,24 @@ static void i2c_wr(struct v4l2_subdev *sd, u16 reg, u8 *values, u32 n)
- 	}
- }
- 
--static noinline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
-+static noinline u32 i2c_rdreg_err(struct v4l2_subdev *sd, u16 reg, u32 n,
-+				  int *err)
- {
-+	int error;
- 	__le32 val = 0;
- 
--	i2c_rd(sd, reg, (u8 __force *)&val, n);
-+	error = i2c_rd(sd, reg, (u8 __force *)&val, n);
-+	if (err)
-+		*err = error;
- 
- 	return le32_to_cpu(val);
- }
- 
-+static inline u32 i2c_rdreg(struct v4l2_subdev *sd, u16 reg, u32 n)
-+{
-+	return i2c_rdreg_err(sd, reg, n, NULL);
-+}
++/*
++ * An IRQ work (deferred_qs_iw) is used by RCU to get the scheduler's attention.
++ * to report quiescent states at the soonest possible time.
++ * The request can be in one of the following states:
++ * - DEFER_QS_IDLE: An IRQ work is yet to be scheduled.
++ * - DEFER_QS_PENDING: An IRQ work was scheduled but either not yet run, or it
++ *                     ran and we still haven't reported a quiescent state.
++ */
++#define DEFER_QS_IDLE		0
++#define DEFER_QS_PENDING	1
 +
- static noinline void i2c_wrreg(struct v4l2_subdev *sd, u16 reg, u32 val, u32 n)
- {
- 	__le32 raw = cpu_to_le32(val);
-@@ -229,6 +239,13 @@ static u16 i2c_rd16(struct v4l2_subdev *sd, u16 reg)
- 	return i2c_rdreg(sd, reg, 2);
+ /* Per-CPU data for read-copy update. */
+ struct rcu_data {
+ 	/* 1) quiescent-state and grace-period handling : */
+@@ -192,7 +203,7 @@ struct rcu_data {
+ 					/*  during and after the last grace */
+ 					/* period it is aware of. */
+ 	struct irq_work defer_qs_iw;	/* Obtain later scheduler attention. */
+-	bool defer_qs_iw_pending;	/* Scheduler attention pending? */
++	int defer_qs_iw_pending;	/* Scheduler attention pending? */
+ 	struct work_struct strict_work;	/* Schedule readers for strict GPs. */
+ 
+ 	/* 2) batch handling */
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index a91b2322a0cd..b6f44871f774 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -486,13 +486,16 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
+ 	struct rcu_node *rnp;
+ 	union rcu_special special;
+ 
++	rdp = this_cpu_ptr(&rcu_data);
++	if (rdp->defer_qs_iw_pending == DEFER_QS_PENDING)
++		rdp->defer_qs_iw_pending = DEFER_QS_IDLE;
++
+ 	/*
+ 	 * If RCU core is waiting for this CPU to exit its critical section,
+ 	 * report the fact that it has exited.  Because irqs are disabled,
+ 	 * t->rcu_read_unlock_special cannot change.
+ 	 */
+ 	special = t->rcu_read_unlock_special;
+-	rdp = this_cpu_ptr(&rcu_data);
+ 	if (!special.s && !rdp->cpu_no_qs.b.exp) {
+ 		local_irq_restore(flags);
+ 		return;
+@@ -629,7 +632,23 @@ static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
+ 
+ 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
+ 	local_irq_save(flags);
+-	rdp->defer_qs_iw_pending = false;
++
++	/*
++	 * If the IRQ work handler happens to run in the middle of RCU read-side
++	 * critical section, it could be ineffective in getting the scheduler's
++	 * attention to report a deferred quiescent state (the whole point of the
++	 * IRQ work). For this reason, requeue the IRQ work.
++	 *
++	 * Basically, we want to avoid following situation:
++	 * 1. rcu_read_unlock() queues IRQ work (state -> DEFER_QS_PENDING)
++	 * 2. CPU enters new rcu_read_lock()
++	 * 3. IRQ work runs but cannot report QS due to rcu_preempt_depth() > 0
++	 * 4. rcu_read_unlock() does not re-queue work (state still PENDING)
++	 * 5. Deferred QS reporting does not happen.
++	 */
++	if (rcu_preempt_depth() > 0)
++		WRITE_ONCE(rdp->defer_qs_iw_pending, DEFER_QS_IDLE);
++
+ 	local_irq_restore(flags);
  }
  
-+static int i2c_rd16_err(struct v4l2_subdev *sd, u16 reg, u16 *value)
-+{
-+	int err;
-+	*value = i2c_rdreg_err(sd, reg, 2, &err);
-+	return err;
-+}
-+
- static void i2c_wr16(struct v4l2_subdev *sd, u16 reg, u16 val)
- {
- 	i2c_wrreg(sd, reg, val, 2);
-@@ -2030,6 +2047,7 @@ static int tc358743_probe(struct i2c_client *client)
- 	struct tc358743_platform_data *pdata = client->dev.platform_data;
- 	struct v4l2_subdev *sd;
- 	u16 irq_mask = MASK_HDMI_MSK | MASK_CSI_MSK;
-+	u16 chipid;
- 	int err;
- 
- 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_SMBUS_BYTE_DATA))
-@@ -2061,7 +2079,8 @@ static int tc358743_probe(struct i2c_client *client)
- 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
- 
- 	/* i2c access */
--	if ((i2c_rd16(sd, CHIPID) & MASK_CHIPID) != 0) {
-+	if (i2c_rd16_err(sd, CHIPID, &chipid) ||
-+	    (chipid & MASK_CHIPID) != 0) {
- 		v4l2_info(sd, "not a TC358743 on address 0x%x\n",
- 			  client->addr << 1);
- 		return -ENODEV;
+@@ -676,17 +695,13 @@ static void rcu_read_unlock_special(struct task_struct *t)
+ 			set_tsk_need_resched(current);
+ 			set_preempt_need_resched();
+ 			if (IS_ENABLED(CONFIG_IRQ_WORK) && irqs_were_disabled &&
+-			    expboost && !rdp->defer_qs_iw_pending && cpu_online(rdp->cpu)) {
++			    expboost && rdp->defer_qs_iw_pending != DEFER_QS_PENDING &&
++			    cpu_online(rdp->cpu)) {
+ 				// Get scheduler to re-evaluate and call hooks.
+ 				// If !IRQ_WORK, FQS scan will eventually IPI.
+-				if (IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD) &&
+-				    IS_ENABLED(CONFIG_PREEMPT_RT))
+-					rdp->defer_qs_iw = IRQ_WORK_INIT_HARD(
+-								rcu_preempt_deferred_qs_handler);
+-				else
+-					init_irq_work(&rdp->defer_qs_iw,
+-						      rcu_preempt_deferred_qs_handler);
+-				rdp->defer_qs_iw_pending = true;
++				rdp->defer_qs_iw =
++					IRQ_WORK_INIT_HARD(rcu_preempt_deferred_qs_handler);
++				rdp->defer_qs_iw_pending = DEFER_QS_PENDING;
+ 				irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
+ 			}
+ 		}
 -- 
 2.39.5
 
