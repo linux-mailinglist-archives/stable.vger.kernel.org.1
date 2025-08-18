@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B090BB2A822
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02263B2A30B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 582D758695F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EE4918A32F9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579E0335BCE;
-	Mon, 18 Aug 2025 13:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E084261B8D;
+	Mon, 18 Aug 2025 12:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmEg+err"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbZ8Mzd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A82B335BBE;
-	Mon, 18 Aug 2025 13:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA2A31AF2D;
+	Mon, 18 Aug 2025 12:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525178; cv=none; b=QNtdnFlBrSQJYgeNCymzJXuM2MQP+fkK9HUHPXf4iFVKXUTTgGM1/06UaGQlVnJ9Z+aUuQjkh9SedXyE/m3AsNJ6WZ2C42HbZ9JS1165W84BsFtrQJbrhLh1/Z50LosnuWVa/mgaVfEniPbcJE0cez5CBE4oxn4IuIs0aYEw3QQ=
+	t=1755521864; cv=none; b=RsXI9ZBAbhj18Ibtpuwc7xEIRBhes3U1HS5XCpcej37O4ex5quRe6asgdhTwm/VYjQAQIarjfiS3aFgkXd5d7e1j29qD+9ENR7AszW7gBZvnik8V9V+DWV71F26K8esZjYjHWfvIPjuPN14ChQG8XptF9iz26CIziaewUoTIf4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525178; c=relaxed/simple;
-	bh=DxCcReqlhsjnszGEU0GGfKyP95luHyhpzp4KCuafyFI=;
+	s=arc-20240116; t=1755521864; c=relaxed/simple;
+	bh=LGa45sBthclR3bqOELsNJGsGasVYvhkiX+FZqVVRiiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ODit86YVQoAf8J7GwtyFzPYHX96uCROjbfGHqVt2iGFpq+bX+DVKqBNQbWUBjs5oMe8+J9j7/wWQS1s9EU98SbtBLdKoSgYRk9V2qguGDcOTI6oKO4WweSVw0ez61E9K8y0XVQAIUWGjqkPBRxhphnU4dhdfMQtMempQo/ihFig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmEg+err; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7AEC4CEEB;
-	Mon, 18 Aug 2025 13:52:57 +0000 (UTC)
+	 MIME-Version; b=pzOs85yoF1DUIDFsFSj0UuLce97robornMwAIW4+TAXiz1dYfbgMXf8BHZQC02ywIFrIcep7I6s6o5skzQ80tTljxf+pVODMOqNYkhKRs1LvYTiDPuACKJhUAebm/c2/Xh9lxiwSBjPgeM1zaoN76hUVstm0RBXBwzpXGZFCrso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbZ8Mzd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC7BC4CEF1;
+	Mon, 18 Aug 2025 12:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525177;
-	bh=DxCcReqlhsjnszGEU0GGfKyP95luHyhpzp4KCuafyFI=;
+	s=korg; t=1755521864;
+	bh=LGa45sBthclR3bqOELsNJGsGasVYvhkiX+FZqVVRiiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmEg+errcLFxcNVqxS309P7a4j0BRqbdgklkThwzurHS6B2JONaCKFpbpBAr1DX/y
-	 fKilkgx6/kTIlCD3ozXPmLU8xu9egAllQNbNI7HZX46esXe6DJOFIEIreDdaUpNOOu
-	 RGnC/rNqcdj6H+cOfwi4MM8wF6mFMFPHzEq+p+ZI=
+	b=wbZ8Mzd2UgJl+dxpIbdiU0k+Gr8Zn1dPn49rDJljaJLN5RWfz+XmBp4+Ld3HUEuY+
+	 lHU6IwdVAJ7XPbPcEv6v+6LTsT9GYx5anAjzsi6onk7lpJvfv90a4Z+Rfm2aZPGTTj
+	 G3HmB1ROIhbpeTOFFr+yVMWLlbPVvxXNNAj16VLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	George Gaidarov <gdgaidarov+lkml@gmail.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 183/570] EDAC/ie31200: Enable support for Core i5-14600 and i7-14700
+Subject: [PATCH 6.12 144/444] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
 Date: Mon, 18 Aug 2025 14:42:50 +0200
-Message-ID: <20250818124512.859973002@linuxfoundation.org>
+Message-ID: <20250818124454.314705261@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Gaidarov <gdgaidarov+lkml@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 493f9c930e5ff72b3508755b45488d1ae2c9650e ]
+[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
 
-Device ID '0xa740' is shared by i7-14700, i7-14700K, and i7-14700T.
-Device ID '0xa704' is shared by i5-14600, i5-14600K, and i5-14600T.
+code mistakenly used a hardcoded index (codec[1]) instead of
+iterating, over the codec array using the loop variable i.
+Use codec[i] instead of codec[1] to match the loop iteration.
 
-Tested locally on my i7-14700K.
-
-Signed-off-by: George Gaidarov <gdgaidarov+lkml@gmail.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20250529162933.1228735-1-gdgaidarov+lkml@gmail.com
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/intel8x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index a53612be4b2f..6aac6672ba38 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -91,6 +91,8 @@
- #define PCI_DEVICE_ID_INTEL_IE31200_RPL_S_2	0x4640
- #define PCI_DEVICE_ID_INTEL_IE31200_RPL_S_3	0x4630
- #define PCI_DEVICE_ID_INTEL_IE31200_RPL_S_4	0xa700
-+#define PCI_DEVICE_ID_INTEL_IE31200_RPL_S_5	0xa740
-+#define PCI_DEVICE_ID_INTEL_IE31200_RPL_S_6	0xa704
- 
- /* Alder Lake-S */
- #define PCI_DEVICE_ID_INTEL_IE31200_ADL_S_1	0x4660
-@@ -740,6 +742,8 @@ static const struct pci_device_id ie31200_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_IE31200_RPL_S_2), (kernel_ulong_t)&rpl_s_cfg},
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_IE31200_RPL_S_3), (kernel_ulong_t)&rpl_s_cfg},
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_IE31200_RPL_S_4), (kernel_ulong_t)&rpl_s_cfg},
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_IE31200_RPL_S_5), (kernel_ulong_t)&rpl_s_cfg},
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_IE31200_RPL_S_6), (kernel_ulong_t)&rpl_s_cfg},
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_IE31200_ADL_S_1), (kernel_ulong_t)&rpl_s_cfg},
- 	{ 0, } /* 0 terminated list. */
- };
+diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
+index e4bb99f71c2c..95f0bd2e1532 100644
+--- a/sound/pci/intel8x0.c
++++ b/sound/pci/intel8x0.c
+@@ -2249,7 +2249,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
+ 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
+ 			for (i = 1; i < 4; i++) {
+ 				if (pcm->r[0].codec[i]) {
+-					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
++					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
+ 					break;
+ 				}
+ 			}
 -- 
 2.39.5
 
