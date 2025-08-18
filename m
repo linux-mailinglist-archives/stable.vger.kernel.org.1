@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D91B2A754
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FABAB2AA83
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357A12A1738
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F67E686B21
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC199321431;
-	Mon, 18 Aug 2025 13:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02E5337682;
+	Mon, 18 Aug 2025 14:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upmegZKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkvDdZmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99573320CAB;
-	Mon, 18 Aug 2025 13:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6163375CD;
+	Mon, 18 Aug 2025 14:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524579; cv=none; b=lOTWBk73yfyV0/X4Ng2wlct6Oaa/0cKJ+8uobZcBHvCCoLt8CJPgydgBzkc3i1hYIvV8ZZ//l6owTaLMqFnW3JXbRzmisxb0V4zEA1BLDnBNLoCXv1GYGLSVRYngnpfLsazxavQ4JdnoMVcTIBUdmeUG8uGtmT4yh16fBZt042Q=
+	t=1755526250; cv=none; b=L0t7xp8PqqMsSMrurtdHQg86IjuM5jc9lrTR4GcmOz96zG/B6MlOzi+TtE6nH94uuC3Ykzl1y+rTQrQoWRp1n3yMQ6iHq6Pj4OuiPbIwPA/fjHwzyS53ZJfOvKyP5LaTZ7YMwBh53qNpo7vflHfgMmWeQox/EcMRlFThJKbclPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524579; c=relaxed/simple;
-	bh=ccBQHH+zfrTOWMouGzzpCsSFF+7IBvKpjk5Ucuun5/Q=;
+	s=arc-20240116; t=1755526250; c=relaxed/simple;
+	bh=IGucrGU/t6NpTWlW/nnAEGIO3z9tGbFaLiL9i21uvJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lBhbSDosuU4og+kf+dbdUClZt0Baiai1ACTA1u8Rp+SKOVV308rpOR0obgnBhanRYlWNHJA4NmVMn6gW7Er274gb6IIcrAI08HYb9/aJi51aiaR7425W2pHiJO5T1TE6GkYEsVk23WmF478IOaQ5crbOVLpKLetsu3aEjGf7sUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upmegZKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097BEC4CEF1;
-	Mon, 18 Aug 2025 13:42:58 +0000 (UTC)
+	 MIME-Version; b=hEnIhwhG2+ZLA2KZ8Fn57QqQn9sF25Ik+0A8GG1kO6EAQaaz//bFGSCrmkbhMMvN0qTwJ/yETxrJ37eF2TmY5AcrtQw9uoZy1A81oXSTf6ofSyo1tAsZDA0FNlsrtJxKKRje3ltnzZdAqq+I0idwevhAbDKeHMKE0Y5ooh3sfC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkvDdZmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94960C4CEEB;
+	Mon, 18 Aug 2025 14:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524579;
-	bh=ccBQHH+zfrTOWMouGzzpCsSFF+7IBvKpjk5Ucuun5/Q=;
+	s=korg; t=1755526250;
+	bh=IGucrGU/t6NpTWlW/nnAEGIO3z9tGbFaLiL9i21uvJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=upmegZKwV0cYi63Td6+VbKzkB1gCb/UyQoBsYPYJGI/mAnV/srmiqOP4cRa3RJifX
-	 Jkx6XqN1wUO2Im4DlmcuMLM3R4WhGzwMi4/6kYw315h5sWKLjpmy41WbXB3FZRzxK5
-	 t0dycYDEHcSctBInoGgOhb/sUlBxdmDraw0iloug=
+	b=VkvDdZmBGzsSqWx02l54aqRpK0mECKF8ZP8rDOuJqEKr/PqKykX3VMNjM/90p7OLN
+	 MC6WLo3cd/CGwh5bv7UFQyu+AU8MQ69+APxdkCYLcy5bYYXzrhSxa5698E4KX04wEf
+	 bIuGyp45Nos2zVuiMic9rRYTCXeJqSV7r+/peg1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>
-Subject: [PATCH 6.15 501/515] tools/nolibc: fix spelling of FD_SETBITMASK in FD_* macros
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 6.16 500/570] iommufd: Report unmapped bytes in the error path of iopt_unmap_iova_range
 Date: Mon, 18 Aug 2025 14:48:07 +0200
-Message-ID: <20250818124517.733957203@linuxfoundation.org>
+Message-ID: <20250818124525.123360734@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willy Tarreau <w@1wt.eu>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit a477629baa2a0e9991f640af418e8c973a1c08e3 upstream.
+commit b23e09f9997771b4b739c1c694fa832b5fa2de02 upstream.
 
-While nolibc-test does test syscalls, it doesn't test as much the rest
-of the macros, and a wrong spelling of FD_SETBITMASK in commit
-feaf75658783a broke programs using either FD_SET() or FD_CLR() without
-being noticed. Let's fix these macros.
+There are callers that read the unmapped bytes even when rc != 0. Thus, do
+not forget to report it in the error path too.
 
-Fixes: feaf75658783a ("nolibc: fix fd_set type")
-Cc: stable@vger.kernel.org # v6.2+
-Acked-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Willy Tarreau <w@1wt.eu>
+Fixes: 8d40205f6093 ("iommufd: Add kAPI toward external drivers for kernel access")
+Link: https://patch.msgid.link/r/e2b61303bbc008ba1a4e2d7c2a2894749b59fdac.1752126748.git.nicolinc@nvidia.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/nolibc/types.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/iommufd/io_pagetable.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/tools/include/nolibc/types.h
-+++ b/tools/include/nolibc/types.h
-@@ -127,7 +127,7 @@ typedef struct {
- 		int __fd = (fd);					\
- 		if (__fd >= 0)						\
- 			__set->fds[__fd / FD_SETIDXMASK] &=		\
--				~(1U << (__fd & FX_SETBITMASK));	\
-+				~(1U << (__fd & FD_SETBITMASK));	\
- 	} while (0)
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -743,8 +743,10 @@ again:
+ 			iommufd_access_notify_unmap(iopt, area_first, length);
+ 			/* Something is not responding to unmap requests. */
+ 			tries++;
+-			if (WARN_ON(tries > 100))
+-				return -EDEADLOCK;
++			if (WARN_ON(tries > 100)) {
++				rc = -EDEADLOCK;
++				goto out_unmapped;
++			}
+ 			goto again;
+ 		}
  
- #define FD_SET(fd, set) do {						\
-@@ -144,7 +144,7 @@ typedef struct {
- 		int __r = 0;						\
- 		if (__fd >= 0)						\
- 			__r = !!(__set->fds[__fd / FD_SETIDXMASK] &	\
--1U << (__fd & FD_SET_BITMASK));						\
-+1U << (__fd & FD_SETBITMASK));						\
- 		__r;							\
- 	})
- 
+@@ -766,6 +768,7 @@ again:
+ out_unlock_iova:
+ 	up_write(&iopt->iova_rwsem);
+ 	up_read(&iopt->domains_rwsem);
++out_unmapped:
+ 	if (unmapped)
+ 		*unmapped = unmapped_bytes;
+ 	return rc;
 
 
 
