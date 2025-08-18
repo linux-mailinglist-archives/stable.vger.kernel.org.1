@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D663B2AA51
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0276B2A6ED
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35976E412C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65DFA5856B3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029C932A3DF;
-	Mon, 18 Aug 2025 14:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6E02C235C;
+	Mon, 18 Aug 2025 13:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwOay5ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVuEw9A4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45F332A3E6;
-	Mon, 18 Aug 2025 14:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD2031AF15;
+	Mon, 18 Aug 2025 13:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526187; cv=none; b=HaCHfxmdREBhgiYbaCPy/9wADWN+xnPRINTp6sj7Jdx6GUrPyPczGOuWJbRfhGlyLNapMZNEOeSpnZPMDIYuYU3fU3MzcMPiecST7+DTiPAl0L2//ZlvaRTT7P/JMuO28yCcx9sXeeREs6G1SntxXdMT8UolP7KU54EZBvMPeJY=
+	t=1755524378; cv=none; b=lZX13NNuDYwsWd+NkEQ+ntrJzFaUveSGBmDzo71gFqqt+NTV6yckFlAF86GaJMpADi2eeC4cTbTIfecV5KldkydK3Yp9u6XGCo9mYS3LpnIzVZRw/dHp+aLzx21FSF/0fe/YrmkddPqqHim8HCNQObxWfVVbI7vJr1nIW5afV4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526187; c=relaxed/simple;
-	bh=DuZfhSKsqRbNs/yDj+ZtO5vm8Z+BwEuxnY2ZhZmxekE=;
+	s=arc-20240116; t=1755524378; c=relaxed/simple;
+	bh=5+uxInoR8EjyXX5WsTnuZf1Ciw1e8EIkVof2zxey5Wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFuW4/XMpZFTztMnYdP1R0wZv8B9Fp3t9wOUYdFutwiVI2FHeKzI/rp46fNufB/FLJpfuqdG/yBFDJZ2D+cR6POQTCnsrAVFARQpUR/dbWZG76ZnjkyLXICFsXuRPOoptvRlJgWGtHdgJZFNTJJTwJttF7XfkIs0ncdlaQFqp6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwOay5ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F055EC113D0;
-	Mon, 18 Aug 2025 14:09:46 +0000 (UTC)
+	 MIME-Version; b=JUHUs5hhVrOW0QiFtsOvt+ff0ks+da9JJKhIz/wz+ahno9vEiT+3KMN4+FCtKGikYrZrsWc6FQsk+FFUl3641nDJlBA9UaoKAhWoX8EvB5DiXp0tKSMrzgMsNIXsxJVQI/7Bp+ud8XxY8AwIS7dwvYTS/j/JHM7n5o6c2xr0rso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVuEw9A4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F77FC116B1;
+	Mon, 18 Aug 2025 13:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526187;
-	bh=DuZfhSKsqRbNs/yDj+ZtO5vm8Z+BwEuxnY2ZhZmxekE=;
+	s=korg; t=1755524377;
+	bh=5+uxInoR8EjyXX5WsTnuZf1Ciw1e8EIkVof2zxey5Wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwOay5yeC14qTi9wZ7JRuoE9dP1e12k+bSEbzNC/3Q9LCFKVSi2A0QugAkbTOpee1
-	 10wroWfn3Bfxmmr5P9yvEfbh4Vi2nRiHHe1CHdkbMegaZ8SdB98978OjMNvos8QNK6
-	 0yhS2wdAsiAJeeIEA5cyZT1k1sHrkYHwN+PHWeG8=
+	b=qVuEw9A4yV8rDFuV2cTGYsZnJEZmdVxaj+y+i5w8mc0bIn6qyRJ8YsmGes5yy7fYw
+	 UNQiQYzgphyy/Eae2X8eWRTmteU/w/6LHEdErInjWMc1NjAvA9iig9+udB1i3qmJoQ
+	 dpyE6XDkO7yWTUx3ZAYStakSqNSAPmAvp+jePCA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 451/570] ipmi: Fix strcpy source and destination the same
-Date: Mon, 18 Aug 2025 14:47:18 +0200
-Message-ID: <20250818124523.194821985@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.15 453/515] ext4: fix largest free orders lists corruption on mb_optimize_scan switch
+Date: Mon, 18 Aug 2025 14:47:19 +0200
+Message-ID: <20250818124515.859252362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
+commit 7d345aa1fac4c2ec9584fbd6f389f2c2368671d5 upstream.
 
-The source and destination of some strcpy operations was the same.
-Split out the part of the operations that needed to be done for those
-particular calls so the unnecessary copy wasn't done.
+The grp->bb_largest_free_order is updated regardless of whether
+mb_optimize_scan is enabled. This can lead to inconsistencies between
+grp->bb_largest_free_order and the actual s_mb_largest_free_orders list
+index when mb_optimize_scan is repeatedly enabled and disabled via remount.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example, if mb_optimize_scan is initially enabled, largest free
+order is 3, and the group is in s_mb_largest_free_orders[3]. Then,
+mb_optimize_scan is disabled via remount, block allocations occur,
+updating largest free order to 2. Finally, mb_optimize_scan is re-enabled
+via remount, more block allocations update largest free order to 1.
+
+At this point, the group would be removed from s_mb_largest_free_orders[3]
+under the protection of s_mb_largest_free_orders_locks[2]. This lock
+mismatch can lead to list corruption.
+
+To fix this, whenever grp->bb_largest_free_order changes, we now always
+attempt to remove the group from its old order list. However, we only
+insert the group into the new order list if `mb_optimize_scan` is enabled.
+This approach helps prevent lock inconsistencies and ensures the data in
+the order lists remains reliable.
+
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+CC: stable@vger.kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250714130327.1830534-12-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
- 1 file changed, 42 insertions(+), 17 deletions(-)
+ fs/ext4/mballoc.c |   33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
-index ab759b492fdd..a013ddbf1466 100644
---- a/drivers/char/ipmi/ipmi_watchdog.c
-+++ b/drivers/char/ipmi/ipmi_watchdog.c
-@@ -1146,14 +1146,8 @@ static struct ipmi_smi_watcher smi_watcher = {
- 	.smi_gone = ipmi_smi_gone
- };
- 
--static int action_op(const char *inval, char *outval)
-+static int action_op_set_val(const char *inval)
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1150,33 +1150,28 @@ static void
+ mb_set_largest_free_order(struct super_block *sb, struct ext4_group_info *grp)
  {
--	if (outval)
--		strcpy(outval, action);
--
--	if (!inval)
--		return 0;
--
- 	if (strcmp(inval, "reset") == 0)
- 		action_val = WDOG_TIMEOUT_RESET;
- 	else if (strcmp(inval, "none") == 0)
-@@ -1164,18 +1158,26 @@ static int action_op(const char *inval, char *outval)
- 		action_val = WDOG_TIMEOUT_POWER_DOWN;
- 	else
- 		return -EINVAL;
--	strcpy(action, inval);
- 	return 0;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	int i;
++	int new, old = grp->bb_largest_free_order;
+ 
+-	for (i = MB_NUM_ORDERS(sb) - 1; i >= 0; i--)
+-		if (grp->bb_counters[i] > 0)
++	for (new = MB_NUM_ORDERS(sb) - 1; new >= 0; new--)
++		if (grp->bb_counters[new] > 0)
+ 			break;
++
+ 	/* No need to move between order lists? */
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) ||
+-	    i == grp->bb_largest_free_order) {
+-		grp->bb_largest_free_order = i;
++	if (new == old)
+ 		return;
+-	}
+ 
+-	if (grp->bb_largest_free_order >= 0) {
+-		write_lock(&sbi->s_mb_largest_free_orders_locks[
+-					      grp->bb_largest_free_order]);
++	if (old >= 0 && !list_empty(&grp->bb_largest_free_order_node)) {
++		write_lock(&sbi->s_mb_largest_free_orders_locks[old]);
+ 		list_del_init(&grp->bb_largest_free_order_node);
+-		write_unlock(&sbi->s_mb_largest_free_orders_locks[
+-					      grp->bb_largest_free_order]);
++		write_unlock(&sbi->s_mb_largest_free_orders_locks[old]);
+ 	}
+-	grp->bb_largest_free_order = i;
+-	if (grp->bb_largest_free_order >= 0 && grp->bb_free) {
+-		write_lock(&sbi->s_mb_largest_free_orders_locks[
+-					      grp->bb_largest_free_order]);
++
++	grp->bb_largest_free_order = new;
++	if (test_opt2(sb, MB_OPTIMIZE_SCAN) && new >= 0 && grp->bb_free) {
++		write_lock(&sbi->s_mb_largest_free_orders_locks[new]);
+ 		list_add_tail(&grp->bb_largest_free_order_node,
+-		      &sbi->s_mb_largest_free_orders[grp->bb_largest_free_order]);
+-		write_unlock(&sbi->s_mb_largest_free_orders_locks[
+-					      grp->bb_largest_free_order]);
++			      &sbi->s_mb_largest_free_orders[new]);
++		write_unlock(&sbi->s_mb_largest_free_orders_locks[new]);
+ 	}
  }
  
--static int preaction_op(const char *inval, char *outval)
-+static int action_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preaction);
-+		strcpy(outval, action);
- 
- 	if (!inval)
- 		return 0;
-+	rv = action_op_set_val(inval);
-+	if (!rv)
-+		strcpy(action, inval);
-+	return rv;
-+}
- 
-+static int preaction_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "pre_none") == 0)
- 		preaction_val = WDOG_PRETIMEOUT_NONE;
- 	else if (strcmp(inval, "pre_smi") == 0)
-@@ -1188,18 +1190,26 @@ static int preaction_op(const char *inval, char *outval)
- 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
- 	else
- 		return -EINVAL;
--	strcpy(preaction, inval);
- 	return 0;
- }
- 
--static int preop_op(const char *inval, char *outval)
-+static int preaction_op(const char *inval, char *outval)
- {
-+	int rv;
-+
- 	if (outval)
--		strcpy(outval, preop);
-+		strcpy(outval, preaction);
- 
- 	if (!inval)
- 		return 0;
-+	rv = preaction_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preaction, inval);
-+	return 0;
-+}
- 
-+static int preop_op_set_val(const char *inval)
-+{
- 	if (strcmp(inval, "preop_none") == 0)
- 		preop_val = WDOG_PREOP_NONE;
- 	else if (strcmp(inval, "preop_panic") == 0)
-@@ -1208,7 +1218,22 @@ static int preop_op(const char *inval, char *outval)
- 		preop_val = WDOG_PREOP_GIVE_DATA;
- 	else
- 		return -EINVAL;
--	strcpy(preop, inval);
-+	return 0;
-+}
-+
-+static int preop_op(const char *inval, char *outval)
-+{
-+	int rv;
-+
-+	if (outval)
-+		strcpy(outval, preop);
-+
-+	if (!inval)
-+		return 0;
-+
-+	rv = preop_op_set_val(inval);
-+	if (!rv)
-+		strcpy(preop, inval);
- 	return 0;
- }
- 
-@@ -1245,18 +1270,18 @@ static int __init ipmi_wdog_init(void)
- {
- 	int rv;
- 
--	if (action_op(action, NULL)) {
-+	if (action_op_set_val(action)) {
- 		action_op("reset", NULL);
- 		pr_info("Unknown action '%s', defaulting to reset\n", action);
- 	}
- 
--	if (preaction_op(preaction, NULL)) {
-+	if (preaction_op_set_val(preaction)) {
- 		preaction_op("pre_none", NULL);
- 		pr_info("Unknown preaction '%s', defaulting to none\n",
- 			preaction);
- 	}
- 
--	if (preop_op(preop, NULL)) {
-+	if (preop_op_set_val(preop)) {
- 		preop_op("preop_none", NULL);
- 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
- 	}
--- 
-2.39.5
-
 
 
 
