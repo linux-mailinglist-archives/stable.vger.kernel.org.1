@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766C0B2A38F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBA4B2A679
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 147AB6261DF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30C8B582BD5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC6731CA61;
-	Mon, 18 Aug 2025 13:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55358322DD6;
+	Mon, 18 Aug 2025 13:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EthgPfrt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/FFE4hH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFF730DD2C;
-	Mon, 18 Aug 2025 13:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1192A322A10;
+	Mon, 18 Aug 2025 13:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522321; cv=none; b=fnzbmQgsilJTIxPCXRrBokSoGdm86qizcmnU0qbyhEtnFmusSGPSE19QKK2v8z/nnj89ivDjPwUPDcvAfpatJL7dDjw/b3Fph0i1Tky0oIzjNsEUseMJlSCyQUVnu489NcwFtSgeBRD9VcJgDS5Y9uVz53N9AtCCHNrLGSSoGgg=
+	t=1755523954; cv=none; b=JV7eQOsEK6gZbL+3r78nhtB4Zh+b89/8VTgZ+Z3QeGs8o0dz35rfa7Wr31e0ohOg1Tq94Dw1Bi2phCEVTWSFyVILZvh2yzKQ+i5dJypLFGM2PsZJ9lFrw3vZQ4VTgWY/3/U+EcZwU2NHgPBr7iRoXpyqp5WYbkCuSFYcWtwkR/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522321; c=relaxed/simple;
-	bh=bUEIX4LfBnxM/ZEonUAAT+j/aJWnOMYd2JeaPsoUiL0=;
+	s=arc-20240116; t=1755523954; c=relaxed/simple;
+	bh=7gMkRvAen16xoK4ZXuwkulrQ+e8rPxEsnmJDpQin6hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pa9CumYhfptVXj1XzWpoK6BMmVzTXDEum/LNs9ZXVYSCtdMeaSeQM0DI7acyc7Dg8P7QTDpnoEC+aSdsJiVvZM9xc1mOxF4ynDZi2MWnibHU947gGpzNjY5SVK6wQw/Z1zLjKzgpkyLZWxHiPs9mTMbO0jiD6qoshxdE5fko9rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EthgPfrt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BDBC19421;
-	Mon, 18 Aug 2025 13:05:20 +0000 (UTC)
+	 MIME-Version; b=ASX9olxoFe6fiwlNYKhg7ImNIWcgLkokaKFEU3VK/BPusWIxesaXeJtg7f77lba1p2J4VUSE/lAdh3Lhn+mJMeJbL+H+4RRPoqWKtE6y/SCa7ExMgUMbpiJzoKtkmTjkJekLWd2x5OPj3GhmUvbIx0mjjP3kdqqyoa1VVPTGoq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/FFE4hH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD13C4CEEB;
+	Mon, 18 Aug 2025 13:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522321;
-	bh=bUEIX4LfBnxM/ZEonUAAT+j/aJWnOMYd2JeaPsoUiL0=;
+	s=korg; t=1755523953;
+	bh=7gMkRvAen16xoK4ZXuwkulrQ+e8rPxEsnmJDpQin6hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EthgPfrtNHQsZDrhZINFKjUYWlrfoT8KUj5SHgobA7PgTKryd/kiG7xmxm35fE/He
-	 unFoBY9pDBypvWGikjt6jT5mY1Z7apth1GxIdOtX+OcS/h8LEo+1kAJ/oOUF1x++Jk
-	 MrPVwwGTzKMfeKXHHo3D2OjYuSSq6bB4I9gt8M3w=
+	b=A/FFE4hHCrDJybWgXzxHe//fewIiEEzbos5HaVeqZQlo7eVJl2cuVc2eLAKEva+kC
+	 WgRKVRaNToD77wRm3fupq2ilbJ6dOv6ewzTkZwu7GdZ2J8oZBE4MD9E9UrgU1S5pGw
+	 uGqECmvkqkU6N8DerhMUHXKUdYhFN2q4tRGJOzK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 281/444] clk: tegra: periph: Fix error handling and resolve unsigned compare warning
-Date: Mon, 18 Aug 2025 14:45:07 +0200
-Message-ID: <20250818124459.503148948@linuxfoundation.org>
+Subject: [PATCH 6.15 322/515] drm/amd/display: Avoid trying AUX transactions on disconnected ports
+Date: Mon, 18 Aug 2025 14:45:08 +0200
+Message-ID: <20250818124510.830150820@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit 2dc2ca9000eea2eb749f658196204cb84d4306f7 ]
+[ Upstream commit deb24e64c8881c462b29e2c69afd9e6669058be5 ]
 
-./drivers/clk/tegra/clk-periph.c:59:5-9: WARNING:
-	Unsigned expression compared with zero: rate < 0
+[Why & How]
+Observe that we try to access DPCD 0x600h of disconnected DP ports.
+In order not to wasting time on retrying these ports, call
+dpcd_write_rx_power_ctrl() after checking its connection status.
 
-The unsigned long 'rate' variable caused:
-- Incorrect handling of negative errors
-- Compile warning: "Unsigned expression compared with zero"
-
-Fix by changing to long type and adding req->rate cast.
-
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://lore.kernel.org/r/79c7f01e29876c612e90d6d0157fb1572ca8b3fb.1752046270.git.xiaopei01@kylinos.cn
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-periph.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-index 0626650a7011..c9fc52a36fce 100644
---- a/drivers/clk/tegra/clk-periph.c
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -51,7 +51,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	struct tegra_clk_periph *periph = to_clk_periph(hw);
- 	const struct clk_ops *div_ops = periph->div_ops;
- 	struct clk_hw *div_hw = &periph->divider.hw;
--	unsigned long rate;
-+	long rate;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 53c961f86d43..2c1dcde5e3ea 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -140,7 +140,8 @@ void link_blank_dp_stream(struct dc_link *link, bool hw_init)
+ 				}
+ 		}
  
- 	__clk_hw_set_clk(div_hw, hw);
- 
-@@ -59,7 +59,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	if (rate < 0)
- 		return rate;
- 
--	req->rate = rate;
-+	req->rate = (unsigned long)rate;
- 	return 0;
+-		if ((!link->wa_flags.dp_keep_receiver_powered) || hw_init)
++		if (((!link->wa_flags.dp_keep_receiver_powered) || hw_init) &&
++			(link->type != dc_connection_none))
+ 			dpcd_write_rx_power_ctrl(link, false);
+ 	}
  }
- 
 -- 
 2.39.5
 
