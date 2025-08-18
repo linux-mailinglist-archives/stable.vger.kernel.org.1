@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-170721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406BEB2A5AA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D43B2A871
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E80767BD12F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37461BA4E1A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A488334703;
-	Mon, 18 Aug 2025 13:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6A0218ABD;
+	Mon, 18 Aug 2025 13:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/+IPgh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAhQ3zVW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC71832A3FA;
-	Mon, 18 Aug 2025 13:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA282253F2;
+	Mon, 18 Aug 2025 13:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523561; cv=none; b=dYdZxl92OgDzIrmpl18mv3Ly9XManTGEXa0MbAjopXHzDYaRSoqyZKu2+f9Ev+ThL2Ypq9ZrRBhgfQxQsxMPPfxQDxqliDWUDRPJptb3kpCp0kZPhK2h5MnoLoojE1/tLpXFmogDq21JDMOP0RQWZjpVSpPaUW7kmMHMPbHg3tY=
+	t=1755525366; cv=none; b=A38TQxGE1ItfhmbECTH8I3giRuOyg10SVglng7pfNeQOJUv/7MJ9GE5d9jsbc45cQicxJ9ctps0KRbyGH4FWB1bYFwd65y069uTssZWAPwuxugM1nzMYGCRxdDL8HuOH9CVYGWznPZ52cvdNbreptxJth8+m3VTeQgfv5kv2f4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523561; c=relaxed/simple;
-	bh=RoIv9uHNTyT6dR1WVL70wVppmwS73tUm9TU3hmRGNQs=;
+	s=arc-20240116; t=1755525366; c=relaxed/simple;
+	bh=JAyK+qqSfZMS1DSqPlACvDqUp0nXKeVKQOok4TwzTMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbk2Ns5JZ1hvilvg6rpxYDvrd5yhRw+h4c2PMJ00CdT87V/AmDF+HNWwdlQZotmlxUCg3iRmXajIFgou4I/I7rjzyWCYIV+Jy4tTuEpX4SUFMJCWfexHGxraL8ssXZsac3UspN1RD2RBtP3L9MrBs+S4zugvdPpAnl0mMisc2gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/+IPgh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEF0C4CEEB;
-	Mon, 18 Aug 2025 13:25:59 +0000 (UTC)
+	 MIME-Version; b=WQCy3EZyTQ5xJlX25DiS2GUIy4h0RNlmMs6EWC8uzQ9l1tAEZW1NeYQtD+XuVOYCyITdW1f6PzG2hE9cjbVLvih1kKzxk8ruAa8jjkRxVUTtTCHkvUrJbIUyYSxcD/dHCTrFY4YyCXP0T0b2s3X0wVQ829WPmqvXjEa8kEgi2aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAhQ3zVW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B8AC4CEEB;
+	Mon, 18 Aug 2025 13:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523560;
-	bh=RoIv9uHNTyT6dR1WVL70wVppmwS73tUm9TU3hmRGNQs=;
+	s=korg; t=1755525366;
+	bh=JAyK+qqSfZMS1DSqPlACvDqUp0nXKeVKQOok4TwzTMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/+IPgh9gfpSNGNI5TctDo9FJDn46rhYa6FpAAWAMVG7+pQobxxwsZEsO/deGnG5/
-	 mxpYM6XUaDXziGIRduKAiWi2/vD88qO6jKqJz2O/J0aMNTr7/IWGZKVWG9LJOUg8FD
-	 Qj9Mz9qiaUfSWGr1z83fN4xGahJ7S/bmHdvjJJh0=
+	b=WAhQ3zVWVIHcKtT9hxw064kZCAOdXA04HWamNl8UIpGVh0jP0KkePLA1Lk6uN3nNp
+	 FPastRNtwo1q94PJIOs6TfpCeiAlMMt9pYKrh0SgX8GTpoBHmTsk+Gz6rVhBjlq1DR
+	 o2GgFcq73Fvn08k3r6EveUisU97lvDCFbQhsmP0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	David Hildenbrand <david@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 208/515] be2net: Use correct byte order and format string for TCP seq and ack_seq
+Subject: [PATCH 6.16 207/570] powerpc/thp: tracing: Hide hugepage events under CONFIG_PPC_BOOK3S_64
 Date: Mon, 18 Aug 2025 14:43:14 +0200
-Message-ID: <20250818124506.381600131@linuxfoundation.org>
+Message-ID: <20250818124513.781921920@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +67,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 4701ee5044fb3992f1c910630a9673c2dc600ce5 ]
+[ Upstream commit 43cf0e05089afe23dac74fa6e1e109d49f2903c4 ]
 
-The TCP header fields seq and ack_seq are 32-bit values in network
-byte order as (__be32). these fields were earlier printed using
-ntohs(), which converts only 16-bit values and produces incorrect
-results for 32-bit fields. This patch is changeing the conversion
-to ntohl(), ensuring correct interpretation of these sequence numbers.
+The events hugepage_set_pmd, hugepage_set_pud, hugepage_update_pmd and
+hugepage_update_pud are only called when CONFIG_PPC_BOOK3S_64 is defined.
+As each event can take up to 5K regardless if they are used or not, it's
+best not to define them when they are not used. Add #ifdef around these
+events when they are not used.
 
-Notably, the format specifier is updated from %d to %u to reflect the
-unsigned nature of these fields.
-
-improves the accuracy of debug log messages for TCP sequence and
-acknowledgment numbers during TX timeouts.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717193552.3648791-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/20250612101259.0ad43e48@batman.local.home
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/trace/events/thp.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index 3d2e21592119..490af6659429 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1465,10 +1465,10 @@ static void be_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- 						 ntohs(tcphdr->source));
- 					dev_info(dev, "TCP dest port %d\n",
- 						 ntohs(tcphdr->dest));
--					dev_info(dev, "TCP sequence num %d\n",
--						 ntohs(tcphdr->seq));
--					dev_info(dev, "TCP ack_seq %d\n",
--						 ntohs(tcphdr->ack_seq));
-+					dev_info(dev, "TCP sequence num %u\n",
-+						 ntohl(tcphdr->seq));
-+					dev_info(dev, "TCP ack_seq %u\n",
-+						 ntohl(tcphdr->ack_seq));
- 				} else if (ip_hdr(skb)->protocol ==
- 					   IPPROTO_UDP) {
- 					udphdr = udp_hdr(skb);
+diff --git a/include/trace/events/thp.h b/include/trace/events/thp.h
+index f50048af5fcc..c8fe879d5828 100644
+--- a/include/trace/events/thp.h
++++ b/include/trace/events/thp.h
+@@ -8,6 +8,7 @@
+ #include <linux/types.h>
+ #include <linux/tracepoint.h>
+ 
++#ifdef CONFIG_PPC_BOOK3S_64
+ DECLARE_EVENT_CLASS(hugepage_set,
+ 
+ 	    TP_PROTO(unsigned long addr, unsigned long pte),
+@@ -66,6 +67,7 @@ DEFINE_EVENT(hugepage_update, hugepage_update_pud,
+ 	    TP_PROTO(unsigned long addr, unsigned long pud, unsigned long clr, unsigned long set),
+ 	    TP_ARGS(addr, pud, clr, set)
+ );
++#endif /* CONFIG_PPC_BOOK3S_64 */
+ 
+ DECLARE_EVENT_CLASS(migration_pmd,
+ 
 -- 
 2.39.5
 
