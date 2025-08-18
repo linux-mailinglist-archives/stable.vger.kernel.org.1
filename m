@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492D2B2A838
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4B1B2A319
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 188EA5A1219
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9837E1892BA3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A93335BC5;
-	Mon, 18 Aug 2025 13:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0838B27B330;
+	Mon, 18 Aug 2025 12:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI2I7unR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Plo0suiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AEB335BA3;
-	Mon, 18 Aug 2025 13:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFF926F2A7;
+	Mon, 18 Aug 2025 12:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525068; cv=none; b=vE+IkKNJqmg7kQ65eWmsBC71JOyA5oKpiL2JzeNhPB+weJydgiFEaf3Dy7EM1TFM6tL1JxPPGJpp9bAc/6Wnu593DWNYLYk8cjUAgYnorhiGfJ9ZVmC1Ft6X8IjamHY4duVJt1ww31cUkQQx5bq4d++n6R1d+oSZI4LLJ0nP684=
+	t=1755521891; cv=none; b=RfYoJbJGHOlEe1G0cWepZ8D+M2h8OiKDJOG/etn9McZgHrnztzWnUyv8XeOdfrJqixYxB4r1z4gYXx0N9t8+otA1rUeBRk3bV97Zh7XfNPJCZpMmJa/VGpJAYUQUdB6BXIfl5DT3sqAXAk5VXnRQTi74F8g5KjSyRD4yPsZYGDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525068; c=relaxed/simple;
-	bh=C9t7IeYQ/h6FR4CXqUhKuhWZdycLqBAsEEgxen+pwoA=;
+	s=arc-20240116; t=1755521891; c=relaxed/simple;
+	bh=1CdeQAkF6YBMXg96O2iw7r3eOFGsUG+FipFz+Ri6ftg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzvHAuYHvpPxEAG8iVWtgYqIIhZKO+OUe0mal0Yb6wl6cdbQIsP95OIa2Rk9L83SJ0dF75AFCQ591g4DpydAWI7GN0mYJE0zpRRJl1nt45RTPXoyQJrGj8l/66dSephhYSvT8t3LrdlhF/Ev6IcYBD+nuc9dq+91PeLIABCsGjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tI2I7unR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AE2C4CEEB;
-	Mon, 18 Aug 2025 13:51:07 +0000 (UTC)
+	 MIME-Version; b=d0Xa6qL19wJZrHdIOdTpk2DZhtkd/kSeSBTLILhYfO+oIpbpzBxqWiOzKzml1gFcZgm+dUGk0mZqe+T9na0wDAFJro/QkJOU0cbCs1Tsx7S747KmQdmUFrNz09MHQ2+IixqAG8XIqWLTAbIHHXsXZBduVITDXUhIFczG3lOkaxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Plo0suiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E020BC4CEEB;
+	Mon, 18 Aug 2025 12:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525067;
-	bh=C9t7IeYQ/h6FR4CXqUhKuhWZdycLqBAsEEgxen+pwoA=;
+	s=korg; t=1755521891;
+	bh=1CdeQAkF6YBMXg96O2iw7r3eOFGsUG+FipFz+Ri6ftg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tI2I7unRY3vKHSRuajkbbrc0nFrJkP64JoEFLLLRmReCUuIrECFWHcFCfbfLN1A5U
-	 PC8ZPbEDRAWPlmB7c7kALtNOXqpo2SZO0jdCGANhEh7b55qFFA6/atKwI0U/3CAzqj
-	 coDROP+YDkKq7WdkhDBzRW9Rm1b2MxF9Rz5JVNwY=
+	b=Plo0suiT+VK4ujdRAqRq55dx9eBXKd5RWHJUjBor4uq+fJM4haKTfpYH26yOOnjcz
+	 xXrNebdqD9SSrEV2mHghk/GWlR9FQpwtlICjFkGSYzGzKdPxtG2Qhj+ZavkQArRbAU
+	 Dg2rzTBq3HIltyo/M5aHaiD8rzmJHNLIFbwfIGfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 149/570] PM / devfreq: governor: Replace sscanf() with kstrtoul() in set_freq_store()
+Subject: [PATCH 6.12 110/444] cpufreq: Exit governor when failed to start old governor
 Date: Mon, 18 Aug 2025 14:42:16 +0200
-Message-ID: <20250818124511.555797194@linuxfoundation.org>
+Message-ID: <20250818124453.060406903@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit 914cc799b28f17d369d5b4db3b941957d18157e8 ]
+[ Upstream commit 0ae204405095abfbc2d694ee0fbb49bcbbe55c57 ]
 
-Replace sscanf() with kstrtoul() in set_freq_store() and check the result
-to avoid invalid input.
+Detect the result of starting old governor in cpufreq_set_policy(). If it
+fails, exit the governor and clear policy->governor.
 
 Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://lore.kernel.org/lkml/20250421030020.3108405-2-zhenglifeng1@huawei.com/
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Link: https://patch.msgid.link/20250709104145.2348017-5-zhenglifeng1@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/governor_userspace.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/devfreq/governor_userspace.c b/drivers/devfreq/governor_userspace.c
-index d1aa6806b683..175de0c0b50e 100644
---- a/drivers/devfreq/governor_userspace.c
-+++ b/drivers/devfreq/governor_userspace.c
-@@ -9,6 +9,7 @@
- #include <linux/slab.h>
- #include <linux/device.h>
- #include <linux/devfreq.h>
-+#include <linux/kstrtox.h>
- #include <linux/pm.h>
- #include <linux/mutex.h>
- #include <linux/module.h>
-@@ -39,10 +40,13 @@ static ssize_t set_freq_store(struct device *dev, struct device_attribute *attr,
- 	unsigned long wanted;
- 	int err = 0;
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index fab94ffcb22c..bd55c2356303 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2724,10 +2724,12 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
+ 	pr_debug("starting governor %s failed\n", policy->governor->name);
+ 	if (old_gov) {
+ 		policy->governor = old_gov;
+-		if (cpufreq_init_governor(policy))
++		if (cpufreq_init_governor(policy)) {
+ 			policy->governor = NULL;
+-		else
+-			cpufreq_start_governor(policy);
++		} else if (cpufreq_start_governor(policy)) {
++			cpufreq_exit_governor(policy);
++			policy->governor = NULL;
++		}
+ 	}
  
-+	err = kstrtoul(buf, 0, &wanted);
-+	if (err)
-+		return err;
-+
- 	mutex_lock(&devfreq->lock);
- 	data = devfreq->governor_data;
- 
--	sscanf(buf, "%lu", &wanted);
- 	data->user_frequency = wanted;
- 	data->valid = true;
- 	err = update_devfreq(devfreq);
+ 	return ret;
 -- 
 2.39.5
 
