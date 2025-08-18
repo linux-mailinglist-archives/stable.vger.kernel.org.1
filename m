@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-170736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A689B2A658
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB541B2A872
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCB736227FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2261BA0C28
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA87B32276E;
-	Mon, 18 Aug 2025 13:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5321F335BD8;
+	Mon, 18 Aug 2025 13:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjrC6/q5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq2YAscX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E8B27B344;
-	Mon, 18 Aug 2025 13:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115E7335BA3;
+	Mon, 18 Aug 2025 13:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523607; cv=none; b=gxYH9i7FDCJQDtlrh154IO49z+GMHeb3jwp3dnodFC3s1J7f/X8O201kx81n1DhdqYdV1BX9YfutS3xNhkak8GBKNnujzWUR2CVhIab6UsDRbETam/SK+UgGZ1MlLXX2Eo40wJ/WrDFv2PusEAL0fiUo8NjtC6e31hrSPlrvAWs=
+	t=1755525203; cv=none; b=V860rmJF0g6bequEQ3V5XtedbMdcZNqaMzweyqwsZMsm8Cgq6xDwyS+k1kvIHLuSefXb86Z/leidk7RiWYaEmEam8tElqutuvjYN57WaROeTLzwJ4MmymS4rACV/xrY/PmdhclPDQwW791ogSDgRHip+4LOzoz7h0IALB7uOMRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523607; c=relaxed/simple;
-	bh=6TFsKiz57AGcCKXtFb0LxM264oHs/Z7qG5ZfKeVKYzs=;
+	s=arc-20240116; t=1755525203; c=relaxed/simple;
+	bh=1xZeW5PyTSZZKrwS4zg3sRccepyV+7udO3vWkNDHXJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZu4TVRI0f44t1zkQ00WvWIeTGKdMniekgNjgHAiwOOXXieQOO3EATiV0yDU+BXBE4UDaRdGfAOJeOcaEyMDi/jABxBn88LE+YuSHgGHqZp9pxHtlZ4ZHq3DGOYarXGorDDVqrwQQv7otEz5z7C5OfJ+uKNkGB50CCjmap0rNFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjrC6/q5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5EDC4CEEB;
-	Mon, 18 Aug 2025 13:26:46 +0000 (UTC)
+	 MIME-Version; b=Zf1zcAxbwIyyCpm27kLaij7HWjnvZnKB8y8zqmXu8RlW3TS1e4Ri0AzdGXmBhG35VFgd1LkUv/kDO2doM15TzCTIlbDKJDioeukGAF6qaHoaetZHhDVsIBG33rcCIm99pDq2UumikExdMVla42UdnpwunYZUD0ksKL1K59+9Xlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oq2YAscX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9104CC4CEEB;
+	Mon, 18 Aug 2025 13:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523607;
-	bh=6TFsKiz57AGcCKXtFb0LxM264oHs/Z7qG5ZfKeVKYzs=;
+	s=korg; t=1755525202;
+	bh=1xZeW5PyTSZZKrwS4zg3sRccepyV+7udO3vWkNDHXJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjrC6/q5Nupqdx7kkP7zA7EYv+uYDXuMCxXsXBlVb6Llf6pVBJ32NtIiyuwa81Yg6
-	 xmG9bFZDJDCnxyYkBcjRXE2NrP2WvnQ57IzKTiOYzYTfp8RjFQyXJh7NuNiwRimM6n
-	 kTP9DpvxG3TH5YKY1bkxyeB9BaKx9s5jhSBCKMug=
+	b=Oq2YAscXzjhWHxSZjE0+H418tfaUnKxQ5cSj569SOMTu18TaBgrpFAhnbxv9lFBWM
+	 ZHM7S/8/4dyGiZCh3MwnpBBJqoTegY+Twj4NZQPSlswpdiVb7Tzazm9rNwSWO4QCXe
+	 ehkwCKazINrMCnk0i3S2jua7cDBXes2PJwgGaYbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	David Hildenbrand <david@redhat.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 191/515] powerpc/thp: tracing: Hide hugepage events under CONFIG_PPC_BOOK3S_64
+Subject: [PATCH 6.16 190/570] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
 Date: Mon, 18 Aug 2025 14:42:57 +0200
-Message-ID: <20250818124505.726248904@linuxfoundation.org>
+Message-ID: <20250818124513.125369376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 43cf0e05089afe23dac74fa6e1e109d49f2903c4 ]
+[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
 
-The events hugepage_set_pmd, hugepage_set_pud, hugepage_update_pmd and
-hugepage_update_pud are only called when CONFIG_PPC_BOOK3S_64 is defined.
-As each event can take up to 5K regardless if they are used or not, it's
-best not to define them when they are not used. Add #ifdef around these
-events when they are not used.
+snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
+leads to null pointer dereference.
+This was reproduced with topology loading and marking a link as ignore
+due to missing hardware component on the system.
+On module removal the soc_tplg_remove_link() would call
+snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
+no runtime was created.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/20250612101259.0ad43e48@batman.local.home
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/thp.h | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/trace/events/thp.h b/include/trace/events/thp.h
-index f50048af5fcc..c8fe879d5828 100644
---- a/include/trace/events/thp.h
-+++ b/include/trace/events/thp.h
-@@ -8,6 +8,7 @@
- #include <linux/types.h>
- #include <linux/tracepoint.h>
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 67bebc339148..16bbc074dc5f 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1139,6 +1139,9 @@ static int snd_soc_compensate_channel_connection_map(struct snd_soc_card *card,
+ void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
+ 				struct snd_soc_pcm_runtime *rtd)
+ {
++	if (!rtd)
++		return;
++
+ 	lockdep_assert_held(&client_mutex);
  
-+#ifdef CONFIG_PPC_BOOK3S_64
- DECLARE_EVENT_CLASS(hugepage_set,
- 
- 	    TP_PROTO(unsigned long addr, unsigned long pte),
-@@ -66,6 +67,7 @@ DEFINE_EVENT(hugepage_update, hugepage_update_pud,
- 	    TP_PROTO(unsigned long addr, unsigned long pud, unsigned long clr, unsigned long set),
- 	    TP_ARGS(addr, pud, clr, set)
- );
-+#endif /* CONFIG_PPC_BOOK3S_64 */
- 
- DECLARE_EVENT_CLASS(migration_pmd,
- 
+ 	/*
 -- 
 2.39.5
 
