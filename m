@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55636B2A85B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4ABB2A5B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71C2B680374
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0372F6834A3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BB81E0DFE;
-	Mon, 18 Aug 2025 13:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8D9321F41;
+	Mon, 18 Aug 2025 13:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjxooPO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWI24uW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933A1335BA3;
-	Mon, 18 Aug 2025 13:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB1321F3C;
+	Mon, 18 Aug 2025 13:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525151; cv=none; b=a2QNsXT6h6oyvSJiKj+6BclFb1egJQw9B+hULhR5To0SX3FSBV1iXWzOw15+6zCgxpmZWCotkdq+YvjUMhSER+CuHz81kWPLuGiQ1QrGToOt1v1oOD9O3598RLuZAJKfb3lJCtQGnozUgaTduvCQKGIqEKtmVTBryLPlNF5OXtE=
+	t=1755523456; cv=none; b=iSAZyBnDmf+sqbg7/9lGE3X8FCjwNtExzPHie9+9dBm/lm/vEExfE+ZIZwNPpbKXvMF0bumoGfZrAK3T64XUjOvv90AhRdY6rE0IR/AhFslmSx34joVYTpauYoYotnm2PJbji195LzC3Z7lXT+BiWR3JPrw+FLYybaFzts/VB3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525151; c=relaxed/simple;
-	bh=uKM9rMpQF1IMvPoAI4ergeVP002HV/qVfTHle9UsHno=;
+	s=arc-20240116; t=1755523456; c=relaxed/simple;
+	bh=cfbq+BrPbZKXt05IQ5TNIhEWKOXNmAiecctYCbK61UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSl0fASBtD/iGaV33azKeNtlBC+mlFdB4ViRZ4LXZd3zcwaCSCsWryCoGRL5eI5H2Ml3i6y9Mk21k0h3AePm3X2Qyx66f+yXyk2BopkCGBMcNElF2dNJtacLEBTDTqtlcbSgF+hiCKSZ8UbZWaE/g+s5EzGHX8CjmO4hHiPOQMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjxooPO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174F6C4CEEB;
-	Mon, 18 Aug 2025 13:52:30 +0000 (UTC)
+	 MIME-Version; b=Sp0YmJJUr2nbfDKe6QO0E9Xw4+tFxPc3Kx+n5djuy1WymwT6K8MfCJvmqtj6aSkciXLDd10eseeHjPbGdlLm+CmI0IHMNh1YYNUp6yke7b4iX88vIVWEw3n7MwQv6nw6qARzEwL79hRsvKi0/NA4YSoqnRhYf0fu10WhSEKTWq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWI24uW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7242C4CEEB;
+	Mon, 18 Aug 2025 13:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525151;
-	bh=uKM9rMpQF1IMvPoAI4ergeVP002HV/qVfTHle9UsHno=;
+	s=korg; t=1755523456;
+	bh=cfbq+BrPbZKXt05IQ5TNIhEWKOXNmAiecctYCbK61UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjxooPO1g2g9NhiuJc1mlrZiA9GtsE7REfGm2MuxDUCb8ZEyWPiSXJnMdrVRw4PmT
-	 Au/n/b7p2ArvJcZ2d+nF/9GyIwQlShUUF49twBLJ7Z/xS/4r6Y3ivucudbFTCwEar1
-	 M3Yv57fovMSLyno5xB66Pl+bNuPLtYKe43nF0elw=
+	b=pWI24uW+ba+Vwo1oPj9170mXVBCtyy+j4wMZknGI5UGegtXjDuSvpQdVyWFIv8t92
+	 bH/ztljXhKAMiedD3tnDvAOpH1ejGQCwKIsJc94u1lBV0aTHrEZO+9a10rBjttum4V
+	 zn6tCs5KwxVUNwdrphut66CIWMdY3hBEQsAHQ1uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 175/570] x86/sev/vc: Fix EFI runtime instruction emulation
+Subject: [PATCH 6.15 176/515] usb: core: usb_submit_urb: downgrade type check
 Date: Mon, 18 Aug 2025 14:42:42 +0200
-Message-ID: <20250818124512.540115635@linuxfoundation.org>
+Message-ID: <20250818124505.140551518@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Hoffmann <kraxel@redhat.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 7b22e0432981c2fa230f1b493082b7e67112c4aa ]
+[ Upstream commit 503bbde34cc3dd2acd231f277ba70c3f9ed22e59 ]
 
-In case efi_mm is active go use the userspace instruction decoder which
-supports fetching instructions from active_mm.  This is needed to make
-instruction emulation work for EFI runtime code, so it can use CPUID and
-RDMSR.
+Checking for the endpoint type is no reason for a WARN, as that can
+cause a reboot. A driver not checking the endpoint type must not cause a
+reboot, as there is just no point in this.  We cannot prevent a device
+from doing something incorrect as a reaction to a transfer. Hence
+warning for a mere assumption being wrong is not sensible.
 
-EFI runtime code uses the CPUID instruction to gather information about
-the environment it is running in, such as SEV being enabled or not, and
-choose (if needed) the SEV code path for ioport access.
-
-EFI runtime code uses the RDMSR instruction to get the location of the
-CAA page (see SVSM spec, section 4.2 - "Post Boot").
-
-The big picture behind this is that the kernel needs to be able to
-properly handle #VC exceptions that come from EFI runtime services.
-Since EFI runtime services have a special page table mapping for the EFI
-virtual address space, the efi_mm context must be used when decoding
-instructions during #VC handling.
-
-  [ bp: Massage. ]
-
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Link: https://lore.kernel.org/20250626114014.373748-2-kraxel@redhat.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20250612122149.2559724-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/sev/vc-handle.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/core/urb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/sev/vc-handle.c b/arch/x86/coco/sev/vc-handle.c
-index 0989d98da130..faf1fce89ed4 100644
---- a/arch/x86/coco/sev/vc-handle.c
-+++ b/arch/x86/coco/sev/vc-handle.c
-@@ -17,6 +17,7 @@
- #include <linux/mm.h>
- #include <linux/io.h>
- #include <linux/psp-sev.h>
-+#include <linux/efi.h>
- #include <uapi/linux/sev-guest.h>
+diff --git a/drivers/usb/core/urb.c b/drivers/usb/core/urb.c
+index 5e52a35486af..120de3c499d2 100644
+--- a/drivers/usb/core/urb.c
++++ b/drivers/usb/core/urb.c
+@@ -500,7 +500,7 @@ int usb_submit_urb(struct urb *urb, gfp_t mem_flags)
  
- #include <asm/init.h>
-@@ -178,9 +179,15 @@ static enum es_result __vc_decode_kern_insn(struct es_em_ctxt *ctxt)
- 		return ES_OK;
- }
+ 	/* Check that the pipe's type matches the endpoint's type */
+ 	if (usb_pipe_type_check(urb->dev, urb->pipe))
+-		dev_WARN(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
++		dev_warn_once(&dev->dev, "BOGUS urb xfer, pipe %x != type %x\n",
+ 			usb_pipetype(urb->pipe), pipetypes[xfertype]);
  
-+/*
-+ * User instruction decoding is also required for the EFI runtime. Even though
-+ * the EFI runtime is running in kernel mode, it uses special EFI virtual
-+ * address mappings that require the use of efi_mm to properly address and
-+ * decode.
-+ */
- static enum es_result vc_decode_insn(struct es_em_ctxt *ctxt)
- {
--	if (user_mode(ctxt->regs))
-+	if (user_mode(ctxt->regs) || mm_is_efi(current->active_mm))
- 		return __vc_decode_user_insn(ctxt);
- 	else
- 		return __vc_decode_kern_insn(ctxt);
+ 	/* Check against a simple/standard policy */
 -- 
 2.39.5
 
