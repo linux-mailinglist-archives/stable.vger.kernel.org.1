@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45718B2A712
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764EAB2A424
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDD71687AD1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AF28622164
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A336921CC59;
-	Mon, 18 Aug 2025 13:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDCE23AB81;
+	Mon, 18 Aug 2025 13:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV12a7fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKbvjZPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C9719E82A;
-	Mon, 18 Aug 2025 13:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4955F3218CB;
+	Mon, 18 Aug 2025 13:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524292; cv=none; b=XArHBZNERP8zsk4OHMXCWEa1huerQ0dA95K0a4AbFjt9g1T7VdXetmbwwSHEQ+Y7n/V5U/VqZDQBb3xeyv4CbKtXI2rUGDGPVgJT6V68vsuwRpPv91a5VeKg7Fs5wkKEvMTtTQOlOYJ2QTgEQRTvairTV+raTyT2RYeVLTpGE3Q=
+	t=1755522679; cv=none; b=NzSnkFSSNeX582+M5IOSbLwVT/CjtmgfchJURCepKRYjUSgb+kSjVCIqQl4/E1rA1p4fVwP4xWnTZXFZIAk5+RPpidVyS/QpCnqUF61YVuF9ObwmAUPg+76ybHP/2FiP4WCtBH8z+3EJFn11jzxW3RjkZznKRlZwy9uaq8b631I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524292; c=relaxed/simple;
-	bh=Cd4RgV+2L3Nhi7dqGlCmJ+w2Ss71CuDYzmr21CzsIYA=;
+	s=arc-20240116; t=1755522679; c=relaxed/simple;
+	bh=lSgXTWRnXojVT66Uvd8cd6WcrhRbBDIDyDkK28BX0G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ym69Nh7UAQTu+fR9oN8M+A21ggKHO8Z7KU+1937yuOgTt+bInZymugOylnU+6L/ejrOTIMBgA+jD++7FE11kmZwEzejN3WPhtZauPYKfki2jY+AVIGaOUy9Wufask7gmsxjwR4RY6t8MLhF20woyvaTm+SBd7wH4KOkVDZH/nkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV12a7fh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8B9C113D0;
-	Mon, 18 Aug 2025 13:38:11 +0000 (UTC)
+	 MIME-Version; b=jNwDxXu+lpbYYUciSQ3xNHxTxKKtcd5+3KrxezUjwOlGXUK2kHzm5iZ/LdJS8dMkGhPejn9n1jA/1Hg8kF+N0eZPLh0ftyDeef40kK20j2jI8ZOKdqbX1Cui/6R3q00S35ToAfEEcijj+1DvMIBnhB163RDcA58egBZ/FuOmxLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKbvjZPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59558C4CEEB;
+	Mon, 18 Aug 2025 13:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524292;
-	bh=Cd4RgV+2L3Nhi7dqGlCmJ+w2Ss71CuDYzmr21CzsIYA=;
+	s=korg; t=1755522677;
+	bh=lSgXTWRnXojVT66Uvd8cd6WcrhRbBDIDyDkK28BX0G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZV12a7fh+r7VmqUUxFhtOl/qt7cdf1fDp5hbpxaVppiTfEkXXvznWEJhLhVGvpk10
-	 2uAoKFK8J0vhqz5ot0MenIicjUlljOJJo99ix/K/4YKOki06Fpuy3bNv1rKdoeJWRN
-	 rVvdsivbinEDDUA6Ic076dWe7ru0K4WzaHA9Z4tE=
+	b=RKbvjZPiw2Ibfr2Pq/a9UB7UJxA1sp7OCMe3WyRT2Dq/jCGLLR0onBQaz9cwegCL8
+	 AmFdHbF103ou26SQfsJLFsnftXuFopLFS0F1mYYdOi8oRIF8pEcBsfF3GUbu+GNulf
+	 E/DXO0HfMXXv1kVBaI4VwBCoiPToBuu/eI9V4sW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 426/515] ASoC: Intel: avs: Fix uninitialized pointer error in probe()
-Date: Mon, 18 Aug 2025 14:46:52 +0200
-Message-ID: <20250818124514.821093558@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 387/444] usb: typec: ucsi: Update power_supply on power role change
+Date: Mon, 18 Aug 2025 14:46:53 +0200
+Message-ID: <20250818124503.409019362@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-[ Upstream commit 11f74f48c14c1f4fe16541900ea5944c42e30ccf ]
+commit 7616f006db07017ef5d4ae410fca99279aaca7aa upstream.
 
-If pcim_request_all_regions() fails, error path operates on
-uninitialized 'bus' pointer. Found out by Coverity static analyzer.
+The current power direction of an USB-C port also influences the
+power_supply's online status, so a power role change should also update
+the power_supply.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250730124906.351798-1-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes an issue on some systems where plugging in a normal USB device in
+for the first time after a reboot will cause upower to erroneously
+consider the system to be connected to AC power.
+
+Cc: stable <stable@kernel.org>
+Fixes: 0e6371fbfba3 ("usb: typec: ucsi: Report power supply changes")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250721-fix-ucsi-pwr-dir-notify-v1-1-e53d5340cb38@qtmlabs.xyz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/avs/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
-index cbbc656fcc3f..6ef49f10e19f 100644
---- a/sound/soc/intel/avs/core.c
-+++ b/sound/soc/intel/avs/core.c
-@@ -446,6 +446,8 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 	adev = devm_kzalloc(dev, sizeof(*adev), GFP_KERNEL);
- 	if (!adev)
- 		return -ENOMEM;
-+	bus = &adev->base.core;
-+
- 	ret = avs_bus_init(adev, pci, id);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to init avs bus: %d\n", ret);
-@@ -456,7 +458,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 	if (ret < 0)
- 		return ret;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1225,6 +1225,7 @@ static void ucsi_handle_connector_change
  
--	bus = &adev->base.core;
- 	bus->addr = pci_resource_start(pci, 0);
- 	bus->remap_addr = pci_ioremap_bar(pci, 0);
- 	if (!bus->remap_addr) {
--- 
-2.39.5
-
+ 	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
+ 		typec_set_pwr_role(con->port, role);
++		ucsi_port_psy_changed(con);
+ 
+ 		/* Complete pending power role swap */
+ 		if (!completion_done(&con->complete))
 
 
 
