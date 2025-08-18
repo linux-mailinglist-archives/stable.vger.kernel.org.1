@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-171530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76C8B2AA6C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:32:19 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FBCB2A675
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F22505A765B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 16DF74E389A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92662334717;
-	Mon, 18 Aug 2025 14:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD41320CB9;
+	Mon, 18 Aug 2025 13:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejnTlQRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CY08oyUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50317334712;
-	Mon, 18 Aug 2025 14:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92BE3203B7;
+	Mon, 18 Aug 2025 13:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526242; cv=none; b=CaOfkLttgFFNywz8PXxAutCAESaCn017TlUutv5ddWdErjBb6uys67zfONpDOX8ViAlMJGF8dcS+VqzIlvxegveUCqOR9dFOWSrJtfAdQ4mmRi46NBxB5ll0xEgUMX2EGTurqG8KsN0Zqx4tMzTizpn1ZoAJfAdHEERWzogEX3M=
+	t=1755524552; cv=none; b=pX6TWuF3U4M2RnXXi/BJp2N7wVTHPziFptEhn1JpTM8rJnPkaf2nXKlEO5kX0qF3wKitOHod/ENZaRUzIJSw9qG9w5+d3RcRgv28GZIsuCbExmdKiJlDOSemyQQ9qqRSgy9spJY4qtlJ1+vLNL4ZmOpaHO+MqybHfK3UD/mzDGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526242; c=relaxed/simple;
-	bh=l5KuUQaF+5OI047Cj6V3an3D25PpUPIZf5S098AM4l0=;
+	s=arc-20240116; t=1755524552; c=relaxed/simple;
+	bh=rVG1KbRJmedReq+xKzlPL4JKsB3H63H3GicAjTg4EGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROb5Fyxv8Q/MpQVnTXa5WQWz6sXQBzAdKbUf5rU15JWP4sMkygilkmiNRUdWwbIm5iQJlLe+5d9sfemPaTTCrBoZE6ADnZAc70m1tkDYJcvCv3+gYDBc89Es0kvg5UTx30N8YOdpZ+/Rva12QT9hPceGUkQOX6Ihrs6aDiaGrIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejnTlQRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52F9C4CEEB;
-	Mon, 18 Aug 2025 14:10:41 +0000 (UTC)
+	 MIME-Version; b=CEQntKB+3TqIa/OQucRdAXOVawQBNpVa9hLRGFtBcz6SOOin+Rn58MbmT0/x7RPKBdIr42D9y6XW6SpPB5kjUH0lgxpS3wc+5l5qYgprtiIV6uEn8LY+8nhTZmmiWlB/Db/M43oE49RfxKtyxOrPq9b5JB+QhGnqdzuBBqk9U8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CY08oyUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F0C4CEF1;
+	Mon, 18 Aug 2025 13:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526242;
-	bh=l5KuUQaF+5OI047Cj6V3an3D25PpUPIZf5S098AM4l0=;
+	s=korg; t=1755524552;
+	bh=rVG1KbRJmedReq+xKzlPL4JKsB3H63H3GicAjTg4EGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejnTlQRq9HChkXeeYv+3c71/JIEJ9mjNVU1rQDJ1j9kzg6NjBkhAoKnGCQDT8cFkr
-	 lpJ47WMvpaoasTgf/+CnejSoyFKSyUKniGm6m2oGMp8GSFKYllcH8pw/U30tpS3eHY
-	 gNSVe1nBdL2o/QoNk1tbQ+ZzyRJIjzRQq1eBNLTY=
+	b=CY08oyUM0BYgxKGDuSg7mVrpUBiiQV+TcrdHh7ovhcyAyUkojRVUGoVDTZ8tLFHmP
+	 rz29PNJXkjXfSkQNLzoyBUYvsHTjEk2BQmDTOZy6+ObKUep2AXdSOjwMINN4RKZkUy
+	 DOhvAHQUK1AVChSigCVJTcIz++WoeJGaPIu/wZ+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.16 499/570] iommu/arm-smmu-qcom: Add SM6115 MDSS compatible
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.15 500/515] tracing: fprobe: Fix infinite recursion using preempt_*_notrace()
 Date: Mon, 18 Aug 2025 14:48:06 +0200
-Message-ID: <20250818124525.087950013@linuxfoundation.org>
+Message-ID: <20250818124517.697877472@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit f7fa8520f30373ce99c436c4d57c76befdacbef3 upstream.
+commit a3e892ab0fc287389176eabdcd74234508f6e52d upstream.
 
-Add the SM6115 MDSS compatible to clients compatible list, as it also
-needs that workaround.
-Without this workaround, for example, QRB4210 RB2 which is based on
-SM4250/SM6115 generates a lot of smmu unhandled context faults during
-boot:
+Since preempt_count_add/del() are tracable functions, it is not allowed
+to use preempt_disable/enable() in ftrace handlers. Without this fix,
+probing on `preempt_count_add%return` will cause an infinite recursion
+of fprobes.
 
-arm_smmu_context_fault: 116854 callbacks suppressed
-arm-smmu c600000.iommu: Unhandled context fault: fsr=0x402,
-iova=0x5c0ec600, fsynr=0x320021, cbfrsynra=0x420, cb=5
-arm-smmu c600000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x420
-arm-smmu c600000.iommu: FSYNR0 = 00320021 [S1CBNDX=50 PNU PLVL=1]
-arm-smmu c600000.iommu: Unhandled context fault: fsr=0x402,
-iova=0x5c0d7800, fsynr=0x320021, cbfrsynra=0x420, cb=5
-arm-smmu c600000.iommu: FSR    = 00000402 [Format=2 TF], SID=0x420
+To fix this problem, use preempt_disable/enable_notrace() in
+fprobe_return().
 
-and also failed initialisation of lontium lt9611uxc, gpu and dpu is
-observed:
-(binding MDSS components triggered by lt9611uxc have failed)
+Link: https://lore.kernel.org/all/175374642359.1471729.1054175011228386560.stgit@mhiramat.tok.corp.google.com/
 
- ------------[ cut here ]------------
- !aspace
- WARNING: CPU: 6 PID: 324 at drivers/gpu/drm/msm/msm_gem_vma.c:130 msm_gem_vma_init+0x150/0x18c [msm]
- Modules linked in: ... (long list of modules)
- CPU: 6 UID: 0 PID: 324 Comm: (udev-worker) Not tainted 6.15.0-03037-gaacc73ceeb8b #4 PREEMPT
- Hardware name: Qualcomm Technologies, Inc. QRB4210 RB2 (DT)
- pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : msm_gem_vma_init+0x150/0x18c [msm]
- lr : msm_gem_vma_init+0x150/0x18c [msm]
- sp : ffff80008144b280
-  		...
- Call trace:
-  msm_gem_vma_init+0x150/0x18c [msm] (P)
-  get_vma_locked+0xc0/0x194 [msm]
-  msm_gem_get_and_pin_iova_range+0x4c/0xdc [msm]
-  msm_gem_kernel_new+0x48/0x160 [msm]
-  msm_gpu_init+0x34c/0x53c [msm]
-  adreno_gpu_init+0x1b0/0x2d8 [msm]
-  a6xx_gpu_init+0x1e8/0x9e0 [msm]
-  adreno_bind+0x2b8/0x348 [msm]
-  component_bind_all+0x100/0x230
-  msm_drm_bind+0x13c/0x3d0 [msm]
-  try_to_bring_up_aggregate_device+0x164/0x1d0
-  __component_add+0xa4/0x174
-  component_add+0x14/0x20
-  dsi_dev_attach+0x20/0x34 [msm]
-  dsi_host_attach+0x58/0x98 [msm]
-  devm_mipi_dsi_attach+0x34/0x90
-  lt9611uxc_attach_dsi.isra.0+0x94/0x124 [lontium_lt9611uxc]
-  lt9611uxc_probe+0x540/0x5fc [lontium_lt9611uxc]
-  i2c_device_probe+0x148/0x2a8
-  really_probe+0xbc/0x2c0
-  __driver_probe_device+0x78/0x120
-  driver_probe_device+0x3c/0x154
-  __driver_attach+0x90/0x1a0
-  bus_for_each_dev+0x68/0xb8
-  driver_attach+0x24/0x30
-  bus_add_driver+0xe4/0x208
-  driver_register+0x68/0x124
-  i2c_register_driver+0x48/0xcc
-  lt9611uxc_driver_init+0x20/0x1000 [lontium_lt9611uxc]
-  do_one_initcall+0x60/0x1d4
-  do_init_module+0x54/0x1fc
-  load_module+0x1748/0x1c8c
-  init_module_from_file+0x74/0xa0
-  __arm64_sys_finit_module+0x130/0x2f8
-  invoke_syscall+0x48/0x104
-  el0_svc_common.constprop.0+0xc0/0xe0
-  do_el0_svc+0x1c/0x28
-  el0_svc+0x2c/0x80
-  el0t_64_sync_handler+0x10c/0x138
-  el0t_64_sync+0x198/0x19c
- ---[ end trace 0000000000000000 ]---
- msm_dpu 5e01000.display-controller: [drm:msm_gpu_init [msm]] *ERROR* could not allocate memptrs: -22
- msm_dpu 5e01000.display-controller: failed to load adreno gpu
- platform a400000.remoteproc:glink-edge:apr:service@7:dais: Adding to iommu group 19
- msm_dpu 5e01000.display-controller: failed to bind 5900000.gpu (ops a3xx_ops [msm]): -22
- msm_dpu 5e01000.display-controller: adev bind failed: -22
- lt9611uxc 0-002b: failed to attach dsi to host
- lt9611uxc 0-002b: probe with driver lt9611uxc failed with error -22
-
-Suggested-by: Bjorn Andersson <andersson@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Fixes: 3581b7062cec ("drm/msm/disp/dpu1: add support for display on SM6115")
+Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://lore.kernel.org/r/20250613173238.15061-1-alexey.klimov@linaro.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/fprobe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -380,6 +380,7 @@ static const struct of_device_id qcom_sm
- 	{ .compatible = "qcom,sdm670-mdss" },
- 	{ .compatible = "qcom,sdm845-mdss" },
- 	{ .compatible = "qcom,sdm845-mss-pil" },
-+	{ .compatible = "qcom,sm6115-mdss" },
- 	{ .compatible = "qcom,sm6350-mdss" },
- 	{ .compatible = "qcom,sm6375-mdss" },
- 	{ .compatible = "qcom,sm8150-mdss" },
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index ba7ff14f5339..f9b3aa9afb17 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -352,7 +352,7 @@ static void fprobe_return(struct ftrace_graph_ret *trace,
+ 	size_words = SIZE_IN_LONG(size);
+ 	ret_ip = ftrace_regs_get_instruction_pointer(fregs);
+ 
+-	preempt_disable();
++	preempt_disable_notrace();
+ 
+ 	curr = 0;
+ 	while (size_words > curr) {
+@@ -368,7 +368,7 @@ static void fprobe_return(struct ftrace_graph_ret *trace,
+ 		}
+ 		curr += size;
+ 	}
+-	preempt_enable();
++	preempt_enable_notrace();
+ }
+ NOKPROBE_SYMBOL(fprobe_return);
+ 
+-- 
+2.50.1
+
 
 
 
