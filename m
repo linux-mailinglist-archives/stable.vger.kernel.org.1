@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-170282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB61B2A389
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E586B2A614
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE2E5622A5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 602613ADF81
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21661218AAB;
-	Mon, 18 Aug 2025 13:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F917322A2B;
+	Mon, 18 Aug 2025 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T602whUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEMWvfwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A8331CA51;
-	Mon, 18 Aug 2025 13:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19DB31CA61;
+	Mon, 18 Aug 2025 13:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522130; cv=none; b=e35Mw0sd2Xy0UTgrK+r+AVNWBa6gWQZtoCi5N3TbXYApqduF9hvjcUFdgmJl+pXAOdR820Q+sXixUFrTm0mCi6Ea25ggITvaSuy3rAwn8/1Ae8V44oDrIh/noPfrzpU2wDNUanZP5xF3FUxliJoqCe5KRP0l5Syajzv6iU7iB6E=
+	t=1755523624; cv=none; b=nrZXSedmQaczlYV1YloSAZkYl9S26WvhzlASuxduBEUTfvb/WRGoaf1ehUpbOW5Gigiv0kATmsiZfDT7qLJA8PpF4etDUVoXwUBObFGOvxm0fyKCU9mZlwbaGRj1Hm3kwM2rYvOiFM72bc0vMsiPGhtJdPi0hiYiWKpOSum50JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522130; c=relaxed/simple;
-	bh=VN382YUXGIHrORcccBu3kqOGaJ+qafhfiwhcuVuV59U=;
+	s=arc-20240116; t=1755523624; c=relaxed/simple;
+	bh=4HO5ElV4/Pd5Z+1jy2TftiyK6GTLT5F3dxtMNQdC37o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDy6omBjlNQQ5rfLIb/X3aiIRUhMusjfG84Qe7wMk5ccwd6Wq9pn5zTEGdKxgW6svInVu23AD7gER57lm6MCEv6hVL+ACR5sMci3vGZZoBcNtKI4QpkJ7I42jRvoyKy+PrqZmFxk/5L064z10pElNxu5MbOvfkYsoidhh+A0KZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T602whUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B22EC4CEEB;
-	Mon, 18 Aug 2025 13:02:09 +0000 (UTC)
+	 MIME-Version; b=B3K0EqoGgGgLKHofpuJVXMfKxp3UC7+R+JOFLElIzrrR3kjdoQU1IB8NPV4JW8hJn+CKYzmJffcN81o5h79FsIomaBdko+Egz4Ce4/gcaYIxlfxalA6RWN6o1pWxkII7nkV5LA7Mbv5X4GNkMwjpgI/aQ7Op620Mzy7oFUpAG18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEMWvfwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66503C4CEEB;
+	Mon, 18 Aug 2025 13:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522130;
-	bh=VN382YUXGIHrORcccBu3kqOGaJ+qafhfiwhcuVuV59U=;
+	s=korg; t=1755523623;
+	bh=4HO5ElV4/Pd5Z+1jy2TftiyK6GTLT5F3dxtMNQdC37o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T602whUCMSsgzF54t2iirH0UrWoyV6CANrRV7jYaJh2WD0lw1e0IDLekSauTeB4uy
-	 w7DyXxnK+QMNpGkQI0EUH7RJb6c/Wq/a+xJNZEw3F+uPLrBmTeiBvGggxo5GRwgWYv
-	 8gyM3d5Glb82YnObQvw6GgKfMnzjByolSvxE4sTg=
+	b=nEMWvfwREmlmQf1roy/LVJUE7m+s1e0cBnkKQGSbHrAVZ6pu1OzVgi+HREkMfw0/j
+	 cuK3pQhFqiZSfoMZhvyjB2B/2uvNNxjO4MTX1bdA4E1yGaL14MD7KMvR9/nN3UKWGa
+	 lp5bG5jAjyWN0taE0z0wHo4ucyrYnwodG9QAQ6yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Syed Hassan <syed.hassan@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/444] net/mlx5e: Properly access RCU protected qdisc_sleeping variable
+Subject: [PATCH 6.15 221/515] drm/amd/display: limit clear_update_flags to dcn32 and above
 Date: Mon, 18 Aug 2025 14:43:27 +0200
-Message-ID: <20250818124455.661629068@linuxfoundation.org>
+Message-ID: <20250818124506.875379169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 2a601b2d35623065d31ebaf697b07502d54878c9 ]
+[ Upstream commit f354556e29f40ef44fa8b13dc914817db3537e20 ]
 
-qdisc_sleeping variable is declared as "struct Qdisc __rcu" and
-as such needs proper annotation while accessing it.
+[why]
+dc has some code out of sync:
+dc_commit_updates_for_stream handles v1/v2/v3,
+but dc_update_planes_and_stream makes v1 asic to use v2.
 
-Without rtnl_dereference(), the following error is generated by sparse:
+as a reression fix: limit clear_update_flags to dcn32 or newer asic.
+need to follow up that v1 asic using v2 issue.
 
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40: warning:
-  incorrect type in initializer (different address spaces)
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    expected
-  struct Qdisc *qdisc
-drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    got struct
-  Qdisc [noderef] __rcu *qdisc_sleeping
-
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1752675472-201445-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/qos.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-index f0744a45db92..4e461cb03b83 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
-@@ -374,7 +374,7 @@ void mlx5e_reactivate_qos_sq(struct mlx5e_priv *priv, u16 qid, struct netdev_que
- void mlx5e_reset_qdisc(struct net_device *dev, u16 qid)
- {
- 	struct netdev_queue *dev_queue = netdev_get_tx_queue(dev, qid);
--	struct Qdisc *qdisc = dev_queue->qdisc_sleeping;
-+	struct Qdisc *qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 40561c4deb3c..d6f0c82d8dda 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -5335,8 +5335,7 @@ bool dc_update_planes_and_stream(struct dc *dc,
+ 	else
+ 		ret = update_planes_and_stream_v2(dc, srf_updates,
+ 			surface_count, stream, stream_update);
+-
+-	if (ret)
++	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
+ 		clear_update_flags(srf_updates, surface_count, stream);
  
- 	if (!qdisc)
- 		return;
+ 	return ret;
+@@ -5367,7 +5366,7 @@ void dc_commit_updates_for_stream(struct dc *dc,
+ 		ret = update_planes_and_stream_v1(dc, srf_updates, surface_count, stream,
+ 				stream_update, state);
+ 
+-	if (ret)
++	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
+ 		clear_update_flags(srf_updates, surface_count, stream);
+ }
+ 
 -- 
 2.39.5
 
