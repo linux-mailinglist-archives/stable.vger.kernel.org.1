@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056C4B2A8CB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:09:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80ED4B2A275
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0B92685F05
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CA497A1CD2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1566E335BC1;
-	Mon, 18 Aug 2025 13:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BAF31E0E6;
+	Mon, 18 Aug 2025 12:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/f/q+RH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GA/zCEh5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77F0335BA3;
-	Mon, 18 Aug 2025 13:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740B031CA62;
+	Mon, 18 Aug 2025 12:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525245; cv=none; b=gDLa/xDX3QAw50yT7zz8zeS41YsOpJQqJQoh1US3fIasgzeiTfi7w72hRO6Ov5cBe30UOCAjFp88GnLlne7rHU+orn1san1StAj0GNAtLkjVR75+V6Lu7DpkqjM1664wfbyQ+7F/mTnl3z9L7WtA4hr3kAqTboAfM9CXwJyD4iE=
+	t=1755521822; cv=none; b=a/Ww6jJ9Zd4KKuedzbsx/a79S+SAIAMJMSy4tr7+9BPPUxO7O84DJG8L/a5pTQIS0eRyHNc1LRxnAAOzvJB9ZoxcZ6cP8BS3TUYvDS0433hHdsq0fCV0TM/koMo9pq2HKUs96bNW3UP5e7TKl/VKNO9J5d5hQe5jfDkUjaI1lgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525245; c=relaxed/simple;
-	bh=wtyty3HdF1YFTM45Ws5f2MJy2nhGhXs8BkcIi8QQE2Y=;
+	s=arc-20240116; t=1755521822; c=relaxed/simple;
+	bh=QTEZBzJpEg33TRqxSDLnjRxYVVfLJyEd2nLpGGWRIKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZKeMEZ2L+FcluuHpEMZK8+6ohCZOBvLXLkNz3lA2Hm788KE+0Wc2lAqOPQ/Qj3zpeZ9vRM1u/DQJxtK346H3UcULXOj6dKBUCKgRgAKo7kUZ9s/l7dvfahgc0YopXEfVQ06dljNP3wLQaJLvkX1uwI8rMkpOy+VI4Px+H8xenLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/f/q+RH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8164C4CEEB;
-	Mon, 18 Aug 2025 13:54:04 +0000 (UTC)
+	 MIME-Version; b=kNkaIpqBej4mA5vxkM0qpiu6WtKOhgfYa7ZDil5ipTS45hhLFZDwpon60npI2WA0in1J1gO1uP9KTkQ7O8acpcioBuvbtxwk1sVbaRiG8BdyCDSOEIjdwkt+MVC2mTR1emuaAiuOnL6KVafcoE5rwKGj2gX6ePrst2hmqsJdUts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GA/zCEh5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCCCC4CEEB;
+	Mon, 18 Aug 2025 12:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525245;
-	bh=wtyty3HdF1YFTM45Ws5f2MJy2nhGhXs8BkcIi8QQE2Y=;
+	s=korg; t=1755521822;
+	bh=QTEZBzJpEg33TRqxSDLnjRxYVVfLJyEd2nLpGGWRIKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/f/q+RH78SOJ8egGrYXDtgsI1Bu5GhvRz2Ac0LugqKaIHcXbTFEsWZN54RsLZnnO
-	 ry4Ua7UysqOqj6Ic1QssVv+c5o8z865YS6UtGbb8rCXG3BhSQOrWfrgOJZfBGV0L3M
-	 /JEvglLDDbOsrb8KO3NqscIOOfM4guw7tN1wRL+E=
+	b=GA/zCEh51S2sCiWBugcfvpfSGV50lvVG1sP1H8OE1vEtkqbDWYoIIDhJ3fevosUow
+	 5RZgKYsDh5DUHxerlqIl6cbOJEE8dFPbz72K5SD5DKGVqYaSID3JtnCK+j+l0c78+c
+	 Gb/7A8eqBKIQb1SURfFCWYBB17oqHkS55tp8b4xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 171/570] selftests: vDSO: vdso_test_getrandom: Always print TAP header
+Subject: [PATCH 6.12 132/444] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
 Date: Mon, 18 Aug 2025 14:42:38 +0200
-Message-ID: <20250818124512.385429250@linuxfoundation.org>
+Message-ID: <20250818124453.862351640@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 1158220b24674edaf885433153deb4f0e5c7d331 ]
+[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
 
-The TAP specification requires that the output begins with a header line.
-If vgetrandom_init() fails and skips the test, that header line is missing.
+When a GHES (Generic Hardware Error Source) triggers a panic, add the
+TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+kernel as tainted due to a machine check event, improving diagnostics
+and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
+indicate lockdep remains valid.
 
-Call vgetrandom_init() after ksft_print_header().
+At large scale deployment, this helps to quickly determine panics that
+are coming due to hardware failures.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250611-selftests-vdso-fixes-v3-8-e62e37a6bcf5@linutronix.de
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vDSO/vdso_test_getrandom.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/apei/ghes.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_test_getrandom.c b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-index 95057f7567db..ff8d5675da2b 100644
---- a/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-@@ -242,6 +242,7 @@ static void kselftest(void)
- 	pid_t child;
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 94e3d3fe11ae..91f9267c07ea 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -996,6 +996,8 @@ static void __ghes_panic(struct ghes *ghes,
  
- 	ksft_print_header();
-+	vgetrandom_init();
- 	ksft_set_plan(2);
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
  
- 	for (size_t i = 0; i < 1000; ++i) {
-@@ -295,8 +296,6 @@ static void usage(const char *argv0)
- 
- int main(int argc, char *argv[])
- {
--	vgetrandom_init();
--
- 	if (argc == 1) {
- 		kselftest();
- 		return 0;
-@@ -306,6 +305,9 @@ int main(int argc, char *argv[])
- 		usage(argv[0]);
- 		return 1;
- 	}
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
 +
-+	vgetrandom_init();
-+
- 	if (!strcmp(argv[1], "bench-single"))
- 		bench_single();
- 	else if (!strcmp(argv[1], "bench-multi"))
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 
+ 	if (!panic_timeout)
 -- 
 2.39.5
 
