@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-171081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3E4B2A81F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1BBB2A578
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAB3F1BA3660
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 822394E0BFC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31685279351;
-	Mon, 18 Aug 2025 13:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8013375A8;
+	Mon, 18 Aug 2025 13:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mr6icTv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFGz/oMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E399421FF4B;
-	Mon, 18 Aug 2025 13:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8796F30C37D;
+	Mon, 18 Aug 2025 13:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524755; cv=none; b=azMRdCz8zmGb2UgjT1s+1qIQlEMIDNpqfKOlO71VQvOzTiCYafCumNfEbEsPwwJAKZHVv1E6xNSkFV3QQ6M7pMM94a4GtsLlv5CMmDpIKcQ4O6gQZ0gjmMK/shcSWOYxBAdkY0ekEduSfXkjznJZCYepNxHxhWnpZPloLlk7mjs=
+	t=1755523146; cv=none; b=htasAuNAEsIgH+ylfoN4GkjXZ40Qk4GRHJ4N1kWp0tA+Qup/541DnAWMiR1BrNp9V/vR0YkA+rFBMw4rcGXhr7HSkMa9dx2pkXxRl2YXaTSwcod3KmcChCo85cGnobZrylm/em4pgyG/RIeXyBzH5VjXheNrKvEaC5CoRXYYURI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524755; c=relaxed/simple;
-	bh=FpOvzk+4ALntbWidujc49mkUd0hVyCzH+oHa5DbNETQ=;
+	s=arc-20240116; t=1755523146; c=relaxed/simple;
+	bh=mDVRW5+BQeEU3h27jP946/yWqg7e6Q0rxv+elQqHhYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCIpgu9vqvZkBRTGJJpUyM+feuEVQCiFrn8Wf/pS+xclKgFrVf//Ctl+eEixgIi+rcmK2yJv3ac5MNB3RzlS2D7cdnF3x7UbxzzA91EdmaDJuLFj6Pau1LV4kZcx5lZdKqhU0PZfd+4nahmNt+AZ3oB6o3qiT0tB4tpU8+cBoCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr6icTv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D7CC4CEEB;
-	Mon, 18 Aug 2025 13:45:54 +0000 (UTC)
+	 MIME-Version; b=GkMI3umqyKowJoDHi4r+VowWSYIkeOvfFt9ECyXdyhxmX5IvyR37iZ84IL9G8AB/CHscAdxpP61ryvD9nni2Xkkl5agzNbqYdNd6/FSv4CxKwbVjytvc4qlH4N8D1Ztf87VlIQ+firegae2IO/p5bVSMcLqJ+CyoAQqgBOYB4lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFGz/oMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CCFC4CEEB;
+	Mon, 18 Aug 2025 13:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524754;
-	bh=FpOvzk+4ALntbWidujc49mkUd0hVyCzH+oHa5DbNETQ=;
+	s=korg; t=1755523146;
+	bh=mDVRW5+BQeEU3h27jP946/yWqg7e6Q0rxv+elQqHhYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mr6icTv0GH5/+oGNs1b2TtIxgtdKLzxNCECBoIb/MD2pKNQVsoj0JO2erdDlSk/Xr
-	 9oJSlsPRfw/fP/NTgtIJVjx2yohl2OkTfxLosOuGHtUbUopAu/E6phQwq7/dFXouNW
-	 GdRN0gJW87xwipin5VDgYLT1RbZ+ndtAQO6gkCnU=
+	b=IFGz/oMsLa6b4B2vcKSxGMnupl3UR7oonsRc/IzK8cU4p0HdGi9csFXi9UClC0UFx
+	 U28ZgxkQblaKWQZiuzNW1iHYEbfc5+97rhfWs6ya5jo+/vS2z/THX1qm73yjrg45kj
+	 V6SuXnElFJ5kNDdHwYaPTyY49OvYeA0UOuXCMChY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya K <me@0upti.me>,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.16 052/570] ACPI: EC: Relax sanity check of the ECDT ID string
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.15 053/515] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
 Date: Mon, 18 Aug 2025 14:40:39 +0200
-Message-ID: <20250818124507.819515773@linuxfoundation.org>
+Message-ID: <20250818124500.461913655@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 963e22c084c2b6097e1e635d29c6336881f67708 upstream.
+commit 5349ae5e05fa37409fd48a1eb483b199c32c889b upstream.
 
-It turns out that the ECDT table inside the ThinkBook 14 G7 IML
-contains a valid EC description but an invalid ID string
-("_SB.PC00.LPCB.EC0"). Ignoring this ECDT based on the invalid
-ID string prevents the kernel from detecting the built-in touchpad,
-so relax the sanity check of the ID string and only reject ECDTs
-with empty ID strings.
+We should call ib_dma_unmap_single() and mempool_free() before calling
+smbd_disconnect_rdma_connection().
 
-Reported-by: Ilya K <me@0upti.me>
-Fixes: 7a0d59f6a913 ("ACPI: EC: Ignore ECDT tables with an invalid ID string")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Tested-by: Ilya K <me@0upti.me>
-Link: https://patch.msgid.link/20250729062038.303734-1-W_Armin@gmx.de
-Cc: 6.16+ <stable@vger.kernel.org> # 6.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+And smbd_disconnect_rdma_connection() needs to be the last function to
+call as all other state might already be gone after it returns.
+
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/ec.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/smb/client/smbdirect.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 75c7db8b156a..7855bbf752b1 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -2033,7 +2033,7 @@ void __init acpi_ec_ecdt_probe(void)
- 		goto out;
- 	}
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -277,18 +277,20 @@ static void send_done(struct ib_cq *cq,
+ 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
+ 		request, wc->status);
  
--	if (!strstarts(ecdt_ptr->id, "\\")) {
-+	if (!strlen(ecdt_ptr->id)) {
- 		/*
- 		 * The ECDT table on some MSI notebooks contains invalid data, together
- 		 * with an empty ID string ("").
-@@ -2042,9 +2042,13 @@ void __init acpi_ec_ecdt_probe(void)
- 		 * a "fully qualified reference to the (...) embedded controller device",
- 		 * so this string always has to start with a backslash.
- 		 *
--		 * By verifying this we can avoid such faulty ECDT tables in a safe way.
-+		 * However some ThinkBook machines have a ECDT table with a valid EC
-+		 * description but an invalid ID string ("_SB.PC00.LPCB.EC0").
-+		 *
-+		 * Because of this we only check if the ID string is empty in order to
-+		 * avoid the obvious cases.
- 		 */
--		pr_err(FW_BUG "Ignoring ECDT due to invalid ID string \"%s\"\n", ecdt_ptr->id);
-+		pr_err(FW_BUG "Ignoring ECDT due to empty ID string\n");
- 		goto out;
- 	}
+-	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
+-		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
+-			wc->status, wc->opcode);
+-		smbd_disconnect_rdma_connection(request->info);
+-	}
+-
+ 	for (i = 0; i < request->num_sge; i++)
+ 		ib_dma_unmap_single(sc->ib.dev,
+ 			request->sge[i].addr,
+ 			request->sge[i].length,
+ 			DMA_TO_DEVICE);
  
--- 
-2.50.1
-
++	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
++		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
++			wc->status, wc->opcode);
++		mempool_free(request, info->request_mempool);
++		smbd_disconnect_rdma_connection(info);
++		return;
++	}
++
+ 	if (atomic_dec_and_test(&request->info->send_pending))
+ 		wake_up(&request->info->wait_send_pending);
+ 
 
 
 
