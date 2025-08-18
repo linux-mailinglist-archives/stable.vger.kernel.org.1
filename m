@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA41CB2A353
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23663B2A921
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D33623FC8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276BF5875DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E110931E105;
-	Mon, 18 Aug 2025 13:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CCA346A01;
+	Mon, 18 Aug 2025 13:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnhOjTrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGsWpQZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9D612DDA1;
-	Mon, 18 Aug 2025 13:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80033469F3;
+	Mon, 18 Aug 2025 13:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522136; cv=none; b=hu8a7ncxbznuopWld70q8i8j3EoCGoUZEbZiIOWSSg5KOFbxo5TuaBIpL1DMymfwlwXUjA0BIxpSYZXtYvJl/kbEkIwTqbYH90scJVUaRoJ3Cj1p6P5sqcq2iqzUjQUEOb0P6JExeQK77GBX384mhJ+oSsNHj1YeX6Y/Y8yosU4=
+	t=1755525452; cv=none; b=Vmjih/2nsx9nfqTyH5DdtXTYbA7QvRIj8sbtlQl4ZM9Z6RvEMk2L5DZGq/XIAsP7VjC3R1THOcQdzzd+ZOjLBR9ARcmdjYgzsTU2DDs4IYXKpTzqehwfTVOAP4x81eBIs+oJrQYEo2cK1nnZusC6DvyWmoGzNWcmjrW3H7UdpGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522136; c=relaxed/simple;
-	bh=6lgOEv1Cj/z1XejdGpg6/bv6q9EFhvIQfC4hwZZDFs4=;
+	s=arc-20240116; t=1755525452; c=relaxed/simple;
+	bh=34xeDUdJ2gbrbC8D/u7Q8yO5lmxdcq17yt695WW0FYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCQU0qP7EtoxUO44Hlo7d+BMHF8O6Bzjj/nbYULpqhff/U4PllxIovlmk5VqFhngKgMjPjY1UHwjkT/UzX7KYufCY/rchQPDLIQR5T2U5sF+8OSBwnrulk5vjXv99ugJ1OUAUnKtSuYgN4OqMB1yNLkztC7q+wCDoTthvI38xXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnhOjTrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246B9C4CEEB;
-	Mon, 18 Aug 2025 13:02:15 +0000 (UTC)
+	 MIME-Version; b=J14kR3+aA2m4WqeK1P/CV3ICWW/DM6Vjjf+EfnX1kJPARPRv7GGo7IOAOXzjuZXrmJ8FdM6wlHizkztOBUxMDu/rb+WZQXH+sk04wqYCHfbKPjSZgf4BV8luiH5Lpq0qEhKJ0kBXeohSKE7M5Clg5SQS4q+jQnxgAiRsPME6Fp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGsWpQZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAA7C4CEEB;
+	Mon, 18 Aug 2025 13:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522136;
-	bh=6lgOEv1Cj/z1XejdGpg6/bv6q9EFhvIQfC4hwZZDFs4=;
+	s=korg; t=1755525452;
+	bh=34xeDUdJ2gbrbC8D/u7Q8yO5lmxdcq17yt695WW0FYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DnhOjTrBbbZ41gcE/VJNcIiADU41wsCndMdweKDDIKI/O5Tire3Dnm6jST0ExFcB3
-	 XbGEXWGTnyFS4z546EnLDfWbw+CXcXe9bARxqBQQ2imXU0tWevXevme4nptfWV9UtG
-	 0VMw1Z+zdT7YnLXvrwCwYfGS/TK/wC9gr3vBtfBs=
+	b=cGsWpQZR615rn4PsMocqDV8XUSAHS/GqnchRyarf3KjHdRuzWkWr6IeQt8AYsUFLr
+	 y22WWxvZAwz2GfTJShdQjqnSr6Dij++AjnbBrnJWsvpH10ctFsQz+6RcHajPnL1vqh
+	 K0rFBGaQzdudf8Aeu32SijemyfhQfCsyXXIvUJTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 227/444] wifi: ath12k: Add memset and update default rate value in wmi tx completion
+Subject: [PATCH 6.16 266/570] rcu/nocb: Fix possible invalid rdps->nocb_cb_kthread pointer access
 Date: Mon, 18 Aug 2025 14:44:13 +0200
-Message-ID: <20250818124457.357028452@linuxfoundation.org>
+Message-ID: <20250818124516.092117363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 9903c0986f782dfc511d7638b6f15fb6e8600cd3 ]
+[ Upstream commit 1bba3900ca18bdae28d1b9fa10f16a8f8cb2ada1 ]
 
-When both AP/STA and monitor interfaces are enabled, ieee80211_tx_status()
-is invoked from two paths: the TX completion handler for data frames
-and the WMI TX completion handler for management frames.
-In the data path, the skb->cb is properly zeroed using memset, but in
-the WMI path, this step is missing.
+In the preparation stage of CPU online, if the corresponding
+the rdp's->nocb_cb_kthread does not exist, will be created,
+there is a situation where the rdp's rcuop kthreads creation fails,
+and then de-offload this CPU's rdp, does not assign this CPU's
+rdp->nocb_cb_kthread pointer, but this rdp's->nocb_gp_rdp and
+rdp's->rdp_gp->nocb_gp_kthread is still valid.
 
-As a result, mac80211 encountered uninitialized (junk) values in
-skb->cb when generating the radiotap header for monitor mode, leading
-to invalid radiotap lengths.
+This will cause the subsequent re-offload operation of this offline
+CPU, which will pass the conditional check and the kthread_unpark()
+will access invalid rdp's->nocb_cb_kthread pointer.
 
-Hence, explicitly zero the status field in the skb->cb using memset
-in WMI TX completion path to ensure consistent and correct behavior
-during WMI tx completion path.
+This commit therefore use rdp's->nocb_gp_kthread instead of
+rdp_gp's->nocb_gp_kthread for safety check.
 
-Additionally, set info->status.rates[0].idx = -1 to indicate that
-no valid rate information is available, avoiding misinterpretation of
-garbage values.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250603063512.1887652-1-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/rcu/tree_nocb.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index d5892e17494f..5c5fc2b7642f 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -5229,6 +5229,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
- 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 711043e4eb54..47d1851f23eb 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -1146,7 +1146,6 @@ static bool rcu_nocb_rdp_offload_wait_cond(struct rcu_data *rdp)
+ static int rcu_nocb_rdp_offload(struct rcu_data *rdp)
+ {
+ 	int wake_gp;
+-	struct rcu_data *rdp_gp = rdp->nocb_gp_rdp;
  
- 	info = IEEE80211_SKB_CB(msdu);
-+	memset(&info->status, 0, sizeof(info->status));
-+
-+	/* skip tx rate update from ieee80211_status*/
-+	info->status.rates[0].idx = -1;
-+
- 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
- 		info->flags |= IEEE80211_TX_STAT_ACK;
+ 	WARN_ON_ONCE(cpu_online(rdp->cpu));
+ 	/*
+@@ -1156,7 +1155,7 @@ static int rcu_nocb_rdp_offload(struct rcu_data *rdp)
+ 	if (!rdp->nocb_gp_rdp)
+ 		return -EINVAL;
  
+-	if (WARN_ON_ONCE(!rdp_gp->nocb_gp_kthread))
++	if (WARN_ON_ONCE(!rdp->nocb_gp_kthread))
+ 		return -EINVAL;
+ 
+ 	pr_info("Offloading %d\n", rdp->cpu);
+@@ -1166,7 +1165,7 @@ static int rcu_nocb_rdp_offload(struct rcu_data *rdp)
+ 
+ 	wake_gp = rcu_nocb_queue_toggle_rdp(rdp);
+ 	if (wake_gp)
+-		wake_up_process(rdp_gp->nocb_gp_kthread);
++		wake_up_process(rdp->nocb_gp_kthread);
+ 
+ 	swait_event_exclusive(rdp->nocb_state_wq,
+ 			      rcu_nocb_rdp_offload_wait_cond(rdp));
 -- 
 2.39.5
 
