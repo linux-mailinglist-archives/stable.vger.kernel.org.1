@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59AE3B2A61A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C86B2A86B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5527D1B670C7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D436E083E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3B23375BC;
-	Mon, 18 Aug 2025 13:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E0E27B358;
+	Mon, 18 Aug 2025 13:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uz1FU0+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XglxfI0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569FF27B330;
-	Mon, 18 Aug 2025 13:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BAA261B99;
+	Mon, 18 Aug 2025 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523749; cv=none; b=O+MAKAWMP3pRHA+YghBAT9G1fJVBC0AAuD7hI8qOu/0N8/o/xAgjLFILtpVZniBS++r90wmvP4ejo1AYPsCWxcLzsx/ipcJsu3ILNNVERkaqeLIFGWgKgdNwUNY7kOmxXMdD9TnGvLKVYjWYGXPW4lT8ZWfa2tV7ovPlf4aP1fQ=
+	t=1755525295; cv=none; b=fDM+6hKIp4AQsv6iFgo2xxNM3JnrvNnGi20ISjiLrQvX40/EBXZ3ORZvHWVyBuklZ7MQDeMl6ciLnwtxIiMcVhR+I84Sk3zGmXD5gL/KnJLw2yiXaTsVFwjeF90cBhLiY9ikUaNe8ihhvFNP5wP2pNDqhp/C/z8RIRja9v5HnlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523749; c=relaxed/simple;
-	bh=3uh8s4E/d6LasIkhFI3y4REcfP7/uHYvG+7z2iHClv4=;
+	s=arc-20240116; t=1755525295; c=relaxed/simple;
+	bh=66DnAOw2HrHqiZTmJQqy/QwmwxEX/6+2d6JgMdSFcFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETw7kZoRGOlRWqnckxE5JnjoIL3/Dt0cGKRLyeama7uJwr+0JaO2QJtGW4UPi/7e23R9RneX10wqof72B5Cpr2TlaypfVIvisRzRJjCwEjnpc3XJpFfBvpQoA9gler1IAk3xs5LhOYR7lidXKSj2rsOx6kSBzkm582KlnBM+pCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uz1FU0+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F82C4CEEB;
-	Mon, 18 Aug 2025 13:29:08 +0000 (UTC)
+	 MIME-Version; b=pcOC2tnHycMXkxaur0HTDoeZ7edRa9HpYeFVEC8yb/92S7TsXV/zdaFV2VI0P3BYrMTyVF5TM0czSLDlc/wWRGbd8DAvH4GKU8oFJMHyv14pEp0xNFGyj4k9R51OTvMWdN8er9gY/wlGnUldW0chrFQEm4UaTbS+M1JqFjL3PxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XglxfI0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640A9C4CEEB;
+	Mon, 18 Aug 2025 13:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523749;
-	bh=3uh8s4E/d6LasIkhFI3y4REcfP7/uHYvG+7z2iHClv4=;
+	s=korg; t=1755525294;
+	bh=66DnAOw2HrHqiZTmJQqy/QwmwxEX/6+2d6JgMdSFcFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uz1FU0+KGOkvP10BUdltn5UG9Edq17osf2gX8czR/YHC9XZKjn1/UYde+ezFMj+o3
-	 mjGV20hEhh9zdbcW8aCumpL/nFL7Lf4qrPg1riAK0jzjaYphKuT0H46FP58KQbaYFA
-	 7px0nBuooP7ET8ECxrKb5WiZSgMjUkx7hW76MEsQ=
+	b=XglxfI0KMvndOyqcRZHH8gVa91hWMBa/8agw7vJ3e2ZlEL3cAXPIZMO4vJFrmgjLp
+	 lJM2LUGLzG6UqYqOIaVAbgXWd1wx1/LIO5IM5LWWoUYd+uN6VPvjQmmd3lFuyRf9wb
+	 26ZEKpHHEXymAM6IIY/IUQovcpyD/6KxC+qT9j2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 220/515] rcu: Protect ->defer_qs_iw_pending from data race
+Subject: [PATCH 6.16 219/570] wifi: ath12k: Correct tid cleanup when tid setup fails
 Date: Mon, 18 Aug 2025 14:43:26 +0200
-Message-ID: <20250818124506.836876461@linuxfoundation.org>
+Message-ID: <20250818124514.241945510@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-[ Upstream commit 90c09d57caeca94e6f3f87c49e96a91edd40cbfd ]
+[ Upstream commit 4a2bf707270f897ab8077baee8ed5842a5321686 ]
 
-On kernels built with CONFIG_IRQ_WORK=y, when rcu_read_unlock() is
-invoked within an interrupts-disabled region of code [1], it will invoke
-rcu_read_unlock_special(), which uses an irq-work handler to force the
-system to notice when the RCU read-side critical section actually ends.
-That end won't happen until interrupts are enabled at the soonest.
+Currently, if any error occurs during ath12k_dp_rx_peer_tid_setup(),
+the tid value is already incremented, even though the corresponding
+TID is not actually allocated. Proceed to
+ath12k_dp_rx_peer_tid_delete() starting from unallocated tid,
+which might leads to freeing unallocated TID and cause potential
+crash or out-of-bounds access.
 
-In some kernels, such as those booted with rcutree.use_softirq=y, the
-irq-work handler is used unconditionally.
+Hence, fix by correctly decrementing tid before cleanup to match only
+the successfully allocated TIDs.
 
-The per-CPU rcu_data structure's ->defer_qs_iw_pending field is
-updated by the irq-work handler and is both read and updated by
-rcu_read_unlock_special().  This resulted in the following KCSAN splat:
+Also, remove tid-- from failure case of ath12k_dp_rx_peer_frag_setup(),
+as decrementing the tid before cleanup in loop will take care of this.
 
-------------------------------------------------------------------------
+Compile tested only.
 
-BUG: KCSAN: data-race in rcu_preempt_deferred_qs_handler / rcu_read_unlock_special
-
-read to 0xffff96b95f42d8d8 of 1 bytes by task 90 on cpu 8:
- rcu_read_unlock_special+0x175/0x260
- __rcu_read_unlock+0x92/0xa0
- rt_spin_unlock+0x9b/0xc0
- __local_bh_enable+0x10d/0x170
- __local_bh_enable_ip+0xfb/0x150
- rcu_do_batch+0x595/0xc40
- rcu_cpu_kthread+0x4e9/0x830
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-write to 0xffff96b95f42d8d8 of 1 bytes by task 88 on cpu 8:
- rcu_preempt_deferred_qs_handler+0x1e/0x30
- irq_work_single+0xaf/0x160
- run_irq_workd+0x91/0xc0
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-no locks held by irq_work/8/88.
-irq event stamp: 200272
-hardirqs last  enabled at (200272): [<ffffffffb0f56121>] finish_task_switch+0x131/0x320
-hardirqs last disabled at (200271): [<ffffffffb25c7859>] __schedule+0x129/0xd70
-softirqs last  enabled at (0): [<ffffffffb0ee093f>] copy_process+0x4df/0x1cc0
-softirqs last disabled at (0): [<0000000000000000>] 0x0
-
-------------------------------------------------------------------------
-
-The problem is that irq-work handlers run with interrupts enabled, which
-means that rcu_preempt_deferred_qs_handler() could be interrupted,
-and that interrupt handler might contain an RCU read-side critical
-section, which might invoke rcu_read_unlock_special().  In the strict
-KCSAN mode of operation used by RCU, this constitutes a data race on
-the ->defer_qs_iw_pending field.
-
-This commit therefore disables interrupts across the portion of the
-rcu_preempt_deferred_qs_handler() that updates the ->defer_qs_iw_pending
-field.  This suffices because this handler is not a fast path.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250721061749.886732-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_plugin.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 3c0bbbbb686f..003e549f6514 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -624,10 +624,13 @@ notrace void rcu_preempt_deferred_qs(struct task_struct *t)
-  */
- static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
- {
-+	unsigned long flags;
- 	struct rcu_data *rdp;
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index 6317c6d4c043..dd26ed8d7d96 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -101,7 +101,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
+ 		return -ENOENT;
+ 	}
  
- 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
-+	local_irq_save(flags);
- 	rdp->defer_qs_iw_pending = false;
-+	local_irq_restore(flags);
- }
+-	for (; tid >= 0; tid--)
++	for (tid--; tid >= 0; tid--)
+ 		ath12k_dp_rx_peer_tid_delete(ar, peer, tid);
  
- /*
+ 	spin_unlock_bh(&ab->base_lock);
 -- 
 2.39.5
 
