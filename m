@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739BAB2A5F2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822BAB2A310
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32CFD684763
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA321728A8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BD8343D7C;
-	Mon, 18 Aug 2025 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A35D320CD4;
+	Mon, 18 Aug 2025 12:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2okImK8q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIzSpuPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35408342CBF;
-	Mon, 18 Aug 2025 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D384431984A;
+	Mon, 18 Aug 2025 12:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523321; cv=none; b=hoQNlVgmHnp1+bcaDro4rjX2eon23mmv2Qqep8olHKub6LzN5rDdA6MO/AcuUy7TCW/pdB3VtVncBlulclgy7aGg5Hx0v3DPOj4rY6waSRMd94JRMt/McdzurV8fKPPAMJ2eR+tzRSX0xT25Feb+fewMUJN0/90BddbS5IA7BbU=
+	t=1755521698; cv=none; b=QvA7TyGD+1HRTicWWJR6OY2Cdpl9J9U1hH6ZbAa6Gfp3NpZdOgJUYZoxGmeyoF+zLhYGPU2U9CJdjG57cw0zLuD3lbQWOmnpBIPbnr31nIEDO2I5ChY6mu7Rsh302cS3gs+rdcwC8n9HjivOmiilvPpga0RtgcVt3YsjqRNto5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523321; c=relaxed/simple;
-	bh=lrGMdHbqMoJo0d47gQ7iTT6Gt5sUgLObdw1miH0mS34=;
+	s=arc-20240116; t=1755521698; c=relaxed/simple;
+	bh=tmn3KtJaDc4Jb8c+3Puqzp3gPdO+l2CfYGYbPWbOwDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OADNtjMuknePu/s0f8/v+8NTr9bkLX8OnsSPUTn7rCFtPoPCHJDLpq0mPe0XwCzPd/8q/ntOBgY8t48EvFe3ZmmhbyPFTpXmW7Pu2xbSE++zaRVeUBxnnSGEgtcs2Tmyk6QXEwdmEHW6Vd+dzkrcoaEG6cAAuRM3+zjKoG8Pl14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2okImK8q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06D4C4CEEB;
-	Mon, 18 Aug 2025 13:22:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LuluuTHhzXe8MHgxU3eULeN1Oo8oRi/CctyOyrgvbCLWS2fkJbdc6f0kBxzLJVeMFfDuBi0cvhtscLkg54BmG7aky5//EtHbYNlnTsn3wJ0ZBrOAuebUApSpThiqgr1pa7ZwJShOZvOyikHP7VME4wL8//C0uveGvevIrCHiJqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIzSpuPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42528C4CEEB;
+	Mon, 18 Aug 2025 12:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523321;
-	bh=lrGMdHbqMoJo0d47gQ7iTT6Gt5sUgLObdw1miH0mS34=;
+	s=korg; t=1755521698;
+	bh=tmn3KtJaDc4Jb8c+3Puqzp3gPdO+l2CfYGYbPWbOwDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2okImK8qSpqxBGxoHNwak/mm0aBkYqn/pT/5rksX9U/s0EoWtNoMcotsrWGJMzuum
-	 nWU0yIOx45O9vsfmQV/W5fGuub4rT9v6fNLI0VJyB4jZbAcMeSm+IuOHWalLQtKqic
-	 ndyDSTAy5Iy4YkVB9LTP7LWVz7ch93B8vqiJhWlQ=
+	b=RIzSpuPd+237diuYDrhxQ+On/+HCpYERdC+gv+NeFi6JEU9AKSvOJITx6z7/wNH4V
+	 8WJpevTU7Mix+lFe7JN77n0w3IaL6AgUKE79c2zO/e3AFt8dVsdfFet/az2ZXdUC80
+	 zjrUOwU5RFVIaZmZXodmVJS0fn87IGoHhddTIFiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kochetkov <al.kochet@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Adam Berglund <adam.f.berglund@hotmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 135/515] ARM: rockchip: fix kernel hang during smp initialization
-Date: Mon, 18 Aug 2025 14:42:01 +0200
-Message-ID: <20250818124503.591472506@linuxfoundation.org>
+Subject: [PATCH 6.12 096/444] platform/x86/amd: pmc: Add Lenovo Yoga 6 13ALC6 to pmc quirk list
+Date: Mon, 18 Aug 2025 14:42:02 +0200
+Message-ID: <20250818124452.543854419@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Kochetkov <al.kochet@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
+[ Upstream commit 4ff3aeb664f7dfe824ba91ffb0b203397a8d431e ]
 
-In order to bring up secondary CPUs main CPU write trampoline
-code to SRAM. The trampoline code is written while secondary
-CPUs are powered on (at least that true for RK3188 CPU).
-Sometimes that leads to kernel hang. Probably because secondary
-CPU execute trampoline code while kernel doesn't expect.
+The Lenovo Yoga 6 13ACL6 82ND has a similar BIOS problem as other Lenovo
+laptops from that vintage that causes a rather long resume from suspend.
 
-The patch moves SRAM initialization step to the point where all
-secondary CPUs are powered down.
+Add it to the quirk list that manipulates the scratch register to avoid
+the issue.
 
-That fixes rarely hangs on RK3188:
-[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.091996] rockchip_smp_prepare_cpus: ncores 4
-
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
-Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reported-by: Adam Berglund <adam.f.berglund@hotmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4434
+Tested-by: Adam Berglund <adam.f.berglund@hotmail.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250718172307.1928744-1-superm1@kernel.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
-index 36915a073c23..f432d22bfed8 100644
---- a/arch/arm/mach-rockchip/platsmp.c
-+++ b/arch/arm/mach-rockchip/platsmp.c
-@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 	}
- 
- 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
--		if (rockchip_smp_prepare_sram(node)) {
--			of_node_put(node);
--			return;
--		}
--
- 		/* enable the SCU power domain */
- 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
- 
-@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
- 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
- 	}
--	of_node_put(node);
- 
- 	/* Make sure that all cores except the first are really off */
- 	for (i = 1; i < ncores; i++)
- 		pmu_set_power_domain(0 + i, false);
-+
-+	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
-+		if (rockchip_smp_prepare_sram(node)) {
-+			of_node_put(node);
-+			return;
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 7ed12c1d3b34..04686ae1e976 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -189,6 +189,15 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
+ 		}
+ 	},
++	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4434 */
++	{
++		.ident = "Lenovo Yoga 6 13ALC6",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
 +		}
-+	}
-+
-+	of_node_put(node);
- }
- 
- static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
++	},
+ 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
+ 	{
+ 		.ident = "HP Laptop 15s-eq2xxx",
 -- 
 2.39.5
 
