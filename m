@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6631FB2A6AC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43609B2A3A7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58801B633E5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0543162701A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1477D279351;
-	Mon, 18 Aug 2025 13:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7881A31E0F4;
+	Mon, 18 Aug 2025 13:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afvSJjjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqXpta6X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FE731B13A;
-	Mon, 18 Aug 2025 13:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF2830F7F8;
+	Mon, 18 Aug 2025 13:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524002; cv=none; b=G6WZOeNfIsJuH/vB8uxWb1iZk5JtJAHwjDLQ8/wfxGnJIatnAdcC8WmPD3uLT19WcoRYRBnBX1V1fVEbRdaNYDD254p5Xa3T0baIeD1lQr/KRhwdQ4tFppyKifmSaHEnykxWddiZMp6C/r/7aaXz7sb2HtQdcgpxOE9tvSXM8lI=
+	t=1755522379; cv=none; b=sd7FhkMRkv5Oc8WyJlBt4jwZaoykD5QGJsSOK+XL7Hryp+24Uh3RaQ6iR8fgty+RdMNvLZOn6P+Z+467fNxMpU2GUei8y3i1Ch8/IuEFs1tblLMHvbXk1jocnPrVE/s6EkQ4j6t+NcbhOboOSNAcQ+h6EVeEVIwcFKu2RimeD2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524002; c=relaxed/simple;
-	bh=v+8fonYjABuqq4/d8b0MfPquQDFKZoi4Vja/w0B6bhk=;
+	s=arc-20240116; t=1755522379; c=relaxed/simple;
+	bh=qzVta7OKedNZqCRsUhsJ3Wo9aKkLElumuFLqKGq0K7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkxSriUbI1PuXXgcBTEcJx+A7OtVPlQnY2Nc2ogfWgN8kSiM/HPqt874USA+4i+IvxtQybWMagqanK68HiyjKMZuV6GDsrR9/Ug46RrSfuTs2Zekf2LWrkhMW6QrHsV7XO4TRJIiAMSqBOL458qjuGwfxgcZdYr1I0Zex8BosYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afvSJjjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335E9C4CEEB;
-	Mon, 18 Aug 2025 13:33:22 +0000 (UTC)
+	 MIME-Version; b=j9Pl28VL7iaz9TCKW1ifxcJFPTQ+pT9bRrURhv1CLfbO3Nux+xWlYwfy+DR+Me8oH6XndmGfXnQkT7lkuAG37rvkXIGduQPJcEdTUOOjbvvFPhT6ccibFOB8q8Q/tgQDEMJfmiZfi2XzDumFqk60ygcw9Xc3pZqUam3N83cZwig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqXpta6X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C401C4CEEB;
+	Mon, 18 Aug 2025 13:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524002;
-	bh=v+8fonYjABuqq4/d8b0MfPquQDFKZoi4Vja/w0B6bhk=;
+	s=korg; t=1755522378;
+	bh=qzVta7OKedNZqCRsUhsJ3Wo9aKkLElumuFLqKGq0K7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afvSJjjXVTrePgJwxnK9Wwbm/nbq3hjdiZ+c9/elpyaJPru+WEsY4z+smIxdcHM5B
-	 aavKTb2I0tV7Dpe+vmj4hDppxvn9k1XM57KTgvNZwG+Lw6EiizIeqakQlyWn/tXJCy
-	 Ek2YmmoLXrt2ErvyWQbV4mTehurG06ULgUMklQK4=
+	b=SqXpta6XpGs17m+o4NHyjnnWznZXWB34JcPTpJX1FHiKgB9Iymuki+BvUcuZ8Q9l3
+	 cWLWX3TIefp0IwO/bCvGkUvCnf5Bl93RFGehajjr9Tl9iKLj0uc2XNz2kLG8tYs5tm
+	 n4awOyZtaOZcoTk85/PXV03i9Vcm+tJy2gB+YE2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Lee Jones <lee@kernel.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 339/515] mfd: axp20x: Set explicit ID for AXP313 regulator
+Subject: [PATCH 6.12 299/444] MIPS: lantiq: falcon: sysctrl: fix request memory check logic
 Date: Mon, 18 Aug 2025 14:45:25 +0200
-Message-ID: <20250818124511.482509382@linuxfoundation.org>
+Message-ID: <20250818124500.164591717@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 88828c7e940dd45d139ad4a39d702b23840a37c5 ]
+[ Upstream commit 9c9a7ff9882fc6ba7d2f4050697e8bb80383e8dc ]
 
-On newer boards featuring the A523 SoC, the AXP323 (related to the
-AXP313) is paired with the AXP717 and serves as a secondary PMIC
-providing additional regulator outputs. However the MFD cells are all
-registered with PLATFORM_DEVID_NONE, which causes the regulator cells
-to conflict with each other.
+request_mem_region() will return NULL instead of error code
+when the memory request fails. Therefore, we should check if
+the return value is non-zero instead of less than zero. In
+this way, this patch also fixes the build warnings:
 
-Commit e37ec3218870 ("mfd: axp20x: Allow multiple regulators") attempted
-to fix this by switching to PLATFORM_DEVID_AUTO so that the device names
-would all be different, however that broke IIO channel mapping, which is
-also tied to the device names. As a result the change was later reverted.
+arch/mips/lantiq/falcon/sysctrl.c:214:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
+  214 |                                 res_status.name) < 0) ||
+      |                                                  ^
+arch/mips/lantiq/falcon/sysctrl.c:216:47: error: ordered comparison of pointer with integer zero [-Werror=extra]
+  216 |                                 res_ebu.name) < 0) ||
+      |                                               ^
+arch/mips/lantiq/falcon/sysctrl.c:219:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
+  219 |                                 res_sys[0].name) < 0) ||
+      |                                                  ^
+arch/mips/lantiq/falcon/sysctrl.c:222:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
+  222 |                                 res_sys[1].name) < 0) ||
+      |                                                  ^
+arch/mips/lantiq/falcon/sysctrl.c:225:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
+  225 |                                 res_sys[2].name) < 0))
+      |
 
-Instead, here we attempt to make sure the AXP313/AXP323 regulator cell
-does not conflict by explicitly giving it an ID number. This was
-previously done for the AXP809+AXP806 pair used with the A80 SoC.
-
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20250619173207.3367126-1-wens@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/axp20x.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/lantiq/falcon/sysctrl.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-index e9914e8a29a3..25c639b348cd 100644
---- a/drivers/mfd/axp20x.c
-+++ b/drivers/mfd/axp20x.c
-@@ -1053,7 +1053,8 @@ static const struct mfd_cell axp152_cells[] = {
- };
+diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
+index 1187729d8cbb..357543996ee6 100644
+--- a/arch/mips/lantiq/falcon/sysctrl.c
++++ b/arch/mips/lantiq/falcon/sysctrl.c
+@@ -214,19 +214,16 @@ void __init ltq_soc_init(void)
+ 	of_node_put(np_syseth);
+ 	of_node_put(np_sysgpe);
  
- static struct mfd_cell axp313a_cells[] = {
--	MFD_CELL_NAME("axp20x-regulator"),
-+	/* AXP323 is sometimes paired with AXP717 as sub-PMIC */
-+	MFD_CELL_BASIC("axp20x-regulator", NULL, NULL, 0, 1),
- 	MFD_CELL_RES("axp313a-pek", axp313a_pek_resources),
- };
+-	if ((request_mem_region(res_status.start, resource_size(&res_status),
+-				res_status.name) < 0) ||
+-		(request_mem_region(res_ebu.start, resource_size(&res_ebu),
+-				res_ebu.name) < 0) ||
+-		(request_mem_region(res_sys[0].start,
+-				resource_size(&res_sys[0]),
+-				res_sys[0].name) < 0) ||
+-		(request_mem_region(res_sys[1].start,
+-				resource_size(&res_sys[1]),
+-				res_sys[1].name) < 0) ||
+-		(request_mem_region(res_sys[2].start,
+-				resource_size(&res_sys[2]),
+-				res_sys[2].name) < 0))
++	if ((!request_mem_region(res_status.start, resource_size(&res_status),
++				 res_status.name)) ||
++	    (!request_mem_region(res_ebu.start, resource_size(&res_ebu),
++				 res_ebu.name)) ||
++	    (!request_mem_region(res_sys[0].start, resource_size(&res_sys[0]),
++				 res_sys[0].name)) ||
++	    (!request_mem_region(res_sys[1].start, resource_size(&res_sys[1]),
++				 res_sys[1].name)) ||
++	    (!request_mem_region(res_sys[2].start, resource_size(&res_sys[2]),
++				 res_sys[2].name)))
+ 		pr_err("Failed to request core resources");
  
+ 	status_membase = ioremap(res_status.start,
 -- 
 2.39.5
 
