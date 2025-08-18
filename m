@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0558DB2A989
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C183B2A749
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05C8EB636EE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3A57563F4B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB08B33470F;
-	Mon, 18 Aug 2025 14:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CF730DEC8;
+	Mon, 18 Aug 2025 13:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+W/hu9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/WtZcyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999022D8DD4;
-	Mon, 18 Aug 2025 14:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0652206B8;
+	Mon, 18 Aug 2025 13:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526224; cv=none; b=Ttf8jySgCM5GqutjdirdsAG/RLNbzM2ExR+Av4fegmUT4JLQweyRaTY6Ge+x3/wT6fQ5g3Tf4H8K8D8lwPuihHQd1/cY/tZvqt+kZBLqBJbCe21EZ2IpAdvP4oHm2uOn/3rWJ7aDJBsY7xJoEMXBWFZ3nHnkknAWoE4K6ern9nQ=
+	t=1755524516; cv=none; b=AS6JkkjJuHiYdPprs2xA7dpjPbKBKU7e9VMY4mzkPPMysF4cv1JIhHiSnU43YHx4n8VpJdB9v8szL7gQRdnruyQfMwdbU4WD7k/+1sVK+e8HpTLDdX9OLzFpFyGvouOI9CpedTebTiCWQtrSNWqn6fX8rzhY3KyFrGOZoOkrqD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526224; c=relaxed/simple;
-	bh=3Hk87/Nq6+8whD9K86QM2jBKlf3YxRYdzl9WZPyJ2Xo=;
+	s=arc-20240116; t=1755524516; c=relaxed/simple;
+	bh=nSDOXL8ly0lsCRpCrUIAd+gAUdPyUVhnTxmzCMcCy6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aaw82l+UIbsr9HpOsGcq9mitCz8N7Yd/OdTr7wkUhrH/7Q4jhFwMJ4WexwgpOqTXLEYFW4HvyW3aTNfI2ql4mWSSDYqbl8pdFoiJM5a/lo402qHisPBZgo3YLOQgcN8AV3Q3o9kVzDY8lqp7FbHYMeZUG2f51EsByud9viXBp4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+W/hu9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38D7C4CEEB;
-	Mon, 18 Aug 2025 14:10:23 +0000 (UTC)
+	 MIME-Version; b=RsZpufN5Zr9/KGdvKy82Gey5rbvtmWRWAy/M13A6cfh6I7Bmn5igJAxtsu7uuYwxiFHtIMgzt3RJhDlY9AONrWUDYkE5CM1h7JE7PpVZrkhl/VW9bkvIQlwG0/6PebFNbs2NEtUreYC0L2W9VXW/OIpPSHIZ0JO/B1cSWHrVK1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/WtZcyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BFAC113D0;
+	Mon, 18 Aug 2025 13:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526224;
-	bh=3Hk87/Nq6+8whD9K86QM2jBKlf3YxRYdzl9WZPyJ2Xo=;
+	s=korg; t=1755524516;
+	bh=nSDOXL8ly0lsCRpCrUIAd+gAUdPyUVhnTxmzCMcCy6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+W/hu9O9T9Mm9yk0wuYFEqrXrXDh82mg4s+5qIXokmAh42mp+EhbMhSKJ6NHeez2
-	 t4dEXlJEgljCXZP6kjY99BtJKATvqh3WFc7+EXfOAxC0/2x/N/NWDwbIbh4L0hHQ54
-	 2yeLtACdIrQyZnPIIDnJvZOylk74SYEVc2jyVDO0=
+	b=W/WtZcyiSQhZUvZj0mXV7/00Sx3d6rc/W5nQcNnUDeQ0CCUiPk2qDgbnvHzT43qxZ
+	 jsU2N4jPk5cAe+5qXEdBFwYFgGejYN0lWwfXtijV+j2tcRt2YkOqzoxiax27Raycpe
+	 uKhMSSNYZrux2HzxKtwdPltnS+7RReiBn8EkGKzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Robert Marko <robimarko@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.16 494/570] clk: qcom: gcc-ipq8074: fix broken freq table for nss_port6_tx_clk_src
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 495/515] mm/kmemleak: avoid deadlock by moving pr_warn() outside kmemleak_lock
 Date: Mon, 18 Aug 2025 14:48:01 +0200
-Message-ID: <20250818124524.900248284@linuxfoundation.org>
+Message-ID: <20250818124517.501575473@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 077ec7bcec9a8987d2a133afb7e13011878c7576 upstream.
+commit 47b0f6d8f0d2be4d311a49e13d2fd5f152f492b2 upstream.
 
-With the conversion done by commit e88f03230dc0 ("clk: qcom: gcc-ipq8074:
-rework nss_port5/6 clock to multiple conf") a Copy-Paste error was made
-for the nss_port6_tx_clk_src frequency table.
+When netpoll is enabled, calling pr_warn_once() while holding
+kmemleak_lock in mem_pool_alloc() can cause a deadlock due to lock
+inversion with the netconsole subsystem.  This occurs because
+pr_warn_once() may trigger netpoll, which eventually leads to
+__alloc_skb() and back into kmemleak code, attempting to reacquire
+kmemleak_lock.
 
-This was caused by the wrong setting of the parent in
-ftbl_nss_port6_tx_clk_src that was wrongly set to P_UNIPHY1_RX instead
-of P_UNIPHY2_TX.
+This is the path for the deadlock.
 
-This cause the UNIPHY2 port to malfunction when it needs to be scaled to
-higher clock. The malfunction was observed with the example scenario
-with an Aquantia 10G PHY connected and a speed higher than 1G (example
-2.5G)
+mem_pool_alloc()
+  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+      -> pr_warn_once()
+          -> netconsole subsystem
+	     -> netpoll
+	         -> __alloc_skb
+		   -> __create_object
+		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
 
-Fix the broken frequency table to restore original functionality.
+Fix this by setting a flag and issuing the pr_warn_once() after
+kmemleak_lock is released.
 
-Cc: stable@vger.kernel.org
-Fixes: e88f03230dc0 ("clk: qcom: gcc-ipq8074: rework nss_port5/6 clock to multiple conf")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Tested-by: Robert Marko <robimarko@gmail.com>
-Link: https://lore.kernel.org/r/20250522202600.4028-1-ansuelsmth@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lkml.kernel.org/r/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org
+Fixes: c5665868183f ("mm: kmemleak: use the memory pool for early allocations")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq8074.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/kmemleak.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/gcc-ipq8074.c
-+++ b/drivers/clk/qcom/gcc-ipq8074.c
-@@ -1895,10 +1895,10 @@ static const struct freq_conf ftbl_nss_p
- static const struct freq_multi_tbl ftbl_nss_port6_tx_clk_src[] = {
- 	FMS(19200000, P_XO, 1, 0, 0),
- 	FM(25000000, ftbl_nss_port6_tx_clk_src_25),
--	FMS(78125000, P_UNIPHY1_RX, 4, 0, 0),
-+	FMS(78125000, P_UNIPHY2_TX, 4, 0, 0),
- 	FM(125000000, ftbl_nss_port6_tx_clk_src_125),
--	FMS(156250000, P_UNIPHY1_RX, 2, 0, 0),
--	FMS(312500000, P_UNIPHY1_RX, 1, 0, 0),
-+	FMS(156250000, P_UNIPHY2_TX, 2, 0, 0),
-+	FMS(312500000, P_UNIPHY2_TX, 1, 0, 0),
- 	{ }
- };
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -475,6 +475,7 @@ static struct kmemleak_object *mem_pool_
+ {
+ 	unsigned long flags;
+ 	struct kmemleak_object *object;
++	bool warn = false;
  
+ 	/* try the slab allocator first */
+ 	if (object_cache) {
+@@ -493,8 +494,10 @@ static struct kmemleak_object *mem_pool_
+ 	else if (mem_pool_free_count)
+ 		object = &mem_pool[--mem_pool_free_count];
+ 	else
+-		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
++		warn = true;
+ 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
++	if (warn)
++		pr_warn_once("Memory pool empty, consider increasing CONFIG_DEBUG_KMEMLEAK_MEM_POOL_SIZE\n");
+ 
+ 	return object;
+ }
 
 
 
