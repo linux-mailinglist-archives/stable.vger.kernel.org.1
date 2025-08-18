@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-170133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A075EB2A268
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20103B2A5A4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFBD62281B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A50D31B6260B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8956B280035;
-	Mon, 18 Aug 2025 12:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348F7322758;
+	Mon, 18 Aug 2025 13:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dA5dCiR0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uY9YXi90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F243218D1;
-	Mon, 18 Aug 2025 12:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E513632142A;
+	Mon, 18 Aug 2025 13:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521631; cv=none; b=mFe/WVZlzUsYWPOdeeV8Puams6UlhYiKaiTXRwDY4IW0EY6wR2syCNciQGmzK0MpQt8o9kQTAr8qLf2B4PIFNX/XuGvKIMJKzQM9flZeywgivQKdTKlYxZYDJs5Q2LPXHhY1zuvJ+G4uelUwp3mjJJh/b6PZgJecWDnZLaApziY=
+	t=1755523258; cv=none; b=GC49OZO5rLJ1OBcUGnFfhasBwkZDRFp87GtKXm1xtCE6ffG33Ovsld/UvE8aOu6pRWgFp58czFd3ohhpJkHV/8Yagk/wAkxXtYAbrVYiCa5Vym+LST2aXyZqYamzi8Fdp206xe9l6Y1Md3F+Nea4PzARzh4Sx6MPi3J7mIcGYZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521631; c=relaxed/simple;
-	bh=hUK5XGZZc+nOJmM+vEqh+KCW/0xTI3RCXBdEPpIuuzc=;
+	s=arc-20240116; t=1755523258; c=relaxed/simple;
+	bh=TBTtTnTd2KQzmAshqP25JRuaJGpx3TPNa+IufaLLRLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3zLzuoOHDZHV3Odp7J5kvzVKNHR3aN08CwGaAapZO3Cn9Rs1IYrO5/LZCMalTLL8gOTK4as9X2Oz3E0C8vXfuRbo3AuAYhI16oDJoi5ErnXEM1sujWLnT4f3FyFqec6fmq+mrN7/qlJU0y59gKBWrkYebJ6xjGQdMv9p3oS1W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dA5dCiR0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD98DC4CEEB;
-	Mon, 18 Aug 2025 12:53:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kj2bdO+14UPw28DYPJKcEj74VQO8iFapKIV49G49SS+MeuM8h3VoVRmMQAU82MaMTyyjcnIXF6kwDUqty6CT09c4iuv/WxWvFZQxoEXyDHA+igina9HrRUYNP0NRXBpHB7pIwNmwgtCmo+SLFpkFgtdH8irCSUTpdv5R98/etFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uY9YXi90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6394FC4CEF1;
+	Mon, 18 Aug 2025 13:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521631;
-	bh=hUK5XGZZc+nOJmM+vEqh+KCW/0xTI3RCXBdEPpIuuzc=;
+	s=korg; t=1755523257;
+	bh=TBTtTnTd2KQzmAshqP25JRuaJGpx3TPNa+IufaLLRLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dA5dCiR04fj/TtNcaPNxXD9Xv9Fg3jksbYyrrJCeUsNdsFcZ6uCKaU2sZKqv8O8Vo
-	 1Xa+5wqAJttnpcBXdQZtI5blf/YHf8WYPov9435C3a3Hd+5sIr/fQuqyfc+IplPyWO
-	 nZE3aO4AwFlJRFpL6eN7a7zpYnhJ1pVef3jdf7G8=
+	b=uY9YXi90l2JB7fQehnTsK53Nj++bvoCRl6CooE7AbWfsW2xi9a8B/ZZpG8gF5Yc/i
+	 EFIRiZ2Q3PcFcqR3BUNSQcUelMnYMiOf9RG7tLR+4jEdTiDSN24jNXaaefoHezyDGo
+	 NJ6Ot4Z85F0dRaHM/hGOaU2nB6Po+eyJNhMkMx70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 044/444] smb: client: dont wait for info->send_pending == 0 on error
-Date: Mon, 18 Aug 2025 14:41:10 +0200
-Message-ID: <20250818124450.590678467@linuxfoundation.org>
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 085/515] tpm: tpm_crb_ffa: try to probe tpm_crb_ffa when its built-in
+Date: Mon, 18 Aug 2025 14:41:11 +0200
+Message-ID: <20250818124501.646601752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-commit 8c48e1c7520321cc87ff651e96093e2f412785fb upstream.
+[ Upstream commit 746d9e9f62a6e8ba0eba2b83fc61cfe7fa8797ce ]
 
-We already called ib_drain_qp() before and that makes sure
-send_done() was called with IB_WC_WR_FLUSH_ERR, but
-didn't called atomic_dec_and_test(&sc->send_io.pending.count)
+To generate the boot_aggregate log in the IMA subsystem using TPM PCR
+values, the TPM driver must be built as built-in and must be probed
+before the IMA subsystem is initialized.
 
-So we may never reach the info->send_pending == 0 condition.
+However, when the TPM device operates over the FF-A protocol using the
+CRB interface, probing fails and returns -EPROBE_DEFER if the
+tpm_crb_ffa device — an FF-A device that provides the communication
+interface to the tpm_crb driver — has not yet been probed.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue occurs because both crb_acpi_driver_init() and
+tpm_crb_ffa_driver_init() are registered with device_initcall.  As a
+result, crb_acpi_driver_init() may be invoked before
+tpm_crb_ffa_driver_init(), which is responsible for probing the
+tpm_crb_ffa device.
+
+When this happens, IMA fails to detect the TPM device and logs the
+following message:
+
+  | ima: No TPM chip found, activating TPM-bypass!
+
+Consequently, it cannot generate the boot_aggregate log with the PCR
+values provided by the TPM.
+
+To resolve this issue, the tpm_crb_ffa_init() function explicitly
+attempts to probe the tpm_crb_ffa by register tpm_crb_ffa driver so that
+when tpm_crb_ffa device is created before tpm_crb_ffa_init(), probe the
+tpm_crb_ffa device in tpm_crb_ffa_init() to finish probe the TPM device
+completely.
+
+This ensures that the TPM device using CRB over FF-A can be successfully
+probed, even if crb_acpi_driver_init() is called first.
+
+[ jarkko: reformatted some of the paragraphs because they were going past
+  the 75 character boundary. ]
+
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/char/tpm/tpm_crb_ffa.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1316,10 +1316,6 @@ void smbd_destroy(struct TCP_Server_Info
- 	log_rdma_event(INFO, "cancelling idle timer\n");
- 	cancel_delayed_work_sync(&info->idle_timer_work);
+diff --git a/drivers/char/tpm/tpm_crb_ffa.c b/drivers/char/tpm/tpm_crb_ffa.c
+index 3169a87a56b6..430b99c04124 100644
+--- a/drivers/char/tpm/tpm_crb_ffa.c
++++ b/drivers/char/tpm/tpm_crb_ffa.c
+@@ -109,6 +109,7 @@ struct tpm_crb_ffa {
+ };
  
--	log_rdma_event(INFO, "wait for all send posted to IB to finish\n");
--	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
--
- 	/* It's not possible for upper layer to get to reassembly */
- 	log_rdma_event(INFO, "drain the reassembly queue\n");
- 	do {
-@@ -1965,7 +1961,11 @@ int smbd_send(struct TCP_Server_Info *se
- 	 */
+ static struct tpm_crb_ffa *tpm_crb_ffa;
++static struct ffa_driver tpm_crb_ffa_driver;
  
- 	wait_event(info->wait_send_pending,
--		atomic_read(&info->send_pending) == 0);
-+		atomic_read(&info->send_pending) == 0 ||
-+		sc->status != SMBDIRECT_SOCKET_CONNECTED);
+ static int tpm_crb_ffa_to_linux_errno(int errno)
+ {
+@@ -162,13 +163,23 @@ static int tpm_crb_ffa_to_linux_errno(int errno)
+  */
+ int tpm_crb_ffa_init(void)
+ {
++	int ret = 0;
 +
-+	if (sc->status != SMBDIRECT_SOCKET_CONNECTED && rc == 0)
-+		rc = -EAGAIN;
++	if (!IS_MODULE(CONFIG_TCG_ARM_CRB_FFA)) {
++		ret = ffa_register(&tpm_crb_ffa_driver);
++		if (ret) {
++			tpm_crb_ffa = ERR_PTR(-ENODEV);
++			return ret;
++		}
++	}
++
+ 	if (!tpm_crb_ffa)
+-		return -ENOENT;
++		ret = -ENOENT;
  
- 	return rc;
+ 	if (IS_ERR_VALUE(tpm_crb_ffa))
+-		return -ENODEV;
++		ret = -ENODEV;
+ 
+-	return 0;
++	return ret;
  }
+ EXPORT_SYMBOL_GPL(tpm_crb_ffa_init);
+ 
+@@ -341,7 +352,9 @@ static struct ffa_driver tpm_crb_ffa_driver = {
+ 	.id_table = tpm_crb_ffa_device_id,
+ };
+ 
++#ifdef MODULE
+ module_ffa_driver(tpm_crb_ffa_driver);
++#endif
+ 
+ MODULE_AUTHOR("Arm");
+ MODULE_DESCRIPTION("TPM CRB FFA driver");
+-- 
+2.39.5
+
 
 
 
