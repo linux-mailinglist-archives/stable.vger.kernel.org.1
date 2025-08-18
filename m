@@ -1,159 +1,138 @@
-Return-Path: <stable+bounces-171668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4748CB2B440
-	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:55:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6F6B2B441
+	for <lists+stable@lfdr.de>; Tue, 19 Aug 2025 00:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A04CA7A2E11
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 22:53:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CB2E3B6CDD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 22:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5564B253B43;
-	Mon, 18 Aug 2025 22:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D372727EE;
+	Mon, 18 Aug 2025 22:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iECbXGNe"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="DIoaKrvB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162B95BAF0
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 22:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB13825F79A
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 22:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755557669; cv=none; b=PmH/0X3R9ID/05TUrJhCNUEGlR0FGYYGQhBvuH/zf4AP5HzkPYC7Mtpwf6uSbtfHfsZIOLPuna2yPW4yFekArLlnLGYpxdPZEuDH8afmSGrerarVQo57D6UvJ6+5ShV6LLCmnMVI1IO+S9U+LGw7ULIpPU+oCdsj74dJGpE9a9c=
+	t=1755557740; cv=none; b=OiVdDPz/u4Hi5drazuzMYE7L1e3YQcap7oz/zlCDLq4Sb22WcLoh+V5gZHrlzjhkKPqtnnwSSqA8r0AcYBZjg4MCvpCtWU1ySKTlMVJSqL/sXRk/RTnLcmHQD4wngkWB47nn8xsn/6JuLkpbmCxi8x7jjadWPbBTmH+Qibh9j08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755557669; c=relaxed/simple;
-	bh=m9W4KMr37jGZ/0gLVa7+CzbmcGYqPaTvSpN31p+nLyA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbeX5N+5R4LqyDJkwOVj+jO6teFC/7mtla9DkgABfyUJa73fVYjFsXW0IqtDrqaWMh+e7bsCAz2Cc3Q/atkcp/yrdOE1v1NoJ+vCm29OHwPZMlSHq/ZyW6G44vmFu9LGhhRaCKSq9PA2JvL7S2iz2O6MgrNdx25ZPJg6GPiO2Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iECbXGNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C2CC4CEEB;
-	Mon, 18 Aug 2025 22:54:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755557668;
-	bh=m9W4KMr37jGZ/0gLVa7+CzbmcGYqPaTvSpN31p+nLyA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iECbXGNeUzfmsT5VMA0N4Btrh8BapbZZVFrMOiOrfluXSpbJ5ZB8vFGDvr8yeEOUk
-	 fWg5REW4jO+lVmouJ/X46hk40bG/RxJ7FuD437Qc1Yk9waTGrOI6kWbhHlKYWhWXs/
-	 wqCizhN3hSPJ+RiKrr+gFKU7VZrm5tBimYxpYLdzvOVO6C1F5t5pfqHL/aljU4Mml4
-	 FgB7hKqnuAQqM5HDVd73AHlS2iIeQucUPiF4AriIWWAOWQlZcK/qsQHQWVqTRRmtec
-	 3fMBJE/d818/z5St55ua8JI+QI95ZzGNb1hQG+G1ryxA6OEsfxrZ0twkrYchXBIf3L
-	 o+Ran/bV4hbSA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] usb: typec: fusb302: cache PD RX state
-Date: Mon, 18 Aug 2025 18:54:25 -0400
-Message-ID: <20250818225425.129459-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081834-staff-ranged-09c8@gregkh>
-References: <2025081834-staff-ranged-09c8@gregkh>
+	s=arc-20240116; t=1755557740; c=relaxed/simple;
+	bh=QNNh0svKJP1IXn4/YVFb/YlCZ+qTCyfcsqfalwr+f18=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JT6tykCCEDUQBn33QYZqgssCQGu9kRa7yuErvAv3IBtjyySrY3W3KupUaqqzrwNcvm3oH2Lu/6VmFNuSFKB5Fh3+toklCgkAceXZGUJZL9zgwUgk6FgsTlTgkXOVIobCfBskip/l3CU9YGa6OMgZP7tPOmsIJ95TqUZ/WCw7ivg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=DIoaKrvB; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24458272c00so46623265ad.3
+        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 15:55:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1755557738; x=1756162538; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bguXmGTgN4Bd/YvdzOLRte6SvfHtxhwHEfPN/3mWt+M=;
+        b=DIoaKrvB5ZQ0RDH2rzw8RXUnBzopq7VYTWeGCD/EuHkOb0jOiYJaJ16gclsQwv6ReY
+         foSIWMpu7x3DqqeeT7uA7XYJsn99+FeVHzGaRq341C9u1vT8fonGHLQE5Ki/nHgM2Ji9
+         l6BbLBeiwdygSexYAWZoCAjYUXMeNKJmN+DMaI40+c6ttifv2YhlDxziFKxnu3geWQqb
+         iVV7dNm4klfedy6YHACNZvYPmoQtY0OTbq8zK8wt2t00SXBy4HT5iYHlucRJl20eysEc
+         DIcj4kkEW07z03UVLKM4PPgdMKkIwWQLdvfJAXVCwmKP8MXgNg8lDB9dJTeNbjGsE/ku
+         C/6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755557738; x=1756162538;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bguXmGTgN4Bd/YvdzOLRte6SvfHtxhwHEfPN/3mWt+M=;
+        b=Gf0Z+lyNdccQi92+5EHM5ihszuoQ10rVSqU8xEKB+sFl3O+i0SfzMQL2y4x/qh2yYQ
+         0Rz8VZl2ds8rStJGsked2aYvshiChV68z57C2t29Lgt3jy0wDMyZIegPM/wdn69O+flq
+         8zwN8tizkDse8keiMv09LH+m0vaT0m2wnQe+Olwn4/df1RL6FAGCtmuDYFyLqLISxHSj
+         qbhoFbypU4CHFzp8BZXytt+vCm0txFi/l7dVVDjnu5IqBXNqfbOuwibgYj+dzib3n7je
+         Cd2Sn9Sk37Htz++V5F6KQl6VWiN65PJi5oUoOYvpNMJ2XivOA7gxLkyUauYW+iGtANnL
+         WESQ==
+X-Gm-Message-State: AOJu0YwjHKrREFY2k636M6TWSpFWjT3jvyTP/WKHPAHHx6j32O+0oxUM
+	JA5lLFQJSdtM+el2v2Z5TWEKMWbS0rYAweXpGPlzyLNhgaVUYSfcef6+G+r2kRQI+VTKyiOl80A
+	sTs0dAH3AE/rsk3er1o6MXB9jVnsbypIUhwFFOQtWeg==
+X-Gm-Gg: ASbGncvucEn72Nx43fFvE7hRmZ8+9W60UGV+75bkjVGV/BOtGSijZ38zqyWiwixs4Lh
+	DaNtQOUWE+rUt7vLtqZyzrYjW1708ET8eiZN9FCb7bsJzyzNZAiXmQltyPRmVhei77FPfZ8LtG9
+	HUY8kqIVSxVygG86Mnr8vKs1fXFUASfUBKq6TRJxktstGgGfkkw88lHpEQApXqDrM0S86efTTft
+	wMep3DgjLQv0//szw==
+X-Google-Smtp-Source: AGHT+IGqTfusBp/Wl3eLH4aesenKmL3K7AJRG5soO/sO56C80oHv6CHuRlAmavvZk/O/Ni2sX6LrwrU3ST3yiXgay2g=
+X-Received: by 2002:a17:903:2acb:b0:244:9c08:a7a4 with SMTP id
+ d9443c01a7336-245e04e5445mr4807265ad.48.1755557737869; Mon, 18 Aug 2025
+ 15:55:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 19 Aug 2025 07:55:21 +0900
+X-Gm-Features: Ac12FXwY6QkznEdzaO8jRF6Tp2__SGYg-Gz6V1qvaRIC3MuAi2b8APUfwkE869s
+Message-ID: <CAKL4bV6dKuszLrLP=QJwegSQpCZUd2YowEsmZSNkzChdHPt-8A@mail.gmail.com>
+Subject: Re: [PATCH 6.16 000/570] 6.16.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+Hi Greg
 
-[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
+On Mon, Aug 18, 2025 at 10:53=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.16.2 release.
+> There are 570 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 20 Aug 2025 12:43:43 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.16.2-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-This patch fixes a race condition communication error, which ends up in
-PD hard resets when losing the race. Some systems, like the Radxa ROCK
-5B are powered through USB-C without any backup power source and use a
-FUSB302 chip to do the PD negotiation. This means it is quite important
-to avoid hard resets, since that effectively kills the system's
-power-supply.
+6.16.2-rc1 tested.
 
-I've found the following race condition while debugging unplanned power
-loss during booting the board every now and then:
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-1. lots of TCPM/FUSB302/PD initialization stuff
-2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
-3. the remote PD source does not send anything, so TCPM does a SOFT RESET
-4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
-   (tcpm_set_pd_rx is enabled again, even though it is still on)
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-At this point I've seen broken CRC good messages being send by the
-FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
-messages are being lost and things generally going haywire with one of
-the two sides doing a hard reset once a broken CRC good message was send
-to the bus.
+[    0.000000] Linux version 6.16.2-rc1rv-g7439b60c7df9
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20250813, GNU ld (GNU
+Binutils) 2.45.0) #1 SMP PREEMPT_DYNAMIC Tue Aug 19 07:00:35 JST 2025
 
-I think the system is running into a race condition, that the FIFOs are
-being cleared and/or the automatic good CRC message generation flag is
-being updated while a message is already arriving.
+Thanks
 
-Let's avoid this by caching the PD RX enabled state, as we have already
-processed anything in the FIFOs and are in a good state. As a side
-effect that this also optimizes I2C bus usage :)
-
-As far as I can tell the problem theoretically also exists when TCPM
-enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
-critical for the following reason:
-
-On devices like the ROCK 5B, which are powered through a TCPM backed
-USB-C port, the bootloader must have done some prior PD communication
-(initial communication must happen within 5 seconds after plugging the
-USB-C plug). This means the first time the kernel TCPM state machine
-reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
-actively. On other devices a hard reset simply adds some extra delay and
-things should be good afterwards.
-
-Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ replaced str_on_off(on) with ternary operator ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/usb/typec/tcpm/fusb302.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index 700e38e92152..f0eb65cf9393 100644
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -103,6 +103,7 @@ struct fusb302_chip {
- 	bool vconn_on;
- 	bool vbus_on;
- 	bool charge_on;
-+	bool pd_rx_on;
- 	bool vbus_present;
- 	enum typec_cc_polarity cc_polarity;
- 	enum typec_cc_status cc1;
-@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 	int ret = 0;
- 
- 	mutex_lock(&chip->lock);
-+	if (chip->pd_rx_on == on) {
-+		fusb302_log(chip, "pd is already %s", on ? "on" : "off");
-+		goto done;
-+	}
-+
- 	ret = fusb302_pd_rx_flush(chip);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
-@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 			    on ? "on" : "off", ret);
- 		goto done;
- 	}
-+
-+	chip->pd_rx_on = on;
- 	fusb302_log(chip, "pd := %s", on ? "on" : "off");
- done:
- 	mutex_unlock(&chip->lock);
--- 
-2.50.1
-
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
