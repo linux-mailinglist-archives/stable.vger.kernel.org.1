@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57584B2A9D5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E77B2A6F8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7FC56E21C1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42E891BA1830
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8320E321F34;
-	Mon, 18 Aug 2025 14:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C060335BBE;
+	Mon, 18 Aug 2025 13:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8Kva2H0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsSfit52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D92321F2F;
-	Mon, 18 Aug 2025 14:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE88A335BA0;
+	Mon, 18 Aug 2025 13:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526001; cv=none; b=bn4DOkPtz+aG1eb22wh4vmx+AEpboJDaGUjBG9yPCRsvlRTw/Qn7CWIeuczSw5DUDraXNJXSl3P3TGXKP54UEBB8tTlf+lnpesOD/CG5j3L1fCA1u7NY6G4l1gomBLi9GulEmt9n42VNsOhsjffbhoVVINykhiLamaW2VNUuhzE=
+	t=1755524244; cv=none; b=D6YXcPnFKRPbwlVSqSVbSYXS7BLXnc2ArNlzG5V9F3A++GDh204wefUDoF+/udihSHzKC+sVorG1L6fv9yDzutZkOmwvs/CKUgQ8SEl+49Ne46RQTua2EfR6SpbFZkLKpjC1i59djCLm0P3bLbp4+z+hgBLNv9NSouImgK9Lk5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526001; c=relaxed/simple;
-	bh=R2fE6NlI20T3vHkeVxa4Y0DcgPqy9D/5eRg0qFCsqAM=;
+	s=arc-20240116; t=1755524244; c=relaxed/simple;
+	bh=SwoBefCQlFgOZEWKvS2Feg9hn5hRC07gjdGgf8x+wsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNRyluJ3CsVG/oKnTkM9OTTE6N27Cy0V7sa0p/5cV/OqsSnCyaJCZG/CT065f6akz92w5BZB+1id2eTdzlL/akR/xacSzlvEFUY31/Dpf27ZuITROvoJZVz6vZA8f3xOEtq3PDCYdsWBoRzXDzXdUww+Tyf+TEfsWrNJ8p3Ario=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8Kva2H0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74982C2BCB9;
-	Mon, 18 Aug 2025 14:06:40 +0000 (UTC)
+	 MIME-Version; b=N5VIkJOhX0sgLoACIURXWn9XkSVHEbbmJWNs/vwTk0KcOJ+20CvBSqRb9F8JD797WeWzLHeegAUNiSGCsD0Tx/TZDj8JyPOLJ762Xs9oYEZIv271zZBgyoS+H2XiLT6/HtJMcuusxsKEBZO3j5pchzQDin3luyaiOKkwaH24ges=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsSfit52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448E1C4CEF1;
+	Mon, 18 Aug 2025 13:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526000;
-	bh=R2fE6NlI20T3vHkeVxa4Y0DcgPqy9D/5eRg0qFCsqAM=;
+	s=korg; t=1755524244;
+	bh=SwoBefCQlFgOZEWKvS2Feg9hn5hRC07gjdGgf8x+wsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l8Kva2H0iFke/gYE1WpfnsStfAw/V3LrKbRqm1L3Wu0Tv6xF1nPwVirAJVV6/bO5E
-	 Mn5/PVRkLhc9jNjM6MqsXDqOb4t/YwpTyXj/3yfzGKPTlNAd5pWhqEKGI1upE1rZ3y
-	 Whgy9em0wZOGsSUcmNd6X3aw221whsevL9Gr7a9o=
+	b=dsSfit52J0oGqoG6tkCp5TJrrAQt1cXdbjFkEBAW4m8Lc7ta+E3cRIwFZ/FOFNjGs
+	 MbqLwWb7Hk97CHtIvOkVTCGoVW8ElqXdsfSZi1Be2aPb7DwQ0uG62Rx3yA4691X/XQ
+	 LYLVmqXeSZIHgX3zTzCdrYyVC5693SDkVQUEuXGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Guo <alexguo1023@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 412/570] media: dvb-frontends: dib7090p: fix null-ptr-deref in dib7090p_rw_on_apb()
+Subject: [PATCH 6.15 413/515] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
 Date: Mon, 18 Aug 2025 14:46:39 +0200
-Message-ID: <20250818124521.719797037@linuxfoundation.org>
+Message-ID: <20250818124514.317187916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Guo <alexguo1023@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit ce5cac69b2edac3e3246fee03e8f4c2a1075238b ]
+[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
 
-In dib7090p_rw_on_apb, msg is controlled by user. When msg[0].buf is null and
-msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing
-msg[0].buf[2] without sanity check, null pointer deref would happen. We add
-check on msg[0].len to prevent crash. Similar issue occurs when access
-msg[1].buf[0] and msg[1].buf[1].
+The on_treeview2_cursor_changed() handler is connected to both the left
+and right tree views, but it hardcodes model2 (the GtkTreeModel of the
+right tree view). This is incorrect. Get the associated model from the
+view.
 
-Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
-
-Signed-off-by: Alex Guo <alexguo1023@gmail.com>
-Link: https://lore.kernel.org/r/20250616013231.730221-1-alexguo1023@gmail.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/kconfig/gconf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index b40daf242046..360a2d7dd3ed 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -2256,8 +2256,12 @@ static int dib7090p_rw_on_apb(struct i2c_adapter *i2c_adap,
- 	u16 word;
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index c0f46f189060..abe4cfe66b14 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -942,13 +942,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
+ void
+ on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
+ {
++	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+ 	GtkTreeSelection *selection;
+ 	GtkTreeIter iter;
+ 	struct menu *menu;
  
- 	if (num == 1) {		/* write */
-+		if (msg[0].len < 3)
-+			return -EOPNOTSUPP;
- 		dib7000p_write_word(state, apb_address, ((msg[0].buf[1] << 8) | (msg[0].buf[2])));
- 	} else {
-+		if (msg[1].len < 2)
-+			return -EOPNOTSUPP;
- 		word = dib7000p_read_word(state, apb_address);
- 		msg[1].buf[0] = (word >> 8) & 0xff;
- 		msg[1].buf[1] = (word) & 0xff;
+ 	selection = gtk_tree_view_get_selection(treeview);
+-	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
+-		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
++	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
++		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
+ 		text_insert_help(menu);
+ 	}
+ }
 -- 
 2.39.5
 
