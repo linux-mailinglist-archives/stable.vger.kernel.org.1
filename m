@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A64B2AAB4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:35:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF929B2A75B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0741BA1076
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9877158639A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED463334719;
-	Mon, 18 Aug 2025 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB6EA93D;
+	Mon, 18 Aug 2025 13:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZPzD6lO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOGtQBpZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA585334714;
-	Mon, 18 Aug 2025 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59773335BCB;
+	Mon, 18 Aug 2025 13:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526235; cv=none; b=Mv+rzc856WzZJB/Y7YX9WDJ/bAoYS0ZU1T/4kJj4qz/3VWw4t/ZSrzTeACXcpmq4TfHa53XLxVYyhzIwJA15ALEQamukrpO/VC2F3qEngdxwP/5UY4y+5RMHZ3UegMIUJXvqLgeC8Uya5OPgxYogYLmQApqhtVAVa4h4olRWor8=
+	t=1755524607; cv=none; b=hU1u3uC+87f1/3z0GTkYjZqtlVeEM6JC4tp41uuiNOyhyxYk9jjvG9Boy20fxLIHfX7Gp0qIApQTHzvBSAA5wEOuaWHCVAbRUXXFewf9HvMqlmWDXF1PjZgP781qLYiSr//ehJbVJnd+lf+LGp9DfqsEX3kkzpkGRO3AmQd+CsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526235; c=relaxed/simple;
-	bh=yFA/RtPgmF6GYMtgY+Sa/z40O+qQ9AkWSYPUKr1nlVw=;
+	s=arc-20240116; t=1755524607; c=relaxed/simple;
+	bh=U/DbNkKJuRZnnDQEuMmX1Si5bFrCrFRUa+nGuOG2o9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n90siI6psJJlZfwVvxUJ2ozzd4+KVwNuOG7uDue7M83eNEJlCVVuf2/pjxiG0TxnvcnscRQZIX1/SRjUJE01+qYFyTgLrQNx3rWI4IcdjrIDYTUFoTMGFppb7jDnqSh351DpyySaQb1SgDf7Jo3/8BTc8n+FR5L0C1p937aGL2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZPzD6lO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7233C4CEEB;
-	Mon, 18 Aug 2025 14:10:34 +0000 (UTC)
+	 MIME-Version; b=PKAF7Fa6Bf8Qcj3U3le68CLTVMAJGmT41eBarBbiOYghETKST9fL32fDcnNfuB573UBSWxh+x2CN229hpizy4aEG97iFD4+RZOIBkGGSIm10XrFiNrY2X1XYAqBC1MaKLYYeF6lh3Gx+pvX8vFFJFskeDYZn9m1sYXxZosMZKH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOGtQBpZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAFEC4CEEB;
+	Mon, 18 Aug 2025 13:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526235;
-	bh=yFA/RtPgmF6GYMtgY+Sa/z40O+qQ9AkWSYPUKr1nlVw=;
+	s=korg; t=1755524607;
+	bh=U/DbNkKJuRZnnDQEuMmX1Si5bFrCrFRUa+nGuOG2o9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZPzD6lOpSCcOT1LHEkHSKkYL79Z0ADUYygRBJRJ36Klv8gRR7oMrkzfARCiXjNeh
-	 4z/7dVq3eVbefdlfhlmcnpj2FFmMwrNcESdeb+zph17TjlaKPR78A0KNHYZ4NFJdVs
-	 FcVDESK3U8i44B6C1i9uXLACMkA3D+IoLjNy375w=
+	b=YOGtQBpZam0rxSioNTFNX0naPbuOAij31K3wCBsRjoIQNDL36ynAN44ppk96lbHqL
+	 hVx4WQumqOx6wMzyjqxo/m/uVvtCI/y3cdLuspAgs3jH3Tv82pxS7m/tJ2KI0AzUZ6
+	 WyRFKw3w646GXeXuqwTrY44Ix1+v+SbNvF4AYEgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioanna Alifieraki <ioanna-maria.alifieraki@canonical.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.16 497/570] iommu/vt-d: Optimize iotlb_sync_map for non-caching/non-RWBF modes
-Date: Mon, 18 Aug 2025 14:48:04 +0200
-Message-ID: <20250818124525.013074711@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.15 499/515] media: v4l2: Add support for NV12M tiled variants to v4l2_format_info()
+Date: Mon, 18 Aug 2025 14:48:05 +0200
+Message-ID: <20250818124517.660207795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit 12724ce3fe1a3d8f30d56e48b4f272d8860d1970 upstream.
+commit f7546da1d6eb8928efb89b7faacbd6c2f8f0de5c upstream.
 
-The iotlb_sync_map iommu ops allows drivers to perform necessary cache
-flushes when new mappings are established. For the Intel iommu driver,
-this callback specifically serves two purposes:
+Commit 6f1466123d73 ("media: s5p-mfc: Add YV12 and I420 multiplanar
+format support") added support for the new formats to s5p-mfc driver,
+what in turn required some internal calls to the v4l2_format_info()
+function while setting up formats. This in turn broke support for the
+"old" tiled NV12MT* formats, which are not recognized by this function.
+Fix this by adding those variants of NV12M pixel format to
+v4l2_format_info() function database.
 
-- To flush caches when a second-stage page table is attached to a device
-  whose iommu is operating in caching mode (CAP_REG.CM==1).
-- To explicitly flush internal write buffers to ensure updates to memory-
-  resident remapping structures are visible to hardware (CAP_REG.RWBF==1).
-
-However, in scenarios where neither caching mode nor the RWBF flag is
-active, the cache_tag_flush_range_np() helper, which is called in the
-iotlb_sync_map path, effectively becomes a no-op.
-
-Despite being a no-op, cache_tag_flush_range_np() involves iterating
-through all cache tags of the iommu's attached to the domain, protected
-by a spinlock. This unnecessary execution path introduces overhead,
-leading to a measurable I/O performance regression. On systems with NVMes
-under the same bridge, performance was observed to drop from approximately
-~6150 MiB/s down to ~4985 MiB/s.
-
-Introduce a flag in the dmar_domain structure. This flag will only be set
-when iotlb_sync_map is required (i.e., when CM or RWBF is set). The
-cache_tag_flush_range_np() is called only for domains where this flag is
-set. This flag, once set, is immutable, given that there won't be mixed
-configurations in real-world scenarios where some IOMMUs in a system
-operate in caching mode while others do not. Theoretically, the
-immutability of this flag does not impact functionality.
-
-Reported-by: Ioanna Alifieraki <ioanna-maria.alifieraki@canonical.com>
-Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2115738
-Link: https://lore.kernel.org/r/20250701171154.52435-1-ioanna-maria.alifieraki@canonical.com
-Fixes: 129dab6e1286 ("iommu/vt-d: Use cache_tag_flush_range_np() in iotlb_sync_map")
+Fixes: 6f1466123d73 ("media: s5p-mfc: Add YV12 and I420 multiplanar format support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20250703031545.3378602-1-baolu.lu@linux.intel.com
-Link: https://lore.kernel.org/r/20250714045028.958850-3-baolu.lu@linux.intel.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c |   19 ++++++++++++++++++-
- drivers/iommu/intel/iommu.h |    3 +++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-common.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -1795,6 +1795,18 @@ static int domain_setup_first_level(stru
- 					  (pgd_t *)pgd, flags, old);
- }
+--- a/drivers/media/v4l2-core/v4l2-common.c
++++ b/drivers/media/v4l2-core/v4l2-common.c
+@@ -312,6 +312,12 @@ const struct v4l2_format_info *v4l2_form
+ 		{ .format = V4L2_PIX_FMT_NV61M,   .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 1 },
+ 		{ .format = V4L2_PIX_FMT_P012M,   .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 2, 4, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2 },
  
-+static bool domain_need_iotlb_sync_map(struct dmar_domain *domain,
-+				       struct intel_iommu *iommu)
-+{
-+	if (cap_caching_mode(iommu->cap) && !domain->use_first_level)
-+		return true;
++		/* Tiled YUV formats, non contiguous variant */
++		{ .format = V4L2_PIX_FMT_NV12MT,        .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2,
++		  .block_w = { 64, 32, 0, 0 },	.block_h = { 32, 16, 0, 0 }},
++		{ .format = V4L2_PIX_FMT_NV12MT_16X16,  .pixel_enc = V4L2_PIXEL_ENC_YUV, .mem_planes = 2, .comp_planes = 2, .bpp = { 1, 2, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 2, .vdiv = 2,
++		  .block_w = { 16,  8, 0, 0 },	.block_h = { 16,  8, 0, 0 }},
 +
-+	if (rwbf_quirk || cap_rwbf(iommu->cap))
-+		return true;
-+
-+	return false;
-+}
-+
- static int dmar_domain_attach_device(struct dmar_domain *domain,
- 				     struct device *dev)
- {
-@@ -1832,6 +1844,8 @@ static int dmar_domain_attach_device(str
- 	if (ret)
- 		goto out_block_translation;
- 
-+	domain->iotlb_sync_map |= domain_need_iotlb_sync_map(domain, iommu);
-+
- 	return 0;
- 
- out_block_translation:
-@@ -3953,7 +3967,10 @@ static bool risky_device(struct pci_dev
- static int intel_iommu_iotlb_sync_map(struct iommu_domain *domain,
- 				      unsigned long iova, size_t size)
- {
--	cache_tag_flush_range_np(to_dmar_domain(domain), iova, iova + size - 1);
-+	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
-+
-+	if (dmar_domain->iotlb_sync_map)
-+		cache_tag_flush_range_np(dmar_domain, iova, iova + size - 1);
- 
- 	return 0;
- }
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -614,6 +614,9 @@ struct dmar_domain {
- 	u8 has_mappings:1;		/* Has mappings configured through
- 					 * iommu_map() interface.
- 					 */
-+	u8 iotlb_sync_map:1;		/* Need to flush IOTLB cache or write
-+					 * buffer when creating mappings.
-+					 */
- 
- 	spinlock_t lock;		/* Protect device tracking lists */
- 	struct list_head devices;	/* all devices' list */
+ 		/* Bayer RGB formats */
+ 		{ .format = V4L2_PIX_FMT_SBGGR8,	.pixel_enc = V4L2_PIXEL_ENC_BAYER, .mem_planes = 1, .comp_planes = 1, .bpp = { 1, 0, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 1, .vdiv = 1 },
+ 		{ .format = V4L2_PIX_FMT_SGBRG8,	.pixel_enc = V4L2_PIXEL_ENC_BAYER, .mem_planes = 1, .comp_planes = 1, .bpp = { 1, 0, 0, 0 }, .bpp_div = { 1, 1, 1, 1 }, .hdiv = 1, .vdiv = 1 },
 
 
 
