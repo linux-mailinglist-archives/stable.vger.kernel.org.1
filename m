@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-170717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14929B2A63D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1E9B2A2D4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77E0681258
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFDEE3BBBF1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7983B32A3F6;
-	Mon, 18 Aug 2025 13:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5A430FF29;
+	Mon, 18 Aug 2025 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmDIbJDi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8HjH8ls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3674332A3D2;
-	Mon, 18 Aug 2025 13:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C81E33F3;
+	Mon, 18 Aug 2025 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523548; cv=none; b=JnWJdpzTE2P0gtJnLY8FwWUuf4eYHG04j9h+cs0DvnZpV/gxQcqoSyIdGZOx2xmndKLcGtlnGH5zz8k2s13IEb7k2Gu5ociVRvDLpQEHF7+RhjupXb0LjNswxUNpSp3+0DIu2YUMaDFpRG+k51dycWN21HLVbHH9gDvVN92jwDw=
+	t=1755521895; cv=none; b=mnw8RQtEsAxDXgIg3UD6WfW98BQFWA6jBJ6vwuBt+xxMPR06p3vw0W8fVnNqzQucOJXvNVsVfXIA/ibJrctdI/d+f7evxHjwEH1V6LZuY0xFit3aBnz8lVsiUCR8Qxi+8+7oAsEOFWDapzDE33x4tvCRAsk5x+6qmffqWjPTwPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523548; c=relaxed/simple;
-	bh=Q5yZKlhjlEsBgTHwnsYmG3UDS8krdExq4ES16ds3CqU=;
+	s=arc-20240116; t=1755521895; c=relaxed/simple;
+	bh=EJZg4/zezXXb/n1sjEOVFp2DGOe7FSk+VnA1dR9b8us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QSE4x+fG28ufF/Iyzg8C9vecDnDxYwxn71R1w0yOlD5ppexdRLArB3aDerxi6Z5/2zBOjDXkBGBZ2h+ZmNg1hB1kgZNOOb8bk0c+r2cdQTEJQri3dA+y9j+paQUjxnuKR+XlGa0BdowumqvoRk3wMl1Aez/E4hdtZaVeOJwlNNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmDIbJDi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204A8C4CEEB;
-	Mon, 18 Aug 2025 13:25:46 +0000 (UTC)
+	 MIME-Version; b=ZTrM1Rb+yi7MQFMR/XUtsVE6AG3beif8Vhe0PfA08Zk8WiO57Tf3Noy5k60Nly3WLoR/FLjSZubcOZSF4ZYAVmaRgJllloJCRXJZDoiREcloaLZPvf0KYxFWyC+EpdgoAEqPylbf5KMPdiWzuq6t2Rzo/BPJ9NfjlHQc38p0Ur8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8HjH8ls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE04C4CEEB;
+	Mon, 18 Aug 2025 12:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523547;
-	bh=Q5yZKlhjlEsBgTHwnsYmG3UDS8krdExq4ES16ds3CqU=;
+	s=korg; t=1755521895;
+	bh=EJZg4/zezXXb/n1sjEOVFp2DGOe7FSk+VnA1dR9b8us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmDIbJDiHWMKH1rDVIQMHoS05U1fVczTM/NX0w+wHQiZT+8sxphBwpj5yH0Xo18Qf
-	 xrJ8qUljlFTfTI85+sbuChOiy7eibUUOWaPioNP5k43gdhdTcgIVAMv0KuXEEjR/ts
-	 TaN2jyzKoktaVeYoURpevGBlU/qDMb5fv7sKtrDU=
+	b=l8HjH8lsGBHzAJ4RmVaapV1T81ST2WkKUpbP1NuTgSpU/UJHXSlG317zLu4l5psIZ
+	 KH960sGhuuGRHBTjwNwvIiLXPNReWLY0fd25QmZjRpNWpk9LwmRHziaHkIlH2yrpXQ
+	 vJ/YbvoqMwYUTpsRQ9jKEG+MENsWif3kl8NWC9VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Xinxin Wan <xinxin.wan@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 187/515] ASoC: codecs: rt5640: Retry DEVICE_ID verification
+Subject: [PATCH 6.12 147/444] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
 Date: Mon, 18 Aug 2025 14:42:53 +0200
-Message-ID: <20250818124505.569776257@linuxfoundation.org>
+Message-ID: <20250818124454.423629277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinxin Wan <xinxin.wan@intel.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
+[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
 
-To be more resilient to codec-detection failures when the hardware
-powers on slowly, add retry mechanism to the device verification check.
-Similar pattern is found throughout a number of Realtek codecs. Our
-tests show that 60ms delay is sufficient to address readiness issues on
-rt5640 chip.
+snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
+leads to null pointer dereference.
+This was reproduced with topology loading and marking a link as ignore
+due to missing hardware component on the system.
+On module removal the soc_tplg_remove_link() would call
+snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
+no runtime was created.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 21a18012b4c0..55881a5669e2 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -3013,6 +3013,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
- 	}
- 
- 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	if (val != RT5640_DEVICE_ID) {
-+		usleep_range(60000, 100000);
-+		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	}
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index e3c8d4f20b9c..4ac870c2dafa 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1138,6 +1138,9 @@ static int snd_soc_compensate_channel_connection_map(struct snd_soc_card *card,
+ void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
+ 				struct snd_soc_pcm_runtime *rtd)
+ {
++	if (!rtd)
++		return;
 +
- 	if (val != RT5640_DEVICE_ID) {
- 		dev_err(&i2c->dev,
- 			"Device with ID register %#x is not rt5640/39\n", val);
+ 	lockdep_assert_held(&client_mutex);
+ 
+ 	/*
 -- 
 2.39.5
 
