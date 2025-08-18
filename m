@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11A9B2A35D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B847BB2A63F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A41D1891811
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BDB685FAD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D12D31E10D;
-	Mon, 18 Aug 2025 13:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F188833A027;
+	Mon, 18 Aug 2025 13:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ujn/gu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fz2fIfen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE27B12DDA1;
-	Mon, 18 Aug 2025 13:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAD033A01F;
+	Mon, 18 Aug 2025 13:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522139; cv=none; b=jU5BLWriBk3DGXeCPePY8hxY9e1QGzOC44DJJiV7nMlGrtahMeDfpzxSFJ9sdXPtZbo2d02X0SOSoqnOFyLV9EfCQVd38OjMp414zOYAjo/fQ0eyY0S/5PA9gp+SywKCVRR3iquPeV/Y0NUteH5xQFneAn1e8G50dfNnWNQLs7s=
+	t=1755523768; cv=none; b=EXo8+hoZexsWuvK+Y4e6z9LOhbkKaEdua80PXlkki07XvxK9bE47URuHtexNvUIiznAjcfUK37CHL6IXH2Q2yBsTHbiZEwmvLh/1O5poihpMXIc6u1fzTPqVYQf9zcv6mxDCCsrWps6npmpcUijM8FnuTYjT7QDKiqEyFCnMqcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522139; c=relaxed/simple;
-	bh=4NksRWzydX+qFfzTO6U2KHrilafzBXu0XzztneMctDM=;
+	s=arc-20240116; t=1755523768; c=relaxed/simple;
+	bh=zU6Fo75mPV49tbvL5+am5zYB3CFf85vry7gFxJfszbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUKvAxWCcAT8kiYbNbHH3ePoyyGMkLq1fxUquhlzpxDHIG3sllyZFggB+8XGlY1C6Yr83VijZvmgqDVYQbq6ibqD7HULx7nH0EV7FjdJz5E/uzTCxFkpzlf6aKy9q+TWZzwwFS5jX7KOaJGybu+C+AZY+Poaq4cbYJswhB/eWeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ujn/gu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E078C113D0;
-	Mon, 18 Aug 2025 13:02:19 +0000 (UTC)
+	 MIME-Version; b=QXUjYuZtWyGbUR7QmbQC7Iv7pRlX2Keo9qwXIC/0wUrw91Gd0xP4tn0xhi57utNczVSSe3vlWfsLq9HaWWY4UwJp+reIdU9pmsB8oGxUKICnHZVatR5QCDu3lCwkmdzKF8w+Yo4kMmTVCfuZHxWQY09EyW3fj+HD0XcZdxmlDyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fz2fIfen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A6DC4CEEB;
+	Mon, 18 Aug 2025 13:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522139;
-	bh=4NksRWzydX+qFfzTO6U2KHrilafzBXu0XzztneMctDM=;
+	s=korg; t=1755523768;
+	bh=zU6Fo75mPV49tbvL5+am5zYB3CFf85vry7gFxJfszbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ujn/gu4wUxYEHOTwKNY5h2+ePVaX53fEjj+rzaMlgrABZyl+6VaNnG9rLCP5l0Iu
-	 kKjje6pgpsm9iJ/HLgrUnvtt0Xak2RC25tQ5zBTFAJDfM0AvwfKI5tfA6r6Hf10S8X
-	 4zEVwsi0tfCtBVqRWGn5Xq419AwjYSMfzheONHoo=
+	b=Fz2fIfencrhYWTCKS4nUczL5eXDIpGTU+OF3wcTqg1MbAR8FCiGJjiBB1aboDGvem
+	 iwqVo42eYQRK4NnQBhulTZPepbHqOikIztyATWfVh3D03tpw0H5kj6XvNB5eMkNc3v
+	 lu9Ze3RGfYetMGzUu/PAaY20laUAcb/rnXCu2phc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Li Chen <chenl311@chinatelecom.cn>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/444] wifi: ath12k: Fix station association with MBSSID Non-TX BSS
+Subject: [PATCH 6.15 268/515] ACPI: Suppress misleading SPCR console message when SPCR table is absent
 Date: Mon, 18 Aug 2025 14:44:14 +0200
-Message-ID: <20250818124457.392306009@linuxfoundation.org>
+Message-ID: <20250818124508.738416946@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+From: Li Chen <chenl311@chinatelecom.cn>
 
-[ Upstream commit 70eeacc1a92a444f4b5777ab19e1c378a5edc8dd ]
+[ Upstream commit bad3fa2fb9206f4dcec6ddef094ec2fbf6e8dcb2 ]
 
-ath12k station is unable to associate with non-transmitting BSSes
-in a Multiple BSS set because the user-space does not receive
-information about the non-transmitting BSSes from mac80211's
-scan results.
+The kernel currently alway prints:
+"Use ACPI SPCR as default console: No/Yes "
 
-The ath12k driver does not advertise its MBSSID capability to mac80211,
-resulting in wiphy->support_mbssid not being set. Consequently, the
-information about non-transmitting BSS is not parsed from received
-Beacon/Probe response frames and is therefore not included in the
-scan results.
+even on systems that lack an SPCR table. This can
+mislead users into thinking the SPCR table exists
+on the machines without SPCR.
 
-Fix this by advertising the MBSSID capability of ath12k driver to
-mac80211.
+With this change, the "Yes" is only printed if
+the SPCR table is present, parsed and !param_acpi_nospcr.
+This avoids user confusion on SPCR-less systems.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
-
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250530035615.3178480-2-rameshkumar.sundaram@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/20250620131309.126555-3-me@linux.beauty
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kernel/acpi.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 4ca684278c36..4b3fbec397ac 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -9218,6 +9218,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+index b9a66fc146c9..4d529ff7ba51 100644
+--- a/arch/arm64/kernel/acpi.c
++++ b/arch/arm64/kernel/acpi.c
+@@ -197,6 +197,8 @@ static int __init acpi_fadt_sanity_check(void)
+  */
+ void __init acpi_boot_table_init(void)
+ {
++	int ret;
++
+ 	/*
+ 	 * Enable ACPI instead of device tree unless
+ 	 * - ACPI has been disabled explicitly (acpi=off), or
+@@ -250,10 +252,12 @@ void __init acpi_boot_table_init(void)
+ 		 * behaviour, use acpi=nospcr to disable console in ACPI SPCR
+ 		 * table as default serial console.
+ 		 */
+-		acpi_parse_spcr(earlycon_acpi_spcr_enable,
++		ret = acpi_parse_spcr(earlycon_acpi_spcr_enable,
+ 			!param_acpi_nospcr);
+-		pr_info("Use ACPI SPCR as default console: %s\n",
+-				param_acpi_nospcr ? "No" : "Yes");
++		if (!ret || param_acpi_nospcr || !IS_ENABLED(CONFIG_ACPI_SPCR_TABLE))
++			pr_info("Use ACPI SPCR as default console: No\n");
++		else
++			pr_info("Use ACPI SPCR as default console: Yes\n");
  
- 	wiphy->mbssid_max_interfaces = mbssid_max_interfaces;
- 	wiphy->ema_max_profile_periodicity = TARGET_EMA_MAX_PROFILE_PERIOD;
-+	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
- 
- 	if (is_6ghz) {
- 		wiphy_ext_feature_set(wiphy,
+ 		if (IS_ENABLED(CONFIG_ACPI_BGRT))
+ 			acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
 -- 
 2.39.5
 
