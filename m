@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E40DB2A6A0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DE4B2A8E9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3626F1B639E4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF97B7BC3BC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D42320CC9;
-	Mon, 18 Aug 2025 13:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE6C337698;
+	Mon, 18 Aug 2025 14:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obUw8WOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WifeiCHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3275D78F4F;
-	Mon, 18 Aug 2025 13:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD3A337695;
+	Mon, 18 Aug 2025 14:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524020; cv=none; b=dDNCNchrxWF23CfhprZl1MK+qRPjU2li0RR5eG8c1UydiISDhmdSCaq3Evg5KAM5vFKQMXmkC/mK4tFvxllKrvgFTqZy9fOnqj6SZroPSNdMx9Uw5hv0gxFgYCZ3bTXgTnblbqDfjgWgggPoGYhp3/MMkX7DRgpzdkoJgLNuDDU=
+	t=1755525648; cv=none; b=mhDnkprRrFKNWUWq9DSxpVhQJXsXNcSjYtrmDOXXolhe0epB99GQtuoj9N61rdzBGsMK2501w+pTC+E0MHnKYSDNRMLrD/QlioUG0Oj97f2gC2L9h2Sm+dkWZ3P6EtLQerIMmgkEL3BQ4qUSu+xFrd9pbjnOl/gcMOs0n4skjH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524020; c=relaxed/simple;
-	bh=RKHyd3OMgBLe3HIkXs2dJ2J6JCBGKaFPPk7lEgpYH5s=;
+	s=arc-20240116; t=1755525648; c=relaxed/simple;
+	bh=TFMbBWFY0ylWID5v8tECZVbP9SdYDs2Fl722g4LnIE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pybzmJx5be2irLK8ZR2xB5GxydgFuxAYTAu4vGRk2Cz2/tKFBG1WyPoDq9G3ARLg0HZ/GeWbiNQ5Rehcyr2RdmkjZQBRepH4N2CzbGWFS4WnQaxko6QkG8CL4eKHaOolU4yS833AOTnNA8umdHFuRWmQm/1d1Sw7xESCpHcrHqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obUw8WOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4B1C4CEEB;
-	Mon, 18 Aug 2025 13:33:39 +0000 (UTC)
+	 MIME-Version; b=II4xs+6Ly5bv69SIKzvUwNeyIAS8AwLIZExO/561WRbCqS0SCWFaZ75dZUQjaFPoDys1Ftf6KxmNhqLSOAUN85OqFBRP4wzHp5EqW6pMqs2qpNAsV2mA83dSmlOZO3G05Y0g7CUargKak0zfN7rh7Cghct5kRHIBQqQF1/rx8TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WifeiCHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEE5C4CEEB;
+	Mon, 18 Aug 2025 14:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524020;
-	bh=RKHyd3OMgBLe3HIkXs2dJ2J6JCBGKaFPPk7lEgpYH5s=;
+	s=korg; t=1755525648;
+	bh=TFMbBWFY0ylWID5v8tECZVbP9SdYDs2Fl722g4LnIE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obUw8WOD327dgHt/31boF1hcbjjdKZgFXQbG3FcZU1EqGbtHgQXycX/kblH3roVs7
-	 hvxhB1SYwyMs+lOPZrz2r7L8ChOdMApYyqGn0fFo2YeQeo0otG9gr12Ee5SHvkAkLE
-	 bthAkQ0XJtPZZDqJ7bZ8WJYtZbNjUvUAD9oXigsE=
+	b=WifeiCHPjkNSl14JlivY8KNBow5csGxHF/f5Pt31rjW/tnZgJZUkbw6hEgkGcsRHB
+	 +STnCCz9uz35QUcWObPWzRl/eJfn0tVYBXCSkK65CA9sW2/weMIL5XzYsXwZQXAXkn
+	 LUUjlKUBYZDXn3ECwZ5ru4Rj+seLDKk+2IpHaKms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 326/515] vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
+Subject: [PATCH 6.16 325/570] drm/amdgpu: Suspend IH during mode-2 reset
 Date: Mon, 18 Aug 2025 14:45:12 +0200
-Message-ID: <20250818124510.985573855@linuxfoundation.org>
+Message-ID: <20250818124518.376634839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 03a92f036a04fed2b00d69f5f46f1a486e70dc5c ]
+[ Upstream commit 3f1e81ecb61923934bd11c3f5c1e10893574e607 ]
 
-When allocating receive buffers for the vsock virtio RX virtqueue, an
-SKB is allocated with a 4140 data payload (the 44-byte packet header +
-VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE). Even when factoring in the SKB
-overhead, the resulting 8KiB allocation thanks to the rounding in
-kmalloc_reserve() is wasteful (~3700 unusable bytes) and results in a
-higher-order page allocation on systems with 4KiB pages just for the
-sake of a few hundred bytes of packet data.
+On multi-aid SOCs, there could be a continuous stream of interrupts from
+GC after poison consumption. Suspend IH to disable them before doing
+mode-2 reset. This avoids conflicts in hardware accesses during
+interrupt handlers while a reset is ongoing.
 
-Limit the vsock virtio RX buffers to 4KiB per SKB, resulting in much
-better memory utilisation and removing the need to allocate higher-order
-pages entirely.
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Message-Id: <20250717090116.11987-5-will@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_vsock.h     | 7 ++++++-
- net/vmw_vsock/virtio_transport.c | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/aldebaran.c | 33 ++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 36fb3edfa403..6c00687539cf 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -111,7 +111,12 @@ static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
- 	return (size_t)(skb_end_pointer(skb) - skb->head);
+diff --git a/drivers/gpu/drm/amd/amdgpu/aldebaran.c b/drivers/gpu/drm/amd/amdgpu/aldebaran.c
+index e13fbd974141..9569dc16dd3d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/aldebaran.c
++++ b/drivers/gpu/drm/amd/amdgpu/aldebaran.c
+@@ -71,18 +71,29 @@ aldebaran_get_reset_handler(struct amdgpu_reset_control *reset_ctl,
+ 	return NULL;
  }
  
--#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
-+/* Dimension the RX SKB so that the entire thing fits exactly into
-+ * a single 4KiB page. This avoids wasting memory due to alloc_skb()
-+ * rounding up to the next page order and also means that we
-+ * don't leave higher-order pages sitting around in the RX queue.
-+ */
-+#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	SKB_WITH_OVERHEAD(1024 * 4)
- #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
- #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
- 
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index f0e48e6911fc..f01f9e878106 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -307,7 +307,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
- 
- static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
++static inline uint32_t aldebaran_get_ip_block_mask(struct amdgpu_device *adev)
++{
++	uint32_t ip_block_mask = BIT(AMD_IP_BLOCK_TYPE_GFX) |
++				 BIT(AMD_IP_BLOCK_TYPE_SDMA);
++
++	if (adev->aid_mask)
++		ip_block_mask |= BIT(AMD_IP_BLOCK_TYPE_IH);
++
++	return ip_block_mask;
++}
++
+ static int aldebaran_mode2_suspend_ip(struct amdgpu_device *adev)
  {
--	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
-+	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
- 	struct scatterlist pkt, *p;
- 	struct virtqueue *vq;
- 	struct sk_buff *skb;
++	uint32_t ip_block_mask = aldebaran_get_ip_block_mask(adev);
++	uint32_t ip_block;
+ 	int r, i;
+ 
+ 	amdgpu_device_set_pg_state(adev, AMD_PG_STATE_UNGATE);
+ 	amdgpu_device_set_cg_state(adev, AMD_CG_STATE_UNGATE);
+ 
+ 	for (i = adev->num_ip_blocks - 1; i >= 0; i--) {
+-		if (!(adev->ip_blocks[i].version->type ==
+-			      AMD_IP_BLOCK_TYPE_GFX ||
+-		      adev->ip_blocks[i].version->type ==
+-			      AMD_IP_BLOCK_TYPE_SDMA))
++		ip_block = BIT(adev->ip_blocks[i].version->type);
++		if (!(ip_block_mask & ip_block))
+ 			continue;
+ 
+ 		r = amdgpu_ip_block_suspend(&adev->ip_blocks[i]);
+@@ -200,8 +211,10 @@ aldebaran_mode2_perform_reset(struct amdgpu_reset_control *reset_ctl,
+ static int aldebaran_mode2_restore_ip(struct amdgpu_device *adev)
+ {
+ 	struct amdgpu_firmware_info *ucode_list[AMDGPU_UCODE_ID_MAXIMUM];
++	uint32_t ip_block_mask = aldebaran_get_ip_block_mask(adev);
+ 	struct amdgpu_firmware_info *ucode;
+ 	struct amdgpu_ip_block *cmn_block;
++	struct amdgpu_ip_block *ih_block;
+ 	int ucode_count = 0;
+ 	int i, r;
+ 
+@@ -243,6 +256,18 @@ static int aldebaran_mode2_restore_ip(struct amdgpu_device *adev)
+ 	if (r)
+ 		return r;
+ 
++	if (ip_block_mask & BIT(AMD_IP_BLOCK_TYPE_IH)) {
++		ih_block = amdgpu_device_ip_get_ip_block(adev,
++							 AMD_IP_BLOCK_TYPE_IH);
++		if (unlikely(!ih_block)) {
++			dev_err(adev->dev, "Failed to get IH handle\n");
++			return -EINVAL;
++		}
++		r = amdgpu_ip_block_resume(ih_block);
++		if (r)
++			return r;
++	}
++
+ 	/* Reinit GFXHUB */
+ 	adev->gfxhub.funcs->init(adev);
+ 	r = adev->gfxhub.funcs->gart_enable(adev);
 -- 
 2.39.5
 
