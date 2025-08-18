@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAD1B2A753
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2030B2A40F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCCB01B2309C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5101188FA91
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9CA322A0E;
-	Mon, 18 Aug 2025 13:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3BF310627;
+	Mon, 18 Aug 2025 13:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmpH322m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t35o8Pny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B392322764;
-	Mon, 18 Aug 2025 13:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF662E22A6;
+	Mon, 18 Aug 2025 13:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524232; cv=none; b=Ogz4hvbycjak5eLpIUzDv0kHa6+NlOfuzDviNryiosHZ7EqNSxJMIJBV81s1XCa0E3s/YLRabs7S6H033MIohHHqAVlQ5v3vEg8i25he+dw8LDtW1zZP/zV5tWxpq+CiTx8DEpfn8ZDxy9RYL+bqfhZ0p0YeanLENiqaW30gCP0=
+	t=1755522615; cv=none; b=Ts7Xew1uAt4ACO+S2N7nY6tdCFjQpx8r7VDHRYOqrjlfZNsg8RoQvfHMiHAMpSGQz8hvQpNhZeSCNM4aamSJWkYUprynDolDw0Bps4luGKIcxRpPjRerXCah9S0OJZ/V2MuGEhZyvrmZa0PLexz2/eRbTi/eCW1pd1wSL6h9rAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524232; c=relaxed/simple;
-	bh=1NgcMZazVy9COmQmUuJJ81oxH6SNMYVLh5lZC4E05ck=;
+	s=arc-20240116; t=1755522615; c=relaxed/simple;
+	bh=W3S8WWCIoT/GfiWT1RQ1X6wMQXon/7/DS0ElQRSXRF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2Mwrudzg73coua7HfCjXvtoOK739mVYjsl/TXUkaOdn6xn6/MmB9Ado9uBCH7MAPMKAzjToPEvfGvpSbhcYrWYp3QYIx2E13G1urBCCQQcunohkqBJnmibFX+jhdlDigq0k6z25CQVaWVPMlk6HC6KFGV3sw3lyOkbgiyM9iUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmpH322m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBED6C4CEEB;
-	Mon, 18 Aug 2025 13:37:11 +0000 (UTC)
+	 MIME-Version; b=Jf4uNXaQSGW2JM2DjBKlSYEZB1yPxbVr1GgXsvy3iXm/gh/yC/NDZkyDbbwgXlxaZPmkpxLQZgYpaGJ9u3fPF0E8gmBNxvsKBViHMQWBMrT0bUbg8KesLjAU00kcMKxSv0y7w7xl6fUl3i/tW+MifXFdG1LXq5DZBRclixJIziA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t35o8Pny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A836C4CEEB;
+	Mon, 18 Aug 2025 13:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524232;
-	bh=1NgcMZazVy9COmQmUuJJ81oxH6SNMYVLh5lZC4E05ck=;
+	s=korg; t=1755522615;
+	bh=W3S8WWCIoT/GfiWT1RQ1X6wMQXon/7/DS0ElQRSXRF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmpH322mQUabwJqLn4BQ7x7OcXOG9a1xW3IGnHlcq7Yw//9JC8sDqv4sAxTO6ie6/
-	 OV9VzN4kpbfpowOwQWrmS7h9xTIpjIwr3e747YOkDz96CEB23MvnEVGBWgmFM6CWBe
-	 AChAlrMWCFE7aBcyynlMOgNThj75QgZvliZPN05A=
+	b=t35o8PnyCO3Fobdp2F0JHyOZMhg8nloAhUweg/dmAThN6sFy3kPktwgBkcKuWLJrn
+	 fstp0vcdFT8aFuoZx7vvM5S0IrrGEjaK7wZ2R9+8y/ZBaNKXXKnru0CR3YCNpfacW3
+	 mJb/7p2ouKzrPJYEgGW/WcR1VdxJzUSUc4gA8H2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 409/515] scsi: target: core: Generate correct identifiers for PR OUT transport IDs
+Subject: [PATCH 6.12 369/444] ASoC: fsl_sai: replace regmap_write with regmap_update_bits
 Date: Mon, 18 Aug 2025 14:46:35 +0200
-Message-ID: <20250818124514.161855544@linuxfoundation.org>
+Message-ID: <20250818124502.733704866@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,240 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 6e0f6aa44b68335df404a2df955055f416b5f2aa ]
+[ Upstream commit 0e270f32975fd21874185ba53653630dd40bf560 ]
 
-Fix target_parse_pr_out_transport_id() to return a string representing
-the transport ID in a human-readable format (e.g., naa.xxxxxxxx...)  for
-various SCSI protocol types (SAS, FCP, SRP, SBP).
+Use the regmap_write() for software reset in fsl_sai_config_disable would
+cause the FSL_SAI_CSR_BCE bit to be cleared. Refer to
+commit 197c53c8ecb34 ("ASoC: fsl_sai: Don't disable bitclock for i.MX8MP")
+FSL_SAI_CSR_BCE should not be cleared. So need to use regmap_update_bits()
+instead of regmap_write() for these bit operations.
 
-Previously, the function returned a pointer to the raw binary buffer,
-which was incorrectly compared against human-readable strings, causing
-comparisons to fail.  Now, the function writes a properly formatted
-string into a buffer provided by the caller.  The output format depends
-on the transport protocol:
-
-* SAS: 64-bit identifier, "naa." prefix.
-* FCP: 64-bit identifier, colon separated values.
-* SBP: 64-bit identifier, no prefix.
-* SRP: 128-bit identifier, "0x" prefix.
-* iSCSI: IQN string.
-
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Link: https://lore.kernel.org/r/20250714133738.11054-1-mlombard@redhat.com
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: dc78f7e59169d ("ASoC: fsl_sai: Force a software reset when starting in consumer mode")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250807020318.2143219-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_fabric_lib.c | 63 +++++++++++++++++++------
- drivers/target/target_core_internal.h   |  4 +-
- drivers/target/target_core_pr.c         | 18 +++----
- 3 files changed, 60 insertions(+), 25 deletions(-)
+ sound/soc/fsl/fsl_sai.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/target/target_core_fabric_lib.c b/drivers/target/target_core_fabric_lib.c
-index 43f47e3aa448..ec7bc6e30228 100644
---- a/drivers/target/target_core_fabric_lib.c
-+++ b/drivers/target/target_core_fabric_lib.c
-@@ -257,11 +257,41 @@ static int iscsi_get_pr_transport_id_len(
- 	return len;
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 25d4b27f5b76..57614c0b711e 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -777,9 +777,9 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
+ 	 * are running concurrently.
+ 	 */
+ 	/* Software Reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, 0);
  }
  
--static char *iscsi_parse_pr_out_transport_id(
-+static void sas_parse_pr_out_transport_id(char *buf, char *i_str)
-+{
-+	char hex[17] = {};
-+
-+	bin2hex(hex, buf + 4, 8);
-+	snprintf(i_str, TRANSPORT_IQN_LEN, "naa.%s", hex);
-+}
-+
-+static void srp_parse_pr_out_transport_id(char *buf, char *i_str)
-+{
-+	char hex[33] = {};
-+
-+	bin2hex(hex, buf + 8, 16);
-+	snprintf(i_str, TRANSPORT_IQN_LEN, "0x%s", hex);
-+}
-+
-+static void fcp_parse_pr_out_transport_id(char *buf, char *i_str)
-+{
-+	snprintf(i_str, TRANSPORT_IQN_LEN, "%8phC", buf + 8);
-+}
-+
-+static void sbp_parse_pr_out_transport_id(char *buf, char *i_str)
-+{
-+	char hex[17] = {};
-+
-+	bin2hex(hex, buf + 8, 8);
-+	snprintf(i_str, TRANSPORT_IQN_LEN, "%s", hex);
-+}
-+
-+static bool iscsi_parse_pr_out_transport_id(
- 	struct se_portal_group *se_tpg,
- 	char *buf,
- 	u32 *out_tid_len,
--	char **port_nexus_ptr)
-+	char **port_nexus_ptr,
-+	char *i_str)
- {
- 	char *p;
- 	int i;
-@@ -282,7 +312,7 @@ static char *iscsi_parse_pr_out_transport_id(
- 	if ((format_code != 0x00) && (format_code != 0x40)) {
- 		pr_err("Illegal format code: 0x%02x for iSCSI"
- 			" Initiator Transport ID\n", format_code);
--		return NULL;
-+		return false;
- 	}
- 	/*
- 	 * If the caller wants the TransportID Length, we set that value for the
-@@ -306,7 +336,7 @@ static char *iscsi_parse_pr_out_transport_id(
- 			pr_err("Unable to locate \",i,0x\" separator"
- 				" for Initiator port identifier: %s\n",
- 				&buf[4]);
--			return NULL;
-+			return false;
- 		}
- 		*p = '\0'; /* Terminate iSCSI Name */
- 		p += 5; /* Skip over ",i,0x" separator */
-@@ -339,7 +369,8 @@ static char *iscsi_parse_pr_out_transport_id(
- 	} else
- 		*port_nexus_ptr = NULL;
+ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+@@ -898,11 +898,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
+ 	unsigned int ofs = sai->soc_data->reg_offset;
  
--	return &buf[4];
-+	strscpy(i_str, &buf[4], TRANSPORT_IQN_LEN);
-+	return true;
- }
+ 	/* Software Reset for both Tx and Rx */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	/* Clear SR bit to finish the reset */
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
  
- int target_get_pr_transport_id_len(struct se_node_acl *nacl,
-@@ -387,33 +418,35 @@ int target_get_pr_transport_id(struct se_node_acl *nacl,
- 	}
- }
+ 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
+ 			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
+@@ -1785,11 +1785,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
  
--const char *target_parse_pr_out_transport_id(struct se_portal_group *tpg,
--		char *buf, u32 *out_tid_len, char **port_nexus_ptr)
-+bool target_parse_pr_out_transport_id(struct se_portal_group *tpg,
-+		char *buf, u32 *out_tid_len, char **port_nexus_ptr, char *i_str)
- {
--	u32 offset;
--
- 	switch (tpg->proto_id) {
- 	case SCSI_PROTOCOL_SAS:
- 		/*
- 		 * Assume the FORMAT CODE 00b from spc4r17, 7.5.4.7 TransportID
- 		 * for initiator ports using SCSI over SAS Serial SCSI Protocol.
- 		 */
--		offset = 4;
-+		sas_parse_pr_out_transport_id(buf, i_str);
- 		break;
--	case SCSI_PROTOCOL_SBP:
- 	case SCSI_PROTOCOL_SRP:
-+		srp_parse_pr_out_transport_id(buf, i_str);
-+		break;
- 	case SCSI_PROTOCOL_FCP:
--		offset = 8;
-+		fcp_parse_pr_out_transport_id(buf, i_str);
-+		break;
-+	case SCSI_PROTOCOL_SBP:
-+		sbp_parse_pr_out_transport_id(buf, i_str);
- 		break;
- 	case SCSI_PROTOCOL_ISCSI:
- 		return iscsi_parse_pr_out_transport_id(tpg, buf, out_tid_len,
--					port_nexus_ptr);
-+					port_nexus_ptr, i_str);
- 	default:
- 		pr_err("Unknown proto_id: 0x%02x\n", tpg->proto_id);
--		return NULL;
-+		return false;
- 	}
+ 	regcache_cache_only(sai->regmap, false);
+ 	regcache_mark_dirty(sai->regmap);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
+ 	usleep_range(1000, 2000);
+-	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
+-	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
++	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
  
- 	*port_nexus_ptr = NULL;
- 	*out_tid_len = 24;
--	return buf + offset;
-+	return true;
- }
-diff --git a/drivers/target/target_core_internal.h b/drivers/target/target_core_internal.h
-index 408be26d2e9b..20aab1f50565 100644
---- a/drivers/target/target_core_internal.h
-+++ b/drivers/target/target_core_internal.h
-@@ -103,8 +103,8 @@ int	target_get_pr_transport_id_len(struct se_node_acl *nacl,
- int	target_get_pr_transport_id(struct se_node_acl *nacl,
- 		struct t10_pr_registration *pr_reg, int *format_code,
- 		unsigned char *buf);
--const char *target_parse_pr_out_transport_id(struct se_portal_group *tpg,
--		char *buf, u32 *out_tid_len, char **port_nexus_ptr);
-+bool target_parse_pr_out_transport_id(struct se_portal_group *tpg,
-+		char *buf, u32 *out_tid_len, char **port_nexus_ptr, char *i_str);
- 
- /* target_core_hba.c */
- struct se_hba *core_alloc_hba(const char *, u32, u32);
-diff --git a/drivers/target/target_core_pr.c b/drivers/target/target_core_pr.c
-index 70905805cb17..83e172c92238 100644
---- a/drivers/target/target_core_pr.c
-+++ b/drivers/target/target_core_pr.c
-@@ -1478,11 +1478,12 @@ core_scsi3_decode_spec_i_port(
- 	LIST_HEAD(tid_dest_list);
- 	struct pr_transport_id_holder *tidh_new, *tidh, *tidh_tmp;
- 	unsigned char *buf, *ptr, proto_ident;
--	const unsigned char *i_str = NULL;
-+	unsigned char i_str[TRANSPORT_IQN_LEN];
- 	char *iport_ptr = NULL, i_buf[PR_REG_ISID_ID_LEN];
- 	sense_reason_t ret;
- 	u32 tpdl, tid_len = 0;
- 	u32 dest_rtpi = 0;
-+	bool tid_found;
- 
- 	/*
- 	 * Allocate a struct pr_transport_id_holder and setup the
-@@ -1571,9 +1572,9 @@ core_scsi3_decode_spec_i_port(
- 			dest_rtpi = tmp_lun->lun_tpg->tpg_rtpi;
- 
- 			iport_ptr = NULL;
--			i_str = target_parse_pr_out_transport_id(tmp_tpg,
--					ptr, &tid_len, &iport_ptr);
--			if (!i_str)
-+			tid_found = target_parse_pr_out_transport_id(tmp_tpg,
-+					ptr, &tid_len, &iport_ptr, i_str);
-+			if (!tid_found)
- 				continue;
- 			/*
- 			 * Determine if this SCSI device server requires that
-@@ -3153,13 +3154,14 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
- 	struct t10_pr_registration *pr_reg, *pr_res_holder, *dest_pr_reg;
- 	struct t10_reservation *pr_tmpl = &dev->t10_pr;
- 	unsigned char *buf;
--	const unsigned char *initiator_str;
-+	unsigned char initiator_str[TRANSPORT_IQN_LEN];
- 	char *iport_ptr = NULL, i_buf[PR_REG_ISID_ID_LEN] = { };
- 	u32 tid_len, tmp_tid_len;
- 	int new_reg = 0, type, scope, matching_iname;
- 	sense_reason_t ret;
- 	unsigned short rtpi;
- 	unsigned char proto_ident;
-+	bool tid_found;
- 
- 	if (!se_sess || !se_lun) {
- 		pr_err("SPC-3 PR: se_sess || struct se_lun is NULL!\n");
-@@ -3278,9 +3280,9 @@ core_scsi3_emulate_pro_register_and_move(struct se_cmd *cmd, u64 res_key,
- 		ret = TCM_INVALID_PARAMETER_LIST;
- 		goto out;
- 	}
--	initiator_str = target_parse_pr_out_transport_id(dest_se_tpg,
--			&buf[24], &tmp_tid_len, &iport_ptr);
--	if (!initiator_str) {
-+	tid_found = target_parse_pr_out_transport_id(dest_se_tpg,
-+			&buf[24], &tmp_tid_len, &iport_ptr, initiator_str);
-+	if (!tid_found) {
- 		pr_err("SPC-3 PR REGISTER_AND_MOVE: Unable to locate"
- 			" initiator_str from Transport ID\n");
- 		ret = TCM_INVALID_PARAMETER_LIST;
+ 	ret = regcache_sync(sai->regmap);
+ 	if (ret)
 -- 
-2.39.5
+2.50.1
 
 
 
