@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08F4B2A982
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:21:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1A3B2A39F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB4B45A2BF3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9ED81893EA1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AAD337695;
-	Mon, 18 Aug 2025 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C491A3074AE;
+	Mon, 18 Aug 2025 13:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hi12ze5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWW2B3u2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A6033768F;
-	Mon, 18 Aug 2025 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EEA3218CA;
+	Mon, 18 Aug 2025 13:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525651; cv=none; b=NtEco5XCaAzE3QHLsjJXoAieORL+qexbFFCR3vQdE0WF35iDZebbB86kYC7+Yy8VK5LysQto0Ubv/COTY07f0h35fNFrc3ud35jcv4PKk/k53eKCd6EmyOf9m8obXzBdlhflSQYtU9jnDy587J/9JQ5Q5rIpuFRxngdU9WBOkLA=
+	t=1755522345; cv=none; b=iQ1wARsuPg2QlRmFn5KPZqu45STIMpMuP4bUnMsw68SxLpp8CnT1hJZjyTePqQSiNnBV9GT23jNW9kN/Kgt5c/qaQefmAjyFVAoE051q6mvaa+aGJTpGXImZZ6SaXMkEQtXHqxK86xs0EcXCu/sWFlMQjclK53+XgS1bbDuwaw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525651; c=relaxed/simple;
-	bh=gCt9as5gVwfvrKvevpnb3pZqlqtB4DQsNawItUMM0hg=;
+	s=arc-20240116; t=1755522345; c=relaxed/simple;
+	bh=2RlCWpnLbwMjHtgJOhCRA23GtLXykNKlOqoJ6yt4Mkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twxMN0ZxYxTqVhb6ZcwOEcVFqI4kqAGCFChj6FViDEsvLYvq37TfioeAj2KwVeXRI6B8FAIcn717C8tQLxIoG8eEUW7q3pXqZ0dEEA+2urjR8ZeaefQ8P85z7GD/Y7xcYMZY7GuRMY4pgdhL920bxs86Y4kb4m1psPOzGhZ94HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hi12ze5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23322C4CEEB;
-	Mon, 18 Aug 2025 14:00:50 +0000 (UTC)
+	 MIME-Version; b=U7a+gsxCbr1Yae6jiALzzw+h0fFS/IH9wgMdxQ4O/6EoVLD7vjW/z1FkHusocFvFJYqUx9zbb9e/Ub3R0lw52au9s40iV5X0sIJXRDpbKkwWq/kk1+QkxOraCsXJTZ89WR3GoP6JHxtnur/OAjoDyHeSrFArO7x9JcPby4/Y6W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWW2B3u2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53AEC4CEEB;
+	Mon, 18 Aug 2025 13:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525651;
-	bh=gCt9as5gVwfvrKvevpnb3pZqlqtB4DQsNawItUMM0hg=;
+	s=korg; t=1755522345;
+	bh=2RlCWpnLbwMjHtgJOhCRA23GtLXykNKlOqoJ6yt4Mkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hi12ze5GsEeqpl/OZskjM2XK913PZKfRzmlo4r1/Ki+F4Hv5aC+2QrMTAGdicbCl5
-	 sqoMvju1emDSuECjbww10HVjzaZ+ecT/EhZrWDd5hxkh3NRQR9VxuCyyM4pjEHjAZo
-	 Lm138yzHJdJNXo7X9wQNTuFGE5M98Ss+5/oFqVc0=
+	b=MWW2B3u2CZsSdQDKDOUjTB8+w5OPcn63/adnKehn1KGLpPfqc20+lvyQdJtspB/uM
+	 TjmGPpWqVLwLanFf2iI618cV2dNkJ+mNN4fs7ZRQfs17rtcO/S/VPjyRRKcGKnrLN3
+	 DkFIZMVLbinZJCIwNQsQc4zfepHn3Zue2LwfSnuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ganglxie <ganglxie@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Florin Leotescu <florin.leotescu@nxp.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 326/570] drm/amdgpu: clear pa and mca record counter when resetting eeprom
+Subject: [PATCH 6.12 287/444] hwmon: (emc2305) Set initial PWM minimum value during probe based on thermal state
 Date: Mon, 18 Aug 2025 14:45:13 +0200
-Message-ID: <20250818124518.414072797@linuxfoundation.org>
+Message-ID: <20250818124459.723940858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ganglxie <ganglxie@amd.com>
+From: Florin Leotescu <florin.leotescu@nxp.com>
 
-[ Upstream commit d0cc8d2b7df1848f98f0fea8135ba706814b1d13 ]
+[ Upstream commit 0429415a084a15466e87d504e8c2a502488184a5 ]
 
-clear pa and mca record counter when resetting eeprom, so that
-ras_num_bad_pages can be calculated correctly
+Prevent the PWM value from being set to minimum when thermal zone
+temperature exceeds any trip point during driver probe. Otherwise, the
+PWM fan speed will remains at minimum speed and not respond to
+temperature changes.
 
-Signed-off-by: ganglxie <ganglxie@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
+Link: https://lore.kernel.org/r/20250603113125.3175103-5-florin.leotescu@oss.nxp.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/emc2305.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-index 2c58e09e56f9..2ddedf476542 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-@@ -476,6 +476,8 @@ int amdgpu_ras_eeprom_reset_table(struct amdgpu_ras_eeprom_control *control)
- 
- 	control->ras_num_recs = 0;
- 	control->ras_num_bad_pages = 0;
-+	control->ras_num_mca_recs = 0;
-+	control->ras_num_pa_recs = 0;
- 	control->ras_fri = 0;
- 
- 	amdgpu_dpm_send_hbm_bad_pages_num(adev, control->ras_num_bad_pages);
+diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
+index 4d39fbd83769..5b5fccac9635 100644
+--- a/drivers/hwmon/emc2305.c
++++ b/drivers/hwmon/emc2305.c
+@@ -300,6 +300,12 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
+ 		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
+ 		return PTR_ERR(data->cdev_data[cdev_idx].cdev);
+ 	}
++
++	if (data->cdev_data[cdev_idx].cur_state > 0)
++		/* Update pwm when temperature is above trips */
++		pwm = EMC2305_PWM_STATE2DUTY(data->cdev_data[cdev_idx].cur_state,
++					     data->max_state, EMC2305_FAN_MAX);
++
+ 	/* Set minimal PWM speed. */
+ 	if (data->pwm_separate) {
+ 		ret = emc2305_set_pwm(dev, pwm, cdev_idx);
+@@ -313,10 +319,10 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
+ 		}
+ 	}
+ 	data->cdev_data[cdev_idx].cur_state =
+-		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
++		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
+ 				       EMC2305_FAN_MAX);
+ 	data->cdev_data[cdev_idx].last_hwmon_state =
+-		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
++		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
+ 				       EMC2305_FAN_MAX);
+ 	return 0;
+ }
 -- 
 2.39.5
 
