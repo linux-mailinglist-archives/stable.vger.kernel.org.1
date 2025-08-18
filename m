@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B5BB2A461
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CEFB2A768
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8703A188FAA2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FFE8682E8C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A3B30F7F8;
-	Mon, 18 Aug 2025 13:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871EF335BA8;
+	Mon, 18 Aug 2025 13:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6zwMu2a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIpDiHpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B1B2765D9;
-	Mon, 18 Aug 2025 13:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4547332144E;
+	Mon, 18 Aug 2025 13:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522818; cv=none; b=SUDDhbb9zkLZzklIDk+1pTS5BYR9CvH7NDpRPGpzxRZFEGDjLr6GiqAE8UlamvTr6PgTHKbD2u5xE9lwCpmp2XKXyTMfMZPFvDxSa2MZLT+9q2H42wyt+BLT0tVUk5BzM3YYJHlWcFeeQJKGImgeuLrMxGZHk3LheJneSRQ+6CI=
+	t=1755524433; cv=none; b=PcBMBRX9GAEjzZmAx5HwKr6v0HG7mDgOiIyAL6QEbFFvfxyF8rpDLYww0NCjrdyAypH9Ayw/dYuIpOJhXAqdaE57NyojyFHLVIYaat59WIKUR2q/o4QDBCAu3sh607tvQi/PZw1hu1KHlnzDursnhmtwmyg048VWceAYrfcei3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522818; c=relaxed/simple;
-	bh=nDbEx6jSJbmKSvPcXlwaCHejf1/Hb7T6Pd1uYbA/kfA=;
+	s=arc-20240116; t=1755524433; c=relaxed/simple;
+	bh=fWC9xsIL71adP+RLJIwL2jWGR3SCN1inrHu4PRq0KkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaVTEPGUZ9KgCb+zj2cVTwc7iq2l7CnlfSxMS9RHTSCQqLcGXvjv//a6tsWVewTbjuL7uJOHEiHAi+Z9ZfDFqyMB8S6DrcanbsGuanTMMbivJNLyLLCUKAxq2MtNiPpPGVG3Uwmqks04W8ClBWCvAYCGBc9nhRrPecx+bLYBgtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6zwMu2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F72CC4CEEB;
-	Mon, 18 Aug 2025 13:13:38 +0000 (UTC)
+	 MIME-Version; b=JmkJcnoQ2b1FNBIYpWaxWKqVo5iblbUr65I66MAREgKdXsEJi5uhtcbs39tYLukJySI+4Fg3RvsSRjzmtIaDP5N8/aSURh988+OCATOCf34RXxHXvOHbB9Sbm0x2APuZeLY9yd6UVT/QiaH967tYe7Q/EHMVE14JB5Io8KTz9fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIpDiHpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC15AC113D0;
+	Mon, 18 Aug 2025 13:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522818;
-	bh=nDbEx6jSJbmKSvPcXlwaCHejf1/Hb7T6Pd1uYbA/kfA=;
+	s=korg; t=1755524433;
+	bh=fWC9xsIL71adP+RLJIwL2jWGR3SCN1inrHu4PRq0KkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6zwMu2aUQatIE79Z6+JsUJGz5SzTqFfmzKCezu4hDQpxlV1dOy48MUSxlmXGRsEW
-	 9JqzTfnCibxl+qft5MbBxecHpQ6XOQgoYuRYbq/IYI6MUKjQcixPugSWu34N9MJO4a
-	 Dv77BJjWlDg2Cd4sG1Ke5vZbyCoEJBAmYhv0Fsfc=
+	b=WIpDiHpTdFFa1c+qTi01SF9fQmTx4cmdCn7wrHifcH1k3WUFEn9R5GaMDS1Hcj0yQ
+	 iFv4aNQfOuA48OHaJEVYYWD9oXc5tFG2DRCOtTzRf3UqJMesT6bsM81RpG77HKzmg1
+	 B0jIuOdBmkXBjUxtONQYn+rDeMV+mEuLraLeRa2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 398/444] btrfs: qgroup: fix qgroup create ioctl returning success after quotas disabled
+	Jack Xiao <Jack.Xiao@amd.com>,
+	Likun Gao <Likun.Gao@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 438/515] drm/amdgpu: fix incorrect vm flags to map bo
 Date: Mon, 18 Aug 2025 14:47:04 +0200
-Message-ID: <20250818124503.843224795@linuxfoundation.org>
+Message-ID: <20250818124515.286695172@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jack Xiao <Jack.Xiao@amd.com>
 
-commit 08530d6e638427e7e1344bd67bacc03882ba95b9 upstream.
+[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
 
-When quotas are disabled qgroup ioctls are supposed to return -ENOTCONN,
-but the qgroup create ioctl stopped doing that when it races with a quota
-disable operation, returning 0 instead. This change of behaviour happened
-in commit 6ed05643ddb1 ("btrfs: create qgroup earlier in snapshot
-creation").
+It should use vm flags instead of pte flags
+to specify bo vm attributes.
 
-The issue happens as follows:
-
-1) Task A enters btrfs_ioctl_qgroup_create(), qgroups are enabled and so
-   qgroup_enabled() returns true since fs_info->quota_root is not NULL;
-
-2) Task B enters btrfs_ioctl_quota_ctl() -> btrfs_quota_disable() and
-   disables qgroups, so now fs_info->quota_root is NULL;
-
-3) Task A enters btrfs_create_qgroup() and calls btrfs_qgroup_mode(),
-   which returns BTRFS_QGROUP_MODE_DISABLED since quotas are disabled,
-   and then btrfs_create_qgroup() returns 0 to the caller, which makes
-   the ioctl return 0 instead of -ENOTCONN.
-
-   The check for fs_info->quota_root and returning -ENOTCONN if it's NULL
-   is made only after the call btrfs_qgroup_mode().
-
-Fix this by moving the check for disabled quotas with btrfs_qgroup_mode()
-into transaction.c:create_pending_snapshot(), so that we don't abort the
-transaction if btrfs_create_qgroup() returns -ENOTCONN and quotas are
-disabled.
-
-Fixes: 6ed05643ddb1 ("btrfs: create qgroup earlier in snapshot creation")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
+Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+Reviewed-by: Likun Gao <Likun.Gao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c      |    3 ---
- fs/btrfs/transaction.c |    6 ++++--
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1701,9 +1701,6 @@ int btrfs_create_qgroup(struct btrfs_tra
- 	struct btrfs_qgroup *prealloc = NULL;
- 	int ret = 0;
- 
--	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_DISABLED)
--		return 0;
--
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
- 		ret = -ENOTCONN;
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1739,8 +1739,10 @@ static noinline int create_pending_snaps
- 
- 	ret = btrfs_create_qgroup(trans, objectid);
- 	if (ret && ret != -EEXIST) {
--		btrfs_abort_transaction(trans, ret);
--		goto fail;
-+		if (ret != -ENOTCONN || btrfs_qgroup_enabled(fs_info)) {
-+			btrfs_abort_transaction(trans, ret);
-+			goto fail;
-+		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+index 02138aa55793..dfb6cfd83760 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -88,8 +88,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
  	}
  
- 	/*
+ 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
+-			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
+-			     AMDGPU_PTE_EXECUTABLE);
++			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
++			     AMDGPU_VM_PAGE_EXECUTABLE);
+ 
+ 	if (r) {
+ 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
+-- 
+2.50.1
+
 
 
 
