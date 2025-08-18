@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-171457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59A64B2AA0B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731B3B2A76C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2112E1BA7F5E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62EBA1B64B9A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA6C320CD9;
-	Mon, 18 Aug 2025 14:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFC4288C1F;
+	Mon, 18 Aug 2025 13:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3HIfu0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hc5+iJhh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED629321425;
-	Mon, 18 Aug 2025 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A49A2206B8;
+	Mon, 18 Aug 2025 13:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525988; cv=none; b=UHZ/5559oRd8AplDvDRShfopeasgn+21f63hUxEuOcJAoa1oaAopfVpbGfIiYqwFKk8ETVIk2QFJNRhVhBUQa/kC4ZJR5/k1FnEHtkTmub7EJ7qG/zKzvCCiEwqfdPdLptHtMer1ejIqOkM/XaeNKQSZVtevFDU31DLzPEoFcyg=
+	t=1755524295; cv=none; b=ZVPyqWvTecOlD4OGi2LntawmBLCiBrqO329a5OWBQs3Gs2CAFbWUo6uwCZJnpBQLDsOEB96XlOrj61c91EQH/t/1IZDntezZR4XJiXW88oS7l9aP7ifIlV7lt4bEMvU1QVP5x7WPu0ZU+xKM13XmAPc6nBDzUm00Urufx/8doN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525988; c=relaxed/simple;
-	bh=bmN+UDpggAVCwUl/XiZsS3Wp32NLNp9I/7jkCC3Sj8g=;
+	s=arc-20240116; t=1755524295; c=relaxed/simple;
+	bh=JmHFhiEEtMDkazwIJBj5D1XlO0Kp+PgjppkCYBaU3kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBpxAAX9kH5VOAol43+Ql9iFu+NT5bKUW5NBdi+suTVYBPQFXzVFG8h0YIQ1Z+WoGAij4iBSWrpBJ5xXrkHC1pXKesPqE6NK4d4azHx+XDu3UwZJ6mlxmqPvBymU63+z70bSyycKVTvcI+U7chX/MukBrQyOaXxS1IuSF3tuzwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3HIfu0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBA9C4CEEB;
-	Mon, 18 Aug 2025 14:06:26 +0000 (UTC)
+	 MIME-Version; b=W0Td3mGVxhu4i4VoU+O3p0GwzwfU+Qr0mY4u4YnGlneauicp2sL8p57TGl4+AiRSvRCfhKA+0ZjYyZ0imI5l+CLHl1dX8oOGraVAn4Qq7Vj6v8pGtqH+g4+a4bbdRYW3SZgofkle0Ec0o6/7OCDUOysu8WfTl+notivPV8o44rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc5+iJhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9D4C4CEEB;
+	Mon, 18 Aug 2025 13:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525987;
-	bh=bmN+UDpggAVCwUl/XiZsS3Wp32NLNp9I/7jkCC3Sj8g=;
+	s=korg; t=1755524295;
+	bh=JmHFhiEEtMDkazwIJBj5D1XlO0Kp+PgjppkCYBaU3kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3HIfu0fGOSy83/Pen+/VU674+joy2jPtmoOIifiiOBrxQu5Wqsqtmfe/iVzNpasN
-	 cPAP521ET1wsO6ztMeXJwktdnKaVcW/4yCaOGLVOCp3+wrGhqmOuHBN9dnEU/kNaPk
-	 aVv44a4rIOhOeCqgWHmlTgz+0SCE2lwU78t9l7f8=
+	b=Hc5+iJhhaPBxb8VRV8rCxatJdW5/ZjklMNpUsHT+MtCAKBZ11mGGXWHFevFLxPJJh
+	 AqtN9hSvedJfcTzF1c/Y+slWk4hEfJAK6CXZBawzHOdxznAuA0GxoW+pyAtEyeS6jE
+	 vp5tAqXhArdLbRHagLqhfuV6exjVaeXFiYfsV2M4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 426/570] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+Subject: [PATCH 6.15 427/515] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
 Date: Mon, 18 Aug 2025 14:46:53 +0200
-Message-ID: <20250818124522.248971181@linuxfoundation.org>
+Message-ID: <20250818124514.862665638@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
+[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+In blk_stack_limits(), we check that the t->chunk_sectors value is a
+multiple of the t->physical_block_size value.
 
-This change expands the oscillator stop flag (OSF) handling that has
-already been implemented for some chips to the ds1341 chip (DS1341 and
-DS1342 share a datasheet). This handling manages the validity of the RTC
-data in .read_time and .set_time based on the OSF.
+However, by finding the chunk_sectors value in bytes, we may overflow
+the unsigned int which holds chunk_sectors, so change the check to be
+based on sectors.
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ block/blk-settings.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index c8a666de9cbe..c6d388bb4a19 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -279,6 +279,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
- 		if (tmp & DS1340_BIT_OSF)
- 			return -EINVAL;
- 		break;
-+	case ds_1341:
-+		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
-+		if (ret)
-+			return ret;
-+		if (tmp & DS1337_BIT_OSF)
-+			return -EINVAL;
-+		break;
- 	case ds_1388:
- 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
- 		if (ret)
-@@ -377,6 +384,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
- 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
- 				   DS1340_BIT_OSF, 0);
- 		break;
-+	case ds_1341:
-+		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
-+				   DS1337_BIT_OSF, 0);
-+		break;
- 	case ds_1388:
- 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
- 				   DS1388_BIT_OSF, 0);
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 47a31e1c0909..7a76ff3696c4 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -797,7 +797,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
+ 	}
+ 
+ 	/* chunk_sectors a multiple of the physical block size? */
+-	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
++	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
+ 		t->chunk_sectors = 0;
+ 		t->flags |= BLK_FLAG_MISALIGNED;
+ 		ret = -1;
 -- 
 2.39.5
 
