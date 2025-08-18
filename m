@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74391B2A9A2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74BEEB2A3DF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF6C6E0B73
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 878433AA586
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222873375B2;
-	Mon, 18 Aug 2025 14:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4A030F7F8;
+	Mon, 18 Aug 2025 13:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0wrxbL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XPPcgWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35E93375A7;
-	Mon, 18 Aug 2025 14:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA2F320397;
+	Mon, 18 Aug 2025 13:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525675; cv=none; b=e8hGbJsh3jg8Psioc39aAnTQbo267tWOIJnHXh1yC8ARSvn2WGzwKan0igkV3xUFsKJ7ezaTwE77av+pJiw0slEBWZVApTOa0r6+MyyermiXiog9UgVM5ZV1ORCHWN/6e2I9T3OF5R4uhogKfh3osBtTAbhmjZJqJfZwDgO7Aow=
+	t=1755522475; cv=none; b=o02CORkKs23Gkv4MucO93xSpLtCBBYzqZKNCBLto98saYr/9tGbIYm/WO9eSnOLJexrhNu+B8ybjDuAhl2iZrM3MGxUM8COjdLRLcMdKobivWSJMM3IRMkGB4xJhyEEpn2QDt26JAS0K13s3r4kTd7eQEhiriyvxJbwWt9TptZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525675; c=relaxed/simple;
-	bh=RSJoXF71+4GYSnH3+1Z0UVKgka0p5OS5+iRfKvEn6yY=;
+	s=arc-20240116; t=1755522475; c=relaxed/simple;
+	bh=lzYXAkeP6AuMkSpkFAQGarexW4aREpxRVfxM4CKYH+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SIv4qer3hlpzpNTNIFsgjUXSpd5TqbgrXZcrLcnnmn5rDif8d1khL4JPNxMGNF9Lo+jTHVP2MGrzO++myLHXXO3sK06cOIxtPAj3W4ADT2bJkcgPuJnQ7VCm+Y8UdQTnepN8MFT9pTsheGRqpgOP8CuJPn9wHXT0QgXRmJ5kwCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0wrxbL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9519C4CEEB;
-	Mon, 18 Aug 2025 14:01:14 +0000 (UTC)
+	 MIME-Version; b=Os7UETTSrZ4JbbIVVqymKDcLZNXm1/JiIsWVcuJB0DgdNWLVaxUzKCh/NpsPNQyEWYjM9RcfmC/zm/z6au6ZjP4MBJ9v1eC+zgl8hRwBSESlBNCjp7VSdkh126LY1yLDTFfPQGYLSDBG8juuSITpY+mFAH0nmjT/lX22NdnL+Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XPPcgWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0383C4CEEB;
+	Mon, 18 Aug 2025 13:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525675;
-	bh=RSJoXF71+4GYSnH3+1Z0UVKgka0p5OS5+iRfKvEn6yY=;
+	s=korg; t=1755522475;
+	bh=lzYXAkeP6AuMkSpkFAQGarexW4aREpxRVfxM4CKYH+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0wrxbL5Cvy9+p2B18gqZcg9WVd8yT5hS7gMZ67PazxuJuyTRikc1kCTU2tSxvn+U
-	 q7LdH4x7+m2YlY6/grYv5TTzCqQT6gKmEYkcjEyLLC1V1iZaB9EigpQKBCjWT8rgyv
-	 0q8dlYKy6IM5LEkH/ln2EYWxg4K/KFs+fJH+TrVE=
+	b=1XPPcgWs+2wzPdq6C2DHqYSTJ+3CvMG94ArXQSo6VbDQeom2J7Uj3ZtqCoThQRrbg
+	 oITi0Ft4NWZiMl7nt4+C6Q7pBmFaD/qClJO2tqrIfqrGpRZjGjvO7qL5A7uL0vxUPy
+	 6ovYLCf4i7nX8Md89s8gfL1Elm72RMIQbhAIFBlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 333/570] net: dsa: b53: prevent DIS_LEARNING access on BCM5325
+Subject: [PATCH 6.12 294/444] jfs: upper bound check of tree index in dbAllocAG
 Date: Mon, 18 Aug 2025 14:45:20 +0200
-Message-ID: <20250818124518.680027351@linuxfoundation.org>
+Message-ID: <20250818124459.982813548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit 800728abd9f83bda4de62a30ce62a8b41c242020 ]
+[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
 
-BCM5325 doesn't implement DIS_LEARNING register so we should avoid reading
-or writing it.
+When computing the tree index in dbAllocAG, we never check if we are
+out of bounds realative to the size of the stree.
+This could happen in a scenario where the filesystem metadata are
+corrupted.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-10-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
+Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 8abbcc588267..990d21fad939 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -583,6 +583,9 @@ static void b53_port_set_learning(struct b53_device *dev, int port,
- {
- 	u16 reg;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 5a877261c3fe..cdfa699cd7c8 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1389,6 +1389,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
+ 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
+ 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
  
-+	if (is5325(dev))
-+		return;
++	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
++		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
++		release_metapage(mp);
++		return -EIO;
++	}
 +
- 	b53_read16(dev, B53_CTRL_PAGE, B53_DIS_LEARNING, &reg);
- 	if (learning)
- 		reg &= ~BIT(port);
-@@ -2195,7 +2198,13 @@ int b53_br_flags_pre(struct dsa_switch *ds, int port,
- 		     struct switchdev_brport_flags flags,
- 		     struct netlink_ext_ack *extack)
- {
--	if (flags.mask & ~(BR_FLOOD | BR_MCAST_FLOOD | BR_LEARNING))
-+	struct b53_device *dev = ds->priv;
-+	unsigned long mask = (BR_FLOOD | BR_MCAST_FLOOD);
-+
-+	if (!is5325(dev))
-+		mask |= BR_LEARNING;
-+
-+	if (flags.mask & ~mask)
- 		return -EINVAL;
- 
- 	return 0;
+ 	/* dmap control page trees fan-out by 4 and a single allocation
+ 	 * group may be described by 1 or 2 subtrees within the ag level
+ 	 * dmap control page, depending upon the ag size. examine the ag's
 -- 
 2.39.5
 
