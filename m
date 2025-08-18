@@ -1,107 +1,93 @@
-Return-Path: <stable+bounces-171603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D23CB2AAAF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:34:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B331B2A326
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8955B567A6B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:25:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 246AA18A6802
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E039343D70;
-	Mon, 18 Aug 2025 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D5A31A063;
+	Mon, 18 Aug 2025 12:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEYKkTyk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QwFrSI6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC37322C76;
-	Mon, 18 Aug 2025 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE22280035;
+	Mon, 18 Aug 2025 12:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526490; cv=none; b=lh03g3ea3YFYiwAlUeAF7a2+5y0BbHr2zFEt+coYEy5EKnzKgrEZdygld2rinJAMr5lfC7Ws47aTQBEjgFiSlJYHINtkD5WlyOQfz/Uph4G9lo5UXoU72HC7DyDBPjDIBd0/7yJfSDGlfirFHuBzjJyL8f4wIyQvXLznb2i+i6E=
+	t=1755521934; cv=none; b=lbni45e7gWU2ubklB9jziMAjKJ9LRUqGkwfAMTsETwxK6b1KqcM6l0U/9pWA+7EY9ZN0dN1N/a+5+0WaAza+7O8+jHfCBsW+IEt/rcyxfSC93dckLIct3jOhSueO1/rRN58dmqjDYL7C78Uw/RK/kMs6RhwJjegoR/iu9k5+1YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526490; c=relaxed/simple;
-	bh=0mzw33OvuhkoKZ5td+4GnAUakp1bZbYeMO7lL2osx4k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIwWbeNxJUvfoa9/AaRhSIDGu2StI51JfqHPIOYjVwrhtje3ZxellOqoHwz/xKhT7gKVWvb8rW+pqciPiLnZb7AAg3orvkA2Nf1Ti/6q/uMLwPDg9tElUBmQCgp1CYWFSMMpPrVMdMipkjOED+e55OF2w07kC0/Klq/TYKOLY10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEYKkTyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D664C4CEEB;
-	Mon, 18 Aug 2025 14:14:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526490;
-	bh=0mzw33OvuhkoKZ5td+4GnAUakp1bZbYeMO7lL2osx4k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEYKkTykYa5eHpPDg+o2IXp+B7pGzBR6ZmGckQnOreZm0u+2BMsoxa9ftC3DvOmSB
-	 vrNC2Q63J0PrYeZioASZkahSvdPDfj+/jMCIUig7nte0Qr7n588PbGWh5rIKJ1g3z+
-	 Nurr5MrKzxMxCPMTAKUE9/cV2Ar0XGAZl3H7aFLk=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 570/570] io_uring/zcrx: dont leak pages on account failure
-Date: Mon, 18 Aug 2025 14:49:17 +0200
-Message-ID: <20250818124527.838787416@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1755521934; c=relaxed/simple;
+	bh=E0iqUF8u0lKcklH2CyTuVcFN8oQAd4cS3SjszM+5ofI=;
+	h=Content-Type:Date:Message-Id:Cc:From:To:Subject:References:
+	 In-Reply-To; b=WIxaGhqq6BYExsrvGgyQIxOM96rawl+zIfkHkN2kT4IqeyA7CILR6ZJFSBlFrsxW/Ndp47rPDjGrH5XnYlNrZKEQHcAtl3EIhDneRU56RxrSjXlIfFvE6IrRz9xbYPXvw2Zg2HoqJF1EzGI7l9a8BnLCdDQoiqQed/IJIdVoOnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QwFrSI6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC269C4CEEB;
+	Mon, 18 Aug 2025 12:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755521934;
+	bh=E0iqUF8u0lKcklH2CyTuVcFN8oQAd4cS3SjszM+5ofI=;
+	h=Date:Cc:From:To:Subject:References:In-Reply-To:From;
+	b=QwFrSI6K8l7NqhI1Jk9IkkXUzy3kH1RbX98iApJ9/1ImqJRGBkvjqUMnWS8syar5j
+	 vSc6dsYhvlmbGvpDoLLMs7rt5n+MsB3tTQHzDAXdn9O0qgP1Czs81d1AHIlXXi9Q+N
+	 9nN3FMeeAwq2uSh927bUea77uOSxQSp7n4DFSsnqflGpaHHeIflbrZCQTxnZZsCt5x
+	 1+Qw3C6CX6i4OYjbGUOZxMdm7X1zZRAdBAnBlx9QGmOQDchAKMF97iwCVfjBShn4cA
+	 NFNkKGEGNV3nP1OpJAPkMZEZt25ySsVB04qn0gVcR0lPLgrehlqIprE80dvm/m3mhO
+	 BH+PCP4g6mhyQ==
+Content-Type: multipart/signed;
+ boundary=2affea532ee4cac79085df4446c4f909e46e73883057bc53258e38ec6b37;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Mon, 18 Aug 2025 14:58:50 +0200
+Message-Id: <DC5KL5AL6HQR.1UOVPHD9YNBSM@kernel.org>
+Cc: <patches@lists.linux.dev>, "Lee Jones" <lee@kernel.org>, "Sasha Levin"
+ <sashal@kernel.org>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.12 120/444] mfd: tps6594: Add TI TPS652G1 support
+X-Mailer: aerc 0.16.0
+References: <20250818124448.879659024@linuxfoundation.org>
+ <20250818124453.420152236@linuxfoundation.org>
+In-Reply-To: <20250818124453.420152236@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+--2affea532ee4cac79085df4446c4f909e46e73883057bc53258e38ec6b37
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-------------------
+On Mon Aug 18, 2025 at 2:42 PM CEST, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me kn=
+ow.
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+This patch on its own doesn't make much sense. Have a look at
 
-commit 6bbd3411ff87df1ca38ff32d36eb5dc673ca8021 upstream.
+https://lore.kernel.org/all/DC5CEJ4YYRRB.3VTJAONRBJPVB@kernel.org/
 
-Someone needs to release pinned pages in io_import_umem() if accounting
-fails. Assign them to the area but return an error, the following
-io_zcrx_free_area() will clean them up.
+-michael
 
-Fixes: 262ab205180d2 ("io_uring/zcrx: account area memory")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/e19f283a912f200c0d427e376cb789fc3f3d69bc.1753091564.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- io_uring/zcrx.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+--2affea532ee4cac79085df4446c4f909e46e73883057bc53258e38ec6b37
+Content-Type: application/pgp-signature; name="signature.asc"
 
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -187,15 +187,13 @@ static int io_import_umem(struct io_zcrx
- 
- 	mem->account_pages = io_count_account_pages(pages, nr_pages);
- 	ret = io_account_mem(ifq->ctx, mem->account_pages);
--	if (ret < 0) {
-+	if (ret < 0)
- 		mem->account_pages = 0;
--		return ret;
--	}
- 
- 	mem->pages = pages;
- 	mem->nr_folios = nr_pages;
- 	mem->size = area_reg->len;
--	return 0;
-+	return ret;
- }
- 
- static void io_release_area_mem(struct io_zcrx_mem *mem)
+-----BEGIN PGP SIGNATURE-----
 
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCaKMjihIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/hOcwGAh1RdgC6bf91j86onq8Gl2lTLBN+0RnZs
+18dTy9hJmdkQEWQfFrR3liiBGVHCAf7AAX4vW6Sc8aJc+XE3vVydRJ5KTAnrc/9G
+UVFuQ42jtRuLRxx57f9Mr4QQ8FAxqH11h1E=
+=bMbL
+-----END PGP SIGNATURE-----
 
+--2affea532ee4cac79085df4446c4f909e46e73883057bc53258e38ec6b37--
 
