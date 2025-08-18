@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA3CB2A78A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44587B2A4F9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:28:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAFC26E0487
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F25B868077C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8538A2253F2;
-	Mon, 18 Aug 2025 13:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E019343D9C;
+	Mon, 18 Aug 2025 13:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFn3AyKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaHgP6tr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42476335BCB;
-	Mon, 18 Aug 2025 13:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A494343D8C;
+	Mon, 18 Aug 2025 13:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524614; cv=none; b=G7Ao4I+KE7Iw/pW7IphoEaqhP1o6em0nfBlNjKp+iBgof+XXsM+uAH+FmxXsNm4UDvZTIb7Ks9B6gov/WvGN0ktVB9XyGLFBeZL1Zx+jEs9MuJuUGmyJ2bYHDkOJfQsg3UunX4viwLRI5qChahK5oHFHvvHXRS3C72mQBbIYHIo=
+	t=1755522964; cv=none; b=DDC5oH/Oi8M6kZ1815IsqeUNis4woINLnZbpspjJfN3e5B40lNjxhxCHCaPFdGuxvy4EW5qd/w3JBI11q81E2C0eWzZByd9tqiqhuPq8sdPasoJAkF8K7rv/cLA3crIzx9oYVZ6fNzDrZ2WvHQNBwIKnzoMQMJ3a5hHVdAmwZhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524614; c=relaxed/simple;
-	bh=EeFrnRSoPreiKelVYWBOUhsVGjyKhyGCrPnWcl6YSlg=;
+	s=arc-20240116; t=1755522964; c=relaxed/simple;
+	bh=8HFpql/9+w2lzgKNexXTL7whGAWmAJpCnyT/l8B/Wz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTs31qDLHBlpzoI6FurwlI0tAse9JbC1LEZW+vPf1xupSP2g3TBk+NOsiHSl0y20fyNBi5GRn046gn57IoGq9zEhvHLHPLPXQ2IHXxvowR9U4LQT6JHycb3gRYxHHki/J5iSTcIOW+ppMwpHvq0AXyFKQ4q1Wk5S3U8pmEHT6ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFn3AyKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF4FC4CEEB;
-	Mon, 18 Aug 2025 13:43:33 +0000 (UTC)
+	 MIME-Version; b=V68zc26aBS/3hYW+ArI7qlaDZXPGkE3cVJMy3gLExNZSpl2XesjFp5JIxSfbdAOUBiE9SXIHpUf3C+/T+vMGQ2pGtoRgKn/YYF+MTsZO4BjVovzEQs2fb8uzUZcE+nowWedOU36MK0XYFTkd5DaF2Wa2dw7TgnELtlbEiuLRNlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaHgP6tr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8266BC4CEEB;
+	Mon, 18 Aug 2025 13:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524613;
-	bh=EeFrnRSoPreiKelVYWBOUhsVGjyKhyGCrPnWcl6YSlg=;
+	s=korg; t=1755522963;
+	bh=8HFpql/9+w2lzgKNexXTL7whGAWmAJpCnyT/l8B/Wz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFn3AyKtBsawtn3ewlPXoqnZ2BVXvpdwiD7SHomuqf2bJeTiU/wPaIY83OAIL6L1x
-	 7Zvj6hoOSKhko+0ujvk/l7u6CwRzdiYvxX+/YFFuDORHO5iD08phZ+S7J3ZHi4NxC2
-	 SemzS6HkatDiLXJRrBJQ+9TYR3FVLyWbS0NcMXj4=
+	b=SaHgP6tr4MLjynJ/KSTwkWujnfCxJN55xrtPn87OoQe0rS8Du69iBgc6j4YQCiFfP
+	 ArY3pokeGCXdPAiMyj0HiEnStUS5PeMbpV6QQRwcx5IXF4mtWCuKGRClCncqOpDph5
+	 W3eVsIdXqzjMnPSwezNixaZHuTJ3gFYH8gPcAmUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.16 010/570] smb3: fix for slab out of bounds on mount to ksmbd
+	Harald Mommer <harald.mommer@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.15 011/515] gpio: virtio: Fix config space reading.
 Date: Mon, 18 Aug 2025 14:39:57 +0200
-Message-ID: <20250818124506.181863696@linuxfoundation.org>
+Message-ID: <20250818124458.759538788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Harald Mommer <harald.mommer@oss.qualcomm.com>
 
-commit 7d34ec36abb84fdfb6632a0f2cbda90379ae21fc upstream.
+commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
 
-With KASAN enabled, it is possible to get a slab out of bounds
-during mount to ksmbd due to missing check in parse_server_interfaces()
-(see below):
+Quote from the virtio specification chapter 4.2.2.2:
 
- BUG: KASAN: slab-out-of-bounds in
- parse_server_interfaces+0x14ee/0x1880 [cifs]
- Read of size 4 at addr ffff8881433dba98 by task mount/9827
+"For the device-specific configuration space, the driver MUST use 8 bit
+wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
+for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
+64 bit wide fields."
 
- CPU: 5 UID: 0 PID: 9827 Comm: mount Tainted: G
- OE       6.16.0-rc2-kasan #2 PREEMPT(voluntary)
- Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
- Hardware name: Dell Inc. Precision Tower 3620/0MWYPT,
- BIOS 2.13.1 06/14/2019
- Call Trace:
-  <TASK>
- dump_stack_lvl+0x9f/0xf0
- print_report+0xd1/0x670
- __virt_addr_valid+0x22c/0x430
- ? parse_server_interfaces+0x14ee/0x1880 [cifs]
- ? kasan_complete_mode_report_info+0x2a/0x1f0
- ? parse_server_interfaces+0x14ee/0x1880 [cifs]
-   kasan_report+0xd6/0x110
-   parse_server_interfaces+0x14ee/0x1880 [cifs]
-   __asan_report_load_n_noabort+0x13/0x20
-   parse_server_interfaces+0x14ee/0x1880 [cifs]
- ? __pfx_parse_server_interfaces+0x10/0x10 [cifs]
- ? trace_hardirqs_on+0x51/0x60
- SMB3_request_interfaces+0x1ad/0x3f0 [cifs]
- ? __pfx_SMB3_request_interfaces+0x10/0x10 [cifs]
- ? SMB2_tcon+0x23c/0x15d0 [cifs]
- smb3_qfs_tcon+0x173/0x2b0 [cifs]
- ? __pfx_smb3_qfs_tcon+0x10/0x10 [cifs]
- ? cifs_get_tcon+0x105d/0x2120 [cifs]
- ? do_raw_spin_unlock+0x5d/0x200
- ? cifs_get_tcon+0x105d/0x2120 [cifs]
- ? __pfx_smb3_qfs_tcon+0x10/0x10 [cifs]
- cifs_mount_get_tcon+0x369/0xb90 [cifs]
- ? dfs_cache_find+0xe7/0x150 [cifs]
- dfs_mount_share+0x985/0x2970 [cifs]
- ? check_path.constprop.0+0x28/0x50
- ? save_trace+0x54/0x370
- ? __pfx_dfs_mount_share+0x10/0x10 [cifs]
- ? __lock_acquire+0xb82/0x2ba0
- ? __kasan_check_write+0x18/0x20
- cifs_mount+0xbc/0x9e0 [cifs]
- ? __pfx_cifs_mount+0x10/0x10 [cifs]
- ? do_raw_spin_unlock+0x5d/0x200
- ? cifs_setup_cifs_sb+0x29d/0x810 [cifs]
- cifs_smb3_do_mount+0x263/0x1990 [cifs]
-
-Reported-by: Namjae Jeon <linkinjeon@kernel.org>
-Tested-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-virtio.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -772,6 +772,13 @@ next_iface:
- 			bytes_left -= sizeof(*p);
- 			break;
- 		}
-+		/* Validate that Next doesn't point beyond the buffer */
-+		if (next > bytes_left) {
-+			cifs_dbg(VFS, "%s: invalid Next pointer %zu > %zd\n",
-+				 __func__, next, bytes_left);
-+			rc = -EINVAL;
-+			goto out;
-+		}
- 		p = (struct network_interface_info_ioctl_rsp *)((u8 *)p+next);
- 		bytes_left -= next;
- 	}
-@@ -783,7 +790,9 @@ next_iface:
- 	}
+--- a/drivers/gpio/gpio-virtio.c
++++ b/drivers/gpio/gpio-virtio.c
+@@ -526,7 +526,6 @@ static const char **virtio_gpio_get_name
  
- 	/* Azure rounds the buffer size up 8, to a 16 byte boundary */
--	if ((bytes_left > 8) || p->Next)
-+	if ((bytes_left > 8) ||
-+	    (bytes_left >= offsetof(struct network_interface_info_ioctl_rsp, Next)
-+	     + sizeof(p->Next) && p->Next))
- 		cifs_dbg(VFS, "%s: incomplete interface info\n", __func__);
+ static int virtio_gpio_probe(struct virtio_device *vdev)
+ {
+-	struct virtio_gpio_config config;
+ 	struct device *dev = &vdev->dev;
+ 	struct virtio_gpio *vgpio;
+ 	struct irq_chip *gpio_irq_chip;
+@@ -539,9 +538,11 @@ static int virtio_gpio_probe(struct virt
+ 		return -ENOMEM;
  
- 	ses->iface_last_update = jiffies;
+ 	/* Read configuration */
+-	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
+-	gpio_names_size = le32_to_cpu(config.gpio_names_size);
+-	ngpio = le16_to_cpu(config.ngpio);
++	gpio_names_size =
++		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
++					      gpio_names_size));
++	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
++					       ngpio));
+ 	if (!ngpio) {
+ 		dev_err(dev, "Number of GPIOs can't be zero\n");
+ 		return -EINVAL;
 
 
 
