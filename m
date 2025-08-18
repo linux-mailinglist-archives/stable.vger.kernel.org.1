@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A46EB2A603
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FAFB2A663
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40F507B2C0C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A21B61062
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4BA31B11E;
-	Mon, 18 Aug 2025 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8992222A0;
+	Mon, 18 Aug 2025 13:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4yjl+AT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAGkDc+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A517E271A6D;
-	Mon, 18 Aug 2025 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC68A166F1A;
+	Mon, 18 Aug 2025 13:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523823; cv=none; b=KFtgu9SMSNBTCeJWBI/jllMgp5zsTMuzGSFuNVNeWKCvrqrLO3xA0FomuY/tJ8pa6LTA8z9M3vxeFNr4TwYOSXRJJ88tAuipx8WM2x04KNjgi0cM82hwrpb11mDBhVgmHPoJoOk46rMXNi6OvZ9q+B5ezTyQR4odmyT5DE+cq7w=
+	t=1755523829; cv=none; b=CYF5rQfW2eOaeoRqJxRHBnhxls7gqmlU/79X3rpnH3ufIop/HDiRAUHnls9Ygqndql6yeLBBKfRFiZV7Ycm1unglorkL36LRmPvuacqSNZEKC1/U4uTZ7bN9KcVMISsEraP8ndNk02+IrN/gpYhthJPQxWt5WZ3WJBmUlFYFysk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523823; c=relaxed/simple;
-	bh=YRbXaiyrRE6Pq2wctI7WyxzKaz0xZitAAPsf9TBWLe0=;
+	s=arc-20240116; t=1755523829; c=relaxed/simple;
+	bh=n8sBVMITAUNvhCXuvEoyUgYBVUzGY8W1IiR+ouvLL3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoeXM51iEKihBHNWqQGRagxxX88pqkWCU6ocaRaawSgr1soLb27c+Sumys5pEH/g4QSACkOaTsNET4gQQeu3TAWnkJV0jyIx/3rOtZv4Q0xBlyRfB5ISmMvNGkyr1gW4D5pgfBCDrLvNTkvo/7Kcl0GUYVS0fX2F0WnMNQi+NqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4yjl+AT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C85C4CEEB;
-	Mon, 18 Aug 2025 13:30:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j2Us1rLEkKMkbNNME0rm5XJfxGmPzKnDbq6V4P/PKsNbuXn/PvcKaQTCKCD8aDuLoBGmGztLFfo5m4xxNSyjJD6NUvfW/vERceso2BxfsER0o40B018gVhYxXG2RvckhVsRiH+AkwGx7+iSImnfIW0DJb6ND27hEEgD9BtNjBJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAGkDc+a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471EDC4CEEB;
+	Mon, 18 Aug 2025 13:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523823;
-	bh=YRbXaiyrRE6Pq2wctI7WyxzKaz0xZitAAPsf9TBWLe0=;
+	s=korg; t=1755523829;
+	bh=n8sBVMITAUNvhCXuvEoyUgYBVUzGY8W1IiR+ouvLL3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4yjl+ATqjqa9fruozTrm5qJ830kVbiTQW+rOaUW5ca7Wb11AKS5KsGd2t8wvqDWR
-	 Eas5iX6yENAuhWUtWaPG+YZIlUk6P93j0XtSoEidk6Pn9gPuI+g7p0wCvvPDOKW6om
-	 RqUmI6aw/BnyXVJ8x98TgTdmLKJzuoYoaLgeefrw=
+	b=TAGkDc+aa4JoBPI7yAUjjkG5a1DEKqmVgBs8YBDi+QsNNldLYnGGmKZ3awEA7BNxb
+	 4smmWR/keYT5RdiCOClRQLFZyTDAfz6IIunLL3BS+a8ynG+FvsTSxMsj1+gvKUjfQN
+	 xEJ6LNYMdQi84sV1sy4dey5NaD7rejKYkDAgliP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wen Chen <Wen.Chen3@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 283/515] rcutorture: Fix rcutorture_one_extend_check() splat in RT kernels
-Date: Mon, 18 Aug 2025 14:44:29 +0200
-Message-ID: <20250818124509.314830070@linuxfoundation.org>
+Subject: [PATCH 6.15 284/515] drm/amd/display: Fix failed to blank crtc!
+Date: Mon, 18 Aug 2025 14:44:30 +0200
+Message-ID: <20250818124509.352433349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -62,88 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Wen Chen <Wen.Chen3@amd.com>
 
-[ Upstream commit 8d71351d88e478d3c4e945e3218e97ec677fd807 ]
+[ Upstream commit 01f60348d8fb6b3fbcdfc7bdde5d669f95b009a4 ]
 
-For built with CONFIG_PREEMPT_RT=y kernels, running rcutorture
-tests resulted in the following splat:
+[why]
+DCN35 is having “DC: failed to blank crtc!” when running HPO
+test cases. It's caused by not having sufficient udelay time.
 
-[   68.797425] rcutorture_one_extend_check during change: Current 0x1  To add 0x1  To remove 0x0  preempt_count() 0x0
-[   68.797533] WARNING: CPU: 2 PID: 512 at kernel/rcu/rcutorture.c:1993 rcutorture_one_extend_check+0x419/0x560 [rcutorture]
-[   68.797601] Call Trace:
-[   68.797602]  <TASK>
-[   68.797619]  ? lockdep_softirqs_off+0xa5/0x160
-[   68.797631]  rcutorture_one_extend+0x18e/0xcc0 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797646]  ? local_clock+0x19/0x40
-[   68.797659]  rcu_torture_one_read+0xf0/0x280 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797678]  ? __pfx_rcu_torture_one_read+0x10/0x10 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797804]  ? __pfx_rcu_torture_timer+0x10/0x10 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797815] rcu-torture: rcu_torture_reader task started
-[   68.797824] rcu-torture: Creating rcu_torture_reader task
-[   68.797824]  rcu_torture_reader+0x238/0x580 [rcutorture 2466dbd2ff34dbaa36049cb323a80c3306ac997c]
-[   68.797836]  ? kvm_sched_clock_read+0x15/0x30
+[how]
+Replace the old wait_for_blank_complete function with fsleep function to
+sleep just until the next frame should come up. This way it doesn't poll
+in case the pixel clock or other clock was bugged or until vactive and
+the vblank are hit again.
 
-Disable BH does not change the SOFTIRQ corresponding bits in
-preempt_count() for RT kernels, this commit therefore use
-softirq_count() to check the if BH is disabled.
-
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Wen Chen <Wen.Chen3@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 4fa7772be183..a6202cbef9c5 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -458,7 +458,7 @@ rcu_read_delay(struct torture_random_state *rrsp, struct rt_read_seg *rtrsp)
- 	    !(torture_random(rrsp) % (nrealreaders * 2000 * longdelay_ms))) {
- 		started = cur_ops->get_gp_seq();
- 		ts = rcu_trace_clock_local();
--		if (preempt_count() & (SOFTIRQ_MASK | HARDIRQ_MASK))
-+		if ((preempt_count() & HARDIRQ_MASK) || softirq_count())
- 			longdelay_ms = 5; /* Avoid triggering BH limits. */
- 		mdelay(longdelay_ms);
- 		rtrsp->rt_delay_ms = longdelay_ms;
-@@ -1922,7 +1922,7 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
- 		return;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index 637f1235d0b7..977ec7c1c212 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -945,7 +945,7 @@ enum dc_status dcn20_enable_stream_timing(
+ 		return DC_ERROR_UNEXPECTED;
+ 	}
  
- 	WARN_ONCE((curstate & (RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH)) &&
--		  !(preempt_count() & SOFTIRQ_MASK), ROEC_ARGS);
-+		  !softirq_count(), ROEC_ARGS);
- 	WARN_ONCE((curstate & (RCUTORTURE_RDR_PREEMPT | RCUTORTURE_RDR_SCHED)) &&
- 		  !(preempt_count() & PREEMPT_MASK), ROEC_ARGS);
- 	WARN_ONCE(cur_ops->readlock_nesting &&
-@@ -1936,7 +1936,7 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
+-	hws->funcs.wait_for_blank_complete(pipe_ctx->stream_res.opp);
++	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
  
- 	WARN_ONCE(cur_ops->extendables &&
- 		  !(curstate & (RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH)) &&
--		  (preempt_count() & SOFTIRQ_MASK), ROEC_ARGS);
-+		  softirq_count(), ROEC_ARGS);
- 
- 	/*
- 	 * non-preemptible RCU in a preemptible kernel uses preempt_disable()
-@@ -1957,6 +1957,9 @@ static void rcutorture_one_extend_check(char *s, int curstate, int new, int old,
- 	if (!IS_ENABLED(CONFIG_PREEMPT_RCU))
- 		mask |= RCUTORTURE_RDR_PREEMPT | RCUTORTURE_RDR_SCHED;
- 
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && softirq_count())
-+		mask |= RCUTORTURE_RDR_BH | RCUTORTURE_RDR_RBH;
-+
- 	WARN_ONCE(cur_ops->readlock_nesting && !(curstate & mask) &&
- 		  cur_ops->readlock_nesting() > 0, ROEC_ARGS);
- }
+ 	params.vertical_total_min = stream->adjust.v_total_min;
+ 	params.vertical_total_max = stream->adjust.v_total_max;
 -- 
 2.39.5
 
