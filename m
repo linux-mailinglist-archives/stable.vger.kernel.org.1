@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEEAB2A719
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E71BB2A455
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E56EE581B75
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BABB93B6E51
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8FD335BD7;
-	Mon, 18 Aug 2025 13:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFB229E112;
+	Mon, 18 Aug 2025 13:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSG77IA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJ4Yq2ov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E55A335BDA;
-	Mon, 18 Aug 2025 13:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5821DED52;
+	Mon, 18 Aug 2025 13:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524478; cv=none; b=mJhIh5uQkRw6Af8/imnFFAMfV+5cAh8inK1suNUhJe9iGNsqcGQUPsQ1WpodCrsC7ihQ+7dIjjcEuMGkdMLByKJFzK6fBsoo4K3zqa6VWdNFdb168AcYX/C6/6v+z7Wj/VW+e5ikRbNpceTiMSDIHVZebABJjbNVBDMTKh+tgKc=
+	t=1755522812; cv=none; b=VFU36Rn8w7ZDq4J0CUhv8N1s9ixo1aOigifGUdM06p8wVm3mjAk7bgkxRVSP8iKsZTkPqpDUd4bCPIGX1vXb5k295xiusyZQL7cPpDe7kRCetEm1+Q5F47uSuOrPz9pK1sySPkLbYUwdSPhwB6EgYIH7+pYpDgNBhFFoe0mawU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524478; c=relaxed/simple;
-	bh=S/1JmARk4ry9lv49C6U1/HDRgh/iXHc+RoS2pTYVuf4=;
+	s=arc-20240116; t=1755522812; c=relaxed/simple;
+	bh=qhm8uwkUkCUumNgaHH94RwYFxdehaUbR8vsnrN39knc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvffJBB3na08Fpg5tVrrTE5dIth5ZvETwAr6jp83yurQ28Y4i/gA5xshgHiVxUNJt/7h8eN6XSyaKFvHomXoOrEmHC7yRaKVFN4Um3HFmYlEOI2t3xTixcF7kZuSJUiTgY7qjBvXAhMAb64gMVTthrZvHRY0TLQ3tRpyscHSyjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSG77IA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892B7C4CEEB;
-	Mon, 18 Aug 2025 13:41:17 +0000 (UTC)
+	 MIME-Version; b=gP5fkDMl31zdO05MXUjfamai+gfgUhVEEy95Uks4AkCzxjc+oiFvQDy+8+yKg4VUcittEYaUt8c9mOIQj41IlAUef4NiWyuf+IRvKA0B+yTbsatlDf4trzr9i9j5XX3ET7HWD9Jh2GGgKC+qd2xX07XFxy6j7ncSeCSgIFIKzWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJ4Yq2ov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD0DC4CEEB;
+	Mon, 18 Aug 2025 13:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524477;
-	bh=S/1JmARk4ry9lv49C6U1/HDRgh/iXHc+RoS2pTYVuf4=;
+	s=korg; t=1755522811;
+	bh=qhm8uwkUkCUumNgaHH94RwYFxdehaUbR8vsnrN39knc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSG77IA2FR1q8TPbRtgkfD+v4ptqg0vSd6dgIW/ZWWoVulJm4GXWm7iZYoXWRTlHM
-	 OuMqonWxRZc4kqwUmIR+WCKMscLbvjvdOYmIW9+cpCY7XhdaH6ffOJF4xjYitJM02h
-	 ZcbywRgA55DvkzmvK7m40Yr8On6eQuh37b0QjZlQ=
+	b=tJ4Yq2ovf22LowsCE5i+vWX/NhwA9L2XmEr0sf+q5gbxOm9L7aGapr3Nu61vy+gew
+	 VuZNuzVSMGOtrokl0erfZaLoTk47CPVvWKRS7TSNQ6y1NTY6fa8OmfYfUNFjxNzGpT
+	 UwNLNU6bpX7UqwEqb1hqGTZ9RYkoSkxPN/+vikE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 467/515] btrfs: dont ignore inode missing when replaying log tree
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 427/444] net: Add net_passive_inc() and net_passive_dec().
 Date: Mon, 18 Aug 2025 14:47:33 +0200
-Message-ID: <20250818124516.398913241@linuxfoundation.org>
+Message-ID: <20250818124504.959779162@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 7ebf381a69421a88265d3c49cd0f007ba7336c9d upstream.
+[ Upstream commit e57a6320215c3967f51ab0edeff87db2095440e4 ]
 
-During log replay, at add_inode_ref(), we return -ENOENT if our current
-inode isn't found on the subvolume tree or if a parent directory isn't
-found. The error comes from btrfs_iget_logging() <- btrfs_iget() <-
-btrfs_read_locked_inode().
+net_drop_ns() is NULL when CONFIG_NET_NS is disabled.
 
-The single caller of add_inode_ref(), replay_one_buffer(), ignores an
--ENOENT error because it expects that error to mean only that a parent
-directory wasn't found and that is ok.
+The next patch introduces a function that increments
+and decrements net->passive.
 
-Before commit 5f61b961599a ("btrfs: fix inode lookup error handling during
-log replay") we were converting any error when getting a parent directory
-to -ENOENT and any error when getting the current inode to -EIO, so our
-caller would fail log replay in case we can't find the current inode.
-After that commit however in case the current inode is not found we return
--ENOENT to the caller and therefore it ignores the critical fact that the
-current inode was not found in the subvolume tree.
+As a prep, let's rename and export net_free() to
+net_passive_dec() and add net_passive_inc().
 
-Fix this by converting -ENOENT to 0 when we don't find a parent directory,
-returning -ENOENT when we don't find the current inode and making the
-caller, replay_one_buffer(), not ignore -ENOENT anymore.
-
-Fixes: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
-CC: stable@vger.kernel.org # 6.16
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/netdev/CANn89i+oUCt2VGvrbrweniTendZFEh+nwS=uonc004-aPkWy-Q@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250217191129.19967-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 59b33fab4ca4 ("smb: client: fix netns refcount leak after net_passive changes")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ include/net/net_namespace.h |   16 ++++++++++++++++
+ net/core/net_namespace.c    |    8 ++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -1380,6 +1380,8 @@ static noinline int add_inode_ref(struct
- 	dir = btrfs_iget_logging(parent_objectid, root);
- 	if (IS_ERR(dir)) {
- 		ret = PTR_ERR(dir);
-+		if (ret == -ENOENT)
-+			ret = 0;
- 		dir = NULL;
- 		goto out;
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -291,6 +291,7 @@ static inline int check_net(const struct
+ }
+ 
+ void net_drop_ns(void *);
++void net_passive_dec(struct net *net);
+ 
+ #else
+ 
+@@ -320,8 +321,23 @@ static inline int check_net(const struct
+ }
+ 
+ #define net_drop_ns NULL
++
++static inline void net_passive_dec(struct net *net)
++{
++	refcount_dec(&net->passive);
++}
+ #endif
+ 
++static inline void net_passive_inc(struct net *net)
++{
++	refcount_inc(&net->passive);
++}
++
++/* Returns true if the netns initialization is completed successfully */
++static inline bool net_initialized(const struct net *net)
++{
++	return READ_ONCE(net->list.next);
++}
+ 
+ static inline void __netns_tracker_alloc(struct net *net,
+ 					 netns_tracker *tracker,
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -458,7 +458,7 @@ static void net_complete_free(void)
+ 
+ }
+ 
+-static void net_free(struct net *net)
++void net_passive_dec(struct net *net)
+ {
+ 	if (refcount_dec_and_test(&net->passive)) {
+ 		kfree(rcu_access_pointer(net->gen));
+@@ -476,7 +476,7 @@ void net_drop_ns(void *p)
+ 	struct net *net = (struct net *)p;
+ 
+ 	if (net)
+-		net_free(net);
++		net_passive_dec(net);
+ }
+ 
+ struct net *copy_net_ns(unsigned long flags,
+@@ -517,7 +517,7 @@ put_userns:
+ 		key_remove_domain(net->key_domain);
+ #endif
+ 		put_user_ns(user_ns);
+-		net_free(net);
++		net_passive_dec(net);
+ dec_ucounts:
+ 		dec_net_namespaces(ucounts);
+ 		return ERR_PTR(rv);
+@@ -662,7 +662,7 @@ static void cleanup_net(struct work_stru
+ 		key_remove_domain(net->key_domain);
+ #endif
+ 		put_user_ns(net->user_ns);
+-		net_free(net);
++		net_passive_dec(net);
  	}
-@@ -1404,6 +1406,15 @@ static noinline int add_inode_ref(struct
- 				if (IS_ERR(dir)) {
- 					ret = PTR_ERR(dir);
- 					dir = NULL;
-+					/*
-+					 * A new parent dir may have not been
-+					 * logged and not exist in the subvolume
-+					 * tree, see the comment above before
-+					 * the loop when getting the first
-+					 * parent dir.
-+					 */
-+					if (ret == -ENOENT)
-+						ret = 0;
- 					goto out;
- 				}
- 			}
-@@ -2516,9 +2527,8 @@ static int replay_one_buffer(struct btrf
- 			   key.type == BTRFS_INODE_EXTREF_KEY) {
- 			ret = add_inode_ref(wc->trans, root, log, path,
- 					    eb, i, &key);
--			if (ret && ret != -ENOENT)
-+			if (ret)
- 				break;
--			ret = 0;
- 		} else if (key.type == BTRFS_EXTENT_DATA_KEY) {
- 			ret = replay_one_extent(wc->trans, root, path,
- 						eb, i, &key);
+ }
+ 
 
 
 
