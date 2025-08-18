@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FC8B2A2E4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01215B2A5BB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A1A05659E0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A725B566FF9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0B931CA57;
-	Mon, 18 Aug 2025 12:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A9F221F15;
+	Mon, 18 Aug 2025 13:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwrLuoJQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRXEnwzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0994C21ABAA;
-	Mon, 18 Aug 2025 12:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920951DC997;
+	Mon, 18 Aug 2025 13:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521709; cv=none; b=cRcHEjXjXZOTsIV5Yx4q9fNCA84c97elluVdPnKZ3OG9UxQ6ybsLKi5S3Ce0RPQFgkqO4+hOyv1jFhHOjMfl8mm980pG6YonKRFcPHjlEZRSb271Kp8dyigk/oyZG/c00K4JKkfE9wRj5ybSusORve3aekbUV+p8dQHmQOWCw9k=
+	t=1755523337; cv=none; b=IhOTEiBpoTti8Pm48rxiLJjoPW0m8NoJZDO2uez+mcKgRe21y+BwLqgme5MNov6/obIJQrdIzdPrLJsS+NORAWBZ6RzU2RK0xjRrmmx7b+H/XbIVKJ634aGaa067qsZF3oAQIiSFw4bTbWg5/mpxWneJFRhDKcC1uFUPNPgii/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521709; c=relaxed/simple;
-	bh=VAKRdiGlUU3UhyD+3HAjLKiz5Yq9D6ssE3wgogXsLAE=;
+	s=arc-20240116; t=1755523337; c=relaxed/simple;
+	bh=wVTpvkLeqfTNSnV8y6OOaWUSYXj5hCjUyEOqYRQgg6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/UkB7kvdAHkF/APotm5vp82CVHYzHenjpuQvNLnd7uv8X2j1fGcNaAYFNYgb7vHCTdshJL7jBUx98AmR1JscfJ0cpYm7dOr/ET4otC3l4SkF7irDSkTL1Wso4BeGKF1RaBRx9jbmwlqvsXIxNWtJCJVDB+6qGh/kSHodtCkSu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwrLuoJQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B9AC4CEEB;
-	Mon, 18 Aug 2025 12:55:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sOHgTUnXuRELhLsoyqLyoTjaT94bhyHr+F22VWKOxB7TQqyp/08JpP+GSGZXQ5uqQyxOSkjmc3y35R1Q+yyisbm2B3JfTEX2uNW8yEhVlxrKegTz2WICjBXPYImE0F/wTgiTTIhpUl7vjCtw78TBNx9tGss8e3Rk5s5rr1E+Mvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRXEnwzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEF2C4CEF1;
+	Mon, 18 Aug 2025 13:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521708;
-	bh=VAKRdiGlUU3UhyD+3HAjLKiz5Yq9D6ssE3wgogXsLAE=;
+	s=korg; t=1755523337;
+	bh=wVTpvkLeqfTNSnV8y6OOaWUSYXj5hCjUyEOqYRQgg6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwrLuoJQF4yAHWT3Yn547CSjiyX6kIQVDD+u6JZd5iBkd7cy46oGq2SsCQr2yIfyQ
-	 ewydmeZk96kPz7mqeYhF0bMnzRRwM3aVf+MpczghuenB39jVV2NBnyWhbT+6BSV0/n
-	 j3nlDZkJ79QIDz90oEDrU/xX/yZLxneIboAuySdo=
+	b=FRXEnwzwgR504V9fPC9TzIIWuoyqHepyGzSrZRP0n7SZeOqCLRaUJ7H5w0KOQFE5f
+	 wsNPx15G9CYfyp+KnGT4X3HyGpsRHxLWC58vH5hiU9rB/l1A9JkB265j3W5AE+LljH
+	 snA6j+yJSHE1tF5O6TH/hV3HqvYQ0o82OGMyo91g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Jameson Thies <jthies@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Willy Tarreau <w@1wt.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/444] usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default
-Date: Mon, 18 Aug 2025 14:42:05 +0200
-Message-ID: <20250818124452.659471543@linuxfoundation.org>
+Subject: [PATCH 6.15 140/515] tools/nolibc: define time_t in terms of __kernel_old_time_t
+Date: Mon, 18 Aug 2025 14:42:06 +0200
+Message-ID: <20250818124503.780569027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benson Leung <bleung@chromium.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit af833e7f7db3cf4c82f063668e1b52297a30ec18 ]
+[ Upstream commit d5094bcb5bfdfea2cf0de8aaf77cc65db56cbdb5 ]
 
-ucsi_psy_get_current_max would return 0mA as the maximum current if
-UCSI detected a BC or a Default USB Power sporce.
+Nolibc assumes that the kernel ABI is using a time values that are as
+large as a long integer. For most ABIs this holds true.
+But for x32 this is not correct, as it uses 32bit longs but 64bit times.
 
-The comment in this function is true that we can't tell the difference
-between DCP/CDP or SDP chargers, but we can guarantee that at least 1-unit
-of USB 1.1/2.0 power is available, which is 100mA, which is a better
-fallback value than 0, which causes some userspaces, including the ChromeOS
-power manager, to regard this as a power source that is not providing
-any power.
+Also the 'struct stat' implementation of nolibc relies on timespec::tv_sec
+and time_t being the same type. While timespec::tv_sec comes from the
+kernel and is of type __kernel_old_time_t, time_t is defined within nolibc.
 
-In reality, 100mA is guaranteed from all sources in these classes.
+Switch to the __kernel_old_time_t to always get the correct type.
 
-Signed-off-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20250717200805.3710473-1-bleung@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://lore.kernel.org/r/20250712-nolibc-x32-v1-1-6d81cb798710@weissschuh.net
+Acked-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/psy.c  | 2 +-
- drivers/usb/typec/ucsi/ucsi.h | 7 ++++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ tools/include/nolibc/std.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/psy.c b/drivers/usb/typec/ucsi/psy.c
-index 1c631c7855a9..9447a50716ec 100644
---- a/drivers/usb/typec/ucsi/psy.c
-+++ b/drivers/usb/typec/ucsi/psy.c
-@@ -164,7 +164,7 @@ static int ucsi_psy_get_current_max(struct ucsi_connector *con,
- 	case UCSI_CONSTAT_PWR_OPMODE_DEFAULT:
- 	/* UCSI can't tell b/w DCP/CDP or USB2/3x1/3x2 SDP chargers */
- 	default:
--		val->intval = 0;
-+		val->intval = UCSI_TYPEC_DEFAULT_CURRENT * 1000;
- 		break;
- 	}
- 	return 0;
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 0568e643e844..25cff9658966 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -412,9 +412,10 @@ struct ucsi {
- #define UCSI_MAX_SVID		5
- #define UCSI_MAX_ALTMODES	(UCSI_MAX_SVID * 6)
+diff --git a/tools/include/nolibc/std.h b/tools/include/nolibc/std.h
+index 933bc0be7e1c..a9d8b5b51f37 100644
+--- a/tools/include/nolibc/std.h
++++ b/tools/include/nolibc/std.h
+@@ -20,6 +20,8 @@
  
--#define UCSI_TYPEC_VSAFE5V	5000
--#define UCSI_TYPEC_1_5_CURRENT	1500
--#define UCSI_TYPEC_3_0_CURRENT	3000
-+#define UCSI_TYPEC_VSAFE5V		5000
-+#define UCSI_TYPEC_DEFAULT_CURRENT	 100
-+#define UCSI_TYPEC_1_5_CURRENT		1500
-+#define UCSI_TYPEC_3_0_CURRENT		3000
+ #include "stdint.h"
  
- struct ucsi_connector {
- 	int num;
++#include <linux/types.h>
++
+ /* those are commonly provided by sys/types.h */
+ typedef unsigned int          dev_t;
+ typedef unsigned long         ino_t;
+@@ -31,6 +33,6 @@ typedef unsigned long       nlink_t;
+ typedef   signed long         off_t;
+ typedef   signed long     blksize_t;
+ typedef   signed long      blkcnt_t;
+-typedef   signed long        time_t;
++typedef __kernel_old_time_t  time_t;
+ 
+ #endif /* _NOLIBC_STD_H */
 -- 
 2.39.5
 
