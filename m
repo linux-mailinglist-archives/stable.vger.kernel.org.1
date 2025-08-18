@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9110B2AA31
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12088B2A72E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE136E6AC8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C40C681D07
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268AF340DA0;
-	Mon, 18 Aug 2025 14:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F290032254A;
+	Mon, 18 Aug 2025 13:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDsZ1Hkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY/MkMER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D708431B11A;
-	Mon, 18 Aug 2025 14:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE465322544;
+	Mon, 18 Aug 2025 13:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525775; cv=none; b=lQDzjhp+Qize9LR9fNLz619u+uNiJrHJN3yzm4+22O8idBPn48T0k3GLLPG/Rr7rY4CctVrSwYEI0NDssuOTaCgZ0XT5GQug3eEtfntthr++ny8DQi7cRylOlJhR7RoHtX5kSCxq459HXv+/ASIo0tz0isRnUC6Wn86auihmZgo=
+	t=1755524194; cv=none; b=dXo0Lg/H4SkZPR1AKhsT25496WySxpyP8OyVWFGILwF3TlPbE74qwV6lw5LyJ6vom97NB5/ToTrZPp0gdH/oDZeNsPYg+/C0QoTbvDRyDbP/urvALl3+9CvDE8ZwajRO301ob+0DlQ91AyzxLbnItPGxgioB3fpTcWlcwwtZWI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525775; c=relaxed/simple;
-	bh=5UPAwShH11hPAp7RWW8HAcwSvVKtzU3pbqtJ9E721RU=;
+	s=arc-20240116; t=1755524194; c=relaxed/simple;
+	bh=Kh/6bMgpWRoWfr774RSkQlLjInc/3yAj33PorjvpNsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3FIvTnsPmMlmdCSnCTJS/32LwmX0o8DdltzIC9wdtDWqZ5brPgcjKqI9vekWibkPvaQTJvI88Q+5jI5D41WVHPbIpzyb4S7b5yyRXPa72tKXFAFU680K1y4jTWGXxKyP2R8oUtd4KI2hREn6qn0JCrZ+uEukMeGsNWN/bWbEyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDsZ1Hkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BBEC4CEEB;
-	Mon, 18 Aug 2025 14:02:55 +0000 (UTC)
+	 MIME-Version; b=L+J02Qz6PlyRv8pGzMNB0baT8roqtQd0J1ognfXp4JMrlFwnrZzwNjXAy4laGcnoXMqX/VkV0nKbuYGQHJ5M6ClFOogTv4tBwuNE7PCpKihU1cXTk7/UHHv2l/6G+b60/rgsGy+4wJrcdCRq2RxRmpVxvzhYVVjaZtN3rupJ8ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY/MkMER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9A1C4CEEB;
+	Mon, 18 Aug 2025 13:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525775;
-	bh=5UPAwShH11hPAp7RWW8HAcwSvVKtzU3pbqtJ9E721RU=;
+	s=korg; t=1755524194;
+	bh=Kh/6bMgpWRoWfr774RSkQlLjInc/3yAj33PorjvpNsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDsZ1HkvAeQ2Sr/z0qf0XeMMTXvuGhbRBs4C545xklKA4mtPwpo/5+dXUs13Mohc4
-	 MPa8BpDCtO2PeOhpkB4G27glju2Enss8HHH2feqNngSM+8CWNY1FuqaMFgmoZ+5wWn
-	 RVI/pWvHkr8mWmnNv4uJWR4baKQs1S3JZmewK8h8=
+	b=tY/MkMERkx1y/26z5X89354hmc3EjSzi8AuhQkK+c1GPbSFa3uciClOv0qbsgrvLb
+	 ZOzMrPId7E39UsJAAjWgPRFYuMlg7Qm4dizAEBVsh8CPTa327pSTAdiXcJBnZyGTXm
+	 ofmkmNgwJyb5qFY/EtG0XQua0g25C0Ni003Dko6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiqi Song <songzhiqi1@huawei.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 363/570] crypto: hisilicon/hpre - fix dma unmap sequence
+Subject: [PATCH 6.15 364/515] RDMA: hfi1: fix possible divide-by-zero in find_hw_thread_mask()
 Date: Mon, 18 Aug 2025 14:45:50 +0200
-Message-ID: <20250818124519.847513666@linuxfoundation.org>
+Message-ID: <20250818124512.418303519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiqi Song <songzhiqi1@huawei.com>
+From: Yury Norov [NVIDIA] <yury.norov@gmail.com>
 
-[ Upstream commit 982fd1a74de63c388c060e4fa6f7fbd088d6d02e ]
+[ Upstream commit 59f7d2138591ef8f0e4e4ab5f1ab674e8181ad3a ]
 
-Perform DMA unmapping operations before processing data.
-Otherwise, there may be unsynchronized data accessed by
-the CPU when the SWIOTLB is enabled.
+The function divides number of online CPUs by num_core_siblings, and
+later checks the divider by zero. This implies a possibility to get
+and divide-by-zero runtime error. Fix it by moving the check prior to
+division. This also helps to save one indentation level.
 
-Signed-off-by: Zhiqi Song <songzhiqi1@huawei.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
+Link: https://patch.msgid.link/20250604193947.11834-3-yury.norov@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/hpre/hpre_crypto.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hfi1/affinity.c | 44 +++++++++++++++------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/hpre/hpre_crypto.c b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
-index 61b5e1c5d019..1550c3818383 100644
---- a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
-+++ b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
-@@ -1491,11 +1491,13 @@ static void hpre_ecdh_cb(struct hpre_ctx *ctx, void *resp)
- 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
- 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
- 
-+	/* Do unmap before data processing */
-+	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
+diff --git a/drivers/infiniband/hw/hfi1/affinity.c b/drivers/infiniband/hw/hfi1/affinity.c
+index 7ead8746b79b..f2c530ab85a5 100644
+--- a/drivers/infiniband/hw/hfi1/affinity.c
++++ b/drivers/infiniband/hw/hfi1/affinity.c
+@@ -964,31 +964,35 @@ static void find_hw_thread_mask(uint hw_thread_no, cpumask_var_t hw_thread_mask,
+ 				struct hfi1_affinity_node_list *affinity)
+ {
+ 	int possible, curr_cpu, i;
+-	uint num_cores_per_socket = node_affinity.num_online_cpus /
++	uint num_cores_per_socket;
 +
- 	p = sg_virt(areq->dst);
- 	memmove(p, p + ctx->key_sz - curve_sz, curve_sz);
- 	memmove(p + curve_sz, p + areq->dst_len - curve_sz, curve_sz);
- 
--	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
- 	kpp_request_complete(areq, ret);
- 
- 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
-@@ -1808,9 +1810,11 @@ static void hpre_curve25519_cb(struct hpre_ctx *ctx, void *resp)
- 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
- 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
- 
-+	/* Do unmap before data processing */
-+	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
++	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
 +
- 	hpre_key_to_big_end(sg_virt(areq->dst), CURVE25519_KEY_SIZE);
++	if (affinity->num_core_siblings == 0)
++		return;
++
++	num_cores_per_socket = node_affinity.num_online_cpus /
+ 					affinity->num_core_siblings /
+ 						node_affinity.num_online_nodes;
  
--	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
- 	kpp_request_complete(areq, ret);
+-	cpumask_copy(hw_thread_mask, &affinity->proc.mask);
+-	if (affinity->num_core_siblings > 0) {
+-		/* Removing other siblings not needed for now */
+-		possible = cpumask_weight(hw_thread_mask);
+-		curr_cpu = cpumask_first(hw_thread_mask);
+-		for (i = 0;
+-		     i < num_cores_per_socket * node_affinity.num_online_nodes;
+-		     i++)
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-
+-		for (; i < possible; i++) {
+-			cpumask_clear_cpu(curr_cpu, hw_thread_mask);
+-			curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+-		}
++	/* Removing other siblings not needed for now */
++	possible = cpumask_weight(hw_thread_mask);
++	curr_cpu = cpumask_first(hw_thread_mask);
++	for (i = 0;
++	     i < num_cores_per_socket * node_affinity.num_online_nodes;
++	     i++)
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
  
- 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
+-		/* Identifying correct HW threads within physical cores */
+-		cpumask_shift_left(hw_thread_mask, hw_thread_mask,
+-				   num_cores_per_socket *
+-				   node_affinity.num_online_nodes *
+-				   hw_thread_no);
++	for (; i < possible; i++) {
++		cpumask_clear_cpu(curr_cpu, hw_thread_mask);
++		curr_cpu = cpumask_next(curr_cpu, hw_thread_mask);
+ 	}
++
++	/* Identifying correct HW threads within physical cores */
++	cpumask_shift_left(hw_thread_mask, hw_thread_mask,
++			   num_cores_per_socket *
++			   node_affinity.num_online_nodes *
++			   hw_thread_no);
+ }
+ 
+ int hfi1_get_proc_affinity(int node)
 -- 
 2.39.5
 
