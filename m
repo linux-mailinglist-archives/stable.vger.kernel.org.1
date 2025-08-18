@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-170906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A03B2A769
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17304B2A401
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05F551BA12FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C72718963BA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53243322DBA;
-	Mon, 18 Aug 2025 13:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A37530F7F8;
+	Mon, 18 Aug 2025 13:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUBPPW9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tWwSnNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10740322DA4;
-	Mon, 18 Aug 2025 13:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4727331E105;
+	Mon, 18 Aug 2025 13:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524185; cv=none; b=pOIRtjS/zWQ+vH7tU8n7t9BdwDyJPI4KutqM4nnjkDqZ5Dq6pbGeqhCgQIuD5qKi2CC9o2Bd5HUwFuqjMkzqUNL7oiELfwYD8a0SolPV8OP2lDi1EW6lqmeXsmLTEqt19+cYKGuzmORjIxu3z33jvLuE1hM3EEASbIcCkwzs8CQ=
+	t=1755522561; cv=none; b=BOaQ7SMExw8c7/dCLx8CzTqT5NUC1FpZWkrJP9sRp7FHH/xmSfRVEqw3sVQexvIfKmK1G+jH5zELGzYGloFIqGIdwWgqXTHc2mnW/TI12Ni86D0EU7KgZkuCbMglLdDPwaWswJedCwd51pAFNVeaMy4gL5Iy4QXgzMbyovg8mDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524185; c=relaxed/simple;
-	bh=AXnLjS94QTQGu5XKx82Eb9+0xDG6z2cjpFquNDkNdgY=;
+	s=arc-20240116; t=1755522561; c=relaxed/simple;
+	bh=37VEBKwsaaymO7I/fDHC7vW+5/0ycd7sZoCbxSsatqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQoOSZJR4S69Kb6FOJRuWd1eOVIzliCkCx54M3T9ZAYX4YLvnLbazPG1yApA3wBOU+wqCf6+s0LmrIbJzw1sYqwu3gzUdJykFnDw8b2SlJ9uuZlB/Qwx9QS1qiu7yPZVhdhc4n/7rMLSCsr2cRNnGcFt3CpeFa/5fWDcXBpWWTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUBPPW9q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C029C4CEEB;
-	Mon, 18 Aug 2025 13:36:24 +0000 (UTC)
+	 MIME-Version; b=Y1odEoAW7+xehz2NuEnr/TCmgYOcUXbEzkcW+i88fr54s5df+f3xz+D7uiCW+fA6IAe1SG3n12pAvVJIYoRxd2Qi1hyqiZ1pvol8p0gptmjI+Ub+N3W8RcTuX1QhFIjWgJNTqZ5+bSvu43z86k6rb8FpLETBvUX7EkhHqnSuAdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tWwSnNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB27CC4CEEB;
+	Mon, 18 Aug 2025 13:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524184;
-	bh=AXnLjS94QTQGu5XKx82Eb9+0xDG6z2cjpFquNDkNdgY=;
+	s=korg; t=1755522561;
+	bh=37VEBKwsaaymO7I/fDHC7vW+5/0ycd7sZoCbxSsatqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUBPPW9qKoPXfQULJyo4BNR2yxoAPlgmpc5O4+j6BIeSmEnJlEQ/R51niwdZyZ1E0
-	 aJspJPe8til04baAUkjJbR4Ezz2d8eqzo8Gw50rc8cRj85QXgKKozbnQEQLomMsWtG
-	 85s3+q1U4u0aDBKLZ82DinYAYlhyfdk0cri8Z5ZE=
+	b=2tWwSnNCddwiBX5JFZ+4mqFtvvU5MbLs3m4xYrSktAkKjY3jbUWHIhzKaivmFbtaY
+	 0HUBMv225XIxnk9HL3JX06sWUt1A5/czbQZGJgUyBxOrBB9cL2af+67xMzWxjhltpQ
+	 +4QNX8mI2LFPEJwbZA2N57D7n0+rd6uZFHkDUoFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	"Yann E. MORIN" <yann.morin.1998@free.fr>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Cherniaev Andrei <dungeonlords789@naver.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 392/515] i3c: add missing include to internal header
+Subject: [PATCH 6.12 352/444] kconfig: lxdialog: fix space to (de)select options
 Date: Mon, 18 Aug 2025 14:46:18 +0200
-Message-ID: <20250818124513.507128397@linuxfoundation.org>
+Message-ID: <20250818124502.116629905@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Yann E. MORIN <yann.morin.1998@free.fr>
 
-[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
+[ Upstream commit 694174f94ebeeb5ec5cc0e9de9b40c82057e1d95 ]
 
-LKP found a random config which failed to build because IO accessors
-were not defined:
+In case a menu has comment without letters/numbers (eg. characters
+matching the regexp '^[^[:alpha:][:digit:]]+$', for example - or *),
+hitting space will cycle through those comments, rather than
+selecting/deselecting the currently-highlighted option.
 
-   In file included from drivers/i3c/master.c:21:
-   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
->> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
+This is the behaviour of hitting any letter/digit: jump to the next
+option which prompt starts with that letter. The only letters that
+do not behave as such are 'y' 'm' and 'n'. Prompts that start with
+one of those three letters are instead matched on the first letter
+that is not 'y', 'm' or 'n'.
 
-Add the proper header to where the IO accessors are used.
+Fix that by treating 'space' as we treat y/m/n, ie. as an action key,
+not as shortcut to jump to  prompt.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+Signed-off-by: Cherniaev Andrei <dungeonlords789@naver.com>
+[masahiro: took from Buildroot, adjusted the commit subject]
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/internals.h | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/kconfig/lxdialog/menubox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 433f6088b7ce..ce04aa4f269e 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -9,6 +9,7 @@
- #define I3C_INTERNALS_H
+diff --git a/scripts/kconfig/lxdialog/menubox.c b/scripts/kconfig/lxdialog/menubox.c
+index 6e6244df0c56..d4c19b7beebb 100644
+--- a/scripts/kconfig/lxdialog/menubox.c
++++ b/scripts/kconfig/lxdialog/menubox.c
+@@ -264,7 +264,7 @@ int dialog_menu(const char *title, const char *prompt,
+ 		if (key < 256 && isalpha(key))
+ 			key = tolower(key);
  
- #include <linux/i3c/master.h>
-+#include <linux/io.h>
- 
- void i3c_bus_normaluse_lock(struct i3c_bus *bus);
- void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+-		if (strchr("ynmh", key))
++		if (strchr("ynmh ", key))
+ 			i = max_choice;
+ 		else {
+ 			for (i = choice + 1; i < max_choice; i++) {
 -- 
 2.39.5
 
