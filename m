@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A1DB2A322
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B54B2A7E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F620565A91
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF58058189A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AACE280035;
-	Mon, 18 Aug 2025 12:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3691D88D7;
+	Mon, 18 Aug 2025 13:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ay147iir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAkAmkvO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D8B20126A;
-	Mon, 18 Aug 2025 12:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFD313C8E8;
+	Mon, 18 Aug 2025 13:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521720; cv=none; b=PeEVUPyQdf2CtsK/qvitv1I0S6pfCnati80Zqp1gIEPhdXXboomDkrQQbmqjwykkpse6wpZI7rWH9ZKHUQOOQEs5AqzBZZsJmdnXomuqmVYJvwrFhtSKuZAnT5LSE8cZ/afiOdZS+pb5w+O2nsu4jWV6V32LO1gmT5SIvu5QqgI=
+	t=1755525042; cv=none; b=elRPt7tO4rXOYPcU9Z7yoIMWt0cSDMfB6p11QmolRCnTVqCtZ4ag3YPONe/vjCLXbE/OAdLuumsFWz7FjYB5OFMoTwAl8srW5a3PvmP8sPEsKoit3ObDThETBdYnuptKeLOhoCDeM75A6hie3BwVdooAUc9DmuZUNzLXPdgHM6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521720; c=relaxed/simple;
-	bh=X5kvw1r63CXzTaps6UjCSw7PE/M26ByaFKHSPj9EtLs=;
+	s=arc-20240116; t=1755525042; c=relaxed/simple;
+	bh=MqC7y4nyCwDtJpZup8VITGbEg4pgKezsAb3ylPD8GAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQpB7qd7cbseRmn0LM3Caa0KVU1x2hdq9J8XF8H1iarEw7VWI8qiMFdxT4H7hlU+GJMwosipbztDeXEPLwYpGVaMOnCF447ArNZL2pF1Qv9SY5YFXrbx7hQtRdcRBwa1aA5bBtXVA0qjumPDcWzLFn4tmZUi5/l6I6B9a5mBWD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ay147iir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88954C4CEEB;
-	Mon, 18 Aug 2025 12:55:19 +0000 (UTC)
+	 MIME-Version; b=lH9sMTQLLK25HspdKuHohk3sKTwDaimy/OeZTZDnBf49/P2g0DpxB2LL2KavMj1VK3ARWCKxJs/SVEfh85nGvfvGoBwyz14LdXADgNwYb8BWs2/Fv2YOpEnCAxMoWcB/yySAwVv2Vz3dyTsE6KnKVBqaZ2/DX7E+hLdZTIPWl88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAkAmkvO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F52DC4CEEB;
+	Mon, 18 Aug 2025 13:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521719;
-	bh=X5kvw1r63CXzTaps6UjCSw7PE/M26ByaFKHSPj9EtLs=;
+	s=korg; t=1755525041;
+	bh=MqC7y4nyCwDtJpZup8VITGbEg4pgKezsAb3ylPD8GAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ay147iirP9LxLRJ9GYbsna3knCI7u+5SDsUeD8+Qrf0tf85RwO/pEiAfdC5G6o4x5
-	 qOREdNXXWfvDCKW4h3mfiS/gXFUsQvG+EzNNmtjnU6GqklC8r8kJH2/G7ar7fC1FYy
-	 G6uYOQCY8wyHONg4XXq13M2k19sV4jJBwwkEUkMM=
+	b=qAkAmkvOelzBILFfIYqblO7SEy+jTjowogV0zpGA2iw36vsYuCwRRy7t9YuRCeHm5
+	 tg2z6c49RtRfp4cu7uroi1R7ebgk9JbDmHQVatiTDKI25nm23wvYcAPY7sp+attiOK
+	 EsUFtow0xQV8eu8nIshtoy4Y+lNDMdPzw1L4BPxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/444] usb: xhci: Avoid showing errors during surprise removal
+Subject: [PATCH 6.16 141/570] gpio: loongson-64bit: Extend GPIO irq support
 Date: Mon, 18 Aug 2025 14:42:08 +0200
-Message-ID: <20250818124452.768364730@linuxfoundation.org>
+Message-ID: <20250818124511.258156557@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Binbin Zhou <zhoubinbin@loongson.cn>
 
-[ Upstream commit 4b9c60e440525b729ac5f071e00bcee12e0a7e84 ]
+[ Upstream commit 27cb8f702eb789f97f7a8bd5a91d76c65a937b2f ]
 
-When a USB4 dock is unplugged from a system it won't respond to ring
-events. The PCI core handles the surprise removal event and notifies
-all PCI drivers. The XHCI PCI driver sets a flag that the device is
-being removed as well.
+Add the interrupt enable register offset (inten_offset) so that GPIO
+interrupts can be enabled normally on more models.
 
-When that flag is set don't show messages in the cleanup path for
-marking the controller dead.
+According to the latest interface specifications, the definition of GPIO
+interrupts in ACPI is similar to that in FDT. The GPIO interrupts are
+listed one by one according to the GPIO number, and the corresponding
+interrupt number can be obtained directly through the GPIO number
+specified by the consumer.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20250714064542.2276247-1-zhoubinbin@loongson.cn
+[Bartosz: tweaked the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-loongson-64bit.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 19978f02bb9e..f6ecb3b9fb14 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1313,12 +1313,15 @@ static void xhci_kill_endpoint_urbs(struct xhci_hcd *xhci,
-  */
- void xhci_hc_died(struct xhci_hcd *xhci)
- {
-+	bool notify;
- 	int i, j;
+diff --git a/drivers/gpio/gpio-loongson-64bit.c b/drivers/gpio/gpio-loongson-64bit.c
+index 70a01c5b8ad1..add09971d26a 100644
+--- a/drivers/gpio/gpio-loongson-64bit.c
++++ b/drivers/gpio/gpio-loongson-64bit.c
+@@ -222,6 +222,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data0 = {
+ 	.conf_offset = 0x0,
+ 	.in_offset = 0xc,
+ 	.out_offset = 0x8,
++	.inten_offset = 0x14,
+ };
  
- 	if (xhci->xhc_state & XHCI_STATE_DYING)
- 		return;
+ static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data1 = {
+@@ -230,6 +231,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data1 = {
+ 	.conf_offset = 0x0,
+ 	.in_offset = 0x20,
+ 	.out_offset = 0x10,
++	.inten_offset = 0x30,
+ };
  
--	xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
-+	notify = !(xhci->xhc_state & XHCI_STATE_REMOVING);
-+	if (notify)
-+		xhci_err(xhci, "xHCI host controller not responding, assume dead\n");
- 	xhci->xhc_state |= XHCI_STATE_DYING;
+ static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data2 = {
+@@ -246,6 +248,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls3a5000_data = {
+ 	.conf_offset = 0x0,
+ 	.in_offset = 0xc,
+ 	.out_offset = 0x8,
++	.inten_offset = 0x14,
+ };
  
- 	xhci_cleanup_command_queue(xhci);
-@@ -1332,7 +1335,7 @@ void xhci_hc_died(struct xhci_hcd *xhci)
- 	}
+ static const struct loongson_gpio_chip_data loongson_gpio_ls7a_data = {
+@@ -254,6 +257,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls7a_data = {
+ 	.conf_offset = 0x800,
+ 	.in_offset = 0xa00,
+ 	.out_offset = 0x900,
++	.inten_offset = 0xb00,
+ };
  
- 	/* inform usb core hc died if PCI remove isn't already handling it */
--	if (!(xhci->xhc_state & XHCI_STATE_REMOVING))
-+	if (notify)
- 		usb_hc_died(xhci_to_hcd(xhci));
- }
+ /* LS7A2000 chipset GPIO */
+@@ -263,6 +267,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls7a2000_data0 = {
+ 	.conf_offset = 0x800,
+ 	.in_offset = 0xa00,
+ 	.out_offset = 0x900,
++	.inten_offset = 0xb00,
+ };
  
+ /* LS7A2000 ACPI GPIO */
+@@ -281,6 +286,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls3a6000_data = {
+ 	.conf_offset = 0x0,
+ 	.in_offset = 0xc,
+ 	.out_offset = 0x8,
++	.inten_offset = 0x14,
+ };
+ 
+ static const struct of_device_id loongson_gpio_of_match[] = {
 -- 
 2.39.5
 
