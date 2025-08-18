@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E89B2A43B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AE7B2A708
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2975626A72
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1695A581502
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B30B1E3DCD;
-	Mon, 18 Aug 2025 13:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3208A31E103;
+	Mon, 18 Aug 2025 13:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9cP5aev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6BYPzaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B52425F79A;
-	Mon, 18 Aug 2025 13:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4D2877DC;
+	Mon, 18 Aug 2025 13:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522732; cv=none; b=Wbca12c9M2PosPxDgD0IQwqUjg4h2oyFBvDadU1RstgGLiMX0VRwtLnQFgvfQjqAaiNgT/9cALJIoPTCJVS8vRPrLNMGNuxnmDgJAy85t9+nls7i7JDY2aD98Y89rjPIeJC15TqHa4glbnPPbUX1JR8bDL/euIq/93aqJIH3lNQ=
+	t=1755524348; cv=none; b=hGdBPsGmthUZxtZUpYglV6XbT09Dz3WQpSKJkiFqZrkKiZ6VIRbIAHSwKaLDLTE2XVn/ejx8C8Iq2pLk98RRHuhdAt8TCH1RrOFn5hsEN1rcCsqSJcbuJFUncDU2K71xN4k946GmTySRyZniy0VPYns/c4yLpDvoZ/Oc25JBwLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522732; c=relaxed/simple;
-	bh=kg998g88IFFKFqRQpbkuTeynKLaEnzkniiJRZmk/Fmk=;
+	s=arc-20240116; t=1755524348; c=relaxed/simple;
+	bh=GFfm4C9Tcis1vSKsLWgr0LfzjXN4422eMLS51VOfSpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D02VjWGOSxqFUh8dePCe4nrYh/q+qIkuZw69ID5pRwfgFt3lJ+OXW2x/rlSoI5wNOZiEsDbrnaquDb3+HU7xcdk/6wJAXInhCbr+sxRJJin0/l9jKWVadXeIhhYmbWBbIRSRXCfKLNADt7IbKDVHaJFFn5uTtj7ZquSyYUDc57g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9cP5aev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46938C4CEEB;
-	Mon, 18 Aug 2025 13:12:11 +0000 (UTC)
+	 MIME-Version; b=GzfJjljE9qV7z+DqkoOUhepk0ztOxtpMAipjILvWmhLmcejy9ZMYZIFNQMmDBN0MJW63EYRfvV6LqWm/O6A1sPJz7LdAZI4E7/OTsc2vvYcVse4WKBmsbToBPBAEXVQqe4uKaR+2sfP/SakEZFYqfB5ITMiJT1Q2eK7HorgCswk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6BYPzaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48906C4CEEB;
+	Mon, 18 Aug 2025 13:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522731;
-	bh=kg998g88IFFKFqRQpbkuTeynKLaEnzkniiJRZmk/Fmk=;
+	s=korg; t=1755524347;
+	bh=GFfm4C9Tcis1vSKsLWgr0LfzjXN4422eMLS51VOfSpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9cP5aeviiqE0BZio08Nq2ehf5FpSnVphOVOVbAWFryUa7W5Ki29l3XEmh73hucKy
-	 cpaniIoFld4x7d00+AexcxK9Q8S6+KplDwfQVRHsIEms9jgJtdn4xHz23xsiNLI55j
-	 v4pBluPlNC67sNcTVrrHpGrTzfoBRqL1O8LcjbqE=
+	b=K6BYPzaFIDudNsVfDQO1IbCV/r8Avqu1pBCE7gtbkS4+UAw+eO1ddZHrEEuKhJA59
+	 XsHz5aFk5Sk7ZgTqhaQzmqILHZER8XmNfgysZsN8DS3q20530yrDd6gI1aaIKWdvgT
+	 trxo9ctXfYU5aK8JIie1mTQNSdukeve7K0M/Ud5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 405/444] btrfs: do not allow relocation of partially dropped subvolumes
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Robert Marko <robimarko@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.15 445/515] clk: qcom: gcc-ipq8074: fix broken freq table for nss_port6_tx_clk_src
 Date: Mon, 18 Aug 2025 14:47:11 +0200
-Message-ID: <20250818124504.117401385@linuxfoundation.org>
+Message-ID: <20250818124515.554670307@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-commit 4289b494ac553e74e86fed1c66b2bf9530bc1082 upstream.
+commit 077ec7bcec9a8987d2a133afb7e13011878c7576 upstream.
 
-[BUG]
-There is an internal report that balance triggered transaction abort,
-with the following call trace:
+With the conversion done by commit e88f03230dc0 ("clk: qcom: gcc-ipq8074:
+rework nss_port5/6 clock to multiple conf") a Copy-Paste error was made
+for the nss_port6_tx_clk_src frequency table.
 
-  item 85 key (594509824 169 0) itemoff 12599 itemsize 33
-          extent refs 1 gen 197740 flags 2
-          ref#0: tree block backref root 7
-  item 86 key (594558976 169 0) itemoff 12566 itemsize 33
-          extent refs 1 gen 197522 flags 2
-          ref#0: tree block backref root 7
- ...
- BTRFS error (device loop0): extent item not found for insert, bytenr 594526208 num_bytes 16384 parent 449921024 root_objectid 934 owner 1 offset 0
- BTRFS error (device loop0): failed to run delayed ref for logical 594526208 num_bytes 16384 type 182 action 1 ref_mod 1: -117
- ------------[ cut here ]------------
- BTRFS: Transaction aborted (error -117)
- WARNING: CPU: 1 PID: 6963 at ../fs/btrfs/extent-tree.c:2168 btrfs_run_delayed_refs+0xfa/0x110 [btrfs]
+This was caused by the wrong setting of the parent in
+ftbl_nss_port6_tx_clk_src that was wrongly set to P_UNIPHY1_RX instead
+of P_UNIPHY2_TX.
 
-And btrfs check doesn't report anything wrong related to the extent
-tree.
+This cause the UNIPHY2 port to malfunction when it needs to be scaled to
+higher clock. The malfunction was observed with the example scenario
+with an Aquantia 10G PHY connected and a speed higher than 1G (example
+2.5G)
 
-[CAUSE]
-The cause is a little complex, firstly the extent tree indeed doesn't
-have the backref for 594526208.
+Fix the broken frequency table to restore original functionality.
 
-The extent tree only have the following two backrefs around that bytenr
-on-disk:
-
-        item 65 key (594509824 METADATA_ITEM 0) itemoff 13880 itemsize 33
-                refs 1 gen 197740 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
-        item 66 key (594558976 METADATA_ITEM 0) itemoff 13847 itemsize 33
-                refs 1 gen 197522 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
-
-But the such missing backref item is not an corruption on disk, as the
-offending delayed ref belongs to subvolume 934, and that subvolume is
-being dropped:
-
-        item 0 key (934 ROOT_ITEM 198229) itemoff 15844 itemsize 439
-                generation 198229 root_dirid 256 bytenr 10741039104 byte_limit 0 bytes_used 345571328
-                last_snapshot 198229 flags 0x1000000000001(RDONLY) refs 0
-                drop_progress key (206324 EXTENT_DATA 2711650304) drop_level 2
-                level 2 generation_v2 198229
-
-And that offending tree block 594526208 is inside the dropped range of
-that subvolume.  That explains why there is no backref item for that
-bytenr and why btrfs check is not reporting anything wrong.
-
-But this also shows another problem, as btrfs will do all the orphan
-subvolume cleanup at a read-write mount.
-
-So half-dropped subvolume should not exist after an RW mount, and
-balance itself is also exclusive to subvolume cleanup, meaning we
-shouldn't hit a subvolume half-dropped during relocation.
-
-The root cause is, there is no orphan item for this subvolume.
-In fact there are 5 subvolumes from around 2021 that have the same
-problem.
-
-It looks like the original report has some older kernels running, and
-caused those zombie subvolumes.
-
-Thankfully upstream commit 8d488a8c7ba2 ("btrfs: fix subvolume/snapshot
-deletion not triggered on mount") has long fixed the bug.
-
-[ENHANCEMENT]
-For repairing such old fs, btrfs-progs will be enhanced.
-
-Considering how delayed the problem will show up (at run delayed ref
-time) and at that time we have to abort transaction already, it is too
-late.
-
-Instead here we reject any half-dropped subvolume for reloc tree at the
-earliest time, preventing confusion and extra time wasted on debugging
-similar bugs.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: e88f03230dc0 ("clk: qcom: gcc-ipq8074: rework nss_port5/6 clock to multiple conf")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Tested-by: Robert Marko <robimarko@gmail.com>
+Link: https://lore.kernel.org/r/20250522202600.4028-1-ansuelsmth@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/relocation.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/clk/qcom/gcc-ipq8074.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -687,6 +687,25 @@ static struct btrfs_root *create_reloc_r
- 	if (btrfs_root_id(root) == objectid) {
- 		u64 commit_root_gen;
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -1895,10 +1895,10 @@ static const struct freq_conf ftbl_nss_p
+ static const struct freq_multi_tbl ftbl_nss_port6_tx_clk_src[] = {
+ 	FMS(19200000, P_XO, 1, 0, 0),
+ 	FM(25000000, ftbl_nss_port6_tx_clk_src_25),
+-	FMS(78125000, P_UNIPHY1_RX, 4, 0, 0),
++	FMS(78125000, P_UNIPHY2_TX, 4, 0, 0),
+ 	FM(125000000, ftbl_nss_port6_tx_clk_src_125),
+-	FMS(156250000, P_UNIPHY1_RX, 2, 0, 0),
+-	FMS(312500000, P_UNIPHY1_RX, 1, 0, 0),
++	FMS(156250000, P_UNIPHY2_TX, 2, 0, 0),
++	FMS(312500000, P_UNIPHY2_TX, 1, 0, 0),
+ 	{ }
+ };
  
-+		/*
-+		 * Relocation will wait for cleaner thread, and any half-dropped
-+		 * subvolume will be fully cleaned up at mount time.
-+		 * So here we shouldn't hit a subvolume with non-zero drop_progress.
-+		 *
-+		 * If this isn't the case, error out since it can make us attempt to
-+		 * drop references for extents that were already dropped before.
-+		 */
-+		if (unlikely(btrfs_disk_key_objectid(&root->root_item.drop_progress))) {
-+			struct btrfs_key cpu_key;
-+
-+			btrfs_disk_key_to_cpu(&cpu_key, &root->root_item.drop_progress);
-+			btrfs_err(fs_info,
-+	"cannot relocate partially dropped subvolume %llu, drop progress key (%llu %u %llu)",
-+				  objectid, cpu_key.objectid, cpu_key.type, cpu_key.offset);
-+			ret = -EUCLEAN;
-+			goto fail;
-+		}
-+
- 		/* called by btrfs_init_reloc_root */
- 		ret = btrfs_copy_root(trans, root, root->commit_root, &eb,
- 				      BTRFS_TREE_RELOC_OBJECTID);
 
 
 
