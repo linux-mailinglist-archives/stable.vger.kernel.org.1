@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA83B2A634
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D92B2A31C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D89B1685926
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABCCF3A4DE3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE21335BD7;
-	Mon, 18 Aug 2025 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF1A31B11A;
+	Mon, 18 Aug 2025 13:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUeFtkLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUBZijmK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98000335BB3;
-	Mon, 18 Aug 2025 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C39E1F462D;
+	Mon, 18 Aug 2025 13:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523662; cv=none; b=jFWRiJK0hcI4JURrc4+3PKmPXp42jmDsqq1MT9uUXUUpqse/vP+FrUbqY5tpZqXfg4bWfgzTjk7LVEiK6t/Msp55z7C8ag8k+r5r+kOoEXIJkh7kAgjdeakHfg1E93mUTTWt4qX5nZH/rJhH5g4rN46dBA+J7cOj1cvvmj1Eflk=
+	t=1755522049; cv=none; b=bB3zJnFQicRZO00AAj6ubWHX1YPRU/bUrEKaCpcExKRgnsqHlojMoVg6bR8pN4Byp9kcjc6boeTSZqMej3xLkPErZhNj/5/+ernU8f8bOxiM93fb66CK6R5zHF8zBr4jESOTp1aX8thrOcptMQL1zuUkgD4TB1EJHFJTvdjvQM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523662; c=relaxed/simple;
-	bh=iN5JbU0gVcLXs/eAqDYgvriX5sc13ibbc579KDbZjvI=;
+	s=arc-20240116; t=1755522049; c=relaxed/simple;
+	bh=qwRRG0qiHKiurCshkYh5BLNVXJ1Jh9ycZnDtBxUdXTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T54fo466WVClBnb+AbuHoNKVhQ/AUC+869PRPkvDn7PC2UBSfuOGQGbB/LgkbqBnQQXDCjYxsr54SnS93bt51fAxbXgXHNkQJ1dFQthMiPoAGHdjMnQyoelC96dDolF7zan5VyzXV4U3TDobK0hFM9dnk7w2FjzIZpJnhsaZffs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUeFtkLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067ECC4CEEB;
-	Mon, 18 Aug 2025 13:27:41 +0000 (UTC)
+	 MIME-Version; b=JDp8F2ITvnZf6W9vnqO8zNDaHm/3mC34Syx1Bl/oOTNgX1NbB135aC/4IAJiLZC2w7rU/+svpn+ml0JHSJCQ+p+8RxmvzfjZILenL8DQe1s2o5KeB+IuHuxRwVDQF/jmtNdoTrThVqwmceCZMPv+zAy27UubLYgWIY5cqfr5GBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUBZijmK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D2EC4CEEB;
+	Mon, 18 Aug 2025 13:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523662;
-	bh=iN5JbU0gVcLXs/eAqDYgvriX5sc13ibbc579KDbZjvI=;
+	s=korg; t=1755522049;
+	bh=qwRRG0qiHKiurCshkYh5BLNVXJ1Jh9ycZnDtBxUdXTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUeFtkLhtcY7BWP/6MCuIOMXSNywhCX1G4vNysmkJ1PQUj+/T1/tHGRee6I7HSviT
-	 m/yi8PKYDcDj+FUlhLGy2+YddIzqDQJwTKUfKYzp62b7q1t3czTCgb44U1EU0uEewa
-	 emrV5D7dfN+otN+mlLRVxnuO85MuQ3C+Z2XSZc3w=
+	b=rUBZijmKLUe7i2pyA8ZZ9nGwGdHalzIOfjSlxV85T3KT/sAyRLzYOdXaAD1MOED/A
+	 R+vjkX7C8GTTzBlAlmvFDdfj0HD50Uf06xCTkubBrbSOL4t+tgH98qecV26LGZEgUt
+	 f8AWmxm4cLI8llv09hnmsOpjwXzJlDj82OWEHFxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kamil=20Hor=C3=A1k=20-=202N?= <kamilh@axis.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 240/515] net: phy: bcm54811: PHY initialization
+Subject: [PATCH 6.12 200/444] s390/stp: Remove udelay from stp_sync_clock()
 Date: Mon, 18 Aug 2025 14:43:46 +0200
-Message-ID: <20250818124507.626254756@linuxfoundation.org>
+Message-ID: <20250818124456.361148584@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Horák - 2N <kamilh@axis.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 3117a11fff5af9e74f4946f07cb3ca083cbbdf4b ]
+[ Upstream commit b367017cdac21781a74eff4e208d3d38e1f38d3f ]
 
-Reset the bit 12 in PHY's LRE Control register upon initialization.
-According to the datasheet, this bit must be written to zero after
-every device reset.
+When an stp sync check is handled on a system with multiple
+cpus each cpu gets a machine check but only the first one
+actually handles the sync operation. All other CPUs spin
+waiting for the first one to finish with a short udelay().
+But udelay can't be used here as the first CPU modifies tod_clock_base
+before performing the sync op. During this timeframe
+get_tod_clock_monotonic() might return a non-monotonic time.
 
-Signed-off-by: Kamil Horák - 2N <kamilh@axis.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250708090140.61355-5-kamilh@axis.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The time spent waiting should be very short and udelay is a busy loop
+anyways, therefore simply remove the udelay.
+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/broadcom.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ arch/s390/kernel/time.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index 9b1de54fd483..f871f11d1921 100644
---- a/drivers/net/phy/broadcom.c
-+++ b/drivers/net/phy/broadcom.c
-@@ -655,7 +655,7 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
- {
- 	struct device_node *np = phydev->mdio.dev.of_node;
- 	struct bcm54xx_phy_priv *priv = phydev->priv;
--	int i, val, err;
-+	int i, val, err, aneg;
- 
- 	for (i = 0; i < ARRAY_SIZE(bcm54811_linkmodes); i++)
- 		linkmode_clear_bit(bcm54811_linkmodes[i], phydev->supported);
-@@ -676,9 +676,19 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
- 		if (val < 0)
- 			return val;
- 
-+		/* BCM54811 is not capable of LDS but the corresponding bit
-+		 * in LRESR is set to 1 and marked "Ignore" in the datasheet.
-+		 * So we must read the bcm54811 as unable to auto-negotiate
-+		 * in BroadR-Reach mode.
-+		 */
-+		if (BRCM_PHY_MODEL(phydev) == PHY_ID_BCM54811)
-+			aneg = 0;
-+		else
-+			aneg = val & LRESR_LDSABILITY;
-+
- 		linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
- 				 phydev->supported,
--				 val & LRESR_LDSABILITY);
-+				 aneg);
- 		linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT1_Full_BIT,
- 				 phydev->supported,
- 				 val & LRESR_100_1PAIR);
-@@ -735,8 +745,15 @@ static int bcm54811_config_aneg(struct phy_device *phydev)
- 
- 	/* Aneg firstly. */
- 	if (priv->brr_mode) {
--		/* BCM54811 is only capable of autonegotiation in IEEE mode */
--		phydev->autoneg = 0;
-+		/* BCM54811 is only capable of autonegotiation in IEEE mode.
-+		 * In BroadR-Reach mode, disable the Long Distance Signaling,
-+		 * the BRR mode autoneg as supported in other Broadcom PHYs.
-+		 * This bit is marked as "Reserved" and "Default 1, must be
-+		 *  written to 0 after every device reset" in the datasheet.
-+		 */
-+		ret = phy_modify(phydev, MII_BCM54XX_LRECR, LRECR_LDSEN, 0);
-+		if (ret < 0)
-+			return ret;
- 		ret = bcm_config_lre_aneg(phydev, false);
- 	} else {
- 		ret = genphy_config_aneg(phydev);
+diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
+index b713effe0579..96fc41f26d7e 100644
+--- a/arch/s390/kernel/time.c
++++ b/arch/s390/kernel/time.c
+@@ -579,7 +579,7 @@ static int stp_sync_clock(void *data)
+ 		atomic_dec(&sync->cpus);
+ 		/* Wait for in_sync to be set. */
+ 		while (READ_ONCE(sync->in_sync) == 0)
+-			__udelay(1);
++			;
+ 	}
+ 	if (sync->in_sync != 1)
+ 		/* Didn't work. Clear per-cpu in sync bit again. */
 -- 
 2.39.5
 
