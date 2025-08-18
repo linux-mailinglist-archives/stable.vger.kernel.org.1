@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF94BB2AA2C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE0CB2A671
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCC5C6E36C1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34857B60A2F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95574320CCC;
-	Mon, 18 Aug 2025 14:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6809726F2AC;
+	Mon, 18 Aug 2025 13:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DHZ8OKK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDnHVILX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5264331B107;
-	Mon, 18 Aug 2025 14:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260762253FC;
+	Mon, 18 Aug 2025 13:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525977; cv=none; b=aIQom3xyTd9z8TfR/hmbLBkoj4Zoh59SYNUdc55gIoE+oW3plxERdc79d0O3CMrZn25JH5yvt1FyMqzo9u0aVadqzsPbY8mDREskDTK//0gsR/Z+DDvAKuAHnCKK1y2CBFrGNUcdI1zB018PKjCxl6ImE4Mb9OQVt/PnyccKB5o=
+	t=1755524286; cv=none; b=Hj8QbnVbLyRwhokgUDDexnm9edNiOrX4XIpM8QztACCO9ncqWsuW9mZe2C1HHMVSG1YkLRfLB7W0J5Ay8pGDvkC1nuTSVHnocvjsb2YEoeIbnREUtkQSmmfhAW4LDyZJ49YoB0sNjRJ/I+yM5QpMl7+Y+JnH3mNrHiyCIy0sSdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525977; c=relaxed/simple;
-	bh=roszR7h4eLmbKTSx8QRTZzJZq15IS4IsyyIKYMFWrIA=;
+	s=arc-20240116; t=1755524286; c=relaxed/simple;
+	bh=S/rFdGZ/fOtapMkXLCBu/HUvewUqr73cxlsSAycRRDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBowrVZ6wovC2HCJoRBSr6b5EV2diupjrFvOVhNbqULOlJsR9IA3XJQ3t3KZSz7RlObrWF6SWLr+1Ue76Huh3z+2gUfhOrADWkEhvnP80+8IIcCsSXyMQzJrbeKGf4dK9jJCE9L28qe+KXbehR1JcIaFuPuOBCYdgayDEkfrUyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DHZ8OKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7AEC4CEEB;
-	Mon, 18 Aug 2025 14:06:16 +0000 (UTC)
+	 MIME-Version; b=kmMYTFONCzqi0awOHiH5goIw6gcb3PMWfv3ZgHIUcE5zfkKMoffYxWEI8gsMjGjXUgeaZGMHezvnnbKwRFxLYvsp7+mrPdJAYMz8A4kKOOrPTNucbVD1VsflCVbRcLJiPI3CjLd0oYatUFhtwhTAq2cwAOWK7jZmUl4WuJMCOeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDnHVILX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983BCC113D0;
+	Mon, 18 Aug 2025 13:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525977;
-	bh=roszR7h4eLmbKTSx8QRTZzJZq15IS4IsyyIKYMFWrIA=;
+	s=korg; t=1755524286;
+	bh=S/rFdGZ/fOtapMkXLCBu/HUvewUqr73cxlsSAycRRDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DHZ8OKKl2/cfXv8XOeVaiLECMck4QBkUWoOcALyNOYtIbkYcLuGLXwSXtxIxIyEq
-	 SKIEA8iH5Pk5jgEfJ8TtHbN20zJUU3e3KLYoJ1ykYGW8HaQRzfMcPYiC+h0rFsZMmq
-	 tJKyvz1jE0GHyBNAuf+IaIMj8y+x3T5F8WevpvkA=
+	b=kDnHVILXk4CzOa6eIz+lv6t6IttkAdzWBZHQNPPUkJosBwJ4dgGXg0E0Lb/WOfuDY
+	 7cQbtixhkBNCYKDsTZ6KjI7JpMl3gBP8NAABVPiyO00nFQjT2GU0af5et+oUtz8z1g
+	 gJQOsdUsjKtboGjeIwv2q0XeSl5gFbitdMQ/uORA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Peter Jakubek <peterjakubek@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 423/570] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
+Subject: [PATCH 6.15 424/515] ASoC: Intel: sof_sdw: Add quirk for Alienware Area 51 (2025) 0CCC SKU
 Date: Mon, 18 Aug 2025 14:46:50 +0200
-Message-ID: <20250818124522.132393011@linuxfoundation.org>
+Message-ID: <20250818124514.745839412@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Peter Jakubek <peterjakubek@gmail.com>
 
-[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
+[ Upstream commit 1b03391d073dad748636a1ad9668b837cce58265 ]
 
-Fix Smatch-detected error:
-drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
-error: uninitialized symbol 'r'.
+Add DMI quirk entry for Alienware systems with SKU "0CCC" to enable
+proper speaker codec configuration (SOC_SDW_CODEC_SPKR).
 
-Smatch detects a possible use of the uninitialized variable 'r' in
-dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
-skipped and 'r' is returned without being set, leading to undefined
-behavior.
+This system requires the same audio configuration as some existing Dell systems.
+Without this patch, the laptop's speakers and microphone will not work.
 
-Initialize 'r' to 0 before the loop. This ensures that if there are no
-devices to iterate over, the function still returns a defined value.
-
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Peter Jakubek <peterjakubek@gmail.com>
+Link: https://patch.msgid.link/20250731172104.2009007-1-peterjakubek@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zoned-target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/sof_sdw.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
-index 5da3db06da10..9da329078ea4 100644
---- a/drivers/md/dm-zoned-target.c
-+++ b/drivers/md/dm-zoned-target.c
-@@ -1062,7 +1062,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
- 	struct dmz_target *dmz = ti->private;
- 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
- 	sector_t capacity;
--	int i, r;
-+	int i, r = 0;
- 
- 	for (i = 0; i < dmz->nr_ddevs; i++) {
- 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 095d08b3fc82..c479b65d73df 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -741,6 +741,14 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
+ 	},
++	{
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CCC")
++		},
++		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
++	},
+ 	/* Pantherlake devices*/
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
 -- 
 2.39.5
 
