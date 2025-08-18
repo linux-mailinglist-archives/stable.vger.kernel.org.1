@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679AFB2A279
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DFBB2A570
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CCA37A521C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F6ED7BE9F3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDF22FF650;
-	Mon, 18 Aug 2025 12:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45609321F5F;
+	Mon, 18 Aug 2025 13:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVwSQr6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcmwJDA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7161E51FE;
-	Mon, 18 Aug 2025 12:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0292D321F49;
+	Mon, 18 Aug 2025 13:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521845; cv=none; b=gFc4kVQqy0/CX9b99LkCBfPeOHCaQ+Q1TruM0yNKCRDNtmLzTTY699RtHimFDa2yOeudqGG2CILU02rjvWViYAQRdO7+WkpsvFR/iMMvEpCvF1sUW2oRwuyY0B/r6wWN3zRgsqhgwPy12eZiEDldh8HKPV7CViYYcTEkmz2zctc=
+	t=1755523466; cv=none; b=MOu23PPeOVKdqqyLDVIPXftYLOe9yg5u34IUckUxz+ZEy7W8Qb+RIylNDlP1t/NdXaBbtVimerKULRJqOQWvpdLOYYWOq+iFzkM4wRSUQlMp11vG9mVDizFYuWcZ2P0ngrzNRWfr4XfH0Wn2j6lYiABhsjRthBv4yErxbuLf2mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521845; c=relaxed/simple;
-	bh=+X0gWPys+exBz7JYqQqgb6cy19GFu2k1ibxC29d9Kr0=;
+	s=arc-20240116; t=1755523466; c=relaxed/simple;
+	bh=16HXFLwGaKgPviUEFQYrPcYrovdx/9HoBTzpOckrBwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKpp+Vz38BttSGYi5IuGl+liDSQcfImb22hJn/1xaWpaPDq7uLW9RCrkVWVUUJY5P29TTi0nb0WeGBDXMbPWar7JPYTO9hE0B4z1ZsKFD1rF2TfvBz7mJQ+U92cRREv3U0hKU9p5C478kWnP/bZw4otpyPmmhpqaWx0NaVyWnLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVwSQr6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7DCC4CEEB;
-	Mon, 18 Aug 2025 12:57:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l/IKRYZgaWyFfcO+FMbDjSo4mrtHrFa2XKEi+W7/qytgQrDbXEh3ntQ9lH69sJzyI9FeAsvryuvAGggXh33KJ4m4pxN7yVgan6VQU3SPZtiYQ0YpTaHh/Orz1CZerA0QyoEGJpiHXsOQnvVapQzpET6g07yyZN4fTnecdKUTlIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcmwJDA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658D4C4CEEB;
+	Mon, 18 Aug 2025 13:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521845;
-	bh=+X0gWPys+exBz7JYqQqgb6cy19GFu2k1ibxC29d9Kr0=;
+	s=korg; t=1755523465;
+	bh=16HXFLwGaKgPviUEFQYrPcYrovdx/9HoBTzpOckrBwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVwSQr6AL8tc+cBsjRuvdTRrPFFx1Wg+YN/DnNillk8EtcuBRcuzAwWMG4HVMDviA
-	 cbcwDvD04blYkaPQuCnEbf/d4OFKldDzyImmo+o1m2rxwC+B/0FYEtTVeCR1Y1GBmH
-	 nkDfapuB3bS0By6ol3bX8LBv5Is7IqjKdTrioaZI=
+	b=WcmwJDA+kndzmYVfR6T1OiRG4BxGtHcfAuF+0UTg2z8gZULRD1bTR4mlzlFNapPxU
+	 RavRvGevmSF/PBKZgp+mY3zYRyatGvRmQttTq7BndBe8yS9MB9SU4Jw6VWYkYf9sQM
+	 4I7NPCfKDaBs9HHzeRp84lGVOZ/coVOxOVnm1Jh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Grignou <gwendal@google.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 139/444] platform/chrome: cros_ec_sensorhub: Retries when a sensor is not ready
+Subject: [PATCH 6.15 179/515] imx8m-blk-ctrl: set ISI panic write hurry level
 Date: Mon, 18 Aug 2025 14:42:45 +0200
-Message-ID: <20250818124454.126337998@linuxfoundation.org>
+Message-ID: <20250818124505.266708160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwendal Grignou <gwendal@chromium.org>
+From: Krzysztof Hałasa <khalasa@piap.pl>
 
-[ Upstream commit 981d7f91aeda17424b29f033249f4fa7cd2a7556 ]
+[ Upstream commit c01fba0b4869cada5403fffff416cd1675dba078 ]
 
-When the EC/ISH starts, it can take a while for all the sensors to be up
-and running or declared broken.
+Apparently, ISI needs cache settings similar to LCDIF.
+Otherwise we get artefacts in the image.
+Tested on i.MX8MP.
 
-If the sensor stack return -EBUSY when checking for sensor information,
-retry up to 50 times.
-It has been observed 100ms wait time is enough to have valid sensors
-ready. It can take more time in case a sensor is really broken and is
-not coming up.
-
-Signed-off-by: Gwendal Grignou <gwendal@google.com>
-Link: https://lore.kernel.org/r/20250623210518.306740-1-gwendal@google.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
+Link: https://lore.kernel.org/r/m3ldr69lsw.fsf@t19.piap.pl
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_sensorhub.c | 23 +++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
-index 50cdae67fa32..9bad8f72680e 100644
---- a/drivers/platform/chrome/cros_ec_sensorhub.c
-+++ b/drivers/platform/chrome/cros_ec_sensorhub.c
-@@ -8,6 +8,7 @@
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 912802b5215b..5c83e5599f1e 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -665,6 +665,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_blk_ctl_dev_data = {
+ #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
+ #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
  
- #include <linux/init.h>
- #include <linux/device.h>
-+#include <linux/delay.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
-@@ -18,6 +19,7 @@
- #include <linux/types.h>
- 
- #define DRV_NAME		"cros-ec-sensorhub"
-+#define CROS_EC_CMD_INFO_RETRIES 50
- 
- static void cros_ec_sensorhub_free_sensor(void *arg)
- {
-@@ -53,7 +55,7 @@ static int cros_ec_sensorhub_register(struct device *dev,
- 	int sensor_type[MOTIONSENSE_TYPE_MAX] = { 0 };
- 	struct cros_ec_command *msg = sensorhub->msg;
- 	struct cros_ec_dev *ec = sensorhub->ec;
--	int ret, i;
-+	int ret, i, retries;
- 	char *name;
- 
- 
-@@ -65,12 +67,25 @@ static int cros_ec_sensorhub_register(struct device *dev,
- 		sensorhub->params->cmd = MOTIONSENSE_CMD_INFO;
- 		sensorhub->params->info.sensor_num = i;
- 
--		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
-+		retries = CROS_EC_CMD_INFO_RETRIES;
-+		do {
-+			ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
-+			if (ret == -EBUSY) {
-+				/* The EC is still busy initializing sensors. */
-+				usleep_range(5000, 6000);
-+				retries--;
-+			}
-+		} while (ret == -EBUSY && retries);
++#define ISI_CACHE_CTRL		0x50
++#define  ISI_V_WR_HURRY		GENMASK(28, 26)
++#define  ISI_U_WR_HURRY		GENMASK(25, 23)
++#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
 +
- 		if (ret < 0) {
--			dev_warn(dev, "no info for EC sensor %d : %d/%d\n",
--				 i, ret, msg->result);
-+			dev_err(dev, "no info for EC sensor %d : %d/%d\n",
-+				i, ret, msg->result);
- 			continue;
- 		}
-+		if (retries < CROS_EC_CMD_INFO_RETRIES) {
-+			dev_warn(dev, "%d retries needed to bring up sensor %d\n",
-+				 CROS_EC_CMD_INFO_RETRIES - retries, i);
-+		}
+ static int imx8mp_media_power_notifier(struct notifier_block *nb,
+ 				unsigned long action, void *data)
+ {
+@@ -694,6 +699,11 @@ static int imx8mp_media_power_notifier(struct notifier_block *nb,
+ 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
+ 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
+ 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
++		/* Same here for ISI */
++		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
++				FIELD_PREP(ISI_V_WR_HURRY, 7) |
++				FIELD_PREP(ISI_U_WR_HURRY, 7) |
++				FIELD_PREP(ISI_Y_WR_HURRY, 7));
+ 	}
  
- 		switch (sensorhub->resp->info.type) {
- 		case MOTIONSENSE_TYPE_ACCEL:
+ 	return NOTIFY_OK;
 -- 
 2.39.5
 
