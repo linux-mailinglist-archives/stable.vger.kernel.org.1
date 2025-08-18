@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FB7B2A3B8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C2BB2A67A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF5FB580687
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41DA01B6221F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADF131B138;
-	Mon, 18 Aug 2025 13:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6C88BEC;
+	Mon, 18 Aug 2025 13:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxpioZyq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlPOPem7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FDF31CA57;
-	Mon, 18 Aug 2025 13:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9939322DA3;
+	Mon, 18 Aug 2025 13:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522150; cv=none; b=B2VqDQIFgBeAhg5cuvBtvNSA+UOIkux0BpL76bclZgqoCE/e+T460wO4YtHnoQuBsQOEnvOBctsOdn1zZ48f3PcB6CrmPFKOO9GPiWNTbn1uTlu/sWX70ziCqqk2Ox8KN/yqlzn7uJoMPLUMy7fuxiVibuzyBw4ha+3PSyTvKa0=
+	t=1755523779; cv=none; b=hFPK90xLDgeKvCoGY2t4izkgZg2HDm6qgsaWY3IZ40+JzSTrLnobMgIxJfoKmQ6blGASdW/3aUSZiKzLNHBprqPDw1zTteomV3FJ0M1vI5KWu7www5M9UVpcb50mEjTVE2X3W9/9QWl7qowrmEe/+GsYG9kyiYpfYvVizLwdhDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522150; c=relaxed/simple;
-	bh=VXJBUvqhP2CjZyGjK34ZrguDUHwlSggESKnJ+zur8ME=;
+	s=arc-20240116; t=1755523779; c=relaxed/simple;
+	bh=NoJEhU7JfyyQZeZRmRUxblGxyszg1Veaa94yRy682PU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwWS/v663e7FHdxnOYuyhDerZBGyQ86gwC0fQgGALM45UYF5i+9Bu2qMbqa7ipPGds9zjt27uhstKmkkJfAorBa4CbPpqwLFXYR2clt2K10/sg99WHo6ICtxLhdhux8OpRcRFKaxlnZtyBFsO0+6dDcLS+S0rP7JeOG3mtZ2lSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxpioZyq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068E4C4CEEB;
-	Mon, 18 Aug 2025 13:02:28 +0000 (UTC)
+	 MIME-Version; b=RPdcTgrVwU5C2fbw2TTPdIPUZVZbv27i081qIllv9XFgDOlLMAXta2721fOP623vTA3UIg2X9D5dO4rDiBQgPlRptMqDiSNvkzxujclpE/iaW+HrsMTP+tI4sKMsOAnVNvSa6HhIQL4WSGN93NQ2gfFYr0Ug1vJ1HnTtwmenPqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlPOPem7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67190C4CEF1;
+	Mon, 18 Aug 2025 13:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522149;
-	bh=VXJBUvqhP2CjZyGjK34ZrguDUHwlSggESKnJ+zur8ME=;
+	s=korg; t=1755523778;
+	bh=NoJEhU7JfyyQZeZRmRUxblGxyszg1Veaa94yRy682PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxpioZyqWoTMwaEUh35dNqkFfTNrbsK0WsrpFoYdONAuVYCSo/HhWuXdkuKwYrSCB
-	 YnD54bN8UMYdP8vVwNHMjj6ttzZaCUqCiT89SKOc/b2fcd4B4Kn+60gwL5RfdsnAHj
-	 wWWFu+d5I4lv59XKME61XEwy+S9XzmyLH2oTq9wc=
+	b=dlPOPem7mD1qWOCSb61gllXOoUmTfuU5c+dzVJ47WY3wASAt/hB1D3JMciGpYc2fq
+	 P2s+iKOF1kShF9Bi1eWsNidrdyNezIwRXq5Nn+IbjsxrF4/qx+Xv64VB8WZxGvBOrv
+	 NxIxAhidce+aUObYjW1fXAQ7G3yEcLRHy0uG9RT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Xiang Liu <xiang.liu@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/444] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
+Subject: [PATCH 6.15 271/515] drm/amdgpu: Use correct severity for BP threshold exceed event
 Date: Mon, 18 Aug 2025 14:44:17 +0200
-Message-ID: <20250818124457.501690332@linuxfoundation.org>
+Message-ID: <20250818124508.852443212@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Xiang Liu <xiang.liu@amd.com>
 
-[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
+[ Upstream commit 4a33ca3f6ee9a013a423a867426704e9c9d785bd ]
 
-Ensure descriptor is freed on error to avoid memory leak.
+The severity of CPER for BP threshold exceed event should be set as
+CPER_SEV_FATAL to match the OOB implementation.
 
-Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
+Signed-off-by: Xiang Liu <xiang.liu@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index cd284767ff4b..385755af8237 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -2955,6 +2955,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	struct iwl_fw_dump_desc *desc;
- 	unsigned int delay = 0;
- 	bool monitor_only = false;
-+	int ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+index 360e07a5c7c1..1a1f30654b14 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+@@ -212,7 +212,7 @@ int amdgpu_cper_entry_fill_bad_page_threshold_section(struct amdgpu_device *adev
+ 		   NONSTD_SEC_OFFSET(hdr->sec_cnt, idx));
  
- 	if (trigger) {
- 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
-@@ -2985,7 +2986,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
- 	desc->trig_desc.type = cpu_to_le32(trig);
- 	memcpy(desc->trig_desc.data, str, len);
+ 	amdgpu_cper_entry_fill_section_desc(adev, section_desc, true, false,
+-					    CPER_SEV_NUM, RUNTIME, NONSTD_SEC_LEN,
++					    CPER_SEV_FATAL, RUNTIME, NONSTD_SEC_LEN,
+ 					    NONSTD_SEC_OFFSET(hdr->sec_cnt, idx));
  
--	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
-+	if (ret)
-+		kfree(desc);
-+
-+	return ret;
- }
- IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
+ 	section->hdr.valid_bits.err_info_cnt = 1;
+@@ -326,7 +326,9 @@ int amdgpu_cper_generate_bp_threshold_record(struct amdgpu_device *adev)
+ 		return -ENOMEM;
+ 	}
  
+-	amdgpu_cper_entry_fill_hdr(adev, bp_threshold, AMDGPU_CPER_TYPE_BP_THRESHOLD, CPER_SEV_NUM);
++	amdgpu_cper_entry_fill_hdr(adev, bp_threshold,
++				   AMDGPU_CPER_TYPE_BP_THRESHOLD,
++				   CPER_SEV_FATAL);
+ 	ret = amdgpu_cper_entry_fill_bad_page_threshold_section(adev, bp_threshold, 0);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 
