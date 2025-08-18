@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946E4B2A5AE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A67B2A867
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:04:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF91684A9C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E75DF6E0416
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC14226D0F;
-	Mon, 18 Aug 2025 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B24335BCE;
+	Mon, 18 Aug 2025 13:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/wQnlg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTC6/+tm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D2421507C;
-	Mon, 18 Aug 2025 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D0F335BAA;
+	Mon, 18 Aug 2025 13:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523416; cv=none; b=TxQ8QGhnl4H1TM6RWvQc6ipJa43RAbJ+BhwfjiiWoaa4BVDUQykexDUCia1fkPWRdJLDpy55CHehw8/Aws0PzIOGvp9mXaqtnTAHmiN4xgXlznTMF8lTt1IZvZux6ApWEzFNk51IWGGcHoTwDhCPu0cnlFnr4mvjHdkR1/7U3K4=
+	t=1755525123; cv=none; b=s4vM3nnGOtHXelEf8JszRc4+mMAaT6JMvRwhVtHz46wGUN4ZDwpyu4f43/pSVfwwoqTQqU4QDD413ZFkP03MyuVhgBD0rbBRIkYEy2EmUvDV4DYNOi+WjqjSs23cUU11sMdLlyNR03DDJPWmoEQh2BaVFgzJTf+X+QFc24zD2Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523416; c=relaxed/simple;
-	bh=5jdk43B6gUBCSUKMZxLMFDxPN8sw/+DKM8cIhxCPG/g=;
+	s=arc-20240116; t=1755525123; c=relaxed/simple;
+	bh=hsrwDM33Pcb2oqokXTlUOvrJBoK2tddqMSQNlCRwtdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bpj5zMqCUx4G6MjCJDvmA1LW7+1FkvMLbmEHhG8QFNV13FAEdy2QfBQmgqY0D1WpVrKHy3yqLqBWZu7hpv5b91qv19wAHTyT8VnX026u18G1sKPyQjr+JkuPvkA70bQNR/Csg3M4nXjDseZMUCcROK6mx4RFyrLIlZR3hdnkEMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/wQnlg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87876C4CEEB;
-	Mon, 18 Aug 2025 13:23:35 +0000 (UTC)
+	 MIME-Version; b=MzvvseDnw93tned6zOFW2bg5C8odERCd3CG8vn3l8AH4M+ffSQSKgiZXudLV3qSjvb8DxV2Ps0r4gGjd9UsmNT1CZQrADgaEbId96GGJ4fjjnCCDYNDze3Kx7Q1pbuxTk5dOYA25ns7g/dAAOuQYK/e0R5QH2CB8Yhmz/I6gYlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTC6/+tm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBADCC4CEEB;
+	Mon, 18 Aug 2025 13:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523416;
-	bh=5jdk43B6gUBCSUKMZxLMFDxPN8sw/+DKM8cIhxCPG/g=;
+	s=korg; t=1755525123;
+	bh=hsrwDM33Pcb2oqokXTlUOvrJBoK2tddqMSQNlCRwtdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/wQnlg97yIPrLbMKVongpt1eaQQJAupRkSBFREYZVD9JidUgcCr32W48/Kg6GWqj
-	 mgFSpR0rjZa1FVGn7JVXq+dEwdt37WcoedIxKKeGyCuhdFt/2V2Tj1kJq2wkJjj+Sn
-	 7u/PqjlzDLIVso4got5DhSFADM2jFMSrDhjQ8B0g=
+	b=gTC6/+tmTcNc+NcxlB0VQ8/rHrFM/rGWejr1i+y46+j7NFfOYXyrF99HMxoOAigBo
+	 piZGP3vySnnhTUa8ueUec0fKBzNT4nKoOVQ3N6+5+/HkgxBy3sLVRI1boyO2rf8ImT
+	 OfGb0xB3QVtTW6UATrj2rPaMgCuzjQbozlmkb+xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Grignou <gwendal@google.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 165/515] platform/chrome: cros_ec_sensorhub: Retries when a sensor is not ready
+Subject: [PATCH 6.16 164/570] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
 Date: Mon, 18 Aug 2025 14:42:31 +0200
-Message-ID: <20250818124504.729679009@linuxfoundation.org>
+Message-ID: <20250818124512.124180745@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwendal Grignou <gwendal@chromium.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 981d7f91aeda17424b29f033249f4fa7cd2a7556 ]
+[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
 
-When the EC/ISH starts, it can take a while for all the sensors to be up
-and running or declared broken.
+Clear power.needs_force_resume in pm_runtime_reinit() in case it has
+been set by pm_runtime_force_suspend() invoked from a driver remove
+callback.
 
-If the sensor stack return -EBUSY when checking for sensor information,
-retry up to 50 times.
-It has been observed 100ms wait time is enough to have valid sensors
-ready. It can take more time in case a sensor is really broken and is
-not coming up.
-
-Signed-off-by: Gwendal Grignou <gwendal@google.com>
-Link: https://lore.kernel.org/r/20250623210518.306740-1-gwendal@google.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_sensorhub.c | 23 +++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/base/power/runtime.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
-index 50cdae67fa32..9bad8f72680e 100644
---- a/drivers/platform/chrome/cros_ec_sensorhub.c
-+++ b/drivers/platform/chrome/cros_ec_sensorhub.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/init.h>
- #include <linux/device.h>
-+#include <linux/delay.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
-@@ -18,6 +19,7 @@
- #include <linux/types.h>
- 
- #define DRV_NAME		"cros-ec-sensorhub"
-+#define CROS_EC_CMD_INFO_RETRIES 50
- 
- static void cros_ec_sensorhub_free_sensor(void *arg)
- {
-@@ -53,7 +55,7 @@ static int cros_ec_sensorhub_register(struct device *dev,
- 	int sensor_type[MOTIONSENSE_TYPE_MAX] = { 0 };
- 	struct cros_ec_command *msg = sensorhub->msg;
- 	struct cros_ec_dev *ec = sensorhub->ec;
--	int ret, i;
-+	int ret, i, retries;
- 	char *name;
- 
- 
-@@ -65,12 +67,25 @@ static int cros_ec_sensorhub_register(struct device *dev,
- 		sensorhub->params->cmd = MOTIONSENSE_CMD_INFO;
- 		sensorhub->params->info.sensor_num = i;
- 
--		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
-+		retries = CROS_EC_CMD_INFO_RETRIES;
-+		do {
-+			ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
-+			if (ret == -EBUSY) {
-+				/* The EC is still busy initializing sensors. */
-+				usleep_range(5000, 6000);
-+				retries--;
-+			}
-+		} while (ret == -EBUSY && retries);
-+
- 		if (ret < 0) {
--			dev_warn(dev, "no info for EC sensor %d : %d/%d\n",
--				 i, ret, msg->result);
-+			dev_err(dev, "no info for EC sensor %d : %d/%d\n",
-+				i, ret, msg->result);
- 			continue;
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index c55a7c70bc1a..1ef26216f971 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1854,6 +1854,11 @@ void pm_runtime_reinit(struct device *dev)
+ 				pm_runtime_put(dev->parent);
  		}
-+		if (retries < CROS_EC_CMD_INFO_RETRIES) {
-+			dev_warn(dev, "%d retries needed to bring up sensor %d\n",
-+				 CROS_EC_CMD_INFO_RETRIES - retries, i);
-+		}
+ 	}
++	/*
++	 * Clear power.needs_force_resume in case it has been set by
++	 * pm_runtime_force_suspend() invoked from a driver remove callback.
++	 */
++	dev->power.needs_force_resume = false;
+ }
  
- 		switch (sensorhub->resp->info.type) {
- 		case MOTIONSENSE_TYPE_ACCEL:
+ /**
 -- 
 2.39.5
 
