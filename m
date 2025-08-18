@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BFAB2A457
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF6BB2A716
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9E8189725B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE3AA1BA1D8E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94823203B4;
-	Mon, 18 Aug 2025 13:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97722206B8;
+	Mon, 18 Aug 2025 13:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybe62KtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yn3d0pvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986DF31E0F1;
-	Mon, 18 Aug 2025 13:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5751320CB9;
+	Mon, 18 Aug 2025 13:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522748; cv=none; b=GS4sHDEWEzWMUeMF5udRRaqYSiTXE5AV/6eIW9kM+raH9GXNsz93rsobPWX/GoTLWM0B17bUcbV8LHhrPqd5jU9NkOkGKzYA3N2nQgXFu19C07g5l56v+n445w8rNL15VS6TBzYHTVh8WqjBLprRRMqaOngRCTFXvZoLbPMjr4A=
+	t=1755524367; cv=none; b=ugzcd/UFNCDYAd10tDvY2v7PaWBW+lou18E+A5LQjZsFAdkka16nZZvD6xTR3y/gGwxh2TN60JTE5M4I5msSGV6mK4ya2UfzN0HIVoQDOV++1/YxOjqkX96fBWkhqQaXLSWWxbPQ/eC35dy7YIQLLF0ux8NTX7WC4zf9889TMNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522748; c=relaxed/simple;
-	bh=cX37G8KRYr1DRylmtUWgV43L22Q3TWBw61Ce08lCrzM=;
+	s=arc-20240116; t=1755524367; c=relaxed/simple;
+	bh=XxSwBid5ITdbxea8I4QXROssz7QOWnYFCz+elgMzQCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNLESO4ZiasmOuFcPiw3GL1GsLB82CFvJX6yzTJcbcyehlAE2AxtoV1GNyMDZ4xe5Z2FJLc9zc3dxAoNuanMRMd60VZ2pWMnwSBGVBtmjNirrKQ7w071k73FfEFEa9cUvrWnEbfGgTN3w412EwWe1ZAhqrCXm75/mJWlAeAlN6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybe62KtS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C84C4CEEB;
-	Mon, 18 Aug 2025 13:12:27 +0000 (UTC)
+	 MIME-Version; b=hSeoSYspdGrQULvUzhEED0DI76YHbU0NiUrHsJ/Mikzn4/iFd9E8wnqIDdT65o4FdxNXmevh5XpuySfTZENmf9RY1uE+3cUBzKG3n4dmTS9WZmlXc3yH4kDlVtJIWa4HIauh48sVAfalZ1d4Bp0wcnZLawnGu/KjvVej5dvtk/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yn3d0pvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB9AC113D0;
+	Mon, 18 Aug 2025 13:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522748;
-	bh=cX37G8KRYr1DRylmtUWgV43L22Q3TWBw61Ce08lCrzM=;
+	s=korg; t=1755524367;
+	bh=XxSwBid5ITdbxea8I4QXROssz7QOWnYFCz+elgMzQCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybe62KtS7mmiwC4vZb4LCkNo31fB5vjtbsdRzpCWZjg+xF06z8YqBo3GsItpIo5iW
-	 lSj2yyhlqjomiGOcjBCzrFOBLiMKe7FSdCBPUTmMjDsCQNicGyo6dvPQvByjNXo3zl
-	 2qmsiUx0fLCZXDuGTuxUt9OdPePlkERrYzkge8xU=
+	b=Yn3d0pvRyS92E0v8K7GX2pbGhccnB4eeqvA5yLhNLvGHX5f6c71y6ngGd+26f5XBw
+	 W0p6haTbHEDOowhl4fDBQ13i5R0JxCKcAGPoSCDlpx9Nj4ssV0ctVe9wSSmeI1SiR1
+	 QW62xguY2Fo8qquCyQnq/nhfWQrRDcpNxtll9SOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 410/444] hv_netvsc: Fix panic during namespace deletion with VF
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 6.15 450/515] iommufd: Report unmapped bytes in the error path of iopt_unmap_iova_range
 Date: Mon, 18 Aug 2025 14:47:16 +0200
-Message-ID: <20250818124504.299622299@linuxfoundation.org>
+Message-ID: <20250818124515.743379835@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,150 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 33caa208dba6fa639e8a92fd0c8320b652e5550c upstream.
+commit b23e09f9997771b4b739c1c694fa832b5fa2de02 upstream.
 
-The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
-received on netvsc NIC. During deletion of the namespace,
-default_device_exit_batch() >> default_device_exit_net() is called. When
-netvsc NIC is moved back and registered to the default namespace, it
-automatically brings VF NIC back to the default namespace. This will cause
-the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
-the list end, and hit NULL ptr:
+There are callers that read the unmapped bytes even when rc != 0. Thus, do
+not forget to report it in the error path too.
 
-[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
-[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
-[  231.450246] #PF: supervisor read access in kernel mode
-[  231.450579] #PF: error_code(0x0000) - not-present page
-[  231.450916] PGD 17b8a8067 P4D 0
-[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
-[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY
-[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
-[  231.452692] Workqueue: netns cleanup_net
-[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
-[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
-[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
-[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
-[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
-[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
-[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
-[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
-[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
-[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
-[  231.458434] Call Trace:
-[  231.458600]  <TASK>
-[  231.458777]  ops_undo_list+0x100/0x220
-[  231.459015]  cleanup_net+0x1b8/0x300
-[  231.459285]  process_one_work+0x184/0x340
-
-To fix it, move the ns change to a workqueue, and take rtnl_lock to avoid
-changing the netdev list when default_device_exit_net() is using it.
-
+Fixes: 8d40205f6093 ("iommufd: Add kAPI toward external drivers for kernel access")
+Link: https://patch.msgid.link/r/e2b61303bbc008ba1a4e2d7c2a2894749b59fdac.1752126748.git.nicolinc@nvidia.com
 Cc: stable@vger.kernel.org
-Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Link: https://patch.msgid.link/1754511711-11188-1-git-send-email-haiyangz@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/hyperv_net.h |    3 +++
- drivers/net/hyperv/netvsc_drv.c |   29 ++++++++++++++++++++++++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ drivers/iommu/iommufd/io_pagetable.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/hyperv/hyperv_net.h
-+++ b/drivers/net/hyperv/hyperv_net.h
-@@ -1061,6 +1061,7 @@ struct net_device_context {
- 	struct net_device __rcu *vf_netdev;
- 	struct netvsc_vf_pcpu_stats __percpu *vf_stats;
- 	struct delayed_work vf_takeover;
-+	struct delayed_work vfns_work;
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -743,8 +743,10 @@ again:
+ 			iommufd_access_notify_unmap(iopt, area_first, length);
+ 			/* Something is not responding to unmap requests. */
+ 			tries++;
+-			if (WARN_ON(tries > 100))
+-				return -EDEADLOCK;
++			if (WARN_ON(tries > 100)) {
++				rc = -EDEADLOCK;
++				goto out_unmapped;
++			}
+ 			goto again;
+ 		}
  
- 	/* 1: allocated, serial number is valid. 0: not allocated */
- 	u32 vf_alloc;
-@@ -1075,6 +1076,8 @@ struct net_device_context {
- 	struct netvsc_device_info *saved_netvsc_dev_info;
- };
- 
-+void netvsc_vfns_work(struct work_struct *w);
-+
- /* Azure hosts don't support non-TCP port numbers in hashing for fragmented
-  * packets. We can use ethtool to change UDP hash level when necessary.
-  */
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2516,6 +2516,7 @@ static int netvsc_probe(struct hv_device
- 	spin_lock_init(&net_device_ctx->lock);
- 	INIT_LIST_HEAD(&net_device_ctx->reconfig_events);
- 	INIT_DELAYED_WORK(&net_device_ctx->vf_takeover, netvsc_vf_setup);
-+	INIT_DELAYED_WORK(&net_device_ctx->vfns_work, netvsc_vfns_work);
- 
- 	net_device_ctx->vf_stats
- 		= netdev_alloc_pcpu_stats(struct netvsc_vf_pcpu_stats);
-@@ -2658,6 +2659,8 @@ static void netvsc_remove(struct hv_devi
- 	cancel_delayed_work_sync(&ndev_ctx->dwork);
- 
- 	rtnl_lock();
-+	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
-+
- 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
- 	if (nvdev) {
- 		cancel_work_sync(&nvdev->subchan_work);
-@@ -2699,6 +2702,7 @@ static int netvsc_suspend(struct hv_devi
- 	cancel_delayed_work_sync(&ndev_ctx->dwork);
- 
- 	rtnl_lock();
-+	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
- 
- 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
- 	if (nvdev == NULL) {
-@@ -2792,6 +2796,27 @@ static void netvsc_event_set_vf_ns(struc
- 	}
- }
- 
-+void netvsc_vfns_work(struct work_struct *w)
-+{
-+	struct net_device_context *ndev_ctx =
-+		container_of(w, struct net_device_context, vfns_work.work);
-+	struct net_device *ndev;
-+
-+	if (!rtnl_trylock()) {
-+		schedule_delayed_work(&ndev_ctx->vfns_work, 1);
-+		return;
-+	}
-+
-+	ndev = hv_get_drvdata(ndev_ctx->device_ctx);
-+	if (!ndev)
-+		goto out;
-+
-+	netvsc_event_set_vf_ns(ndev);
-+
-+out:
-+	rtnl_unlock();
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2802,10 +2827,12 @@ static int netvsc_netdev_event(struct no
- 			       unsigned long event, void *ptr)
- {
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
-+	struct net_device_context *ndev_ctx;
- 	int ret = 0;
- 
- 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
--		netvsc_event_set_vf_ns(event_dev);
-+		ndev_ctx = netdev_priv(event_dev);
-+		schedule_delayed_work(&ndev_ctx->vfns_work, 0);
- 		return NOTIFY_DONE;
- 	}
- 
+@@ -766,6 +768,7 @@ again:
+ out_unlock_iova:
+ 	up_write(&iopt->iova_rwsem);
+ 	up_read(&iopt->domains_rwsem);
++out_unmapped:
+ 	if (unmapped)
+ 		*unmapped = unmapped_bytes;
+ 	return rc;
 
 
 
