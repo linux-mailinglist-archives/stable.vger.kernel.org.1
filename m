@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875DCB2A9D1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CB9B2A683
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8030161DBF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F185686509
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767C233A015;
-	Mon, 18 Aug 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53C6320CA0;
+	Mon, 18 Aug 2025 13:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndl3IJn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZPHg25w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F4433A00E;
-	Mon, 18 Aug 2025 14:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FAE321F4F;
+	Mon, 18 Aug 2025 13:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525719; cv=none; b=AsABHJU5hX28UJ8ZPVa5GqKjAvkB/iIhvg56z3dcDpdIoVIIddsxJOG3VqHuJ9eFf9Qe4QMKauq9TwudAE0a2NSiUakB8IFahhzJMeTx4x0/A9M9BdUdRPVu7qc6uBMETS4ug0AiicmGOIx34pRcFO1qbD4uP/QtWcPqFMPmoQ0=
+	t=1755523895; cv=none; b=dNdzzQlqKxR6bBkMiBcg1YiqMT2kyFWPqpyPO/7o1c32zQvoGU4xlZHv+a7LgkRjj56Ny6ayw4KbR80PO/PXwmUqx1JHBFx3E9VXutRBYfbBVQtMpxitu+WCXnVMSYTG5wBCQPwWGn+VjI03Vy7T5etR7B2quVceaRvhkKRoC1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525719; c=relaxed/simple;
-	bh=eNUUdnXxne5mlzshCF5uYNeC+BR2pQIKMdVK4caGEnA=;
+	s=arc-20240116; t=1755523895; c=relaxed/simple;
+	bh=1ODLFlbQSPf7nkhHubMoBHjHXjUWpgCfH+ymb4IZI28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGloxbWnj9vALhSNLgL7kidV8NIrrbQ0G2eN6b2Bjs/C6pWwmDRRRDbM21HDckI58CfqE9q6QOi66T5h/rQo0k5CV3fB5x53Aa8DcYFBqwclbdzJTUVsny5fMGyLQVFVRJ1wa09GYMpsRVU42c2IxQ34zgGH5MFQIN8LtXpMriM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndl3IJn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBB3C4CEEB;
-	Mon, 18 Aug 2025 14:01:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jm4glPMwVbz3Af8hVmLAtV9H22dQ5Dh2K6kMdZlpryFINsFhUaPSGK9Rb6aM5QRI3R+tIlCu2IglzAU1sXKBBaHDWkZEFqU2aUS30Vwr/3TQYVb8W6A6GpktLHyPT/v6InGvuEhJez59KvrzqHNGfShIM5jAV5Vpf92c+3lVFEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZPHg25w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6539C4CEEB;
+	Mon, 18 Aug 2025 13:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525719;
-	bh=eNUUdnXxne5mlzshCF5uYNeC+BR2pQIKMdVK4caGEnA=;
+	s=korg; t=1755523895;
+	bh=1ODLFlbQSPf7nkhHubMoBHjHXjUWpgCfH+ymb4IZI28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndl3IJn7UVjIyHl7+Xr0rZcaA9MmAGQ6VhHZxW5loS6TnTj+5eLf0Xo1n9WFmSVpP
-	 EgFCGETj7L1YYEqDq16d9SycEYnTWcBsYGDgeRlhE/KpiCrOgR0viSKiRdQIjcPzpB
-	 oqvLY5a31ZCC8tnHaBmfdHzQ7cKCaCcr3K1l1E3I=
+	b=bZPHg25wj1be3eT57Etp4325UVsUMwc0E9Bp0ugwy/4p2UndiJpXXY/Vm7DB6GpGf
+	 5HhL6k8vPOO3ghTey87OiJPwxCn+XzhvJsvDDiOqjaTYhwPa4hn36V9PAPJ6uXmoJ5
+	 13+RXZeXhobIg68k7yy3yXtvQt3APDUM/IkURXc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 304/570] wifi: iwlwifi: mld: use the correct struct size for tracing
-Date: Mon, 18 Aug 2025 14:44:51 +0200
-Message-ID: <20250818124517.572186338@linuxfoundation.org>
+Subject: [PATCH 6.15 306/515] net: dsa: b53: prevent DIS_LEARNING access on BCM5325
+Date: Mon, 18 Aug 2025 14:44:52 +0200
+Message-ID: <20250818124510.219743025@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit b2c1f9b6e3aac9567c84208b73d716cc5d456404 ]
+[ Upstream commit 800728abd9f83bda4de62a30ce62a8b41c242020 ]
 
-For the iwlmld driver the RX command is using struct iwl_rx_mpdu_desc
-and not the much older struct iwl_rx_mpdu_res_start. Adjust the value of
-rx_mpdu_cmd_hdr_size accordingly so that the trace data is correct.
+BCM5325 doesn't implement DIS_LEARNING register so we should avoid reading
+or writing it.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250612144708.688d95d99ff3.Id3055ca6c19cf8c821cbbd80c09ca2a21d9acec7@changeid
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-10-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mld.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 1774bb84dd3f..2a6088e8f4c7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -357,7 +357,7 @@ iwl_mld_configure_trans(struct iwl_op_mode *op_mode)
- 	trans->conf.n_no_reclaim_cmds = ARRAY_SIZE(no_reclaim_cmds);
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 8abbcc588267..990d21fad939 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -583,6 +583,9 @@ static void b53_port_set_learning(struct b53_device *dev, int port,
+ {
+ 	u16 reg;
  
- 	trans->conf.rx_mpdu_cmd = REPLY_RX_MPDU_CMD;
--	trans->conf.rx_mpdu_cmd_hdr_size = sizeof(struct iwl_rx_mpdu_res_start);
-+	trans->conf.rx_mpdu_cmd_hdr_size = sizeof(struct iwl_rx_mpdu_desc);
- 	trans->conf.wide_cmd_header = true;
++	if (is5325(dev))
++		return;
++
+ 	b53_read16(dev, B53_CTRL_PAGE, B53_DIS_LEARNING, &reg);
+ 	if (learning)
+ 		reg &= ~BIT(port);
+@@ -2195,7 +2198,13 @@ int b53_br_flags_pre(struct dsa_switch *ds, int port,
+ 		     struct switchdev_brport_flags flags,
+ 		     struct netlink_ext_ack *extack)
+ {
+-	if (flags.mask & ~(BR_FLOOD | BR_MCAST_FLOOD | BR_LEARNING))
++	struct b53_device *dev = ds->priv;
++	unsigned long mask = (BR_FLOOD | BR_MCAST_FLOOD);
++
++	if (!is5325(dev))
++		mask |= BR_LEARNING;
++
++	if (flags.mask & ~mask)
+ 		return -EINVAL;
  
- 	iwl_trans_op_mode_enter(trans, op_mode);
+ 	return 0;
 -- 
 2.39.5
 
