@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE0FB2A248
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572F4B2A7D6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38C53188D1AB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56011684201
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90433258ED7;
-	Mon, 18 Aug 2025 12:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31BB321442;
+	Mon, 18 Aug 2025 13:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wceiSKk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lkox+taq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5421ABAA;
-	Mon, 18 Aug 2025 12:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F755235C01;
+	Mon, 18 Aug 2025 13:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521399; cv=none; b=K8jXfU5jFEdqN8MbPtfp7OFaZNTaxVRXCfDZphICdwhiChMrrpVFHadWFm5Y+y9Zbly5dCioFXWXgzLAsCVnVIcUeoBVmZAXvSa1gCB37uuFZZYEiALf9xC/mxFik2XkTthUwMb1Sz3JJ9qwkYbK48+BeqJ+MAU9k6T6FlJCegQ=
+	t=1755524717; cv=none; b=iosnzZ+uutOPEtPTnj6iDuA8OB0HWv9phIOYitC4O1Xjjfr/Z//u1ty+eUBifPhyxrRX7MAmL1n+5ieDQwRt48xT2k+aOZlEeejZxN89AFNokXteK7RtNBkoFH0hteIyvulJ9Pk9hl6ubsfnEtOlJIEMdmhyraGej6KsoqZ87WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521399; c=relaxed/simple;
-	bh=2U0qhL68EeJxioRzFglX7aabtB2pvir/Oji2J0Vn1X0=;
+	s=arc-20240116; t=1755524717; c=relaxed/simple;
+	bh=vDl+qoP45wfHrLdhBXxJw4RnntdDyWbXMrVO5DAvN4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tf9boqezHIhUDE8LvkYH3gMkCANqQojrcdDHrQN+2LOm0piSGaGN6LBH/EnIAd7gfNHXgF0XnfEjr18ddK32uYTBhLISToEnQgRnaYNvTtIda2vwp2oWPigYAww/EhbeZMs0ziiXR65spxLiEy1yMonVjXSnEkNQ9aA5KGjkp8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wceiSKk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E5DC4CEEB;
-	Mon, 18 Aug 2025 12:49:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vFsP2UAdzP0jT52MsUd+CjeeerwkduzMcTYUbN6B8jL/GjQX8ZOl1o1FppSSgeb2KoTATDSd8cSWvcsZTZPlyWWtLIzLhpUqjDzrNPGieaTSKBhSQTQRLWEAkSz1g6vKIa9sFzcKxHNOgjYLSN/Tz1XRucJB/JdL0RuATJXZUtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lkox+taq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD36AC4CEEB;
+	Mon, 18 Aug 2025 13:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521398;
-	bh=2U0qhL68EeJxioRzFglX7aabtB2pvir/Oji2J0Vn1X0=;
+	s=korg; t=1755524717;
+	bh=vDl+qoP45wfHrLdhBXxJw4RnntdDyWbXMrVO5DAvN4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wceiSKk6fI4GtrRekrj9aJT8RQaaux+AM/5wAaMW5pJ/MMigSL/pRTzDKV3EGWDpd
-	 PksG/gMf0xGk2ISQVD9qfFJvFetv04+K/P2BC+ddsZ+03nfgQ328RxfTmdeEd64V5C
-	 WCIG8ANmzAQKdzEPu2/IRSGfW9R5R0qhksD0ePO4=
+	b=Lkox+taq4EW+zfsZAmlKM4wT9qqxFDR82XmJvEiHjQbz+fYXBVN7WwzUFxBaXxypk
+	 ftU26NSFR7AcURerwLo3EaENOin8pGGdt2l1sATw7HoHTkt8dOVN3BvtAH4brbObdP
+	 7K6G+JZLWj87uwQ0uWqRS6kBPgcKcFlfkZw2+lQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Youngjun Lee <yjjuny.lee@samsung.com>
-Subject: [PATCH 6.12 002/444] ALSA: usb-audio: Validate UAC3 power domain descriptors, too
+	Ma Ke <make24@iscas.ac.cn>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.16 041/570] sunvdc: Balance device refcount in vdc_port_mpgroup_check
 Date: Mon, 18 Aug 2025 14:40:28 +0200
-Message-ID: <20250818124448.976701428@linuxfoundation.org>
+Message-ID: <20250818124507.397141385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit d832ccbc301fbd9e5a1d691bdcf461cdb514595f upstream.
+commit 63ce53724637e2e7ba51fe3a4f78351715049905 upstream.
 
-UAC3 power domain descriptors need to be verified with its variable
-bLength for avoiding the unexpected OOB accesses by malicious
-firmware, too.
+Using device_find_child() to locate a probed virtual-device-port node
+causes a device refcount imbalance, as device_find_child() internally
+calls get_device() to increment the device’s reference count before
+returning its pointer. vdc_port_mpgroup_check() directly returns true
+upon finding a matching device without releasing the reference via
+put_device(). We should call put_device() to decrement refcount.
 
-Fixes: 9a2fe9b801f5 ("ALSA: usb: initial USB Audio Device Class 3.0 support")
-Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250814081245.8902-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 3ee70591d6c4 ("sunvdc: prevent sunvdc panic when mpgroup disk added to guest domain")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20250719075856.3447953-1-make24@iscas.ac.cn
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/validate.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/block/sunvdc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -221,6 +221,17 @@ static bool validate_uac3_feature_unit(c
- 	return d->bLength >= sizeof(*d) + 4 + 2;
+--- a/drivers/block/sunvdc.c
++++ b/drivers/block/sunvdc.c
+@@ -957,8 +957,10 @@ static bool vdc_port_mpgroup_check(struc
+ 	dev = device_find_child(vdev->dev.parent, &port_data,
+ 				vdc_device_probed);
+ 
+-	if (dev)
++	if (dev) {
++		put_device(dev);
+ 		return true;
++	}
+ 
+ 	return false;
  }
- 
-+static bool validate_uac3_power_domain_unit(const void *p,
-+					    const struct usb_desc_validator *v)
-+{
-+	const struct uac3_power_domain_descriptor *d = p;
-+
-+	if (d->bLength < sizeof(*d))
-+		return false;
-+	/* baEntities[] + wPDomainDescrStr */
-+	return d->bLength >= sizeof(*d) + d->bNrEntities + 2;
-+}
-+
- static bool validate_midi_out_jack(const void *p,
- 				   const struct usb_desc_validator *v)
- {
-@@ -285,6 +296,7 @@ static const struct usb_desc_validator a
- 	      struct uac3_clock_multiplier_descriptor),
- 	/* UAC_VERSION_3, UAC3_SAMPLE_RATE_CONVERTER: not implemented yet */
- 	/* UAC_VERSION_3, UAC3_CONNECTORS: not implemented yet */
-+	FUNC(UAC_VERSION_3, UAC3_POWER_DOMAIN, validate_uac3_power_domain_unit),
- 	{ } /* terminator */
- };
- 
 
 
 
