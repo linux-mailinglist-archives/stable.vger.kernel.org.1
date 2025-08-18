@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-171344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE034B2A965
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94323B2A393
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6467D6E4CA5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:08:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7E001B601C7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FE831E0EB;
-	Mon, 18 Aug 2025 14:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C16F31E0F6;
+	Mon, 18 Aug 2025 13:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbWBVjLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4Oj3yYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C85E27B324;
-	Mon, 18 Aug 2025 14:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4953831CA55;
+	Mon, 18 Aug 2025 13:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525608; cv=none; b=eydYR0qyWAR3G3LBRAm4aPvC7EYUuSVw1N/oZ8bKwaYauLldqtORHHXWnT9cYzzi2XwrgHZJfPnDkFqt3ja6LtZpFUnXwiH9WcW1l5OhUufmWqvUubbnmT35L5MDAcj2QKltJCf1jX2u3z7Ze2SOhV6KfT/ihyHS/W6yz7V+J58=
+	t=1755522301; cv=none; b=qgLKfEQRuwttTLDvVakLaju0CJi1KPAaCMXCr/r+UyMZh+tfh/Safvy3dJYkoSQ3GEEY4/FPx1eD4lRMcI85vcs6ZsWT6fexj9+eWM4wKgmayH1pQwUgyIuQ1mNiQjNA+Lf84BLac5Rl/BFXxw5kRiK1NU/cXxkYKMW7S2aocuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525608; c=relaxed/simple;
-	bh=FYWNiU4t+ds1i9txGWKUXEdL7e+kNvMv1Vv19+s00QU=;
+	s=arc-20240116; t=1755522301; c=relaxed/simple;
+	bh=uBJw7FC1EW8VolAbxdjCj/bhJ/Oy8c0WQv8XtqTcAWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=boNycKJ06A8grqFQ+B8P1OId3Z4s8mZGmfJrK9kVOMlSM6JO5eeFKs6oaJENrA2C30qK5rJKImWYu/7PETz0Rq//gZ/z+llpYZsOnmwLCj6SqhoHenhywBd5DH6xxqiLQQBUF8BfyImuf3M2hGVLisGt/IT6AdPfjqWnC7ElW30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbWBVjLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89372C4CEEB;
-	Mon, 18 Aug 2025 14:00:07 +0000 (UTC)
+	 MIME-Version; b=Jz3LI5y9giXl744yK0/Q3dWseB+2ufgYSAi+OmNiiL0e4W94Gus2MZAgQ6trf04oSBcvjplYfS1OvXQHL8d9tlhjc5ZHWHbqEby7FWE/xXJOyA8BeThHs7FAmX3lP3ZC/lWmSr/JWrPLNKPq+nVLiaNyTc/Ej3vMttcy80Zjk+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4Oj3yYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8902EC4CEEB;
+	Mon, 18 Aug 2025 13:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525608;
-	bh=FYWNiU4t+ds1i9txGWKUXEdL7e+kNvMv1Vv19+s00QU=;
+	s=korg; t=1755522301;
+	bh=uBJw7FC1EW8VolAbxdjCj/bhJ/Oy8c0WQv8XtqTcAWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbWBVjLnysTClKgXC8LEmQ9zn3gZjCEnCy2fMAn1OKOoaLxbgEwa71S6XfNQSiVQ7
-	 yNXgEYiJ0YxhqUYKYHC+3uXaEXVQGVRuwi7zqFYR3zOu3ReguA/hpplFT+uHLdu9ZZ
-	 Ea+ilQw7ls25hewOgAW1IAtSsNkOotQ5vKdYDwXw=
+	b=h4Oj3yYObpRg8MImTJiHvULqKLq+u1RPn/QnFVtoCL+qmeFj+QKDQBgiKAvoB7mvI
+	 WTEDKcm3R1nN+4U1cCmqS6HYzD6D0o5CNB9P56ZkfWLy6S2r+9xfGFJ3sGphzDLpeS
+	 DIt0YDaPzaeyZa7gJJATZMK8LAGeRrz9/vPqQYHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ching-Te Ku <ku920601@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 314/570] wifi: rtw89: coex: Not to set slot duration to zero to avoid firmware issue
+Subject: [PATCH 6.12 275/444] drm/amd/display: Disable dsc_power_gate for dcn314 by default
 Date: Mon, 18 Aug 2025 14:45:01 +0200
-Message-ID: <20250818124517.964622286@linuxfoundation.org>
+Message-ID: <20250818124459.283668916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Roman Li <Roman.Li@amd.com>
 
-[ Upstream commit a7feafea4ce80d5fa5284d05d54b4f108d2ab575 ]
+[ Upstream commit 02f3ec53177243d32ee8b6f8ba99136d7887ee3a ]
 
-If the duration set to zero, Wi-Fi firmware will trigger some unexpected
-issue when firmware try to enable timer.
+[Why]
+"REG_WAIT timeout 1us * 1000 tries - dcn314_dsc_pg_control line"
+warnings seen after resuming from s2idle.
+DCN314 has issues with DSC power gating that cause REG_WAIT timeouts
+when attempting to power down DSC blocks.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250616090252.51098-9-pkshih@realtek.com
+[How]
+Disable dsc_power_gate for dcn314 by default.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 5ccf0cbaed2f..ea3664103fbf 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -3836,13 +3836,13 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+index 01d95108ce66..585c3e8a2194 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+@@ -927,6 +927,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ 	.seamless_boot_odm_combine = true,
+ 	.enable_legacy_fast_update = true,
+ 	.using_dml2 = false,
++	.disable_dsc_power_gate = true,
+ };
  
- 		switch (policy_type) {
- 		case BTC_CXP_OFFE_2GBWISOB: /* for normal-case */
--			_slot_set(btc, CXST_E2G, 0, tbl_w1, SLOT_ISO);
-+			_slot_set(btc, CXST_E2G, 5, tbl_w1, SLOT_ISO);
- 			_slot_set_le(btc, CXST_EBT, s_def[CXST_EBT].dur,
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			_slot_set_dur(btc, CXST_EBT, dur_2);
- 			break;
- 		case BTC_CXP_OFFE_2GISOB: /* for bt no-link */
--			_slot_set(btc, CXST_E2G, 0, cxtbl[1], SLOT_ISO);
-+			_slot_set(btc, CXST_E2G, 5, cxtbl[1], SLOT_ISO);
- 			_slot_set_le(btc, CXST_EBT, s_def[CXST_EBT].dur,
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			_slot_set_dur(btc, CXST_EBT, dur_2);
-@@ -3868,15 +3868,15 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 			break;
- 		case BTC_CXP_OFFE_2GBWMIXB:
- 			if (a2dp->exist)
--				_slot_set(btc, CXST_E2G, 0, cxtbl[2], SLOT_MIX);
-+				_slot_set(btc, CXST_E2G, 5, cxtbl[2], SLOT_MIX);
- 			else
--				_slot_set(btc, CXST_E2G, 0, tbl_w1, SLOT_MIX);
-+				_slot_set(btc, CXST_E2G, 5, tbl_w1, SLOT_MIX);
- 			_slot_set_le(btc, CXST_EBT, s_def[CXST_EBT].dur,
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			break;
- 		case BTC_CXP_OFFE_WL: /* for 4-way */
--			_slot_set(btc, CXST_E2G, 0, cxtbl[1], SLOT_MIX);
--			_slot_set(btc, CXST_EBT, 0, cxtbl[1], SLOT_MIX);
-+			_slot_set(btc, CXST_E2G, 5, cxtbl[1], SLOT_MIX);
-+			_slot_set(btc, CXST_EBT, 5, cxtbl[1], SLOT_MIX);
- 			break;
- 		default:
- 			break;
+ static const struct dc_panel_config panel_config_defaults = {
 -- 
 2.39.5
 
