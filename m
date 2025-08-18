@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C554B2A738
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48D7B2AA07
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5441BA1943
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A191BA21E9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198072E22A6;
-	Mon, 18 Aug 2025 13:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8AC320CC5;
+	Mon, 18 Aug 2025 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YF5QxNqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9R/J3nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA28E335BA0;
-	Mon, 18 Aug 2025 13:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD10320CBC;
+	Mon, 18 Aug 2025 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524279; cv=none; b=U8657OWBxfLkUQEATVuKlIvg3A5QmHeTu8GOuhYiZM5Wrk4KxqVjdB8uQZAJlF/yl/NFvH+qNOjp805IyN4i7pv9rbQ5xsMPIyfSCqL3PCBQBVySWwOv72mBynkU3wy6YJdA245NpfuN2VB1tOUm+BVi0VTwuZk8SNSQ+VP8hbI=
+	t=1755525974; cv=none; b=L2dpgfv7LBGmmhjg4KH9hOblIyPcUrkNT6zsIvDJL/069+HJ9sMpfvp3k86+03Oqpdp+USwOezScF1h94G9hBzu8VuXAECUEbPCdPT/pMnKQvO4kdL7MKdveRQ+ldt6cxnqKFSp+kHlsAr62TWy1Hw55k3Ij7lcdDiyxW+eD01k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524279; c=relaxed/simple;
-	bh=rC1THRWytBpp0zgwclt4MmZFnUXwdLTXUa0TF9Tj2kI=;
+	s=arc-20240116; t=1755525974; c=relaxed/simple;
+	bh=XKSCo2VTat5NsCWwjJriu2x3WiwVTqGyfe40u6AOOkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfkGSgqgfEAFnbXbSSyxj20f/j5HcFLfpV5Mokz9Cb/1Erkk6+4wKKl7L7Y3oW8t6hqGMzxgBOlztOPTkubQbs1GAth3KOFK5F0n9TS71yUu8/yK8Gt/RNvnhT7MqDft+EzXTdLma00/rvZO17g0nnV2Pvi+nBZy40fc5sS7sas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YF5QxNqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39628C113D0;
-	Mon, 18 Aug 2025 13:37:59 +0000 (UTC)
+	 MIME-Version; b=UuOE8vxzS5LWeGOETJWibZrTuYmeBMIa1uNX3N9YNsYFRyvGb0E2OHVdvNT90VbEhqzPff9S9dzAXApIL4iF34+nDl06lSisOVxu/gVaguWuzuOuKeb5Hxft5Rg5DeHsTrLLRiUfq2o3tWsM33sHJ2tfl0JE40AEcUCE8gyuQU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9R/J3nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D68C4CEEB;
+	Mon, 18 Aug 2025 14:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524279;
-	bh=rC1THRWytBpp0zgwclt4MmZFnUXwdLTXUa0TF9Tj2kI=;
+	s=korg; t=1755525974;
+	bh=XKSCo2VTat5NsCWwjJriu2x3WiwVTqGyfe40u6AOOkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YF5QxNqAc3DIM+D8nL59rVnW2A1MNmSIKwJIeNKRvgP958IuafEZq0fxX7e3S+8FJ
-	 bvPZ3uy7uzXGlbfsxcBoJPk988jfUO7WgEqEUlpvgRBaSqObN0ZjhV8oxvl7SZ88I5
-	 cRortlhhTIzdCyZYvwkXuH4HOeC/IkROi5tAM6PM=
+	b=S9R/J3nfBi/H57KsxL71/Zpfy9Sr5VHLsaO2hYquc2d885z1IJQcgL0x/2mgtZFlH
+	 WdnRPSbnmUGIz5Ous2fDFEZrpT10PxfsH0LQECaTYubzSqCd1iTF/d6kbuu7uX1tOD
+	 7ShWHeRpoB3P/mOCx5MuJU+B86nc28t696QoVrr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Croft <thomasmcft@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 423/515] ALSA: hda/realtek: add LG gram 16Z90R-A to alc269 fixup table
+Subject: [PATCH 6.16 422/570] soundwire: Move handle_nested_irq outside of sdw_dev_lock
 Date: Mon, 18 Aug 2025 14:46:49 +0200
-Message-ID: <20250818124514.708189534@linuxfoundation.org>
+Message-ID: <20250818124522.094685024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Croft <thomasmcft@gmail.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit dbe05428c4e54068a86e7e02405f3b30b1d2b3dd ]
+[ Upstream commit ccb7bb13c00bcc3178d270da052635c56148bc16 ]
 
-Several months ago, Joshua Grisham submitted a patch [1]
-for several ALC298 based sound cards.
+The sdw_dev_lock protects the SoundWire driver callbacks against
+the probed flag, which is used to skip the callbacks if the
+driver gets removed. For more information see commit bd29c00edd0a
+("soundwire: revisit driver bind/unbind and callbacks").
 
-The entry for the LG gram 16 in the alc269_fixup_tbl only matches the
-Subsystem ID for the 16Z90R-Q and 16Z90R-K models [2]. My 16Z90R-A has a
-different Subsystem ID [3]. I'm not sure why these IDs differ, but I
-speculate it's due to the NVIDIA GPU included in the 16Z90R-A model that
-isn't present in the other models.
+However, this lock is a frequent source of mutex inversions.
+Many audio operations eventually hit the hardware resulting in a
+SoundWire callback, this means that typically the driver has the
+locking order ALSA/ASoC locks -> sdw_dev_lock. Conversely, the IRQ
+comes in directly from the SoundWire hardware, but then will often
+want to access ALSA/ASoC, such as updating something in DAPM or
+an ALSA control. This gives the other lock order sdw_dev_lock ->
+ALSA/ASoC locks.
 
-I applied the patch to the latest Arch Linux kernel and the card was
-initialized as expected.
+When the IRQ handling was initially added to SoundWire this was
+through a callback mechanism. As such it required being covered by
+the lock because the callbacks are part of the sdw_driver structure
+and are thus present regardless of if the driver is currently
+probed.
 
-[1]: https://lore.kernel.org/linux-sound/20240909193000.838815-1-josh@joshuagrisham.com/
-[2]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0488
-[3]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0489
+Since then a newer mechanism using the IRQ framework has been
+added, which is currently covered by the same lock but this isn't
+actually required. Handlers for the IRQ framework are registered in
+probe and should by released during remove, thus the IRQ framework
+will have already unbound the IRQ before the slave driver is
+removed. Avoid the aforementioned mutex inversion by moving the
+handle_nested_irq call outside of the sdw_dev_lock.
 
-Signed-off-by: Thomas Croft <thomasmcft@gmail.com>
-Link: https://patch.msgid.link/20250804151457.134761-2-thomasmcft@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250609143041.495049-3-ckeepax@opensource.cirrus.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soundwire/bus.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 71632790ca1d..1c421518570e 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11376,6 +11376,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1854, 0x0440, "LG CQ6", ALC256_FIXUP_HEADPHONE_AMP_VOL),
- 	SND_PCI_QUIRK(0x1854, 0x0441, "LG CQ6 AIO", ALC256_FIXUP_HEADPHONE_AMP_VOL),
- 	SND_PCI_QUIRK(0x1854, 0x0488, "LG gram 16 (16Z90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x1854, 0x0489, "LG gram 16 (16Z90R-A)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x1854, 0x048a, "LG gram 17 (17ZD90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
- 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
+index 68db4b67a86f..4fd5cac799c5 100644
+--- a/drivers/soundwire/bus.c
++++ b/drivers/soundwire/bus.c
+@@ -1753,15 +1753,15 @@ static int sdw_handle_slave_alerts(struct sdw_slave *slave)
+ 
+ 		/* Update the Slave driver */
+ 		if (slave_notify) {
++			if (slave->prop.use_domain_irq && slave->irq)
++				handle_nested_irq(slave->irq);
++
+ 			mutex_lock(&slave->sdw_dev_lock);
+ 
+ 			if (slave->probed) {
+ 				struct device *dev = &slave->dev;
+ 				struct sdw_driver *drv = drv_to_sdw_driver(dev->driver);
+ 
+-				if (slave->prop.use_domain_irq && slave->irq)
+-					handle_nested_irq(slave->irq);
+-
+ 				if (drv->ops && drv->ops->interrupt_callback) {
+ 					slave_intr.sdca_cascade = sdca_cascade;
+ 					slave_intr.control_port = clear;
 -- 
 2.39.5
 
