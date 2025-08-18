@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2F7B2A5F0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA84B2A846
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE1C3BEACB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED9536246F7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CE2321F28;
-	Mon, 18 Aug 2025 13:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69302216E23;
+	Mon, 18 Aug 2025 13:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTs1N5Fe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DY8uDq2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3917226D0F;
-	Mon, 18 Aug 2025 13:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152E121CC55;
+	Mon, 18 Aug 2025 13:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523393; cv=none; b=oHYhrerAwpYfhGQ06IsVaNTITM/1uqowwDLrLPUC5vWjOENLLxzG9jxZ7G1RSh8SdhLvWfcmJyV1VBWfmejgJLR/vu3POU1/b5LZtQDZwbc3Ox6iOYLhRKIYySCnUm0jqwNjIEzK7J5spI6IiwKOaHt79XSpyUzfbXvcnBZJeok=
+	t=1755524949; cv=none; b=caxdsJP7uLzXmhB8TdIIBhDOWNepNpCjz9TLoCGzRGlEhJAuhK0pbDdLvlaR+MIRfhqUuKl8xk/AMjqdd0237R6rkyBsITZ3kF1G4zpzwbAl9fw/OhnQDKIdd/Xed7NJ6jU7E732WaZOUxc1ltsp9WpAN+oOCItDbUDFIfr2ATw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523393; c=relaxed/simple;
-	bh=1v1e21rkMIouYI7Sg95qEs1humXzF8j2sNO3Ma81fI0=;
+	s=arc-20240116; t=1755524949; c=relaxed/simple;
+	bh=pvo7FNyhY/991h9zn4NhkY6UnyPRh0rGt0SnXelbsRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OKAOQYWZMQ0azcYoctenbPJQI9/R/VN7+One5bmNWS4t4OlZE1EdNLJX6D6cAyvBjn9/U8Zw7p4ULqyzchqSewn+SxtciW4/6KIzjfcsDYxRWdy0vwycHuIyiZBgxfGVbdSvRcsAEJd9SmXi5AIC8zBZhM4iFpYoO4GkAYc3eVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTs1N5Fe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF55C4CEEB;
-	Mon, 18 Aug 2025 13:23:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=unVOGTTxFM9+1LLCzqOgwq0P5MevuaYimZzlyDFb7AL8K5Z8hze8ZuqATmxYcSlbVzUQQi9EEt2Oo+zFxOo21L7rB6NyODJWFuHGWpyLz42mSowu3cBObBtR53IbLyk4PIQ0VhrBPERwhhbMd6qup1IknB6zIjAx6RV/yrcrpYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DY8uDq2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470F7C113D0;
+	Mon, 18 Aug 2025 13:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523392;
-	bh=1v1e21rkMIouYI7Sg95qEs1humXzF8j2sNO3Ma81fI0=;
+	s=korg; t=1755524948;
+	bh=pvo7FNyhY/991h9zn4NhkY6UnyPRh0rGt0SnXelbsRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTs1N5Fe9St/UPddySmHzOGlwii8pRCZL/TW4TyvgMj3Cq7VbK/jZFzToGGEBucr2
-	 Btp0pXpOceHKywVC1ZcB8CB7pygdlf5FyeJEYe7FC94F9A0pT+4Ztu+/ccmhfEv8K/
-	 f01lZvOhCwrYfROL3XfrOKM5r42uT7t6RvqMmLQI=
+	b=DY8uDq2vuSgwVKK/yA4Kh6lktVVVbFVBJEtE/18zjWz86EcpTPUU0fCSvihLPiUx1
+	 iwjxNIa5BfMWkbSK6GhIDzMSmfJea1oJsoGqH/uD+3v+YXEamOMpdA+f+cFATdRnIt
+	 t5Y83oJEn3aALm0Hss6zzN9AdJW8MpJ8ty02qGRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Berglund <adam.f.berglund@hotmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 114/515] platform/x86/amd: pmc: Add Lenovo Yoga 6 13ALC6 to pmc quirk list
+Subject: [PATCH 6.16 113/570] ata: ahci: Disable DIPM if host lacks support
 Date: Mon, 18 Aug 2025 14:41:40 +0200
-Message-ID: <20250818124502.741245260@linuxfoundation.org>
+Message-ID: <20250818124510.156954800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 4ff3aeb664f7dfe824ba91ffb0b203397a8d431e ]
+[ Upstream commit f7870e8d345cdabfb94bcbdcba6a07e050f8705e ]
 
-The Lenovo Yoga 6 13ACL6 82ND has a similar BIOS problem as other Lenovo
-laptops from that vintage that causes a rather long resume from suspend.
+The AHCI specification version 1.3.1 section 8.3.1.4 (Software
+Requirements and Precedence) states that:
 
-Add it to the quirk list that manipulates the scratch register to avoid
-the issue.
+If CAP.SSC or CAP.PSC is cleared to ‘0’, software should disable
+device-initiated power management by issuing the appropriate SET
+FEATURES command to the device.
 
-Reported-by: Adam Berglund <adam.f.berglund@hotmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4434
-Tested-by: Adam Berglund <adam.f.berglund@hotmail.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Link: https://lore.kernel.org/r/20250718172307.1928744-1-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+To satisfy this constraint and force ata_dev_configure to disable the
+device DIPM feature, modify ahci_update_initial_lpm_policy() to set the
+ATA_FLAG_NO_DIPM flag on ports that have a host with either the
+ATA_HOST_NO_PART flag set or the ATA_HOST_NO_SSC flag set.
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de.>
+Link: https://lore.kernel.org/r/20250701125321.69496-7-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/ata/ahci.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 7ed12c1d3b34..04686ae1e976 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -189,6 +189,15 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
- 		}
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4434 */
-+	{
-+		.ident = "Lenovo Yoga 6 13ALC6",
-+		.driver_data = &quirk_s2idle_bug,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
-+		}
-+	},
- 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
- 	{
- 		.ident = "HP Laptop 15s-eq2xxx",
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 04c9b601cac1..4f69da480e86 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1778,6 +1778,13 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
+ 		return;
+ 	}
+ 
++	/* If no Partial or no Slumber, we cannot support DIPM. */
++	if ((ap->host->flags & ATA_HOST_NO_PART) ||
++	    (ap->host->flags & ATA_HOST_NO_SSC)) {
++		ata_port_dbg(ap, "Host does not support DIPM\n");
++		ap->flags |= ATA_FLAG_NO_DIPM;
++	}
++
+ 	/* If no LPM states are supported by the HBA, do not bother with LPM */
+ 	if ((ap->host->flags & ATA_HOST_NO_PART) &&
+ 	    (ap->host->flags & ATA_HOST_NO_SSC) &&
 -- 
 2.39.5
 
