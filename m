@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-170132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50DAB2A267
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2F7B2A5F0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 029436227DF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE1C3BEACB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439D2318126;
-	Mon, 18 Aug 2025 12:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CE2321F28;
+	Mon, 18 Aug 2025 13:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVx91Y9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTs1N5Fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7827B330;
-	Mon, 18 Aug 2025 12:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3917226D0F;
+	Mon, 18 Aug 2025 13:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521623; cv=none; b=SFDf2I6CEuJg5IPw8YVicMaxwbgNAiev686+Rd6p+i89Pjx1I9EgUvwFVodt1H2O7mzo81SVS5gOBTo1QmguWhEmlV1dT7EGGrJnzfbGJTEw43C+a1mbqw+JvBCKL1WDvcVJ8iNs1aaUOQjg85N5cap0uBSmfRjgLintPwQtdGE=
+	t=1755523393; cv=none; b=oHYhrerAwpYfhGQ06IsVaNTITM/1uqowwDLrLPUC5vWjOENLLxzG9jxZ7G1RSh8SdhLvWfcmJyV1VBWfmejgJLR/vu3POU1/b5LZtQDZwbc3Ox6iOYLhRKIYySCnUm0jqwNjIEzK7J5spI6IiwKOaHt79XSpyUzfbXvcnBZJeok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521623; c=relaxed/simple;
-	bh=1ABijm6baDJbTKOhp4Gid9mEwq2stuc0hCEzlyFkxCc=;
+	s=arc-20240116; t=1755523393; c=relaxed/simple;
+	bh=1v1e21rkMIouYI7Sg95qEs1humXzF8j2sNO3Ma81fI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSMj5Ze5DAsuZouNnUTsXV0+RfOpVKJbwjKZoxy/4TvMP8ADbNUKe6P6nTgyrlFSliRm5On/MsZr4oCqHpJXJLL1ZNElJln89El7m+1RZQHK+7cTATa4D61ULmPKC9pf1oJF71MU/sRjeA1zhui12FcXPUSLNWmJ0SvoZ0TAyQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVx91Y9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ACAC4CEEB;
-	Mon, 18 Aug 2025 12:53:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OKAOQYWZMQ0azcYoctenbPJQI9/R/VN7+One5bmNWS4t4OlZE1EdNLJX6D6cAyvBjn9/U8Zw7p4ULqyzchqSewn+SxtciW4/6KIzjfcsDYxRWdy0vwycHuIyiZBgxfGVbdSvRcsAEJd9SmXi5AIC8zBZhM4iFpYoO4GkAYc3eVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTs1N5Fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF55C4CEEB;
+	Mon, 18 Aug 2025 13:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521622;
-	bh=1ABijm6baDJbTKOhp4Gid9mEwq2stuc0hCEzlyFkxCc=;
+	s=korg; t=1755523392;
+	bh=1v1e21rkMIouYI7Sg95qEs1humXzF8j2sNO3Ma81fI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVx91Y9h7QlhSQ4SgU1wAHmHlSwp5SzWdRlm5vv90oUPEkyMHV+JJviGqJI10Q5fj
-	 lDLoRyx7gGHbBFCpD9PUwdGF8dJsVdRk8z2tfKtWkRDretsSgsj7YuUgE63IdWNMiR
-	 TG7ziqtM+doMMOTwxpr7gvX5++OkSrBYbR+4DQSE=
+	b=XTs1N5Fe9St/UPddySmHzOGlwii8pRCZL/TW4TyvgMj3Cq7VbK/jZFzToGGEBucr2
+	 Btp0pXpOceHKywVC1ZcB8CB7pygdlf5FyeJEYe7FC94F9A0pT+4Ztu+/ccmhfEv8K/
+	 f01lZvOhCwrYfROL3XfrOKM5r42uT7t6RvqMmLQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Adam Berglund <adam.f.berglund@hotmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/444] md/raid10: set chunk_sectors limit
+Subject: [PATCH 6.15 114/515] platform/x86/amd: pmc: Add Lenovo Yoga 6 13ALC6 to pmc quirk list
 Date: Mon, 18 Aug 2025 14:41:40 +0200
-Message-ID: <20250818124451.730891328@linuxfoundation.org>
+Message-ID: <20250818124502.741245260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 7ef50c4c6a9c36fa3ea6f1681a80c0bf9a797345 ]
+[ Upstream commit 4ff3aeb664f7dfe824ba91ffb0b203397a8d431e ]
 
-Same as done for raid0, set chunk_sectors limit to appropriately set the
-atomic write size limit.
+The Lenovo Yoga 6 13ACL6 82ND has a similar BIOS problem as other Lenovo
+laptops from that vintage that causes a rather long resume from suspend.
 
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20250711105258.3135198-5-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add it to the quirk list that manipulates the scratch register to avoid
+the issue.
+
+Reported-by: Adam Berglund <adam.f.berglund@hotmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4434
+Tested-by: Adam Berglund <adam.f.berglund@hotmail.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250718172307.1928744-1-superm1@kernel.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 5cdc599fcad3..7515a98001ca 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -3968,6 +3968,7 @@ static int raid10_set_queue_limits(struct mddev *mddev)
- 	md_init_stacking_limits(&lim);
- 	lim.max_write_zeroes_sectors = 0;
- 	lim.io_min = mddev->chunk_sectors << 9;
-+	lim.chunk_sectors = mddev->chunk_sectors;
- 	lim.io_opt = lim.io_min * raid10_nr_stripes(conf);
- 	err = mddev_stack_rdev_limits(mddev, &lim, MDDEV_STACK_INTEGRITY);
- 	if (err)
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 7ed12c1d3b34..04686ae1e976 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -189,6 +189,15 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
+ 		}
+ 	},
++	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4434 */
++	{
++		.ident = "Lenovo Yoga 6 13ALC6",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
++		}
++	},
+ 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
+ 	{
+ 		.ident = "HP Laptop 15s-eq2xxx",
 -- 
 2.39.5
 
