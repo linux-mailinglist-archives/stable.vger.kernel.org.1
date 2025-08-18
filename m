@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF72B2A379
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85870B2A650
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57CBA189AF59
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83287583F71
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C9431E109;
-	Mon, 18 Aug 2025 13:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C37224B06;
+	Mon, 18 Aug 2025 13:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vW6RxYB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjRFOPAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF8831E0F9;
-	Mon, 18 Aug 2025 13:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77C020C461;
+	Mon, 18 Aug 2025 13:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522250; cv=none; b=AlRl0G6x03uPjyy7HwsWpPC+wy+df2CfWD0VG7dxBRuB3rzqUeWvVErE4f3bglfY3VpETl0ATiTvFFiCOU/SdzT1FMOxcLhNQzEA/c8DwzJohqX1JeSAbJxb24atyvJ6AsbIolj7hwihwSdaVPg0n050XWPX0sQN3h9Orj2mvgY=
+	t=1755523826; cv=none; b=BRrDvuBJCKoE6BNmb+lvfM4NasbZfZvBfuUYyGWX8f936lodmySiAF5KMaAfdtjc7E8jvMrB7tPT+6H6uy18jkn2csdSpNMLuVWpEASiW0YTq28C0z07dbKUU8wvVPArRqhR8tzQdqz/F8FYPSDcpjTOpR28ff2m5u+RoSr29Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522250; c=relaxed/simple;
-	bh=wTaJeD0bIWeJ/ly0CeiOukIsK1l8Zc+5TcjsVLKItkA=;
+	s=arc-20240116; t=1755523826; c=relaxed/simple;
+	bh=mHbhihw2gsa4LdV+qJYcKvZLrJLxqzq4v1v/YIASBPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/19WJE2bEbUANyoInQ7BWXh2N9q4EAKnFkbvuHhciRKgYZMmLgOvdJ/KlLY7GvcdME/uOo6UnpbV7RAOnl+igvqwU6yS+YoL5l3rjJ7RQszXFo9CDbg3N5MO/ceZYrta/sGE+s6aCGpLmrv0aN5ce3nTqHTbi9le9p7mSTa/uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vW6RxYB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE98AC4CEEB;
-	Mon, 18 Aug 2025 13:04:09 +0000 (UTC)
+	 MIME-Version; b=brovADzm3mUt7v8WfwpYm7iU0Ty0O6uTK4L1YMn58wkqEoP73GBAS6x0sQXWbvJG1BXb7ucs3HRX6MIRR4UJNyqLMm1LJQxHaoPhXwDP9C/qPi4MFLv/1PB7uswLCiCB3cfg2GVNS0dLTapng5AyIXLRZ+wc5ns/taR4efoxqo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjRFOPAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA3CC4CEEB;
+	Mon, 18 Aug 2025 13:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522250;
-	bh=wTaJeD0bIWeJ/ly0CeiOukIsK1l8Zc+5TcjsVLKItkA=;
+	s=korg; t=1755523826;
+	bh=mHbhihw2gsa4LdV+qJYcKvZLrJLxqzq4v1v/YIASBPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vW6RxYB2B/YG7ktzdA9+T4vmwNCRVwFQSAa2581xGFT7cT0jcx8qLgzyDO/SlS30d
-	 Ehk4AWm0cgnOSZpIwokxiQhI6p0qODGbrfSdm/Ze3hlqtFEH+meK3sHhnlpEltz+V6
-	 WDlndW1bNbP+Nwq7Hc3Cvii+5cquDPHNpKUrJPeI=
+	b=ZjRFOPAvXALRbDvQ9UjH/CvBeNL8jLjZhROflfkT2lkv9dIjCoEoimyXP76lsKysm
+	 TovOfwaZMLemkUfg6QSDe9vudIVX0l+1LnVHW4RHP/CB9wbDsmKe/yyEgDR3g8LyDl
+	 J+wFK5hSKdEQQJcq40qRwhYVjkE+op+H+ovptVZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 217/444] drm/xe/xe_query: Use separate iterator while filling GT list
+Subject: [PATCH 6.15 257/515] drm/imagination: Clear runtime PM errors while resetting the GPU
 Date: Mon, 18 Aug 2025 14:44:03 +0200
-Message-ID: <20250818124456.982468739@linuxfoundation.org>
+Message-ID: <20250818124508.306751041@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Alessio Belle <alessio.belle@imgtec.com>
 
-[ Upstream commit d4eb4a010262ea7801e576d1033b355910f2f7d4 ]
+[ Upstream commit 551507e0d0bf32ce1d7d27533c4b98307380804c ]
 
-The 'id' value updated by for_each_gt() is the uapi GT ID of the GTs
-being iterated over, and may skip over values if a GT is not present on
-the device.  Use a separate iterator for GT list array assignments to
-ensure that the array will be filled properly on future platforms where
-index in the GT query list may not match the uapi ID.
+The runtime PM might be left in error state if one of the callbacks
+returned an error, e.g. if the (auto)suspend callback failed following
+a firmware crash.
 
-v2:
- - Include the missing increment of the iterator.  (Jonathan)
+When that happens, any further attempt to acquire or release a power
+reference will then also fail, making it impossible to do anything else
+with the GPU. The driver logic will eventually reach the reset code.
 
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://lore.kernel.org/r/20250701201320.2514369-16-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+In pvr_power_reset(), replace pvr_power_get() with a new API
+pvr_power_get_clear() which also attempts to clear any runtime PM error
+state if acquiring a power reference is not possible.
+
+Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://lore.kernel.org/r/20250624-clear-rpm-errors-gpu-reset-v1-1-b8ff2ae55aac@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_query.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/imagination/pvr_power.c | 59 ++++++++++++++++++++++++-
+ 1 file changed, 58 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
-index 6fec5d1a1eb4..6e7c940d7e22 100644
---- a/drivers/gpu/drm/xe/xe_query.c
-+++ b/drivers/gpu/drm/xe/xe_query.c
-@@ -366,6 +366,7 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
- 	struct drm_xe_query_gt_list __user *query_ptr =
- 		u64_to_user_ptr(query->data);
- 	struct drm_xe_query_gt_list *gt_list;
-+	int iter = 0;
- 	u8 id;
+diff --git a/drivers/gpu/drm/imagination/pvr_power.c b/drivers/gpu/drm/imagination/pvr_power.c
+index 850b318605da..d97613c6a0a9 100644
+--- a/drivers/gpu/drm/imagination/pvr_power.c
++++ b/drivers/gpu/drm/imagination/pvr_power.c
+@@ -317,6 +317,63 @@ pvr_power_device_idle(struct device *dev)
+ 	return pvr_power_is_idle(pvr_dev) ? 0 : -EBUSY;
+ }
  
- 	if (query->size == 0) {
-@@ -383,12 +384,12 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
- 
- 	for_each_gt(gt, xe, id) {
- 		if (xe_gt_is_media_type(gt))
--			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
-+			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
- 		else
--			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MAIN;
--		gt_list->gt_list[id].tile_id = gt_to_tile(gt)->id;
--		gt_list->gt_list[id].gt_id = gt->info.id;
--		gt_list->gt_list[id].reference_clock = gt->info.reference_clock;
-+			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MAIN;
-+		gt_list->gt_list[iter].tile_id = gt_to_tile(gt)->id;
-+		gt_list->gt_list[iter].gt_id = gt->info.id;
-+		gt_list->gt_list[iter].reference_clock = gt->info.reference_clock;
- 		/*
- 		 * The mem_regions indexes in the mask below need to
- 		 * directly identify the struct
-@@ -404,19 +405,21 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
- 		 * assumption.
- 		 */
- 		if (!IS_DGFX(xe))
--			gt_list->gt_list[id].near_mem_regions = 0x1;
-+			gt_list->gt_list[iter].near_mem_regions = 0x1;
- 		else
--			gt_list->gt_list[id].near_mem_regions =
-+			gt_list->gt_list[iter].near_mem_regions =
- 				BIT(gt_to_tile(gt)->id) << 1;
--		gt_list->gt_list[id].far_mem_regions = xe->info.mem_region_mask ^
--			gt_list->gt_list[id].near_mem_regions;
-+		gt_list->gt_list[iter].far_mem_regions = xe->info.mem_region_mask ^
-+			gt_list->gt_list[iter].near_mem_regions;
- 
--		gt_list->gt_list[id].ip_ver_major =
-+		gt_list->gt_list[iter].ip_ver_major =
- 			REG_FIELD_GET(GMD_ID_ARCH_MASK, gt->info.gmdid);
--		gt_list->gt_list[id].ip_ver_minor =
-+		gt_list->gt_list[iter].ip_ver_minor =
- 			REG_FIELD_GET(GMD_ID_RELEASE_MASK, gt->info.gmdid);
--		gt_list->gt_list[id].ip_ver_rev =
-+		gt_list->gt_list[iter].ip_ver_rev =
- 			REG_FIELD_GET(GMD_ID_REVID, gt->info.gmdid);
++static int
++pvr_power_clear_error(struct pvr_device *pvr_dev)
++{
++	struct device *dev = from_pvr_device(pvr_dev)->dev;
++	int err;
 +
-+		iter++;
- 	}
++	/* Ensure the device state is known and nothing is happening past this point */
++	pm_runtime_disable(dev);
++
++	/* Attempt to clear the runtime PM error by setting the current state again */
++	if (pm_runtime_status_suspended(dev))
++		err = pm_runtime_set_suspended(dev);
++	else
++		err = pm_runtime_set_active(dev);
++
++	if (err) {
++		drm_err(from_pvr_device(pvr_dev),
++			"%s: Failed to clear runtime PM error (new error %d)\n",
++			__func__, err);
++	}
++
++	pm_runtime_enable(dev);
++
++	return err;
++}
++
++/**
++ * pvr_power_get_clear() - Acquire a power reference, correcting any errors
++ * @pvr_dev: Device pointer
++ *
++ * Attempt to acquire a power reference on the device. If the runtime PM
++ * is in error state, attempt to clear the error and retry.
++ *
++ * Returns:
++ *  * 0 on success, or
++ *  * Any error code returned by pvr_power_get() or the runtime PM API.
++ */
++static int
++pvr_power_get_clear(struct pvr_device *pvr_dev)
++{
++	int err;
++
++	err = pvr_power_get(pvr_dev);
++	if (err == 0)
++		return err;
++
++	drm_warn(from_pvr_device(pvr_dev),
++		 "%s: pvr_power_get returned error %d, attempting recovery\n",
++		 __func__, err);
++
++	err = pvr_power_clear_error(pvr_dev);
++	if (err)
++		return err;
++
++	return pvr_power_get(pvr_dev);
++}
++
+ /**
+  * pvr_power_reset() - Reset the GPU
+  * @pvr_dev: Device pointer
+@@ -341,7 +398,7 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
+ 	 * Take a power reference during the reset. This should prevent any interference with the
+ 	 * power state during reset.
+ 	 */
+-	WARN_ON(pvr_power_get(pvr_dev));
++	WARN_ON(pvr_power_get_clear(pvr_dev));
  
- 	if (copy_to_user(query_ptr, gt_list, size)) {
+ 	down_write(&pvr_dev->reset_sem);
+ 
 -- 
 2.39.5
 
