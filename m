@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E948B2AA32
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F081B2A3D8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 468F41BA2F66
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 165797B9EF7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5019C320CBC;
-	Mon, 18 Aug 2025 14:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1305131E0FE;
+	Mon, 18 Aug 2025 13:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZN9HMaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axoXjou9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C9731B107;
-	Mon, 18 Aug 2025 14:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5311E3DCD;
+	Mon, 18 Aug 2025 13:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525981; cv=none; b=X7vCS8RmMsiO/qf2mL6QC8C86SclYv7AKaheoooqNnkr11ZJbT2cohkEXgDIxy2GMkD0BBHFK6G+lE7OR6Kuw+KsvMUHaDBNwXwqRoUW4kqJaY/4G0UYd3FgysNu8i3WuwX5ePjT8oyuq5zmAackg+WbCdVQPjK2Z72tA9pASdM=
+	t=1755522674; cv=none; b=R965+2Auw884BNZx7VYI+a6DcDu+4HMY/U/WXDFLI7YyNrMMv5qLMbVct+AZfqHa5fVFpNlb2ZGBq7aAi0Xhg4XZLYZBooDrSCr/Tol4RHKHwb7K2yEGjjv1/KyKpLaJ2/Qtbe5z2z6twDJ+viesSeEhd+Ny+NXf0lFPmSD0MyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525981; c=relaxed/simple;
-	bh=kOsXsPHp1Bfu77OQSUAPxFgIL5YPL9YIzS/aykxES2g=;
+	s=arc-20240116; t=1755522674; c=relaxed/simple;
+	bh=OqzYYaTcDt8hfcCcY97V7Jkm5ONn13qGJnbCtHMJp3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWvya+oPXKuKxJ54oyscE0grtpb2uu6k5C21YJaK4y0Z7OjgyyNldx1TlHvIsgt+G+n2Qre95n2joiLc2VJrC5Kt/hADVLvnjZpDnYzuLkG8CFWBcVjuSe6H1c4SyMOE6isxIh9jBdAy+82uCCp6AqWyKMSB+rGQ6CherfdktRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZN9HMaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AA3C4CEEB;
-	Mon, 18 Aug 2025 14:06:19 +0000 (UTC)
+	 MIME-Version; b=uCxHLwPaH2opG/cenUfnEW85pbGcWV/Dz6FPKIDrgr8kRrr8itRzH35REyFExyIeikCxQG/BlOUY5LpuXJboA6OfDY6vZj8dSAVgReHsLyCy6R3dU9JdRxviQgV8I/NnxzUfzA6ueTHr3OmSQYSeT/CPy5oBebHjPfwLTNxV/jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axoXjou9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33354C4CEEB;
+	Mon, 18 Aug 2025 13:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525980;
-	bh=kOsXsPHp1Bfu77OQSUAPxFgIL5YPL9YIzS/aykxES2g=;
+	s=korg; t=1755522674;
+	bh=OqzYYaTcDt8hfcCcY97V7Jkm5ONn13qGJnbCtHMJp3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZN9HMaLv8e0GP2oxaai5K2EL4PjHpo+DdpHKxdwlqbWfGlhLkMQmSkVnj23NUj0y
-	 F9Yv9ZhUsjU31P6rfcT2J3G61DuhPmSZtdS98cuGldT4uIWTX0z/u3Xv6b5LnDZWi7
-	 ail1pXFc3Wt97MHr5TN4eeKBg6dKYiYMFZaNsk1E=
+	b=axoXjou9shevbUsq+1EVMQHt+IzXIgsVPsBAbyYATdjmWRvn2vvkkY6MVqC/+618b
+	 QrlHx901ivGYPl4RrUGpzbBtycQvkJXLibNPkfs/HeTwALMFhcZFmmz3dMeA0+m9Mh
+	 n/qIS6upJMCU/q3E2ebzUTFYuHBdoQI47B/5nU6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 424/570] module: Prevent silent truncation of module name in delete_module(2)
-Date: Mon, 18 Aug 2025 14:46:51 +0200
-Message-ID: <20250818124522.172235862@linuxfoundation.org>
+	Ricky Wu <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 386/444] misc: rtsx: usb: Ensure mmc child device is active when card is present
+Date: Mon, 18 Aug 2025 14:46:52 +0200
+Message-ID: <20250818124503.373131147@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Ricky Wu <ricky_wu@realtek.com>
 
-[ Upstream commit a6323bd4e611567913e23df5b58f2d4e4da06789 ]
+commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
 
-Passing a module name longer than MODULE_NAME_LEN to the delete_module
-syscall results in its silent truncation. This really isn't much of
-a problem in practice, but it could theoretically lead to the removal of an
-incorrect module. It is more sensible to return ENAMETOOLONG or ENOENT in
-such a case.
+When a card is present in the reader, the driver currently defers
+autosuspend by returning -EAGAIN during the suspend callback to
+trigger USB remote wakeup signaling. However, this does not guarantee
+that the mmc child device has been resumed, which may cause issues if
+it remains suspended while the card is accessible.
+This patch ensures that all child devices, including the mmc host
+controller, are explicitly resumed before returning -EAGAIN. This
+fixes a corner case introduced by earlier remote wakeup handling,
+improving reliability of runtime PM when a card is inserted.
 
-Update the syscall to return ENOENT, as documented in the delete_module(2)
-man page to mean "No module by that name exists." This is appropriate
-because a module with a name longer than MODULE_NAME_LEN cannot be loaded
-in the first place.
-
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Link: https://lore.kernel.org/r/20250630143535.267745-2-petr.pavlu@suse.com
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module/main.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 43df45c39f59..b62f9ccc50d6 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -751,14 +751,16 @@ SYSCALL_DEFINE2(delete_module, const char __user *, name_user,
- 	struct module *mod;
- 	char name[MODULE_NAME_LEN];
- 	char buf[MODULE_FLAGS_BUF_SIZE];
--	int ret, forced = 0;
-+	int ret, len, forced = 0;
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
+ }
  
- 	if (!capable(CAP_SYS_MODULE) || modules_disabled)
- 		return -EPERM;
+ #ifdef CONFIG_PM
++static int rtsx_usb_resume_child(struct device *dev, void *data)
++{
++	pm_request_resume(dev);
++	return 0;
++}
++
+ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct rtsx_ucr *ucr =
+@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
+ 			mutex_unlock(&ucr->dev_mutex);
  
--	if (strncpy_from_user(name, name_user, MODULE_NAME_LEN-1) < 0)
--		return -EFAULT;
--	name[MODULE_NAME_LEN-1] = '\0';
-+	len = strncpy_from_user(name, name_user, MODULE_NAME_LEN);
-+	if (len == 0 || len == MODULE_NAME_LEN)
-+		return -ENOENT;
-+	if (len < 0)
-+		return len;
+ 			/* Defer the autosuspend if card exists */
+-			if (val & (SD_CD | MS_CD))
++			if (val & (SD_CD | MS_CD)) {
++				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+ 				return -EAGAIN;
++			}
+ 		} else {
+ 			/* There is an ongoing operation*/
+ 			return -EAGAIN;
+@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
+ 	return 0;
+ }
  
- 	audit_log_kern_module(name);
- 
--- 
-2.39.5
-
+-static int rtsx_usb_resume_child(struct device *dev, void *data)
+-{
+-	pm_request_resume(dev);
+-	return 0;
+-}
+-
+ static int rtsx_usb_resume(struct usb_interface *intf)
+ {
+ 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
 
 
 
