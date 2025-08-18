@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305ABB2A9C8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E89B2A43B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3024B17EFB8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2975626A72
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54806341ADA;
-	Mon, 18 Aug 2025 14:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B30B1E3DCD;
+	Mon, 18 Aug 2025 13:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I89h4pV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9cP5aev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FFF335BAB;
-	Mon, 18 Aug 2025 14:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B52425F79A;
+	Mon, 18 Aug 2025 13:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526055; cv=none; b=YQW1p0udfZqLwHXhDrInIql9iIn6ihLJJ89ccef073oYBAF2yzrJTWRN5J89tko/ewSDohV3yr5ww9awfXqdeGR/4H9z8HNbuHvKtfUH9r46hQhoCUnl62SXT2WVLmfPppf0wSFOIue9jykJIEZFKmcG6ell0zvvSmSSzw3QAGM=
+	t=1755522732; cv=none; b=Wbca12c9M2PosPxDgD0IQwqUjg4h2oyFBvDadU1RstgGLiMX0VRwtLnQFgvfQjqAaiNgT/9cALJIoPTCJVS8vRPrLNMGNuxnmDgJAy85t9+nls7i7JDY2aD98Y89rjPIeJC15TqHa4glbnPPbUX1JR8bDL/euIq/93aqJIH3lNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526055; c=relaxed/simple;
-	bh=JK2jwkb+LfjMJNqNrg8lvMm9g/4GuRYdhIA97D4vmJw=;
+	s=arc-20240116; t=1755522732; c=relaxed/simple;
+	bh=kg998g88IFFKFqRQpbkuTeynKLaEnzkniiJRZmk/Fmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amiIn9bGmjrXP5XhaIC0uXWuY4zaxxIVmTbEjzrT8ifKfPUHGWvDoEDSe8GjQRwOmp7IPvwMK8xaOXn5UwtdtOXDhaRxwIQT2MqG8V48wwh6yaVevOWOhulZcaIsbKKH10XHojb8YUEze+pyASeyz13DIKx0cvYPAkEpoxcuxHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I89h4pV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAC0C4CEEB;
-	Mon, 18 Aug 2025 14:07:34 +0000 (UTC)
+	 MIME-Version; b=D02VjWGOSxqFUh8dePCe4nrYh/q+qIkuZw69ID5pRwfgFt3lJ+OXW2x/rlSoI5wNOZiEsDbrnaquDb3+HU7xcdk/6wJAXInhCbr+sxRJJin0/l9jKWVadXeIhhYmbWBbIRSRXCfKLNADt7IbKDVHaJFFn5uTtj7ZquSyYUDc57g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9cP5aev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46938C4CEEB;
+	Mon, 18 Aug 2025 13:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526055;
-	bh=JK2jwkb+LfjMJNqNrg8lvMm9g/4GuRYdhIA97D4vmJw=;
+	s=korg; t=1755522731;
+	bh=kg998g88IFFKFqRQpbkuTeynKLaEnzkniiJRZmk/Fmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I89h4pV72ieGyRGdpa8B51S5wvoLsxOTodDU2EuvBmNOtugP5Zwxh6dInLtHnMyNZ
-	 tKzp5E8XBNGzKVILy1ejmlxCK3Tj5u9WRSboOqhdtGZ5g6KM2HA2TIGPNA0dlpm4o9
-	 xoNYbfcwrEHizAGxRBt0R4nZYT1TLDEfDnK/KiUU=
+	b=N9cP5aeviiqE0BZio08Nq2ehf5FpSnVphOVOVbAWFryUa7W5Ki29l3XEmh73hucKy
+	 cpaniIoFld4x7d00+AexcxK9Q8S6+KplDwfQVRHsIEms9jgJtdn4xHz23xsiNLI55j
+	 v4pBluPlNC67sNcTVrrHpGrTzfoBRqL1O8LcjbqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 444/570] scsi: aacraid: Stop using PCI_IRQ_AFFINITY
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 405/444] btrfs: do not allow relocation of partially dropped subvolumes
 Date: Mon, 18 Aug 2025 14:47:11 +0200
-Message-ID: <20250818124522.921185265@linuxfoundation.org>
+Message-ID: <20250818124504.117401385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit dafeaf2c03e71255438ffe5a341d94d180e6c88e ]
+commit 4289b494ac553e74e86fed1c66b2bf9530bc1082 upstream.
 
-When PCI_IRQ_AFFINITY is set for calling pci_alloc_irq_vectors(), it
-means interrupts are spread around the available CPUs. It also means that
-the interrupts become managed, which means that an interrupt is shutdown
-when all the CPUs in the interrupt affinity mask go offline.
+[BUG]
+There is an internal report that balance triggered transaction abort,
+with the following call trace:
 
-Using managed interrupts in this way means that we should ensure that
-completions should not occur on HW queues where the associated interrupt
-is shutdown. This is typically achieved by ensuring only CPUs which are
-online can generate IO completion traffic to the HW queue which they are
-mapped to (so that they can also serve completion interrupts for that HW
-queue).
+  item 85 key (594509824 169 0) itemoff 12599 itemsize 33
+          extent refs 1 gen 197740 flags 2
+          ref#0: tree block backref root 7
+  item 86 key (594558976 169 0) itemoff 12566 itemsize 33
+          extent refs 1 gen 197522 flags 2
+          ref#0: tree block backref root 7
+ ...
+ BTRFS error (device loop0): extent item not found for insert, bytenr 594526208 num_bytes 16384 parent 449921024 root_objectid 934 owner 1 offset 0
+ BTRFS error (device loop0): failed to run delayed ref for logical 594526208 num_bytes 16384 type 182 action 1 ref_mod 1: -117
+ ------------[ cut here ]------------
+ BTRFS: Transaction aborted (error -117)
+ WARNING: CPU: 1 PID: 6963 at ../fs/btrfs/extent-tree.c:2168 btrfs_run_delayed_refs+0xfa/0x110 [btrfs]
 
-The problem in the driver is that a CPU can generate completions to a HW
-queue whose interrupt may be shutdown, as the CPUs in the HW queue
-interrupt affinity mask may be offline. This can cause IOs to never
-complete and hang the system. The driver maintains its own CPU <-> HW
-queue mapping for submissions, see aac_fib_vector_assign(), but this does
-not reflect the CPU <-> HW queue interrupt affinity mapping.
+And btrfs check doesn't report anything wrong related to the extent
+tree.
 
-Commit 9dc704dcc09e ("scsi: aacraid: Reply queue mapping to CPUs based on
-IRQ affinity") tried to remedy this issue may mapping CPUs properly to HW
-queue interrupts. However this was later reverted in commit c5becf57dd56
-("Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ
-affinity") - it seems that there were other reports of hangs. I guess
-that this was due to some implementation issue in the original commit or
-maybe a HW issue.
+[CAUSE]
+The cause is a little complex, firstly the extent tree indeed doesn't
+have the backref for 594526208.
 
-Fix the very original hang by just not using managed interrupts by not
-setting PCI_IRQ_AFFINITY.  In this way, all CPUs will be in each HW queue
-affinity mask, so should not create completion problems if any CPUs go
-offline.
+The extent tree only have the following two backrefs around that bytenr
+on-disk:
 
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20250715111535.499853-1-john.g.garry@oracle.com
-Closes: https://lore.kernel.org/linux-scsi/20250618192427.3845724-1-jmeneghi@redhat.com/
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+        item 65 key (594509824 METADATA_ITEM 0) itemoff 13880 itemsize 33
+                refs 1 gen 197740 flags TREE_BLOCK
+                tree block skinny level 0
+                (176 0x7) tree block backref root CSUM_TREE
+        item 66 key (594558976 METADATA_ITEM 0) itemoff 13847 itemsize 33
+                refs 1 gen 197522 flags TREE_BLOCK
+                tree block skinny level 0
+                (176 0x7) tree block backref root CSUM_TREE
+
+But the such missing backref item is not an corruption on disk, as the
+offending delayed ref belongs to subvolume 934, and that subvolume is
+being dropped:
+
+        item 0 key (934 ROOT_ITEM 198229) itemoff 15844 itemsize 439
+                generation 198229 root_dirid 256 bytenr 10741039104 byte_limit 0 bytes_used 345571328
+                last_snapshot 198229 flags 0x1000000000001(RDONLY) refs 0
+                drop_progress key (206324 EXTENT_DATA 2711650304) drop_level 2
+                level 2 generation_v2 198229
+
+And that offending tree block 594526208 is inside the dropped range of
+that subvolume.  That explains why there is no backref item for that
+bytenr and why btrfs check is not reporting anything wrong.
+
+But this also shows another problem, as btrfs will do all the orphan
+subvolume cleanup at a read-write mount.
+
+So half-dropped subvolume should not exist after an RW mount, and
+balance itself is also exclusive to subvolume cleanup, meaning we
+shouldn't hit a subvolume half-dropped during relocation.
+
+The root cause is, there is no orphan item for this subvolume.
+In fact there are 5 subvolumes from around 2021 that have the same
+problem.
+
+It looks like the original report has some older kernels running, and
+caused those zombie subvolumes.
+
+Thankfully upstream commit 8d488a8c7ba2 ("btrfs: fix subvolume/snapshot
+deletion not triggered on mount") has long fixed the bug.
+
+[ENHANCEMENT]
+For repairing such old fs, btrfs-progs will be enhanced.
+
+Considering how delayed the problem will show up (at run delayed ref
+time) and at that time we have to abort transaction already, it is too
+late.
+
+Instead here we reject any half-dropped subvolume for reloc tree at the
+earliest time, preventing confusion and extra time wasted on debugging
+similar bugs.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/aacraid/comminit.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/btrfs/relocation.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index 28cf18955a08..726c8531b7d3 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -481,8 +481,7 @@ void aac_define_int_mode(struct aac_dev *dev)
- 	    pci_find_capability(dev->pdev, PCI_CAP_ID_MSIX)) {
- 		min_msix = 2;
- 		i = pci_alloc_irq_vectors(dev->pdev,
--					  min_msix, msi_count,
--					  PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
-+					  min_msix, msi_count, PCI_IRQ_MSIX);
- 		if (i > 0) {
- 			dev->msi_enabled = 1;
- 			msi_count = i;
--- 
-2.39.5
-
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -687,6 +687,25 @@ static struct btrfs_root *create_reloc_r
+ 	if (btrfs_root_id(root) == objectid) {
+ 		u64 commit_root_gen;
+ 
++		/*
++		 * Relocation will wait for cleaner thread, and any half-dropped
++		 * subvolume will be fully cleaned up at mount time.
++		 * So here we shouldn't hit a subvolume with non-zero drop_progress.
++		 *
++		 * If this isn't the case, error out since it can make us attempt to
++		 * drop references for extents that were already dropped before.
++		 */
++		if (unlikely(btrfs_disk_key_objectid(&root->root_item.drop_progress))) {
++			struct btrfs_key cpu_key;
++
++			btrfs_disk_key_to_cpu(&cpu_key, &root->root_item.drop_progress);
++			btrfs_err(fs_info,
++	"cannot relocate partially dropped subvolume %llu, drop progress key (%llu %u %llu)",
++				  objectid, cpu_key.objectid, cpu_key.type, cpu_key.offset);
++			ret = -EUCLEAN;
++			goto fail;
++		}
++
+ 		/* called by btrfs_init_reloc_root */
+ 		ret = btrfs_copy_root(trans, root, root->commit_root, &eb,
+ 				      BTRFS_TREE_RELOC_OBJECTID);
 
 
 
