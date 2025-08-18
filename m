@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EDEB2A3E3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CC1FB2A9EB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB991899AD8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25F56686EB7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1EB31CA61;
-	Mon, 18 Aug 2025 13:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D457340DA4;
+	Mon, 18 Aug 2025 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLf3jKze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVv1zAtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C89230F7F8;
-	Mon, 18 Aug 2025 13:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A4B340D98;
+	Mon, 18 Aug 2025 14:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522465; cv=none; b=B9Lo/xU1Fq/nfxZpScNa352O2uQtnguKSGpATYDGxBmbum711BYPKJ9t8M/gDLMGtJgEAU2RVmTxmX2S/R7Zgy6+o+MaxqavN21RuUJidctByBIgev+i9qUfbO9a3zofCv3BBmYwc7WfQXplhBdAgxk6XKNGPVPto9T+yCQE1Jw=
+	t=1755525773; cv=none; b=BWTVZVH6qoUx2Fpf+gJ/+JZKCDa4rJtSizupNYrbcPdSADRKsUkIy2COw+zZC1TnJ6pzzcv8K1XsIadafkWWwWoD3nELmS/ksJRnNNopttQNq2YtfTjBxHdFDs5eOILCK3NE1+x+7164wtP3YsbWrpPqP7//37MTY8bBrQK2sBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522465; c=relaxed/simple;
-	bh=nHBwcNBVapzO8julUXAccmFGLec5NBdHAODHnMyuI8w=;
+	s=arc-20240116; t=1755525773; c=relaxed/simple;
+	bh=willZGGSEIhZHdXCISANgxVZMBoGxQxm9C74TSXoYiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exIF1OSgCIKKQ7Hab2clJ473VbIYSAioBKQO3a31+YYAcQDUMRrwbO9Ap+dalAn2XCeIQlL3ig4JzMdarhkLmjibjXgZ7j3Yn8N5vKSIIdpCAWtHXnFFoeEv5+sROEKBmZ715A+8+Hl35YJiS8fAK1/3jKDfs91Mww7XH/CLDIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLf3jKze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B502C4CEF1;
-	Mon, 18 Aug 2025 13:07:44 +0000 (UTC)
+	 MIME-Version; b=m/pdifyk8fBfdKi+Mr3joOTGCD7pRVDBb4ItbmUd9ibs/jpJOoWEkTNYGYPPnR/WDrsuz/R1oOPNOF53kjs1ZaDh8wAWGsp76oiCjberwi2+ECxNr0wTd3ySkeN3MQ+PvGNOvAB6kT58fIhjeKV6s1ocV/4ADcYqgAsEVbEKP9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVv1zAtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4D3C4CEEB;
+	Mon, 18 Aug 2025 14:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522465;
-	bh=nHBwcNBVapzO8julUXAccmFGLec5NBdHAODHnMyuI8w=;
+	s=korg; t=1755525772;
+	bh=willZGGSEIhZHdXCISANgxVZMBoGxQxm9C74TSXoYiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLf3jKze1cYZxAmU/2I+HeN1ku6V5+cTVoxO6ejJb/+p8HoF/mlOf+6jqbbLPE3Sa
-	 S3iXyVN/+K4cbC6Lk/oJC4eKsM9bxU/Uaw7oZI3QB1LMpV7c3gfCuugaaqyr1tW9Qz
-	 vktLp6LHazFuP462h6RUEiDQWoUXU61SnvGCAkiU=
+	b=cVv1zAtMQlSCYkSyfwLGbUS8SEy7IO99TQPqwv6Eg+gAzDGK4q/rtk/Ipp/P+bR2k
+	 zp19uLJhDoYL19bd8ijmjA9vJ9hPfD10MeOgkHL8xrFK77zxkvgxsPjhE6h8k+hP/4
+	 NWDflgqvaIXhKtznIbEjAStAeRIsbOLBb1HpLNX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Yongzhen Zhang <zhangyongzhen@kylinos.cn>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 323/444] clk: renesas: rzg2l: Postpone updating priv->clks[]
+Subject: [PATCH 6.16 362/570] fbdev: fix potential buffer overflow in do_register_framebuffer()
 Date: Mon, 18 Aug 2025 14:45:49 +0200
-Message-ID: <20250818124501.052398089@linuxfoundation.org>
+Message-ID: <20250818124519.810624237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
 
-[ Upstream commit 2f96afdffad4ef74e3c511207058c41c54a2d014 ]
+[ Upstream commit 523b84dc7ccea9c4d79126d6ed1cf9033cf83b05 ]
 
-Since the sibling data is filled after the priv->clks[] array entry is
-populated, the first clock that is probed and has a sibling will
-temporarily behave as its own sibling until its actual sibling is
-populated. To avoid any issues, postpone updating priv->clks[] until after
-the sibling is populated.
+The current implementation may lead to buffer overflow when:
+1.  Unregistration creates NULL gaps in registered_fb[]
+2.  All array slots become occupied despite num_registered_fb < FB_MAX
+3.  The registration loop exceeds array bounds
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250514090415.4098534-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Add boundary check to prevent registered_fb[FB_MAX] access.
+
+Signed-off-by: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/fbmem.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 97d42328fa81..e2ecc9d36e05 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -1398,10 +1398,6 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
- 		goto fail;
- 	}
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index dfcf5e4d1d4c..53f1719b1ae1 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -449,6 +449,9 @@ static int do_register_framebuffer(struct fb_info *fb_info)
+ 		if (!registered_fb[i])
+ 			break;
  
--	clk = clock->hw.clk;
--	dev_dbg(dev, "Module clock %pC at %lu Hz\n", clk, clk_get_rate(clk));
--	priv->clks[id] = clk;
--
- 	if (mod->is_coupled) {
- 		struct mstp_clock *sibling;
- 
-@@ -1413,6 +1409,10 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
- 		}
- 	}
- 
-+	clk = clock->hw.clk;
-+	dev_dbg(dev, "Module clock %pC at %lu Hz\n", clk, clk_get_rate(clk));
-+	priv->clks[id] = clk;
++	if (i >= FB_MAX)
++		return -ENXIO;
 +
- 	return;
+ 	if (!fb_info->modelist.prev || !fb_info->modelist.next)
+ 		INIT_LIST_HEAD(&fb_info->modelist);
  
- fail:
 -- 
 2.39.5
 
