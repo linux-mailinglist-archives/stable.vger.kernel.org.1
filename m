@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D454B2A6FA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14738B2A9BB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D316561E50
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3F31B66830
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E76223DC0;
-	Mon, 18 Aug 2025 13:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67981322C7D;
+	Mon, 18 Aug 2025 14:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxZINmiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8e2l4uS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07422222A0;
-	Mon, 18 Aug 2025 13:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231A03203A2;
+	Mon, 18 Aug 2025 14:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524321; cv=none; b=SjsHg3g+9Od+J8vfMBzY6HEFkNLBsKDGpTItvk76hFoxWv9YNKcJ+xguwcYBW6fet9kAbnNChQjG2So3P4+dP9rkMgY1ANqOswWu9SNMbLxplMKnuIEtcKDMQ/achYJv31Fw4WljFn+GIMmz3ajgwpUy9BBl5LOFN4tVB6/OWIY=
+	t=1755525910; cv=none; b=bySTD4cvzd/XQWx4tqJTgQZfnEVlSGsYWWYdvRmfdn8iES956rPzzN8thmT8q2HU/a2YVahs+iaInpzRKZds2nN7EJLFSs2UdVtgVORWKTECBLzgO91SSJhEV9YVWjpRsG+AckRZFTDDGisjEC4Lyft8BrqKZEBvUGwisS0QtPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524321; c=relaxed/simple;
-	bh=mu4K7T2lAQKt8y2AvksqKpEs5B1TK53NVLiFXFlbHgU=;
+	s=arc-20240116; t=1755525910; c=relaxed/simple;
+	bh=yzFWpfkwLkeGh3umJx1D1XJwpHfv7fYRv8BGKp969Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8qUmpUpKYG7we39fTTwdoKi+HnDMorbPGjtwv/+ZAbC04vkknt/Q9ER3HYBVBMYyUmYyDjHtIgnAOFvVUSNpjwbDsnx5TxuqQCO3h7MAvwVn18vnCfKpfksWdGudLVbRZjl+HrUejklvTuhdyohiamQBFYVG7xVxn7r0wXVNDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxZINmiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E79C4CEF1;
-	Mon, 18 Aug 2025 13:38:41 +0000 (UTC)
+	 MIME-Version; b=tWR+gd+gEC8zV/tzCiKVtdkKdYsjjBi+Lhc7RLnd5NYRZkyNZ3zT04mA0VyN0vuCpDuZJrwOks1QfaUYzESN2dgnNmUfPMGaBHsjmUuODPyCE1IGAqpNajnMN3nEA3Fr/fSSQL36lamkbO8FhthQ05dLExXbaUxx0wFJTBE5408=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8e2l4uS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822DFC4CEEB;
+	Mon, 18 Aug 2025 14:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524321;
-	bh=mu4K7T2lAQKt8y2AvksqKpEs5B1TK53NVLiFXFlbHgU=;
+	s=korg; t=1755525910;
+	bh=yzFWpfkwLkeGh3umJx1D1XJwpHfv7fYRv8BGKp969Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxZINmiqTPSau3o7yKrsK/PUNub8dG2HFKyZ12HzhwqHxuUUl8PFGLFoSezE484SM
-	 bwyYyCY5eKNmHXoSShq+ln0pFmK6RVl3Kt/Q+wk1VKO1xLj0EJpQxGrux27EMc3l60
-	 Og4ACzOqpZrFetYkAi2efhId/Au89k+oel2kem/A=
+	b=L8e2l4uSbpKc0esT/X0Ivv0p4McTQkJSVLX20/IB6WRcp+DZYS4AzHwB81b+Locd3
+	 PHW1xXs4+zsd+B2xjXUY6BXl7eCWZJwzZe+H0a01Or4hstsSSWau1GSq5rItOa/1yI
+	 YaVLV85FUY9odIj4ZMCfWTTACC2oKwEAiKWqoYa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 403/515] f2fs: check the generic conditions first
+Subject: [PATCH 6.16 402/570] scsi: mpt3sas: Correctly handle ATA device errors
 Date: Mon, 18 Aug 2025 14:46:29 +0200
-Message-ID: <20250818124513.928594472@linuxfoundation.org>
+Message-ID: <20250818124521.338198374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit e23ab8028de0d92df5921a570f5212c0370db3b5 ]
+[ Upstream commit 15592a11d5a5c8411ac8494ec49736b658f6fbff ]
 
-Let's return errors caught by the generic checks. This fixes generic/494 where
-it expects to see EBUSY by setattr_prepare instead of EINVAL by f2fs for active
-swapfile.
+With the ATA error model, an NCQ command failure always triggers an abort
+(termination) of all NCQ commands queued on the device. In such case, the
+SAT or the host must handle the failed command according to the command
+sense data and immediately retry all other NCQ commands that were aborted
+due to the failed NCQ command.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+For SAS HBAs controlled by the mpt3sas driver, NCQ command aborts are not
+handled by the HBA SAT and sent back to the host, with an ioc log
+information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
+PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
+_scsih_io_done() always forces a retry of commands terminated with the
+status MPI2_IOCSTATUS_SCSI_IOC_TERMINATED using the SCSI result
+DID_SOFT_ERROR, regardless of the log_info for the command.  This
+correctly forces the retry of collateral NCQ abort commands, but with the
+retry counter for the command being incremented. If a command to an ATA
+device is subject to too many retries due to other NCQ commands failing
+(e.g. read commands trying to access unreadable sectors), the collateral
+NCQ abort commands may be terminated with an error as they run out of
+retries. This violates the SAT specification and causes hard-to-debug
+command errors.
+
+Solve this issue by modifying the handling of the
+MPI2_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
+ATA device and if the command loginfo indicates an NCQ collateral
+abort. If that is the case, force the command retry using the SCSI result
+DID_IMM_RETRY to avoid incrementing the command retry count.
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250606052747.742998-3-dlemoal@kernel.org
+Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index f2de3c886c08..72c8d8cb6fe8 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1044,6 +1044,18 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	if (unlikely(f2fs_cp_error(F2FS_I_SB(inode))))
- 		return -EIO;
- 
-+	err = setattr_prepare(idmap, dentry, attr);
-+	if (err)
-+		return err;
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+index 0f900ddb3047..967af259118e 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -195,6 +195,14 @@ struct sense_info {
+ #define MPT3SAS_PORT_ENABLE_COMPLETE (0xFFFD)
+ #define MPT3SAS_ABRT_TASK_SET (0xFFFE)
+ #define MPT3SAS_REMOVE_UNRESPONDING_DEVICES (0xFFFF)
 +
-+	err = fscrypt_prepare_setattr(dentry, attr);
-+	if (err)
-+		return err;
++/*
++ * SAS Log info code for a NCQ collateral abort after an NCQ error:
++ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
++ * See: drivers/message/fusion/lsi/mpi_log_sas.h
++ */
++#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
 +
-+	err = fsverity_prepare_setattr(dentry, attr);
-+	if (err)
-+		return err;
-+
- 	if (unlikely(IS_IMMUTABLE(inode)))
- 		return -EPERM;
- 
-@@ -1062,18 +1074,6 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 			return -EINVAL;
- 	}
- 
--	err = setattr_prepare(idmap, dentry, attr);
--	if (err)
--		return err;
--
--	err = fscrypt_prepare_setattr(dentry, attr);
--	if (err)
--		return err;
--
--	err = fsverity_prepare_setattr(dentry, attr);
--	if (err)
--		return err;
--
- 	if (is_quota_modification(idmap, inode, attr)) {
- 		err = f2fs_dquot_initialize(inode);
- 		if (err)
+ /**
+  * struct fw_event_work - firmware event struct
+  * @list: link list framework
+@@ -5814,6 +5822,17 @@ _scsih_io_done(struct MPT3SAS_ADAPTER *ioc, u16 smid, u8 msix_index, u32 reply)
+ 			scmd->result = DID_TRANSPORT_DISRUPTED << 16;
+ 			goto out;
+ 		}
++		if (log_info == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
++			/*
++			 * This is a ATA NCQ command aborted due to another NCQ
++			 * command failure. We must retry this command
++			 * immediately but without incrementing its retry
++			 * counter.
++			 */
++			WARN_ON_ONCE(xfer_cnt != 0);
++			scmd->result = DID_IMM_RETRY << 16;
++			break;
++		}
+ 		if (log_info == 0x31110630) {
+ 			if (scmd->retries > 2) {
+ 				scmd->result = DID_NO_CONNECT << 16;
 -- 
 2.39.5
 
