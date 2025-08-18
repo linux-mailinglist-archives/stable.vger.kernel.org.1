@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD94B2A5DA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9E4B2A7E9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8847680EFF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EC836820C5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B83321F30;
-	Mon, 18 Aug 2025 13:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328432192F4;
+	Mon, 18 Aug 2025 13:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Js5bjhXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JihSws2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229DC226D1F;
-	Mon, 18 Aug 2025 13:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16C61A5B92;
+	Mon, 18 Aug 2025 13:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523399; cv=none; b=pr9+M7xt5NSsBiVM4ZSA4JiLEhqib7JNb1Ohzmis9ItactSG0M5tGJDEQ/Z9B63z3vjUY/g2FfvG5/5tUfc2ZyI07QrIRdqeR4mAcTXZblXJQmpmebNVfSd8/Ua9NKjRsgDFY4zldqvVu4RWa07XtOmZkYMP8prWgAoO9GbZmrc=
+	t=1755525111; cv=none; b=NC9E0EXgIZKRDleIHlx8MHX2WdHHDN8M9oGohoqiWMijSmgZTqyat05+6Pm5Wge1bmyw1UoPwIEWkWs6P9QS4TSzb4woRa1sAR1RRHndIucf1KAT0g3lS/RFXoH1fV29hLVE+96gLB6Gh2uNSi1bwdGC/d6CaD0Vq12QyC3YFM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523399; c=relaxed/simple;
-	bh=cXn/ug5C4K5zFoIxujM+Eji7OgPn1h695sc+ITM7Up0=;
+	s=arc-20240116; t=1755525111; c=relaxed/simple;
+	bh=3OPRIrsP/0e16xIv6gDVxcSz+2PZsp4qQ1jU9MmavUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cXf17NZCgf9luHhngwDyzuXiNIgHNxqBdPq3xb79mmF8r/HzpzlQ7g61V7w1u5xzi8egLgA0z6aWV8CnNkuG+kYD+QmCgIhPIMebFPmZOET9DqF5YDJThSGQwrY/5V+TIEH+EQPj8eWcNAvBdHu4T2S1yBOCuFneadtVh57vpB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Js5bjhXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99012C4CEEB;
-	Mon, 18 Aug 2025 13:23:18 +0000 (UTC)
+	 MIME-Version; b=YM+8KNbVpaxymZti33IU1eYC9QCYwjsgFp2HgaaSvmhtahwEKZ5AfciR0L/iZEkQ84uUdCMp98V7IiFntZIBlNpFZ3ClRDCRefJluRUEsUcgjGGVa8Pv0uPJa9f8vIEItHdxrj1ZM2dDiRcCBL4A85QGG6EDjjqTn/Yme4klLzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JihSws2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E83C4CEF1;
+	Mon, 18 Aug 2025 13:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523399;
-	bh=cXn/ug5C4K5zFoIxujM+Eji7OgPn1h695sc+ITM7Up0=;
+	s=korg; t=1755525110;
+	bh=3OPRIrsP/0e16xIv6gDVxcSz+2PZsp4qQ1jU9MmavUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Js5bjhXVIgE8XKXgHtffftwxeA7eVv+aLdDx2TEkPC7eSGa+9dxask+39A1Rkj6sz
-	 awl50gws1hTDTSjOGgxIJWFQCPLHtLMHgIJdBvuMpGMF+MJhgkuqWStqbQyoggIMsC
-	 FZ4tDTkDzug3Hq59a1VrYYmgCJjDM80AuyRxtSPc=
+	b=JihSws2gp30G4Kspx32bBTGP2sJGfRhgDWQSbUWVmbl0idszKHGDkVBCA+MTOZQXx
+	 do4D/apMgz9fYl9KLr2tB5DUUI8p9x0d0cjpAO+C9K3VnNQOl80Bkm8IzEk26qtqWH
+	 wGEs4VNRSGbRs4PeO4CyvD7aPikOo4B4Um+aQYtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Zhu Qiyu <qiyuzhu2@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 160/515] reset: brcmstb: Enable reset drivers for ARCH_BCM2835
-Date: Mon, 18 Aug 2025 14:42:26 +0200
-Message-ID: <20250818124504.542962084@linuxfoundation.org>
+Subject: [PATCH 6.16 160/570] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Date: Mon, 18 Aug 2025 14:42:27 +0200
+Message-ID: <20250818124511.974094640@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Zhu Qiyu <qiyuzhu2@amd.com>
 
-[ Upstream commit 1d99f92f71b6b4b2eee776562c991428490f71ef ]
+[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
 
-The BRCMSTB and BRCMSTB_RESCAL reset drivers are also
-used in the BCM2712, AKA the RPi5. The RPi platforms
-have typically used the ARCH_BCM2835, and the PCIe
-support for this SoC can use this config which depends
-on these drivers so enable building them when just that
-arch option is enabled to ensure the platform works as
-expected.
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") introduced non-essential printing "Failed to find
+VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
+something wrong is going on while it is not the case.
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250630175301.846082-1-pbrobinson@gmail.com
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+According to the PRM Spec Section 4.1.2 [1], both static data buffer
+address and ACPI parameter buffer address may be NULL if they are not
+needed, so there is no need to print out the "Failed to find VA ... "
+in those cases.
+
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
+Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
+[ rjw: Edits in new comments, subject and changelog ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 99f6f9784e68..c9bbdc6ac382 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -51,8 +51,8 @@ config RESET_BERLIN
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index e549914a636c..be033bbb126a 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
+ 		}
+ 	}
  
- config RESET_BRCMSTB
- 	tristate "Broadcom STB reset controller"
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the reset controller driver for Broadcom STB SoCs using
- 	  a SUN_TOP_CTRL_SW_INIT style controller.
-@@ -60,11 +60,11 @@ config RESET_BRCMSTB
- config RESET_BRCMSTB_RESCAL
- 	tristate "Broadcom STB RESCAL reset controller"
- 	depends on HAS_IOMEM
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
--	  BCM7216.
-+	  BCM7216 or the BCM2712.
+-	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
+-
+ 	return 0;
+ }
  
- config RESET_EYEQ
- 	bool "Mobileye EyeQ reset controller"
+@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
+ 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
+ 		th->handler_addr =
+ 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
++		/*
++		 * Print a warning message if handler_addr is zero which is not expected to
++		 * ever happen.
++		 */
++		if (unlikely(!th->handler_addr))
++			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->handler_address);
+ 
+ 		th->static_data_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
++		/*
++		 * According to the PRM specification, static_data_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
++			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->static_data_buffer_address);
+ 
+ 		th->acpi_param_buffer_addr =
+ 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
+ 
++		/*
++		 * According to the PRM specification, acpi_param_buffer_address can be zero,
++		 * so avoid printing a warning message in that case.  Otherwise, if the
++		 * return value of efi_pa_va_lookup() is zero, print the message.
++		 */
++		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
++			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
++				&th->guid, handler_info->acpi_param_buffer_address);
++
+ 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
+ 
+ 	return 0;
 -- 
 2.39.5
 
