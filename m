@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-171087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD67B2A72B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B134B2A4E7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F17B7B88AC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22EB47A90CE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB21335BBE;
-	Mon, 18 Aug 2025 13:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68D232277C;
+	Mon, 18 Aug 2025 13:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKxaybWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h04fJAqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52A4335BA8;
-	Mon, 18 Aug 2025 13:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6339D321443;
+	Mon, 18 Aug 2025 13:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524774; cv=none; b=JGgiXU44wzaEbl7/WB23BARskGenWBVxliBWCXa3BywMoo0EeUBH9I59jcoGpax3zY3MG7v8tIXwjz3bCdkjlZMnlrvR/JmHvwBJwoU6BAflo0McxiXzNtSFlOLwUSCC9d0sfKtxs+/VU+ZYRJXjULt9MYqpSsfLSQ38px8JYsU=
+	t=1755523059; cv=none; b=AgM0g5IJXJ9MmAfzd8XvE+mDqhNYKkyG/SxZgkVx5ps8DyXdJAM+fNGAkuD5rTtz4FSC5ruqv8A5qgcBG77tr1rrwARXjpJYXUiueTjWubUtMhwOnQ++tyYV2kE13KCnsZkZeeEwQ0XqyH2sydnQE7PMnUegdmkLRlOcpXJ1LBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524774; c=relaxed/simple;
-	bh=EIAAQKGbmcvxbgaEIe9HenLnyUbAPXv+GK1GARJ9dvY=;
+	s=arc-20240116; t=1755523059; c=relaxed/simple;
+	bh=cCHOwq2liHFL63xv3rOTCi6kjW5KXBHv3rb6sDlA4E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUrmT0LmiHJbd0MKlie7kpZdUn8MGnszo9126DFCj2D/z9g+SiTI0JrU0uAxxwiAeQQ89xTAv+6o7FubVrP7CACjvrkcNRhd5hcvN1VsYU37ghzjdQInsAWr1E5XqSPYapAtjAXJUkyT8Pe6LD6bqs+hrEpsIQBjWVg9SVS/tvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKxaybWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520B1C4CEEB;
-	Mon, 18 Aug 2025 13:46:13 +0000 (UTC)
+	 MIME-Version; b=pJWDmgua5DrSO8+7QDdmlHTAr7y0E0UghmpQX18Us9zGdiTTMaTATWEBujTNCQL5zxRvaFkv2eZ/PsMZ6ZChB2BBo9yZe659+exIrV/BciFnjMgs5KTXuKAPS72gRVAqbT/431MKsI0BNsneuVZY1LF9JAI6iUsdbGZ72et+owE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h04fJAqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC85C4CEF1;
+	Mon, 18 Aug 2025 13:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524773;
-	bh=EIAAQKGbmcvxbgaEIe9HenLnyUbAPXv+GK1GARJ9dvY=;
+	s=korg; t=1755523059;
+	bh=cCHOwq2liHFL63xv3rOTCi6kjW5KXBHv3rb6sDlA4E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKxaybWwiDBoVq3P/UBWnWxKaiu0di3THR4fTLZprFyvrr/pcsxp0CNj0AXKRFE8E
-	 QRg9AtwL+fbaDhNXKP0XmG6vqIGoJqKUZ7TQ/KcyK7ESM4WGjoDjK0pomQ+2xukC9r
-	 1M+0Eywr3Qe2ViE/NW/uUVI+LGDiIpcoWWkGz14U=
+	b=h04fJAqWJrIpe0dQRT13aZA09p6dkW2/qbzHP3JG04d/bpx+uYdAj2hs+gj/bCa24
+	 pkKW80T8+d6AOMc9dC4pYffCmwJOcVQERpuAeyBltIlNEZ+/HtrFCFLZ9IdFQHGIjg
+	 dMviYXN3b259bWfaas+5w6ywMqZa77TkjCELnpOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.16 057/570] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
-Date: Mon, 18 Aug 2025 14:40:44 +0200
-Message-ID: <20250818124508.009465778@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 059/515] netfilter: ctnetlink: fix refcount leak on table dump
+Date: Mon, 18 Aug 2025 14:40:45 +0200
+Message-ID: <20250818124500.687017584@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit 5349ae5e05fa37409fd48a1eb483b199c32c889b upstream.
+[ Upstream commit de788b2e6227462b6dcd0e07474e72c089008f74 ]
 
-We should call ib_dma_unmap_single() and mempool_free() before calling
-smbd_disconnect_rdma_connection().
+There is a reference count leak in ctnetlink_dump_table():
+      if (res < 0) {
+                nf_conntrack_get(&ct->ct_general); // HERE
+                cb->args[1] = (unsigned long)ct;
+                ...
 
-And smbd_disconnect_rdma_connection() needs to be the last function to
-call as all other state might already be gone after it returns.
+While its very unlikely, its possible that ct == last.
+If this happens, then the refcount of ct was already incremented.
+This 2nd increment is never undone.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This prevents the conntrack object from being released, which in turn
+keeps prevents cnet->count from dropping back to 0.
+
+This will then block the netns dismantle (or conntrack rmmod) as
+nf_conntrack_cleanup_net_list() will wait forever.
+
+This can be reproduced by running conntrack_resize.sh selftest in a loop.
+It takes ~20 minutes for me on a preemptible kernel on average before
+I see a runaway kworker spinning in nf_conntrack_cleanup_net_list.
+
+One fix would to change this to:
+        if (res < 0) {
+		if (ct != last)
+	                nf_conntrack_get(&ct->ct_general);
+
+But this reference counting isn't needed in the first place.
+We can just store a cookie value instead.
+
+A followup patch will do the same for ctnetlink_exp_dump_table,
+it looks to me as if this has the same problem and like
+ctnetlink_dump_table, we only need a 'skip hint', not the actual
+object so we can apply the same cookie strategy there as well.
+
+Fixes: d205dc40798d ("[NETFILTER]: ctnetlink: fix deadlock in table dumping")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smbdirect.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -277,18 +277,20 @@ static void send_done(struct ib_cq *cq,
- 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
- 		request, wc->status);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 2cc0fde23344..5fdcae45e0bc 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -884,8 +884,6 @@ ctnetlink_conntrack_event(unsigned int events, const struct nf_ct_event *item)
  
--	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
--		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
--			wc->status, wc->opcode);
--		smbd_disconnect_rdma_connection(request->info);
--	}
--
- 	for (i = 0; i < request->num_sge; i++)
- 		ib_dma_unmap_single(sc->ib.dev,
- 			request->sge[i].addr,
- 			request->sge[i].length,
- 			DMA_TO_DEVICE);
+ static int ctnetlink_done(struct netlink_callback *cb)
+ {
+-	if (cb->args[1])
+-		nf_ct_put((struct nf_conn *)cb->args[1]);
+ 	kfree(cb->data);
+ 	return 0;
+ }
+@@ -1208,19 +1206,26 @@ static int ctnetlink_filter_match(struct nf_conn *ct, void *data)
+ 	return 0;
+ }
  
-+	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
-+			wc->status, wc->opcode);
-+		mempool_free(request, info->request_mempool);
-+		smbd_disconnect_rdma_connection(info);
-+		return;
-+	}
++static unsigned long ctnetlink_get_id(const struct nf_conn *ct)
++{
++	unsigned long id = nf_ct_get_id(ct);
 +
- 	if (atomic_dec_and_test(&request->info->send_pending))
- 		wake_up(&request->info->wait_send_pending);
++	return id ? id : 1;
++}
++
+ static int
+ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	unsigned int flags = cb->data ? NLM_F_DUMP_FILTERED : 0;
+ 	struct net *net = sock_net(skb->sk);
+-	struct nf_conn *ct, *last;
++	unsigned long last_id = cb->args[1];
+ 	struct nf_conntrack_tuple_hash *h;
+ 	struct hlist_nulls_node *n;
+ 	struct nf_conn *nf_ct_evict[8];
++	struct nf_conn *ct;
+ 	int res, i;
+ 	spinlock_t *lockp;
  
+-	last = (struct nf_conn *)cb->args[1];
+ 	i = 0;
+ 
+ 	local_bh_disable();
+@@ -1257,7 +1262,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 				continue;
+ 
+ 			if (cb->args[1]) {
+-				if (ct != last)
++				if (ctnetlink_get_id(ct) != last_id)
+ 					continue;
+ 				cb->args[1] = 0;
+ 			}
+@@ -1270,8 +1275,7 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 					    NFNL_MSG_TYPE(cb->nlh->nlmsg_type),
+ 					    ct, true, flags);
+ 			if (res < 0) {
+-				nf_conntrack_get(&ct->ct_general);
+-				cb->args[1] = (unsigned long)ct;
++				cb->args[1] = ctnetlink_get_id(ct);
+ 				spin_unlock(lockp);
+ 				goto out;
+ 			}
+@@ -1284,12 +1288,10 @@ ctnetlink_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 	}
+ out:
+ 	local_bh_enable();
+-	if (last) {
++	if (last_id) {
+ 		/* nf ct hash resize happened, now clear the leftover. */
+-		if ((struct nf_conn *)cb->args[1] == last)
++		if (cb->args[1] == last_id)
+ 			cb->args[1] = 0;
+-
+-		nf_ct_put(last);
+ 	}
+ 
+ 	while (i) {
+-- 
+2.50.1
+
 
 
 
