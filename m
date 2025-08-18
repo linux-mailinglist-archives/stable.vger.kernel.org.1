@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9EADB2A32E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DE3B2A8CD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A6683B24CE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03D4817E0BA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0631217F3D;
-	Mon, 18 Aug 2025 13:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861C026F286;
+	Mon, 18 Aug 2025 13:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEgaab9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czHqnlka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAD018B0F;
-	Mon, 18 Aug 2025 13:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DE113C8E8;
+	Mon, 18 Aug 2025 13:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522085; cv=none; b=cOUd2SeoJJ7iYbJC61pCzmJdZgjJ76NkKa4MDLfCHfFCJatKXcFEm1tiW0iJ7lw1Dut3AqEDJsNfLGrlkbU2gDZDRQJa6QFFyj7FA/VFuR9ut//vk4gdmZb33crYdehGuiPG6F2054GqbiFntgjGe9oVskQeK3ydIiN8KPKsWrY=
+	t=1755525391; cv=none; b=Tt1dbZKk5Yim2Jwjz4Y6E0vdcp0qNzAcjea/WbQl4LaZAbRr8W06dkbSj+ca8YiKeyG3sKNyC7TFzjtt+a+trYVRRSv72yJd+GzAOOqKxIBk9TXbLbYuK5pYLkvGhSXPNO9MafIHWihiUuCzha6zKaltBU7TdFLgLvIxEhHKNKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522085; c=relaxed/simple;
-	bh=Rzv/qKkHEVSE+wAjaAfDfhM93xMkv0ZkU+8D3YLWsUM=;
+	s=arc-20240116; t=1755525391; c=relaxed/simple;
+	bh=D4eFwirA7D8VIfjR49OqxRtqaWZ2VWfxiGjbHaPJvE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pK4nSOLWr2Kd2Xb9L/9Ha8EkUEkW1GfvU/XzKaEdM5Erib+tlCMheVx+RJ8rTEoHrsF9Ig48/yZsLSNXXjn0BI/4R5Pcdpjx2hzuhb8JnKmXguumuWzb3y4Cqh8wD3ZNgJFWf7aXAUaH0+CZGboWFM6wJMW0WnI1Qe4Vb5c+RHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEgaab9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59F2C4CEF1;
-	Mon, 18 Aug 2025 13:01:24 +0000 (UTC)
+	 MIME-Version; b=i1/4tobiDJiwlD8A8AiIeykgugtU475vMprhWRmjD2nytpmXgxgFn5w4Rv0OrmqgOfa+pfZJfwyprGkcuNZMOshCvK0uPq4fdM5lZlNGsKYhBweuE7t1VgiOuF0xEKUp3MDHTKFfmvLNysdALPuC+WXcpOorEIAiENTqZyyeIiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czHqnlka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5015C4CEEB;
+	Mon, 18 Aug 2025 13:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522085;
-	bh=Rzv/qKkHEVSE+wAjaAfDfhM93xMkv0ZkU+8D3YLWsUM=;
+	s=korg; t=1755525391;
+	bh=D4eFwirA7D8VIfjR49OqxRtqaWZ2VWfxiGjbHaPJvE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZEgaab9jdxmbdFVyfVai0M7MbPahtxWCET8z62ErL3XeOUr+2QQHs9uAv0JOpy5fk
-	 JCqkqsVz79htEMtQ8gA4L9f2ApzfKGnhaJc2SdUTyVuCbSuCs2RE6YOK8h/S5qmlYu
-	 ezHHenTvJTltOff8apeN0Af66PaP2BaDbfeDmQAU=
+	b=czHqnlkaC2aXFOH61i/jQNiKq3QpIM7CU1TGXTAckqB+aCscp2BCH54IbkcXaqwKR
+	 qeFc0bIXXLyLXch6JLCYM5ptlpPYYlmb0tc4kr3uUMhmngG8a+5GE/LYBUsNpyFW28
+	 ldrlyP7uxd3zVCUrgpk0gEpbTyvXI9w2q6hFT6aI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Antonino Maniscalco <antomani103@gmail.com>,
+	syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/444] drm/msm: use trylock for debugfs
+Subject: [PATCH 6.16 249/570] bpf: Forget ranges when refining tnum after JSET
 Date: Mon, 18 Aug 2025 14:43:56 +0200
-Message-ID: <20250818124456.726380498@linuxfoundation.org>
+Message-ID: <20250818124515.412655187@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 0a1ff88ec5b60b41ba830c5bf08b6cd8f45ab411 ]
+[ Upstream commit 6279846b9b2532e1b04559ef8bd0dec049f29383 ]
 
-This resolves a potential deadlock vs msm_gem_vm_close().  Otherwise for
-_NO_SHARE buffers msm_gem_describe() could be trying to acquire the
-shared vm resv, while already holding priv->obj_lock.  But _vm_close()
-might drop the last reference to a GEM obj while already holding the vm
-resv, and msm_gem_free_object() needs to grab priv->obj_lock, a locking
-inversion.
+Syzbot reported a kernel warning due to a range invariant violation on
+the following BPF program.
 
-OTOH this is only for debugfs and it isn't critical if we undercount by
-skipping a locked obj.  So just use trylock() and move along if we can't
-get the lock.
+  0: call bpf_get_netns_cookie
+  1: if r0 == 0 goto <exit>
+  2: if r0 & Oxffffffff goto <exit>
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Tested-by: Antonino Maniscalco <antomani103@gmail.com>
-Reviewed-by: Antonino Maniscalco <antomani103@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/661525/
+The issue is on the path where we fall through both jumps.
+
+That path is unreachable at runtime: after insn 1, we know r0 != 0, but
+with the sign extension on the jset, we would only fallthrough insn 2
+if r0 == 0. Unfortunately, is_branch_taken() isn't currently able to
+figure this out, so the verifier walks all branches. The verifier then
+refines the register bounds using the second condition and we end
+up with inconsistent bounds on this unreachable path:
+
+  1: if r0 == 0 goto <exit>
+    r0: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0xffffffffffffffff)
+  2: if r0 & 0xffffffff goto <exit>
+    r0 before reg_bounds_sync: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0)
+    r0 after reg_bounds_sync:  u64=[0x1, 0] var_off=(0, 0)
+
+Improving the range refinement for JSET to cover all cases is tricky. We
+also don't expect many users to rely on JSET given LLVM doesn't generate
+those instructions. So instead of improving the range refinement for
+JSETs, Eduard suggested we forget the ranges whenever we're narrowing
+tnums after a JSET. This patch implements that approach.
+
+Reported-by: syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com
+Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/9d4fd6432a095d281f815770608fdcd16028ce0b.1752171365.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem.c | 3 ++-
- drivers/gpu/drm/msm/msm_gem.h | 6 ++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
-index ebc9ba66efb8..eeb3b65dd4d1 100644
---- a/drivers/gpu/drm/msm/msm_gem.c
-+++ b/drivers/gpu/drm/msm/msm_gem.c
-@@ -963,7 +963,8 @@ void msm_gem_describe(struct drm_gem_object *obj, struct seq_file *m,
- 	uint64_t off = drm_vma_node_start(&obj->vma_node);
- 	const char *madv;
- 
--	msm_gem_lock(obj);
-+	if (!msm_gem_trylock(obj))
-+		return;
- 
- 	stats->all.count++;
- 	stats->all.size += obj->size;
-diff --git a/drivers/gpu/drm/msm/msm_gem.h b/drivers/gpu/drm/msm/msm_gem.h
-index 85f0257e83da..748053f70ca7 100644
---- a/drivers/gpu/drm/msm/msm_gem.h
-+++ b/drivers/gpu/drm/msm/msm_gem.h
-@@ -188,6 +188,12 @@ msm_gem_lock(struct drm_gem_object *obj)
- 	dma_resv_lock(obj->resv, NULL);
- }
- 
-+static inline bool __must_check
-+msm_gem_trylock(struct drm_gem_object *obj)
-+{
-+	return dma_resv_trylock(obj->resv);
-+}
-+
- static inline int
- msm_gem_lock_interruptible(struct drm_gem_object *obj)
- {
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 97e07eb31fec..94ff01f1ab8a 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16028,6 +16028,10 @@ static void regs_refine_cond_op(struct bpf_reg_state *reg1, struct bpf_reg_state
+ 		if (!is_reg_const(reg2, is_jmp32))
+ 			break;
+ 		val = reg_const_value(reg2, is_jmp32);
++		/* Forget the ranges before narrowing tnums, to avoid invariant
++		 * violations if we're on a dead branch.
++		 */
++		__mark_reg_unbounded(reg1);
+ 		if (is_jmp32) {
+ 			t = tnum_and(tnum_subreg(reg1->var_off), tnum_const(~val));
+ 			reg1->var_off = tnum_with_subreg(reg1->var_off, t);
 -- 
 2.39.5
 
