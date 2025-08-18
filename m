@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-171168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2F1B2A813
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCABB2A5E5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D57095823CA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F363B1B28292
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F8D335BC4;
-	Mon, 18 Aug 2025 13:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2913C220F3F;
+	Mon, 18 Aug 2025 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlrt97P3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16SPRNrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BE11E48A;
-	Mon, 18 Aug 2025 13:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0481E2606;
+	Mon, 18 Aug 2025 13:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525039; cv=none; b=GaUddjZY1cVGU53yz3+edIf/tGZdR9ut3PmkW5ULWJo48HR2ANJjL4Hv2CXu0i0UkHqU9VRkFrFuDrpBaDUxo5lLcDkVpH3LtPn1tOXEVbzbYfs6JtyCjruMpRS2FMIg9oFn8rQtgDq6xwfr+8dZYmu/Irv6OrGt5xGN1JhLBxM=
+	t=1755523340; cv=none; b=IrA6PDBJHONHjOHcfeAG8+Dr9MN1OjUJT7E4bXkmdWi7WPdIOmEn6FpME+m8e1rip421LkyBTniWwRNS6x/wGSEZhA9F/MOVRaCIkitTAEAaA43Z35FzYNUNIr+XCkQZbK60a1y7gsTQl9XuOczdOJDcXWHpTXWMfjAwJpNLbrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525039; c=relaxed/simple;
-	bh=dOQpb9hK5rSz8nSyc/SZ33bA9DeSPz0x6fcazzv1Yv8=;
+	s=arc-20240116; t=1755523340; c=relaxed/simple;
+	bh=xfuSEQ494CYuE/IjtqiYR28tNqtrl2S05LZw4ZfpfYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1YhFvVIjfrFERi4WF0SNkloO+kVre09nrWETWtgqHtD0F/nHM6LB7Xnvn+Bgug8dovGdQk0XCvCesp0GAafbVGwtUsN26un25auPf3Z0QS3G4kmh2LXUPsinOU424mX492HCCIgvOkyOxpK/baH7B6qDYYvgIKyUxcdPAyxnco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlrt97P3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4302CC4CEEB;
-	Mon, 18 Aug 2025 13:50:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j3kyOW7TE3+Vh+13ss7Rn8nXwkaP7ekGkI5vLJf9d49dwGMq/etfKDAGESZlA1i5V5e7yktG1nfebMNTcnSmXdf0zYSvyhzS7yVYdfpSHafnWAmaYbzcGAczdJqqpbL/0c1f+TlUoZQe7MZRQwmLxcsrEO4dOfQf/vpmpUeO6h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16SPRNrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625A5C4CEEB;
+	Mon, 18 Aug 2025 13:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525038;
-	bh=dOQpb9hK5rSz8nSyc/SZ33bA9DeSPz0x6fcazzv1Yv8=;
+	s=korg; t=1755523340;
+	bh=xfuSEQ494CYuE/IjtqiYR28tNqtrl2S05LZw4ZfpfYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlrt97P35EvXLAAzcmI4B+0q3WT3H+e5W0+tcZPOptb7BFy9FpRL+QTxmudgxckeF
-	 3/gyM5wvDYAf4LrDU8cI8FAftNWA/J8cEXSFUhK/xmSMiuMIYMDWr/D6AmGonMaAm8
-	 PJQuusrZbqmFNpFkv7QalI9nlaeU5Ms6azGqZOZM=
+	b=16SPRNrtVcPGcEx9ECxwz5ZWmCBuxXNWj84jXVCawKln3a7LsMDSGz1Xyd7Lq1+Vv
+	 Niz91qi9cYp0+p4mDzFhzdQnEho5z78xNKXZveMwgLyt87W2cPlUjZyO2huXem2wNb
+	 Y/93qq6QH2lEIDGKHTemRJcaynXGbfCO5kL/QzVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiffany Yang <ynaffit@google.com>,
-	Carlos Llamas <cmllamas@google.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 140/570] binder: Fix selftest page indexing
+Subject: [PATCH 6.15 141/515] iio: adc: ad_sigma_delta: dont overallocate scan buffer
 Date: Mon, 18 Aug 2025 14:42:07 +0200
-Message-ID: <20250818124511.212034346@linuxfoundation.org>
+Message-ID: <20250818124503.816385881@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiffany Yang <ynaffit@google.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit bea3e7bfa2957d986683543cbf57092715f9a91b ]
+[ Upstream commit 5a2f15c5a8e017d0951e6dc62aa7b5b634f56881 ]
 
-The binder allocator selftest was only checking the last page of buffers
-that ended on a page boundary. Correct the page indexing to account for
-buffers that are not page-aligned.
+Fix overallocating the size of the scan buffer by converting bits to
+bytes. The size is meant to be in bytes, so scanbits needs to be
+divided by 8.
 
-Signed-off-by: Tiffany Yang <ynaffit@google.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20250714185321.2417234-2-ynaffit@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250701-iio-adc-ad7173-add-spi-offload-support-v3-1-42abb83e3dac@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc_selftest.c | 2 +-
+ drivers/iio/adc/ad_sigma_delta.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/android/binder_alloc_selftest.c b/drivers/android/binder_alloc_selftest.c
-index c88735c54848..486af3ec3c02 100644
---- a/drivers/android/binder_alloc_selftest.c
-+++ b/drivers/android/binder_alloc_selftest.c
-@@ -142,12 +142,12 @@ static void binder_selftest_free_buf(struct binder_alloc *alloc,
- 	for (i = 0; i < BUFFER_NUM; i++)
- 		binder_alloc_free_buf(alloc, buffers[seq[i]]);
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 4c5f8d29a559..6b3ef7ef403e 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -489,7 +489,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
+ 			return ret;
+ 	}
  
--	for (i = 0; i < end / PAGE_SIZE; i++) {
- 		/**
- 		 * Error message on a free page can be false positive
- 		 * if binder shrinker ran during binder_alloc_free_buf
- 		 * calls above.
- 		 */
-+	for (i = 0; i <= (end - 1) / PAGE_SIZE; i++) {
- 		if (list_empty(page_to_lru(alloc->pages[i]))) {
- 			pr_err_size_seq(sizes, seq);
- 			pr_err("expect lru but is %s at page index %d\n",
+-	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits, 8);
++	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits / 8, 8);
+ 	samples_buf_size += sizeof(int64_t);
+ 	samples_buf = devm_krealloc(&sigma_delta->spi->dev, sigma_delta->samples_buf,
+ 				    samples_buf_size, GFP_KERNEL);
 -- 
 2.39.5
 
