@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E787BB2A3A4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1761B2A600
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7380B6269F1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44AAD7B50AA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310AF31E112;
-	Mon, 18 Aug 2025 13:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535393218D1;
+	Mon, 18 Aug 2025 13:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUxnYq2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdtkz/ey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A5731E0FE;
-	Mon, 18 Aug 2025 13:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED0B224AF9;
+	Mon, 18 Aug 2025 13:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522366; cv=none; b=P6UsPsyJB9gt2L7ofd5u47x6D0NnjxLWsZk3Ke09/qXiW3rk6pJEZo6gkHSIHLST5sQ3KWUtL9rOOi7cvi73cJV7K84sCYqXlvDJTa6gwz/NwO448rudV6TsOb+IBBw9MmYuzKbc0me6ywe27tI4ul50hi0oJi2f9jg+RSmBasY=
+	t=1755523882; cv=none; b=cigRMGvQouxUnx2CfLO2HlNwZtwl4T5cdGG+qAVbxmmqWLWoBZ+KcH6VxMTah2AI4/7ZnRAy2DfL3EFBz39l7B1+E+HeK/ndgX7GBOvxDYvuz5paXpFHu51Ta5x3yOlkanoyNY5mh1BGIHzH7y3w8yEw8r9GIhMs+QLOSDaa9xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522366; c=relaxed/simple;
-	bh=0PIYcwbCSSJFobX/SF+DhMu2Pipio6TsKpGUeDq7beY=;
+	s=arc-20240116; t=1755523882; c=relaxed/simple;
+	bh=5+tjLzFlkbzeywd09XtkDNJFc9TRCTvAXX6N3glXdbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j4zeJY6R4c8arOwdBDSkdkgQFqSXgl+Vif4u69seKC3ZNIsFu3GCtkbSx7BXhtAij+MNTRD41CYx0chjB/sa0h8qK4I5ekeGOXVVX+N3sAvq/tPmc1ownQaLPQKu6GYrn6gX4zxheTT7V0HrcCh5LD4w3sy6h9i0gmwiX5xFytI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUxnYq2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EED6C4CEF1;
-	Mon, 18 Aug 2025 13:06:05 +0000 (UTC)
+	 MIME-Version; b=b9GTavdhyL89LFZtAfPrj8wXmLDjL6yt9+cM2m6HZf5f7q2nvgDQEEoTQyJLsBTU2kK4Dp/x6YtJEJfIzdwqmECdo4GQMd03EFanX/coKlDkWkKCV12Jk0t8TvjgxqTBMBGujQlvT/ctHjmJrukEUbndb+2HYW23JtO+YmV9h0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdtkz/ey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721E3C113D0;
+	Mon, 18 Aug 2025 13:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522365;
-	bh=0PIYcwbCSSJFobX/SF+DhMu2Pipio6TsKpGUeDq7beY=;
+	s=korg; t=1755523881;
+	bh=5+tjLzFlkbzeywd09XtkDNJFc9TRCTvAXX6N3glXdbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUxnYq2sehU+EcBCLrlr0kQMhXrU+7BsF4Bh7SCwmdvRgTnhpJYSX67gzKnZHxPGK
-	 gZog8WllCGhPtzrt8VJrmfo+f/XKiGYdGWBM2Rn8IY/J8gtHkj2bH2Z5k7i1WZQLPT
-	 JDPhVtz1plu6x1v+IOCOi2S10+4kVe3nHL9Np3wE=
+	b=bdtkz/eyjoqMHprgAmQXr59UmCGRB6dWS4K0CttOK198S/huK3EvxwQKf1HXub1NO
+	 JeSTtiuNSdKotjZoB5/sXCJ3vG4Yh2gOGNgLZTwrY8g4VbQoyP8oJ5k9j+cFVnlz4n
+	 VGYuwm6mldw1NJT0m2qUy+Kxfa89E4iRKrghtOJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 262/444] uapi: in6: restore visibility of most IPv6 socket options
+Subject: [PATCH 6.15 302/515] gve: Return error for unknown admin queue command
 Date: Mon, 18 Aug 2025 14:44:48 +0200
-Message-ID: <20250818124458.650137756@linuxfoundation.org>
+Message-ID: <20250818124510.062247804@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,104 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 31557b3487b349464daf42bc4366153743c1e727 ]
+[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
 
-A decade ago commit 6d08acd2d32e ("in6: fix conflict with glibc")
-hid the definitions of IPV6 options, because GCC was complaining
-about duplicates. The commit did not list the warnings seen, but
-trying to recreate them now I think they are (building iproute2):
+In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
+admin queue command opcode is encountered.
 
-In file included from ./include/uapi/rdma/rdma_user_cm.h:39,
-                 from rdma.h:16,
-                 from res.h:9,
-                 from res-ctx.c:7:
-../include/uapi/linux/in6.h:171:9: warning: ‘IPV6_ADD_MEMBERSHIP’ redefined
-  171 | #define IPV6_ADD_MEMBERSHIP     20
-      |         ^~~~~~~~~~~~~~~~~~~
-In file included from /usr/include/netinet/in.h:37,
-                 from rdma.h:13:
-/usr/include/bits/in.h:233:10: note: this is the location of the previous definition
-  233 | # define IPV6_ADD_MEMBERSHIP    IPV6_JOIN_GROUP
-      |          ^~~~~~~~~~~~~~~~~~~
-../include/uapi/linux/in6.h:172:9: warning: ‘IPV6_DROP_MEMBERSHIP’ redefined
-  172 | #define IPV6_DROP_MEMBERSHIP    21
-      |         ^~~~~~~~~~~~~~~~~~~~
-/usr/include/bits/in.h:234:10: note: this is the location of the previous definition
-  234 | # define IPV6_DROP_MEMBERSHIP   IPV6_LEAVE_GROUP
-      |          ^~~~~~~~~~~~~~~~~~~~
+This prevents the function from silently succeeding on invalid input
+and prevents undefined behavior by ensuring the function fails gracefully
+when an unrecognized opcode is provided.
 
-Compilers don't complain about redefinition if the defines
-are identical, but here we have the kernel using the literal
-value, and glibc using an indirection (defining to a name
-of another define, with the same numerical value).
+These changes improve error handling.
 
-Problem is, the commit in question hid all the IPV6 socket
-options, and glibc has a pretty sparse list. For instance
-it lacks Flow Label related options. Willem called this out
-in commit 3fb321fde22d ("selftests/net: ipv6 flowlabel"):
-
-  /* uapi/glibc weirdness may leave this undefined */
-  #ifndef IPV6_FLOWINFO
-  #define IPV6_FLOWINFO 11
-  #endif
-
-More interestingly some applications (socat) use
-a #ifdef IPV6_FLOWINFO to gate compilation of thier
-rudimentary flow label support. (For added confusion
-socat misspells it as IPV4_FLOWINFO in some places.)
-
-Hide only the two defines we know glibc has a problem
-with. If we discover more warnings we can hide more
-but we should avoid covering the entire block of
-defines for "IPV6 socket options".
-
-Link: https://patch.msgid.link/20250609143933.1654417-1-kuba@kernel.org
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/in6.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
-index ff8d21f9e95b..5a47339ef7d7 100644
---- a/include/uapi/linux/in6.h
-+++ b/include/uapi/linux/in6.h
-@@ -152,7 +152,6 @@ struct in6_flowlabel_req {
- /*
-  *	IPV6 socket options
-  */
--#if __UAPI_DEF_IPV6_OPTIONS
- #define IPV6_ADDRFORM		1
- #define IPV6_2292PKTINFO	2
- #define IPV6_2292HOPOPTS	3
-@@ -169,8 +168,10 @@ struct in6_flowlabel_req {
- #define IPV6_MULTICAST_IF	17
- #define IPV6_MULTICAST_HOPS	18
- #define IPV6_MULTICAST_LOOP	19
-+#if __UAPI_DEF_IPV6_OPTIONS
- #define IPV6_ADD_MEMBERSHIP	20
- #define IPV6_DROP_MEMBERSHIP	21
-+#endif
- #define IPV6_ROUTER_ALERT	22
- #define IPV6_MTU_DISCOVER	23
- #define IPV6_MTU		24
-@@ -203,7 +204,6 @@ struct in6_flowlabel_req {
- #define IPV6_IPSEC_POLICY	34
- #define IPV6_XFRM_POLICY	35
- #define IPV6_HDRINCL		36
--#endif
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 3e8fc33cc11f..7f2334006f9f 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -564,6 +564,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 		break;
+ 	default:
+ 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
++		return -EINVAL;
+ 	}
  
- /*
-  * Multicast:
+ 	return 0;
 -- 
 2.39.5
 
