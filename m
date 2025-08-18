@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-170134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B728B2A2F4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF48AB2A7BF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800B916DDBC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3871585401
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CDB310640;
-	Mon, 18 Aug 2025 12:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823AB335BBA;
+	Mon, 18 Aug 2025 13:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZJbigdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ftf9F0mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5610C3218C2;
-	Mon, 18 Aug 2025 12:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3324C335BA3;
+	Mon, 18 Aug 2025 13:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521634; cv=none; b=ZON/EvaqoJnKLuFYJNCDeidpUcOe3jsKRAy9P9IXViaHE+m3BqVY9hYbe1kNSjO6K758Dece9REp/UyAuOLwgrmlHUECC3wEJX8RBxF5Y6h5/tkpx2LMR80G+SF8wXA4tb/mS06umWalxw9hDKtHIb+/vQWwOImEI4rKxhAkjNE=
+	t=1755524857; cv=none; b=ePR7qW/u7QzkXNFVfrx82VAwu3JclAmKCHb7oLD4AeBIlxn5U7680uV+ErgMaB8UsRJfGb7rRO1jYI8pm1Wmy5vpYtPO6h1NpVK/DTfAG3GaqJ+6fg2ymY5iSgVq9ohJLWETA0V84o6ZHrDC+73TgP7L4B5EgooCg9DuAd/joTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521634; c=relaxed/simple;
-	bh=Q2NniQk7zzcFPoqy4hFwD55t30JKut1QCjViJ5dNcZY=;
+	s=arc-20240116; t=1755524857; c=relaxed/simple;
+	bh=gXp3QyHoPxrt7YfWZekhZ8bl8oitC63ZHE6ivkXgyw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSk/F4BZWL6LJywxMPa3ds3Zl4PpTKIOdP9uUqmNUUX0OB+0lthCE1EhXUvUV0TozJFE1v+Sf3jJRTPnN1x69EsqOWkdxzLiB8cT1DaK/vrYwc94MZdHjZkPx09dFNqauaV0wq6J8UFjJdJeHyQKqdvafiV33E6SlXrF0JiUy0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZJbigdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6784C4CEEB;
-	Mon, 18 Aug 2025 12:53:53 +0000 (UTC)
+	 MIME-Version; b=VlAjYfwJGOyQ/Ml7cRjazCmt+Rj+lFQDSafEcbTgGw5yjgpMlKuzmy/beAPYwF31IbxOoBhAVK6PPFtBVau6BrbBdJIcQGxb1i2aYAyOh8PvSnDrHOoSVUYo796wzZvErcPMarto4vo87GeTTLSAlla3UtFRFki2xLiru3fxeLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ftf9F0mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9DAC4CEEB;
+	Mon, 18 Aug 2025 13:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521634;
-	bh=Q2NniQk7zzcFPoqy4hFwD55t30JKut1QCjViJ5dNcZY=;
+	s=korg; t=1755524857;
+	bh=gXp3QyHoPxrt7YfWZekhZ8bl8oitC63ZHE6ivkXgyw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZJbigdWSvhl0KpUoBySgcm1Tjps6N+29YrZwyk4zJkfxKIms+70tdAB9SUDKzIkQ
-	 IFwrvqwynt9cLU22KivrEnG/huF/u3zo64hlbDI63E3NikA5lmxM1Lj1fTD0VBT/Jq
-	 NJPhaPQbjZDk3w9jwP/uexgIRl4k2jsnhsp8Wy+Q=
+	b=Ftf9F0mmUTI1T1rlD6wfQjhbN37Leg+ql6XdlVbg2M+qlOrDLdUMNQBCC8xOcBqF4
+	 nyeABk4KUVZCONtq70sTSVdV8dToC6rLZEvrjcSOZ5g6X57IXL4teyk+96TDyVb1d6
+	 9dkKeJNKekA4SnBq21VRqm9dehy1T2xBf5jjcU6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/444] KVM: x86: Convert vcpu_run()s immediate exit param into a generic bitmap
+Subject: [PATCH 6.16 084/570] tls: handle data disappearing from under the TLS ULP
 Date: Mon, 18 Aug 2025 14:41:11 +0200
-Message-ID: <20250818124450.626683044@linuxfoundation.org>
+Message-ID: <20250818124509.055271477@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,154 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 2478b1b220c49d25cb1c3f061ec4f9b351d9a131 ]
+[ Upstream commit 6db015fc4b5d5f63a64a193f65d98da3a7fc811d ]
 
-Convert kvm_x86_ops.vcpu_run()'s "force_immediate_exit" boolean parameter
-into an a generic bitmap so that similar "take action" information can be
-passed to vendor code without creating a pile of boolean parameters.
+TLS expects that it owns the receive queue of the TCP socket.
+This cannot be guaranteed in case the reader of the TCP socket
+entered before the TLS ULP was installed, or uses some non-standard
+read API (eg. zerocopy ones). Replace the WARN_ON() and a buggy
+early exit (which leaves anchor pointing to a freed skb) with real
+error handling. Wipe the parsing state and tell the reader to retry.
 
-This will allow dropping kvm_x86_ops.set_dr6() in favor of a new flag, and
-will also allow for adding similar functionality for re-loading debugctl
-in the active VMCS.
+We already reload the anchor every time we (re)acquire the socket lock,
+so the only condition we need to avoid is an out of bounds read
+(not having enough bytes in the socket for previously parsed record len).
 
-Opportunistically massage the TDX WARN and comment to prepare for adding
-more run_flags, all of which are expected to be mutually exclusive with
-TDX, i.e. should be WARNed on.
+If some data was read from under TLS but there's enough in the queue
+we'll reload and decrypt what is most likely not a valid TLS record.
+Leading to some undefined behavior from TLS perspective (corrupting
+a stream? missing an alert? missing an attack?) but no kernel crash
+should take place.
 
-No functional change intended.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250610232010.162191-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[sean: drop TDX changes]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://lore.kernel.org/tFjq_kf7sWIG3A7CrCg_egb8CVsT_gsmHAK0_wxDPJXfIzxFAMxqmLwp3MlU5EHiet0AwwJldaaFdgyHpeIUCS-3m3llsmRzp9xIOBR4lAI=@syst3mfailure.io
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250807232907.600366-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |  6 +++++-
- arch/x86/kvm/svm/svm.c          |  4 ++--
- arch/x86/kvm/vmx/vmx.c          |  3 ++-
- arch/x86/kvm/vmx/x86_ops.h      |  2 +-
- arch/x86/kvm/x86.c              | 11 ++++++++---
- 5 files changed, 18 insertions(+), 8 deletions(-)
+ net/tls/tls.h      |  2 +-
+ net/tls/tls_strp.c | 11 ++++++++---
+ net/tls/tls_sw.c   |  3 ++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 0caa3293f6db..cccc8cbe72db 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1627,6 +1627,10 @@ static inline u16 kvm_lapic_irq_dest_mode(bool dest_mode_logical)
- 	return dest_mode_logical ? APIC_DEST_LOGICAL : APIC_DEST_PHYSICAL;
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 774859b63f0d..4e077068e6d9 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -196,7 +196,7 @@ void tls_strp_msg_done(struct tls_strparser *strp);
+ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb);
+ void tls_rx_msg_ready(struct tls_strparser *strp);
+ 
+-void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
++bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
+ int tls_strp_msg_cow(struct tls_sw_context_rx *ctx);
+ struct sk_buff *tls_strp_msg_detach(struct tls_sw_context_rx *ctx);
+ int tls_strp_msg_hold(struct tls_strparser *strp, struct sk_buff_head *dst);
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 095cf31bae0b..d71643b494a1 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -475,7 +475,7 @@ static void tls_strp_load_anchor_with_queue(struct tls_strparser *strp, int len)
+ 	strp->stm.offset = offset;
  }
  
-+enum kvm_x86_run_flags {
-+	KVM_RUN_FORCE_IMMEDIATE_EXIT	= BIT(0),
-+};
+-void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
++bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ {
+ 	struct strp_msg *rxm;
+ 	struct tls_msg *tlm;
+@@ -484,8 +484,11 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ 	DEBUG_NET_WARN_ON_ONCE(!strp->stm.full_len);
+ 
+ 	if (!strp->copy_mode && force_refresh) {
+-		if (WARN_ON(tcp_inq(strp->sk) < strp->stm.full_len))
+-			return;
++		if (unlikely(tcp_inq(strp->sk) < strp->stm.full_len)) {
++			WRITE_ONCE(strp->msg_ready, 0);
++			memset(&strp->stm, 0, sizeof(strp->stm));
++			return false;
++		}
+ 
+ 		tls_strp_load_anchor_with_queue(strp, strp->stm.full_len);
+ 	}
+@@ -495,6 +498,8 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ 	rxm->offset	= strp->stm.offset;
+ 	tlm = tls_msg(strp->anchor);
+ 	tlm->control	= strp->mark;
 +
- struct kvm_x86_ops {
- 	const char *name;
- 
-@@ -1706,7 +1710,7 @@ struct kvm_x86_ops {
- 
- 	int (*vcpu_pre_run)(struct kvm_vcpu *vcpu);
- 	enum exit_fastpath_completion (*vcpu_run)(struct kvm_vcpu *vcpu,
--						  bool force_immediate_exit);
-+						  u64 run_flags);
- 	int (*handle_exit)(struct kvm_vcpu *vcpu,
- 		enum exit_fastpath_completion exit_fastpath);
- 	int (*skip_emulated_instruction)(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 1f42a71b15c0..7d1b871cfc02 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4226,9 +4226,9 @@ static noinstr void svm_vcpu_enter_exit(struct kvm_vcpu *vcpu, bool spec_ctrl_in
- 	guest_state_exit_irqoff();
++	return true;
  }
  
--static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu,
--					  bool force_immediate_exit)
-+static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- {
-+	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	bool spec_ctrl_intercepted = msr_write_intercepted(vcpu, MSR_IA32_SPEC_CTRL);
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 9a4ebf3dfbfc..2a977cdfcd0c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7353,8 +7353,9 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 	guest_state_exit_irqoff();
- }
- 
--fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit)
-+fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
- {
-+	bool force_immediate_exit = run_flags & KVM_RUN_FORCE_IMMEDIATE_EXIT;
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	unsigned long cr3, cr4;
- 
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index 4aba200f435d..5e4ce13ab305 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -21,7 +21,7 @@ void vmx_vm_destroy(struct kvm *kvm);
- int vmx_vcpu_precreate(struct kvm *kvm);
- int vmx_vcpu_create(struct kvm_vcpu *vcpu);
- int vmx_vcpu_pre_run(struct kvm_vcpu *vcpu);
--fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, bool force_immediate_exit);
-+fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags);
- void vmx_vcpu_free(struct kvm_vcpu *vcpu);
- void vmx_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event);
- void vmx_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 213af0fda768..44ab46f2a2d2 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10711,6 +10711,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		dm_request_for_irq_injection(vcpu) &&
- 		kvm_cpu_accept_dm_intr(vcpu);
- 	fastpath_t exit_fastpath;
-+	u64 run_flags;
- 
- 	bool req_immediate_exit = false;
- 
-@@ -10955,8 +10956,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		goto cancel_injection;
+ /* Called with lock held on lower socket */
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 549d1ea01a72..51c98a007dda 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1384,7 +1384,8 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+ 			return sock_intr_errno(timeo);
  	}
  
--	if (req_immediate_exit)
-+	run_flags = 0;
-+	if (req_immediate_exit) {
-+		run_flags |= KVM_RUN_FORCE_IMMEDIATE_EXIT;
- 		kvm_make_request(KVM_REQ_EVENT, vcpu);
-+	}
+-	tls_strp_msg_load(&ctx->strp, released);
++	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
++		return tls_rx_rec_wait(sk, psock, nonblock, false);
  
- 	fpregs_assert_state_consistent();
- 	if (test_thread_flag(TIF_NEED_FPU_LOAD))
-@@ -10992,8 +10996,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		WARN_ON_ONCE((kvm_vcpu_apicv_activated(vcpu) != kvm_vcpu_apicv_active(vcpu)) &&
- 			     (kvm_get_apic_mode(vcpu) != LAPIC_MODE_DISABLED));
- 
--		exit_fastpath = kvm_x86_call(vcpu_run)(vcpu,
--						       req_immediate_exit);
-+		exit_fastpath = kvm_x86_call(vcpu_run)(vcpu, run_flags);
- 		if (likely(exit_fastpath != EXIT_FASTPATH_REENTER_GUEST))
- 			break;
- 
-@@ -11005,6 +11008,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 			break;
- 		}
- 
-+		run_flags = 0;
-+
- 		/* Note, VM-Exits that go down the "slow" path are accounted below. */
- 		++vcpu->stat.exits;
- 	}
+ 	return 1;
+ }
 -- 
 2.50.1
 
