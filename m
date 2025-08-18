@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9896AB2A419
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7B6B2A9FB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC11564C0A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21D596868D9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F281631E0F8;
-	Mon, 18 Aug 2025 13:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879102E22B0;
+	Mon, 18 Aug 2025 14:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkoO/Gct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1uf+fos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BB931E0E8;
-	Mon, 18 Aug 2025 13:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4639E34AB12;
+	Mon, 18 Aug 2025 14:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522283; cv=none; b=NeBSClOu+V2B5v/MBHx0B4dczU1+DNG2Hz/TFsf3Rk0gLSrXAqNrA2eiW+zqxVc+CKRcVFyXmEcLNccVEHVJryfHItMIURcrZQQdHRQYWyNbD0vge5raEj6O0jg3Bxh0Yj3tJ8DJYcYZh3LIqIUXQiGjdI0ImTRo18LscTqU0mw=
+	t=1755525706; cv=none; b=RTMBGtAmImLWqMLXfvB4WAieoAdk8Rjgx9Nfaulde9+kHtLjZtVQ37wZUxNssr1tne+E2QsTsjfQxGQLpEDWrvkk9rzHR3+P6JgJQxcUpcZ/sZkkysQBREtD8ZFccT5gXtMPQ8jPEZT0G9lsWEkpOUIvs8XY4s+Q4BhORGgmIhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522283; c=relaxed/simple;
-	bh=jisjdfoyz6Vv77jNtp9ta4MfH/IBhjDqFrHiCM81EhI=;
+	s=arc-20240116; t=1755525706; c=relaxed/simple;
+	bh=QHPX4hp/jzSGQh55Zk7icKeUeFvuLrerxfDQpOY3aH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gi0QY0cQCVAwCLNWDvRDEuTseXGaz5jeGraMB3jwNSgw3KOySHzyxcVQUD63dCUWbbN0mueBk0BXsDoqOHagq02Vtli3vCcynP5/Rkiryv41g+3hvvZ9fIwFlZ/+JiwXsRzPOCc+jjG3UrdbMhsZhlu4Z1FqFKPZO210Y/UUdNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkoO/Gct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172A8C4CEEB;
-	Mon, 18 Aug 2025 13:04:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A+LPCT6YmMUuSrifill6pJD8ki2yOU1v/yVLtQIoXxLOSsl6HHDK3umRcgtoRVuQXcE+cnvyB2UwqtVjIKpoZs1aw5GwALfqydvsOoKTGjJfHZBktcYBW1y2TKdRHL8U/XMIamoPKLvKXidZu9L2aeQpRbC34C3vkS3lpHzDZg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1uf+fos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAC9C4CEEB;
+	Mon, 18 Aug 2025 14:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522283;
-	bh=jisjdfoyz6Vv77jNtp9ta4MfH/IBhjDqFrHiCM81EhI=;
+	s=korg; t=1755525706;
+	bh=QHPX4hp/jzSGQh55Zk7icKeUeFvuLrerxfDQpOY3aH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkoO/Gctg5C4YX4PKMlqx9oVIzlXtts1DYLCKF/Al/eNm3JkPqvQ5QhrhUUIJZFjh
-	 jGDAoWCmMIehhAx27Qfbp3PlyE5xfLvH1lgL4LCcOtjjsouzO4JTx3PeyJw/nTtooi
-	 /ZCptwnEWSMARGveAwIkpj8nmYATnwCoFz48q4Sk=
+	b=e1uf+fosHorhjxfLLSFwjzpfiQ7aOEREyYSwetOgI2upKrYpyZt9Nwg5V6xQZ51eq
+	 jAX0YyE0fNiKM3m+Yov2vCQ/8jY4O3V8KLVKYDKrygePGlAvwhjgaerQ+oeYzkv52L
+	 orB1cQ1bmEBabsLWwEG7Bc3A+/YkTviB+u/iCjCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wen Chen <Wen.Chen3@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 271/444] vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
+Subject: [PATCH 6.16 310/570] drm/amd/display: Fix failed to blank crtc!
 Date: Mon, 18 Aug 2025 14:44:57 +0200
-Message-ID: <20250818124458.985291969@linuxfoundation.org>
+Message-ID: <20250818124517.812389651@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Wen Chen <Wen.Chen3@amd.com>
 
-[ Upstream commit 03a92f036a04fed2b00d69f5f46f1a486e70dc5c ]
+[ Upstream commit 01f60348d8fb6b3fbcdfc7bdde5d669f95b009a4 ]
 
-When allocating receive buffers for the vsock virtio RX virtqueue, an
-SKB is allocated with a 4140 data payload (the 44-byte packet header +
-VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE). Even when factoring in the SKB
-overhead, the resulting 8KiB allocation thanks to the rounding in
-kmalloc_reserve() is wasteful (~3700 unusable bytes) and results in a
-higher-order page allocation on systems with 4KiB pages just for the
-sake of a few hundred bytes of packet data.
+[why]
+DCN35 is having “DC: failed to blank crtc!” when running HPO
+test cases. It's caused by not having sufficient udelay time.
 
-Limit the vsock virtio RX buffers to 4KiB per SKB, resulting in much
-better memory utilisation and removing the need to allocate higher-order
-pages entirely.
+[how]
+Replace the old wait_for_blank_complete function with fsleep function to
+sleep just until the next frame should come up. This way it doesn't poll
+in case the pixel clock or other clock was bugged or until vactive and
+the vblank are hit again.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Message-Id: <20250717090116.11987-5-will@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Wen Chen <Wen.Chen3@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_vsock.h     | 7 ++++++-
- net/vmw_vsock/virtio_transport.c | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 36fb3edfa403..6c00687539cf 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -111,7 +111,12 @@ static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
- 	return (size_t)(skb_end_pointer(skb) - skb->head);
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index a93282d6e5a4..cdb8685ae7d7 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -955,7 +955,7 @@ enum dc_status dcn20_enable_stream_timing(
+ 		return DC_ERROR_UNEXPECTED;
+ 	}
  
--#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
-+/* Dimension the RX SKB so that the entire thing fits exactly into
-+ * a single 4KiB page. This avoids wasting memory due to alloc_skb()
-+ * rounding up to the next page order and also means that we
-+ * don't leave higher-order pages sitting around in the RX queue.
-+ */
-+#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	SKB_WITH_OVERHEAD(1024 * 4)
- #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
- #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
+-	hws->funcs.wait_for_blank_complete(pipe_ctx->stream_res.opp);
++	fsleep(stream->timing.v_total * (stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz));
  
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index f0e48e6911fc..f01f9e878106 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -307,7 +307,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
- 
- static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
- {
--	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
-+	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
- 	struct scatterlist pkt, *p;
- 	struct virtqueue *vq;
- 	struct sk_buff *skb;
+ 	params.vertical_total_min = stream->adjust.v_total_min;
+ 	params.vertical_total_max = stream->adjust.v_total_max;
 -- 
 2.39.5
 
