@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86F7B2A8E0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:10:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F22B2A691
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7EE06E29C8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:59:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A921B67122
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385BE322A38;
-	Mon, 18 Aug 2025 13:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B5C3375C8;
+	Mon, 18 Aug 2025 13:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvA+5xN4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WN5cCNW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7679322A2E;
-	Mon, 18 Aug 2025 13:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A6C2206AF;
+	Mon, 18 Aug 2025 13:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525408; cv=none; b=I75/XZ3tdVzslXs+z34hiBxa9UDc1Ky0LesXvAvyv1P5jhtBcvomDFoIeNFWRwvMtyvo/tee+4rtB8i1i6IdqUqoMP0e8WWFjEr6P8go9oWTq+TYTP8CvkHnHCkFZV44foX09wVtlsi4ptrXbeVoNafMQG9cuyZs0ekp567MoQs=
+	t=1755523752; cv=none; b=cgfyI8uxOhMwyhZpyMd5nhjQY8LEOACLt94SySiDUfKt5ODqLdl5eG+FMuACeZhqIBS8BQ8jpCfWBOEzSW5HxajXArMdfov9sqx7aDDuO40tl1jFuXJyZwC5iivMzjE1s+IkTS9U7EPO+gqDSrco0RTcg9RBBk+q5AZKO/8WRNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525408; c=relaxed/simple;
-	bh=wJ9+JRbHGxbHXNqOiYWFfehqdxvC6lkslto//RFFs/E=;
+	s=arc-20240116; t=1755523752; c=relaxed/simple;
+	bh=Pce3GuXBZKwKLdSjyb3JdKp3s32c6lAPlL13nfkiBFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3QnT/GjIq1nnEPrYgYQrNCnBXgwXjBtHERLut5EYdlzbKfJpDyWjwUZyiN6M8bAo0bYwEcWSFF+FRxLvzjbK0I6mz81sBz2e3X9j0QiNBK/YoTlI0ujKs3JO/XgA0XJFTDBkvqOeOfp7r83IHLLcUnNFqcO+4nueAbRIkk0yvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvA+5xN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF38C113D0;
-	Mon, 18 Aug 2025 13:56:46 +0000 (UTC)
+	 MIME-Version; b=uqLE9rRMC0IPD40qzumW1V3UeXusEdZXPe1m3KWlREDUdYGuEjBTvnv/LXC7XuSqshivRpQKN2gjMFLRAKFe7agwJeOoaNNjm9u3VaSFZPwmou76MKrpLMTdNzs56TgjLb51wgvkQEBx2EllkB+1rx9BvK+nXUnDI015EtKrAKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WN5cCNW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22549C113D0;
+	Mon, 18 Aug 2025 13:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525407;
-	bh=wJ9+JRbHGxbHXNqOiYWFfehqdxvC6lkslto//RFFs/E=;
+	s=korg; t=1755523752;
+	bh=Pce3GuXBZKwKLdSjyb3JdKp3s32c6lAPlL13nfkiBFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvA+5xN4Z/DrdZkdSW0gfuUJpC02OOPquXFz2xKj/yKXlvRxmAwzhYQMT1qXgM2Gm
-	 Gl4j0I/jg6ET4EObAub832AzgRvb2FAau3QBsuYbVX2PrNrxME1vINX11lgvTVqMbn
-	 zKIsCOX16Uwpd/7aAkP05RAqvpmvU8JDsDr3Bf5I=
+	b=WN5cCNW+viKrRd7vMdurr6Lm5qmJ+C8wTwajCfxJ1I1r8ZjJiGCCr9xiOJC+8oRRt
+	 fcOzPJqgR/ALKJht/hBkntt4OrD9W6pWt9n1RrxAkx5v7zFL4LZ5qGo218FcT5jM2X
+	 7zlhADKSge+yKl91SoZllkedWg9CPaJlKVybz/CM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 254/570] wifi: iwlwifi: handle non-overlapping API ranges
+Subject: [PATCH 6.15 255/515] drm/msm: Add error handling for krealloc in metadata setup
 Date: Mon, 18 Aug 2025 14:44:01 +0200
-Message-ID: <20250818124515.603637700@linuxfoundation.org>
+Message-ID: <20250818124508.229865486@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 6fdd41b25fb4154bcde7a38ca1c98e072fa1177c ]
+[ Upstream commit 1c8c354098ea9d4376a58c96ae6b65288a6f15d8 ]
 
-The option to set an api_version_min/max also to the RF was added.
-In the case that both the MAC and the RF has a range defined, we take
-the narrower range of both.
+Function msm_ioctl_gem_info_set_metadata() now checks for krealloc
+failure and returns -ENOMEM, avoiding potential NULL pointer dereference.
+Explicitly avoids __GFP_NOFAIL due to deadlock risks and allocation constraints.
 
-This doesn't work for non-overlapping ranges. In this case, we should
-just take the lower range of both.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709200543.1628666-2-miriam.rachel.korenblit@intel.com
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Patchwork: https://patchwork.freedesktop.org/patch/661235/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_drv.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 9504a0cb8b13..557a97144f90 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -298,13 +298,17 @@ static void iwl_get_ucode_api_versions(struct iwl_trans *trans,
- 	const struct iwl_family_base_params *base = trans->mac_cfg->base;
- 	const struct iwl_rf_cfg *cfg = trans->cfg;
+diff --git a/drivers/gpu/drm/msm/msm_drv.c b/drivers/gpu/drm/msm/msm_drv.c
+index c3588dc9e537..b4e73b015d02 100644
+--- a/drivers/gpu/drm/msm/msm_drv.c
++++ b/drivers/gpu/drm/msm/msm_drv.c
+@@ -551,6 +551,7 @@ static int msm_ioctl_gem_info_set_metadata(struct drm_gem_object *obj,
+ 					   u32 metadata_size)
+ {
+ 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
++	void *new_metadata;
+ 	void *buf;
+ 	int ret;
  
--	if (!base->ucode_api_max) {
-+	/* if the MAC doesn't have range or if its range it higher than the RF's */
-+	if (!base->ucode_api_max ||
-+	    (cfg->ucode_api_max && base->ucode_api_min > cfg->ucode_api_max)) {
- 		*api_min = cfg->ucode_api_min;
- 		*api_max = cfg->ucode_api_max;
- 		return;
- 	}
+@@ -568,8 +569,14 @@ static int msm_ioctl_gem_info_set_metadata(struct drm_gem_object *obj,
+ 	if (ret)
+ 		goto out;
  
--	if (!cfg->ucode_api_max) {
-+	/* if the RF doesn't have range or if its range it higher than the MAC's */
-+	if (!cfg->ucode_api_max ||
-+	    (base->ucode_api_max && cfg->ucode_api_min > base->ucode_api_max)) {
- 		*api_min = base->ucode_api_min;
- 		*api_max = base->ucode_api_max;
- 		return;
+-	msm_obj->metadata =
++	new_metadata =
+ 		krealloc(msm_obj->metadata, metadata_size, GFP_KERNEL);
++	if (!new_metadata) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	msm_obj->metadata = new_metadata;
+ 	msm_obj->metadata_size = metadata_size;
+ 	memcpy(msm_obj->metadata, buf, metadata_size);
+ 
 -- 
 2.39.5
 
