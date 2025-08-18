@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA84B2A846
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB4EB2A356
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED9536246F7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C52566271
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69302216E23;
-	Mon, 18 Aug 2025 13:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D5831E0F4;
+	Mon, 18 Aug 2025 12:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DY8uDq2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3C3H6c0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152E121CC55;
-	Mon, 18 Aug 2025 13:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648F731A068;
+	Mon, 18 Aug 2025 12:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524949; cv=none; b=caxdsJP7uLzXmhB8TdIIBhDOWNepNpCjz9TLoCGzRGlEhJAuhK0pbDdLvlaR+MIRfhqUuKl8xk/AMjqdd0237R6rkyBsITZ3kF1G4zpzwbAl9fw/OhnQDKIdd/Xed7NJ6jU7E732WaZOUxc1ltsp9WpAN+oOCItDbUDFIfr2ATw=
+	t=1755521771; cv=none; b=DFpvnV2QiFRMj0dsTMxcN4k8yge7SBSpKQwhtxXz4xo+TF8bCD6rKr/Zt3LhfnmLiGjGxrkLzC/IHsOP2kJwte2rJ1Wp2STCVirZCXToGoOzFVZa2XwhrGxhOq9qSvF9Nxxq4VOYGpkNpJNrR2g/sM9TVEAvUcInIhfjqa6JwXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524949; c=relaxed/simple;
-	bh=pvo7FNyhY/991h9zn4NhkY6UnyPRh0rGt0SnXelbsRg=;
+	s=arc-20240116; t=1755521771; c=relaxed/simple;
+	bh=stkdx/eShTkSPisV+ra+AajdEhCDAOSgXXrHN+e1vUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=unVOGTTxFM9+1LLCzqOgwq0P5MevuaYimZzlyDFb7AL8K5Z8hze8ZuqATmxYcSlbVzUQQi9EEt2Oo+zFxOo21L7rB6NyODJWFuHGWpyLz42mSowu3cBObBtR53IbLyk4PIQ0VhrBPERwhhbMd6qup1IknB6zIjAx6RV/yrcrpYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DY8uDq2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470F7C113D0;
-	Mon, 18 Aug 2025 13:49:08 +0000 (UTC)
+	 MIME-Version; b=Gvlg5iB07Mzq+VYrvEMRfaFBGrJVjzZP7MR72VWuD5ANApXov8J0n8q6mWoQw71zj9TqVkjGrH5+1LIIRWDvO1e2EZSpUoIRtsZpKx6cTrg/i7IN+MrcZRMV+EImQy2FS5KHiZlG006vwLVidUlDkRFOJgcneSToOLkRxdgSvmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3C3H6c0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17D8C4CEEB;
+	Mon, 18 Aug 2025 12:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524948;
-	bh=pvo7FNyhY/991h9zn4NhkY6UnyPRh0rGt0SnXelbsRg=;
+	s=korg; t=1755521771;
+	bh=stkdx/eShTkSPisV+ra+AajdEhCDAOSgXXrHN+e1vUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DY8uDq2vuSgwVKK/yA4Kh6lktVVVbFVBJEtE/18zjWz86EcpTPUU0fCSvihLPiUx1
-	 iwjxNIa5BfMWkbSK6GhIDzMSmfJea1oJsoGqH/uD+3v+YXEamOMpdA+f+cFATdRnIt
-	 t5Y83oJEn3aALm0Hss6zzN9AdJW8MpJ8ty02qGRI=
+	b=V3C3H6c0iprnje/I4MMQ6iMZZ0z9htZicrcv9xpQNyKtLBM9VjAmMqy6aIa5LfWT+
+	 aklPEHAigu2WPtIs+WedaCtV6XN7/G+PmXqCQunyge74Ut7mnUB9h0z7ubRdGeh+si
+	 OjzOo5byGKtDrszecpyPDotBRU79ONxVzx7SbaVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
 	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 113/570] ata: ahci: Disable DIPM if host lacks support
-Date: Mon, 18 Aug 2025 14:41:40 +0200
-Message-ID: <20250818124510.156954800@linuxfoundation.org>
+Subject: [PATCH 6.12 075/444] nvme-tcp: log TLS handshake failures at error level
+Date: Mon, 18 Aug 2025 14:41:41 +0200
+Message-ID: <20250818124451.767171654@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit f7870e8d345cdabfb94bcbdcba6a07e050f8705e ]
+[ Upstream commit 5a58ac9bfc412a58c3cf26c6a7e54d4308e9d109 ]
 
-The AHCI specification version 1.3.1 section 8.3.1.4 (Software
-Requirements and Precedence) states that:
+Update the nvme_tcp_start_tls() function to use dev_err() instead of
+dev_dbg() when a TLS error is detected. This ensures that handshake
+failures are visible by default, aiding in debugging.
 
-If CAP.SSC or CAP.PSC is cleared to ‘0’, software should disable
-device-initiated power management by issuing the appropriate SET
-FEATURES command to the device.
-
-To satisfy this constraint and force ata_dev_configure to disable the
-device DIPM feature, modify ahci_update_initial_lpm_policy() to set the
-ATA_FLAG_NO_DIPM flag on ports that have a host with either the
-ATA_HOST_NO_PART flag set or the ATA_HOST_NO_SSC flag set.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de.>
-Link: https://lore.kernel.org/r/20250701125321.69496-7-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvme/host/tcp.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 04c9b601cac1..4f69da480e86 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1778,6 +1778,13 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
- 		return;
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 25e486e6e805..83a6b18b01ad 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1777,9 +1777,14 @@ static int nvme_tcp_start_tls(struct nvme_ctrl *nctrl,
+ 			qid, ret);
+ 		tls_handshake_cancel(queue->sock->sk);
+ 	} else {
+-		dev_dbg(nctrl->device,
+-			"queue %d: TLS handshake complete, error %d\n",
+-			qid, queue->tls_err);
++		if (queue->tls_err) {
++			dev_err(nctrl->device,
++				"queue %d: TLS handshake complete, error %d\n",
++				qid, queue->tls_err);
++		} else {
++			dev_dbg(nctrl->device,
++				"queue %d: TLS handshake complete\n", qid);
++		}
+ 		ret = queue->tls_err;
  	}
- 
-+	/* If no Partial or no Slumber, we cannot support DIPM. */
-+	if ((ap->host->flags & ATA_HOST_NO_PART) ||
-+	    (ap->host->flags & ATA_HOST_NO_SSC)) {
-+		ata_port_dbg(ap, "Host does not support DIPM\n");
-+		ap->flags |= ATA_FLAG_NO_DIPM;
-+	}
-+
- 	/* If no LPM states are supported by the HBA, do not bother with LPM */
- 	if ((ap->host->flags & ATA_HOST_NO_PART) &&
- 	    (ap->host->flags & ATA_HOST_NO_SSC) &&
+ 	return ret;
 -- 
 2.39.5
 
