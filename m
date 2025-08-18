@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-171615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED3BB2AC12
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3487BB2AC13
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 134A018A346C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8061E18A3630
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C83217722;
-	Mon, 18 Aug 2025 14:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D0B239591;
+	Mon, 18 Aug 2025 14:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="11VI1JT6"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="BpuaEkcQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B768135A2AC
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 14:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6558F1FF7D7
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 14:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755529148; cv=none; b=HMlS1KKB6v0MIfpm3aT6rmbOWO/jx+SZY6CQB62scoyjUPfdke4CC8syw7GMUh0EM5IfQs0bVXpsRSncHMu4RW/aowierhY2SH3JK+JjN2PKMMkGsV/Q02nZAXHOXBCVkfuh3tDOGH0mT2bsPYW0PDi+DdkvSU2xerQTwwCqZrY=
+	t=1755529149; cv=none; b=bVsxJ2jjS7Owuom7jhAxG6RSx7BiKMbQ91FmRuTFwvKlcoj9OStjxIQRB+myj0fx0zVcKKWhYZOR2cYINPxN7/iRCbrNZSHosFRtFeL52uBGwdpBoy0yaQf7/IaalMq70eLosDN8IOOKDTYnjPH2edZqFc5uDZes4lvHelWUfQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755529148; c=relaxed/simple;
-	bh=1CZPBKqu/7ZEFyHu1MfsM16dI4vs+nPGNqiZH7AXJaE=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=BWWLSvMsZX3qZnHvjpgi8Cu4M3dTCbzzsjlgPKKZmlKYzf78cRt3xGj73hGIS1+qsZxGdLhm4LBro7nkvNkyM9YWZvMaR1AB7LocI8WYrpwAotKe0m8IFvCrjuB3SnjI3BRR1hwLahl3pmpfgRplRSxb4onWIOenxv7S7v33J18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=11VI1JT6; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1755529149; c=relaxed/simple;
+	bh=x3x2Axm/vg84U6A/QXRSVurUbA2OgAMZC8U9+0QEYwU=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=Ig/pG7/Smjm3f0ibAjmse8jiAX1q1oRoeTd2Fh0bROUZzt+z/VA8rv0/OKnTlCrfp+OXJv5bO60rKe/uGb6uVidVaVE4Je9Hs4ZbeCa+cd2C2NsMF/NhhVF2WuqeX1OMmNqtP/QlQMJVHN3BBRQEqqiYo9/HUwRf+KpzecOWigA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=BpuaEkcQ; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b4717390ad7so2880291a12.1
-        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 07:59:06 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-244580523a0so36902025ad.1
+        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 07:59:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1755529146; x=1756133946; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1755529147; x=1756133947; darn=vger.kernel.org;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C3+nrQMZjyoe7skqNxCYdyCCPFjgYbnRaHd/eT4wOxE=;
-        b=11VI1JT6qgg5I9z4pgCaPU4DBb+ACExR++XJs3tqrxZFwEFEYN2t4YL3P+p4pPCf0K
-         47hN043L7nyiBjfbbpeQM61mIrU4kZ3o+5BRAS4lNpoqryNEX7wsK5ypBMhM/iVtmsTd
-         jBBDrQ61aaVckiXdK9DYj3xLyiBaamsoOrFcBzY3OHDb33GxDRItfyRC6RUMrJBfqrLp
-         8YJaOP/SnLL6vYuPX9tRBwRL55CjOmQ5eHOb1gPb0ESvEpSk9+fvl5/umRWc6gYgCa8X
-         8nhmndsCA8DQEi++T6Olieop4PUDgLAxQpJnDYVXPxIXHtnNy4TQqNkoiAXy2DlCm2zB
-         lZnQ==
+        bh=imihs9UdVJ+cu8dbhC8IcPh+Tx1B+im9KIGEWng20gg=;
+        b=BpuaEkcQ+uFTtAvOTRmAQeNrQ3qToCe7+sNmbAEfkv03KHK+rbafQOgR05RJ7UigDk
+         UI6iWpkdPZeREVdWp8YPHrUDMwnQnbB9AtQ+4iiAPuJcrFf+DZ6CChG+Lry/twD/jZAN
+         kuRvE5gSdmzbylxGtryc6z4xRKbZhjRTrO4ww2F0zekPssI0s7j0/O2k7JCmeOifwm7R
+         w4rIgg2zl807MwHlwUiprX8h8tiWqVbtTcTfkhgsR8yjfyQmXCC8mJMsLfJiUWs01C1t
+         qDRxXzS+qTIyRcjRwULqQUQ+ZnUY1D7tLIzLzFMqPeYb3p3odic3MnWfWsYCCr23UqAu
+         FIOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755529146; x=1756133946;
+        d=1e100.net; s=20230601; t=1755529147; x=1756133947;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=C3+nrQMZjyoe7skqNxCYdyCCPFjgYbnRaHd/eT4wOxE=;
-        b=rVVf22hKdBEFaExxUXqBgzbhN6raGSlwfVrgxUjR8X3fQUANn3TwfuP6T+milk8OR8
-         x17G35+Sro+nQoIIbIe+cbAmR5tjEpMgQXXz1qmGVETTWXMf/uBD/Y7zK5v/gn9SCR1C
-         1pOp4xVDOypna9ZIlL1B93E79Csn34ZKjaFGF+3tC+DfPSfPvNHfJFvha/iNFMCAFA2I
-         2Xxeyklkj1AYLqw/vScEp2nN9iK4wBi15Lr5fFYqqTq+EFv7beD9u+GeMKdFYWJjICyv
-         h177kYdaUlClEOCtYz2aB1XyEjz3TghEGLz2ezOqd6DmJYN+TQqGzhPfRTH8UIRWdHNT
-         LYjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVySd7/fuoVOBsJ7rKd/UohtoJlunHsOyN8GZ0tc+1sQZ6ZIWtLrDBgcRYA+ih7W9t7TFyo3xU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwwnLpyFR0/P0Nf3w0QrnANUTNN6lMzn4M2LxGm0N1b8ER6AWM
-	XxePBb3clXLXTvt/i0bEpnkY6y27aV8IH7/4beHZT2+NY+XdJZcJRH+FnmLIEkjfMQGbuSnSBrM
-	JD4ES
-X-Gm-Gg: ASbGnctS/K/+HlbOx0dJ07W0uZtEs6Vkw8U8b9aKoJytW4n1q1gKSYjsZ2mlRVrLRTd
-	6HF+UVKD8ebFnRWMOxR/2xylCzsxTGVMCrOxUYSTS6S9QEH82eywW3dqTJsXolPimm6DBsF8TDx
-	NPqdqLy480PzWq1b8lry19BMCRV/j6HJLq2fXd0uhj8FYSBssJLQrLZWf/+ICYVqhTtp5eQNqSI
-	xgz/GZtj6JS86cPM2C0/KRDSUYF/5DCVgFLsIzBxOVpTgmXmXXWaGzF9XKru4iPSF+z91xlG2Qf
-	391vGSDuuRWp2V8IAd27/Sp6SjvTH3AYgQjtc8Z5yEINYRGc5hoLdb2cofF/JH9jlcPTQnWCvBH
-	dJy0sa24ZqOkOg7Ql
-X-Google-Smtp-Source: AGHT+IFC3FkzVDlcxxqXEgE7DRm2nKyiD5IBM/KjGv8CKvjsbEXdN31MJPLb6WNYmSeP3qjdjRmzBg==
-X-Received: by 2002:a17:902:f647:b0:234:bca7:2920 with SMTP id d9443c01a7336-2446d744f72mr214803235ad.24.1755529145853;
-        Mon, 18 Aug 2025 07:59:05 -0700 (PDT)
+        bh=imihs9UdVJ+cu8dbhC8IcPh+Tx1B+im9KIGEWng20gg=;
+        b=vFkmTB7iPz4mqGLoAJHo7goaJRcG3yxvzdmu8Bcd4gpP9zySSJ+atVbBPF/VCc3s8U
+         nRDKY8F+UCEU3ibeOpfOrOLtffRw+rXt5T9zikzPFW5qvzQiqs2xPa1nYKGZGAbd2akU
+         I2hSL887/613XjLIUo8cN137ABUcghJpiGkbwb6XCALH0REPbCZseoZlnkQgkOHgYdFH
+         a4uRKmwyEeD6nZTghNaZ0EJfKcuq15mfuJ4ZUKhcL9qazlp62dtlnNbKeKZO/UWNhsCc
+         h4v4vYFuaDyhbalqc5XURxmPdN9yKglkHfBmZco0kVHyPy3/ztEVHPMac4s+cm1pHGnF
+         LqYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWtU1KFTRgiUer1y7S3d+oozITQlw7wx4Zutd/t0BOdzWIWmzYZKL4GeK+aVREEei84+r+wDik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKSO1QrwpOQhL/f3JsFW9l2tdZ0fnNc/32LekUulqxwicL8Hde
+	fWIwQi/V/0SNxTpZpl+nrErhPjq4xTdBgf5lEFGQzHGJtg4Oihp6QHnq6I2WI33TTpImmRp2gkq
+	jslLy
+X-Gm-Gg: ASbGncsHsU9nsN95y7HXFCTF1kgztWZpq86Pu09F3kle/rd8zg6lz3QAshl5COSfYhH
+	yJeggOaM4gPVx/AETvyWIKc6tRdKQkWdfR/72pkt+bmOazXv1wbGiwMG61aC1jrhgnmbNSieIHP
+	3A4oM5jRth4V5EuuNvdNMfk9Do0tnWpu3ezlf85UOfz+D4gRvG8rTRYeJVgAWK4RkempQePIBID
+	4LJjQWS2Mpx8dJIX9e2rfSbMegODXVu/I0f/Tnzo23SON8wm3eFAx6uMH0I+V7ONBAbzbEXrsjq
+	FZsKFCN+iS2+fE0fMCb4hPrJC3WODdAF2N6l7X0rZ/JAwz9RVwIkR1+k+OBIuNf96vE6TobXC5G
+	Vn7Wlr5hxZzUwnD/nAeyxuT21kts=
+X-Google-Smtp-Source: AGHT+IFGfsQFUqTsmYKdx37zAeKh/Nwqwb6+bAIVlwj5hdxkOCI8/wmkGgVkaubdMjpNuyeOJCUc5g==
+X-Received: by 2002:a17:903:1967:b0:242:a0b0:3c12 with SMTP id d9443c01a7336-2446d9c534amr164418595ad.52.1755529147575;
+        Mon, 18 Aug 2025 07:59:07 -0700 (PDT)
 Received: from 16ad3c994827 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446ca9e063sm82876215ad.34.2025.08.18.07.59.04
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446cb0dba2sm82938645ad.68.2025.08.18.07.59.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 07:59:05 -0700 (PDT)
+        Mon, 18 Aug 2025 07:59:06 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -81,15 +81,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-5.4.y: (build) implicit declaration of
+Subject: [REGRESSION] stable-rc/linux-6.6.y: (build) call to undeclared
  function
- 'BIT_U32' [-Werror,-Wimplicit-fun...
+ 'BIT_U32'; ISO C99 and later do not su...
 From: KernelCI bot <bot@kernelci.org>
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Reply-To: kernelci@lists.linux.dev
-Date: Mon, 18 Aug 2025 14:59:04 -0000
-Message-ID: <175552914431.59.14848574391579704496@16ad3c994827>
+Date: Mon, 18 Aug 2025 14:59:06 -0000
+Message-ID: <175552914619.59.17895621905537693562@16ad3c994827>
 
 
 
@@ -97,22 +97,22 @@ Message-ID: <175552914431.59.14848574391579704496@16ad3c994827>
 
 Hello,
 
-New build issue found on stable-rc/linux-5.4.y:
+New build issue found on stable-rc/linux-6.6.y:
 
 ---
- implicit declaration of function 'BIT_U32' [-Werror,-Wimplicit-function-declaration] in drivers/net/can/ti_hecc.o (drivers/net/can/ti_hecc.c) [logspec:kbuild,kbuild.compiler.error]
+ call to undeclared function 'BIT_U32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] in drivers/net/can/ti_hecc.o (drivers/net/can/ti_hecc.c) [logspec:kbuild,kbuild.compiler.error]
 ---
 
-- dashboard: https://d.kernelci.org/i/maestro:d43992843dddea5eb6d0e618759db726469a7b6a
+- dashboard: https://d.kernelci.org/i/maestro:8ace23e7f8ec64c36de1851f3a96cbd024dbc75a
 - giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  a6319f2fe27b8fefe40757d3797cfca30d43ce3c
+- commit HEAD:  243d4807be1704fef446934001535d37afafd8d7
 
 
 
 Log excerpt:
 =====================================================
-drivers/net/can/ti_hecc.c:396:14: error: implicit declaration of function 'BIT_U32' [-Werror,-Wimplicit-function-declaration]
-  396 |         mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
+drivers/net/can/ti_hecc.c:386:14: error: call to undeclared function 'BIT_U32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+  386 |         mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
       |                     ^
 1 error generated.
 
@@ -123,10 +123,10 @@ drivers/net/can/ti_hecc.c:396:14: error: implicit declaration of function 'BIT_U
 
 ## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
 - compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:68a325ed233e484a3f9ea033
+- dashboard: https://d.kernelci.org/build/maestro:68a3271d233e484a3f9ea12f
 
 
-#kernelci issue maestro:d43992843dddea5eb6d0e618759db726469a7b6a
+#kernelci issue maestro:8ace23e7f8ec64c36de1851f3a96cbd024dbc75a
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
