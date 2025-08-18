@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A74BB2A9BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B49DB2A6BC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3955D196751F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 950C06867A8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4039133A01C;
-	Mon, 18 Aug 2025 14:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EE1322744;
+	Mon, 18 Aug 2025 13:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVfPEheu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMdd0BhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE08F34AB12;
-	Mon, 18 Aug 2025 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE07319847;
+	Mon, 18 Aug 2025 13:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525716; cv=none; b=eevVmUMV+ywByct8W6Z7iFORC5K5x+xbsVeqKygYwc9JphW6mEZPnjC94WNvL19e26cfBvSglhoY25VuV44n+uUQnVoY4TvR6rtfjx9PT8h+CCEOUm78JwFuC2GC5xxFIylnzdrfyNNI4XXDeATgJwKp/DJ0DR3JRPvq1rqS2js=
+	t=1755523925; cv=none; b=T40T0O9Lg2t6an6Jyx3hOSXBf2no9ZtbKjapvCWohLT8u/OLep5OKd8sy9YT0Ez3jYDs9R8LEYEZvHW46kXfsW9lsWhBf/WEVU8s627lbP1AtW9k4YjkrXtOt81WqPAh/yUEuYbFX9LZ9+8TGS/Wn9gqsZuddqEBztbSILoVqyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525716; c=relaxed/simple;
-	bh=6L9driD62lbPkzRMEdL9JePXW8mkElxCl3vk/PooXfA=;
+	s=arc-20240116; t=1755523925; c=relaxed/simple;
+	bh=PkuibbLI/dYHH3dwK61hSlk1jT2pszkhQXJOgsDDjmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TifINYU4TF26ud7Tvg+qdSYlXOOn+LPpaJXThiYcLxQYIPlsSrM8mHVAhNdu1MA8eNGmJForTOvonpZokpFCok9BQTEfPspMueUtAxm8khc8iA0xNuo0aZW/tW0HpWyf0E2MlnDuPz85bMH/AmrUEEqKkeuSKwS78C9WTeyrwpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVfPEheu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E11EC4CEEB;
-	Mon, 18 Aug 2025 14:01:55 +0000 (UTC)
+	 MIME-Version; b=m7RBIQeuMqSHpUYGDtFrsvyonatG4YLaV78MkCX/SQ7g+RE4JiELftWcX/pZEa2l93dCpDXECzC6srW+0xzXsm/xcVTT79KC+GPnzs3ru4oTNmMy7HCuy6lqxiOeBldYksY79AouvJi+P27Ucuzm3syMIXlkM6+8x76tCcDrLes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMdd0BhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2ABC4CEEB;
+	Mon, 18 Aug 2025 13:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525715;
-	bh=6L9driD62lbPkzRMEdL9JePXW8mkElxCl3vk/PooXfA=;
+	s=korg; t=1755523925;
+	bh=PkuibbLI/dYHH3dwK61hSlk1jT2pszkhQXJOgsDDjmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVfPEheuo/ACSW4XSn2i3r7zNkbi1xTNJ0njUNEl/jXx2vHx8xyNbTaMnLl+JEKLI
-	 9DVmH9Knx+aa0AxtGiLwYn0ZTrdw1MNlIxlcvx3iA6Q+Mmsnz9IBhacSQuX8UFB8sU
-	 jVSeVgkGsWXkIFOquxBBTzEUdUYuCUx3rheqwmD0=
+	b=MMdd0BhAwH5/0VmW/ZC1FyWYtK3aq9P5YKJRUEhc6CnPB3CHwpJWNXIS1Gf6LbHLC
+	 YV/qNS8JGDgAU8aZ1pwIw8zCo/8/2O489CY4KkraSfNk9mrLEJpXh7tbklHV3qOdyj
+	 jl+sYkxVdTkizeRMolNxd1+m4YNMzJZ56kH1Juec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
+	Paul Fertser <fercerpav@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 313/570] wifi: rtlwifi: fix possible skb memory leak in `_rtl_pci_rx_interrupt()`.
+Subject: [PATCH 6.15 314/515] net: ncsi: Fix buffer overflow in fetching version id
 Date: Mon, 18 Aug 2025 14:45:00 +0200
-Message-ID: <20250818124517.922421289@linuxfoundation.org>
+Message-ID: <20250818124510.522687923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
 
-[ Upstream commit 44c0e191004f0e3aa1bdee3be248be14dbe5b020 ]
+[ Upstream commit 8e16170ae972c7fed132bc928914a2ffb94690fc ]
 
-The function `_rtl_pci_init_one_rxdesc()` can fail even when the new
-`skb` is passed because of a DMA mapping error.  If it fails, the `skb`
-is not saved in the rx ringbuffer and thus lost.
+In NC-SI spec v1.2 section 8.4.44.2, the firmware name doesn't
+need to be null terminated while its size occupies the full size
+of the field. Fix the buffer overflow issue by adding one
+additional byte for null terminator.
 
-Compile tested only
-
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250616105631.444309-4-fourier.thomas@gmail.com
+Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
+Link: https://patch.msgid.link/20250610193338.1368-1-kalavakunta.hari.prasad@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/ncsi/internal.h | 2 +-
+ net/ncsi/ncsi-rsp.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 898f597f70a9..2741c3beac4c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -802,13 +802,19 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
- 		skb = new_skb;
- no_new:
- 		if (rtlpriv->use_new_trx_flow) {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 		} else {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 			if (rtlpci->rx_ring[rxring_idx].idx ==
- 			    rtlpci->rxringcount - 1)
- 				rtlpriv->cfg->ops->set_desc(hw, (u8 *)pdesc,
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index 2c260f33b55c..ad1f671ffc37 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -110,7 +110,7 @@ struct ncsi_channel_version {
+ 	u8   update;		/* NCSI version update */
+ 	char alpha1;		/* NCSI version alpha1 */
+ 	char alpha2;		/* NCSI version alpha2 */
+-	u8  fw_name[12];	/* Firmware name string                */
++	u8  fw_name[12 + 1];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+ 	u32 mf_id;		/* Manufacture ID                     */
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 8668888c5a2f..d5ed80731e89 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -775,6 +775,7 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
+ 	ncv->alpha1 = rsp->alpha1;
+ 	ncv->alpha2 = rsp->alpha2;
+ 	memcpy(ncv->fw_name, rsp->fw_name, 12);
++	ncv->fw_name[12] = '\0';
+ 	ncv->fw_version = ntohl(rsp->fw_version);
+ 	for (i = 0; i < ARRAY_SIZE(ncv->pci_ids); i++)
+ 		ncv->pci_ids[i] = ntohs(rsp->pci_ids[i]);
 -- 
 2.39.5
 
