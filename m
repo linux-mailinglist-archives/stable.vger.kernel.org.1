@@ -1,99 +1,126 @@
-Return-Path: <stable+bounces-171647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D534B2B1CD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:39:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0ADB2B1D9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:46:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703DE5E4B6B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:39:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6731D1B63E5C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B323A274649;
-	Mon, 18 Aug 2025 19:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CA0223DD9;
+	Mon, 18 Aug 2025 19:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elVAXFpI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8hLF3+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E942273D6D;
-	Mon, 18 Aug 2025 19:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E40786349
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 19:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755545932; cv=none; b=Xyc/PuQ6Qurm36Xcb4oza58RUaC6GRlBwQWafttxCuLWIIBo0vSmpA9kJhPdOU5urtK2xWKCql6zh0ZqEYo8t3R2l6V3Lfw6NEVLWEoGI5ist9sHkg12472aQG8pH0t/ZuBioIQXS5709J13S4BFxHdo7c4DY8aPBoTp3oaqZfE=
+	t=1755546414; cv=none; b=X3pU1MaGiDkHaYyteuoqH+1AR2jxarlzeOVZbNUGGmqkB596srrciP7kTzb4ALPvvhJDoWbYtbJwCckP0xOYcX+ZlSxFzyeyzHWq4fsfCS/iiBcEBLTmlBhoIkiToKWat0qP1oGPcLQbfPm68tV2oVZIDmdLXmBufJWFSEt/QpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755545932; c=relaxed/simple;
-	bh=VkrdvVd5SEXtLNxlHzDFLtCsAV8AnNDaqUpaJZ60WSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=moSFyMU+u5KF9kv/SGf9GDd/CGgXl6lE/2ZVLX50uOxZWbfsbtno1nOmlUtwAh8n5O5fgrcwOpjNqdQcyS9vb9g6BWcxrUgzVKRJQMmOBz2T1Kh4mfmO5CvfabG4CyY2vBVfcyebgPBzbnhOoHF4oByV7xlnpNOPNGFRkRIyXU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=elVAXFpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4719C4CEED;
-	Mon, 18 Aug 2025 19:38:51 +0000 (UTC)
+	s=arc-20240116; t=1755546414; c=relaxed/simple;
+	bh=xK/jJG7ngut4zPJ7OqgODrD7nhhLaEgafTvEGdYVHKM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D9M/CmI0xtUNHWXBjdJArJVqvwGGlC19QT4bnJx02KECiG3DcfVTN0C9ElHXeI7K48vgkQGKWBUmwNBnm5Hkq/MEn0hB7kFIFPXhVDuP5kb/fHaSMbtZvTUmbsMG8B97L6cDdiN7gmle64BKdGJkmRP5ID6vySorbisJI3zNPyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8hLF3+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74006C4CEEB;
+	Mon, 18 Aug 2025 19:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755545931;
-	bh=VkrdvVd5SEXtLNxlHzDFLtCsAV8AnNDaqUpaJZ60WSo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=elVAXFpIRcifcL1F2/hmBDTQJ6fhrtmkcCHFaqwVx2qrap9TcXEw36jXWkzl3PcO4
-	 qmFQ1Ha9zJToVhsw4TH7GzB7MbNgiP0z9CpZ674yoNNvx/R33Bkf9QhZ459iBjzxxD
-	 apBJoA11dnf9PKTsQaAC7IFHZUNcUwbJvVqm62DQubRSKd1U9uRZebN2g11ETnBGJC
-	 8bPkk/oeJvWqcULZym1G2UXe6SRt4YrdRGnZZQjMM+ln8PkfYOmf+obrzX6NtXyuGC
-	 v2wB+EszDHEoKUCT509NrF/woTI7ViQuI0rJjVrDKFqBIKOzdtUJlHzZYZJphZ5Rts
-	 /lcTXZOG2+mDQ==
-Date: Mon, 18 Aug 2025 19:38:49 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: netdev@vger.kernel.org, David Lebrun <dlebrun@google.com>,
-	stable@vger.kernel.org, stefano.salsano@uniroma2.it,
-	Paolo Lungaroni <paolo.lungaroni@uniroma2.it>
-Subject: Re: [PATCH net-next 1/3] ipv6: sr: Fix MAC comparison to be
- constant-time
-Message-ID: <20250818193849.GB12939@google.com>
-References: <20250816031136.482400-1-ebiggers@kernel.org>
- <20250816031136.482400-2-ebiggers@kernel.org>
- <20250818211607.c8eb87fbac2f81774022b54b@uniroma2.it>
+	s=k20201202; t=1755546414;
+	bh=xK/jJG7ngut4zPJ7OqgODrD7nhhLaEgafTvEGdYVHKM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=d8hLF3+2a5FxuI5ViD7CeiFT8PbOXgCbFQ0qBQbEIgdb+tBBgCjKufOdwSDSby+X1
+	 fVS8Y6Y4woqHwaWwKZ+xGPJ9/xT+nNjXx3lJDppx0iNTGiWhPbWDzQ/JJmttQ3JUx/
+	 8Mv1krPwUEOC3nj9+Irv7S/2kOp5X85zKlBbZxRpljYobIDX00kb+HGuCiMTU02tTe
+	 uwpnNJxWMqs0jPLys5lcM0yMzlA2r0rEhVAutqF3d0i9WAEUqn/rN375YUjd0GCljy
+	 OnkC/x/lEZcvbApX30+n+sdyEYVuBBl+U1uuU3CSaKnEubhnXZXWlBl4kvA4sz+IRC
+	 i3frHzo6FVPGw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] serial: 8250: fix panic due to PSLVERR
+Date: Mon, 18 Aug 2025 15:46:51 -0400
+Message-ID: <20250818194651.56144-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025081846-exquisite-previous-f76e@gregkh>
+References: <2025081846-exquisite-previous-f76e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250818211607.c8eb87fbac2f81774022b54b@uniroma2.it>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 18, 2025 at 09:16:07PM +0200, Andrea Mayer wrote:
-> On Fri, 15 Aug 2025 20:11:34 -0700
-> Eric Biggers <ebiggers@kernel.org> wrote:
-> 
-> > To prevent timing attacks, MACs need to be compared in constant time.
-> > Use the appropriate helper function for this.
-> > 
-> > Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> > ---
-> >  net/ipv6/seg6_hmac.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> 
-> Hi Eric,
-> 
-> Thanks for the fix!
-> 
-> I believe it would be best to submit this fix separately from the current patch
-> set. Since this addresses a bug rather than an enhancement or cleanup, sending
-> it individually with the 'net' tag will help facilitate applying this patch to
-> the net tree.
-> 
-> Ciao,
-> Andrea
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-Then there would be a merge conflict between the two patchsets.
+[ Upstream commit 7f8fdd4dbffc05982b96caf586f77a014b2a9353 ]
 
-I can do that if you want, but then I'd probably have to wait for this
-patch to reach net-next before the rest can proceed.
+When the PSLVERR_RESP_EN parameter is set to 1, the device generates
+an error response if an attempt is made to read an empty RBR (Receive
+Buffer Register) while the FIFO is enabled.
 
-- Eric
+In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
+UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
+dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
+function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
+Execution proceeds to the serial_port_in(port, UART_RX).
+This satisfies the PSLVERR trigger condition.
+
+When another CPU (e.g., using printk()) is accessing the UART (UART
+is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
+(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
+dw8250_force_idle().
+
+Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
+to fix this issue.
+
+Panic backtrace:
+[    0.442336] Oops - unknown exception [#1]
+[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
+[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
+...
+[    0.442416] console_on_rootfs+0x26/0x70
+
+Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
+Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Applied fix to serial8250_do_startup() instead of serial8250_initialize() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/tty/serial/8250/8250_port.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index d5ad6cae6b65..23aed9e89e30 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2375,9 +2375,8 @@ int serial8250_do_startup(struct uart_port *port)
+ 	/*
+ 	 * Now, initialize the UART
+ 	 */
+-	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+-
+ 	spin_lock_irqsave(&port->lock, flags);
++	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
+ 	if (up->port.flags & UPF_FOURPORT) {
+ 		if (!up->port.irq)
+ 			up->port.mctrl |= TIOCM_OUT1;
+-- 
+2.50.1
+
 
