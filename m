@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655EAB2A33C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315F8B2A885
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2B37196004B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B06BB6E365B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44336286D5E;
-	Mon, 18 Aug 2025 13:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7365027B358;
+	Mon, 18 Aug 2025 13:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0yHuboz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9EYdFdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0018B217F3D;
-	Mon, 18 Aug 2025 13:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EF0261B9C;
+	Mon, 18 Aug 2025 13:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522033; cv=none; b=Q3dvi4fRY9rnKiFJJSm0vIvXjr1FQQh9JnPpueYcgZ531an9CeF+h9jFzYkm/W42nvsbApmSllsrjOcjSByfr6G5VASV/rAgBUMUfmHYKDtRcM0R1/cPeKhJHwAcQk+1qM3AT+f9Xo5gZ13rPhaYgoN/466Z77aHFQnKP6TsC00=
+	t=1755525350; cv=none; b=tlOMwBmF+EwPkvk2qzDDKu1L/D3Tqn2Q+0URa8wjmIQUYfeIe8n8ib7x5rRLOjXsYmLWMFb0XPY7YA+qefVt2cZSNdtLyn9lSobVvEpQCLxl61cq4herDScVQ/jbZVnc889xjcxbkd+8fcFo5hIRWdAz+zTiyq7YW9uaCFCY4kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522033; c=relaxed/simple;
-	bh=zwsT0Q341VQEVB3oeJ/X6lNoElUrixqk058lLjgWUEE=;
+	s=arc-20240116; t=1755525350; c=relaxed/simple;
+	bh=dw+DtP6lLrbNRfh8whbeWXEawrzysl3y4yKBhF5aNXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5T+ktNxCft3Doz+iQLdqtuE5IwEoLN1Y7SsmNgXvpY4lBgMJAuV2vSamx5L4Ktvw8Ok3RjvB58I/KN+RWRymPQrNghdTBtSmmL4/6cfbM6raVxhISdVfYJX+PEjPOWpmqOkd8F4cXrT2FhQNPbM2kTIlM9zyQNf1NPBa/Ufqz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0yHuboz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638A8C4CEEB;
-	Mon, 18 Aug 2025 13:00:32 +0000 (UTC)
+	 MIME-Version; b=JjydWmQvAVX11/mQhkp4wZgcb1sHJicvhnGjhjdHpfwuNKQ+TZb3qbbQMF0eU+Ptn9SBMmp88m47YgxOvoFMiYsQB+FX9CVVvbiBfISoNlLPxsTwQ+w7YMdXFjB93mWw/QP4XmfuoiZV9MhQI0JpRlYSsO/G+io0CfonLk3iT8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9EYdFdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BFAC4CEEB;
+	Mon, 18 Aug 2025 13:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522032;
-	bh=zwsT0Q341VQEVB3oeJ/X6lNoElUrixqk058lLjgWUEE=;
+	s=korg; t=1755525349;
+	bh=dw+DtP6lLrbNRfh8whbeWXEawrzysl3y4yKBhF5aNXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0yHubozZkEuJQcWt77k5MthMZkiCu4rpe/SvmmyFKXQU07wEHjr1mwVeNKoUDklk
-	 R3bFlmYFeAULhek9Iw44N+uPEM+h1cW2VrParwtrmHvj9uCfTpMa0vUDIbM94O1Gj2
-	 dubVykaZhxJFsRV5OxsELACqENj/E8Z9NP/KOko8=
+	b=U9EYdFdXFsG/D4EYetzkqqFC7l63jKSaxiqTRX0TjuK59I8tsQnHCEUyPpZmOoXhf
+	 wj0MqmavNN+l3mbCkNh0bHm4Apuw2IpS2ClnQOBLcML2ZzXidfwpSSFAKkEMk9heTl
+	 WopwLOhWV5eh3R3/OGw9uwoJPnWqX74txu2564bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Breno Leitao <leitao@debian.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/444] sched/deadline: Fix accounting after global limits change
+Subject: [PATCH 6.16 234/570] arm64: Mark kernel as tainted on SAE and SError panic
 Date: Mon, 18 Aug 2025 14:43:41 +0200
-Message-ID: <20250818124456.178304502@linuxfoundation.org>
+Message-ID: <20250818124514.840876485@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 440989c10f4e32620e9e2717ca52c3ed7ae11048 ]
+[ Upstream commit d7ce7e3a84642aadf7c4787f7ec4f58eb163d129 ]
 
-A global limits change (sched_rt_handler() logic) currently leaves stale
-and/or incorrect values in variables related to accounting (e.g.
-extra_bw).
+Set TAINT_MACHINE_CHECK when SError or Synchronous External Abort (SEA)
+interrupts trigger a panic to flag potential hardware faults. This
+tainting mechanism aids in debugging and enables correlation of
+hardware-related crashes in large-scale deployments.
 
-Properly clean up per runqueue variables before implementing the change
-and rebuild scheduling domains (so that accounting is also properly
-restored) after such a change is complete.
+This change aligns with similar patches[1] that mark machine check
+events when the system crashes due to hardware errors.
 
-Reported-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk> # nuc & rock5b
-Link: https://lore.kernel.org/r/20250627115118.438797-4-juri.lelli@redhat.com
+Link: https://lore.kernel.org/all/20250702-add_tain-v1-1-9187b10914b9@debian.org/ [1]
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250716-vmcore_hw_error-v2-1-f187f7d62aba@debian.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 4 +++-
- kernel/sched/rt.c       | 6 ++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/traps.c | 1 +
+ arch/arm64/mm/fault.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 0a47e5155897..53e3670fbb1e 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -3227,6 +3227,9 @@ void sched_dl_do_global(void)
- 	if (global_rt_runtime() != RUNTIME_INF)
- 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index 9bfa5c944379..7468b22585ce 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -931,6 +931,7 @@ void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigne
  
-+	for_each_possible_cpu(cpu)
-+		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
-+
- 	for_each_possible_cpu(cpu) {
- 		rcu_read_lock_sched();
+ void __noreturn arm64_serror_panic(struct pt_regs *regs, unsigned long esr)
+ {
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	console_verbose();
  
-@@ -3242,7 +3245,6 @@ void sched_dl_do_global(void)
- 		raw_spin_unlock_irqrestore(&dl_b->lock, flags);
- 
- 		rcu_read_unlock_sched();
--		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
+ 	pr_crit("SError Interrupt on CPU%d, code 0x%016lx -- %s\n",
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 11eb8d1adc84..f590dc71ce99 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -838,6 +838,7 @@ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ 		 */
+ 		siaddr  = untagged_addr(far);
  	}
- }
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+ 	arm64_notify_die(inf->name, regs, inf->sig, inf->code, siaddr, esr);
  
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 172c588de542..6ad6717084ed 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2951,6 +2951,12 @@ static int sched_rt_handler(const struct ctl_table *table, int write, void *buff
- 	}
- 	mutex_unlock(&mutex);
- 
-+	/*
-+	 * After changing maximum available bandwidth for DEADLINE, we need to
-+	 * recompute per root domain and per cpus variables accordingly.
-+	 */
-+	rebuild_sched_domains();
-+
- 	return ret;
- }
- 
+ 	return 0;
 -- 
 2.39.5
 
