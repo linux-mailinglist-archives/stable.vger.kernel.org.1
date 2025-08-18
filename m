@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80ED4B2A275
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3700B2A5D9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CA497A1CD2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105691778C8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BAF31E0E6;
-	Mon, 18 Aug 2025 12:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55637321442;
+	Mon, 18 Aug 2025 13:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GA/zCEh5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/QLPnxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740B031CA62;
-	Mon, 18 Aug 2025 12:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138E32135CE;
+	Mon, 18 Aug 2025 13:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521822; cv=none; b=a/Ww6jJ9Zd4KKuedzbsx/a79S+SAIAMJMSy4tr7+9BPPUxO7O84DJG8L/a5pTQIS0eRyHNc1LRxnAAOzvJB9ZoxcZ6cP8BS3TUYvDS0433hHdsq0fCV0TM/koMo9pq2HKUs96bNW3UP5e7TKl/VKNO9J5d5hQe5jfDkUjaI1lgQ=
+	t=1755523443; cv=none; b=rEEnpT+YNUpH3OHQozJlO55bo3CafVbe4XXSAB0rw1Dhew1bNQld0GYtC7JWIH6Bay32rPqp/M7lhDe8z5632oh8Ekj4KKcJb47z1dVafWkxDO/tivLLTILwERGQWu/iJ9EBYVkoSivi/nJ28wqsRTtTtjkWsFyJYH+RBd0qNWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521822; c=relaxed/simple;
-	bh=QTEZBzJpEg33TRqxSDLnjRxYVVfLJyEd2nLpGGWRIKc=;
+	s=arc-20240116; t=1755523443; c=relaxed/simple;
+	bh=/J3hqniTaRoMqxQTS4UqviSgLpzDyilYx7uwD28N98I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNkaIpqBej4mA5vxkM0qpiu6WtKOhgfYa7ZDil5ipTS45hhLFZDwpon60npI2WA0in1J1gO1uP9KTkQ7O8acpcioBuvbtxwk1sVbaRiG8BdyCDSOEIjdwkt+MVC2mTR1emuaAiuOnL6KVafcoE5rwKGj2gX6ePrst2hmqsJdUts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GA/zCEh5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCCCC4CEEB;
-	Mon, 18 Aug 2025 12:57:01 +0000 (UTC)
+	 MIME-Version; b=gjKu8rNe8Cx5iP7QT69U/WzIvFQ3WTBkCgvni6BsE+VHokuyTXhm2W0mmKY0OCyC8Oc/oSJ46WiY9nHuFw+7oTan1f32IoS8WIqk9N3qO0gaXrhJxAS5XIoV1AHs+Iq4kCOt8095zdCsKj6zobCxpoWk/HOElQ723+t/Ra7s9Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/QLPnxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7588EC4CEEB;
+	Mon, 18 Aug 2025 13:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521822;
-	bh=QTEZBzJpEg33TRqxSDLnjRxYVVfLJyEd2nLpGGWRIKc=;
+	s=korg; t=1755523442;
+	bh=/J3hqniTaRoMqxQTS4UqviSgLpzDyilYx7uwD28N98I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GA/zCEh51S2sCiWBugcfvpfSGV50lvVG1sP1H8OE1vEtkqbDWYoIIDhJ3fevosUow
-	 5RZgKYsDh5DUHxerlqIl6cbOJEE8dFPbz72K5SD5DKGVqYaSID3JtnCK+j+l0c78+c
-	 Gb/7A8eqBKIQb1SURfFCWYBB17oqHkS55tp8b4xs=
+	b=F/QLPnxXHod6qXb+d0v/BR2p1EKlo6xMQrQW0JCKQVR65MqXN31WbR/VPf5KIscGo
+	 S/Xi+PrBdcWNR/HttFYFfH5MwZ7x6iJbQiw7w2VkK6VM5gHsSBcGk0zWGgAlLahCrA
+	 SfbTu9KNjV5JPNP4N7pl097DdVV5viTHRfiyTYMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 132/444] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+Subject: [PATCH 6.15 172/515] ASoC: SOF: topology: Parse the dapm_widget_tokens in case of DSPless mode
 Date: Mon, 18 Aug 2025 14:42:38 +0200
-Message-ID: <20250818124453.862351640@linuxfoundation.org>
+Message-ID: <20250818124504.986357325@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+[ Upstream commit 6b3cb7f4341cbf62d41ccf6ea906dbe66be8aa3d ]
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+Parsing the dapm_widget_tokens is also needed for DSPless mode as it is
+setting the snd_soc_dapm_widget.no_wname_in_kcontrol_name flag for the
+kcontrol creation from DAPM widgets.
+Without that flag set, the following warnings might appear because of long
+control names:
+ALSA: Control name 'eqiir.2.1 Post Mixer Analog Playback IIR Eq bytes' truncated to 'eqiir.2.1 Post Mixer Analog Playback IIR Eq'
+ALSA: Control name 'eqfir.2.1 Post Mixer Analog Playback FIR Eq bytes' truncated to 'eqfir.2.1 Post Mixer Analog Playback FIR Eq'
+ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC bytes' truncated to 'drc.2.1 Post Mixer Analog Playback DRC byte'
+ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC switch' truncated to 'drc.2.1 Post Mixer Analog Playback DRC swit'
+ALSA: Control name 'gain.15.1 Pre Mixer Deepbuffer HDA Analog Volume' truncated to 'gain.15.1 Pre Mixer Deepbuffer HDA Analog V'
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://patch.msgid.link/20250619102640.12068-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/sof/topology.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 94e3d3fe11ae..91f9267c07ea 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -996,6 +996,8 @@ static void __ghes_panic(struct ghes *ghes,
- 
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index 14aa8ecc4bc4..554808d2dc29 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -2368,14 +2368,25 @@ static int sof_dspless_widget_ready(struct snd_soc_component *scomp, int index,
+ 				    struct snd_soc_dapm_widget *w,
+ 				    struct snd_soc_tplg_dapm_widget *tw)
+ {
++	struct snd_soc_tplg_private *priv = &tw->priv;
++	int ret;
 +
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
++	/* for snd_soc_dapm_widget.no_wname_in_kcontrol_name */
++	ret = sof_parse_tokens(scomp, w, dapm_widget_tokens,
++			       ARRAY_SIZE(dapm_widget_tokens),
++			       priv->array, le32_to_cpu(priv->size));
++	if (ret < 0) {
++		dev_err(scomp->dev, "failed to parse dapm widget tokens for %s\n",
++			w->name);
++		return ret;
++	}
++
+ 	if (WIDGET_IS_DAI(w->id)) {
+ 		static const struct sof_topology_token dai_tokens[] = {
+ 			{SOF_TKN_DAI_TYPE, SND_SOC_TPLG_TUPLE_TYPE_STRING, get_token_dai_type, 0}};
+ 		struct snd_sof_dev *sdev = snd_soc_component_get_drvdata(scomp);
+-		struct snd_soc_tplg_private *priv = &tw->priv;
+ 		struct snd_sof_widget *swidget;
+ 		struct snd_sof_dai *sdai;
+-		int ret;
  
- 	if (!panic_timeout)
+ 		swidget = kzalloc(sizeof(*swidget), GFP_KERNEL);
+ 		if (!swidget)
 -- 
 2.39.5
 
