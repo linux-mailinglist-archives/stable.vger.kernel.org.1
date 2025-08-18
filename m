@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-171633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D23B2AF6A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:31:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD764B2AF80
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:35:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B05897A1793
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:29:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20E8617AC60
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE400284880;
-	Mon, 18 Aug 2025 17:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8BF2773C8;
+	Mon, 18 Aug 2025 17:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rFHKJyBj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSYYOSKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AAA32C33A;
-	Mon, 18 Aug 2025 17:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491A42773C6;
+	Mon, 18 Aug 2025 17:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755538262; cv=none; b=DxqhXf3z7ySQyhO3vJ1Dg2Ir5vYarEc6doEyFCURuynZudZnoRW6yY4uyCqajkHt3imQ/hDSvEznrkuTUJy/3sPYhS+xl/wm05MlpvTkb7ZvYCFM40qh72CTL3ICIklMk+jhj7dy2P7EuHl/Ki3tE7+h/qnMKbkdp45E6QHnfA4=
+	t=1755538438; cv=none; b=IcjArv//83cdgIV7qmIq7wHz5jhxVcY4LXTud5eDQ9Klu2L1Udix+yl0BuLFC4FIXfqJzdzUhlbEs+qW2W3jplUSrfOf2xJ3gtceeXpaYJQY3qNZ2NkdRCGGAa13scl09LdFQvXZW7lmn86LLifXdq6TSoA+ACKnMI9j9O1ZJpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755538262; c=relaxed/simple;
-	bh=4Pjd9TNGOPRxXeRTGonj96aAUJIdna38eyaQvAHKeAM=;
+	s=arc-20240116; t=1755538438; c=relaxed/simple;
+	bh=vqyBLna+nZ7Qa7M4Vfzib09tCSisDgnoTvkKrxSb3SQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YA3/HLyxwU3ATojByqRMYsVQkdRrStkBVOBx9PqR7YFnKA8/rwoLtCJATKR0Y28Q2iH4cfaoCOVdpc/WN7h1uyW9r1N0mHp7+jJ1Jhwm0u0+eaWeSuvE09A+18gCUXJEnv82CUmg1CYk8EG/qrawBYhxM24SxmQRnlMQIR1gOjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rFHKJyBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB986C116C6;
-	Mon, 18 Aug 2025 17:31:01 +0000 (UTC)
+	 MIME-Version; b=YEk1dEuqEyvTEKu9/USj5Sz7G8f0IEe6QSniJAM5+5poukMjH/UpXGiQDXA2poSRB3Mii/UwosPW9Vu5VsdZUZMrzJeDDx254O3a4qDm5/gIZCH/hEOyfy3bTgLqEXIM5LYqDxT+R3lbkC6pgsdvw01Wk9sWPfMyHSqJQl1ajTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSYYOSKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461F1C4CEEB;
+	Mon, 18 Aug 2025 17:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755538262;
-	bh=4Pjd9TNGOPRxXeRTGonj96aAUJIdna38eyaQvAHKeAM=;
+	s=k20201202; t=1755538437;
+	bh=vqyBLna+nZ7Qa7M4Vfzib09tCSisDgnoTvkKrxSb3SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFHKJyBjzeGrFzoLouOQOIgQCDBLjhjv844s3Vhx1jnWsPMTBNqqyoGzu+F6CUzBk
-	 htBQ3ZDDJ7BwU4PTDNEuVAfzkBtcdqkxoL0Z/t0kEAlMK+O1gMGxzpcFbIQy91ODKs
-	 NtcwZ+LDG0qGwPrA5u8/3vTF7EIvQ3aXWEYwFvDoJLy0+AVNGFU8dk10TIJlhgSgqf
-	 fsoKAS+0Qu4yuT4BRFHt2Uf1grsROGgYAbiuWuDAshzZCMnBYHerRNnGhaSJbLpSWt
-	 Bv4KpVvfMvQipqBVn89oU/0e4WlFgjq2bDMwvAbETUY56yjrZc0XDUAweTvGiqiS1z
-	 cgZQHVv4PQB2Q==
+	b=qSYYOSKlyRBfaQc34OVGF1HY/AecIGK/P71o1BWWIg+SeH21eOjPZ0VQnZtaie+og
+	 URGuRI5iyoSN/CHlKhnDYwDgEz7oXxojQFsLxNWkSayZtBihVXMPNZ9BIsEZC+Xuw4
+	 ik4k2A0D+tUDd83Yb2D1Sc1GV3V1OhLDJxmIL4V4kQkIz47ECCX5ALHafXcZxC8m6C
+	 SZs4t5uo+BFRvIt/llpuPbsnACL2hU0spsHL966UMOJ93P6zRWRDpfIHKUNkvJzC4Z
+	 lrxeshyN9Bf42BDdIpIUgimpwJTz7qqsEfumkoGw3A4qVC9U65Dz3awdchjPNkJxNy
+	 06iW3jkJpaPfg==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
@@ -49,12 +49,12 @@ Cc: damon@lists.linux.dev,
 	Honggyu Kim <honggyu.kim@sk.com>,
 	Hyeongtak Ji <hyeongtak.ji@sk.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15.y] mm/damon/ops-common: ignore migration request to invalid nodes
-Date: Mon, 18 Aug 2025 10:30:58 -0700
-Message-Id: <20250818173058.56921-1-sj@kernel.org>
+Subject: [PATCH 6.12.y] mm/damon/ops-common: ignore migration request to invalid nodes
+Date: Mon, 18 Aug 2025 10:33:54 -0700
+Message-Id: <20250818173354.59050-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <2025081832-splendor-carve-f25b@gregkh>
-References: <2025081832-splendor-carve-f25b@gregkh>
+In-Reply-To: <2025081833-booting-yelling-d0fa@gregkh>
+References: <2025081833-booting-yelling-d0fa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -106,10 +106,10 @@ Signed-off-by: SeongJae Park <sj@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 1b70d3f36046..32ee3739f1d2 100644
+index 8813038abc6f..4120a73f4933 100644
 --- a/mm/damon/paddr.c
 +++ b/mm/damon/paddr.c
-@@ -476,6 +476,10 @@ static unsigned long damon_pa_migrate_pages(struct list_head *folio_list,
+@@ -431,6 +431,10 @@ static unsigned long damon_pa_migrate_pages(struct list_head *folio_list,
  	if (list_empty(folio_list))
  		return nr_migrated;
  
