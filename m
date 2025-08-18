@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C33B2A594
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722CCB2A304
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E31937A9578
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A94A189EBF4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3242321F58;
-	Mon, 18 Aug 2025 13:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC813218C0;
+	Mon, 18 Aug 2025 12:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAiRWnrU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTgAzYLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A073722A7E0;
-	Mon, 18 Aug 2025 13:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE73B1E51FE;
+	Mon, 18 Aug 2025 12:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523459; cv=none; b=TIPS35iNZP+YGaXFHRr6hyJpisDR56Gi+cRd+Sh0vmFb+U2Vxg3T+0XxoGl+LXHGBq5JzcM2H1SZN9eS0mXuQwfO92FjI+m/WeWqXH1dWzq/1HmTZ8ZK10A7/JAeslb8AW6v+T4HGt/sMPd4l7FIrIij8blttzwK/2dp4Blt0+o=
+	t=1755521838; cv=none; b=Z0tGyIdEne0rL52dmjdIdDQivXpuuvOkHs8lEOpU6LfXsCGo0yYa4P5s2FmutMtVMjHpYrYej2+PZap2YP3FZsUFoSijGezID1RFJ/OPwCfsm4ZH+RHypYZD5ECZdtowq0N5bkAW9QawmLwhbew9gBWMK0EU5VCCh3N26CwqjE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523459; c=relaxed/simple;
-	bh=YTKzFVmxvix36OVONbphBoT3WOE9LlBtEl3FKXRid4U=;
+	s=arc-20240116; t=1755521838; c=relaxed/simple;
+	bh=cXd8lGme1eUbCSA3binFW1ngvK9ARf4XI7O1Ulk9mVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6CQe5sEB2h5rCHw5xgbGV+YEOcbuEEPhn1bpkiGPSUTG2zMIqJsWaVYggwGKimsOMJcSs1t7Upkjn6PvquqdgncoYuzlixyHWLe+LBEgZUbNJ1RkBfIGTS+eQXdd9bmSbTnXPELYAWLX1tzXRuaSOdDCp6pOVLUgyWZjK0KmA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAiRWnrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F901C4CEEB;
-	Mon, 18 Aug 2025 13:24:18 +0000 (UTC)
+	 MIME-Version; b=pfKjtHgzRWDbtGKj5exf/UpI14PuTY1PivZKZiJcBa2AZZIpan+tw57Y8vLKPgEKfDDVo7MKpchGGqsSJG/ATO1eIsQM4zACGqmurllMO/IljSbed+dFsqUXd3CSb+yRfSdGUBcPy0tCPoxqYo5U6h/SSkDv448NwdDHtQkAECM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTgAzYLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE5BC4CEEB;
+	Mon, 18 Aug 2025 12:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523459;
-	bh=YTKzFVmxvix36OVONbphBoT3WOE9LlBtEl3FKXRid4U=;
+	s=korg; t=1755521838;
+	bh=cXd8lGme1eUbCSA3binFW1ngvK9ARf4XI7O1Ulk9mVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAiRWnrUm2suwrl0K1OAHPB2SkCbeA4F1WRN+Hr1INg/7yVjFyBy+miCkWmrx+0tK
-	 /5ZEuOJizEFkZMidWoI6KR9t6y9aH2be5w26PXq3vRgWSat1nLcoqVvayVnlH0LZbo
-	 hSGK9ve4Gly/VplnNLdt8+qs28PrzO/CGwV5c5Zk=
+	b=HTgAzYLqDOh7yAZ3tG1zIU1S8Sjod5lj73XDwbjOWD0gGi3+dfH9eqJ+3ogkEGYaZ
+	 jfVRnmq+gov8qWyE//vX6o9C6/TAAbVznROqX7C72m+9uLg+Y9co+JZm6bR3DqPOM5
+	 HLOsKoFKEIRXa7V6jCeKUeJOPGxAyqYUJNkV0BWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 177/515] usb: dwc3: xilinx: add shutdown callback
+Subject: [PATCH 6.12 137/444] mei: bus: Check for still connected devices in mei_cl_bus_dev_release()
 Date: Mon, 18 Aug 2025 14:42:43 +0200
-Message-ID: <20250818124505.180855093@linuxfoundation.org>
+Message-ID: <20250818124454.044081027@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 70627bf82e36e61c40c3315e1206e4ea4c02e668 ]
+[ Upstream commit 35e8a426b16adbecae7a4e0e3c00fc8d0273db53 ]
 
-Adds a shutdown callback to ensure that the XHCI stack is properly
-shutdown in reboot/shutdown path.
+mei_cl_bus_dev_release() also frees the mei-client (struct mei_cl)
+belonging to the device being released.
 
-In kexec flow, kernel_restart_prepare() performs actions necessary
-to prepare the system for a restart and invokes device_shutdown. To
-ensure proper shutdown attach the dwc3 shutdown implementation which
-mirrors the remove method.
+If there are bugs like the just fixed bug in the ACE/CSI2 mei drivers,
+the mei-client being freed might still be part of the mei_device's
+file_list and iterating over this list after the freeing will then trigger
+a use-afer-free bug.
 
-$ kexec -e
+Add a check to mei_cl_bus_dev_release() to make sure that the to-be-freed
+mei-client is not on the mei_device's file_list.
 
-<snip>
-xhci-hcd xhci-hcd.0.auto: remove, state 1
-usb usb1: USB disconnect, device number 1
-usb 1-1: USB disconnect, device number 6
-xhci-hcd xhci-hcd.0.auto: USB bus 1 deregistered
-kexec_core: Starting new kernel
-
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/1748977771-714153-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-11-hansg@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/mei/bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/usb/dwc3/dwc3-xilinx.c b/drivers/usb/dwc3/dwc3-xilinx.c
-index 4ca7f6240d07..09c3c5c226ab 100644
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -422,6 +422,7 @@ static const struct dev_pm_ops dwc3_xlnx_dev_pm_ops = {
- static struct platform_driver dwc3_xlnx_driver = {
- 	.probe		= dwc3_xlnx_probe,
- 	.remove		= dwc3_xlnx_remove,
-+	.shutdown	= dwc3_xlnx_remove,
- 	.driver		= {
- 		.name		= "dwc3-xilinx",
- 		.of_match_table	= dwc3_xlnx_of_match,
+diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
+index 5576146ab13b..04f9a4b79d85 100644
+--- a/drivers/misc/mei/bus.c
++++ b/drivers/misc/mei/bus.c
+@@ -1353,10 +1353,16 @@ static void mei_dev_bus_put(struct mei_device *bus)
+ static void mei_cl_bus_dev_release(struct device *dev)
+ {
+ 	struct mei_cl_device *cldev = to_mei_cl_device(dev);
++	struct mei_device *mdev = cldev->cl->dev;
++	struct mei_cl *cl;
+ 
+ 	mei_cl_flush_queues(cldev->cl, NULL);
+ 	mei_me_cl_put(cldev->me_cl);
+ 	mei_dev_bus_put(cldev->bus);
++
++	list_for_each_entry(cl, &mdev->file_list, link)
++		WARN_ON(cl == cldev->cl);
++
+ 	kfree(cldev->cl);
+ 	kfree(cldev);
+ }
 -- 
 2.39.5
 
