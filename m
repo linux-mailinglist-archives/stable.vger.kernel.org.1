@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4B3B2A2C7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:02:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587AAB2A8A6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B30F4E3001
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A767E6E33E9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A1A31CA61;
-	Mon, 18 Aug 2025 13:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0426A315781;
+	Mon, 18 Aug 2025 13:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8T4xBER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yz+VdEVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC1A31CA60;
-	Mon, 18 Aug 2025 13:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B496727F727;
+	Mon, 18 Aug 2025 13:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522111; cv=none; b=pMksj5C9M9PGNTXhE09Jq/ps3MmvOQ7yzs+G6Cl9tlbF8/rKnLH2/kH3hKdaN2WvkuBO0SdfxKe3xSGO3aYP4afRUMZMwbySiBP6HvBr0tkO8m/WCiO1yYkmmqJ30qlbBD3EvmwzpvXNSjX6KulIQxDJ7s3PlsYKsQI48sxajvo=
+	t=1755525316; cv=none; b=EhPD5oa3gV7dkmhooNuNNe88f/x4UjvXiLKSnF+YPYw9lFJ+Ta3KhgOaeX1ivNNpuZ9irldXf2SeXXQximJSBVg1SlsnCBFL4etXshTLM4stGONHLCSqfm0CjT4F2a5XNPQ1sAABcjyWNIX0gqtj1MdEwqyCfK8AawNiSH/l16c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522111; c=relaxed/simple;
-	bh=sJ+g3GNpN0DVbaaOJO+uB3XUwmVm79JPbtEgHhoqv6Q=;
+	s=arc-20240116; t=1755525316; c=relaxed/simple;
+	bh=6A8lJ9otMe9GnI6ASETq5o3nD7adgYjZsRQjG3mVgGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzYy73lCZN1lJKA5zHb/G40GWA+/86BazhvlkqjScbPSRdwbDnKaM4xHDSATLfHlLXxBSUnxT62e0/TMHDJJYYw79C+sa38GICheB4ZMOzadAHxH8GFZvWOI/KE2MNX2RWibxdNHT48EgzbyV3bg+otKcDCzY9IYf2ltA5iifzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8T4xBER; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8482AC4CEF1;
-	Mon, 18 Aug 2025 13:01:50 +0000 (UTC)
+	 MIME-Version; b=WQ1e1lwAtEs8y+7gWu0+/bgwMue4vIos4CiLUo+4JHHhI547hWU28+j7cEYvW90M0eyVUypKtkluAcJRc9nfvkzWGZlmaQjEFRbNRpPDIeX+wSdeELfFk0uAvAB03aFViR+XfL3cG9ehi8gzVs0Jn9rM86YNvG37c00laiXqlMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yz+VdEVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF4CC4CEF1;
+	Mon, 18 Aug 2025 13:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522111;
-	bh=sJ+g3GNpN0DVbaaOJO+uB3XUwmVm79JPbtEgHhoqv6Q=;
+	s=korg; t=1755525316;
+	bh=6A8lJ9otMe9GnI6ASETq5o3nD7adgYjZsRQjG3mVgGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8T4xBERyD/az6QRjpqQJNPfEl5/AZ1btFhlt+plI2z6d/WVseKtGZokODBs5CAHE
-	 gbHEoPNsoOTTM91SeT0QfYbRKtLwp41ELJjrthPGC8S5ls3a7GXb8ecF0WJ29Hr6P6
-	 v8ZClRQ8EdPBhVhNCr+rHISwh/A6LOqjk2E7kIv0=
+	b=Yz+VdEVukpFAWp+7ebZHUkm9s+6NWCVp+147F0oBG5zlfB9fKz5T5HvsqpmU3Xbr8
+	 jB6OrqeO01sHTeRMyQuy9IhbIWXV++RsuQDUOhi5SD2HTO13Ijy+RxK9/Bnh9by774
+	 zYY5Nxdh2VLqPUyn6viyqag9j0vKtOG3kXFP3/Ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 185/444] rcu: Protect ->defer_qs_iw_pending from data race
-Date: Mon, 18 Aug 2025 14:43:31 +0200
-Message-ID: <20250818124455.808815665@linuxfoundation.org>
+Subject: [PATCH 6.16 225/570] libbpf: Verify that arena map exists when adding arena relocations
+Date: Mon, 18 Aug 2025 14:43:32 +0200
+Message-ID: <20250818124514.485041890@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 90c09d57caeca94e6f3f87c49e96a91edd40cbfd ]
+[ Upstream commit 42be23e8f2dcb100cb9944b2b54b6bf41aff943d ]
 
-On kernels built with CONFIG_IRQ_WORK=y, when rcu_read_unlock() is
-invoked within an interrupts-disabled region of code [1], it will invoke
-rcu_read_unlock_special(), which uses an irq-work handler to force the
-system to notice when the RCU read-side critical section actually ends.
-That end won't happen until interrupts are enabled at the soonest.
+Fuzzer reported a memory access error in bpf_program__record_reloc()
+that happens when:
+- ".addr_space.1" section exists
+- there is a relocation referencing this section
+- there are no arena maps defined in BTF.
 
-In some kernels, such as those booted with rcutree.use_softirq=y, the
-irq-work handler is used unconditionally.
+Sanity checks for maps existence are already present in
+bpf_program__record_reloc(), hence this commit adds another one.
 
-The per-CPU rcu_data structure's ->defer_qs_iw_pending field is
-updated by the irq-work handler and is both read and updated by
-rcu_read_unlock_special().  This resulted in the following KCSAN splat:
+[1] https://github.com/libbpf/libbpf/actions/runs/16375110681/job/46272998064
 
-------------------------------------------------------------------------
-
-BUG: KCSAN: data-race in rcu_preempt_deferred_qs_handler / rcu_read_unlock_special
-
-read to 0xffff96b95f42d8d8 of 1 bytes by task 90 on cpu 8:
- rcu_read_unlock_special+0x175/0x260
- __rcu_read_unlock+0x92/0xa0
- rt_spin_unlock+0x9b/0xc0
- __local_bh_enable+0x10d/0x170
- __local_bh_enable_ip+0xfb/0x150
- rcu_do_batch+0x595/0xc40
- rcu_cpu_kthread+0x4e9/0x830
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-write to 0xffff96b95f42d8d8 of 1 bytes by task 88 on cpu 8:
- rcu_preempt_deferred_qs_handler+0x1e/0x30
- irq_work_single+0xaf/0x160
- run_irq_workd+0x91/0xc0
- smpboot_thread_fn+0x24d/0x3b0
- kthread+0x3bd/0x410
- ret_from_fork+0x35/0x40
- ret_from_fork_asm+0x1a/0x30
-
-no locks held by irq_work/8/88.
-irq event stamp: 200272
-hardirqs last  enabled at (200272): [<ffffffffb0f56121>] finish_task_switch+0x131/0x320
-hardirqs last disabled at (200271): [<ffffffffb25c7859>] __schedule+0x129/0xd70
-softirqs last  enabled at (0): [<ffffffffb0ee093f>] copy_process+0x4df/0x1cc0
-softirqs last disabled at (0): [<0000000000000000>] 0x0
-
-------------------------------------------------------------------------
-
-The problem is that irq-work handlers run with interrupts enabled, which
-means that rcu_preempt_deferred_qs_handler() could be interrupted,
-and that interrupt handler might contain an RCU read-side critical
-section, which might invoke rcu_read_unlock_special().  In the strict
-KCSAN mode of operation used by RCU, this constitutes a data race on
-the ->defer_qs_iw_pending field.
-
-This commit therefore disables interrupts across the portion of the
-rcu_preempt_deferred_qs_handler() that updates the ->defer_qs_iw_pending
-field.  This suffices because this handler is not a fast path.
-
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250718222059.281526-1-eddyz87@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree_plugin.h | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/lib/bpf/libbpf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
-index 304e3405e6ec..27ab715569f2 100644
---- a/kernel/rcu/tree_plugin.h
-+++ b/kernel/rcu/tree_plugin.h
-@@ -623,10 +623,13 @@ notrace void rcu_preempt_deferred_qs(struct task_struct *t)
-  */
- static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
- {
-+	unsigned long flags;
- 	struct rcu_data *rdp;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index d41ee26b9443..6401dd3bd35f 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -4582,6 +4582,11 @@ static int bpf_program__record_reloc(struct bpf_program *prog,
  
- 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
-+	local_irq_save(flags);
- 	rdp->defer_qs_iw_pending = false;
-+	local_irq_restore(flags);
- }
- 
- /*
+ 	/* arena data relocation */
+ 	if (shdr_idx == obj->efile.arena_data_shndx) {
++		if (obj->arena_map_idx < 0) {
++			pr_warn("prog '%s': bad arena data relocation at insn %u, no arena maps defined\n",
++				prog->name, insn_idx);
++			return -LIBBPF_ERRNO__RELOC;
++		}
+ 		reloc_desc->type = RELO_DATA;
+ 		reloc_desc->insn_idx = insn_idx;
+ 		reloc_desc->map_idx = obj->arena_map_idx;
 -- 
 2.39.5
 
