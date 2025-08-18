@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-171016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F8BB2A779
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15179B2A477
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1142B3A8FD4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D191F623FC8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4391331E116;
-	Mon, 18 Aug 2025 13:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BDE3203BE;
+	Mon, 18 Aug 2025 13:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFEy2gvH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEZHuwKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AFE30C37D;
-	Mon, 18 Aug 2025 13:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CD731CA6E;
+	Mon, 18 Aug 2025 13:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524540; cv=none; b=OM1g617Ci7KELEvFLhl4F9/OOyvqGFAefDR6YyFidKDRFVMIXu1oInf2dL+IX2+nwpiVhJbDs2OBSKWveEDvup6igWbz3HHuWWesd+EHAI9c4oo8MPVrDQ6XUfxwW/EcLbMt51yglW+EtQjdCJUuAjzILsBO3DxvYOz3KROK7aw=
+	t=1755522870; cv=none; b=GTPVfdhAl6g22M9Yx8RHB9G6O2nDMcacKiedo1eSfy2BglneP6aS1fvkqObGMAH3fObU9g902zJn6LGx0JiFoy/CvjP/+bauqxIemu5+7PcwX+EYnC7Y4leT++8nSNd3wW079i+Kyf/nxUi7d7n+t2P3Aj5lcyux8X6lwrJrryc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524540; c=relaxed/simple;
-	bh=Gvk3ywyxTn02MVbFKPjtSPoDtdbMb/vwSirCps4vIbM=;
+	s=arc-20240116; t=1755522870; c=relaxed/simple;
+	bh=Gu3Xl2Dm1pqYZTWXZJWCjOEfeY0S16wWJUCcVoSFBrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJL0aRWYrYGUwPThCdQKQFwjKO6a/XGG2ZKf2+mBZ3ZWFBhoauyIJQPmRT4w8WJCUyVYIMKUxNAJpVrYSf1nxasCnaNbb8UE5yK+YV/Pb/dAsGrMDXInCFLfpGZaQwHk+mlT/JR62/lvI9zZqEKek1VkfFQLzwMXbetb1zqJZOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFEy2gvH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37827C4CEEB;
-	Mon, 18 Aug 2025 13:42:18 +0000 (UTC)
+	 MIME-Version; b=gpCJVxgY/q7L4fB59SuRo/JFkfkFgdl0VF4F5mYOzXjwdmrzhj4SzY7f6fIK+piauQDBBCv02IvKNXfUWJPhAehWSlTYerli8FcbzYULibxHiQCOSPrvnxWQDDFALq8PSnzWW4Evarf5IO4eV6g1WFHWlwHo7/Nf0nSk1QQJ/+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEZHuwKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50076C4CEEB;
+	Mon, 18 Aug 2025 13:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524539;
-	bh=Gvk3ywyxTn02MVbFKPjtSPoDtdbMb/vwSirCps4vIbM=;
+	s=korg; t=1755522869;
+	bh=Gu3Xl2Dm1pqYZTWXZJWCjOEfeY0S16wWJUCcVoSFBrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFEy2gvHOItZ1+hHFudbyMYBEXTUAXiYYs5GPwyTNLFxv4Nz7lNF5oZeeBC7PAPMJ
-	 VGXpYgBK53tm4OhXEj7jhWpTQW/4IYb0rMW5UxXi/FLPj9HqUW6tvgdV4LBWAlqgWS
-	 UxUXoY749pGLU1fguWsfbtO8sJ/rRR7vJIbhuyEA=
+	b=eEZHuwKA2DV4HrU5l92ufefCQETY+Q+4ze+CpMb3o6eW4ta25BPPHGCqQN8HQOx1X
+	 7pZET1FXKkCXAYuL2jHtjAiWik4ASewhnQb4Jv2SUg6xlM/alOsjaQVkPMy69jCcLp
+	 E8Zy7Kkc9MuZpyBK3aNdTPAr/1u4YNFrFPY0koNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 472/515] btrfs: qgroup: fix qgroup create ioctl returning success after quotas disabled
+	Laurent Bigonville <bigon@bigon.be>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 432/444] PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports
 Date: Mon, 18 Aug 2025 14:47:38 +0200
-Message-ID: <20250818124516.591415449@linuxfoundation.org>
+Message-ID: <20250818124505.155578846@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +65,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 08530d6e638427e7e1344bd67bacc03882ba95b9 upstream.
+[ Upstream commit 6cff20ce3b92ffbf2fc5eb9e5a030b3672aa414a ]
 
-When quotas are disabled qgroup ioctls are supposed to return -ENOTCONN,
-but the qgroup create ioctl stopped doing that when it races with a quota
-disable operation, returning 0 instead. This change of behaviour happened
-in commit 6ed05643ddb1 ("btrfs: create qgroup earlier in snapshot
-creation").
+pci_bridge_d3_possible() is called from both pcie_portdrv_probe() and
+pcie_portdrv_remove() to determine whether runtime power management shall
+be enabled (on probe) or disabled (on remove) on a PCIe port.
 
-The issue happens as follows:
+The underlying assumption is that pci_bridge_d3_possible() always returns
+the same value, else a runtime PM reference imbalance would occur.  That
+assumption is not given if the PCIe port is inaccessible on remove due to
+hot-unplug:  pci_bridge_d3_possible() calls pciehp_is_native(), which
+accesses Config Space to determine whether the port is Hot-Plug Capable.
+An inaccessible port returns "all ones", which is converted to "all
+zeroes" by pcie_capability_read_dword().  Hence the port no longer seems
+Hot-Plug Capable on remove even though it was on probe.
 
-1) Task A enters btrfs_ioctl_qgroup_create(), qgroups are enabled and so
-   qgroup_enabled() returns true since fs_info->quota_root is not NULL;
+The resulting runtime PM ref imbalance causes warning messages such as:
 
-2) Task B enters btrfs_ioctl_quota_ctl() -> btrfs_quota_disable() and
-   disables qgroups, so now fs_info->quota_root is NULL;
+  pcieport 0000:02:04.0: Runtime PM usage count underflow!
 
-3) Task A enters btrfs_create_qgroup() and calls btrfs_qgroup_mode(),
-   which returns BTRFS_QGROUP_MODE_DISABLED since quotas are disabled,
-   and then btrfs_create_qgroup() returns 0 to the caller, which makes
-   the ioctl return 0 instead of -ENOTCONN.
+Avoid the Config Space access (and thus the runtime PM ref imbalance) by
+caching the Hot-Plug Capable bit in struct pci_dev.
 
-   The check for fs_info->quota_root and returning -ENOTCONN if it's NULL
-   is made only after the call btrfs_qgroup_mode().
+The struct already contains an "is_hotplug_bridge" flag, which however is
+not only set on Hot-Plug Capable PCIe ports, but also Conventional PCI
+Hot-Plug bridges and ACPI slots.  The flag identifies bridges which are
+allocated additional MMIO and bus number resources to allow for hierarchy
+expansion.
 
-Fix this by moving the check for disabled quotas with btrfs_qgroup_mode()
-into transaction.c:create_pending_snapshot(), so that we don't abort the
-transaction if btrfs_create_qgroup() returns -ENOTCONN and quotas are
-disabled.
+The kernel is somewhat sloppily using "is_hotplug_bridge" in a number of
+places to identify Hot-Plug Capable PCIe ports, even though the flag
+encompasses other devices.  Subsequent commits replace these occurrences
+with the new flag to clearly delineate Hot-Plug Capable PCIe ports from
+other kinds of hotplug bridges.
 
-Fixes: 6ed05643ddb1 ("btrfs: create qgroup earlier in snapshot creation")
-CC: stable@vger.kernel.org # 6.12+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Document the existing "is_hotplug_bridge" and the new "is_pciehp" flag
+and document the (non-obvious) requirement that pci_bridge_d3_possible()
+always returns the same value across the entire lifetime of a bridge,
+including its hot-removal.
+
+Fixes: 5352a44a561d ("PCI: pciehp: Make pciehp_is_native() stricter")
+Reported-by: Laurent Bigonville <bigon@bigon.be>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220216
+Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+Closes: https://lore.kernel.org/r/20250609020223.269407-3-superm1@kernel.org/
+Link: https://lore.kernel.org/all/20250620025535.3425049-3-superm1@kernel.org/T/#u
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: stable@vger.kernel.org # v4.18+
+Link: https://patch.msgid.link/fe5dcc3b2e62ee1df7905d746bde161eb1b3291c.1752390101.git.lukas@wunner.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c      |    3 ---
- fs/btrfs/transaction.c |    6 ++++--
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/pci/pci-acpi.c |    4 +---
+ drivers/pci/pci.c      |    6 +++++-
+ drivers/pci/probe.c    |    2 +-
+ include/linux/pci.h    |    6 ++++++
+ 4 files changed, 13 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1690,9 +1690,6 @@ int btrfs_create_qgroup(struct btrfs_tra
- 	struct btrfs_qgroup *prealloc = NULL;
- 	int ret = 0;
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -816,13 +816,11 @@ int pci_acpi_program_hp_params(struct pc
+ bool pciehp_is_native(struct pci_dev *bridge)
+ {
+ 	const struct pci_host_bridge *host;
+-	u32 slot_cap;
  
--	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_DISABLED)
--		return 0;
--
- 	mutex_lock(&fs_info->qgroup_ioctl_lock);
- 	if (!fs_info->quota_root) {
- 		ret = -ENOTCONN;
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1736,8 +1736,10 @@ static noinline int create_pending_snaps
+ 	if (!IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE))
+ 		return false;
  
- 	ret = btrfs_create_qgroup(trans, objectid);
- 	if (ret && ret != -EEXIST) {
--		btrfs_abort_transaction(trans, ret);
--		goto fail;
-+		if (ret != -ENOTCONN || btrfs_qgroup_enabled(fs_info)) {
-+			btrfs_abort_transaction(trans, ret);
-+			goto fail;
-+		}
- 	}
+-	pcie_capability_read_dword(bridge, PCI_EXP_SLTCAP, &slot_cap);
+-	if (!(slot_cap & PCI_EXP_SLTCAP_HPC))
++	if (!bridge->is_pciehp)
+ 		return false;
  
+ 	if (pcie_ports_native)
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3023,8 +3023,12 @@ static const struct dmi_system_id bridge
+  * pci_bridge_d3_possible - Is it possible to put the bridge into D3
+  * @bridge: Bridge to check
+  *
+- * This function checks if it is possible to move the bridge to D3.
+  * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
++ *
++ * Return: Whether it is possible to move the bridge to D3.
++ *
++ * The return value is guaranteed to be constant across the entire lifetime
++ * of the bridge, including its hot-removal.
+  */
+ bool pci_bridge_d3_possible(struct pci_dev *bridge)
+ {
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1627,7 +1627,7 @@ void set_pcie_hotplug_bridge(struct pci_
+ 
+ 	pcie_capability_read_dword(pdev, PCI_EXP_SLTCAP, &reg32);
+ 	if (reg32 & PCI_EXP_SLTCAP_HPC)
+-		pdev->is_hotplug_bridge = 1;
++		pdev->is_hotplug_bridge = pdev->is_pciehp = 1;
+ }
+ 
+ static void set_pcie_thunderbolt(struct pci_dev *dev)
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -327,6 +327,11 @@ struct rcec_ea;
+  *			determined (e.g., for Root Complex Integrated
+  *			Endpoints without the relevant Capability
+  *			Registers).
++ * @is_hotplug_bridge:	Hotplug bridge of any kind (e.g. PCIe Hot-Plug Capable,
++ *			Conventional PCI Hot-Plug, ACPI slot).
++ *			Such bridges are allocated additional MMIO and bus
++ *			number resources to allow for hierarchy expansion.
++ * @is_pciehp:		PCIe Hot-Plug Capable bridge.
+  */
+ struct pci_dev {
+ 	struct list_head bus_list;	/* Node in per-bus list */
+@@ -450,6 +455,7 @@ struct pci_dev {
+ 	unsigned int	is_physfn:1;
+ 	unsigned int	is_virtfn:1;
+ 	unsigned int	is_hotplug_bridge:1;
++	unsigned int	is_pciehp:1;
+ 	unsigned int	shpc_managed:1;		/* SHPC owned by shpchp */
+ 	unsigned int	is_thunderbolt:1;	/* Thunderbolt controller */
  	/*
 
 
