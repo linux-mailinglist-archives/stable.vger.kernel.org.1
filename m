@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAA2B2AA34
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5A9B2A747
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D3516E6C44
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EB4417363C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43047304BA0;
-	Mon, 18 Aug 2025 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A94320CC7;
+	Mon, 18 Aug 2025 13:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDS0TOE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLCwU9eg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35072E22B0;
-	Mon, 18 Aug 2025 14:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E701A320CAB;
+	Mon, 18 Aug 2025 13:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526283; cv=none; b=SPrAlIr97BaxvXBkhlIioNi1mpZopHvoUaentrKE8ffpD3nBiPDrwalvTrkdMAikJIK+f9y1qDV0Ig8gqSWjUTlI/f7BtkfohjuXmR1jxhJKJyaOlaAsqvIoqDgslIlBlZrLmjgDEobydpC/IfzxVth9Pd8WBSYy8hrFnUy7V68=
+	t=1755524563; cv=none; b=CgiaL3Co3vgoWgxw5HkmRM+o/mZ12xsDYqzbu6C1MLN4dMraihT0y9FhkG8YOoG6NB0gxSDJvoeEfRgt+oQpr2u6okpt0MZMpsbuyJHSfiVI2ryjVcLzmIz2bYr7mfF2oPLk/pfJArdE0sj/L+p1AQ6Ep4y3nQnB5NLtDO7QjjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526283; c=relaxed/simple;
-	bh=1Xw/UMJlKYIEDd7MgntElmqiymJfDt4d6rJVBuOPtJY=;
+	s=arc-20240116; t=1755524563; c=relaxed/simple;
+	bh=ko8DNvolq3PmiwBqpzeuTF4CU72ZFPIBHZvLJhwglPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5kaLQcowo+x5gZB41aceOwrSTx+cb6g1VC0SPru+AkV51EyHpHDfmus2qWdrBiHiLgkvqzVD2Wk+O2anl2ksh9MXZSL/yrW2Xlnvs2ZN254wHa8l5Q2mxYWy4WtkT3j1GHwkGnm/JEq5Me8wXwuzoEUhYGzrECH7lTzOqy6sVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDS0TOE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9FEC4CEEB;
-	Mon, 18 Aug 2025 14:11:22 +0000 (UTC)
+	 MIME-Version; b=MNRDrCZ1+By5/rokyy0/ErT5I+HpzA435MAGB6ZXsx/AMPZgHLOOZeenawGA4DNlm2XQOLYToNNV+u3hB3IEGRPDERLHjdw81e7TrGj66ekC2zdE423qTm4Uie9lzGAAihzcIXSGhnA0toloKWpyraFERjgw90kxnozCxNVw958=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLCwU9eg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659D4C116B1;
+	Mon, 18 Aug 2025 13:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526282;
-	bh=1Xw/UMJlKYIEDd7MgntElmqiymJfDt4d6rJVBuOPtJY=;
+	s=korg; t=1755524562;
+	bh=ko8DNvolq3PmiwBqpzeuTF4CU72ZFPIBHZvLJhwglPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDS0TOE3A/BMlwWzF7D/TagYL0HzLoSbWdWMeFICloEFoqhUUrCSilIvXLRfJKJwP
-	 MSH85Ne44WJNjaGQqMC2rPcdSUgw1G2QbTOUbU/ZWKZKmcv4Yi4FdF05XFxOapmi0E
-	 W2c+e4w4oNRHeRm5QGtGqi8+k004FUzywXBa3MhI=
+	b=GLCwU9egzy8pvsBhaANSATlm/GATQw4Iink2pvdau7Dntrdcf5+mYqv4Y4rO1ZI88
+	 8vzYDh1Vt2JVFkBERduw9jjdniOf5/afIBCWjPed9DZEpI27iSKrMmRHowDSVuw+gi
+	 t38OkaZHAAl2ThyfvlMp+pQdGR/KFpsv0chs4nY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.16 509/570] thunderbolt: Fix copy+paste error in match_service_id()
-Date: Mon, 18 Aug 2025 14:48:16 +0200
-Message-ID: <20250818124525.469593737@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.15 511/515] firmware: arm_scmi: Convert to SYSTEM_SLEEP_PM_OPS
+Date: Mon, 18 Aug 2025 14:48:17 +0200
+Message-ID: <20250818124518.108076341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 5cc1f66cb23cccc704e3def27ad31ed479e934a5 upstream.
+commit 62d6b81e8bd207ad44eff39d1a0fe17f0df510a5 upstream.
 
-The second instance of TBSVC_MATCH_PROTOCOL_VERSION seems to have been
-intended to be TBSVC_MATCH_PROTOCOL_REVISION.
+The old SET_SYSTEM_SLEEP_PM_OPS() macro leads to a warning about an
+unused function:
 
-Fixes: d1ff70241a27 ("thunderbolt: Add support for XDomain discovery protocol")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://lore.kernel.org/r/20250721050136.30004-1-ebiggers@kernel.org
+  |  drivers/firmware/arm_scmi/scmi_power_control.c:363:12: error:
+  | 	'scmi_system_power_resume' defined but not used [-Werror=unused-function]
+  |         static int scmi_system_power_resume(struct device *dev)
+
+The proper way to do this these days is to use SYSTEM_SLEEP_PM_OPS()
+and pm_sleep_ptr().
+
+Fixes: 9a0658d3991e ("firmware: arm_scmi: power_control: Ensure SCMI_SYSPOWER_IDLE is set early during resume")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Peng Fan <peng.fan@nxp.com>
+Message-Id: <20250709070107.1388512-1-arnd@kernel.org>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/domain.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/scmi_power_control.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/domain.c
-+++ b/drivers/thunderbolt/domain.c
-@@ -36,7 +36,7 @@ static bool match_service_id(const struc
- 			return false;
- 	}
+--- a/drivers/firmware/arm_scmi/scmi_power_control.c
++++ b/drivers/firmware/arm_scmi/scmi_power_control.c
+@@ -369,7 +369,7 @@ static int scmi_system_power_resume(stru
+ }
  
--	if (id->match_flags & TBSVC_MATCH_PROTOCOL_VERSION) {
-+	if (id->match_flags & TBSVC_MATCH_PROTOCOL_REVISION) {
- 		if (id->protocol_revision != svc->prtcrevs)
- 			return false;
- 	}
+ static const struct dev_pm_ops scmi_system_power_pmops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
++	SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
+ };
+ 
+ static const struct scmi_device_id scmi_id_table[] = {
+@@ -380,7 +380,7 @@ MODULE_DEVICE_TABLE(scmi, scmi_id_table)
+ 
+ static struct scmi_driver scmi_system_power_driver = {
+ 	.driver	= {
+-		.pm = &scmi_system_power_pmops,
++		.pm = pm_sleep_ptr(&scmi_system_power_pmops),
+ 	},
+ 	.name = "scmi-system-power",
+ 	.probe = scmi_syspower_probe,
 
 
 
