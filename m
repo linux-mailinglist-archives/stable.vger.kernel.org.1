@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC07B2A355
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 220A4B2A8CC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFDCF1B2360E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5651F1BA5FB0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B12931CA48;
-	Mon, 18 Aug 2025 13:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C94832A3CD;
+	Mon, 18 Aug 2025 13:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3lRYF22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEARwMVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8F2286D5E;
-	Mon, 18 Aug 2025 13:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16306261B97;
+	Mon, 18 Aug 2025 13:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522107; cv=none; b=RC3pjddo2qUfiF72hRJ75UCaKXHzYQJAlklRakhB6iaM+uYfBzYUjMbxqHh2m6pNh344T0ldgl128QrRDO3Ll3NRvCgs/YKFZIDTdCUD/iMxE9kYXOK2wX8UkGV1dsC+Dsz3Ufu0/3OO77PJrDeYm0Gzh+2nS+LyngkzHp/bVyI=
+	t=1755525411; cv=none; b=NZSsBczqUgTaGYZQiHjpr4ri2rrHC6QZTDLtz8JsMs18Nf4NvSWsMIs2bwAODnYO5v0f7bD9hE8dKQhlyQwdVqbnhsyIUb6Grqn6jZZGPHR2cV5/iKvHbiLQ5iGtUBRgIMwKRMoiNIbY0F44d4GeMWx9a/reQXLrQWXToW9B/44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522107; c=relaxed/simple;
-	bh=1Ov1fuRJjDiLuyV1VF31GdKbNvUodxq8M96tIdjTSBg=;
+	s=arc-20240116; t=1755525411; c=relaxed/simple;
+	bh=XigxmDx/mC98HOPwtOaAi5KRnHCWgnKU5gC8dr8zU5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgLrXOBOPJBph4rJDmNkcHA+vbZOgMzfibL0U89uL44AHyBUij++3o2btReO4FrOt2sVU3ci/PCgNeUqd/+0YQhT2aEPtyElc9SpuZlMHWYSLPkilG7t+nFFAZh96dJkWrWwcyItkOMSdunsD7/9G33O6huQ5rc/pbGc03PAREE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3lRYF22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425D5C4CEEB;
-	Mon, 18 Aug 2025 13:01:47 +0000 (UTC)
+	 MIME-Version; b=ckQW01d9d+S9/ZIOEbRtOjxmgN9G+GfLAhwFiXmyZiQch9dKD0q8i7Jx/oG+DSHI5Atws7c39mP43WwTr+LdaCKk7cMDpCE07w2HRVNgjUE7TXrDsqvpv8chHjxJopRwDrLw8/ggYI/xNLXosb1JFay5N3Yql0vIo7I4YIrm+XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEARwMVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CFBC4CEEB;
+	Mon, 18 Aug 2025 13:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522107;
-	bh=1Ov1fuRJjDiLuyV1VF31GdKbNvUodxq8M96tIdjTSBg=;
+	s=korg; t=1755525410;
+	bh=XigxmDx/mC98HOPwtOaAi5KRnHCWgnKU5gC8dr8zU5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3lRYF22wKtpWRkzbRIcEDC5cyUgMpzeqA2qfSTPlyXxD/uE9evKUrYGHNlSFbQr6
-	 4Dk0vKjuSlQHvOn7JD5q9doMTWU3oMigYj5HBEX4/YagG7OVZ8lql0bDlsaVHXbOhd
-	 QnXwYtQw2/WYwjtkqob+zBgQkelQRCoUzrnBLs90=
+	b=BEARwMVVvjS3HE0/8xHudT9ns0w+Hkr8MPzIV1jax5iSpf6PxWImnpJvxhWnImbnX
+	 cSRezuu0JC/TQLKdHX55UdF+BSIYeO5Jwn4RUG1kjuoyEdnWo3fobE/OUa4g1njB9p
+	 u2dbbMdGG7N9WAYtcZf/7AOKKMLOUtpVDMKvVUBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 216/444] kselftest/arm64: Specify SVE data when testing VL set in sve-ptrace
+Subject: [PATCH 6.16 255/570] drm/sched/tests: Add unit test for cancel_job()
 Date: Mon, 18 Aug 2025 14:44:02 +0200
-Message-ID: <20250818124456.945770305@linuxfoundation.org>
+Message-ID: <20250818124515.641232068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Philipp Stanner <phasta@kernel.org>
 
-[ Upstream commit 9e8ebfe677f9101bbfe1f75d548a5aec581e8213 ]
+[ Upstream commit c2668a0e03501a26cedc82e32fe9f3f692d330db ]
 
-Since f916dd32a943 ("arm64/fpsimd: ptrace: Mandate SVE payload for
-streaming-mode state") we reject attempts to write to the streaming mode
-regset even if there is no register data supplied, causing the tests for
-setting vector lengths and setting SVE_VL_INHERIT in sve-ptrace to
-spuriously fail. Set the flag to avoid the issue, we still support not
-supplying register data.
+The scheduler unit tests now provide a new callback, cancel_job(). This
+callback gets used by drm_sched_fini() for all still pending jobs to
+cancel them.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-3-998fcfa6f240@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Implement a new unit test to test this.
+
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20250710125412.128476-6-phasta@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/fp/sve-ptrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/tests/tests_basic.c | 42 +++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-index c6228176dd1a..408fb1c5c2f8 100644
---- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
-+++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-@@ -168,7 +168,7 @@ static void ptrace_set_get_inherit(pid_t child, const struct vec_type *type)
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
- 	sve.vl = sve_vl_from_vq(SVE_VQ_MIN);
--	sve.flags = SVE_PT_VL_INHERIT;
-+	sve.flags = SVE_PT_VL_INHERIT | SVE_PT_REGS_SVE;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
- 		ksft_test_result_fail("Failed to set %s SVE_PT_VL_INHERIT\n",
-@@ -233,6 +233,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
- 	/* Set the VL by doing a set with no register payload */
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
-+	sve.flags = SVE_PT_REGS_SVE;
- 	sve.vl = vl;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
+diff --git a/drivers/gpu/drm/scheduler/tests/tests_basic.c b/drivers/gpu/drm/scheduler/tests/tests_basic.c
+index 7230057e0594..b1ae10c6bb37 100644
+--- a/drivers/gpu/drm/scheduler/tests/tests_basic.c
++++ b/drivers/gpu/drm/scheduler/tests/tests_basic.c
+@@ -204,6 +204,47 @@ static struct kunit_suite drm_sched_basic = {
+ 	.test_cases = drm_sched_basic_tests,
+ };
+ 
++static void drm_sched_basic_cancel(struct kunit *test)
++{
++	struct drm_mock_sched_entity *entity;
++	struct drm_mock_scheduler *sched;
++	struct drm_mock_sched_job *job;
++	bool done;
++
++	/*
++	 * Check that drm_sched_fini() uses the cancel_job() callback to cancel
++	 * jobs that are still pending.
++	 */
++
++	sched = drm_mock_sched_new(test, MAX_SCHEDULE_TIMEOUT);
++	entity = drm_mock_sched_entity_new(test, DRM_SCHED_PRIORITY_NORMAL,
++					   sched);
++
++	job = drm_mock_sched_job_new(test, entity);
++
++	drm_mock_sched_job_submit(job);
++
++	done = drm_mock_sched_job_wait_scheduled(job, HZ);
++	KUNIT_ASSERT_TRUE(test, done);
++
++	drm_mock_sched_entity_free(entity);
++	drm_mock_sched_fini(sched);
++
++	KUNIT_ASSERT_EQ(test, job->hw_fence.error, -ECANCELED);
++}
++
++static struct kunit_case drm_sched_cancel_tests[] = {
++	KUNIT_CASE(drm_sched_basic_cancel),
++	{}
++};
++
++static struct kunit_suite drm_sched_cancel = {
++	.name = "drm_sched_basic_cancel_tests",
++	.init = drm_sched_basic_init,
++	.exit = drm_sched_basic_exit,
++	.test_cases = drm_sched_cancel_tests,
++};
++
+ static void drm_sched_basic_timeout(struct kunit *test)
+ {
+ 	struct drm_mock_scheduler *sched = test->priv;
+@@ -471,6 +512,7 @@ static struct kunit_suite drm_sched_credits = {
+ 
+ kunit_test_suites(&drm_sched_basic,
+ 		  &drm_sched_timeout,
++		  &drm_sched_cancel,
+ 		  &drm_sched_priority,
+ 		  &drm_sched_modify_sched,
+ 		  &drm_sched_credits);
 -- 
 2.39.5
 
