@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B75B2A87D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E68B2A5EC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7836A6866F5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2908565B85
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366F3335BDE;
-	Mon, 18 Aug 2025 13:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD5332254D;
+	Mon, 18 Aug 2025 13:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWLYpg2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjrLqU9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ADC335BA7;
-	Mon, 18 Aug 2025 13:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362B1322549;
+	Mon, 18 Aug 2025 13:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525168; cv=none; b=IzvciPNN+p9yWHgNJytitmTGi32ZEyxCSOgxsoWJXXdcrUHfysDiX6zhcCtSkkjnIzyCCDNV94qC0OlvHoWWUAiBpzeH1XWkog0VhY7wvSkl6sgCwUuAN9gde1Efnz4KUWdBM7RIVSOAxKRK9odlhet66nUDxGdkrsV8bNiAtRQ=
+	t=1755523476; cv=none; b=iDq6xVkZiA9dHMUyZ1XSRiWNqKjhuuIKANV7tNH7tyz9HDmTP/EeANp+KquOtbAB818t2UbcK7SyrTHEqpeLre7iTC2AlGfe0tYRoxdEHRe87fN2h+jx+oSAPfY99RLStseUpXyg6n2cDpvT6WNlgaF/DJlbNXm4DzYEI+impqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525168; c=relaxed/simple;
-	bh=QCb1uRkrukGQAPrF499/DXsTYS8jBYXPpzLL17+CsUA=;
+	s=arc-20240116; t=1755523476; c=relaxed/simple;
+	bh=jh0VhUa6NKU2eLUxp3cawwPBUIkSL6x9XYGC39LkDaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tB1HS5LqSU09LrS2SDmZ392h1pzexFcr2225yu6lYcYTaFWcnMZ9Vts+xoaW7m08ck2ZRIepg+YAKF5xEYcKUS6Rvmm8ktEoVgXauzFMGjhs1CElNoMVhxtXX/NfN743WvLbcSsmyui8IkdgFk5c5k9JkiGU9A06jvjkje/ZvV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWLYpg2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60406C4CEEB;
-	Mon, 18 Aug 2025 13:52:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s02lvSdSQhRaQsVCQxDJYgxoYo7Ap8JikMKpadO7aqPBGDCVWj6iv03X9dUNPSGaJgqjfXz1tMViWfsRdnC/Q5qHNpxn/tfVIE86AMKgLK7KkLqpcmlf5Jd8qZqsbltMUCYo2A7nSC3h5ugDNmdVYzrrgULu++kgemE7SOoY2dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjrLqU9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A3EC116B1;
+	Mon, 18 Aug 2025 13:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525167;
-	bh=QCb1uRkrukGQAPrF499/DXsTYS8jBYXPpzLL17+CsUA=;
+	s=korg; t=1755523475;
+	bh=jh0VhUa6NKU2eLUxp3cawwPBUIkSL6x9XYGC39LkDaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWLYpg2CPW4/ZoNgaKT5LO4xrYC7eXq0ptk6zFiao3jF58YZ7OPUzCH7+9HJ10aLI
-	 aOHK6wO9/GcocgN2Ims5t0FG+Z9RixNafk/Jwhi7bXbt9lL0iYv2tpQILZOzA7GoCh
-	 YwN1imPIjdVf3ko6i7HG7lx/EZo+ol/ujhE+h/EA=
+	b=SjrLqU9g0O0bXd+/xMl147XqSVB5Y8imxzmMa6Tbr8UGsRJCS82oZt7z88I5ThgVd
+	 NK8YgUGk28trvywSOWuu4otvt7YPZ271KenGN0zAvPniZiOIVZvwH30LhF1ISLpb+V
+	 tdPN89qmLZXTSDkXEChIrGXzHneN2YNaBsEcdHH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gwendal Grignou <gwendal@google.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 180/570] platform/chrome: cros_ec_sensorhub: Retries when a sensor is not ready
+Subject: [PATCH 6.15 181/515] platform/x86: thinkpad_acpi: Handle KCOV __init vs inline mismatches
 Date: Mon, 18 Aug 2025 14:42:47 +0200
-Message-ID: <20250818124512.741129149@linuxfoundation.org>
+Message-ID: <20250818124505.341530461@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gwendal Grignou <gwendal@chromium.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 981d7f91aeda17424b29f033249f4fa7cd2a7556 ]
+[ Upstream commit 6418a8504187dc7f5b6f9d0649c03e362cb0664b ]
 
-When the EC/ISH starts, it can take a while for all the sensors to be up
-and running or declared broken.
+When KCOV is enabled all functions get instrumented, unless the
+__no_sanitize_coverage attribute is used. To prepare for
+__no_sanitize_coverage being applied to __init functions[1], we have
+to handle differences in how GCC's inline optimizations get resolved.
+For thinkpad_acpi routines, this means forcing two functions to be
+inline with __always_inline.
 
-If the sensor stack return -EBUSY when checking for sensor information,
-retry up to 50 times.
-It has been observed 100ms wait time is enough to have valid sensors
-ready. It can take more time in case a sensor is really broken and is
-not coming up.
-
-Signed-off-by: Gwendal Grignou <gwendal@google.com>
-Link: https://lore.kernel.org/r/20250623210518.306740-1-gwendal@google.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/lkml/20250523043935.2009972-11-kees@kernel.org/ [1]
+Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/r/20250529181831.work.439-kees@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_sensorhub.c | 23 +++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_sensorhub.c b/drivers/platform/chrome/cros_ec_sensorhub.c
-index 50cdae67fa32..9bad8f72680e 100644
---- a/drivers/platform/chrome/cros_ec_sensorhub.c
-+++ b/drivers/platform/chrome/cros_ec_sensorhub.c
-@@ -8,6 +8,7 @@
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 657625dd60a0..dc1fc069fed9 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -558,12 +558,12 @@ static unsigned long __init tpacpi_check_quirks(
+ 	return 0;
+ }
  
- #include <linux/init.h>
- #include <linux/device.h>
-+#include <linux/delay.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
-@@ -18,6 +19,7 @@
- #include <linux/types.h>
- 
- #define DRV_NAME		"cros-ec-sensorhub"
-+#define CROS_EC_CMD_INFO_RETRIES 50
- 
- static void cros_ec_sensorhub_free_sensor(void *arg)
+-static inline bool __pure __init tpacpi_is_lenovo(void)
++static __always_inline bool __pure __init tpacpi_is_lenovo(void)
  {
-@@ -53,7 +55,7 @@ static int cros_ec_sensorhub_register(struct device *dev,
- 	int sensor_type[MOTIONSENSE_TYPE_MAX] = { 0 };
- 	struct cros_ec_command *msg = sensorhub->msg;
- 	struct cros_ec_dev *ec = sensorhub->ec;
--	int ret, i;
-+	int ret, i, retries;
- 	char *name;
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_LENOVO;
+ }
  
- 
-@@ -65,12 +67,25 @@ static int cros_ec_sensorhub_register(struct device *dev,
- 		sensorhub->params->cmd = MOTIONSENSE_CMD_INFO;
- 		sensorhub->params->info.sensor_num = i;
- 
--		ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
-+		retries = CROS_EC_CMD_INFO_RETRIES;
-+		do {
-+			ret = cros_ec_cmd_xfer_status(ec->ec_dev, msg);
-+			if (ret == -EBUSY) {
-+				/* The EC is still busy initializing sensors. */
-+				usleep_range(5000, 6000);
-+				retries--;
-+			}
-+		} while (ret == -EBUSY && retries);
-+
- 		if (ret < 0) {
--			dev_warn(dev, "no info for EC sensor %d : %d/%d\n",
--				 i, ret, msg->result);
-+			dev_err(dev, "no info for EC sensor %d : %d/%d\n",
-+				i, ret, msg->result);
- 			continue;
- 		}
-+		if (retries < CROS_EC_CMD_INFO_RETRIES) {
-+			dev_warn(dev, "%d retries needed to bring up sensor %d\n",
-+				 CROS_EC_CMD_INFO_RETRIES - retries, i);
-+		}
- 
- 		switch (sensorhub->resp->info.type) {
- 		case MOTIONSENSE_TYPE_ACCEL:
+-static inline bool __pure __init tpacpi_is_ibm(void)
++static __always_inline bool __pure __init tpacpi_is_ibm(void)
+ {
+ 	return thinkpad_id.vendor == PCI_VENDOR_ID_IBM;
+ }
 -- 
 2.39.5
 
