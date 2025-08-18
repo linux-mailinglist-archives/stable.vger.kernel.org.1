@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-171149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617F3B2A814
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3461BB2A318
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8085E56297D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67A4A565E53
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE47216E23;
-	Mon, 18 Aug 2025 13:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74AF31CA48;
+	Mon, 18 Aug 2025 12:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9AHWCZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naJzFOy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C447335BBB;
-	Mon, 18 Aug 2025 13:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7234A27B355;
+	Mon, 18 Aug 2025 12:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524975; cv=none; b=MunrTYNIoRDCuZGmimyx88sL2S7aPgI2u16DMImzA1yOALwKfW/7+B3YdxdUOhcGss2NYan2mOWiLmQ+jXo+k7I591iSkRn2vg4t9/Atug9d3iLz79aNkAm4yhQRks4IFlYnWnCayo+DiPuM6kytV9CqcNfuowaLzxBewDIuNj0=
+	t=1755521758; cv=none; b=JEiTW0H0qj3r2D/+y7PbmNj/uF2IYcH8W0SVw+RHiHeBv1ww9jxTnSFvZtTEvj4EEil2LNUpoINxYBMhg48VQMAyDqzb05LnKaaPOmVFNOvDCma1bi0iADaK47Vw2Q7DyiS9VamDdh55o76xOgmibIpMphSD1bDbzDtyGN33PLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524975; c=relaxed/simple;
-	bh=7igTzAr0dbyJOcYt+U9iS3N4XPLpIl79/vCfsl3WZqk=;
+	s=arc-20240116; t=1755521758; c=relaxed/simple;
+	bh=9sr2TNthXucMcNHd+cq8zFOPwYrm/A2OeMI380dgEoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlfLdK6urNbWUj9pJ0VjJIFGuvbEtVYdOo6K0K1IZ+L5U3a3yrrxkhdCljkNU9l6n9qFgL9FFU/wo2K1XONGWN9PU7kFve9Xqrdn266/9kMf73ow6a86UJcgP/7kEEsVdprmmiXX0dTUu6osPj4+IqpwAriPCNBLBovU9ee5/gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9AHWCZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76DCC4CEEB;
-	Mon, 18 Aug 2025 13:49:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qB4Mnm29ZNNtciUNDG3FQjJobyRfJFrdNw4rl7aTfQ5wOe2SfzZR8ABSwREZT6hrhF/ZqpAICdphlSXBTVM3pE9a9z2VzNxAz9ardW4RwJAFA7QCwlU/VHf5eatq8igHMxEKhkUWII2tMMPwSgWirGZCyfvVt4YUY1H2m6BHWiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naJzFOy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F7EC4CEEB;
+	Mon, 18 Aug 2025 12:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524975;
-	bh=7igTzAr0dbyJOcYt+U9iS3N4XPLpIl79/vCfsl3WZqk=;
+	s=korg; t=1755521758;
+	bh=9sr2TNthXucMcNHd+cq8zFOPwYrm/A2OeMI380dgEoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9AHWCZPxDAbm6OUUMEzLKKv2Mi72jv+2YhY+gnWYpcS8oTlQAOTMWswPsoKEKP6N
-	 5zVfHPLmOjzG+638RLMKslfj0QLIHoxSror/S1WZAn0Pq4g/wePEfPAFN8/rsmsz94
-	 O56ZJLI1dv6QgEAJeJBrLxFqNCp2RWJnky6YoER4=
+	b=naJzFOy1PaHBu0sR9QroWNbB16JY36oSx4/N1zQEdxUKYuD5h2J00bT5m9zR2J4yT
+	 +aEzTDJwFeJ/QsJh9pfGWVOgd9y/7eqYECgOQI5XXMXR5Cktc1GIbJNSj7ReSNrNCh
+	 pHRb3fX26RMJI1qFikIifrjTjqFZJDMAlFPTsF2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Gao <wegao@suse.com>,
-	Jan Kara <jack@suse.cz>,
+	Sarah Newman <srn@prgmr.com>,
+	Lars Ellenberg <lars@linbit.com>,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 120/570] ext2: Handle fiemap on empty files to prevent EINVAL
+Subject: [PATCH 6.12 081/444] drbd: add missing kref_get in handle_write_conflicts
 Date: Mon, 18 Aug 2025 14:41:47 +0200
-Message-ID: <20250818124510.437856235@linuxfoundation.org>
+Message-ID: <20250818124451.992484145@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Gao <wegao@suse.com>
+From: Sarah Newman <srn@prgmr.com>
 
-[ Upstream commit a099b09a3342a0b28ea330e405501b5b4d0424b4 ]
+[ Upstream commit 00c9c9628b49e368d140cfa61d7df9b8922ec2a8 ]
 
-Previously, ext2_fiemap would unconditionally apply "len = min_t(u64, len,
-i_size_read(inode));", When inode->i_size was 0 (for an empty file), this
-would reduce the requested len to 0. Passing len = 0 to iomap_fiemap could
-then result in an -EINVAL error, even for valid queries on empty files.
+With `two-primaries` enabled, DRBD tries to detect "concurrent" writes
+and handle write conflicts, so that even if you write to the same sector
+simultaneously on both nodes, they end up with the identical data once
+the writes are completed.
 
-Link: https://github.com/linux-test-project/ltp/issues/1246
-Signed-off-by: Wei Gao <wegao@suse.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250613152402.3432135-1-wegao@suse.com
+In handling "superseeded" writes, we forgot a kref_get,
+resulting in a premature drbd_destroy_device and use after free,
+and further to kernel crashes with symptoms.
+
+Relevance: No one should use DRBD as a random data generator, and apparently
+all users of "two-primaries" handle concurrent writes correctly on layer up.
+That is cluster file systems use some distributed lock manager,
+and live migration in virtualization environments stops writes on one node
+before starting writes on the other node.
+
+Which means that other than for "test cases",
+this code path is never taken in real life.
+
+FYI, in DRBD 9, things are handled differently nowadays.  We still detect
+"write conflicts", but no longer try to be smart about them.
+We decided to disconnect hard instead: upper layers must not submit concurrent
+writes. If they do, that's their fault.
+
+Signed-off-by: Sarah Newman <srn@prgmr.com>
+Signed-off-by: Lars Ellenberg <lars@linbit.com>
+Signed-off-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Link: https://lore.kernel.org/r/20250627095728.800688-1-christoph.boehmwalder@linbit.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/inode.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/block/drbd/drbd_receiver.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
-index 30f8201c155f..177b1f852b63 100644
---- a/fs/ext2/inode.c
-+++ b/fs/ext2/inode.c
-@@ -895,9 +895,19 @@ int ext2_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 		u64 start, u64 len)
- {
- 	int ret;
-+	loff_t i_size;
+diff --git a/drivers/block/drbd/drbd_receiver.c b/drivers/block/drbd/drbd_receiver.c
+index 0c9f54197768..ac18d36b0ea8 100644
+--- a/drivers/block/drbd/drbd_receiver.c
++++ b/drivers/block/drbd/drbd_receiver.c
+@@ -2500,7 +2500,11 @@ static int handle_write_conflicts(struct drbd_device *device,
+ 			peer_req->w.cb = superseded ? e_send_superseded :
+ 						   e_send_retry_write;
+ 			list_add_tail(&peer_req->w.list, &device->done_ee);
+-			queue_work(connection->ack_sender, &peer_req->peer_device->send_acks_work);
++			/* put is in drbd_send_acks_wf() */
++			kref_get(&device->kref);
++			if (!queue_work(connection->ack_sender,
++					&peer_req->peer_device->send_acks_work))
++				kref_put(&device->kref, drbd_destroy_device);
  
- 	inode_lock(inode);
--	len = min_t(u64, len, i_size_read(inode));
-+	i_size = i_size_read(inode);
-+	/*
-+	 * iomap_fiemap() returns EINVAL for 0 length. Make sure we don't trim
-+	 * length to 0 but still trim the range as much as possible since
-+	 * ext2_get_blocks() iterates unmapped space block by block which is
-+	 * slow.
-+	 */
-+	if (i_size == 0)
-+		i_size = 1;
-+	len = min_t(u64, len, i_size);
- 	ret = iomap_fiemap(inode, fieinfo, start, len, &ext2_iomap_ops);
- 	inode_unlock(inode);
- 
+ 			err = -ENOENT;
+ 			goto out;
 -- 
 2.39.5
 
