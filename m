@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-170627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40212B2A588
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB56B2A2EC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231552A03F7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F2EE174E92
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E9427F758;
-	Mon, 18 Aug 2025 13:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E9D31A05E;
+	Mon, 18 Aug 2025 12:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swHOnZMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQsitWqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB90335BD8;
-	Mon, 18 Aug 2025 13:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B9F20126A;
+	Mon, 18 Aug 2025 12:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523250; cv=none; b=AQ74XpS1f5w8eBiepo+J39aWVjhTF2LNq6JXDifhhkkA9kuIpRm+vTLV4FnIMWAbJPPCNnKbOQ2hlF999BW948oJ7VpKlTneImLm2BYqyz/RmA8JZGdmPH43TcSwT2LkPMuOl6iEWTYPuG2jTTNrMZ86kcMKpWU+Y2S/wcyKgrM=
+	t=1755521605; cv=none; b=P38ul2kl4X0PObU9d9Lrz6d0/igGJB8qc3hfFmYpMFQzECNm0eQhXG3FvyPE3xWiN9jj4pu4NoZmFjD1ge6gbETKVveW9RUbKhO/LkQaVU7G+oSfoZ0ZfjUxSGj8F0Iy2O0GCBpgqH6ADxqGoY4iSxAqpw5vr5OOi0KqVK36RYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523250; c=relaxed/simple;
-	bh=ax5TYhDaK856JHXHJZhXJI+eMheMoHs7WqQU18E32BY=;
+	s=arc-20240116; t=1755521605; c=relaxed/simple;
+	bh=4ag9/39dFWU8GkiOlWASTAeMNygUPvBXL7NuEXQxR7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NG2c4cEqIf21uOnc1NTJQ68LrpyJC72wyS0wht6Tiq60eRjTN1eBUBxQ1b4lvKbW9l1Fwnjp06TFfOtIhaxcCTfXGIU1eG1+22pK80KInKmj2meAv67/+KOYevPAeNF0xrzOCmx7pN1AMeJO/b0QY/gdzmxmfB+p6s54bDykfsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swHOnZMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC58BC113D0;
-	Mon, 18 Aug 2025 13:20:49 +0000 (UTC)
+	 MIME-Version; b=Hdbyusw3nTxuqMdWBEGdnw9ahi9LJz6v74zsD0NUNlzxrgDjmxXzzNgKENFKW3cmustxW9rqKZbp6S2an+s2HPheNxbISu8hkTfkuCxXkjNyjYlLLfuATRkKzppCSMLC9/9cH9OA2G9NG7tUAjdJDG6nwaYZ0F1KBOn90wn3ue8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQsitWqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD79AC4CEEB;
+	Mon, 18 Aug 2025 12:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523250;
-	bh=ax5TYhDaK856JHXHJZhXJI+eMheMoHs7WqQU18E32BY=;
+	s=korg; t=1755521605;
+	bh=4ag9/39dFWU8GkiOlWASTAeMNygUPvBXL7NuEXQxR7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swHOnZMO8EarumxjR87JRZvFntn21vClRRChgizCkZEUelvE1kwmzRNpUIXY8CrGs
-	 w1n56MpO6c/I/wEkLd7XLly3gVWF4j0Y3KXeweRAkQccNP8YR247KLZznCIheQMmge
-	 6n7GamMt8mf7qFddR3qB3AQh8x8aM7SZ9l7ilgTU=
+	b=qQsitWqIzzmSUDsr0D8usEOQWi4JmCBqlGyU7y3KpF5gzPX0VLVT5wUACsZKP1T9e
+	 LodCbUNOoMKz4i/3gVrIQ1ouvq4bUWG4A6dlTc+nNuw+P3DYTWugLd0V5pBVr+d5w8
+	 GhbpcQAcBTk+U3unEM6dISCISyQ0K4iAs4res3kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 083/515] arm64: Handle KCOV __init vs inline mismatches
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 043/444] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
 Date: Mon, 18 Aug 2025 14:41:09 +0200
-Message-ID: <20250818124501.573931254@linuxfoundation.org>
+Message-ID: <20250818124450.554409951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 65c430906efffee9bd7551d474f01a6b1197df90 ]
+commit 5349ae5e05fa37409fd48a1eb483b199c32c889b upstream.
 
-GCC appears to have kind of fragile inlining heuristics, in the
-sense that it can change whether or not it inlines something based on
-optimizations. It looks like the kcov instrumentation being added (or in
-this case, removed) from a function changes the optimization results,
-and some functions marked "inline" are _not_ inlined. In that case,
-we end up with __init code calling a function not marked __init, and we
-get the build warnings I'm trying to eliminate in the coming patch that
-adds __no_sanitize_coverage to __init functions:
+We should call ib_dma_unmap_single() and mempool_free() before calling
+smbd_disconnect_rdma_connection().
 
-WARNING: modpost: vmlinux: section mismatch in reference: acpi_get_enable_method+0x1c (section: .text.unlikely) -> acpi_psci_present (section: .init.text)
+And smbd_disconnect_rdma_connection() needs to be the last function to
+call as all other state might already be gone after it returns.
 
-This problem is somewhat fragile (though using either __always_inline
-or __init will deterministically solve it), but we've tripped over
-this before with GCC and the solution has usually been to just use
-__always_inline and move on.
-
-For arm64 this requires forcing one ACPI function to be inlined with
-__always_inline.
-
-Link: https://lore.kernel.org/r/20250724055029.3623499-1-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/acpi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smbdirect.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index a407f9cd549e..c07a58b96329 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -150,7 +150,7 @@ acpi_set_mailbox_entry(int cpu, struct acpi_madt_generic_interrupt *processor)
- {}
- #endif
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -277,18 +277,20 @@ static void send_done(struct ib_cq *cq,
+ 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
+ 		request, wc->status);
  
--static inline const char *acpi_get_enable_method(int cpu)
-+static __always_inline const char *acpi_get_enable_method(int cpu)
- {
- 	if (acpi_psci_present())
- 		return "psci";
--- 
-2.39.5
-
+-	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
+-		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
+-			wc->status, wc->opcode);
+-		smbd_disconnect_rdma_connection(request->info);
+-	}
+-
+ 	for (i = 0; i < request->num_sge; i++)
+ 		ib_dma_unmap_single(sc->ib.dev,
+ 			request->sge[i].addr,
+ 			request->sge[i].length,
+ 			DMA_TO_DEVICE);
+ 
++	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
++		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
++			wc->status, wc->opcode);
++		mempool_free(request, info->request_mempool);
++		smbd_disconnect_rdma_connection(info);
++		return;
++	}
++
+ 	if (atomic_dec_and_test(&request->info->send_pending))
+ 		wake_up(&request->info->wait_send_pending);
+ 
 
 
 
