@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81ED7B2AA7D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:32:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71965B2A66D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678871BC15BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C97BDB6150C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBAD350855;
-	Mon, 18 Aug 2025 14:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D55221F15;
+	Mon, 18 Aug 2025 13:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqcwbraR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYxRl7GJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4AD350847;
-	Mon, 18 Aug 2025 14:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3526335BA0;
+	Mon, 18 Aug 2025 13:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525890; cv=none; b=l2ww+0zS2tMp6f8n6/cAGkQYrSRhivbqCjYENvXN6ORHy369x37YYcRXnkMNUWSIXikuTI2Y1tCGW+ixuXYsDzJJrh38eNI6P8SB8WQZfQpZ73crGHrZz6RINXJLVB4bF6npPxmSqUx+r0mTbDf5MjtAQRwhH4qtMwZtZ65kSTU=
+	t=1755524282; cv=none; b=Xbk1oNCUsO65i43VqZEUy+b4UDoWDHNmU7UqVNbVq9tMeaRduwejF70ZvTAv7nKoVdUcrQUI4cvshvWNJ51znIkyLRYlbamp08TJaqDDeWLHaIXN+4jx/qIRCe3VIwshtB7cfx4B4EYuVN4g51n9POb3K0afz/VFhNU+XdPDXCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525890; c=relaxed/simple;
-	bh=ZoS5l1hiu9Pa0EQ0bm5q1yEqFXl4v+VTh4p1htZj7OE=;
+	s=arc-20240116; t=1755524282; c=relaxed/simple;
+	bh=jQReOy/bcxITP9RcQPSw802unHrIfxBgsruQLNVYYZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRxxcxpsyzSowBjb6LxaQkLCyYKFQxyhSWVX48cxNv/yZge5gyJE/mcsUg7KfvxF0dMehwQ57yFYE47uMKHFsebXJJek/9QOKiHZ+VJB1trZ94gQ+ohNv0snfy0+Wn64QOKg4nN31CeNBctCAjMg52cadGC1q8ha2TnqeAK+AM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqcwbraR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3839C4CEEB;
-	Mon, 18 Aug 2025 14:04:49 +0000 (UTC)
+	 MIME-Version; b=AIHL+x2WwjKYeIqG0fx4vm7EluDIm2veHnzbY5iV4f84OcVfpdxOpI8iwbpT5HIC0KSJkcNz81mgRyuU7RzNEDHMG4nxiWotGfMbFqSTZHK/HIVVsebbOb2ZF3ttEEiScSoZZKK5fXXb/EaWhO23HTzxqHvEp05YEOpQK0xeD1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYxRl7GJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421E6C116C6;
+	Mon, 18 Aug 2025 13:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525890;
-	bh=ZoS5l1hiu9Pa0EQ0bm5q1yEqFXl4v+VTh4p1htZj7OE=;
+	s=korg; t=1755524282;
+	bh=jQReOy/bcxITP9RcQPSw802unHrIfxBgsruQLNVYYZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqcwbraRTuDndRxHcvtk1myv7TIQQuV16fHUWvGqRcULgsxkBuv6hnjGaiP+Bm4ff
-	 GVZJXBGwJ5haKQwjwZ2zK31QDmULOx9QBxxGTV3jVOvVJfR545qm7/5dcbPRgyuIfe
-	 dtxjlnUc4cMqMjaxTqzXqMozUTZgjBTACVeOB9k0=
+	b=HYxRl7GJpbZLko0SVVdBKOeld8wUGTPLtZ67otVgpANFUUh1+z5XsmV8Yjr1f4Jei
+	 N/yCPu0GuUZxVdHh1idUcySCrhq5vNUv2EIEBE8u8AXaWQ/8D2enCn72hhPKb7tsxn
+	 3Myzib+MwRgXpU5mSC7uMTGSigAU2z7Y/6U8Q8m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 396/570] RDMA/core: reduce stack using in nldev_stat_get_doit()
+Subject: [PATCH 6.15 397/515] dm-mpath: dont print the "loaded" message if registering fails
 Date: Mon, 18 Aug 2025 14:46:23 +0200
-Message-ID: <20250818124521.113020394@linuxfoundation.org>
+Message-ID: <20250818124513.693711792@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
+[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
 
-In the s390 defconfig, gcc-10 and earlier end up inlining three functions
-into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
+If dm_register_path_selector, don't print the "version X loaded" message.
 
-The result is a function with an overly large stack frame and a warning:
-
-drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
-
-Mark the three functions noinline_for_stack to prevent this, ensuring
-that only one copy of the nlattr array is on the stack of each function.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/md/dm-ps-historical-service-time.c | 4 +++-
+ drivers/md/dm-ps-queue-length.c            | 4 +++-
+ drivers/md/dm-ps-round-robin.c             | 4 +++-
+ drivers/md/dm-ps-service-time.c            | 4 +++-
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index be6b2ef0ede4..2220a2dfab24 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -1469,10 +1469,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
- 
- };
- 
--static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
--			       struct netlink_ext_ack *extack,
--			       enum rdma_restrack_type res_type,
--			       res_fill_func_t fill_func)
-+static noinline_for_stack int
-+res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		    struct netlink_ext_ack *extack,
-+		    enum rdma_restrack_type res_type,
-+		    res_fill_func_t fill_func)
+diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
+index b49e10d76d03..2c8626a83de4 100644
+--- a/drivers/md/dm-ps-historical-service-time.c
++++ b/drivers/md/dm-ps-historical-service-time.c
+@@ -541,8 +541,10 @@ static int __init dm_hst_init(void)
  {
- 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
- 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
-@@ -2263,10 +2264,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return ret;
- }
+ 	int r = dm_register_path_selector(&hst_ps);
  
--static int stat_get_doit_default_counter(struct sk_buff *skb,
--					 struct nlmsghdr *nlh,
--					 struct netlink_ext_ack *extack,
--					 struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			      struct netlink_ext_ack *extack,
-+			      struct nlattr *tb[])
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " HST_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
+index e305f05ad1e5..eb543e6431e0 100644
+--- a/drivers/md/dm-ps-queue-length.c
++++ b/drivers/md/dm-ps-queue-length.c
+@@ -260,8 +260,10 @@ static int __init dm_ql_init(void)
  {
- 	struct rdma_hw_stats *stats;
- 	struct nlattr *table_attr;
-@@ -2356,8 +2357,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
- 	return ret;
- }
+ 	int r = dm_register_path_selector(&ql_ps);
  
--static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
--			    struct netlink_ext_ack *extack, struct nlattr *tb[])
-+static noinline_for_stack int
-+stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
-+		 struct netlink_ext_ack *extack, struct nlattr *tb[])
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
  
+ 	DMINFO("version " QL_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
+index d1745b123dc1..66a15ac0c22c 100644
+--- a/drivers/md/dm-ps-round-robin.c
++++ b/drivers/md/dm-ps-round-robin.c
+@@ -220,8 +220,10 @@ static int __init dm_rr_init(void)
  {
- 	static enum rdma_nl_counter_mode mode;
+ 	int r = dm_register_path_selector(&rr_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " RR_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
+index 969d31c40272..f8c43aecdb27 100644
+--- a/drivers/md/dm-ps-service-time.c
++++ b/drivers/md/dm-ps-service-time.c
+@@ -341,8 +341,10 @@ static int __init dm_st_init(void)
+ {
+ 	int r = dm_register_path_selector(&st_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " ST_VERSION " loaded");
+ 
 -- 
 2.39.5
 
