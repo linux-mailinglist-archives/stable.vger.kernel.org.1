@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74D3B2A558
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3222B2A226
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AADD683AE2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 187776207DA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8495832252D;
-	Mon, 18 Aug 2025 13:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FAC31CA72;
+	Mon, 18 Aug 2025 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPxHDPz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A859TAYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421A2322524;
-	Mon, 18 Aug 2025 13:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419E31A071;
+	Mon, 18 Aug 2025 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523072; cv=none; b=MDkfmNIGkgeDyKbvYV8cgd2P71caEY/+58Pb/A8yLtwEh/pyP/IAO9bM7EZlGCNMBO9HRxJK4Gt5Y1DZu/FTxqOy15XXaoz0iE1r4uEHGFB61rI3pizVcqtmWiU5hYjUDTd29oKX71cLJCbJC5OA6WzsSH24lQFLMdHKJjzQd4Y=
+	t=1755521450; cv=none; b=MwSebgf+6AniKVWeMKSb1PZ5vJ5GeQXBWjb+Mx3yk9E8BkPJ6zBe11nIIfDEtni49EomCXu1KFEakz+efIC/9u/zArXDgAJ4XZGKwzoj8eBkG8gkEm1yRc+UJ0nXWMCRZspivuuxmAAzM7EtCkRXGSmsPShAnEwNgui3OPixvFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523072; c=relaxed/simple;
-	bh=E/nIv9U7dyBInUs9ktNzuWz1/gLxS/1lU4Z8SUy5ZfM=;
+	s=arc-20240116; t=1755521450; c=relaxed/simple;
+	bh=oQKgX7M5Z+WMXgxsQZu7ODnUrgBwJ7WEklxq79lclPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhQtKMdVj0xbuqxxIuONE9o6XBCu2qMvr5h1rQ+ZIooXXG4poa4q2YX34Pk7uFscfgmKpkw2s5n4Cnx56Z5iPSLRvvAxdTUd7PvKXs5Ls/bZoqfMdv1uLzyYlgkoqf1cmVby7qAWiKCFbr9EVOWRgWr/PaR2uUH8e7KxsA5nnXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPxHDPz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A8DC113D0;
-	Mon, 18 Aug 2025 13:17:51 +0000 (UTC)
+	 MIME-Version; b=HSJbepnCX0YfAmhJcluhJrQEwyUB8yqySGS4jDBzX8I2sDB1/ITZM+pFa1dgotUGt2DaPliBBWYF+3b/OfuORybmtrNplwr5rXwLwkKjcde6MbD/8q8XgI3x7Ql4si4suzUjhvUSR5ru9S9HWxyRjxXCR2eiiqyzFZ5ktDnZv5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A859TAYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D98BC4CEEB;
+	Mon, 18 Aug 2025 12:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523072;
-	bh=E/nIv9U7dyBInUs9ktNzuWz1/gLxS/1lU4Z8SUy5ZfM=;
+	s=korg; t=1755521450;
+	bh=oQKgX7M5Z+WMXgxsQZu7ODnUrgBwJ7WEklxq79lclPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPxHDPz3lf/mzEm+73h9xxq1uk2Af0Id2RC85UwOHsTZCV2YeyDAoZQjjapBMF+Yf
-	 h4TxsM7oweIgNIQ3pDT+b662x7SssBYBVYuRSKpNbdGgWEorN08AjiZwoq8VsQ97Px
-	 8USAuy2AxfelPG+0HrRyyVAsnY8I3IZMT8lRZOK0=
+	b=A859TAYcKcdSF0zG5XmrlzOMlqXfKR8gFadDf2NIBjDVGV/nxa6BqOHTcIeKQPEk2
+	 4fbUpEINJO30ZxrqxiqU6pJMIHqYMGE/gO5ujUVmNebWRIw8tVknRkpXqaDvuyhw28
+	 75nhCBiYtLRmiWWgJMHi5sY4GBBpFIYqbhBxz7iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 063/515] net: ti: icssg-prueth: Fix emac link speed handling
+	lei lu <llfamsec@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 023/444] nfsd: handle get_client_locked() failure in nfsd4_setclientid_confirm()
 Date: Mon, 18 Aug 2025 14:40:49 +0200
-Message-ID: <20250818124500.834119196@linuxfoundation.org>
+Message-ID: <20250818124449.802229887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MD Danish Anwar <danishanwar@ti.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 06feac15406f4f66f4c0c6ea60b10d44775d4133 ]
+commit 908e4ead7f757504d8b345452730636e298cbf68 upstream.
 
-When link settings are changed emac->speed is populated by
-emac_adjust_link(). The link speed and other settings are then written into
-the DRAM. However if both ports are brought down after this and brought up
-again or if the operating mode is changed and a firmware reload is needed,
-the DRAM is cleared by icssg_config(). As a result the link settings are
-lost.
+Lei Lu recently reported that nfsd4_setclientid_confirm() did not check
+the return value from get_client_locked(). a SETCLIENTID_CONFIRM could
+race with a confirmed client expiring and fail to get a reference. That
+could later lead to a UAF.
 
-Fix this by calling emac_adjust_link() after icssg_config(). This re
-populates the settings in the DRAM after a new firmware load.
+Fix this by getting a reference early in the case where there is an
+extant confirmed client. If that fails then treat it as if there were no
+confirmed client found at all.
 
-Fixes: 9facce84f406 ("net: ti: icssg-prueth: Fix firmware load sequence.")
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Message-ID: <20250805173812.2183161-1-danishanwar@ti.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the case where the unconfirmed client is expiring, just fail and
+return the result from get_client_locked().
+
+Reported-by: lei lu <llfamsec@gmail.com>
+Closes: https://lore.kernel.org/linux-nfs/CAEBF3_b=UvqzNKdnfD_52L05Mqrqui9vZ2eFamgAbV0WG+FNWQ@mail.gmail.com/
+Fixes: d20c11d86d8f ("nfsd: Protect session creation and client confirm using client_lock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_prueth.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfsd/nfs4state.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 2f5c4335dec3..008d77727400 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -50,6 +50,8 @@
- /* CTRLMMR_ICSSG_RGMII_CTRL register bits */
- #define ICSSG_CTRL_RGMII_ID_MODE                BIT(24)
- 
-+static void emac_adjust_link(struct net_device *ndev);
-+
- static int emac_get_tx_ts(struct prueth_emac *emac,
- 			  struct emac_tx_ts_response *rsp)
- {
-@@ -266,6 +268,10 @@ static int prueth_emac_common_start(struct prueth *prueth)
- 		ret = icssg_config(prueth, emac, slice);
- 		if (ret)
- 			goto disable_class;
-+
-+		mutex_lock(&emac->ndev->phydev->lock);
-+		emac_adjust_link(emac->ndev);
-+		mutex_unlock(&emac->ndev->phydev->lock);
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4550,10 +4550,16 @@ nfsd4_setclientid_confirm(struct svc_rqs
  	}
- 
- 	ret = prueth_emac_start(prueth);
--- 
-2.50.1
-
+ 	status = nfs_ok;
+ 	if (conf) {
+-		old = unconf;
+-		unhash_client_locked(old);
+-		nfsd4_change_callback(conf, &unconf->cl_cb_conn);
+-	} else {
++		if (get_client_locked(conf) == nfs_ok) {
++			old = unconf;
++			unhash_client_locked(old);
++			nfsd4_change_callback(conf, &unconf->cl_cb_conn);
++		} else {
++			conf = NULL;
++		}
++	}
++
++	if (!conf) {
+ 		old = find_confirmed_client_by_name(&unconf->cl_name, nn);
+ 		if (old) {
+ 			status = nfserr_clid_inuse;
+@@ -4570,10 +4576,14 @@ nfsd4_setclientid_confirm(struct svc_rqs
+ 			}
+ 			trace_nfsd_clid_replaced(&old->cl_clientid);
+ 		}
++		status = get_client_locked(unconf);
++		if (status != nfs_ok) {
++			old = NULL;
++			goto out;
++		}
+ 		move_to_confirmed(unconf);
+ 		conf = unconf;
+ 	}
+-	get_client_locked(conf);
+ 	spin_unlock(&nn->client_lock);
+ 	if (conf == unconf)
+ 		fsnotify_dentry(conf->cl_nfsd_info_dentry, FS_MODIFY);
 
 
 
