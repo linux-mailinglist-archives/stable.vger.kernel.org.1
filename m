@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5133B2A2A8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:00:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D9BB2A584
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6BD33A3D37
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E3807BC530
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43CC31E0F6;
-	Mon, 18 Aug 2025 12:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290AD321F36;
+	Mon, 18 Aug 2025 13:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nG0A+uT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8qYMF2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F15E31E0FF;
-	Mon, 18 Aug 2025 12:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA78D226D0F;
+	Mon, 18 Aug 2025 13:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521785; cv=none; b=Cu8sInqyG7vWvbkhLWZWYjY+y6djLOp8CKidfYafkYZTGrBy1acu9B9n2Bl9nA8f2Qv/j7kWJLquN34w3SEqkmFZDcq/Rmkgusc/wUZuZZxUok7/GxRknwPQZj3RS5SlDdtXWq7aZuaUj3Qo081MBfyGVlgvZe5UwMw1IsBLlO4=
+	t=1755523405; cv=none; b=kxI+fomzaYg5khOtSfaL2c35S5OoAfgmEx0JBbO+YslvFTE0+p3OVHF5fEUWgXjro+8db2WJTkc1OrEF6XX1sgu4A4y3PuB3m1rCMllRvDY4Bzvcm7Tt2eZt3Vt3ilcHZKUSOAm11Mgq1VlLCmJj3As+KdpQk9vNCGrbI61hzYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521785; c=relaxed/simple;
-	bh=GVAxfwnTCTzyTs/iSEYJVIxcbSdZZEo94EYhdME4HgE=;
+	s=arc-20240116; t=1755523405; c=relaxed/simple;
+	bh=HPbMH2D/kIg3mv5sfCtZoUx73yI3f/typsk2rBNKeBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KSzAzfPESG6ccp+R1iLpRQ1CgpbX1ZTMJVwzYm4x3xumUChkXmlf6dR4dmMWyYI0eTWnfhBySI6Vsu5lreHUI3A0qSLj2sY7N0vnxQt2ErKk8FcRn1uLEdt0Y0us/wpvdby2EPvDkCbPiJ/UT9YyPu+melHmDinynotbJxkSj/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nG0A+uT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB247C4CEEB;
-	Mon, 18 Aug 2025 12:56:24 +0000 (UTC)
+	 MIME-Version; b=nP+d4j5VqSXQZFmeejrn/MMEQnyZXdogntGUmgsIcMGZdyjeZXugo1to5T1SWBC8PbJ2B61fKxp2QEoFBDw6c2Sf2zpnAIa6cZs36EISG9iKbyXwdStUc5Ku+ai2+YUNAqKeBObQzbtBJhXDmCNOLKILZ8qPUyvX/fRG1icFynQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8qYMF2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A20BC4CEEB;
+	Mon, 18 Aug 2025 13:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521785;
-	bh=GVAxfwnTCTzyTs/iSEYJVIxcbSdZZEo94EYhdME4HgE=;
+	s=korg; t=1755523405;
+	bh=HPbMH2D/kIg3mv5sfCtZoUx73yI3f/typsk2rBNKeBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0nG0A+uTM6cnSsDyxTI6+ER1TKNQx0HZZartecP/nAiBSpmsiL0aywMU5PJFjZdIp
-	 12ovjh74JKURcCXL4f6AJ8W1hHAPGF5IXRrmIIovlqfCeize9TJPy4kbqb1Lk50EuH
-	 xUCe3P0Z9EXWxWXAbKE2HU887SEbsLVXXrAkh7dE=
+	b=a8qYMF2Dt5gjhRQBdXaWR7jheNIncgLlwP46pGxkhpxEIynrR6yesFqUqxm0wXXWP
+	 L4Auizs1+j2XWDti+tuJTf8p3BK6U/WGyANh1eA3mOKZnwO6YvbcSg70TTNJtRde/q
+	 E+e83P3iDFdmMhnpcmWzYnEub7j0f/7qn6G+uZCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/444] tools/build: Fix s390(x) cross-compilation with clang
+Subject: [PATCH 6.15 162/515] char: misc: Fix improper and inaccurate error code returned by misc_init()
 Date: Mon, 18 Aug 2025 14:42:28 +0200
-Message-ID: <20250818124453.491395420@linuxfoundation.org>
+Message-ID: <20250818124504.618081695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit a40f0cdce78be8a559ee8a85c908049c65a410b2 ]
+[ Upstream commit 0ef1fe4bc38673db72e39b700b29c50dfcc5a415 ]
 
-The heuristic to derive a clang target triple from a GCC one does not work
-for s390. GCC uses "s390-linux" while clang expects "s390x-linux" or
-"powerz-linux".
+misc_init() returns -EIO for __register_chrdev() invocation failure, but:
 
-Add an explicit override.
+- -EIO is for I/O error normally, but __register_chrdev() does not do I/O.
+- -EIO can not cover various error codes returned by __register_chrdev().
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250620-tools-cross-s390-v2-1-ecda886e00e5@linutronix.de
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fix by returning error code of __register_chrdev().
+
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250620-fix_mischar-v1-3-6c2716bbf1fa@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/scripts/Makefile.include | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/char/misc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
-index 0aa4005017c7..5f2afd95de43 100644
---- a/tools/scripts/Makefile.include
-+++ b/tools/scripts/Makefile.include
-@@ -98,7 +98,9 @@ else ifneq ($(CROSS_COMPILE),)
- # Allow userspace to override CLANG_CROSS_FLAGS to specify their own
- # sysroots and flags or to avoid the GCC call in pure Clang builds.
- ifeq ($(CLANG_CROSS_FLAGS),)
--CLANG_CROSS_FLAGS := --target=$(notdir $(CROSS_COMPILE:%-=%))
-+CLANG_TARGET := $(notdir $(CROSS_COMPILE:%-=%))
-+CLANG_TARGET := $(subst s390-linux,s390x-linux,$(CLANG_TARGET))
-+CLANG_CROSS_FLAGS := --target=$(CLANG_TARGET)
- GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE)gcc 2>/dev/null))
- ifneq ($(GCC_TOOLCHAIN_DIR),)
- CLANG_CROSS_FLAGS += --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
+diff --git a/drivers/char/misc.c b/drivers/char/misc.c
+index dda466f9181a..30178e20d962 100644
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -314,8 +314,8 @@ static int __init misc_init(void)
+ 	if (err)
+ 		goto fail_remove;
+ 
+-	err = -EIO;
+-	if (__register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops))
++	err = __register_chrdev(MISC_MAJOR, 0, MINORMASK + 1, "misc", &misc_fops);
++	if (err < 0)
+ 		goto fail_printk;
+ 	return 0;
+ 
 -- 
 2.39.5
 
