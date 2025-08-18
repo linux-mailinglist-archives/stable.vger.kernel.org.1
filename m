@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E77B2A711
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CAA2B2A3C7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DDF01B66C5C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84C9E7B8999
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB238321F22;
-	Mon, 18 Aug 2025 13:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E1331A055;
+	Mon, 18 Aug 2025 13:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvkIWp9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iF1Vz6FV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D86230D0D;
-	Mon, 18 Aug 2025 13:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA9627F736;
+	Mon, 18 Aug 2025 13:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524400; cv=none; b=jX86ffSF5b6EEGtmt3DYhHeB1F0PDlgmjBugTg+zj2CQJqipI96Ozli1+O18ebHCqdIjrymeiVRqd+Qag8o8EyJsZHvWSesellagZurprU4ZUbMDH9JDdUz9w7lZTOMlo8S4Cz+saqFacAaLXAWh3iPqBCzdrSA+ctTuaDUKfQ0=
+	t=1755522700; cv=none; b=YBQUMMQfPqwBxIuHpax/sVlQtk1cySYCSJ0SpsDfPWShEZyGnZssucNBojLyL/NsCHXMA7KNvdJmxRt7iPc576M5FTA4X/tsXfwM8DVVkeqPtwKX3SPcjYPHNHZhf2QZC4Et4zsjCTpmYDFX7YNjXvrEIOi4psC1k9bMM7dD7MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524400; c=relaxed/simple;
-	bh=5VOOnwxZNM5Q+xyVmdGkAdD3f1GggCrmrg0216BhQQI=;
+	s=arc-20240116; t=1755522700; c=relaxed/simple;
+	bh=uWGM5JvcJKT/cc5MOafHkKS7T1IwPxL6fd52KY+NgBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdVedPx7OjZNK7rOrA3pl44MDIntd+LWYdSwQ0u23YVxQ4pQuG1C/3vtm8HXnSb3lVWKnaJwIF5L9qZLrYSbVjuDsCAejb4RROd3g3irPLDg53VlzoE+OgqWA9MoIAOP7iM22Pd7F+Qsj03uJoPp7KSMoIiASc7lMKVe3oyptpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvkIWp9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3470C113D0;
-	Mon, 18 Aug 2025 13:39:59 +0000 (UTC)
+	 MIME-Version; b=ZCTHmqivAvES3+kjTNmmwYyqP5T0JWCrfBhj/U9X4gxWzO4Shw9dp4F6UoYvymyNe7pD/vuiTVdTxPprGwqIcOnO7UqH37vIm15kAR4+5zI7e8TfE6FqQVFk0IfbRYaf7vZQHj2YX0n+pphZoQCr1eM+vWV9tmuYVN1jFUn5OyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iF1Vz6FV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CD7C113D0;
+	Mon, 18 Aug 2025 13:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524400;
-	bh=5VOOnwxZNM5Q+xyVmdGkAdD3f1GggCrmrg0216BhQQI=;
+	s=korg; t=1755522700;
+	bh=uWGM5JvcJKT/cc5MOafHkKS7T1IwPxL6fd52KY+NgBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvkIWp9tvz4IUmylHuNpzZxH4NBM4K46DYVEOxBfAjSXCP3n7Wm+83AgC75e82qTc
-	 u+aJYgbs5iWzxkhBQRfAAKDs0synCv5JZaA+oyD7LprhWMRuH0Q2v/gOqRZGw0EI4R
-	 /k5VwetoXXFYGzEMACIYn2C8mzxJKwGSom+D7lQc=
+	b=iF1Vz6FV5ZINexNzW9jU9lBqcP7VT36j8t36yoWyjt1BD6ANYItCj2wWjDhwNsVTh
+	 X3pVoNSipxlUtbc0Rd2pzpI5sh6Dy0d9Kyp5g9XIuMhpEfG7iRYwBa8lJi/CAuZlwT
+	 pm7rOmDUtHgfR17vYobJfu6/rV18cJnusXpm05QM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 433/515] scsi: lpfc: Remove redundant assignment to avoid memory leak
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 393/444] btrfs: zoned: do not remove unwritten non-data block group
 Date: Mon, 18 Aug 2025 14:46:59 +0200
-Message-ID: <20250818124515.095596880@linuxfoundation.org>
+Message-ID: <20250818124503.651323150@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit eea6cafb5890db488fce1c69d05464214616d800 ]
+commit 3061801420469610c8fa6080a950e56770773ef1 upstream.
 
-Remove the redundant assignment if kzalloc() succeeds to avoid memory
-leak.
+There are some reports of "unable to find chunk map for logical 2147483648
+length 16384" error message appears in dmesg. This means some IOs are
+occurring after a block group is removed.
 
-Fixes: bd2cdd5e400f ("scsi: lpfc: NVME Initiator: Add debugfs support")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20250801185202.42631-1-jiashengjiangcool@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When a metadata tree node is cleaned on a zoned setup, we keep that node
+still dirty and write it out not to create a write hole. However, this can
+make a block group's used bytes == 0 while there is a dirty region left.
+
+Such an unused block group is moved into the unused_bg list and processed
+for removal. When the removal succeeds, the block group is removed from the
+transaction->dirty_bgs list, so the unused dirty nodes in the block group
+are not sent at the transaction commit time. It will be written at some
+later time e.g, sync or umount, and causes "unable to find chunk map"
+errors.
+
+This can happen relatively easy on SMR whose zone size is 256MB. However,
+calling do_zone_finish() on such block group returns -EAGAIN and keep that
+block group intact, which is why the issue is hidden until now.
+
+Fixes: afba2bc036b0 ("btrfs: zoned: implement active zone tracking")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_debugfs.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/btrfs/block-group.c |   27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
-index 3fd1aa5cc78c..1b601e45bc45 100644
---- a/drivers/scsi/lpfc/lpfc_debugfs.c
-+++ b/drivers/scsi/lpfc/lpfc_debugfs.c
-@@ -6289,7 +6289,6 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 			}
- 			phba->nvmeio_trc_on = 1;
- 			phba->nvmeio_trc_output_idx = 0;
--			phba->nvmeio_trc = NULL;
- 		} else {
- nvmeio_off:
- 			phba->nvmeio_trc_size = 0;
--- 
-2.50.1
-
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -34,6 +34,19 @@ int btrfs_should_fragment_free_space(con
+ }
+ #endif
+ 
++static inline bool has_unwritten_metadata(struct btrfs_block_group *block_group)
++{
++	/* The meta_write_pointer is available only on the zoned setup. */
++	if (!btrfs_is_zoned(block_group->fs_info))
++		return false;
++
++	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
++		return false;
++
++	return block_group->start + block_group->alloc_offset >
++		block_group->meta_write_pointer;
++}
++
+ /*
+  * Return target flags in extended format or 0 if restripe for this chunk_type
+  * is not in progress
+@@ -1249,6 +1262,15 @@ int btrfs_remove_block_group(struct btrf
+ 		goto out;
+ 
+ 	spin_lock(&block_group->lock);
++	/*
++	 * Hitting this WARN means we removed a block group with an unwritten
++	 * region. It will cause "unable to find chunk map for logical" errors.
++	 */
++	if (WARN_ON(has_unwritten_metadata(block_group)))
++		btrfs_warn(fs_info,
++			   "block group %llu is removed before metadata write out",
++			   block_group->start);
++
+ 	set_bit(BLOCK_GROUP_FLAG_REMOVED, &block_group->runtime_flags);
+ 
+ 	/*
+@@ -1567,8 +1589,9 @@ void btrfs_delete_unused_bgs(struct btrf
+ 		 * needing to allocate extents from the block group.
+ 		 */
+ 		used = btrfs_space_info_used(space_info, true);
+-		if (space_info->total_bytes - block_group->length < used &&
+-		    block_group->zone_unusable < block_group->length) {
++		if ((space_info->total_bytes - block_group->length < used &&
++		     block_group->zone_unusable < block_group->length) ||
++		    has_unwritten_metadata(block_group)) {
+ 			/*
+ 			 * Add a reference for the list, compensate for the ref
+ 			 * drop under the "next" label for the
 
 
 
