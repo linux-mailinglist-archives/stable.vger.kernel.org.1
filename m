@@ -1,131 +1,151 @@
-Return-Path: <stable+bounces-169926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CBDB2999D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 08:26:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D7AB299C2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 08:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F2517816B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 06:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E087D189F0A8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 06:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8CF2749ED;
-	Mon, 18 Aug 2025 06:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0959C274FFE;
+	Mon, 18 Aug 2025 06:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqjgh3cx"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E02E290F;
-	Mon, 18 Aug 2025 06:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4C926FD8E;
+	Mon, 18 Aug 2025 06:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755498394; cv=none; b=bm6t16+YXB10xozEgr9lZu1+QxZ+wRdbyG7zUY8YUL6CDfFnfOOmfw1Gl8xlRbvTvbqcakXqzZhSj2BlxIXHwEl0wcROel3yzVylQXOXVFCVHVHod3g83zf0hN9kALal1KSbh/DnD1brCbUfyT+Yi2K0cBjid1nP+hSjAIlGvGQ=
+	t=1755498847; cv=none; b=tOFzOnKEBu8Zmf8stjfxQsflZfkEslMpY6TUXOBtR+dbknf2thizSehoMfAiKCYZMnZpKWYz7ibqrfE0hlodhNEZE+IvKR8eTV5EwtqECIailVA6mJmb+7EG8ntbtZCQkI8/kfZoNOFN0vu2Djxe02pirCd7fgdbD/84qCF0Mtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755498394; c=relaxed/simple;
-	bh=ZUrAl+s71f40VD8ohCY1TkdodyA35sYtKzJl1fKKGdE=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=kRjXIQp/Uz6QshBirxwEA4Dwlasq2Zr94RxZ5gzVxWUZrgDJqqgUWM/faMo96v8d4JGiKwPVkzy9pLqzyxrJcHZRuVpgE1kJFM7g7fdvXnG+KZJ5JJUOkuNme55o8nqhrs6gD6Lt3UR9IAyVymCgGcOSrnqVgJNnR5dZvPu7rQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4c52mM66l1zKHN5c;
-	Mon, 18 Aug 2025 14:26:27 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 409B01A10C2;
-	Mon, 18 Aug 2025 14:26:27 +0800 (CST)
-Received: from [10.174.179.143] (unknown [10.174.179.143])
-	by APP4 (Coremail) with SMTP id gCh0CgB3QBGPx6Jo+3BMEA--.53559S3;
-	Mon, 18 Aug 2025 14:26:25 +0800 (CST)
-Subject: Re: Patch "md: call del_gendisk in control path" has been added to
- the 6.6-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>, Yu Kuai <yukuai1@huaweicloud.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, xni@redhat.com,
- Song Liu <song@kernel.org>, "yukuai (C)" <yukuai3@huawei.com>
-References: <20250817141818.2370452-1-sashal@kernel.org>
- <7748b907-8279-c222-d4e4-b94c3216408b@huaweicloud.com>
- <2025081846-veneering-radish-498d@gregkh>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <0c083639-eb30-2830-0938-20684db3914a@huaweicloud.com>
-Date: Mon, 18 Aug 2025 14:26:23 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+	s=arc-20240116; t=1755498847; c=relaxed/simple;
+	bh=TuT1Q3ab9MEdA63O5u8QSJxHcrlpKFyOYhq7iu8xQKc=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:From:To:References:
+	 In-Reply-To; b=mfskBrWbGWpnjWKozY3yTjMUMaYli0pBwEc5qhiHghAQLpwCpItIXwkLkHRPUKWROyvcm8IF3A2+byu408ra1oWwj/oaWYAFpftjjSyWGNTRNsHhjnnLoGBvjF8wPxN3QvXd0xS/JS8tSFtuRAVDuE9CSiWzd83LS0bqFUtBB6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqjgh3cx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13DAC4CEEB;
+	Mon, 18 Aug 2025 06:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755498847;
+	bh=TuT1Q3ab9MEdA63O5u8QSJxHcrlpKFyOYhq7iu8xQKc=;
+	h=Date:Subject:Cc:From:To:References:In-Reply-To:From;
+	b=kqjgh3cxyMw2Zu0BIe0IRTM5G68fDYWwP4MyCD0hkzIBjTBHFRTDilNoi2S1NWfYz
+	 3owbAQAqsDS60lpBfzTIwqepD/5hVR1jF8HMPN6iCl9eSUaxsV3YUPBP8VhWvaMDem
+	 On2OBFN7mrY0qbluRaYLfmDqEhmz4zFKWy1EDKSky+VjLp6OuFg4MWUwBuMwcVAjQY
+	 Bh7Na2xUQaAk0p6ObgIDXFjzeMsoep6aaFAIN/+1F/Gbl9M7KM+cuEnGEK7WA4vI/A
+	 AGwF+qc0WPmJE18lqK0OIacQ2BuBXE7oVmNaNIJrxa7hOvMFsIyGjCiOmnzGYLSsK1
+	 MYdha2NyC2oxg==
+Content-Type: multipart/signed;
+ boundary=b0bb75deace1dbc2ddd5574427033e423afc4aadde330d8d0257abae0a9d;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Mon, 18 Aug 2025 08:34:03 +0200
+Message-Id: <DC5CEJ4YYRRB.3VTJAONRBJPVB@kernel.org>
+Subject: Re: [PATCH AUTOSEL 6.12 27/69] mfd: tps6594: Add TI TPS652G1
+ support
+Cc: "Lee Jones" <lee@kernel.org>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Sasha Levin" <sashal@kernel.org>, <patches@lists.linux.dev>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.16.0
+References: <20250804003119.3620476-1-sashal@kernel.org>
+ <20250804003119.3620476-27-sashal@kernel.org>
+In-Reply-To: <20250804003119.3620476-27-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <2025081846-veneering-radish-498d@gregkh>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgB3QBGPx6Jo+3BMEA--.53559S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7WFW5Kw1UAF1Duw4DGF43trb_yoW8GrWrpa
-	4IkFWayrs8tr1xtw13Kw4Fva40vw47A343Krn8Grn5A3s0vF1IvF4xWrZI9FnrGw1jgr12
-	qFWjgwn7trWkZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7I2V7IY0VAS07AlzVAY
-	IcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUvXd8UUUUU=
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-Hi,
+--b0bb75deace1dbc2ddd5574427033e423afc4aadde330d8d0257abae0a9d
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-在 2025/08/18 13:55, Greg KH 写道:
-> On Mon, Aug 18, 2025 at 09:03:39AM +0800, Yu Kuai wrote:
->> Hi,
->>
->> 在 2025/08/17 22:18, Sasha Levin 写道:
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>       md: call del_gendisk in control path
->>>
->>> to the 6.6-stable tree which can be found at:
->>>       http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>
->>> The filename of the patch is:
->>>        md-call-del_gendisk-in-control-path.patch
->>> and it can be found in the queue-6.6 subdirectory.
->>>
->>> If you, or anyone else, feels it should not be added to the stable tree,
->>> please let <stable@vger.kernel.org> know about it.
->>>
->>>
->> This patch should be be backported to any stable kernel, this change
->> will break user tools mdadm:
->>
->> https://lore.kernel.org/all/f654db67-a5a5-114b-09b8-00db303daab7@redhat.com/
-> 
-> Is it reverted in Linus's tree?
-> 
+Hi Sasha,
 
-No, we'll not revert it, this is an improvement. In order to keep user
-tools compatibility, we added a switch in the kernel. As discussed in
-the thread, for old tools + new kernel, functionality is the same,
-however, there will be kernel warning about deprecated behaviour to
-inform user upgrading user tools.
+On Mon Aug 4, 2025 at 2:30 AM CEST, Sasha Levin wrote:
+> From: Michael Walle <mwalle@kernel.org>
+>
+> [ Upstream commit 626bb0a45584d544d84eab909795ccb355062bcc ]
+>
+> The TPS652G1 is a stripped down version of the TPS65224. From a software
+> point of view, it lacks any voltage monitoring, the watchdog, the ESM
+> and the ADC.
+>
+> Signed-off-by: Michael Walle <mwalle@kernel.org>
+> Link: https://lore.kernel.org/r/20250613114518.1772109-2-mwalle@kernel.or=
+g
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>
+> LLM Generated explanations, may be completely bogus:
+>
+> **YES**
+>
+> This commit should be backported to stable kernel trees for the
+> following reasons:
+>
+> 1. **Hardware Enablement (Device ID Addition)**: This patch adds support
+>    for a new PMIC variant (TPS652G1) by adding its device ID and
+>    configuration. According to stable kernel rules, patches that "just
+>    add a device ID" are explicitly allowed for stable backporting.
+>
+> 2. **Self-Contained Changes**: The modifications are isolated to adding
+>    support for the new device without altering existing functionality:
+>    - Adds `TPS652G1` to the `enum pmic_id`
+>    - Adds TPS652G1-specific MFD cells configuration
+>    - Adds device-specific IRQ mappings (subset of TPS65224 IRQs)
+>    - Adds compatible strings "ti,tps652g1" to I2C and SPI device tables
+>    - Properly handles the stripped-down nature of TPS652G1 (no RTC, ADC,
+>      watchdog, ESM)
+>
+> 3. **Low Risk**: The changes follow the existing driver pattern and only
+>    add conditional paths for the new device:
+>   ```c
+>   if (tps->chip_id =3D=3D TPS65224 || tps->chip_id =3D=3D TPS652G1)
+>   ```
+>   This ensures existing device support remains unaffected.
+>
+> 4. **User Benefit**: Without this patch, users with TPS652G1 hardware
+>    cannot use their devices on stable kernels. This directly impacts
+>    hardware functionality for affected users.
+>
+> 5. **Proper Implementation**: The patch correctly handles the TPS652G1
+>    as a feature-reduced variant of TPS65224, sharing the same register
+>    layout and CRC handling while properly excluding unsupported
+>    features.
+>
+> The patch is relatively small, follows established driver patterns, and
+> enables essential hardware support without introducing architectural
+> changes or new features beyond device enablement.
 
-However, I feel this new warning messages is not acceptable for
-stable kernels.
+While this is correct, the MFD patch on it's own is rather useless,
+as the individual driver implementations are missing. See
+https://lore.kernel.org/all/20250703113153.2447110-1-mwalle@kernel.org/
 
-Thanks,
-Kuai
+I don't care too much, I just want to point out, that just having
+this patch might be misleading regarding the support of this PMIC.
 
-> thanks,
-> 
-> greg k-h
-> 
-> .
-> 
+-michael
 
+--b0bb75deace1dbc2ddd5574427033e423afc4aadde330d8d0257abae0a9d
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCaKLJWxIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/hUVQF+KHDTV7ZjbafCPzJFfLz7eU+lFnOpjOye
+22pVQzCxqiSjaU0s69DCCRq22OVpF0LkAYDahGM/kSaSBhm/GSiMQtNhwohhQCuu
+M9OuRbwrt+EPOFB8ksLrC0G2kvqL9sZcdxY=
+=mxBt
+-----END PGP SIGNATURE-----
+
+--b0bb75deace1dbc2ddd5574427033e423afc4aadde330d8d0257abae0a9d--
 
