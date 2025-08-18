@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E9AB2A369
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757A1B2A8A4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A83917356B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4C55A24D3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321EE26F283;
-	Mon, 18 Aug 2025 12:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B04220F3F;
+	Mon, 18 Aug 2025 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wygr+Rg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wbcIOIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CDB3218CF;
-	Mon, 18 Aug 2025 12:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4180421CC55;
+	Mon, 18 Aug 2025 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521988; cv=none; b=lCx8WA7D5q57WFbv5QXv4LRPQAgmxTweuIzF9fqRrcuR8WbeRdEM9ZZgow1eYGTA06CBLTbGHUoxHy+o7Wv/w8DQGGj2g2OYAW2gbzh2nUnMhti49+LIBpfZI61EYifzGYu3fIy5vR3TbS0qiMD7dFKLJJd/7yKDUMb/38FlVoU=
+	t=1755525301; cv=none; b=ReAATEeD30y9bW31P8Ks7BEi9CNSIWM0Qo6Bf/N0C6BK5O8iP0eeJGzAGGeWJNeD5DBG+YvT+0Jpcc7BjDCSvHb17tS/ojwpJQIR/k/cEbZuaRJh0DRpsLbVozQuS7Ltp5WRN2gCPzonfjuSJZCbiYfuO4RwWsPHkOVEL/+JXIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521988; c=relaxed/simple;
-	bh=eU7vc+gS93dxezLZZs5C/rcS0WiWvig9w3lm+cgN7Cg=;
+	s=arc-20240116; t=1755525301; c=relaxed/simple;
+	bh=VgvhDJkbIGBvN1XbakODLUSQkBAM0WYQydN+eNT9vyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iz9V1fP6vwZO7R2ll2w2JEoIf8L5EA+jN7QEyEWJDXTwpZgWimhH+IM76oJ2RIzlReCxozSD30jjrKT6DxMtljkei4bDqNyVSFKeELVQA2zmbbcV9Zfbw0If/iT8SDfkzX0pYQRmxdfLnrjbY2JV1zW2effK4BNl+H7I03O8rmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wygr+Rg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533F1C4CEEB;
-	Mon, 18 Aug 2025 12:59:47 +0000 (UTC)
+	 MIME-Version; b=R5bmrxu4HCiijxqf6Rc2fRDS/L9xSpjt4xTu1W98VU1Ih3iNYJHZvPbV7Vb5Q06DIkVzSu9yGjcTbh3T46o+bnHfVeszQCDL5Cu50m3wXfHWuCLB1tKrxwX/hH1jBbqucYVXmEe9L0Bb1uyx0Jx5XGxjXsrOOlqKpJmxErJar2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wbcIOIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9F9C4CEEB;
+	Mon, 18 Aug 2025 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521987;
-	bh=eU7vc+gS93dxezLZZs5C/rcS0WiWvig9w3lm+cgN7Cg=;
+	s=korg; t=1755525301;
+	bh=VgvhDJkbIGBvN1XbakODLUSQkBAM0WYQydN+eNT9vyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wygr+Rg9u/iotBQYmnyw5hflyleSShGbU6/gML08dR7Mabv89P6sO57wybXt4gMO9
-	 NSZSWuTLi9qtJFmuqFUhHW+Ij43zi390u8rWMnugYlxMydkTlkqbeQxQg6XXBL7rt2
-	 iRrpaG6FKvxJrDD0I70Qqr7UkPe0ic9Vrc1OtNtY=
+	b=2wbcIOIeibGcy/pwI5QEhPiivq92YtJxdCpVKMYI+ijXaMUFBHY2M/1TWISMb8kOP
+	 lLRcddiuS9hwmGqnSiSeU79lXePWErA+fxu+T8JieKGN/pw84AaIRfwNFUT3JhOzcK
+	 KKi+IKw4AwcyPtXEoMURPguszJ/hQrJTI6yFvxO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"John Warthog9 Hawley" <warthog9@kernel.org>,
+	Dhaval Giani <dhaval.giani@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 180/444] net: ag71xx: Add missing check after DMA map
-Date: Mon, 18 Aug 2025 14:43:26 +0200
-Message-ID: <20250818124455.624024256@linuxfoundation.org>
+Subject: [PATCH 6.16 220/570] ktest.pl: Prevent recursion of default variable options
+Date: Mon, 18 Aug 2025 14:43:27 +0200
+Message-ID: <20250818124514.281694463@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 96a1e15e60216b52da0e6da5336b6d7f5b0188b0 ]
+[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
 
-The DMA map functions can fail and should be tested for errors.
+If a default variable contains itself, do not recurse on it.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250716095733.37452-3-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For example:
+
+  ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+The above works because the temp variable ADD_CONFIG (is a temp because it
+is created with ":=") is already defined, it will be substituted in the
+variable option. But if it gets commented out:
+
+  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+Then the above will go into a recursive loop where ${ADD_CONFIG} will
+get replaced with the current definition of ADD_CONFIG which contains the
+${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
+after 100 attempts of recursion and fail.
+
+When replacing a variable with the default variable, if the default
+variable contains itself, do not replace it.
+
+Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
+Cc: Dhaval Giani <dhaval.giani@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/testing/ktest/ktest.pl | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index 9586b6894f7e..bccc7e7b2a84 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1213,6 +1213,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
- 	buf->rx.rx_buf = data;
- 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
- 					  DMA_FROM_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
-+		skb_free_frag(data);
-+		buf->rx.rx_buf = NULL;
-+		return false;
-+	}
- 	desc->data = (u32)buf->rx.dma_addr + offset;
- 	return true;
- }
-@@ -1511,6 +1516,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
- 
- 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
- 				  DMA_TO_DEVICE);
-+	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
-+		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
-+		goto err_drop;
-+	}
- 
- 	i = ring->curr & ring_mask;
- 	desc = ag71xx_ring_desc(ring, i);
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index a5f7fdd0c1fb..e1d31e2aa948 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1371,7 +1371,10 @@ sub __eval_option {
+ 	# If a variable contains itself, use the default var
+ 	if (($var eq $name) && defined($opt{$var})) {
+ 	    $o = $opt{$var};
+-	    $retval = "$retval$o";
++	    # Only append if the default doesn't contain itself
++	    if ($o !~ m/\$\{$var\}/) {
++		$retval = "$retval$o";
++	    }
+ 	} elsif (defined($opt{$o})) {
+ 	    $o = $opt{$o};
+ 	    $retval = "$retval$o";
 -- 
 2.39.5
 
