@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-170628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3D1B2A57D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A075EB2A268
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BBBC563559
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFBD62281B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45DE31B100;
-	Mon, 18 Aug 2025 13:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8956B280035;
+	Mon, 18 Aug 2025 12:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+GGBl2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dA5dCiR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66583335BD8;
-	Mon, 18 Aug 2025 13:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F243218D1;
+	Mon, 18 Aug 2025 12:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523254; cv=none; b=N3zJkhdnJhJuXTdbziVCSRg/zh3icynK/8MwzGGsmZNZ1Cz9K0oESYnfHXOmdqOa7pQRe7aIT6KX2jv3mUWGrxOqYmstJ11H0V3jcJQ1KcJ2p278VxSsSzAcsEcTPZCVxz6eS1WtPkP+OFh1WbJPcomsk5BmbIDyuO/KhnAr5y0=
+	t=1755521631; cv=none; b=mFe/WVZlzUsYWPOdeeV8Puams6UlhYiKaiTXRwDY4IW0EY6wR2syCNciQGmzK0MpQt8o9kQTAr8qLf2B4PIFNX/XuGvKIMJKzQM9flZeywgivQKdTKlYxZYDJs5Q2LPXHhY1zuvJ+G4uelUwp3mjJJh/b6PZgJecWDnZLaApziY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523254; c=relaxed/simple;
-	bh=6LyvAp5wXCz1mRRAvx26kaCMF0c9stVjtaMIB05px/k=;
+	s=arc-20240116; t=1755521631; c=relaxed/simple;
+	bh=hUK5XGZZc+nOJmM+vEqh+KCW/0xTI3RCXBdEPpIuuzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQUBBkiEmfYLh3kkgIagH10jBj+C9OkhSFW0xhWpYnejQYcsBsHn7tcE8ivwSs44h5Fg/26ICFoiDBsd+xlMohqxPTXEUGNOINmsAmDJ4sFliFjhbcpLQbKROJy3t82LfxEOmYK2bpyAV5p/TWNAVaU5VrhkJucRXPgbm+DVTlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+GGBl2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5316DC4CEEB;
-	Mon, 18 Aug 2025 13:20:53 +0000 (UTC)
+	 MIME-Version; b=j3zLzuoOHDZHV3Odp7J5kvzVKNHR3aN08CwGaAapZO3Cn9Rs1IYrO5/LZCMalTLL8gOTK4as9X2Oz3E0C8vXfuRbo3AuAYhI16oDJoi5ErnXEM1sujWLnT4f3FyFqec6fmq+mrN7/qlJU0y59gKBWrkYebJ6xjGQdMv9p3oS1W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dA5dCiR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD98DC4CEEB;
+	Mon, 18 Aug 2025 12:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523254;
-	bh=6LyvAp5wXCz1mRRAvx26kaCMF0c9stVjtaMIB05px/k=;
+	s=korg; t=1755521631;
+	bh=hUK5XGZZc+nOJmM+vEqh+KCW/0xTI3RCXBdEPpIuuzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+GGBl2y6mb9wjNqoc87BJjLwloudCgTKjVh+nY7QPMkcKKK/mwQ5+WvkMPk+XKrf
-	 sZ5uUXSsbTqUiXyD6SeB05r0hhAbMHIigi48aCFCisPQAqxYIMOdhhAaGiIRTKCZz6
-	 gWXdCS0TaLDnZ8VjHRycBt3zJrHIZjzllVwYTNU8=
+	b=dA5dCiR04fj/TtNcaPNxXD9Xv9Fg3jksbYyrrJCeUsNdsFcZ6uCKaU2sZKqv8O8Vo
+	 1Xa+5wqAJttnpcBXdQZtI5blf/YHf8WYPov9435C3a3Hd+5sIr/fQuqyfc+IplPyWO
+	 nZE3aO4AwFlJRFpL6eN7a7zpYnhJ1pVef3jdf7G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 084/515] tpm: Check for completion after timeout
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 044/444] smb: client: dont wait for info->send_pending == 0 on error
 Date: Mon, 18 Aug 2025 14:41:10 +0200
-Message-ID: <20250818124501.611173136@linuxfoundation.org>
+Message-ID: <20250818124450.590678467@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit d4640c394f23b202a89512346cf28f6622a49031 ]
+commit 8c48e1c7520321cc87ff651e96093e2f412785fb upstream.
 
-The current implementation of timeout detection works in the following
-way:
+We already called ib_drain_qp() before and that makes sure
+send_done() was called with IB_WC_WR_FLUSH_ERR, but
+didn't called atomic_dec_and_test(&sc->send_io.pending.count)
 
-1. Read completion status. If completed, return the data
-2. Sleep for some time (usleep_range)
-3. Check for timeout using current jiffies value. Return an error if
-   timed out
-4. Goto 1
+So we may never reach the info->send_pending == 0 condition.
 
-usleep_range doesn't guarantee it's always going to wake up strictly in
-(min, max) range, so such a situation is possible:
-
-1. Driver reads completion status. No completion yet
-2. Process sleeps indefinitely. In the meantime, TPM responds
-3. We check for timeout without checking for the completion again.
-   Result is lost.
-
-Such a situation also happens for the guest VMs: if vCPU goes to sleep
-and doesn't get scheduled for some time, the guest TPM driver will
-timeout instantly after waking up without checking for the completion
-(which may already be in place).
-
-Perform the completion check once again after exiting the busy loop in
-order to give the device the last chance to send us some data.
-
-Since now we check for completion in two places, extract this check into
-a separate function.
-
-Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Reviewed-by: Jonathan McDowell <noodles@meta.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Fixes: 5349ae5e05fa ("smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()")
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-interface.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ fs/smb/client/smbdirect.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-index 8d7e4da6ed53..8d18b33aa62d 100644
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -82,6 +82,13 @@ static bool tpm_chip_req_canceled(struct tpm_chip *chip, u8 status)
- 	return chip->ops->req_canceled(chip, status);
- }
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1316,10 +1316,6 @@ void smbd_destroy(struct TCP_Server_Info
+ 	log_rdma_event(INFO, "cancelling idle timer\n");
+ 	cancel_delayed_work_sync(&info->idle_timer_work);
  
-+static bool tpm_transmit_completed(u8 status, struct tpm_chip *chip)
-+{
-+	u8 status_masked = status & chip->ops->req_complete_mask;
-+
-+	return status_masked == chip->ops->req_complete_val;
-+}
-+
- static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
- {
- 	struct tpm_header *header = buf;
-@@ -129,8 +136,7 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
- 	stop = jiffies + tpm_calc_ordinal_duration(chip, ordinal);
+-	log_rdma_event(INFO, "wait for all send posted to IB to finish\n");
+-	wait_event(info->wait_send_pending,
+-		atomic_read(&info->send_pending) == 0);
+-
+ 	/* It's not possible for upper layer to get to reassembly */
+ 	log_rdma_event(INFO, "drain the reassembly queue\n");
  	do {
- 		u8 status = tpm_chip_status(chip);
--		if ((status & chip->ops->req_complete_mask) ==
--		    chip->ops->req_complete_val)
-+		if (tpm_transmit_completed(status, chip))
- 			goto out_recv;
+@@ -1965,7 +1961,11 @@ int smbd_send(struct TCP_Server_Info *se
+ 	 */
  
- 		if (tpm_chip_req_canceled(chip, status)) {
-@@ -142,6 +148,13 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
- 		rmb();
- 	} while (time_before(jiffies, stop));
- 
-+	/*
-+	 * Check for completion one more time, just in case the device reported
-+	 * it while the driver was sleeping in the busy loop above.
-+	 */
-+	if (tpm_transmit_completed(tpm_chip_status(chip), chip))
-+		goto out_recv;
+ 	wait_event(info->wait_send_pending,
+-		atomic_read(&info->send_pending) == 0);
++		atomic_read(&info->send_pending) == 0 ||
++		sc->status != SMBDIRECT_SOCKET_CONNECTED);
 +
- 	tpm_chip_cancel(chip);
- 	dev_err(&chip->dev, "Operation Timed out\n");
- 	return -ETIME;
--- 
-2.39.5
-
++	if (sc->status != SMBDIRECT_SOCKET_CONNECTED && rc == 0)
++		rc = -EAGAIN;
+ 
+ 	return rc;
+ }
 
 
 
