@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9BBB2A551
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C362EB2A79F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0D7604E3229
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5614D7A84A6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BEB322A22;
-	Mon, 18 Aug 2025 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DFA335BC5;
+	Mon, 18 Aug 2025 13:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkAWrZVL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSDLXzcm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710E0322775;
-	Mon, 18 Aug 2025 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E486335BA9;
+	Mon, 18 Aug 2025 13:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523617; cv=none; b=A/JA8bb9joLht+p+p09GRKKoKLNCrBxw92L/xxBQOPG60jj58TJFNscbOzo5ubp7FojOzdZYc9Un/ADj9Y4LyK4XFrHMHBzoMILkgPcA3sowx5Nr8olsy+5rw0CqrhA+7+Vppw+VHaT+fSZP3w8mTiFdvQU3gqD6OwNYbkIjg1k=
+	t=1755525212; cv=none; b=ayk8z5y9QgGZXQpgaE415KNxskXNMClytOlgijk+zlRXM6qmGu2GAHRhWlVKw/LD2IwxzBvfvut5t4S30bOqfxXWWYltHseRqAmlsUrDfF676Srf/t/VifbJPwBgqCZLQFIhKMxGFUvnqJ23ZebP2Lcs5kNvFI8wn9DdJKA5NF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523617; c=relaxed/simple;
-	bh=XZLlQWDnv397lPYhIXi83l9g4EL6rpYJg/gtynmqaQA=;
+	s=arc-20240116; t=1755525212; c=relaxed/simple;
+	bh=01NtwRO61eDq3ZYOWLVjQ8ZmfmS5j1/Pr/6ibXH1ZoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIGeHxiJsimK2LjcajTTFKf8VjHcNBTF6ixCZUOHm435yPF2uNk14NDuwCt5jS4o9Xt0F2inhhKibClIzPQMlGNJufRDqRporsYlqaUXkiB4e1mH+NReLdd1Oxh2/yPqsrEYXXv2Bjb4KtvOmv6lfkjw6xfcN1MwIbQDV5bMoCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkAWrZVL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5928C4CEEB;
-	Mon, 18 Aug 2025 13:26:56 +0000 (UTC)
+	 MIME-Version; b=TShKJlcrY0JIo9XhpFZo8YE3KgPxf1kHrsVdUBop/39bof/hrHtF+nvlckfJckH6xh0x9wd1QZD5Zcd9bTI5QPvZupaGktTfct4vZ4HIgYjUCCdDFC9oSNd3AoUDJmRZj/4JrrSSRPyVtmA8xufxd/wSRv6t12pP5oZR00N1FKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSDLXzcm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A422EC4CEEB;
+	Mon, 18 Aug 2025 13:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523617;
-	bh=XZLlQWDnv397lPYhIXi83l9g4EL6rpYJg/gtynmqaQA=;
+	s=korg; t=1755525212;
+	bh=01NtwRO61eDq3ZYOWLVjQ8ZmfmS5j1/Pr/6ibXH1ZoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkAWrZVLSk78BaeR/ERcYNI0BoE8RoNr/LIgF47ABtYEPi+xV3BkhhZ0apWosgJfT
-	 Ln1cgDvW9rixMwGqLcj4gMO57wL5zS9XaWITRc2vOFRWCVXVZB1bjH0o/v13VKpwc+
-	 io16PFx/6O9EZiJKvG476pAJ/4iQqI8zLFbEZCEk=
+	b=KSDLXzcmOCZo3Mpl9W0ERnbi8lgnunB8HQTAZJ0fYRw4B6YqnuQbWDTXWWREcDQBL
+	 AYluwe87z855PVUmtTlJGs3Ftixz+JL2mQFMbWgivZ7+pYklL0HeOd9y0lp2HbaFJ6
+	 MI7oGMNw74CbtpwjoAKiLFD/SDng5wZOhh3e1nzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 194/515] Bluetooth: btusb: Add new VID/PID 0489/e14e for MT7925
+Subject: [PATCH 6.16 193/570] usb: dwc3: xilinx: add shutdown callback
 Date: Mon, 18 Aug 2025 14:43:00 +0200
-Message-ID: <20250818124505.836864449@linuxfoundation.org>
+Message-ID: <20250818124513.236204155@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit 942873c8137fe0015ab37f62f159d88079859c5e ]
+[ Upstream commit 70627bf82e36e61c40c3315e1206e4ea4c02e668 ]
 
-Add VID 0489 & PID e14e for MediaTek MT7925 USB Bluetooth chip.
+Adds a shutdown callback to ensure that the XHCI stack is properly
+shutdown in reboot/shutdown path.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+In kexec flow, kernel_restart_prepare() performs actions necessary
+to prepare the system for a restart and invokes device_shutdown. To
+ensure proper shutdown attach the dwc3 shutdown implementation which
+mirrors the remove method.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e14e Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:* If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+$ kexec -e
 
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+<snip>
+xhci-hcd xhci-hcd.0.auto: remove, state 1
+usb usb1: USB disconnect, device number 1
+usb 1-1: USB disconnect, device number 6
+xhci-hcd xhci-hcd.0.auto: USB bus 1 deregistered
+kexec_core: Starting new kernel
+
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/1748977771-714153-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc3/dwc3-xilinx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index a2ba32319b6f..338f426e92e2 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -709,6 +709,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe139), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe14e), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe14f), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe150), .driver_info = BTUSB_MEDIATEK |
+diff --git a/drivers/usb/dwc3/dwc3-xilinx.c b/drivers/usb/dwc3/dwc3-xilinx.c
+index 4ca7f6240d07..09c3c5c226ab 100644
+--- a/drivers/usb/dwc3/dwc3-xilinx.c
++++ b/drivers/usb/dwc3/dwc3-xilinx.c
+@@ -422,6 +422,7 @@ static const struct dev_pm_ops dwc3_xlnx_dev_pm_ops = {
+ static struct platform_driver dwc3_xlnx_driver = {
+ 	.probe		= dwc3_xlnx_probe,
+ 	.remove		= dwc3_xlnx_remove,
++	.shutdown	= dwc3_xlnx_remove,
+ 	.driver		= {
+ 		.name		= "dwc3-xilinx",
+ 		.of_match_table	= dwc3_xlnx_of_match,
 -- 
 2.39.5
 
