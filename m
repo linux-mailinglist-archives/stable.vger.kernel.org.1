@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D6CB2A26E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AF0B2A870
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E731F4E2E29
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FC2582C28
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330B930E0F4;
-	Mon, 18 Aug 2025 12:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CE4335BCB;
+	Mon, 18 Aug 2025 13:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8qJWCC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CC3dWYPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E457527B330;
-	Mon, 18 Aug 2025 12:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7654335BCA;
+	Mon, 18 Aug 2025 13:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521806; cv=none; b=Wu1c0gBmwoUeZW8SJmUlBFJfWTUR65FQzztBZ7DjfsCSlZKMnghxTOgf7g/X8Tp08+OZETCQa8+OFwqo2+XvJ1OZuuKcFvJgCnYUCLaaXeaP3dcIvF8kzdQ/hIsJ+8Km1tteTDp2v7ITEDLbbnEzIu7yrSHN8Sb1ITAgAVWFoi4=
+	t=1755525218; cv=none; b=ZQ4SJKKtPlT+itdtFqR9wD3VtH1lvtR6G1akSa7q0C9KSNh7TJgmMN+sngC+F2mZOhLJL9iVZgRCxuLeaYbxkMr2zDhOuViR4rso7iHWBN5Ahpov3t8RqRqQmF3K6/ysk/K49xuge4bwVMJDB6hVheVtWPtjEfs/El0mKpKRJgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521806; c=relaxed/simple;
-	bh=W6S3cnjR7+lbT97ZY96Ag3UVByX+3aIaDJ2LKpiGt0w=;
+	s=arc-20240116; t=1755525218; c=relaxed/simple;
+	bh=zA/r/6vbuQGSw1IzuAjlV/gpLkWLx6zCMFvcJ0+MnCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nB3ZRiZOgQcpBYjHyLtWKbLjp8C9DU6DUN8souw6+n5wtApRTyTDs1dh7O3zVntiCemTWO/oocvBLF28xDQaFfZoQkzOvOR/mUHMxa19wQRDCHiCaLUZBklIApE7ZKc70vmSesDXmnZkWGoVMGETc18EYWh8URlkohONit21cAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8qJWCC4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA64C4CEF1;
-	Mon, 18 Aug 2025 12:56:44 +0000 (UTC)
+	 MIME-Version; b=FPGQ8bA786LgmZEz+AVkQOWk8DTwqu+AqS4oIRfQdfWlyrZGG4rqMKv4d7Xx2L2w7VOPCQ9GOeEaRyUW6xVn5VNoNo1jFU0nJ6lMNjuNaZm9lXhz4566JV+KiMgsOCWOIWr5Dfv6ZQYNEOG9I6o18urw0Mw5as1iwhaM7mfastY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CC3dWYPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F8CC4CEEB;
+	Mon, 18 Aug 2025 13:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521805;
-	bh=W6S3cnjR7+lbT97ZY96Ag3UVByX+3aIaDJ2LKpiGt0w=;
+	s=korg; t=1755525218;
+	bh=zA/r/6vbuQGSw1IzuAjlV/gpLkWLx6zCMFvcJ0+MnCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q8qJWCC4jCItGq9A02ZFshvFqEgTznDU6WcpeWgYpR2eZYXP3h4cymxPU34LNxZlI
-	 IatDRP3J1YSCoA5OHKIi9qHHcHxo4EnpKYN194SSUy00q5i58Rx/jBd3zrPeDNCnle
-	 +aLcZ+hcCbo5vQXx4Rpr3rTy1pWf47CHM3HFYTL0=
+	b=CC3dWYPj5hR0Qmwj/F2uKVAQvDHU1hYVH4MlI6TF2HPZF6EFBEjyKMcD/+k9Lu6im
+	 EqyyEAFjFiv9KsJTcAC8nhBlIFiCEORAPzjqyYHyL06Q2f19nlWQO9x0SySRHpRCJq
+	 LGYc7vg+kXUbCo+SGLUlWuFEUmKB9gFP1UGXQid8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sarthak Garg <quic_sartgarg@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 128/444] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
-Date: Mon, 18 Aug 2025 14:42:34 +0200
-Message-ID: <20250818124453.718108285@linuxfoundation.org>
+Subject: [PATCH 6.16 168/570] mmc: sdhci-msm: Ensure SD card power isnt ON when card removed
+Date: Mon, 18 Aug 2025 14:42:35 +0200
+Message-ID: <20250818124512.273366142@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Sarthak Garg <quic_sartgarg@quicinc.com>
 
-[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
+[ Upstream commit db58532188ebf51d52b1d7693d9e94c76b926e9f ]
 
-According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
-means the read would block. Hence, the common implementation in
-nonblocking model will poll the file when the nonblocking read returns
-EAGAIN. However, when the target file is thermal zone, this mechanism
-will totally malfunction because thermal zone doesn't implement sysfs
-notification and thus the poll will never return.
+Many mobile phones feature multi-card tray designs, where the same
+tray is used for both SD and SIM cards. If the SD card is placed
+at the outermost location in the tray, the SIM card may come in
+contact with SD card power-supply while removing the tray, possibly
+resulting in SIM damage.
 
-For example, the read in Golang implemnts such method and sometimes
-hangs at reading some thermal zones via sysfs.
+To prevent that, make sure the SD card is really inserted by reading
+the Card Detect pin state. If it's not, turn off the power in
+sdhci_msm_check_power_status() and also set the BUS_FAIL power state
+on the controller as part of pwr_irq handling for BUS_ON request.
 
-Change to return -ENODATA instead of -EAGAIN to userspace.
-
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250701100659.3310386-1-quic_sartgarg@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_sysfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-msm.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-index 1838aa729bb5..c58c53d4ecc6 100644
---- a/drivers/thermal/thermal_sysfs.c
-+++ b/drivers/thermal/thermal_sysfs.c
-@@ -40,10 +40,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
- 
- 	ret = thermal_zone_get_temp(tz, &temperature);
- 
--	if (ret)
--		return ret;
-+	if (!ret)
-+		return sprintf(buf, "%d\n", temperature);
- 
--	return sprintf(buf, "%d\n", temperature);
-+	if (ret == -EAGAIN)
-+		return -ENODATA;
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 66c0d1ba2a33..bc6ca49652f8 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -1564,6 +1564,7 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	struct mmc_host *mmc = host->mmc;
+ 	bool done = false;
+ 	u32 val = SWITCHABLE_SIGNALING_VOLTAGE;
+ 	const struct sdhci_msm_offset *msm_offset =
+@@ -1621,6 +1622,12 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
+ 				 "%s: pwr_irq for req: (%d) timed out\n",
+ 				 mmc_hostname(host->mmc), req_type);
+ 	}
 +
-+	return ret;
++	if ((req_type & REQ_BUS_ON) && mmc->card && !mmc->ops->get_cd(mmc)) {
++		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
++		host->pwr = 0;
++	}
++
+ 	pr_debug("%s: %s: request %d done\n", mmc_hostname(host->mmc),
+ 			__func__, req_type);
  }
+@@ -1679,6 +1686,13 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
+ 		udelay(10);
+ 	}
  
- static ssize_t
++	if ((irq_status & CORE_PWRCTL_BUS_ON) && mmc->card &&
++	    !mmc->ops->get_cd(mmc)) {
++		msm_host_writel(msm_host, CORE_PWRCTL_BUS_FAIL, host,
++				msm_offset->core_pwrctl_ctl);
++		return;
++	}
++
+ 	/* Handle BUS ON/OFF*/
+ 	if (irq_status & CORE_PWRCTL_BUS_ON) {
+ 		pwr_state = REQ_BUS_ON;
 -- 
 2.39.5
 
