@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-171254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587AAB2A8A6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F54B2A34A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A767E6E33E9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0805E623D86
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0426A315781;
-	Mon, 18 Aug 2025 13:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C391731E108;
+	Mon, 18 Aug 2025 13:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yz+VdEVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3+wWr0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B496727F727;
-	Mon, 18 Aug 2025 13:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECD331E0F8;
+	Mon, 18 Aug 2025 13:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525316; cv=none; b=EhPD5oa3gV7dkmhooNuNNe88f/x4UjvXiLKSnF+YPYw9lFJ+Ta3KhgOaeX1ivNNpuZ9irldXf2SeXXQximJSBVg1SlsnCBFL4etXshTLM4stGONHLCSqfm0CjT4F2a5XNPQ1sAABcjyWNIX0gqtj1MdEwqyCfK8AawNiSH/l16c=
+	t=1755522114; cv=none; b=iN4gSRT+ZRMwNWIHh4U91o2b91URETWXvQ9QIsFNJxUciWO5xft/OFJ7iLFi9F7y0u/qksjf2nNHpji7T704u7sm0hWK+YX7t/XXNtjjQKPGrcrE9SBMCHydOjHqjoXDSr/fnZ3jo75JDbjQHGqAb6xJZHq/dQdCEoKpTsTTmzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525316; c=relaxed/simple;
-	bh=6A8lJ9otMe9GnI6ASETq5o3nD7adgYjZsRQjG3mVgGk=;
+	s=arc-20240116; t=1755522114; c=relaxed/simple;
+	bh=9kxBc5HJRVpe35Nuw6rCCF8aZnHwasBNFE1tYbruvVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQ1e1lwAtEs8y+7gWu0+/bgwMue4vIos4CiLUo+4JHHhI547hWU28+j7cEYvW90M0eyVUypKtkluAcJRc9nfvkzWGZlmaQjEFRbNRpPDIeX+wSdeELfFk0uAvAB03aFViR+XfL3cG9ehi8gzVs0Jn9rM86YNvG37c00laiXqlMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yz+VdEVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF4CC4CEF1;
-	Mon, 18 Aug 2025 13:55:16 +0000 (UTC)
+	 MIME-Version; b=cfTgaAPn6UPvTCCV7eSrgpmag5IMxn7WZZQoAOklvrp011RJfko/icewqRgNB2qQKR3k0AjWlfJQ/0z6kEq4MNkB468pm6rOtYytg3kVFUct3tZCdT/gi+PZeb4n4EpQYqvVr5zRsv59KlLQF/tbyTHFqSR7RVGrrggpic7BQbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3+wWr0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BF8C113D0;
+	Mon, 18 Aug 2025 13:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525316;
-	bh=6A8lJ9otMe9GnI6ASETq5o3nD7adgYjZsRQjG3mVgGk=;
+	s=korg; t=1755522114;
+	bh=9kxBc5HJRVpe35Nuw6rCCF8aZnHwasBNFE1tYbruvVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yz+VdEVukpFAWp+7ebZHUkm9s+6NWCVp+147F0oBG5zlfB9fKz5T5HvsqpmU3Xbr8
-	 jB6OrqeO01sHTeRMyQuy9IhbIWXV++RsuQDUOhi5SD2HTO13Ijy+RxK9/Bnh9by774
-	 zYY5Nxdh2VLqPUyn6viyqag9j0vKtOG3kXFP3/Ug=
+	b=i3+wWr0NA3XhR+Yaa8vPca1H8PimczP+0K2rGqqeHyZySHwjnIiU3XdLZ8JPNAGw0
+	 BVibTkrwEMHcMEQcWu4mi34ncsnE7qzE7tn3sEpapgTDraGAXAgi2xyMiB0ePckPUM
+	 ibIeRFN2zmD2h9i6KYLmBuPQX4MNtNJ58veeZkIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Syed Hassan <syed.hassan@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 225/570] libbpf: Verify that arena map exists when adding arena relocations
+Subject: [PATCH 6.12 186/444] drm/amd/display: limit clear_update_flags to dcn32 and above
 Date: Mon, 18 Aug 2025 14:43:32 +0200
-Message-ID: <20250818124514.485041890@linuxfoundation.org>
+Message-ID: <20250818124455.846336247@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 42be23e8f2dcb100cb9944b2b54b6bf41aff943d ]
+[ Upstream commit f354556e29f40ef44fa8b13dc914817db3537e20 ]
 
-Fuzzer reported a memory access error in bpf_program__record_reloc()
-that happens when:
-- ".addr_space.1" section exists
-- there is a relocation referencing this section
-- there are no arena maps defined in BTF.
+[why]
+dc has some code out of sync:
+dc_commit_updates_for_stream handles v1/v2/v3,
+but dc_update_planes_and_stream makes v1 asic to use v2.
 
-Sanity checks for maps existence are already present in
-bpf_program__record_reloc(), hence this commit adds another one.
+as a reression fix: limit clear_update_flags to dcn32 or newer asic.
+need to follow up that v1 asic using v2 issue.
 
-[1] https://github.com/libbpf/libbpf/actions/runs/16375110681/job/46272998064
-
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250718222059.281526-1-eddyz87@gmail.com
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index d41ee26b9443..6401dd3bd35f 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4582,6 +4582,11 @@ static int bpf_program__record_reloc(struct bpf_program *prog,
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index a99d3e2256f1..b87f3e2d5117 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -5121,8 +5121,7 @@ bool dc_update_planes_and_stream(struct dc *dc,
+ 	else
+ 		ret = update_planes_and_stream_v2(dc, srf_updates,
+ 			surface_count, stream, stream_update);
+-
+-	if (ret)
++	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
+ 		clear_update_flags(srf_updates, surface_count, stream);
  
- 	/* arena data relocation */
- 	if (shdr_idx == obj->efile.arena_data_shndx) {
-+		if (obj->arena_map_idx < 0) {
-+			pr_warn("prog '%s': bad arena data relocation at insn %u, no arena maps defined\n",
-+				prog->name, insn_idx);
-+			return -LIBBPF_ERRNO__RELOC;
-+		}
- 		reloc_desc->type = RELO_DATA;
- 		reloc_desc->insn_idx = insn_idx;
- 		reloc_desc->map_idx = obj->arena_map_idx;
+ 	return ret;
+@@ -5153,7 +5152,7 @@ void dc_commit_updates_for_stream(struct dc *dc,
+ 		ret = update_planes_and_stream_v1(dc, srf_updates, surface_count, stream,
+ 				stream_update, state);
+ 
+-	if (ret)
++	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
+ 		clear_update_flags(srf_updates, surface_count, stream);
+ }
+ 
 -- 
 2.39.5
 
