@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-170658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E84B2A5BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AFCAB2A292
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EF801B640D4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88ACC6217C2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E1B322DA5;
-	Mon, 18 Aug 2025 13:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAB631076A;
+	Mon, 18 Aug 2025 12:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SX4sjY0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2YcPEGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B6127B333;
-	Mon, 18 Aug 2025 13:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E7C3218C0;
+	Mon, 18 Aug 2025 12:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523357; cv=none; b=bhBTLzLJo/F+r1RlbZl0TsF/Yrquh2HGhruLm8L4treIDpRLvDZNg8CbVHO5XYjjunfTnQ83Q4REGLi1QHjnymze00muOyf68wsYE1T/6nqNxqsIRrae+M3+A5QP1N5sGwP1hnGy9VKyfrD6jT3nqEDng6PHUhrubTNwkseNB6w=
+	t=1755521733; cv=none; b=E/Z1mCdS4boCGjEQDyuLtUVjWErgTAAHZTjtOrJBgp2s4bcbWB0si1TSnoTPsLBmZCCM9zF3oZhLiYwEonfUOxTHzZVWDEUPa15TWmGgcrwEa4n++P2tulYxxxEFvddqBgMgPiA2373oEEbjSoWA3iSQ9zY1uHQru5MDx13CyPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523357; c=relaxed/simple;
-	bh=NdDjVqzKJAX6jg8dkQgG0XYNQIONU+Bsg9H4JphIwPk=;
+	s=arc-20240116; t=1755521733; c=relaxed/simple;
+	bh=/cgF0UROp3Bt+ibA0Z7JFLNtC/EZP/STlsL8HBdvAJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OE0/p6/yVh8F7BRgWeS6Uuyrz/VCTQj+/ngm3ajNChDh043vjBFHJ1T67rtYtopzIV0lNIaf2B4ALInUhQD7RRLSHCEFjjqTGCK0YOU1t6icBnf0pLZFclEIVl01MVC4XPc51sJYOGaMCbYaLSBBQlKOqA/nc59k+QMoFWfoLV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SX4sjY0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27208C4CEEB;
-	Mon, 18 Aug 2025 13:22:35 +0000 (UTC)
+	 MIME-Version; b=UzxbrGqu4yerT8nzZt663svFyj9kEaDaXNvB+diOWntVcUsL5jDmHEJ3IJcGtXRmWMUGe5g2KnOVhdqBLhtOHmhuIwH7wSB2+QGPeTe2Z4VjovKXNmpCVv1zvHr4KUGeBHQ1WehMgtxZS1fy3OtBKt1kWj5UP3jZnOjCiBRzenA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2YcPEGa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107ACC4CEEB;
+	Mon, 18 Aug 2025 12:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523356;
-	bh=NdDjVqzKJAX6jg8dkQgG0XYNQIONU+Bsg9H4JphIwPk=;
+	s=korg; t=1755521733;
+	bh=/cgF0UROp3Bt+ibA0Z7JFLNtC/EZP/STlsL8HBdvAJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SX4sjY0qLq4xHK4S0Ol37h1lzNch6J68UshQEmlZq/4VavKdrtGKj3UTyy6ATPE3T
-	 Hb365BNnzbERzWHUSITA0LIl/r2dIF8O8BV4lrgbmriV4AP8qFlNGNUCUxPATxeQTR
-	 zDk7Q023CeXcrd1olQiYDB6eeleCKJZVkmigpzq4=
+	b=J2YcPEGamf/lyBTMChWPbLEVTzHpjCpqhm5ek4chSyJCIN5XFx1X11TjmaqypkTq4
+	 WOPi4c7emsxHYcd1S6h2FQAbkClDTzoXbQaUE9SyHkVbCVcJiwV7+xoNbHrw2cmFlI
+	 eB8Q8HezkHIh6tV9/EOfPPCJEqB/ot4sDlv891js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 145/515] tools/build: Fix s390(x) cross-compilation with clang
+Subject: [PATCH 6.12 105/444] ACPI: APEI: send SIGBUS to current task if synchronous memory error not recovered
 Date: Mon, 18 Aug 2025 14:42:11 +0200
-Message-ID: <20250818124503.969469798@linuxfoundation.org>
+Message-ID: <20250818124452.875876270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +65,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit a40f0cdce78be8a559ee8a85c908049c65a410b2 ]
+[ Upstream commit 79a5ae3c4c5eb7e38e0ebe4d6bf602d296080060 ]
 
-The heuristic to derive a clang target triple from a GCC one does not work
-for s390. GCC uses "s390-linux" while clang expects "s390x-linux" or
-"powerz-linux".
+If a synchronous error is detected as a result of user-space process
+triggering a 2-bit uncorrected error, the CPU will take a synchronous
+error exception such as Synchronous External Abort (SEA) on Arm64. The
+kernel will queue a memory_failure() work which poisons the related
+page, unmaps the page, and then sends a SIGBUS to the process, so that
+a system wide panic can be avoided.
 
-Add an explicit override.
+However, no memory_failure() work will be queued when abnormal
+synchronous errors occur. These errors can include situations like
+invalid PA, unexpected severity, no memory failure config support,
+invalid GUID section, etc. In such a case, the user-space process will
+trigger SEA again.  This loop can potentially exceed the platform
+firmware threshold or even trigger a kernel hard lockup, leading to a
+system reboot.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250620-tools-cross-s390-v2-1-ecda886e00e5@linutronix.de
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fix it by performing a force kill if no memory_failure() work is queued
+for synchronous errors.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Reviewed-by: Jane Chu <jane.chu@oracle.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://patch.msgid.link/20250714114212.31660-2-xueshuai@linux.alibaba.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/scripts/Makefile.include | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/apei/ghes.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
-index 5158250988ce..ded48263dd5e 100644
---- a/tools/scripts/Makefile.include
-+++ b/tools/scripts/Makefile.include
-@@ -101,7 +101,9 @@ else ifneq ($(CROSS_COMPILE),)
- # Allow userspace to override CLANG_CROSS_FLAGS to specify their own
- # sysroots and flags or to avoid the GCC call in pure Clang builds.
- ifeq ($(CLANG_CROSS_FLAGS),)
--CLANG_CROSS_FLAGS := --target=$(notdir $(CROSS_COMPILE:%-=%))
-+CLANG_TARGET := $(notdir $(CROSS_COMPILE:%-=%))
-+CLANG_TARGET := $(subst s390-linux,s390x-linux,$(CLANG_TARGET))
-+CLANG_CROSS_FLAGS := --target=$(CLANG_TARGET)
- GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE)gcc 2>/dev/null))
- ifneq ($(GCC_TOOLCHAIN_DIR),)
- CLANG_CROSS_FLAGS += --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 6cf40e8ac321..94e3d3fe11ae 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -799,6 +799,17 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 		}
+ 	}
+ 
++	/*
++	 * If no memory failure work is queued for abnormal synchronous
++	 * errors, do a force kill.
++	 */
++	if (sync && !queued) {
++		dev_err(ghes->dev,
++			HW_ERR GHES_PFX "%s:%d: synchronous unrecoverable error (SIGBUS)\n",
++			current->comm, task_pid_nr(current));
++		force_sig(SIGBUS);
++	}
++
+ 	return queued;
+ }
+ 
 -- 
 2.39.5
 
