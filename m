@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31CFB29E55
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:49:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382F0B29E80
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76D13BAEAF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:47:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EDBA34E27C8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AC430F531;
-	Mon, 18 Aug 2025 09:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5015930F81E;
+	Mon, 18 Aug 2025 09:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVX2AKOT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHiyF4rj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9649430E85B
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C473278146
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755510468; cv=none; b=XU69hWPm6GkgFiZ19BUem24tke5B5WD9jsjRYaOrZ7Qt+jTqI0x4qXX+LPCJHAxkrGejK1llgrxYFnHTgBJswff6GufcZpBU7ta1ClxCOs3FCDrv5eKRR9vTwUdUT86ZHyKgpyiy0EiaXcMJEPbs6y5TAjlBdQ8R+/8JRe0VRPs=
+	t=1755510923; cv=none; b=anxEbJDxZ95lTQ2JgVBCCGvCMaymzTkhyRDOObgDOmj4xMiRUjnIBWVL6DX7oDziYtVskYVLARjoRaAgnJNVQY+u8Ymkj6DF9FkxYXCaql+0fijy0YrRPYx+7t3dH2os8iYXegkiJGL9WogNN2+81J/6t+Ctxic/z+RE7qG7E2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755510468; c=relaxed/simple;
-	bh=PWu5xjq7ul8gtxFKTWNxeSzgVGSvIvlO+bGoatC6euI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ejCf+6kn6ph60mIWqILe429mbsWWj0Yqv6e1hTGXPWdFpLFlE9JYiwCX2c/VsbDSPEe5p6mCDKuaAIuYJk8klevPmPFts8wmRJj+Y7246toivfioOx9cTAigtCtOIr2gU3NQ5JesRmRuv/CHDWF9RhrGCmQ9EU9hQs4m3zcjTRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVX2AKOT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC87C4CEEB;
-	Mon, 18 Aug 2025 09:47:46 +0000 (UTC)
+	s=arc-20240116; t=1755510923; c=relaxed/simple;
+	bh=RkfJjqptkVgB9z7B+NpMaGZ8EEBgKTzdVdoPQ8E0PeA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BwUhOUdp1q/NdvaJ6annCw7KiVmI1eT093ZkJrfpaHdibHbRnGJ4vtgV2a+UHAurdEbmegBkojPow5Bo3QqN2auMLAYLqld2Hp5Ku5TOfVHs1nVAPyaO0N7MyNekamfgq03ec5IgTBSJXsYiAzM3ZJw1q3og0P61AQLlG0wF2qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHiyF4rj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76CEC4CEEB;
+	Mon, 18 Aug 2025 09:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755510467;
-	bh=PWu5xjq7ul8gtxFKTWNxeSzgVGSvIvlO+bGoatC6euI=;
+	s=korg; t=1755510922;
+	bh=RkfJjqptkVgB9z7B+NpMaGZ8EEBgKTzdVdoPQ8E0PeA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XVX2AKOTRjIEAa68GoQF/rAjZlSPx1onz1kVrUsYPxvNo3zvysV6/ruEt9A657bXN
-	 xB5Zo4+ITTu9U1fwo+48zrKZ52cp8ETFReI80oGi1LGRHrLrFbZUVzNkQPHtHcDQe1
-	 GRJwoIOS1D9aLEiv8QQSf3LLHNCDE+qMZ9g7ozaY=
-Subject: FAILED: patch "[PATCH] mm/damon/ops-common: ignore migration request to invalid" failed to apply to 6.12-stable tree
-To: sj@kernel.org,akpm@linux-foundation.org,honggyu.kim@sk.com,hyeongtak.ji@sk.com,joshua.hahnjy@gmail.com,stable@vger.kernel.org
+	b=rHiyF4rjp9822N04lKwrA3hcYzBkSrcchAuWskD9Vg6cvdvWM2AQbrmQ+YzAAy09y
+	 Mn68kMNfDuhTejjKUOl8LwpCSR3fJ4QYHJhEkkHXVSBtOpULDIr+1LntZ/ZwS1m0Iq
+	 BQdAeGU8e1EFhhkiJyM0yohO/I9IzG1aPE6vzo+0=
+Subject: FAILED: patch "[PATCH] clk: imx: Fix an out-of-bounds access in" failed to apply to 6.15-stable tree
+To: xiaolei.wang@windriver.com,Frank.Li@nxp.com,sboyd@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 11:47:33 +0200
-Message-ID: <2025081833-booting-yelling-d0fa@gregkh>
+Date: Mon, 18 Aug 2025 11:55:10 +0200
+Message-ID: <2025081810-dinner-pancake-ae44@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7e6c3130690a01076efdf45aa02ba5d5c16849a0
+git cherry-pick -x b2be1327a6ed74fbf7e1ac0bc6ca57750f7ebe07
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081833-booting-yelling-d0fa@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081810-dinner-pancake-ae44@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,63 +77,71 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e6c3130690a01076efdf45aa02ba5d5c16849a0 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Sun, 20 Jul 2025 11:58:22 -0700
-Subject: [PATCH] mm/damon/ops-common: ignore migration request to invalid
- nodes
+From b2be1327a6ed74fbf7e1ac0bc6ca57750f7ebe07 Mon Sep 17 00:00:00 2001
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
+Date: Thu, 19 Jun 2025 14:21:08 +0800
+Subject: [PATCH] clk: imx: Fix an out-of-bounds access in
+ dispmix_csr_clk_dev_data
 
-damon_migrate_pages() tries migration even if the target node is invalid.
-If users mistakenly make such invalid requests via
-DAMOS_MIGRATE_{HOT,COLD} action, the below kernel BUG can happen.
+When num_parents is 4, __clk_register() occurs an out-of-bounds
+when accessing parent_names member. Use ARRAY_SIZE() instead of
+hardcode number here.
 
-    [ 7831.883495] BUG: unable to handle page fault for address: 0000000000001f48
-    [ 7831.884160] #PF: supervisor read access in kernel mode
-    [ 7831.884681] #PF: error_code(0x0000) - not-present page
-    [ 7831.885203] PGD 0 P4D 0
-    [ 7831.885468] Oops: Oops: 0000 [#1] SMP PTI
-    [ 7831.885852] CPU: 31 UID: 0 PID: 94202 Comm: kdamond.0 Not tainted 6.16.0-rc5-mm-new-damon+ #93 PREEMPT(voluntary)
-    [ 7831.886913] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-4.el9 04/01/2014
-    [ 7831.887777] RIP: 0010:__alloc_frozen_pages_noprof (include/linux/mmzone.h:1724 include/linux/mmzone.h:1750 mm/page_alloc.c:4936 mm/page_alloc.c:5137)
-    [...]
-    [ 7831.895953] Call Trace:
-    [ 7831.896195]  <TASK>
-    [ 7831.896397] __folio_alloc_noprof (mm/page_alloc.c:5183 mm/page_alloc.c:5192)
-    [ 7831.896787] migrate_pages_batch (mm/migrate.c:1189 mm/migrate.c:1851)
-    [ 7831.897228] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
-    [ 7831.897735] migrate_pages (mm/migrate.c:2078)
-    [ 7831.898141] ? __pfx_alloc_migration_target (mm/migrate.c:2137)
-    [ 7831.898664] damon_migrate_folio_list (mm/damon/ops-common.c:321 mm/damon/ops-common.c:354)
-    [ 7831.899140] damon_migrate_pages (mm/damon/ops-common.c:405)
-    [...]
+ BUG: KASAN: global-out-of-bounds in __clk_register+0x1844/0x20d8
+ Read of size 8 at addr ffff800086988e78 by task kworker/u24:3/59
+  Hardware name: NXP i.MX95 19X19 board (DT)
+  Workqueue: events_unbound deferred_probe_work_func
+  Call trace:
+    dump_backtrace+0x94/0xec
+    show_stack+0x18/0x24
+    dump_stack_lvl+0x8c/0xcc
+    print_report+0x398/0x5fc
+    kasan_report+0xd4/0x114
+    __asan_report_load8_noabort+0x20/0x2c
+    __clk_register+0x1844/0x20d8
+    clk_hw_register+0x44/0x110
+    __clk_hw_register_mux+0x284/0x3a8
+    imx95_bc_probe+0x4f4/0xa70
 
-Add a target node validity check in damon_migrate_pages().  The validity
-check is stolen from that of do_pages_move(), which is being used for the
-move_pages() system call.
+Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Link: https://lore.kernel.org/r/20250619062108.2016511-1-xiaolei.wang@windriver.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 
-Link: https://lkml.kernel.org/r/20250720185822.1451-1-sj@kernel.org
-Fixes: b51820ebea65 ("mm/damon/paddr: introduce DAMOS_MIGRATE_COLD action for demotion")	[6.11.x]
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Honggyu Kim <honggyu.kim@sk.com>
-Cc: Hyeongtak Ji <hyeongtak.ji@sk.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-index 6a9797d1d7ff..99321ff5cb92 100644
---- a/mm/damon/ops-common.c
-+++ b/mm/damon/ops-common.c
-@@ -383,6 +383,10 @@ unsigned long damon_migrate_pages(struct list_head *folio_list, int target_nid)
- 	if (list_empty(folio_list))
- 		return nr_migrated;
+diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+index 25974947ad0c..cc2ee2be1819 100644
+--- a/drivers/clk/imx/clk-imx95-blk-ctl.c
++++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+@@ -219,11 +219,15 @@ static const struct imx95_blk_ctl_dev_data lvds_csr_dev_data = {
+ 	.clk_reg_offset = 0,
+ };
  
-+	if (target_nid < 0 || target_nid >= MAX_NUMNODES ||
-+			!node_state(target_nid, N_MEMORY))
-+		return nr_migrated;
++static const char * const disp_engine_parents[] = {
++	"videopll1", "dsi_pll", "ldb_pll_div7"
++};
 +
- 	noreclaim_flag = memalloc_noreclaim_save();
- 
- 	nid = folio_nid(lru_to_folio(folio_list));
+ static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
+ 	[IMX95_CLK_DISPMIX_ENG0_SEL] = {
+ 		.name = "disp_engine0_sel",
+-		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
+-		.num_parents = 4,
++		.parent_names = disp_engine_parents,
++		.num_parents = ARRAY_SIZE(disp_engine_parents),
+ 		.reg = 0,
+ 		.bit_idx = 0,
+ 		.bit_width = 2,
+@@ -232,8 +236,8 @@ static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
+ 	},
+ 	[IMX95_CLK_DISPMIX_ENG1_SEL] = {
+ 		.name = "disp_engine1_sel",
+-		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
+-		.num_parents = 4,
++		.parent_names = disp_engine_parents,
++		.num_parents = ARRAY_SIZE(disp_engine_parents),
+ 		.reg = 0,
+ 		.bit_idx = 2,
+ 		.bit_width = 2,
 
 
