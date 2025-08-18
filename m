@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-170356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF61B2A361
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28AEFB2A704
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98D897B86ED
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7126C1B6540A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F35932038F;
-	Mon, 18 Aug 2025 13:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A22F322A36;
+	Mon, 18 Aug 2025 13:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGC2qoIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJ3FAOO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4D931E11E;
-	Mon, 18 Aug 2025 13:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DB51DDA14;
+	Mon, 18 Aug 2025 13:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522372; cv=none; b=dc5P09PiYNZDYEdzEUKpimKjHv543fyCJtf8Iry+G91HmmSgW0qRprbC1S9mDShceROeeGTRmdTVoAmP0mGni0v35IzvU5cfIAZbK7pFjIAiPIA+SSTzJReLRbTrMxPZ3XWiuQvtKbX4kBSpIxfOA9ZhbICTeQLgBZQsq5A6QQE=
+	t=1755524080; cv=none; b=YObGe9WDrAM5RiFFUEn6LwTuxKWsCCDLi7C6k+aPAfs3c/bQ1H6+jvgxOSVuXEGgwNfaUYFDdyrFPu1KWDSU4rxsMRmU061k1hAgKmouhwElmOljv8I7uH/GMyI07EVUVSyoQOyGDpAgZe4DZh3g3lhoJ9EKEcifOxz7vqRkh+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522372; c=relaxed/simple;
-	bh=9mfiJK6NV5D26jDDDLKalo6BqXoA/A5YpIIsDDMur74=;
+	s=arc-20240116; t=1755524080; c=relaxed/simple;
+	bh=o8vobFpedfrovBSPz4ZrnhtB1/q5NFhJauq0EXcnC00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riwSkuP0bhdtbrqJzNnk48wtCK2R/bAp20sueQl/Cr7BZ2wA3z8BRSOIF5pBrnEMn+NgfvbAbPAw8IduUU8XYYUABwevkLy+5CPTsPtSCQ9zy9hi6dWB5Z8ws7slRRN9M+skVwdjvh2ynBTjqwSKdq7QMV1M+u4DrbTgRcY9MU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGC2qoIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A226DC116B1;
-	Mon, 18 Aug 2025 13:06:11 +0000 (UTC)
+	 MIME-Version; b=RlQru/pp51pEaCR0hCGtmkBnVhmI/+/wScG6tStp9P8h2wr05N6ulQZpn21cz7x8K2sD21oLtz3LiFNXDXZe7ZrpPSlSrts6Jqgm5StxfljJPdo8Bjwm9y12AERz6Rhe18QEM194qsXbg4r6eeQuIZ5FokwTDyUGOGeMxN6hBV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJ3FAOO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23FAC4CEEB;
+	Mon, 18 Aug 2025 13:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522372;
-	bh=9mfiJK6NV5D26jDDDLKalo6BqXoA/A5YpIIsDDMur74=;
+	s=korg; t=1755524079;
+	bh=o8vobFpedfrovBSPz4ZrnhtB1/q5NFhJauq0EXcnC00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cGC2qoIYuwwYsg1Dot01ElouNvjgYG/ljL0rzzVU0bvR/Qnr4YVejQ0EXiPPlWDB6
-	 uJ+pd1yL6vaCdkycWD/h5UkcYUdiovxPxVic2uJQsHt62BTpMLneG4Rtl4ttY8MdW6
-	 khpz0fR/zPGqjyOpdaSJq/3kxaYU25knX0OphAUU=
+	b=hJ3FAOO/l293y7UtTleNnW3htVMkK5m46k4wxaA7N9IJV3aKG79Y9tDdb0/gY+768
+	 7fEphJUbOTeTJp27yZp3ItOaOAHr84GOFN7tHIttrnMiB5R4F9rgWIt5FuAAQYNFBg
+	 WmoJAwmcRFE6jujVeFJH9Q/CS7uAdbvstXQMuTec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"Sun peng (Leo) Li" <sunpeng.li@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/444] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
+Subject: [PATCH 6.15 329/515] drm/amd/display: Avoid configuring PSR granularity if PSR-SU not supported
 Date: Mon, 18 Aug 2025 14:45:15 +0200
-Message-ID: <20250818124459.797804824@linuxfoundation.org>
+Message-ID: <20250818124511.099083590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
+[ Upstream commit a5ce8695d6d1b40d6960d2d298b579042c158f25 ]
 
-These functions are exported but their prototypes are not defined.
-This patch adds the missing function prototypes to fix the following
-compilation warnings:
+[Why]
+If PSR-SU is disabled on the link, then configuring su_y granularity in
+mod_power_calc_psr_configs() can lead to assertions in
+psr_su_set_dsc_slice_height().
 
-arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
-  180 | void *vpe_alloc(void)
-      |       ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
-  198 | int vpe_start(void *vpe, unsigned long start)
-      |     ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
-  208 | int vpe_stop(void *vpe)
-      |     ^~~~~~~~
-arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
-  229 | int vpe_free(void *vpe)
-      |     ^~~~~~~~
+[How]
+Check the PSR version in amdgpu_dm_link_setup_psr() to determine whether
+or not to configure granularity.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/vpe.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
-index 61fd4d0aeda4..c0769dc4b853 100644
---- a/arch/mips/include/asm/vpe.h
-+++ b/arch/mips/include/asm/vpe.h
-@@ -119,4 +119,12 @@ void cleanup_tc(struct tc *tc);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
+index e140b7a04d72..d63038ec4ec7 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_psr.c
+@@ -127,8 +127,10 @@ bool amdgpu_dm_link_setup_psr(struct dc_stream_state *stream)
+ 		psr_config.allow_multi_disp_optimizations =
+ 			(amdgpu_dc_feature_mask & DC_PSR_ALLOW_MULTI_DISP_OPT);
  
- int __init vpe_module_init(void);
- void __exit vpe_module_exit(void);
-+
-+#ifdef CONFIG_MIPS_VPE_LOADER_MT
-+void *vpe_alloc(void);
-+int vpe_start(void *vpe, unsigned long start);
-+int vpe_stop(void *vpe);
-+int vpe_free(void *vpe);
-+#endif /* CONFIG_MIPS_VPE_LOADER_MT */
-+
- #endif /* _ASM_VPE_H */
+-		if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
+-			return false;
++		if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1) {
++			if (!psr_su_set_dsc_slice_height(dc, link, stream, &psr_config))
++				return false;
++		}
+ 
+ 		ret = dc_link_setup_psr(link, stream, &psr_config, &psr_context);
+ 
 -- 
 2.39.5
 
