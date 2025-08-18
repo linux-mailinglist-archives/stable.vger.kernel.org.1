@@ -1,237 +1,325 @@
-Return-Path: <stable+bounces-171643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07725B2B17C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:22:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0805B2B1B5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD5C171F2A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C8621884A92
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8614D175BF;
-	Mon, 18 Aug 2025 19:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4D242056;
+	Mon, 18 Aug 2025 19:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x23odhRo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arnlu8yF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07352253E4
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 19:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2FE3451B3
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 19:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755544945; cv=none; b=i6Seah2mCAtQ7pGg1pnx52jusqkHrmOD2G6Rh+vRb+gGwp0RuHD2NYTsdpii0CmCFeaYGo8wDG83/dsoWC48JcLCiuxcdtfOoj1mRc1WPDU/jj1BR0vjR3xaO7uvAlg+rFXyH0oV1djSbU+V2eezjujj4Y2aUh+/4Izz8uEilVM=
+	t=1755545563; cv=none; b=r6zbDRMgGKyW5mtzm6HMrnKVduizTjXD3rbD7v7syrbOSynkm0LwC2frGb5F/lnVtzzMaKmAj62gEMMLcSLJZGWPr1IlaY/ugEgosvhT6Kg6UdbB9U31DaLh/dM72o2udmo+X7j/kOw8dB8wmtwLZstrKxGdJl7AtvFMvPyJrOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755544945; c=relaxed/simple;
-	bh=fx5mISMkXEo1Bxd5OoP9xVO95F0DiAh3Hh+crbMmAEA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q+tR6JHoyV0rjBqWKGn12oquKN2wiVaZQFdA1R5U+CZNytJzIyoatF0xgZvWjAaaP+nr7SSDtD9J+27/zBgOheGCly0VE9tRA/1LFOsTjhz4DXDc3J4fXZ2vjuQn6//xq1WJqw3y1Aq+x0dGnMM6rQDv3Jbw20utw+f11su6Z+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=x23odhRo; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b47475cf8eeso853072a12.3
-        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 12:22:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755544943; x=1756149743; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=toQPxHiy1KMHSW6a7UOwaU4onC0FC5huJ+T+rOz/mHw=;
-        b=x23odhRo0bhkxWdWlx/50WMga3nGLFSmE2Fr8a25cXtkb2h55fTeR7+5RSC8lwhcAs
-         6o4TYSg4w+spQTVfYVFjJyUcP/miVWS8PqYCIZWyfaWcOcH7KMNnNrc7/++vjke75ogr
-         i8DEWKsPb2J9uhkPdJZmakCcTHTv6NSM5PD9b46KDeEhWOVsOqi76oxgwKCAOauWr/00
-         8sBj75xzUDA2cf+8pWEShPhCi86FHHTG0bnclZhjHk9hRumVwO5ZTwIMJqBxHT9TXYl3
-         6g8RMK84W8TxDyaci+2F2pKXC8UzfzN1YWGybqgMkzcKVmgf3lfjfpCk+i+DqbFbh2Rr
-         CT+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755544943; x=1756149743;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=toQPxHiy1KMHSW6a7UOwaU4onC0FC5huJ+T+rOz/mHw=;
-        b=oeQqbz7pV/l4CLJOqIFN3ZcwO0gdO8Y5Yse6S1pFPeGFESklsb6X4/Yvb56wsgRP1Z
-         FkhcT4+WfFTD3v2mBX/lSUAPgLpPW8WHDKpDDa7zLLDMvduJBBTG/Z2nsXK5iQ7JdYeq
-         MLxtvskLR84jLXhRzF/71HbeRwNvq+DnGEQeFnfTE1dCJykjsvMB2bgvyyp94sTqoBZs
-         ra1/3BBoyQeCPj4sSgNM6OCmwyTxcC3WMZ0QSOfwi4GiFv+cMQRPXYPVFoXOsU7WJ6/O
-         zxI2aUff7fzpLAgfXrrKZTTNTiFwrlOmyrghkzdyE6ER4DYV+rEseWT0ho+kP/ZIz8ez
-         1g2A==
-X-Gm-Message-State: AOJu0YwEZh31r9E5YRL0dQrIBQXklnU1BAS0nxnz2JZVfV5fp60CVwQT
-	VF0cR3xeIo3v34RVMGJJkgV6PBKcjNYT0+ZhcG69Vaibifo5euP5t/hxxRg59YswUh1AdnVfO+S
-	XeOH0dFrlfo7UsWcsYVqV1wnQLsXbGxoRotdUtmwb4Q==
-X-Gm-Gg: ASbGncvDgKSvD4n1ebYAyiKRm+9VNxkB/o84N23A92rYLLEKVmmNZE7G3aFD7Sxh59c
-	ct+EFtiwCfYIFp5jaB1mEA+sAbv2Mr+kH3LZsRCDj9SAs/h5ZTdalb+htXRYf7gHxyn19Pplcja
-	s3a2JIOZpavTwH3pPZlY26VPnXtjDqqjJ7KTyObkPu9XgzdJdMi7xNSWkkXleK1Jafpcrjjme3H
-	/Ajm8PiOhA59Ywr37MdbtXtGDZsifJ5IhQWEUmJmmhS63okBHIdga0NtKlFXA==
-X-Google-Smtp-Source: AGHT+IHS9gRRUinlegBP/u/axpgH2+HbfQ/LUYof3SDqB39/z9xyiC0/E6Z/XZ7VMjN7bYH5hslQ9igO/RaNQuVAvKU=
-X-Received: by 2002:a17:902:db03:b0:240:8f4:b36e with SMTP id
- d9443c01a7336-2446d8b67eamr205261235ad.34.1755544942812; Mon, 18 Aug 2025
- 12:22:22 -0700 (PDT)
+	s=arc-20240116; t=1755545563; c=relaxed/simple;
+	bh=TWW8AoEKESt3V156h8uwdI0eaQnMi+ot9YfTms1OMXM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BWwjmL1j9el2Bgaw+/IIJSakmsMsSuPOWxXQvyURtrqLCQUINyR9U62Ml4AJKdfmMhflI019FZ0M4cQwziDoSv0YTHVfv2XhW3kDo/Ilam+uch+Xct9TqVWimM9FZQ7/2e/vYLTm8iOe+tRGHXu8zdOHoGvMY+7Rse984VIYM1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arnlu8yF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D816BC4CEEB;
+	Mon, 18 Aug 2025 19:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755545563;
+	bh=TWW8AoEKESt3V156h8uwdI0eaQnMi+ot9YfTms1OMXM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=arnlu8yFCwgU923ICpRTnztVd8NOdFmGJD/2mzpswJoBISHJuQREVPmK0gx6uvGQT
+	 XdkNq40yQIqHpYV//LvxgzPcLzi06RvXOSzPxIKDgXy4NneyBHhu6fDhIjSf1qyX37
+	 Xt/6lR42/OwduyjWj+2sK1aLEvtRBXvioEBrZE6EMHmxd8hOYX88vpP4gTSfSS/k8H
+	 oXKb8DL+liFG5b+2L/HgA67Gtb1B8bdrxu6zWXHkJY8TkS5T/qsJmPoA93yWRhFt5N
+	 DyozAzOUPiOA5rR6w7Tw/BPwAokwHnOHADJNj1+T2zH34/JhSd9iloF68cVdiPwtn0
+	 n3tFzOktAuHdQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] USB: typec: Use str_enable_disable-like helpers
+Date: Mon, 18 Aug 2025 15:32:39 -0400
+Message-ID: <20250818193240.50566-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025081830-selected-dandelion-46ec@gregkh>
+References: <2025081830-selected-dandelion-46ec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250818124505.781598737@linuxfoundation.org>
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 19 Aug 2025 00:52:11 +0530
-X-Gm-Features: Ac12FXwVOEvsYKs2Hj_OhG9gGnWNHFXCh_3DRHC0oFh_uKaf6Yom4JJ2icGbgRA
-Message-ID: <CA+G9fYs014sj_hmcu5pROEQoC-bvk3UNcZDHEezsrmcRkzKf8A@mail.gmail.com>
-Subject: Re: [PATCH 6.16 000/570] 6.16.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, 
-	Ben Copeland <benjamin.copeland@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	srinivas.kandagatla@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 18 Aug 2025 at 19:14, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.16.2 release.
-> There are 570 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 20 Aug 2025 12:43:43 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.2-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Boot regression occurs on the Qualcomm DragonBoard 410c (arm64) with
-stable-rc 6.16.2-rc1. The kernel crashes during early boot with a
-NULL pointer dereference in the Qualcomm SCM/TZMEM subsystem.
+[ Upstream commit 13b3af26a41538e5051baedba8678eba521a27d3 ]
 
-The crash originates in qcom_scm_shm_bridge_enable()
-(drivers/firmware/qcom/qcom_scm.c) and is invoked by
-qcom_tzmem_enable() (drivers/firmware/qcom/qcom_tzmem.c).
-This happens while probing SCM during platform initialization, preventing
-the board from reaching userspace due to kernel panic.
+Replace ternary (condition ? "enable" : "disable") syntax with helpers
+from string_choices.h because:
+1. Simple function call with one argument is easier to read.  Ternary
+   operator has three arguments and with wrapping might lead to quite
+   long code.
+2. Is slightly shorter thus also easier to read.
+3. It brings uniformity in the text - same string.
+4. Allows deduping by the linker, which results in a smaller binary
+   file.
 
-Regression Analysis:
-- New regression? yes
-- Reproducibility? yes
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250114-str-enable-disable-usb-v1-3-c8405df47c19@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 1e61f6ab0878 ("usb: typec: fusb302: cache PD RX state")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/typec/class.c                     |  7 +++---
+ drivers/usb/typec/tcpm/fusb302.c              | 24 +++++++++----------
+ .../typec/tcpm/qcom/qcom_pmic_typec_pdphy.c   |  3 ++-
+ .../tcpm/qcom/qcom_pmic_typec_pdphy_stub.c    |  3 ++-
+ .../typec/tcpm/qcom/qcom_pmic_typec_port.c    |  4 +++-
+ drivers/usb/typec/tcpm/tcpm.c                 |  7 +++---
+ 6 files changed, 27 insertions(+), 21 deletions(-)
 
-Boot regression: stable-rc 6.16.2-rc1 arm64 Qualcomm Dragonboard 410c
-kernel NULL pointer dereference qcom_scm_shm_bridge_enable
-qcom_tzmem_enable
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 5c75634b8fa3..c9c3dea8ba07 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -10,6 +10,7 @@
+ #include <linux/mutex.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/usb/pd_vdo.h>
+ #include <linux/usb/typec_mux.h>
+ #include <linux/usb/typec_retimer.h>
+@@ -354,7 +355,7 @@ active_show(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+ 	struct typec_altmode *alt = to_typec_altmode(dev);
+ 
+-	return sprintf(buf, "%s\n", alt->active ? "yes" : "no");
++	return sprintf(buf, "%s\n", str_yes_no(alt->active));
+ }
+ 
+ static ssize_t active_store(struct device *dev, struct device_attribute *attr,
+@@ -630,7 +631,7 @@ static ssize_t supports_usb_power_delivery_show(struct device *dev,
+ {
+ 	struct typec_partner *p = to_typec_partner(dev);
+ 
+-	return sprintf(buf, "%s\n", p->usb_pd ? "yes" : "no");
++	return sprintf(buf, "%s\n", str_yes_no(p->usb_pd));
+ }
+ static DEVICE_ATTR_RO(supports_usb_power_delivery);
+ 
+@@ -1688,7 +1689,7 @@ static ssize_t vconn_source_show(struct device *dev,
+ 	struct typec_port *port = to_typec_port(dev);
+ 
+ 	return sprintf(buf, "%s\n",
+-		       port->vconn_role == TYPEC_SOURCE ? "yes" : "no");
++		       str_yes_no(port->vconn_role == TYPEC_SOURCE));
+ }
+ static DEVICE_ATTR_RW(vconn_source);
+ 
+diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
+index e2fe479e16ad..f15c63d3a8f4 100644
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -24,6 +24,7 @@
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ #include <linux/string.h>
++#include <linux/string_choices.h>
+ #include <linux/types.h>
+ #include <linux/usb.h>
+ #include <linux/usb/typec.h>
+@@ -733,7 +734,7 @@ static int tcpm_set_vconn(struct tcpc_dev *dev, bool on)
+ 
+ 	mutex_lock(&chip->lock);
+ 	if (chip->vconn_on == on) {
+-		fusb302_log(chip, "vconn is already %s", on ? "On" : "Off");
++		fusb302_log(chip, "vconn is already %s", str_on_off(on));
+ 		goto done;
+ 	}
+ 	if (on) {
+@@ -746,7 +747,7 @@ static int tcpm_set_vconn(struct tcpc_dev *dev, bool on)
+ 	if (ret < 0)
+ 		goto done;
+ 	chip->vconn_on = on;
+-	fusb302_log(chip, "vconn := %s", on ? "On" : "Off");
++	fusb302_log(chip, "vconn := %s", str_on_off(on));
+ done:
+ 	mutex_unlock(&chip->lock);
+ 
+@@ -761,7 +762,7 @@ static int tcpm_set_vbus(struct tcpc_dev *dev, bool on, bool charge)
+ 
+ 	mutex_lock(&chip->lock);
+ 	if (chip->vbus_on == on) {
+-		fusb302_log(chip, "vbus is already %s", on ? "On" : "Off");
++		fusb302_log(chip, "vbus is already %s", str_on_off(on));
+ 	} else {
+ 		if (on)
+ 			ret = regulator_enable(chip->vbus);
+@@ -769,15 +770,14 @@ static int tcpm_set_vbus(struct tcpc_dev *dev, bool on, bool charge)
+ 			ret = regulator_disable(chip->vbus);
+ 		if (ret < 0) {
+ 			fusb302_log(chip, "cannot %s vbus regulator, ret=%d",
+-				    on ? "enable" : "disable", ret);
++				    str_enable_disable(on), ret);
+ 			goto done;
+ 		}
+ 		chip->vbus_on = on;
+-		fusb302_log(chip, "vbus := %s", on ? "On" : "Off");
++		fusb302_log(chip, "vbus := %s", str_on_off(on));
+ 	}
+ 	if (chip->charge_on == charge)
+-		fusb302_log(chip, "charge is already %s",
+-			    charge ? "On" : "Off");
++		fusb302_log(chip, "charge is already %s", str_on_off(charge));
+ 	else
+ 		chip->charge_on = charge;
+ 
+@@ -854,16 +854,16 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
+ 	ret = fusb302_pd_set_auto_goodcrc(chip, on);
+ 	if (ret < 0) {
+ 		fusb302_log(chip, "cannot turn %s auto GCRC, ret=%d",
+-			    on ? "on" : "off", ret);
++			    str_on_off(on), ret);
+ 		goto done;
+ 	}
+ 	ret = fusb302_pd_set_interrupts(chip, on);
+ 	if (ret < 0) {
+ 		fusb302_log(chip, "cannot turn %s pd interrupts, ret=%d",
+-			    on ? "on" : "off", ret);
++			    str_on_off(on), ret);
+ 		goto done;
+ 	}
+-	fusb302_log(chip, "pd := %s", on ? "on" : "off");
++	fusb302_log(chip, "pd := %s", str_on_off(on));
+ done:
+ 	mutex_unlock(&chip->lock);
+ 
+@@ -1531,7 +1531,7 @@ static void fusb302_irq_work(struct work_struct *work)
+ 	if (interrupt & FUSB_REG_INTERRUPT_VBUSOK) {
+ 		vbus_present = !!(status0 & FUSB_REG_STATUS0_VBUSOK);
+ 		fusb302_log(chip, "IRQ: VBUS_OK, vbus=%s",
+-			    vbus_present ? "On" : "Off");
++			    str_on_off(vbus_present));
+ 		if (vbus_present != chip->vbus_present) {
+ 			chip->vbus_present = vbus_present;
+ 			tcpm_vbus_change(chip->tcpm_port);
+@@ -1562,7 +1562,7 @@ static void fusb302_irq_work(struct work_struct *work)
+ 	if ((interrupt & FUSB_REG_INTERRUPT_COMP_CHNG) && intr_comp_chng) {
+ 		comp_result = !!(status0 & FUSB_REG_STATUS0_COMP);
+ 		fusb302_log(chip, "IRQ: COMP_CHNG, comp=%s",
+-			    comp_result ? "true" : "false");
++			    str_true_false(comp_result));
+ 		if (comp_result) {
+ 			/* cc level > Rd_threshold, detach */
+ 			chip->cc1 = TYPEC_CC_OPEN;
+diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+index 726423684bae..18303b34594b 100644
+--- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
++++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy.c
+@@ -12,6 +12,7 @@
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/usb/pd.h>
+ #include <linux/usb/tcpm.h>
+ #include "qcom_pmic_typec.h"
+@@ -418,7 +419,7 @@ static int qcom_pmic_typec_pdphy_set_pd_rx(struct tcpc_dev *tcpc, bool on)
+ 
+ 	spin_unlock_irqrestore(&pmic_typec_pdphy->lock, flags);
+ 
+-	dev_dbg(pmic_typec_pdphy->dev, "set_pd_rx: %s\n", on ? "on" : "off");
++	dev_dbg(pmic_typec_pdphy->dev, "set_pd_rx: %s\n", str_on_off(on));
+ 
+ 	return ret;
+ }
+diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy_stub.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy_stub.c
+index df79059cda67..8fac171778da 100644
+--- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy_stub.c
++++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_pdphy_stub.c
+@@ -12,6 +12,7 @@
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/usb/pd.h>
+ #include <linux/usb/tcpm.h>
+ #include "qcom_pmic_typec.h"
+@@ -38,7 +39,7 @@ static int qcom_pmic_typec_pdphy_stub_set_pd_rx(struct tcpc_dev *tcpc, bool on)
+ 	struct pmic_typec *tcpm = tcpc_to_tcpm(tcpc);
+ 	struct device *dev = tcpm->dev;
+ 
+-	dev_dbg(dev, "set_pd_rx: %s\n", on ? "on" : "off");
++	dev_dbg(dev, "set_pd_rx: %s\n", str_on_off(on));
+ 
+ 	return 0;
+ }
+diff --git a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
+index c37dede62e12..4fc83dcfae64 100644
+--- a/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
++++ b/drivers/usb/typec/tcpm/qcom/qcom_pmic_typec_port.c
+@@ -13,6 +13,7 @@
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/usb/tcpm.h>
+ #include <linux/usb/typec_mux.h>
+ #include <linux/workqueue.h>
+@@ -562,7 +563,8 @@ static int qcom_pmic_typec_port_set_vconn(struct tcpc_dev *tcpc, bool on)
+ 	spin_unlock_irqrestore(&pmic_typec_port->lock, flags);
+ 
+ 	dev_dbg(dev, "set_vconn: orientation %d control 0x%08x state %s cc %s vconn %s\n",
+-		orientation, value, on ? "on" : "off", misc_to_vconn(misc), misc_to_cc(misc));
++		orientation, value, str_on_off(on), misc_to_vconn(misc),
++		misc_to_cc(misc));
+ 
+ 	return ret;
+ }
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index aa2fa720af15..43e3dac5129f 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -21,6 +21,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/string_choices.h>
+ #include <linux/usb.h>
+ #include <linux/usb/pd.h>
+ #include <linux/usb/pd_ado.h>
+@@ -874,8 +875,8 @@ static int tcpm_enable_auto_vbus_discharge(struct tcpm_port *port, bool enable)
+ 
+ 	if (port->tcpc->enable_auto_vbus_discharge) {
+ 		ret = port->tcpc->enable_auto_vbus_discharge(port->tcpc, enable);
+-		tcpm_log_force(port, "%s vbus discharge ret:%d", enable ? "enable" : "disable",
+-			       ret);
++		tcpm_log_force(port, "%s vbus discharge ret:%d",
++			       str_enable_disable(enable), ret);
+ 		if (!ret)
+ 			port->auto_vbus_discharge_enabled = enable;
+ 	}
+@@ -4429,7 +4430,7 @@ static void tcpm_unregister_altmodes(struct tcpm_port *port)
+ 
+ static void tcpm_set_partner_usb_comm_capable(struct tcpm_port *port, bool capable)
+ {
+-	tcpm_log(port, "Setting usb_comm capable %s", capable ? "true" : "false");
++	tcpm_log(port, "Setting usb_comm capable %s", str_true_false(capable));
+ 
+ 	if (port->tcpc->set_partner_usb_comm_capable)
+ 		port->tcpc->set_partner_usb_comm_capable(port->tcpc, capable);
+-- 
+2.50.1
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Test log
-[    1.011897] scmi_core: SCMI protocol bus registered
-[    1.014070] Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000000
-[    1.018776] Mem abort info:
-[    1.027774]   ESR = 0x0000000096000004
-[    1.030282]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    1.034116]   SET = 0, FnV = 0
-[    1.039581]   EA = 0, S1PTW = 0
-[    1.042433]   FSC = 0x04: level 0 translation fault
-[    1.045486] Data abort info:
-[    1.050341]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[    1.053464]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    1.058768]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    1.063891] [0000000000000000] user address but active_mm is swapper
-[    1.069276] Internal error: Oops: 0000000096000004 [#1]  SMP
-[    1.075601] Modules linked in:
-[    1.081240] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted
-6.16.2-rc1 #1 PREEMPT
-[    1.084114] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
-[    1.091663] pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    1.098607] pc : qcom_scm_shm_bridge_enable
-(drivers/firmware/qcom/qcom_scm.c:1618)
-[    1.105285] lr : qcom_tzmem_enable
-(drivers/firmware/qcom/qcom_tzmem.c:98
-drivers/firmware/qcom/qcom_tzmem.c:475)
-[    1.110491] sp : ffff80008002b730
-[    1.114916] x29: ffff80008002b7c0 x28: 0000000000000000 x27: 0000000000000000
-[    1.118226] x26: 0000000000000000 x25: 0000000000000000 x24: ffff00003fcf2028
-[    1.125343] x23: ffff00003fcc1798 x22: 0000000000000000 x21: ffff000002cdf410
-[    1.132460] x20: ffff000002cdf400 x19: ffff80008288a000 x18: ffff8000813951f0
-[    1.139579] x17: 0000000000000000 x16: 00000000ffffffff x15: fffffffffffffc00
-[    1.146696] x14: ffffffffffffffff x13: 0000000000000020 x12: 0000000000000002
-[    1.153814] x11: 0000000000000000 x10: 0000000000000019 x9 : 0000000000000001
-[    1.160932] x8 : 0000000000000000 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff35302f37
-[    1.168052] x5 : 8080808000000000 x4 : 0000000000000020 x3 : 0000000036313038
-[    1.175169] x2 : 000000000000001c x1 : 000000000000000c x0 : 0000000000000000
-[    1.182289] Call trace:
-[    1.189393] qcom_scm_shm_bridge_enable
-(drivers/firmware/qcom/qcom_scm.c:1618) (P)
-[    1.191658] qcom_tzmem_enable
-(drivers/firmware/qcom/qcom_tzmem.c:98
-drivers/firmware/qcom/qcom_tzmem.c:475)
-[    1.196862] qcom_scm_probe (drivers/firmware/qcom/qcom_scm.c:2259)
-[    1.200941] platform_probe (drivers/base/platform.c:1405)
-[    1.204587] really_probe (drivers/base/dd.c:581 drivers/base/dd.c:657)
-[    1.208408] __driver_probe_device (drivers/base/dd.c:0)
-[    1.212055] driver_probe_device (drivers/base/dd.c:829)
-[    1.216394] __driver_attach (drivers/base/dd.c:1216)
-[    1.220299] bus_for_each_dev (drivers/base/bus.c:369)
-[    1.224118] driver_attach (drivers/base/dd.c:1233)
-[    1.228285] bus_add_driver (drivers/base/bus.c:679)
-[    1.231844] driver_register (drivers/base/driver.c:250)
-[    1.235403] __platform_driver_register (drivers/base/platform.c:867)
-[    1.239225] qcom_scm_init (drivers/firmware/qcom/qcom_scm.c:2365)
-[    1.244083] do_one_initcall (init/main.c:1252 init/main.c:1275)
-[    1.247730] do_initcall_level (init/main.c:1335)
-[    1.251289] do_initcalls (init/main.c:1349)
-[    1.255455] do_basic_setup (init/main.c:1372)
-[    1.258666] kernel_init_freeable (init/main.c:1588)
-[    1.262488] kernel_init (init/main.c:1476)
-[    1.266826] ret_from_fork (arch/arm64/kernel/entry.S:848)
-[ 1.270045] Code: a904ffff a903ffff a902ffff a900ffff (f9400100)
-All code
-========
-
-Code starting with the faulting instruction
-===========================================
-[    1.273870] ---[ end trace 0000000000000000 ]---
-[    1.279875] Kernel panic - not syncing: Attempted to kill init!
-exitcode=0x0000000b
-[    1.284550] SMP: stopping secondary CPUs
-[    1.291930] ---[ end Kernel panic - not syncing: Attempted to kill
-init! exitcode=0x0000000b ]---
-
-Please refer full test log information in the below links.
-
-## Source
-* Kernel version: 6.16.2-rc1
-* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* Git describe: v6.16-1192-g7439b60c7df9
-* Git commit: 7439b60c7df9cf7683dbfe417d128304e34a4f22
-* Architectures: arm64 Dragonboard 410c
-* Toolchains: gcc-13, clang-20
-* Kconfigs: defconfig+lkft
-
-## Test
-* Boot log: https://qa-reports.linaro.org/api/testruns/29589924/log_file/
-* Boot lava log: https://lkft.validation.linaro.org/scheduler/job/8407950#L2304
-* Boot details:
-https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.16.y/v6.16-1192-g7439b60c7df9/log-parser-boot/panic-multiline-kernel-panic-not-syncing-attempted-to-kill-init-exitcode/
-* Boot plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/31SnSReSLRhyKacT9vTgYiE9GRJ
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/31SnQ9iEVyT81yLXvTtUzBV7I4A/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/31SnQ9iEVyT81yLXvTtUzBV7I4A/config
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
