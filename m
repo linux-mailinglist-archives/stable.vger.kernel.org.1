@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06ABB2A28D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739BAB2A5F2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CEFC62234B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32CFD684763
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596CC320CDA;
-	Mon, 18 Aug 2025 12:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BD8343D7C;
+	Mon, 18 Aug 2025 13:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIG2kT5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2okImK8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0947E31CA57;
-	Mon, 18 Aug 2025 12:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35408342CBF;
+	Mon, 18 Aug 2025 13:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521696; cv=none; b=OrSMdq6yS80rBvSRoJ2S5Q7kOI6U+2qoZL8p5auSyV3/vYcCliK78xNoc0JgutcMd70POewbKN9IvCkxKp2eSqAa/Q9clKceB8PsGcmyybmJtFIhHTqUBLhvZzchYcPFEcTtXg6aemk2LlbkdGmfYzZIkoRoJG5FCHvNiBaidwg=
+	t=1755523321; cv=none; b=hoQNlVgmHnp1+bcaDro4rjX2eon23mmv2Qqep8olHKub6LzN5rDdA6MO/AcuUy7TCW/pdB3VtVncBlulclgy7aGg5Hx0v3DPOj4rY6waSRMd94JRMt/McdzurV8fKPPAMJ2eR+tzRSX0xT25Feb+fewMUJN0/90BddbS5IA7BbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521696; c=relaxed/simple;
-	bh=od8CRF1+7FzGX2iUhKcYeLtYQgaULIQYXCClkIyH9SY=;
+	s=arc-20240116; t=1755523321; c=relaxed/simple;
+	bh=lrGMdHbqMoJo0d47gQ7iTT6Gt5sUgLObdw1miH0mS34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y66o0T2qVxB2IJHcjAyBwzk1cK6F3ElKxKs3IucEPNTgZkoyit07GYV3gNFbPZykyfM3FMYbdBLeYjqO+w6QoA9/Ay03yUbhI7BMRP4Dl0MvhmxyX9or3RH17SCWohsIk5RqI6dysnGJaTeccB46C0OX8gkUZIPHK6injVRp/28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIG2kT5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F36C4CEEB;
-	Mon, 18 Aug 2025 12:54:54 +0000 (UTC)
+	 MIME-Version; b=OADNtjMuknePu/s0f8/v+8NTr9bkLX8OnsSPUTn7rCFtPoPCHJDLpq0mPe0XwCzPd/8q/ntOBgY8t48EvFe3ZmmhbyPFTpXmW7Pu2xbSE++zaRVeUBxnnSGEgtcs2Tmyk6QXEwdmEHW6Vd+dzkrcoaEG6cAAuRM3+zjKoG8Pl14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2okImK8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06D4C4CEEB;
+	Mon, 18 Aug 2025 13:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521695;
-	bh=od8CRF1+7FzGX2iUhKcYeLtYQgaULIQYXCClkIyH9SY=;
+	s=korg; t=1755523321;
+	bh=lrGMdHbqMoJo0d47gQ7iTT6Gt5sUgLObdw1miH0mS34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIG2kT5eVoziWUgLzSk9blE+4bPO3IYO0d782w2PFfXH2H3/rD6lLF8UCUT4akJSL
-	 thXYwb7gBs6TkcO75RMUuBn43Y95ByGjpJKWIvkWwJDUZLHUEwHJVrbcTKDhgkdolW
-	 jU+8RLYEkonwLT/x0mrts9hiCNUpsjzz5iJdGLDQ=
+	b=2okImK8qSpqxBGxoHNwak/mm0aBkYqn/pT/5rksX9U/s0EoWtNoMcotsrWGJMzuum
+	 nWU0yIOx45O9vsfmQV/W5fGuub4rT9v6fNLI0VJyB4jZbAcMeSm+IuOHWalLQtKqic
+	 ndyDSTAy5Iy4YkVB9LTP7LWVz7ch93B8vqiJhWlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
+	Alexander Kochetkov <al.kochet@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/444] usb: xhci: print xhci->xhc_state when queue_command failed
+Subject: [PATCH 6.15 135/515] ARM: rockchip: fix kernel hang during smp initialization
 Date: Mon, 18 Aug 2025 14:42:01 +0200
-Message-ID: <20250818124452.508846500@linuxfoundation.org>
+Message-ID: <20250818124503.591472506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Alexander Kochetkov <al.kochet@gmail.com>
 
-[ Upstream commit 7919407eca2ef562fa6c98c41cfdf6f6cdd69d92 ]
+[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
 
-When encounters some errors like these:
-xhci_hcd 0000:4a:00.2: xHCI dying or halted, can't queue_command
-xhci_hcd 0000:4a:00.2: FIXME: allocate a command ring segment
-usb usb5-port6: couldn't allocate usb_device
+In order to bring up secondary CPUs main CPU write trampoline
+code to SRAM. The trampoline code is written while secondary
+CPUs are powered on (at least that true for RK3188 CPU).
+Sometimes that leads to kernel hang. Probably because secondary
+CPU execute trampoline code while kernel doesn't expect.
 
-It's hard to know whether xhc_state is dying or halted. So it's better
-to print xhc_state's value which can help locate the resaon of the bug.
+The patch moves SRAM initialization step to the point where all
+secondary CPUs are powered down.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20250725060117.1773770-1-suhui@nfschina.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That fixes rarely hangs on RK3188:
+[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.091996] rockchip_smp_prepare_cpus: ncores 4
+
+Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
+Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 2ff8787f753c..19978f02bb9e 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -4378,7 +4378,8 @@ static int queue_command(struct xhci_hcd *xhci, struct xhci_command *cmd,
- 
- 	if ((xhci->xhc_state & XHCI_STATE_DYING) ||
- 		(xhci->xhc_state & XHCI_STATE_HALTED)) {
--		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command\n");
-+		xhci_dbg(xhci, "xHCI dying or halted, can't queue_command. state: 0x%x\n",
-+			 xhci->xhc_state);
- 		return -ESHUTDOWN;
+diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
+index 36915a073c23..f432d22bfed8 100644
+--- a/arch/arm/mach-rockchip/platsmp.c
++++ b/arch/arm/mach-rockchip/platsmp.c
+@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
  	}
  
+ 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
+-		if (rockchip_smp_prepare_sram(node)) {
+-			of_node_put(node);
+-			return;
+-		}
+-
+ 		/* enable the SCU power domain */
+ 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
+ 
+@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
+ 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
+ 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
+ 	}
+-	of_node_put(node);
+ 
+ 	/* Make sure that all cores except the first are really off */
+ 	for (i = 1; i < ncores; i++)
+ 		pmu_set_power_domain(0 + i, false);
++
++	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
++		if (rockchip_smp_prepare_sram(node)) {
++			of_node_put(node);
++			return;
++		}
++	}
++
++	of_node_put(node);
+ }
+ 
+ static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
 -- 
 2.39.5
 
