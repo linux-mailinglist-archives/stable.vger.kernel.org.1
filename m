@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0713EB2A694
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3747AB2A418
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F3747AA23A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97ED01B279DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15F4322DBC;
-	Mon, 18 Aug 2025 13:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACA831B13A;
+	Mon, 18 Aug 2025 13:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcT8mOVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRDUubZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F1A322776;
-	Mon, 18 Aug 2025 13:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2181E3DCD;
+	Mon, 18 Aug 2025 13:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524241; cv=none; b=OHwjbzwKa9/HAz4JR7KRN94Hcz3SggSTpYSL+hJdRr4nmsa8ROVsjFiZT8tttmCjNhHfn0tHl4WojJc6bhwmafxP956FhZ1rZW0qCOvAJw1WhktwOnfL3E8jf+LQxONuKoRcpbFdQG5gM+wk4TU4OZCQFx8QmOMOMjg+grQzsbo=
+	t=1755522628; cv=none; b=jKxjaN8pncN4+bem93wE3PJFmaE0Yh7OZpHohCSmxlf16BheZBjsrRZM0sRjfdQES79PD1FEMniebvLn5ZzbetlJHrDUijKWSSAgF5d+bLUV0BLBvM/pGnROcNMZzOxRC+4dFaLD9FyuiHJI6li9BXEHZ3tM0ZhuNNrtGsLv//s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524241; c=relaxed/simple;
-	bh=0A9Rm8Ux37cMr/EVm62Bn/cqIQhI+CP2ILd1wDxNinw=;
+	s=arc-20240116; t=1755522628; c=relaxed/simple;
+	bh=CNmZZgGKOl8fEUov2zvY+LMuHkFJTPbqbxlLXt6MOdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UATFQwU8YmbJV2sRXyEU3T4CVAGrhkSuJtnw595qjCWC+o5x9xun33AIOstCetrfUYzi8vFdFGjBckES2ROIVPyflFBhm0GwrMl4Mqo8PuHUIP0nkECsXse06Owpg9TTsGja8YNB+5bHndhJYwePQXj6uo23BqSoe9w4FJiBEFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcT8mOVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5C3C4CEF1;
-	Mon, 18 Aug 2025 13:37:20 +0000 (UTC)
+	 MIME-Version; b=jYS5DNhc+DDIdMOLATm1GsJFPtUkxwOo1KH5yU8JgDVmBnZAZODFhmvAMqeZwTAyYIHdetYsV5PHjZJsrfIoZ1UAsvPt8Q5X90mkxYGf0AP4TPxT87HaXHwJSzbXRcugkLHXmsYhw8bLZJl4rUr3JkBAWF0V1MRAjebrgs9nnxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRDUubZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2960AC4CEEB;
+	Mon, 18 Aug 2025 13:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524241;
-	bh=0A9Rm8Ux37cMr/EVm62Bn/cqIQhI+CP2ILd1wDxNinw=;
+	s=korg; t=1755522628;
+	bh=CNmZZgGKOl8fEUov2zvY+LMuHkFJTPbqbxlLXt6MOdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rcT8mOVxwoOY6Gfl8tq5lDh3hnZAnT4fQrI3RtOAq7QtGx13GGGUpoP8gXsjP+Wn+
-	 uo/z0LMMshaYMseZG6K/iX7qHATD/VYP3rJ77/9cI859JT2sjJE8/w+9QQMiNAhT4s
-	 xinS/FU8g4p6hqiVWbi6Mt9GRVMDEaQ5MN5oE1nw=
+	b=WRDUubZCxX9r7Ch96eIWm2HvqZXw1YqvZMMgdLd7d28JRPU5keT3xcsc9cNBV7doi
+	 njce31C+3DsiTjhLEL/kUAqm+UCG8A/Efzn2leqBh6qi4luziiGN4quleXmbyaJLZY
+	 tHZ+Gi5KhR0wcqap9SfsEYA53V+GIrl7hy94aluA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 412/515] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
-Date: Mon, 18 Aug 2025 14:46:38 +0200
-Message-ID: <20250818124514.277560372@linuxfoundation.org>
+	Bijan Tabatabai <bijantabatab@micron.com>,
+	SeongJae Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Ravi Shankar Jonnalagadda <ravis.opensrc@micron.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 373/444] mm/damon/core: commit damos->target_nid
+Date: Mon, 18 Aug 2025 14:46:39 +0200
+Message-ID: <20250818124502.880545757@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Bijan Tabatabai <bijantabatab@micron.com>
 
-[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
+commit 579bd5006fe7f4a7abb32da0160d376476cab67d upstream.
 
-During BMC firmware upgrades on live systems, the ipmi_msghandler
-generates excessive "BMC returned incorrect response" warnings
-while the BMC is temporarily offline. This can flood system logs
-in large deployments.
+When committing new scheme parameters from the sysfs, the target_nid field
+of the damos struct would not be copied.  This would result in the
+target_nid field to retain its original value, despite being updated in
+the sysfs interface.
 
-Replace dev_warn() with dev_warn_ratelimited() to throttle these
-warnings and prevent log spam during BMC maintenance operations.
+This patch fixes this issue by copying target_nid in damos_commit().
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250709004729.17252-1-bijan311@gmail.com
+Fixes: 83dc7bbaecae ("mm/damon/sysfs: use damon_commit_ctx()")
+Signed-off-by: Bijan Tabatabai <bijantabatab@micron.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Ravi Shankar Jonnalagadda <ravis.opensrc@micron.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/damon/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 6047c9600e03..808d0d213509 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -4615,10 +4615,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
- 		 * The NetFN and Command in the response is not even
- 		 * marginally correct.
- 		 */
--		dev_warn(intf->si_dev,
--			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
--			 (msg->data[0] >> 2) | 1, msg->data[1],
--			 msg->rsp[0] >> 2, msg->rsp[1]);
-+		dev_warn_ratelimited(intf->si_dev,
-+				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
-+				     (msg->data[0] >> 2) | 1, msg->data[1],
-+				     msg->rsp[0] >> 2, msg->rsp[1]);
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -837,6 +837,7 @@ static int damos_commit(struct damos *ds
+ 		return err;
  
- 		goto return_unspecified;
- 	}
--- 
-2.39.5
-
+ 	dst->wmarks = src->wmarks;
++	dst->target_nid = src->target_nid;
+ 
+ 	err = damos_commit_filters(dst, src);
+ 	return err;
 
 
 
