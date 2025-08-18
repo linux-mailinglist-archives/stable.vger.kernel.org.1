@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7691B2A6A3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B252BB2A991
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B26CD1B64189
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A5E05A45C7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096FE322766;
-	Mon, 18 Aug 2025 13:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EB9342CAB;
+	Mon, 18 Aug 2025 14:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vW/fGG0a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGwWfL3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9977322762;
-	Mon, 18 Aug 2025 13:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC21634E19B;
+	Mon, 18 Aug 2025 14:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524026; cv=none; b=U+4yIRAvyJsy/lYHxgOtyfHyNjbcviZWIDuJ+yx/Hukvu8RCs2+y/pAjwWtskTHYh3zttLowbMx8BSllgkLqpFVo4n6BsoLAfbWgDp50OdqVtQZQdwJnFjL3Vs7smFAbYhRhb8tSJDYmKeNjCkGgNk3rDpTkCGgs1yk0nAy7MnQ=
+	t=1755525821; cv=none; b=HuxwaW4Gi25prT1MELN/wbdGIunoQ694UHKXqjWkw8ir2hFQzIV+YIpb7/M2DHwHERD4rlrg3K1jddTaEvhN4HTkO1OfMht55XJZBnEAvilA28Sjle7YB1M7mBhw1mMO2wIqW0bchEhZ3Gaq2ilHjr8znx+9QGrSy7RjuorynMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524026; c=relaxed/simple;
-	bh=VN8J5uKLs8XAF/IhzqF4qnZqPtmkY5bEOUcICEsqaQ8=;
+	s=arc-20240116; t=1755525821; c=relaxed/simple;
+	bh=G54IrugTdYlAlk6n9TYy7Sf0QNZvHVuIsQUuulqMz6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIwPkkD7gD1yXVfM5UdsxeIOHTKk1iRrwpQy/IVV2xSI2jiRI6PXSuu9t0GPvOTilFuY19gUmYAkLy2C5K10WdsBz3WqavU6yEAVx53xbtZ8WgBzPyrtbIfHTDX5hgvDdr+qXcYIAl1oMvkoGOYO820SgSOZyYHA6BbhgAQcP7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vW/fGG0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288DFC4CEEB;
-	Mon, 18 Aug 2025 13:33:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YN5Ru4YebkpG3B25KJ17b2mAJHa7kAYzIFsEGe8UdwCU6Ul6M4CbtuSu1I4Q86MG0DuuPReXbwbYU8SiFT9Nz8IAnHpkvSciRlG+x0xmxg8lw4Cd6IhZ0LePmmzRlRsgUxuxr7qOkCcMEX2Js1PCCbZeRDoeEGzBkz2I/YMz4Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGwWfL3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1222C113D0;
+	Mon, 18 Aug 2025 14:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524026;
-	bh=VN8J5uKLs8XAF/IhzqF4qnZqPtmkY5bEOUcICEsqaQ8=;
+	s=korg; t=1755525821;
+	bh=G54IrugTdYlAlk6n9TYy7Sf0QNZvHVuIsQUuulqMz6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vW/fGG0aBZqquOMWp4dYyzvL6h0ZMva6GlfSQlP7Gnc5yxSY4sfd7EYC5ceZCLw6Y
-	 /opasQhPcV/J6j9mvLOXhVxWZFHbMCMWrLSbfpfCQELTypCjtO7IbtZcaX0mP6EBgm
-	 /4fSdvCSjYz9Fo+gSYlEAveET409Sys+h6socbwI=
+	b=dGwWfL3vTSs6mTE2uJHgI71Mmkre1NBpIgR8aKLfYP3SZ4OzHjw3EaEMEcmCQL916
+	 kFvJ79RGLLrEzXMqUIdyUMmgkL+YMcc0QzdsHlFuXXgsF7flPhftgucA8VjOqqiuup
+	 0Nivk9oamNDkR4sFYoe8WmwxdnZSXg4COmmI7XJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florin Leotescu <florin.leotescu@nxp.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 345/515] hwmon: (emc2305) Set initial PWM minimum value during probe based on thermal state
+Subject: [PATCH 6.16 344/570] uapi: in6: restore visibility of most IPv6 socket options
 Date: Mon, 18 Aug 2025 14:45:31 +0200
-Message-ID: <20250818124511.714885440@linuxfoundation.org>
+Message-ID: <20250818124519.113752886@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +59,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florin Leotescu <florin.leotescu@nxp.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 0429415a084a15466e87d504e8c2a502488184a5 ]
+[ Upstream commit 31557b3487b349464daf42bc4366153743c1e727 ]
 
-Prevent the PWM value from being set to minimum when thermal zone
-temperature exceeds any trip point during driver probe. Otherwise, the
-PWM fan speed will remains at minimum speed and not respond to
-temperature changes.
+A decade ago commit 6d08acd2d32e ("in6: fix conflict with glibc")
+hid the definitions of IPV6 options, because GCC was complaining
+about duplicates. The commit did not list the warnings seen, but
+trying to recreate them now I think they are (building iproute2):
 
-Signed-off-by: Florin Leotescu <florin.leotescu@nxp.com>
-Link: https://lore.kernel.org/r/20250603113125.3175103-5-florin.leotescu@oss.nxp.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+In file included from ./include/uapi/rdma/rdma_user_cm.h:39,
+                 from rdma.h:16,
+                 from res.h:9,
+                 from res-ctx.c:7:
+../include/uapi/linux/in6.h:171:9: warning: ‘IPV6_ADD_MEMBERSHIP’ redefined
+  171 | #define IPV6_ADD_MEMBERSHIP     20
+      |         ^~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/netinet/in.h:37,
+                 from rdma.h:13:
+/usr/include/bits/in.h:233:10: note: this is the location of the previous definition
+  233 | # define IPV6_ADD_MEMBERSHIP    IPV6_JOIN_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~
+../include/uapi/linux/in6.h:172:9: warning: ‘IPV6_DROP_MEMBERSHIP’ redefined
+  172 | #define IPV6_DROP_MEMBERSHIP    21
+      |         ^~~~~~~~~~~~~~~~~~~~
+/usr/include/bits/in.h:234:10: note: this is the location of the previous definition
+  234 | # define IPV6_DROP_MEMBERSHIP   IPV6_LEAVE_GROUP
+      |          ^~~~~~~~~~~~~~~~~~~~
+
+Compilers don't complain about redefinition if the defines
+are identical, but here we have the kernel using the literal
+value, and glibc using an indirection (defining to a name
+of another define, with the same numerical value).
+
+Problem is, the commit in question hid all the IPV6 socket
+options, and glibc has a pretty sparse list. For instance
+it lacks Flow Label related options. Willem called this out
+in commit 3fb321fde22d ("selftests/net: ipv6 flowlabel"):
+
+  /* uapi/glibc weirdness may leave this undefined */
+  #ifndef IPV6_FLOWINFO
+  #define IPV6_FLOWINFO 11
+  #endif
+
+More interestingly some applications (socat) use
+a #ifdef IPV6_FLOWINFO to gate compilation of thier
+rudimentary flow label support. (For added confusion
+socat misspells it as IPV4_FLOWINFO in some places.)
+
+Hide only the two defines we know glibc has a problem
+with. If we discover more warnings we can hide more
+but we should avoid covering the entire block of
+defines for "IPV6 socket options".
+
+Link: https://patch.msgid.link/20250609143933.1654417-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/emc2305.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/uapi/linux/in6.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/emc2305.c b/drivers/hwmon/emc2305.c
-index 234c54956a4b..1dbe3f26467d 100644
---- a/drivers/hwmon/emc2305.c
-+++ b/drivers/hwmon/emc2305.c
-@@ -299,6 +299,12 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
- 		dev_err(dev, "Failed to register cooling device %s\n", emc2305_fan_name[idx]);
- 		return PTR_ERR(data->cdev_data[cdev_idx].cdev);
- 	}
-+
-+	if (data->cdev_data[cdev_idx].cur_state > 0)
-+		/* Update pwm when temperature is above trips */
-+		pwm = EMC2305_PWM_STATE2DUTY(data->cdev_data[cdev_idx].cur_state,
-+					     data->max_state, EMC2305_FAN_MAX);
-+
- 	/* Set minimal PWM speed. */
- 	if (data->pwm_separate) {
- 		ret = emc2305_set_pwm(dev, pwm, cdev_idx);
-@@ -312,10 +318,10 @@ static int emc2305_set_single_tz(struct device *dev, int idx)
- 		}
- 	}
- 	data->cdev_data[cdev_idx].cur_state =
--		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
-+		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
- 				       EMC2305_FAN_MAX);
- 	data->cdev_data[cdev_idx].last_hwmon_state =
--		EMC2305_PWM_DUTY2STATE(data->pwm_min[cdev_idx], data->max_state,
-+		EMC2305_PWM_DUTY2STATE(pwm, data->max_state,
- 				       EMC2305_FAN_MAX);
- 	return 0;
- }
+diff --git a/include/uapi/linux/in6.h b/include/uapi/linux/in6.h
+index ff8d21f9e95b..5a47339ef7d7 100644
+--- a/include/uapi/linux/in6.h
++++ b/include/uapi/linux/in6.h
+@@ -152,7 +152,6 @@ struct in6_flowlabel_req {
+ /*
+  *	IPV6 socket options
+  */
+-#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADDRFORM		1
+ #define IPV6_2292PKTINFO	2
+ #define IPV6_2292HOPOPTS	3
+@@ -169,8 +168,10 @@ struct in6_flowlabel_req {
+ #define IPV6_MULTICAST_IF	17
+ #define IPV6_MULTICAST_HOPS	18
+ #define IPV6_MULTICAST_LOOP	19
++#if __UAPI_DEF_IPV6_OPTIONS
+ #define IPV6_ADD_MEMBERSHIP	20
+ #define IPV6_DROP_MEMBERSHIP	21
++#endif
+ #define IPV6_ROUTER_ALERT	22
+ #define IPV6_MTU_DISCOVER	23
+ #define IPV6_MTU		24
+@@ -203,7 +204,6 @@ struct in6_flowlabel_req {
+ #define IPV6_IPSEC_POLICY	34
+ #define IPV6_XFRM_POLICY	35
+ #define IPV6_HDRINCL		36
+-#endif
+ 
+ /*
+  * Multicast:
 -- 
 2.39.5
 
