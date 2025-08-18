@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-170752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB221B2A611
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D053B2A60B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87CC16858FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA3F218951BE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDCD335BD4;
-	Mon, 18 Aug 2025 13:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CD7322526;
+	Mon, 18 Aug 2025 13:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNK12WKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3Ahaxaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393A6335BCA;
-	Mon, 18 Aug 2025 13:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458D63203BE;
+	Mon, 18 Aug 2025 13:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523659; cv=none; b=VtMvPLfypbPkTJpPJv6fylQsmpxe3/ECwP4rGsU8gybCqHqNibpU4mdRgRA/lnTY/SOLPFscTAcsH+7INRfeoNK/eAQlpNv0d6v/eAYpCbVupW4PC8YyTPsoXLolT0o2cKeO8w9ghE+QMD6rXoVjKoGNDkRqF0u4vHrDrw14QoQ=
+	t=1755523696; cv=none; b=iqnYf+WI6N5oC1mtdYWotIJC5R2VQLY7TFZxp3W+Hw8onYQM15Tdy9UGkFY4Z7SVFkvP+OmR5K/kyl5+dbPQ4XuX13iURe+E1Mh892BX2KYdnDRpnW07O3w2WTPzFwEZZQL4EECfxcEGe/x2MW5C46P/7TOf6JHdcRDlADssXQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523659; c=relaxed/simple;
-	bh=R6QZMF/V7qdaKNmAbTuFWfOR+T9LSRzbat9wsEI4mCg=;
+	s=arc-20240116; t=1755523696; c=relaxed/simple;
+	bh=rztUob9sXHVa3KlDlN5zXU1JgnngtIvLB5fBO4Ax3ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I42sw1Jx867GIbffba1bR35+HXRusjUIDB1xC69XJeaaGrSbBYuUdP/6OclkhoUor+CUeVirPpGwwVkoiwmPOaG5DP3QBnmN7qhQWteV4fIJhuV6ySfpmHwJ4Rdb9ilC78dNq9ZePeHMgy6pmPA3HG5fXjIQRige3bCw87X78gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNK12WKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AB7C4CEF1;
-	Mon, 18 Aug 2025 13:27:38 +0000 (UTC)
+	 MIME-Version; b=twl3BCmnu7p0pzXRnbU3zoeenqXT5b1YkuieD2JX6OlAmazWtplvaCJO1CW5l/jZwsIbdbyVOPM7xjdRSdvVRQzrfEi6oa6dgunzLajwNV3WcFvDuUWoZbFUU4T8atIaCIy4hXznsPymh9KoM3lX+wxWiL3AvxOPPYeVdUh5Sc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3Ahaxaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E752C4CEEB;
+	Mon, 18 Aug 2025 13:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523659;
-	bh=R6QZMF/V7qdaKNmAbTuFWfOR+T9LSRzbat9wsEI4mCg=;
+	s=korg; t=1755523696;
+	bh=rztUob9sXHVa3KlDlN5zXU1JgnngtIvLB5fBO4Ax3ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNK12WKUHQN1FxaqV8uVjQRIEhtDaJfevgDljBPDM0QM2nxWWFnCPs2sLgWbFPN4X
-	 vybTktP1SkZa/Ax8E7cc9qAxyelbLD5TO4WZq/Qc7TnyF+xUM6rfeZSpgrMpmzF6xL
-	 FnzKlp/i816TgxEqnzK4o5b4CnnduNqAl1hQwi8s=
+	b=n3AhaxaqocEG8wJOc8esXTLJd3jiviOYVayrMnYjxR+bKvoniEg58Rmmp3bjVHy5Z
+	 anRjadBFx9KZAv+YwNDAXjg1HPKHhjIBZOQTgwFrUhosd2+LQSqxGYDv9XOcUa3tDK
+	 kZvj0xLICUBi0y7qrYix4ZWxLgHscN+2a0hcvbLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 222/515] can: ti_hecc: fix -Woverflow compiler warning
-Date: Mon, 18 Aug 2025 14:43:28 +0200
-Message-ID: <20250818124506.912539860@linuxfoundation.org>
+Subject: [PATCH 6.15 223/515] net: mctp: Prevent duplicate binds
+Date: Mon, 18 Aug 2025 14:43:29 +0200
+Message-ID: <20250818124506.950004580@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -66,38 +66,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit 7cae4d04717b002cffe41169da3f239c845a0723 ]
+[ Upstream commit 3954502377ec05a1b37e2dc9bef0bacd4bbd71b2 ]
 
-Fix below default (W=0) warning:
+Disallow bind() calls that have the same arguments as existing bound
+sockets.  Previously multiple sockets could bind() to the same
+type/local address, with an arbitrary socket receiving matched messages.
 
-  drivers/net/can/ti_hecc.c: In function 'ti_hecc_start':
-  drivers/net/can/ti_hecc.c:386:20: warning: conversion from 'long unsigned int' to 'u32' {aka 'unsigned int'} changes value from '18446744073709551599' to '4294967279' [-Woverflow]
-    386 |         mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
-        |                    ^
+This is only a partial fix, a future commit will define precedence order
+for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
+together.
 
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250715-can-compile-test-v2-1-f7fd566db86f@wanadoo.fr
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/ti_hecc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mctp/af_mctp.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/ti_hecc.c b/drivers/net/can/ti_hecc.c
-index 644e8b8eb91e..e6d6661a908a 100644
---- a/drivers/net/can/ti_hecc.c
-+++ b/drivers/net/can/ti_hecc.c
-@@ -383,7 +383,7 @@ static void ti_hecc_start(struct net_device *ndev)
- 	 * overflows instead of the hardware silently dropping the
- 	 * messages.
- 	 */
--	mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
-+	mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
- 	hecc_write(priv, HECC_CANOPC, mbx_mask);
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 9b12ca97f412..9d5db3feedec 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -73,7 +73,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
  
- 	/* Enable interrupts */
+ 	lock_sock(sk);
+ 
+-	/* TODO: allow rebind */
+ 	if (sk_hashed(sk)) {
+ 		rc = -EADDRINUSE;
+ 		goto out_release;
+@@ -629,15 +628,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
+ static int mctp_sk_hash(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
++	struct sock *existing;
++	struct mctp_sock *msk;
++	int rc;
++
++	msk = container_of(sk, struct mctp_sock, sk);
+ 
+ 	/* Bind lookup runs under RCU, remain live during that. */
+ 	sock_set_flag(sk, SOCK_RCU_FREE);
+ 
+ 	mutex_lock(&net->mctp.bind_lock);
++
++	/* Prevent duplicate binds. */
++	sk_for_each(existing, &net->mctp.binds) {
++		struct mctp_sock *mex =
++			container_of(existing, struct mctp_sock, sk);
++
++		if (mex->bind_type == msk->bind_type &&
++		    mex->bind_addr == msk->bind_addr &&
++		    mex->bind_net == msk->bind_net) {
++			rc = -EADDRINUSE;
++			goto out;
++		}
++	}
++
+ 	sk_add_node_rcu(sk, &net->mctp.binds);
+-	mutex_unlock(&net->mctp.bind_lock);
++	rc = 0;
+ 
+-	return 0;
++out:
++	mutex_unlock(&net->mctp.bind_lock);
++	return rc;
+ }
+ 
+ static void mctp_sk_unhash(struct sock *sk)
 -- 
 2.39.5
 
