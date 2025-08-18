@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04CEB2A438
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38219B2A9E2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10D73A7C0B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32B4F6E7778
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE75E31E10C;
-	Mon, 18 Aug 2025 13:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D658735085E;
+	Mon, 18 Aug 2025 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnlFwyQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2rh7RwE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDB131E0E8;
-	Mon, 18 Aug 2025 13:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93663350843;
+	Mon, 18 Aug 2025 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522722; cv=none; b=A/oA2VdItt2mE/tCZiU7337rjzpbC6ReqrKzY1RT5zgo99EH1PjgibamfaUp5JPQs7WSfHzKOOcIoD9kKlJDVKA34Y11cAJ8vbbaDSrH9z8j35sT7Gq5oaX9kQWKr3AYKk3LGCc0N3RmusPdqDFGX8X+M2kW6A2QlLeCgyibkyU=
+	t=1755525896; cv=none; b=hHJRQmnWtbwm7lGQN+eRhPTFtseVSOX/91tfTGMHtPSzcuXM7tnFENIdRwZ034ab77vVFmWp223eF2sLJzAnuV6nsuRmwHDRSi9DY0OC8pEVgeGXBZZ1nw3nVreThQELEj6T7/CJhs0tBbxFM2jtH+bfzpUaGClgtsSvKmADghk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522722; c=relaxed/simple;
-	bh=qtPhC6OY6Z8ydd7J6DdzX9tpQnkikVkJE2fm3rjffOs=;
+	s=arc-20240116; t=1755525896; c=relaxed/simple;
+	bh=/+sdwEyU7ldpVmhBRiHeRy/BoMTFQ+OSP41rX2prXBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SM1cEZsiQkdcDSMeH4yTcfu5fnKBV7DaKfLd5jdw/yh32UJqifn0dHk+u3sjtcwenLNYPICOK8ttiosewUxBqMKpuNNBusuE7pLbz85E+mQKsRcpPJ0A0tF4rl2c8K42S6de4aIyIBDNcOO0FpFTC8RaZFxdzzRKwLEvQvtKiB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnlFwyQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF890C113D0;
-	Mon, 18 Aug 2025 13:12:01 +0000 (UTC)
+	 MIME-Version; b=ts4MDxjQ0AbtgX54nPmypLgSaLS3YXcjuNKUuzSbqxdM4RtL/w1jURSpvFSUrixruNx2+cOPDNUJ8cupMKOnfSjpLlJ8yMSN10MTY9XU6d6tmfnz2WvYZ/qYbNcyY8TnG8t90+Nyd1KVDNsHxr3iaFJxNe5HDGdCbsQ00rj3OFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2rh7RwE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191F2C4CEEB;
+	Mon, 18 Aug 2025 14:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522722;
-	bh=qtPhC6OY6Z8ydd7J6DdzX9tpQnkikVkJE2fm3rjffOs=;
+	s=korg; t=1755525896;
+	bh=/+sdwEyU7ldpVmhBRiHeRy/BoMTFQ+OSP41rX2prXBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnlFwyQRC80DS1WF/nbPKH/0g7MEeOEXX53Imh65RY0lsJuWS/5yXZTFs9HVuoL62
-	 yY3/EQCa4cDw7fjnaIbyF9zFZN3WnA4Z7gOEWOG0azWjWHr30hFLbbodtrdYIx24E4
-	 0HsyM0VMNdMPv3plqnvnajYb6zpv7A4/A16+j4v0=
+	b=K2rh7RwEF4fSkZ3Wj3o30pDaDYL2bIAYedWv3Nd8PMgSN+2zJFRqjgNBJQuf2Lscs
+	 U47e9fXjDVUrp4VC+pzn/q6G0hi4oDptzDAoh4hh66EfR8rGgys/gNFeQN7jxc15ab
+	 tbFvCmdH2VxFPZ3YQfdF95JoGU3k90ER6zBF3p9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Croft <thomasmcft@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 359/444] ALSA: hda/realtek: add LG gram 16Z90R-A to alc269 fixup table
+Subject: [PATCH 6.16 398/570] scsi: lpfc: Check for hdwq null ptr when cleaning up lpfc_vport structure
 Date: Mon, 18 Aug 2025 14:46:25 +0200
-Message-ID: <20250818124502.371558918@linuxfoundation.org>
+Message-ID: <20250818124521.189461115@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Croft <thomasmcft@gmail.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit dbe05428c4e54068a86e7e02405f3b30b1d2b3dd ]
+[ Upstream commit 6698796282e828733cde3329c887b4ae9e5545e9 ]
 
-Several months ago, Joshua Grisham submitted a patch [1]
-for several ALC298 based sound cards.
+If a call to lpfc_sli4_read_rev() from lpfc_sli4_hba_setup() fails, the
+resultant cleanup routine lpfc_sli4_vport_delete_fcp_xri_aborted() may
+occur before sli4_hba.hdwqs are allocated.  This may result in a null
+pointer dereference when attempting to take the abts_io_buf_list_lock for
+the first hardware queue.  Fix by adding a null ptr check on
+phba->sli4_hba.hdwq and early return because this situation means there
+must have been an error during port initialization.
 
-The entry for the LG gram 16 in the alc269_fixup_tbl only matches the
-Subsystem ID for the 16Z90R-Q and 16Z90R-K models [2]. My 16Z90R-A has a
-different Subsystem ID [3]. I'm not sure why these IDs differ, but I
-speculate it's due to the NVIDIA GPU included in the 16Z90R-A model that
-isn't present in the other models.
-
-I applied the patch to the latest Arch Linux kernel and the card was
-initialized as expected.
-
-[1]: https://lore.kernel.org/linux-sound/20240909193000.838815-1-josh@joshuagrisham.com/
-[2]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0488
-[3]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0489
-
-Signed-off-by: Thomas Croft <thomasmcft@gmail.com>
-Link: https://patch.msgid.link/20250804151457.134761-2-thomasmcft@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250618192138.124116-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/lpfc/lpfc_scsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 50b340876f09..840cde49935d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11302,6 +11302,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1854, 0x0440, "LG CQ6", ALC256_FIXUP_HEADPHONE_AMP_VOL),
- 	SND_PCI_QUIRK(0x1854, 0x0441, "LG CQ6 AIO", ALC256_FIXUP_HEADPHONE_AMP_VOL),
- 	SND_PCI_QUIRK(0x1854, 0x0488, "LG gram 16 (16Z90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
-+	SND_PCI_QUIRK(0x1854, 0x0489, "LG gram 16 (16Z90R-A)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x1854, 0x048a, "LG gram 17 (17ZD90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
- 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
- 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 8acb744febcd..31a9f142bcb9 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -390,6 +390,10 @@ lpfc_sli4_vport_delete_fcp_xri_aborted(struct lpfc_vport *vport)
+ 	if (!(vport->cfg_enable_fc4_type & LPFC_ENABLE_FCP))
+ 		return;
+ 
++	/* may be called before queues established if hba_setup fails */
++	if (!phba->sli4_hba.hdwq)
++		return;
++
+ 	spin_lock_irqsave(&phba->hbalock, iflag);
+ 	for (idx = 0; idx < phba->cfg_hdw_queue; idx++) {
+ 		qp = &phba->sli4_hba.hdwq[idx];
 -- 
 2.39.5
 
