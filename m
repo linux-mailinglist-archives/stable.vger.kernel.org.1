@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77629B2A3DE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EA9B2A946
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA894E492B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F16055A31D4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85639310627;
-	Mon, 18 Aug 2025 13:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9727C33473C;
+	Mon, 18 Aug 2025 14:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPiRoxfN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oz6TlHFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F0C30F7F8;
-	Mon, 18 Aug 2025 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554BB2E2287;
+	Mon, 18 Aug 2025 14:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522472; cv=none; b=TusA3FCoJgQjCt6in9wjnP5Gv0l1hqfIztoDxyTIMODFWuUTxE3wYLdlH4MYJx+ulrxQsmPLlupcYV6Dmsdbjev857XTMgfXe1V5HmZUFDnFVO6ezPsmGQYrBaiMkP0igLekjsA6pJ6+DbuzbF+LLdu9mP7sGpScXwJtwIIxq2M=
+	t=1755525672; cv=none; b=oZxW5C8J93yBSoJPxyUnq6c2Bvz0bk5zklZcyITj0xRbRR2fyzgCKGyrLjTAhs9UKT0gQd/+i8zhNRw3PbsD6sh/UCEvR6nsanjMMenHtrIqLu9dEdbL6zlsQFX0+ZqIUXf5O+2hrzggcSA+5us7nUvCBN8jzQvdCEDgml9Zti4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522472; c=relaxed/simple;
-	bh=NCqm6b4Lj3v6M2qXzrGYEyhyMNtfnZ9bDLgtB49+Hk0=;
+	s=arc-20240116; t=1755525672; c=relaxed/simple;
+	bh=j6BYJ4EduVxev3KK3GzJGA30T7Na9lVbG6p6FGVwwqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dqAAxaz1YYY9ritjBdEhLHgRtQmPIr1Tv1r45fAwNjJrUB28Q8dIvHXXm0nxd/S41E3+Wo+j+lYmI/OEIdc/mWOF2dZ2HS3B6fsh3kEHEgZHSFrTv4am4o28014z805m5xyG//6BLn1yiq6vxNXCqlGx8I6X+JzJ2Eub6tnsJGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPiRoxfN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64230C4CEEB;
-	Mon, 18 Aug 2025 13:07:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SxBd9NXrkQ67VL2j/TS8hLvRoyWrzBzz3e/a9xCJBNFLpA4eM2+r+sI6InZcwS5X1OAC+Gg8Mx+uHKi6UcCJsJqzrQxOIkQcZvPM4Y3f2VVGxBPvVgWjb2SJ94w+wR6k0SZk4D42Ghcyb/C+wthf3FMY8abmqAyzXqI4kvyej+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oz6TlHFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C61C4CEEB;
+	Mon, 18 Aug 2025 14:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522471;
-	bh=NCqm6b4Lj3v6M2qXzrGYEyhyMNtfnZ9bDLgtB49+Hk0=;
+	s=korg; t=1755525672;
+	bh=j6BYJ4EduVxev3KK3GzJGA30T7Na9lVbG6p6FGVwwqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPiRoxfNlFOLXn+jlz0IUq1DizznaJtDOvbokmq0Hn7vG/QctgAzr1ffj4MDKKu3M
-	 du/zkoe1Mff9qmA86F1Jqh/GlhjC6Nb9xJG9FViRrvDhSM0WAVFuhX3WABt8AZifAt
-	 30bTDQPvZ9+j/BURLkgTm6V/RnCjwapx/vYuMW+s=
+	b=oz6TlHFvK7ccx5ryD1gYezEX7zc90Wm2/vXkyu47FluXJ8ofb7Gv8qFR3K25A6gvN
+	 HnMVieh6E3RxuP9pW6A6F5+/oGdwulehjhCMwxEXM/XXKBabBVgs962IBd967bd0XD
+	 5zSG8r06nG08j12bOK41ZuLOVjjQP1mdioOMasB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 293/444] jfs: Regular file corruption check
+Subject: [PATCH 6.16 332/570] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
 Date: Mon, 18 Aug 2025 14:45:19 +0200
-Message-ID: <20250818124459.944433807@linuxfoundation.org>
+Message-ID: <20250818124518.641963115@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 2d04df8116426b6c7b9f8b9b371250f666a2a2fb ]
+[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
 
-The reproducer builds a corrupted file on disk with a negative i_size value.
-Add a check when opening this file to avoid subsequent operation failures.
+BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
+avoid reading or writing it.
+PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
+and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
 
-Reported-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=630f6d40b3ccabc8e96e
-Tested-by: syzbot+630f6d40b3ccabc8e96e@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/file.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jfs/file.c b/fs/jfs/file.c
-index 01b6912e60f8..742cadd1f37e 100644
---- a/fs/jfs/file.c
-+++ b/fs/jfs/file.c
-@@ -44,6 +44,9 @@ static int jfs_open(struct inode *inode, struct file *file)
- {
- 	int rc;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 55e1844a5e9c..8abbcc588267 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1274,6 +1274,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1298,6 +1300,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1328,10 +1332,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 		return;
+ 	}
  
-+	if (S_ISREG(inode->i_mode) && inode->i_size < 0)
-+		return -EIO;
+-	if (rx_pause)
+-		reg |= PORT_OVERRIDE_RX_FLOW;
+-	if (tx_pause)
+-		reg |= PORT_OVERRIDE_TX_FLOW;
++	if (rx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_RX_FLOW;
++	}
 +
- 	if ((rc = dquot_file_open(inode, file)))
- 		return rc;
++	if (tx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_TX_FLOW;
++	}
  
+ 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index d31c8ad9a9b6..25d25bd1071f 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -95,6 +95,7 @@
+ #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
++#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
+ #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
 -- 
 2.39.5
 
