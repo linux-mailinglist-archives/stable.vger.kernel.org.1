@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF91B2A9AE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AAAB2A3D7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CA981BA4BDD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B72271B2334C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3527B33A03F;
-	Mon, 18 Aug 2025 14:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCA531E0ED;
+	Mon, 18 Aug 2025 13:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0SBUrEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpJpnQ5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28D833A035;
-	Mon, 18 Aug 2025 14:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9AC3218C9;
+	Mon, 18 Aug 2025 13:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525743; cv=none; b=ZFLLJ+c8ywKWS3CjPhIZ5jkIb3Q9y5TSUGpxRLfyZfmal4oGLCGhq88X+2+yQl2izzpBakkv2JasZTnZ1D7gyWJMCByf/b/mpLDc450fgLXmFQ5dlshn2fg6BGGWDNeAh7hAqYXuXjfdJ6ighDZEBpn9nE6KA/zd50S+AvhyiMs=
+	t=1755522434; cv=none; b=JdsTgyLi3D3SbUuTPYp4xm4MZ85wbgJA57yRPXWiZVxjpCxA4bH8CibzEn1wd/cltvNYC7Z5evL4yS1CKrILzb9Zy9Ey2uE2Wmjm/LrHxrizHRe9ui3FZkXCKvvgCSXWEGi6uT4eMAoSaHkhzqQOC8IaOSC7maCBA4Ls9UvpYTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525743; c=relaxed/simple;
-	bh=6sy5G3JEz3BDjX+/3/3gKptXbv9Q0brxJmxKRsMfEl0=;
+	s=arc-20240116; t=1755522434; c=relaxed/simple;
+	bh=ylxatfdBBvsAWqZ9bCglAPOchitLRxG5ZqhnMOaKdDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRrsVHOOnzlAelCEG72YtPnRII1H9p+n5Rc0SNYCJTPB9RABjD6PQcf1RJAHRYOy/BILlbeKcWIRgJ/pBxhJuQQCV9jT1QWbM4IY9Pz7aiGTav2n3AGX/eGqhKJebbADvN346e5aMwXTg5YLtKyvaCfM938TNwJyzWunGYt2q20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0SBUrEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EBBC4CEEB;
-	Mon, 18 Aug 2025 14:02:21 +0000 (UTC)
+	 MIME-Version; b=ppW6Y8Lk0Mf1b3zCygrzoRpcj015naKpSnCEv9aTGgSXdAYl/wumdZQ6UHBCyvdWUkNzcAx/RecF9Ebhx4FO7+Bg8oIGzOtooaaleMY7vI2yqIbSZdblhcGJ/hCC/4vw8TSsHPY6Aa5UDI/eTYdimaDA0S9Wf4RAbVchkWgUazs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpJpnQ5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC33C4CEEB;
+	Mon, 18 Aug 2025 13:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525742;
-	bh=6sy5G3JEz3BDjX+/3/3gKptXbv9Q0brxJmxKRsMfEl0=;
+	s=korg; t=1755522434;
+	bh=ylxatfdBBvsAWqZ9bCglAPOchitLRxG5ZqhnMOaKdDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0SBUrEeS56FmdLqmxVe4FsOl7ofmYa/uTwQCnKQyvuXjgqTx7js4GaR6+WTmxRB8
-	 L/dZbQ/e78kNiq/+ZVEASP+b9szAvR+9VHUhHYBdH0xpDV5VDsT5NO2bCGUUwLwgfd
-	 aPshdY3uX+ppmZtGiW0gHa3Ut6c8Sf7yyAX4nvfM=
+	b=xpJpnQ5BWisJxpWxrp5ZB+Nvd9KZ41QIYkc3cino868clmS9+LDjOTiyzN19iNAw7
+	 en2cF7x52VirhZi4CIgX8pavDX/2QqTYapqb6f2/3Qsb2xWp9Kl8XADkHzYBwAETdZ
+	 J/35+lCSQ/RbYHSWcqEQACE4ewRmp5yeWUGUY2Gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 354/570] vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
+Subject: [PATCH 6.12 315/444] media: tc358743: Increase FIFO trigger level to 374
 Date: Mon, 18 Aug 2025 14:45:41 +0200
-Message-ID: <20250818124519.498236707@linuxfoundation.org>
+Message-ID: <20250818124500.755434801@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 03a92f036a04fed2b00d69f5f46f1a486e70dc5c ]
+[ Upstream commit 86addd25314a1e77dbdcfddfeed0bab2f27da0e2 ]
 
-When allocating receive buffers for the vsock virtio RX virtqueue, an
-SKB is allocated with a 4140 data payload (the 44-byte packet header +
-VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE). Even when factoring in the SKB
-overhead, the resulting 8KiB allocation thanks to the rounding in
-kmalloc_reserve() is wasteful (~3700 unusable bytes) and results in a
-higher-order page allocation on systems with 4KiB pages just for the
-sake of a few hundred bytes of packet data.
+The existing fixed value of 16 worked for UYVY 720P60 over
+2 lanes at 594MHz, or UYVY 1080P60 over 4 lanes. (RGB888
+1080P60 needs 6 lanes at 594MHz).
+It doesn't allow for lower resolutions to work as the FIFO
+underflows.
 
-Limit the vsock virtio RX buffers to 4KiB per SKB, resulting in much
-better memory utilisation and removing the need to allocate higher-order
-pages entirely.
+374 is required for 1080P24 or 1080P30 UYVY over 2 lanes @
+972Mbit/s, but >374 means that the FIFO underflows on 1080P50
+UYVY over 2 lanes @ 972Mbit/s.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Message-Id: <20250717090116.11987-5-will@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Whilst it would be nice to compute it, the required information
+isn't published by Toshiba.
+
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_vsock.h     | 7 ++++++-
- net/vmw_vsock/virtio_transport.c | 2 +-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/i2c/tc358743.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 36fb3edfa403..6c00687539cf 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -111,7 +111,12 @@ static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
- 	return (size_t)(skb_end_pointer(skb) - skb->head);
- }
- 
--#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
-+/* Dimension the RX SKB so that the entire thing fits exactly into
-+ * a single 4KiB page. This avoids wasting memory due to alloc_skb()
-+ * rounding up to the next page order and also means that we
-+ * don't leave higher-order pages sitting around in the RX queue.
-+ */
-+#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	SKB_WITH_OVERHEAD(1024 * 4)
- #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
- #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
- 
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index f0e48e6911fc..f01f9e878106 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -307,7 +307,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
- 
- static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
- {
--	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
-+	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
- 	struct scatterlist pkt, *p;
- 	struct virtqueue *vq;
- 	struct sk_buff *skb;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index ee7c2cd6a81b..d1306f39fa13 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1948,8 +1948,19 @@ static int tc358743_probe_of(struct tc358743_state *state)
+ 	state->pdata.refclk_hz = clk_get_rate(refclk);
+ 	state->pdata.ddc5v_delay = DDC5V_DELAY_100_MS;
+ 	state->pdata.enable_hdcp = false;
+-	/* A FIFO level of 16 should be enough for 2-lane 720p60 at 594 MHz. */
+-	state->pdata.fifo_level = 16;
++	/*
++	 * Ideally the FIFO trigger level should be set based on the input and
++	 * output data rates, but the calculations required are buried in
++	 * Toshiba's register settings spreadsheet.
++	 * A value of 16 works with a 594Mbps data rate for 720p60 (using 2
++	 * lanes) and 1080p60 (using 4 lanes), but fails when the data rate
++	 * is increased, or a lower pixel clock is used that result in CSI
++	 * reading out faster than the data is arriving.
++	 *
++	 * A value of 374 works with both those modes at 594Mbps, and with most
++	 * modes on 972Mbps.
++	 */
++	state->pdata.fifo_level = 374;
+ 	/*
+ 	 * The PLL input clock is obtained by dividing refclk by pll_prd.
+ 	 * It must be between 6 MHz and 40 MHz, lower frequency is better.
 -- 
 2.39.5
 
