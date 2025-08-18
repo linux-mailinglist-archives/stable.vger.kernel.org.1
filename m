@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-171505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7593B2AAB5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:35:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508D4B2A7CF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD441BA4C62
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E0176860B6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F1331E0F5;
-	Mon, 18 Aug 2025 14:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EBC3203A4;
+	Mon, 18 Aug 2025 13:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwLkAwry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PgtAwjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2405A183CC3;
-	Mon, 18 Aug 2025 14:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84612320381;
+	Mon, 18 Aug 2025 13:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526153; cv=none; b=rJYPwaLMXHXFf8U4WbXX1FSLD3vOy1p4QJBLvQmUSMcXs514wCACdGOclFB5Wk13dfh0CXU3ku8PO+h5kY5M9vgqELXJJUKgIgzajplsnx4NFFvhoT3P2Mybx624swAIL8m/4drmcL3aLCHYtbzzUUupcZqq6DtrSVyqO6jPbhk=
+	t=1755524546; cv=none; b=Zcxa+piGQPCzPfaCuCmAjoXCod26yFe/ZxjYdPqhhX9PWQZHBAKpfrX2+WXeRS7TpFEZ88KpV2FuC/MaJLWx6ZhOCogFze5qVU2M7aYZ6tlu1kV/VS0XMgJ1FzyRQWsAncBaSd7AWHZbLXO5XFMy2H0FFNVttGMeRfyYwOU+z/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526153; c=relaxed/simple;
-	bh=cLyz8mcOvvmnWTG814yIn8k0UHWmbPvgewc8N2aQbOo=;
+	s=arc-20240116; t=1755524546; c=relaxed/simple;
+	bh=WiukRnchYfauyHNPmBqaySZheXwro/FwOl5mLlFfwEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuLTRADw+9Tlf2OCZToEG4EewSDsRE8Nw2r9JRaFZRRbsd3ZZlw78vXOPb+S0HFLN811KAU4JJzZFEAglPozxcCvuf4q38UTQOUdrJ9MndwSq05PdZKpFT6WZQd4i26S2e5qRrhjrj76GvAO/1WLMTCyWifg+CapCE57+DPMQzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwLkAwry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F85DC4CEEB;
-	Mon, 18 Aug 2025 14:09:11 +0000 (UTC)
+	 MIME-Version; b=BIhSh4yIB9UdUlgQHrilKrGllrg867nHs/M5p89tqlaXouOb9Rf/50ZKZEcb31quTil6midnMdWc+uz2lv5hD6pDcCiSHQUVVPQUSMIaAHE0tJMo1u4rOiQzJVFfbr5ddhi8bVOsL4iVbZm/ZlKciy22vNOrZqvGQ65uDewdQlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PgtAwjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF913C4CEF1;
+	Mon, 18 Aug 2025 13:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526152;
-	bh=cLyz8mcOvvmnWTG814yIn8k0UHWmbPvgewc8N2aQbOo=;
+	s=korg; t=1755524546;
+	bh=WiukRnchYfauyHNPmBqaySZheXwro/FwOl5mLlFfwEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwLkAwryL2DnQAYTQ6tw+3pAiXKHqaJPNobWqERiw2myxqBcuuJM0VdftgYUm8jJf
-	 keByTUyNQQngbRc75E7QSx0NmNFWQNOt1aD56RV1mJ/M4oNaWKa/g6S1FG7AdxIAf8
-	 cWCV+iwSOXMHoPSpgptoZ7y6fTSjR2PfCTtJ4Pfk=
+	b=2PgtAwjL46TYlYl1obyouI40hpBLDS32Qasg8b9bnA39VmeFGK8vm8WqlDigP9u6B
+	 /HbS1yddTojOQes9P2Wnn4XwvvZuJ4TED9QUtJyVI5oD5D/XE4Mv4yJI79ZuX4hOeh
+	 8tM+jYUQptaDWnhLDk6U5AgbsjH6za/HadZ8D8Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 473/570] block: fix kobject double initialization in add_disk
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 474/515] btrfs: clear dirty status from extent buffer on error at insert_new_root()
 Date: Mon, 18 Aug 2025 14:47:40 +0200
-Message-ID: <20250818124524.109670473@linuxfoundation.org>
+Message-ID: <20250818124516.666784444@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,143 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 343dc5423bfe876c12bb80c56f5e44286e442a07 ]
+commit c0d013495a80cbb53e2288af7ae0ec4170aafd7c upstream.
 
-Device-mapper can call add_disk() multiple times for the same gendisk
-due to its two-phase creation process (dm create + dm load). This leads
-to kobject double initialization errors when the underlying iSCSI devices
-become temporarily unavailable and then reappear.
+If we failed to insert the tree mod log operation, we are not removing the
+dirty status from the allocated and dirtied extent buffer before we free
+it. Removing the dirty status is needed for several reasons such as to
+adjust the fs_info->dirty_metadata_bytes counter and remove the dirty
+status from the respective folios. So add the missing call to
+btrfs_clear_buffer_dirty().
 
-However, if the first add_disk() call fails and is retried, the queue_kobj
-gets initialized twice, causing:
-
-kobject: kobject (ffff88810c27bb90): tried to init an initialized object,
-something is seriously wrong.
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x5b/0x80
-  kobject_init.cold+0x43/0x51
-  blk_register_queue+0x46/0x280
-  add_disk_fwnode+0xb5/0x280
-  dm_setup_md_queue+0x194/0x1c0
-  table_load+0x297/0x2d0
-  ctl_ioctl+0x2a2/0x480
-  dm_ctl_ioctl+0xe/0x20
-  __x64_sys_ioctl+0xc7/0x110
-  do_syscall_64+0x72/0x390
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fix this by separating kobject initialization from sysfs registration:
- - Initialize queue_kobj early during gendisk allocation
- - add_disk() only adds the already-initialized kobject to sysfs
- - del_gendisk() removes from sysfs but doesn't destroy the kobject
- - Final cleanup happens when the disk is released
-
-Fixes: 2bd85221a625 ("block: untangle request_queue refcounting from sysfs")
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Closes: https://lore.kernel.org/all/83591d0b-2467-433c-bce0-5581298eb161@huawei.com/
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250808053609.3237836-1-zhengqixing@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f61aa7ba08ab ("btrfs: do not BUG_ON() on tree mod log failure at insert_new_root()")
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-sysfs.c | 12 +++++-------
- block/blk.h       |  1 +
- block/genhd.c     |  2 ++
- 3 files changed, 8 insertions(+), 7 deletions(-)
+ fs/btrfs/ctree.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index c611444480b3..de39746de18b 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -821,7 +821,7 @@ static void blk_queue_release(struct kobject *kobj)
- 	/* nothing to do here, all data is associated with the parent gendisk */
- }
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -2872,6 +2872,7 @@ static noinline int insert_new_root(stru
+ 	if (ret < 0) {
+ 		int ret2;
  
--static const struct kobj_type blk_queue_ktype = {
-+const struct kobj_type blk_queue_ktype = {
- 	.default_groups = blk_queue_attr_groups,
- 	.sysfs_ops	= &queue_sysfs_ops,
- 	.release	= blk_queue_release,
-@@ -849,15 +849,14 @@ int blk_register_queue(struct gendisk *disk)
- 	struct request_queue *q = disk->queue;
- 	int ret;
- 
--	kobject_init(&disk->queue_kobj, &blk_queue_ktype);
- 	ret = kobject_add(&disk->queue_kobj, &disk_to_dev(disk)->kobj, "queue");
- 	if (ret < 0)
--		goto out_put_queue_kobj;
-+		return ret;
- 
- 	if (queue_is_mq(q)) {
- 		ret = blk_mq_sysfs_register(disk);
- 		if (ret)
--			goto out_put_queue_kobj;
-+			goto out_del_queue_kobj;
- 	}
- 	mutex_lock(&q->sysfs_lock);
- 
-@@ -908,8 +907,8 @@ int blk_register_queue(struct gendisk *disk)
- 	mutex_unlock(&q->sysfs_lock);
- 	if (queue_is_mq(q))
- 		blk_mq_sysfs_unregister(disk);
--out_put_queue_kobj:
--	kobject_put(&disk->queue_kobj);
-+out_del_queue_kobj:
-+	kobject_del(&disk->queue_kobj);
- 	return ret;
- }
- 
-@@ -960,5 +959,4 @@ void blk_unregister_queue(struct gendisk *disk)
- 		elevator_set_none(q);
- 
- 	blk_debugfs_remove(disk);
--	kobject_put(&disk->queue_kobj);
- }
-diff --git a/block/blk.h b/block/blk.h
-index fae7653a941f..4746a7704856 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -19,6 +19,7 @@ struct elevator_type;
- /* Max future timer expiry for timeouts */
- #define BLK_MAX_TIMEOUT		(5 * HZ)
- 
-+extern const struct kobj_type blk_queue_ktype;
- extern struct dentry *blk_debugfs_root;
- 
- struct blk_flush_queue {
-diff --git a/block/genhd.c b/block/genhd.c
-index c26733f6324b..9bbc38d12792 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -1303,6 +1303,7 @@ static void disk_release(struct device *dev)
- 	disk_free_zone_resources(disk);
- 	xa_destroy(&disk->part_tbl);
- 
-+	kobject_put(&disk->queue_kobj);
- 	disk->queue->disk = NULL;
- 	blk_put_queue(disk->queue);
- 
-@@ -1486,6 +1487,7 @@ struct gendisk *__alloc_disk_node(struct request_queue *q, int node_id,
- 	INIT_LIST_HEAD(&disk->slave_bdevs);
- #endif
- 	mutex_init(&disk->rqos_state_mutex);
-+	kobject_init(&disk->queue_kobj, &blk_queue_ktype);
- 	return disk;
- 
- out_erase_part0:
--- 
-2.50.1
-
++		btrfs_clear_buffer_dirty(trans, c);
+ 		ret2 = btrfs_free_tree_block(trans, btrfs_root_id(root), c, 0, 1);
+ 		if (ret2 < 0)
+ 			btrfs_abort_transaction(trans, ret2);
 
 
 
