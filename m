@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-171486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A13FB2AA44
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A163B2A449
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B512A5672CB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F1E627272
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D314322A25;
-	Mon, 18 Aug 2025 14:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F8831B100;
+	Mon, 18 Aug 2025 13:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvGYF/jR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7bXRRQ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B27E31E115;
-	Mon, 18 Aug 2025 14:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864AD2E22A6;
+	Mon, 18 Aug 2025 13:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526087; cv=none; b=SHmNuZwheWx2LE67WWZO801fJii1euRqX6QjR30y83rfoWkghjNO5/jfFQaGs9U9S74B+qZ+J2f1cXDp5sS0jXAXomYGEQrmES8ict3zzoJ8NyrfCqPXmzP/e8IWfDCcT8uEzgva0Z8ozgEIYLfI1Uw+eSp36xFgGVhzPd2Aj9U=
+	t=1755522772; cv=none; b=BvcTmPOxzhZLEBDtW3TYcBGnu5GVXio3RJgZICygGdYRcKRCOoTzPTH0JJTTfmP2C7qDS8wYdx1PQwc2Zx0Dp3psE9ScVN9RWqcJAiqdAWG7tuQ0lhXpwQrewQzyolaQ5HOwXZQfis6spNdPUwYoT1UaHhrLOIbVedIF5paB7IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526087; c=relaxed/simple;
-	bh=XUO/HOu64xn0aV2mRSED/5w0tMBAeOVHWd1oI0YB+NE=;
+	s=arc-20240116; t=1755522772; c=relaxed/simple;
+	bh=zUCuWW7y+4//8LsCCTweeJTmUPt8oFQoMDSdffSif0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hH1TBe6H7+Lmqf4BnFNBD2UCRt4PdVyZnvjAEBvt4B4xxhkmFFUZfT0eJFYfH0cgAVlHumVM81JCszmJotpGOIFGCXWmJCvE54H3HCzW9+aXxrQ3KC6lnTjXD3i2oEhShMoLC7j+0qGiI21Nd8golMhXjJyF6kMBpYo4DD+vZY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvGYF/jR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2960FC4CEEB;
-	Mon, 18 Aug 2025 14:08:05 +0000 (UTC)
+	 MIME-Version; b=IfhEWuz1IIbYyDN6EFC7PWbDT+OUKdZ7MdtvespSg4rK1Smbd9Fs+Oz6R9BFGzAiCyWPC61A0s4bo1BXIBalY1u7H4nhZBcNZHYcJHM8bx8uPN2t1PMRaKE3nQ6hzdGbs1r/f0UYse3XAOhHWtXdg4llZ4et6cOdSduSSlPAYKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7bXRRQ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AF4C113D0;
+	Mon, 18 Aug 2025 13:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526086;
-	bh=XUO/HOu64xn0aV2mRSED/5w0tMBAeOVHWd1oI0YB+NE=;
+	s=korg; t=1755522772;
+	bh=zUCuWW7y+4//8LsCCTweeJTmUPt8oFQoMDSdffSif0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IvGYF/jR2llRZR6fslrWXvKQawkAN2U8qhofFxG6w5ra6RGg83y+zIuJ21gOeNVbd
-	 xTUWuaeAnA/DvAOOp9YqL2esjymYgZp+MBjKSqREee0/UfsghNF216iy6e0mW2cpuR
-	 JI9o1s4k2wsutYN2CtmOVjMwW24msaW6zEJbIvn4=
+	b=R7bXRRQ+gDhbUZrAT83gN7NIEuciRNZ+sPH2KaGgFgkID8fnzLiIRXXF16SVtmTio
+	 Buz96cVzwbAygj+WdcQxUJkDgXtyTLtguFLo6ih2QMvdPkPP1Kap6f0MHaJ8NMiSoY
+	 l7dVy0qW5DKl+qOX1F2Tee4efEGSpRzWuJ/n3dMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 455/570] smb: client: dont call init_waitqueue_head(&info->conn_wait) twice in _smbd_get_connection
+	Youngjun Lee <yjjuny.lee@samsung.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 416/444] media: uvcvideo: Fix 1-byte out-of-bounds read in uvc_parse_format()
 Date: Mon, 18 Aug 2025 14:47:22 +0200
-Message-ID: <20250818124523.348923151@linuxfoundation.org>
+Message-ID: <20250818124504.531375699@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Youngjun Lee <yjjuny.lee@samsung.com>
 
-[ Upstream commit 550a194c5998e4e77affc6235e80d3766dc2d27e ]
+commit 782b6a718651eda3478b1824b37a8b3185d2740c upstream.
 
-It is already called long before we may hit this cleanup code path.
+The buffer length check before calling uvc_parse_format() only ensured
+that the buffer has at least 3 bytes (buflen > 2), buf the function
+accesses buffer[3], requiring at least 4 bytes.
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can lead to an out-of-bounds read if the buffer has exactly 3 bytes.
+
+Fix it by checking that the buffer has at least 4 bytes in
+uvc_parse_format().
+
+Signed-off-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: c0efd232929c ("V4L/DVB (8145a): USB Video Class driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://lore.kernel.org/r/20250610124107.37360-1-yjjuny.lee@samsung.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/usb/uvc/uvc_driver.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-index cd4c61932cb2..b9bb531717a6 100644
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -1689,7 +1689,6 @@ static struct smbd_connection *_smbd_get_connection(
- 	cancel_delayed_work_sync(&info->idle_timer_work);
- 	destroy_caches_and_workqueue(info);
- 	sc->status = SMBDIRECT_SOCKET_NEGOTIATE_FAILED;
--	init_waitqueue_head(&info->conn_wait);
- 	rdma_disconnect(sc->rdma.cm_id);
- 	wait_event(info->conn_wait,
- 		sc->status == SMBDIRECT_SOCKET_DISCONNECTED);
--- 
-2.39.5
-
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -235,6 +235,9 @@ static int uvc_parse_format(struct uvc_d
+ 	unsigned int i, n;
+ 	u8 ftype;
+ 
++	if (buflen < 4)
++		return -EINVAL;
++
+ 	format->type = buffer[2];
+ 	format->index = buffer[3];
+ 	format->frames = frames;
 
 
 
