@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-170021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20ADB2A00C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FBFB2A008
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6265B18A70DE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:07:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D66137A2C05
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808B130E0DE;
-	Mon, 18 Aug 2025 11:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DBE30E0DE;
+	Mon, 18 Aug 2025 11:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvyCFsVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grDfBNHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C82261B67
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 11:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DF7261B67
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 11:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755515203; cv=none; b=YIpI3P5qg9Dxb5oNS9S3nZ8XvXseDki9jSr0ffap1YMU0efPjDxNGs65sb1gU5kEk/6cxfFPEK57WonlRwJ9Yuoj/ewU96PRwJ7dvLMLbBUR++L6o5DPRFCTrn5TDdtAnqBKbx1Terpvyrvs2k1TzeCtIkY7ZMM7i/6grd9ogrw=
+	t=1755515241; cv=none; b=XLuUWjHeyTy1ALeYq6V4WCafFDDWvSoRZG05r59R+JyZYeeJpkwb6iDTopQptvBvOKrWOpk8putOFZXhhLt/vYvD6OuqFp5sA6MOb9dYebLy/KdRVXW4E85+xQr8KDhxLB71X910Qtgqp5AFLc9nQLqHvcu2LlHRf2NV4B6gtFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755515203; c=relaxed/simple;
-	bh=Xvr1LdCX771sei8RAC8mWuTM8UJB03PhS7v+3PATvMM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rdja5sGXJNWiCjrnIvUVSfQvFNuY5Pr8FE3cnHf2T91s/bA918xnfBBe8POwsBUGAMwYPEOlCJjwN+w0n4UBwqwZWQfMKBP+HUlzqNjl2MHCBt0FUViQ3o/xbq4U49PGP4B8QWgKZDjXkd3g4NAxepNCmIomwFlgKNwYepcX+UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvyCFsVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8301EC4CEEB;
-	Mon, 18 Aug 2025 11:06:42 +0000 (UTC)
+	s=arc-20240116; t=1755515241; c=relaxed/simple;
+	bh=KJa8wvSMD5qBlYSvKhvnaOI6pdBivDO2hJSWT4d7vOE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PjhZrwrVLXRM/DpKVhqX16zsVGRt+xqYeusu7mkONrEIOrNOs1Umys9SB4AdUkOQluFR8FPKkk2/S84a1Gxva4p0PzUfjuyOaNdFbyeEEpDqSmO7BE4YJx4024DGif1XjlZo9NK+Pz7TkFFkiDIL5tFsqzQ+PqaG3WvtjWN0k4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grDfBNHl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B198DC4CEEB;
+	Mon, 18 Aug 2025 11:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755515203;
-	bh=Xvr1LdCX771sei8RAC8mWuTM8UJB03PhS7v+3PATvMM=;
+	s=korg; t=1755515241;
+	bh=KJa8wvSMD5qBlYSvKhvnaOI6pdBivDO2hJSWT4d7vOE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nvyCFsVQmBhR6QG1wd+Ku6sxEbRfPibSmUSm2BkoKE4mI8r+07c8tiT+9OexsfPq+
-	 x61AyJer3EmPscHnpkhfR+sTuyhU28Ww0Q+2yqTa3NqQ32tb1DVblpg32KQQTdFiPt
-	 1Stwl48hRAjo1RSx4Y5yVeJGVMDylZhlXdFvvtcc=
-Subject: FAILED: patch "[PATCH] hv_netvsc: Fix panic during namespace deletion with VF" failed to apply to 5.4-stable tree
-To: haiyangz@microsoft.com,kuba@kernel.org
+	b=grDfBNHl7ujGgkvrwVvzOmamQgwHBOvq5NMxQmbf7u6ZIF7uuN6V93XawmSbsY6Qi
+	 HwETV7jIZmZbzSkZiW2i/wQOjzLKdIFRrolzkJ6ygxhDWvupIpYNW2Tt3vbDZnBZ7W
+	 8LAVqDlnj7vbvHYzVzICwqzVdCm0bLKzdowQgsRA=
+Subject: FAILED: patch "[PATCH] mm, slab: restore NUMA policy support for large kmalloc" failed to apply to 6.6-stable tree
+To: vbabka@suse.cz,cl@gentwo.org,harry.yoo@oracle.com,roman.gushchin@linux.dev,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 13:06:29 +0200
-Message-ID: <2025081829-subsidy-password-5fce@gregkh>
+Date: Mon, 18 Aug 2025 13:07:18 +0200
+Message-ID: <2025081818-fragrant-plausibly-d214@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 33caa208dba6fa639e8a92fd0c8320b652e5550c
+git cherry-pick -x e2d18cbf178775ad377ad88ee55e6e183c38d262
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081829-subsidy-password-5fce@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081818-fragrant-plausibly-d214@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,145 +77,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 33caa208dba6fa639e8a92fd0c8320b652e5550c Mon Sep 17 00:00:00 2001
-From: Haiyang Zhang <haiyangz@microsoft.com>
-Date: Wed, 6 Aug 2025 13:21:51 -0700
-Subject: [PATCH] hv_netvsc: Fix panic during namespace deletion with VF
+From e2d18cbf178775ad377ad88ee55e6e183c38d262 Mon Sep 17 00:00:00 2001
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Mon, 2 Jun 2025 13:02:12 +0200
+Subject: [PATCH] mm, slab: restore NUMA policy support for large kmalloc
 
-The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
-received on netvsc NIC. During deletion of the namespace,
-default_device_exit_batch() >> default_device_exit_net() is called. When
-netvsc NIC is moved back and registered to the default namespace, it
-automatically brings VF NIC back to the default namespace. This will cause
-the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
-the list end, and hit NULL ptr:
+The slab allocator observes the task's NUMA policy in various places
+such as allocating slab pages. Large kmalloc() allocations used to do
+that too, until an unintended change by c4cab557521a ("mm/slab_common:
+cleanup kmalloc_large()") resulted in ignoring mempolicy and just
+preferring the local node. Restore the NUMA policy support.
 
-[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
-[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
-[  231.450246] #PF: supervisor read access in kernel mode
-[  231.450579] #PF: error_code(0x0000) - not-present page
-[  231.450916] PGD 17b8a8067 P4D 0
-[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
-[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY
-[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
-[  231.452692] Workqueue: netns cleanup_net
-[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
-[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
-[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
-[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
-[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
-[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
-[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
-[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
-[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
-[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
-[  231.458434] Call Trace:
-[  231.458600]  <TASK>
-[  231.458777]  ops_undo_list+0x100/0x220
-[  231.459015]  cleanup_net+0x1b8/0x300
-[  231.459285]  process_one_work+0x184/0x340
+Fixes: c4cab557521a ("mm/slab_common: cleanup kmalloc_large()")
+Cc: <stable@vger.kernel.org>
+Acked-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-To fix it, move the ns change to a workqueue, and take rtnl_lock to avoid
-changing the netdev list when default_device_exit_net() is using it.
-
-Cc: stable@vger.kernel.org
-Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Link: https://patch.msgid.link/1754511711-11188-1-git-send-email-haiyangz@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/drivers/net/hyperv/hyperv_net.h b/drivers/net/hyperv/hyperv_net.h
-index cb6f5482d203..7397c693f984 100644
---- a/drivers/net/hyperv/hyperv_net.h
-+++ b/drivers/net/hyperv/hyperv_net.h
-@@ -1061,6 +1061,7 @@ struct net_device_context {
- 	struct net_device __rcu *vf_netdev;
- 	struct netvsc_vf_pcpu_stats __percpu *vf_stats;
- 	struct delayed_work vf_takeover;
-+	struct delayed_work vfns_work;
+diff --git a/mm/slub.c b/mm/slub.c
+index 31e11ef256f9..06d64a5fb1bf 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4269,7 +4269,12 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
+ 		flags = kmalloc_fix_flags(flags);
  
- 	/* 1: allocated, serial number is valid. 0: not allocated */
- 	u32 vf_alloc;
-@@ -1075,6 +1076,8 @@ struct net_device_context {
- 	struct netvsc_device_info *saved_netvsc_dev_info;
- };
- 
-+void netvsc_vfns_work(struct work_struct *w);
+ 	flags |= __GFP_COMP;
+-	folio = (struct folio *)alloc_pages_node_noprof(node, flags, order);
 +
- /* Azure hosts don't support non-TCP port numbers in hashing for fragmented
-  * packets. We can use ethtool to change UDP hash level when necessary.
-  */
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index f44753756358..39c892e46cb0 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2522,6 +2522,7 @@ static int netvsc_probe(struct hv_device *dev,
- 	spin_lock_init(&net_device_ctx->lock);
- 	INIT_LIST_HEAD(&net_device_ctx->reconfig_events);
- 	INIT_DELAYED_WORK(&net_device_ctx->vf_takeover, netvsc_vf_setup);
-+	INIT_DELAYED_WORK(&net_device_ctx->vfns_work, netvsc_vfns_work);
- 
- 	net_device_ctx->vf_stats
- 		= netdev_alloc_pcpu_stats(struct netvsc_vf_pcpu_stats);
-@@ -2666,6 +2667,8 @@ static void netvsc_remove(struct hv_device *dev)
- 	cancel_delayed_work_sync(&ndev_ctx->dwork);
- 
- 	rtnl_lock();
-+	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
++	if (node == NUMA_NO_NODE)
++		folio = (struct folio *)alloc_pages_noprof(flags, order);
++	else
++		folio = (struct folio *)__alloc_pages_noprof(flags, order, node, NULL);
 +
- 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
- 	if (nvdev) {
- 		cancel_work_sync(&nvdev->subchan_work);
-@@ -2707,6 +2710,7 @@ static int netvsc_suspend(struct hv_device *dev)
- 	cancel_delayed_work_sync(&ndev_ctx->dwork);
- 
- 	rtnl_lock();
-+	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
- 
- 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
- 	if (nvdev == NULL) {
-@@ -2800,6 +2804,27 @@ static void netvsc_event_set_vf_ns(struct net_device *ndev)
- 	}
- }
- 
-+void netvsc_vfns_work(struct work_struct *w)
-+{
-+	struct net_device_context *ndev_ctx =
-+		container_of(w, struct net_device_context, vfns_work.work);
-+	struct net_device *ndev;
-+
-+	if (!rtnl_trylock()) {
-+		schedule_delayed_work(&ndev_ctx->vfns_work, 1);
-+		return;
-+	}
-+
-+	ndev = hv_get_drvdata(ndev_ctx->device_ctx);
-+	if (!ndev)
-+		goto out;
-+
-+	netvsc_event_set_vf_ns(ndev);
-+
-+out:
-+	rtnl_unlock();
-+}
-+
- /*
-  * On Hyper-V, every VF interface is matched with a corresponding
-  * synthetic interface. The synthetic interface is presented first
-@@ -2810,10 +2835,12 @@ static int netvsc_netdev_event(struct notifier_block *this,
- 			       unsigned long event, void *ptr)
- {
- 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
-+	struct net_device_context *ndev_ctx;
- 	int ret = 0;
- 
- 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
--		netvsc_event_set_vf_ns(event_dev);
-+		ndev_ctx = netdev_priv(event_dev);
-+		schedule_delayed_work(&ndev_ctx->vfns_work, 0);
- 		return NOTIFY_DONE;
- 	}
- 
+ 	if (folio) {
+ 		ptr = folio_address(folio);
+ 		lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B,
 
 
