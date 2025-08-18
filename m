@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-170048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E868B2A0AB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678B4B2A0B2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9951562615
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:33:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E6913AD162
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0853246BC6;
-	Mon, 18 Aug 2025 11:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FFF21FF38;
+	Mon, 18 Aug 2025 11:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9sd1N9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVsWxSXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760891C4A20;
-	Mon, 18 Aug 2025 11:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DEB2E2283
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 11:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755516755; cv=none; b=jXeFSb5AMHXz1Ag57BCn7dr4ZmBcpy+dz7g46wREocO/MtGPFPW9xBcza+ngVdsrNbUPtqQWqsTGjrs5OoOs5D3KZe7BNkoC5Y2jPRVtT5EMgablj+SmFncxMB9/epXcWeq6kc31mUat4UDi2ammyut3rPrdMxOTg4VTABTRiVE=
+	t=1755517276; cv=none; b=GPf4OQhxtmCAmIeqBFSE/7yceLU3PvAi7qy4QXkDYj21ESYhOk2vmd8bFd7+FsURZiv+EKyi0hFkOC8tZdJ8pi+6HT2P5eTIgBgi5b4AkEhocFWfxDxXDT7G9Iv0KRyPABhjxuGMp5fxcRjyq4pLM92CQ+ju4glUa26JZB9W3iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755516755; c=relaxed/simple;
-	bh=OEyi5yHREVDomYliCb+RiP5YrndamhvCmhCRx40LSP4=;
+	s=arc-20240116; t=1755517276; c=relaxed/simple;
+	bh=KARksXz8kGSJICeCPybif3Z+aJK7Z4/IrOjTpAbKAHs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ub7qiQv9fzVBPeuk63d5FOTzXOi0S8tNDq82xGx9ePYIhjHRPLn+0XfDlfVdzj6iPz76A2XYc9om17kJk4sulr3u/64KeRjsA3Zrpm3Rpf5DuajXtIhlr9WK5SV4lcg4ZnHSdbtKB26DrmC6iBdPnG0aDs56S8JMVtKeoWNYtEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9sd1N9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5340FC4CEEB;
-	Mon, 18 Aug 2025 11:32:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=pKVdkCoFVAZwaBbF4HirvgGSkLRgkmT8rT9fwPHnQkFz9Y+vsWfjAoHlraUpMQo66wmkL4gHDV7EMwvsUgrw16YAev9E4RW7HmzuqNhyZoSVzmO+HHf91PXc4q7i60/b5JEKAcPKGPdVuqZ61w5HxCi65XmPWBc+moD0+URMwmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVsWxSXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F60DC116B1;
+	Mon, 18 Aug 2025 11:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755516755;
-	bh=OEyi5yHREVDomYliCb+RiP5YrndamhvCmhCRx40LSP4=;
+	s=korg; t=1755517276;
+	bh=KARksXz8kGSJICeCPybif3Z+aJK7Z4/IrOjTpAbKAHs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u9sd1N9OkQ4EfKniJMRHqKpeFy+xxWE/m1rcGVex96M+ssNTEUrZVgTlSd3u9oUQI
-	 ewchyMlP4xFtzbLdA3WcfO6pOb9BIDER7hfWjszyUVE4rPND83vFOHSHz+iXqwfPu1
-	 drBMjAyMvDEH/7ZNwVkzWEdvTeV2KQfG6PfjLeSs=
-Date: Mon, 18 Aug 2025 13:32:31 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naman Jain <namjain@linux.microsoft.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Long Li <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>
-Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
- size of ring buffer
-Message-ID: <2025081825-freezing-feisty-9978@gregkh>
-References: <20250722134340.596340262@linuxfoundation.org>
- <20250722134341.490321531@linuxfoundation.org>
- <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
- <2025072316-mop-manhood-b63e@gregkh>
- <08158da3-82a0-4eb0-a805-87afe34e288a@linux.microsoft.com>
- <2025081834-bullfrog-elixir-6a96@gregkh>
- <fbf3a795-bf18-4970-a320-ec06e0758d3b@linux.microsoft.com>
+	b=DVsWxSXQSibJZND/sPu7KE/j2/qJSukT1sDi1nZPYboqSzAlDVAZDGkDZ4GVB2bXJ
+	 sbpk1zlNw/PO7sdj00IL6iwse0e0S2AN1z7NlPv84OazAzFqRFLcgAIblyPp9GGx/V
+	 1/e5HU02ctreaoSQAg5/N4lgfwjQYPfSnW0Iu0BU=
+Date: Mon, 18 Aug 2025 13:41:13 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, qat-linux@intel.com,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ahsan Atta <ahsan.atta@intel.com>
+Subject: Re: [PATCH 6.1 v2] crypto: qat - fix ring to service map for QAT GEN4
+Message-ID: <2025081806-hasty-nectar-4d65@gregkh>
+References: <20250722150910.6768-1-giovanni.cabiddu@intel.com>
+ <aKMOiXg0KvyxWb6F@gcabiddu-mobl.ger.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,87 +57,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fbf3a795-bf18-4970-a320-ec06e0758d3b@linux.microsoft.com>
+In-Reply-To: <aKMOiXg0KvyxWb6F@gcabiddu-mobl.ger.corp.intel.com>
 
-On Mon, Aug 18, 2025 at 12:17:56PM +0530, Naman Jain wrote:
+On Mon, Aug 18, 2025 at 12:29:13PM +0100, Giovanni Cabiddu wrote:
+> Hi Greg and Sasha,
 > 
-> 
-> On 8/18/2025 11:22 AM, Greg Kroah-Hartman wrote:
-> > On Mon, Aug 18, 2025 at 10:54:10AM +0530, Naman Jain wrote:
-> > > 
-> > > 
-> > > On 7/23/2025 12:12 PM, Greg Kroah-Hartman wrote:
-> > > > On Tue, Jul 22, 2025 at 08:29:07PM +0530, Naman Jain wrote:
-> > > > > 
-> > > > > 
-> > > > > On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
-> > > > > > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > > > > > 
-> > > > > > ------------------
-> > > > > > 
-> > > > > > From: Naman Jain <namjain@linux.microsoft.com>
-> > > > > > 
-> > > > > > commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
-> > > > > > 
-> > > > > > Size of ring buffer, as defined in uio_hv_generic driver, is no longer
-> > > > > > fixed to 16 KB. This creates a problem in fcopy, since this size was
-> > > > > > hardcoded. With the change in place to make ring sysfs node actually
-> > > > > > reflect the size of underlying ring buffer, it is safe to get the size
-> > > > > > of ring sysfs file and use it for ring buffer size in fcopy daemon.
-> > > > > > Fix the issue of disparity in ring buffer size, by making it dynamic
-> > > > > > in fcopy uio daemon.
-> > > > > > 
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
-> > > > > > Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-> > > > > > Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> > > > > > Reviewed-by: Long Li <longli@microsoft.com>
-> > > > > > Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
-> > > > > > Signed-off-by: Wei Liu <wei.liu@kernel.org>
-> > > > > > Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
-> > > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > > > ---
-> > > > > 
-> > > > > 
-> > > > > Hello Greg,
-> > > > > Please don't pick this change yet. I have shared the reason in the other
-> > > > > thread:
-> > > > > "Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring buffer"
-> > > > > has been added to the 6.12-stable tree"
-> > > > 
-> > > > Ok, I have dropped this from the 6.12.y tree now.
-> > > > 
-> > > > thanks,
-> > > > 
-> > > > greg k-h
-> > > 
-> > > Hello Greg,
-> > > Can you please consider picking this change for next release of 6.12 kernel.
-> > > The dependent change [1] is now part of 6.12 kernel, so we need this change
-> > > to fix fcopy in 6.12 kernel.
-> > > 
-> > > [1]: Drivers: hv: Make the sysfs node size for the ring buffer dynamic
+> On Tue, Jul 22, 2025 at 04:07:09PM +0100, Giovanni Cabiddu wrote:
+> > [ Upstream commit a238487f7965d102794ed9f8aff0b667cd2ae886 ]
 > > 
-> > What are the exact git commit ids you want to have applied here?  [1]
-> > does not reference much to me :)
+> > The 4xxx drivers hardcode the ring to service mapping. However, when
+> > additional configurations where added to the driver, the mappings were
+> > not updated. This implies that an incorrect mapping might be reported
+> > through pfvf for certain configurations.
 > > 
-> > thanks,
+> > This is a backport of the upstream commit with modifications, as the
+> > original patch does not apply cleanly to kernel v6.1.x. The logic has
+> > been simplified to reflect the limited configurations of the QAT driver
+> > in this version: crypto-only and compression.
 > > 
-> > greg k-h
+> > Instead of dynamically computing the ring to service mappings, these are
+> > now hardcoded to simplify the backport.
+> > 
+> > Fixes: 0cec19c761e5 ("crypto: qat - add support for compression for 4xxx")
+> > Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+> > Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
+> > Reviewed-by: Tero Kristo <tero.kristo@linux.intel.com>
+> > Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> > (cherry-picked from commit a238487f7965d102794ed9f8aff0b667cd2ae886)
+> > [Giovanni: backport to 6.1.y, conflict resolved simplifying the logic
+> > in the function get_ring_to_svc_map() as the QAT driver in v6.1 supports
+> > only limited configurations (crypto only and compression).  Differs from
+> > upstream as the ring to service mapping is hardcoded rather than being
+> > dynamically computed.]
+> > Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+> > Tested-by: Ahsan Atta <ahsan.atta@intel.com>
+> > Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+> > ---
+> > V1 -> V2: changed signed-off-by area:
+> >   * added (cherry-picked from ...) after last tag from upstream commit
+> >   * added a note explaining how this backport differs from the original patch
+> >   * added a new Signed-off-by tag for the backport author.
 > 
-> My bad :)
+> Just following up on this patch as I haven't seen any activity on it yet.
 > 
-> Please pick the commit a4131a50d072 ("tools/hv: fcopy: Fix irregularities
-> with size of ring buffer") in next 6.12 release, which is supposed to fix
-> fcopy.
-> 
-> 
-> The commit which added the missing dependency is now already part of
-> v6.12.42 kernel
-> c7f864d34529 ("Drivers: hv: Make the sysfs node size for the ring buffer
-> dynamic")
+> Was it possibly missed, or is there anything I should do to move it
+> forward?
 
-Now queued up, thanks.
+It's in a pending queue of hundreds of stable backports I have yet to
+get to.  That's what I get for trying to take a vacation... :)
+
+Don't worry, it's not lost, just that we have to process patches for the
+newer stable kernels first, as that's where we have the most users.
+This, and many others, will be gotten to in a week or so.
+
+thanks,
 
 greg k-h
 
