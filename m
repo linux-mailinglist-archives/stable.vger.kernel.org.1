@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-170049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678B4B2A0B2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBEBBB2A0B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E6913AD162
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:41:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 972B83A643C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FFF21FF38;
-	Mon, 18 Aug 2025 11:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B106226F282;
+	Mon, 18 Aug 2025 11:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVsWxSXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V503yscL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DEB2E2283
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 11:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64555258EC7;
+	Mon, 18 Aug 2025 11:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755517276; cv=none; b=GPf4OQhxtmCAmIeqBFSE/7yceLU3PvAi7qy4QXkDYj21ESYhOk2vmd8bFd7+FsURZiv+EKyi0hFkOC8tZdJ8pi+6HT2P5eTIgBgi5b4AkEhocFWfxDxXDT7G9Iv0KRyPABhjxuGMp5fxcRjyq4pLM92CQ+ju4glUa26JZB9W3iY=
+	t=1755517342; cv=none; b=nCAvllbieVOSV0Z4ZWnMD+USqBM/BGZwQWHL2ez6eAe48gVqPnvC41xeYiGCwfGqACN6O3iTXA79YmJ/79B2vd2zllbgPUtcS0wa1lR8rIuArWTS5ZLYm0pEz8DKYhmB/fi9ngQIBHw8LkxPZ6cIsapy/xR+y4IAgGzli0Sfffc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755517276; c=relaxed/simple;
-	bh=KARksXz8kGSJICeCPybif3Z+aJK7Z4/IrOjTpAbKAHs=;
+	s=arc-20240116; t=1755517342; c=relaxed/simple;
+	bh=oC5vZnztnlIcER5pgvEzBD+Ze82XllsXn8EMgCLpIMI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pKVdkCoFVAZwaBbF4HirvgGSkLRgkmT8rT9fwPHnQkFz9Y+vsWfjAoHlraUpMQo66wmkL4gHDV7EMwvsUgrw16YAev9E4RW7HmzuqNhyZoSVzmO+HHf91PXc4q7i60/b5JEKAcPKGPdVuqZ61w5HxCi65XmPWBc+moD0+URMwmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVsWxSXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F60DC116B1;
-	Mon, 18 Aug 2025 11:41:15 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=qaoyizuf7at6m0OhZDkAoGHoocACasfi49NF22CdHh9xZz9Yj2w8EAPy9H6k8FZYMHsmZzOys86w8buQ54dSKSpphWiSKHC3hk6LDgOdm4EDjcUGdwonulL9+blGkr9Jfq0PfNy6hnMWkHt3nQJhR0eN8Xgk+h4YlWAo9zC7MVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V503yscL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4822AC4CEEB;
+	Mon, 18 Aug 2025 11:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755517276;
-	bh=KARksXz8kGSJICeCPybif3Z+aJK7Z4/IrOjTpAbKAHs=;
+	s=korg; t=1755517342;
+	bh=oC5vZnztnlIcER5pgvEzBD+Ze82XllsXn8EMgCLpIMI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DVsWxSXQSibJZND/sPu7KE/j2/qJSukT1sDi1nZPYboqSzAlDVAZDGkDZ4GVB2bXJ
-	 sbpk1zlNw/PO7sdj00IL6iwse0e0S2AN1z7NlPv84OazAzFqRFLcgAIblyPp9GGx/V
-	 1/e5HU02ctreaoSQAg5/N4lgfwjQYPfSnW0Iu0BU=
-Date: Mon, 18 Aug 2025 13:41:13 +0200
+	b=V503yscL+OdWMGhcI5jZ6ao7SgIQiZy5m9+pRerk16nT3qlNc1x+/59nlIqp+SP2v
+	 7OkP1cuptCAOSnN5p601ml5vawmYA3jTQiM3XrokheL6rsAkafQmuGvgpAXzkCLlWG
+	 Frd3rhr07h1EYMy/hSgMmZDS3h/iszFoOUo4YgS0=
+Date: Mon, 18 Aug 2025 13:42:18 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Cc: stable@vger.kernel.org, sashal@kernel.org, qat-linux@intel.com,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ahsan Atta <ahsan.atta@intel.com>
-Subject: Re: [PATCH 6.1 v2] crypto: qat - fix ring to service map for QAT GEN4
-Message-ID: <2025081806-hasty-nectar-4d65@gregkh>
-References: <20250722150910.6768-1-giovanni.cabiddu@intel.com>
- <aKMOiXg0KvyxWb6F@gcabiddu-mobl.ger.corp.intel.com>
+To: wangzijie <wangzijie1@honor.com>
+Cc: akpm@linux-foundation.org, viro@zeniv.linux.org.uk, adobriyan@gmail.com,
+	rick.p.edgecombe@intel.com, ast@kernel.org, k.shutemov@gmail.com,
+	jirislaby@kernel.org, linux-fsdevel@vger.kernel.org,
+	polynomial-c@gmx.de, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: [PATCH v2] proc: fix missing pde_set_flags() for net proc files
+Message-ID: <2025081810-hulk-polio-097b@gregkh>
+References: <20250818112428.953835-1-wangzijie1@honor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,60 +57,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aKMOiXg0KvyxWb6F@gcabiddu-mobl.ger.corp.intel.com>
+In-Reply-To: <20250818112428.953835-1-wangzijie1@honor.com>
 
-On Mon, Aug 18, 2025 at 12:29:13PM +0100, Giovanni Cabiddu wrote:
-> Hi Greg and Sasha,
+On Mon, Aug 18, 2025 at 07:24:28PM +0800, wangzijie wrote:
+> To avoid potential UAF issues during module removal races, we use pde_set_flags()
+> to save proc_ops flags in PDE itself before proc_register(), and then use
+> pde_has_proc_*() helpers instead of directly dereferencing pde->proc_ops->*.
 > 
-> On Tue, Jul 22, 2025 at 04:07:09PM +0100, Giovanni Cabiddu wrote:
-> > [ Upstream commit a238487f7965d102794ed9f8aff0b667cd2ae886 ]
-> > 
-> > The 4xxx drivers hardcode the ring to service mapping. However, when
-> > additional configurations where added to the driver, the mappings were
-> > not updated. This implies that an incorrect mapping might be reported
-> > through pfvf for certain configurations.
-> > 
-> > This is a backport of the upstream commit with modifications, as the
-> > original patch does not apply cleanly to kernel v6.1.x. The logic has
-> > been simplified to reflect the limited configurations of the QAT driver
-> > in this version: crypto-only and compression.
-> > 
-> > Instead of dynamically computing the ring to service mappings, these are
-> > now hardcoded to simplify the backport.
-> > 
-> > Fixes: 0cec19c761e5 ("crypto: qat - add support for compression for 4xxx")
-> > Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-> > Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-> > Reviewed-by: Tero Kristo <tero.kristo@linux.intel.com>
-> > Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-> > (cherry-picked from commit a238487f7965d102794ed9f8aff0b667cd2ae886)
-> > [Giovanni: backport to 6.1.y, conflict resolved simplifying the logic
-> > in the function get_ring_to_svc_map() as the QAT driver in v6.1 supports
-> > only limited configurations (crypto only and compression).  Differs from
-> > upstream as the ring to service mapping is hardcoded rather than being
-> > dynamically computed.]
-> > Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-> > Tested-by: Ahsan Atta <ahsan.atta@intel.com>
-> > Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-> > ---
-> > V1 -> V2: changed signed-off-by area:
-> >   * added (cherry-picked from ...) after last tag from upstream commit
-> >   * added a note explaining how this backport differs from the original patch
-> >   * added a new Signed-off-by tag for the backport author.
+> However, the pde_set_flags() call was missing when creating net related proc files.
+> This omission caused incorrect behavior which FMODE_LSEEK was being cleared
+> inappropriately in proc_reg_open() for net proc files. Lars reported it in this link[1].
 > 
-> Just following up on this patch as I haven't seen any activity on it yet.
+> Fix this by ensuring pde_set_flags() is called when register proc entry, and add
+> NULL check for proc_ops in pde_set_flags().
 > 
-> Was it possibly missed, or is there anything I should do to move it
-> forward?
+> [1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
+> 
+> Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
+> Reported-by: Lars Wendler <polynomial-c@gmx.de>
+> Signed-off-by: wangzijie <wangzijie1@honor.com>
+> ---
+> v2:
+> - followed by Jiri's suggestion to refractor code and reformat commit message
+> ---
+>  fs/proc/generic.c | 36 +++++++++++++++++++-----------------
+>  1 file changed, 19 insertions(+), 17 deletions(-)
+> 
 
-It's in a pending queue of hundreds of stable backports I have yet to
-get to.  That's what I get for trying to take a vacation... :)
 
-Don't worry, it's not lost, just that we have to process patches for the
-newer stable kernels first, as that's where we have the most users.
-This, and many others, will be gotten to in a week or so.
+<formletter>
 
-thanks,
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-greg k-h
+</formletter>
 
