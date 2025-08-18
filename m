@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B67AB2A3CD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1944B2AA22
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC4B5623C94
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC0606E4E30
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95AF320399;
-	Mon, 18 Aug 2025 13:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EA433A026;
+	Mon, 18 Aug 2025 14:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUk/yGOy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENJYjv2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F85731CA57;
-	Mon, 18 Aug 2025 13:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD2733A00E;
+	Mon, 18 Aug 2025 14:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522421; cv=none; b=DRZ4VmF7ee+/SPguWmA2noQf7VuZyDnScbkyzSzF1PTvDXFg/GBMkgzflXF/SmXeqQTV7w3L4MKwb92WJ4ulcdA1LcSdu1fNXQauiVhnMqkLyJ9KkKiGAOGG+OAgVzYZH8iOIsEX83+pQUrls7EdYi/6jy5l0JvG1/Nmr72gMow=
+	t=1755525729; cv=none; b=Y2KsSGkqp3ni8aR3E8J8sPVZzmbh/TEjrsbxHuEyuXkqC3ZdUSIF5n24k5ivg5gqdu+gVNvFxrfqBbhnMvPF72b/0zP/KLw59c/qczpVwdWIqQscMWWicqiPV55v2iAG8SKOTJIt7/gi8MlghNKsZyZ/cyLTTucJ+gibDOaDMDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522421; c=relaxed/simple;
-	bh=ScHznxdBvavaL7r8yIJRt7QTKb1m4a7hSewmriu5Qg0=;
+	s=arc-20240116; t=1755525729; c=relaxed/simple;
+	bh=yZQ7HLOiOzlARTu6FlT0AOt95glGzs9p6yu4Co2g6HQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AusIahUJ9SGkBEDTKYkogxnaj/ymNqLUjOKL4N/aFz/sQ4mSY8Yyv8N4CMVd2gjd/BfGjW6/xj1N5Sj3gx2jHUuxYGVig3xDK0Lvoc0oNddS8+6BLIofgB2ba0CU0sKFssyI8UjgLe+01ezMSEXzn2RxXlsGCZiza3BlCE4/HEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUk/yGOy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7392C4CEEB;
-	Mon, 18 Aug 2025 13:07:00 +0000 (UTC)
+	 MIME-Version; b=qPmv1uUN+PZY1/TpkDvxJEQDjZBiIogrW1f0ytlbi9LGH8l9rbN/OdtCYB3VEoCfVOrmUg90b1zljdMvMNkNLnrb3ilhbqQV+p8ykD0N802uDNptTYrudnH2chhG5zA8ACwOqLGSO/NzoxX69TbUTewUNA8pMh6OXnwrE+V5WyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENJYjv2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D734CC4CEEB;
+	Mon, 18 Aug 2025 14:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522421;
-	bh=ScHznxdBvavaL7r8yIJRt7QTKb1m4a7hSewmriu5Qg0=;
+	s=korg; t=1755525729;
+	bh=yZQ7HLOiOzlARTu6FlT0AOt95glGzs9p6yu4Co2g6HQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUk/yGOyrMfKUu+yJoSQ/uL24iMvQkSnFIG4kSG8o0s4bQBQKIKSrdQqRP1h6AaRE
-	 OPpF1n3PDDA3h7bbuPJAB+oVziQ99XIs4yW/qG3Lpk2wjzwzIf4qCLfbQYyOinyAfl
-	 H+tdTupddA73oIWgBftzT19BDCVaUxFxDCUiGlI8=
+	b=ENJYjv2yzdwMvnSUCB4eHAr21UjoYMIAGUCCUCA6gz/smUH34kcQ/PLyZ6iKdv6Bh
+	 twHAOQM+8ko+NZ38gVBZShbxFXFsEml+D4U+Ao9DLwkrA4xbwbv91xY0pr0R0tMl3T
+	 YEn7JLjJkDCccfoVWKC5xwBZFu1+7rhdP7I+fydY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 311/444] scsi: mpi3mr: Correctly handle ATA device errors
+Subject: [PATCH 6.16 350/570] drm/amd/display: Avoid trying AUX transactions on disconnected ports
 Date: Mon, 18 Aug 2025 14:45:37 +0200
-Message-ID: <20250818124500.609211937@linuxfoundation.org>
+Message-ID: <20250818124519.341928492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit 04caad5a7ba86e830d04750417a15bad8ac2613c ]
+[ Upstream commit deb24e64c8881c462b29e2c69afd9e6669058be5 ]
 
-With the ATA error model, an NCQ command failure always triggers an abort
-(termination) of all NCQ commands queued on the device. In such case, the
-SAT or the host must handle the failed command according to the command
-sense data and immediately retry all other NCQ commands that were aborted
-due to the failed NCQ command.
+[Why & How]
+Observe that we try to access DPCD 0x600h of disconnected DP ports.
+In order not to wasting time on retrying these ports, call
+dpcd_write_rx_power_ctrl() after checking its connection status.
 
-For SAS HBAs controlled by the mpi3mr driver, NCQ command aborts are not
-handled by the HBA SAT and sent back to the host, with an ioc log
-information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
-PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
-mpi3mr_process_op_reply_desc() always forces a retry of commands
-terminated with the status MPI3_IOCSTATUS_SCSI_IOC_TERMINATED using the
-SCSI result DID_SOFT_ERROR, regardless of the ioc_loginfo for the
-command. This correctly forces the retry of collateral NCQ abort
-commands, but with the retry counter for the command being incremented.
-If a command to an ATA device is subject to too many retries due to other
-NCQ commands failing (e.g. read commands trying to access unreadable
-sectors), the collateral NCQ abort commands may be terminated with an
-error as they run out of retries. This violates the SAT specification and
-causes hard-to-debug command errors.
-
-Solve this issue by modifying the handling of the
-MPI3_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
-ATA device and if the command ioc_loginfo indicates an NCQ collateral
-abort. If that is the case, force the command retry using the SCSI result
-DID_IMM_RETRY to avoid incrementing the command retry count.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250606052747.742998-2-dlemoal@kernel.org
-Tested-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 1e8735538b23..990646e1e18d 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -49,6 +49,13 @@ static void mpi3mr_send_event_ack(struct mpi3mr_ioc *mrioc, u8 event,
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 273a3be6d593..f16cba4b9119 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -140,7 +140,8 @@ void link_blank_dp_stream(struct dc_link *link, bool hw_init)
+ 				}
+ 		}
  
- #define MPI3_EVENT_WAIT_FOR_DEVICES_TO_REFRESH	(0xFFFE)
- 
-+/*
-+ * SAS Log info code for a NCQ collateral abort after an NCQ error:
-+ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
-+ * See: drivers/message/fusion/lsi/mpi_log_sas.h
-+ */
-+#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
-+
- /**
-  * mpi3mr_host_tag_for_scmd - Get host tag for a scmd
-  * @mrioc: Adapter instance reference
-@@ -3397,7 +3404,18 @@ void mpi3mr_process_op_reply_desc(struct mpi3mr_ioc *mrioc,
- 		scmd->result = DID_NO_CONNECT << 16;
- 		break;
- 	case MPI3_IOCSTATUS_SCSI_IOC_TERMINATED:
--		scmd->result = DID_SOFT_ERROR << 16;
-+		if (ioc_loginfo == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
-+			/*
-+			 * This is a ATA NCQ command aborted due to another NCQ
-+			 * command failure. We must retry this command
-+			 * immediately but without incrementing its retry
-+			 * counter.
-+			 */
-+			WARN_ON_ONCE(xfer_count != 0);
-+			scmd->result = DID_IMM_RETRY << 16;
-+		} else {
-+			scmd->result = DID_SOFT_ERROR << 16;
-+		}
- 		break;
- 	case MPI3_IOCSTATUS_SCSI_TASK_TERMINATED:
- 	case MPI3_IOCSTATUS_SCSI_EXT_TERMINATED:
+-		if ((!link->wa_flags.dp_keep_receiver_powered) || hw_init)
++		if (((!link->wa_flags.dp_keep_receiver_powered) || hw_init) &&
++			(link->type != dc_connection_none))
+ 			dpcd_write_rx_power_ctrl(link, false);
+ 	}
+ }
 -- 
 2.39.5
 
