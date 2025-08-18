@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-171219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB541B2A872
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BD7B2A5E8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2261BA0C28
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EEB4681614
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5321F335BD8;
-	Mon, 18 Aug 2025 13:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B45322A17;
+	Mon, 18 Aug 2025 13:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq2YAscX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZIp3QLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115E7335BA3;
-	Mon, 18 Aug 2025 13:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0B131A04F;
+	Mon, 18 Aug 2025 13:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525203; cv=none; b=V860rmJF0g6bequEQ3V5XtedbMdcZNqaMzweyqwsZMsm8Cgq6xDwyS+k1kvIHLuSefXb86Z/leidk7RiWYaEmEam8tElqutuvjYN57WaROeTLzwJ4MmymS4rACV/xrY/PmdhclPDQwW791ogSDgRHip+4LOzoz7h0IALB7uOMRA=
+	t=1755523610; cv=none; b=F1CO8ABV/POU34ND93NUM++TsFdibL3MaJ57Y4xXgkT/cVv/FyPBv4j+H0ByGaSEAq/NonZ43eCGAG4IohpLeyJ6NKEZ9W7nIDuRwoLM4eySsSFaQWyFtnpB6+J8BYcnE0cBGGv+CKn0Td1n8eQ49mhItqc+39DD8+G1lwtm++w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525203; c=relaxed/simple;
-	bh=1xZeW5PyTSZZKrwS4zg3sRccepyV+7udO3vWkNDHXJ4=;
+	s=arc-20240116; t=1755523610; c=relaxed/simple;
+	bh=NsPfWvJy5RUBXP44+BZmAq26B3Pm0WuzI1P6UVC3pTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zf1zcAxbwIyyCpm27kLaij7HWjnvZnKB8y8zqmXu8RlW3TS1e4Ri0AzdGXmBhG35VFgd1LkUv/kDO2doM15TzCTIlbDKJDioeukGAF6qaHoaetZHhDVsIBG33rcCIm99pDq2UumikExdMVla42UdnpwunYZUD0ksKL1K59+9Xlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oq2YAscX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9104CC4CEEB;
-	Mon, 18 Aug 2025 13:53:22 +0000 (UTC)
+	 MIME-Version; b=uGf9F9W+2UR6mpfPzZh7T6ZJxYNwWUZNiNF37VwrUMsuFYMm1JMqcP0S5ak77mayXfNJccIVoWGODnj5mPdA/2hhrcTirAmdkIdv93ecNlcI8JxtMQ8pPWZ8K1Ans0xp0W5SYuRw5M1pb9xpgb671kdzwrac4RWSYvqV6SICGiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZIp3QLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C06C4CEEB;
+	Mon, 18 Aug 2025 13:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525202;
-	bh=1xZeW5PyTSZZKrwS4zg3sRccepyV+7udO3vWkNDHXJ4=;
+	s=korg; t=1755523610;
+	bh=NsPfWvJy5RUBXP44+BZmAq26B3Pm0WuzI1P6UVC3pTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oq2YAscXzjhWHxSZjE0+H418tfaUnKxQ5cSj569SOMTu18TaBgrpFAhnbxv9lFBWM
-	 ZHM7S/8/4dyGiZCh3MwnpBBJqoTegY+Twj4NZQPSlswpdiVb7Tzazm9rNwSWO4QCXe
-	 ehkwCKazINrMCnk0i3S2jua7cDBXes2PJwgGaYbk=
+	b=CZIp3QLyG5lxX1p8M8Wvu20qjIl8+AhoykisxslJTvv8ZINuiIZGF25Z8qXrksAp5
+	 NrcM+k0tP7rVKBeR5UB23QQBYFvf2k1bffBvnpcy0Nyufb4/42RHd5Yquvuuq76yOC
+	 vZLg59tiMR5ms1U88lcjWx/uzjrSZdK27B9OR6hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Nam Cao <namcao@linutronix.de>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 190/570] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
-Date: Mon, 18 Aug 2025 14:42:57 +0200
-Message-ID: <20250818124513.125369376@linuxfoundation.org>
+Subject: [PATCH 6.15 192/515] verification/dot2k: Make a separate dot2k_templates/Kconfig_container
+Date: Mon, 18 Aug 2025 14:42:58 +0200
+Message-ID: <20250818124505.762225788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
+[ Upstream commit 214459699fd202c28b7b9f787e674acbd3af724a ]
 
-snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
-leads to null pointer dereference.
-This was reproduced with topology loading and marking a link as ignore
-due to missing hardware component on the system.
-On module removal the soc_tplg_remove_link() would call
-snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
-no runtime was created.
+A generated container's Kconfig has an incorrect line:
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    select DA_MON_EVENTS_IMPLICIT
+
+This is due to container generation uses the same template Kconfig file as
+deterministic automaton monitor.
+
+Therefore, make a separate Kconfig template for container which has only
+the necessaries for container.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/d54fd7ee120785bec5695220e837dbbd6efb30e5.1751634289.git.namcao@linutronix.de
+Reviewed-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/verification/dot2/dot2k.py                          | 3 ++-
+ tools/verification/dot2/dot2k_templates/Kconfig_container | 5 +++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+ create mode 100644 tools/verification/dot2/dot2k_templates/Kconfig_container
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 67bebc339148..16bbc074dc5f 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1139,6 +1139,9 @@ static int snd_soc_compensate_channel_connection_map(struct snd_soc_card *card,
- void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
- 				struct snd_soc_pcm_runtime *rtd)
- {
-+	if (!rtd)
-+		return;
-+
- 	lockdep_assert_held(&client_mutex);
+diff --git a/tools/verification/dot2/dot2k.py b/tools/verification/dot2/dot2k.py
+index 745d35a4a379..dd4b5528a4f2 100644
+--- a/tools/verification/dot2/dot2k.py
++++ b/tools/verification/dot2/dot2k.py
+@@ -35,6 +35,7 @@ class dot2k(Dot2c):
+             self.states = []
+             self.main_c = self.__read_file(self.monitor_templates_dir + "main_container.c")
+             self.main_h = self.__read_file(self.monitor_templates_dir + "main_container.h")
++            self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig_container")
+         else:
+             super().__init__(file_path, extra_params.get("model_name"))
  
- 	/*
+@@ -44,7 +45,7 @@ class dot2k(Dot2c):
+             self.monitor_type = MonitorType
+             self.main_c = self.__read_file(self.monitor_templates_dir + "main.c")
+             self.trace_h = self.__read_file(self.monitor_templates_dir + "trace.h")
+-        self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig")
++            self.kconfig = self.__read_file(self.monitor_templates_dir + "Kconfig")
+         self.enum_suffix = "_%s" % self.name
+         self.description = extra_params.get("description", self.name) or "auto-generated"
+         self.auto_patch = extra_params.get("auto_patch")
+diff --git a/tools/verification/dot2/dot2k_templates/Kconfig_container b/tools/verification/dot2/dot2k_templates/Kconfig_container
+new file mode 100644
+index 000000000000..a606111949c2
+--- /dev/null
++++ b/tools/verification/dot2/dot2k_templates/Kconfig_container
+@@ -0,0 +1,5 @@
++config RV_MON_%%MODEL_NAME_UP%%
++	depends on RV
++	bool "%%MODEL_NAME%% monitor"
++	help
++	  %%DESCRIPTION%%
 -- 
 2.39.5
 
