@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E774B2A3AF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B0DB2A63B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730A61B60BDF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A8F2B60E01
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CC931CA76;
-	Mon, 18 Aug 2025 13:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FDB13C8E8;
+	Mon, 18 Aug 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKTsMzxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFGR8U3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B8931CA59;
-	Mon, 18 Aug 2025 13:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62753335BA1;
+	Mon, 18 Aug 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522376; cv=none; b=PA9KMmFU0I36nwFlPop9dkKXSiiRF56Kexvq/XtuA7wHvacmug9v3lvrILK9ZkplpD4uwZK2YSY3oghqgdv3JbLweO4rb14EY4iSTYiuMsEe/XYkUepD7GcquNYTIeij0j9GmsDmuSbFN6l0C4O6mkZXYviYOxhIdtsUWV1Rnto=
+	t=1755523999; cv=none; b=sPv5kHDV/QcbTElqDsmUiHyhznnnjt7Ro6R5cY94j23OOe77blnKnxhqKhy+67zCyZ/zRkXrpu83NsN0Pb1Fg3ABQW3whZ8ETWIUCiE1QpBetvYok4xbNYGTnQtxdhUnGn1Rm0bN2+ogXfcexcDM84BhfV5ZO9WR+8a+nqBAKoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522376; c=relaxed/simple;
-	bh=JL0Ghvykjh6YAyWt/ZWSDaYwNZNSeAZwqDcsySjfTZ8=;
+	s=arc-20240116; t=1755523999; c=relaxed/simple;
+	bh=FYzhuSMRN/2BWNUXYMRYJK0a0BIyR6AajjCK3E6Kq9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VCs7YLbu9RIo67U6eHkitBJu41yoUq81D4OayQeC+WZTdnJVACXRhRWg4cEJakjH6gAFQYJjMVXiexzTzXNERwr0HhYdH+91iYfuGUglPjfEnCCr8GHWSi7IM/vgNw6a3Jl+kzo98mb0JCj9K/XMDEX1fR0RE4gGo2gufllolgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKTsMzxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC65DC4CEEB;
-	Mon, 18 Aug 2025 13:06:14 +0000 (UTC)
+	 MIME-Version; b=NxQeYZJkWoGzuxkXtq8OYQufiyqidIPwszRgCxu25vNC4+BlBa6rmiWFhJvnH1rV6OHcM/fIZw0eiYOdfOdN8KegyLK0CMis6+UY4u9EizMrfXMZ88o3fjAJH4Ls2PDURZKpsqYEYEgAIBsG/5V5erc8l8nyGSSt0kyYuZGnPeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFGR8U3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9395C4CEEB;
+	Mon, 18 Aug 2025 13:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522375;
-	bh=JL0Ghvykjh6YAyWt/ZWSDaYwNZNSeAZwqDcsySjfTZ8=;
+	s=korg; t=1755523999;
+	bh=FYzhuSMRN/2BWNUXYMRYJK0a0BIyR6AajjCK3E6Kq9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKTsMzxYUbVSLakwb4ZdLF0CouwN2wxZAMFtsW1poCkaEReooI0buLQuCcKO6xK4Q
-	 hr3nWSGy9z76k1K7dO6X1anABsxKRyGdWbTm5i3jUZbjI8QZPJaN3ilPL5CtFuYmSO
-	 IcpxIs+HLe7g2Yy18dyEweaS0v1yR5IIaPwuFQQY=
+	b=WFGR8U3XcWsWPASg+INlrl0qhmSapJZHh77I8rSvBDHbJzV7+BljHD3W1wlUdJvZ0
+	 E0bQyBRk634HsCUoCAb3oN1N7hSR68cjT+h7T5IXQcm2GLCoFjqxs/VvJSDpJQl4rx
+	 6MTGjJC8XKmnVc9veTvKF4GBvzC95jZg9Y5mc1HU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 298/444] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+Subject: [PATCH 6.15 338/515] sphinx: kernel_abi: fix performance regression with O=<dir>
 Date: Mon, 18 Aug 2025 14:45:24 +0200
-Message-ID: <20250818124500.127773624@linuxfoundation.org>
+Message-ID: <20250818124511.443498477@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
+[ Upstream commit 2b16b71a05a7f056221751b906c13f8809656b1f ]
 
-Not all tasks have an ABI associated or vDSO mapped,
-for example kthreads never do.
-If such a task ever ends up calling stack_top(), it will derefence the
-NULL ABI pointer and crash.
+The logic there which adds a dependency note to Sphinx cache
+is not taking into account that the build dir may not be
+the source dir. This causes a performance regression:
 
-This can for example happen when using kunit:
+$ time make O=/tmp/foo SPHINXDIRS=admin-guide htmldocs
 
-    mips_stack_top+0x28/0xc0
-    arch_pick_mmap_layout+0x190/0x220
-    kunit_vm_mmap_init+0xf8/0x138
-    __kunit_add_resource+0x40/0xa8
-    kunit_vm_mmap+0x88/0xd8
-    usercopy_test_init+0xb8/0x240
-    kunit_try_run_case+0x5c/0x1a8
-    kunit_generic_run_threadfn_adapter+0x28/0x50
-    kthread+0x118/0x240
-    ret_from_kernel_thread+0x14/0x1c
+	[OUTDATED]
+	Added: set()
+	Changed: {'abi-obsolete', 'abi-removed', 'abi-stable-files', 'abi-obsolete-files', 'abi-stable', 'abi', 'abi-removed-files', 'abi-testing-files', 'abi-testing', 'gpio/index', 'gpio/obsolete'}
+	Removed: set()
+	All docs count: 385
+	Found docs count: 385
 
-Only dereference the ABI point if it is set.
+	real    0m11,324s
+	user    0m15,783s
+	sys     0m1,164s
 
-The GIC page is also included as it is specific to the vDSO.
-Also move the randomization adjustment into the same conditional.
+To get the root cause of the problem (ABI files reported as changed),
+I used this changeset:
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+#	diff --git a/Documentation/conf.py b/Documentation/conf.py
+#	index e8766e689c1b..ab486623bd8b 100644
+#	--- a/Documentation/conf.py
+#	+++ b/Documentation/conf.py
+#	@@ -571,3 +571,16 @@ def setup(app):
+#	     """Patterns need to be updated at init time on older Sphinx versions"""
+#
+#	     app.connect('config-inited', update_patterns)
+#	+    app.connect('env-get-outdated', on_outdated)
+#	+
+#	+def on_outdated(app, env, added, changed, removed):
+#	+    """Track cache outdated due to added/changed/removed files"""
+#	+    print("\n[OUTDATED]")
+#	+    print(f"Added: {added}")
+#	+    print(f"Changed: {changed}")
+#	+    print(f"Removed: {removed}")
+#	+    print(f"All docs count: {len(env.all_docs)}")
+#	+    print(f"Found docs count: {len(env.found_docs)}")
+#	+
+#	+    # Just return what we have
+#	+    return added | changed | removed
+
+Reported-by: Akira Yokosawa <akiyks@gmail.com>
+Closes: https://lore.kernel.org/linux-doc/c174f7c5-ec21-4eae-b1c3-f643cca90d9d@gmail.com/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Tested-by: Akira Yokosawa <akiyks@gmail.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/e25673d87357457bc54ee863e97ff8f75956580d.1752752211.git.mchehab+huawei@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/process.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ Documentation/sphinx/kernel_abi.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
-index b630604c577f..02aa6a04a21d 100644
---- a/arch/mips/kernel/process.c
-+++ b/arch/mips/kernel/process.c
-@@ -690,18 +690,20 @@ unsigned long mips_stack_top(void)
- 	}
+diff --git a/Documentation/sphinx/kernel_abi.py b/Documentation/sphinx/kernel_abi.py
+index db6f0380de94..4c4375201b9e 100644
+--- a/Documentation/sphinx/kernel_abi.py
++++ b/Documentation/sphinx/kernel_abi.py
+@@ -146,8 +146,10 @@ class KernelCmd(Directive):
+                 n += 1
  
- 	/* Space for the VDSO, data page & GIC user page */
--	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
--	top -= PAGE_SIZE;
--	top -= mips_gic_present() ? PAGE_SIZE : 0;
-+	if (current->thread.abi) {
-+		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
-+		top -= PAGE_SIZE;
-+		top -= mips_gic_present() ? PAGE_SIZE : 0;
-+
-+		/* Space to randomize the VDSO base */
-+		if (current->flags & PF_RANDOMIZE)
-+			top -= VDSO_RANDOMIZE_SIZE;
-+	}
+             if f != old_f:
+-                # Add the file to Sphinx build dependencies
+-                env.note_dependency(os.path.abspath(f))
++                # Add the file to Sphinx build dependencies if the file exists
++                fname = os.path.join(srctree, f)
++                if os.path.isfile(fname):
++                    env.note_dependency(fname)
  
- 	/* Space for cache colour alignment */
- 	if (cpu_has_dc_aliases)
- 		top -= shm_align_mask + 1;
- 
--	/* Space to randomize the VDSO base */
--	if (current->flags & PF_RANDOMIZE)
--		top -= VDSO_RANDOMIZE_SIZE;
--
- 	return top;
- }
+                 old_f = f
  
 -- 
 2.39.5
