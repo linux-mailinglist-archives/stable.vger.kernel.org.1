@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8127AB2A6AF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0FDB2A36F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7719A18950A8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B72E91899F70
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277EB271A6D;
-	Mon, 18 Aug 2025 13:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF05531CA48;
+	Mon, 18 Aug 2025 13:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYtGXLYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDfAyXfg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81A522F14C;
-	Mon, 18 Aug 2025 13:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEC5308F30;
+	Mon, 18 Aug 2025 13:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523839; cv=none; b=oKIafZR2E8nWKO7GyTKWTU44dWGhKWb/6d2fS8+gcD8td1hhuyV5OizWA/5IsUFh8i1KTag3adTK6igwFbZmCKwOn/9+XqcPGQJ6uu0rjK75HBE+6OImPB8viEXkvsKPa2h4TGyUqbXQ0NYeh/Z3wFiM5uMLpt/3u6qLrPe+3Io=
+	t=1755522209; cv=none; b=h1H3D+iP8dGkVZxWjbpbe9IhnA1MagpZ2vUEbmYv5GDl3nzdojbRCH/AKOHoGnLg7hHkSdxRhSCloEb0EY7t1eK4Oo6IaA0I5BV2ZOn4CllG3zuxusWK8CNOE0HsTcJclpXsStdtTCRSbbnwIhwUdgGZlJvI+hAL0K74GVi6bAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523839; c=relaxed/simple;
-	bh=KAONm0WhqrrqY8RpDXeIUdiZYG/f6lT2sf2du4h5hhs=;
+	s=arc-20240116; t=1755522209; c=relaxed/simple;
+	bh=HmY/YtGnwam2ykZCt4JNgQ5Aa4FKpslhGvX2+hUthng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6sM0a3K5zN3bKxfqqMvbpFF6O1p15VkC2nWQpKyxZx92YKuoln0P8dJHrp6q0cX/tnl1ahVVVtA9FugXpgyLbo/mytXTEnT7TK5DStSPZIAXAfOe5TW9QiT+AJR0EXmI5ibcuRD1GrqmYoUr6M/ruXltMSfB0lXnXbBGbMK9nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYtGXLYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4679BC4CEEB;
-	Mon, 18 Aug 2025 13:30:39 +0000 (UTC)
+	 MIME-Version; b=jP+xvCoOT/jfCIhwRo4jDvBMlTYrLdGfgo6vFJ5N01yp+qnS1SCaxEKSaxC0wl22KDhUA/kDyRkRcTeHLOr4MCEz8F02TSDFByc5Wzsx3hdonf+G5b26/AwH2555FYZqAmWy/4AYasNRDi69NH+/wY47gb5QTxbtnw//XgTxzI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDfAyXfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F72AC116C6;
+	Mon, 18 Aug 2025 13:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523839;
-	bh=KAONm0WhqrrqY8RpDXeIUdiZYG/f6lT2sf2du4h5hhs=;
+	s=korg; t=1755522209;
+	bh=HmY/YtGnwam2ykZCt4JNgQ5Aa4FKpslhGvX2+hUthng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYtGXLYagUqDR/l9IpbS2AKO3GYOmSch0a/XeU/lGm83DZo1cQxTq0pWUiY9Fj9Ov
-	 yNTOF5lNUQ9rblvJ2oDfjGI9QVfrZGHR0tL/LAVXx2ODjmUrSWnEx1QDWhJsi3FsMI
-	 jOdJasd5edh1XaL3roiPlRqwuczN9g4mg7D6QBYY=
+	b=yDfAyXfgke6dgKpUm0OB5uNYLNg5tMXH5+we8YQau/buOkWqoB8pNJtCgLV/IBUXg
+	 wDxski9mLvnF324y8g8NTGk6bWKRMEB3pd3O2WgvFE3UieNdIHRAC18izQYV9WpP3l
+	 8NTnEOLEn54lWXiZYWz5HVFZIDtkQ+XNurSu0o9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 287/515] wifi: rtlwifi: fix possible skb memory leak in `_rtl_pci_rx_interrupt()`.
+Subject: [PATCH 6.12 247/444] gve: Return error for unknown admin queue command
 Date: Mon, 18 Aug 2025 14:44:33 +0200
-Message-ID: <20250818124509.463412951@linuxfoundation.org>
+Message-ID: <20250818124458.089164513@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 44c0e191004f0e3aa1bdee3be248be14dbe5b020 ]
+[ Upstream commit b11344f63fdd9e8c5121148a6965b41079071dd2 ]
 
-The function `_rtl_pci_init_one_rxdesc()` can fail even when the new
-`skb` is passed because of a DMA mapping error.  If it fails, the `skb`
-is not saved in the rx ringbuffer and thus lost.
+In gve_adminq_issue_cmd(), return -EINVAL instead of 0 when an unknown
+admin queue command opcode is encountered.
 
-Compile tested only
+This prevents the function from silently succeeding on invalid input
+and prevents undefined behavior by ensuring the function fails gracefully
+when an unrecognized opcode is provided.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250616105631.444309-4-fourier.thomas@gmail.com
+These changes improve error handling.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250616054504.1644770-2-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/google/gve/gve_adminq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 898f597f70a9..2741c3beac4c 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -802,13 +802,19 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
- 		skb = new_skb;
- no_new:
- 		if (rtlpriv->use_new_trx_flow) {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)buffer_desc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 		} else {
--			_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
--						 rxring_idx,
--						 rtlpci->rx_ring[rxring_idx].idx);
-+			if (!_rtl_pci_init_one_rxdesc(hw, skb, (u8 *)pdesc,
-+						      rxring_idx,
-+						      rtlpci->rx_ring[rxring_idx].idx)) {
-+				if (new_skb)
-+					dev_kfree_skb_any(skb);
-+			}
- 			if (rtlpci->rx_ring[rxring_idx].idx ==
- 			    rtlpci->rxringcount - 1)
- 				rtlpriv->cfg->ops->set_desc(hw, (u8 *)pdesc,
+diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+index 060e0e674938..36acbcd8f62a 100644
+--- a/drivers/net/ethernet/google/gve/gve_adminq.c
++++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+@@ -564,6 +564,7 @@ static int gve_adminq_issue_cmd(struct gve_priv *priv,
+ 		break;
+ 	default:
+ 		dev_err(&priv->pdev->dev, "unknown AQ command opcode %d\n", opcode);
++		return -EINVAL;
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.5
 
