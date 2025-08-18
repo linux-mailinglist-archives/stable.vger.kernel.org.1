@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83336B2A4C2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:25:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597FCB2A7B6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAD0B7A9AC9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:20:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBC681BA0751
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8EC221F15;
-	Mon, 18 Aug 2025 13:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C4335BDD;
+	Mon, 18 Aug 2025 13:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMNGmsDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U39KiDcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC2821FF4B;
-	Mon, 18 Aug 2025 13:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79CB335BA3;
+	Mon, 18 Aug 2025 13:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522973; cv=none; b=pyUPNOeozqFHdKtWNS5cfZ4u0K3/DKuEU8oe+3jsrl1QSvUjlW43EICE6tVcrsKZT1Jq38vAFN83dhaxOY0o+uVYKue212jQ6GH8j6yVWqWDxEZwl3lqm4CMr5Vm9TV142Ko5ovd3Jb2aSEQn48PhJdqL0YqfUcLccswXlbwMn0=
+	t=1755524786; cv=none; b=idOPgwOArcNkyREGa6q/N2C6bsWqYGZgnXAvHpe70dN16KlSxFnR1UGIFUx9tJN5tYAjJA20eJHqEtaYgV/7BqR8eEmhqpvweXYxSARBqpqVc1ve71bs/49jlUkcF2CSd4g9tttE6Kh/VLuQOmFyZqfcZ90ru/I5xYfyRHqMdwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522973; c=relaxed/simple;
-	bh=CEWYjcqaaHr5F1tNBs+pXXT2WpyzT+qsDzgXThu+jCU=;
+	s=arc-20240116; t=1755524786; c=relaxed/simple;
+	bh=yyyw/dP/yG/Atfj9Ty/I4EbyluqsnJJrXc8UxR00jzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/fwwrxoAj2gwN+9USOr1dvKG5GyE5xPcF3DsfVE/gjibZFso3uqHMfzF+zLzqjiNz5MgpfB1bHyPznkQOU83NckRRoQMJ4HpYclsc0iX//kgyyOmmnQenpfS4DAfrEcolEYyxh8mdEuLx4ZM4Fblu2qRTPOufwkmblqiONOpkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMNGmsDF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A261DC116B1;
-	Mon, 18 Aug 2025 13:16:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TjATuuxLGIrr+13GPUxWETb1U0x9fZi09gudYZLqC+QYYZza4FqZA/G8T4+dLsNQ4636vd4mr1yBHzMg6Je2JJQI2FR7zAH9gna9vbMNPizm195QCRpQs4OvYsdFyl4JWNpU9xYzJgryISvSrqrMTBBuwRTJJPgsixekdUHgAmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U39KiDcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3B4C4CEEB;
+	Mon, 18 Aug 2025 13:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522973;
-	bh=CEWYjcqaaHr5F1tNBs+pXXT2WpyzT+qsDzgXThu+jCU=;
+	s=korg; t=1755524786;
+	bh=yyyw/dP/yG/Atfj9Ty/I4EbyluqsnJJrXc8UxR00jzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMNGmsDF4QSVhvh+O74lEO3y+Ml9OTKCcmLhxiwqHzn1fCAL7SRNc5QQheHM4loap
-	 ayeUgUjbdhyfDPlxq+g0ztB/JB882z+7pPKMizgh7un7JBP9ywUedz3Rhcoo7yWrRs
-	 CQEaMecS18YQYEpUhqaV7l8rShMkvgV3DNm7NH0U=
+	b=U39KiDcwqyAQxbDiyc+Fqf+y7grwbNERq4zPlugha741ncVQzgwK7wxTGL+zON6Rp
+	 3TqIfyFuje1mAyVqYtJ/Nz6iHk+B16tHPj7veYwkLmEbSthBUYPecYhxLkcl0vpqXB
+	 0LPs09Mj7mFK1bC/xf2hhCI6oWWHvlLGaosHle1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petro Pavlov <petro.pavlov@vastdata.com>,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.15 031/515] NFSD: detect mismatch of file handle and delegation stateid in OPEN op
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 030/570] net: usb: qmi_wwan: add Telit Cinterion FN990A w/audio composition
 Date: Mon, 18 Aug 2025 14:40:17 +0200
-Message-ID: <20250818124459.652685176@linuxfoundation.org>
+Message-ID: <20250818124506.979335398@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 9c65001c57164033ad08b654c8b5ae35512ddf4a upstream.
+commit 61aaca8b89fb98be58b8df19f01181bb983cccff upstream.
 
-When the client sends an OPEN with claim type CLAIM_DELEG_CUR_FH or
-CLAIM_DELEGATION_CUR, the delegation stateid and the file handle
-must belong to the same file, otherwise return NFS4ERR_INVAL.
+Add the following Telit Cinterion FN990A w/audio composition:
 
-Note that RFC8881, section 8.2.4, mandates the server to return
-NFS4ERR_BAD_STATEID if the selected table entry does not match the
-current filehandle. However returning NFS4ERR_BAD_STATEID in the
-OPEN causes the client to retry the operation and therefor get the
-client into a loop. To avoid this situation we return NFS4ERR_INVAL
-instead.
+0x1077: tty (diag) + adb + rmnet + audio + tty (AT/NMEA) + tty (AT) +
+tty (AT) + tty (AT)
+T:  Bus=01 Lev=01 Prnt=01 Port=09 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1077 Rev=05.04
+S:  Manufacturer=Telit Wireless Solutions
+S:  Product=FN990
+S:  SerialNumber=67e04c35
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 0 Cls=01(audio) Sub=01 Prot=20 Driver=snd-usb-audio
+I:  If#= 4 Alt= 1 #EPs= 1 Cls=01(audio) Sub=02 Prot=20 Driver=snd-usb-audio
+E:  Ad=03(O) Atr=0d(Isoc) MxPS=  68 Ivl=1ms
+I:  If#= 5 Alt= 1 #EPs= 1 Cls=01(audio) Sub=02 Prot=20 Driver=snd-usb-audio
+E:  Ad=84(I) Atr=0d(Isoc) MxPS=  68 Ivl=1ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 7 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 9 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8c(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Reported-by: Petro Pavlov <petro.pavlov@vastdata.com>
-Fixes: c44c5eeb2c02 ("[PATCH] nfsd4: add open state code for CLAIM_DELEGATE_CUR")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6328,6 +6328,20 @@ nfsd4_process_open2(struct svc_rqst *rqs
- 		status = nfs4_check_deleg(cl, open, &dp);
- 		if (status)
- 			goto out;
-+		if (dp && nfsd4_is_deleg_cur(open) &&
-+				(dp->dl_stid.sc_file != fp)) {
-+			/*
-+			 * RFC8881 section 8.2.4 mandates the server to return
-+			 * NFS4ERR_BAD_STATEID if the selected table entry does
-+			 * not match the current filehandle. However returning
-+			 * NFS4ERR_BAD_STATEID in the OPEN can cause the client
-+			 * to repeatedly retry the operation with the same
-+			 * stateid, since the stateid itself is valid. To avoid
-+			 * this situation NFSD returns NFS4ERR_INVAL instead.
-+			 */
-+			status = nfserr_inval;
-+			goto out;
-+		}
- 		stp = nfsd4_find_and_lock_existing_open(fp, open);
- 	} else {
- 		open->op_file = NULL;
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1361,6 +1361,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1057, 2)},	/* Telit FN980 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990A */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1077, 2)},	/* Telit FN990A w/audio */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990A */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
 
 
 
