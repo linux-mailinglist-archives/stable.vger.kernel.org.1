@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4041CB2A815
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831B5B2A516
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 303351B67F64
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C56B456585C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6469A322533;
-	Mon, 18 Aug 2025 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834A1320CD1;
+	Mon, 18 Aug 2025 13:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pD6D330C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSDNSRKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2286F2E22AF;
-	Mon, 18 Aug 2025 13:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4073426F2B4;
+	Mon, 18 Aug 2025 13:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524634; cv=none; b=mkgcKSlMBnLJB4uhnbr44leSY2sYlKQeO4clue3soaR3ZSxCq6WUlVyyGGFzAeD9o7rMU5BY9U33JWtMwAWMBqI8J9F/XC2OabvAJFY1C8k5Nxwca1MS857L5lBRWu07hUZnTFWWaDVnvphSA6qpS62h6dBEUrtyQKjX0MCM/Mk=
+	t=1755523034; cv=none; b=XNB1hXY2Fw+wLOnx09VOBXUA8ED7jWKE+JzqBmm6jUCoZwPMmaQYS9PWEqtpZqT6nJ6+4LFbOQdDNwt9nA3zZthqlz3YvUvM0OjsbEtcUmjAuhMPROjn9LAzzY4Cjb9HOYuOib2Z45gjZPr2y2EkerOyqn+977LhKe5mpKJgCTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524634; c=relaxed/simple;
-	bh=uGk38xlSHKiIF4pMwENR/Wxe1ecqR9AddOy/ORlpHY0=;
+	s=arc-20240116; t=1755523034; c=relaxed/simple;
+	bh=FncI+V8Ioj/DkXCKFIZYmwQXTYU+W2VO4SAUwcVjzcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fONVlpfatqxjIxsy+Yl0Y/Box15foP/SpBAAwgdQhBOd4KzuABNRr4B2IoqCLtdeHT5+nXcrz1iMRVbfJXSVEoVc+l6EsRnJhiaguu6hUtsA3q0HlqoIjuIbkUEMOKLQBLfSfj9HUoSzCFPPmfT32Np29CY3lbJly1NXyGZRLkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pD6D330C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31508C4CEEB;
-	Mon, 18 Aug 2025 13:43:52 +0000 (UTC)
+	 MIME-Version; b=NCnipR+H/Qi42QdvBPrSyweRn/13DeE352DukeSD1LI+RgeuGQqRu7YknFHDMozQk+v2D3gselGKRmctPgk+QkDbsI6LJnrKjNNIGbuCsiBQjThdg488T3SYkhy+IPY1AJ/02dW3Yn1Z6MNIceUboyWkHHu46IFn5ThDDpmDAOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSDNSRKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAA5C4CEEB;
+	Mon, 18 Aug 2025 13:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524633;
-	bh=uGk38xlSHKiIF4pMwENR/Wxe1ecqR9AddOy/ORlpHY0=;
+	s=korg; t=1755523034;
+	bh=FncI+V8Ioj/DkXCKFIZYmwQXTYU+W2VO4SAUwcVjzcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pD6D330CO3ATfO3xJg70/lqDtr1s6lF/5QtUct2wk7PVge0EGO7zw5mXLamnSScQM
-	 m3dzFeXBv9/6spoe4BHaZV6tv4JsbdpMFVwyhB8r3NBvQEueODCaXggUonIlwqdgTI
-	 iwgOSRLWb/kkEfwxIBsw1xUyv6qPg8R70e0ps/qs=
+	b=fSDNSRKbR6um1iWPJs/m7Yvv7x9mHyEwL8BfAEV3Dc8sJfACl3IGnOghrE1d954pi
+	 lGYi6Sv90rTZ6vk2oP8d1149NcY/DX8S6oQPcH5Mn+j8svxADYux2ss44joXr6gqWB
+	 IGGAvECuqyAqhADjB78NsKG8XudYR/J5n5kXbI2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje@dujemihanovic.xyz>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.16 016/570] Revert "gpio: pxa: Make irq_chip immutable"
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.15 017/515] leds: flash: leds-qcom-flash: Fix registry access after re-bind
 Date: Mon, 18 Aug 2025 14:40:03 +0200
-Message-ID: <20250818124506.418205523@linuxfoundation.org>
+Message-ID: <20250818124458.975007000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit b644c640923b625340c603cdb8d8f456406eb4de upstream.
+commit fab15f57360b1e6620a1d0d6b0fbee896e6c1f07 upstream.
 
-This reverts commit 20117cf426b6 ("gpio: pxa: Make irq_chip immutableas")
-as it caused a regression on samsung coreprimevelte and we've not been
-able to fix it so far.
+Driver in probe() updates each of 'reg_field' with 'reg_base':
 
-Cc: stable@vger.kernel.org # v6.16
-Fixes: 20117cf426b6 ("gpio: pxa: Make irq_chip immutableas")
-Reported-by: Duje Mihanović <duje@dujemihanovic.xyz>
-Closes: https://lore.kernel.org/all/3367665.aeNJFYEL58@radijator/
-Tested-by: Duje Mihanović <duje@dujemihanovic.xyz>
-Link: https://lore.kernel.org/r/20250801071858.7554-1-brgl@bgdev.pl
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+	for (i = 0; i < REG_MAX_COUNT; i++)
+		regs[i].reg += reg_base;
+
+'reg_field' array (under variable 'regs' above) is statically allocated,
+thus each re-bind would add another 'reg_base' leading to bogus
+register addresses.  Constify the local 'reg_field' array and duplicate
+it in probe to solve this.
+
+Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250529063335.8785-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-pxa.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/leds/flash/leds-qcom-flash.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/gpio/gpio-pxa.c
-+++ b/drivers/gpio/gpio-pxa.c
-@@ -497,8 +497,6 @@ static void pxa_mask_muxed_gpio(struct i
- 	gfer = readl_relaxed(base + GFER_OFFSET) & ~GPIO_bit(gpio);
- 	writel_relaxed(grer, base + GRER_OFFSET);
- 	writel_relaxed(gfer, base + GFER_OFFSET);
--
--	gpiochip_disable_irq(&pchip->chip, gpio);
- }
- 
- static int pxa_gpio_set_wake(struct irq_data *d, unsigned int on)
-@@ -518,21 +516,17 @@ static void pxa_unmask_muxed_gpio(struct
- 	unsigned int gpio = irqd_to_hwirq(d);
- 	struct pxa_gpio_bank *c = gpio_to_pxabank(&pchip->chip, gpio);
- 
--	gpiochip_enable_irq(&pchip->chip, gpio);
--
- 	c->irq_mask |= GPIO_bit(gpio);
- 	update_edge_detect(c);
- }
- 
--static const struct irq_chip pxa_muxed_gpio_chip = {
-+static struct irq_chip pxa_muxed_gpio_chip = {
- 	.name		= "GPIO",
- 	.irq_ack	= pxa_ack_muxed_gpio,
- 	.irq_mask	= pxa_mask_muxed_gpio,
- 	.irq_unmask	= pxa_unmask_muxed_gpio,
- 	.irq_set_type	= pxa_gpio_irq_type,
- 	.irq_set_wake	= pxa_gpio_set_wake,
--	.flags = IRQCHIP_IMMUTABLE,
--	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+--- a/drivers/leds/flash/leds-qcom-flash.c
++++ b/drivers/leds/flash/leds-qcom-flash.c
+@@ -117,7 +117,7 @@ enum {
+ 	REG_MAX_COUNT,
  };
  
- static int pxa_gpio_nums(struct platform_device *pdev)
+-static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
++static const struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
+ 	REG_FIELD(0x08, 0, 7),			/* status1	*/
+ 	REG_FIELD(0x09, 0, 7),                  /* status2	*/
+ 	REG_FIELD(0x0a, 0, 7),                  /* status3	*/
+@@ -132,7 +132,7 @@ static struct reg_field mvflash_3ch_regs
+ 	REG_FIELD(0x58, 0, 2),			/* therm_thrsh3 */
+ };
+ 
+-static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
++static const struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
+ 	REG_FIELD(0x06, 0, 7),			/* status1	*/
+ 	REG_FIELD(0x07, 0, 6),			/* status2	*/
+ 	REG_FIELD(0x09, 0, 7),			/* status3	*/
+@@ -854,11 +854,17 @@ static int qcom_flash_led_probe(struct p
+ 	if (val == FLASH_SUBTYPE_3CH_PM8150_VAL || val == FLASH_SUBTYPE_3CH_PMI8998_VAL) {
+ 		flash_data->hw_type = QCOM_MVFLASH_3CH;
+ 		flash_data->max_channels = 3;
+-		regs = mvflash_3ch_regs;
++		regs = devm_kmemdup(dev, mvflash_3ch_regs, sizeof(mvflash_3ch_regs),
++				    GFP_KERNEL);
++		if (!regs)
++			return -ENOMEM;
+ 	} else if (val == FLASH_SUBTYPE_4CH_VAL) {
+ 		flash_data->hw_type = QCOM_MVFLASH_4CH;
+ 		flash_data->max_channels = 4;
+-		regs = mvflash_4ch_regs;
++		regs = devm_kmemdup(dev, mvflash_4ch_regs, sizeof(mvflash_4ch_regs),
++				    GFP_KERNEL);
++		if (!regs)
++			return -ENOMEM;
+ 
+ 		rc = regmap_read(regmap, reg_base + FLASH_REVISION_REG, &val);
+ 		if (rc < 0) {
+@@ -880,6 +886,7 @@ static int qcom_flash_led_probe(struct p
+ 		dev_err(dev, "Failed to allocate regmap field, rc=%d\n", rc);
+ 		return rc;
+ 	}
++	devm_kfree(dev, regs); /* devm_regmap_field_bulk_alloc() makes copies */
+ 
+ 	platform_set_drvdata(pdev, flash_data);
+ 	mutex_init(&flash_data->lock);
 
 
 
