@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9928EB2A99F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABFA8B2A3A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B73B61BA4235
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 346963A7E62
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94FA261B9B;
-	Mon, 18 Aug 2025 13:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED1631E116;
+	Mon, 18 Aug 2025 13:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7Tpv32n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4dPIeTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BE3322759;
-	Mon, 18 Aug 2025 13:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4BE31E10E;
+	Mon, 18 Aug 2025 13:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525566; cv=none; b=HodtI4W5cV0rUjFROUgycsbZsfOkOG0+6UlCrMZGW4JESR+XSJofb6uw1CqVy1d45fw69VYhTKE71RYPTmkdV+oYDHPc4B4mcJAxAJiXmlTHVz5QIfN4Ng3usS3hjma1aGHbSJ5hcAk1uv90LNS12rBkSmqdWD3srm3iRUIspP4=
+	t=1755522362; cv=none; b=gQEyDyLJpTrEwMa36vTQ16Qxlm3eLBSaY4P0Vd2DFFX3y7n37kt9YN3DL+uNz/7ebe0aba6sRtuzJSCnm/SZEWK4vVkqpkiPA4dkyNp+/cXqcXDlj6VDasC8Y8qtyxXpmC3TMZnSQkLhYKU2AU4LFSjQ2wu+dx/eMgC115PoPnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525566; c=relaxed/simple;
-	bh=hIQnPhVSCGnTU1PWv6PzhT3LZxluHMiTqaPFiuqD/FU=;
+	s=arc-20240116; t=1755522362; c=relaxed/simple;
+	bh=QnAW6/JExWKwhTpxrkxg2sC6dtpk/fB/lAfzbjQa20w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBki0f4yrwAf+tvlX6pR5Zb9+dw+rg8xxiWg7jpQiorHocYkBhnGryG5t0jZp8qPOIeUg5S/U8LVhqFa1kaeGv7+YfN2/pN0P9QCls7QO1oZ7kjmvYhgBJD62Dr7xJA6qgPE5pR/Kkc/9YI7M2tSL5ScD30MKhQjmmkXUZaQGQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7Tpv32n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE753C4CEEB;
-	Mon, 18 Aug 2025 13:59:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CYRTLiGAscYw5xQfNvqPBCktt/mq5OlQG8QvCZiDADJMd1xSFXk1ZUkDykNemndBio/VgrxzSkx53kJtgd8KNgK7FQu+UJXHTQhz1M90v0bMtP4qG+mfC4VCSxgcLgm3Glf8/w6qC71HGooSAcnC9Ugda2SJ0X6u33/LHOOpFzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4dPIeTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD33CC113D0;
+	Mon, 18 Aug 2025 13:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525566;
-	bh=hIQnPhVSCGnTU1PWv6PzhT3LZxluHMiTqaPFiuqD/FU=;
+	s=korg; t=1755522362;
+	bh=QnAW6/JExWKwhTpxrkxg2sC6dtpk/fB/lAfzbjQa20w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7Tpv32nxiTdxb+8LAzqZkV8f3aqayZZ6cwWCQWzIulUS4ALk1C90O6wQAWJkib/I
-	 2bpwDERY5OzH0gDCR4w9Y9+L9YC/PbvXkZNR8YHLg+bbHlxvoFoJcHg70UkYt0G/Yu
-	 hJTeKtnhcgs/b2BidJe07Pl3tfQMyGRqsfahTtU4=
+	b=r4dPIeTA2a0Vpuuxayb/x7UZLYl3gLVWGjCs+vDepXMnTSGVf338sV+0l4LXInTeU
+	 nwrU5FWazDamhy0AfUil3y6sfSo+wLHe6ngiay3YalNXqSuVSK50yTmm1fMfHPydq7
+	 jFOg8w4rOAO1y8BR1/CD8tcOpxFN+z/Ism+muDpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Braunwarth <daniel.braunwarth@kuka.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Emily Deng <Emily.Deng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 300/570] net: phy: realtek: add error handling to rtl8211f_get_wol
+Subject: [PATCH 6.12 261/444] drm/ttm: Should to return the evict error
 Date: Mon, 18 Aug 2025 14:44:47 +0200
-Message-ID: <20250818124517.409587765@linuxfoundation.org>
+Message-ID: <20250818124458.614428070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Braunwarth <daniel.braunwarth@kuka.com>
+From: Emily Deng <Emily.Deng@amd.com>
 
-[ Upstream commit a9b24b3583ae1da7dbda031f141264f2da260219 ]
+[ Upstream commit 4e16a9a00239db5d819197b9a00f70665951bf50 ]
 
-We should check if the WOL settings was successfully read from the PHY.
+For the evict fail case, the evict error should be returned.
 
-In case this fails we cannot just use the error code and proceed.
+v2: Consider ENOENT case.
 
-Signed-off-by: Daniel Braunwarth <daniel.braunwarth@kuka.com>
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/baaa083b-9a69-460f-ab35-2a7cb3246ffd@nvidia.com
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250624-realtek_fixes-v1-1-02a0b7c369bc@kuka.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+v3: Abort directly when the eviction failed for some reason (except for -ENOENT)
+ and not wait for the move to finish
+
+Signed-off-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250603091154.3472646-1-Emily.Deng@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek/realtek_main.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ttm/ttm_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index c3dcb6257430..dd0d675149ad 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -436,9 +436,15 @@ static irqreturn_t rtl8211f_handle_interrupt(struct phy_device *phydev)
+diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+index 6d764ba88aab..53f258f39ceb 100644
+--- a/drivers/gpu/drm/ttm/ttm_resource.c
++++ b/drivers/gpu/drm/ttm/ttm_resource.c
+@@ -501,6 +501,9 @@ int ttm_resource_manager_evict_all(struct ttm_device *bdev,
+ 		cond_resched();
+ 	} while (!ret);
  
- static void rtl8211f_get_wol(struct phy_device *dev, struct ethtool_wolinfo *wol)
- {
-+	int wol_events;
++	if (ret && ret != -ENOENT)
++		return ret;
 +
- 	wol->supported = WAKE_MAGIC;
--	if (phy_read_paged(dev, RTL8211F_WOL_SETTINGS_PAGE, RTL8211F_WOL_SETTINGS_EVENTS)
--	    & RTL8211F_WOL_EVENT_MAGIC)
-+
-+	wol_events = phy_read_paged(dev, RTL8211F_WOL_SETTINGS_PAGE, RTL8211F_WOL_SETTINGS_EVENTS);
-+	if (wol_events < 0)
-+		return;
-+
-+	if (wol_events & RTL8211F_WOL_EVENT_MAGIC)
- 		wol->wolopts = WAKE_MAGIC;
- }
- 
+ 	spin_lock(&man->move_lock);
+ 	fence = dma_fence_get(man->move);
+ 	spin_unlock(&man->move_lock);
 -- 
 2.39.5
 
