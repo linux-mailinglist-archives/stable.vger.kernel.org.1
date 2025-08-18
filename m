@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDF8B2A7EA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F414B2A4DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A24C7581D89
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 445AC4E3238
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFC8192598;
-	Mon, 18 Aug 2025 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653B1335BB9;
+	Mon, 18 Aug 2025 13:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/hStNJG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ovn5BBeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC05335BBF;
-	Mon, 18 Aug 2025 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E88335BAC;
+	Mon, 18 Aug 2025 13:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525021; cv=none; b=UouOe4fI5n/Dsv6PGWTb4riqKk6BayXEsRUOqUFyP7/RtTP2QLHLe5qtbs/guOImGLIP22uodWEA0lOumiD3ZUVqsV8qALyosSyb6zVZux5UgwA0TWQeWCRVx1iG+8OrWs/uyy/EJKZ9qaBr4hsZn9Ic8cJigGxHrQt/ANvUVO4=
+	t=1755523213; cv=none; b=ZhqEDZQ7fXpV3VdhcQ+TLlJZoSn0TEztVMrNDpu/Yb6lyONgmlwdY7ewzmnDvjffvlWLE+Y13OUOLw1vmKYTE7HWK8bXTcyXdreZ+BCvT5erQfJ0BwRaFV++8zcbPHu9+0XFBhH/kMrwia3WVtc5g+rUTz+CHusoepOQC6NG100=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525021; c=relaxed/simple;
-	bh=8ChRynjqmwz66UI6rPsfK/J86BG9ekSznx4ftjSu7y4=;
+	s=arc-20240116; t=1755523213; c=relaxed/simple;
+	bh=5KlB0rLSFQFyKMrPt1AIgyK8Laq0Yf1moWbBUEuMO/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGOFzrFJ2TBH+IvvvQq5MTUVb8PE5SU8xIGUlYerZBPcmOqv9HIOkVCefXZvXWps6hObKgYfiBZOM8tt/fPFPhTu3GRvVNhviFZHxhhVMa1MQlaJqJ2Qu+OHIoeq+5ult6r9tvs0YAI3qUyBLBXkPuHj6PaBbBp9SwyFrXzOMT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/hStNJG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69DDC4CEEB;
-	Mon, 18 Aug 2025 13:50:20 +0000 (UTC)
+	 MIME-Version; b=D7v9haaIFn1v2JeJN/LVqZQB99xTRh7O1IHo1378zor9aDHWRpIR6X01BMyOmpE4dAsqMNS7lPSby5Kg2vHDboYmbI9O4F4bxyxaAXLgL8r2pbujg8saUtIehtlHqhcvF36PgXPXlFAcihR7ZQddRTzK2ZePwdAmgJrXvClpJ0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ovn5BBeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44933C4CEEB;
+	Mon, 18 Aug 2025 13:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525021;
-	bh=8ChRynjqmwz66UI6rPsfK/J86BG9ekSznx4ftjSu7y4=;
+	s=korg; t=1755523212;
+	bh=5KlB0rLSFQFyKMrPt1AIgyK8Laq0Yf1moWbBUEuMO/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/hStNJGor1VKSZRXwWkorQ4kyjWZL+kkEUCT78LLNQRQF4kGD85i6YQf7Olnt5ff
-	 9tkIQJjOS+PeodiQQzDjp7fMBdjGTbccHniGgLyhgMf4A+B1kufv/exhB3/IedRhMf
-	 GbhNmsyoIiUTUKzKmFHt5q0ldaBYVhhQPxgztnmk=
+	b=Ovn5BBeQzrSlwPlzBa92xvsl7blkEjTd8aFtW+wDdaR8wLqcVVjAWHP7LS3Hj3U2R
+	 FispgmkDig/5RjROXYoM9Zn+x4qK+Dcyhh/SBsWBHIbNopDyDiTr7OYtDg4RBx80uz
+	 JuGRzvYF3+fkB5+BmR6dcxz47YYBpjVqA91A0Vzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
+	Rong Zhang <ulin0208@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 103/570] nvme-tcp: log TLS handshake failures at error level
+Subject: [PATCH 6.15 104/515] fs/ntfs3: correctly create symlink for relative path
 Date: Mon, 18 Aug 2025 14:41:30 +0200
-Message-ID: <20250818124509.778785123@linuxfoundation.org>
+Message-ID: <20250818124502.373726583@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Rong Zhang <ulin0208@gmail.com>
 
-[ Upstream commit 5a58ac9bfc412a58c3cf26c6a7e54d4308e9d109 ]
+[ Upstream commit b1e9d89408f402858c00103f9831b25ffa0994d3 ]
 
-Update the nvme_tcp_start_tls() function to use dev_err() instead of
-dev_dbg() when a TLS error is detected. This ensures that handshake
-failures are visible by default, aiding in debugging.
+After applying this patch, could correctly create symlink:
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+ln -s "relative/path/to/file" symlink
+
+Signed-off-by: Rong Zhang <ulin0208@gmail.com>
+[almaz.alexandrovich@paragon-software.com: added cpu_to_le32 macro to
+rs->Flags assignment]
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/ntfs3/inode.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index d924008c3949..9233f088fac8 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1745,9 +1745,14 @@ static int nvme_tcp_start_tls(struct nvme_ctrl *nctrl,
- 			qid, ret);
- 		tls_handshake_cancel(queue->sock->sk);
- 	} else {
--		dev_dbg(nctrl->device,
--			"queue %d: TLS handshake complete, error %d\n",
--			qid, queue->tls_err);
-+		if (queue->tls_err) {
-+			dev_err(nctrl->device,
-+				"queue %d: TLS handshake complete, error %d\n",
-+				qid, queue->tls_err);
-+		} else {
-+			dev_dbg(nctrl->device,
-+				"queue %d: TLS handshake complete\n", qid);
-+		}
- 		ret = queue->tls_err;
- 	}
- 	return ret;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 0f0d27d4644a..8214970f4594 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1062,10 +1062,10 @@ int inode_read_data(struct inode *inode, void *data, size_t bytes)
+  * Number of bytes for REPARSE_DATA_BUFFER(IO_REPARSE_TAG_SYMLINK)
+  * for unicode string of @uni_len length.
+  */
+-static inline u32 ntfs_reparse_bytes(u32 uni_len)
++static inline u32 ntfs_reparse_bytes(u32 uni_len, bool is_absolute)
+ {
+ 	/* Header + unicode string + decorated unicode string. */
+-	return sizeof(short) * (2 * uni_len + 4) +
++	return sizeof(short) * (2 * uni_len + (is_absolute ? 4 : 0)) +
+ 	       offsetof(struct REPARSE_DATA_BUFFER,
+ 			SymbolicLinkReparseBuffer.PathBuffer);
+ }
+@@ -1078,8 +1078,11 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 	struct REPARSE_DATA_BUFFER *rp;
+ 	__le16 *rp_name;
+ 	typeof(rp->SymbolicLinkReparseBuffer) *rs;
++	bool is_absolute;
+ 
+-	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2), GFP_NOFS);
++	is_absolute = (strlen(symname) > 1 && symname[1] == ':');
++
++	rp = kzalloc(ntfs_reparse_bytes(2 * size + 2, is_absolute), GFP_NOFS);
+ 	if (!rp)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1094,7 +1097,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 		goto out;
+ 
+ 	/* err = the length of unicode name of symlink. */
+-	*nsize = ntfs_reparse_bytes(err);
++	*nsize = ntfs_reparse_bytes(err, is_absolute);
+ 
+ 	if (*nsize > sbi->reparse.max_size) {
+ 		err = -EFBIG;
+@@ -1114,7 +1117,7 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 
+ 	/* PrintName + SubstituteName. */
+ 	rs->SubstituteNameOffset = cpu_to_le16(sizeof(short) * err);
+-	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + 8);
++	rs->SubstituteNameLength = cpu_to_le16(sizeof(short) * err + (is_absolute ? 8 : 0));
+ 	rs->PrintNameLength = rs->SubstituteNameOffset;
+ 
+ 	/*
+@@ -1122,16 +1125,18 @@ ntfs_create_reparse_buffer(struct ntfs_sb_info *sbi, const char *symname,
+ 	 * parse this path.
+ 	 * 0-absolute path 1- relative path (SYMLINK_FLAG_RELATIVE).
+ 	 */
+-	rs->Flags = 0;
++	rs->Flags = cpu_to_le32(is_absolute ? 0 : SYMLINK_FLAG_RELATIVE);
+ 
+-	memmove(rp_name + err + 4, rp_name, sizeof(short) * err);
++	memmove(rp_name + err + (is_absolute ? 4 : 0), rp_name, sizeof(short) * err);
+ 
+-	/* Decorate SubstituteName. */
+-	rp_name += err;
+-	rp_name[0] = cpu_to_le16('\\');
+-	rp_name[1] = cpu_to_le16('?');
+-	rp_name[2] = cpu_to_le16('?');
+-	rp_name[3] = cpu_to_le16('\\');
++	if (is_absolute) {
++		/* Decorate SubstituteName. */
++		rp_name += err;
++		rp_name[0] = cpu_to_le16('\\');
++		rp_name[1] = cpu_to_le16('?');
++		rp_name[2] = cpu_to_le16('?');
++		rp_name[3] = cpu_to_le16('\\');
++	}
+ 
+ 	return rp;
+ out:
 -- 
 2.39.5
 
