@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7DEB2A495
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25BDDB2A7BB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AD89177070
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:16:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FED71B62C5A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138E62206B8;
-	Mon, 18 Aug 2025 13:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5271335BC5;
+	Mon, 18 Aug 2025 13:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PyWnevri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeG86AJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31EC20E6E1;
-	Mon, 18 Aug 2025 13:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E057335BA3;
+	Mon, 18 Aug 2025 13:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522919; cv=none; b=DdgKp1hoATzzazp1RaHfb+h3T+tDw76wG6l+ZI5r0TmXo+YENvQbP0GrPhfMbhc3yM/iLj74BK/Umd6FdaYFLemzlbhqxHN/PJXbTEFnHG6fecQlh7xiE/QqcgSR/QH0kL51C/Dqpg4C6dpEMqwwN9FHD2paUYgNb3cWupI6LIo=
+	t=1755524684; cv=none; b=mhgKJmOqUk80VnRSjdTWHuWHXoTl3g4sFnY5qpcaj+1ie2Xcykbz82FJvPXAFDQ29M/Aog+d7hJu4kBAIy1+somlW3xgjqujjwxCi+NVIm0/JWVAIpRQk+dymow8OSq4cVDC1MAJm/kMPyN3e6yN62z483DM4hPI1eTh0miZ5Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522919; c=relaxed/simple;
-	bh=Hjg52v6yRKBe/aytDO+sdDEqHNAoMAMC+UGMMvrgQA4=;
+	s=arc-20240116; t=1755524684; c=relaxed/simple;
+	bh=OaY6H0IuElB/YQQBpjG7E2jEdiCj1zcDQRVKNsc/FCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPX/kAbbqVHtaZ/dWIDUDWNI3NqTS9fhVXYcaui0nU2LZdzSSb70pusrArrdp6+Z+PdHLio0ob5c/52UWKOhItQNVD6Uq/+Vkz6z3oV+/DWLtmPthkx3gJAJHSwwclmQ/eotbb3TShoiECrRvgRwqK04PeFNH1VVmiPYgIbJcUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PyWnevri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D55C4CEEB;
-	Mon, 18 Aug 2025 13:15:18 +0000 (UTC)
+	 MIME-Version; b=N0iArs3VSsUVGjGYqCna05a6OXEvlTC3fEfbNFHdgMLNcAJkLKGkzSoI+k+s7Wgaox08Jo9o7iV601YhuXJIA+yxo0zgR5T1Si8Zrxr8VtvHUst58Vkwnh8bgkueHJzWnOx42k/ss076gsrZHbkN9NlkVDfUsljOcyRUPQ/ZzjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeG86AJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F4EC4CEEB;
+	Mon, 18 Aug 2025 13:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522919;
-	bh=Hjg52v6yRKBe/aytDO+sdDEqHNAoMAMC+UGMMvrgQA4=;
+	s=korg; t=1755524684;
+	bh=OaY6H0IuElB/YQQBpjG7E2jEdiCj1zcDQRVKNsc/FCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PyWnevriJnM2eRp82jVTqTKd0DkCLYIZa3KtGHxW+X36RuvyW5yZZW9+tYtZoT6z1
-	 GPL33w9Nt6QRtQt9qi7vtJIGgXPd6Q/H28cT7VtjXZriJKmw0EA6LzD3zmyCLBzsLS
-	 zE+s54mhWYupA+IGPOHF6Z/t6mBIAi5JQ+p+DGiM=
+	b=WeG86AJe/dIqD1vFv/Kl4WoMudMSRaDeELjgf5Z7z/NJyqgFxpENbJSeB8XAo8MBc
+	 eE+XMk9UrJwrCI6ewBjaXof8MfBSUov2BglQd/baHW+rzxZK7CfsTro4XddQdnhb9k
+	 OwC63xRyeXSbOhgqTYLtNyubIe89e9XR/Z3PUY+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Eby <kreed@kreed.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 008/515] ALSA: hda/realtek: Add Framework Laptop 13 (AMD Ryzen AI 300) to quirks
+	Takashi Iwai <tiwai@suse.de>,
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 6.16 007/570] ALSA: usb-audio: Validate UAC3 cluster segment descriptors
 Date: Mon, 18 Aug 2025 14:39:54 +0200
-Message-ID: <20250818124458.650029916@linuxfoundation.org>
+Message-ID: <20250818124506.070067094@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher Eby <kreed@kreed.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 0db77eccd964b11ab2b757031d1354fcc5a025ea upstream.
+commit ecfd41166b72b67d3bdeb88d224ff445f6163869 upstream.
 
-Framework Laptop 13 (AMD Ryzen AI 300) requires the same quirk for
-headset detection as other Framework 13 models.
+UAC3 class segment descriptors need to be verified whether their sizes
+match with the declared lengths and whether they fit with the
+allocated buffer sizes, too.  Otherwise malicious firmware may lead to
+the unexpected OOB accesses.
 
-Signed-off-by: Christopher Eby <kreed@kreed.org>
+Fixes: 11785ef53228 ("ALSA: usb-audio: Initial Power Domain support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250810030006.9060-1-kreed@kreed.org
+Link: https://patch.msgid.link/20250814081245.8902-2-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/stream.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11422,6 +11422,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0009, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0xf111, 0x000b, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x000c, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -341,20 +341,28 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
  
- #if 0
+ 	len = le16_to_cpu(cluster->wLength);
+ 	c = 0;
+-	p += sizeof(struct uac3_cluster_header_descriptor);
++	p += sizeof(*cluster);
++	len -= sizeof(*cluster);
+ 
+-	while (((p - (void *)cluster) < len) && (c < channels)) {
++	while (len > 0 && (c < channels)) {
+ 		struct uac3_cluster_segment_descriptor *cs_desc = p;
+ 		u16 cs_len;
+ 		u8 cs_type;
+ 
++		if (len < sizeof(*p))
++			break;
+ 		cs_len = le16_to_cpu(cs_desc->wLength);
++		if (len < cs_len)
++			break;
+ 		cs_type = cs_desc->bSegmentType;
+ 
+ 		if (cs_type == UAC3_CHANNEL_INFORMATION) {
+ 			struct uac3_cluster_information_segment_descriptor *is = p;
+ 			unsigned char map;
+ 
++			if (cs_len < sizeof(*is))
++				break;
++
+ 			/*
+ 			 * TODO: this conversion is not complete, update it
+ 			 * after adding UAC3 values to asound.h
+@@ -456,6 +464,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
+ 			chmap->map[c++] = map;
+ 		}
+ 		p += cs_len;
++		len -= cs_len;
+ 	}
+ 
+ 	if (channels < c)
+@@ -880,7 +889,7 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 	u64 badd_formats = 0;
+ 	unsigned int num_channels;
+ 	struct audioformat *fp;
+-	u16 cluster_id, wLength;
++	u16 cluster_id, wLength, cluster_wLength;
+ 	int clock = 0;
+ 	int err;
+ 
+@@ -1008,6 +1017,16 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 			iface_no, altno);
+ 		kfree(cluster);
+ 		return ERR_PTR(-EIO);
++	}
++
++	cluster_wLength = le16_to_cpu(cluster->wLength);
++	if (cluster_wLength < sizeof(*cluster) ||
++	    cluster_wLength > wLength) {
++		dev_err(&dev->dev,
++			"%u:%d : invalid Cluster Descriptor size\n",
++			iface_no, altno);
++		kfree(cluster);
++		return ERR_PTR(-EIO);
+ 	}
+ 
+ 	num_channels = cluster->bNrChannels;
 
 
 
