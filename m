@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A23B2A524
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F3C3B2A220
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAD045680A4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF33F6201AC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2482A32252A;
-	Mon, 18 Aug 2025 13:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DEDD31AF15;
+	Mon, 18 Aug 2025 12:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkhBXAL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7NLZNy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57FB31B11A;
-	Mon, 18 Aug 2025 13:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4D830DD05;
+	Mon, 18 Aug 2025 12:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523065; cv=none; b=s+E/xPQsooQczw6AAIdTi18A4I2DVMu9UFZVNL/zW4zmn8x/9rn3QIea82uiZNJJwBbXJuiuPqzHv7WBKFxgBtPAHCrl+ts82kdQbPJfvRJ4OEbbB3wk/rV3Z7v4H7N8t5zHGnVN+A/eqMaO359bvTMEZDBNIpKUvQF42nD8QoQ=
+	t=1755521441; cv=none; b=B68BSCNVUZS27sDsOGJ7Zf0ChlPkZpdSV1AX2keMntNw87XC4Ep704AiKmOqJYiTO2OCM3j3uEcDXJmXt/V2+Be+KU1wbG7GBRW93h83jml3JX3tx6YMBeCCbqZ9ioI1LLZw5emso/0uu1bbHQA9eq/4/cT37QkrfxfM2M4Vlpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523065; c=relaxed/simple;
-	bh=X57BJ8+AxQRJglQ1QMEIY+91XeGFgOnT36Gxu23al6k=;
+	s=arc-20240116; t=1755521441; c=relaxed/simple;
+	bh=wufA9uz7TLKib4IJQZ9am0pEjsvdkV9Rwc6UA6QWDr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQfN+WdrCfur49LA8AxwKZxPskCRWcU8E++FB9K+Q3/p8pj56VxvQRx5+tXB5Np/bw/7eg9WyZkqmlRSnJ/zF4/24Aw9WuV/Z/uQDd+3cT/9o2wlbSWt5Ro5Bue2lyugT2wsoYA7qrlvTIjbt0BayexVTV7mzsVic36Hp8AwgVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkhBXAL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEABC4CEEB;
-	Mon, 18 Aug 2025 13:17:44 +0000 (UTC)
+	 MIME-Version; b=o4bKV7Pm3BBC6ZlI8vOiDcGMX2uvOxLXlTRpn0s29Is8FnSzfbvrn/J0wrC5BBBlmxoDnGeiz0iZfELw0MP8GIHVgPaUUM+eUAgGWrr4ZqbMy5t0zaV29HZLse+JfcmxV69wMRQQc3t+8lApsgkWODRcPIhmdzfQm6woi1BBbzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7NLZNy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3119C4CEEB;
+	Mon, 18 Aug 2025 12:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523065;
-	bh=X57BJ8+AxQRJglQ1QMEIY+91XeGFgOnT36Gxu23al6k=;
+	s=korg; t=1755521440;
+	bh=wufA9uz7TLKib4IJQZ9am0pEjsvdkV9Rwc6UA6QWDr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkhBXAL+yl1xRlrtq1Dvtr3UjiB8u6ievK2gJ7FKB2KCQ+N6/bb+rT0brFWEr1wsr
-	 1FLbXw2k/EHtxlxj7V89m/CEr7JcVxagI94sQgLDx2bVzd4vE5EEYpRLPQbGvVy6K6
-	 kPhYGTKiSqp5bRh8NlaiJowZk7yzM7xsDP0Aaapo=
+	b=F7NLZNy8siqqeIY1AImNCCNJD492AzPzeFtF2eic6OuW/iNTNm0x5YLK9NLP1xU4H
+	 hEKuh9k45Ni+DwgS0oiS3wTvm6llkiwALjBRqaNmmb6yAxOfCGK360SVBwP2o/xXEo
+	 n5vcr0Hgi5yu0IZi40IRpkNzJtUWKmauS/5rvjGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
+	Yangbo Lu <yangbo.lu@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 061/515] net: hibmcge: fix the division by zero issue
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 021/444] net: dpaa: fix device leak when querying time stamp info
 Date: Mon, 18 Aug 2025 14:40:47 +0200
-Message-ID: <20250818124500.758701944@linuxfoundation.org>
+Message-ID: <20250818124449.711212081@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 7004b26f0b64331143eb0b312e77a357a11427ce ]
+commit 3fa840230f534385b34a4f39c8dd313fbe723f05 upstream.
 
-When the network port is down, the queue is released, and ring->len is 0.
-In debugfs, hbg_get_queue_used_num() will be called,
-which may lead to a division by zero issue.
+Make sure to drop the reference to the ptp device taken by
+of_find_device_by_node() when querying the time stamping capabilities.
 
-This patch adds a check, if ring->len is 0,
-hbg_get_queue_used_num() directly returns 0.
+Note that holding a reference to the ptp device does not prevent its
+driver data from going away.
 
-Fixes: 40735e7543f9 ("net: hibmcge: Implement .ndo_start_xmit function")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Fixes: 17ae0b0ee9db ("dpaa_eth: add the get_ts_info interface for ethtool")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Yangbo Lu <yangbo.lu@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-2-johan@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-index 2883a5899ae2..8b6110599e10 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-@@ -29,7 +29,12 @@ static inline bool hbg_fifo_is_full(struct hbg_priv *priv, enum hbg_dir dir)
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
+@@ -415,8 +415,10 @@ static int dpaa_get_ts_info(struct net_d
+ 		of_node_put(ptp_node);
+ 	}
  
- static inline u32 hbg_get_queue_used_num(struct hbg_ring *ring)
- {
--	return (ring->ntu + ring->len - ring->ntc) % ring->len;
-+	u32 len = READ_ONCE(ring->len);
-+
-+	if (!len)
-+		return 0;
-+
-+	return (READ_ONCE(ring->ntu) + len - READ_ONCE(ring->ntc)) % len;
- }
+-	if (ptp_dev)
++	if (ptp_dev) {
+ 		ptp = platform_get_drvdata(ptp_dev);
++		put_device(&ptp_dev->dev);
++	}
  
- netdev_tx_t hbg_net_start_xmit(struct sk_buff *skb, struct net_device *netdev);
--- 
-2.50.1
-
+ 	if (ptp)
+ 		info->phc_index = ptp->phc_index;
 
 
 
