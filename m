@@ -1,101 +1,98 @@
-Return-Path: <stable+bounces-170177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536BAB2A2A6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1F7B2A227
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E6833A38D8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9BCF16EFEF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7431E109;
-	Mon, 18 Aug 2025 12:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85212264B3;
+	Mon, 18 Aug 2025 12:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5sK5IXN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="La1XjXG0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C401E51FE;
-	Mon, 18 Aug 2025 12:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AA91C8606
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 12:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521782; cv=none; b=LduVTsf7F9e5viLhUOEKrFk2sTeTgBncUH9GOHYWH9O9PSWiSSA1e7wWSRn55jK+ST5FbGcaYqZLSOPNd6/qPMPbPWrFWUXr6BBg3RWJR8U3mPna77yw1yLZP2X/1aQNvB9y6Lsj3qJblkt8MY22E0qn9+06RCtHVs9PTEaJ9ZI=
+	t=1755521008; cv=none; b=ulfwSiNTZKSehAnGkJ24kgIaBTOg98cKTpnTe7oZJzUqUwy00Qn5lLI2PoDhOH9ldSsFLbWagKWY22kZFNly/Whog5ixrOVOyYriuviAN0Mkn8LPil5j+AltV3PC9j/kAvlFjvQeuQiD4ufulTkH4IG56p5m4z+SRDpDVmAdDFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521782; c=relaxed/simple;
-	bh=i586I4XE0WushWhzx1G9Crt4ttb0NoHiOFOk4ZtTHx8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pL38n9ES14/x2wjqP/9Pc+1u72cGQ2ab00tCfCd6BR2JHN+XLzmQcL7zLasPfN8+inbD8hoj+ml/G2hsRh019rpSegUtyKAge+UfpTkV2a6etrhdwK23FKB40yNdgfTclvXMTC6RUJmPF23RrrscEn3X2RMYi+Vb0ZGmn249DOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5sK5IXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8B5C4CEEB;
-	Mon, 18 Aug 2025 12:56:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521781;
-	bh=i586I4XE0WushWhzx1G9Crt4ttb0NoHiOFOk4ZtTHx8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5sK5IXNNmQ+xELa2ZjKbDvqOlXQc7hdV7aOmpAuCxSj6GCmjkGq07R+qf7QuUVyL
-	 3IeHJ3qpU3b/Zz0odu5XbNhKm9PuDIvTZKUFX3wFQ3vWMHzScE6gbci7AXhUDsdhfi
-	 YwM72vZOrksE8S0sECRsCNfzEkf5UKCptrFZq6pQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/444] ARM: tegra: Use I/O memcpy to write to IRAM
-Date: Mon, 18 Aug 2025 14:42:27 +0200
-Message-ID: <20250818124453.456266972@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1755521008; c=relaxed/simple;
+	bh=gG3oGq/hJVfxFUTpg6jg7GO9O7GLdA0OnBQMXthbYVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=kgsNQsqoD4voQDMVunCUwZdyQHwDdsdfbEdRE1O2lUQEVsprrmVRs3BejFfV4nX5Krew6mCUIY3A36Z2wbAeJ8Q3lkoMuXBB8fydoGPmR0hPNbWK/hSQ2dPJtWECy3OzSEnxAKzY+Z5rYO5Ls6YaeDyPgsQQVNEsTGQPI994w7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=La1XjXG0; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755521008; x=1787057008;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=gG3oGq/hJVfxFUTpg6jg7GO9O7GLdA0OnBQMXthbYVM=;
+  b=La1XjXG0xIZUeDQR1j74m5bOa1YD+tRUM1561t3TI2f+C13/+hK95xru
+   1Rxej8k0FJdUjluvBofeZXk7ud9FniAVnGsEekIwuW99oWMGoDzQB9G1x
+   WNMKVontTehnlRGbSpxu36WGHrbAJZvD2qOHXC4JnSiSFMz3CSIv5G3Qd
+   d3flpUwDCLveEZOz6WBRIWqKlPGHdpKvyJoWlicd9p2BMBnpsXB3oHdg7
+   nLjxaUnZ67hKEDyT4K/22rjSDAiAvgDb0b4QN6/K4RC2RRO0d0QrhNsyt
+   0vUvVdUExXMMAbbmmdYw3HJNIMtwsUT6ZHplU1H8wmwZZu2mbXGwGbSMW
+   g==;
+X-CSE-ConnectionGUID: 5ALAzMFDTNOyBOmHDRGjPA==
+X-CSE-MsgGUID: oRI0euxaSTOGoUK5QWxeFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="57598365"
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
+   d="scan'208";a="57598365"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 05:43:27 -0700
+X-CSE-ConnectionGUID: pC+0/5geTbqx5UTMICCXow==
+X-CSE-MsgGUID: twCjzM6eRgiFfqaKun1MwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,293,1747724400"; 
+   d="scan'208";a="171806153"
+Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 18 Aug 2025 05:43:26 -0700
+Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1unzCt-000EE3-2H;
+	Mon, 18 Aug 2025 12:43:23 +0000
+Date: Mon, 18 Aug 2025 20:42:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 1/2] media: cx18: Fix invalid access to file *
+Message-ID: <aKMfs970ReRSZGy9@769e0d9fd271>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818-cx18-v4l2-fh-v1-1-6fe153760bce@ideasonboard.com>
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Hi,
 
-------------------
+Thanks for your patch.
 
-From: Aaron Kling <webgeek1234@gmail.com>
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Kasan crashes the kernel trying to check boundaries when using the
-normal memcpy.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 1/2] media: cx18: Fix invalid access to file *
+Link: https://lore.kernel.org/stable/20250818-cx18-v4l2-fh-v1-1-6fe153760bce%40ideasonboard.com
 
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/mach-tegra/reset.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
-index d5c805adf7a8..ea706fac6358 100644
---- a/arch/arm/mach-tegra/reset.c
-+++ b/arch/arm/mach-tegra/reset.c
-@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
- 	BUG_ON(is_enabled);
- 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
- 
--	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
-+	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
- 			tegra_cpu_reset_handler_size);
- 
- 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
 -- 
-2.39.5
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
 
