@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8982B2A688
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F31FB2A94C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BBEEB613A3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44B31B624B6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A915335BBF;
-	Mon, 18 Aug 2025 13:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3443322548;
+	Mon, 18 Aug 2025 14:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfH6EDSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHxHCFpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9C335BA0;
-	Mon, 18 Aug 2025 13:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AD234984;
+	Mon, 18 Aug 2025 14:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524251; cv=none; b=coxvFdE5cD0ikoBhIEUvWzVS4WR97FW5z7hqFxug4Mb2qKHA0EhW7z+9E2s5d5ujUrr5GzDA1eJ1L4QH0UhJ/4ckqUjyOxOTyBySozvnLA6VpXbz3hfP6r43nFE7rl++iTIoJap+IrDk1MLv8D50v57N2drIiVRmfg+KCVF8rO4=
+	t=1755526038; cv=none; b=bdMpnrP85c78OLTFMtXWSWbvyHd5LyfMQgxMdij2Sf+Co+KAD/9TOwtCnIgA3w5M3toQXZxqFsz20PdOhhSJRYg6wMjil6180MhloNnLmPTzMcCZbRDd6HzWGn23966K1Jt3SIrTd/PkUb+DaRmcVK9CGErHleB68yzcJUDdnRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524251; c=relaxed/simple;
-	bh=FrQZMWUiWjsAiyl65j6AZR/zjwtMHFBoqEy1yo3eox8=;
+	s=arc-20240116; t=1755526038; c=relaxed/simple;
+	bh=C76PeATUBMEAnu/b9miGHNvLkm7bdENGZ7dGRN/sxBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bino1NFTHUzOk9U5SMV4X2xujuUe4BQcsL85ea1VW4l6WOeFzSJsgKBad2Ke0WmumhGIG96KTtE3bbpT94BM1lzDe5QNzXerUiLU/oQAe/qdamoh7fGPLwJ1q4jYk6QxlhUW0mv/iBu4RvlebNRC+ePB0s6lnH1+QCJmvI+SqAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfH6EDSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99967C116C6;
-	Mon, 18 Aug 2025 13:37:30 +0000 (UTC)
+	 MIME-Version; b=dy/ws0INW1LJvPqHdehONuH9hQNpbA0W5mQ07b4CkRXLFQMtYONFKp2PHngUt9Sva8SxTVVBs8wVyxCttzBLBpe4ik9Q4ABMmoJcTvC7jbGfVbq4+HVJBx5mWUyf5bHhiKc99j/Yru7Rh+a0RsezM4uxJNDnv2ffJGk/q/ZsRWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHxHCFpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD66C4CEEB;
+	Mon, 18 Aug 2025 14:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524251;
-	bh=FrQZMWUiWjsAiyl65j6AZR/zjwtMHFBoqEy1yo3eox8=;
+	s=korg; t=1755526038;
+	bh=C76PeATUBMEAnu/b9miGHNvLkm7bdENGZ7dGRN/sxBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfH6EDSMWCbflnJalSgIINaWhgZhcfoF9wNXCklGTcrKqa5IQMY40sCoIoeBHWXnn
-	 qGl6z6qJ793WD3c3v3QxCNiLLTf1EsnL3Xpn+T4L65Bzqs/ZCVDDmPz95m8DpFkx7s
-	 Aplq//ZGyNIaX8i2EkQQs//9e5IGEmmXtt1G3e1k=
+	b=cHxHCFpK+quyzNgNUiqm07wQ4y658m4FMCsl+S2otEOLWizETIdF1uhcvoOaqN+xO
+	 Ljwvh4+hK7KQD8ChlKJhQwqlYB8Qjqgw2q2WEnjAHlShihi4Uj5kJvPOrofU7iTt5C
+	 oOEJ62RJnvigrBsrK6/BJUC5fZpOE+9fiZPDEQ/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Alex Guo <alexguo1023@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 414/515] kconfig: gconf: fix potential memory leak in renderer_edited()
+Subject: [PATCH 6.16 413/570] media: dvb-frontends: w7090p: fix null-ptr-deref in w7090p_tuner_write_serpar and w7090p_tuner_read_serpar
 Date: Mon, 18 Aug 2025 14:46:40 +0200
-Message-ID: <20250818124514.355389442@linuxfoundation.org>
+Message-ID: <20250818124521.755800897@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Alex Guo <alexguo1023@gmail.com>
 
-[ Upstream commit f72ed4c6a375e52a3f4b75615e4a89d29d8acea7 ]
+[ Upstream commit ed0234c8458b3149f15e496b48a1c9874dd24a1b ]
 
-If gtk_tree_model_get_iter() fails, gtk_tree_path_free() is not called.
+In w7090p_tuner_write_serpar, msg is controlled by user. When msg[0].buf is null and msg[0].len is zero, former checks on msg[0].buf would be passed. If accessing msg[0].buf[2] without sanity check, null pointer deref would happen. We add
+check on msg[0].len to prevent crash.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Similar commit: commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+Link: https://lore.kernel.org/r/20250616013353.738790-1-alexguo1023@gmail.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/dvb-frontends/dib7000p.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index abe4cfe66b14..0caf0ced13df 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -748,7 +748,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 	struct symbol *sym;
+diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
+index 360a2d7dd3ed..7d3a994b7cc4 100644
+--- a/drivers/media/dvb-frontends/dib7000p.c
++++ b/drivers/media/dvb-frontends/dib7000p.c
+@@ -2193,6 +2193,8 @@ static int w7090p_tuner_write_serpar(struct i2c_adapter *i2c_adap, struct i2c_ms
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 3)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
  
- 	if (!gtk_tree_model_get_iter(model2, &iter, path))
--		return;
-+		goto free;
- 
- 	gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
- 	sym = menu->sym;
-@@ -760,6 +760,7 @@ static void renderer_edited(GtkCellRendererText * cell,
- 
- 	update_tree(&rootmenu, NULL);
- 
-+free:
- 	gtk_tree_path_free(path);
- }
+ 	while (n_overflow == 1 && i) {
+@@ -2212,6 +2214,8 @@ static int w7090p_tuner_read_serpar(struct i2c_adapter *i2c_adap, struct i2c_msg
+ 	struct dib7000p_state *state = i2c_get_adapdata(i2c_adap);
+ 	u8 n_overflow = 1, n_empty = 1;
+ 	u16 i = 1000;
++	if (msg[0].len < 1 || msg[1].len < 2)
++		return -EOPNOTSUPP;
+ 	u16 serpar_num = msg[0].buf[0];
+ 	u16 read_word;
  
 -- 
 2.39.5
