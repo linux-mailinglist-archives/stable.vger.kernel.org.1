@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-170595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1BBB2A578
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85634B2A21B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 822394E0BFC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E67E33B094F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8013375A8;
-	Mon, 18 Aug 2025 13:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4755318133;
+	Mon, 18 Aug 2025 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFGz/oMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYtz5Cm7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8796F30C37D;
-	Mon, 18 Aug 2025 13:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601F92FF15F;
+	Mon, 18 Aug 2025 12:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523146; cv=none; b=htasAuNAEsIgH+ylfoN4GkjXZ40Qk4GRHJ4N1kWp0tA+Qup/541DnAWMiR1BrNp9V/vR0YkA+rFBMw4rcGXhr7HSkMa9dx2pkXxRl2YXaTSwcod3KmcChCo85cGnobZrylm/em4pgyG/RIeXyBzH5VjXheNrKvEaC5CoRXYYURI=
+	t=1755521415; cv=none; b=s3mgVSXVW2J9vjhEVGhlvVB3WlbyoRIVPSGCSkoXYB83cayTYi+DNgl3n1jxUc3GgbbiHMbq2wYBYf3YtXEvtoyJiXykWYX9xp9v2Cb/er+b4fiYKEC5toAouiYdxXGygYAqwMfeYla3aIg3q07Q/TgBorlpOVA/FoaFjm+X+W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523146; c=relaxed/simple;
-	bh=mDVRW5+BQeEU3h27jP946/yWqg7e6Q0rxv+elQqHhYQ=;
+	s=arc-20240116; t=1755521415; c=relaxed/simple;
+	bh=EJE8si7FCtLsuS/nBrSDw8IVdblg/LPQPqxwdRtQzDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkMI3umqyKowJoDHi4r+VowWSYIkeOvfFt9ECyXdyhxmX5IvyR37iZ84IL9G8AB/CHscAdxpP61ryvD9nni2Xkkl5agzNbqYdNd6/FSv4CxKwbVjytvc4qlH4N8D1Ztf87VlIQ+firegae2IO/p5bVSMcLqJ+CyoAQqgBOYB4lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFGz/oMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CCFC4CEEB;
-	Mon, 18 Aug 2025 13:19:05 +0000 (UTC)
+	 MIME-Version; b=E7R5RB6rzEhqjC2ZGITcX9g98mbHh6I8X4oPRG/z/WQFIgdxWeBf0st9GGkHSyiKm50jCOpiRO5GXp3WKoFA1EJuNhBStavwVUYe4+UAqevoCO6T3JuukpYGQnavfivvKKBX/653hJmABB6lHpPO97R8LUzE4xqcSBC9pTOeBhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYtz5Cm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FD7C113D0;
+	Mon, 18 Aug 2025 12:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523146;
-	bh=mDVRW5+BQeEU3h27jP946/yWqg7e6Q0rxv+elQqHhYQ=;
+	s=korg; t=1755521414;
+	bh=EJE8si7FCtLsuS/nBrSDw8IVdblg/LPQPqxwdRtQzDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFGz/oMsLa6b4B2vcKSxGMnupl3UR7oonsRc/IzK8cU4p0HdGi9csFXi9UClC0UFx
-	 U28ZgxkQblaKWQZiuzNW1iHYEbfc5+97rhfWs6ya5jo+/vS2z/THX1qm73yjrg45kj
-	 V6SuXnElFJ5kNDdHwYaPTyY49OvYeA0UOuXCMChY=
+	b=PYtz5Cm7lKoiKXXjuTUgc0xTgmwF2VwtevtKN2sZOGJ+DmZSbMP26+lU66KbX7v2Z
+	 tpV4Q71EX+sayLwtsoy+7p4dmnPbywYUdQI8G3QWI25FZL2iOAGCwol20PIyZaK1Pz
+	 WiTZiWq+cDoYWqi+0m1rY8keZCPkx/Fw9pKQtQ1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Long Li <longli@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 053/515] smb: client: let send_done() cleanup before calling smbd_disconnect_rdma_connection()
-Date: Mon, 18 Aug 2025 14:40:39 +0200
-Message-ID: <20250818124500.461913655@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 014/444] netlink: avoid infinite retry looping in netlink_unicast()
+Date: Mon, 18 Aug 2025 14:40:40 +0200
+Message-ID: <20250818124449.437223086@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 5349ae5e05fa37409fd48a1eb483b199c32c889b upstream.
+commit 759dfc7d04bab1b0b86113f1164dc1fec192b859 upstream.
 
-We should call ib_dma_unmap_single() and mempool_free() before calling
-smbd_disconnect_rdma_connection().
+netlink_attachskb() checks for the socket's read memory allocation
+constraints. Firstly, it has:
 
-And smbd_disconnect_rdma_connection() needs to be the last function to
-call as all other state might already be gone after it returns.
+  rmem < READ_ONCE(sk->sk_rcvbuf)
 
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Fixes: f198186aa9bb ("CIFS: SMBD: Establish SMB Direct connection")
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+to check if the just increased rmem value fits into the socket's receive
+buffer. If not, it proceeds and tries to wait for the memory under:
+
+  rmem + skb->truesize > READ_ONCE(sk->sk_rcvbuf)
+
+The checks don't cover the case when skb->truesize + sk->sk_rmem_alloc is
+equal to sk->sk_rcvbuf. Thus the function neither successfully accepts
+these conditions, nor manages to reschedule the task - and is called in
+retry loop for indefinite time which is caught as:
+
+  rcu: INFO: rcu_sched self-detected stall on CPU
+  rcu:     0-....: (25999 ticks this GP) idle=ef2/1/0x4000000000000000 softirq=262269/262269 fqs=6212
+  (t=26000 jiffies g=230833 q=259957)
+  NMI backtrace for cpu 0
+  CPU: 0 PID: 22 Comm: kauditd Not tainted 5.10.240 #68
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc42 04/01/2014
+  Call Trace:
+  <IRQ>
+  dump_stack lib/dump_stack.c:120
+  nmi_cpu_backtrace.cold lib/nmi_backtrace.c:105
+  nmi_trigger_cpumask_backtrace lib/nmi_backtrace.c:62
+  rcu_dump_cpu_stacks kernel/rcu/tree_stall.h:335
+  rcu_sched_clock_irq.cold kernel/rcu/tree.c:2590
+  update_process_times kernel/time/timer.c:1953
+  tick_sched_handle kernel/time/tick-sched.c:227
+  tick_sched_timer kernel/time/tick-sched.c:1399
+  __hrtimer_run_queues kernel/time/hrtimer.c:1652
+  hrtimer_interrupt kernel/time/hrtimer.c:1717
+  __sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1113
+  asm_call_irq_on_stack arch/x86/entry/entry_64.S:808
+  </IRQ>
+
+  netlink_attachskb net/netlink/af_netlink.c:1234
+  netlink_unicast net/netlink/af_netlink.c:1349
+  kauditd_send_queue kernel/audit.c:776
+  kauditd_thread kernel/audit.c:897
+  kthread kernel/kthread.c:328
+  ret_from_fork arch/x86/entry/entry_64.S:304
+
+Restore the original behavior of the check which commit in Fixes
+accidentally missed when restructuring the code.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: ae8f160e7eb2 ("netlink: Fix wraparounds of sk->sk_rmem_alloc.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250728080727.255138-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smbdirect.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ net/netlink/af_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/smbdirect.c
-+++ b/fs/smb/client/smbdirect.c
-@@ -277,18 +277,20 @@ static void send_done(struct ib_cq *cq,
- 	log_rdma_send(INFO, "smbd_request 0x%p completed wc->status=%d\n",
- 		request, wc->status);
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1222,7 +1222,7 @@ int netlink_attachskb(struct sock *sk, s
+ 	nlk = nlk_sk(sk);
+ 	rmem = atomic_add_return(skb->truesize, &sk->sk_rmem_alloc);
  
--	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
--		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
--			wc->status, wc->opcode);
--		smbd_disconnect_rdma_connection(request->info);
--	}
--
- 	for (i = 0; i < request->num_sge; i++)
- 		ib_dma_unmap_single(sc->ib.dev,
- 			request->sge[i].addr,
- 			request->sge[i].length,
- 			DMA_TO_DEVICE);
- 
-+	if (wc->status != IB_WC_SUCCESS || wc->opcode != IB_WC_SEND) {
-+		log_rdma_send(ERR, "wc->status=%d wc->opcode=%d\n",
-+			wc->status, wc->opcode);
-+		mempool_free(request, info->request_mempool);
-+		smbd_disconnect_rdma_connection(info);
-+		return;
-+	}
-+
- 	if (atomic_dec_and_test(&request->info->send_pending))
- 		wake_up(&request->info->wait_send_pending);
- 
+-	if ((rmem == skb->truesize || rmem < READ_ONCE(sk->sk_rcvbuf)) &&
++	if ((rmem == skb->truesize || rmem <= READ_ONCE(sk->sk_rcvbuf)) &&
+ 	    !test_bit(NETLINK_S_CONGESTED, &nlk->state)) {
+ 		netlink_skb_set_owner_r(skb, sk);
+ 		return 0;
 
 
 
