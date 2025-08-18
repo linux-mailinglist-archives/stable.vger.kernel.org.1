@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-171100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAC1B2A82F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99249B2A296
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 445326E1454
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 795BA1896268
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C13C26F2AC;
-	Mon, 18 Aug 2025 13:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031D631B102;
+	Mon, 18 Aug 2025 12:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngG82ItE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSmYHg2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7EF335BC3;
-	Mon, 18 Aug 2025 13:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35502F28E0;
+	Mon, 18 Aug 2025 12:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524815; cv=none; b=eiEkcM7loN3eYQlckpMV8dLYcZ6N9tckMpoK03OcaM89Lb1gbRjUIsE5vhCW2Ah37bU7Dr0iB5U7ks+wF1kYf14I61ETN2zYyQRG++tvpDAvpoUN1WcsfKxA47YJUyXYT4YXkk3x4H1UdUxyWb3RYqmv8WB4yOepUB3wHjzEu4U=
+	t=1755521484; cv=none; b=CE9tynLWZXOhiLD+b9TeiqpYUhIPLjgPwIWLmhC5Ve2pec+dcXMY9i+O6gOiwvwMkGSEq1eUpVdt6LiZ68d/ARUJjJ0nSInaksoOwOOdCpscIvFlALgBw6u2SKuOYO4NuyuOJ/P9jBx6c8aQDHnxyW28UBIEVJImDdpywV4irCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524815; c=relaxed/simple;
-	bh=8ywg+aAX1LOa6txgh+r3fJ4+isK8VlXuahvCtkeixa0=;
+	s=arc-20240116; t=1755521484; c=relaxed/simple;
+	bh=agNwrwHi2bkIJbrilG+Eihj+PGCBndowCfc1gpkA344=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gzznw5FXfeyVP7ktQuPvmRQgD2GCYjIXpLHQHfvsupxp9LYCRBd4IcTnqcSjgLkcqcG5k465IrJOhlggtBkOYbkB2aeVMm/PYLlX70F+7dpwGuXfFBnwYSL8aL4AKy75BDxQtXMjaL5DHqJmVSmcpvFcSykw7RQ8GQt/zXbCaG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngG82ItE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B27CC4CEEB;
-	Mon, 18 Aug 2025 13:46:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PeFV4F2RyqJjtnB2s9CYaQl5MXKpSeIaWkJ0arouRGrVVRYXMKIy5pjlwjIybtXkRWPqq7zhRft4DiU2EX45k4Snhs2C+L8NCjRWDdc5w30zPukYii3RFJXJvN7ZwyaE4w3Kc25X6cNWFnNRBmWxJYJ+xl6ji0Vf2jFddDMtkxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSmYHg2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFE8C4CEEB;
+	Mon, 18 Aug 2025 12:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524815;
-	bh=8ywg+aAX1LOa6txgh+r3fJ4+isK8VlXuahvCtkeixa0=;
+	s=korg; t=1755521484;
+	bh=agNwrwHi2bkIJbrilG+Eihj+PGCBndowCfc1gpkA344=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngG82ItEHTj0mZ+2zSGG2IIQqQ/55EuC4B1T1hKKjfonMX/SurDZmA0l/6RcFPvdE
-	 ie5hGnM7xZiuEixi2KRyUo+RHjjv2VOsO6qikPdUoWSq0I+dE5EA/zMsoIPlOqyjT8
-	 p0U4HqVQoS/GjpnSsOGKnepIvaNWGVZCI92OEwb0=
+	b=bSmYHg2AZV/iAnd0CoBzP7CSBrfGK1HLc2kgs1+LYnW+8H9aRxpogt4xWptp4S7v4
+	 cPVrTZBNjC7QTIYAUV+nqz2rIlUrzyckOq4omoyY2i25VkICyTs0EyjMkRM/1loCPC
+	 bjydSUpaSx9P2CGk/5TPoSBTqt2cY0MPw6BQYrMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 072/570] net: ti: icss-iep: Fix incorrect type for return value in extts_enable()
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.12 033/444] clk: samsung: gs101: fix CLK_DOUT_CMU_G3D_BUSD
 Date: Mon, 18 Aug 2025 14:40:59 +0200
-Message-ID: <20250818124508.600960271@linuxfoundation.org>
+Message-ID: <20250818124450.168973704@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit 5f1d1d14db7dabce9c815e7d7cd351f8d58b8585 ]
+commit 29a9361f0b50be2b16d308695e30ee030fedea2c upstream.
 
-The variable ret in icss_iep_extts_enable() was incorrectly declared
-as u32, while the function returns int and may return negative error
-codes. This will cause sign extension issues and incorrect error
-propagation. Update ret to be int to fix error handling.
+Use the correct Linux clock ID when instantiating the G3D_BUSD
+div_clock.
 
-This change corrects the declaration to avoid potential type mismatch.
-
-Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250805142323.1949406-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c597bb7d66a ("clk: samsung: clk-gs101: Add cmu_top, cmu_misc and cmu_apm support")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-1-49daf1ff4592@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/samsung/clk-gs101.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 50bfbc2779e4..d8c9fe1d98c4 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -621,7 +621,8 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
- 
- static int icss_iep_extts_enable(struct icss_iep *iep, u32 index, int on)
- {
--	u32 val, cap, ret = 0;
-+	u32 val, cap;
-+	int ret = 0;
- 
- 	mutex_lock(&iep->ptp_clk_mutex);
- 
--- 
-2.50.1
-
+--- a/drivers/clk/samsung/clk-gs101.c
++++ b/drivers/clk/samsung/clk-gs101.c
+@@ -1154,7 +1154,7 @@ static const struct samsung_div_clock cm
+ 	    CLK_CON_DIV_CLKCMU_G2D_MSCL, 0, 4),
+ 	DIV(CLK_DOUT_CMU_G3AA_G3AA, "dout_cmu_g3aa_g3aa", "gout_cmu_g3aa_g3aa",
+ 	    CLK_CON_DIV_CLKCMU_G3AA_G3AA, 0, 4),
+-	DIV(CLK_DOUT_CMU_G3D_SWITCH, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
++	DIV(CLK_DOUT_CMU_G3D_BUSD, "dout_cmu_g3d_busd", "gout_cmu_g3d_busd",
+ 	    CLK_CON_DIV_CLKCMU_G3D_BUSD, 0, 4),
+ 	DIV(CLK_DOUT_CMU_G3D_GLB, "dout_cmu_g3d_glb", "gout_cmu_g3d_glb",
+ 	    CLK_CON_DIV_CLKCMU_G3D_GLB, 0, 4),
 
 
 
