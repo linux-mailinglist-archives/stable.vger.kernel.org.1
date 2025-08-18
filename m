@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8606AB2A7C9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C0CB2A5A7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 838B768367F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 296096241D2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E13320CAB;
-	Mon, 18 Aug 2025 13:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D117D322774;
+	Mon, 18 Aug 2025 13:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysgUimNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrYJezHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3082192F4;
-	Mon, 18 Aug 2025 13:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E300322773;
+	Mon, 18 Aug 2025 13:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524863; cv=none; b=i056rWlWcO5rhXBEvAB1yLetPJXAFJfmZei3lvmU8ZqB5rdJhv5yeFDzl3gKdCo0SBmAcdq5nXIEP9yKDg/4xdYg6IcpdgEN5d5KTC1eo6lpyVaWKQL1fBS+LKIcTZM0JxKu1dfkgjxwpJnh9VjUrdpDBqJ2UVfFFvmfT/OGrZs=
+	t=1755523265; cv=none; b=KuabZcvA4u8NwKsvKLi3FeZ0JMtsGTRL3uTPTGL/oZxTc5il9HxXSjwqaPClnZ3/+mssAjYzUsYHMWUuvFtypSSdcsMWPifslN7KFxsTz0pz0fnVLnEewZOha/ue5LRyYppwcEIuceNqfwobRQuy/4QZrmu5aKiMCocdkKBOHoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524863; c=relaxed/simple;
-	bh=1IV3pEBcg7xaKGcTIuUjQ86LVWucN+Cx0HRi3cCo95s=;
+	s=arc-20240116; t=1755523265; c=relaxed/simple;
+	bh=EDnf9Vb5Cgaymnu8jn2VJEwhXxZ6Vt5fXSQb/kkQdoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfmTwt8RHo1ieVN2g9bwzOie0hTt+aj/lRLccg6Oo3leFPfHZ9K7vc7lVkwZ9fEzLvvzDJl7QspxYjyuGY+uIminx1mI2c3pA2CiZI9i0koyvxvaoxZrIsRpgQXPf/HqpeiFQn+wWv4hzmIPdRys6AMuWhXDuxz/Mg9LGb/KBGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysgUimNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144A9C4CEEB;
-	Mon, 18 Aug 2025 13:47:42 +0000 (UTC)
+	 MIME-Version; b=vBFAEOyya910TUEFykdFxaSZd7I169bAeD5BGsU1cti23vLziSrXI6gLKR+XWyZyHG3QGLbrtgJ1171VLEfmffZYtU8F/NbOXtpOkWwOeNJauc6FjmsdFuAyLbiiR216NZ+yB9rt9ul1RPMEU3kTnNtBSqU1A1dCbWqPSnweVlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrYJezHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57588C113D0;
+	Mon, 18 Aug 2025 13:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524863;
-	bh=1IV3pEBcg7xaKGcTIuUjQ86LVWucN+Cx0HRi3cCo95s=;
+	s=korg; t=1755523265;
+	bh=EDnf9Vb5Cgaymnu8jn2VJEwhXxZ6Vt5fXSQb/kkQdoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysgUimNn236iMDEAFeUIE3m0y5c8fT9FwxXwN7qS/FL7/58pl0Bfp17MQltJT0DW2
-	 KBoh7VY28R0KI7FB098RmYQQJmP/+6Sj2etfs74YfRwJvCgZESayNnEJ7EXbngIXK9
-	 DQ5+ZxYT6mKx8Djul6RRWx5WBTeB0KT1gMDl4Jrs=
+	b=TrYJezHgt2ANZt2QkeXLUy+udolyAWyfncsuqwmpkyi6yUQEkqYQCqfDyDK7lSXXt
+	 3NZPEIlF7PTIrIQSf5TUtiLauTGFoxy5z+a3fX3BbWwxib68aTAwatKE/QHgHWsXlm
+	 /I0QRTfwOqKsJJZFLiqDqX07g78eYbGuJz/DwaA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	NeilBrown <neil@brown.name>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 086/570] netfilter: nf_tables: reject duplicate device on updates
+Subject: [PATCH 6.15 087/515] smb/server: avoid deadlock when linking with ReplaceIfExists
 Date: Mon, 18 Aug 2025 14:41:13 +0200
-Message-ID: <20250818124509.129065089@linuxfoundation.org>
+Message-ID: <20250818124501.727067863@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 ]
+[ Upstream commit d5fc1400a34b4ea5e8f2ce296ea12bf8c8421694 ]
 
-A chain/flowtable update with duplicated devices in the same batch is
-possible. Unfortunately, netdev event path only removes the first
-device that is found, leaving unregistered the hook of the duplicated
-device.
+If smb2_create_link() is called with ReplaceIfExists set and the name
+does exist then a deadlock will happen.
 
-Check if a duplicated device exists in the transaction batch, bail out
-with EEXIST in such case.
+ksmbd_vfs_kern_path_locked() will return with success and the parent
+directory will be locked.  ksmbd_vfs_remove_file() will then remove the
+file.  ksmbd_vfs_link() will then be called while the parent is still
+locked.  It will try to lock the same parent and will deadlock.
 
-WARNING is hit when unregistering the hook:
+This patch moves the ksmbd_vfs_kern_path_unlock() call to *before*
+ksmbd_vfs_link() and then simplifies the code, removing the file_present
+flag variable.
 
- [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
- [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
- [...]
- [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
-
-Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
-Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: NeilBrown <neil@brown.name>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ fs/smb/server/smb2pdu.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 064f18792d98..46ca725d6538 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2790,6 +2790,7 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
- 	struct nft_chain *chain = ctx->chain;
- 	struct nft_chain_hook hook = {};
- 	struct nft_stats __percpu *stats = NULL;
-+	struct nftables_pernet *nft_net;
- 	struct nft_hook *h, *next;
- 	struct nf_hook_ops *ops;
- 	struct nft_trans *trans;
-@@ -2832,6 +2833,20 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
- 				if (nft_hook_list_find(&basechain->hook_list, h)) {
- 					list_del(&h->list);
- 					nft_netdev_hook_free(h);
-+					continue;
-+				}
-+
-+				nft_net = nft_pernet(ctx->net);
-+				list_for_each_entry(trans, &nft_net->commit_list, list) {
-+					if (trans->msg_type != NFT_MSG_NEWCHAIN ||
-+					    trans->table != ctx->table ||
-+					    !nft_trans_chain_update(trans))
-+						continue;
-+
-+					if (nft_hook_list_find(&nft_trans_chain_hooks(trans), h)) {
-+						nft_chain_release_hook(&hook);
-+						return -EEXIST;
-+					}
- 				}
- 			}
- 		} else {
-@@ -9033,6 +9048,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 55a7887fdad7..1e379de6b22b 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6035,7 +6035,6 @@ static int smb2_create_link(struct ksmbd_work *work,
  {
- 	const struct nlattr * const *nla = ctx->nla;
- 	struct nft_flowtable_hook flowtable_hook;
-+	struct nftables_pernet *nft_net;
- 	struct nft_hook *hook, *next;
- 	struct nf_hook_ops *ops;
- 	struct nft_trans *trans;
-@@ -9049,6 +9065,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
- 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
- 			list_del(&hook->list);
- 			nft_netdev_hook_free(hook);
-+			continue;
-+		}
-+
-+		nft_net = nft_pernet(ctx->net);
-+		list_for_each_entry(trans, &nft_net->commit_list, list) {
-+			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
-+			    trans->table != ctx->table ||
-+			    !nft_trans_flowtable_update(trans))
-+				continue;
-+
-+			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
-+				err = -EEXIST;
-+				goto err_flowtable_update_hook;
-+			}
- 		}
- 	}
+ 	char *link_name = NULL, *target_name = NULL, *pathname = NULL;
+ 	struct path path, parent_path;
+-	bool file_present = false;
+ 	int rc;
  
+ 	if (buf_len < (u64)sizeof(struct smb2_file_link_info) +
+@@ -6068,11 +6067,8 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 	if (rc) {
+ 		if (rc != -ENOENT)
+ 			goto out;
+-	} else
+-		file_present = true;
+-
+-	if (file_info->ReplaceIfExists) {
+-		if (file_present) {
++	} else {
++		if (file_info->ReplaceIfExists) {
+ 			rc = ksmbd_vfs_remove_file(work, &path);
+ 			if (rc) {
+ 				rc = -EINVAL;
+@@ -6080,21 +6076,17 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 					    link_name);
+ 				goto out;
+ 			}
+-		}
+-	} else {
+-		if (file_present) {
++		} else {
+ 			rc = -EEXIST;
+ 			ksmbd_debug(SMB, "link already exists\n");
+ 			goto out;
+ 		}
++		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 	}
+-
+ 	rc = ksmbd_vfs_link(work, target_name, link_name);
+ 	if (rc)
+ 		rc = -EINVAL;
+ out:
+-	if (file_present)
+-		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 
+ 	if (!IS_ERR(link_name))
+ 		kfree(link_name);
 -- 
-2.50.1
+2.39.5
 
 
 
