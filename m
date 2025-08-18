@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-171129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05FDB2A7B9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20083B2A285
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5938E588037
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66F8F18A7B98
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE92335BD4;
-	Mon, 18 Aug 2025 13:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493ED320CD8;
+	Mon, 18 Aug 2025 12:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez8J/5tL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJc2akBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B55B335BA3;
-	Mon, 18 Aug 2025 13:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43A7320CCC;
+	Mon, 18 Aug 2025 12:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524909; cv=none; b=hHlixQHbfmlFvD135rpWtRMqN5I1lMFh9H1SQucERjhtI03VwqvyfQKy9wyiVy35UfR4W+h1Kb4VdEQcEdYbAEbz0bWnAO94VZKXJlAQX3x6DPrWQd0XayOhzJ7cepR5JaE/B0bLj3HXiwpLXFY7h7firbTdl+e7ZDjJkV07hAY=
+	t=1755521469; cv=none; b=DdUvl8NT1dr25bhcuPnkHOlbwwzFslcEEcke3769TZ5GJ/SkseE5weFYrBaTERz9og/V+Tv/A4Vnd35W6jqklUTxRi/TLU/VwTPLmrBqUYqM4gp/4+gJNpA599Pi3ff9Kap8psfrY3btsl7gRDM8HG80tBGsgj1SkKjcvqHbLC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524909; c=relaxed/simple;
-	bh=qzdtJziQ2GXhffLAzPKDDZcc5prK5BliasrvIT7zUPg=;
+	s=arc-20240116; t=1755521469; c=relaxed/simple;
+	bh=jEur6KgMpHpdIEF5RKPl4aJBWpC003sBMgHcWCa/q7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXOR4XBN3puEeCNPz9y0Wv3V3VP5v9zzv3gdijIGEiA2vmM6Ryl/DZaZ4GzrE2uZ3qbCoP7EfZlb3btDCXIGtAmQObCxJm0PWOxvmIKf0Hf6dLpxaSLRGv/xj2RNEi4sJ0mkwGc5QYqfa0YhxINqmJ6nKmKCki13lRKiRVKX0hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ez8J/5tL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74A8C4CEEB;
-	Mon, 18 Aug 2025 13:48:28 +0000 (UTC)
+	 MIME-Version; b=LFLQj1BJnWgCA9ktZcVRMLEKvhyfzHuZP1qJlHqStJPui6HYmrSsepqoISDp4RYM+QPTD60l4jnTaYJ7YLCvb6PqPMjMo9V/8gk9kSys/aniQp56dHaMpC1GqUeGgZ4TH9zBkzW5sfZAQSd7F7wyG2z0Vw8+yUyCEIs2ZAdtZVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJc2akBH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D280C113D0;
+	Mon, 18 Aug 2025 12:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524909;
-	bh=qzdtJziQ2GXhffLAzPKDDZcc5prK5BliasrvIT7zUPg=;
+	s=korg; t=1755521468;
+	bh=jEur6KgMpHpdIEF5RKPl4aJBWpC003sBMgHcWCa/q7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ez8J/5tLXzWNNucBEIpY5sy7Qrue7XuarvX0GSF2vq49q3qAyRxPo/3OMSTcV6YuB
-	 IzEcjolX+3sZipfO4pVJlc3B5WSDJOuN1fJFknTkDuYu4gW9GqrIBg0C03dhl4S8ov
-	 13d+fgXbTMJRty3BWjjmHpaHTDmRO2n5TbqacNf0=
+	b=UJc2akBH2m+7tv24FX2RbnMVqFCiBV+HjRO0BANSBTzwlgQM+uZRcbcuPT6cH/fJX
+	 /ivbAycsOi8mkfOt2bVvpPrmoHZ/bywsYN3qpJD/prymb+KLopvU2Dbholz2uuBnSQ
+	 ibOVZtO/wt/pIExwIO3/6WB0ayY8nDyLtNUNRLoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 068/570] net: hibmcge: fix the division by zero issue
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 029/444] LoongArch: Make relocate_new_kernel_size be a .quad value
 Date: Mon, 18 Aug 2025 14:40:55 +0200
-Message-ID: <20250818124508.432341812@linuxfoundation.org>
+Message-ID: <20250818124450.022328591@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 7004b26f0b64331143eb0b312e77a357a11427ce ]
+commit a1a81b5477196ca1290b367404a461e046e647d5 upstream.
 
-When the network port is down, the queue is released, and ring->len is 0.
-In debugfs, hbg_get_queue_used_num() will be called,
-which may lead to a division by zero issue.
+Now relocate_new_kernel_size is a .long value, which means 32bit, so its
+high 32bit is undefined. This causes memcpy((void *)reboot_code_buffer,
+relocate_new_kernel, relocate_new_kernel_size) in machine_kexec_prepare()
+access out of range memories in some cases, and then end up with an ADE
+exception.
 
-This patch adds a check, if ring->len is 0,
-hbg_get_queue_used_num() directly returns 0.
+So make relocate_new_kernel_size be a .quad value, which means 64bit, to
+avoid such errors.
 
-Fixes: 40735e7543f9 ("net: hibmcge: Implement .ndo_start_xmit function")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/relocate_kernel.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-index 2883a5899ae2..8b6110599e10 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_txrx.h
-@@ -29,7 +29,12 @@ static inline bool hbg_fifo_is_full(struct hbg_priv *priv, enum hbg_dir dir)
+--- a/arch/loongarch/kernel/relocate_kernel.S
++++ b/arch/loongarch/kernel/relocate_kernel.S
+@@ -109,4 +109,4 @@ SYM_CODE_END(kexec_smp_wait)
+ relocate_new_kernel_end:
  
- static inline u32 hbg_get_queue_used_num(struct hbg_ring *ring)
- {
--	return (ring->ntu + ring->len - ring->ntc) % ring->len;
-+	u32 len = READ_ONCE(ring->len);
-+
-+	if (!len)
-+		return 0;
-+
-+	return (READ_ONCE(ring->ntu) + len - READ_ONCE(ring->ntc)) % len;
- }
- 
- netdev_tx_t hbg_net_start_xmit(struct sk_buff *skb, struct net_device *netdev);
--- 
-2.50.1
-
+ 	.section ".data"
+-SYM_DATA(relocate_new_kernel_size, .long relocate_new_kernel_end - relocate_new_kernel)
++SYM_DATA(relocate_new_kernel_size, .quad relocate_new_kernel_end - relocate_new_kernel)
 
 
 
