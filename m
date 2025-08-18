@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E98DB2A60D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 124C0B2A86C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50CD21B66366
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8B246E2F1E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7A4322765;
-	Mon, 18 Aug 2025 13:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A95335BC6;
+	Mon, 18 Aug 2025 13:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdD6PMBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdhhXxV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8D427B344;
-	Mon, 18 Aug 2025 13:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4491335BC1;
+	Mon, 18 Aug 2025 13:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523601; cv=none; b=XYjIPz/SHnzz07gmJjomPwjJ17tVtnNjTGW3/IdMSt7y2MMctkgMtTwj1QYhCujJSMDG3YFPllfcdlPVqK1Nts/diUEqDGpjMhEEMbn2mMQ/YZASD1y/iW4RXdMI1zzm+VVXFsj8xsXyWICu+nQnlBqTZAHn8/SQ6uMZ5pys6+I=
+	t=1755525197; cv=none; b=c7tnJ42KXyknxhQ3r72d0g+jxSAdDTS6H6/N3wsWxffmr0W9IGQhexA+f00H2ke7m7wC26OURfs0SRfTg4hCwiGsu6niEHht0a1kL92SHBD45qrjgmIibOEL4BSbzI2zEda8ZYuqeNw1CgNYj9tVtIUJJyxuXoKCw9wDhxCId98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523601; c=relaxed/simple;
-	bh=8Vvt4qFcK2kxrI81rSuXKiaxwm/A3yf+d9ENCmgLxkU=;
+	s=arc-20240116; t=1755525197; c=relaxed/simple;
+	bh=RPvHU3cqLa+syShMlcHIGjp/GoAtua2pl88J9jL827E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5Rk57ATx58Z8XjweNKGPcC+AEGYN3Emq0AU0hQNDVH3Hegtofgx/aLHtS/XsYltbfZObcF4zHivNhkAnyzzyDPSWNZdAwh1Fue+4zpOtUXetV8wJX9ph788sO0GvZ8b1Ichsf+TsOzTL1/BWH7n+XA5HZf3qjpSIL1XxFfrGgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdD6PMBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904EEC4CEEB;
-	Mon, 18 Aug 2025 13:26:40 +0000 (UTC)
+	 MIME-Version; b=PVAnOx3l7lWeGZfKJTQIsmabP/tFFIG65rVZlfvrwDZ5I280LQsd2ZItlD5clPz9+GfESPfHmQvGZPE00GdpjtuXpKkUdgYtSAGl7evQapPRe11HSZPvbaG7V2N2ulhbbcZPmZcpao7WPDnsJpV7b9sRAUsGm9YW1A+1mk7BSYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdhhXxV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659BAC116C6;
+	Mon, 18 Aug 2025 13:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523601;
-	bh=8Vvt4qFcK2kxrI81rSuXKiaxwm/A3yf+d9ENCmgLxkU=;
+	s=korg; t=1755525196;
+	bh=RPvHU3cqLa+syShMlcHIGjp/GoAtua2pl88J9jL827E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdD6PMBSLY0d69vIQIyLLUl8bs9NKnD+fY/q9FiEU4edZG2y/+9xqF0euW0ZtxUFT
-	 qTSOGFx2NCJCmA7uvOJHdyCHkGGFmJm2B6DPk4UeRUjrfTMB90UEdmCW3kOtA0WYLc
-	 AscaGSnRBbc0CzpgEDltfbEAcMEFu2aBFpQbncCU=
+	b=mdhhXxV0UnVKtW2KMPAylV6m8BcxJ8eYWGKukKeTR6SOHOoz+ay+fgAF6+Ldd/fWm
+	 0UzTGx9ALD2Jm81onxhHTX57jDIiXs295thInIuVjMLOQymi3edHzvj07V8ChMbs00
+	 EEe16S8cug0XHLaQBOymQa0izB2iVczIQKY0//Vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 189/515] netfilter: nft_set_pipapo: prefer kvmalloc for scratch maps
+Subject: [PATCH 6.16 188/570] ASoC: SOF: topology: Parse the dapm_widget_tokens in case of DSPless mode
 Date: Mon, 18 Aug 2025 14:42:55 +0200
-Message-ID: <20250818124505.649888727@linuxfoundation.org>
+Message-ID: <20250818124513.049982940@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 897eefee2eb73ec6c119a0ca357d7b4a3e92c5ef ]
+[ Upstream commit 6b3cb7f4341cbf62d41ccf6ea906dbe66be8aa3d ]
 
-The scratchmap size depends on the number of elements in the set.
-For huge sets, each scratch map can easily require very large
-allocations, e.g. for 100k entries each scratch map will require
-close to 64kbyte of memory.
+Parsing the dapm_widget_tokens is also needed for DSPless mode as it is
+setting the snd_soc_dapm_widget.no_wname_in_kcontrol_name flag for the
+kcontrol creation from DAPM widgets.
+Without that flag set, the following warnings might appear because of long
+control names:
+ALSA: Control name 'eqiir.2.1 Post Mixer Analog Playback IIR Eq bytes' truncated to 'eqiir.2.1 Post Mixer Analog Playback IIR Eq'
+ALSA: Control name 'eqfir.2.1 Post Mixer Analog Playback FIR Eq bytes' truncated to 'eqfir.2.1 Post Mixer Analog Playback FIR Eq'
+ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC bytes' truncated to 'drc.2.1 Post Mixer Analog Playback DRC byte'
+ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC switch' truncated to 'drc.2.1 Post Mixer Analog Playback DRC swit'
+ALSA: Control name 'gain.15.1 Pre Mixer Deepbuffer HDA Analog Volume' truncated to 'gain.15.1 Pre Mixer Deepbuffer HDA Analog V'
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://patch.msgid.link/20250619102640.12068-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ sound/soc/sof/topology.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index c5855069bdab..9e4e25f2458f 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1219,7 +1219,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index d612d693efc3..b6d5c8024f8c 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -2378,14 +2378,25 @@ static int sof_dspless_widget_ready(struct snd_soc_component *scomp, int index,
+ 				    struct snd_soc_dapm_widget *w,
+ 				    struct snd_soc_tplg_dapm_widget *tw)
+ {
++	struct snd_soc_tplg_private *priv = &tw->priv;
++	int ret;
++
++	/* for snd_soc_dapm_widget.no_wname_in_kcontrol_name */
++	ret = sof_parse_tokens(scomp, w, dapm_widget_tokens,
++			       ARRAY_SIZE(dapm_widget_tokens),
++			       priv->array, le32_to_cpu(priv->size));
++	if (ret < 0) {
++		dev_err(scomp->dev, "failed to parse dapm widget tokens for %s\n",
++			w->name);
++		return ret;
++	}
++
+ 	if (WIDGET_IS_DAI(w->id)) {
+ 		static const struct sof_topology_token dai_tokens[] = {
+ 			{SOF_TKN_DAI_TYPE, SND_SOC_TPLG_TUPLE_TYPE_STRING, get_token_dai_type, 0}};
+ 		struct snd_sof_dev *sdev = snd_soc_component_get_drvdata(scomp);
+-		struct snd_soc_tplg_private *priv = &tw->priv;
+ 		struct snd_sof_widget *swidget;
+ 		struct snd_sof_dai *sdai;
+-		int ret;
  
- 	mem = s;
- 	mem -= s->align_off;
--	kfree(mem);
-+	kvfree(mem);
- }
- 
- /**
-@@ -1240,10 +1240,9 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
- 		void *scratch_aligned;
- 		u32 align_off;
- #endif
--		scratch = kzalloc_node(struct_size(scratch, map,
--						   bsize_max * 2) +
--				       NFT_PIPAPO_ALIGN_HEADROOM,
--				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
-+		scratch = kvzalloc_node(struct_size(scratch, map, bsize_max * 2) +
-+					NFT_PIPAPO_ALIGN_HEADROOM,
-+					GFP_KERNEL_ACCOUNT, cpu_to_node(i));
- 		if (!scratch) {
- 			/* On failure, there's no need to undo previous
- 			 * allocations: this means that some scratch maps have
+ 		swidget = kzalloc(sizeof(*swidget), GFP_KERNEL);
+ 		if (!swidget)
 -- 
 2.39.5
 
