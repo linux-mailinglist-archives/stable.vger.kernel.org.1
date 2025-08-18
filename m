@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29004B2A9D0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31AAB2A375
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C6CB6E2978
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66AF27B1FA1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4C430DEC8;
-	Mon, 18 Aug 2025 14:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C13131CA57;
+	Mon, 18 Aug 2025 13:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEpMT+hI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9j0hivE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00A733A02E;
-	Mon, 18 Aug 2025 14:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B553218C9;
+	Mon, 18 Aug 2025 13:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525739; cv=none; b=l4zVwbEb/QUO5oTPRxbT3XXBn0wm8U8cSp23vxtz3deX8nhzy8EVvYa5l0AGBdK5ucz8bB3MOOQhUUHrzjBys7rSQAsFJtUZmr6FKURmZdP0iqCxF1Nx1GEvVkggO/sTr+w91GCbqkL6VI4UQ3yePeVdcTJh+kNrgdAPe/Mc36o=
+	t=1755522431; cv=none; b=cTHRmRWWmfv4HlLs0WLV8audocqX8P6gl8VresB1jB9X9naOK11wou2egolQJRqgPVdO05TXTJ7EAU1DvgynWSv9yh4QqXuTm3Pfcm0ZSD8Tr9qU4UnoCP2SFrIQurPl7JRNxeVrbDegTMli0OLMWzkHhtbLkr+jBqu85nYsf5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525739; c=relaxed/simple;
-	bh=3KXjPZ0MZ+sfC6tmfPiKF1wk7D5sGkCTWnIHgoFTl1o=;
+	s=arc-20240116; t=1755522431; c=relaxed/simple;
+	bh=pnDMIHprVDfg65zAUlJ/VyTl1XkhHS9kyunKcE4ZNag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BLcftnEkVNuFWH9/7oS/oYo83hjTvRUx5beDpLdTvLpcKovOrlEV4nu7ADcMltpOZbd1yaoyi8vHwnth0RHvkCggVMiIOu4iolaybwiZhxDRHs36WyBaSMAhOmADH53d/iV7nIjZvSOd5dA8LFwIwcfTZGvbQuZy50tB4a0Sb18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEpMT+hI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1F9C4CEEB;
-	Mon, 18 Aug 2025 14:02:18 +0000 (UTC)
+	 MIME-Version; b=sd5hzc0HHu9jkWcEuvwbo7IGY5aSWYAEAUOGRetEFjhmRkxu/IIXeLawXCiLca6xIqAgsGRh9Dj0wj7OYgsoSovzclVqBRt0af758aO67/CUpzjl+L3raH4Xl16kGFWxY1ZeeJ/2iexQurILMAzPJ+BQpRUHgwr4d8YYvmo0uFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9j0hivE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D809C4CEEB;
+	Mon, 18 Aug 2025 13:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525738;
-	bh=3KXjPZ0MZ+sfC6tmfPiKF1wk7D5sGkCTWnIHgoFTl1o=;
+	s=korg; t=1755522430;
+	bh=pnDMIHprVDfg65zAUlJ/VyTl1XkhHS9kyunKcE4ZNag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEpMT+hI9osUMMXCebjE7p66Lp86PL2SA0tK2PJQRIDrfe5JcFQ4lO3T14Y1Wy5L0
-	 8tkuufSlAu2urjNaFK7PFme1OULy37XLfPSmNnAk58aQEeNK6GxFoAbCfkg3j9bpPC
-	 mzCgdCugVmsGewwJOXVwNzJOVxwRr7FXc7Fil0ro=
+	b=z9j0hivEXlPIITmchcBv2XcTxI0Lkop8JYUcKENuW/JwR+O5xHzPytmLj2JlKZmlt
+	 zhp0ZkG1Zet7QowjDl6/n4MFnubLY1QA0oOS638y4DaaBeh2Gkb+UJQaOJKtoq7JYF
+	 jgNnbIB1TDss20ezfbwHGfzMweW7lb7b4BPtYmf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 353/570] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
+Subject: [PATCH 6.12 314/444] media: tc358743: Return an appropriate colorspace from tc358743_set_fmt
 Date: Mon, 18 Aug 2025 14:45:40 +0200
-Message-ID: <20250818124519.459631832@linuxfoundation.org>
+Message-ID: <20250818124500.718422248@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
+[ Upstream commit 377cc006a364dfdab2f3f221cfad63a9265200b8 ]
 
-BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
+When calling tc358743_set_fmt, the code was calling tc358743_get_fmt
+to choose a valid format. However that sets the colorspace
+based on information read back from the chip, not the colour
+format requested.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The result was that if you called try or set format for UYVY
+when the current format was RGB3 then you would get told SRGB,
+and try RGB3 when current was UYVY and you would get told
+SMPTE170M.
+
+The value programmed in the VI_REP register for the colorspace
+is always set by this driver, therefore there is no need to read
+back the value, and never set to REC709.
+Return the colorspace based on the format set/tried instead.
+
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/media/i2c/tc358743.c | 44 ++++++++++++++----------------------
+ 1 file changed, 17 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index bb0a5fd6a372..d15d912690c4 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -366,14 +366,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
- 		mgmt |= B53_MII_DUMB_FWDG_EN;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
--	}
- 
--	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
--	 * frames should be flooded or not.
--	 */
--	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
--	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
-+		 * frames should be flooded or not.
-+		 */
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+	} else {
-+		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
-+		mgmt |= B53_IP_MCAST_25;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
-+	}
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 621855b3a715..ee7c2cd6a81b 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1677,12 +1677,23 @@ static int tc358743_enum_mbus_code(struct v4l2_subdev *sd,
+ 	return 0;
  }
  
- static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 25d25bd1071f..f2caf8fe5699 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -110,6 +110,7 @@
++static u32 tc358743_g_colorspace(u32 code)
++{
++	switch (code) {
++	case MEDIA_BUS_FMT_RGB888_1X24:
++		return V4L2_COLORSPACE_SRGB;
++	case MEDIA_BUS_FMT_UYVY8_1X16:
++		return V4L2_COLORSPACE_SMPTE170M;
++	default:
++		return 0;
++	}
++}
++
+ static int tc358743_get_fmt(struct v4l2_subdev *sd,
+ 		struct v4l2_subdev_state *sd_state,
+ 		struct v4l2_subdev_format *format)
+ {
+ 	struct tc358743_state *state = to_state(sd);
+-	u8 vi_rep = i2c_rd8(sd, VI_REP);
  
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
-+#define  B53_IP_MCAST_25		BIT(0)
- #define  B53_IPMC_FWD_EN		BIT(1)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
+ 	if (format->pad != 0)
+ 		return -EINVAL;
+@@ -1692,23 +1703,7 @@ static int tc358743_get_fmt(struct v4l2_subdev *sd,
+ 	format->format.height = state->timings.bt.height;
+ 	format->format.field = V4L2_FIELD_NONE;
+ 
+-	switch (vi_rep & MASK_VOUT_COLOR_SEL) {
+-	case MASK_VOUT_COLOR_RGB_FULL:
+-	case MASK_VOUT_COLOR_RGB_LIMITED:
+-		format->format.colorspace = V4L2_COLORSPACE_SRGB;
+-		break;
+-	case MASK_VOUT_COLOR_601_YCBCR_LIMITED:
+-	case MASK_VOUT_COLOR_601_YCBCR_FULL:
+-		format->format.colorspace = V4L2_COLORSPACE_SMPTE170M;
+-		break;
+-	case MASK_VOUT_COLOR_709_YCBCR_FULL:
+-	case MASK_VOUT_COLOR_709_YCBCR_LIMITED:
+-		format->format.colorspace = V4L2_COLORSPACE_REC709;
+-		break;
+-	default:
+-		format->format.colorspace = 0;
+-		break;
+-	}
++	format->format.colorspace = tc358743_g_colorspace(format->format.code);
+ 
+ 	return 0;
+ }
+@@ -1722,19 +1717,14 @@ static int tc358743_set_fmt(struct v4l2_subdev *sd,
+ 	u32 code = format->format.code; /* is overwritten by get_fmt */
+ 	int ret = tc358743_get_fmt(sd, sd_state, format);
+ 
+-	format->format.code = code;
++	if (code == MEDIA_BUS_FMT_RGB888_1X24 ||
++	    code == MEDIA_BUS_FMT_UYVY8_1X16)
++		format->format.code = code;
++	format->format.colorspace = tc358743_g_colorspace(format->format.code);
+ 
+ 	if (ret)
+ 		return ret;
+ 
+-	switch (code) {
+-	case MEDIA_BUS_FMT_RGB888_1X24:
+-	case MEDIA_BUS_FMT_UYVY8_1X16:
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY)
+ 		return 0;
+ 
 -- 
 2.39.5
 
