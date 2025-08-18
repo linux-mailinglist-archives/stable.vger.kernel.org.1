@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB19BB2A84A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:03:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57443B2A2D2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E981B627F7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E661F3BBF51
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A921F1A5B92;
-	Mon, 18 Aug 2025 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C492F3218D1;
+	Mon, 18 Aug 2025 12:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEkxUHbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzLXRN/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652B1335BD4;
-	Mon, 18 Aug 2025 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C021DE8A4;
+	Mon, 18 Aug 2025 12:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525222; cv=none; b=Y+Dt9V9CvMkIsyBAPSpk3IgWDVeXHr1gb8JLJG4MVOZwXEKTsir9UeF65ja3HXF12NxKeIQKtyWLxZ8ORYfcISw5t2CrDelZQjNjmnM09ioD058LKyG3MihMhyLWfcGDliRdNFG0Du/NAuh+B4o/TSnz2Go5YIPxOFXAZqPMyBM=
+	t=1755521899; cv=none; b=jHyhwZVRm/J+8ixRs41aVsJ0PTts8nrI6KJ7aE238rcNeEETOiPANyIEuu08OH+eoLa6fRvoM+2WIdo6aFGq6e4/A7fvEB5Ot6cfuWBK2oCJeEbA8JIf+D545dQ4CKIF0ZX3GrCy0m3q0D/MLuhXoWOh0+w2bKiOODFbxMjvsag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525222; c=relaxed/simple;
-	bh=JAIXG6+2etU7O0+ofvWTwWDFsiJkxvhuzK9mfXUHNGU=;
+	s=arc-20240116; t=1755521899; c=relaxed/simple;
+	bh=qfuYDz5jGjzUTb32jYEo6pkl2vQ/SIUyenQ/yv0MiYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EwzOKOMiMACW5pv88WEqgJ/ccPbu8fH7Imng0+UL+djkzE7DqxeLKDoIsMkpUXA1B9dVeySRWaDprmlP9u2o8XT68Fq3ARUKjUBAg3uxISGUnfK/gc+r0q6zVoE+AlFDLvW/Tfbtm41B3vr0uxSCdKFUShLc0rNzir1/R8mFhLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEkxUHbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D8DC4CEEB;
-	Mon, 18 Aug 2025 13:53:41 +0000 (UTC)
+	 MIME-Version; b=eMJs0hCIZQzabWR8viMjSaS6HRDd29BuL6g5A3zTQjhgwEsqborQftE0mcMtETeSfO0l6DIuTR85gZe8AE1A2SPKPXN+JwdIXCMiiWafzTpxIdpWPUqegocsp1RMNb3Gz5y6kDqhovgfmVuMdFlipeD7yU3XDY98i+sDI2v7LIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzLXRN/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE50C4CEEB;
+	Mon, 18 Aug 2025 12:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525222;
-	bh=JAIXG6+2etU7O0+ofvWTwWDFsiJkxvhuzK9mfXUHNGU=;
+	s=korg; t=1755521899;
+	bh=qfuYDz5jGjzUTb32jYEo6pkl2vQ/SIUyenQ/yv0MiYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEkxUHboIbq9vRetqE1ubqcVEGFBkgPO/4PL5jPoegSlFBExWc5kI+DneUnV6O5Q2
-	 /VJfJzlLF122mXupk6Dp6M78rqU+GddKtTWOopS2cgpDc0ceezrOIpM8SxOoA1pVe4
-	 6nL41KNqaWfN0jCTnUM5QoYIGNEbacyVN3sZH7Ps=
+	b=mzLXRN/g7LxpSCJMUP+0Fw294KVayq+XqnucOpK6SENtlrVr77T/E6LNUS6/zpr3T
+	 8xbu8Cur8lpc/eZZquz/WK3FFLkrZVi6Xg+MI4eHcV6TRswnMOcbA42VUFLfDcLrkH
+	 hY1LrJDx2gM/e+Rd8z4mGqsydYWfJZSdFHX410oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 195/570] imx8m-blk-ctrl: set ISI panic write hurry level
+Subject: [PATCH 6.12 156/444] ALSA: pcm: Rewrite recalculate_boundary() to avoid costly loop
 Date: Mon, 18 Aug 2025 14:43:02 +0200
-Message-ID: <20250818124513.312839829@linuxfoundation.org>
+Message-ID: <20250818124454.748843158@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Hałasa <khalasa@piap.pl>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit c01fba0b4869cada5403fffff416cd1675dba078 ]
+[ Upstream commit 92f59aeb13252265c20e7aef1379a8080c57e0a2 ]
 
-Apparently, ISI needs cache settings similar to LCDIF.
-Otherwise we get artefacts in the image.
-Tested on i.MX8MP.
+At the time being recalculate_boundary() is implemented with a
+loop which shows up as costly in a perf profile, as depicted by
+the annotate below:
 
-Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
-Link: https://lore.kernel.org/r/m3ldr69lsw.fsf@t19.piap.pl
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+    0.00 :   c057e934:       3d 40 7f ff     lis     r10,32767
+    0.03 :   c057e938:       61 4a ff ff     ori     r10,r10,65535
+    0.21 :   c057e93c:       7d 49 50 50     subf    r10,r9,r10
+    5.39 :   c057e940:       7d 3c 4b 78     mr      r28,r9
+    2.11 :   c057e944:       55 29 08 3c     slwi    r9,r9,1
+    3.04 :   c057e948:       7c 09 50 40     cmplw   r9,r10
+    2.47 :   c057e94c:       40 81 ff f4     ble     c057e940 <snd_pcm_ioctl+0xee0>
+
+Total: 13.2% on that simple loop.
+
+But what the loop does is to multiply the boundary by 2 until it is
+over the wanted border. This can be avoided by using fls() to get the
+boundary value order and shift it by the appropriate number of bits at
+once.
+
+This change provides the following profile:
+
+    0.04 :   c057f6e8:       3d 20 7f ff     lis     r9,32767
+    0.02 :   c057f6ec:       61 29 ff ff     ori     r9,r9,65535
+    0.34 :   c057f6f0:       7d 5a 48 50     subf    r10,r26,r9
+    0.23 :   c057f6f4:       7c 1a 50 40     cmplw   r26,r10
+    0.02 :   c057f6f8:       41 81 00 20     bgt     c057f718 <snd_pcm_ioctl+0xf08>
+    0.26 :   c057f6fc:       7f 47 00 34     cntlzw  r7,r26
+    0.09 :   c057f700:       7d 48 00 34     cntlzw  r8,r10
+    0.22 :   c057f704:       7d 08 38 50     subf    r8,r8,r7
+    0.04 :   c057f708:       7f 5a 40 30     slw     r26,r26,r8
+    0.35 :   c057f70c:       7c 0a d0 40     cmplw   r10,r26
+    0.13 :   c057f710:       40 80 05 f8     bge     c057fd08 <snd_pcm_ioctl+0x14f8>
+    0.00 :   c057f714:       57 5a f8 7e     srwi    r26,r26,1
+
+Total: 1.7% with that loopless alternative.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://patch.msgid.link/4836e2cde653eebaf2709ebe30eec736bb8c67fd.1749202237.git.christophe.leroy@csgroup.eu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/imx8m-blk-ctrl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/core/pcm_native.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-index 912802b5215b..5c83e5599f1e 100644
---- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-@@ -665,6 +665,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_blk_ctl_dev_data = {
- #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
- #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 0a1ba26872f8..9b91f68b3fff 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -24,6 +24,7 @@
+ #include <sound/minors.h>
+ #include <linux/uio.h>
+ #include <linux/delay.h>
++#include <linux/bitops.h>
  
-+#define ISI_CACHE_CTRL		0x50
-+#define  ISI_V_WR_HURRY		GENMASK(28, 26)
-+#define  ISI_U_WR_HURRY		GENMASK(25, 23)
-+#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
-+
- static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 				unsigned long action, void *data)
+ #include "pcm_local.h"
+ 
+@@ -3130,13 +3131,23 @@ struct snd_pcm_sync_ptr32 {
+ static snd_pcm_uframes_t recalculate_boundary(struct snd_pcm_runtime *runtime)
  {
-@@ -694,6 +699,11 @@ static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
- 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
- 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
-+		/* Same here for ISI */
-+		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
-+				FIELD_PREP(ISI_V_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_U_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_Y_WR_HURRY, 7));
- 	}
+ 	snd_pcm_uframes_t boundary;
++	snd_pcm_uframes_t border;
++	int order;
  
- 	return NOTIFY_OK;
+ 	if (! runtime->buffer_size)
+ 		return 0;
+-	boundary = runtime->buffer_size;
+-	while (boundary * 2 <= 0x7fffffffUL - runtime->buffer_size)
+-		boundary *= 2;
+-	return boundary;
++
++	border = 0x7fffffffUL - runtime->buffer_size;
++	if (runtime->buffer_size > border)
++		return runtime->buffer_size;
++
++	order = __fls(border) - __fls(runtime->buffer_size);
++	boundary = runtime->buffer_size << order;
++
++	if (boundary <= border)
++		return boundary;
++	else
++		return boundary / 2;
+ }
+ 
+ static int snd_pcm_ioctl_sync_ptr_compat(struct snd_pcm_substream *substream,
 -- 
 2.39.5
 
