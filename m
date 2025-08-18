@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81127B2A613
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1E7B2A88A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A07468586A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EC055A28CC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44B7335BA9;
-	Mon, 18 Aug 2025 13:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9980119E82A;
+	Mon, 18 Aug 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXuY0V/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPpN+iR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92632335BA1;
-	Mon, 18 Aug 2025 13:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A58335BC5;
+	Mon, 18 Aug 2025 13:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523633; cv=none; b=k1VHjaX/QKEuIFqON09YQ0fVs6hPdGmHBzky5+WmyJPx2fQtbd3tJ1nJEs2vWTYLHyfPw9JnxT1YR1EVCBJY2PbVxlDtBKRY4GjUCZuBMOO0n+SjyPEV/KmeeCONyCeToBZWnjAIRoyBpSfBTv0z0bEF65brF/NZ0oY1Mrabky4=
+	t=1755525340; cv=none; b=mETNhzL3YFCK0UZFvXfpvqrnd8g4LdVpvjgOwPx+tG6WgFEpK4Rzpoi5Jz3eRR5oGrS00JJZATgBddoblKPsk834JaBs0UN8AgzsqdV2U8dHnuwXceGVrqN/KphVHrFfhFQ1zy6finmZDBN1P+6lfnuIdarbYz0qZhNj+4C4pv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523633; c=relaxed/simple;
-	bh=4QK+ZDky9iShKO6RUk7kT8b4mTmEA441++/punGYfCk=;
+	s=arc-20240116; t=1755525340; c=relaxed/simple;
+	bh=twoA7Y5gXXxddcCRSG2jRx488DfCMgSh+/ii+0AHB7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BgSNpAAQRMNTEvSsJJ04/f0B6XQ06qCxkKm10PSUuaoX9FBRLflGQlP2G03DkdKEvVdUdOw0YvTEbO6HV3D3vq05vdnJ/nd1B/tBQuvnuKpflNTd5cPKHhMDQ5ZLUnW6GLG8N3+G7S/2bcF6ktjlexFtL0ykhDOQCtB748jHf5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXuY0V/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B666C113D0;
-	Mon, 18 Aug 2025 13:27:12 +0000 (UTC)
+	 MIME-Version; b=NkJ9pXtafY8+41vYT7IIz7L0J0RurVPg+UKb3FSCXcsDeC1ossqyiRDirvXvgPpe8sDOKqXawCCKk1U8T5aggkStZ1gTIJTgIT2TgjeA1CxfrB0F59Zqq+ffVG0WS0tjI09hnCV1B4OJuJBKI6NA8SRFHQDRGVVwjznnRWDcDaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPpN+iR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD38AC4CEEB;
+	Mon, 18 Aug 2025 13:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523633;
-	bh=4QK+ZDky9iShKO6RUk7kT8b4mTmEA441++/punGYfCk=;
+	s=korg; t=1755525340;
+	bh=twoA7Y5gXXxddcCRSG2jRx488DfCMgSh+/ii+0AHB7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXuY0V/X0ZOZuE2SxEdgi60Ij4H7fV2eEL35n7MAUGbML1OwJGvjMrwfFRrMK20DF
-	 I0Cj2V2LiSlcycTuWlBJ7JNr+9pZ7Gsx3V5b7IYhKD1clnDgv5ZbkNUkerDQ/ZTDCA
-	 LJZL0Z4b735rFLSGG6kLDPcVbnvePh98PDgm3o7s=
+	b=kPpN+iR/EcbaL/2PP92uTxw36mu1E9kx5eEFQe98EXoaIgrU4c9a1eyZk/3SRrvhd
+	 k/iKqPGMBIOCWtE6ajlSgxRWaM+y8wDfGlMs431T6MlWaN2mrPcRgasCWRCWyJFDx7
+	 DyM/coj/gfWV1/36urXdJyTnioZuGSHnQhBRc7vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 232/515] sched/deadline: Fix accounting after global limits change
+Subject: [PATCH 6.16 231/570] net: ag71xx: Add missing check after DMA map
 Date: Mon, 18 Aug 2025 14:43:38 +0200
-Message-ID: <20250818124507.306825638@linuxfoundation.org>
+Message-ID: <20250818124514.719282180@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 440989c10f4e32620e9e2717ca52c3ed7ae11048 ]
+[ Upstream commit 96a1e15e60216b52da0e6da5336b6d7f5b0188b0 ]
 
-A global limits change (sched_rt_handler() logic) currently leaves stale
-and/or incorrect values in variables related to accounting (e.g.
-extra_bw).
+The DMA map functions can fail and should be tested for errors.
 
-Properly clean up per runqueue variables before implementing the change
-and rebuild scheduling domains (so that accounting is also properly
-restored) after such a change is complete.
-
-Reported-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Marcel Ziswiler <marcel.ziswiler@codethink.co.uk> # nuc & rock5b
-Link: https://lore.kernel.org/r/20250627115118.438797-4-juri.lelli@redhat.com
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716095733.37452-3-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/deadline.c | 4 +++-
- kernel/sched/rt.c       | 6 ++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 65f3b2cc891d..d86b211f2c14 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -3249,6 +3249,9 @@ void sched_dl_do_global(void)
- 	if (global_rt_runtime() != RUNTIME_INF)
- 		new_bw = to_ratio(global_rt_period(), global_rt_runtime());
- 
-+	for_each_possible_cpu(cpu)
-+		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
-+
- 	for_each_possible_cpu(cpu) {
- 		rcu_read_lock_sched();
- 
-@@ -3264,7 +3267,6 @@ void sched_dl_do_global(void)
- 		raw_spin_unlock_irqrestore(&dl_b->lock, flags);
- 
- 		rcu_read_unlock_sched();
--		init_dl_rq_bw_ratio(&cpu_rq(cpu)->dl);
- 	}
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index d8e6f23e1432..cbc730c7cff2 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1213,6 +1213,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
+ 	buf->rx.rx_buf = data;
+ 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
+ 					  DMA_FROM_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
++		skb_free_frag(data);
++		buf->rx.rx_buf = NULL;
++		return false;
++	}
+ 	desc->data = (u32)buf->rx.dma_addr + offset;
+ 	return true;
  }
+@@ -1511,6 +1516,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
  
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index bfcb8b0a1e2c..41a216fec3ce 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2936,6 +2936,12 @@ static int sched_rt_handler(const struct ctl_table *table, int write, void *buff
- 	sched_domains_mutex_unlock();
- 	mutex_unlock(&mutex);
+ 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
+ 				  DMA_TO_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
++		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
++		goto err_drop;
++	}
  
-+	/*
-+	 * After changing maximum available bandwidth for DEADLINE, we need to
-+	 * recompute per root domain and per cpus variables accordingly.
-+	 */
-+	rebuild_sched_domains();
-+
- 	return ret;
- }
- 
+ 	i = ring->curr & ring_mask;
+ 	desc = ag71xx_ring_desc(ring, i);
 -- 
 2.39.5
 
