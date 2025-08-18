@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2015BB2AA92
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:33:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD46DB2A706
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DE771BA1107
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5534C18A19E3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79C632A3F5;
-	Mon, 18 Aug 2025 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460B6321430;
+	Mon, 18 Aug 2025 13:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+FAEsQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWWuSqwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E1E288C1F;
-	Mon, 18 Aug 2025 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0360E220696;
+	Mon, 18 Aug 2025 13:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526199; cv=none; b=sRg6U6SFN1e4Z6DcxwPsk7OcuZqQEycHtaCXeSaY4uINLTCctgSpNygcxUKuoBbvkr4ibHB/xYZR13rncQxsi5qoN6wylgl/UE6tlGNblVaY8EN0Ipv+Vu36K+H9/cZq9s3IQxhNfwmxuBykGO7TjpzxO3nU1mysi9NjinN6niM=
+	t=1755524387; cv=none; b=n/xMMu8q4ejGwJOzyk2aKlTqk+XOngdMAmX9DmV0MsPtktk2AiZw8rbqnzDePBMQefib8zpGklaWom8ES1xPDiV6HCmwA59oWMg+zbQWL4v73Aw8M6WZNtBf1X9cu2/T+8/CpGsJPXqDjpbNpHXt1vJX9hliQDrwKnkHNRf7PTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526199; c=relaxed/simple;
-	bh=GDUvMl36M58VmyzDnczTRAaPnldPuQyikL7E4t8pzTM=;
+	s=arc-20240116; t=1755524387; c=relaxed/simple;
+	bh=i+DkHewD2WPhsc2h3yMWklfHJfkNlKOKP+PyrRxHZyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRcSBuTYOgnqAt+P4mi0gUTaKafN5T+t/eWeASa8fFczUSoKVoboIcoGv9Qm2EzBTqeXoR/Q7dKkzmGws/tKqZ1aRrbAGtJAUQfQDfr5tdjiwA1rFw5VkZ2s/i8TYt5kdzKkhiwZKI0EYbeDz6aPX1t0s7BPLSMwokU7raGaVGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+FAEsQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D7FC4CEEB;
-	Mon, 18 Aug 2025 14:09:58 +0000 (UTC)
+	 MIME-Version; b=cRVKWcYTWz6NWo4HJKB9Sa/D9ejxiIOK9mOVsSeoyAfd4hX5xLxE414Oahr2YUYlZ00VpwM26ZXxxsPrIwNgcFN8KR7RhQmNDr54ALCRakNWSFIESFKRPw+nHSC4DdbI8pPWHpPhillOHsajuVNnvmbi69tzbkJW2Q8Ea+5Laz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWWuSqwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637E6C113D0;
+	Mon, 18 Aug 2025 13:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526199;
-	bh=GDUvMl36M58VmyzDnczTRAaPnldPuQyikL7E4t8pzTM=;
+	s=korg; t=1755524386;
+	bh=i+DkHewD2WPhsc2h3yMWklfHJfkNlKOKP+PyrRxHZyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+FAEsQ2YqbywG8YZ6S0zysNypGegIVI0rf4bjgoZ8l/WvidxpQT6V5bPm31MgtTU
-	 A0/14rTKXqbw3Q00r/DAobEO4m1H0BgD/CiIWmNss36vp5S6v0h/LPWC13gcQgP9SE
-	 vQChnckB7Cq/rSx1sV2tHMK/8DXxpU4R1yq1+IzY=
+	b=oWWuSqwjpv+PtIhRbFfIJeN9Quby2eZs8uDjUQhS0g2Z0l13bZXu78IPzi5f4GXX9
+	 +1EeLIzJA8748PuJGMbcd7ioppIPtnSZW5FPWYkP42ytYQFqIuu9edhTnPTDYmQ/7i
+	 bIWxIZLIWQEbyiVJ3l+epvHGQwyf0bb7V1HPCBU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calvin Owens <calvin@wbinvd.org>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 454/570] tools/power turbostat: Handle cap_get_proc() ENOSYS
-Date: Mon, 18 Aug 2025 14:47:21 +0200
-Message-ID: <20250818124523.306481116@linuxfoundation.org>
+	Ricky Wu <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.15 456/515] misc: rtsx: usb: Ensure mmc child device is active when card is present
+Date: Mon, 18 Aug 2025 14:47:22 +0200
+Message-ID: <20250818124515.973405273@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Calvin Owens <calvin@wbinvd.org>
+From: Ricky Wu <ricky_wu@realtek.com>
 
-[ Upstream commit d34fe509f5f76d9dc36291242d67c6528027ebbd ]
+commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
 
-Kernels configured with CONFIG_MULTIUSER=n have no cap_get_proc().
-Check for ENOSYS to recognize this case, and continue on to
-attempt to access the requested MSRs (such as temperature).
+When a card is present in the reader, the driver currently defers
+autosuspend by returning -EAGAIN during the suspend callback to
+trigger USB remote wakeup signaling. However, this does not guarantee
+that the mmc child device has been resumed, which may cause issues if
+it remains suspended while the card is accessible.
+This patch ensures that all child devices, including the mmc host
+controller, are explicitly resumed before returning -EAGAIN. This
+fixes a corner case introduced by earlier remote wakeup handling,
+improving reliability of runtime PM when a card is inserted.
 
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 9eb8e8a850ec..5c747131f155 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -6573,8 +6573,16 @@ int check_for_cap_sys_rawio(void)
- 	int ret = 0;
+--- a/drivers/misc/cardreader/rtsx_usb.c
++++ b/drivers/misc/cardreader/rtsx_usb.c
+@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
+ }
  
- 	caps = cap_get_proc();
--	if (caps == NULL)
-+	if (caps == NULL) {
-+		/*
-+		 * CONFIG_MULTIUSER=n kernels have no cap_get_proc()
-+		 * Allow them to continue and attempt to access MSRs
-+		 */
-+		if (errno == ENOSYS)
-+			return 0;
+ #ifdef CONFIG_PM
++static int rtsx_usb_resume_child(struct device *dev, void *data)
++{
++	pm_request_resume(dev);
++	return 0;
++}
 +
- 		return 1;
-+	}
+ static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
+ {
+ 	struct rtsx_ucr *ucr =
+@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
+ 			mutex_unlock(&ucr->dev_mutex);
  
- 	if (cap_get_flag(caps, CAP_SYS_RAWIO, CAP_EFFECTIVE, &cap_flag_value)) {
- 		ret = 1;
--- 
-2.39.5
-
+ 			/* Defer the autosuspend if card exists */
+-			if (val & (SD_CD | MS_CD))
++			if (val & (SD_CD | MS_CD)) {
++				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+ 				return -EAGAIN;
++			}
+ 		} else {
+ 			/* There is an ongoing operation*/
+ 			return -EAGAIN;
+@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
+ 	return 0;
+ }
+ 
+-static int rtsx_usb_resume_child(struct device *dev, void *data)
+-{
+-	pm_request_resume(dev);
+-	return 0;
+-}
+-
+ static int rtsx_usb_resume(struct usb_interface *intf)
+ {
+ 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
 
 
 
