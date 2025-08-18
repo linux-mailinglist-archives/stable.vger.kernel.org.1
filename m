@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CB7B2A9BD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41457B2A70D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0594F7BAE63
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F73D1B6658C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C055E322A32;
-	Mon, 18 Aug 2025 14:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF46320CA0;
+	Mon, 18 Aug 2025 13:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdUEBRUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFqcuMUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD75322A1A;
-	Mon, 18 Aug 2025 14:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3C4220696;
+	Mon, 18 Aug 2025 13:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526101; cv=none; b=SnJkTaSq2AQnigy8pHxA6jRIWlflvjFSXzbkbnOi8SOepdDl24Zfwwa90fI+XO9NsBfuSAyT1ZwGasaJgcp1XbxIWZsbhALhtvXbBjT3p+Yve/Y+h8lQLrhIh3vXdymUgqa5U27xczuSQDZ8kV2P6Y/z5SgNegnqDB41+6hO5nQ=
+	t=1755524404; cv=none; b=Bu2uBBXdVNKdyZuQUZLNR+YHW/6V5vfxRX32HhPTusBXf1Bdqv2iYKqpS+R8yhplGYLWjPBWFlHXlaOFvfa01fCK8KmBalvhPsjmdyxQ2h8a1cDhNCibolGmgJOkAqhBXUz4MAiR8EdCMZ7ANMyHpOSMAcURjRKjc1eoKFgNAyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526101; c=relaxed/simple;
-	bh=cox8OjX+mbGrzJlKivezC6C4e6zul0qDpuBq/SYHOeo=;
+	s=arc-20240116; t=1755524404; c=relaxed/simple;
+	bh=tSvIWVOFJpWZ3aVbM9/XMCWNXfsbB0vEuAHqtnt+OMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anr9x38phq9UbwYJWVrodmSsY6tJD2aP8cCc4x1sGLv2FCREm95wV5lQZ9zQXknEu4y2Bvjly6jHgTvBDK4TyDqUR5KH5fwyKXViJx58tHaqd3C/Sn2gj+O3/B0aN4nG+CUm7g5XCK6SjKQ3dEG2lIUKxMp12k4q9dN2jUD3aeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdUEBRUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3ECCC116C6;
-	Mon, 18 Aug 2025 14:08:20 +0000 (UTC)
+	 MIME-Version; b=IQc0jrIOAN+HjchpgauGApZrlXTAxptai/KE5a5hK+wpWa9aesZmpwyd5CZhsAvPEyelSBEFzQvkaNpE4orcM38a8rG2BqzSuQaeQyJsPIPPE807HMudqdNE2/4h1zS3pf1vtGjrtiRQb3FlIw/my3+HZtAKmwsyfcTSd02ajl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFqcuMUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB03C4CEF1;
+	Mon, 18 Aug 2025 13:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526101;
-	bh=cox8OjX+mbGrzJlKivezC6C4e6zul0qDpuBq/SYHOeo=;
+	s=korg; t=1755524403;
+	bh=tSvIWVOFJpWZ3aVbM9/XMCWNXfsbB0vEuAHqtnt+OMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jdUEBRUrqkBTP6PrmJ0beJ3SxGNRs0rXsLcTmAtXqgwpHxoZ3Oy7iSnWGIrXgwARv
-	 Aoq/yjGWzudpoNMy9fXTTf0c3jaAfr/xtarVL9bjOkI7hX+ZClqdfxdHjgFXljkeeN
-	 8yMpAr1loRdnvYNmAKlHT6UbL4ERQW3cYr1gowNo=
+	b=VFqcuMUusUjjYA1ols+TB6aKpv7mXbrwVeTS/WrmTd0TDxfLvLL1OkjzSKcfpeFg9
+	 3ygf15suvXLXrlPCsVZh5OKJoZlOwLZxjZWtr9L9aEQs6jHgvFUdLbvvFJXII7QvEe
+	 fmZqMEiCYuR3gAiA8lYs8vwx+6323L0cAOrpUk+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Jakubek <peterjakubek@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 459/570] ASoC: Intel: sof_sdw: Add quirk for Alienware Area 51 (2025) 0CCC SKU
+	stable <stable@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.15 460/515] usb: typec: fusb302: cache PD RX state
 Date: Mon, 18 Aug 2025 14:47:26 +0200
-Message-ID: <20250818124523.542564979@linuxfoundation.org>
+Message-ID: <20250818124516.129290641@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Jakubek <peterjakubek@gmail.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit 1b03391d073dad748636a1ad9668b837cce58265 ]
+commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 upstream.
 
-Add DMI quirk entry for Alienware systems with SKU "0CCC" to enable
-proper speaker codec configuration (SOC_SDW_CODEC_SPKR).
+This patch fixes a race condition communication error, which ends up in
+PD hard resets when losing the race. Some systems, like the Radxa ROCK
+5B are powered through USB-C without any backup power source and use a
+FUSB302 chip to do the PD negotiation. This means it is quite important
+to avoid hard resets, since that effectively kills the system's
+power-supply.
 
-This system requires the same audio configuration as some existing Dell systems.
-Without this patch, the laptop's speakers and microphone will not work.
+I've found the following race condition while debugging unplanned power
+loss during booting the board every now and then:
 
-Signed-off-by: Peter Jakubek <peterjakubek@gmail.com>
-Link: https://patch.msgid.link/20250731172104.2009007-1-peterjakubek@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. lots of TCPM/FUSB302/PD initialization stuff
+2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
+3. the remote PD source does not send anything, so TCPM does a SOFT RESET
+4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
+   (tcpm_set_pd_rx is enabled again, even though it is still on)
+
+At this point I've seen broken CRC good messages being send by the
+FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
+messages are being lost and things generally going haywire with one of
+the two sides doing a hard reset once a broken CRC good message was send
+to the bus.
+
+I think the system is running into a race condition, that the FIFOs are
+being cleared and/or the automatic good CRC message generation flag is
+being updated while a message is already arriving.
+
+Let's avoid this by caching the PD RX enabled state, as we have already
+processed anything in the FIFOs and are in a good state. As a side
+effect that this also optimizes I2C bus usage :)
+
+As far as I can tell the problem theoretically also exists when TCPM
+enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
+critical for the following reason:
+
+On devices like the ROCK 5B, which are powered through a TCPM backed
+USB-C port, the bootloader must have done some prior PD communication
+(initial communication must happen within 5 seconds after plugging the
+USB-C plug). This means the first time the kernel TCPM state machine
+reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
+actively. On other devices a hard reset simply adds some extra delay and
+things should be good afterwards.
+
+Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 8 ++++++++
+ drivers/usb/typec/tcpm/fusb302.c |    8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 504887505e68..c576ec5527f9 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -741,6 +741,14 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		},
- 		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0CCC")
-+		},
-+		.driver_data = (void *)(SOC_SDW_CODEC_SPKR),
-+	},
- 	/* Pantherlake devices*/
- 	{
- 		.callback = sof_sdw_quirk_cb,
--- 
-2.39.5
-
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -104,6 +104,7 @@ struct fusb302_chip {
+ 	bool vconn_on;
+ 	bool vbus_on;
+ 	bool charge_on;
++	bool pd_rx_on;
+ 	bool vbus_present;
+ 	enum typec_cc_polarity cc_polarity;
+ 	enum typec_cc_status cc1;
+@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_de
+ 	int ret = 0;
+ 
+ 	mutex_lock(&chip->lock);
++	if (chip->pd_rx_on == on) {
++		fusb302_log(chip, "pd is already %s", str_on_off(on));
++		goto done;
++	}
++
+ 	ret = fusb302_pd_rx_flush(chip);
+ 	if (ret < 0) {
+ 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
+@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_de
+ 			    str_on_off(on), ret);
+ 		goto done;
+ 	}
++
++	chip->pd_rx_on = on;
+ 	fusb302_log(chip, "pd := %s", str_on_off(on));
+ done:
+ 	mutex_unlock(&chip->lock);
 
 
 
