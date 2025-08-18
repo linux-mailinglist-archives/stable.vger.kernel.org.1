@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233ADB2A480
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0C2B2A72D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0161B62EFB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB70B688130
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E5D304BC6;
-	Mon, 18 Aug 2025 13:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCD031E11E;
+	Mon, 18 Aug 2025 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rpr1MxNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBtLsXbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874C62727E2;
-	Mon, 18 Aug 2025 13:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF8B2206AF;
+	Mon, 18 Aug 2025 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522866; cv=none; b=q0LLxkFcD8hHyiRiTP60eWnN7/UCMjWTfoFSmensyEKAgx/upbJc/f0+wEpDqI2a7ft5l92PpfPBC4J1grQjb34K2pUPVC6AycKoQ5hNPQD+keNxOTwLny32+1zM6y/JT0vE9bAbQ0FgowxlMbhlAZh4dGXM6lbQfEJdCEWLg/g=
+	t=1755524536; cv=none; b=QXAc3IP4FZgvDip9FR4pqTbHBo7LQdHNfgbxB8bQqT9NlQC5kh4vkt8V7mPeXXm1l+i1SYkXanxa/nzTlp/WF9s60trqXcx1aNl043OrbjkyRZfRGeMGHC8Ha2135ejlsqMr7EAjQI39hSKvv7Vtfae2CeCPOchNQuiftXaHv94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522866; c=relaxed/simple;
-	bh=GSqJirkA2UbnWwwgbSvFgCBbHJV6tV/2zkb19Ot3vbE=;
+	s=arc-20240116; t=1755524536; c=relaxed/simple;
+	bh=4x7eWrwJ4zmn+cOI3n2P0+FNf6aPsKxWgHea9i/UmTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xlxrs1Lm6/+9OBQkq22t60AsvjIX5NRohsA0h9aBqYOl0V9qbZ/feyuNmaXBEN7zk+skuhMLWKqWlMVqFU4ejl+BkzOtI0ffje32i2hFhZsm9wmrd7ob3E4Rym1OMeeMy617tSAA100gHPot/rOHp1wNc5QJv9Vsq6wMsKVhIos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rpr1MxNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4F8C4CEEB;
-	Mon, 18 Aug 2025 13:14:25 +0000 (UTC)
+	 MIME-Version; b=hHxmsuFmxcN/4uvMFqj5We6QAlRbGR2CJw99QF9fq+jChVCmKM5HbxvIhSTtE9KKCMKfmGTCXkthaGY4QeGh+8yyHY6sUwuZrfxq3vdKQBLDNeBHdRqX4NGBiQAo9yREVnB0uQozech0MMO+JRTKPC87OiOh6OZdjTwPwdx05ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBtLsXbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF68DC116B1;
+	Mon, 18 Aug 2025 13:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522866;
-	bh=GSqJirkA2UbnWwwgbSvFgCBbHJV6tV/2zkb19Ot3vbE=;
+	s=korg; t=1755524536;
+	bh=4x7eWrwJ4zmn+cOI3n2P0+FNf6aPsKxWgHea9i/UmTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rpr1MxNVNdJ5WIPjjvLsYO8D+rslHY3rKSFraA0nFSPb/tzp63rScarsMI4OFLEEV
-	 MpS0Rz8VDECBjUEp71msqRmIP4P5kBCg4TNKw+rDMLjT6nTKfP1BQWuX3RFCcWYkSY
-	 i8wmQfAjDl0fKWFV38UfCa4a6UutF7UqKnIErJpQ=
+	b=GBtLsXbXEqN8YnZfqzoImEt1+HBOuH0aoWjDXs3dM5git2kCtqtvDcLkxudDyGGJ1
+	 4fuc5ZIZy8RkMsr5L1OtEBJwagNOtLcqzIfuNdRoPv/sUiWJIHFUZhoRiEtuuMWVyG
+	 OOudObCWMSqg7t9uTonFeAkQh33c15smKT8MWeGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 431/444] PCI: Allow PCI bridges to go to D3Hot on all non-x86
+	Caleb Sander Mateos <csander@purestorage.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 471/515] btrfs: dont skip accounting in early ENOTTY return in btrfs_uring_encoded_read()
 Date: Mon, 18 Aug 2025 14:47:37 +0200
-Message-ID: <20250818124505.115434121@linuxfoundation.org>
+Message-ID: <20250818124516.553493382@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit a5fb3ff632876d63ee1fc5ed3af2464240145a00 ]
+commit ea124ec327086325fc096abf42837dac471ac7ae upstream.
 
-Currently, pci_bridge_d3_possible() encodes a variety of decision factors
-when deciding whether a given bridge can be put into D3. A particular one
-of note is for "recent enough PCIe ports." Per Rafael [0]:
+btrfs_uring_encoded_read() returns early with -ENOTTY if the uring_cmd
+is issued with IO_URING_F_COMPAT but the kernel doesn't support compat
+syscalls. However, this early return bypasses the syscall accounting.
+Go to out_acct instead to ensure the syscall is counted.
 
-  "There were hardware issues related to PM on x86 platforms predating
-   the introduction of Connected Standby in Windows.  For instance,
-   programming a port into D3hot by writing to its PMCSR might cause the
-   PCIe link behind it to go down and the only way to revive it was to
-   power cycle the Root Complex.  And similar."
-
-Thus, this function contains a DMI-based check for post-2015 BIOS.
-
-The above factors (Windows, x86) don't really apply to non-x86 systems, and
-also, many such systems don't have BIOS or DMI. However, we'd like to be
-able to suspend bridges on non-x86 systems too.
-
-Restrict the "recent enough" check to x86. If we find further
-incompatibilities, it probably makes sense to expand on the deny-list
-approach (i.e., bridge_d3_blacklist or similar).
-
-Link: https://lore.kernel.org/r/20250320110604.v6.1.Id0a0e78ab0421b6bce51c4b0b87e6aebdfc69ec7@changeid
-Link: https://lore.kernel.org/linux-pci/CAJZ5v0j_6jeMAQ7eFkZBe5Yi+USGzysxAgfemYh=-zq4h5W+Qg@mail.gmail.com/ [0]
-Link: https://lore.kernel.org/linux-pci/20240227225442.GA249898@bhelgaas/ [1]
-Link: https://lore.kernel.org/linux-pci/20240828210705.GA37859@bhelgaas/ [2]
-[Brian: rewrite to !X86 based on Rafael's suggestions]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 6cff20ce3b92 ("PCI/ACPI: Fix runtime PM ref imbalance on Hot-Plug Capable ports")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 34310c442e17 ("btrfs: add io_uring command for encoded reads (ENCODED_READ ioctl)")
+CC: stable@vger.kernel.org # 6.15+
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/btrfs/ioctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3024,7 +3024,7 @@ static const struct dmi_system_id bridge
-  * @bridge: Bridge to check
-  *
-  * This function checks if it is possible to move the bridge to D3.
-- * Currently we only allow D3 for recent enough PCIe ports and Thunderbolt.
-+ * Currently we only allow D3 for some PCIe ports and for Thunderbolt.
-  */
- bool pci_bridge_d3_possible(struct pci_dev *bridge)
- {
-@@ -3068,10 +3068,10 @@ bool pci_bridge_d3_possible(struct pci_d
- 			return false;
- 
- 		/*
--		 * It should be safe to put PCIe ports from 2015 or newer
--		 * to D3.
-+		 * Out of caution, we only allow PCIe ports from 2015 or newer
-+		 * into D3 on x86.
- 		 */
--		if (dmi_get_bios_year() >= 2015)
-+		if (!IS_ENABLED(CONFIG_X86) || dmi_get_bios_year() >= 2015)
- 			return true;
- 		break;
- 	}
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4832,7 +4832,8 @@ static int btrfs_uring_encoded_read(stru
+ #if defined(CONFIG_64BIT) && defined(CONFIG_COMPAT)
+ 		copy_end = offsetofend(struct btrfs_ioctl_encoded_io_args_32, flags);
+ #else
+-		return -ENOTTY;
++		ret = -ENOTTY;
++		goto out_acct;
+ #endif
+ 	} else {
+ 		copy_end = copy_end_kernel;
 
 
 
