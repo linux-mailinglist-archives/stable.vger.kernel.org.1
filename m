@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D9FB2A941
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC2AB2A3D0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B346583D81
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6FC3171973
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B9F320CBC;
-	Mon, 18 Aug 2025 13:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611CE21C9FD;
+	Mon, 18 Aug 2025 13:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+ddC62Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MueV4QRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA5D2C235D;
-	Mon, 18 Aug 2025 13:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8AD31A055;
+	Mon, 18 Aug 2025 13:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525496; cv=none; b=CcwATFHpdC9VAj1nc1ecc1c5fEvPQggKNJGk4qxLWuBcHCHkXYGD6oIOJYQJOVIoBWmytBoVQ0Tn+zSprnCAcWNeuHKhcc4T435fz28yjDunLr2Q0+FxjT2YdCFdtER15g1cOzKX2T26yBo5f6Ugh9Zx+rrxisUvGRP+L+bYht4=
+	t=1755522190; cv=none; b=VEoSnCSdkXGiwwtb6qhsYpXzrKk7M2Djrmvztvq03PEPCmMs+4qUrL6Z8LuO1dMA4JdDZ2wd3z3HJdPlo3Q7t7mQkyUB0S2Y2oG4Uvk5zx2j84hAcqt8w0eWuWb0AKwjuHp3bqxbvAhLbb087PaRKAAk9kO2prvPy4qxY2isYb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525496; c=relaxed/simple;
-	bh=tzs5p2pii35p6oUAH2g/UsnJWpED1MXjH1G7DsrZ358=;
+	s=arc-20240116; t=1755522190; c=relaxed/simple;
+	bh=+Bwe0JUSOGogC30Z6G9LGkjODOAk5fUYdRWGqG4PH9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1sxWtFAu7Otchzlqnw5wJFFpNd39CkhkMP62ub4ghAFVlIN357282NRUDrZZqcqzcFieLzrJhIkp4Ecje7I1J/Zg90TNkYC92s0DfWSkf541f7Ydike4GyF+JjNj1gxU5RMoeYpXnVDARsiIuqNWKYa7MX19QUK15x70l8dVlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+ddC62Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B960C4CEEB;
-	Mon, 18 Aug 2025 13:58:15 +0000 (UTC)
+	 MIME-Version; b=Mv3T6SYzac5z4OC7nrNlbJnm21m8teTQDsM04gIMyj3KSJoWiWq6ZEjFbu+rSekXuJuO4yoJ4Ua/yztcIukr7lg+002l1m8FmlQ8DVX44xdKSPWkQ1gy78XiFKxiti3Yu4ttpm58TVkxYBrSNFrpSln63RrlTPWYg1EjMWDFMtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MueV4QRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AF0C4CEEB;
+	Mon, 18 Aug 2025 13:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525496;
-	bh=tzs5p2pii35p6oUAH2g/UsnJWpED1MXjH1G7DsrZ358=;
+	s=korg; t=1755522190;
+	bh=+Bwe0JUSOGogC30Z6G9LGkjODOAk5fUYdRWGqG4PH9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+ddC62YDjs1RPfk+JI1pvain6DhlbX3VOZ8WsWbolK39Wp8ntHJ80DmJSP0TSWHL
-	 lLQZFJdvGjUBYqmCoq0XQ2s14PR4rmntS1gjfqeJiPxyR+yR+0yEc0Cjch1+KgkX1E
-	 P6Q00T11TqsTpF76EqENQW0Gkm195Nw48w1+3eJE=
+	b=MueV4QRq3+mXWJ+izz7e1tfiJh+CITrzF53QwOQa+E3MzfwWcYL6C3xxHTDrsHESH
+	 5xeFGvb2DGdvIl2DVIOPkifzfspSxo7PSOwQNHvuo6hHpsmMORowJs4mGg57GzqYHs
+	 4f5eky8Co1UapoL2M/jIsPFGD1jFbcKxPGbkZwzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 281/570] drm/xe/xe_query: Use separate iterator while filling GT list
+Subject: [PATCH 6.12 242/444] neighbour: add support for NUD_PERMANENT proxy entries
 Date: Mon, 18 Aug 2025 14:44:28 +0200
-Message-ID: <20250818124516.671019915@linuxfoundation.org>
+Message-ID: <20250818124457.909218017@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit d4eb4a010262ea7801e576d1033b355910f2f7d4 ]
+[ Upstream commit c7d78566bbd30544a0618a6ffbc97bc0ddac7035 ]
 
-The 'id' value updated by for_each_gt() is the uapi GT ID of the GTs
-being iterated over, and may skip over values if a GT is not present on
-the device.  Use a separate iterator for GT list array assignments to
-ensure that the array will be filled properly on future platforms where
-index in the GT query list may not match the uapi ID.
+As discussesd before in [0] proxy entries (which are more configuration
+than runtime data) should stay when the link (carrier) goes does down.
+This is what happens for regular neighbour entries.
 
-v2:
- - Include the missing increment of the iterator.  (Jonathan)
+So lets fix this by:
+  - storing in proxy entries the fact that it was added as NUD_PERMANENT
+  - not removing NUD_PERMANENT proxy entries when the carrier goes down
+    (same as how it's done in neigh_flush_dev() for regular neigh entries)
 
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Link: https://lore.kernel.org/r/20250701201320.2514369-16-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+[0]: https://lore.kernel.org/netdev/c584ef7e-6897-01f3-5b80-12b53f7b4bf4@kernel.org/
+
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250617141334.3724863-1-nico.escande@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_query.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ include/net/neighbour.h |  1 +
+ net/core/neighbour.c    | 12 +++++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
-index 2dbf4066d86f..34f7488acc99 100644
---- a/drivers/gpu/drm/xe/xe_query.c
-+++ b/drivers/gpu/drm/xe/xe_query.c
-@@ -368,6 +368,7 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
- 	struct drm_xe_query_gt_list __user *query_ptr =
- 		u64_to_user_ptr(query->data);
- 	struct drm_xe_query_gt_list *gt_list;
-+	int iter = 0;
- 	u8 id;
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index a44f262a7384..cb5f835a5d61 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -180,6 +180,7 @@ struct pneigh_entry {
+ 	netdevice_tracker	dev_tracker;
+ 	u32			flags;
+ 	u8			protocol;
++	bool			permanent;
+ 	u32			key[];
+ };
  
- 	if (query->size == 0) {
-@@ -385,12 +386,12 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 8082cc6be4fc..96786016dbb4 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -55,7 +55,8 @@ static void __neigh_notify(struct neighbour *n, int type, int flags,
+ 			   u32 pid);
+ static void neigh_update_notify(struct neighbour *neigh, u32 nlmsg_pid);
+ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+-				    struct net_device *dev);
++				    struct net_device *dev,
++				    bool skip_perm);
  
- 	for_each_gt(gt, xe, id) {
- 		if (xe_gt_is_media_type(gt))
--			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
-+			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
- 		else
--			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MAIN;
--		gt_list->gt_list[id].tile_id = gt_to_tile(gt)->id;
--		gt_list->gt_list[id].gt_id = gt->info.id;
--		gt_list->gt_list[id].reference_clock = gt->info.reference_clock;
-+			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MAIN;
-+		gt_list->gt_list[iter].tile_id = gt_to_tile(gt)->id;
-+		gt_list->gt_list[iter].gt_id = gt->info.id;
-+		gt_list->gt_list[iter].reference_clock = gt->info.reference_clock;
- 		/*
- 		 * The mem_regions indexes in the mask below need to
- 		 * directly identify the struct
-@@ -406,19 +407,21 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
- 		 * assumption.
- 		 */
- 		if (!IS_DGFX(xe))
--			gt_list->gt_list[id].near_mem_regions = 0x1;
-+			gt_list->gt_list[iter].near_mem_regions = 0x1;
- 		else
--			gt_list->gt_list[id].near_mem_regions =
-+			gt_list->gt_list[iter].near_mem_regions =
- 				BIT(gt_to_tile(gt)->id) << 1;
--		gt_list->gt_list[id].far_mem_regions = xe->info.mem_region_mask ^
--			gt_list->gt_list[id].near_mem_regions;
-+		gt_list->gt_list[iter].far_mem_regions = xe->info.mem_region_mask ^
-+			gt_list->gt_list[iter].near_mem_regions;
+ #ifdef CONFIG_PROC_FS
+ static const struct seq_operations neigh_stat_seq_ops;
+@@ -444,7 +445,7 @@ static int __neigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
+ {
+ 	write_lock_bh(&tbl->lock);
+ 	neigh_flush_dev(tbl, dev, skip_perm);
+-	pneigh_ifdown_and_unlock(tbl, dev);
++	pneigh_ifdown_and_unlock(tbl, dev, skip_perm);
+ 	pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
+ 			   tbl->family);
+ 	if (skb_queue_empty_lockless(&tbl->proxy_queue))
+@@ -847,7 +848,8 @@ int pneigh_delete(struct neigh_table *tbl, struct net *net, const void *pkey,
+ }
  
--		gt_list->gt_list[id].ip_ver_major =
-+		gt_list->gt_list[iter].ip_ver_major =
- 			REG_FIELD_GET(GMD_ID_ARCH_MASK, gt->info.gmdid);
--		gt_list->gt_list[id].ip_ver_minor =
-+		gt_list->gt_list[iter].ip_ver_minor =
- 			REG_FIELD_GET(GMD_ID_RELEASE_MASK, gt->info.gmdid);
--		gt_list->gt_list[id].ip_ver_rev =
-+		gt_list->gt_list[iter].ip_ver_rev =
- 			REG_FIELD_GET(GMD_ID_REVID, gt->info.gmdid);
-+
-+		iter++;
+ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+-				    struct net_device *dev)
++				    struct net_device *dev,
++				    bool skip_perm)
+ {
+ 	struct pneigh_entry *n, **np, *freelist = NULL;
+ 	u32 h;
+@@ -855,12 +857,15 @@ static int pneigh_ifdown_and_unlock(struct neigh_table *tbl,
+ 	for (h = 0; h <= PNEIGH_HASHMASK; h++) {
+ 		np = &tbl->phash_buckets[h];
+ 		while ((n = *np) != NULL) {
++			if (skip_perm && n->permanent)
++				goto skip;
+ 			if (!dev || n->dev == dev) {
+ 				*np = n->next;
+ 				n->next = freelist;
+ 				freelist = n;
+ 				continue;
+ 			}
++skip:
+ 			np = &n->next;
+ 		}
  	}
- 
- 	if (copy_to_user(query_ptr, gt_list, size)) {
+@@ -2041,6 +2046,7 @@ static int neigh_add(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		pn = pneigh_lookup(tbl, net, dst, dev, 1);
+ 		if (pn) {
+ 			pn->flags = ndm_flags;
++			pn->permanent = !!(ndm->ndm_state & NUD_PERMANENT);
+ 			if (protocol)
+ 				pn->protocol = protocol;
+ 			err = 0;
 -- 
 2.39.5
 
