@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAC7B2A6A9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA6DB2A4F8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2A544E394B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 638BF682E5D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D3B335BCB;
-	Mon, 18 Aug 2025 13:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274F5343D66;
+	Mon, 18 Aug 2025 13:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO0pgc/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Y5XSA8R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17425335BA9;
-	Mon, 18 Aug 2025 13:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F9343D60;
+	Mon, 18 Aug 2025 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524698; cv=none; b=dpiYEfbEQ/8MBgjwpdvOT6XfaYxqcHVNxCTeca75I7EtnST8gZVIp5ruLEnlAaaYcMxLgMpQuf2qcF3flhz8ObJEEc7zVAlZC/AjQ3BFwD0F8eloYIZ0pxDio3UN3UP0fXXbwgdawjY8wLY/2ak+tCRPZvIlqOAQ+4x4ioVk3Ac=
+	t=1755522960; cv=none; b=PBB5vOpCLJl5plpKHAhZik1kZQ50GNFwXKFgroB9Nde3amFApQ1Gx5PlIEQ3AZU/Qs8kZCR+Bh5hOb51fPJg8AfS/CO0WSirjBQsNN+HmhAzYjxO+K+NOyrhBaOi6PBZf0L5XPR/TTJN4RWQ809+wJYj+Hot89fnXnCWDhQqdLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524698; c=relaxed/simple;
-	bh=2/hBSFFlZz9tTcdqHSPWFdFp+bdAMB7Iv9JZeMW4fWw=;
+	s=arc-20240116; t=1755522960; c=relaxed/simple;
+	bh=mQJ8ErPkvyO9jOpHtYClP2oK2UD5G3wsH7Mf5v4eLm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0GzJH8z5LiyR7cxlsXazKV4RkTb9AjsgfJZdVIuzMfcha9CQhd1B10GTmRTF/zZoea2s7ASXbfJGNkv5Br2hN3UPn2B6AfN+9fdQi6/74Pfu7g9T64ueC1Op9uCbNCQj7G7CZw4GuRd7r2EGsa8d1Ct/CTB3e9qdjMHtkonz3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO0pgc/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFE8C4CEEB;
-	Mon, 18 Aug 2025 13:44:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IFv0sktvAlMcFIgvNJLp4EErlbxLTIWYeST7u1F1gqup/i0+x5qAQk0VLn7+CoRtFZNRF9LW5Qxv4ltENfIqI4BV6ibf4Bijx8i9Qtm3Xt0oEGmSi2TVV6cSeO+Z+7nA0Ji7P59euhyZSsBlIFeG6dhTX0EFYlywct0Dzln9SJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Y5XSA8R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426C0C113D0;
+	Mon, 18 Aug 2025 13:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524698;
-	bh=2/hBSFFlZz9tTcdqHSPWFdFp+bdAMB7Iv9JZeMW4fWw=;
+	s=korg; t=1755522960;
+	bh=mQJ8ErPkvyO9jOpHtYClP2oK2UD5G3wsH7Mf5v4eLm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MO0pgc/EJkyyYpwJjGMqo0jlWbTbuE5M7fkP27bU8reqAUASBroKkSuI30L0jayPX
-	 R51rYTvnKKK4O9wN8qkPsOwvnng3V0psnlLSwjpbSItuZYgVj6iTWTI0aDxkbrRmwT
-	 2eEgQqqwKJYoucGGpCVvLXRylZ1j0uwKg+VxbcJ4=
+	b=2Y5XSA8RHA+AIE6QwikxoIAYefDvDmk56NrAtV5DGhc2hKLe7vC1ncOoqjlIAkd4q
+	 cMXQTldmESt9zx9JDLP2wsRCudOhhGk4NMZun3fl3J2K+lbprJX1x13k5/eGrGdDAs
+	 V7FQvSxi8C4JlBH2i6yhc32a2b029JTHIpLFChA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roger Quadros <rogerq@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 027/570] net: ti: icss-iep: fix device and OF node leaks at probe
+Subject: [PATCH 6.15 028/515] net: usb: qmi_wwan: add Telit Cinterion FN990A w/audio composition
 Date: Mon, 18 Aug 2025 14:40:14 +0200
-Message-ID: <20250818124506.861621998@linuxfoundation.org>
+Message-ID: <20250818124459.543397454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit e05c54974a05ab19658433545d6ced88d9075cf0 upstream.
+commit 61aaca8b89fb98be58b8df19f01181bb983cccff upstream.
 
-Make sure to drop the references to the IEP OF node and device taken by
-of_parse_phandle() and of_find_device_by_node() when looking up IEP
-devices during probe.
+Add the following Telit Cinterion FN990A w/audio composition:
 
-Drop the bogus additional reference taken on successful lookup so that
-the device is released correctly by icss_iep_put().
+0x1077: tty (diag) + adb + rmnet + audio + tty (AT/NMEA) + tty (AT) +
+tty (AT) + tty (AT)
+T:  Bus=01 Lev=01 Prnt=01 Port=09 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1077 Rev=05.04
+S:  Manufacturer=Telit Wireless Solutions
+S:  Product=FN990
+S:  SerialNumber=67e04c35
+C:  #Ifs=10 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 0 Cls=01(audio) Sub=01 Prot=20 Driver=snd-usb-audio
+I:  If#= 4 Alt= 1 #EPs= 1 Cls=01(audio) Sub=02 Prot=20 Driver=snd-usb-audio
+E:  Ad=03(O) Atr=0d(Isoc) MxPS=  68 Ivl=1ms
+I:  If#= 5 Alt= 1 #EPs= 1 Cls=01(audio) Sub=02 Prot=20 Driver=snd-usb-audio
+E:  Ad=84(I) Atr=0d(Isoc) MxPS=  68 Ivl=1ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 7 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 9 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8b(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8c(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
-Cc: stable@vger.kernel.org	# 6.6
-Cc: Roger Quadros <rogerq@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250725171213.880-6-johan@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/net/usb/qmi_wwan.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -685,11 +685,17 @@ struct icss_iep *icss_iep_get_idx(struct
- 	struct platform_device *pdev;
- 	struct device_node *iep_np;
- 	struct icss_iep *iep;
-+	int ret;
- 
- 	iep_np = of_parse_phandle(np, "ti,iep", idx);
--	if (!iep_np || !of_device_is_available(iep_np))
-+	if (!iep_np)
- 		return ERR_PTR(-ENODEV);
- 
-+	if (!of_device_is_available(iep_np)) {
-+		of_node_put(iep_np);
-+		return ERR_PTR(-ENODEV);
-+	}
-+
- 	pdev = of_find_device_by_node(iep_np);
- 	of_node_put(iep_np);
- 
-@@ -698,21 +704,28 @@ struct icss_iep *icss_iep_get_idx(struct
- 		return ERR_PTR(-EPROBE_DEFER);
- 
- 	iep = platform_get_drvdata(pdev);
--	if (!iep)
--		return ERR_PTR(-EPROBE_DEFER);
-+	if (!iep) {
-+		ret = -EPROBE_DEFER;
-+		goto err_put_pdev;
-+	}
- 
- 	device_lock(iep->dev);
- 	if (iep->client_np) {
- 		device_unlock(iep->dev);
- 		dev_err(iep->dev, "IEP is already acquired by %s",
- 			iep->client_np->name);
--		return ERR_PTR(-EBUSY);
-+		ret = -EBUSY;
-+		goto err_put_pdev;
- 	}
- 	iep->client_np = np;
- 	device_unlock(iep->dev);
--	get_device(iep->dev);
- 
- 	return iep;
-+
-+err_put_pdev:
-+	put_device(&pdev->dev);
-+
-+	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(icss_iep_get_idx);
- 
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1361,6 +1361,7 @@ static const struct usb_device_id produc
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1057, 2)},	/* Telit FN980 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1060, 2)},	/* Telit LN920 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1070, 2)},	/* Telit FN990A */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1077, 2)},	/* Telit FN990A w/audio */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1080, 2)}, /* Telit FE990A */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a0, 0)}, /* Telit FN920C04 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x10a4, 0)}, /* Telit FN920C04 */
 
 
 
