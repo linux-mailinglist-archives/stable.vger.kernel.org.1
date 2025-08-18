@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-170890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA70B2A652
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A028B2A9E3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4C52B60A0A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C857B5871AE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D403203AE;
-	Mon, 18 Aug 2025 13:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44829322C84;
+	Mon, 18 Aug 2025 14:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWFH43Ge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0TuRo1H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BB02C2340;
-	Mon, 18 Aug 2025 13:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0036C322C80;
+	Mon, 18 Aug 2025 14:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524132; cv=none; b=tTtCGIwFxb3Rei8uVL/tMtkb+c/Hqh9ZJqZvkc8UazsZe1QIEZOrfGzwpHpe7TWcILxwIldtMEUEFO+magfIZQDneQJRU6WmXPO+8SCwFVHeLj3a/DSTBJKw74FRrIDTsOewPtIudI3z1pVbf0cZCCW80vNyvy7p+42ra52zrXE=
+	t=1755525917; cv=none; b=bIjV/Y7JTOlbETY2TOJ1rM5f6DqDm+DCyUnSL/6WR7b8Fhd2jp8bWiXj2BEmNr54zVwGAU88mxXVmRNuMeuMNXQcS+XcJaEiL1I/Yjk/k2eIbb9xSyd1KEpAtvYOAWkYrRg4MRve7SbUoZnQekmMeljEe1h0IOaWyw2HEkjh4nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524132; c=relaxed/simple;
-	bh=K+pB83DIHNjcXKUuQbKWlTYmnMApVR7Unr7fyxSmn2w=;
+	s=arc-20240116; t=1755525917; c=relaxed/simple;
+	bh=4xH6R9Ep+RUOH5C23tG5JpgcW91P9c60P1ukDFjcXwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PevfPwkL2pCilG7Aaw+g71qySh8bphtHT9TC1MQIfblLMx68IOs1MVuCdEtdgncbWOmXKCqrbTaDz0XMo0aGCMAYoWbPsqL3w56rz2O6H7cyoQNu3Fg/VRAQPukEE6/Mk0++zutJKrkRGdBUx/klDMFV6KXWTSkju2Q7ac9ABNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWFH43Ge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3712C4CEEB;
-	Mon, 18 Aug 2025 13:35:31 +0000 (UTC)
+	 MIME-Version; b=LTVoGM104+PPH2dg0mnAO/zmtIp0niu4nVS8aYAr9nTJDz1gI6/Q5iVOPLPhFw5cXjMpROWLMTB9iRADU5z+EF3wO1ueWJ+27PN8TwiJgJSHzxxUEaWuRTPmAo7XW7GnlnLYJi9J0wMOmeu2c6yiTlseYbEZylee9uGPBcrBpwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0TuRo1H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E46CC4CEEB;
+	Mon, 18 Aug 2025 14:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524132;
-	bh=K+pB83DIHNjcXKUuQbKWlTYmnMApVR7Unr7fyxSmn2w=;
+	s=korg; t=1755525916;
+	bh=4xH6R9Ep+RUOH5C23tG5JpgcW91P9c60P1ukDFjcXwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AWFH43GeEiIRrd1wiF4dLBkAdGyjQEXVdw+gv7DkOUkKyaPaKfo81R6csDDKultV8
-	 6qor2tY4eU99g0oQnx8dZZM/7NbLi/6daCeWUGPDayllW2oJJ/diZhxhNto7TtZr90
-	 qNWz3fjU+BLxl958RQQyqtVcL4vEfbdlVJ88CNDY=
+	b=v0TuRo1H47t+2IKr+X+jG0z3BZkMOJD6fyqGuq+ssM1BM7fYycXPTnIOszq7ULkPv
+	 imHlxJHb4NoFYgIx0Vsv2MQG2gHUKiiepLrRmqBkUdkmM8jaQT6SfqJOqCF5LbSfDw
+	 5/lfxME+a+8e3G9/+umoALPa3xwWiETfUH36gp1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 378/515] media: usb: hdpvr: disable zero-length read messages
+Subject: [PATCH 6.16 377/570] ext4: limit the maximum folio order
 Date: Mon, 18 Aug 2025 14:46:04 +0200
-Message-ID: <20250818124512.975298602@linuxfoundation.org>
+Message-ID: <20250818124520.378510131@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
+[ Upstream commit b12f423d598fd874df9ecfb2436789d582fda8e6 ]
 
-This driver passes the length of an i2c_msg directly to
-usb_control_msg(). If the message is now a read and of length 0, it
-violates the USB protocol and a warning will be printed. Enable the
-I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
-read messages altogether.
+In environments with a page size of 64KB, the maximum size of a folio
+can reach up to 128MB. Consequently, during the write-back of folios,
+the 'rsv_blocks' will be overestimated to 1,577, which can make
+pressure on the journal space where the journal is small. This can
+easily exceed the limit of a single transaction. Besides, an excessively
+large folio is meaningless and will instead increase the overhead of
+traversing the bhs within the folio. Therefore, limit the maximum order
+of a folio to 2048 filesystem blocks.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Reported-by: Joseph Qi <jiangqi903@gmail.com>
+Closes: https://lore.kernel.org/linux-ext4/CA+G9fYsyYQ3ZL4xaSg1-Tt5Evto7Zd+hgNWZEa9cQLbahA1+xg@mail.gmail.com/
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250707140814.542883-12-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/ext4.h   |  2 +-
+ fs/ext4/ialloc.c |  3 +--
+ fs/ext4/inode.c  | 22 +++++++++++++++++++---
+ 3 files changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-index 070559b01b01..54956a8ff15e 100644
---- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
-+++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
-@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
- 	.functionality = hdpvr_functionality,
- };
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 18373de980f2..fe3366e98493 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3020,7 +3020,7 @@ int ext4_walk_page_buffers(handle_t *handle,
+ 				     struct buffer_head *bh));
+ int do_journal_get_write_access(handle_t *handle, struct inode *inode,
+ 				struct buffer_head *bh);
+-bool ext4_should_enable_large_folio(struct inode *inode);
++void ext4_set_inode_mapping_order(struct inode *inode);
+ #define FALL_BACK_TO_NONDELALLOC 1
+ #define CONVERT_INLINE_DATA	 2
  
-+/* prevent invalid 0-length usb_control_msg */
-+static const struct i2c_adapter_quirks hdpvr_quirks = {
-+	.flags = I2C_AQ_NO_ZERO_LEN_READ,
-+};
+diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+index 79aa3df8d019..df4051613b29 100644
+--- a/fs/ext4/ialloc.c
++++ b/fs/ext4/ialloc.c
+@@ -1335,8 +1335,7 @@ struct inode *__ext4_new_inode(struct mnt_idmap *idmap,
+ 		}
+ 	}
+ 
+-	if (ext4_should_enable_large_folio(inode))
+-		mapping_set_large_folios(inode->i_mapping);
++	ext4_set_inode_mapping_order(inode);
+ 
+ 	ext4_update_inode_fsync_trans(handle, inode, 1);
+ 
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index ee4129b5ecce..0f316632b8dd 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -5107,7 +5107,7 @@ static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
+ 	return -EFSCORRUPTED;
+ }
+ 
+-bool ext4_should_enable_large_folio(struct inode *inode)
++static bool ext4_should_enable_large_folio(struct inode *inode)
+ {
+ 	struct super_block *sb = inode->i_sb;
+ 
+@@ -5124,6 +5124,22 @@ bool ext4_should_enable_large_folio(struct inode *inode)
+ 	return true;
+ }
+ 
++/*
++ * Limit the maximum folio order to 2048 blocks to prevent overestimation
++ * of reserve handle credits during the folio writeback in environments
++ * where the PAGE_SIZE exceeds 4KB.
++ */
++#define EXT4_MAX_PAGECACHE_ORDER(i)		\
++		umin(MAX_PAGECACHE_ORDER, (11 + (i)->i_blkbits - PAGE_SHIFT))
++void ext4_set_inode_mapping_order(struct inode *inode)
++{
++	if (!ext4_should_enable_large_folio(inode))
++		return;
 +
- static const struct i2c_adapter hdpvr_i2c_adapter_template = {
- 	.name   = "Hauppauge HD PVR I2C",
- 	.owner  = THIS_MODULE,
- 	.algo   = &hdpvr_algo,
-+	.quirks = &hdpvr_quirks,
- };
++	mapping_set_folio_order_range(inode->i_mapping, 0,
++				      EXT4_MAX_PAGECACHE_ORDER(inode));
++}
++
+ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 			  ext4_iget_flags flags, const char *function,
+ 			  unsigned int line)
+@@ -5441,8 +5457,8 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+ 		ret = -EFSCORRUPTED;
+ 		goto bad_inode;
+ 	}
+-	if (ext4_should_enable_large_folio(inode))
+-		mapping_set_large_folios(inode->i_mapping);
++
++	ext4_set_inode_mapping_order(inode);
  
- static int hdpvr_activate_ir(struct hdpvr_device *dev)
+ 	ret = check_igot_inode(inode, flags, function, line);
+ 	/*
 -- 
 2.39.5
 
