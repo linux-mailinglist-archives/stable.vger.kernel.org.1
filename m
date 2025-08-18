@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE953B2A566
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4282B2A2B0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11851B6010F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B37E82A7BA5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E1B33471E;
-	Mon, 18 Aug 2025 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A4B31CA59;
+	Mon, 18 Aug 2025 12:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmMxW7GS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvXqLBVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1412C320CA0;
-	Mon, 18 Aug 2025 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB7931A071;
+	Mon, 18 Aug 2025 12:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523123; cv=none; b=ZPVUmVvvrwy7Yh+oFLz3GoE83z7eBoFycxOmtLPROpHh6L+tJv1u9fhPrW4lZRB02RyCRuJF6pyHEgZfrBVeBPP0rPKZqdmvh1mVpkjcigAIWGH8X99wE3XLmU9hL0P6mBwNwb7nZvwtvaPLv3uA9VsRzeiA9CgONhAdfDP7ghE=
+	t=1755521494; cv=none; b=d132Lb3kYyL5VuTBS5QinWvWyxlzvz9kzT8tLz5RGX0mzc7fGcLIVMoqfsqzLyhSb6He341yWWl40a+vOXzRvEmBI66Qcojs1E5HKgRRYevZz5XUk5F+SDLgvV1Nv0XDDmj87d95QZwBPkH/KZKMAXZbraiSN9SUzzdoPcXuWEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523123; c=relaxed/simple;
-	bh=Gpz2uVS4iBAsPfAT15SE8qLSZOmuw0xwvTKNJLiNs3I=;
+	s=arc-20240116; t=1755521494; c=relaxed/simple;
+	bh=Xg/A/fmJHDR38cyfgjsnElojH6UQHinWTMJCeyGrrpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk2rcN9jNkxtK/7x5jFN5C+F3e6QCa2YpNab2kzrGyBabJRxksrKFQz7Lpo1WVaibXEYrjJ48+Wbt2DxBPn+SD+17g//OjY8vgoBvI1GavhnrtL5Xkv6lGJ/xcDVpVi4XTPznbqvZ6rAsowIcyl8chPagvBLh7mOxNLalK37LA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmMxW7GS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF1DC4CEEB;
-	Mon, 18 Aug 2025 13:18:42 +0000 (UTC)
+	 MIME-Version; b=JkKfFOWRYzErlA5rx8jlcNslY8nQ1/aUgl965xQQDmWUVren9gHgt1K25MhsD5KDH3s5/NZftbRNNv1gCxDNiSb9EziSifJGbmzg2uzE8IL84W6VvcX8Z0M7yJZ+1vfDQQI97YvXH6AU9je7QFnhwCr4Ll6UyFxbcIkYLH6ez9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvXqLBVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BBFC4CEEB;
+	Mon, 18 Aug 2025 12:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523122;
-	bh=Gpz2uVS4iBAsPfAT15SE8qLSZOmuw0xwvTKNJLiNs3I=;
+	s=korg; t=1755521494;
+	bh=Xg/A/fmJHDR38cyfgjsnElojH6UQHinWTMJCeyGrrpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmMxW7GSjVkDNnGhPDAd6JnKTURANNRMLLUjjj+FE+BU89dU2POIdrGpTQ8G2QGyh
-	 1CUg2vxzzA5mr/CQ6dRiXUmPKdV2pHkPkaU6TwAtX30cHKhWfdnkgR/2d4I/t7Rep6
-	 ohid1xk8F9dRvVFC7CoP9W8ljxCWZe0YsgVd2aBc=
+	b=uvXqLBVgYifg2/x34TnqcOwwfeVaW5Bh4UKh6uLwKWp1UdSCzek1VWpWBojpzpBVO
+	 0P2HXuOMVLF+YmVM5AKtS1w4cAvqGXFINwhNF/Rm4qQtlkOnUkCud6czidjafOOWqA
+	 SRjOBujT01CfKC4lX0fy0IXC3toaLMHObdsWXUVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 076/515] ipvs: Fix estimator kthreads preferred affinity
+	Sasha Levin <sashal@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 036/444] fs: Prevent file descriptor table allocations exceeding INT_MAX
 Date: Mon, 18 Aug 2025 14:41:02 +0200
-Message-ID: <20250818124501.308351252@linuxfoundation.org>
+Message-ID: <20250818124450.283335321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Sasha Levin <sashal@kernel.org>
 
-[ Upstream commit c0a23bbc98e93704a1f4fb5e7e7bb2d7c0fb6eb3 ]
+commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
 
-The estimator kthreads' affinity are defined by sysctl overwritten
-preferences and applied through a plain call to the scheduler's affinity
-API.
+When sysctl_nr_open is set to a very high value (for example, 1073741816
+as set by systemd), processes attempting to use file descriptors near
+the limit can trigger massive memory allocation attempts that exceed
+INT_MAX, resulting in a WARNING in mm/slub.c:
 
-However since the introduction of managed kthreads preferred affinity,
-such a practice shortcuts the kthreads core code which eventually
-overwrites the target to the default unbound affinity.
+  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
 
-Fix this with using the appropriate kthread's API.
+This happens because kvmalloc_array() and kvmalloc() check if the
+requested size exceeds INT_MAX and emit a warning when the allocation is
+not flagged with __GFP_NOWARN.
 
-Fixes: d1a89197589c ("kthread: Default affine kthread to its preferred NUMA node")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
+- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
+- Multiple bitmaps: ~400MB
+- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
+
+Reproducer:
+1. Set /proc/sys/fs/nr_open to 1073741816:
+   # echo 1073741816 > /proc/sys/fs/nr_open
+
+2. Run a program that uses a high file descriptor:
+   #include <unistd.h>
+   #include <sys/resource.h>
+
+   int main() {
+       struct rlimit rlim = {1073741824, 1073741824};
+       setrlimit(RLIMIT_NOFILE, &rlim);
+       dup2(2, 1073741880);  // Triggers the warning
+       return 0;
+   }
+
+3. Observe WARNING in dmesg at mm/slub.c:5027
+
+systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
+maximum possible value. The rationale was that systems with memory
+control groups (memcg) no longer need separate file descriptor limits
+since memory is properly accounted. However, this change overlooked
+that:
+
+1. The kernel's allocation functions still enforce INT_MAX as a maximum
+   size regardless of memcg accounting
+2. Programs and tests that legitimately test file descriptor limits can
+   inadvertently trigger massive allocations
+3. The resulting allocations (>8GB) are impractical and will always fail
+
+systemd's algorithm starts with INT_MAX and keeps halving the value
+until the kernel accepts it. On most systems, this results in nr_open
+being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
+descriptors.
+
+While processes rarely use file descriptors near this limit in normal
+operation, certain selftests (like
+tools/testing/selftests/core/unshare_test.c) and programs that test file
+descriptor limits can trigger this issue.
+
+Fix this by adding a check in alloc_fdtable() to ensure the requested
+allocation size does not exceed INT_MAX. This causes the operation to
+fail with -EMFILE instead of triggering a kernel warning and avoids the
+impractical >8GB memory allocation request.
+
+Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip_vs.h            | 13 +++++++++++++
- kernel/kthread.c               |  1 +
- net/netfilter/ipvs/ip_vs_est.c |  3 ++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ fs/file.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
-index ff406ef4fd4a..29a36709e7f3 100644
---- a/include/net/ip_vs.h
-+++ b/include/net/ip_vs.h
-@@ -1163,6 +1163,14 @@ static inline const struct cpumask *sysctl_est_cpulist(struct netns_ipvs *ipvs)
- 		return housekeeping_cpumask(HK_TYPE_KTHREAD);
- }
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -126,6 +126,21 @@ static struct fdtable * alloc_fdtable(un
+ 	if (unlikely(nr > sysctl_nr_open))
+ 		nr = ((sysctl_nr_open - 1) | (BITS_PER_LONG - 1)) + 1;
  
-+static inline const struct cpumask *sysctl_est_preferred_cpulist(struct netns_ipvs *ipvs)
-+{
-+	if (ipvs->est_cpulist_valid)
-+		return ipvs->sysctl_est_cpulist;
-+	else
-+		return NULL;
-+}
++	/*
++	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
++	 * and kvmalloc() will warn if the allocation size is greater than
++	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
++	 *
++	 * This can happen when sysctl_nr_open is set to a very high value and
++	 * a process tries to use a file descriptor near that limit. For example,
++	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
++	 * systemd typically sets it to - then trying to use a file descriptor
++	 * close to that value will require allocating a file descriptor table
++	 * that exceeds 8GB in size.
++	 */
++	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
++		return ERR_PTR(-EMFILE);
 +
- static inline int sysctl_est_nice(struct netns_ipvs *ipvs)
- {
- 	return ipvs->sysctl_est_nice;
-@@ -1270,6 +1278,11 @@ static inline const struct cpumask *sysctl_est_cpulist(struct netns_ipvs *ipvs)
- 	return housekeeping_cpumask(HK_TYPE_KTHREAD);
- }
- 
-+static inline const struct cpumask *sysctl_est_preferred_cpulist(struct netns_ipvs *ipvs)
-+{
-+	return NULL;
-+}
-+
- static inline int sysctl_est_nice(struct netns_ipvs *ipvs)
- {
- 	return IPVS_EST_NICE;
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 77c44924cf54..800c8fc46b08 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -894,6 +894,7 @@ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(kthread_affine_preferred);
- 
- /*
-  * Re-affine kthreads according to their preferences
-diff --git a/net/netfilter/ipvs/ip_vs_est.c b/net/netfilter/ipvs/ip_vs_est.c
-index f821ad2e19b3..15049b826732 100644
---- a/net/netfilter/ipvs/ip_vs_est.c
-+++ b/net/netfilter/ipvs/ip_vs_est.c
-@@ -265,7 +265,8 @@ int ip_vs_est_kthread_start(struct netns_ipvs *ipvs,
- 	}
- 
- 	set_user_nice(kd->task, sysctl_est_nice(ipvs));
--	set_cpus_allowed_ptr(kd->task, sysctl_est_cpulist(ipvs));
-+	if (sysctl_est_preferred_cpulist(ipvs))
-+		kthread_affine_preferred(kd->task, sysctl_est_preferred_cpulist(ipvs));
- 
- 	pr_info("starting estimator thread %d...\n", kd->id);
- 	wake_up_process(kd->task);
--- 
-2.50.1
-
+ 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
+ 	if (!fdt)
+ 		goto out;
 
 
 
