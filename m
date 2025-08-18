@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-170448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2A6B2A456
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3AAB2A700
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FEB156020B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7367C626377
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88BD31E0E9;
-	Mon, 18 Aug 2025 13:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753C430DEC8;
+	Mon, 18 Aug 2025 13:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrgNoVYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dL7Y9s6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66513218CB;
-	Mon, 18 Aug 2025 13:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331A921CC59;
+	Mon, 18 Aug 2025 13:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522671; cv=none; b=bMsPXy9Hn5yHsoJCK3mpjkT3bLkB5GlhvupPcRv4ylvKQX2CdOj8AqLS9y5LlVGt1ltpFMf8oSBb3BbL8aXVSjh+mPQnDUOYMuB1hDsoGmrvk2An3ux9mlYkGs6ILFv3B2R3giQyOblL+qhIzr3/L/YhlCXNuoNWqvckcNvKlVM=
+	t=1755524289; cv=none; b=GSK+FctQBho2Jr2h1zLQywGwjSQTYn5IGJ3Kf+Z4mO1iLUo4O7eiqX7mJ8XuIqVBeHTePWj7SjU8WzeifkwrA+p2OExorZTW1JFQem74Sr2fRp9zVSIT98ez6R6Do+a457ZTCBcza2EmWzMiK5zOUgB6nfM5ClVgqmxNFlXCGzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522671; c=relaxed/simple;
-	bh=EQIP4gmv6Igu7VWVChjMvIR0bPWtah+htM0hegIZK54=;
+	s=arc-20240116; t=1755524289; c=relaxed/simple;
+	bh=tCN8UXOl60H8N1DPuo6VqyaQDA2UtsOfhgXf9oUfovQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKCXzYQ4L3/TGZdC3if2rj+lz6sIb1U1DZTI83DCOSnKYrWe5kNz6itDbNQfZE8xjzGlNr0nzyXrwSnCTTODIbf3L8UyHbuZvt75Re6FlA5tawxihIzz7YNreZwQTumaOoPPmC0ywzG/SkX+xa/L/XF+XJF/dfNwr7BlpjzdqvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrgNoVYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC11C4CEEB;
-	Mon, 18 Aug 2025 13:11:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eCxK3CL/014T6YtRNiN1ZguEu1+ISJA/XDqFe6gWD/f80EHP3HLeyKb56kvbWv3D8B0XIDDW68645foYvoDK/Im8SwG4LorDEGsRiA3U9+42PdF8/sQs60F2Mu4ZPxlhfJK+pYfe8rs47Ljd0guHH0ViSCA+lzXKlI2hHrPpcYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dL7Y9s6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CD6C116D0;
+	Mon, 18 Aug 2025 13:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522671;
-	bh=EQIP4gmv6Igu7VWVChjMvIR0bPWtah+htM0hegIZK54=;
+	s=korg; t=1755524289;
+	bh=tCN8UXOl60H8N1DPuo6VqyaQDA2UtsOfhgXf9oUfovQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrgNoVYzS4FwYf2pbEc7ERdxkzbqbQC6tQRQ3FvBBpOKZ96h7hkSALbFy1k0DchfX
-	 C+HBUYHOh5pVBwsOLZQqPIR013e03aKTmUvrCN9c2krAbXWPMyLPNjXVeWshDoHig4
-	 jm5zAA6AiG1IyUIq2Xwg5mh+rM0XwmdsenD7kNkM=
+	b=dL7Y9s6P49j7WIWWf+bYflzykEq1PDjpYPN3bjhQcflIDR8tvIPG37R0LZv1W3UUU
+	 i/ur5Jar+kHHF3CspuryAz6MZPyYTDLquJtIgFRXxGQHvguoRHyVYRWTxBbZRrByEQ
+	 BuxqOgXapC1U/ZJeecRZ48BPi6W2mm8DK7rNERAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinyu Liu <katieeliu@tencent.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 385/444] usb: core: config: Prevent OOB read in SS endpoint companion parsing
+	Buday Csaba <buday.csaba@prolan.hu>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 425/515] net: phy: smsc: add proper reset flags for LAN8710A
 Date: Mon, 18 Aug 2025 14:46:51 +0200
-Message-ID: <20250818124503.336035316@linuxfoundation.org>
+Message-ID: <20250818124514.783522000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinyu Liu <katieeliu@tencent.com>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-commit cf16f408364efd8a68f39011a3b073c83a03612d upstream.
+[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
 
-usb_parse_ss_endpoint_companion() checks descriptor type before length,
-enabling a potentially odd read outside of the buffer size.
+According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
+reset is required after power-on, and the reference clock (REF_CLK) must be
+established before asserting reset.
 
-Fix this up by checking the size first before looking at any of the
-fields in the descriptor.
-
-Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/phy/smsc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -81,8 +81,14 @@ static void usb_parse_ss_endpoint_compan
- 	 */
- 	desc = (struct usb_ss_ep_comp_descriptor *) buffer;
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index b6489da5cfcd..48487149c225 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -785,6 +785,7 @@ static struct phy_driver smsc_phy_driver[] = {
  
--	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP ||
--			size < USB_DT_SS_EP_COMP_SIZE) {
-+	if (size < USB_DT_SS_EP_COMP_SIZE) {
-+		dev_notice(ddev,
-+			   "invalid SuperSpeed endpoint companion descriptor "
-+			   "of length %d, skipping\n", size);
-+		return;
-+	}
-+
-+	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP) {
- 		dev_notice(ddev, "No SuperSpeed endpoint companion for config %d "
- 				" interface %d altsetting %d ep %d: "
- 				"using minimum values\n",
+ 	/* PHY_BASIC_FEATURES */
+ 
++	.flags		= PHY_RST_AFTER_CLK_EN,
+ 	.probe		= smsc_phy_probe,
+ 
+ 	/* basic functions */
+-- 
+2.39.5
+
 
 
 
