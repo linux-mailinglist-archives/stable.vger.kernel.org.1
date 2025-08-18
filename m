@@ -1,159 +1,132 @@
-Return-Path: <stable+bounces-171657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3B2B2B26C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 22:31:21 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2F4B2B2A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 22:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC3443BE5C1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 20:30:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B98E74E379F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 20:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D25220F3E;
-	Mon, 18 Aug 2025 20:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03D9257AC7;
+	Mon, 18 Aug 2025 20:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CoDPC1pT"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="CYDs611F"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB23E1EDA0E
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 20:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF983451A4;
+	Mon, 18 Aug 2025 20:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755549030; cv=none; b=lSqVj2Uweftffrpdxo7sLmcj44EyRSvQOHcZLPomEJtPTokaj+SvaJI11ptQB65yphFk2A3qzI4ZP2k+vkeK//QVPrPtq02QmCu03zB7QSDh+2HA7G/sp6SJl5YnM++L2c2fCeX0hGLHkwzJQ7F/tuHqk79gT95JjiZ1qv4KWgU=
+	t=1755549742; cv=none; b=AdVo/kaoVC6emSOFhLvrFPeEGD7LTG8MeADuCxlD7DOWzxJU9PXnHskKaHuqqqWJ4jEteMhGACaL52qQ1wtjK7poab8ID0RQx3sRuqMMNdi8XCq/WQj7IYNMWgPxv+1wSf70Coz9FYUcn+zXV77NDROyiYUSYLra1n8Gk5smYgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755549030; c=relaxed/simple;
-	bh=yw/dBMz3R/I0QXjLvJ6S/SxCuFsQHU75DOAW3TM7iG4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqJ2bvp2bvYRI/HiN7y3g8j0PCURoxmbTSLicN8quAkkp2vXLdEaB1MML8ThHvZvfjti96U2+xOfZPQGFDoU7CupWhiRiIq87zyvManCscqG9SEh3v+xSyLcXxIP46/1nZxBtkSxaeaPsB4R/PODYK4GgwpAfbxnBPbhmUQjQ3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CoDPC1pT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF23C4CEEB;
-	Mon, 18 Aug 2025 20:30:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755549029;
-	bh=yw/dBMz3R/I0QXjLvJ6S/SxCuFsQHU75DOAW3TM7iG4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoDPC1pT01q+r1QJlkLLsLPG5+YLqNgMyxq0AtKaMnN9XxLtQNPdIj0s1AXcSWBtG
-	 BRhOKOK3xSd+VBJQ5y2O1Lamt1BnNL5zkHgpiiJOv7wq4ji9+X0i55w4uFggIFRtaW
-	 p1PCjOwDCHX3U7AdR8cHgVWtVtzoTD/yRxTdG7Eh+lTA4WpjPBZ9FYVv93MLMIOgCh
-	 KaMG8hdApg1XbZPCGnW1QSSpaU/KCH9lwOyLdiRuQ9mz8Pd9Vzl0EA+8vrJ+IX6ytq
-	 64BImkeGDH0SVmzgUVMjCJJeYIwz9jiFbLiYL7nLuXaeIPjntuVueVLwdcLjdrGFCL
-	 hR7eJrjx+b3ow==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] usb: typec: fusb302: cache PD RX state
-Date: Mon, 18 Aug 2025 16:30:26 -0400
-Message-ID: <20250818203026.76749-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081832-rental-utter-f3e1@gregkh>
-References: <2025081832-rental-utter-f3e1@gregkh>
+	s=arc-20240116; t=1755549742; c=relaxed/simple;
+	bh=OXxtMVQVk+Z/GYSkhRsFPMgwnbFGXIz2anODCU92sYo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aGy5vcZ4q6epYNKeZuylb75ZVOtC5CJmyKMEoxQEgPMu4aUDz4rUky6VypdhIA9MTo22wYZdqxD+IiPIdm3o2bqagfKWL5ZCboF0YSJwdy3medsvU1c1qu9CxRsI7UOe35JPVcbaIV7NHIT8W2Ij+1/IAQms9YGCxx8bgD1B5lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=CYDs611F; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.1.106] (mob-5-90-52-92.net.vodafone.it [5.90.52.92])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6D397C64;
+	Mon, 18 Aug 2025 22:41:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1755549678;
+	bh=OXxtMVQVk+Z/GYSkhRsFPMgwnbFGXIz2anODCU92sYo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=CYDs611F0srggIAMukGJitClAyvRfxy4q/4QNwZ0h4XMyEfYKvTuzRK/yb/kpEAx7
+	 BeLeslrXFQg/i/dLu2DC4ZBSJ32TnAWEoD0583d6S9wtNqyWZzzMYgfM0QN2EkgBz1
+	 oy1sBU53d2EX7YYrY1Xs/774thl/oTRC4Rm/Hhi0=
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Subject: [PATCH v3 0/2] media: pci: Fix invalid access to file *
+Date: Mon, 18 Aug 2025 22:39:35 +0200
+Message-Id: <20250818-cx18-v4l2-fh-v3-0-5e2f08f3cadc@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIiPo2gC/33MTQ6CMBCG4auQWVvTHyjgynsYF6WdyiRKTWsaD
+ OHuFtbqZpJ3ku9ZIGEkTHCqFoiYKVGYSqhDBXY00w0ZudIguWx4Jzpm53JyfZfMj6xFY7Toe+8
+ cQpk8I3qad+5yLT1SeoX43vUstu8PKAvGmfYoGtVqPlg8k0OTwjQEE93RhgdsXpb/DFkM5Rtls
+ ZZKa/XFWNf1A0BjxjDzAAAA
+X-Change-ID: 20250818-cx18-v4l2-fh-7eaa6199fdde
+To: Andy Walls <awalls@md.metrocast.net>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil+cisco@kernel.org>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1641;
+ i=jacopo.mondi@ideasonboard.com; h=from:subject:message-id;
+ bh=OXxtMVQVk+Z/GYSkhRsFPMgwnbFGXIz2anODCU92sYo=;
+ b=owEBbQKS/ZANAwAKAXI0Bo8WoVY8AcsmYgBoo5AlVqOdpRTiI1zCHhrH7rA3ZmQa/+Zp7BD7f
+ tURcWUg1vCJAjMEAAEKAB0WIQS1xD1IgJogio9YOMByNAaPFqFWPAUCaKOQJQAKCRByNAaPFqFW
+ PGVRD/0es6wI+NkeZOHfoNDLfY5solkVXLMPdfSiZB7ixB1n3Iw8daPfhWgXOh0j/uZhz+azihq
+ W/tv/r57p6xXxYCRk2sng9kQt3zB84BeUjcSLTuqDkL5M802vQAZYwv//NF/0aRkKw5K4mII/Pe
+ fDFMMFDoJPCLhuBAGSbtJzFLJ95h47co7h2c4kN4aDny6eEVmomSodBHmTy8bzCOPrBR2f1r1jl
+ CiC2D8LV1i4wqejAI4l5c0+wTdPByggVye8b4F4bSneRhCKNTB6YzE2y1spTd/ti+X/W1azw4ye
+ W+0kPWA0xh8EONL6GPqXs1+R0ORniOGge0RPhzpQjssHSDGUunYpNzSDaKUwc3YljXh0GfmJ4XS
+ tpARM4UJcn/oPX5YsvkMPaWHDWqUH6mY6yEQU7S+DU8GUWRvPrcq/W/AILkWOQ6P9XV+3j11qTJ
+ dY1FGpRHZmoMYokPIcsZ7ehpaHEPs/BNgA8Le1ahcdmVeaQzvJDH+ewk4TD+Rpg0iRb2yZb+D6r
+ tQcuWL+VrGtmmv7/FNbeJcbQPl7IyhSBaEaZvKtAQ51x2BkGzWObR9K4rr37hkV5QJXKOGkoAZH
+ EFhmA6NLHtg3XnNsWLbwI8D39BU33ElijkvL80odD+z+eJ1RR+5sv812f5gtAHimss1e99Y34kl
+ QYRMOaD2pBLZIWw==
+X-Developer-Key: i=jacopo.mondi@ideasonboard.com; a=openpgp;
+ fpr=72392EDC88144A65C701EA9BA5826A2587AD026B
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+Since commits
+7b9eb53e8591 ("media: cx18: Access v4l2_fh from file")
+9ba9d11544f9 ("media: ivtv: Access v4l2_fh from file")
 
-[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
+All the ioctl handlers access their private data structures
+from file *
 
-This patch fixes a race condition communication error, which ends up in
-PD hard resets when losing the race. Some systems, like the Radxa ROCK
-5B are powered through USB-C without any backup power source and use a
-FUSB302 chip to do the PD negotiation. This means it is quite important
-to avoid hard resets, since that effectively kills the system's
-power-supply.
+The ivtv and cx18 drivers call the ioctl handlers from their
+DVB layer without a valid file *, causing invalid memory access.
 
-I've found the following race condition while debugging unplanned power
-loss during booting the board every now and then:
+The issue has been reported by smatch in
+"[bug report] media: cx18: Access v4l2_fh from file"
 
-1. lots of TCPM/FUSB302/PD initialization stuff
-2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
-3. the remote PD source does not send anything, so TCPM does a SOFT RESET
-4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
-   (tcpm_set_pd_rx is enabled again, even though it is still on)
+Fix this by providing wrappers for the ioctl handlers to be
+used by the DVB layer that do not require a valid file *.
 
-At this point I've seen broken CRC good messages being send by the
-FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
-messages are being lost and things generally going haywire with one of
-the two sides doing a hard reset once a broken CRC good message was send
-to the bus.
-
-I think the system is running into a race condition, that the FIFOs are
-being cleared and/or the automatic good CRC message generation flag is
-being updated while a message is already arriving.
-
-Let's avoid this by caching the PD RX enabled state, as we have already
-processed anything in the FIFOs and are in a good state. As a side
-effect that this also optimizes I2C bus usage :)
-
-As far as I can tell the problem theoretically also exists when TCPM
-enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
-critical for the following reason:
-
-On devices like the ROCK 5B, which are powered through a TCPM backed
-USB-C port, the bootloader must have done some prior PD communication
-(initial communication must happen within 5 seconds after plugging the
-USB-C plug). This means the first time the kernel TCPM state machine
-reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
-actively. On other devices a hard reset simply adds some extra delay and
-things should be good afterwards.
-
-Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 ---
- drivers/usb/typec/tcpm/fusb302.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Changes in v3:
+- Change helpers to accept the type they're going to operate on instead
+  of using the open_id wrapper type as suggested by Laurent
+- Link to v2: https://lore.kernel.org/r/20250818-cx18-v4l2-fh-v2-0-3f53ce423663@ideasonboard.com
 
-diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index 721b2a548084..ded3f6fe8b00 100644
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -103,6 +103,7 @@ struct fusb302_chip {
- 	bool vconn_on;
- 	bool vbus_on;
- 	bool charge_on;
-+	bool pd_rx_on;
- 	bool vbus_present;
- 	enum typec_cc_polarity cc_polarity;
- 	enum typec_cc_status cc1;
-@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 	int ret = 0;
- 
- 	mutex_lock(&chip->lock);
-+	if (chip->pd_rx_on == on) {
-+		fusb302_log(chip, "pd is already %s", str_on_off(on));
-+		goto done;
-+	}
-+
- 	ret = fusb302_pd_rx_flush(chip);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
-@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 			    on ? "on" : "off", ret);
- 		goto done;
- 	}
-+
-+	chip->pd_rx_on = on;
- 	fusb302_log(chip, "pd := %s", on ? "on" : "off");
- done:
- 	mutex_unlock(&chip->lock);
+Changes in v2:
+- Add Cc: stable@vger.kernel.org per-patch
+
+---
+Jacopo Mondi (2):
+      media: cx18: Fix invalid access to file *
+      media: ivtv: Fix invalid access to file *
+
+ drivers/media/pci/cx18/cx18-driver.c |  9 +++------
+ drivers/media/pci/cx18/cx18-ioctl.c  | 30 +++++++++++++++++++-----------
+ drivers/media/pci/cx18/cx18-ioctl.h  |  8 +++++---
+ drivers/media/pci/ivtv/ivtv-driver.c | 11 ++++-------
+ drivers/media/pci/ivtv/ivtv-ioctl.c  | 22 +++++++++++++++++-----
+ drivers/media/pci/ivtv/ivtv-ioctl.h  |  6 ++++--
+ 6 files changed, 52 insertions(+), 34 deletions(-)
+---
+base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
+change-id: 20250818-cx18-v4l2-fh-7eaa6199fdde
+
+Best regards,
 -- 
-2.50.1
+Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
 
