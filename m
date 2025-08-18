@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EECB2A5D7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:31 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF78B2A297
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A755B681265
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0AA374E2E96
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDC2320CDB;
-	Mon, 18 Aug 2025 13:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D32D2C235F;
+	Mon, 18 Aug 2025 12:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2wRIzqv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJAtwb7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1D2320CAB;
-	Mon, 18 Aug 2025 13:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF95D27E074;
+	Mon, 18 Aug 2025 12:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523538; cv=none; b=JI2DNlYYMYWSy7Pb/0uCfXDOZeely0aujA6a1vX5fQ1gho9fz5xEYJHxvsBjVkwbj/ZJJSXSkKyzjJjtmFL8g505dhq6mbujg1dJHO4zwS98pih0khINDjYISnsrUrSrZp2c+T67B8WLtA3gDEUcOD+Oukh+FNEDYJgFbVGGZX8=
+	t=1755521919; cv=none; b=JKEPF5cGOhaxP2/NbBi/Y5M1VWW/gwZxuix6AAvlRKVEWRXkVsJxexk/oq5nvA1U3NHWSS6P81KKCVl3mEwp0TNoG2/wZOR5OqFbg4YulCcIgHyFbB91WTCSDdw8+aRCWHKSbBztzBI8aXSidluMWfqOBYx2GK2LhPp2oGGfLfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523538; c=relaxed/simple;
-	bh=7JK2NLfgKsHBjYNvSBX8zzuSX0DWY4q1ZfxSg/O1GR4=;
+	s=arc-20240116; t=1755521919; c=relaxed/simple;
+	bh=KO4It1dNM823dXG+9zrX+vvIJ1bEps0aJX85X8vI3TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chMxRvOph4zHAK08pE5kAQiY/xCpBRwz1Ft8E6VNZmmjRJqqhB+swIxSUCYgh99RcjR3LKiB56ut7T9dKOZXuztnoWJgVS/Q32c73xnIJ0rjF8MQdtm+EalLzKZ3CDEGzIsAu+rJS11whCE9crQJnSpwXwZ+SZVtdvAIARvH/7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2wRIzqv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F1FC4CEEB;
-	Mon, 18 Aug 2025 13:25:37 +0000 (UTC)
+	 MIME-Version; b=TaEQXIsDobqcJZebWck6ZOryBayt+UUOQBmDeM/m+zTXvN3DoqeZAMV2ALX8MJYHVLCbZvXGsKO0jxjWuCTokxXqjX5Vd33TsrvLWrPrjMixLJMEjF3bnNglTou7MvgrCHjyjQZoitpDEpoXy+j6fPq0/0oDGg/QGJkrwQLnZGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJAtwb7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46098C116C6;
+	Mon, 18 Aug 2025 12:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523537;
-	bh=7JK2NLfgKsHBjYNvSBX8zzuSX0DWY4q1ZfxSg/O1GR4=;
+	s=korg; t=1755521919;
+	bh=KO4It1dNM823dXG+9zrX+vvIJ1bEps0aJX85X8vI3TQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2wRIzqvzvRhrCn36LQphPy1cAHAicH4CEpDQILurdf5pEddv5J2N+ReszSeT/F5q
-	 pEN81QcOv7xE4jpYIAJKITeSYxe6k7FTeAo/c85xl3EP3NkfLBqMFHWleX4wmQ1Yar
-	 Dr1lq/kbSkwU/CxXtlQjipWn0MxLWP7NIR7+49sA=
+	b=JJAtwb7/lHHrDC4nJhcv4CFYHXCppD2d1a6istQlyhzO19wn4ep1jTC6XKrkqLUvP
+	 yqqqDqVdj5UYDZtF5yxYhYCWCLQGFsEfDbpRIfpSQo6hPxVpea9QKD4bMJzJ80v5X0
+	 UvT8EXjkcrn7ons27Fv7zMYXAvmECNXMrUqNy6Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 202/515] net: usb: cdc-ncm: check for filtering capability
+Subject: [PATCH 6.12 162/444] selftests: netfilter: Enable CONFIG_INET_SCTP_DIAG
 Date: Mon, 18 Aug 2025 14:43:08 +0200
-Message-ID: <20250818124506.139000487@linuxfoundation.org>
+Message-ID: <20250818124454.972611789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 61c3e8940f2d8b5bfeaeec4bedc2f3e7d873abb3 ]
+[ Upstream commit ba71a6e58b38aa6f86865d4e18579cb014903692 ]
 
-If the decice does not support filtering, filtering
-must not be used and all packets delivered for the
-upper layers to sort.
+The config snippet specifies CONFIG_SCTP_DIAG. This was never an option.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250717120649.2090929-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Replace CONFIG_SCTP_DIAG with the intended CONFIG_INET_SCTP_DIAG.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/cdc_ncm.c   | 20 ++++++++++++++++----
- include/linux/usb/cdc_ncm.h |  1 +
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/netfilter/config | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 34e82f1e37d9..ea0e5e276cd6 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -892,6 +892,10 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
- 		}
- 	}
- 
-+	if (ctx->func_desc)
-+		ctx->filtering_supported = !!(ctx->func_desc->bmNetworkCapabilities
-+			& USB_CDC_NCM_NCAP_ETH_FILTER);
-+
- 	iface_no = ctx->data->cur_altsetting->desc.bInterfaceNumber;
- 
- 	/* Device-specific flags */
-@@ -1898,6 +1902,14 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
- 	}
- }
- 
-+static void cdc_ncm_update_filter(struct usbnet *dev)
-+{
-+	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
-+
-+	if (ctx->filtering_supported)
-+		usbnet_cdc_update_filter(dev);
-+}
-+
- static const struct driver_info cdc_ncm_info = {
- 	.description = "CDC NCM (NO ZLP)",
- 	.flags = FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET
-@@ -1908,7 +1920,7 @@ static const struct driver_info cdc_ncm_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP  */
-@@ -1922,7 +1934,7 @@ static const struct driver_info cdc_ncm_zlp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP */
-@@ -1964,7 +1976,7 @@ static const struct driver_info wwan_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as wwan_info, but with FLAG_NOARP  */
-@@ -1978,7 +1990,7 @@ static const struct driver_info wwan_noarp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- static const struct usb_device_id cdc_devs[] = {
-diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
-index 2d207cb4837d..4ac082a63173 100644
---- a/include/linux/usb/cdc_ncm.h
-+++ b/include/linux/usb/cdc_ncm.h
-@@ -119,6 +119,7 @@ struct cdc_ncm_ctx {
- 	u32 timer_interval;
- 	u32 max_ndp_size;
- 	u8 is_ndp16;
-+	u8 filtering_supported;
- 	union {
- 		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
- 		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
+diff --git a/tools/testing/selftests/net/netfilter/config b/tools/testing/selftests/net/netfilter/config
+index 43d8b500d391..8cc6036f97dc 100644
+--- a/tools/testing/selftests/net/netfilter/config
++++ b/tools/testing/selftests/net/netfilter/config
+@@ -91,4 +91,4 @@ CONFIG_XFRM_STATISTICS=y
+ CONFIG_NET_PKTGEN=m
+ CONFIG_TUN=m
+ CONFIG_INET_DIAG=m
+-CONFIG_SCTP_DIAG=m
++CONFIG_INET_SCTP_DIAG=m
 -- 
 2.39.5
 
