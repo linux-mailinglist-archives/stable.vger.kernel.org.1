@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FA0B2A410
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1044B2AA26
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BE8F3B9BC6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CF981BA6AFE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2576431E103;
-	Mon, 18 Aug 2025 13:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A849341ABE;
+	Mon, 18 Aug 2025 14:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wm9ZKDYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kiugy0mO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D478731E0FF;
-	Mon, 18 Aug 2025 13:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4911A21CC55;
+	Mon, 18 Aug 2025 14:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522625; cv=none; b=NR2I/KNIEQ9pq0qfzDnXEZS4nMWadm7sigRF7Ukk1daUuRtDOZqCQQno9M2GPcpYryoDuKTamfJp/unw1ITUluCsJFZxBlaJKp9ytUfq8P8hKFRcQymRvqqk6jmW9wv9Ax1sd01K4dYE6SdrsDqKNwyGbkNB2nW6wNUTOn4zMJA=
+	t=1755525964; cv=none; b=srY+YYD/3Fg45FOORQFfxi/FBLtyHgL3Zi4daAirs7/I3zucxQ3DAd7gf6WCkKD2Uck/7y/WjYELqly2whOoXt4s4KkTuXtaE08ViqkGmgK0/XjmF6uyasRsqsO/tClSmqCE3eYLc+QTsswA5XoMTpfhXsFMCfunZhHQatmujoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522625; c=relaxed/simple;
-	bh=5CZnMHRIZ5mK0/cbDMAj1oaIHbnP7y0L6vqo5YGYdSA=;
+	s=arc-20240116; t=1755525964; c=relaxed/simple;
+	bh=s4LQL8lgbnV9lwP3bku6+rAeQR+qfsI7rXVjtcVeGkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7HD7/+g9DP4jlNvZaOA2UCGmC7XuHeJtMmCnBPyQwk6JkR3rpVrotZSRyONl9Y+rzVjLkHuKtWGEbtnw1a7Ck0xGD5vjs2qng5RuXF+fh8f3VJrbMbFWs+PvPAzv7QJPjpmr9WfurCg1z8tJqEuvfvAxUOtI9fHhZljFg1xB+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wm9ZKDYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE073C4CEEB;
-	Mon, 18 Aug 2025 13:10:24 +0000 (UTC)
+	 MIME-Version; b=cPKBowJUaXJ8+szM4AEu9tu7e5isNFOc/5mWoQ0DJHaVnVxe/sLgQwIrmU+2ekDDvzSDuK+CvjTZO9IgD+TRUxqMTtcN77jpTC6fg5hhOKhODMGpIzZ9iN0lS5etDEcJlHUX12p3tFvi1n3yEoqYE6u69tHHSo/h3vhPijVd6GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kiugy0mO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FA4C113D0;
+	Mon, 18 Aug 2025 14:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522625;
-	bh=5CZnMHRIZ5mK0/cbDMAj1oaIHbnP7y0L6vqo5YGYdSA=;
+	s=korg; t=1755525964;
+	bh=s4LQL8lgbnV9lwP3bku6+rAeQR+qfsI7rXVjtcVeGkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wm9ZKDYcCMZWdbSMA+ytOq3gqMI/qcwNST2AfcGu46ZYJuMQ2qr/+0hruIc8RFhvX
-	 TkY91cbtaw7lfGIfcfncXZepmPCWVAgHd1Zj0n1h4PLg/Dc2zIYsczOOA1NQZs8PsI
-	 WSJ/kUUZBgOeaMNICX43jcFPfz5cX8e88FNA9NAg=
+	b=Kiugy0mOnZRl9L8Ie+kQKvzxzkaX3jPClzW28jDvH7XArJ0qXVIOoZA/yES5AzKg9
+	 JCZcREoQp3KI0QcJSzFNp0oTph8ngE3e0PpOV3bX0UQQy+esARluebxdQ/e8cU7ui+
+	 c12c/6+i+VyJ+2i3OQmAa4XwV+0YsK8fCGbDHFDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Xiao <Jack.Xiao@amd.com>,
-	Likun Gao <Likun.Gao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 372/444] drm/amdgpu: fix incorrect vm flags to map bo
+Subject: [PATCH 6.16 411/570] media: usb: hdpvr: disable zero-length read messages
 Date: Mon, 18 Aug 2025 14:46:38 +0200
-Message-ID: <20250818124502.842948106@linuxfoundation.org>
+Message-ID: <20250818124521.679636046@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 040bc6d0e0e9c814c9c663f6f1544ebaff6824a8 ]
+[ Upstream commit b5ae5a79825ba8037b0be3ef677a24de8c063abf ]
 
-It should use vm flags instead of pte flags
-to specify bo vm attributes.
+This driver passes the length of an i2c_msg directly to
+usb_control_msg(). If the message is now a read and of length 0, it
+violates the USB protocol and a warning will be printed. Enable the
+I2C_AQ_NO_ZERO_LEN_READ quirk for this adapter thus forbidding 0-length
+read messages altogether.
 
-Fixes: 7946340fa389 ("drm/amdgpu: Move csa related code to separate file")
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Reviewed-by: Likun Gao <Likun.Gao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b08425fa77ad2f305fe57a33dceb456be03b653f)
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/hdpvr/hdpvr-i2c.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-index 02138aa55793..dfb6cfd83760 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -88,8 +88,8 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- 	}
+diff --git a/drivers/media/usb/hdpvr/hdpvr-i2c.c b/drivers/media/usb/hdpvr/hdpvr-i2c.c
+index 070559b01b01..54956a8ff15e 100644
+--- a/drivers/media/usb/hdpvr/hdpvr-i2c.c
++++ b/drivers/media/usb/hdpvr/hdpvr-i2c.c
+@@ -165,10 +165,16 @@ static const struct i2c_algorithm hdpvr_algo = {
+ 	.functionality = hdpvr_functionality,
+ };
  
- 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
--			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
--			     AMDGPU_PTE_EXECUTABLE);
-+			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
-+			     AMDGPU_VM_PAGE_EXECUTABLE);
++/* prevent invalid 0-length usb_control_msg */
++static const struct i2c_adapter_quirks hdpvr_quirks = {
++	.flags = I2C_AQ_NO_ZERO_LEN_READ,
++};
++
+ static const struct i2c_adapter hdpvr_i2c_adapter_template = {
+ 	.name   = "Hauppauge HD PVR I2C",
+ 	.owner  = THIS_MODULE,
+ 	.algo   = &hdpvr_algo,
++	.quirks = &hdpvr_quirks,
+ };
  
- 	if (r) {
- 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
+ static int hdpvr_activate_ir(struct hdpvr_device *dev)
 -- 
-2.50.1
+2.39.5
 
 
 
