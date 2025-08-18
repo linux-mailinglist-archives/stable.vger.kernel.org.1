@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A59B2A6C4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0698B2A239
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1A6194E3A69
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A61F4E2058
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A2931B100;
-	Mon, 18 Aug 2025 13:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF1D31CA72;
+	Mon, 18 Aug 2025 12:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hu3xDs5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rxu2DCUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8729722AE7A;
-	Mon, 18 Aug 2025 13:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE84E30DD0F;
+	Mon, 18 Aug 2025 12:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524745; cv=none; b=jnUPRswwHwnDeBY7VM85h4Bwk3v12DcFNwgrwyLa50RHUZPHw9vGhhkKtEMIg3LErzT8zrN/GIS15mmp0K56ABl3VddWmYH3X9dwrJONwDB4Mpd8JFz2Y8Rt5IqNcV4hyUq6NUYhERkgAmqPapQJ3jka5/Zl4P3eMyBTH2QLi2M=
+	t=1755521518; cv=none; b=czIFyXclOQUcOHO/Ny0m/nj9oPnHITDF9IvrkZJDKo8xX09L+QGHK9fmCvYFhpI25Qcyyo0KDpOcrwmj4w2PFXvc8MOndcg5NqWZkVEv7lB3J8qu8kysyrpB+w1s+8+1SWYfgj6rCRqdiZrOP+c5S+02xdBH6KpBCa3IZKmciP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524745; c=relaxed/simple;
-	bh=I5HNoZ27SVtyZB9FQ1tmtqtvEKE3Nf5gG5cPpfhqBII=;
+	s=arc-20240116; t=1755521518; c=relaxed/simple;
+	bh=PhIudanTI2HEb+QZGxqgqnPabmiKRS4T7eAlCZktXdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGbNU7cnsWoM2V9CtxiON/N9zGXoWb/j1j/NomWPlEsMFCiOtW+f/CTtMrBo9NU8EwzJIoJQSw/x1JRlCO7/bOTsMLJNVKkirGuGCJcfxq4vK3TLnPW4ryKpIjVILk8yb2X22IhhNh/BPweFM/FS3PqkxG6yyz1P8U8F2lMFfDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hu3xDs5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF134C4CEEB;
-	Mon, 18 Aug 2025 13:45:44 +0000 (UTC)
+	 MIME-Version; b=Fq9ODo5q2AU1dBjvA1WJ5gsiEtXAijtUCoey0Y89Q0q0czlWIg5V09lkCZxegPG1bzT5L+StrAt+8EE+C4s6+ki+jC8pRNryOGvbNiLyADsPku8KYtgKax6w07IWEYKD7Wl1IqdiKhciftD/a34QOUeV1lRKjerZH7lcY/W1HYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rxu2DCUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3575BC4CEEB;
+	Mon, 18 Aug 2025 12:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524745;
-	bh=I5HNoZ27SVtyZB9FQ1tmtqtvEKE3Nf5gG5cPpfhqBII=;
+	s=korg; t=1755521518;
+	bh=PhIudanTI2HEb+QZGxqgqnPabmiKRS4T7eAlCZktXdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hu3xDs5mTtZDsLCMeUBnEuGMDpgwEcY/3HowGwDx5tJxOkJ3g2gZVfwtMbYZ911a4
-	 F22Gi0Zkuouzc21+1lBNQU1AjpjxRzunv+JU9wfeKIpWaIVMvGFErBqur8g+XagQ5/
-	 NrOQBfHh65X3Ga2bm4hbG+kRpUBxKa/b9QHOw5PA=
+	b=Rxu2DCUsvZEW09vO6uFUkjA1HG9nVMaK1Ak1/SABQiMpYOhnpv3/LFd3/ncvx55wR
+	 yZK86FkOZbhfKyc/gX7TV8EHLx4VEjbn/WpW01JuKTSnynUvQcEQ9BSTpY02bdgLZT
+	 tgFKJnAvKUaINTGTh1Bf2rVXBJFEj/YAoRMA73qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
+	David Thompson <davthompson@nvidia.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.16 049/570] Documentation: ACPI: Fix parent device references
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.12 010/444] Revert "gpio: mlxbf3: only get IRQ for device instance 0"
 Date: Mon, 18 Aug 2025 14:40:36 +0200
-Message-ID: <20250818124507.702328644@linuxfoundation.org>
+Message-ID: <20250818124449.290819962@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: David Thompson <davthompson@nvidia.com>
 
-commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
+commit 56bdf7270ff4f870e2d4bfacdc00161e766dba2d upstream.
 
-The _CRS resources in many cases want to have ResourceSource field
-to be a type of ACPI String. This means that to compile properly
-we need to enclosure the name path into double quotes. This will
-in practice defer the interpretation to a run-time stage, However,
-this may be interpreted differently on different OSes and ACPI
-interpreter implementations. In particular ACPICA might not correctly
-recognize the leading '^' (caret) character and will not resolve
-the relative name path properly. On top of that, this piece may be
-used in SSDTs which are loaded after the DSDT and on itself may also
-not resolve relative name paths outside of their own scopes.
-With this all said, fix documentation to use fully-qualified name
-paths always to avoid any misinterpretations, which is proven to
-work.
+This reverts commit 10af0273a35ab4513ca1546644b8c853044da134.
 
-Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
-Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+While this change was merged, it is not the preferred solution.
+During review of a similar change to the gpio-mlxbf2 driver, the
+use of "platform_get_irq_optional" was identified as the preferred
+solution, so let's use it for gpio-mlxbf3 driver as well.
+
+Cc: stable@vger.kernel.org
+Fixes: 10af0273a35a ("gpio: mlxbf3: only get IRQ for device instance 0")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/8d2b630c71b3742f2c74242cf7d602706a6108e6.1754928650.git.davthompson@nvidia.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-mlxbf3.c |   54 +++++++++++++++------------------------------
+ 1 file changed, 19 insertions(+), 35 deletions(-)
 
---- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
-+++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
-@@ -14,7 +14,7 @@ Consider this topology::
-     |      |   | 0x70 |--CH01--> i2c client B (0x50)
-     +------+   +------+
+--- a/drivers/gpio/gpio-mlxbf3.c
++++ b/drivers/gpio/gpio-mlxbf3.c
+@@ -190,9 +190,7 @@ static int mlxbf3_gpio_probe(struct plat
+ 	struct mlxbf3_gpio_context *gs;
+ 	struct gpio_irq_chip *girq;
+ 	struct gpio_chip *gc;
+-	char *colon_ptr;
+ 	int ret, irq;
+-	long num;
  
--which corresponds to the following ASL::
-+which corresponds to the following ASL (in the scope of \_SB)::
+ 	gs = devm_kzalloc(dev, sizeof(*gs), GFP_KERNEL);
+ 	if (!gs)
+@@ -229,39 +227,25 @@ static int mlxbf3_gpio_probe(struct plat
+ 	gc->owner = THIS_MODULE;
+ 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
  
-     Device (SMB1)
-     {
-@@ -24,7 +24,7 @@ which corresponds to the following ASL::
-             Name (_HID, ...)
-             Name (_CRS, ResourceTemplate () {
-                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
--                            AddressingMode7Bit, "^SMB1", 0x00,
-+                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
-                             ResourceConsumer,,)
-             }
+-	colon_ptr = strchr(dev_name(dev), ':');
+-	if (!colon_ptr) {
+-		dev_err(dev, "invalid device name format\n");
+-		return -EINVAL;
+-	}
+-
+-	ret = kstrtol(++colon_ptr, 16, &num);
+-	if (ret) {
+-		dev_err(dev, "invalid device instance\n");
+-		return ret;
+-	}
+-
+-	if (!num) {
+-		irq = platform_get_irq(pdev, 0);
+-		if (irq >= 0) {
+-			girq = &gs->gc.irq;
+-			gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
+-			girq->default_type = IRQ_TYPE_NONE;
+-			/* This will let us handle the parent IRQ in the driver */
+-			girq->num_parents = 0;
+-			girq->parents = NULL;
+-			girq->parent_handler = NULL;
+-			girq->handler = handle_bad_irq;
+-
+-			/*
+-			 * Directly request the irq here instead of passing
+-			 * a flow-handler because the irq is shared.
+-			 */
+-			ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
+-					       IRQF_SHARED, dev_name(dev), gs);
+-			if (ret)
+-				return dev_err_probe(dev, ret, "failed to request IRQ");
+-		}
++	irq = platform_get_irq(pdev, 0);
++	if (irq >= 0) {
++		girq = &gs->gc.irq;
++		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
++		girq->default_type = IRQ_TYPE_NONE;
++		/* This will let us handle the parent IRQ in the driver */
++		girq->num_parents = 0;
++		girq->parents = NULL;
++		girq->parent_handler = NULL;
++		girq->handler = handle_bad_irq;
++
++		/*
++		 * Directly request the irq here instead of passing
++		 * a flow-handler because the irq is shared.
++		 */
++		ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
++				       IRQF_SHARED, dev_name(dev), gs);
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to request IRQ");
+ 	}
  
-@@ -37,7 +37,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH00", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
-@@ -52,7 +52,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH01", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
+ 	platform_set_drvdata(pdev, gs);
 
 
 
