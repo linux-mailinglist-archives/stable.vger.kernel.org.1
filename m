@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-171047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870F1B2A79E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A85A0B2A4B9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECB1862592B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1253F681886
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498CE216E23;
-	Mon, 18 Aug 2025 13:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F87532255D;
+	Mon, 18 Aug 2025 13:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEgENcTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXGyij0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F7C2C235C;
-	Mon, 18 Aug 2025 13:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B8B32253D;
+	Mon, 18 Aug 2025 13:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524644; cv=none; b=cYSJZoNmm3JC24ypRm0XlAOSb068MA2a5LW7IXNitnPlZdHbcZEdfqZNS1UFHk2uoOzQ8WsdrvdPE1WfRiVZYQGvUiyRRnk7du4dNuSIkp4T0eymBzjI/L5+CdGuWiwoV1f8ZrR/JVhNsjID5kEKf2cAiNSJdtEhU4EVEbsKNdc=
+	t=1755522934; cv=none; b=r1waPqZ8HWgvd529mAEt/+glm+aSjTqROOYVuNWwysEZP7uBa51GOXv9WW+HzgXY5vvnIsVvnWQskbKR++FB+lSTvbyRj8xR606e4HUj5GaoG+5Dd3EwY2xPRhduGJ8ynF16AJmb0G5c/PkqAv07uT9f+saj7OoF3b1SSribS/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524644; c=relaxed/simple;
-	bh=JDbW1xYnynbXiHlabYc0lJqHwJTe+41JyXUyK6lAMVs=;
+	s=arc-20240116; t=1755522934; c=relaxed/simple;
+	bh=tAriAgQqG1yfrYTs6DPRZ3tWoM4k6J53T1kTyq2W3Do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtR2dI5D+ZZLvjqeC3nhaqdemqgxdkNm8bbSxpajjsy5SR51SIVzNSBHy5923rhoG97nTNAqpiBBXRTGCXfiqtyBYxPQqlSHUBsbbri/PsLdWuOwR+JlUxAzgkhfECcSCVAkyqcpGiN7t4OQOOMTtZLmRucWmSMXdk5286EVs50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEgENcTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D190C113D0;
-	Mon, 18 Aug 2025 13:44:03 +0000 (UTC)
+	 MIME-Version; b=KRUwWLGSU5foXXjBf8x8g0GNWvNronHc2dBPTd40bwy4PD/cxLfjZOylnj8kioWYrHgZrkZDGUiFv2PYYtFusE/VeaPsfFuoFvJkNY3PmYkcVkonqwlvWG0PHtbhMwvmSTwbKActksuK+YjeEEAChUI3+M7TYTkXx2HVftNjFbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXGyij0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9B4C113D0;
+	Mon, 18 Aug 2025 13:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524643;
-	bh=JDbW1xYnynbXiHlabYc0lJqHwJTe+41JyXUyK6lAMVs=;
+	s=korg; t=1755522933;
+	bh=tAriAgQqG1yfrYTs6DPRZ3tWoM4k6J53T1kTyq2W3Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEgENcTbGtE3J/xms8uTml9jguQFIT6BkkEeF6jk+hepL/vUekD4MI7/vH3D4Y/0j
-	 WG/K/3ywIDRLBCQre1TBYci5lH6zMaIZbH5uwVmNt/zZQZ/YrpxVBOb+OiM6R775wl
-	 tbUUP9/aIagfCauGdN2aNjQ7TrBcw1jEhNO4gOL4=
+	b=CXGyij0JtsfVj1ircG6+vBDY3/P20WJ4MGPOV3UsyQGoRo79gFlY5VBdsqQVyydKv
+	 UTWRYS56zpczUm06QufTPj/oAX7z4MiNNT8umuNLEfiXCd3VZPCoWj3LhZ16/ZEhAn
+	 phSyJFu3fx+013redmqWRx9MMv0rLG/3yn2EhNsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Fenglin Wu <fenglin.wu@oss.qualcomm.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.16 019/570] leds: flash: leds-qcom-flash: Fix registry access after re-bind
+	Florian Larysch <fl@n621.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 020/515] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
 Date: Mon, 18 Aug 2025 14:40:06 +0200
-Message-ID: <20250818124506.539606224@linuxfoundation.org>
+Message-ID: <20250818124459.248057180@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Florian Larysch <fl@n621.de>
 
-commit fab15f57360b1e6620a1d0d6b0fbee896e6c1f07 upstream.
+commit 49db61c27c4bbd24364086dc0892bd3e14c1502e upstream.
 
-Driver in probe() updates each of 'reg_field' with 'reg_base':
+Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
+phy") introduced cable_test support for the LAN8814 that reuses parts of
+the KSZ886x logic and introduced the cable_diag_reg and pair_mask
+parameters to account for differences between those chips.
 
-	for (i = 0; i < REG_MAX_COUNT; i++)
-		regs[i].reg += reg_base;
+However, it did not update the ksz8081_type struct, so those members are
+now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
+and ksz886x_cable_test_wait_for_completion to poll the wrong register
+for the affected PHYs (Basic Control/Reset, which is 0 in normal
+operation) and exit immediately.
 
-'reg_field' array (under variable 'regs' above) is statically allocated,
-thus each re-bind would add another 'reg_base' leading to bogus
-register addresses.  Constify the local 'reg_field' array and duplicate
-it in probe to solve this.
+Fix this by setting both struct members accordingly.
 
-Fixes: 96a2e242a5dc ("leds: flash: Add driver to support flash LED module in QCOM PMICs")
+Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Fenglin Wu <fenglin.wu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250529063335.8785-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Florian Larysch <fl@n621.de>
+Link: https://patch.msgid.link/20250723222250.13960-1-fl@n621.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/flash/leds-qcom-flash.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/phy/micrel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/leds/flash/leds-qcom-flash.c
-+++ b/drivers/leds/flash/leds-qcom-flash.c
-@@ -117,7 +117,7 @@ enum {
- 	REG_MAX_COUNT,
- };
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -472,6 +472,8 @@ static const struct kszphy_type ksz8051_
  
--static struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_3ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x08, 0, 7),			/* status1	*/
- 	REG_FIELD(0x09, 0, 7),                  /* status2	*/
- 	REG_FIELD(0x0a, 0, 7),                  /* status3	*/
-@@ -132,7 +132,7 @@ static struct reg_field mvflash_3ch_regs
- 	REG_FIELD(0x58, 0, 2),			/* therm_thrsh3 */
- };
- 
--static struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
-+static const struct reg_field mvflash_4ch_regs[REG_MAX_COUNT] = {
- 	REG_FIELD(0x06, 0, 7),			/* status1	*/
- 	REG_FIELD(0x07, 0, 6),			/* status2	*/
- 	REG_FIELD(0x09, 0, 7),			/* status3	*/
-@@ -854,11 +854,17 @@ static int qcom_flash_led_probe(struct p
- 	if (val == FLASH_SUBTYPE_3CH_PM8150_VAL || val == FLASH_SUBTYPE_3CH_PMI8998_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_3CH;
- 		flash_data->max_channels = 3;
--		regs = mvflash_3ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_3ch_regs, sizeof(mvflash_3ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
- 	} else if (val == FLASH_SUBTYPE_4CH_VAL) {
- 		flash_data->hw_type = QCOM_MVFLASH_4CH;
- 		flash_data->max_channels = 4;
--		regs = mvflash_4ch_regs;
-+		regs = devm_kmemdup(dev, mvflash_4ch_regs, sizeof(mvflash_4ch_regs),
-+				    GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
- 
- 		rc = regmap_read(regmap, reg_base + FLASH_REVISION_REG, &val);
- 		if (rc < 0) {
-@@ -880,6 +886,7 @@ static int qcom_flash_led_probe(struct p
- 		dev_err(dev, "Failed to allocate regmap field, rc=%d\n", rc);
- 		return rc;
- 	}
-+	devm_kfree(dev, regs); /* devm_regmap_field_bulk_alloc() makes copies */
- 
- 	platform_set_drvdata(pdev, flash_data);
- 	mutex_init(&flash_data->lock);
+ static const struct kszphy_type ksz8081_type = {
+ 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
++	.cable_diag_reg		= KSZ8081_LMD,
++	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
+ 	.has_broadcast_disable	= true,
+ 	.has_nand_tree_disable	= true,
+ 	.has_rmii_ref_clk_sel	= true,
 
 
 
