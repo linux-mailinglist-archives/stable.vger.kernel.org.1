@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3102B2AA08
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A5DB2A6D6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690301BA1D91
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 301C858396C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1D3322C7F;
-	Mon, 18 Aug 2025 14:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA45322DA7;
+	Mon, 18 Aug 2025 13:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+hnSdOp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O70VMw53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084E23203AD;
-	Mon, 18 Aug 2025 14:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2C5322776;
+	Mon, 18 Aug 2025 13:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525931; cv=none; b=jCEF55oh1ldg1IPjwPADwtqbevV6KxNlVpL0Mhcz6DyLcU2JM0uo+7l0bJ+KqaCIyCCZ3UUpwtWbjxU063erdjUMP4cW/qykU3MnUGLCMRl+xdSiJDCj4ti/OZNIGrcZfqsz1HxFzqalx805OKm29RoY0ZDM2JBf0QZHRc4wq3M=
+	t=1755524229; cv=none; b=ClQKREnWi3AUW1Y3ytyxYdIb1I2mjnkn+4GfI8kYWPreY3ENtBxOzOdHvsHhakE/9p+cv9l7YwHkrKZ53QKFJgAJ7nWWpFKEOUvvJd7+u8uaQFhNYm4z+u7G4zwfOdLCeSmboPueL0i34lMcVuuQIlnKXf514ihDvXbMV7E5AV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525931; c=relaxed/simple;
-	bh=Xf+6kIWTCESetOdvUxKvLz48M5D0Sb3EJ2TFL9k5Tv0=;
+	s=arc-20240116; t=1755524229; c=relaxed/simple;
+	bh=cNKTASlWc1g1MYoOp7/ofXy0STBCNcvlXenzeZjy60I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tgmdlGb4vJ6pLTk7MPecbHH/pX7yyL0dAXmFUPcfXXG4QBIXbGLI99U9fR7I5GcIiq14f/T6DwmzZMj0PFaSCJTDV7JyLORW3F2oDWincntLpUdtrCbWO/qT4G4AaNgVXu//Q3b3lzxT/hVUvz0J9/Rcj4cYygTuUuEbSvGzOi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+hnSdOp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BE4C4CEF1;
-	Mon, 18 Aug 2025 14:05:30 +0000 (UTC)
+	 MIME-Version; b=UkfS8S9gnyFZBgMljD8bCai1O3+QGzhtBqpfpqiwnFfE00U/2kRNFqepkteAz1XPs0OnZM8O7hC1Vg5gsQkID+1kawZsSrkc0I0yhY2DnsfbaeGLXF3b/2XtOJWloR7EShly5mBBWKOgiUPqCtpyHUYTcyqZoo3BgvHZksdlahg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O70VMw53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE5FC4CEEB;
+	Mon, 18 Aug 2025 13:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525930;
-	bh=Xf+6kIWTCESetOdvUxKvLz48M5D0Sb3EJ2TFL9k5Tv0=;
+	s=korg; t=1755524229;
+	bh=cNKTASlWc1g1MYoOp7/ofXy0STBCNcvlXenzeZjy60I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+hnSdOplY+D7QIl/9TwBVeTLzfu9V4gYPMJUeQG07ZLTo20R+dz67wfYtFzH6fCh
-	 rQ/KN88pg4L32RdiW2w1lMnkCLFXRsqQ2403YxUg9ht2WWnQ8CAKRKxeLnYjtLT1Zl
-	 lfTfdceEFzYq2gW9zJt98l+l/qVXbD7LpIWVCWuc=
+	b=O70VMw538Yo4skEgVTtGRDjj0A08qVUws3WFufQs+DHQP6ZmFi/wNUG4PNZqWnH8V
+	 N0epSNsAi010LzebGSlfdNQyRQisd4RI2Zv9DjZ5naFQBlhDxMPjqognOJaR73N8ea
+	 DW5xxAJTaCJhlrE3QIPr5vHPl2xxveQBlO0SFqTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 407/570] media: raspberrypi: cfe: Fix min_reqbufs_allocation
+Subject: [PATCH 6.15 408/515] scsi: Fix sas_user_scan() to handle wildcard and multi-channel scans
 Date: Mon, 18 Aug 2025 14:46:34 +0200
-Message-ID: <20250818124521.528355462@linuxfoundation.org>
+Message-ID: <20250818124514.120633624@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 57b5a302b5d529db96ddc52fbccec005092ebb3d ]
+[ Upstream commit 37c4e72b0651e7697eb338cd1fb09feef472cc1a ]
 
-The driver checks if "vq->max_num_buffers + *nbuffers < 3", but
-vq->max_num_buffers is (by default) 32, so the check is never true. Nor
-does the check make sense.
+sas_user_scan() did not fully process wildcard channel scans
+(SCAN_WILD_CARD) when a transport-specific user_scan() callback was
+present. Only channel 0 would be scanned via user_scan(), while the
+remaining channels were skipped, potentially missing devices.
 
-The original code in the BSP kernel was "vq->num_buffers + *nbuffers <
-3", but got mangled along the way to upstream. The intention was to make
-sure that at least 3 buffers are allocated.
+user_scan() invokes updated sas_user_scan() for channel 0, and if
+successful, iteratively scans remaining channels (1 to
+shost->max_channel) via scsi_scan_host_selected().  This ensures complete
+wildcard scanning without affecting transport-specific scanning behavior.
 
-Fix this by removing the bad lines and setting q->min_reqbufs_allocation
-to three.
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250624061649.17990-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/raspberrypi/rp1-cfe/cfe.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/scsi/scsi_scan.c          |  2 +-
+ drivers/scsi/scsi_transport_sas.c | 60 ++++++++++++++++++++++++-------
+ 2 files changed, 49 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
-index fcadb2143c88..62dca76b468d 100644
---- a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
-+++ b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
-@@ -1024,9 +1024,6 @@ static int cfe_queue_setup(struct vb2_queue *vq, unsigned int *nbuffers,
- 	cfe_dbg(cfe, "%s: [%s] type:%u\n", __func__, node_desc[node->id].name,
- 		node->buffer_queue.type);
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index 4833b8fe251b..396fcf194b6b 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1899,7 +1899,7 @@ int scsi_scan_host_selected(struct Scsi_Host *shost, unsigned int channel,
  
--	if (vq->max_num_buffers + *nbuffers < 3)
--		*nbuffers = 3 - vq->max_num_buffers;
+ 	return 0;
+ }
 -
- 	if (*nplanes) {
- 		if (sizes[0] < size) {
- 			cfe_err(cfe, "sizes[0] %i < size %u\n", sizes[0], size);
-@@ -1998,6 +1995,7 @@ static int cfe_register_node(struct cfe_device *cfe, int id)
- 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
- 	q->lock = &node->lock;
- 	q->min_queued_buffers = 1;
-+	q->min_reqbufs_allocation = 3;
- 	q->dev = &cfe->pdev->dev;
++EXPORT_SYMBOL(scsi_scan_host_selected);
+ static void scsi_sysfs_add_devices(struct Scsi_Host *shost)
+ {
+ 	struct scsi_device *sdev;
+diff --git a/drivers/scsi/scsi_transport_sas.c b/drivers/scsi/scsi_transport_sas.c
+index 351b028ef893..d69c7c444a31 100644
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -40,6 +40,8 @@
+ #include <scsi/scsi_transport_sas.h>
  
- 	ret = vb2_queue_init(q);
+ #include "scsi_sas_internal.h"
++#include "scsi_priv.h"
++
+ struct sas_host_attrs {
+ 	struct list_head rphy_list;
+ 	struct mutex lock;
+@@ -1683,32 +1685,66 @@ int scsi_is_sas_rphy(const struct device *dev)
+ }
+ EXPORT_SYMBOL(scsi_is_sas_rphy);
+ 
+-
+-/*
+- * SCSI scan helper
+- */
+-
+-static int sas_user_scan(struct Scsi_Host *shost, uint channel,
+-		uint id, u64 lun)
++static void scan_channel_zero(struct Scsi_Host *shost, uint id, u64 lun)
+ {
+ 	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
+ 	struct sas_rphy *rphy;
+ 
+-	mutex_lock(&sas_host->lock);
+ 	list_for_each_entry(rphy, &sas_host->rphy_list, list) {
+ 		if (rphy->identify.device_type != SAS_END_DEVICE ||
+ 		    rphy->scsi_target_id == -1)
+ 			continue;
+ 
+-		if ((channel == SCAN_WILD_CARD || channel == 0) &&
+-		    (id == SCAN_WILD_CARD || id == rphy->scsi_target_id)) {
++		if (id == SCAN_WILD_CARD || id == rphy->scsi_target_id) {
+ 			scsi_scan_target(&rphy->dev, 0, rphy->scsi_target_id,
+ 					 lun, SCSI_SCAN_MANUAL);
+ 		}
+ 	}
+-	mutex_unlock(&sas_host->lock);
++}
+ 
+-	return 0;
++/*
++ * SCSI scan helper
++ */
++
++static int sas_user_scan(struct Scsi_Host *shost, uint channel,
++		uint id, u64 lun)
++{
++	struct sas_host_attrs *sas_host = to_sas_host_attrs(shost);
++	int res = 0;
++	int i;
++
++	switch (channel) {
++	case 0:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++		break;
++
++	case SCAN_WILD_CARD:
++		mutex_lock(&sas_host->lock);
++		scan_channel_zero(shost, id, lun);
++		mutex_unlock(&sas_host->lock);
++
++		for (i = 1; i <= shost->max_channel; i++) {
++			res = scsi_scan_host_selected(shost, i, id, lun,
++						      SCSI_SCAN_MANUAL);
++			if (res)
++				goto exit_scan;
++		}
++		break;
++
++	default:
++		if (channel < shost->max_channel) {
++			res = scsi_scan_host_selected(shost, channel, id, lun,
++						      SCSI_SCAN_MANUAL);
++		} else {
++			res = -EINVAL;
++		}
++		break;
++	}
++
++exit_scan:
++	return res;
+ }
+ 
+ 
 -- 
 2.39.5
 
