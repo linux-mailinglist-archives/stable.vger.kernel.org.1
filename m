@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-170119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35F1B2A2D9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03EA1B2A847
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05F9156324F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D231B68127
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492AE321425;
-	Mon, 18 Aug 2025 12:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFC81E86E;
+	Mon, 18 Aug 2025 13:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzgDaSQu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OazPkfxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C8A320CDC;
-	Mon, 18 Aug 2025 12:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4856F335BBF;
+	Mon, 18 Aug 2025 13:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521578; cv=none; b=RK5HjO+Vf0KbC37X/bFLFGLYF/36FjkXdSdrD6Cpa214CNCFf0/29zRqFZRiZCnSIuFVEowUBDHjQ2F1DYx1Am0l7mfMqRM9R1/liubRwWZ0gVbF04+dqQdLdbvVgJIbWnKTnHRk5fSQAJckm0PNDNuHFT/AoHaLohSsvMf/00g=
+	t=1755525018; cv=none; b=eQm6Pc9l9hjZr5Eo80H+yiDuVBOQ7XIKsI66MvYsGW+STJh/POTLlE5K2KtT+BMgrKi33tXgEU49qlLAALdgrhbZ/w2h9INKEFEgzlTG+jMrSXThSsPBdQbmQod4PuCsp/icUh4uklySQg6FEC63QOu+FSxvFANT/46tN0Opht4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521578; c=relaxed/simple;
-	bh=mmkhaYHooSYDTQVK0SUjell5/OCZePKI0dxuCS4BM7A=;
+	s=arc-20240116; t=1755525018; c=relaxed/simple;
+	bh=ykJA7gqkuM67f6ZdJIwTgaoPZOj/GBAfR/hALw+DiP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKXJyFdjHKZeGZ+ForJ3OUSXFjpcx114mZ4wVZHv25XE26qJwOG2FKOmaiPN/gZB/PaJl0ggQDnFEIXl9LEv+nfMoLJIKHal1AyclR+quLZC6sjXTzf6oHiHQU5jDImVN6izB3+vTR5dA5ZdTK67Yi7d2ZOMt4AELbosVg1+rMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzgDaSQu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3227EC4CEEB;
-	Mon, 18 Aug 2025 12:52:56 +0000 (UTC)
+	 MIME-Version; b=OykFSlO98oBNr9+VchkpbcJrCgZ5n4euRM4L5/uDfsNRHyXhdB6MrK9rD+MfbBbnFqiU6FEOhnBqwg4Y6PUTHZTEGoXzfJbwzsVcA4uC+TDPQwawN+Vy07UxQojfQvrcLsGkZGmyDZRkRL0M2hVuoAH1sAnsCl0pj6Ov61UTeyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OazPkfxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEDFC4CEEB;
+	Mon, 18 Aug 2025 13:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521577;
-	bh=mmkhaYHooSYDTQVK0SUjell5/OCZePKI0dxuCS4BM7A=;
+	s=korg; t=1755525018;
+	bh=ykJA7gqkuM67f6ZdJIwTgaoPZOj/GBAfR/hALw+DiP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzgDaSQu2b7DpMuSAVYy67IS/2dsD0A4L7hTrbcoX7CyH7RKBtBCGgrSNu4OE/9OK
-	 40Gw/y7byPw2goz4USIJoFa1/fd9lYMOQfSKBeQ6hW6lNbPshXN/cSu7St3lout+F+
-	 qSGc4PG5NcCP8bYIAbDbrOGunefZwYNq4CftRybM=
+	b=OazPkfxn/pkLOTSUEdddQMTZ0WC8/EoClQyPafM9fdZ9vUvsz/ypl0Z0We24wV8nC
+	 UjWMk4rRURVfifygNzOJxmht2S/LsrtLP74ycOrdn5vmSVySrBd2TSr1CSHeX/eUnm
+	 qm15UE2BhxqnJCTJfv3o++9coti2h0G2gqzA2OPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/444] tls: handle data disappearing from under the TLS ULP
-Date: Mon, 18 Aug 2025 14:41:28 +0200
-Message-ID: <20250818124451.271497033@linuxfoundation.org>
+Subject: [PATCH 6.16 102/570] md/raid10: set chunk_sectors limit
+Date: Mon, 18 Aug 2025 14:41:29 +0200
+Message-ID: <20250818124509.740415706@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit 6db015fc4b5d5f63a64a193f65d98da3a7fc811d ]
+[ Upstream commit 7ef50c4c6a9c36fa3ea6f1681a80c0bf9a797345 ]
 
-TLS expects that it owns the receive queue of the TCP socket.
-This cannot be guaranteed in case the reader of the TCP socket
-entered before the TLS ULP was installed, or uses some non-standard
-read API (eg. zerocopy ones). Replace the WARN_ON() and a buggy
-early exit (which leaves anchor pointing to a freed skb) with real
-error handling. Wipe the parsing state and tell the reader to retry.
+Same as done for raid0, set chunk_sectors limit to appropriately set the
+atomic write size limit.
 
-We already reload the anchor every time we (re)acquire the socket lock,
-so the only condition we need to avoid is an out of bounds read
-(not having enough bytes in the socket for previously parsed record len).
-
-If some data was read from under TLS but there's enough in the queue
-we'll reload and decrypt what is most likely not a valid TLS record.
-Leading to some undefined behavior from TLS perspective (corrupting
-a stream? missing an alert? missing an attack?) but no kernel crash
-should take place.
-
-Reported-by: William Liu <will@willsroot.io>
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Link: https://lore.kernel.org/tFjq_kf7sWIG3A7CrCg_egb8CVsT_gsmHAK0_wxDPJXfIzxFAMxqmLwp3MlU5EHiet0AwwJldaaFdgyHpeIUCS-3m3llsmRzp9xIOBR4lAI=@syst3mfailure.io
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250807232907.600366-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250711105258.3135198-5-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls.h      |  2 +-
- net/tls/tls_strp.c | 11 ++++++++---
- net/tls/tls_sw.c   |  3 ++-
- 3 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/md/raid10.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index e5e47452308a..e1eaf12b3742 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -195,7 +195,7 @@ void tls_strp_msg_done(struct tls_strparser *strp);
- int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb);
- void tls_rx_msg_ready(struct tls_strparser *strp);
- 
--void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
-+bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
- int tls_strp_msg_cow(struct tls_sw_context_rx *ctx);
- struct sk_buff *tls_strp_msg_detach(struct tls_sw_context_rx *ctx);
- int tls_strp_msg_hold(struct tls_strparser *strp, struct sk_buff_head *dst);
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 095cf31bae0b..d71643b494a1 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -475,7 +475,7 @@ static void tls_strp_load_anchor_with_queue(struct tls_strparser *strp, int len)
- 	strp->stm.offset = offset;
- }
- 
--void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
-+bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
- {
- 	struct strp_msg *rxm;
- 	struct tls_msg *tlm;
-@@ -484,8 +484,11 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
- 	DEBUG_NET_WARN_ON_ONCE(!strp->stm.full_len);
- 
- 	if (!strp->copy_mode && force_refresh) {
--		if (WARN_ON(tcp_inq(strp->sk) < strp->stm.full_len))
--			return;
-+		if (unlikely(tcp_inq(strp->sk) < strp->stm.full_len)) {
-+			WRITE_ONCE(strp->msg_ready, 0);
-+			memset(&strp->stm, 0, sizeof(strp->stm));
-+			return false;
-+		}
- 
- 		tls_strp_load_anchor_with_queue(strp, strp->stm.full_len);
- 	}
-@@ -495,6 +498,8 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
- 	rxm->offset	= strp->stm.offset;
- 	tlm = tls_msg(strp->anchor);
- 	tlm->control	= strp->mark;
-+
-+	return true;
- }
- 
- /* Called with lock held on lower socket */
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 1d7caadd0cbc..6385329ef98d 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1380,7 +1380,8 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
- 			return sock_intr_errno(timeo);
- 	}
- 
--	tls_strp_msg_load(&ctx->strp, released);
-+	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
-+		return tls_rx_rec_wait(sk, psock, nonblock, false);
- 
- 	return 1;
- }
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index d2b237652d7e..95dc354a86a0 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -4009,6 +4009,7 @@ static int raid10_set_queue_limits(struct mddev *mddev)
+ 	md_init_stacking_limits(&lim);
+ 	lim.max_write_zeroes_sectors = 0;
+ 	lim.io_min = mddev->chunk_sectors << 9;
++	lim.chunk_sectors = mddev->chunk_sectors;
+ 	lim.io_opt = lim.io_min * raid10_nr_stripes(conf);
+ 	lim.features |= BLK_FEAT_ATOMIC_WRITES;
+ 	err = mddev_stack_rdev_limits(mddev, &lim, MDDEV_STACK_INTEGRITY);
 -- 
-2.50.1
+2.39.5
 
 
 
