@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107B5B2A6FB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA188B2A402
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D16A818A134B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5AA0624E8E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A95E216E23;
-	Mon, 18 Aug 2025 13:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F5F31E11E;
+	Mon, 18 Aug 2025 13:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1TAPNsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXuvGWN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC60C8BEC;
-	Mon, 18 Aug 2025 13:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D012E22A3;
+	Mon, 18 Aug 2025 13:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524324; cv=none; b=meeYF51qGoZ4xw5kxq+xzTS5+MCbTPVNuWUJCTS55bP+69E1dOvluehSgmtFQyAaEl10HXroiQX7/Ruixq6hGvU52wm5ppX2j/dyUOKT3LpM8+gj75zsvMfJ3pJuu91h+1mpCGkLZa7SywNEM4BTVvplCMTjiLjFd67pjRg3Zf4=
+	t=1755522571; cv=none; b=BLwD2zwj+hCExaq+eqIcAzLL6T5y8JxmsHwsXTpzKzObiI2yU1IX/xlXFhVu2EpoZGMbnE2HY4jy4zT1hvhvxdNZgC4o7kqk38SFH5cUo5CHomXMDmqOqTI4xCA1qQ4NXcY1CFvSGQ3P3WUrvMdXN1PnJjpfKfVQSgzytkWndoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524324; c=relaxed/simple;
-	bh=pKftlY3dAd6g1KwTG2MD8h8OGsTms4JbmGVgSe+p59M=;
+	s=arc-20240116; t=1755522571; c=relaxed/simple;
+	bh=PZHZrZDnY4KSdC/GPl6Tc4BGR5moAHlS+L8ffLFqMbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEEy8WU3sPPjiGRMHacLJqe61CrIZ36AGo58q6AMjXNcLyTsH0qchVajt30fkSVT20hgc0qEuxyJQmKuAUqypy8Tg9qUjj4SQ/8RjSV9rOURvWp+tNsdKuiwgjPqGcLOsypIyz8cPsZYLrlGqTmkLHQgUEkmGtkNuzP5AtQBYUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1TAPNsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556B1C4CEEB;
-	Mon, 18 Aug 2025 13:38:44 +0000 (UTC)
+	 MIME-Version; b=B8xl/ha70uFdOgwm3aBZKlv7AveBpd6UN3vQn+axP2pOHOsosTQNDRCwqnLx3rx/jdmwlR6y4gslmITpj8T1kaJ7dmnjH9R4L1oRKimKgdy6WDnxvXCLEt1tcIsya/D7CR6eK/TWPzEhe150Cb7S3Eo1SdyoI934PXp570+QUaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXuvGWN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5767C4CEEB;
+	Mon, 18 Aug 2025 13:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524324;
-	bh=pKftlY3dAd6g1KwTG2MD8h8OGsTms4JbmGVgSe+p59M=;
+	s=korg; t=1755522571;
+	bh=PZHZrZDnY4KSdC/GPl6Tc4BGR5moAHlS+L8ffLFqMbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1TAPNspz4z4MvRecwrjwYsOTtwOT3lBJAbh5SW4sfMQAOiy6+zjX+nS9MUxbsVID
-	 64iJpt7KCMgzxUy3JXwCyUrMr9DXO34IXzZ7ebixtExbrmNYIflnsvKNgt/V1dbLl7
-	 mS5OoA9mf9I7KS8tRvlG6Lut11doDOaVj1iaUpfc=
+	b=UXuvGWN5wLQDX2QUXO0FdmIf7hiBKFKwCLxXb8tgiY3Wn5i8Ito0bp3NkN22xhjLI
+	 sUyZC09WBCtJFKq/VpwWCUuAJk9ZZqdUPJMCuE9nT+yzogB0qJuPI0g7TFvvfxpkmj
+	 ZohIRa5I6TBxtAsyq9nHMhKYUoafiP+h6xlesca8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Totev <gabriel.totev@zetier.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 394/515] apparmor: shift ouid when mediating hard links in userns
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Len Brown <len.brown@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH 6.12 354/444] tools/power turbostat: Handle non-root legacy-uncore sysfs permissions
 Date: Mon, 18 Aug 2025 14:46:20 +0200
-Message-ID: <20250818124513.580063759@linuxfoundation.org>
+Message-ID: <20250818124502.189980680@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Totev <gabriel.totev@zetier.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit c5bf96d20fd787e4909b755de4705d52f3458836 ]
+[ Upstream commit e60a13bcef206795d3ddf82f130fe8f570176d06 ]
 
-When using AppArmor profiles inside an unprivileged container,
-the link operation observes an unshifted ouid.
-(tested with LXD and Incus)
+/sys/devices/system/cpu/intel_uncore_frequency/package_X_die_Y/
+may be readable by all, but
+/sys/devices/system/cpu/intel_uncore_frequency/package_X_die_Y/current_freq_khz
+may be readable only by root.
 
-For example, root inside container and uid 1000000 outside, with
-`owner /root/link l,` profile entry for ln:
+Non-root turbostat users see complaints in this scenario.
 
-/root$ touch chain && ln chain link
-==> dmesg
-apparmor="DENIED" operation="link" class="file"
-namespace="root//lxd-feet_<var-snap-lxd-common-lxd>" profile="linkit"
-name="/root/link" pid=1655 comm="ln" requested_mask="l" denied_mask="l"
-fsuid=1000000 ouid=0 [<== should be 1000000] target="/root/chain"
+Fail probe of the interface if we can't read current_freq_khz.
 
-Fix by mapping inode uid of old_dentry in aa_path_link() rather than
-using it directly, similarly to how it's mapped in __file_path_perm()
-later in the file.
-
-Signed-off-by: Gabriel Totev <gabriel.totev@zetier.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Original-patch-by: Zhang Rui <rui.zhang@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/file.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/security/apparmor/file.c b/security/apparmor/file.c
-index d52a5b14dad4..62bc46e03758 100644
---- a/security/apparmor/file.c
-+++ b/security/apparmor/file.c
-@@ -423,9 +423,11 @@ int aa_path_link(const struct cred *subj_cred,
- {
- 	struct path link = { .mnt = new_dir->mnt, .dentry = new_dentry };
- 	struct path target = { .mnt = new_dir->mnt, .dentry = old_dentry };
-+	struct inode *inode = d_backing_inode(old_dentry);
-+	vfsuid_t vfsuid = i_uid_into_vfsuid(mnt_idmap(target.mnt), inode);
- 	struct path_cond cond = {
--		d_backing_inode(old_dentry)->i_uid,
--		d_backing_inode(old_dentry)->i_mode
-+		.uid = vfsuid_into_kuid(vfsuid),
-+		.mode = inode->i_mode,
- 	};
- 	char *buffer = NULL, *buffer2 = NULL;
- 	struct aa_profile *profile;
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 4c322586730d..8c876e9df1a9 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -6409,7 +6409,8 @@ static void probe_intel_uncore_frequency_legacy(void)
+ 			sprintf(path_base, "/sys/devices/system/cpu/intel_uncore_frequency/package_%02d_die_%02d", i,
+ 				j);
+ 
+-			if (access(path_base, R_OK))
++			sprintf(path, "%s/current_freq_khz", path_base);
++			if (access(path, R_OK))
+ 				continue;
+ 
+ 			BIC_PRESENT(BIC_UNCORE_MHZ);
 -- 
 2.39.5
 
