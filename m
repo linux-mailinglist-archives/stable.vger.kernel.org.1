@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614B7B29F5D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:45:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C81B29F59
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C74D18A81C4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:45:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3F763BBF23
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C862765CC;
-	Mon, 18 Aug 2025 10:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198FA2765D5;
+	Mon, 18 Aug 2025 10:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjYNVKaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUVO22BR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45372765C9
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA03B2C2371
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755513892; cv=none; b=F6JOhmTFmbEa9bhycaegNxAYSLj1w07seLzdjepXZ9h7FZwO+BgKo346gNsDvypbqKp/J1f7GYsp+P6OQfL6ZiiZ2EDRAe9RUUtXNDPYQm7pvzGtjVBCFzVLwYnRqY1bEh+EiTJqOXTP3CZ7g2EASdSf8I6MKsDX6ecYBTkD8bs=
+	t=1755513899; cv=none; b=Ys20i+WZ8lg4K84sdiWti+Yt0C0CWBwc1nwWsBiiYtr0j59Sall6LT2QTVMpI3ye5tTnFkXwO+7UPac2R88OwtXhqShvCTTiToxAart0DVIDUZIexOZeGr0uE5qd+uXn5sFdLDCyHm4jxj+FWF3CTBALqwky3PhfjKEEyRgthiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755513892; c=relaxed/simple;
-	bh=wSNEnAwjzcU2oLrPQ41WFP3hJuwinYu72J703+HhEeU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P2gAjQHJrkhvx0v2J7OO3K3sk67VUY/WbMxVEAFRPrL8Y2qhMVkOmIOeqrrSDR+JOc2bBFoF6VWjIvXH1LtcRsQjsBcFulvJM0jmvlT3a4nwZBNiUxiQeHn1zhs3Az8LHpmcb3Y4QFp+t9J+rJXGkPI/WhbdsI5uX8S3ixVj31E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjYNVKaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C54C4CEEB;
-	Mon, 18 Aug 2025 10:44:51 +0000 (UTC)
+	s=arc-20240116; t=1755513899; c=relaxed/simple;
+	bh=yJQ+yOYZIpA4PMSXExqj9fShJy2WFnuMPiKbWuXkvgI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fl8XZxd+Vm3RKHmgdqUdhhLlD+kUxEJ4cD5u4Zz3yseXjfh0vZmHtmC/j/RRyw2pOmzYs9dHKFAPX3hobc39T/OevKuR5gbkcb6j15dMHrxLErEOBJKu2EFNVCzyVtieZzq2wvN7Kx2LvWnCY94YdE4vrvvYQVgi+esv2pa2MZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUVO22BR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B54C4CEEB;
+	Mon, 18 Aug 2025 10:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755513892;
-	bh=wSNEnAwjzcU2oLrPQ41WFP3hJuwinYu72J703+HhEeU=;
+	s=korg; t=1755513899;
+	bh=yJQ+yOYZIpA4PMSXExqj9fShJy2WFnuMPiKbWuXkvgI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pjYNVKaIQNLxvMtVh5a1Zzen7A/NkzyiFVf3+Y2rs4fzjK72KRBsKjybZGrFDefSy
-	 /ead9wkHJ/9YIK8gCJUTrDCWiZML1U/iSUvnDikDHygmoUnFIkpeGDj7euqV1Xdwqn
-	 inbJ+BYp+iJ1G3bsfVnTfp1DUrxblYg2YlhZUHeM=
-Subject: FAILED: patch "[PATCH] usb: typec: fusb302: cache PD RX state" failed to apply to 5.4-stable tree
-To: sebastian.reichel@collabora.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,stable@kernel.org
+	b=sUVO22BRFOyYUWGRu/tgxJkPqTH0T0bK/aZkEoFnK5sqAhxJY/FtsyrbrSCN975RU
+	 e+fyMj6SsYD5X6ZWNwL1xGrzlGGmYnaOmmbAk1NqnBPZq9SWA4VAW3+Q3iWSAUuX3R
+	 z4xk5N73QaKo3E+9SLZtNRSHRfjMkrrJNpzbXvqY=
+Subject: FAILED: patch "[PATCH] cdc-acm: fix race between initial clearing halt and open" failed to apply to 5.10-stable tree
+To: oneukum@suse.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 12:44:35 +0200
-Message-ID: <2025081835-swaddling-wound-cef8@gregkh>
+Date: Mon, 18 Aug 2025 12:44:47 +0200
+Message-ID: <2025081847-resident-transform-fcca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56
+git cherry-pick -x 64690a90cd7c6db16d3af8616be1f4bf8d492850
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081835-swaddling-wound-cef8@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081847-resident-transform-fcca@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,92 +77,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 Mon Sep 17 00:00:00 2001
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-Date: Fri, 4 Jul 2025 19:55:06 +0200
-Subject: [PATCH] usb: typec: fusb302: cache PD RX state
+From 64690a90cd7c6db16d3af8616be1f4bf8d492850 Mon Sep 17 00:00:00 2001
+From: Oliver Neukum <oneukum@suse.com>
+Date: Thu, 17 Jul 2025 16:12:50 +0200
+Subject: [PATCH] cdc-acm: fix race between initial clearing halt and open
 
-This patch fixes a race condition communication error, which ends up in
-PD hard resets when losing the race. Some systems, like the Radxa ROCK
-5B are powered through USB-C without any backup power source and use a
-FUSB302 chip to do the PD negotiation. This means it is quite important
-to avoid hard resets, since that effectively kills the system's
-power-supply.
+On the devices that need their endpoints to get an
+initial clear_halt, this needs to be done before
+the devices can be opened. That means it needs to be
+before the devices are registered.
 
-I've found the following race condition while debugging unplanned power
-loss during booting the board every now and then:
-
-1. lots of TCPM/FUSB302/PD initialization stuff
-2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
-3. the remote PD source does not send anything, so TCPM does a SOFT RESET
-4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
-   (tcpm_set_pd_rx is enabled again, even though it is still on)
-
-At this point I've seen broken CRC good messages being send by the
-FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
-messages are being lost and things generally going haywire with one of
-the two sides doing a hard reset once a broken CRC good message was send
-to the bus.
-
-I think the system is running into a race condition, that the FIFOs are
-being cleared and/or the automatic good CRC message generation flag is
-being updated while a message is already arriving.
-
-Let's avoid this by caching the PD RX enabled state, as we have already
-processed anything in the FIFOs and are in a good state. As a side
-effect that this also optimizes I2C bus usage :)
-
-As far as I can tell the problem theoretically also exists when TCPM
-enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
-critical for the following reason:
-
-On devices like the ROCK 5B, which are powered through a TCPM backed
-USB-C port, the bootloader must have done some prior PD communication
-(initial communication must happen within 5 seconds after plugging the
-USB-C plug). This means the first time the kernel TCPM state machine
-reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
-actively. On other devices a hard reset simply adds some extra delay and
-things should be good afterwards.
-
-Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
+Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index f2801279c4b5..a4ff2403ddd6 100644
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -104,6 +104,7 @@ struct fusb302_chip {
- 	bool vconn_on;
- 	bool vbus_on;
- 	bool charge_on;
-+	bool pd_rx_on;
- 	bool vbus_present;
- 	enum typec_cc_polarity cc_polarity;
- 	enum typec_cc_status cc1;
-@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 	int ret = 0;
+diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+index c2ecfa3c8349..5a334e370f4d 100644
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1520,6 +1520,12 @@ static int acm_probe(struct usb_interface *intf,
+ 			goto err_remove_files;
+ 	}
  
- 	mutex_lock(&chip->lock);
-+	if (chip->pd_rx_on == on) {
-+		fusb302_log(chip, "pd is already %s", str_on_off(on));
-+		goto done;
++	if (quirks & CLEAR_HALT_CONDITIONS) {
++		/* errors intentionally ignored */
++		usb_clear_halt(usb_dev, acm->in);
++		usb_clear_halt(usb_dev, acm->out);
 +	}
 +
- 	ret = fusb302_pd_rx_flush(chip);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
-@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 			    str_on_off(on), ret);
- 		goto done;
+ 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
+ 			&control_interface->dev);
+ 	if (IS_ERR(tty_dev)) {
+@@ -1527,11 +1533,6 @@ static int acm_probe(struct usb_interface *intf,
+ 		goto err_release_data_interface;
  	}
-+
-+	chip->pd_rx_on = on;
- 	fusb302_log(chip, "pd := %s", str_on_off(on));
- done:
- 	mutex_unlock(&chip->lock);
+ 
+-	if (quirks & CLEAR_HALT_CONDITIONS) {
+-		usb_clear_halt(usb_dev, acm->in);
+-		usb_clear_halt(usb_dev, acm->out);
+-	}
+-
+ 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
+ 
+ 	return 0;
 
 
