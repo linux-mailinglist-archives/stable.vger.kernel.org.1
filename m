@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC78B2A58F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C70B2A7D7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1B513BAC29
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D103F687582
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC89A31E103;
-	Mon, 18 Aug 2025 13:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC875335BAA;
+	Mon, 18 Aug 2025 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUMRg8jR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXN2MihQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3C5335BD8;
-	Mon, 18 Aug 2025 13:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A58218ABD;
+	Mon, 18 Aug 2025 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523276; cv=none; b=V+QrdsGdmnwLsoNC6wMa66ASABkRDEyt3fmuCfIz6JwwGf1p2t5kqlwTC68o5QMVtlXU0g6lzCev02rjIbkepIkGrcwQijDo/X3ir4qvN4Vv6V0gUmMugsk4WUDg8wpb95KfNbQFvYlWH+U6fBLXRapqpmqZlmWzCofv/9lZtkY=
+	t=1755524834; cv=none; b=U9WpnGkaz/bJTPa1JGod7CgG67B8gDnIDnz2RdtNh1x06ntM16OZwx98TodTvhtCLfl519F6rFImOqEUGyPeDgH9rHmhRo4LM4LgyqdoGY9Cilb2hWlFDDyG2eKVFoK9By53xC9ZJNiWgG3TV3fUS9pllE4e9Q9wI0VvVpHobPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523276; c=relaxed/simple;
-	bh=4wy1XFwcZP71u7lBTP3+LwUIfdpoTm5jwSvloiImlgs=;
+	s=arc-20240116; t=1755524834; c=relaxed/simple;
+	bh=rMtjoTAr6FQ4VLE1rAq8GB2HpPD65yYsNwvb8kc9gJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+KlRzUhkw1uDX+0opcXFpfHawYvVTG+OOb69MqIPFIgUoe8Qn54/ssjLOggjPVTVrBj5ydGa6Q8sspZIvbpEEmVvOcseEvC1nO3z9UO8JSt3Am3sCULBZWQ/9dH9lPBwLs/KHwbFwxV15QH+WIkDq18RDQ4DFUaEzg6TA/3VYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUMRg8jR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BF0C4CEEB;
-	Mon, 18 Aug 2025 13:21:15 +0000 (UTC)
+	 MIME-Version; b=M0k0nXPXuQFz8R9X1+BBxdCeylyLsxtkMioGrdbJKfQt/O4Lq2DuHddFIiIM3PILgv/4soP791Ncn6i5JCcVnUoqnib5Vt/FpJgCjAxTWj0HNmGY5c00COeiU5JjXhqC9YmNjK8QksNIdKNcc2hdoWIvIsQ7gh6luSOcYYMW8Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXN2MihQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8B8C4CEEB;
+	Mon, 18 Aug 2025 13:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523276;
-	bh=4wy1XFwcZP71u7lBTP3+LwUIfdpoTm5jwSvloiImlgs=;
+	s=korg; t=1755524834;
+	bh=rMtjoTAr6FQ4VLE1rAq8GB2HpPD65yYsNwvb8kc9gJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUMRg8jRFYcLHitANG98DJoCKDTzuw/pXXFQjiCTqVPMSGj7gX9ozi2ABFFgMo6Yh
-	 jWBBmEPq1PvLonmL9shLNKVmoC4Mhb3z9BAJqdpntluozOAHykjzyuwNg/6z08gfx6
-	 02+AyHQV9RntBWKTqQppZLlibIctCXSCKIQx1ZGQ=
+	b=MXN2MihQAed9xpeF4w0DNpPtmH2V4K/V2C3LFdT8mQV6CmFWIOiva5nhPDk8t3mzj
+	 CPpjzVJ7ON7K87VDMrnJv+sCl7Mgm0ul/VxyUglPS/sEa7ne1UrlLlYPG8eSkqXMmd
+	 JwxFcI/piq1AFacfuAUGGWQ3rfjVYqTWNzdE/9f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 079/515] hfs: fix slab-out-of-bounds in hfs_bnode_read()
+Subject: [PATCH 6.16 078/570] cpuidle: governors: menu: Avoid using invalid recent intervals data
 Date: Mon, 18 Aug 2025 14:41:05 +0200
-Message-ID: <20250818124501.430208996@linuxfoundation.org>
+Message-ID: <20250818124508.829254672@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit a431930c9bac518bf99d6b1da526a7f37ddee8d8 ]
+[ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
 
-This patch introduces is_bnode_offset_valid() method that checks
-the requested offset value. Also, it introduces
-check_and_correct_requested_length() method that checks and
-correct the requested length (if it is necessary). These methods
-are used in hfs_bnode_read(), hfs_bnode_write(), hfs_bnode_clear(),
-hfs_bnode_copy(), and hfs_bnode_move() with the goal to prevent
-the access out of allocated memory and triggering the crash.
+Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
+discarding useful information") caused the number of wakeup interrupts
+to increase on an idle system [1], which was not expected to happen
+after merely allowing shallower idle states to be selected by the
+governor in some cases.
 
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250703214912.244138-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+However, on the system in question, all of the idle states deeper than
+WFI are rejected by the driver due to a firmware issue [2].  This causes
+the governor to only consider the recent interval duriation data
+corresponding to attempts to enter WFI that are successful and the
+recent invervals table is filled with values lower than the scheduler
+tick period.  Consequently, the governor predicts an idle duration
+below the scheduler tick period length and avoids stopping the tick
+more often which leads to the observed symptom.
+
+Address it by modifying the governor to update the recent intervals
+table also when entering the previously selected idle state fails, so
+it knows that the short idle intervals might have been the minority
+had the selected idle states been actually entered every time.
+
+Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
+Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
+Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/bnode.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 92 insertions(+)
+ drivers/cpuidle/governors/menu.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index cb823a8a6ba9..1dac5d9c055f 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -15,6 +15,48 @@
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index 52d5d26fc7c6..81306612a5c6 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -97,6 +97,14 @@ static inline int which_bucket(u64 duration_ns)
  
- #include "btree.h"
+ static DEFINE_PER_CPU(struct menu_device, menu_devices);
  
-+static inline
-+bool is_bnode_offset_valid(struct hfs_bnode *node, int off)
++static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
 +{
-+	bool is_valid = off < node->tree->node_size;
-+
-+	if (!is_valid) {
-+		pr_err("requested invalid offset: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off);
-+	}
-+
-+	return is_valid;
++	/* Update the repeating-pattern data. */
++	data->intervals[data->interval_ptr++] = interval_us;
++	if (data->interval_ptr >= INTERVALS)
++		data->interval_ptr = 0;
 +}
 +
-+static inline
-+int check_and_correct_requested_length(struct hfs_bnode *node, int off, int len)
-+{
-+	unsigned int node_size;
-+
-+	if (!is_bnode_offset_valid(node, off))
-+		return 0;
-+
-+	node_size = node->tree->node_size;
-+
-+	if ((off + len) > node_size) {
-+		int new_len = (int)node_size - off;
-+
-+		pr_err("requested length has been corrected: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, "
-+		       "requested_len %d, corrected_len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len, new_len);
-+
-+		return new_len;
-+	}
-+
-+	return len;
-+}
-+
- void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
- {
- 	struct page *page;
-@@ -22,6 +64,20 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
- 	int bytes_read;
- 	int bytes_to_read;
+ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
  
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	pagenum = off >> PAGE_SHIFT;
- 	off &= ~PAGE_MASK; /* compute page offset for the first page */
-@@ -80,6 +136,20 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
- {
- 	struct page *page;
+ /*
+@@ -222,6 +230,14 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	if (data->needs_update) {
+ 		menu_update(drv, dev);
+ 		data->needs_update = 0;
++	} else if (!dev->last_residency_ns) {
++		/*
++		 * This happens when the driver rejects the previously selected
++		 * idle state and returns an error, so update the recent
++		 * intervals table to prevent invalid information from being
++		 * used going forward.
++		 */
++		menu_update_intervals(data, UINT_MAX);
+ 	}
  
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	page = node->page[0];
+ 	/* Find the shortest expected idle interval. */
+@@ -482,10 +498,7 @@ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
  
-@@ -104,6 +174,20 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
- {
- 	struct page *page;
+ 	data->correction_factor[data->bucket] = new_factor;
  
-+	if (!is_bnode_offset_valid(node, off))
-+		return;
-+
-+	if (len == 0) {
-+		pr_err("requested zero length: "
-+		       "NODE: id %u, type %#x, height %u, "
-+		       "node_size %u, offset %d, len %d\n",
-+		       node->this, node->type, node->height,
-+		       node->tree->node_size, off, len);
-+		return;
-+	}
-+
-+	len = check_and_correct_requested_length(node, off, len);
-+
- 	off += node->page_offset;
- 	page = node->page[0];
+-	/* update the repeating-pattern data */
+-	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
+-	if (data->interval_ptr >= INTERVALS)
+-		data->interval_ptr = 0;
++	menu_update_intervals(data, ktime_to_us(measured_ns));
+ }
  
-@@ -119,6 +203,10 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
- 	hfs_dbg(BNODE_MOD, "copybytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(src_node, src, len);
-+	len = check_and_correct_requested_length(dst_node, dst, len);
-+
- 	src += src_node->page_offset;
- 	dst += dst_node->page_offset;
- 	src_page = src_node->page[0];
-@@ -136,6 +224,10 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
- 	hfs_dbg(BNODE_MOD, "movebytes: %u,%u,%u\n", dst, src, len);
- 	if (!len)
- 		return;
-+
-+	len = check_and_correct_requested_length(node, src, len);
-+	len = check_and_correct_requested_length(node, dst, len);
-+
- 	src += node->page_offset;
- 	dst += node->page_offset;
- 	page = node->page[0];
+ /**
 -- 
-2.39.5
+2.50.1
 
 
 
