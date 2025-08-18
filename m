@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-171233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039A0B2A82A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E5DB2A5CC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0985683608
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E049258311F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536DD335BCB;
-	Mon, 18 Aug 2025 13:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767F9321452;
+	Mon, 18 Aug 2025 13:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrbhNIpz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvtEsiK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA6D335BBF;
-	Mon, 18 Aug 2025 13:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EAD321448;
+	Mon, 18 Aug 2025 13:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525249; cv=none; b=bC/Wo7Hr3Wnm57jwwqLyllzhaKdBplDZCCITIBwPksHMILQlxx6b2HgNQpHxaeRAJbWOR9l0QRXhbWjjlwBG/UZ3bba/CDpqnPsnW15S1a5AAOlk3+uHQB/vbq1GK2rxqdEOWCL2aaIaSic8zmEGgR2qOyQ5krAX3DxZF68qN1M=
+	t=1755523450; cv=none; b=WBu+VOxLEvP/PZyR0Zi1PWtWXx9v4Tos5+OcJKOAHKY3Nt9wrCXuBKKVm9/LMb9xv0i1qug+ZoSlfC53KeoYXnzRgnZYKuHgKNzL91RJ2177UAS+zdNf+wuqthPCxsU7SWQ+0qXKV0sM0oYljiv1flLNpQ2bQ/b1V84FooMZBjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525249; c=relaxed/simple;
-	bh=jvxZ7aPJASls7EkJx2jmeKx7WOWMXrTxQN5fahuAE5M=;
+	s=arc-20240116; t=1755523450; c=relaxed/simple;
+	bh=X+Qu72bvhMfAG6+88mF72Lew9XpuNeZhY07NgBa5SIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ogh5cB3g80/HamTP3xKR1Pc9SBqbSS38MnCKlwWW+J/F72+RRqOpk5+V8KWBA1f3youyAq4NmpK0T1u8I1uZxrnLf01NCLPICPinnWCFWDWUDtfg1kY41rkX1YS1i5ktyuxgVyWdHA9dozhqFYrJpgrO6trH3LUmK6McKnbpR1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrbhNIpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82603C4CEEB;
-	Mon, 18 Aug 2025 13:54:08 +0000 (UTC)
+	 MIME-Version; b=pb+q7onXPmwyzg3wsEsoDQRlYqytq5htigSxMZs030h5A2vZB7YCt7XFhVO04vmDhZPpB4KDxFTSvokcqwU7XeWAGRIr97uwrNAV3IV2don0yHb1m+We999L9A1VjYM12jkwzUxiq+9FsM9rFrqmwIOLVTOVU25/a+ZSmXAAK4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvtEsiK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398BEC4CEEB;
+	Mon, 18 Aug 2025 13:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525248;
-	bh=jvxZ7aPJASls7EkJx2jmeKx7WOWMXrTxQN5fahuAE5M=;
+	s=korg; t=1755523449;
+	bh=X+Qu72bvhMfAG6+88mF72Lew9XpuNeZhY07NgBa5SIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrbhNIpz1du0uw+r8i/DmU1jvKOD1N56BiyB9q9vMM3ALRpKWNvyqizZ9Zv+Mq6w0
-	 49cPotue1vNsjSzkhKfx5sj/YKpJCacNkXxblIXUixXOait+L7vyq08T0KQYjBLcni
-	 FDKDXFiJRq9ktKYrE/kAFBkWuSc3Uz4mbAXJkAWY=
+	b=SvtEsiK7n2Aidte9XQz9n4o763ooEVIIWZKYxCYC9mRPBfme2FTOtVu9u4VkYlhPL
+	 eU7/vjdGZYjCpSssOO36iMauiuJRQGHtc/dEj9jPGSU4SRL6L31h+bVkemlYRnZRpX
+	 EBgndM8H7atRB9ksXWC11/I/aKrtaHLdjuQ5OSnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliav Farber <farbere@amazon.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 172/570] pps: clients: gpio: fix interrupt handling order in remove path
-Date: Mon, 18 Aug 2025 14:42:39 +0200
-Message-ID: <20250818124512.424417925@linuxfoundation.org>
+Subject: [PATCH 6.15 174/515] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
+Date: Mon, 18 Aug 2025 14:42:40 +0200
+Message-ID: <20250818124505.061534456@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliav Farber <farbere@amazon.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
+[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
 
-The interrupt handler in pps_gpio_probe() is registered after calling
-pps_register_source() using devm_request_irq(). However, in the
-corresponding remove function, pps_unregister_source() is called before
-the IRQ is freed, since devm-managed resources are released after the
-remove function completes.
+snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
+leads to null pointer dereference.
+This was reproduced with topology loading and marking a link as ignore
+due to missing hardware component on the system.
+On module removal the soc_tplg_remove_link() would call
+snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
+no runtime was created.
 
-This creates a potential race condition where an interrupt may occur
-after the PPS source is unregistered but before the handler is removed,
-possibly leading to a kernel panic.
-
-To prevent this, switch from devm-managed IRQ registration to manual
-management by using request_irq() and calling free_irq() explicitly in
-the remove path before unregistering the PPS source. This ensures the
-interrupt handler is safely removed before deactivating the PPS source.
-
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pps/clients/pps-gpio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-index 47d9891de368..935da68610c7 100644
---- a/drivers/pps/clients/pps-gpio.c
-+++ b/drivers/pps/clients/pps-gpio.c
-@@ -210,8 +210,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
- 	}
- 
- 	/* register IRQ interrupt handler */
--	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
--			get_irqf_trigger_flags(data), data->info.name, data);
-+	ret = request_irq(data->irq, pps_gpio_irq_handler,
-+			  get_irqf_trigger_flags(data), data->info.name, data);
- 	if (ret) {
- 		pps_unregister_source(data->pps);
- 		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
-@@ -228,6 +228,7 @@ static void pps_gpio_remove(struct platform_device *pdev)
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 3f97d1f132c6..0db6db16f28b 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1139,6 +1139,9 @@ static int snd_soc_compensate_channel_connection_map(struct snd_soc_card *card,
+ void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
+ 				struct snd_soc_pcm_runtime *rtd)
  {
- 	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
++	if (!rtd)
++		return;
++
+ 	lockdep_assert_held(&client_mutex);
  
-+	free_irq(data->irq, data);
- 	pps_unregister_source(data->pps);
- 	timer_delete_sync(&data->echo_timer);
- 	/* reset echo pin in any case */
+ 	/*
 -- 
 2.39.5
 
