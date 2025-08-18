@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-170969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD46DB2A706
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A13FB2AA44
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5534C18A19E3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B512A5672CB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460B6321430;
-	Mon, 18 Aug 2025 13:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D314322A25;
+	Mon, 18 Aug 2025 14:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWWuSqwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvGYF/jR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0360E220696;
-	Mon, 18 Aug 2025 13:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B27E31E115;
+	Mon, 18 Aug 2025 14:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524387; cv=none; b=n/xMMu8q4ejGwJOzyk2aKlTqk+XOngdMAmX9DmV0MsPtktk2AiZw8rbqnzDePBMQefib8zpGklaWom8ES1xPDiV6HCmwA59oWMg+zbQWL4v73Aw8M6WZNtBf1X9cu2/T+8/CpGsJPXqDjpbNpHXt1vJX9hliQDrwKnkHNRf7PTU=
+	t=1755526087; cv=none; b=SHmNuZwheWx2LE67WWZO801fJii1euRqX6QjR30y83rfoWkghjNO5/jfFQaGs9U9S74B+qZ+J2f1cXDp5sS0jXAXomYGEQrmES8ict3zzoJ8NyrfCqPXmzP/e8IWfDCcT8uEzgva0Z8ozgEIYLfI1Uw+eSp36xFgGVhzPd2Aj9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524387; c=relaxed/simple;
-	bh=i+DkHewD2WPhsc2h3yMWklfHJfkNlKOKP+PyrRxHZyw=;
+	s=arc-20240116; t=1755526087; c=relaxed/simple;
+	bh=XUO/HOu64xn0aV2mRSED/5w0tMBAeOVHWd1oI0YB+NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRVKWcYTWz6NWo4HJKB9Sa/D9ejxiIOK9mOVsSeoyAfd4hX5xLxE414Oahr2YUYlZ00VpwM26ZXxxsPrIwNgcFN8KR7RhQmNDr54ALCRakNWSFIESFKRPw+nHSC4DdbI8pPWHpPhillOHsajuVNnvmbi69tzbkJW2Q8Ea+5Laz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWWuSqwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637E6C113D0;
-	Mon, 18 Aug 2025 13:39:46 +0000 (UTC)
+	 MIME-Version; b=hH1TBe6H7+Lmqf4BnFNBD2UCRt4PdVyZnvjAEBvt4B4xxhkmFFUZfT0eJFYfH0cgAVlHumVM81JCszmJotpGOIFGCXWmJCvE54H3HCzW9+aXxrQ3KC6lnTjXD3i2oEhShMoLC7j+0qGiI21Nd8golMhXjJyF6kMBpYo4DD+vZY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvGYF/jR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2960FC4CEEB;
+	Mon, 18 Aug 2025 14:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524386;
-	bh=i+DkHewD2WPhsc2h3yMWklfHJfkNlKOKP+PyrRxHZyw=;
+	s=korg; t=1755526086;
+	bh=XUO/HOu64xn0aV2mRSED/5w0tMBAeOVHWd1oI0YB+NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWWuSqwjpv+PtIhRbFfIJeN9Quby2eZs8uDjUQhS0g2Z0l13bZXu78IPzi5f4GXX9
-	 +1EeLIzJA8748PuJGMbcd7ioppIPtnSZW5FPWYkP42ytYQFqIuu9edhTnPTDYmQ/7i
-	 bIWxIZLIWQEbyiVJ3l+epvHGQwyf0bb7V1HPCBU4=
+	b=IvGYF/jR2llRZR6fslrWXvKQawkAN2U8qhofFxG6w5ra6RGg83y+zIuJ21gOeNVbd
+	 xTUWuaeAnA/DvAOOp9YqL2esjymYgZp+MBjKSqREee0/UfsghNF216iy6e0mW2cpuR
+	 JI9o1s4k2wsutYN2CtmOVjMwW24msaW6zEJbIvn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.15 456/515] misc: rtsx: usb: Ensure mmc child device is active when card is present
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 455/570] smb: client: dont call init_waitqueue_head(&info->conn_wait) twice in _smbd_get_connection
 Date: Mon, 18 Aug 2025 14:47:22 +0200
-Message-ID: <20250818124515.973405273@linuxfoundation.org>
+Message-ID: <20250818124523.348923151@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +67,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky Wu <ricky_wu@realtek.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 966c5cd72be8989c8a559ddef8e8ff07a37c5eb0 upstream.
+[ Upstream commit 550a194c5998e4e77affc6235e80d3766dc2d27e ]
 
-When a card is present in the reader, the driver currently defers
-autosuspend by returning -EAGAIN during the suspend callback to
-trigger USB remote wakeup signaling. However, this does not guarantee
-that the mmc child device has been resumed, which may cause issues if
-it remains suspended while the card is accessible.
-This patch ensures that all child devices, including the mmc host
-controller, are explicitly resumed before returning -EAGAIN. This
-fixes a corner case introduced by earlier remote wakeup handling,
-improving reliability of runtime PM when a card is inserted.
+It is already called long before we may hit this cleanup code path.
 
-Fixes: 883a87ddf2f1 ("misc: rtsx_usb: Use USB remote wakeup signaling for card insertion detection")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20250711140143.2105224-1-ricky_wu@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/smb/client/smbdirect.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -698,6 +698,12 @@ static void rtsx_usb_disconnect(struct u
- }
- 
- #ifdef CONFIG_PM
-+static int rtsx_usb_resume_child(struct device *dev, void *data)
-+{
-+	pm_request_resume(dev);
-+	return 0;
-+}
-+
- static int rtsx_usb_suspend(struct usb_interface *intf, pm_message_t message)
- {
- 	struct rtsx_ucr *ucr =
-@@ -713,8 +719,10 @@ static int rtsx_usb_suspend(struct usb_i
- 			mutex_unlock(&ucr->dev_mutex);
- 
- 			/* Defer the autosuspend if card exists */
--			if (val & (SD_CD | MS_CD))
-+			if (val & (SD_CD | MS_CD)) {
-+				device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
- 				return -EAGAIN;
-+			}
- 		} else {
- 			/* There is an ongoing operation*/
- 			return -EAGAIN;
-@@ -724,12 +732,6 @@ static int rtsx_usb_suspend(struct usb_i
- 	return 0;
- }
- 
--static int rtsx_usb_resume_child(struct device *dev, void *data)
--{
--	pm_request_resume(dev);
--	return 0;
--}
--
- static int rtsx_usb_resume(struct usb_interface *intf)
- {
- 	device_for_each_child(&intf->dev, NULL, rtsx_usb_resume_child);
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index cd4c61932cb2..b9bb531717a6 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1689,7 +1689,6 @@ static struct smbd_connection *_smbd_get_connection(
+ 	cancel_delayed_work_sync(&info->idle_timer_work);
+ 	destroy_caches_and_workqueue(info);
+ 	sc->status = SMBDIRECT_SOCKET_NEGOTIATE_FAILED;
+-	init_waitqueue_head(&info->conn_wait);
+ 	rdma_disconnect(sc->rdma.cm_id);
+ 	wait_event(info->conn_wait,
+ 		sc->status == SMBDIRECT_SOCKET_DISCONNECTED);
+-- 
+2.39.5
+
 
 
 
