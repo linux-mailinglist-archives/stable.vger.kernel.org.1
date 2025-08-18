@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C318DB2A685
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765A9B2A3C8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4341B616A0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3AA5179565
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAD4322DD7;
-	Mon, 18 Aug 2025 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC6E31E101;
+	Mon, 18 Aug 2025 13:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCgmAeZ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJBi40b/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7296322DCF;
-	Mon, 18 Aug 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF1B31A055;
+	Mon, 18 Aug 2025 13:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523945; cv=none; b=GmF2wp76PRPIDLgYepvSUKcJYBEbgHIVbsIlKAZW9Myqq30tRD76ySm/Rss+eOj44mZX9TINu164b7o91pRGePpCVU/NjPDBocJAgnU8DRk1nktHWwDw3uq4CrTbLldaiMAywHi8JeflQngvwxvqiFEpdjqrUh5QaBdH52Kqp9Y=
+	t=1755522315; cv=none; b=ETNjJuzjXHB+5+rzHxD5X5onMXDK1ih5DDOYnsvdYp9c7k3B7cqiH3kXd+9Au85NjtR24w31s0eamHZt04wCngVjVpjLgd/ztc8idAd3rIk4gdxrxI+KPSS/MEUlFKW8faUGvhkeB2LnG+sb94cmQ0mupKrwgwGysckG9pKpz6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523945; c=relaxed/simple;
-	bh=A9yuKzN5x5goftNCPl3SRTu5OtEQB6rZ1ygq/birQSs=;
+	s=arc-20240116; t=1755522315; c=relaxed/simple;
+	bh=OUlIHdV3vjd8mWzDYz3IHufBT6lNFLyaKn12qFDZkNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Du36RCOppjdKpwzaPvSred1U2ohADAPtXFC4rl7xB6viRciU+AWCHxCEpPqO/it4YtMLaUgWEqm8TIy+mJJfMUnPdzmPP6e3Y85EYkjBZ+ZcT8SpAQp6klnnHKpLHW7BOzySmvwj1s+k8UqbeUKBef+kWmngNecRyS89L60srb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCgmAeZ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FDBC4CEF1;
-	Mon, 18 Aug 2025 13:32:23 +0000 (UTC)
+	 MIME-Version; b=Kni3rt2N9fpNPxh4rrqfJopK4Tj77rxBtcI54B56Hes0pJX6L9LdNj/CkCg0HMeWVrgkvW40t70qn0HY9xznAyoDskCcAfpMyTyJ3H7pURmFDykJgpVUpycS0ELkfKRm2vfuDiQqbMPKiREK5ThBo5JfJJ+ttfJV03i1F+Kx/U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJBi40b/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02423C4CEEB;
+	Mon, 18 Aug 2025 13:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523944;
-	bh=A9yuKzN5x5goftNCPl3SRTu5OtEQB6rZ1ygq/birQSs=;
+	s=korg; t=1755522314;
+	bh=OUlIHdV3vjd8mWzDYz3IHufBT6lNFLyaKn12qFDZkNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCgmAeZ+bXuWD1zUpXhzGuF0VP72kOEUqGttq5xlhMarHnpHt+2MkDAQebr9NILLJ
-	 mzT45L7dPy/xrm+UTlGkqnaNNBxNc3MBP6WhzaNa3aDA+RW9YCtL2VufQyuC7H1FYn
-	 yMZQGix5sPD3tSGyHRZgczA1wyz2EEg9o8x8ORio=
+	b=EJBi40b/4gNJH+zpRz1GuEZkjaSLBqHnESB2ZvFAH/ZDYbddmU0/txwfZrln2nJa5
+	 IZnPisu+L9Whc48OMyMRJDMt0HdPcMdxZQD50eq1JLcHjFq5JrMq9oTBtMxcyJBbyF
+	 djJRlFd9M/oxQC4s2iUUkfR9px04sy7hNsTvU4j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Zhiqi Song <songzhiqi1@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 319/515] selftests/bpf: Fix ringbuf/ringbuf_write test failure with arm64 64KB page size
+Subject: [PATCH 6.12 279/444] crypto: hisilicon/hpre - fix dma unmap sequence
 Date: Mon, 18 Aug 2025 14:45:05 +0200
-Message-ID: <20250818124510.711469646@linuxfoundation.org>
+Message-ID: <20250818124459.429821981@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Zhiqi Song <songzhiqi1@huawei.com>
 
-[ Upstream commit 8c8c5e3c854a2593ec90dacd868f3066b67de1c4 ]
+[ Upstream commit 982fd1a74de63c388c060e4fa6f7fbd088d6d02e ]
 
-The ringbuf max_entries must be PAGE_ALIGNED. See kernel function
-ringbuf_map_alloc(). So for arm64 64KB page size, adjust max_entries
-and other related metrics properly.
+Perform DMA unmapping operations before processing data.
+Otherwise, there may be unsynchronized data accessed by
+the CPU when the SWIOTLB is enabled.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250607013621.1552332-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Zhiqi Song <songzhiqi1@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/ringbuf.c       | 4 ++--
- tools/testing/selftests/bpf/progs/test_ringbuf_write.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre_crypto.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/ringbuf.c b/tools/testing/selftests/bpf/prog_tests/ringbuf.c
-index da430df45aa4..d1e4cb28a72c 100644
---- a/tools/testing/selftests/bpf/prog_tests/ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ringbuf.c
-@@ -97,7 +97,7 @@ static void ringbuf_write_subtest(void)
- 	if (!ASSERT_OK_PTR(skel, "skel_open"))
- 		return;
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_crypto.c b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+index c167dbd6c7d6..e71f1e459764 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_crypto.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_crypto.c
+@@ -1487,11 +1487,13 @@ static void hpre_ecdh_cb(struct hpre_ctx *ctx, void *resp)
+ 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
+ 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
  
--	skel->maps.ringbuf.max_entries = 0x4000;
-+	skel->maps.ringbuf.max_entries = 0x40000;
++	/* Do unmap before data processing */
++	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
++
+ 	p = sg_virt(areq->dst);
+ 	memmove(p, p + ctx->key_sz - curve_sz, curve_sz);
+ 	memmove(p + curve_sz, p + areq->dst_len - curve_sz, curve_sz);
  
- 	err = test_ringbuf_write_lskel__load(skel);
- 	if (!ASSERT_OK(err, "skel_load"))
-@@ -108,7 +108,7 @@ static void ringbuf_write_subtest(void)
- 	mmap_ptr = mmap(NULL, page_size, PROT_READ | PROT_WRITE, MAP_SHARED, rb_fd, 0);
- 	if (!ASSERT_OK_PTR(mmap_ptr, "rw_cons_pos"))
- 		goto cleanup;
--	*mmap_ptr = 0x3000;
-+	*mmap_ptr = 0x30000;
- 	ASSERT_OK(munmap(mmap_ptr, page_size), "unmap_rw");
+-	hpre_ecdh_hw_data_clr_all(ctx, req, areq->dst, areq->src);
+ 	kpp_request_complete(areq, ret);
  
- 	skel->bss->pid = getpid();
-diff --git a/tools/testing/selftests/bpf/progs/test_ringbuf_write.c b/tools/testing/selftests/bpf/progs/test_ringbuf_write.c
-index 350513c0e4c9..f063a0013f85 100644
---- a/tools/testing/selftests/bpf/progs/test_ringbuf_write.c
-+++ b/tools/testing/selftests/bpf/progs/test_ringbuf_write.c
-@@ -26,11 +26,11 @@ int test_ringbuf_write(void *ctx)
- 	if (cur_pid != pid)
- 		return 0;
+ 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
+@@ -1801,9 +1803,11 @@ static void hpre_curve25519_cb(struct hpre_ctx *ctx, void *resp)
+ 	if (overtime_thrhld && hpre_is_bd_timeout(req, overtime_thrhld))
+ 		atomic64_inc(&dfx[HPRE_OVER_THRHLD_CNT].value);
  
--	sample1 = bpf_ringbuf_reserve(&ringbuf, 0x3000, 0);
-+	sample1 = bpf_ringbuf_reserve(&ringbuf, 0x30000, 0);
- 	if (!sample1)
- 		return 0;
- 	/* first one can pass */
--	sample2 = bpf_ringbuf_reserve(&ringbuf, 0x3000, 0);
-+	sample2 = bpf_ringbuf_reserve(&ringbuf, 0x30000, 0);
- 	if (!sample2) {
- 		bpf_ringbuf_discard(sample1, 0);
- 		__sync_fetch_and_add(&discarded, 1);
++	/* Do unmap before data processing */
++	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
++
+ 	hpre_key_to_big_end(sg_virt(areq->dst), CURVE25519_KEY_SIZE);
+ 
+-	hpre_curve25519_hw_data_clr_all(ctx, req, areq->dst, areq->src);
+ 	kpp_request_complete(areq, ret);
+ 
+ 	atomic64_inc(&dfx[HPRE_RECV_CNT].value);
 -- 
 2.39.5
 
