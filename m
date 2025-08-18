@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460A2B2A2F1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15260B2A82D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6189170B24
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A17D0584023
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6289032039C;
-	Mon, 18 Aug 2025 12:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA47335BBB;
+	Mon, 18 Aug 2025 13:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKMUc6v5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X24IcC0B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205F131A04F;
-	Mon, 18 Aug 2025 12:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB31335BA7;
+	Mon, 18 Aug 2025 13:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521672; cv=none; b=jSCC90L/ZRTEv5MTd/JivzLyJZ6o5E1gvfvcjOjFWwe7M/D3VYszgJh2QM+WlYwDphUcmBPuREmaz6l4ZeeCkVLROZ2yKBNk/7C230+fWe88DGMpXS1qP2SH+P79+WYU6U78Hee42I7O8SJyX7izrECieci0+wsmHxy46QkSe4I=
+	t=1755525005; cv=none; b=kTNiJBfX95Z6mLwlh76x5otsu4awXSls9uDVhe8rLw42QeoOmUbIXIfqmt3w6oip2jUr7yOYegIv4KaMSKzMoGFIhjc9eTN0gK/tZiPQXUfrg/9eYhd04e8Oj58Swjyb2dZZMNa+T/6yRhH9cYVJOrmv0E4R/R0ZK2VfjiP35a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521672; c=relaxed/simple;
-	bh=AxgdvljR/BqxouG0EsB02x/waAk5QINpo/PktoOou5M=;
+	s=arc-20240116; t=1755525005; c=relaxed/simple;
+	bh=xU3FRGuxHMvwzQNA4mgMP1dyc3ZX7cxP2X+pi86x834=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcoUCVQsqFH7+jIE2H2uACl+43cN4elka+8Id9/0OuhoS2HFTw82eg2Ip4LrSnYTJNGD2s82i2q7xqZnCvuaceJw5eeapEmapxF0toe1vliMBZbkx/ujbBZSFBFmIqlJOYmzWNbwWoAyKCeks5RQ+0Q/YsShru7mEeud+e3gWbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKMUc6v5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854E4C4CEEB;
-	Mon, 18 Aug 2025 12:54:31 +0000 (UTC)
+	 MIME-Version; b=Zc702vYUFcKIitcVuKQIpHfAMszJ+S+7NNW+YcqIzUrEcOm6Zx/wHOXb4q4mm8fWKCiwyfvqehpzn2/L4RXLdRyrouHQPl0hpv6iPDaLEnV6E+HdG6Zjoua/k+l9TrFySrqAVh9Q2tikT3IHhJQ7hr3X1lYTCIx3SOfW5q4fUsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X24IcC0B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1BBC4CEEB;
+	Mon, 18 Aug 2025 13:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521672;
-	bh=AxgdvljR/BqxouG0EsB02x/waAk5QINpo/PktoOou5M=;
+	s=korg; t=1755525005;
+	bh=xU3FRGuxHMvwzQNA4mgMP1dyc3ZX7cxP2X+pi86x834=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKMUc6v5nfz5joplOx1mvTdeXDCmOr/juxFWqGxMUqoIDTJVjsyzrvsExZtGKRzgx
-	 bP3sPQ8wlXyLDPGPJNbsGbEibKZTmTdPU/SgdEjzvybEcGNb1sFsgZPbb2V+MjybFv
-	 kP42CrbrFnnZUlqR/StX0FrCAg1f427nfid/f9xY=
+	b=X24IcC0B+fObwHVNjA/+H5L6XN46EX0EEzx+pq1SszrsWNk5wtB8kfdCHrQKqBijv
+	 DwihAiB4LDOcm2lFMOHP5dTUOCfqgJ33aY+1WK9KD9aSm2Vo2iCEZcgHlrjK8hmFAC
+	 Fo7mAOaZUxU9MjkvNwKKnuYIoAZe8mJrpb9v90zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Prashant Malani <pmalani@google.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/444] md: Dont clear MD_CLOSING until mddev is freed
+Subject: [PATCH 6.16 128/570] cpufreq: CPPC: Mark driver with NEED_UPDATE_LIMITS flag
 Date: Mon, 18 Aug 2025 14:41:55 +0200
-Message-ID: <20250818124452.283798260@linuxfoundation.org>
+Message-ID: <20250818124510.754946082@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Ni <xni@redhat.com>
+From: Prashant Malani <pmalani@google.com>
 
-[ Upstream commit 5f286f33553d600e6c2fb5a23dd6afcf99b3ebac ]
+[ Upstream commit 0a1416a49e63c320f6e6c1c8d07e1b58c0d4a3f3 ]
 
-UNTIL_STOP is used to avoid mddev is freed on the last close before adding
-disks to mddev. And it should be cleared when stopping an array which is
-mentioned in commit efeb53c0e572 ("md: Allow md devices to be created by
-name."). So reset ->hold_active to 0 in md_clean.
+AMU counters on certain CPPC-based platforms tend to yield inaccurate
+delivered performance measurements on systems that are idle/mostly idle.
+This results in an inaccurate frequency being stored by cpufreq in its
+policy structure when the CPU is brought online. [1]
 
-And MD_CLOSING should be kept until mddev is freed to avoid reopen.
+Consequently, if the userspace governor tries to set the frequency to a
+new value, there is a possibility that it would be the erroneous value
+stored earlier. In such a scenario, cpufreq would assume that the
+requested frequency has already been set and return early, resulting in
+the correct/new frequency request never making it to the hardware.
 
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Link: https://lore.kernel.org/linux-raid/20250611073108.25463-3-xni@redhat.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Since the operating frequency is liable to this sort of inconsistency,
+mark the CPPC driver with CPUFREQ_NEED_UPDATE_LIMITS so that it is always
+invoked when a target frequency update is requested.
+
+Link: https://lore.kernel.org/linux-pm/20250619000925.415528-3-pmalani@google.com/ [1]
+Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Prashant Malani <pmalani@google.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/20250722055611.130574-2-pmalani@google.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 91cece996250..6b5b69a7a3f0 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -6380,15 +6380,10 @@ static void md_clean(struct mddev *mddev)
- 	mddev->persistent = 0;
- 	mddev->level = LEVEL_NONE;
- 	mddev->clevel[0] = 0;
--	/*
--	 * Don't clear MD_CLOSING, or mddev can be opened again.
--	 * 'hold_active != 0' means mddev is still in the creation
--	 * process and will be used later.
--	 */
--	if (mddev->hold_active)
--		mddev->flags = 0;
--	else
--		mddev->flags &= BIT_ULL_MASK(MD_CLOSING);
-+	/* if UNTIL_STOP is set, it's cleared here */
-+	mddev->hold_active = 0;
-+	/* Don't clear MD_CLOSING, or mddev can be opened again. */
-+	mddev->flags &= BIT_ULL_MASK(MD_CLOSING);
- 	mddev->sb_flags = 0;
- 	mddev->ro = MD_RDWR;
- 	mddev->metadata_type[0] = 0;
-@@ -6615,9 +6610,6 @@ static int do_md_stop(struct mddev *mddev, int mode)
- 		export_array(mddev);
- 		md_clean(mddev);
- 		set_bit(MD_DELETED, &mddev->flags);
--
--		if (mddev->hold_active == UNTIL_STOP)
--			mddev->hold_active = 0;
- 	}
- 	md_new_event();
- 	sysfs_notify_dirent_safe(mddev->sysfs_state);
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index b7c688a5659c..c8e63c7aa9a3 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -925,7 +925,7 @@ static struct freq_attr *cppc_cpufreq_attr[] = {
+ };
+ 
+ static struct cpufreq_driver cppc_cpufreq_driver = {
+-	.flags = CPUFREQ_CONST_LOOPS,
++	.flags = CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
+ 	.verify = cppc_verify_policy,
+ 	.target = cppc_cpufreq_set_target,
+ 	.get = cppc_cpufreq_get_rate,
 -- 
 2.39.5
 
