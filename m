@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-171077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C96B2A789
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C29B2A54A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53CD583B93
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49DAB5808E4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5B3321F4C;
-	Mon, 18 Aug 2025 13:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9060933472F;
+	Mon, 18 Aug 2025 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOtCLPNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucWKOEyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0D3321F43;
-	Mon, 18 Aug 2025 13:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E95322759;
+	Mon, 18 Aug 2025 13:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524742; cv=none; b=A+AkNlx6ydaTU3/JzdpoyV6zSLTRqN9h6ew5oWF95mU2bzPJM+fmc7zpwSOlqNciXF6Btdt9TYmqLCtt7dc9cBTbyJisod7ilIi7Qx8+KV/b6dn+6B2M/bd8Tl8SPAqIsAbG9g2d32o5r22zqZOWi93v/porQghVV3AvUjgvvJ4=
+	t=1755523133; cv=none; b=W1sEt8HNiAmfDOgLsNv1mVRq7cj889cc2aiHRdZKCQovS3wrhn6En5LmHVpAWz/Hv56wyNmpa90t9ZSSuyyMnf+CnjybOXzwsSadMOjhE4ZFjQMySjsJt6OvJooiuFcTjY2ZdoRyfBNF+pv7hzOtyvorAT4+4RUWuX7B+7gCWQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524742; c=relaxed/simple;
-	bh=xv3I08wWxP2VNEENmVnkyAgSOO6fhrEXO38hyk2padw=;
+	s=arc-20240116; t=1755523133; c=relaxed/simple;
+	bh=AHcCZ9suD+mmoqouFEKER5ayOpeCygei8HFK09WQBlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/FXcxXko/7Z0gE2Sv0CoJqJGiOjvv2I0VfhtJCikYwvNNprKcD50ZnxEmAUHIIQ4lWDl5A/HUvTqyHbKTlaMrq/OKvKW9bectY3ypvo+Sw6m+7LccJTXTzVpa3JT4e+13tPOH+pKN0Y3883zv8+a5AxeiBGs7CI12txTsxmSjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOtCLPNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E063C4CEEB;
-	Mon, 18 Aug 2025 13:45:41 +0000 (UTC)
+	 MIME-Version; b=cedB1gkat/B/Y/uzbA8BXfidQ88CmmlggCDIRBWnGHO9PK+pa/KHeqls2HFLcxXgBoE1PLaHxCNc1iN+BkjzKWmhFsD6tMGJniEEm9Fb0kdUS1R6Dnf4hnplYNsv7QL6vtawZluCyr3CKEfBgJC8u+ciifMOUGxM5knAozGv4Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucWKOEyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A98C4CEEB;
+	Mon, 18 Aug 2025 13:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524742;
-	bh=xv3I08wWxP2VNEENmVnkyAgSOO6fhrEXO38hyk2padw=;
+	s=korg; t=1755523132;
+	bh=AHcCZ9suD+mmoqouFEKER5ayOpeCygei8HFK09WQBlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dOtCLPNZbNUSWfYHI4S56QDgtacw4/L0wGM8SKqOIH++5GKy8OIcKfYUj1b7DCTUv
-	 Ef7vv3r/TIH7ris9x9T35EDL7ySd3J4INLgfgiLthWHwxTuhz/1r85VFUMn7d3p8ey
-	 l6OE/Qi8KVTDJYIpdd465DX82MuAHFkbgu7/H7os=
+	b=ucWKOEyGMcLPsawtXQoghiWHCdwRpIEcdkxKfp20x/denbPm6VvZwhA3BWreWg80O
+	 +eGxVUr+6AUhUqlT3ndbg2B5zivPVEVQVVXHqs9D3rztWn1Fpa4GETph8UBaOJMlhR
+	 GjpEHMb0OtD6tvNheu1vujjNd0C2KbZl5Nrl96nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.16 048/570] fs: Prevent file descriptor table allocations exceeding INT_MAX
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.15 049/515] ACPI: processor: perflib: Move problematic pr->performance check
 Date: Mon, 18 Aug 2025 14:40:35 +0200
-Message-ID: <20250818124507.664671934@linuxfoundation.org>
+Message-ID: <20250818124500.310939181@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
+commit d405ec23df13e6df599f5bd965a55d13420366b8 upstream.
 
-When sysctl_nr_open is set to a very high value (for example, 1073741816
-as set by systemd), processes attempting to use file descriptors near
-the limit can trigger massive memory allocation attempts that exceed
-INT_MAX, resulting in a WARNING in mm/slub.c:
+Commit d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit
+application") added a pr->performance check that prevents the frequency
+QoS request from being added when the given processor has no performance
+object.  Unfortunately, this causes a WARN() in freq_qos_remove_request()
+to trigger on an attempt to take the given CPU offline later because the
+frequency QoS object has not been added for it due to the missing
+performance object.
 
-  WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
+Address this by moving the pr->performance check before calling
+acpi_processor_get_platform_limit() so it only prevents a limit from
+being set for the CPU if the performance object is not present.  This
+way, the frequency QoS request is added as it was before the above
+commit and it is present all the time along with the CPU's cpufreq
+policy regardless of whether or not the CPU is online.
 
-This happens because kvmalloc_array() and kvmalloc() check if the
-requested size exceeds INT_MAX and emit a warning when the allocation is
-not flagged with __GFP_NOWARN.
-
-Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
-process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
-- File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
-- Multiple bitmaps: ~400MB
-- Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
-
-Reproducer:
-1. Set /proc/sys/fs/nr_open to 1073741816:
-   # echo 1073741816 > /proc/sys/fs/nr_open
-
-2. Run a program that uses a high file descriptor:
-   #include <unistd.h>
-   #include <sys/resource.h>
-
-   int main() {
-       struct rlimit rlim = {1073741824, 1073741824};
-       setrlimit(RLIMIT_NOFILE, &rlim);
-       dup2(2, 1073741880);  // Triggers the warning
-       return 0;
-   }
-
-3. Observe WARNING in dmesg at mm/slub.c:5027
-
-systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
-maximum possible value. The rationale was that systems with memory
-control groups (memcg) no longer need separate file descriptor limits
-since memory is properly accounted. However, this change overlooked
-that:
-
-1. The kernel's allocation functions still enforce INT_MAX as a maximum
-   size regardless of memcg accounting
-2. Programs and tests that legitimately test file descriptor limits can
-   inadvertently trigger massive allocations
-3. The resulting allocations (>8GB) are impractical and will always fail
-
-systemd's algorithm starts with INT_MAX and keeps halving the value
-until the kernel accepts it. On most systems, this results in nr_open
-being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
-descriptors.
-
-While processes rarely use file descriptors near this limit in normal
-operation, certain selftests (like
-tools/testing/selftests/core/unshare_test.c) and programs that test file
-descriptor limits can trigger this issue.
-
-Fix this by adding a check in alloc_fdtable() to ensure the requested
-allocation size does not exceed INT_MAX. This causes the operation to
-fail with -EMFILE instead of triggering a kernel warning and avoids the
-impractical >8GB memory allocation request.
-
-Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: d33bd88ac0eb ("ACPI: processor: perflib: Fix initial _PPC limit application")
+Tested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2801421.mvXUDI8C0e@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/acpi/processor_perflib.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -197,6 +197,21 @@ static struct fdtable *alloc_fdtable(uns
- 			return ERR_PTR(-EMFILE);
- 	}
+--- a/drivers/acpi/processor_perflib.c
++++ b/drivers/acpi/processor_perflib.c
+@@ -179,7 +179,7 @@ void acpi_processor_ppc_init(struct cpuf
+ 		struct acpi_processor *pr = per_cpu(processors, cpu);
+ 		int ret;
  
-+	/*
-+	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
-+	 * and kvmalloc() will warn if the allocation size is greater than
-+	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
-+	 *
-+	 * This can happen when sysctl_nr_open is set to a very high value and
-+	 * a process tries to use a file descriptor near that limit. For example,
-+	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
-+	 * systemd typically sets it to - then trying to use a file descriptor
-+	 * close to that value will require allocating a file descriptor table
-+	 * that exceeds 8GB in size.
-+	 */
-+	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
-+		return ERR_PTR(-EMFILE);
+-		if (!pr || !pr->performance)
++		if (!pr)
+ 			continue;
+ 
+ 		/*
+@@ -196,6 +196,9 @@ void acpi_processor_ppc_init(struct cpuf
+ 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
+ 			       cpu, ret);
+ 
++		if (!pr->performance)
++			continue;
 +
- 	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
- 	if (!fdt)
- 		goto out;
+ 		ret = acpi_processor_get_platform_limit(pr);
+ 		if (ret)
+ 			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
 
 
 
