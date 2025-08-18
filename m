@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-171051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DBDB2A800
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BC6B2A4DA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549261B65207
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D65A2682214
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4602206AF;
-	Mon, 18 Aug 2025 13:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415A933473B;
+	Mon, 18 Aug 2025 13:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJAYbzeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyi6bBlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4EF2C235C;
-	Mon, 18 Aug 2025 13:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05B82882A7;
+	Mon, 18 Aug 2025 13:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524657; cv=none; b=muDdhUfUpme/UqaWT8OWtztr2LQ3gwYmITDkS49PFmm/Sj1983Lk6Pcw6AR0MiLP0iudVmM1A7NCx2f6G5wCAnXG2SsUlvWbHHWH/ItoEiRhFl6z5Ob+jP1zEF5Ht44zZlnSUSeAI92yxRnCF/8qMgtAIzrIMM74cUIztNLeUZU=
+	t=1755522944; cv=none; b=hcjzh4eyzkhb3xL9f06uZ4NfVnMAKEsmoLjktr/68IpjvfuFc2ePLKyK6Q0ZJWkK7jZ+Lw1wsQWX0AN2euZp/w3ihuvUbWAX3Xczo7f5ioRjRwCEialcSP09+rZMfXF3abKRORjEwluduZT4CLPLXaE2KCsi9PWApsJAudCelUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524657; c=relaxed/simple;
-	bh=lqRuHQOnuEj9Ip7LQkR0W0tCxzD0XpAtyYzDeGqAnFI=;
+	s=arc-20240116; t=1755522944; c=relaxed/simple;
+	bh=jo39OaiLw98/Xw3kuA7yxziuoDoATFM6k8+gpGjnXZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fla8BUBLC9jNSFR0QKubFd3jfUN58G7oiLgvGiYvJI/6LY2W1J6oZ6DK7r/lI1MRULOOhZlwHThwjtWWEUT6zV/NWs+ikKaEyGiWwBopePx9IMvabPknyCTfqm0NUhwqTBarzewAf8hYw2Kl3Kc/GfcijmJoEd5w6OGlPb+VKHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJAYbzeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DDCC4CEEB;
-	Mon, 18 Aug 2025 13:44:16 +0000 (UTC)
+	 MIME-Version; b=di5S6/0LsRAcWy/VT40j0MxeG+3G+ZT67U9Yb8XdyoahMRGhCNef0D/W90BCQkGRvSENpDeFJGUDqA5870iQLrTRfrrvikrK5YC5EQorkHDHBi2PAZ+kKtdwznx5KTFbdidDRma3SNUZ7QnS5U1Dq4utWteJugptDB0179T3t7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyi6bBlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375E4C4CEEB;
+	Mon, 18 Aug 2025 13:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524657;
-	bh=lqRuHQOnuEj9Ip7LQkR0W0tCxzD0XpAtyYzDeGqAnFI=;
+	s=korg; t=1755522943;
+	bh=jo39OaiLw98/Xw3kuA7yxziuoDoATFM6k8+gpGjnXZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJAYbzeEt98573jdqCA/SPz7MCensiFACz0lx20XcN+n8Hu3ZD4MqWAJU+NoIUL/v
-	 nn80XlKO02Sab9ZXR6M0ylz6B1rAIrOqqYTCty6myq9krVs6k409D+p0Z+7T7/vB3S
-	 TsaROFPpmpoBm0UqcoAYmwhmNb1s6LBVb4zKWntc=
+	b=cyi6bBlbzgSYyzAA+J1bq3xV22ygkhguLuJ1bY8GzeIfFrqb6FZYO1bJIb3sEx/KA
+	 bRfskcJkoyjXjjqM3HgKTmRZCZdQ0gwR9+WEPxrA7NM8BooMhjrdA/ehSxF0K110wV
+	 kM5EIGVQW5H73MU3rT9agzNnyu+iE5SUKg6PLCks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Larysch <fl@n621.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 022/570] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
+Subject: [PATCH 6.15 023/515] net: enetc: fix device and OF node leak at probe
 Date: Mon, 18 Aug 2025 14:40:09 +0200
-Message-ID: <20250818124506.650232958@linuxfoundation.org>
+Message-ID: <20250818124459.358354380@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Larysch <fl@n621.de>
+From: Johan Hovold <johan@kernel.org>
 
-commit 49db61c27c4bbd24364086dc0892bd3e14c1502e upstream.
+commit 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed upstream.
 
-Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
-phy") introduced cable_test support for the LAN8814 that reuses parts of
-the KSZ886x logic and introduced the cable_diag_reg and pair_mask
-parameters to account for differences between those chips.
+Make sure to drop the references to the IERB OF node and platform device
+taken by of_parse_phandle() and of_find_device_by_node() during probe.
 
-However, it did not update the ksz8081_type struct, so those members are
-now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
-and ksz886x_cable_test_wait_for_completion to poll the wrong register
-for the affected PHYs (Basic Control/Reset, which is 0 in normal
-operation) and exit immediately.
-
-Fix this by setting both struct members accordingly.
-
-Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
-Cc: stable@vger.kernel.org
-Signed-off-by: Florian Larysch <fl@n621.de>
-Link: https://patch.msgid.link/20250723222250.13960-1-fl@n621.de
+Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-3-johan@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -472,6 +472,8 @@ static const struct kszphy_type ksz8051_
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -924,19 +924,29 @@ static int enetc_pf_register_with_ierb(s
+ {
+ 	struct platform_device *ierb_pdev;
+ 	struct device_node *ierb_node;
++	int ret;
  
- static const struct kszphy_type ksz8081_type = {
- 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
-+	.cable_diag_reg		= KSZ8081_LMD,
-+	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
- 	.has_broadcast_disable	= true,
- 	.has_nand_tree_disable	= true,
- 	.has_rmii_ref_clk_sel	= true,
+ 	ierb_node = of_find_compatible_node(NULL, NULL,
+ 					    "fsl,ls1028a-enetc-ierb");
+-	if (!ierb_node || !of_device_is_available(ierb_node))
++	if (!ierb_node)
+ 		return -ENODEV;
+ 
++	if (!of_device_is_available(ierb_node)) {
++		of_node_put(ierb_node);
++		return -ENODEV;
++	}
++
+ 	ierb_pdev = of_find_device_by_node(ierb_node);
+ 	of_node_put(ierb_node);
+ 
+ 	if (!ierb_pdev)
+ 		return -EPROBE_DEFER;
+ 
+-	return enetc_ierb_register_pf(ierb_pdev, pdev);
++	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
++
++	put_device(&ierb_pdev->dev);
++
++	return ret;
+ }
+ 
+ static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
 
 
 
