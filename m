@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-170937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71965B2A66D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F037B2A395
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C97BDB6150C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 111027B9714
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D55221F15;
-	Mon, 18 Aug 2025 13:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0185F3203A2;
+	Mon, 18 Aug 2025 13:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYxRl7GJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7v6E7wc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3526335BA0;
-	Mon, 18 Aug 2025 13:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AD932039C;
+	Mon, 18 Aug 2025 13:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524282; cv=none; b=Xbk1oNCUsO65i43VqZEUy+b4UDoWDHNmU7UqVNbVq9tMeaRduwejF70ZvTAv7nKoVdUcrQUI4cvshvWNJ51znIkyLRYlbamp08TJaqDDeWLHaIXN+4jx/qIRCe3VIwshtB7cfx4B4EYuVN4g51n9POb3K0afz/VFhNU+XdPDXCc=
+	t=1755522581; cv=none; b=A1nlm1PRwLlgo/fWnGBxK9i1ZIMEcS3X37oQGPNwAGbAAAleXhdRlhLwIgMdiWJ5E1GncqHzSjzt9tfT098vDtj+chpJKqm64XCHEiXkuR4n0UeWXHCpo/WeDiMbC+Ya40+eUlEbCnranAsT9o6/frUN6QhQeY0+7Si3DvCEL7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524282; c=relaxed/simple;
-	bh=jQReOy/bcxITP9RcQPSw802unHrIfxBgsruQLNVYYZE=;
+	s=arc-20240116; t=1755522581; c=relaxed/simple;
+	bh=vUeV5ABvzHkBD/rYsWo6/Rmz4WU4Crec79TkX79eEmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIHL+x2WwjKYeIqG0fx4vm7EluDIm2veHnzbY5iV4f84OcVfpdxOpI8iwbpT5HIC0KSJkcNz81mgRyuU7RzNEDHMG4nxiWotGfMbFqSTZHK/HIVVsebbOb2ZF3ttEEiScSoZZKK5fXXb/EaWhO23HTzxqHvEp05YEOpQK0xeD1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYxRl7GJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421E6C116C6;
-	Mon, 18 Aug 2025 13:38:02 +0000 (UTC)
+	 MIME-Version; b=tkIwDI5Bkmwzih2WSkh9KdJlaX0+GGWlVsI2XKSYvTivH0W5dB2elGCotO2XpmAlKcHb4yF0UA0MX5GvrFRU83LiLCxN79WpN75g/yRK9gdhJ4ydWsqENjaw6mJfHo5Ie8o3PKvWqW69RIX2TF+GKx0p2V7C51CmcbgCp38lZcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7v6E7wc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138DFC4CEEB;
+	Mon, 18 Aug 2025 13:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524282;
-	bh=jQReOy/bcxITP9RcQPSw802unHrIfxBgsruQLNVYYZE=;
+	s=korg; t=1755522581;
+	bh=vUeV5ABvzHkBD/rYsWo6/Rmz4WU4Crec79TkX79eEmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYxRl7GJpbZLko0SVVdBKOeld8wUGTPLtZ67otVgpANFUUh1+z5XsmV8Yjr1f4Jei
-	 N/yCPu0GuUZxVdHh1idUcySCrhq5vNUv2EIEBE8u8AXaWQ/8D2enCn72hhPKb7tsxn
-	 3Myzib+MwRgXpU5mSC7uMTGSigAU2z7Y/6U8Q8m4=
+	b=R7v6E7wcnKx3yiDeIE8qrF6Vg2zLqudlMKak4XDZQmamb9NRxPY+ri/qp2nHlfEJM
+	 AjL8hKsaBitcmQgXk7++hl3srCHnShrvBIPR5MfIE6Upx/5Bc8iukl4FSr3MvnAJ5o
+	 jwRDXYNnP5nnSn/G5lmhN3Q/EHo2IO7FzUEwlASg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 397/515] dm-mpath: dont print the "loaded" message if registering fails
+Subject: [PATCH 6.12 357/444] smb: client: dont call init_waitqueue_head(&info->conn_wait) twice in _smbd_get_connection
 Date: Mon, 18 Aug 2025 14:46:23 +0200
-Message-ID: <20250818124513.693711792@linuxfoundation.org>
+Message-ID: <20250818124502.300002189@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +67,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
+[ Upstream commit 550a194c5998e4e77affc6235e80d3766dc2d27e ]
 
-If dm_register_path_selector, don't print the "version X loaded" message.
+It is already called long before we may hit this cleanup code path.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-ps-historical-service-time.c | 4 +++-
- drivers/md/dm-ps-queue-length.c            | 4 +++-
- drivers/md/dm-ps-round-robin.c             | 4 +++-
- drivers/md/dm-ps-service-time.c            | 4 +++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ fs/smb/client/smbdirect.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
-index b49e10d76d03..2c8626a83de4 100644
---- a/drivers/md/dm-ps-historical-service-time.c
-+++ b/drivers/md/dm-ps-historical-service-time.c
-@@ -541,8 +541,10 @@ static int __init dm_hst_init(void)
- {
- 	int r = dm_register_path_selector(&hst_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " HST_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
-index e305f05ad1e5..eb543e6431e0 100644
---- a/drivers/md/dm-ps-queue-length.c
-+++ b/drivers/md/dm-ps-queue-length.c
-@@ -260,8 +260,10 @@ static int __init dm_ql_init(void)
- {
- 	int r = dm_register_path_selector(&ql_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " QL_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
-index d1745b123dc1..66a15ac0c22c 100644
---- a/drivers/md/dm-ps-round-robin.c
-+++ b/drivers/md/dm-ps-round-robin.c
-@@ -220,8 +220,10 @@ static int __init dm_rr_init(void)
- {
- 	int r = dm_register_path_selector(&rr_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " RR_VERSION " loaded");
- 
-diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
-index 969d31c40272..f8c43aecdb27 100644
---- a/drivers/md/dm-ps-service-time.c
-+++ b/drivers/md/dm-ps-service-time.c
-@@ -341,8 +341,10 @@ static int __init dm_st_init(void)
- {
- 	int r = dm_register_path_selector(&st_ps);
- 
--	if (r < 0)
-+	if (r < 0) {
- 		DMERR("register failed %d", r);
-+		return r;
-+	}
- 
- 	DMINFO("version " ST_VERSION " loaded");
- 
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index cd4c61932cb2..b9bb531717a6 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1689,7 +1689,6 @@ static struct smbd_connection *_smbd_get_connection(
+ 	cancel_delayed_work_sync(&info->idle_timer_work);
+ 	destroy_caches_and_workqueue(info);
+ 	sc->status = SMBDIRECT_SOCKET_NEGOTIATE_FAILED;
+-	init_waitqueue_head(&info->conn_wait);
+ 	rdma_disconnect(sc->rdma.cm_id);
+ 	wait_event(info->conn_wait,
+ 		sc->status == SMBDIRECT_SOCKET_DISCONNECTED);
 -- 
 2.39.5
 
