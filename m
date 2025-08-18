@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98310B2A4F6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:28:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460A2B2A2F1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 80EED4E32CF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6189170B24
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA83342C93;
-	Mon, 18 Aug 2025 13:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6289032039C;
+	Mon, 18 Aug 2025 12:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3xEhoKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKMUc6v5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A57F342C92;
-	Mon, 18 Aug 2025 13:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205F131A04F;
+	Mon, 18 Aug 2025 12:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523296; cv=none; b=UQG9/eIMo5FelZdl4c39m6srp4+3fDobr+TYer18+xfL9TgTpvlbDjF8fa6NhRpVJjV+Zy0ko6/1Z7NjczY91egyTsc58etajmtNroJKJwm/bJC51W88mvR8ycln/Y6HdznxvCWyAIBtyFgxcCY5bHRPw8nCU7kteDJtepZkHY0=
+	t=1755521672; cv=none; b=jSCC90L/ZRTEv5MTd/JivzLyJZ6o5E1gvfvcjOjFWwe7M/D3VYszgJh2QM+WlYwDphUcmBPuREmaz6l4ZeeCkVLROZ2yKBNk/7C230+fWe88DGMpXS1qP2SH+P79+WYU6U78Hee42I7O8SJyX7izrECieci0+wsmHxy46QkSe4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523296; c=relaxed/simple;
-	bh=Z0izx6XdtogP+3MU1EfzHC2Khb5ijdr+aWYdwiKa4O8=;
+	s=arc-20240116; t=1755521672; c=relaxed/simple;
+	bh=AxgdvljR/BqxouG0EsB02x/waAk5QINpo/PktoOou5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dM7wA8GIZk8oX17GshftC9izt1aDVTwUYsSauL7z75KBQlVWrphkZ8EZ1jtga/ey2nOigJ1hC9Siv6I6ZHnRtbC9dyfTwUrjzkDmdKAxPhb9IRnEgVDlYpqCFTtzgmqX01uKTqXrfvMsHiE6J7x6Z3mUcjmlxSBR7hsRvfK02GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3xEhoKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FC3C4CEEB;
-	Mon, 18 Aug 2025 13:21:35 +0000 (UTC)
+	 MIME-Version; b=IcoUCVQsqFH7+jIE2H2uACl+43cN4elka+8Id9/0OuhoS2HFTw82eg2Ip4LrSnYTJNGD2s82i2q7xqZnCvuaceJw5eeapEmapxF0toe1vliMBZbkx/ujbBZSFBFmIqlJOYmzWNbwWoAyKCeks5RQ+0Q/YsShru7mEeud+e3gWbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKMUc6v5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854E4C4CEEB;
+	Mon, 18 Aug 2025 12:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523295;
-	bh=Z0izx6XdtogP+3MU1EfzHC2Khb5ijdr+aWYdwiKa4O8=;
+	s=korg; t=1755521672;
+	bh=AxgdvljR/BqxouG0EsB02x/waAk5QINpo/PktoOou5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3xEhoKrEZFl52fUj6fDIrkG8pGEdBEwWzjP6HddgdtdwdLugnBwP/TR0wUTfxS8R
-	 xgpuWPRjrVSKVwZrbScGomIBmjKqZ4y2TUl1MMBt+rdtwMFE9jocEzMuu0u+/3/rNn
-	 nspG+vf50IyeQZg0TGIYef5mAubN+I116eJZPEHY=
+	b=vKMUc6v5nfz5joplOx1mvTdeXDCmOr/juxFWqGxMUqoIDTJVjsyzrvsExZtGKRzgx
+	 bP3sPQ8wlXyLDPGPJNbsGbEibKZTmTdPU/SgdEjzvybEcGNb1sFsgZPbb2V+MjybFv
+	 kP42CrbrFnnZUlqR/StX0FrCAg1f427nfid/f9xY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 128/515] gpio: loongson-64bit: Extend GPIO irq support
-Date: Mon, 18 Aug 2025 14:41:54 +0200
-Message-ID: <20250818124503.330254678@linuxfoundation.org>
+Subject: [PATCH 6.12 089/444] md: Dont clear MD_CLOSING until mddev is freed
+Date: Mon, 18 Aug 2025 14:41:55 +0200
+Message-ID: <20250818124452.283798260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Xiao Ni <xni@redhat.com>
 
-[ Upstream commit 27cb8f702eb789f97f7a8bd5a91d76c65a937b2f ]
+[ Upstream commit 5f286f33553d600e6c2fb5a23dd6afcf99b3ebac ]
 
-Add the interrupt enable register offset (inten_offset) so that GPIO
-interrupts can be enabled normally on more models.
+UNTIL_STOP is used to avoid mddev is freed on the last close before adding
+disks to mddev. And it should be cleared when stopping an array which is
+mentioned in commit efeb53c0e572 ("md: Allow md devices to be created by
+name."). So reset ->hold_active to 0 in md_clean.
 
-According to the latest interface specifications, the definition of GPIO
-interrupts in ACPI is similar to that in FDT. The GPIO interrupts are
-listed one by one according to the GPIO number, and the corresponding
-interrupt number can be obtained directly through the GPIO number
-specified by the consumer.
+And MD_CLOSING should be kept until mddev is freed to avoid reopen.
 
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250714064542.2276247-1-zhoubinbin@loongson.cn
-[Bartosz: tweaked the commit message]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Link: https://lore.kernel.org/linux-raid/20250611073108.25463-3-xni@redhat.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-loongson-64bit.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/md/md.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpio/gpio-loongson-64bit.c b/drivers/gpio/gpio-loongson-64bit.c
-index 286a3876ed0c..fd8686d8583a 100644
---- a/drivers/gpio/gpio-loongson-64bit.c
-+++ b/drivers/gpio/gpio-loongson-64bit.c
-@@ -220,6 +220,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data0 = {
- 	.conf_offset = 0x0,
- 	.in_offset = 0xc,
- 	.out_offset = 0x8,
-+	.inten_offset = 0x14,
- };
- 
- static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data1 = {
-@@ -228,6 +229,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data1 = {
- 	.conf_offset = 0x0,
- 	.in_offset = 0x20,
- 	.out_offset = 0x10,
-+	.inten_offset = 0x30,
- };
- 
- static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data2 = {
-@@ -244,6 +246,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls3a5000_data = {
- 	.conf_offset = 0x0,
- 	.in_offset = 0xc,
- 	.out_offset = 0x8,
-+	.inten_offset = 0x14,
- };
- 
- static const struct loongson_gpio_chip_data loongson_gpio_ls7a_data = {
-@@ -252,6 +255,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls7a_data = {
- 	.conf_offset = 0x800,
- 	.in_offset = 0xa00,
- 	.out_offset = 0x900,
-+	.inten_offset = 0xb00,
- };
- 
- /* LS7A2000 chipset GPIO */
-@@ -261,6 +265,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls7a2000_data0 = {
- 	.conf_offset = 0x800,
- 	.in_offset = 0xa00,
- 	.out_offset = 0x900,
-+	.inten_offset = 0xb00,
- };
- 
- /* LS7A2000 ACPI GPIO */
-@@ -279,6 +284,7 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls3a6000_data = {
- 	.conf_offset = 0x0,
- 	.in_offset = 0xc,
- 	.out_offset = 0x8,
-+	.inten_offset = 0x14,
- };
- 
- static const struct of_device_id loongson_gpio_of_match[] = {
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 91cece996250..6b5b69a7a3f0 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -6380,15 +6380,10 @@ static void md_clean(struct mddev *mddev)
+ 	mddev->persistent = 0;
+ 	mddev->level = LEVEL_NONE;
+ 	mddev->clevel[0] = 0;
+-	/*
+-	 * Don't clear MD_CLOSING, or mddev can be opened again.
+-	 * 'hold_active != 0' means mddev is still in the creation
+-	 * process and will be used later.
+-	 */
+-	if (mddev->hold_active)
+-		mddev->flags = 0;
+-	else
+-		mddev->flags &= BIT_ULL_MASK(MD_CLOSING);
++	/* if UNTIL_STOP is set, it's cleared here */
++	mddev->hold_active = 0;
++	/* Don't clear MD_CLOSING, or mddev can be opened again. */
++	mddev->flags &= BIT_ULL_MASK(MD_CLOSING);
+ 	mddev->sb_flags = 0;
+ 	mddev->ro = MD_RDWR;
+ 	mddev->metadata_type[0] = 0;
+@@ -6615,9 +6610,6 @@ static int do_md_stop(struct mddev *mddev, int mode)
+ 		export_array(mddev);
+ 		md_clean(mddev);
+ 		set_bit(MD_DELETED, &mddev->flags);
+-
+-		if (mddev->hold_active == UNTIL_STOP)
+-			mddev->hold_active = 0;
+ 	}
+ 	md_new_event();
+ 	sysfs_notify_dirent_safe(mddev->sysfs_state);
 -- 
 2.39.5
 
