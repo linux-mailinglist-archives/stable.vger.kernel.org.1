@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BD6B2A7CC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BDEB2A4C5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B692718A581A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:07 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A4F244E31E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF0B274650;
-	Mon, 18 Aug 2025 13:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B08B334726;
+	Mon, 18 Aug 2025 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f++PxzjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHu/1duC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE831335BC3;
-	Mon, 18 Aug 2025 13:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165C733471F;
+	Mon, 18 Aug 2025 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524823; cv=none; b=kJwBVqJbGqlLojiygJbaY1LG2339SLHSZF3PgDj55fdQX89kR1T7d+/sFDIrwxQ57uWJvaXv2cGyCOo2xOFiLCWaxNu10SEUJ62GF84WWkeQ/rU2I2vP4r9fVvD16pxAdicoyyT9hC28smt0yNAx+XQjo8E3vnyAKfTE8TbRbYE=
+	t=1755523120; cv=none; b=Nr56PdMFNLg0xGU49oEh4PcJYJFAlzTtjj1FtT9gSvPiMjNwDeSYj3LBJw/jI1Qe0Cr9bPrmKpgD8oGhB097D99JCeOawuawLc12+baRYMFieAjf0MvfMXdfaojTfYD0nr8eyZImiKZ+a2DBt0qh+xOhWtpWHdKkRo23dmtj2MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524823; c=relaxed/simple;
-	bh=qUlo1UbU4wffR6w/Ybj8A2HV1YchxDO3f6OcIrYJRNQ=;
+	s=arc-20240116; t=1755523120; c=relaxed/simple;
+	bh=qLuotDlX62XwM8EJ2el1S2I98+3E2FjaUvfscMoI7EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lz+lUTXbaFs4UxudUg7t0o11P/DdgJ8x9BN3otyy81kmkcytGsb88vMJ+A1ji6lws4u9UccCihDwrh4bmoTisqeZeXRlyN5/9tBaW29i8o3tlDW5bEWZYgrv+uTtm58D3vDrb2cfsWOTlpcvuNBV80CNunWBTz6kEMqhyGX++cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f++PxzjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9FBC4CEEB;
-	Mon, 18 Aug 2025 13:47:01 +0000 (UTC)
+	 MIME-Version; b=NRVSN2GptYKJprZgUBplUkdxvSa+cnJ4+9yk6FKhql9G6grsFQoU1E+yFP9Q81s2PsZAu39kjtv4qupaeEYZSXrug7CSNkrXytc7cbhPCb0o0Ql8bEJ/burfpoNnTeKLB1ivwdHpNL0234etDyFEOtRtP+IMEE8SaOYeA1RvW2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHu/1duC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFBCC4CEF1;
+	Mon, 18 Aug 2025 13:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524822;
-	bh=qUlo1UbU4wffR6w/Ybj8A2HV1YchxDO3f6OcIrYJRNQ=;
+	s=korg; t=1755523120;
+	bh=qLuotDlX62XwM8EJ2el1S2I98+3E2FjaUvfscMoI7EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f++PxzjMkPh8p78ykzDg/216g+DLZ4/ggCuyEpOL7JO9XECm08Com2L6PwcuYkeKQ
-	 Zz1Bv+0ut1m9mvqOAwifzgp2ySjxZRIw3FjHhr8Aw4TEmVLdPCdLq+9iH5RR2wsjvP
-	 w9CBYAe5s32mRfoY4Oht0cQXF3KJ5bF+UAFtHCRs=
+	b=lHu/1duCShCeiugyDdLXOtBe5hIHMVuwds8byOwReji4Z+IaZrNl1NrTTJ/1uu5TN
+	 J5jKuaVr4mRytcrxRtZgay4jTexSCnT3MwQwjTiHoMPiJkm9BZ02gXoXgqT3P8Xmtp
+	 RxthDl3kgZSMbZd25WZUOxoPPLzC1NIJeRaMxvrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	syzbot+e67ea9c235b13b4f0020@syzkaller.appspotmail.com,
-	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 074/570] net: lapbether: ignore ops-locked netdevs
+Subject: [PATCH 6.15 075/515] tls: handle data disappearing from under the TLS ULP
 Date: Mon, 18 Aug 2025 14:41:01 +0200
-Message-ID: <20250818124508.679468952@linuxfoundation.org>
+Message-ID: <20250818124501.269578193@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 53898ebabe843bfa7baea9dae152797d5d0563c9 ]
+[ Upstream commit 6db015fc4b5d5f63a64a193f65d98da3a7fc811d ]
 
-Syzkaller managed to trigger lock dependency in xsk_notify via
-register_netdevice. As discussed in [0], using register_netdevice
-in the notifiers is problematic so skip adding lapbeth for ops-locked
-devices.
+TLS expects that it owns the receive queue of the TCP socket.
+This cannot be guaranteed in case the reader of the TCP socket
+entered before the TLS ULP was installed, or uses some non-standard
+read API (eg. zerocopy ones). Replace the WARN_ON() and a buggy
+early exit (which leaves anchor pointing to a freed skb) with real
+error handling. Wipe the parsing state and tell the reader to retry.
 
-       xsk_notifier+0xa4/0x280 net/xdp/xsk.c:1645
-       notifier_call_chain+0xbc/0x410 kernel/notifier.c:85
-       call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:2230
-       call_netdevice_notifiers_extack net/core/dev.c:2268 [inline]
-       call_netdevice_notifiers net/core/dev.c:2282 [inline]
-       unregister_netdevice_many_notify+0xf9d/0x2700 net/core/dev.c:12077
-       unregister_netdevice_many net/core/dev.c:12140 [inline]
-       unregister_netdevice_queue+0x305/0x3f0 net/core/dev.c:11984
-       register_netdevice+0x18f1/0x2270 net/core/dev.c:11149
-       lapbeth_new_device drivers/net/wan/lapbether.c:420 [inline]
-       lapbeth_device_event+0x5b1/0xbe0 drivers/net/wan/lapbether.c:462
-       notifier_call_chain+0xbc/0x410 kernel/notifier.c:85
-       call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:2230
-       call_netdevice_notifiers_extack net/core/dev.c:2268 [inline]
-       call_netdevice_notifiers net/core/dev.c:2282 [inline]
-       __dev_notify_flags+0x12c/0x2e0 net/core/dev.c:9497
-       netif_change_flags+0x108/0x160 net/core/dev.c:9526
-       dev_change_flags+0xba/0x250 net/core/dev_api.c:68
-       devinet_ioctl+0x11d5/0x1f50 net/ipv4/devinet.c:1200
-       inet_ioctl+0x3a7/0x3f0 net/ipv4/af_inet.c:1001
+We already reload the anchor every time we (re)acquire the socket lock,
+so the only condition we need to avoid is an out of bounds read
+(not having enough bytes in the socket for previously parsed record len).
 
-0: https://lore.kernel.org/netdev/20250625140357.6203d0af@kernel.org/
-Fixes: 4c975fd70002 ("net: hold instance lock during NETDEV_REGISTER/UP")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: syzbot+e67ea9c235b13b4f0020@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e67ea9c235b13b4f0020
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250806213726.1383379-1-sdf@fomichev.me
+If some data was read from under TLS but there's enough in the queue
+we'll reload and decrypt what is most likely not a valid TLS record.
+Leading to some undefined behavior from TLS perspective (corrupting
+a stream? missing an alert? missing an attack?) but no kernel crash
+should take place.
+
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Link: https://lore.kernel.org/tFjq_kf7sWIG3A7CrCg_egb8CVsT_gsmHAK0_wxDPJXfIzxFAMxqmLwp3MlU5EHiet0AwwJldaaFdgyHpeIUCS-3m3llsmRzp9xIOBR4lAI=@syst3mfailure.io
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250807232907.600366-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/lapbether.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls.h      |  2 +-
+ net/tls/tls_strp.c | 11 ++++++++---
+ net/tls/tls_sw.c   |  3 ++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index 995a7207bdf8..f357a7ac70ac 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -81,7 +81,7 @@ static struct lapbethdev *lapbeth_get_x25_dev(struct net_device *dev)
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 774859b63f0d..4e077068e6d9 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -196,7 +196,7 @@ void tls_strp_msg_done(struct tls_strparser *strp);
+ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb);
+ void tls_rx_msg_ready(struct tls_strparser *strp);
  
- static __inline__ int dev_is_ethdev(struct net_device *dev)
- {
--	return dev->type == ARPHRD_ETHER && strncmp(dev->name, "dummy", 5);
-+	return dev->type == ARPHRD_ETHER && !netdev_need_ops_lock(dev);
+-void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
++bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh);
+ int tls_strp_msg_cow(struct tls_sw_context_rx *ctx);
+ struct sk_buff *tls_strp_msg_detach(struct tls_sw_context_rx *ctx);
+ int tls_strp_msg_hold(struct tls_strparser *strp, struct sk_buff_head *dst);
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 095cf31bae0b..d71643b494a1 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -475,7 +475,7 @@ static void tls_strp_load_anchor_with_queue(struct tls_strparser *strp, int len)
+ 	strp->stm.offset = offset;
  }
  
- /* ------------------------------------------------------------------------ */
+-void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
++bool tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ {
+ 	struct strp_msg *rxm;
+ 	struct tls_msg *tlm;
+@@ -484,8 +484,11 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ 	DEBUG_NET_WARN_ON_ONCE(!strp->stm.full_len);
+ 
+ 	if (!strp->copy_mode && force_refresh) {
+-		if (WARN_ON(tcp_inq(strp->sk) < strp->stm.full_len))
+-			return;
++		if (unlikely(tcp_inq(strp->sk) < strp->stm.full_len)) {
++			WRITE_ONCE(strp->msg_ready, 0);
++			memset(&strp->stm, 0, sizeof(strp->stm));
++			return false;
++		}
+ 
+ 		tls_strp_load_anchor_with_queue(strp, strp->stm.full_len);
+ 	}
+@@ -495,6 +498,8 @@ void tls_strp_msg_load(struct tls_strparser *strp, bool force_refresh)
+ 	rxm->offset	= strp->stm.offset;
+ 	tlm = tls_msg(strp->anchor);
+ 	tlm->control	= strp->mark;
++
++	return true;
+ }
+ 
+ /* Called with lock held on lower socket */
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 549d1ea01a72..51c98a007dda 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1384,7 +1384,8 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
+ 			return sock_intr_errno(timeo);
+ 	}
+ 
+-	tls_strp_msg_load(&ctx->strp, released);
++	if (unlikely(!tls_strp_msg_load(&ctx->strp, released)))
++		return tls_rx_rec_wait(sk, psock, nonblock, false);
+ 
+ 	return 1;
+ }
 -- 
 2.50.1
 
