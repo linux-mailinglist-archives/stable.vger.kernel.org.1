@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08ADB2A618
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE21B2A8BC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A261583C4E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6869E5877AA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5FD335BC0;
-	Mon, 18 Aug 2025 13:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C632335BC5;
+	Mon, 18 Aug 2025 13:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jvr7opi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raZ21Nha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C683A335BA3;
-	Mon, 18 Aug 2025 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECC422AE7A;
+	Mon, 18 Aug 2025 13:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523636; cv=none; b=NcjbgOsGhZGIyekLRblD+fs/s1xThx40RjSE5MPuDfg/4wkvqP8XWL+D8CxRJUtqOsvP8uHPXFm2h8UguIALcO0VyKwQWxs6jgGJpi27nQ8g+UtSlspzqBbobAx2aSYvlJpaGVnjeSh4zfRMOpicBIcTIwetaCpJqXTjG+IvQ/0=
+	t=1755525346; cv=none; b=S2einFrVppt04wGXmlIzrItS3y8VMzMYXOYP7GPLsPH3D871mntji+GVqzhmZB8SQj2F8Gst23GQ6oialeTdewcS3/91hlysVcVUqYRJsfnu+xpO3iXwk5UTrEAZFBXw1ykK+7J9IiS9NbMp3+Oucl1hvtGTG6p3DItwQ8dkpN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523636; c=relaxed/simple;
-	bh=CWZqlD6dHS2Bw2h7lLMfEX49jZs4MCCcHbJKUyhBhK8=;
+	s=arc-20240116; t=1755525346; c=relaxed/simple;
+	bh=qQbOm5V2YHwRcVPsN5JoVCJlSDzdZj06fpnOqvvjSwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPXZZyiFTCi23PHgytF21m4CZI2A6PYGaE4WHuQCTuDWQ+pEZjHzAYDRwOeQIqLiTk5Ta8TPcsh/ZAP3ZecHpjvObQNP9/KUIZxax2mZo41p4wnfYMi7d9BqoPbkQqgtD8lFw3ZgD+1LVEsGnkNjX4JuqlEiB2aXH55RHgUmNgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jvr7opi2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7FFC4CEEB;
-	Mon, 18 Aug 2025 13:27:16 +0000 (UTC)
+	 MIME-Version; b=GKxzE/psFuQ1OFA+FiXyMNUzY72PwWb+SHyiJZ/gDNWxyRERe4TMyBWGvsLBt9Q4AZ/m3N1p/fF6zN1OmDVpl3hzojVvZxA4Wy4a5w6vi2U/GuvWwUHML+3Bmu89rhAFjOOtSX30NODyvSvl7OM/ifZUIAR8QqgRtdFb9gqQsEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raZ21Nha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34096C4CEEB;
+	Mon, 18 Aug 2025 13:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523636;
-	bh=CWZqlD6dHS2Bw2h7lLMfEX49jZs4MCCcHbJKUyhBhK8=;
+	s=korg; t=1755525346;
+	bh=qQbOm5V2YHwRcVPsN5JoVCJlSDzdZj06fpnOqvvjSwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jvr7opi2HST8kmnHwvKAURD+vs6W7qwGNiI6ETcczUKyHWyjXw6e2niAtVxvXcAEr
-	 bV5QPkr5Ypi0Q85t2WP34qGL5keaJOtCelZRI9r6mECCG2sW70wacymiMyWYjoHgUx
-	 Jbua0AABpCrrf1Kim6bhd8QUUAXpdvm7bO0AtV38=
+	b=raZ21NhadysBq44k+FIRlx4ZwogDejleseB0LvkhP2OMR5aK41QZwXRYcxuNygWX4
+	 QIRlec7jjbS0AqU3F2DO5meqVCAPa+K9loE94klPiCtHj8z8dfSD2CHzYv373fq+z3
+	 e3blMM80oFw02x0gcdAUvZqKAJDZExWLJpHBEQJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jack Ping CHNG <jchng@maxlinear.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 233/515] bpf: Forget ranges when refining tnum after JSET
-Date: Mon, 18 Aug 2025 14:43:39 +0200
-Message-ID: <20250818124507.347750641@linuxfoundation.org>
+Subject: [PATCH 6.16 233/570] net: pcs: xpcs: mask readl() return value to 16 bits
+Date: Mon, 18 Aug 2025 14:43:40 +0200
+Message-ID: <20250818124514.804531734@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Chaignon <paul.chaignon@gmail.com>
+From: Jack Ping CHNG <jchng@maxlinear.com>
 
-[ Upstream commit 6279846b9b2532e1b04559ef8bd0dec049f29383 ]
+[ Upstream commit 2b0ba7b5b010455c4e43ab557860f8b1089e7424 ]
 
-Syzbot reported a kernel warning due to a range invariant violation on
-the following BPF program.
+readl() returns 32-bit value but Clause 22/45 registers are 16-bit wide.
+Masking with 0xFFFF avoids using garbage upper bits.
 
-  0: call bpf_get_netns_cookie
-  1: if r0 == 0 goto <exit>
-  2: if r0 & Oxffffffff goto <exit>
-
-The issue is on the path where we fall through both jumps.
-
-That path is unreachable at runtime: after insn 1, we know r0 != 0, but
-with the sign extension on the jset, we would only fallthrough insn 2
-if r0 == 0. Unfortunately, is_branch_taken() isn't currently able to
-figure this out, so the verifier walks all branches. The verifier then
-refines the register bounds using the second condition and we end
-up with inconsistent bounds on this unreachable path:
-
-  1: if r0 == 0 goto <exit>
-    r0: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0xffffffffffffffff)
-  2: if r0 & 0xffffffff goto <exit>
-    r0 before reg_bounds_sync: u64=[0x1, 0xffffffffffffffff] var_off=(0, 0)
-    r0 after reg_bounds_sync:  u64=[0x1, 0] var_off=(0, 0)
-
-Improving the range refinement for JSET to cover all cases is tricky. We
-also don't expect many users to rely on JSET given LLVM doesn't generate
-those instructions. So instead of improving the range refinement for
-JSETs, Eduard suggested we forget the ranges whenever we're narrowing
-tnums after a JSET. This patch implements that approach.
-
-Reported-by: syzbot+c711ce17dd78e5d4fdcf@syzkaller.appspotmail.com
-Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
-Link: https://lore.kernel.org/r/9d4fd6432a095d281f815770608fdcd16028ce0b.1752171365.git.paul.chaignon@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jack Ping CHNG <jchng@maxlinear.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250716030349.3796806-1-jchng@maxlinear.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/pcs/pcs-xpcs-plat.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index a1ecad2944a8..bdeed2a24910 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -16014,6 +16014,10 @@ static void regs_refine_cond_op(struct bpf_reg_state *reg1, struct bpf_reg_state
- 		if (!is_reg_const(reg2, is_jmp32))
- 			break;
- 		val = reg_const_value(reg2, is_jmp32);
-+		/* Forget the ranges before narrowing tnums, to avoid invariant
-+		 * violations if we're on a dead branch.
-+		 */
-+		__mark_reg_unbounded(reg1);
- 		if (is_jmp32) {
- 			t = tnum_and(tnum_subreg(reg1->var_off), tnum_const(~val));
- 			reg1->var_off = tnum_with_subreg(reg1->var_off, t);
+diff --git a/drivers/net/pcs/pcs-xpcs-plat.c b/drivers/net/pcs/pcs-xpcs-plat.c
+index 629315f1e57c..9dcaf7a66113 100644
+--- a/drivers/net/pcs/pcs-xpcs-plat.c
++++ b/drivers/net/pcs/pcs-xpcs-plat.c
+@@ -66,7 +66,7 @@ static int xpcs_mmio_read_reg_indirect(struct dw_xpcs_plat *pxpcs,
+ 	switch (pxpcs->reg_width) {
+ 	case 4:
+ 		writel(page, pxpcs->reg_base + (DW_VR_CSR_VIEWPORT << 2));
+-		ret = readl(pxpcs->reg_base + (ofs << 2));
++		ret = readl(pxpcs->reg_base + (ofs << 2)) & 0xffff;
+ 		break;
+ 	default:
+ 		writew(page, pxpcs->reg_base + (DW_VR_CSR_VIEWPORT << 1));
+@@ -124,7 +124,7 @@ static int xpcs_mmio_read_reg_direct(struct dw_xpcs_plat *pxpcs,
+ 
+ 	switch (pxpcs->reg_width) {
+ 	case 4:
+-		ret = readl(pxpcs->reg_base + (csr << 2));
++		ret = readl(pxpcs->reg_base + (csr << 2)) & 0xffff;
+ 		break;
+ 	default:
+ 		ret = readw(pxpcs->reg_base + (csr << 1));
 -- 
 2.39.5
 
