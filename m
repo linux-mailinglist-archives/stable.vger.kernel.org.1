@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE83B2A362
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A78B2A8C3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F1D11898DBE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 744147B8B63
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04955218AAB;
-	Mon, 18 Aug 2025 13:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C26322A21;
+	Mon, 18 Aug 2025 13:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGGV5Q3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYzTdP9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60673074AE;
-	Mon, 18 Aug 2025 13:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEF0322776;
+	Mon, 18 Aug 2025 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522166; cv=none; b=PRKLqwVym2A/5HCEmbgYmw/+XuRTZpI41O3EMJ6fv3sooZpYW2pcVs8NjDUDDmmpOxIAf+w/J/FDpz97AJClOjrHaoSdua3hDj9qKtrxGf++BiLEJugS91Lf27jJkUGaVb3dGS53rjSn410prTPyGzuPOzFR01QoJia71pbjF94=
+	t=1755525587; cv=none; b=EOaux0Jl+9Y14Ls+MLAiyqcWTEi7e7h7lYZUeSx9a2pScWkVEL/3cPNaKItGFtL7BWRNr1sd5uVNBTKwb9XD2+u2DPw7TJeT+kDQPgrddgBJX93GKhFjPJXQdNa4QpGAQvfN4Lrf5dOQ/L5bpmJHyuCIY5cTYqydevNxoE5I058=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522166; c=relaxed/simple;
-	bh=AKNHmzDoymK30pp3q1dcgfCL/CQKK3pznFcpfMdjpk4=;
+	s=arc-20240116; t=1755525587; c=relaxed/simple;
+	bh=usLfDJdSU3H2dCvsothumH+SnBZkY9xep9YyNV+SKMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcMxyCjV9UCNyKLuasyjkuzLa5vOU9k/Qk874qDD45wL/FBHaXgQSD8lMW3ZJ5z2uCJB9a6gt2RhzRYaaDNX4TBTEJ+IMPpu796Ihsexbqf8CP1Ff+azFylYOePh+UJktQOUnCVpAJsJ4ow/w/AClzai/1CM8t6gmPdWeNvlJCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGGV5Q3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23731C4CEEB;
-	Mon, 18 Aug 2025 13:02:45 +0000 (UTC)
+	 MIME-Version; b=gCjjh002C75aKu08drNdhSvpYeVlgYU94o++yMap+D+c6l438A41QRGcgCGtQrWFryF52vCyeuTJqsGgf9bW60WtyqA9JI2iyvPP0nMrnlgg3mXC++3kJIQ7Ccv5P9XXNjBKI/44BqYWIXzpGvEc6Mic/gu8bW+bvfiUX7VMtpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYzTdP9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC54C4CEEB;
+	Mon, 18 Aug 2025 13:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522166;
-	bh=AKNHmzDoymK30pp3q1dcgfCL/CQKK3pznFcpfMdjpk4=;
+	s=korg; t=1755525587;
+	bh=usLfDJdSU3H2dCvsothumH+SnBZkY9xep9YyNV+SKMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGGV5Q3QC4G4E9GfPfSf79vCKPvChcl6vKi3DGB1w5jH/9xnMF/HulmEeplGRdcZP
-	 NIj5nNyFWhapZZkhWmuzvPERgijZ2cySUTOjPQAa9nu32kaT1zG26EGPWTl4D4g9wB
-	 SDtSpS848M3N1mj/cgXKGcQKb7elkyX8XJWlG2zM=
+	b=iYzTdP9o1fjt7bDNikX3KAxAY11VId2DHLfyKp0nCN/C2HZPVAvoNKybGcMQ1PP7L
+	 wTU1RDa7JZAOHcUUnCY3/Z2yYMeofjclQ7nhj/tSi38esXT4ZT1Q6C/1/gB+CYuNYB
+	 zcS8r0nkQ8p1Je6qOOg6pdBrmMh1R4DYrbBqVtzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 236/444] wifi: ath12k: Enable REO queue lookup table feature on QCN9274 hw2.0
-Date: Mon, 18 Aug 2025 14:44:22 +0200
-Message-ID: <20250818124457.682202138@linuxfoundation.org>
+Subject: [PATCH 6.16 276/570] wifi: rtw89: Fix rtw89_mac_power_switch() for USB
+Date: Mon, 18 Aug 2025 14:44:23 +0200
+Message-ID: <20250818124516.484479664@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit b79742b84e16e41c4a09f3126436f39f36e75c06 ]
+[ Upstream commit e2b71603333a9dd73ee88347d8894fffc3456ac1 ]
 
-The commit 89ac53e96217 ("wifi: ath12k: Enable REO queue lookup table
-feature on QCN9274") originally intended to enable the reoq_lut_support
-hardware parameter flag for both QCN9274 hw1.0 and hw2.0. However,
-it enabled it only for QCN9274 hw1.0.
+Clear some bits in some registers in order to allow RTL8851BU to power
+on. This is done both when powering on and when powering off because
+that's what the vendor driver does.
 
-Hence, enable REO queue lookup table feature on QCN9274 hw2.0.
+Also tested with RTL8832BU and RTL8832CU.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250609-qcn9274-reoq-v1-1-a92c91abc9b9@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/a39da939-d640-4486-ad38-f658f220afc8@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/mac.c | 19 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/reg.h |  1 +
+ 2 files changed, 20 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index e3eb22bb9e1c..057ef2d282b2 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1084,7 +1084,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.download_calib = true,
- 		.supports_suspend = false,
- 		.tcl_ring_retry = true,
--		.reoq_lut_support = false,
-+		.reoq_lut_support = true,
- 		.supports_shadow_regs = false,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 9f0e30e75009..94bcdf6abca5 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -1441,6 +1441,23 @@ void rtw89_mac_notify_wake(struct rtw89_dev *rtwdev)
+ 	rtw89_mac_send_rpwm(rtwdev, state, true);
+ }
  
- 		.num_tcl_banks = 48,
++static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
++{
++	u32 boot_mode;
++
++	if (rtwdev->hci.type != RTW89_HCI_TYPE_USB)
++		return;
++
++	boot_mode = rtw89_read32_mask(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
++	if (!boot_mode)
++		return;
++
++	rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_APFN_ONMAC);
++	rtw89_write32_clr(rtwdev, R_AX_SYS_STATUS1, B_AX_AUTO_WLPON);
++	rtw89_write32_clr(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
++	rtw89_write32_clr(rtwdev, R_AX_RSV_CTRL, B_AX_R_DIS_PRST);
++}
++
+ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+ {
+ #define PWR_ACT 1
+@@ -1451,6 +1468,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+ 	int ret;
+ 	u8 val;
+ 
++	rtw89_mac_power_switch_boot_mode(rtwdev);
++
+ 	if (on) {
+ 		cfg_seq = chip->pwr_on_seq;
+ 		cfg_func = chip->ops->pwr_on_func;
+diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
+index f05c81ae5869..9d9e1b02bfc7 100644
+--- a/drivers/net/wireless/realtek/rtw89/reg.h
++++ b/drivers/net/wireless/realtek/rtw89/reg.h
+@@ -182,6 +182,7 @@
+ 
+ #define R_AX_SYS_STATUS1 0x00F4
+ #define B_AX_SEL_0XC0_MASK GENMASK(17, 16)
++#define B_AX_AUTO_WLPON BIT(10)
+ #define B_AX_PAD_HCI_SEL_V2_MASK GENMASK(5, 3)
+ #define MAC_AX_HCI_SEL_SDIO_UART 0
+ #define MAC_AX_HCI_SEL_MULTI_USB 1
 -- 
 2.39.5
 
