@@ -1,156 +1,156 @@
-Return-Path: <stable+bounces-169915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8E0B297A1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 06:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C810B297A2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 06:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46098168B1F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 04:03:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D9EF169FA9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 04:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FCAA215798;
-	Mon, 18 Aug 2025 04:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CADD25C838;
+	Mon, 18 Aug 2025 04:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="kmFfgp1T"
+	dkim=pass (1024-bit key) header.d=honor.com header.i=@honor.com header.b="Ap/zqDUq"
 X-Original-To: stable@vger.kernel.org
-Received: from out.smtpout.orange.fr (out-74.smtpout.orange.fr [193.252.22.74])
-	(using TLSv1.2 with cipher AES128-GCM-SHA256 (128/128 bits))
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314FA1581EE;
-	Mon, 18 Aug 2025 04:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7141214228
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 04:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.192.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755489824; cv=none; b=O1ICo3sLG5/854HTQdKCtrvfA0Kiy7/YjbvHYb4l6ABoVvff/t5vzoBS6+bqSXtcXvprXWRmw0Aos77LL5NJYwpx8jl0htspsJ7n+2mKlOkSCDSbdrXbzrb0DDjoaUHXUbmFT+L6BERoWYLKNmCg0VVcREWFyddkYmV1OT1aEbA=
+	t=1755489953; cv=none; b=gBkY3up87T8LC4o8Ub7ZMOODChibGGfhTK6bcAS6CeATW2SSICw9LmZ5mgtn19xnPEcoNt23m8HaxKRwju0XLl9VfXTU5EQ8u97iiJfOA9FUbTWK7Kexsz5knA/RqRtoVlxa049Ax5id9oBJLfyf48vna3kPWZ0J5le0tk3rOX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755489824; c=relaxed/simple;
-	bh=Y1gGnQORqmvXbgKRKxTHkiaFMB+fsoNDmG0x0pHOsRQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UdhCMu9h0H5Bs2Hkg6kQrPkJfdq232cGUd2M8VdJh7xMCpm4xyhBQHxFoDqh0b56/gDJmMAMizNTHdjW1Pfk5avdYdINu9KDBzdrEeNlnnFmeLrawg5Hcp64aHzM5K+as55oiZlzw7arYvS/0Y2n0phmgsCae+TY3W3mn9veZJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=kmFfgp1T; arc=none smtp.client-ip=193.252.22.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from mail-ej1-f44.google.com ([209.85.218.44])
-	by smtp.orange.fr with ESMTPA
-	id nqxAuAcKdbbh0nqxAuhdUI; Mon, 18 Aug 2025 05:54:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1755489276;
-	bh=o+QzOdmBL0axfC9aNcrcNjUYXD8jt/EaKqTt5UNvrqw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To;
-	b=kmFfgp1THH35h5Dzit26D53oYcjriIf0Nwnj9U1+sbfLzaSO0t3vYm28/UX7eGlO5
-	 zC96a0wrhOOVzDEeTb7+Z0x+hn01vNHSb+mouy5qB1tP9bjrm59dZARJAMuF4xjAvi
-	 kDu0iCGlFdks7cOI17Jy/Xni2b2P3T/Us5Cq2yOp3cj1IOzt+apA5pM0nJpW8aIi8C
-	 2RVFb02+h2YJZ+WPu3fRtqIUUGZuKXAXzyUqlEsDfw9p4jhrohXJT++zck2WHlxXkx
-	 6y7hXUv0c/L3zRqZbQeBnaRPou77R/EJEjJdZRxJekDaj1JaSiQQtsjAp/p0QF134d
-	 ZqykObijt39yw==
-X-ME-Helo: mail-ej1-f44.google.com
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 18 Aug 2025 05:54:36 +0200
-X-ME-IP: 209.85.218.44
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-afcb73394b4so559326866b.0;
-        Sun, 17 Aug 2025 20:54:36 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwzOikpnLfJTQj3mWdwti2sIPr0J+z23OAHvRqvdOB04P2/2EKu
-	9w3JTU7e1VRolmwRj4zcabfokMIgkEWop5HhkAENy1v4gpfBsx8jPj0cknvep14O48KlhXW6emy
-	Tp3gBx9dUYnWtCm/5h9SmxPIn7KYMZwc=
-X-Google-Smtp-Source: AGHT+IGTGgx2xs0bT2Kbk+4BMNZCJcj78d5d9P3cIF/ky/B9M01/8WExkNd1UP9MP5KN63UOuYpbSObQ3HIgNdbrW0E=
-X-Received: by 2002:a17:907:934c:b0:af5:a834:c327 with SMTP id
- a640c23a62f3a-afcdc085d1dmr952071866b.21.1755489276509; Sun, 17 Aug 2025
- 20:54:36 -0700 (PDT)
+	s=arc-20240116; t=1755489953; c=relaxed/simple;
+	bh=241GMDtQFPTad17nsb8K4ns2GfmB8X7VHCtkkfWYmlE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EAWHJG/jNH0h3dVFTczr6WRhJnx+SWUb7ZadBhLXDjR25oKAUWvPEmNUfSX0oDpz6PkA/AEmyb5SaTg8hE9DXiJeAPZ97lZVr8icRA+RwDpTcQBiLYOqbvtVzl+bTBdIYEEYb1CS5DOghiFW/xT15g9MYxUqcPrqdGgTEpEBiO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com; spf=pass smtp.mailfrom=honor.com; dkim=pass (1024-bit key) header.d=honor.com header.i=@honor.com header.b=Ap/zqDUq; arc=none smtp.client-ip=81.70.192.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=honor.com
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=TGr0CJdWjvW6XSRyCCqtBV1odyJvmpfAvpUsJkjheDY=;
+	b=Ap/zqDUq6Mwo8BJ3AavHOtCDWPhi4lUfNglH85EmkiXb8oOt4gf2XfA8OE6KNKAkW30o7YRwd
+	so5NB6hoHxzJ1dLAToP6YCuSYcS2aLR7frOVULr7hNgL0WvkAG2qQjoCvBjCXYJ5jYYy8K/QhW2
+	+yQo6lGUCihhCG4Fh3gPt3M=
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4c4zdj1JpnzYkxfN;
+	Mon, 18 Aug 2025 12:05:29 +0800 (CST)
+Received: from a011.hihonor.com (10.68.31.243) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
+ 2025 12:05:37 +0800
+Received: from localhost.localdomain (10.144.23.14) by a011.hihonor.com
+ (10.68.31.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
+ 2025 12:05:36 +0800
+From: wangzijie <wangzijie1@honor.com>
+To: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
+	<adobriyan@gmail.com>, <rick.p.edgecombe@intel.com>, <ast@kernel.org>,
+	<kirill.shutemov@linux.intel.com>
+CC: <polynomial-c@gmx.de>, <gregkh@linuxfoundation.org>,
+	<stable@vger.kernel.org>, <regressions@lists.linux.dev>, wangzijie
+	<wangzijie1@honor.com>
+Subject: [PATCH] proc: fix wrong behavior of FMODE_LSEEK clearing for net related proc file
+Date: Mon, 18 Aug 2025 12:05:35 +0800
+Message-ID: <20250818040535.564611-1-wangzijie1@honor.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250817134901.2350637-1-sashal@kernel.org>
-In-Reply-To: <20250817134901.2350637-1-sashal@kernel.org>
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Date: Mon, 18 Aug 2025 12:54:26 +0900
-X-Gmail-Original-Message-ID: <CAMZ6RqKtpR3vikvm80h0Tv-SUCP4AU2gmMvn=F=SZMSB1UJTgA@mail.gmail.com>
-X-Gm-Features: Ac12FXzqAcQwYki_kHhbiDY2AwAgX77eADux-vZk2X1hH-aaBzL8DQWQMprN370
-Message-ID: <CAMZ6RqKtpR3vikvm80h0Tv-SUCP4AU2gmMvn=F=SZMSB1UJTgA@mail.gmail.com>
-Subject: Re: Patch "can: ti_hecc: fix -Woverflow compiler warning" has been
- added to the 6.15-stable tree
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: w010.hihonor.com (10.68.28.113) To a011.hihonor.com
+ (10.68.31.243)
 
-Hi Sasha,
+For avoiding pde->proc_ops->... dereference(which may cause UAF in rmmod race scene),
+we call pde_set_flags() to save this kind of information in PDE itself before
+proc_register() and call pde_has_proc_XXX() to replace pde->proc_ops->... dereference.
+But there has omission of pde_set_flags() in net related proc file create, which cause
+the wroing behavior of FMODE_LSEEK clearing in proc_reg_open() for net related proc file
+after commit ff7ec8dc1b64("proc: use the same treatment to check proc_lseek as ones for
+proc_read_iter et.al"). Lars reported it in this link[1]. So call pde_set_flags() when
+create net related proc file to fix this bug.
 
-On Sun. 17 Aug. 2025 at 22:49, Sasha Levin <sashal@kernel.org> wrote:
->
-> This is a note to let you know that I've just added the patch titled
->
->     can: ti_hecc: fix -Woverflow compiler warning
->
-> to the 6.15-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->      can-ti_hecc-fix-woverflow-compiler-warning.patch
-> and it can be found in the queue-6.15 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+[1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
 
-This only silences a compiler warning. There are no actual bugs in the
-original code. This is why I did not put the Fixes tag.
+Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+---
+ fs/proc/generic.c  | 2 +-
+ fs/proc/internal.h | 1 +
+ fs/proc/proc_net.c | 4 ++++
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-I am not against this being backported to stable but please note that
-this depends on the new BIT_U32() macro which where recently added in
-commit 5b572e8a9f3d ("bits: introduce fixed-type BIT_U*()")
-Link: https://git.kernel.org/torvalds/c/5b572e8a9f3d
+diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+index 76e800e38..57ec5e385 100644
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -561,7 +561,7 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
+ 	return p;
+ }
+ 
+-static void pde_set_flags(struct proc_dir_entry *pde)
++void pde_set_flags(struct proc_dir_entry *pde)
+ {
+ 	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+ 		pde->flags |= PROC_ENTRY_PERMANENT;
+diff --git a/fs/proc/internal.h b/fs/proc/internal.h
+index e737401d7..c4f7cbc7d 100644
+--- a/fs/proc/internal.h
++++ b/fs/proc/internal.h
+@@ -284,6 +284,7 @@ extern struct dentry *proc_lookup(struct inode *, struct dentry *, unsigned int)
+ struct dentry *proc_lookup_de(struct inode *, struct dentry *, struct proc_dir_entry *);
+ extern int proc_readdir(struct file *, struct dir_context *);
+ int proc_readdir_de(struct file *, struct dir_context *, struct proc_dir_entry *);
++void pde_set_flags(struct proc_dir_entry *);
+ 
+ static inline void pde_get(struct proc_dir_entry *pde)
+ {
+diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
+index 52f0b75cb..20bc7481b 100644
+--- a/fs/proc/proc_net.c
++++ b/fs/proc/proc_net.c
+@@ -124,6 +124,7 @@ struct proc_dir_entry *proc_create_net_data(const char *name, umode_t mode,
+ 	p->proc_ops = &proc_net_seq_ops;
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL_GPL(proc_create_net_data);
+@@ -170,6 +171,7 @@ struct proc_dir_entry *proc_create_net_data_write(const char *name, umode_t mode
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
+ 	p->write = write;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL_GPL(proc_create_net_data_write);
+@@ -217,6 +219,7 @@ struct proc_dir_entry *proc_create_net_single(const char *name, umode_t mode,
+ 	pde_force_lookup(p);
+ 	p->proc_ops = &proc_net_single_ops;
+ 	p->single_show = show;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL_GPL(proc_create_net_single);
+@@ -261,6 +264,7 @@ struct proc_dir_entry *proc_create_net_single_write(const char *name, umode_t mo
+ 	p->proc_ops = &proc_net_single_ops;
+ 	p->single_show = show;
+ 	p->write = write;
++	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL_GPL(proc_create_net_single_write);
+-- 
+2.25.1
 
-So, unless you also backport the above patch, this will not compile.
-
-The options are:
-
-  1. drop this patch (i.e. keep that benin -Woverflow in stable)
-  2. backport the new BIT_U*() macros and keep the patch as-is
-  3. modify the patch as below:
-
-       mbx_mask = ~(u32)BIT(HECC_RX_LAST_MBOX);
-
-I'll let you decide what you prefer. That comment also applies to the
-other backports of that patch except for the 6.16.x branch which
-already has the BIT_U*() macros.
-
-
-Yours sincerely,
-Vincent Mailhol
-
-> commit f37dbcbbea3844900081b44f372f2f4d4be1b5c6
-> Author: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-> Date:   Tue Jul 15 20:28:11 2025 +0900
->
->     can: ti_hecc: fix -Woverflow compiler warning
->
->     [ Upstream commit 7cae4d04717b002cffe41169da3f239c845a0723 ]
->
->     Fix below default (W=0) warning:
->
->       drivers/net/can/ti_hecc.c: In function 'ti_hecc_start':
->       drivers/net/can/ti_hecc.c:386:20: warning: conversion from 'long unsigned int' to 'u32' {aka 'unsigned int'} changes value from '18446744073709551599' to '4294967279' [-Woverflow]
->         386 |         mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
->             |                    ^
->
->     Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
->     Link: https://patch.msgid.link/20250715-can-compile-test-v2-1-f7fd566db86f@wanadoo.fr
->     Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/drivers/net/can/ti_hecc.c b/drivers/net/can/ti_hecc.c
-> index 644e8b8eb91e..e6d6661a908a 100644
-> --- a/drivers/net/can/ti_hecc.c
-> +++ b/drivers/net/can/ti_hecc.c
-> @@ -383,7 +383,7 @@ static void ti_hecc_start(struct net_device *ndev)
->          * overflows instead of the hardware silently dropping the
->          * messages.
->          */
-> -       mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
-> +       mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
->         hecc_write(priv, HECC_CANOPC, mbx_mask);
->
->         /* Enable interrupts */
 
