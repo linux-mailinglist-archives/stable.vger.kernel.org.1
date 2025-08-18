@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-171480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8D1B2AA37
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D58B2A423
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB79E1BA70C6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1932E1894F1D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A6C32277C;
-	Mon, 18 Aug 2025 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09F631B100;
+	Mon, 18 Aug 2025 13:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0m6jHQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0zGPAVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93774321F43;
-	Mon, 18 Aug 2025 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8821B199;
+	Mon, 18 Aug 2025 13:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526066; cv=none; b=HDL0BuKGFh/FC7g7FNBTJ0/Gm0Vm4HyQ8FNlffJaN7JFEdPJi7/VbUbHMsC6VcZheOTh2l1QKlZIDRCPIhxtACIZuTSCvH5aGgosPdGaE5SpgEIssuu1syyaPTcS+L/KJYDsHzdl0pKMfAQW2H6pf4aLjKC9uUhch4XrPpWse+U=
+	t=1755522642; cv=none; b=TtZbFR9AqWXywFiieYuFDG0QlY8jSXK74aBQF4TBdUw9nIYlriGqBg5vt7E+zdIO57XBczLw3PDYWJN4EwqO3kBN5bKFOw3sMXpZ799pVKll0gZUVhSWIZe0hSn2q0VWoqn4k0mI3C2tZHeR1YNZzBiohOZNRkv6kiSSD42kLzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526066; c=relaxed/simple;
-	bh=37M2+k6NXjw7hAkQRXRDQhv+jl22n8xkcb66m0tg918=;
+	s=arc-20240116; t=1755522642; c=relaxed/simple;
+	bh=oGmlzHwuN/bCiJjsXjI+2k/flfnLl/zTXayGQSqBNTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxOPBl83dXpRqdd3DLn2574IZmpJnBe5vd7Qdcjz6cJ3kVmamGG9cjDbnmVg3xKfrNt7V3pCfDuZFe4dmYCOI6005s6ZoXGU80NLDdjLzRiW5nwEB1usfalXDWev9p/H1BPtG4lGdh5NTsxlaNbghWOwSuISbbBWLosphZa1qK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0m6jHQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04E5C4CEEB;
-	Mon, 18 Aug 2025 14:07:45 +0000 (UTC)
+	 MIME-Version; b=A8qn2gtXpoitFmZBwZYo1D4z7xMZDQbJo9oPII5y6srzg7RP5tpOtho/OHBmeUbFPjdCSsJ5BSOdNTytIjdc7IBvHw+L2FKxo+Zv2VfZNLLFTEn8Grs0Zu/xow2iQ4h+selmCwUDpFVkoSbIFHQyuy5O6aEv/vFSNtcaIK79IdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0zGPAVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C086FC4CEEB;
+	Mon, 18 Aug 2025 13:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526066;
-	bh=37M2+k6NXjw7hAkQRXRDQhv+jl22n8xkcb66m0tg918=;
+	s=korg; t=1755522642;
+	bh=oGmlzHwuN/bCiJjsXjI+2k/flfnLl/zTXayGQSqBNTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0m6jHQUHHD7YKd/gg1+PwYat59cB6rnC29hX+Yh03zbLl2Fo1nf1uzchD6hFSovf
-	 XBeTovLStHubQFpv6V4ZfLvKvAIIUR2XgtiJILeBPxqGlNk+HcHGJYfcHKqYaw5xoP
-	 lV6Ozpe9lgyq02F1LNeSaNCrSQYbQbVfD2/FKuSI=
+	b=i0zGPAVjPqqoobRaAfuVMA916kB+Zs/1RkiQYce2+UNjZNkKbXy1vx1x2q+i7vgP+
+	 z/JsDETXp6BXRQeoLgTReqOxc7Z31UQSrNprpLtL5JiogzQMIKRJcFdK6wjmrJuZuo
+	 XaiL/2GzW8qe+Lq0fI/ju7/z2xy4pHbYYFv0CiO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chenchangcheng <chenchangcheng@kylinos.cn>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 416/570] media: uvcvideo: Fix bandwidth issue for Alcor camera
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 377/444] cifs: reset iface weights when we cannot find a candidate
 Date: Mon, 18 Aug 2025 14:46:43 +0200
-Message-ID: <20250818124521.870515953@linuxfoundation.org>
+Message-ID: <20250818124503.024581263@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chenchangcheng <chenchangcheng@kylinos.cn>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 9764401bf6f8a20eb11c2e78470f20fee91a9ea7 ]
+commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 upstream.
 
-Some broken device return wrong dwMaxPayloadTransferSize fields as
-follows:
+We now do a weighted selection of server interfaces when allocating
+new channels. The weights are decided based on the speed advertised.
+The fulfilled weight for an interface is a counter that is used to
+track the interface selection. It should be reset back to zero once
+all interfaces fulfilling their weight.
 
-[  218.632537] uvcvideo: Device requested 2752512 B/frame bandwidth.
-[  218.632598] uvcvideo: No fast enough alt setting for requested bandwidth.
+In cifs_chan_update_iface, this reset logic was missing. As a result
+when the server interface list changes, the client may not be able
+to find a new candidate for other channels after all interfaces have
+been fulfilled.
 
-When dwMaxPayloadTransferSize is greater than maxpsize, it will prevent
-the camera from starting. So use the bandwidth of maxpsize.
-
-Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250510061803.811433-1-ccc194101@163.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_video.c | 9 +++++++++
+ fs/smb/client/sess.c |    9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index e3567aeb0007..11769a1832d2 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -262,6 +262,15 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -360,6 +360,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 	struct cifs_server_iface *old_iface = NULL;
+ 	struct cifs_server_iface *last_iface = NULL;
+ 	struct sockaddr_storage ss;
++	int retry = 0;
  
- 		ctrl->dwMaxPayloadTransferSize = bandwidth;
+ 	spin_lock(&ses->chan_lock);
+ 	chan_index = cifs_ses_get_chan_index(ses, server);
+@@ -388,6 +389,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 		return;
  	}
-+
-+	if (stream->intf->num_altsetting > 1 &&
-+	    ctrl->dwMaxPayloadTransferSize > stream->maxpsize) {
-+		dev_warn_ratelimited(&stream->intf->dev,
-+				     "UVC non compliance: the max payload transmission size (%u) exceeds the size of the ep max packet (%u). Using the max size.\n",
-+				     ctrl->dwMaxPayloadTransferSize,
-+				     stream->maxpsize);
-+		ctrl->dwMaxPayloadTransferSize = stream->maxpsize;
-+	}
- }
  
- static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
--- 
-2.39.5
-
++try_again:
+ 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
+ 				     iface_head);
+ 	iface_min_speed = last_iface->speed;
+@@ -425,6 +427,13 @@ cifs_chan_update_iface(struct cifs_ses *
+ 	}
+ 
+ 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
++		list_for_each_entry(iface, &ses->iface_list, iface_head)
++			iface->weight_fulfilled = 0;
++
++		/* see if it can be satisfied in second attempt */
++		if (!retry++)
++			goto try_again;
++
+ 		iface = NULL;
+ 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	}
 
 
 
