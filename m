@@ -1,135 +1,87 @@
-Return-Path: <stable+bounces-169966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143D8B29EBC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:03:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EA4B29EC5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10E3196318D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:02:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1F0A3ACC60
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BAC310794;
-	Mon, 18 Aug 2025 10:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F226B310622;
+	Mon, 18 Aug 2025 10:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ETksj5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaLwxCtw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EBA31078F
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06A83101A7
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755511277; cv=none; b=lgaQQcoCvUQFwl7ekEYU4aet8KAqCEwnP4QGWsc/poTt44VUDj35pvNEGylzaxZgohuB6jl00vcujF7IWD5eoY76UoC054ac+TrH/kcwX33bfVPycA5SK9tFAjBlOxY7Zrd5BH9tQmRvEwyMyk9DaiHijpINKPTr/JDPf2ciVOg=
+	t=1755511414; cv=none; b=ay/woUsawrwRS5SuNVA31y7P/1uD/IkjlbdujCbwMVOv49Qj52b7gN1/R+sz+ReA5BoLDzTwZc960ukiaaX5nztaRv0VjK2NeQqO+8KJF+wo8SlvjwAIs2m7tLjPCes2r44Q08Uf6zCVNsDIWbQW8DcInXmUbvxewwGiLW2QL6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755511277; c=relaxed/simple;
-	bh=CIiqCBY29RgxtAt3a8CL/TVTfKPmnqHNIPfnKIsdysA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V3plRV52kRjgunwZCR/EPhEedVtI/q1cOAoFHgI5iqAUAlL3CRl86dc96btjfPzLtbFLXDelmPL5FT3TYmbDyDVMYud9vuvfLw+VKYmPqsLGvHgEmdeyVRAayiFlfxvhKRYhvdEJeD8OwWBfmsUn5K58HPqiSKZZIjRbUyOhpPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ETksj5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B118C4CEEB;
-	Mon, 18 Aug 2025 10:01:15 +0000 (UTC)
+	s=arc-20240116; t=1755511414; c=relaxed/simple;
+	bh=CSnKYuUY9TrC+TO0gE7aReqBDA6wfSS6qGWSoAgEyW4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q6Q58ikyiFE7Ht+LRz+vo3vXql3WmxBQsgRB8MLl4NuPLDmD+w/fi6ErrylZli7dT7d1gEp697JjFivEba14dflHVen9pd13rbfoMGhOyB/kQc9ktt4AYeEa6dCdsZ1df44yuNjz70WVMoGjOEUy7hgJTmtnD95WeGlLWfahrb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaLwxCtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F326CC4CEED;
+	Mon, 18 Aug 2025 10:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755511275;
-	bh=CIiqCBY29RgxtAt3a8CL/TVTfKPmnqHNIPfnKIsdysA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=2ETksj5OMBiVQGttJm7Cg7OEL0Cu7JmzGXPU0SygdhDg7NfTNzL2LKu8aNet22DcO
-	 pX7x0+i5jclL52rCYdd3N5SMTA6dQ3oeKau2O+jbt538oJywZZ7MADJT1jyfFeYage
-	 /r4RqygsfQu5Q9MCAget3dgRlqnJEQ8b1VwAk9/I=
-Subject: FAILED: patch "[PATCH] serial: 8250: fix panic due to PSLVERR" failed to apply to 5.4-stable tree
-To: cuiyunhui@bytedance.com,gregkh@linuxfoundation.org,john.ogness@linutronix.de,stable@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 12:00:49 +0200
-Message-ID: <2025081849-trio-prepay-4247@gregkh>
+	s=korg; t=1755511414;
+	bh=CSnKYuUY9TrC+TO0gE7aReqBDA6wfSS6qGWSoAgEyW4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zaLwxCtwdS5IuoA2unl5FRXJCXjuw9DL4B6Vmuq6U/2Gyp85q1g0xvA5po18rERrd
+	 MkZwk+tT9QJ2EaMcd10isMrTlaebgUPp7bIe9vVEUFN28OKFYItA/HhHuk4vfpnlfI
+	 TamXQNa1oM67oklwxNMGlfgh8xSntfYLbAAXUKPg=
+Date: Mon, 18 Aug 2025 12:03:31 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jiucheng Xu <Jiucheng.Xu@amlogic.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Tuan Zhang <Tuan.Zhang@amlogic.com>,
+	Jianxin Pan <Jianxin.Pan@amlogic.com>
+Subject: Re: f2fs: fix to avoid UAF in f2fs_sync_inode_meta()
+Message-ID: <2025081817-python-habitant-17e3@gregkh>
+References: <ae6791c0-8bd0-4388-bb65-53c421b35380@amlogic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae6791c0-8bd0-4388-bb65-53c421b35380@amlogic.com>
 
+On Mon, Aug 18, 2025 at 09:46:32AM +0000, Jiucheng Xu wrote:
+> Dear 5.15.y maintainers,
+> 
+> A f2fs patch should be backported from upstream mainline to the stable 
+> 5.15.y branch. The patch's information is shown as below:
+> 
+> [Subject]
+> f2fs: fix to avoid UAF in f2fs_sync_inode_meta()
+> 
+> [Upstream commit ID]
+> 7c30d79930132466f5be7d0b57add14d1a016bda
+> 
+> [Kernel version]
+> 5.15.y
+> 
+> [Why]
+> This patch fixes the issue where the f2fs_inode_info.gdirty_list is not 
+> deleted when evicting the inode. This would cause the gdirty_list to 
+> remain incorrectly linked when the f2fs_inode_info is reallocated, which 
+> in turn would be detected by __list_del_entry_valid during list_del_init.
+> 
+> On the Android 5.15 U arm platform, the issue that could be reproduced 
+> within 24 hours has not recurred for a week after applying this patch.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7f8fdd4dbffc05982b96caf586f77a014b2a9353
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081849-trio-prepay-4247@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+It's already queued up for the next 5.15.y release, thanks!
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7f8fdd4dbffc05982b96caf586f77a014b2a9353 Mon Sep 17 00:00:00 2001
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-Date: Wed, 23 Jul 2025 10:33:22 +0800
-Subject: [PATCH] serial: 8250: fix panic due to PSLVERR
-
-When the PSLVERR_RESP_EN parameter is set to 1, the device generates
-an error response if an attempt is made to read an empty RBR (Receive
-Buffer Register) while the FIFO is enabled.
-
-In serial8250_do_startup(), calling serial_port_out(port, UART_LCR,
-UART_LCR_WLEN8) triggers dw8250_check_lcr(), which invokes
-dw8250_force_idle() and serial8250_clear_and_reinit_fifos(). The latter
-function enables the FIFO via serial_out(p, UART_FCR, p->fcr).
-Execution proceeds to the serial_port_in(port, UART_RX).
-This satisfies the PSLVERR trigger condition.
-
-When another CPU (e.g., using printk()) is accessing the UART (UART
-is busy), the current CPU fails the check (value & ~UART_LCR_SPAR) ==
-(lcr & ~UART_LCR_SPAR) in dw8250_check_lcr(), causing it to enter
-dw8250_force_idle().
-
-Put serial_port_out(port, UART_LCR, UART_LCR_WLEN8) under the port->lock
-to fix this issue.
-
-Panic backtrace:
-[    0.442336] Oops - unknown exception [#1]
-[    0.442343] epc : dw8250_serial_in32+0x1e/0x4a
-[    0.442351]  ra : serial8250_do_startup+0x2c8/0x88e
-...
-[    0.442416] console_on_rootfs+0x26/0x70
-
-Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
-Link: https://lore.kernel.org/all/84cydt5peu.fsf@jogness.linutronix.de/T/
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250723023322.464-2-cuiyunhui@bytedance.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 7eddcab318b4..2da9db960d09 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2269,9 +2269,9 @@ static void serial8250_initialize(struct uart_port *port)
- {
- 	unsigned long flags;
- 
-+	uart_port_lock_irqsave(port, &flags);
- 	serial_port_out(port, UART_LCR, UART_LCR_WLEN8);
- 
--	uart_port_lock_irqsave(port, &flags);
- 	serial8250_init_mctrl(port);
- 	serial8250_iir_txen_test(port);
- 	uart_port_unlock_irqrestore(port, flags);
-
 
