@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACBBB2A370
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6E3B2A61C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D82316F7A1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98EA017D60E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AE426F283;
-	Mon, 18 Aug 2025 12:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1141322A04;
+	Mon, 18 Aug 2025 13:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWIJtZwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrBSFz2Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80431E51FE;
-	Mon, 18 Aug 2025 12:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7C8322A07;
+	Mon, 18 Aug 2025 13:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521968; cv=none; b=ruIOMjkn57IKHuNm7VRtmQ6Kz0I0N+yZxoDS64n/rGTAbOshn1ycNg2fyJCur4SNjG0SCuznH+LZVx70dxbTVQjs16jPhBX1Ma2pXR2fihHbZtrYYgxpSW73SzA4kMYtMb6V3WaXpHQ5cborWIuPZnpj078oJYQYtI0FYF7Ptt4=
+	t=1755523585; cv=none; b=aeFbf5TT1+AgpbASA0gAYsHVSbqE63yb78WAC7y4v6In7EwmqubWU86mHuD7tYGx9as2zbbMErVMOLvWGwuo4sDmfx9X3pQwGUFVEw8d5NwzYq99nKgQ1vQy9c7na7sd3Cdi0hAg29yaxnNfIChA1IPujGn0lNPFyTDqRqZhGlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521968; c=relaxed/simple;
-	bh=jgkYcCgqLPq/KJFooc/Dvxv2kXPuqCo9HyjqGT36W1Q=;
+	s=arc-20240116; t=1755523585; c=relaxed/simple;
+	bh=rxMF7g2jlaGJsl05a5P9ltISdQKX5YGTyJa9FfeipE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D59cjaAvl4ktIxVZFF8PEOJmwAOzdiJHwg2TnTaYrduoaX6p57DFeBULQVTzqs1daIZSI59S07Y3QlGeFaZg+LMrJaP63mbE0SZDcKDJ1Pej6or8C55ZLabF0QnjprBq3MITxNyQISozp1GP++zkPbyu36DysDvMAn8CbRVcTTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWIJtZwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127AFC4CEEB;
-	Mon, 18 Aug 2025 12:59:26 +0000 (UTC)
+	 MIME-Version; b=lwVwyJGi8khvMq/chMY/cwSgy19OkhHwJ9/OxTvbvfbZ2NG9RYG7iQw4EVmDm+AtfV+XkkHc3xC7shcx6T8WZbaAmA+LqYtEam4eliAb5TMVXnUSIkPHQN9rjHS+kMPKkyvnhKdVMjubbKUJF4Ksbp7s21c84pstrffyx/Dh1ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrBSFz2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41CBC4CEEB;
+	Mon, 18 Aug 2025 13:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521967;
-	bh=jgkYcCgqLPq/KJFooc/Dvxv2kXPuqCo9HyjqGT36W1Q=;
+	s=korg; t=1755523585;
+	bh=rxMF7g2jlaGJsl05a5P9ltISdQKX5YGTyJa9FfeipE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWIJtZwqlVeEwZtHXYN11/2sTZB3lqVpoSU4fFFmgKzBqXWa7SF1DsQhZiPPgKsSA
-	 9uEjGQyeZ1Msq3fQn2PgM8294jdq4+uaUiIwqH2MtFWSkT3omuk1eQRpGaYwj/4ghN
-	 Ay7pMZuA/zrb1SGfdGWFhNwft1AfAPK26GOfzSgg=
+	b=BrBSFz2Yd/ST+AHOSqcr38188T1pY7GIjWyz0crpax2o82BlyAFdQAdE2h1d3DxBe
+	 IoUlYVZF3iEO+NBJva9ZkY+imdNjvO3tqWHLHQTstbeS3hFH8azXjMx1pjjcc7Ez1Q
+	 KCgoR8KUaLhLOSLL5nHu/9XQ5m6aMyQiiZWA2ibQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 175/444] libbpf: Verify that arena map exists when adding arena relocations
+Subject: [PATCH 6.15 215/515] net: ag71xx: Add missing check after DMA map
 Date: Mon, 18 Aug 2025 14:43:21 +0200
-Message-ID: <20250818124455.443794877@linuxfoundation.org>
+Message-ID: <20250818124506.648952861@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 42be23e8f2dcb100cb9944b2b54b6bf41aff943d ]
+[ Upstream commit 96a1e15e60216b52da0e6da5336b6d7f5b0188b0 ]
 
-Fuzzer reported a memory access error in bpf_program__record_reloc()
-that happens when:
-- ".addr_space.1" section exists
-- there is a relocation referencing this section
-- there are no arena maps defined in BTF.
+The DMA map functions can fail and should be tested for errors.
 
-Sanity checks for maps existence are already present in
-bpf_program__record_reloc(), hence this commit adds another one.
-
-[1] https://github.com/libbpf/libbpf/actions/runs/16375110681/job/46272998064
-
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250718222059.281526-1-eddyz87@gmail.com
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250716095733.37452-3-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/atheros/ag71xx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 747cef47e685..e33cf3caf8b6 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4546,6 +4546,11 @@ static int bpf_program__record_reloc(struct bpf_program *prog,
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index 67b654889cae..d1be8928b985 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1213,6 +1213,11 @@ static bool ag71xx_fill_rx_buf(struct ag71xx *ag, struct ag71xx_buf *buf,
+ 	buf->rx.rx_buf = data;
+ 	buf->rx.dma_addr = dma_map_single(&ag->pdev->dev, data, ag->rx_buf_size,
+ 					  DMA_FROM_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, buf->rx.dma_addr)) {
++		skb_free_frag(data);
++		buf->rx.rx_buf = NULL;
++		return false;
++	}
+ 	desc->data = (u32)buf->rx.dma_addr + offset;
+ 	return true;
+ }
+@@ -1511,6 +1516,10 @@ static netdev_tx_t ag71xx_hard_start_xmit(struct sk_buff *skb,
  
- 	/* arena data relocation */
- 	if (shdr_idx == obj->efile.arena_data_shndx) {
-+		if (obj->arena_map_idx < 0) {
-+			pr_warn("prog '%s': bad arena data relocation at insn %u, no arena maps defined\n",
-+				prog->name, insn_idx);
-+			return -LIBBPF_ERRNO__RELOC;
-+		}
- 		reloc_desc->type = RELO_DATA;
- 		reloc_desc->insn_idx = insn_idx;
- 		reloc_desc->map_idx = obj->arena_map_idx;
+ 	dma_addr = dma_map_single(&ag->pdev->dev, skb->data, skb->len,
+ 				  DMA_TO_DEVICE);
++	if (dma_mapping_error(&ag->pdev->dev, dma_addr)) {
++		netif_dbg(ag, tx_err, ndev, "DMA mapping error\n");
++		goto err_drop;
++	}
+ 
+ 	i = ring->curr & ring_mask;
+ 	desc = ag71xx_ring_desc(ring, i);
 -- 
 2.39.5
 
