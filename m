@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F675B2A6D3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28033B2A958
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0EF17B64B2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 390F4B62218
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285FA32254F;
-	Mon, 18 Aug 2025 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3612321F58;
+	Mon, 18 Aug 2025 14:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYCGP1Ue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzoJ1oZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3F732144E;
-	Mon, 18 Aug 2025 13:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05A2322525;
+	Mon, 18 Aug 2025 14:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524429; cv=none; b=lceSn/Yozys7byvkX9ptKbDE7WCHFtGCfsaRSxH4hNhzCrVg13JvBRGt4PM0AVUUkVo6LExidjzc2gmQR3soS4lRt/5TXzYAh/ZOqUKKiKQlQ6wa9Hgo6cdXNh72XLajYAen/O+IlrmOeH5Glnz/9/kR1csg1P7croeXUAm/Fjg=
+	t=1755526024; cv=none; b=NaDR9PjnlP+IXa11zcEYA1leP2rDHmPODBsBPzczfMV4SY+c5IJtGedtHvMwCWYVmmPxuOPcz0wJR05rK4cT5ZLYAgafn1SjjRhQdzQPQT0XLdBsUlQWIMJAvDo+gpdfSWHUNzSdKyD0p9givbticDiq1j9vEK4610HHOY9uAII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524429; c=relaxed/simple;
-	bh=fX/UWJTcNPy5Oo685zOgQ3bL78WkK1wAtRN3XniAHwc=;
+	s=arc-20240116; t=1755526024; c=relaxed/simple;
+	bh=Qci8KyMFoBi49LhGFgQApFOaIeppruZnvPD8Y6TMk2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGjNZc19Wkw2DOfma0Jba1f6OKOGvAXvEn5zlZ4JPSvMIPcyPHo9KxvwnZARUfu+P/+hNUYt123lT6YaGdPENIvR/wdq0uwradr+kDxsqtY4J2ctab/zaPdlbYq7qI7vEwMkBnVWQ5sI910Mzx+ZwM+sezdGfs3EiQhHxmeBzU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYCGP1Ue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3A1C4CEF1;
-	Mon, 18 Aug 2025 13:40:29 +0000 (UTC)
+	 MIME-Version; b=ieq9MEWxMWcOrWp0Hs9my0wkl830bImtkefkqOiMoslrEpE7VWpPyazI48iUo3beymvm4GxACjB3c5izEMoBndTHXJPdWCsNWkyVzC2b9TzmAosc3hlr8T364OJGTnkeNDeDtayr2+SdgZ9pF3gKUhlH9RgLMikFWmoN94enV5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzoJ1oZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB37C113D0;
+	Mon, 18 Aug 2025 14:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524429;
-	bh=fX/UWJTcNPy5Oo685zOgQ3bL78WkK1wAtRN3XniAHwc=;
+	s=korg; t=1755526024;
+	bh=Qci8KyMFoBi49LhGFgQApFOaIeppruZnvPD8Y6TMk2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYCGP1UeE/KtkGRRRW4Rj/ZMh0cJzPY33Up3jNdix7tVsDM9DOevlTMTdVI09yue6
-	 AytFuRZoZQskG0kH6FSp8uDWgNXZPFh/+FQ/eS8l414lRV5fSpAFcEn2KnPX9fh9m+
-	 xy8xFsgNHVzqt+YfICSieMjDThEHh3eT9NiEMnaM=
+	b=jzoJ1oZ4yTxRFzJCEfXSOTDcibPQWvImcekZybb2OoF5S7AG8EHLKIYD8gufutr4S
+	 +xGAdKa7aww6yaM6pV0cBn9OUmROX59WZMa+ewxkf/LQCGvGa3+XAaF9r/B+68T0me
+	 vChGuToLN+WBIPPo0NU871M8YSsotJYx4oJ6jia0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YiPeng Chai <YiPeng.Chai@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 437/515] drm/amdgpu: fix vram reservation issue
+Subject: [PATCH 6.16 436/570] f2fs: check the generic conditions first
 Date: Mon, 18 Aug 2025 14:47:03 +0200
-Message-ID: <20250818124515.249837963@linuxfoundation.org>
+Message-ID: <20250818124522.621560492@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YiPeng Chai <YiPeng.Chai@amd.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 10ef476aad1c848449934e7bec2ab2374333c7b6 ]
+[ Upstream commit e23ab8028de0d92df5921a570f5212c0370db3b5 ]
 
-The vram block allocation flag must be cleared
-before making vram reservation, otherwise reserving
-addresses within the currently freed memory range
-will always fail.
+Let's return errors caught by the generic checks. This fixes generic/494 where
+it expects to see EBUSY by setattr_prepare instead of EINVAL by f2fs for active
+swapfile.
 
-Fixes: c9cad937c0c5 ("drm/amdgpu: add drm buddy support to amdgpu")
-Signed-off-by: YiPeng Chai <YiPeng.Chai@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d38eaf27de1b8584f42d6fb3f717b7ec44b3a7a1)
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/f2fs/file.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 07c936e90d8e..78f9e86ccc09 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -648,9 +648,8 @@ static void amdgpu_vram_mgr_del(struct ttm_resource_manager *man,
- 	list_for_each_entry(block, &vres->blocks, link)
- 		vis_usage += amdgpu_vram_mgr_vis_size(adev, block);
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 696131e655ed..bb3fd6a8416f 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1047,6 +1047,18 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	if (unlikely(f2fs_cp_error(F2FS_I_SB(inode))))
+ 		return -EIO;
  
--	amdgpu_vram_mgr_do_reserve(man);
++	err = setattr_prepare(idmap, dentry, attr);
++	if (err)
++		return err;
++
++	err = fscrypt_prepare_setattr(dentry, attr);
++	if (err)
++		return err;
++
++	err = fsverity_prepare_setattr(dentry, attr);
++	if (err)
++		return err;
++
+ 	if (unlikely(IS_IMMUTABLE(inode)))
+ 		return -EPERM;
+ 
+@@ -1065,18 +1077,6 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 			return -EINVAL;
+ 	}
+ 
+-	err = setattr_prepare(idmap, dentry, attr);
+-	if (err)
+-		return err;
 -
- 	drm_buddy_free_list(mm, &vres->blocks, vres->flags);
-+	amdgpu_vram_mgr_do_reserve(man);
- 	mutex_unlock(&mgr->lock);
- 
- 	atomic64_sub(vis_usage, &mgr->vis_usage);
+-	err = fscrypt_prepare_setattr(dentry, attr);
+-	if (err)
+-		return err;
+-
+-	err = fsverity_prepare_setattr(dentry, attr);
+-	if (err)
+-		return err;
+-
+ 	if (is_quota_modification(idmap, inode, attr)) {
+ 		err = f2fs_dquot_initialize(inode);
+ 		if (err)
 -- 
-2.50.1
+2.39.5
 
 
 
