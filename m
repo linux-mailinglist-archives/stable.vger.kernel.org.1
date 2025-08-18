@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-171173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58A4B2A7F6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:42 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B503B2A50A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5F4D5A1149
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 55D2C4E3345
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85305335BC6;
-	Mon, 18 Aug 2025 13:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A116322DB9;
+	Mon, 18 Aug 2025 13:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThIW2xEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2dO7I58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43285225413;
-	Mon, 18 Aug 2025 13:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F97322DB1;
+	Mon, 18 Aug 2025 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525055; cv=none; b=J8KemeoUKsWgo7/LV16skLmKodPY5D7v+v+GeCqDCUSudINXnNYyDkqL+/LPrBfvgZvrO9QbeCksWf0oZtR7/acYMGfdknIwTnzAoZPAzTHR/UZroJFDDKkBKqSIxxJyHVcroV5xp3+nw7+ZLCVj8MwKR6vvEnfL1uFOfg/LMYo=
+	t=1755523359; cv=none; b=J5vhGKbFnpILygzwDQg6ZIwjjBIhl01GBQ7BHH6PaL+ikZPsZfPSK60OiPGyyPdSGjHlideWLZuOGGZTF25Z64g0jbezbpZ0h4USAgGpiIyZqYFPeqpYmgO6Afon9GSkeVWbZRHwjBXJx/MVPDjMxmIld06uV9pt8TO3eK8Pzmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525055; c=relaxed/simple;
-	bh=HDp/7MTvC9gOVSrFb6lvdXVu4zpbECHEj88hBuVrptc=;
+	s=arc-20240116; t=1755523359; c=relaxed/simple;
+	bh=8ehFnlFy/eBzkMqM4T/tK8uN74bcSbWxA8rzOeUwSm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCgp2GaV3d/mYABUmYzmJ+oNNu/BiK2Y6yz0M494c8pV+R2glsE3P4iUObgIRyf1eQygOnb93vX7XKMf/StXRbWxGMYlMPgUq1h6cBymHHkqTrj26arh5N6XxFXN2+WgnNdWnWDdpFRpG0QO6THcBSrNnyP//fP/GrI2v1MeSiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThIW2xEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0708C113D0;
-	Mon, 18 Aug 2025 13:50:54 +0000 (UTC)
+	 MIME-Version; b=kHge8ICt3u4mBwe7aLUr0deIny9MxNhxKIoMpslSyEDz77F8F0TsuMJkEH+jk196ifFkxvmefE2YBzf3FGZPQy0FzfSS6sWO0EEToB4ub1B9RnKSZNdvqJPrJjltsaL1Uhz8PnXQDqhquldO1j4lr603A24JZijqnx041QcqR+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2dO7I58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EAFC113D0;
+	Mon, 18 Aug 2025 13:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525055;
-	bh=HDp/7MTvC9gOVSrFb6lvdXVu4zpbECHEj88hBuVrptc=;
+	s=korg; t=1755523359;
+	bh=8ehFnlFy/eBzkMqM4T/tK8uN74bcSbWxA8rzOeUwSm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThIW2xEubI5fifCp2A9PRWeCDNeLSalKFu21ZAnlYWTgQo5KMS1OjJg0pAuYlhCEM
-	 opsNgAsxSSptVdcvOdJHnOU+pjGMXOkjpcPcybyIzd9jIRcWQtuW/9d5QrkR0m756p
-	 mX4aywTVobN2/JAtghmvoZzVdpxp2i79sxnCssZM=
+	b=N2dO7I58CpTBC/frKWmKZt9SgJmFDvItidMZPzGw3i4cLMkhHLO/PW6h2CVGk7qs8
+	 HbKrwCyQMmXPVy3yiJKoMUaAElp26POLUoDhOVzqvK9pJSGFyaIg/Kaz4PARRaO3Ij
+	 IMfqF07uXgWWLVc5ED6iPMFRV9bSwt/6teIe7F+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 145/570] gpio: wcd934x: check the return value of regmap_update_bits()
+Subject: [PATCH 6.15 146/515] selftests: tracing: Use mutex_unlock for testing glob filter
 Date: Mon, 18 Aug 2025 14:42:12 +0200
-Message-ID: <20250818124511.408000113@linuxfoundation.org>
+Message-ID: <20250818124504.006135671@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit ff0f0d7c6587e38c308be9905e36f86e98fb9c1f ]
+[ Upstream commit a089bb2822a49b0c5777a8936f82c1f8629231fb ]
 
-regmap_update_bits() can fail so check its return value in
-wcd_gpio_direction_output() for consistency with the rest of the code
-and propagate any errors.
+Since commit c5b6ababd21a ("locking/mutex: implement
+mutex_trylock_nested") makes mutex_trylock() as an inlined
+function if CONFIG_DEBUG_LOCK_ALLOC=y, we can not use
+mutex_trylock() for testing the glob filter of ftrace.
 
-Link: https://lore.kernel.org/r/20250709-gpiochip-set-rv-gpio-remaining-v1-2-b8950f69618d@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Use mutex_unlock instead.
+
+Link: https://lore.kernel.org/r/175151680309.2149615.9795104805153538717.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-wcd934x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
-index 2bba27b13947..cfa7b0a50c8e 100644
---- a/drivers/gpio/gpio-wcd934x.c
-+++ b/drivers/gpio/gpio-wcd934x.c
-@@ -46,9 +46,12 @@ static int wcd_gpio_direction_output(struct gpio_chip *chip, unsigned int pin,
- 				     int val)
- {
- 	struct wcd_gpio_data *data = gpiochip_get_data(chip);
-+	int ret;
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+index 4b994b6df5ac..ed81eaf2afd6 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-glob.tc
+@@ -29,7 +29,7 @@ ftrace_filter_check 'schedule*' '^schedule.*$'
+ ftrace_filter_check '*pin*lock' '.*pin.*lock$'
  
--	regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
--			   WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
-+	ret = regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
-+				 WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
-+	if (ret)
-+		return ret;
+ # filter by start*mid*
+-ftrace_filter_check 'mutex*try*' '^mutex.*try.*'
++ftrace_filter_check 'mutex*unl*' '^mutex.*unl.*'
  
- 	return regmap_update_bits(data->map, WCD_REG_VAL_CTL_OFFSET,
- 				  WCD_PIN_MASK(pin),
+ # Advanced full-glob matching feature is recently supported.
+ # Skip the tests if we are sure the kernel does not support it.
 -- 
 2.39.5
 
