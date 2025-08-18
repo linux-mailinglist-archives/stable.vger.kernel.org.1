@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C99B2A9C9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C60B2A63E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65CB45868DF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:14:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C49F7B6012F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144F5345740;
-	Mon, 18 Aug 2025 14:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DD9322535;
+	Mon, 18 Aug 2025 13:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8sz4+WB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFDZ9ccr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C661C345739;
-	Mon, 18 Aug 2025 14:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AE732252B;
+	Mon, 18 Aug 2025 13:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525866; cv=none; b=nfBARXkzIvuqCAl5s8pD4F37o2z4tbmj9EydNDzkJykPLt4OvcOVXfXTDIdrBdT31eAKMMWRhXlsFaAW/6o65GauFEqeCF3Qw93WTjJDoggh8gjhlnYoeAp5tXkP3vJAJK/NKWbBbzYUFzOZ5lCi1aPdy+uwgUVexniZ3R4oV1A=
+	t=1755524182; cv=none; b=KDuq/h3/37vthpidpXtef8CFWrmgjVkcqHTh0vUfTjPZmExKMX4iBrbqNyKrAwVeXPRHDDtYnBC5+5+6R72RUG6HR+jXcZqMOCngtGHzv7dJWAUSbD+UXOzMJZElynISc9MmC/C95si+7DiRS33E1PitI0KEJ3zoT71GSg4ngjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525866; c=relaxed/simple;
-	bh=z9fInwTmPxEDvfhxnkuYOovrQsXFqxLniAIGODzz9qY=;
+	s=arc-20240116; t=1755524182; c=relaxed/simple;
+	bh=LCE5SOKHIGIquMYkqPxvhCX6pZ5ofsqbtnm106qhzn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRnKXRQs8d+OxZMhoNLAlBWFaT22/GX2r2DWxJ0P11Kwoa+2E2Ditn8puFq0ry0cWKQ4ZVqh2K9uTyvH64AnTHu1ZG9+qcH/3qn10uZBHgmZJ/rrpb8670cr8j1r35a6Ug0dsUoA1OZzu+6CBmc6d+0sqXTgngXzgTzpPWoeZuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8sz4+WB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36339C116C6;
-	Mon, 18 Aug 2025 14:04:26 +0000 (UTC)
+	 MIME-Version; b=S0i2A25nhIDEmExfnEL1XY7+P/iEfw3YnxzNe2k6jJzqfDRe96uw0MLYVxd00IX7cPutj9+DIiRTSJUozdur8+qSF4AA3YmwmJ104clEVpwYDjPPbezMJp2WMjXToWvoFW89g7qrCeVoKpvtN2JJJjDZHhxqZTvtvze9E6Z+JBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFDZ9ccr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AE9C4CEEB;
+	Mon, 18 Aug 2025 13:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525866;
-	bh=z9fInwTmPxEDvfhxnkuYOovrQsXFqxLniAIGODzz9qY=;
+	s=korg; t=1755524181;
+	bh=LCE5SOKHIGIquMYkqPxvhCX6pZ5ofsqbtnm106qhzn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8sz4+WBaGQgB59fZ2QhdJLXL+gNuDSxl7ZY6i8Sq0CywGOeDhXciqv03VIFQfrp3
-	 ENFAioub5E6DzdufxrLyZ4OaEgY6VFX9194j3JUUHCTVVGJcRPOFMNzcAYF1uiUr+G
-	 8qllS2DyKgYXAGlWiYfuMvxv4q9fpbcm1DnwLyXI=
+	b=qFDZ9ccrELu1byGYRxXNhRdiQbOWLFhAxDCSV2+kZ0/aDflYVvReOWd5mD8ra97JE
+	 y5h8HARDmF6v0DZQgytsF5/WJXDf1g/61PEIHH8x0iekGaLsS1bNF0X++aTvz4VKrv
+	 3h+4DFERpfpalDXZ9tuPvc0B6nQSb/jNc5Hw7x3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 390/570] media: i2c: vd55g1: Fix RATE macros not being expressed in bps
+Subject: [PATCH 6.15 391/515] module: Prevent silent truncation of module name in delete_module(2)
 Date: Mon, 18 Aug 2025 14:46:17 +0200
-Message-ID: <20250818124520.874774252@linuxfoundation.org>
+Message-ID: <20250818124513.469136550@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 5b69a84005b686365e9cacb2ca942271ed74867a ]
+[ Upstream commit a6323bd4e611567913e23df5b58f2d4e4da06789 ]
 
-As a bit rate is expressed in bps, use MEGA instead of HZ_PER_MHZ.
+Passing a module name longer than MODULE_NAME_LEN to the delete_module
+syscall results in its silent truncation. This really isn't much of
+a problem in practice, but it could theoretically lead to the removal of an
+incorrect module. It is more sensible to return ENAMETOOLONG or ENOENT in
+such a case.
 
-Signed-off-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Update the syscall to return ENOENT, as documented in the delete_module(2)
+man page to mean "No module by that name exists." This is appropriate
+because a module with a name longer than MODULE_NAME_LEN cannot be loaded
+in the first place.
+
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Link: https://lore.kernel.org/r/20250630143535.267745-2-petr.pavlu@suse.com
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/vd55g1.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/module/main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/i2c/vd55g1.c b/drivers/media/i2c/vd55g1.c
-index 8552ce75e1aa..d00daf89be96 100644
---- a/drivers/media/i2c/vd55g1.c
-+++ b/drivers/media/i2c/vd55g1.c
-@@ -129,8 +129,8 @@
- #define VD55G1_FWPATCH_REVISION_MINOR			9
- #define VD55G1_XCLK_FREQ_MIN				(6 * HZ_PER_MHZ)
- #define VD55G1_XCLK_FREQ_MAX				(27 * HZ_PER_MHZ)
--#define VD55G1_MIPI_RATE_MIN				(250 * HZ_PER_MHZ)
--#define VD55G1_MIPI_RATE_MAX				(1200 * HZ_PER_MHZ)
-+#define VD55G1_MIPI_RATE_MIN				(250 * MEGA)
-+#define VD55G1_MIPI_RATE_MAX				(1200 * MEGA)
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 05da78b6a6c1..4e4e0fd11dde 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -727,14 +727,16 @@ SYSCALL_DEFINE2(delete_module, const char __user *, name_user,
+ 	struct module *mod;
+ 	char name[MODULE_NAME_LEN];
+ 	char buf[MODULE_FLAGS_BUF_SIZE];
+-	int ret, forced = 0;
++	int ret, len, forced = 0;
  
- static const u8 patch_array[] = {
- 	0x44, 0x03, 0x09, 0x02, 0xe6, 0x01, 0x42, 0x00, 0xea, 0x01, 0x42, 0x00,
+ 	if (!capable(CAP_SYS_MODULE) || modules_disabled)
+ 		return -EPERM;
+ 
+-	if (strncpy_from_user(name, name_user, MODULE_NAME_LEN-1) < 0)
+-		return -EFAULT;
+-	name[MODULE_NAME_LEN-1] = '\0';
++	len = strncpy_from_user(name, name_user, MODULE_NAME_LEN);
++	if (len == 0 || len == MODULE_NAME_LEN)
++		return -ENOENT;
++	if (len < 0)
++		return len;
+ 
+ 	audit_log_kern_module(name);
+ 
 -- 
 2.39.5
 
