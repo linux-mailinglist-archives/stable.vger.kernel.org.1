@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC1FB2A9EB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98899B2A40A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25F56686EB7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E813AC95D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D457340DA4;
-	Mon, 18 Aug 2025 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CEC31A055;
+	Mon, 18 Aug 2025 13:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVv1zAtM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzUnyob6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A4B340D98;
-	Mon, 18 Aug 2025 14:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742E93218C9;
+	Mon, 18 Aug 2025 13:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525773; cv=none; b=BWTVZVH6qoUx2Fpf+gJ/+JZKCDa4rJtSizupNYrbcPdSADRKsUkIy2COw+zZC1TnJ6pzzcv8K1XsIadafkWWwWoD3nELmS/ksJRnNNopttQNq2YtfTjBxHdFDs5eOILCK3NE1+x+7164wtP3YsbWrpPqP7//37MTY8bBrQK2sBU=
+	t=1755522609; cv=none; b=eEtl77u3AUGs+1P1gDijTVkZy3Pv9xVXYTxYExAUQ/7QxG2pWDA+BBc6876iuMAbwY8hCfWUm3bD1TEayebI4wNCraiOmpK4aNQdAiXP4qI4SJX2gjcomIppuTRfRdHt01ekmPLr4cKDGJCi9RjXvnVnKv9m+jrD3IXd3E4BUfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525773; c=relaxed/simple;
-	bh=willZGGSEIhZHdXCISANgxVZMBoGxQxm9C74TSXoYiM=;
+	s=arc-20240116; t=1755522609; c=relaxed/simple;
+	bh=rWDMWMZd+RfJMApEDkTPvn7TpX5q0aN4wg9ZjqGGe+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/pdifyk8fBfdKi+Mr3joOTGCD7pRVDBb4ItbmUd9ibs/jpJOoWEkTNYGYPPnR/WDrsuz/R1oOPNOF53kjs1ZaDh8wAWGsp76oiCjberwi2+ECxNr0wTd3ySkeN3MQ+PvGNOvAB6kT58fIhjeKV6s1ocV/4ADcYqgAsEVbEKP9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVv1zAtM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4D3C4CEEB;
-	Mon, 18 Aug 2025 14:02:51 +0000 (UTC)
+	 MIME-Version; b=uHcFM0akyA47XUSDGo7wsViQvNnopb1nifM8EnhfypdXSQtx6Siec7FOpa8eHKjXbuI7ec+zn6q1XCh7+xkWwldb/9/Olr+gIqMc/Al05Ub9GAXfWwjsK7QdZ8/EYUOSLkM3xiTQ1IRXYofKoXyu92YAb66R/iUtam4nWu6RU8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzUnyob6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D31C4CEEB;
+	Mon, 18 Aug 2025 13:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525772;
-	bh=willZGGSEIhZHdXCISANgxVZMBoGxQxm9C74TSXoYiM=;
+	s=korg; t=1755522609;
+	bh=rWDMWMZd+RfJMApEDkTPvn7TpX5q0aN4wg9ZjqGGe+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cVv1zAtMQlSCYkSyfwLGbUS8SEy7IO99TQPqwv6Eg+gAzDGK4q/rtk/Ipp/P+bR2k
-	 zp19uLJhDoYL19bd8ijmjA9vJ9hPfD10MeOgkHL8xrFK77zxkvgxsPjhE6h8k+hP/4
-	 NWDflgqvaIXhKtznIbEjAStAeRIsbOLBb1HpLNX4=
+	b=PzUnyob6QFtA8jf3HIsKh6wNrLv0ze8FW3zskbIVXshJZJr4JLs7ccnilX/rE6UT0
+	 ie9BtRTSS6yEG1fik4gFNCNy1QNhtd+SEXPXUB+qUXQYE9OJsUD+KkFXTu8iI/fL6M
+	 PaJEePQFTr+ObJAze+KsqR3+qL9T442o13Ur+8UE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongzhen Zhang <zhangyongzhen@kylinos.cn>,
-	Helge Deller <deller@gmx.de>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 362/570] fbdev: fix potential buffer overflow in do_register_framebuffer()
-Date: Mon, 18 Aug 2025 14:45:49 +0200
-Message-ID: <20250818124519.810624237@linuxfoundation.org>
+Subject: [PATCH 6.12 324/444] soundwire: amd: serialize amd manager resume sequence during pm_prepare
+Date: Mon, 18 Aug 2025 14:45:50 +0200
+Message-ID: <20250818124501.089025992@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 523b84dc7ccea9c4d79126d6ed1cf9033cf83b05 ]
+[ Upstream commit 03837341790039d6f1cbf7a1ae7dfa2cb77ef0a4 ]
 
-The current implementation may lead to buffer overflow when:
-1.  Unregistration creates NULL gaps in registered_fb[]
-2.  All array slots become occupied despite num_registered_fb < FB_MAX
-3.  The registration loop exceeds array bounds
+During pm_prepare callback, pm_request_resume() delays SoundWire manager D0
+entry sequence. Synchronize runtime resume sequence for amd_manager
+instance prior to invoking child devices resume sequence for both the amd
+power modes(ClockStop Mode and Power off mode).
+Change the power_mode_mask check and use pm_runtime_resume() in
+amd_pm_prepare() callback.
 
-Add boundary check to prevent registered_fb[FB_MAX] access.
-
-Signed-off-by: Yongzhen Zhang <zhangyongzhen@kylinos.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20250530054447.1645807-3-Vijendar.Mukunda@amd.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbmem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/soundwire/amd_manager.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index dfcf5e4d1d4c..53f1719b1ae1 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -449,6 +449,9 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 		if (!registered_fb[i])
- 			break;
- 
-+	if (i >= FB_MAX)
-+		return -ENXIO;
-+
- 	if (!fb_info->modelist.prev || !fb_info->modelist.next)
- 		INIT_LIST_HEAD(&fb_info->modelist);
- 
+diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
+index 1895fba5e70b..dc7d54cb1740 100644
+--- a/drivers/soundwire/amd_manager.c
++++ b/drivers/soundwire/amd_manager.c
+@@ -1076,10 +1076,10 @@ static int __maybe_unused amd_pm_prepare(struct device *dev)
+ 	 * device is not in runtime suspend state, observed that device alerts are missing
+ 	 * without pm_prepare on AMD platforms in clockstop mode0.
+ 	 */
+-	if (amd_manager->power_mode_mask & AMD_SDW_CLK_STOP_MODE) {
+-		ret = pm_request_resume(dev);
++	if (amd_manager->power_mode_mask) {
++		ret = pm_runtime_resume(dev);
+ 		if (ret < 0) {
+-			dev_err(bus->dev, "pm_request_resume failed: %d\n", ret);
++			dev_err(bus->dev, "pm_runtime_resume failed: %d\n", ret);
+ 			return 0;
+ 		}
+ 	}
 -- 
 2.39.5
 
