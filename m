@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E340EB2A713
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3102B2AA08
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9F5B1895978
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690301BA1D91
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8C6322DAC;
-	Mon, 18 Aug 2025 13:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1D3322C7F;
+	Mon, 18 Aug 2025 14:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny3C3XYV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+hnSdOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC72322754;
-	Mon, 18 Aug 2025 13:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084E23203AD;
+	Mon, 18 Aug 2025 14:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524226; cv=none; b=AmwJo4NWN4KO87txJB4Wbs6eIoVpN6zKEuJnbIU4YJs5TcMVp+0f62YPQ+SrxGpvXedsOl26SQxoq+XfGzzUvfLVj/WwQllZcDf1a2AJMkosFWwXOkbdp8ni3Po48jAIb+J+k0SGvY4aVgWtf3KCUVsJMLQzXmXjkCmYxzz6LSA=
+	t=1755525931; cv=none; b=jCEF55oh1ldg1IPjwPADwtqbevV6KxNlVpL0Mhcz6DyLcU2JM0uo+7l0bJ+KqaCIyCCZ3UUpwtWbjxU063erdjUMP4cW/qykU3MnUGLCMRl+xdSiJDCj4ti/OZNIGrcZfqsz1HxFzqalx805OKm29RoY0ZDM2JBf0QZHRc4wq3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524226; c=relaxed/simple;
-	bh=h502uA5glZLFnWJ8UTnyyi7hwvEurRcNuCEmmmayIjo=;
+	s=arc-20240116; t=1755525931; c=relaxed/simple;
+	bh=Xf+6kIWTCESetOdvUxKvLz48M5D0Sb3EJ2TFL9k5Tv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdfhnfacS8EI59ap2ynwJg8c90WzHr0Ejyxoa2d8bi6jB5+TvIqnGpdrwTLu6+H/BKVcp8Fv3rbrjnxzxsxHG+5uzAY6cBPi+Ji2tC51DCOK6feFC/ePBPt2NX9ePuaVz8QV/6dWojJkFPfRzHU4X2Zabaafoax7KN0z5MqG69I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny3C3XYV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CD5C4CEEB;
-	Mon, 18 Aug 2025 13:37:05 +0000 (UTC)
+	 MIME-Version; b=tgmdlGb4vJ6pLTk7MPecbHH/pX7yyL0dAXmFUPcfXXG4QBIXbGLI99U9fR7I5GcIiq14f/T6DwmzZMj0PFaSCJTDV7JyLORW3F2oDWincntLpUdtrCbWO/qT4G4AaNgVXu//Q3b3lzxT/hVUvz0J9/Rcj4cYygTuUuEbSvGzOi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+hnSdOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BE4C4CEF1;
+	Mon, 18 Aug 2025 14:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524226;
-	bh=h502uA5glZLFnWJ8UTnyyi7hwvEurRcNuCEmmmayIjo=;
+	s=korg; t=1755525930;
+	bh=Xf+6kIWTCESetOdvUxKvLz48M5D0Sb3EJ2TFL9k5Tv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ny3C3XYVIPmbKma11xNUr23bEr0MgiIfV9Q2y4CTzXgudtN3xqEozfA9F//nbsCTI
-	 TAS0cWES5mlnR2gkZAD++VyLJcIlhmxUc55URI52zKhpHHJaP7l4G3d8+0LUiSN1kJ
-	 L0eZ54bQwSZIy/jQN8W3dLAdqa/3o6GRiI7gcRi0=
+	b=o+hnSdOplY+D7QIl/9TwBVeTLzfu9V4gYPMJUeQG07ZLTo20R+dz67wfYtFzH6fCh
+	 rQ/KN88pg4L32RdiW2w1lMnkCLFXRsqQ2403YxUg9ht2WWnQ8CAKRKxeLnYjtLT1Zl
+	 lfTfdceEFzYq2gW9zJt98l+l/qVXbD7LpIWVCWuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Nicolas Schier <n.schier@avm.de>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 407/515] kconfig: nconf: Ensure null termination where strncpy is used
-Date: Mon, 18 Aug 2025 14:46:33 +0200
-Message-ID: <20250818124514.083254535@linuxfoundation.org>
+Subject: [PATCH 6.16 407/570] media: raspberrypi: cfe: Fix min_reqbufs_allocation
+Date: Mon, 18 Aug 2025 14:46:34 +0200
+Message-ID: <20250818124521.528355462@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shankari Anand <shankari.ak0208@gmail.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit f468992936894c9ce3b1659cf38c230d33b77a16 ]
+[ Upstream commit 57b5a302b5d529db96ddc52fbccec005092ebb3d ]
 
-strncpy() does not guarantee null-termination if the source string is
-longer than the destination buffer.
+The driver checks if "vq->max_num_buffers + *nbuffers < 3", but
+vq->max_num_buffers is (by default) 32, so the check is never true. Nor
+does the check make sense.
 
-Ensure the buffer is explicitly null-terminated to prevent potential
-string overflows or undefined behavior.
+The original code in the BSP kernel was "vq->num_buffers + *nbuffers <
+3", but got mangled along the way to upstream. The intention was to make
+sure that at least 3 buffers are allocated.
 
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Nicolas Schier <n.schier@avm.de>
-Acked-by: Nicolas Schier <n.schier@avm.de>
+Fix this by removing the bad lines and setting q->min_reqbufs_allocation
+to three.
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/nconf.c     | 2 ++
- scripts/kconfig/nconf.gui.c | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/media/platform/raspberrypi/rp1-cfe/cfe.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index c0b2dabf6c89..ae1fe5f60327 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -593,6 +593,8 @@ static void item_add_str(const char *fmt, ...)
- 		tmp_str,
- 		sizeof(k_menu_items[index].str));
+diff --git a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
+index fcadb2143c88..62dca76b468d 100644
+--- a/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
++++ b/drivers/media/platform/raspberrypi/rp1-cfe/cfe.c
+@@ -1024,9 +1024,6 @@ static int cfe_queue_setup(struct vb2_queue *vq, unsigned int *nbuffers,
+ 	cfe_dbg(cfe, "%s: [%s] type:%u\n", __func__, node_desc[node->id].name,
+ 		node->buffer_queue.type);
  
-+	k_menu_items[index].str[sizeof(k_menu_items[index].str) - 1] = '\0';
-+
- 	free_item(curses_menu_items[index]);
- 	curses_menu_items[index] = new_item(
- 			k_menu_items[index].str,
-diff --git a/scripts/kconfig/nconf.gui.c b/scripts/kconfig/nconf.gui.c
-index 4bfdf8ac2a9a..7206437e784a 100644
---- a/scripts/kconfig/nconf.gui.c
-+++ b/scripts/kconfig/nconf.gui.c
-@@ -359,6 +359,7 @@ int dialog_inputbox(WINDOW *main_window,
- 	x = (columns-win_cols)/2;
+-	if (vq->max_num_buffers + *nbuffers < 3)
+-		*nbuffers = 3 - vq->max_num_buffers;
+-
+ 	if (*nplanes) {
+ 		if (sizes[0] < size) {
+ 			cfe_err(cfe, "sizes[0] %i < size %u\n", sizes[0], size);
+@@ -1998,6 +1995,7 @@ static int cfe_register_node(struct cfe_device *cfe, int id)
+ 	q->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
+ 	q->lock = &node->lock;
+ 	q->min_queued_buffers = 1;
++	q->min_reqbufs_allocation = 3;
+ 	q->dev = &cfe->pdev->dev;
  
- 	strncpy(result, init, *result_len);
-+	result[*result_len - 1] = '\0';
- 
- 	/* create the windows */
- 	win = newwin(win_lines, win_cols, y, x);
+ 	ret = vb2_queue_init(q);
 -- 
 2.39.5
 
