@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-170588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F79BB2A4C7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:25:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3186CB2A7E4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B98B4E31D4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9891BA3881
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF88F334724;
-	Mon, 18 Aug 2025 13:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FC222A4E9;
+	Mon, 18 Aug 2025 13:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAz5NuWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awChgCwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B50F2253AE;
-	Mon, 18 Aug 2025 13:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D0F335BAA;
+	Mon, 18 Aug 2025 13:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523126; cv=none; b=dWTfXZns/sss+vc0v0ko5ImMdsRJol5qjeP5nwCfiCoziTEnbYUqIGIliLqDIBZ4irI64+YP187yuDomSM0BPW9Y5FIYelbT/7w14EojA7CSLmoPun9sSX+k6D+U+7lQwyUn2qzyixuX4/ErdYBBPvuCIqheSt1OejgDJr9iVNc=
+	t=1755524828; cv=none; b=OEvijvZDhv01xA5sKtG6aGI5OnVwzw9bEKJ7+4xGhRVm7ZhjH2GrMZkzGDGV4Ao1SL6MDcvO2kOaHbOgpiuYRXVcpCpL+dbEx5SKKvqnLfX6d2QFihhgqqN3wcDUKr+Sb5MmhgqSnyx5FjhRDYS7rG1WR09Qpk9aeSLUTzPFYZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523126; c=relaxed/simple;
-	bh=TvISiNH7RFqs9W+a0/7L7gGO81xCb7qpluJKew7lJ2A=;
+	s=arc-20240116; t=1755524828; c=relaxed/simple;
+	bh=5Ke9Qe4Hgr0M1GS19/+G9pXSCIZhZWWkAOqUe9dXoDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBz/44CQYetcEnpws7YvMZshLxtKAKgRxAbJsE+Gt18UfVshtWyIaJ8WOLbvXJNS/jX7cYYeOm+asOB/WIoZ3QxIbAPAzytLtD9/sKfpSx92JB3QCir4HcTtkY2Y0+JJwAsTw4iC539JnMtgQ3GjScQIxl4g9VWgqq3fPmhEba8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAz5NuWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00C6C4CEEB;
-	Mon, 18 Aug 2025 13:18:45 +0000 (UTC)
+	 MIME-Version; b=tiZm/UAhtgJW3dsTsHMMS6KdRj4JHg7UyyljnPkzNP4UD2HUiepczawtcx08mIV4JZgyTgxoDUyIx772X9FaddVKIx7lRkajxqUpjtsVmmmZxGj86LZc2c2OPR/8CLZBTyC6iQ+0vhdcOToiEDbYp1qOSAZMrEgfykorUrKn3II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awChgCwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12856C4CEEB;
+	Mon, 18 Aug 2025 13:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523126;
-	bh=TvISiNH7RFqs9W+a0/7L7gGO81xCb7qpluJKew7lJ2A=;
+	s=korg; t=1755524828;
+	bh=5Ke9Qe4Hgr0M1GS19/+G9pXSCIZhZWWkAOqUe9dXoDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAz5NuWJNfj2Vp7qkTAH7u9QJGKLr2ZCkeBE830hQ28Ihl7BLe/6E4D41WJlYU9AX
-	 LlSHM/6+FEjAYo2LRfYObBjSJ5SrxuUN/KzaSGorDWS9VbrDB7+uMpOKuvwEPH1IJp
-	 xzeynx3LnQxWZlzWHPDyK+Gou6W6p0PyTehT1XOQ=
+	b=awChgCwYCzb4b5nxjhPeJtxoeHKcME0wUq7BlIPlioybNQyVP2nJnaCu0Gs5lQzrg
+	 PxqK7iNucEmH4TbYPlEODBG5MQWVC/UamzP9gQxjI4qhzwgRiF1ykCEsqkag6brR9Y
+	 rf0yJCpkaREoNezTDHWT5JtLcSVcUuDc5ruAdYjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com,
-	syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com,
-	syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com,
-	Sven Stegemann <sven@stegemann.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 077/515] net: kcm: Fix race condition in kcm_unattach()
+Subject: [PATCH 6.16 076/570] erofs: fix block count report when 48-bit layout is on
 Date: Mon, 18 Aug 2025 14:41:03 +0200
-Message-ID: <20250818124501.346670351@linuxfoundation.org>
+Message-ID: <20250818124508.754006993@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Stegemann <sven@stegemann.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 52565a935213cd6a8662ddb8efe5b4219343a25d ]
+[ Upstream commit 0b96d9bed324a1c1b7d02bfb9596351ef178428d ]
 
-syzbot found a race condition when kcm_unattach(psock)
-and kcm_release(kcm) are executed at the same time.
+Fix incorrect shift order when combining the 48-bit block count.
 
-kcm_unattach() is missing a check of the flag
-kcm->tx_stopped before calling queue_work().
-
-If the kcm has a reserved psock, kcm_unattach() might get executed
-between cancel_work_sync() and unreserve_psock() in kcm_release(),
-requeuing kcm->tx_work right before kcm gets freed in kcm_done().
-
-Remove kcm->tx_stopped and replace it by the less
-error-prone disable_work_sync().
-
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Reported-by: syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e62c9db591c30e174662
-Reported-by: syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d199b52665b6c3069b94
-Reported-by: syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=be6b1fdfeae512726b4e
-Signed-off-by: Sven Stegemann <sven@stegemann.de>
-Link: https://patch.msgid.link/20250812191810.27777-1-sven@stegemann.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2e1473d5195f ("erofs: implement 48-bit block addressing for unencoded inodes")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250807082019.3093539-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/kcm.h |  1 -
- net/kcm/kcmsock.c | 10 ++--------
- 2 files changed, 2 insertions(+), 9 deletions(-)
+ fs/erofs/super.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/kcm.h b/include/net/kcm.h
-index 441e993be634..d9c35e71ecea 100644
---- a/include/net/kcm.h
-+++ b/include/net/kcm.h
-@@ -71,7 +71,6 @@ struct kcm_sock {
- 	struct list_head wait_psock_list;
- 	struct sk_buff *seq_skb;
- 	struct mutex tx_mutex;
--	u32 tx_stopped : 1;
- 
- 	/* Don't use bit fields here, these are set under different locks */
- 	bool tx_wait;
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 24aec295a51c..8c0577cd764f 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -429,7 +429,7 @@ static void psock_write_space(struct sock *sk)
- 
- 	/* Check if the socket is reserved so someone is waiting for sending. */
- 	kcm = psock->tx_kcm;
--	if (kcm && !unlikely(kcm->tx_stopped))
-+	if (kcm)
- 		queue_work(kcm_wq, &kcm->tx_work);
- 
- 	spin_unlock_bh(&mux->lock);
-@@ -1688,12 +1688,6 @@ static int kcm_release(struct socket *sock)
- 	 */
- 	__skb_queue_purge(&sk->sk_write_queue);
- 
--	/* Set tx_stopped. This is checked when psock is bound to a kcm and we
--	 * get a writespace callback. This prevents further work being queued
--	 * from the callback (unbinding the psock occurs after canceling work.
--	 */
--	kcm->tx_stopped = 1;
--
- 	release_sock(sk);
- 
- 	spin_lock_bh(&mux->lock);
-@@ -1709,7 +1703,7 @@ static int kcm_release(struct socket *sock)
- 	/* Cancel work. After this point there should be no outside references
- 	 * to the kcm socket.
- 	 */
--	cancel_work_sync(&kcm->tx_work);
-+	disable_work_sync(&kcm->tx_work);
- 
- 	lock_sock(sk);
- 	psock = kcm->tx_psock;
+diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+index e1e9f06e8342..799fef437aa8 100644
+--- a/fs/erofs/super.c
++++ b/fs/erofs/super.c
+@@ -313,8 +313,8 @@ static int erofs_read_superblock(struct super_block *sb)
+ 	sbi->islotbits = ilog2(sizeof(struct erofs_inode_compact));
+ 	if (erofs_sb_has_48bit(sbi) && dsb->rootnid_8b) {
+ 		sbi->root_nid = le64_to_cpu(dsb->rootnid_8b);
+-		sbi->dif0.blocks = (sbi->dif0.blocks << 32) |
+-				le16_to_cpu(dsb->rb.blocks_hi);
++		sbi->dif0.blocks = sbi->dif0.blocks |
++				((u64)le16_to_cpu(dsb->rb.blocks_hi) << 32);
+ 	} else {
+ 		sbi->root_nid = le16_to_cpu(dsb->rb.rootnid_2b);
+ 	}
 -- 
 2.50.1
 
