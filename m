@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-170334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94323B2A393
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6931B2A68F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7E001B601C7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177721BA052E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C16F31E0F6;
-	Mon, 18 Aug 2025 13:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3090332274F;
+	Mon, 18 Aug 2025 13:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4Oj3yYO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvveJjBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4953831CA55;
-	Mon, 18 Aug 2025 13:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D3432274B;
+	Mon, 18 Aug 2025 13:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522301; cv=none; b=qgLKfEQRuwttTLDvVakLaju0CJi1KPAaCMXCr/r+UyMZh+tfh/Safvy3dJYkoSQ3GEEY4/FPx1eD4lRMcI85vcs6ZsWT6fexj9+eWM4wKgmayH1pQwUgyIuQ1mNiQjNA+Lf84BLac5Rl/BFXxw5kRiK1NU/cXxkYKMW7S2aocuY=
+	t=1755523929; cv=none; b=Q9fcKTJ0yF8z5shpn0gEVHjQgD78TGrW8RTsH6+GcRHNeMfVIDAHn6zwRl8BdHeoR1uPr3Sa+KPHF1bIiU2Iu/SFOuIf71wtTqGCOwS6P+J6aLPKFhqXuM96fURYVsxx4t8DYmyGls5wJzMZrI5rH0u5yNS+k5fZHnTOD6JfZas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522301; c=relaxed/simple;
-	bh=uBJw7FC1EW8VolAbxdjCj/bhJ/Oy8c0WQv8XtqTcAWI=;
+	s=arc-20240116; t=1755523929; c=relaxed/simple;
+	bh=PAff590vJRw8ScjbHkCkmsAMKefD6vw0zUyjzOXRvU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jz3LI5y9giXl744yK0/Q3dWseB+2ufgYSAi+OmNiiL0e4W94Gus2MZAgQ6trf04oSBcvjplYfS1OvXQHL8d9tlhjc5ZHWHbqEby7FWE/xXJOyA8BeThHs7FAmX3lP3ZC/lWmSr/JWrPLNKPq+nVLiaNyTc/Ej3vMttcy80Zjk+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4Oj3yYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8902EC4CEEB;
-	Mon, 18 Aug 2025 13:04:59 +0000 (UTC)
+	 MIME-Version; b=G7fNoWw5Rm703NQQlOIfncyFoOQryJfIjPRMRZw/Ofyb0DsdAppINxg+ILmg3KtAR27Yg2uu10wbvvCMzBpwDFOIcgyuYSMW4x4b91O/GsIMuK78KGBNmHTAuV+fEcJHmZzg4hDgxWinF18CmmA9rO/XN/JSfZ63m1/i0RuG7E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvveJjBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11360C4CEEB;
+	Mon, 18 Aug 2025 13:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522301;
-	bh=uBJw7FC1EW8VolAbxdjCj/bhJ/Oy8c0WQv8XtqTcAWI=;
+	s=korg; t=1755523928;
+	bh=PAff590vJRw8ScjbHkCkmsAMKefD6vw0zUyjzOXRvU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4Oj3yYObpRg8MImTJiHvULqKLq+u1RPn/QnFVtoCL+qmeFj+QKDQBgiKAvoB7mvI
-	 WTEDKcm3R1nN+4U1cCmqS6HYzD6D0o5CNB9P56ZkfWLy6S2r+9xfGFJ3sGphzDLpeS
-	 DIt0YDaPzaeyZa7gJJATZMK8LAGeRrz9/vPqQYHs=
+	b=JvveJjBJcHDRRIeY2atdIlsuG3ob74mhR6MM+JwMw0ho/iHF4R7iFn19ZAGJdqsXO
+	 xTLHkSH6cMVF1CRTUK8DzoEfPHel6nUPW7XLfOWit3ze6bcCCmWjAbTfF9pvd3ASdq
+	 emfS5ThA/XiPigZY9C2Y5bPFJgryLwNmPuEfWoA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 275/444] drm/amd/display: Disable dsc_power_gate for dcn314 by default
+Subject: [PATCH 6.15 315/515] drm: renesas: rz-du: mipi_dsi: Add min check for VCLK range
 Date: Mon, 18 Aug 2025 14:45:01 +0200
-Message-ID: <20250818124459.283668916@linuxfoundation.org>
+Message-ID: <20250818124510.561007800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 02f3ec53177243d32ee8b6f8ba99136d7887ee3a ]
+[ Upstream commit e37a95d01d5acce211da8446fefbd8684c67f516 ]
 
-[Why]
-"REG_WAIT timeout 1us * 1000 tries - dcn314_dsc_pg_control line"
-warnings seen after resuming from s2idle.
-DCN314 has issues with DSC power gating that cause REG_WAIT timeouts
-when attempting to power down DSC blocks.
+The VCLK range for Renesas RZ/G2L SoC is 5.803 MHz to 148.5 MHz. Add a
+minimum clock check in the mode_valid callback to ensure that the clock
+value does not fall below the valid range.
 
-[How]
-Disable dsc_power_gate for dcn314 by default.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250609225630.502888-2-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-index 01d95108ce66..585c3e8a2194 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-@@ -927,6 +927,7 @@ static const struct dc_debug_options debug_defaults_drv = {
- 	.seamless_boot_odm_combine = true,
- 	.enable_legacy_fast_update = true,
- 	.using_dml2 = false,
-+	.disable_dsc_power_gate = true,
- };
+diff --git a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
+index 4550c6d84796..ec8baecb9ba5 100644
+--- a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
++++ b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
+@@ -584,6 +584,9 @@ rzg2l_mipi_dsi_bridge_mode_valid(struct drm_bridge *bridge,
+ 	if (mode->clock > 148500)
+ 		return MODE_CLOCK_HIGH;
  
- static const struct dc_panel_config panel_config_defaults = {
++	if (mode->clock < 5803)
++		return MODE_CLOCK_LOW;
++
+ 	return MODE_OK;
+ }
+ 
 -- 
 2.39.5
 
