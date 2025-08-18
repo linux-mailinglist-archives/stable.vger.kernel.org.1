@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-171512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3016B2A9B3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3434B2A6DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDBCB6349A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:17:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEE207BBD86
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8771A32A3E1;
-	Mon, 18 Aug 2025 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7045A335BD4;
+	Mon, 18 Aug 2025 13:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozkwH3Rt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+wuLO65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45407288C1F;
-	Mon, 18 Aug 2025 14:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B4C335BB3;
+	Mon, 18 Aug 2025 13:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526177; cv=none; b=Fkrfd0KFUPhxqpdzgdPc9wg2h7BgO0Q4SS8Xv50nWnPHPgIFp0TZcj1wFJlUGkk80wVgDK8dVvEBS7bThL+FvIs2whLyErb30aiCrobQT/efnfpBzI68apyVz6nGiDFk1s2Ew5RiibybKhuAF0JltraIy63l8k8nLr3hak7ws0w=
+	t=1755524462; cv=none; b=gEugL1LkjbY6QvgsNja1QT+wXzr8IS7ne9ojX9ACUL9hAbQkUP6SQ4pCIVApWn6TLT0RarebTv2/QWqxd/ieBmVDEaiGdnFDaTTJd7ruGkxTp0XAeSDGo78uwI920vrq7PZ9r690ucFsprVVfOkyAoMw+8P8nYwl1T0QmFRypaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526177; c=relaxed/simple;
-	bh=ahsuBlpgvSvGeuuM0e9LV4+V/rYVVm6xYdGKhAsLpDg=;
+	s=arc-20240116; t=1755524462; c=relaxed/simple;
+	bh=dtyAgugaz/2g63U42U6A37DLSBNy7AOA5m0fp4nBVKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bzwfi6TjxDOS5Idl7VRmzHkhTMMLyAfUxcc9dPL2DVN0z6Ctn4arTJaXBUqXbmPGv6GgX6bTKoN50L3k0rPdN0MUSMiZ9sz+eYMYU/m51+/gHqrw1iCcPYZaOBiuctmgjW+Qv7saj4VW/OMYMRBpdkKNQz9ezwDyM5eRmyuHR4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozkwH3Rt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB196C4CEEB;
-	Mon, 18 Aug 2025 14:09:36 +0000 (UTC)
+	 MIME-Version; b=HPY95vVu5qM5/Qnz6nHv5JrMCdjwz2bgxP2ZHpih056dIoJ3xQb47QZXC+DePDkjtoYhxzlMRVPGtBuTXumStM+Ky8oWvoSoYd8820xebrk5m6h6BXmC8Iq4MSYO1JwCCcFApNvF/PDslDFyxYjtJsrcvfWv3A+fREq8kAFe/y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+wuLO65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69162C116D0;
+	Mon, 18 Aug 2025 13:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526177;
-	bh=ahsuBlpgvSvGeuuM0e9LV4+V/rYVVm6xYdGKhAsLpDg=;
+	s=korg; t=1755524462;
+	bh=dtyAgugaz/2g63U42U6A37DLSBNy7AOA5m0fp4nBVKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozkwH3RteAXWdWcyfvtG1HgVcWKcWm1qnVJ+MUOBQz02OBG3avhJWKTVKL0pik4gp
-	 pcvhk17o3VvGz07b2m9TeMFkcPN2bw8B2pYBFtz8ANzRlPma4smm9xEAw0KKiw9Y/H
-	 VQLwXR/NF3opadik5e0dXCVwFGNaCWeM1xmJNKoM=
+	b=T+wuLO65YDOr337M9EE+RZZqlJ/GN4xdqqmb68YObuHl03rmxMxlbv6vPemq0qn5i
+	 CaAply4v043FvD9V+x0h6DGSGVGdCop8yuef+rfMFIngvk4hSoq0NYLENKzXmWFoXW
+	 Dswn3zpqXdqozD651IbBeTfewFq3BbHagiW6mkTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Maciej Patelczyk <maciej.patelczyk@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 479/570] drm/xe/migrate: prevent potential UAF
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 480/515] btrfs: fix iteration bug in __qgroup_excl_accounting()
 Date: Mon, 18 Aug 2025 14:47:46 +0200
-Message-ID: <20250818124524.337467323@linuxfoundation.org>
+Message-ID: <20250818124516.900846472@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 145832fbdd17b1d77ffd6cdd1642259e101d1b7e ]
+commit 7b632596188e1973c6b3ac1c9f8252f735e1039f upstream.
 
-If we hit the error path, the previous fence (if there is one) has
-already been put() prior to this, so doing a fence_wait could lead to
-UAF. Tweak the flow to do to the put() until after we do the wait.
+__qgroup_excl_accounting() uses the qgroup iterator machinery to
+update the account of one qgroups usage for all its parent hierarchy,
+when we either add or remove a relation and have only exclusive usage.
 
-Fixes: 270172f64b11 ("drm/xe: Update xe_ttm_access_memory to use GPU for non-visible access")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Maciej Patelczyk <maciej.patelczyk@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
-Link: https://lore.kernel.org/r/20250731093807.207572-8-matthew.auld@intel.com
-(cherry picked from commit 9b7ca35ed28fe5fad86e9d9c24ebd1271e4c9c3e)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, there is a small bug there: we loop with an extra iteration
+temporary qgroup called `cur` but never actually refer to that in the
+body of the loop. As a result, we redundantly account the same usage to
+the first qgroup in the list.
+
+This can be reproduced in the following way:
+
+  mkfs.btrfs -f -O squota <dev>
+  mount <dev> <mnt>
+  btrfs subvol create <mnt>/sv
+  dd if=/dev/zero of=<mnt>/sv/f bs=1M count=1
+  sync
+  btrfs qgroup create 1/100 <mnt>
+  btrfs qgroup create 2/200 <mnt>
+  btrfs qgroup assign 1/100 2/200 <mnt>
+  btrfs qgroup assign 0/256 1/100 <mnt>
+  btrfs qgroup show <mnt>
+
+and the broken result is (note the 2MiB on 1/100 and 0Mib on 2/100):
+
+  Qgroupid    Referenced    Exclusive   Path
+  --------    ----------    ---------   ----
+  0/5           16.00KiB     16.00KiB   <toplevel>
+  0/256          1.02MiB      1.02MiB   sv
+
+  Qgroupid    Referenced    Exclusive   Path
+  --------    ----------    ---------   ----
+  0/5           16.00KiB     16.00KiB   <toplevel>
+  0/256          1.02MiB      1.02MiB   sv
+  1/100          2.03MiB      2.03MiB   2/100<1 member qgroup>
+  2/100            0.00B        0.00B   <0 member qgroups>
+
+With this fix, which simply re-uses `qgroup` as the iteration variable,
+we see the expected result:
+
+  Qgroupid    Referenced    Exclusive   Path
+  --------    ----------    ---------   ----
+  0/5           16.00KiB     16.00KiB   <toplevel>
+  0/256          1.02MiB      1.02MiB   sv
+
+  Qgroupid    Referenced    Exclusive   Path
+  --------    ----------    ---------   ----
+  0/5           16.00KiB     16.00KiB   <toplevel>
+  0/256          1.02MiB      1.02MiB   sv
+  1/100          1.02MiB      1.02MiB   2/100<1 member qgroup>
+  2/100          1.02MiB      1.02MiB   <0 member qgroups>
+
+The existing fstests did not exercise two layer inheritance so this bug
+was missed. I intend to add that testing there, as well.
+
+Fixes: a0bdc04b0732 ("btrfs: qgroup: use qgroup_iterator in __qgroup_excl_accounting()")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/btrfs/qgroup.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
-index 02c0a4a7372c..1e3fd139dfcb 100644
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -1893,9 +1893,6 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
- 			current_bytes = min_t(int, current_bytes, S16_MAX * pitch);
- 		}
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1481,7 +1481,6 @@ static int __qgroup_excl_accounting(stru
+ 				    struct btrfs_qgroup *src, int sign)
+ {
+ 	struct btrfs_qgroup *qgroup;
+-	struct btrfs_qgroup *cur;
+ 	LIST_HEAD(qgroup_list);
+ 	u64 num_bytes = src->excl;
+ 	int ret = 0;
+@@ -1491,7 +1490,7 @@ static int __qgroup_excl_accounting(stru
+ 		goto out;
  
--		if (fence)
--			dma_fence_put(fence);
--
- 		__fence = xe_migrate_vram(m, current_bytes,
- 					  (unsigned long)buf & ~PAGE_MASK,
- 					  dma_addr + current_page,
-@@ -1903,11 +1900,15 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
- 					  XE_MIGRATE_COPY_TO_VRAM :
- 					  XE_MIGRATE_COPY_TO_SRAM);
- 		if (IS_ERR(__fence)) {
--			if (fence)
-+			if (fence) {
- 				dma_fence_wait(fence, false);
-+				dma_fence_put(fence);
-+			}
- 			fence = __fence;
- 			goto out_err;
- 		}
-+
-+		dma_fence_put(fence);
- 		fence = __fence;
+ 	qgroup_iterator_add(&qgroup_list, qgroup);
+-	list_for_each_entry(cur, &qgroup_list, iterator) {
++	list_for_each_entry(qgroup, &qgroup_list, iterator) {
+ 		struct btrfs_qgroup_list *glist;
  
- 		buf += current_bytes;
--- 
-2.50.1
-
+ 		qgroup->rfer += sign * num_bytes;
 
 
 
