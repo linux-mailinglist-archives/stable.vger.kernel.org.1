@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1843DB2A2F8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C398B2A5AC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B61918A1936
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8126835B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EC726F2AD;
-	Mon, 18 Aug 2025 12:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DD8258ECF;
+	Mon, 18 Aug 2025 13:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzD93Z+M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqvLDikT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE63218C2;
-	Mon, 18 Aug 2025 12:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52CA2135CE;
+	Mon, 18 Aug 2025 13:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521802; cv=none; b=jzfXKj4xPCQeSFp98nmTBn/vCrZXTPdzlWmNd/cW3FfLWRhr2FEu8a4OME8jX2dz3e/GfpD7b+Ft8W15M3d53iCRm1dfMnhE4NQPQibSWok4qbQ7ORRx6PRdYgrntehHaF3CZzIpyz1d1F8LwEgGfOVXrov21CBvpWjA2kWZ4Ac=
+	t=1755523422; cv=none; b=Tkn72JFEdiZnTjrB1AgTAPv9Gtqib4c1gkF1qFbRRDQY+Pf4XydLF+Ohm3zGKVoiyZAV2TBzXAY8sBu9K+3mPvICtMcy5og+9dVCvaF0jdWIYExELVhV8YafzRdBviGrSd4yYVQ+EALP5/Ov2iMY4GLgA/zEG+8ocDg9ytnqG9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521802; c=relaxed/simple;
-	bh=dS8BO6rgb00BffjGHoddYmrWqYBrwak8cjmyX4SGIdU=;
+	s=arc-20240116; t=1755523422; c=relaxed/simple;
+	bh=Lbrl1LQ1L6UWfU/3qME8ftpW0IfubX5ZsQKGcg4/64c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nkprv+FvwNLNpj8ZNheNdBY84lNgD9kGZXoQg3K5/CaoIg2EpK8kjJodgtXAWvrzXw0Kwc5k6mpgVvTT4KB/Noraa5ut32i4bSUHE3hCzwWNWY0DfNIGfZFq++5vSsX64Z+CxXsB4Xh0RuarGP1CDZxoC1Et/ipTz1bFzLJOjAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzD93Z+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C19C4CEEB;
-	Mon, 18 Aug 2025 12:56:40 +0000 (UTC)
+	 MIME-Version; b=rPunErNEtyVxN0KWQUy4hwDXh9YVNMLLQnbEcnRrwkuqTm/iXghXTTlOFYzQlwNwxbc5NEqPu9u4KsCM4lBphacLskoXuWRv3HvZgRu4LpE2Y3kV17JemuNOh0Bf97nZXkR8XlkH+tX+hxUTFVA/C7ymBcLQoDz3eBVCL4gl1pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqvLDikT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A5EC4CEEB;
+	Mon, 18 Aug 2025 13:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521802;
-	bh=dS8BO6rgb00BffjGHoddYmrWqYBrwak8cjmyX4SGIdU=;
+	s=korg; t=1755523422;
+	bh=Lbrl1LQ1L6UWfU/3qME8ftpW0IfubX5ZsQKGcg4/64c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzD93Z+M4uUMfU91l732FtlfrQlD9a3OBCqBasb8I6AiQ4a6+xrJa0Sear+xujBjL
-	 1sQeszuXU1LVPgRgo01jAIENHoWb1ufa3WRJqRcEIzWswoaIsQXs0qriAq+e88dMkb
-	 2gwXHEX9PiX0g2ysSyIqTOwykhdZusa98VZs4J48=
+	b=VqvLDikT6dn951SE8TN7x1GKY6o94BOGL8KZWwa9b81wHeMiD2HPoWvJRELVvkO78
+	 bEmBWbjpZRhG8cHHhamYnTOKbUjfHiEAnX4VkY1g8DgI23MycDLNhcuWrOfCk8ca5J
+	 3BV2YqcfRbsRmmPdb2pifQLxJ6mM6cuFcCrY6G6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/444] PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()
+Subject: [PATCH 6.15 167/515] ALSA: hda: Disable jack polling at shutdown
 Date: Mon, 18 Aug 2025 14:42:33 +0200
-Message-ID: <20250818124453.672650808@linuxfoundation.org>
+Message-ID: <20250818124504.803365343@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 89d9cec3b1e9c49bae9375a2db6dc49bc7468af0 ]
+[ Upstream commit 1adcbdf54f76e1004bdf71df4eb1888c26e7ad06 ]
 
-Clear power.needs_force_resume in pm_runtime_reinit() in case it has
-been set by pm_runtime_force_suspend() invoked from a driver remove
-callback.
+Although the jack polling is canceled at shutdown in
+snd_hda_codec_shutdown(), it might be still re-triggered when the work
+is being processed at cancel_delayed_work_sync() call.  This may
+result in the unexpected hardware access that should have been already
+disabled.
 
-Suggested-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/9495163.CDJkKcVGEf@rjwysocki.net
+For assuring to stop the jack polling, clear codec->jackpoll_interval
+at shutdown.
+
+Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Closes: https://lore.kernel.org/20250619020844.2974160-4-joakim.zhang@cixtech.com
+Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250623131437.10670-2-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/hda_codec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 99f25d6b2027..317505eab126 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1787,6 +1787,11 @@ void pm_runtime_reinit(struct device *dev)
- 				pm_runtime_put(dev->parent);
- 		}
- 	}
-+	/*
-+	 * Clear power.needs_force_resume in case it has been set by
-+	 * pm_runtime_force_suspend() invoked from a driver remove callback.
-+	 */
-+	dev->power.needs_force_resume = false;
- }
+diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
+index ca7c3517c341..7b090c953974 100644
+--- a/sound/pci/hda/hda_codec.c
++++ b/sound/pci/hda/hda_codec.c
+@@ -3037,6 +3037,7 @@ void snd_hda_codec_shutdown(struct hda_codec *codec)
+ 	if (!codec->core.registered)
+ 		return;
  
- /**
++	codec->jackpoll_interval = 0; /* don't poll any longer */
+ 	cancel_delayed_work_sync(&codec->jackpoll_work);
+ 	list_for_each_entry(cpcm, &codec->pcm_list_head, list)
+ 		snd_pcm_suspend_all(cpcm->pcm);
 -- 
 2.39.5
 
