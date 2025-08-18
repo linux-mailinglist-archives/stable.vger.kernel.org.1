@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CB1B2A39A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CACB2AA64
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C3FB7B83D7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97211681F3A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F911E3DCD;
-	Mon, 18 Aug 2025 13:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E35350846;
+	Mon, 18 Aug 2025 14:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lq5s9+/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjGSWjx4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04426318126;
-	Mon, 18 Aug 2025 13:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1059350843;
+	Mon, 18 Aug 2025 14:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522507; cv=none; b=Eid/ZYFKPl3skyVeDSawaNLwqYzeAFs++ekT223Cg0Cf83GHkytqOpQtBK88VZVdDhL5cCou/k5teW4DnO4y2d3N+PNhTka+eToKB7ZVVutrZWOLAf4laSWZRwgRM0mPjWhp+M0tC/PIpvdoiojSjFPg10r6glMfa7jH8JE41RA=
+	t=1755525879; cv=none; b=fQBkXKgBI95m9FtIEFV2PppsB9aPj3LtUSfmBE42Y/H/v/9C09rBOlKNPfdsib3cAaoSreeA16L1WAvdI2amMluobwfs8nHe7cREG5THfPu0Jfp3oYNkEO0KW8oZFL9TOEsgeBdXO6EQLtnc1gNgnnziCkE/BsszKny/VQ4gq1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522507; c=relaxed/simple;
-	bh=iEVCDxueDqg6J19wCwqq2AfYCplWscwneI6AJefThGU=;
+	s=arc-20240116; t=1755525879; c=relaxed/simple;
+	bh=dn6EIixy8iV2qMVI7r1/6jCnV7gt5spcBP34c+rNGJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlFtVEwq83MIdwVLhIUAtirg54gmtk0Izaj6WVNaTb7aVrPO6aPTYnpXL74GID+mNBB4jcjbm7VXc17VyiyLqJlMeGhfHSWzTbvFhxyT7ZoPL/6Wc8sFWhQq17wUKrUJtH1Ix4QBLmxMdIqOjs9Kmzc6XFtJx2LWU0S2B8xKEVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lq5s9+/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C9EC4CEEB;
-	Mon, 18 Aug 2025 13:08:25 +0000 (UTC)
+	 MIME-Version; b=Z8hY8TeJ/yT0+4hcjCuIt+HTNUc4YZcYyCe9exhZvHHKMRzP324O9JoLPbhTigdbhdJmeo2em+byk1mgrxry2ZJyKsGnnbA7JHRgzqH/it5Tke87PHJChVr2dMq1ulP1M1bXOGHQyA7To+Y06R6qknijMYzLS7sMiPKQNbqT0rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjGSWjx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E8AC116C6;
+	Mon, 18 Aug 2025 14:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522506;
-	bh=iEVCDxueDqg6J19wCwqq2AfYCplWscwneI6AJefThGU=;
+	s=korg; t=1755525879;
+	bh=dn6EIixy8iV2qMVI7r1/6jCnV7gt5spcBP34c+rNGJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lq5s9+/+8Xpa/EjnBL231IdNAZuz/9YD9bilIyY2jLw5kw55PSg3mJq0ReuFkEdhT
-	 q4XEaFOWxh2PpeNzqLYWQGwfWTUobQg+WUCGLEhZSmARnIw6LSKksib/2t9IZwMJfZ
-	 ogpz3jhYxdo+ns6yRTE7ThS+QGi74jVB4pVagJTs=
+	b=AjGSWjx4ARofhfBTiakmrVU5DUvYxWvTGlbax7i4HvC5Tv+5RL2OzACRCeIWDWF8c
+	 dESZz9Gm5PIh6eyOXH32WISnbzvVZQPDXl8LshNokzEqwAgIjr9G5xwpCkQRe0sJtE
+	 JcGGR7nD648fC7jdKHqvmXeWj1zP/Fg7QDYw+RJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Johansen <john.johansen@canonical.com>,
+	Ziyan Fu <fuzy5@lenovo.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 337/444] apparmor: fix x_table_lookup when stacking is not the first entry
+Subject: [PATCH 6.16 376/570] watchdog: iTCO_wdt: Report error if timeout configuration fails
 Date: Mon, 18 Aug 2025 14:46:03 +0200
-Message-ID: <20250818124501.567910637@linuxfoundation.org>
+Message-ID: <20250818124520.340418145@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,146 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Ziyan Fu <fuzy5@lenovo.com>
 
-[ Upstream commit a9eb185be84e998aa9a99c7760534ccc06216705 ]
+[ Upstream commit 40efc43eb7ffb5a4e2f998c13b8cfb555e671b92 ]
 
-x_table_lookup currently does stacking during label_parse() if the
-target specifies a stack but its only caller ensures that it will
-never be used with stacking.
+The driver probes with the invalid timeout value when
+'iTCO_wdt_set_timeout()' fails, as its return value is not checked. In
+this case, when executing "wdctl", we may get:
 
-Refactor to slightly simplify the code in x_to_label(), this
-also fixes a long standing problem where x_to_labels check on stacking
-is only on the first element to the table option list, instead of
-the element that is found and used.
+Device:        /dev/watchdog0
+Timeout:       30 seconds
+Timeleft:      613 seconds
 
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+The timeout value is the value of "heartbeat" or "WATCHDOG_TIMEOUT", and
+the timeleft value is calculated from the register value we actually read
+(0xffff) by masking with 0x3ff and converting ticks to seconds (* 6 / 10).
+
+Add error handling to return the failure code if 'iTCO_wdt_set_timeout()'
+fails, ensuring the driver probe fails and prevents invalid operation.
+
+Signed-off-by: Ziyan Fu <fuzy5@lenovo.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250704073518.7838-1-13281011316@163.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/domain.c | 52 +++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 23 deletions(-)
+ drivers/watchdog/iTCO_wdt.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/security/apparmor/domain.c b/security/apparmor/domain.c
-index 571158ec6188..cccd61cca509 100644
---- a/security/apparmor/domain.c
-+++ b/security/apparmor/domain.c
-@@ -509,6 +509,7 @@ static const char *next_name(int xtype, const char *name)
-  * @name: returns: name tested to find label (NOT NULL)
-  *
-  * Returns: refcounted label, or NULL on failure (MAYBE NULL)
-+ *          @name will always be set with the last name tried
-  */
- struct aa_label *x_table_lookup(struct aa_profile *profile, u32 xindex,
- 				const char **name)
-@@ -518,6 +519,7 @@ struct aa_label *x_table_lookup(struct aa_profile *profile, u32 xindex,
- 	struct aa_label *label = NULL;
- 	u32 xtype = xindex & AA_X_TYPE_MASK;
- 	int index = xindex & AA_X_INDEX_MASK;
-+	const char *next;
- 
- 	AA_BUG(!name);
- 
-@@ -525,25 +527,27 @@ struct aa_label *x_table_lookup(struct aa_profile *profile, u32 xindex,
- 	/* TODO: move lookup parsing to unpack time so this is a straight
- 	 *       index into the resultant label
- 	 */
--	for (*name = rules->file->trans.table[index]; !label && *name;
--	     *name = next_name(xtype, *name)) {
-+	for (next = rules->file->trans.table[index]; next;
-+	     next = next_name(xtype, next)) {
-+		const char *lookup = (*next == '&') ? next + 1 : next;
-+		*name = next;
- 		if (xindex & AA_X_CHILD) {
--			struct aa_profile *new_profile;
--			/* release by caller */
--			new_profile = aa_find_child(profile, *name);
--			if (new_profile)
--				label = &new_profile->label;
-+			/* TODO: switich to parse to get stack of child */
-+			struct aa_profile *new = aa_find_child(profile, lookup);
-+
-+			if (new)
-+				/* release by caller */
-+				return &new->label;
- 			continue;
- 		}
--		label = aa_label_parse(&profile->label, *name, GFP_KERNEL,
-+		label = aa_label_parse(&profile->label, lookup, GFP_KERNEL,
- 				       true, false);
--		if (IS_ERR(label))
--			label = NULL;
-+		if (!IS_ERR_OR_NULL(label))
-+			/* release by caller */
-+			return label;
- 	}
- 
--	/* released by caller */
--
--	return label;
-+	return NULL;
- }
- 
- /**
-@@ -568,9 +572,9 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 	struct aa_ruleset *rules = list_first_entry(&profile->rules,
- 						    typeof(*rules), list);
- 	struct aa_label *new = NULL;
-+	struct aa_label *stack = NULL;
- 	struct aa_ns *ns = profile->ns;
- 	u32 xtype = xindex & AA_X_TYPE_MASK;
--	const char *stack = NULL;
- 
- 	switch (xtype) {
- 	case AA_X_NONE:
-@@ -579,13 +583,14 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 		break;
- 	case AA_X_TABLE:
- 		/* TODO: fix when perm mapping done at unload */
--		stack = rules->file->trans.table[xindex & AA_X_INDEX_MASK];
--		if (*stack != '&') {
--			/* released by caller */
--			new = x_table_lookup(profile, xindex, lookupname);
--			stack = NULL;
-+		/* released by caller
-+		 * if null for both stack and direct want to try fallback
-+		 */
-+		new = x_table_lookup(profile, xindex, lookupname);
-+		if (!new || **lookupname != '&')
- 			break;
--		}
-+		stack = new;
-+		new = NULL;
- 		fallthrough;	/* to X_NAME */
- 	case AA_X_NAME:
- 		if (xindex & AA_X_CHILD)
-@@ -600,6 +605,7 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 		break;
- 	}
- 
-+	/* fallback transition check */
- 	if (!new) {
- 		if (xindex & AA_X_INHERIT) {
- 			/* (p|c|n)ix - don't change profile but do
-@@ -618,12 +624,12 @@ static struct aa_label *x_to_label(struct aa_profile *profile,
- 		/* base the stack on post domain transition */
- 		struct aa_label *base = new;
- 
--		new = aa_label_parse(base, stack, GFP_KERNEL, true, false);
--		if (IS_ERR(new))
--			new = NULL;
-+		new = aa_label_merge(base, stack, GFP_KERNEL);
-+		/* null on error */
- 		aa_put_label(base);
- 	}
- 
-+	aa_put_label(stack);
- 	/* released by caller */
- 	return new;
- }
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 9ab769aa0244..4ab3405ef8e6 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -577,7 +577,11 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
+ 	/* Check that the heartbeat value is within it's range;
+ 	   if not reset to the default */
+ 	if (iTCO_wdt_set_timeout(&p->wddev, heartbeat)) {
+-		iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
++		ret = iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
++		if (ret != 0) {
++			dev_err(dev, "Failed to set watchdog timeout (%d)\n", WATCHDOG_TIMEOUT);
++			return ret;
++		}
+ 		dev_info(dev, "timeout value out of range, using %d\n",
+ 			WATCHDOG_TIMEOUT);
+ 		heartbeat = WATCHDOG_TIMEOUT;
 -- 
 2.39.5
 
