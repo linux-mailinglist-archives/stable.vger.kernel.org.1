@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E50B2A557
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58962B2A79A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB4D1B27417
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 797365876A2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B06322520;
-	Mon, 18 Aug 2025 13:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD057335BD4;
+	Mon, 18 Aug 2025 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UaWLFdMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sT5rt3JW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8253531B11A;
-	Mon, 18 Aug 2025 13:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5AF335BA7;
+	Mon, 18 Aug 2025 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523062; cv=none; b=bs0DoZ6vmTDqzLK4kzMc68LzkgAZ4fyFvkiRY4fcYo4Fn9ev8kRWLGKirYdrZhH37ta5qcUV0BoEl9wzSo2lzKuY0S4EWh7MqCXzc3vDtTH7/nqcGdcLJz5KAuqNCJzZq/++NkgGJ9re9w1P/M6vXYUWwQc84LOVad5gCiNkGOo=
+	t=1755524780; cv=none; b=ipIIaw6mCVNFKgY262yM1TuqbyDBRJ+pxuot4Xg8OMHstSSW4gFFod4wftgldlKCNkQMuRKUbTnMeXM3iZsb+ztjJtqyXcFlaJHNnsB8U5nk7JXKWoznm7lgKGj9ZQaYF3jGy483KPzEpzSikuOHhwnUjdjBqAGAOOKl59F8W6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523062; c=relaxed/simple;
-	bh=5nhd9Mh9ITTxnF1EI/fYhZsV8srvggHEwD5niFDPOco=;
+	s=arc-20240116; t=1755524780; c=relaxed/simple;
+	bh=3nUEpa6KnKIvRoe5ejgx76Y3iBX6wSOzMpdqLCsdMCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBc6RRfagxWd/BGEqM0I11xDbnZ5DJvbmnGLZxjJvKIP76RU7CqHtLA8ai8uFTD0PXziLjn0ouFHh4STRWWcr1DlbTHzNw67LgS1ac2DrwcZ7xrzSYLEjOSL872gBawBTxW+xCNy2UeGA4NsBSNfSmC8K3JzDxO31SSRrG+XNfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UaWLFdMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D254C4CEEB;
-	Mon, 18 Aug 2025 13:17:41 +0000 (UTC)
+	 MIME-Version; b=BNAyeqoYNitX/CrT2Y4OW9SX+gtAfPMAuBD0o8olmoSgdSRK2No+lLn//tOFXK0qF/dgnX236/njCt2vTmjbamsCurVCm4jwbjYhLAQ4JoP4uzPyuasV0A3d0tdYcRW91A1e9uJLDExAMgRf3pdcjoE7P3tUVBZf62LNa9/dCm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sT5rt3JW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E8EC4CEEB;
+	Mon, 18 Aug 2025 13:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523062;
-	bh=5nhd9Mh9ITTxnF1EI/fYhZsV8srvggHEwD5niFDPOco=;
+	s=korg; t=1755524780;
+	bh=3nUEpa6KnKIvRoe5ejgx76Y3iBX6wSOzMpdqLCsdMCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UaWLFdMIGEshtb32EWzKyQsgAOgdb001mCpAPObWsyJTrwMArVWdxJpE6IQj+K1b2
-	 vlC0hkf0UZMmnu9Prte/BDSiqZz/zNFEAgiVkrcv1mq3/o89urHpzB+ZvxygN3rCKw
-	 IEx0plwNBJ8occpspweewFUw3I+6S14t7ZJdZGD8=
+	b=sT5rt3JWnP0aRPmxb4vWrGGAJJ2G9cYUtpslL3UAWgI9kK6Fiek2Tz3ZPeeqbh29Q
+	 30wFffC8SdlQkMUw9I8BHXFmcubwn/H2Bq7yIiX5vJ77wC6OI1oqyVXnHqQXo63fvf
+	 8vYTIdjkqXQEj96T5xZJ2WJwVeMl002hjzfwVPkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 060/515] net: hibmcge: fix rtnl deadlock issue
+Subject: [PATCH 6.16 059/570] habanalabs: fix UAF in export_dmabuf()
 Date: Mon, 18 Aug 2025 14:40:46 +0200
-Message-ID: <20250818124500.722166920@linuxfoundation.org>
+Message-ID: <20250818124508.095635773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit c875503a9b9082928d7d3fc60b5400d16fbfae4e ]
+[ Upstream commit 33927f3d0ecdcff06326d6e4edb6166aed42811c ]
 
-Currently, the hibmcge netdev acquires the rtnl_lock in
-pci_error_handlers.reset_prepare() and releases it in
-pci_error_handlers.reset_done().
+As soon as we'd inserted a file reference into descriptor table, another
+thread could close it.  That's fine for the case when all we are doing is
+returning that descriptor to userland (it's a race, but it's a userland
+race and there's nothing the kernel can do about it).  However, if we
+follow fd_install() with any kind of access to objects that would be
+destroyed on close (be it the struct file itself or anything destroyed
+by its ->release()), we have a UAF.
 
-However, in the PCI framework:
-pci_reset_bus - __pci_reset_slot - pci_slot_save_and_disable_locked -
- pci_dev_save_and_disable - err_handler->reset_prepare(dev);
+dma_buf_fd() is a combination of reserving a descriptor and fd_install().
+habanalabs export_dmabuf() calls it and then proceeds to access the
+objects destroyed on close.  In particular, it grabs an extra reference to
+another struct file that will be dropped as part of ->release() for ours;
+that "will be" is actually "might have already been".
 
-In pci_slot_save_and_disable_locked():
-	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
-		if (!dev->slot || dev->slot!= slot)
-			continue;
-		pci_dev_save_and_disable(dev);
-		if (dev->subordinate)
-			pci_bus_save_and_disable_locked(dev->subordinate);
-	}
+Fix that by reserving descriptor before anything else and do fd_install()
+only when everything had been set up.  As a side benefit, we no longer
+have the failure exit with file already created, but reference to
+underlying file (as well as ->dmabuf_export_cnt, etc.) not grabbed yet;
+unlike dma_buf_fd(), fd_install() can't fail.
 
-This will iterate through all devices under the current bus and execute
-err_handler->reset_prepare(), causing two devices of the hibmcge driver
-to sequentially request the rtnl_lock, leading to a deadlock.
-
-Since the driver now executes netif_device_detach()
-before the reset process, it will not concurrently with
-other netdev APIs, so there is no need to hold the rtnl_lock now.
-
-Therefore, this patch removes the rtnl_lock during the reset process and
-adjusts the position of HBG_NIC_STATE_RESETTING to ensure
-that multiple resets are not executed concurrently.
-
-Fixes: 3f5a61f6d504f ("net: hibmcge: Add reset supported in this module")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: db1a8dd916aa ("habanalabs: add support for dma-buf exporter")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/accel/habanalabs/common/memory.c | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-index ff3295b60a69..dee1e8681157 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-@@ -53,9 +53,11 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
- {
- 	int ret;
+diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
+index 601fdbe70179..61472a381904 100644
+--- a/drivers/accel/habanalabs/common/memory.c
++++ b/drivers/accel/habanalabs/common/memory.c
+@@ -1829,9 +1829,6 @@ static void hl_release_dmabuf(struct dma_buf *dmabuf)
+ 	struct hl_dmabuf_priv *hl_dmabuf = dmabuf->priv;
+ 	struct hl_ctx *ctx;
  
--	ASSERT_RTNL();
-+	if (test_and_set_bit(HBG_NIC_STATE_RESETTING, &priv->state))
-+		return -EBUSY;
- 
- 	if (netif_running(priv->netdev)) {
-+		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 		dev_warn(&priv->pdev->dev,
- 			 "failed to reset because port is up\n");
- 		return -EBUSY;
-@@ -64,7 +66,6 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
- 	netif_device_detach(priv->netdev);
- 
- 	priv->reset_type = type;
--	set_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
- 	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
- 	if (ret) {
-@@ -83,28 +84,25 @@ static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
- 	    type != priv->reset_type)
- 		return 0;
- 
--	ASSERT_RTNL();
+-	if (!hl_dmabuf)
+-		return;
 -
--	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 	ret = hbg_rebuild(priv);
- 	if (ret) {
- 		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
-+		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
- 		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
- 		return ret;
+ 	ctx = hl_dmabuf->ctx;
+ 
+ 	if (hl_dmabuf->memhash_hnode)
+@@ -1859,7 +1856,12 @@ static int export_dmabuf(struct hl_ctx *ctx,
+ {
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	struct hl_device *hdev = ctx->hdev;
+-	int rc, fd;
++	CLASS(get_unused_fd, fd)(flags);
++
++	if (fd < 0) {
++		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", fd);
++		return fd;
++	}
+ 
+ 	exp_info.ops = &habanalabs_dmabuf_ops;
+ 	exp_info.size = total_size;
+@@ -1872,13 +1874,6 @@ static int export_dmabuf(struct hl_ctx *ctx,
+ 		return PTR_ERR(hl_dmabuf->dmabuf);
  	}
  
- 	netif_device_attach(priv->netdev);
-+	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+-	fd = dma_buf_fd(hl_dmabuf->dmabuf, flags);
+-	if (fd < 0) {
+-		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", fd);
+-		rc = fd;
+-		goto err_dma_buf_put;
+-	}
+-
+ 	hl_dmabuf->ctx = ctx;
+ 	hl_ctx_get(hl_dmabuf->ctx);
+ 	atomic_inc(&ctx->hdev->dmabuf_export_cnt);
+@@ -1890,13 +1885,9 @@ static int export_dmabuf(struct hl_ctx *ctx,
+ 	get_file(ctx->hpriv->file_priv->filp);
  
- 	dev_info(&priv->pdev->dev, "reset done\n");
- 	return ret;
+ 	*dmabuf_fd = fd;
++	fd_install(take_fd(fd), hl_dmabuf->dmabuf->file);
+ 
+ 	return 0;
+-
+-err_dma_buf_put:
+-	hl_dmabuf->dmabuf->priv = NULL;
+-	dma_buf_put(hl_dmabuf->dmabuf);
+-	return rc;
  }
  
--/* must be protected by rtnl lock */
- int hbg_reset(struct hbg_priv *priv)
- {
- 	int ret;
- 
--	ASSERT_RTNL();
- 	ret = hbg_reset_prepare(priv, HBG_RESET_TYPE_FUNCTION);
- 	if (ret)
- 		return ret;
-@@ -169,7 +167,6 @@ static void hbg_pci_err_reset_prepare(struct pci_dev *pdev)
- 	struct net_device *netdev = pci_get_drvdata(pdev);
- 	struct hbg_priv *priv = netdev_priv(netdev);
- 
--	rtnl_lock();
- 	hbg_reset_prepare(priv, HBG_RESET_TYPE_FLR);
- }
- 
-@@ -179,7 +176,6 @@ static void hbg_pci_err_reset_done(struct pci_dev *pdev)
- 	struct hbg_priv *priv = netdev_priv(netdev);
- 
- 	hbg_reset_done(priv, HBG_RESET_TYPE_FLR);
--	rtnl_unlock();
- }
- 
- static const struct pci_error_handlers hbg_pci_err_handler = {
+ static int validate_export_params_common(struct hl_device *hdev, u64 addr, u64 size, u64 offset)
 -- 
 2.50.1
 
