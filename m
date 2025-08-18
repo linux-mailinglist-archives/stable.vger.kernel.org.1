@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461C9B2A51E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2E3B2A2B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9D3565A11
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16F902A81A0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E38322741;
-	Mon, 18 Aug 2025 13:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CF031B13A;
+	Mon, 18 Aug 2025 12:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kbagNt8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNvl6s07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F858321455;
-	Mon, 18 Aug 2025 13:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6012B26F2A7;
+	Mon, 18 Aug 2025 12:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523043; cv=none; b=WabKTkDVnnFbhG8hbLrEXsIUC6dxx2Ziz6p7cUiV4QJeuo3ilPpseJ9gUXf2ADg9Ox+lzzT2OKXJIeOO3y0LgNs1iCf1QJbBnqaQqylVKCwY7Mh9qoxQKCuWLyq+kYKQ2/dbDy9x6gmyjnEnZnLCfc26EhNRbOc9kkwXwoVINB8=
+	t=1755521508; cv=none; b=HvH2yUGvDj970kO85O849rRhW/5vlOo6lSkpVzYu9YGyQs6a18z7aFe1shxjq3Gk+yEm73ev0dr6sSsjNSlJWi2fVbXXHj/ogasxYk2tGw6RIANEnWZ5n7YGY9vlvswPl2ISgllIT3Lv+t7Uhl8E/58BR9qDPpXEP4FjoxD1DdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523043; c=relaxed/simple;
-	bh=HNkfyjSAqrHKcGO6EeIpXeuzzgUUXmsbsFmdKvRgpVk=;
+	s=arc-20240116; t=1755521508; c=relaxed/simple;
+	bh=EcS991L5/QR/wySYFgfKha1KGaz52t/xMNvjJqNGKiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhalMPeOCYcWtnagZIbmYOzM4Mfkjx2ajyUV2HHKg8ucsM4V97pbvVBeS9z7s+Rzo4S2bFoZUBqO8AiaYawwkVeJzJQ08H51wNtVgVAO+bla9ZX9lcBC2lWQXp3Pzxxb6PZGPUjnWE1Dkq9RCv5ov1hFSogYdBfVtRt1IceKmKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kbagNt8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007C5C4CEEB;
-	Mon, 18 Aug 2025 13:17:22 +0000 (UTC)
+	 MIME-Version; b=Ys9AElZ/dAKilXc3KCQsypq+V1o92yaKNKGl3aymaz8UOzB4BYDlFm4C/1+D6Np1ELoIyEg0ZG/XZFRxcAQ3OGw9TMFKoP10P6Z5Cbh+lCLY/Q6Y9bMNcr11r32+7eZ3qqIVR66lbBFN5zsppVM5OEvdaOestxGXCW7aiX15+lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNvl6s07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C543FC4CEEB;
+	Mon, 18 Aug 2025 12:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523043;
-	bh=HNkfyjSAqrHKcGO6EeIpXeuzzgUUXmsbsFmdKvRgpVk=;
+	s=korg; t=1755521508;
+	bh=EcS991L5/QR/wySYFgfKha1KGaz52t/xMNvjJqNGKiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kbagNt8MJ9gohHNeo88INCoZPLk/wlBLUe89av6QmkqXgj3XyJHeCPnKe60Zy7FzD
-	 p8Pe9wLpqItAcmUg+dhY9cR6I1feIPIZiXQhgCbuUI7e2dURTWdVomS0dqCMZLIbc7
-	 oYsZfT+RtvzZfwR77RiNtriHazqyY7I9XKjnu2ME=
+	b=iNvl6s07SLm2oQE1yJR7GP7NsUPd5SRTDeJgv5kjxYxWM4kbleTsOFSju7FCaBSdL
+	 4u9TrBqlPmaJCgiJ6y/Tgl1aFZ24oOyUeVS3yw3pqk31lUS4KNxS0796TSXjwhDvW5
+	 ZMvvimKGXjgffZgG0wTvTOP4vx83lkH9eeOfBm/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevhen Kondrashyn <e.kondrashyn@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.15 046/515] Documentation: ACPI: Fix parent device references
-Date: Mon, 18 Aug 2025 14:40:32 +0200
-Message-ID: <20250818124500.196190621@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 007/444] smb: client: remove redundant lstrp update in negotiate protocol
+Date: Mon, 18 Aug 2025 14:40:33 +0200
+Message-ID: <20250818124449.180608635@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Wang Zhaolong <wangzhaolong@huaweicloud.com>
 
-commit e65cb011349e653ded541dddd6469c2ca813edcf upstream.
+commit e19d8dd694d261ac26adb2a26121a37c107c81ad upstream.
 
-The _CRS resources in many cases want to have ResourceSource field
-to be a type of ACPI String. This means that to compile properly
-we need to enclosure the name path into double quotes. This will
-in practice defer the interpretation to a run-time stage, However,
-this may be interpreted differently on different OSes and ACPI
-interpreter implementations. In particular ACPICA might not correctly
-recognize the leading '^' (caret) character and will not resolve
-the relative name path properly. On top of that, this piece may be
-used in SSDTs which are loaded after the DSDT and on itself may also
-not resolve relative name paths outside of their own scopes.
-With this all said, fix documentation to use fully-qualified name
-paths always to avoid any misinterpretations, which is proven to
-work.
+Commit 34331d7beed7 ("smb: client: fix first command failure during
+re-negotiation") addressed a race condition by updating lstrp before
+entering negotiate state. However, this approach may have some unintended
+side effects.
 
-Fixes: 8eb5c87a92c0 ("i2c: add ACPI support for I2C mux ports")
-Reported-by: Yevhen Kondrashyn <e.kondrashyn@gmail.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20250710170225.961303-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The lstrp field is documented as "when we got last response from this
+server", and updating it before actually receiving a server response
+could potentially affect other mechanisms that rely on this timestamp.
+For example, the SMB echo detection logic also uses lstrp as a reference
+point. In scenarios with frequent user operations during reconnect states,
+the repeated calls to cifs_negotiate_protocol() might continuously
+update lstrp, which could interfere with the echo detection timing.
+
+Additionally, commit 266b5d02e14f ("smb: client: fix race condition in
+negotiate timeout by using more precise timing") introduced a dedicated
+neg_start field specifically for tracking negotiate start time. This
+provides a more precise solution for the original race condition while
+preserving the intended semantics of lstrp.
+
+Since the race condition is now properly handled by the neg_start
+mechanism, the lstrp update in cifs_negotiate_protocol() is no longer
+necessary and can be safely removed.
+
+Fixes: 266b5d02e14f ("smb: client: fix race condition in negotiate timeout by using more precise timing")
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/firmware-guide/acpi/i2c-muxes.rst |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/smb/client/connect.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/Documentation/firmware-guide/acpi/i2c-muxes.rst
-+++ b/Documentation/firmware-guide/acpi/i2c-muxes.rst
-@@ -14,7 +14,7 @@ Consider this topology::
-     |      |   | 0x70 |--CH01--> i2c client B (0x50)
-     +------+   +------+
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -4001,7 +4001,6 @@ retry:
+ 		return 0;
+ 	}
  
--which corresponds to the following ASL::
-+which corresponds to the following ASL (in the scope of \_SB)::
- 
-     Device (SMB1)
-     {
-@@ -24,7 +24,7 @@ which corresponds to the following ASL::
-             Name (_HID, ...)
-             Name (_CRS, ResourceTemplate () {
-                 I2cSerialBus (0x70, ControllerInitiated, I2C_SPEED,
--                            AddressingMode7Bit, "^SMB1", 0x00,
-+                            AddressingMode7Bit, "\\_SB.SMB1", 0x00,
-                             ResourceConsumer,,)
-             }
- 
-@@ -37,7 +37,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH00", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH00", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
-@@ -52,7 +52,7 @@ which corresponds to the following ASL::
-                     Name (_HID, ...)
-                     Name (_CRS, ResourceTemplate () {
-                         I2cSerialBus (0x50, ControllerInitiated, I2C_SPEED,
--                                    AddressingMode7Bit, "^CH01", 0x00,
-+                                    AddressingMode7Bit, "\\_SB.SMB1.CH01", 0x00,
-                                     ResourceConsumer,,)
-                     }
-                 }
+-	server->lstrp = jiffies;
+ 	server->tcpStatus = CifsInNegotiate;
+ 	server->neg_start = jiffies;
+ 	spin_unlock(&server->srv_lock);
 
 
 
