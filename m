@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123CDB2A6C8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B17B2AA00
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA1A56681B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 423771BA519A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A05332253C;
-	Mon, 18 Aug 2025 13:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8205D345751;
+	Mon, 18 Aug 2025 14:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJmgHJVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1Acp2MK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58140321F4C;
-	Mon, 18 Aug 2025 13:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E5734574B;
+	Mon, 18 Aug 2025 14:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524188; cv=none; b=mik5UWTR5cDcEDENJA9PjgtlKtlQuLRF8bngMomOZuIIyEGU8GMH4Pl233d+yId2KTDBuL8jUfO3Cofm0+SKXkWZAbIXrXDKg2f4+ZVCZBbikH3pEbQZvwiaCEdHCv4zpPikDHhWV8P++6VfRCl1uTWMyZLDcmnrjwIh86CzHn8=
+	t=1755525873; cv=none; b=k5AzIw5gBmSAdamt4t/b+0saZXk/fxl9aywWjHtCD++p2vCmENUxdjWzG2I+XPr+IGcuuQ4ACPYhJnfM5i0qI1gIb4Wl1aq+4+4ITtjFXXpJO/fUVpN0dJyhmpxKFITSLR0dbEhCls+CYAM1UVY9PiuPOaVsxvlmWdTHOSiECUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524188; c=relaxed/simple;
-	bh=ESmhZ2YFRx/N/fG9NxeBJ8T7CC52L3aHvbX095jSx40=;
+	s=arc-20240116; t=1755525873; c=relaxed/simple;
+	bh=bDQ3oBWhN6N+cAvQ/5XSeTms1UF2BozMpcT4ACM4Cv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fq1oS2mr5186uVMkOSkKiDMnK1S2sLqXQElF+Gv4mt+c9XZHoBwh7V8ur04sxm3wC5moEZEHbJqXROTHe+HqNLFrsOBXteNl+aCHFWYRAf0Tg4Ux/g0Ij9IutJur2OAp9ixZ32NzFMlfCn8IfNNGuC4Ii28Qhqt3GTaHWZnww0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJmgHJVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87FEC4CEEB;
-	Mon, 18 Aug 2025 13:36:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Lo9VmuvSosY+H6iav/KJ9oPYbxbvYvszl8Ky68acYgQET3XUZJqvSHXuciTrew7VlpCm65dDRtHGRu64WBfgyffgeNnmNaSgJF1PTaalS/I2EFWWXMrTM9wF/yVlcwqpDRT6vAA6XFXPORQAJ4TWdRc4L0nRKL+xJPHic5KRs24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1Acp2MK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50A9C4CEEB;
+	Mon, 18 Aug 2025 14:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524188;
-	bh=ESmhZ2YFRx/N/fG9NxeBJ8T7CC52L3aHvbX095jSx40=;
+	s=korg; t=1755525873;
+	bh=bDQ3oBWhN6N+cAvQ/5XSeTms1UF2BozMpcT4ACM4Cv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJmgHJVTCPMFXfVUVSBJ/ij+v3BClb0zLPoJ0/Ju2j52+aJD45P8z04zzBglm4z4s
-	 dYHJ2RSyWT36J18kzlFGloZHdPbEI0fud/eyTFlpjg8+oFwc2LftGUPZcgEg8BYRIr
-	 Iq7zWAcpcH44CZsjR5Ebmy5QeYfZA8AA3l2FFmak=
+	b=h1Acp2MKvFFJiXkEOIPwAZqUJzHhVbtJoVVeAhrpcxNeyexkjmVupNXMgXJ4F1GDl
+	 GqvcZcu+kfLBSQtPo+zI6QSzooA8TVPMkRpRQYGLptz6vqRpeRdTbBLI6oIUUgTNVf
+	 ushEei1dBRKtAEEwIWYQI5ZP9uB8gZLJHqfT1W6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 393/515] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+Subject: [PATCH 6.16 392/570] media: v4l2-common: Reduce warnings about missing V4L2_CID_LINK_FREQ control
 Date: Mon, 18 Aug 2025 14:46:19 +0200
-Message-ID: <20250818124513.543200809@linuxfoundation.org>
+Message-ID: <20250818124520.959415765@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
+[ Upstream commit 5a0abb8909b9dcf347fce1d201ac6686ac33fd64 ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+When operating a pipeline with a missing V4L2_CID_LINK_FREQ control this
+two line warning is printed each time the pipeline is started. Reduce
+this excessive logging by only warning once for the missing control.
 
-This change expands the oscillator stop flag (OSF) handling that has
-already been implemented for some chips to the ds1341 chip (DS1341 and
-DS1342 share a datasheet). This handling manages the validity of the RTC
-data in .read_time and .set_time based on the OSF.
-
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/media/v4l2-core/v4l2-common.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index c8a666de9cbe..c6d388bb4a19 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -279,6 +279,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
- 		if (tmp & DS1340_BIT_OSF)
- 			return -EINVAL;
- 		break;
-+	case ds_1341:
-+		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
-+		if (ret)
-+			return ret;
-+		if (tmp & DS1337_BIT_OSF)
-+			return -EINVAL;
-+		break;
- 	case ds_1388:
- 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
- 		if (ret)
-@@ -377,6 +384,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
- 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
- 				   DS1340_BIT_OSF, 0);
- 		break;
-+	case ds_1341:
-+		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
-+				   DS1337_BIT_OSF, 0);
-+		break;
- 	case ds_1388:
- 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
- 				   DS1388_BIT_OSF, 0);
+diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
+index bd160a8c9efe..e1fc8fe43b74 100644
+--- a/drivers/media/v4l2-core/v4l2-common.c
++++ b/drivers/media/v4l2-core/v4l2-common.c
+@@ -505,10 +505,10 @@ s64 __v4l2_get_link_freq_ctrl(struct v4l2_ctrl_handler *handler,
+ 
+ 		freq = div_u64(v4l2_ctrl_g_ctrl_int64(ctrl) * mul, div);
+ 
+-		pr_warn("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
+-			__func__);
+-		pr_warn("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
+-			__func__);
++		pr_warn_once("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
++			     __func__);
++		pr_warn_once("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
++			     __func__);
+ 	}
+ 
+ 	return freq > 0 ? freq : -EINVAL;
 -- 
 2.39.5
 
