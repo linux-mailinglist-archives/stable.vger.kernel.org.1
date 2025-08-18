@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C81BB2A300
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F6AB2A92E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3691D7B3796
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1A451B667E5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EED32039D;
-	Mon, 18 Aug 2025 13:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E04341AB0;
+	Mon, 18 Aug 2025 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnL48oNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek5kKNvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE85B31E0F5;
-	Mon, 18 Aug 2025 13:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1D3341AA5;
+	Mon, 18 Aug 2025 13:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522236; cv=none; b=hC6N59Wjbku94LlCPKsPxHhCerrkzRJl0SFeaX6vLPLXfjFW2SjFEaQ33+pm2SF4CkkyNSahuU/Tj98rUz3g1VqGMGXM5BXlFg4O9LAueChNv1CVcQenlwv9+u0jQbgaTw07I4cI4/L69+KN9LqC3tw/cMRIHIQA222tR+NAKJY=
+	t=1755525436; cv=none; b=I9n3Ce1GnCew3zJzBw8Z3SHoBikHk5m9emIDvE1LJg/lr+3r289YZdpu/hCiSlAH2w3AxKm+LAsahZcFFLz0eBNshQnAgMil7dWrDw8wfvco3lIU7CeWlwwwPbRGUbE6NoWeoqQom3lCFLylDkj0k7GEE52ifjhvKFDDrjRKzVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522236; c=relaxed/simple;
-	bh=oFOGNvnACJAbxc9AyAeLd5P1z9LceR1J/47chkldNkY=;
+	s=arc-20240116; t=1755525436; c=relaxed/simple;
+	bh=aSzmBXSCvsfShYbAIGgigXysLK3Pbt4CM+0+vdmvZGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GB0RHErwWLFEC2ens2OSmXBPK94UABYreHMGDtDoTFA4/2FV+AlQtzWjqy0W4UXBNffoKOqEkcgBmaqkipqAD6UCUtRZ/yRmGE/4H7QojfXTU2+X8klxEXE8eWIZfjGOzt4T+ERTv+9PC2ZfkZPV6f73IcMG3ZaawXFB5lsjyYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnL48oNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28816C4CEEB;
-	Mon, 18 Aug 2025 13:03:55 +0000 (UTC)
+	 MIME-Version; b=qRa8emEKzKo1jhBPYjBQUA0UFqfun2XkAITNiyCFRVpVm9FYM4G21i9XZFBp2OO2J9lpXpknCd8qIGbiZFpiSRcYAJDswywzF8VAR0NjSSDxTIevGd7QAFR8en4jvSicBigugZh9mWe/ninF+bwOTtsUXJiPKcELijwsbDVTh5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek5kKNvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41BF7C113D0;
+	Mon, 18 Aug 2025 13:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522236;
-	bh=oFOGNvnACJAbxc9AyAeLd5P1z9LceR1J/47chkldNkY=;
+	s=korg; t=1755525436;
+	bh=aSzmBXSCvsfShYbAIGgigXysLK3Pbt4CM+0+vdmvZGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LnL48oNs4ECI21rD4uTBJ0GQXzzboGrjM0Xd6KLSVDj12dPsIxoh/NUeFl0zqxNi/
-	 enxVASKICuYva1DZ3zNcib9OLOJDUWcQHb2t9DxA/dsI9NahFLkDjmuy++IRF3q6YG
-	 gRe7XxM05XHP9BaCqZB3qy6nCkamBs3ynx1SEeT0=
+	b=ek5kKNvS72hcAzTAYov0HjQXrj773/AsZfFxokwSTBd6EMReGPAdZMP6h5603UlxN
+	 pAfQIy9h8RtfHGduwdKllzaxpEKai6BN8ZpvpzxTs7MA1weaQqoypX7zQgr+X09XC8
+	 tGtN+llGuCH7zqb9Qu5X2ugq5mYf+yL5LoCgX6+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RubenKelevra <rubenkelevra@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/444] net: ieee8021q: fix insufficient table-size assertion
+Subject: [PATCH 6.16 262/570] wifi: mac80211: avoid weird state in error path
 Date: Mon, 18 Aug 2025 14:44:09 +0200
-Message-ID: <20250818124457.208985479@linuxfoundation.org>
+Message-ID: <20250818124515.917639665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RubenKelevra <rubenkelevra@gmail.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 21deb2d966920f0d4dd098ca6c3a55efbc0b2f23 ]
+[ Upstream commit be1ba9ed221ffb95a8bb15f4c83d0694225ba808 ]
 
-_Static_assert(ARRAY_SIZE(map) != IEEE8021Q_TT_MAX - 1) rejects only a
-length of 7 and allows any other mismatch. Replace it with a strict
-equality test via a helper macro so that every mapping table must have
-exactly IEEE8021Q_TT_MAX (8) entries.
+If we get to the error path of ieee80211_prep_connection, for example
+because of a FW issue, then ieee80211_vif_set_links is called
+with 0.
+But the call to drv_change_vif_links from ieee80211_vif_update_links
+will probably fail as well, for the same reason.
+In this case, the valid_links and active_links bitmaps will be reverted
+to the value of the failing connection.
+Then, in the next connection, due to the logic of
+ieee80211_set_vif_links_bitmaps, valid_links will be set to the ID of
+the new connection assoc link, but the active_links will remain with the
+ID of the old connection's assoc link.
+If those IDs are different, we get into a weird state of valid_links and
+active_links being different. One of the consequences of this state is
+to call drv_change_vif_links with new_links as 0, since the & operation
+between the bitmaps will be 0.
 
-Signed-off-by: RubenKelevra <rubenkelevra@gmail.com>
-Link: https://patch.msgid.link/20250626205907.1566384-1-rubenkelevra@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Since a removal of a link should always succeed, ignore the return value
+of drv_change_vif_links if it was called to only remove links, which is
+the case for the ieee80211_prep_connection's error path.
+That way, the bitmaps will not be reverted to have the value from the
+failing connection and will have 0, so the next connection will have a
+good state.
+
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20250609213231.ba2011fb435f.Id87ff6dab5e1cf757b54094ac2d714c656165059@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/ieee8021q_helpers.c | 44 +++++++++++-------------------------
- 1 file changed, 13 insertions(+), 31 deletions(-)
+ include/net/mac80211.h | 2 ++
+ net/mac80211/link.c    | 9 ++++++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/ieee8021q_helpers.c b/net/core/ieee8021q_helpers.c
-index 759a9b9f3f89..669b357b73b2 100644
---- a/net/core/ieee8021q_helpers.c
-+++ b/net/core/ieee8021q_helpers.c
-@@ -7,6 +7,11 @@
- #include <net/dscp.h>
- #include <net/ieee8021q.h>
- 
-+/* verify that table covers all 8 traffic types */
-+#define TT_MAP_SIZE_OK(tbl)                                 \
-+	compiletime_assert(ARRAY_SIZE(tbl) == IEEE8021Q_TT_MAX, \
-+			   #tbl " size mismatch")
-+
- /* The following arrays map Traffic Types (TT) to traffic classes (TC) for
-  * different number of queues as shown in the example provided by
-  * IEEE 802.1Q-2022 in Annex I "I.3 Traffic type to traffic class mapping" and
-@@ -101,51 +106,28 @@ int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues)
- 
- 	switch (num_queues) {
- 	case 8:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_8queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_8queue_tt_tc_map != max - 1");
-+		TT_MAP_SIZE_OK(ieee8021q_8queue_tt_tc_map);
- 		return ieee8021q_8queue_tt_tc_map[tt];
- 	case 7:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_7queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_7queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_7queue_tt_tc_map);
- 		return ieee8021q_7queue_tt_tc_map[tt];
- 	case 6:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_6queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_6queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_6queue_tt_tc_map);
- 		return ieee8021q_6queue_tt_tc_map[tt];
- 	case 5:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_5queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_5queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_5queue_tt_tc_map);
- 		return ieee8021q_5queue_tt_tc_map[tt];
- 	case 4:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_4queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_4queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_4queue_tt_tc_map);
- 		return ieee8021q_4queue_tt_tc_map[tt];
- 	case 3:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_3queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_3queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_3queue_tt_tc_map);
- 		return ieee8021q_3queue_tt_tc_map[tt];
- 	case 2:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_2queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_2queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_2queue_tt_tc_map);
- 		return ieee8021q_2queue_tt_tc_map[tt];
- 	case 1:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_1queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_1queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_1queue_tt_tc_map);
- 		return ieee8021q_1queue_tt_tc_map[tt];
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 1b79e948b925..2e9d1c0bf5ac 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4468,6 +4468,8 @@ struct ieee80211_prep_tx_info {
+  *	new links bitmaps may be 0 if going from/to a non-MLO situation.
+  *	The @old array contains pointers to the old bss_conf structures
+  *	that were already removed, in case they're needed.
++ *	Note that removal of link should always succeed, so the return value
++ *	will be ignored in a removal only case.
+  *	This callback can sleep.
+  * @change_sta_links: Change the valid links of a station, similar to
+  *	@change_vif_links. This callback can sleep.
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index 4f7b7d0f64f2..d71eabe5abf8 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -2,7 +2,7 @@
+ /*
+  * MLO link handling
+  *
+- * Copyright (C) 2022-2024 Intel Corporation
++ * Copyright (C) 2022-2025 Intel Corporation
+  */
+ #include <linux/slab.h>
+ #include <linux/kernel.h>
+@@ -368,6 +368,13 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
+ 			ieee80211_update_apvlan_links(sdata);
  	}
  
++	/*
++	 * Ignore errors if we are only removing links as removal should
++	 * always succeed
++	 */
++	if (!new_links)
++		ret = 0;
++
+ 	if (ret) {
+ 		/* restore config */
+ 		memcpy(sdata->link, old_data, sizeof(old_data));
 -- 
 2.39.5
 
