@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B03BB2A470
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F81B2A76F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CEC6680368
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210EC1B65C42
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C2D3203A4;
-	Mon, 18 Aug 2025 13:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97FD335BC3;
+	Mon, 18 Aug 2025 13:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6NYD16S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC39Nbut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC12E31B100;
-	Mon, 18 Aug 2025 13:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4637335BA2;
+	Mon, 18 Aug 2025 13:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522845; cv=none; b=GiyHU0Wcd/Zst1DrBQ6B8+eXHHYRsi+iCLEw1sB+air7TN/Ode3Zya1E5OS72cKVhzfOq55xoKodQXHRp9qjWVEhUQRJDMLWFTl0vFTQ33hsChB6riktL2AWn6LOANmKuLYYLpjwur2oZW8qii1MEhgWMdPPlnUUdyFtLiNxukU=
+	t=1755524458; cv=none; b=cfqmwlkNtM27/fVoWa8GtjgJFCTLI5j0RbX82dcbz54P99gcbSSnAk1EAYdlb31SSQpuVLGSmG4IZkMgz0OcldlhVFWFc5YY3z6I6ALUg4WeTNuDi5iEfNzMyOECZzmm/xuYhlsMthLIJNJh8K1KLRoLm5BQtc+Z2Tn2mk1avCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522845; c=relaxed/simple;
-	bh=TaEcxZ5IJ4fOmSVrOYWF/sIHXebZaBTMRsFJA3lwtJ8=;
+	s=arc-20240116; t=1755524458; c=relaxed/simple;
+	bh=mqgIqU8Uqk7uVSRDHthPp34yM0KjQmf6BkH6Zu/3B+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSnV5s6IEuFrEey0EVq2XYGh7ooC5/BWia+xEC+k8QZsMRPjsAIYS2iIssR9sr9+EMS0/kxlwwQ5MVp2+FA4L4TWVqDEuR3Wm+m12SyHV+eBgZHHubH6OKrBnwCVbnkx//fRcBY2NjQ2Z9t7BfDfjvumt1oD8EFWgG+r2ZrSICU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6NYD16S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29656C4CEEB;
-	Mon, 18 Aug 2025 13:14:04 +0000 (UTC)
+	 MIME-Version; b=IV/p6BHLCIRFDegmoDuhEJVAeOtXx72DOIKYoEGVEuFH480Yjn21hp1WvptP/XakhksUYUXwBb/ziYqRuPbMo5z30myq7BU9wrXIFCD8XkafAGy9zaimcdjY9xdm6DOGf4s1rf9DJdry48JBj8liqAXU+lWKkvd7S/LVsmGOgeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC39Nbut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEB9C4CEEB;
+	Mon, 18 Aug 2025 13:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522845;
-	bh=TaEcxZ5IJ4fOmSVrOYWF/sIHXebZaBTMRsFJA3lwtJ8=;
+	s=korg; t=1755524458;
+	bh=mqgIqU8Uqk7uVSRDHthPp34yM0KjQmf6BkH6Zu/3B+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6NYD16SbezPimDhMFlel5dyJojvZAQ5HH2Up8nBxzQJFPzNnWuWKoUUDSF8EyYZ/
-	 WXwZij0n0BRxfQBCzeQQWhVBAd9d5nmXoPzyxs8PIKZuYUT96s4F9cHttaUvyKvWJW
-	 sf39lVR9j1uCtLvYZdJLXyCphoY7rvmDhE6SRlo0=
+	b=tC39NbutYYwPWM8V4aOXEJ4dhNUkXEn5g7wIqXwG0jL3MlQvI0Fi6ak6XN25klZve
+	 2PVlJ3KgzzUQnaJmPxjeMFS+SXSQGhtBsIXKK/t+ax4CCRFQc0jYdvSvY8se0SxLv8
+	 UoCne1jcziqBsplyClGtTfFmJmkoiEu5Xeq5rIEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.12 439/444] firmware: arm_scmi: Convert to SYSTEM_SLEEP_PM_OPS
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 479/515] btrfs: fix wrong length parameter for btrfs_cleanup_ordered_extents()
 Date: Mon, 18 Aug 2025 14:47:45 +0200
-Message-ID: <20250818124505.424240046@linuxfoundation.org>
+Message-ID: <20250818124516.862076077@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 62d6b81e8bd207ad44eff39d1a0fe17f0df510a5 upstream.
+commit deaf895212da74635a7f0a420e1ecf8f5eca1fe5 upstream.
 
-The old SET_SYSTEM_SLEEP_PM_OPS() macro leads to a warning about an
-unused function:
+Inside nocow_one_range(), if the checksum cloning for data reloc inode
+failed, we call btrfs_cleanup_ordered_extents() to cleanup the just
+allocated ordered extents.
 
-  |  drivers/firmware/arm_scmi/scmi_power_control.c:363:12: error:
-  | 	'scmi_system_power_resume' defined but not used [-Werror=unused-function]
-  |         static int scmi_system_power_resume(struct device *dev)
+But unlike extent_clear_unlock_delalloc(),
+btrfs_cleanup_ordered_extents() requires a length, not an inclusive end
+bytenr.
 
-The proper way to do this these days is to use SYSTEM_SLEEP_PM_OPS()
-and pm_sleep_ptr().
+This can be problematic, as the @end is normally way larger than @len.
 
-Fixes: 9a0658d3991e ("firmware: arm_scmi: power_control: Ensure SCMI_SYSPOWER_IDLE is set early during resume")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Peng Fan <peng.fan@nxp.com>
-Message-Id: <20250709070107.1388512-1-arnd@kernel.org>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+This means btrfs_cleanup_ordered_extents() can be called on folios
+out of the correct range, and if the out-of-range folio is under
+writeback, we can incorrectly clear the ordered flag of the folio, and
+trigger the DEBUG_WARN() inside btrfs_writepage_cow_fixup().
+
+Fix the wrong parameter with correct length instead.
+
+Fixes: 94f6c5c17e52 ("btrfs: move ordered extent cleanup to where they are allocated")
+CC: stable@vger.kernel.org # 6.15+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/scmi_power_control.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/arm_scmi/scmi_power_control.c
-+++ b/drivers/firmware/arm_scmi/scmi_power_control.c
-@@ -369,7 +369,7 @@ static int scmi_system_power_resume(stru
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2028,7 +2028,7 @@ static int nocow_one_range(struct btrfs_
+ 	 * cleaered by the caller.
+ 	 */
+ 	if (ret < 0)
+-		btrfs_cleanup_ordered_extents(inode, file_pos, end);
++		btrfs_cleanup_ordered_extents(inode, file_pos, len);
+ 	return ret;
  }
  
- static const struct dev_pm_ops scmi_system_power_pmops = {
--	SET_SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
-+	SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
- };
- 
- static const struct scmi_device_id scmi_id_table[] = {
-@@ -380,7 +380,7 @@ MODULE_DEVICE_TABLE(scmi, scmi_id_table)
- 
- static struct scmi_driver scmi_system_power_driver = {
- 	.driver	= {
--		.pm = &scmi_system_power_pmops,
-+		.pm = pm_sleep_ptr(&scmi_system_power_pmops),
- 	},
- 	.name = "scmi-system-power",
- 	.probe = scmi_syspower_probe,
 
 
 
