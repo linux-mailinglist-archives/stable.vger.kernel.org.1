@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29F8B2A3C4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C7DB2A972
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:20:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94CF5563686
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CA9A627EC6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDA2308F30;
-	Mon, 18 Aug 2025 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18180346A1A;
+	Mon, 18 Aug 2025 13:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGBXD70E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guHuYQrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF2112DDA1;
-	Mon, 18 Aug 2025 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97503469FB;
+	Mon, 18 Aug 2025 13:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522196; cv=none; b=Dccm6OFrqp7A561bLdoPiooBND46agoMPM/BQhbsi891YHyyYHUaz3WMiT7l0Awvyr3fQldc1yep7Z1ahk2o87PdtelPfAF9Gj/SAzC6EF5KkqjwSwZZVuEnSZWgntjVQVTkU8EUtsApPKccMWp8zM+fXWwRVahaDyWxnM9lIQs=
+	t=1755525503; cv=none; b=DFlu6fFCCOSV/WesF6sW9vcw4r8fcpGmlIn6Av/3TCN+i15EteCMM8A2T4Z6U8VBLOvtOqw549ZtvID8DExqWLJf8pfXxbeV9P1BDshcowtuxOCvT4sBEMseMAKp5dw/5j4YdYvDmdu9q8BUg6mZ78ukPkRNLHvt5TFUpHNf+o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522196; c=relaxed/simple;
-	bh=vipGDLADZUbaKbZFjqLhNIFicTK5YvULto/0PDI64CM=;
+	s=arc-20240116; t=1755525503; c=relaxed/simple;
+	bh=POF+Rsmmj8gsVm2HJiG5H7oFGG7x1i74qNuBe6ZBrvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDqzUf0vrN0L55/lboFRTX1kf2Q07WFhH1f38qtTLMrPysiZhZ78yDsldpkHHmWzAeDYSpB21yySp9tlu0DtptgCBx5zchSODt4i3kDu9RORjm6g9z5fQviptMFRrO1OyYWx3Gk3rUtVzenHcFIgF9C0DquC4MVOubDuSDfM0V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGBXD70E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3E6C4CEEB;
-	Mon, 18 Aug 2025 13:03:15 +0000 (UTC)
+	 MIME-Version; b=my9JuzOxzmIp2DMr6cM0SEDGDb2xGj/8FXJiXhST2sx6FP5DkawuTBYI+TorOJjCfWUonct3WiCLDNVnlo3SGeNdTh5mGGKI7mUy+H4JAJ5sjgtCOsl4jwseIJwYNCEsB2RIlME7mS+ZzmsZ1hiBAzj+yrVQK1r2IuwI//fwTng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guHuYQrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB0EC4CEEB;
+	Mon, 18 Aug 2025 13:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522196;
-	bh=vipGDLADZUbaKbZFjqLhNIFicTK5YvULto/0PDI64CM=;
+	s=korg; t=1755525503;
+	bh=POF+Rsmmj8gsVm2HJiG5H7oFGG7x1i74qNuBe6ZBrvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dGBXD70Ewg+gChp13ddVrf8XHbhvGK5BUg+jOLXVfpdQ2Rx+IpnENJHKCd/sUBcOH
-	 Y1dbx/uPlkzo+m+/X2xlc0kOgF+o6TVkuocNEqiZvymfbhTbG8f64LGipGr70YSwRg
-	 D0mWhSlC8TQZtaPiircUfPrAxWvC2iOR9xpewWEM=
+	b=guHuYQrh7ZOshrJ1hKM4+b2yGlj0zwpGc/MTxyq6qqMApTBr/9mLiy2g9l2QhhdH4
+	 N5nfbY0tfChHovi0fyhtv3YKNzvbKfeH5yqirInatScRVRYTuHu0k83r4RZCmmUUL6
+	 kqVwSv4hJe0vY9nBOQWZoVIDs4kg3CqPLzcgQ7tQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Pierre-Loup A. Griffais" <pgriffais@valvesoftware.com>,
-	Vicki Pfau <vi@endrift.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	zhangjianrong <zhangjianrong5@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 244/444] drm/amd: Allow printing VanGogh OD SCLK levels without setting dpm to manual
+Subject: [PATCH 6.16 283/570] net: thunderbolt: Fix the parameter passing of tb_xdomain_enable_paths()/tb_xdomain_disable_paths()
 Date: Mon, 18 Aug 2025 14:44:30 +0200
-Message-ID: <20250818124457.981099548@linuxfoundation.org>
+Message-ID: <20250818124516.744232555@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: zhangjianrong <zhangjianrong5@huawei.com>
 
-[ Upstream commit 2d1ec1e955414e8e8358178011c35afca1a1c0b1 ]
+[ Upstream commit 8ec31cb17cd355cea25cdb8496d9b3fbf1321647 ]
 
-Several other ASICs allow printing OD SCLK levels without setting DPM
-control to manual.  When OD is disabled it will show the range the
-hardware supports. When OD is enabled it will show what values have
-been programmed. Adjust VanGogh to work the same.
+According to the description of tb_xdomain_enable_paths(), the third
+parameter represents the transmit ring and the fifth parameter represents
+the receive ring. tb_xdomain_disable_paths() is the same case.
 
-Cc: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
-Reported-by: Vicki Pfau <vi@endrift.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://lore.kernel.org/r/20250609031227.479079-1-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Jakub] Mika says: it works now because both rings ->hop is the same
+
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250625051149.GD2824380@black.fi.intel.com
+Signed-off-by: zhangjianrong <zhangjianrong5@huawei.com>
+Link: https://patch.msgid.link/20250628094920.656658-1-zhangjianrong5@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c  | 37 ++++++++-----------
- 1 file changed, 15 insertions(+), 22 deletions(-)
+ drivers/net/thunderbolt/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-index 9bca748ac2e9..3d3765815e24 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
-@@ -664,7 +664,6 @@ static int vangogh_print_clk_levels(struct smu_context *smu,
- {
- 	DpmClocks_t *clk_table = smu->smu_table.clocks_table;
- 	SmuMetrics_t metrics;
--	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
- 	int i, idx, size = 0, ret = 0;
- 	uint32_t cur_value = 0, value = 0, count = 0;
- 	bool cur_value_match_level = false;
-@@ -680,31 +679,25 @@ static int vangogh_print_clk_levels(struct smu_context *smu,
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index 643cf67840b5..dcaa62377808 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -396,9 +396,9 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
  
- 	switch (clk_type) {
- 	case SMU_OD_SCLK:
--		if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
--			size += sysfs_emit_at(buf, size, "%s:\n", "OD_SCLK");
--			size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
--			(smu->gfx_actual_hard_min_freq > 0) ? smu->gfx_actual_hard_min_freq : smu->gfx_default_hard_min_freq);
--			size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
--			(smu->gfx_actual_soft_max_freq > 0) ? smu->gfx_actual_soft_max_freq : smu->gfx_default_soft_max_freq);
--		}
-+		size += sysfs_emit_at(buf, size, "%s:\n", "OD_SCLK");
-+		size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
-+		(smu->gfx_actual_hard_min_freq > 0) ? smu->gfx_actual_hard_min_freq : smu->gfx_default_hard_min_freq);
-+		size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
-+		(smu->gfx_actual_soft_max_freq > 0) ? smu->gfx_actual_soft_max_freq : smu->gfx_default_soft_max_freq);
- 		break;
- 	case SMU_OD_CCLK:
--		if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
--			size += sysfs_emit_at(buf, size, "CCLK_RANGE in Core%d:\n",  smu->cpu_core_id_select);
--			size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
--			(smu->cpu_actual_soft_min_freq > 0) ? smu->cpu_actual_soft_min_freq : smu->cpu_default_soft_min_freq);
--			size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
--			(smu->cpu_actual_soft_max_freq > 0) ? smu->cpu_actual_soft_max_freq : smu->cpu_default_soft_max_freq);
--		}
-+		size += sysfs_emit_at(buf, size, "CCLK_RANGE in Core%d:\n",  smu->cpu_core_id_select);
-+		size += sysfs_emit_at(buf, size, "0: %10uMhz\n",
-+		(smu->cpu_actual_soft_min_freq > 0) ? smu->cpu_actual_soft_min_freq : smu->cpu_default_soft_min_freq);
-+		size += sysfs_emit_at(buf, size, "1: %10uMhz\n",
-+		(smu->cpu_actual_soft_max_freq > 0) ? smu->cpu_actual_soft_max_freq : smu->cpu_default_soft_max_freq);
- 		break;
- 	case SMU_OD_RANGE:
--		if (smu_dpm_ctx->dpm_level == AMD_DPM_FORCED_LEVEL_MANUAL) {
--			size += sysfs_emit_at(buf, size, "%s:\n", "OD_RANGE");
--			size += sysfs_emit_at(buf, size, "SCLK: %7uMhz %10uMhz\n",
--				smu->gfx_default_hard_min_freq, smu->gfx_default_soft_max_freq);
--			size += sysfs_emit_at(buf, size, "CCLK: %7uMhz %10uMhz\n",
--				smu->cpu_default_soft_min_freq, smu->cpu_default_soft_max_freq);
--		}
-+		size += sysfs_emit_at(buf, size, "%s:\n", "OD_RANGE");
-+		size += sysfs_emit_at(buf, size, "SCLK: %7uMhz %10uMhz\n",
-+			smu->gfx_default_hard_min_freq, smu->gfx_default_soft_max_freq);
-+		size += sysfs_emit_at(buf, size, "CCLK: %7uMhz %10uMhz\n",
-+			smu->cpu_default_soft_min_freq, smu->cpu_default_soft_max_freq);
- 		break;
- 	case SMU_SOCCLK:
- 		/* the level 3 ~ 6 of socclk use the same frequency for vangogh */
+ 		ret = tb_xdomain_disable_paths(net->xd,
+ 					       net->local_transmit_path,
+-					       net->rx_ring.ring->hop,
++					       net->tx_ring.ring->hop,
+ 					       net->remote_transmit_path,
+-					       net->tx_ring.ring->hop);
++					       net->rx_ring.ring->hop);
+ 		if (ret)
+ 			netdev_warn(net->dev, "failed to disable DMA paths\n");
+ 
+@@ -662,9 +662,9 @@ static void tbnet_connected_work(struct work_struct *work)
+ 		goto err_free_rx_buffers;
+ 
+ 	ret = tb_xdomain_enable_paths(net->xd, net->local_transmit_path,
+-				      net->rx_ring.ring->hop,
++				      net->tx_ring.ring->hop,
+ 				      net->remote_transmit_path,
+-				      net->tx_ring.ring->hop);
++				      net->rx_ring.ring->hop);
+ 	if (ret) {
+ 		netdev_err(net->dev, "failed to enable DMA paths\n");
+ 		goto err_free_tx_buffers;
 -- 
 2.39.5
 
