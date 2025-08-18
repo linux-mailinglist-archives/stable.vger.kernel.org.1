@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D94B2A5CD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DC7B2A92D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D336E7B357D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F1366E3F8B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5053322DAD;
-	Mon, 18 Aug 2025 13:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B114346A04;
+	Mon, 18 Aug 2025 13:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQN+StgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAMA+cgT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92725322DA8;
-	Mon, 18 Aug 2025 13:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292E0346A00;
+	Mon, 18 Aug 2025 13:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523772; cv=none; b=o+uh+l9l4MTVSGGr0qOlU02ONpfbVP12pcE/VwSdXaUwWPnMQfk4rV1B6fJHcwrhbTGq5qXcuBRBmvzma0JVCLB020+a8hA+Pryh9nBpQZvxDS+LBw8zbmu+PAaku2Ukb07xJnpj0ZUNspc/pxs4oXZ0qRjjSvIBnmakF3Rgess=
+	t=1755525463; cv=none; b=u9VmNhpnzmQFaQqtsGmkX3RfUb4ccXzyZbFQqfhZFjyXcB95MAq1PT28NNhntKSr62sfHwNXHhfOsLOaoS5EajPDmzhOA6fru06pRRx60zArUN0CVgoZmCTIoksOlsnG1p+IPyXsJrDowVLDs8zpfZ86dcA1X+oXTlmT0ydhg2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523772; c=relaxed/simple;
-	bh=uo3WRt/Id1ccnArK++SwDiJlTfM7nt5OVZ2/2gD82n0=;
+	s=arc-20240116; t=1755525463; c=relaxed/simple;
+	bh=Y6pu/6uw+s7f9QjsYXFMiP3iifAPed5jhCA03SpkjNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpyPL87g/Z4vZoGenp2aaX4KaMkkG9XMWp1gEI6J7qOA5G5Lk5IZOQlWv1DkBUpixMsMfVCnHpNJgsGK+DKAQGGhBXJIEHsI805WfX9KZftmk/CvWAO6tL4QUvlst+RA4ZLRlPd94CAKOeCp7A2u84e+Ba+Vq1ky+kFg7lfTz2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQN+StgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C91C4CEEB;
-	Mon, 18 Aug 2025 13:29:31 +0000 (UTC)
+	 MIME-Version; b=Azqw96b+AxCxT9f+w8chI0euaQfCYRft3nUIr4vQVmLlrnzsrUDUg1DGkAJcKHtKYefALJBITDY3MQOsRbyyAvz+Tf9NNy1qeOiiLdmU8Pgc3qScdMyLT/+tLlZftX/o9bV6wrR5hx1uus6R6KnsM6HC7zMcp/IbsHFSiYUBPZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAMA+cgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CDEC4CEEB;
+	Mon, 18 Aug 2025 13:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523772;
-	bh=uo3WRt/Id1ccnArK++SwDiJlTfM7nt5OVZ2/2gD82n0=;
+	s=korg; t=1755525462;
+	bh=Y6pu/6uw+s7f9QjsYXFMiP3iifAPed5jhCA03SpkjNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQN+StgSQ+d8EwG/QlgoHf3K1/KRwHZd82dyyKllAP5Nbxsc07VABCbzhdopDDOPq
-	 utfnb2AQDYGXpT1DbBap1LlueAiC2pLCaJ+NK6y2vxibbwe5rvKsx6J+AoWHzaPeIX
-	 uYT48tLTxySpIn/FJQ41uVF56L67IJvr6E4eSw0w=
+	b=TAMA+cgTqOTJAVXntlEXh1m1zx5Xoc1PML4WaFeoxRnI4MBVUkOKhKC2pe8nDIuZf
+	 ZwDSKVhbva8Vd72JjOE0UCKR9haphrQ3HWVBnKW1fVKJafOLkRLfT1qTcfsX5f9GbU
+	 BP2oN2MRsmqLlF6CFlTjudxLNx4Hb7MuEIlDeW04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RubenKelevra <rubenkelevra@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 269/515] net: ieee8021q: fix insufficient table-size assertion
-Date: Mon, 18 Aug 2025 14:44:15 +0200
-Message-ID: <20250818124508.777106523@linuxfoundation.org>
+Subject: [PATCH 6.16 269/570] wifi: mt76: fix vif link allocation
+Date: Mon, 18 Aug 2025 14:44:16 +0200
+Message-ID: <20250818124516.210877163@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RubenKelevra <rubenkelevra@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 21deb2d966920f0d4dd098ca6c3a55efbc0b2f23 ]
+[ Upstream commit 53a5d72bdd70e262623b6009cc4754927b428bad ]
 
-_Static_assert(ARRAY_SIZE(map) != IEEE8021Q_TT_MAX - 1) rejects only a
-length of 7 and allows any other mismatch. Replace it with a strict
-equality test via a helper macro so that every mapping table must have
-exactly IEEE8021Q_TT_MAX (8) entries.
+Reuse the vif deflink for link_id = 0 in order to avoid confusion with
+vif->bss_conf, which also gets a link id of 0.
 
-Signed-off-by: RubenKelevra <rubenkelevra@gmail.com>
-Link: https://patch.msgid.link/20250626205907.1566384-1-rubenkelevra@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250704-mt7996-mlo-fixes-v1-1-356456c73f43@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/ieee8021q_helpers.c | 44 +++++++++++-------------------------
- 1 file changed, 13 insertions(+), 31 deletions(-)
+ drivers/net/wireless/mediatek/mt76/channel.c | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt76.h    | 5 ++++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/ieee8021q_helpers.c b/net/core/ieee8021q_helpers.c
-index 759a9b9f3f89..669b357b73b2 100644
---- a/net/core/ieee8021q_helpers.c
-+++ b/net/core/ieee8021q_helpers.c
-@@ -7,6 +7,11 @@
- #include <net/dscp.h>
- #include <net/ieee8021q.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
+index cc2d888e3f17..77b75792eb48 100644
+--- a/drivers/net/wireless/mediatek/mt76/channel.c
++++ b/drivers/net/wireless/mediatek/mt76/channel.c
+@@ -173,13 +173,13 @@ void mt76_unassign_vif_chanctx(struct ieee80211_hw *hw,
+ 	if (!mlink)
+ 		goto out;
  
-+/* verify that table covers all 8 traffic types */
-+#define TT_MAP_SIZE_OK(tbl)                                 \
-+	compiletime_assert(ARRAY_SIZE(tbl) == IEEE8021Q_TT_MAX, \
-+			   #tbl " size mismatch")
+-	if (link_conf != &vif->bss_conf)
++	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
+ 		rcu_assign_pointer(mvif->link[link_id], NULL);
+ 
+ 	dev->drv->vif_link_remove(phy, vif, link_conf, mlink);
+ 	mlink->ctx = NULL;
+ 
+-	if (link_conf != &vif->bss_conf)
++	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
+ 		kfree_rcu(mlink, rcu_head);
+ 
+ out:
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 74b75035d361..0ecf77fcbe3d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1874,6 +1874,9 @@ mt76_vif_link(struct mt76_dev *dev, struct ieee80211_vif *vif, int link_id)
+ 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
+ 	struct mt76_vif_data *mvif = mlink->mvif;
+ 
++	if (!link_id)
++		return mlink;
 +
- /* The following arrays map Traffic Types (TT) to traffic classes (TC) for
-  * different number of queues as shown in the example provided by
-  * IEEE 802.1Q-2022 in Annex I "I.3 Traffic type to traffic class mapping" and
-@@ -101,51 +106,28 @@ int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues)
+ 	return mt76_dereference(mvif->link[link_id], dev);
+ }
  
- 	switch (num_queues) {
- 	case 8:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_8queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_8queue_tt_tc_map != max - 1");
-+		TT_MAP_SIZE_OK(ieee8021q_8queue_tt_tc_map);
- 		return ieee8021q_8queue_tt_tc_map[tt];
- 	case 7:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_7queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_7queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_7queue_tt_tc_map);
- 		return ieee8021q_7queue_tt_tc_map[tt];
- 	case 6:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_6queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_6queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_6queue_tt_tc_map);
- 		return ieee8021q_6queue_tt_tc_map[tt];
- 	case 5:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_5queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_5queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_5queue_tt_tc_map);
- 		return ieee8021q_5queue_tt_tc_map[tt];
- 	case 4:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_4queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_4queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_4queue_tt_tc_map);
- 		return ieee8021q_4queue_tt_tc_map[tt];
- 	case 3:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_3queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_3queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_3queue_tt_tc_map);
- 		return ieee8021q_3queue_tt_tc_map[tt];
- 	case 2:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_2queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_2queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_2queue_tt_tc_map);
- 		return ieee8021q_2queue_tt_tc_map[tt];
- 	case 1:
--		compiletime_assert(ARRAY_SIZE(ieee8021q_1queue_tt_tc_map) !=
--				   IEEE8021Q_TT_MAX - 1,
--				   "ieee8021q_1queue_tt_tc_map != max - 1");
--
-+		TT_MAP_SIZE_OK(ieee8021q_1queue_tt_tc_map);
- 		return ieee8021q_1queue_tt_tc_map[tt];
- 	}
+@@ -1884,7 +1887,7 @@ mt76_vif_conf_link(struct mt76_dev *dev, struct ieee80211_vif *vif,
+ 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
+ 	struct mt76_vif_data *mvif = mlink->mvif;
  
+-	if (link_conf == &vif->bss_conf)
++	if (link_conf == &vif->bss_conf || !link_conf->link_id)
+ 		return mlink;
+ 
+ 	return mt76_dereference(mvif->link[link_conf->link_id], dev);
 -- 
 2.39.5
 
