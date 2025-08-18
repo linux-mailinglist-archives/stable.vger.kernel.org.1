@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-170686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E5DB2A5CC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3291EB2A853
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E049258311F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8AD58469A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767F9321452;
-	Mon, 18 Aug 2025 13:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DCE335BCD;
+	Mon, 18 Aug 2025 13:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvtEsiK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEjI/6na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EAD321448;
-	Mon, 18 Aug 2025 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E6B1E48A;
+	Mon, 18 Aug 2025 13:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523450; cv=none; b=WBu+VOxLEvP/PZyR0Zi1PWtWXx9v4Tos5+OcJKOAHKY3Nt9wrCXuBKKVm9/LMb9xv0i1qug+ZoSlfC53KeoYXnzRgnZYKuHgKNzL91RJ2177UAS+zdNf+wuqthPCxsU7SWQ+0qXKV0sM0oYljiv1flLNpQ2bQ/b1V84FooMZBjQ=
+	t=1755525252; cv=none; b=nXXJx1Gn+hwPhYhNZrE3BUTYvUotwheLkffLHOkUBYCW20oqqnvMRIGX+arjYLrXaCfB4+oRqqRk+9X78+6szZEgTGPCUkLVTMPh/sPPQBz6wrC4wg1K1I9YED3a+q1aNQ4kqYOiKf14tVTNBqtwBcmtwVI8NbzN2nJamWYNfDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523450; c=relaxed/simple;
-	bh=X+Qu72bvhMfAG6+88mF72Lew9XpuNeZhY07NgBa5SIM=;
+	s=arc-20240116; t=1755525252; c=relaxed/simple;
+	bh=futBSFL0JEL3uN73PWvaLt+eQ70j0/MEr0adtpxSGLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pb+q7onXPmwyzg3wsEsoDQRlYqytq5htigSxMZs030h5A2vZB7YCt7XFhVO04vmDhZPpB4KDxFTSvokcqwU7XeWAGRIr97uwrNAV3IV2don0yHb1m+We999L9A1VjYM12jkwzUxiq+9FsM9rFrqmwIOLVTOVU25/a+ZSmXAAK4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvtEsiK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398BEC4CEEB;
-	Mon, 18 Aug 2025 13:24:08 +0000 (UTC)
+	 MIME-Version; b=FsJncXUw9oUyqksdlPIE51c66ZrvibBecKKFDrdWBlAqG7Kon7zqejrf36asvW/BGtOD3ffx4sxq0YpWzPtiKk1z1CNZu6uoXOcrxapWoGi1XVFAoCF6Xk0Tjn/8VJ6QG6/X2Zm20sH+KjcPiHhRpiyODNeHlgq+W5xcPDk6W+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEjI/6na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946B3C4CEEB;
+	Mon, 18 Aug 2025 13:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523449;
-	bh=X+Qu72bvhMfAG6+88mF72Lew9XpuNeZhY07NgBa5SIM=;
+	s=korg; t=1755525252;
+	bh=futBSFL0JEL3uN73PWvaLt+eQ70j0/MEr0adtpxSGLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvtEsiK7n2Aidte9XQz9n4o763ooEVIIWZKYxCYC9mRPBfme2FTOtVu9u4VkYlhPL
-	 eU7/vjdGZYjCpSssOO36iMauiuJRQGHtc/dEj9jPGSU4SRL6L31h+bVkemlYRnZRpX
-	 EBgndM8H7atRB9ksXWC11/I/aKrtaHLdjuQ5OSnc=
+	b=pEjI/6naKS6xmCDIgrzeaJqoJsOdRvwzisBHemk62aZYBf1kNQ1GS/GBIDGnFmwGm
+	 zfjLcHVq+zEdTJ4+s1Z5PtAcZO2moFvQR1Z9y5E5ZBpXXbQ259GvP1xETMNOk7fJFo
+	 YQ7QCJ8VAAdlWTJU/LIPcI/B75GQJJd4mGrv65Cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 174/515] ASoC: core: Check for rtd == NULL in snd_soc_remove_pcm_runtime()
+Subject: [PATCH 6.16 173/570] reset: brcmstb: Enable reset drivers for ARCH_BCM2835
 Date: Mon, 18 Aug 2025 14:42:40 +0200
-Message-ID: <20250818124505.061534456@linuxfoundation.org>
+Message-ID: <20250818124512.461354395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit 2d91cb261cac6d885954b8f5da28b5c176c18131 ]
+[ Upstream commit 1d99f92f71b6b4b2eee776562c991428490f71ef ]
 
-snd_soc_remove_pcm_runtime() might be called with rtd == NULL which will
-leads to null pointer dereference.
-This was reproduced with topology loading and marking a link as ignore
-due to missing hardware component on the system.
-On module removal the soc_tplg_remove_link() would call
-snd_soc_remove_pcm_runtime() with rtd == NULL since the link was ignored,
-no runtime was created.
+The BRCMSTB and BRCMSTB_RESCAL reset drivers are also
+used in the BCM2712, AKA the RPi5. The RPi platforms
+have typically used the ARCH_BCM2835, and the PCIe
+support for this SoC can use this config which depends
+on these drivers so enable building them when just that
+arch option is enabled to ensure the platform works as
+expected.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Link: https://patch.msgid.link/20250619084222.559-3-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20250630175301.846082-1-pbrobinson@gmail.com
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/reset/Kconfig | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 3f97d1f132c6..0db6db16f28b 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1139,6 +1139,9 @@ static int snd_soc_compensate_channel_connection_map(struct snd_soc_card *card,
- void snd_soc_remove_pcm_runtime(struct snd_soc_card *card,
- 				struct snd_soc_pcm_runtime *rtd)
- {
-+	if (!rtd)
-+		return;
-+
- 	lockdep_assert_held(&client_mutex);
+diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
+index d85be5899da6..ec8c953cb73d 100644
+--- a/drivers/reset/Kconfig
++++ b/drivers/reset/Kconfig
+@@ -51,8 +51,8 @@ config RESET_BERLIN
  
- 	/*
+ config RESET_BRCMSTB
+ 	tristate "Broadcom STB reset controller"
+-	depends on ARCH_BRCMSTB || COMPILE_TEST
+-	default ARCH_BRCMSTB
++	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
++	default ARCH_BRCMSTB || ARCH_BCM2835
+ 	help
+ 	  This enables the reset controller driver for Broadcom STB SoCs using
+ 	  a SUN_TOP_CTRL_SW_INIT style controller.
+@@ -60,11 +60,11 @@ config RESET_BRCMSTB
+ config RESET_BRCMSTB_RESCAL
+ 	tristate "Broadcom STB RESCAL reset controller"
+ 	depends on HAS_IOMEM
+-	depends on ARCH_BRCMSTB || COMPILE_TEST
+-	default ARCH_BRCMSTB
++	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
++	default ARCH_BRCMSTB || ARCH_BCM2835
+ 	help
+ 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
+-	  BCM7216.
++	  BCM7216 or the BCM2712.
+ 
+ config RESET_EYEQ
+ 	bool "Mobileye EyeQ reset controller"
 -- 
 2.39.5
 
