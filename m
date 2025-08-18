@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-171338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A78B2A8C3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A83B2A3D3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 744147B8B63
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1893E5631CA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C26322A21;
-	Mon, 18 Aug 2025 13:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8721612DDA1;
+	Mon, 18 Aug 2025 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYzTdP9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7Nv8U1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEF0322776;
-	Mon, 18 Aug 2025 13:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457343074AE;
+	Mon, 18 Aug 2025 13:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525587; cv=none; b=EOaux0Jl+9Y14Ls+MLAiyqcWTEi7e7h7lYZUeSx9a2pScWkVEL/3cPNaKItGFtL7BWRNr1sd5uVNBTKwb9XD2+u2DPw7TJeT+kDQPgrddgBJX93GKhFjPJXQdNa4QpGAQvfN4Lrf5dOQ/L5bpmJHyuCIY5cTYqydevNxoE5I058=
+	t=1755522173; cv=none; b=O8zR2ocyIZ7SDJzgJf4Uo/GoeXP7WKwaHpN5Ci04EdfuElYaQiU3aYNVtmJLVLtpY7bGLlNRXaPTtBYYbjuKU/BDaT2d5Xq4q9bMyUe9bO323ryHeVmKwGPt7O1moYLwQo/HQl6RkYFlzYn0KsKa6qoGZkDB41ZneILGNfbGYvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525587; c=relaxed/simple;
-	bh=usLfDJdSU3H2dCvsothumH+SnBZkY9xep9YyNV+SKMo=;
+	s=arc-20240116; t=1755522173; c=relaxed/simple;
+	bh=HWFYFjO2lBCaOeVG+J/R6ofmHHPGZnw5fclJrEdLvaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gCjjh002C75aKu08drNdhSvpYeVlgYU94o++yMap+D+c6l438A41QRGcgCGtQrWFryF52vCyeuTJqsGgf9bW60WtyqA9JI2iyvPP0nMrnlgg3mXC++3kJIQ7Ccv5P9XXNjBKI/44BqYWIXzpGvEc6Mic/gu8bW+bvfiUX7VMtpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYzTdP9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC54C4CEEB;
-	Mon, 18 Aug 2025 13:59:45 +0000 (UTC)
+	 MIME-Version; b=DBEI4W3yQwM1ONS64dWpLuwfllYEjUz335fy70G2TIiA0Qof3RtKoraBmrQAa66iNi26k5TG5/A6Tv3XdiMY8N10EvHdYekPUAmy2JlyqKQzUpyv94hSyjDNKXPcxPmcXkFvhNZ7mVu1va9gt4fUOsi6BgsR57SOa0XmlnfXCgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7Nv8U1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C119DC4CEEB;
+	Mon, 18 Aug 2025 13:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525587;
-	bh=usLfDJdSU3H2dCvsothumH+SnBZkY9xep9YyNV+SKMo=;
+	s=korg; t=1755522173;
+	bh=HWFYFjO2lBCaOeVG+J/R6ofmHHPGZnw5fclJrEdLvaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iYzTdP9o1fjt7bDNikX3KAxAY11VId2DHLfyKp0nCN/C2HZPVAvoNKybGcMQ1PP7L
-	 wTU1RDa7JZAOHcUUnCY3/Z2yYMeofjclQ7nhj/tSi38esXT4ZT1Q6C/1/gB+CYuNYB
-	 zcS8r0nkQ8p1Je6qOOg6pdBrmMh1R4DYrbBqVtzk=
+	b=u7Nv8U1FBe9bWqg1N0tMHHNgZ6byqmxeqqVfr3ndu91l/QidWWqzJBg6ek+Da7ejh
+	 HMbfCBza/oK04zLxj/K91nft8/zTgHuEIpLoFNxLznK8KnX15jDt1OxbYstz947S+H
+	 NwQnhG0Hj3OX0eRVaZ9xq75mtdkX1NfkMrLBM9q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 276/570] wifi: rtw89: Fix rtw89_mac_power_switch() for USB
+Subject: [PATCH 6.12 237/444] wifi: ath12k: Decrement TID on RX peer frag setup error handling
 Date: Mon, 18 Aug 2025 14:44:23 +0200
-Message-ID: <20250818124516.484479664@linuxfoundation.org>
+Message-ID: <20250818124457.718932761@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 
-[ Upstream commit e2b71603333a9dd73ee88347d8894fffc3456ac1 ]
+[ Upstream commit 7c0884fcd2ddde0544d2e77f297ae461e1f53f58 ]
 
-Clear some bits in some registers in order to allow RTL8851BU to power
-on. This is done both when powering on and when powering off because
-that's what the vendor driver does.
+Currently, TID is not decremented before peer cleanup, during error
+handling path of ath12k_dp_rx_peer_frag_setup(). This could lead to
+out-of-bounds access in peer->rx_tid[].
 
-Also tested with RTL8832BU and RTL8832CU.
+Hence, add a decrement operation for TID, before peer cleanup to
+ensures proper cleanup and prevents out-of-bounds access issues when
+the RX peer frag setup fails.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/a39da939-d640-4486-ad38-f658f220afc8@gmail.com
+Found during code review. Compile tested only.
+
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250526034713.712592-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac.c | 19 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/reg.h |  1 +
- 2 files changed, 20 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index 9f0e30e75009..94bcdf6abca5 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -1441,6 +1441,23 @@ void rtw89_mac_notify_wake(struct rtw89_dev *rtwdev)
- 	rtw89_mac_send_rpwm(rtwdev, state, true);
- }
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index cfb17f16b081..3244f7c3ca4f 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -79,6 +79,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
+ 	ret = ath12k_dp_rx_peer_frag_setup(ar, addr, vdev_id);
+ 	if (ret) {
+ 		ath12k_warn(ab, "failed to setup rx defrag context\n");
++		tid--;
+ 		goto peer_clean;
+ 	}
  
-+static void rtw89_mac_power_switch_boot_mode(struct rtw89_dev *rtwdev)
-+{
-+	u32 boot_mode;
-+
-+	if (rtwdev->hci.type != RTW89_HCI_TYPE_USB)
-+		return;
-+
-+	boot_mode = rtw89_read32_mask(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
-+	if (!boot_mode)
-+		return;
-+
-+	rtw89_write32_clr(rtwdev, R_AX_SYS_PW_CTRL, B_AX_APFN_ONMAC);
-+	rtw89_write32_clr(rtwdev, R_AX_SYS_STATUS1, B_AX_AUTO_WLPON);
-+	rtw89_write32_clr(rtwdev, R_AX_GPIO_MUXCFG, B_AX_BOOT_MODE);
-+	rtw89_write32_clr(rtwdev, R_AX_RSV_CTRL, B_AX_R_DIS_PRST);
-+}
-+
- static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
- {
- #define PWR_ACT 1
-@@ -1451,6 +1468,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
- 	int ret;
- 	u8 val;
- 
-+	rtw89_mac_power_switch_boot_mode(rtwdev);
-+
- 	if (on) {
- 		cfg_seq = chip->pwr_on_seq;
- 		cfg_func = chip->ops->pwr_on_func;
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index f05c81ae5869..9d9e1b02bfc7 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -182,6 +182,7 @@
- 
- #define R_AX_SYS_STATUS1 0x00F4
- #define B_AX_SEL_0XC0_MASK GENMASK(17, 16)
-+#define B_AX_AUTO_WLPON BIT(10)
- #define B_AX_PAD_HCI_SEL_V2_MASK GENMASK(5, 3)
- #define MAC_AX_HCI_SEL_SDIO_UART 0
- #define MAC_AX_HCI_SEL_MULTI_USB 1
 -- 
 2.39.5
 
