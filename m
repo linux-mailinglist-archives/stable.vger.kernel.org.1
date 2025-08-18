@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799EFB2A5EF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D65EB2A8A3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB1312A4F9E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756CA1B67B30
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5CE322DBC;
-	Mon, 18 Aug 2025 13:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8B2335BCA;
+	Mon, 18 Aug 2025 13:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+DdR8+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjNVsP3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49255320CDB;
-	Mon, 18 Aug 2025 13:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F18335BBE;
+	Mon, 18 Aug 2025 13:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523521; cv=none; b=D1qjxgQ9kYcnoCb8uDuA3twN6EMLuxq8bwYDJtZWQiu+hxZwBMZuTVrmfMhpHHjorhU3zN/x0N8w0lS3G+8X8gdM1WMPCOnMX3QE28vSHyaFcaNY7m9rVc8FwvcPM7e78SmW/OM79OflDETotP6pO+F2K1l0zcdf8lJrg3Z09GA=
+	t=1755525225; cv=none; b=VyxpbNQQU3eWKTcSfK7b6r8gMDhgHTw5KKaAh1kCnIGgQ3fXr664F496kNdXqsUN/CMQ5HJdKmlvAzxfSQQ+fxc+Z3zarmIRJ7vsRxTr/Rj+4seWod3wOeIt2TIuuYPt/wdoZWh7wO+F6YWWAvdXd3DGFJHi/ZaBO0VcyxdASJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523521; c=relaxed/simple;
-	bh=q2R+UZR25tIAuDAMTvpr8tHLnBj8GEgPFv0xLWtB9Qs=;
+	s=arc-20240116; t=1755525225; c=relaxed/simple;
+	bh=BvaUTPG4u5OLH7sceZGFNTL6XUL4bMtsUROPmGKXrCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iDLHcEiQQT715GzxCgba1hrkDogR/pE2o1uzjY9MUwC2rAPuo9cX4LLblMkt9+zzzVqBWFfjMl9SdzyLDCUBVPc6r5ZXt7YdOGeKg7AhPk6Ief/BnmsAGg1eqQBn7macHKhCd5HZxmTPmrjiZE1T9/CN46FKJDVSnQngudIyr+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+DdR8+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F36C4CEEB;
-	Mon, 18 Aug 2025 13:25:20 +0000 (UTC)
+	 MIME-Version; b=Gf8T4uPyU2ktKVE04Xx3X3lseT+W0DCmhn1mkhBzF+47V090AU3Z8puDoZExPqEW/DQvjfHROeD2WdUlLc36t/KCmdT9X65/QRqUWMALPAZruPwLUCMrP2n4sdw2nRJH5kjQVji3yRUbHX2wOhLMISUbhZRymKfo3+wuVJreyt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjNVsP3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A2BC4CEEB;
+	Mon, 18 Aug 2025 13:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523521;
-	bh=q2R+UZR25tIAuDAMTvpr8tHLnBj8GEgPFv0xLWtB9Qs=;
+	s=korg; t=1755525225;
+	bh=BvaUTPG4u5OLH7sceZGFNTL6XUL4bMtsUROPmGKXrCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+DdR8+U+NI1Yao3yN2hNxEIbncltKWhdnqhaCpFzk55VO+YImC2zA6PFCnf4n2wt
-	 M7E2gvV9NPUz73wjgBsdi8PAtExs4qoEPSgJiw7TRp/IJCi3QxFgK1eQ7kqXK5h8bB
-	 2P7Gd9eCS5P0Lf4zZQ7GL88r5kPZh6Mn8UbdKhgU=
+	b=gjNVsP3viUD1qSCV1s1ZaEjWwejDY0wIC6KMhzUiwQ9Jud1TT6NyiF/g9i5VK++TN
+	 CCxB8a1XpEiJ0nxCYJgrJSBUYDJXJpQA0fmtYFxmxq7HwvYwbtuqtW3VPkcB4RD8NN
+	 Dy8Kf5RO2Hv0S30awBBLKlaiSTYkpmA4p+s0Eg80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	shdeb <shdeb3000000@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 197/515] Bluetooth: btusb: Add support for variant of RTL8851BE (USB ID 13d3:3601)
+Subject: [PATCH 6.16 196/570] soc: qcom: mdt_loader: Actually use the e_phoff
 Date: Mon, 18 Aug 2025 14:43:03 +0200
-Message-ID: <20250818124505.954611300@linuxfoundation.org>
+Message-ID: <20250818124513.350976306@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <ukleinek@debian.org>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 65b0dca6f9f2c912a77a6ad6cf56f60a895a496b ]
+[ Upstream commit 47e339cac89143709e84a3b71ba8bd9b2fdd2368 ]
 
-Teach the btusb driver to recognize another variant of the RTL8851BE
-bluetooth radio.
+Rather than relying/assuming that the tools generating the firmware
+places the program headers immediately following the ELF header, use
+e_phoff as intended to find the program headers.
 
-/sys/kernel/debug/usb/devices reports for that device:
-
-	T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-	D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-	P:  Vendor=13d3 ProdID=3601 Rev= 0.00
-	S:  Manufacturer=Realtek
-	S:  Product=Bluetooth Radio
-	S:  SerialNumber=00e04c000001
-	C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-	I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-	E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-	E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-	I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-	E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-	I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-	E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-	I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-	E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-	I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-	E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-	I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-	E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-	I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-	E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-	I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-	E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-	E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-
-Reported-by: shdeb <shdeb3000000@gmail.com>
-Link: https://bugs.debian.org/1106386
-Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250610-mdt-loader-validation-and-fixes-v2-3-f7073e9ab899@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/qcom/mdt_loader.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 338f426e92e2..c83de1772fdd 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -515,6 +515,7 @@ static const struct usb_device_id quirks_table[] = {
- 	/* Realtek 8851BE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0xb850), .driver_info = BTUSB_REALTEK },
- 	{ USB_DEVICE(0x13d3, 0x3600), .driver_info = BTUSB_REALTEK },
-+	{ USB_DEVICE(0x13d3, 0x3601), .driver_info = BTUSB_REALTEK },
+diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+index b2c0fb55d4ae..44589d10b15b 100644
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -83,7 +83,7 @@ ssize_t qcom_mdt_get_size(const struct firmware *fw)
+ 	int i;
  
- 	/* Realtek 8851BU Bluetooth devices */
- 	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
+@@ -135,7 +135,7 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
+ 	void *data;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	if (ehdr->e_phnum < 2)
+ 		return ERR_PTR(-EINVAL);
+@@ -215,7 +215,7 @@ int qcom_mdt_pas_init(struct device *dev, const struct firmware *fw,
+ 	int i;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
+@@ -270,7 +270,7 @@ static bool qcom_mdt_bins_are_split(const struct firmware *fw, const char *fw_na
+ 	int i;
+ 
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		/*
+@@ -312,7 +312,7 @@ static int __qcom_mdt_load(struct device *dev, const struct firmware *fw,
+ 
+ 	is_split = qcom_mdt_bins_are_split(fw, fw_name);
+ 	ehdr = (struct elf32_hdr *)fw->data;
+-	phdrs = (struct elf32_phdr *)(ehdr + 1);
++	phdrs = (struct elf32_phdr *)(fw->data + ehdr->e_phoff);
+ 
+ 	for (i = 0; i < ehdr->e_phnum; i++) {
+ 		phdr = &phdrs[i];
 -- 
 2.39.5
 
