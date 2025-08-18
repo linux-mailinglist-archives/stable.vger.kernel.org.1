@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE314B2A757
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E361B2A451
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A9A684FAF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD99165482
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2CE13C8E8;
-	Mon, 18 Aug 2025 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945F3318126;
+	Mon, 18 Aug 2025 13:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIF+u78A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzCgsHsa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289CC335BA0;
-	Mon, 18 Aug 2025 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515D43218C0;
+	Mon, 18 Aug 2025 13:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524270; cv=none; b=DcTKOX8sKMqggfYLTTWb2xtDLthsFQoIkz+VkynfZoLa1A1I4dDD7+pwDryZVpoHeivA8/6KG4WP0AOblw+o68CHU36C0PJs/GhManzZZiQe5mSO+iJvBo8w3YvWdEbuzz629FZU2ktfRMgy+DBUO4KBr3yZ6xhIxH0taPb2br8=
+	t=1755522655; cv=none; b=BqdWJ4QmbtlvYRN8AMaRCdtOI0ar7d+6SF+paqJCSA68bupjTsTw3QqvVIuBjPaV+Ndz0VeeboQ0JEqMrTz99C2KSddOSfDXgAUF/n07uVPPNUmVSkovro6dLvtJTHVbKk1cGeCbHDHlypaf97uLJt0+Y1SkGaBbxmCrC+f2W3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524270; c=relaxed/simple;
-	bh=cgOPrA4mmtjOi2QuE5/uVnbeHAPCqHiwpu3pzlMClKI=;
+	s=arc-20240116; t=1755522655; c=relaxed/simple;
+	bh=GfiKsblZCmgnsxfbr+wr11VTmvKHpXa1uixi5oD7dkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pV73Y7HIAjgEk/IfbeV43Okh97KBkJVUrJ3DlEM7M3YStWJM28sUFe0lXk53esC3sPqVI+qNbJ/5Ni8NVamQYLsUiMpyzo5IYQ/ox7Rnatrpgukv5vJ6i904UmDftTmLIWoP/FH6drv1vCOPm1j6k0ZqRvN0Y5tZgfqkz3eGmZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIF+u78A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C818C116B1;
-	Mon, 18 Aug 2025 13:37:49 +0000 (UTC)
+	 MIME-Version; b=R3rxOJAYRVIv2UO1+d8gRgivWG89sdJULqph6OWttrTS7adTrcAqA3PTgTTkQ+DWuyCNwr5BEo6HzPbmSa+cJpeMr1MC4E0GAgPC/g/1g255BEJOEhwQ/Zmim7PBuDZ22v0B3I/4DNUjWwuu7uDYZBsZGv+rcgxYlN5GV+W0kpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzCgsHsa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD57C4CEEB;
+	Mon, 18 Aug 2025 13:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524270;
-	bh=cgOPrA4mmtjOi2QuE5/uVnbeHAPCqHiwpu3pzlMClKI=;
+	s=korg; t=1755522655;
+	bh=GfiKsblZCmgnsxfbr+wr11VTmvKHpXa1uixi5oD7dkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIF+u78ANjHBalLX5mi8bBmHX9AVIxxBKpdAsri0Ufy85A5NyaInJ9sl7qDYiY3Zy
-	 YwFJQQLkwtUulHNaIWtXiA7P+cmCgHCJmNnSEOlFn4hQRerdRiyAHDYXv/+VbJ7ND5
-	 xnf6eBTZZegyxmG1GC/UaXF4sbSr8soXLhvzDBhs=
+	b=uzCgsHsaWiguIvDF0EvB4NYYH5RR2h6c9et0gyMUjujPmYSmqUDsKEvRZVBiows5+
+	 A2DKLSyJV66qhkkRgqCPuuGvlcR6zgpQRp758TM8YIjryOo9z2kicvF/LV7+owUatx
+	 HqJzViGwiY43uay1W3VjbrvdsbzW4iVkZ9Zgmipo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calvin Owens <calvin@wbinvd.org>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 420/515] tools/power turbostat: Handle cap_get_proc() ENOSYS
+	Kevin Tian <kevin.tian@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Subject: [PATCH 6.12 380/444] iommufd: Report unmapped bytes in the error path of iopt_unmap_iova_range
 Date: Mon, 18 Aug 2025 14:46:46 +0200
-Message-ID: <20250818124514.597344675@linuxfoundation.org>
+Message-ID: <20250818124503.134167102@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Calvin Owens <calvin@wbinvd.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit d34fe509f5f76d9dc36291242d67c6528027ebbd ]
+commit b23e09f9997771b4b739c1c694fa832b5fa2de02 upstream.
 
-Kernels configured with CONFIG_MULTIUSER=n have no cap_get_proc().
-Check for ENOSYS to recognize this case, and continue on to
-attempt to access the requested MSRs (such as temperature).
+There are callers that read the unmapped bytes even when rc != 0. Thus, do
+not forget to report it in the error path too.
 
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8d40205f6093 ("iommufd: Add kAPI toward external drivers for kernel access")
+Link: https://patch.msgid.link/r/e2b61303bbc008ba1a4e2d7c2a2894749b59fdac.1752126748.git.nicolinc@nvidia.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/iommu/iommufd/io_pagetable.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 2c77ec8df67d..dd3c32ab9ec1 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -6527,8 +6527,16 @@ int check_for_cap_sys_rawio(void)
- 	int ret = 0;
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -696,8 +696,10 @@ again:
+ 			iommufd_access_notify_unmap(iopt, area_first, length);
+ 			/* Something is not responding to unmap requests. */
+ 			tries++;
+-			if (WARN_ON(tries > 100))
+-				return -EDEADLOCK;
++			if (WARN_ON(tries > 100)) {
++				rc = -EDEADLOCK;
++				goto out_unmapped;
++			}
+ 			goto again;
+ 		}
  
- 	caps = cap_get_proc();
--	if (caps == NULL)
-+	if (caps == NULL) {
-+		/*
-+		 * CONFIG_MULTIUSER=n kernels have no cap_get_proc()
-+		 * Allow them to continue and attempt to access MSRs
-+		 */
-+		if (errno == ENOSYS)
-+			return 0;
-+
- 		return 1;
-+	}
- 
- 	if (cap_get_flag(caps, CAP_SYS_RAWIO, CAP_EFFECTIVE, &cap_flag_value)) {
- 		ret = 1;
--- 
-2.39.5
-
+@@ -719,6 +721,7 @@ again:
+ out_unlock_iova:
+ 	up_write(&iopt->iova_rwsem);
+ 	up_read(&iopt->domains_rwsem);
++out_unmapped:
+ 	if (unmapped)
+ 		*unmapped = unmapped_bytes;
+ 	return rc;
 
 
 
