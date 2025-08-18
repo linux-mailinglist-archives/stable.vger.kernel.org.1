@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66A2B2A6CE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BA9B2A44E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5494C580359
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310AF562182
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C448322532;
-	Mon, 18 Aug 2025 13:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF30631E10C;
+	Mon, 18 Aug 2025 13:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oxoshe67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QldutMkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094E4322525;
-	Mon, 18 Aug 2025 13:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8106531E103;
+	Mon, 18 Aug 2025 13:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524179; cv=none; b=VlTva3ZnVOSv6uCaOqd6+CE8Qs80iSToXxaEISiiqGhloqEensifrJ+a4b33J9ablIQ/7vmtXbgnVodANwkuj4ZqQAGEyEEdPVOurFqihfcX7h2Ior8G9ZLb+xVKip9QVhDqpCfN78iN5GHC7nQedST0ZQbenb7ljUW//c4uqGI=
+	t=1755522554; cv=none; b=RbLEuCtUsqGfktBJTMVXxmcTqwkXt50wvSRSjIJHwjmhRsCKYmEYot14HOTUDKNx8f7O2U9NBUMy49hgcRGzCQrUfedZyUqLG9JlA0neoINuS1hZH2bqG8PVJZb2G6So5Lm1y2TTDbklQ2Xy2+4laimpR2H6l7Eu1je94V4MB/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524179; c=relaxed/simple;
-	bh=3HmXGMQZGprrm3/vk9w4Q7t4Da+Hr1tGdJtSb72gxd4=;
+	s=arc-20240116; t=1755522554; c=relaxed/simple;
+	bh=fE2SSmAQcEuI/8GVV1Jdph6vvY88GOLXGZ+bWEDyUbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9/6T6aURZKTmIoD3P916LFPUMlVweVfke6VwkOrLIc0N8qVpIJwOorzez3/3BhCMp+vwTncYdDQasm8SfTZ3uyIgeQMHvJYTNfBMyjXmkY+GYFB+a+M74H3Bglr7mcW7FYMTpBi8RWfKA3zG0BnzoCXku5X7GOwy09i9yHTlrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oxoshe67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D804C19423;
-	Mon, 18 Aug 2025 13:36:18 +0000 (UTC)
+	 MIME-Version; b=Wt3dX1DYElDrWN7eiXugPPTLHLX/ngXEtDEegYsbJ9UiqRWofiS1XuguK031g2M7Om7k+l+csBXK2YcD2JfRWiJ/exFH9aqyDDHbkdv5tvvIjwXMLq59t4DOhodyW6zOu6mmyyEvP4nnRrxcx+eGZic1CMl7F5dhssfUqg22U9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QldutMkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57ECC4CEEB;
+	Mon, 18 Aug 2025 13:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524178;
-	bh=3HmXGMQZGprrm3/vk9w4Q7t4Da+Hr1tGdJtSb72gxd4=;
+	s=korg; t=1755522554;
+	bh=fE2SSmAQcEuI/8GVV1Jdph6vvY88GOLXGZ+bWEDyUbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oxoshe67cB8Sfz52931Z6/HmhsfRbOsdgwzV4sF5Axx4sfpwuL7Nz+L+QrzSbGxrc
-	 hV7sAVCyymwXbZzBsqWBXxHezvDw+Ox8ER/QSXA7qd6KPnXLn/zRkl4ZKYN6ohVXA7
-	 ups0AxPWyEfMSYQ+NVfrc45Rc8MEyVReNaIVc71Q=
+	b=QldutMkt0XhV5QscRCd+t45g90qe/1pX2DXOCnbCzN6fOP0COjX5Sb77W7twsmoXj
+	 /yajbvwNN7QqFInT5OHm53WFdnl7PyAkg6EnyU3dG9pLdEPBsPPiuvjP79cw53nKzr
+	 +nzvKq5bQ7S0lmh41YnVBqFIgnQcexr6qzFT3JOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Purva Yeshi <purvayeshi550@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 390/515] md: dm-zoned-target: Initialize return variable r to avoid uninitialized use
+Subject: [PATCH 6.12 350/444] kconfig: gconf: avoid hardcoding model2 in on_treeview2_cursor_changed()
 Date: Mon, 18 Aug 2025 14:46:16 +0200
-Message-ID: <20250818124513.429697465@linuxfoundation.org>
+Message-ID: <20250818124502.043704458@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Purva Yeshi <purvayeshi550@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 487767bff572d46f7c37ad846c4078f6d6c9cc55 ]
+[ Upstream commit cae9cdbcd9af044810bcceeb43a87accca47c71d ]
 
-Fix Smatch-detected error:
-drivers/md/dm-zoned-target.c:1073 dmz_iterate_devices()
-error: uninitialized symbol 'r'.
+The on_treeview2_cursor_changed() handler is connected to both the left
+and right tree views, but it hardcodes model2 (the GtkTreeModel of the
+right tree view). This is incorrect. Get the associated model from the
+view.
 
-Smatch detects a possible use of the uninitialized variable 'r' in
-dmz_iterate_devices() because if dmz->nr_ddevs is zero, the loop is
-skipped and 'r' is returned without being set, leading to undefined
-behavior.
-
-Initialize 'r' to 0 before the loop. This ensures that if there are no
-devices to iterate over, the function still returns a defined value.
-
-Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zoned-target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/gconf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
-index 6141fc25d842..c38bd6e4c273 100644
---- a/drivers/md/dm-zoned-target.c
-+++ b/drivers/md/dm-zoned-target.c
-@@ -1061,7 +1061,7 @@ static int dmz_iterate_devices(struct dm_target *ti,
- 	struct dmz_target *dmz = ti->private;
- 	unsigned int zone_nr_sectors = dmz_zone_nr_sectors(dmz->metadata);
- 	sector_t capacity;
--	int i, r;
-+	int i, r = 0;
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index c0f46f189060..abe4cfe66b14 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -942,13 +942,14 @@ on_treeview2_key_press_event(GtkWidget * widget,
+ void
+ on_treeview2_cursor_changed(GtkTreeView * treeview, gpointer user_data)
+ {
++	GtkTreeModel *model = gtk_tree_view_get_model(treeview);
+ 	GtkTreeSelection *selection;
+ 	GtkTreeIter iter;
+ 	struct menu *menu;
  
- 	for (i = 0; i < dmz->nr_ddevs; i++) {
- 		capacity = dmz->dev[i].capacity & ~(zone_nr_sectors - 1);
+ 	selection = gtk_tree_view_get_selection(treeview);
+-	if (gtk_tree_selection_get_selected(selection, &model2, &iter)) {
+-		gtk_tree_model_get(model2, &iter, COL_MENU, &menu, -1);
++	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
++		gtk_tree_model_get(model, &iter, COL_MENU, &menu, -1);
+ 		text_insert_help(menu);
+ 	}
+ }
 -- 
 2.39.5
 
