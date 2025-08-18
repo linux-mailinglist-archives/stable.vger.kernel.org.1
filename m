@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB98B2A3F2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40ADB2AAA2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD4B77B5B90
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A2E51BA6B89
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC23E2E22A6;
-	Mon, 18 Aug 2025 13:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF0F322A1C;
+	Mon, 18 Aug 2025 14:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQgb7mFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUProUV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A54D25F79A;
-	Mon, 18 Aug 2025 13:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BA5320380;
+	Mon, 18 Aug 2025 14:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522735; cv=none; b=rmDlOCqMZkY+lAzK0J9QW2dpXWuMWz890uOP734n7VGFsxDgSPwSdZLwpr/TE4KFXM1BUYZBWllOUuD8P4QWyrH9tRPo5wvTEu+wZU4J3EPcxzOn0RX4zjn6LAjcn5za2w6f1UhXPEGlxHwVluCYBRqkJotIRonpYG4Tup7O53Q=
+	t=1755526083; cv=none; b=Op6LldE9kCZPsRGOXsymkGQdPUA1n3b705z5MGqj5LsMEzfmTeC2FOj6Rxra/+puBUe9HSJmpc9i8QpVnwkLFznpRPvzM7dQ80zLSfieF83pdAmH46Ygfn1+Dyz37NMz6I92A6fI6FPx4H8DHtWwjk4f2vftmD6TRxDqJ+/UCvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522735; c=relaxed/simple;
-	bh=b/YD3S1rn9wx/Vy6Ov80cOd/4WS9xvq8n9K8XxQhb9U=;
+	s=arc-20240116; t=1755526083; c=relaxed/simple;
+	bh=jhamu6fqcKLu7wVPe4aXe7YoUoKZrBUjz9Uc9WLOWl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3gd70jr8iCh/jv9IZ7urJV/kKedxBUzacnzvVkjhpLo2YnXzWX3PrPSLEb0MI9jUUbSXIJY35AXauYWM9Yr9eX156wljEhmz7oaI/pc1KZZBB/+oTowzsR/oUYBMV1itI/trzYFKV2ZLpdlvCbbB6NLg1MN1Isbw731U8aXkRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQgb7mFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3271C4CEEB;
-	Mon, 18 Aug 2025 13:12:14 +0000 (UTC)
+	 MIME-Version; b=uBM5pyL02IXwvUG0tVWjPwP+XezDFoifuEEEyClyIWFiXpSowERRZa9AUTyYEXQt6J2XVPEeqli6HUul5YhDsurRAVAn5LFg6ccJuKP9UjtVn8tzfzkq+6V+I/4AFEjn6s7ttOIm4emRhAXg64q4ScaPWQnEty6w1QnbVyspNac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUProUV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0B1C4CEEB;
+	Mon, 18 Aug 2025 14:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522735;
-	bh=b/YD3S1rn9wx/Vy6Ov80cOd/4WS9xvq8n9K8XxQhb9U=;
+	s=korg; t=1755526083;
+	bh=jhamu6fqcKLu7wVPe4aXe7YoUoKZrBUjz9Uc9WLOWl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQgb7mFem2gjPSM5vsP+NsRhz/J8igec8qXuT5VJKNRSQjwgM3Y9dMA9jHDftteXU
-	 5FBn9JCf4qrrpsDiqveN1ezrRbY2gDUZdFO2cHeSu9Eo/+BBKh4oqSi5NtsDoooiPT
-	 jsI6YHy01UvbubLKTN4DFfR/39twC5HLy04W95gw=
+	b=aUProUV0mJbnzmXeWZ4dQO8/HCZOjpaahS1DkW1DyP5VMlgL7DezCmaCOoOYAYF+W
+	 vUvMW7XO6fsaKPV2y/wHlzHgmqGjv/EljTr2Q4UU58pbhYJwIkOyfo0Xzx47vUhnPS
+	 tyzydnHJr/IYiERPgRCKDv06LViGoURZDa/sIhcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Andrey Albershteyn <aalbersh@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 406/444] xfs: fix scrub trace with null pointer in quotacheck
-Date: Mon, 18 Aug 2025 14:47:12 +0200
-Message-ID: <20250818124504.153417879@linuxfoundation.org>
+	Breno Leitao <leitao@debian.org>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 446/570] ipmi: Use dev_warn_ratelimited() for incorrect message warnings
+Date: Mon, 18 Aug 2025 14:47:13 +0200
+Message-ID: <20250818124522.997239556@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Albershteyn <aalbersh@redhat.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 5d94b19f066480addfcdcb5efde66152ad5a7c0e upstream.
+[ Upstream commit ec50ec378e3fd83bde9b3d622ceac3509a60b6b5 ]
 
-The quotacheck doesn't initialize sc->ip.
+During BMC firmware upgrades on live systems, the ipmi_msghandler
+generates excessive "BMC returned incorrect response" warnings
+while the BMC is temporarily offline. This can flood system logs
+in large deployments.
 
-Cc: stable@vger.kernel.org # v6.8
-Fixes: 21d7500929c8a0 ("xfs: improve dquot iteration for scrub")
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace dev_warn() with dev_warn_ratelimited() to throttle these
+warnings and prevent log spam during BMC maintenance operations.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Message-ID: <20250710-ipmi_ratelimit-v1-1-6d417015ebe9@debian.org>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/trace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/scrub/trace.h
-+++ b/fs/xfs/scrub/trace.h
-@@ -467,7 +467,7 @@ DECLARE_EVENT_CLASS(xchk_dqiter_class,
- 		__field(xfs_exntst_t, state)
- 	),
- 	TP_fast_assign(
--		__entry->dev = cursor->sc->ip->i_mount->m_super->s_dev;
-+		__entry->dev = cursor->sc->mp->m_super->s_dev;
- 		__entry->dqtype = cursor->dqtype;
- 		__entry->ino = cursor->quota_ip->i_ino;
- 		__entry->cur_id = cursor->id;
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 064944ae9fdc..8e9050f99e9e 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -4607,10 +4607,10 @@ static int handle_one_recv_msg(struct ipmi_smi *intf,
+ 		 * The NetFN and Command in the response is not even
+ 		 * marginally correct.
+ 		 */
+-		dev_warn(intf->si_dev,
+-			 "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
+-			 (msg->data[0] >> 2) | 1, msg->data[1],
+-			 msg->rsp[0] >> 2, msg->rsp[1]);
++		dev_warn_ratelimited(intf->si_dev,
++				     "BMC returned incorrect response, expected netfn %x cmd %x, got netfn %x cmd %x\n",
++				     (msg->data[0] >> 2) | 1, msg->data[1],
++				     msg->rsp[0] >> 2, msg->rsp[1]);
+ 
+ 		goto return_unspecified;
+ 	}
+-- 
+2.39.5
+
 
 
 
