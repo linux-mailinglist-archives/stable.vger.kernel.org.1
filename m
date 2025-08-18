@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-171653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A39B2B24B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 22:22:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D12B2B25D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 22:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DB333A8CC8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 20:22:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84B53585E35
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 20:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF41221545;
-	Mon, 18 Aug 2025 20:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEA822A4D6;
+	Mon, 18 Aug 2025 20:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EfRdl29b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ha6rnbEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8D51E376C
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 20:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77CE225A29;
+	Mon, 18 Aug 2025 20:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755548531; cv=none; b=qrAjd2CMYz76e4Xs3Dgpkdo+PFaKCNmWQwb3mvlE1mmpGqfJZApFcScdLhRaQO1XXX5cyf+01ws9aAjFn5byysudotuiUygtOYo99av4mBJVlnbj14yaRBj/f5xvbdS4jS+Yaw3pqgp9xW4MLqcLK7XYvK5E+l7nMIIX2bW8KVw=
+	t=1755548927; cv=none; b=adKpB+UHR3kMCacnyWP/RGPUsXj5b8UFykAlQQdE6GYs94mCvz/kE0kGMQNjeIJr9eeVrVpoerrMHuUBPCVI1MEouIidusDPjDTqrWXpF+iQ6slY03yWLGBFiorXZkI5zyOWApy/ozcuqb5S7gpZyNZBcZAW/HDdU2IL13kSBbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755548531; c=relaxed/simple;
-	bh=RVcHnE2rSvyKQGEYSIdANpELG5k4fZog4RaBS/s/gI0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUGEJ7syNP9bN457dBK8sDVKBzSUFaFly3gm/cDrTJdi7SE0KIedXA52wqWOYnALFEJABHvc22S/cgi2T/9FJ/ouLQvnEY1mVl/ih4WRTEgOCEtLI67cZCq9OxsJ8Ai9ITQSHNSkbIRzmmq9vNAcbJSkYApeLOzkQXW4YpkfMpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EfRdl29b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46921C4CEEB;
-	Mon, 18 Aug 2025 20:22:10 +0000 (UTC)
+	s=arc-20240116; t=1755548927; c=relaxed/simple;
+	bh=KiWZ/EiIDY+ilEC4IXfdyN/LdSTVyd3z4Jo9QiKYDtA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fuum3r7iGZviRZtkrCJ+JFIlvBVLYPVjj7d3Zrfl5TK9t1s6Kl4fTwF3/KtqLJDijalPfXGKApfVTDmKbbNvOJXMaBFcb7JQrFpWGFua0QDF5p0HboBFe19c2X3fU2Jc8XrYJtQV0Gl3qin2kjD86TNIfHdLUc1iU2EPjw+Thn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ha6rnbEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21579C4CEF1;
+	Mon, 18 Aug 2025 20:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755548531;
-	bh=RVcHnE2rSvyKQGEYSIdANpELG5k4fZog4RaBS/s/gI0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfRdl29bPckFfTvctMlqwkVzlQw6ConSEbdHGZLds6XeKJUbvlvzuY/bKo3Kq8X1l
-	 52pbrYz6S4Pcyt8QrsjqVVW1WHo55d35D7/t5iYwd0BY6t9wztvaPUg8zcvHCttvt/
-	 1dxwV4a7NbIneutTa39UbmCHjfE8UATHlDB4EvKmaHtTiONBXwRFh/22GcxMy8XDRa
-	 vLer3DHlzFpflR/tNB6WGtcqCVk29p1JlDWFmyqH5HpvrG/mkrwhzVMNhLh9MTOty3
-	 QYiJ3ZCdhEzRUOIOCW83Ry+BZlVBzIEwmar7wPxxDYbv+x6gYiEwsj1eypDCgj64Qd
-	 rhYuuNFTLc+XA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] usb: typec: fusb302: cache PD RX state
-Date: Mon, 18 Aug 2025 16:22:08 -0400
-Message-ID: <20250818202208.73004-1-sashal@kernel.org>
+	s=k20201202; t=1755548927;
+	bh=KiWZ/EiIDY+ilEC4IXfdyN/LdSTVyd3z4Jo9QiKYDtA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ha6rnbEcOVvvtzAFK09Tdm0Qn6g6Yz45E3AsPi1F+28h3vY6yT1+pxzyqUjD7n8iG
+	 O2QEcjqOxXJHbTl2gtLRT+/6Y0OXygyXNzm45ixBoUkj4wU1rH2lf0EKQrUXc3+nb8
+	 uyqpQlD2cWQLUk2mGP1yZjciTuk9NOFN8RS1YB32+yyV6YFuAkTOY0qjerVsBZSoMN
+	 82HdRq8NPlFw1sQtVUH1R6QFipQmIHnPs3yu26dhSW/SzYTOucHTcPpnFfrlZ/XAY8
+	 5SDYeq1Fea6+9JO/gTJH5pF+IWXdZQM7I0P7YdLT0ceUq9rVqaw5ZMmy+y3s7I9oOt
+	 KUWMgvtasce5A==
+From: Eric Biggers <ebiggers@kernel.org>
+To: netdev@vger.kernel.org,
+	Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: linux-crypto@vger.kernel.org,
+	David Lebrun <dlebrun@google.com>,
+	Minhong He <heminhong@kylinos.cn>,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] ipv6: sr: Fix MAC comparison to be constant-time
+Date: Mon, 18 Aug 2025 13:27:24 -0700
+Message-ID: <20250818202724.15713-1-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081831-untrimmed-dab-6b43@gregkh>
-References: <2025081831-untrimmed-dab-6b43@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,97 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To prevent timing attacks, MACs need to be compared in constant time.
+Use the appropriate helper function for this.
 
-[ Upstream commit 1e61f6ab08786d66a11cfc51e13d6f08a6b06c56 ]
-
-This patch fixes a race condition communication error, which ends up in
-PD hard resets when losing the race. Some systems, like the Radxa ROCK
-5B are powered through USB-C without any backup power source and use a
-FUSB302 chip to do the PD negotiation. This means it is quite important
-to avoid hard resets, since that effectively kills the system's
-power-supply.
-
-I've found the following race condition while debugging unplanned power
-loss during booting the board every now and then:
-
-1. lots of TCPM/FUSB302/PD initialization stuff
-2. TCPM ends up in SNK_WAIT_CAPABILITIES (tcpm_set_pd_rx is enabled here)
-3. the remote PD source does not send anything, so TCPM does a SOFT RESET
-4. TCPM ends up in SNK_WAIT_CAPABILITIES for the second time
-   (tcpm_set_pd_rx is enabled again, even though it is still on)
-
-At this point I've seen broken CRC good messages being send by the
-FUSB302 with a logic analyzer sniffing the CC lines. Also it looks like
-messages are being lost and things generally going haywire with one of
-the two sides doing a hard reset once a broken CRC good message was send
-to the bus.
-
-I think the system is running into a race condition, that the FIFOs are
-being cleared and/or the automatic good CRC message generation flag is
-being updated while a message is already arriving.
-
-Let's avoid this by caching the PD RX enabled state, as we have already
-processed anything in the FIFOs and are in a good state. As a side
-effect that this also optimizes I2C bus usage :)
-
-As far as I can tell the problem theoretically also exists when TCPM
-enters SNK_WAIT_CAPABILITIES the first time, but I believe this is less
-critical for the following reason:
-
-On devices like the ROCK 5B, which are powered through a TCPM backed
-USB-C port, the bootloader must have done some prior PD communication
-(initial communication must happen within 5 seconds after plugging the
-USB-C plug). This means the first time the kernel TCPM state machine
-reaches SNK_WAIT_CAPABILITIES, the remote side is not sending messages
-actively. On other devices a hard reset simply adds some extra delay and
-things should be good afterwards.
-
-Fixes: c034a43e72dda ("staging: typec: Fairchild FUSB302 Type-c chip driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250704-fusb302-race-condition-fix-v1-1-239012c0e27a@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- drivers/usb/typec/tcpm/fusb302.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/usb/typec/tcpm/fusb302.c b/drivers/usb/typec/tcpm/fusb302.c
-index bc21006e979c..03749a392fdb 100644
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -103,6 +103,7 @@ struct fusb302_chip {
- 	bool vconn_on;
- 	bool vbus_on;
- 	bool charge_on;
-+	bool pd_rx_on;
- 	bool vbus_present;
- 	enum typec_cc_polarity cc_polarity;
- 	enum typec_cc_status cc1;
-@@ -841,6 +842,11 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 	int ret = 0;
+v2: sent as standalone patch targeting net instead of net-next.
+
+ net/ipv6/seg6_hmac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index f78ecb6ad8383..5dae892bbc73b 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -33,10 +33,11 @@
+ #include <net/ip6_route.h>
+ #include <net/addrconf.h>
+ #include <net/xfrm.h>
  
- 	mutex_lock(&chip->lock);
-+	if (chip->pd_rx_on == on) {
-+		fusb302_log(chip, "pd is already %s", str_on_off(on));
-+		goto done;
-+	}
-+
- 	ret = fusb302_pd_rx_flush(chip);
- 	if (ret < 0) {
- 		fusb302_log(chip, "cannot flush pd rx buffer, ret=%d", ret);
-@@ -863,6 +869,8 @@ static int tcpm_set_pd_rx(struct tcpc_dev *dev, bool on)
- 			    on ? "on" : "off", ret);
- 		goto done;
- 	}
-+
-+	chip->pd_rx_on = on;
- 	fusb302_log(chip, "pd := %s", on ? "on" : "off");
- done:
- 	mutex_unlock(&chip->lock);
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <net/seg6.h>
+ #include <net/genetlink.h>
+ #include <net/seg6_hmac.h>
+ #include <linux/random.h>
+ 
+@@ -278,11 +279,11 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+ 		return false;
+ 
+ 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
+ 		return false;
+ 
+-	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
++	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
+ 		return false;
+ 
+ 	return true;
+ }
+ EXPORT_SYMBOL(seg6_hmac_validate_skb);
+
+base-commit: 715c7a36d59f54162a26fac1d1ed8dc087a24cf1
 -- 
 2.50.1
 
