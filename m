@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-170978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DC0B2A761
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A37C7B2A7C4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19A291B60466
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7B4168833C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFF4321F4A;
-	Mon, 18 Aug 2025 13:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83773203BE;
+	Mon, 18 Aug 2025 13:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOYULVvz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LT372SE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778D1321F42;
-	Mon, 18 Aug 2025 13:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976993203B7;
+	Mon, 18 Aug 2025 13:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524416; cv=none; b=S4IyvlFJbqMQ7SDRmsS4IuuyL8vNusOg4vDssL1k//p/jTp1Fqtit1GcEa5IEm0lPZxiSXcuFaq1nRl6hgwNUrVXJ9De2jqTLya9Awtra1aVlWU9Xx+f4nJN7YZjhuA6mNDjwBXg9FYSb3WS+kz9A8Rq6yp6fW+zXhmUiTRKA5A=
+	t=1755524549; cv=none; b=t+Uoa0HvfdWUkT86WefU7KXsSrH/FBxwrCP9jB8yYB9nRPHvq6VVMdci3ggyeAHeFiHjG3zUBeL1LFu6CsDl31v471EFlHFxLUBvWpnoqtJu5TyNxIiS/sMYxm6dVbdnFHQTJcMnxEoTjcjP9sn4WRY8s54zfNvW+/3vuh+BfuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524416; c=relaxed/simple;
-	bh=eVhoad7wBIEiLwWBgq4r3MXMU4AJN3CbrVGW3+quSpQ=;
+	s=arc-20240116; t=1755524549; c=relaxed/simple;
+	bh=e9TjkbA+9eamqieWBZS9qwSPCauKec+MM2X+JN71ZQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmDC/5VB5+HtEpg/CoLVyu87xibNn/I7YoKsjyQWMf/2/HiMq9oAlTXny+TaPiGwA4jTJNMKMpfdZv/mTqEMTNb49ytyA3IzOR1JW4U6Ihs9BLX+A9WPqrSn9TP1D+YZVr24k2YtdkqXcaYEtbZyj6TXoXVENQQL/jFfU5TixA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOYULVvz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926A5C4CEF1;
-	Mon, 18 Aug 2025 13:40:15 +0000 (UTC)
+	 MIME-Version; b=Nf5SzmXmcyUT18Hpw+55vi0NimaYNCIWeNJm1nKyy3jomZq+N94njftkve/hPS1ScSq+XGQ2IYqA4410S1Qf+HYy3hQ8MxnOBLCXOAaCFDTAyoFrjDNwfI7WN/I6calb8wSTls/8oyDGkkIMmqpqjeu4wc0yeatSp4ztK9CwOtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LT372SE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CA9C4CEEB;
+	Mon, 18 Aug 2025 13:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524416;
-	bh=eVhoad7wBIEiLwWBgq4r3MXMU4AJN3CbrVGW3+quSpQ=;
+	s=korg; t=1755524549;
+	bh=e9TjkbA+9eamqieWBZS9qwSPCauKec+MM2X+JN71ZQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOYULVvzEQZmHhmloVzxihJcCvrArpmG1XdxKLLsnpoc3n6cGXtBWWmbh7C4iDapW
-	 vkd9/P8k6YaO5UXwDxOoBaQJ10BNH/4Q5Z5zvH6sDjzVSQN5k3OIksef3bo/chUpp2
-	 bqcBPCtweiyazv/rfDva+Jjw1E01befMza8ey5/c=
+	b=LT372SE9ojt50YJFDyDqLHALFEoQ1OOjvoLNBpGKWqGfPSzrrM1HzlRqmcRH6fpTw
+	 WsDB9zcvug7ApUWh/lsLCPWH+Ic+7arR9FSx5liorn1ue6TRL2dicKH6lNc6HMbOB2
+	 k0l8TuTcJoQuN3EZ1gD1VJnyGchmp0K2cG9tDW6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	Naohiro Aota <naohiro.aota@wdc.com>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 464/515] btrfs: zoned: requeue to unused block group list if zone finish failed
-Date: Mon, 18 Aug 2025 14:47:30 +0200
-Message-ID: <20250818124516.281752967@linuxfoundation.org>
+Subject: [PATCH 6.15 465/515] btrfs: zoned: do not remove unwritten non-data block group
+Date: Mon, 18 Aug 2025 14:47:31 +0200
+Message-ID: <20250818124516.318382337@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -68,38 +68,87 @@ Content-Transfer-Encoding: 8bit
 
 From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit 62be7afcc13b2727bdc6a4c91aefed6b452e6ecc upstream.
+commit 3061801420469610c8fa6080a950e56770773ef1 upstream.
 
-btrfs_zone_finish() can fail for several reason. If it is -EAGAIN, we need
-to try it again later. So, put the block group to the retry list properly.
+There are some reports of "unable to find chunk map for logical 2147483648
+length 16384" error message appears in dmesg. This means some IOs are
+occurring after a block group is removed.
 
-Failing to do so will keep the removable block group intact until remount
-and can causes unnecessary ENOSPC.
+When a metadata tree node is cleaned on a zoned setup, we keep that node
+still dirty and write it out not to create a write hole. However, this can
+make a block group's used bytes == 0 while there is a dirty region left.
 
-Fixes: 74e91b12b115 ("btrfs: zoned: zone finish unused block group")
+Such an unused block group is moved into the unused_bg list and processed
+for removal. When the removal succeeds, the block group is removed from the
+transaction->dirty_bgs list, so the unused dirty nodes in the block group
+are not sent at the transaction commit time. It will be written at some
+later time e.g, sync or umount, and causes "unable to find chunk map"
+errors.
+
+This can happen relatively easy on SMR whose zone size is 256MB. However,
+calling do_zone_finish() on such block group returns -EAGAIN and keep that
+block group intact, which is why the issue is hidden until now.
+
+Fixes: afba2bc036b0 ("btrfs: zoned: implement active zone tracking")
 CC: stable@vger.kernel.org # 6.1+
 Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/block-group.c |   27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
 --- a/fs/btrfs/block-group.c
 +++ b/fs/btrfs/block-group.c
-@@ -1619,8 +1619,10 @@ void btrfs_delete_unused_bgs(struct btrf
- 		ret = btrfs_zone_finish(block_group);
- 		if (ret < 0) {
- 			btrfs_dec_block_group_ro(block_group);
--			if (ret == -EAGAIN)
-+			if (ret == -EAGAIN) {
-+				btrfs_link_bg_list(block_group, &retry_list);
- 				ret = 0;
-+			}
- 			goto next;
- 		}
+@@ -34,6 +34,19 @@ int btrfs_should_fragment_free_space(con
+ }
+ #endif
  
++static inline bool has_unwritten_metadata(struct btrfs_block_group *block_group)
++{
++	/* The meta_write_pointer is available only on the zoned setup. */
++	if (!btrfs_is_zoned(block_group->fs_info))
++		return false;
++
++	if (block_group->flags & BTRFS_BLOCK_GROUP_DATA)
++		return false;
++
++	return block_group->start + block_group->alloc_offset >
++		block_group->meta_write_pointer;
++}
++
+ /*
+  * Return target flags in extended format or 0 if restripe for this chunk_type
+  * is not in progress
+@@ -1246,6 +1259,15 @@ int btrfs_remove_block_group(struct btrf
+ 		goto out;
+ 
+ 	spin_lock(&block_group->lock);
++	/*
++	 * Hitting this WARN means we removed a block group with an unwritten
++	 * region. It will cause "unable to find chunk map for logical" errors.
++	 */
++	if (WARN_ON(has_unwritten_metadata(block_group)))
++		btrfs_warn(fs_info,
++			   "block group %llu is removed before metadata write out",
++			   block_group->start);
++
+ 	set_bit(BLOCK_GROUP_FLAG_REMOVED, &block_group->runtime_flags);
+ 
+ 	/*
+@@ -1589,8 +1611,9 @@ void btrfs_delete_unused_bgs(struct btrf
+ 		 * needing to allocate extents from the block group.
+ 		 */
+ 		used = btrfs_space_info_used(space_info, true);
+-		if (space_info->total_bytes - block_group->length < used &&
+-		    block_group->zone_unusable < block_group->length) {
++		if ((space_info->total_bytes - block_group->length < used &&
++		     block_group->zone_unusable < block_group->length) ||
++		    has_unwritten_metadata(block_group)) {
+ 			/*
+ 			 * Add a reference for the list, compensate for the ref
+ 			 * drop under the "next" label for the
 
 
 
