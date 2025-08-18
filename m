@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-170871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65C5B2A657
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DB1B2A963
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DABBB60EDF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:36:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C01C6E4BF4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8703C1E2606;
-	Mon, 18 Aug 2025 13:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C38340D89;
+	Mon, 18 Aug 2025 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbSlMZ75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjqXS8Ud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459532253F2;
-	Mon, 18 Aug 2025 13:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBD521507C;
+	Mon, 18 Aug 2025 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524070; cv=none; b=pEQLj4RcFOdZh2E8QlHBDa9FEwN4wFP5gf1iXiPL25mKI9AyDruAWAGnh8n3IpuRpP0EtevlJzlOTfzEkBB1q1ky3iUW8PokVD7qrhUXmyvbfpmCu+ygr5r+OGT3clDt8mKhsd5Iol0Y+dPJLGR3yHWapM913ECMe70FErx30Co=
+	t=1755525749; cv=none; b=EI8tLBnhippr8+BmX8R651RbCrqm0QHWx8lUbpcpjECOrdmxgbnZdT56Brx4QfY1zHDbq0tcOXAVDYuf6McskY0nbyMPszMyc2eGCnmmINg/lvB/lvZMDVuzh0QNRdLQYZWtPcsPv3lEV6w4G4oTcS38OZHi3WeFGDYWhoXVwZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524070; c=relaxed/simple;
-	bh=G13hj0LCsZ71SMhaKa6HhwDpXmwzoVeOwf0L/ZyCF08=;
+	s=arc-20240116; t=1755525749; c=relaxed/simple;
+	bh=ehvGvChkHlXiAMZyNUX1LZb+8VcwLrrMqoWU2dOf1ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFCyB3PkGE4qXW0Xag0PEbi/twcSWXNTS9sEerzmgw5nQUNlom5X53vEhvn93NkkGnWx2Up5wyDtLjf6Cc58/D0gUXV8g/jKmISALsWf45dx9yRFgcYB22Waf7uqzHTQ4HPs7RGF9txIFNkpDCnHIGQHnqjh8i71Yk3JxI4JBcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbSlMZ75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4A7C4CEEB;
-	Mon, 18 Aug 2025 13:34:29 +0000 (UTC)
+	 MIME-Version; b=S3svZRwLrECKeQ2qNf259Q4nLb82RQU0as0I/Nyq3vPo/zo2azUfmFYQLRnol5Lfkecrfm6rhrsrNfrHAHrys7tl0WYkUITyskeqUpBoULigd9O+bqtaKoRNoxQqhsOlq+kM4cE3613+ynr/7l1/Y50sHLTKm/YHZpqbCkk06+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjqXS8Ud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E815BC4CEEB;
+	Mon, 18 Aug 2025 14:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524070;
-	bh=G13hj0LCsZ71SMhaKa6HhwDpXmwzoVeOwf0L/ZyCF08=;
+	s=korg; t=1755525749;
+	bh=ehvGvChkHlXiAMZyNUX1LZb+8VcwLrrMqoWU2dOf1ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbSlMZ75xC/oPaMjruMprA1+b4jrmbF4JZCfDMwkSYFmOvkbce8Yts5T/TnZ8tYJV
-	 /FNS3rBC4c27My7lmMJbz/KUna794tWbsQuoavaLl6YLU0HC84L7kjjx40Y5iejtLU
-	 5/ylbm7CnnjxrGrv0z2H/AwuJ8Iy77/OuJtiLLHw=
+	b=TjqXS8UdRPoskNPjKHmkaIMb/i9Zlbk06RPcqSRQlHhc5Jk0R9XFPHIs12uIG3URh
+	 UA+fIJI6wqEYd6xPkX9/FGI+rM7/cYP2bjPhZbDTMuO/HMLqRwK2pSacUvCjAqSixW
+	 vjTho2wH94As6jwSCdncreXC7cHmRyQDC9qzaqCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 357/515] MIPS: lantiq: falcon: sysctrl: fix request memory check logic
+Subject: [PATCH 6.16 356/570] drm/amd/display: Only finalize atomic_obj if it was initialized
 Date: Mon, 18 Aug 2025 14:45:43 +0200
-Message-ID: <20250818124512.155856477@linuxfoundation.org>
+Message-ID: <20250818124519.573413241@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 9c9a7ff9882fc6ba7d2f4050697e8bb80383e8dc ]
+[ Upstream commit b174084b3fe15ad1acc69530e673c1535d2e4f85 ]
 
-request_mem_region() will return NULL instead of error code
-when the memory request fails. Therefore, we should check if
-the return value is non-zero instead of less than zero. In
-this way, this patch also fixes the build warnings:
+[Why]
+If amdgpu_dm failed to initalize before amdgpu_dm_initialize_drm_device()
+completed then freeing atomic_obj will lead to list corruption.
 
-arch/mips/lantiq/falcon/sysctrl.c:214:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  214 |                                 res_status.name) < 0) ||
-      |                                                  ^
-arch/mips/lantiq/falcon/sysctrl.c:216:47: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  216 |                                 res_ebu.name) < 0) ||
-      |                                               ^
-arch/mips/lantiq/falcon/sysctrl.c:219:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  219 |                                 res_sys[0].name) < 0) ||
-      |                                                  ^
-arch/mips/lantiq/falcon/sysctrl.c:222:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  222 |                                 res_sys[1].name) < 0) ||
-      |                                                  ^
-arch/mips/lantiq/falcon/sysctrl.c:225:50: error: ordered comparison of pointer with integer zero [-Werror=extra]
-  225 |                                 res_sys[2].name) < 0))
-      |
+[How]
+Check if atomic_obj state is initialized before trying to free.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/lantiq/falcon/sysctrl.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/lantiq/falcon/sysctrl.c b/arch/mips/lantiq/falcon/sysctrl.c
-index 1187729d8cbb..357543996ee6 100644
---- a/arch/mips/lantiq/falcon/sysctrl.c
-+++ b/arch/mips/lantiq/falcon/sysctrl.c
-@@ -214,19 +214,16 @@ void __init ltq_soc_init(void)
- 	of_node_put(np_syseth);
- 	of_node_put(np_sysgpe);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 5be8c0bf8880..7b5440bdad2f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5379,7 +5379,8 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
  
--	if ((request_mem_region(res_status.start, resource_size(&res_status),
--				res_status.name) < 0) ||
--		(request_mem_region(res_ebu.start, resource_size(&res_ebu),
--				res_ebu.name) < 0) ||
--		(request_mem_region(res_sys[0].start,
--				resource_size(&res_sys[0]),
--				res_sys[0].name) < 0) ||
--		(request_mem_region(res_sys[1].start,
--				resource_size(&res_sys[1]),
--				res_sys[1].name) < 0) ||
--		(request_mem_region(res_sys[2].start,
--				resource_size(&res_sys[2]),
--				res_sys[2].name) < 0))
-+	if ((!request_mem_region(res_status.start, resource_size(&res_status),
-+				 res_status.name)) ||
-+	    (!request_mem_region(res_ebu.start, resource_size(&res_ebu),
-+				 res_ebu.name)) ||
-+	    (!request_mem_region(res_sys[0].start, resource_size(&res_sys[0]),
-+				 res_sys[0].name)) ||
-+	    (!request_mem_region(res_sys[1].start, resource_size(&res_sys[1]),
-+				 res_sys[1].name)) ||
-+	    (!request_mem_region(res_sys[2].start, resource_size(&res_sys[2]),
-+				 res_sys[2].name)))
- 		pr_err("Failed to request core resources");
+ static void amdgpu_dm_destroy_drm_device(struct amdgpu_display_manager *dm)
+ {
+-	drm_atomic_private_obj_fini(&dm->atomic_obj);
++	if (dm->atomic_obj.state)
++		drm_atomic_private_obj_fini(&dm->atomic_obj);
+ }
  
- 	status_membase = ioremap(res_status.start,
+ /******************************************************************************
 -- 
 2.39.5
 
