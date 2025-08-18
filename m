@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF16B2A8B1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F8BB2A5BE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3292F1BA4738
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30543683105
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E2D335BCB;
-	Mon, 18 Aug 2025 13:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46B0321431;
+	Mon, 18 Aug 2025 13:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U11G1b/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fomSicjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D73335BAF;
-	Mon, 18 Aug 2025 13:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4DE320CD4;
+	Mon, 18 Aug 2025 13:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525239; cv=none; b=Xui7ZC5Ugcq/kya371EOoGNK+kaFr5kzAJ805PFUBpgHt0ZlcvCoKHMYP3FcoMaS3W5dDrye5rJkBhBUnS7ow/gbhX1v1pIJHPEegA8eymn5608pDqTYqswDxMUpA4o9dDZD+6k/e7CpQ7qqvSVRf5FC5e+ZhQ1dpK2uPGEF+P8=
+	t=1755523436; cv=none; b=HqPsuAGXDyvCT52K7FJBHrTlF/HmYcKf8JxZC2ufFdmjNWA59tYS40aacq8R+ZB4nSn6yUbIbkAgWSD7cFVHRM4iHybcI/hKNydFBBf6iMkuoXmVzSbRMTiNQGtrfbmdgsKTE5zgfusfFXNRMJUkeulyuYgxW+7lp2lyNtoI7WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525239; c=relaxed/simple;
-	bh=VQg9kOpW/R3vungOZ3Ca2uu/KLjCD1MbCPONwhNPwSY=;
+	s=arc-20240116; t=1755523436; c=relaxed/simple;
+	bh=4xTrgjRcc+dzukaVkdiTUTHkrgIUZtaaZcv4TcS4qkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9Ml4MN7Vcm6Gar4eRLXnXm1GxHBoo/Q9DiDrMZWiNyVTIfhrSIp43wzUXq1InBBhOA7SXEEQV6X0Pb2A/hbVZ5Cq/MjDB/GlzPCejp1c7KA851RpPOAaWlhMMtuSdLCUVDRij32dlgcd8voAKgPLFmVfLzeoIMnCpftecaIlVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U11G1b/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ABDC4CEEB;
-	Mon, 18 Aug 2025 13:53:58 +0000 (UTC)
+	 MIME-Version; b=j/Sj6TZQbnkmQ0Yvjw6U1B2zCqTD8gIiqKEWQUIk4BepFWmUfyVJq8r+FXghvwmLDxORzToLv3AVUnxDKFPIXRV5B01IiHGsJ8rOGW5rIjxN2czxO0+DsBp1PXgq0uu80PsVyosliH864EoZhvzeJve5ACM2qz3ZRjCVQBiCUr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fomSicjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06EFC4CEEB;
+	Mon, 18 Aug 2025 13:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525238;
-	bh=VQg9kOpW/R3vungOZ3Ca2uu/KLjCD1MbCPONwhNPwSY=;
+	s=korg; t=1755523436;
+	bh=4xTrgjRcc+dzukaVkdiTUTHkrgIUZtaaZcv4TcS4qkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U11G1b/qNb2+uyfnQl743GcYnG+2kn7/mz/U0PPLLHEpun+gYSf5PAXQhwXFZblz4
-	 226dJKvaMT0DlCplePPhUhZ2nwnFrNxdYTV047jcx9ULLkqrqV9Bfj9PP6s8tBD+JR
-	 tEsbxmflFXa+hl/VS+FkBe0gGHDJA5DtKKO9kq9c=
+	b=fomSicjTpA5fyQ82YRYAeTnHzYiAXknXCRohbmzHyT4xWo7K+S6B+3An8NfqR1Lsb
+	 4deAk3kUrzxXB5uzm99auSgwz1Y4WSz9dAm/vjLgEeWdGwZjYJbszkanq6MfRdlot1
+	 8enslYmHhb6comW3QZMEN6FtvKTnJ488MW1Uk4Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 169/570] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+Subject: [PATCH 6.15 170/515] ALSA: intel8x0: Fix incorrect codec index usage in mixer for ICH4
 Date: Mon, 18 Aug 2025 14:42:36 +0200
-Message-ID: <20250818124512.309134125@linuxfoundation.org>
+Message-ID: <20250818124504.913009401@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+[ Upstream commit 87aafc8580acf87fcaf1a7e30ed858d8c8d37d81 ]
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+code mistakenly used a hardcoded index (codec[1]) instead of
+iterating, over the codec array using the loop variable i.
+Use codec[i] instead of codec[1] to match the loop iteration.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250621185233.4081094-1-alok.a.tiwari@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/intel8x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 281a0a2f6730..bda33a0f0a01 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1099,6 +1099,8 @@ static void __ghes_panic(struct ghes *ghes,
- 
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-+
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
- 	if (!panic_timeout)
+diff --git a/sound/pci/intel8x0.c b/sound/pci/intel8x0.c
+index e4bb99f71c2c..95f0bd2e1532 100644
+--- a/sound/pci/intel8x0.c
++++ b/sound/pci/intel8x0.c
+@@ -2249,7 +2249,7 @@ static int snd_intel8x0_mixer(struct intel8x0 *chip, int ac97_clock,
+ 			tmp |= chip->ac97_sdin[0] << ICH_DI1L_SHIFT;
+ 			for (i = 1; i < 4; i++) {
+ 				if (pcm->r[0].codec[i]) {
+-					tmp |= chip->ac97_sdin[pcm->r[0].codec[1]->num] << ICH_DI2L_SHIFT;
++					tmp |= chip->ac97_sdin[pcm->r[0].codec[i]->num] << ICH_DI2L_SHIFT;
+ 					break;
+ 				}
+ 			}
 -- 
 2.39.5
 
