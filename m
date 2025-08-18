@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15DBB2A288
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4975B2A842
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CED67AFD4B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE0D0582F67
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E4431A068;
-	Mon, 18 Aug 2025 12:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83138335BC1;
+	Mon, 18 Aug 2025 13:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2J3LNj+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LChVWWZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CBF27B355;
-	Mon, 18 Aug 2025 12:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8DD335BBA;
+	Mon, 18 Aug 2025 13:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521884; cv=none; b=WLnPQdbBUmQXNLwP4SdN/iFMngGmN/EMvYpYTRz00dka6+ZwNJ4wR3WXOgitUu3Uw3FU6wjSXNvItpsOjNy5vk3EHkWHnT3zVApFtsigEit9bBDsyXj5FI7VTFlvW+4fRVc6A1qLfdIQhg4J2cLiG0jDgm37uKD134WHX4YMO50=
+	t=1755525097; cv=none; b=a5wjsq4L5TnxZ1/L7kkx7npIQEfKqw5+VbQUUD8cAz/SsjSbt6kA25TzGpWQfyExTACc2+JJ25gdbB/d8ZCoAHkpMIg3Nvne0WAWSw90Pw6vtvYjbYZCyuTevSvZ6Yu1hpohUAqDR9Ymw+tv9AabQ7hMrSnyO1qxMwKcGfHYqPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521884; c=relaxed/simple;
-	bh=peof7Hd3zCibFg3RF2n2c4wTzfnygYtZGRHDkDCFOOc=;
+	s=arc-20240116; t=1755525097; c=relaxed/simple;
+	bh=kJMkcRivNiRGu2yy3yYt7VohVLhvhiNQb9/0z75Y/GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fhzLaoLwdbuN8Biwj1DpXPZA81mZ2xe9Y4dSpJZ+TIMXVGGmL+ncgMY2WmeMC8UOsap8ree74mxj0jtpnpGLoZ+mit3rX/nKUdkZdZg9rGLg7FjaeZX3ZwuLqoEWhKGgw4H3LJU3ffYgpuvCkvbpJRPjIjT/58YLSKELXzA0Ak8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2J3LNj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31EDC4CEEB;
-	Mon, 18 Aug 2025 12:58:03 +0000 (UTC)
+	 MIME-Version; b=XQZac5fO+Zypu2uXatoayQGXOi1GFqKr4jgmCz3cFsBKSjjIeGmicMDOGYpyBCCPQ3ycqx+2h2u/km2P7OpnnJ06XBjF8Zn+a3vquwsZ49YqfLuBLaZfWSs1KguG7yJXbOXS4FvFmKAz9pkeUb6MWnP57AyXT5NOmv6II9moTTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LChVWWZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DC3C4CEEB;
+	Mon, 18 Aug 2025 13:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521884;
-	bh=peof7Hd3zCibFg3RF2n2c4wTzfnygYtZGRHDkDCFOOc=;
+	s=korg; t=1755525097;
+	bh=kJMkcRivNiRGu2yy3yYt7VohVLhvhiNQb9/0z75Y/GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2J3LNj+BCbnQ2cJNhPCRjdaI4pPofYZLJ6nDJX1wmRpIW43Os/DC8eT6ACRjvvki
-	 9dL+UoFqHp0bQpQeUKETeBN+LMrYewsc/k/rObhkvV6exdLT0IoA0uyw2kxijHFVGy
-	 Zud21Qum00lInAj9Vu0Ff5mOB/kOTy+53Pi1Zgmg=
+	b=LChVWWZpmvFGzzDA/9iMp3+vi55hgH9Qd6zV2Z6e1aW/dxYeK3gvIYNFW9vmMbrWU
+	 ELXvx0ZSLbSfu8Xw9ZITy4qh/1q644Om/xeblQNY8jVAMZ4MusZRgoHJLrSUjbHykI
+	 Io3lSwlOyGrYaatHvcMU6a9tvXv15cOxZXVr0I5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/444] iio: adc: ad_sigma_delta: dont overallocate scan buffer
+Subject: [PATCH 6.16 157/570] ARM: tegra: Use I/O memcpy to write to IRAM
 Date: Mon, 18 Aug 2025 14:42:24 +0200
-Message-ID: <20250818124453.346597306@linuxfoundation.org>
+Message-ID: <20250818124511.863114580@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 5a2f15c5a8e017d0951e6dc62aa7b5b634f56881 ]
+[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
 
-Fix overallocating the size of the scan buffer by converting bits to
-bytes. The size is meant to be in bytes, so scanbits needs to be
-divided by 8.
+Kasan crashes the kernel trying to check boundaries when using the
+normal memcpy.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250701-iio-adc-ad7173-add-spi-offload-support-v3-1-42abb83e3dac@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 2 +-
+ arch/arm/mach-tegra/reset.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 3df1d4f6bc95..39196a2862cf 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -379,7 +379,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 			return ret;
- 	}
+diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
+index d5c805adf7a8..ea706fac6358 100644
+--- a/arch/arm/mach-tegra/reset.c
++++ b/arch/arm/mach-tegra/reset.c
+@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
+ 	BUG_ON(is_enabled);
+ 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
  
--	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits, 8);
-+	samples_buf_size = ALIGN(slot * indio_dev->channels[0].scan_type.storagebits / 8, 8);
- 	samples_buf_size += sizeof(int64_t);
- 	samples_buf = devm_krealloc(&sigma_delta->spi->dev, sigma_delta->samples_buf,
- 				    samples_buf_size, GFP_KERNEL);
+-	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
++	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
+ 			tegra_cpu_reset_handler_size);
+ 
+ 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
 -- 
 2.39.5
 
