@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DDFB2A6D4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61B7B2A352
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11A7D3B4120
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4621F7B88F5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8864031CA48;
-	Mon, 18 Aug 2025 13:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22C83203B1;
+	Mon, 18 Aug 2025 13:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5JPldfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueRBNYwO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444EB335BA1;
-	Mon, 18 Aug 2025 13:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E131E103;
+	Mon, 18 Aug 2025 13:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524010; cv=none; b=QDSParJorXY+2BjMGOlw+fhtvmMDUyXbzM+AjbHFHq5BRwNLyBo14MhHCjzZqU565jZDc8xiLj1R5KEjT+qjhYvI/dX6su9ldsPiucniZ7vKitfGgs4CPoEXtc4+tJh5q4R9IbAX54qKMtbQwfAllTp4agAHoiW5Mdd4XDoC1h4=
+	t=1755522386; cv=none; b=KlN0CuKIuhwjT13WQOvlKGb8cOZrMtHXKt4KcMn9KdOneDANomjfEsJoOcAHbaQN7kxwX5Sald8Bw1bTa1i5UsTZea1zj4azwCmTfmBSsrF5A3cPV6zIH+4QfToE6hqhr3hpfAygEQFHeuH88QbLWHSDjs001dj4YR9UAJ5hqZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524010; c=relaxed/simple;
-	bh=8MJ0LrtYpQKXduGvQwj1SCfdhebBs9C4DHyznQXJF+Q=;
+	s=arc-20240116; t=1755522386; c=relaxed/simple;
+	bh=IFTt7czDDgjNqYmvogi2ausPPR9oKdJ2o64YxMZhnwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWKPOsdB2RIMVGb3hFp1vaxd7PIwLTZS6pY+VdcMWQSr+5jImhKsreMN6d1cQ2MRdaNM4wAmPslOUOD+Tycr23BX55h4TmxuRqvBcq+sH59esC32cd5KtRAHcLGmfbj4eN49ze9/TlPbg2h1EEiD0mEnbD6jNvS43MR8nVMHYJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5JPldfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5175C4CEEB;
-	Mon, 18 Aug 2025 13:33:29 +0000 (UTC)
+	 MIME-Version; b=S+knLhAe4pWQqy9YFE2QzBqadHcowATLnKRZ0t4uuuX3I6anX+RA7/qr5N1d5jrooBkrckuuuO1+2tZMyPR04XFwDMTM1sBCkGC8RbegmFAUwU27rb+BAVDbLy2euq2kJRDs9OjVFVhK328P3mOZxe1FWJZp+xDa9EHkgqpqVHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueRBNYwO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB659C4CEEB;
+	Mon, 18 Aug 2025 13:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524010;
-	bh=8MJ0LrtYpQKXduGvQwj1SCfdhebBs9C4DHyznQXJF+Q=;
+	s=korg; t=1755522385;
+	bh=IFTt7czDDgjNqYmvogi2ausPPR9oKdJ2o64YxMZhnwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5JPldfiAcFZx9NdhwQ3cj8KgCvvHTv4RGoaiapubutlczfaZhYzsf5fbPI8q5LOT
-	 L7hd49IrGXzm+y+kL2jbzzOXf44OthvHHhtx/0gTut3tmOFTo1HwIamuNTRIjeTbOy
-	 74QbJSp+w+2Mfc9B6/sFzu/X81CvucZLFbMjSsw4=
+	b=ueRBNYwOmIvIuNOjj9Irz/bkE+Htn6lUZwKoQMXicN6B8zOybgRxIIISc5dvKrxZ2
+	 p/W2Vc3CcILxQpujngWzqu8jjTtbEAKQWG4us65cH8PigeXl8gY9GFCZF8nAYBeFY+
+	 RGTlL1WS4sS8U8c8tByJM0NFoVrZEO9/Yhpk2QR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Valmantas Paliksa <walmis@gmail.com>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 341/515] phy: rockchip-pcie: Enable all four lanes if required
+Subject: [PATCH 6.12 301/444] media: ipu-bridge: Add _HID for OV5670
 Date: Mon, 18 Aug 2025 14:45:27 +0200
-Message-ID: <20250818124511.554635376@linuxfoundation.org>
+Message-ID: <20250818124500.235752448@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valmantas Paliksa <walmis@gmail.com>
+From: Daniel Scally <dan.scally@ideasonboard.com>
 
-[ Upstream commit c3fe7071e196e25789ecf90dbc9e8491a98884d7 ]
+[ Upstream commit 484f8bec3ddb453321ef0b8621c25de6ce3d0302 ]
 
-Current code enables only Lane 0 because pwr_cnt will be incremented on
-first call to the function. Let's reorder the enablement code to enable
-all 4 lanes through GRF.
+The OV5670 is found on Dell 7212 tablets paired with an IPU3 ISP
+and needs to be connected by the ipu-bridge. Add it to the list
+of supported devices.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-
-Signed-off-by: Valmantas Paliksa <walmis@gmail.com>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/16b610aab34e069fd31d9f57260c10df2a968f80.1751322015.git.geraldogabriel@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-pcie.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/pci/intel/ipu-bridge.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-pcie.c b/drivers/phy/rockchip/phy-rockchip-pcie.c
-index 63e88abc66c6..4e2dfd01adf2 100644
---- a/drivers/phy/rockchip/phy-rockchip-pcie.c
-+++ b/drivers/phy/rockchip/phy-rockchip-pcie.c
-@@ -159,6 +159,12 @@ static int rockchip_pcie_phy_power_on(struct phy *phy)
- 
- 	guard(mutex)(&rk_phy->pcie_mutex);
- 
-+	regmap_write(rk_phy->reg_base,
-+		     rk_phy->phy_data->pcie_laneoff,
-+		     HIWORD_UPDATE(!PHY_LANE_IDLE_OFF,
-+				   PHY_LANE_IDLE_MASK,
-+				   PHY_LANE_IDLE_A_SHIFT + inst->index));
-+
- 	if (rk_phy->pwr_cnt++) {
- 		return 0;
- 	}
-@@ -175,12 +181,6 @@ static int rockchip_pcie_phy_power_on(struct phy *phy)
- 				   PHY_CFG_ADDR_MASK,
- 				   PHY_CFG_ADDR_SHIFT));
- 
--	regmap_write(rk_phy->reg_base,
--		     rk_phy->phy_data->pcie_laneoff,
--		     HIWORD_UPDATE(!PHY_LANE_IDLE_OFF,
--				   PHY_LANE_IDLE_MASK,
--				   PHY_LANE_IDLE_A_SHIFT + inst->index));
--
- 	/*
- 	 * No documented timeout value for phy operation below,
- 	 * so we make it large enough here. And we use loop-break
+diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
+index a0e9a71580b5..4e921c751629 100644
+--- a/drivers/media/pci/intel/ipu-bridge.c
++++ b/drivers/media/pci/intel/ipu-bridge.c
+@@ -59,6 +59,8 @@ static const struct ipu_sensor_config ipu_supported_sensors[] = {
+ 	IPU_SENSOR_CONFIG("INT33BE", 1, 419200000),
+ 	/* Omnivision OV2740 */
+ 	IPU_SENSOR_CONFIG("INT3474", 1, 180000000),
++	/* Omnivision OV5670 */
++	IPU_SENSOR_CONFIG("INT3479", 1, 422400000),
+ 	/* Omnivision OV8865 */
+ 	IPU_SENSOR_CONFIG("INT347A", 1, 360000000),
+ 	/* Omnivision OV7251 */
 -- 
 2.39.5
 
