@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB750B2A331
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA56B2A537
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BD218A79E1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5FC94E3418
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7E4318144;
-	Mon, 18 Aug 2025 13:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C76322DA7;
+	Mon, 18 Aug 2025 13:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0oIsuk+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TantPckm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8841C3BEB;
-	Mon, 18 Aug 2025 13:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4E132277A;
+	Mon, 18 Aug 2025 13:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522009; cv=none; b=Bu9Fbwc8M5P9LFIJcbatReXvV1nwuRYzA6pT3/uRkLlruzI2i7syzsBjCbc7VWKAszqb76qf0Sf90oLUSEWRjOcch77wwcbYOLlMveJ5Zeblo+mcknXdFxRRYtEbKIMOhKsl40etUxqGPwKqUq8RT3HKXIGip0Cqzwph6oygoWY=
+	t=1755523518; cv=none; b=sYPf/B9TPnocksvWqU9ST6YmjAdWq6u/N7685utsKUiLrJJcaHxdwzB0knonlok8R1yjJ05/h9al3ihTqmo6+ihHPXtHeNOCv6D3TofBLx+dqYzoToy439hfJmv7YuMFdK6H0XMm92yoAWoGh/iP0qXnBHFb2JDvps3dTbOP97E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522009; c=relaxed/simple;
-	bh=th5Scw5NFJWxmy1EL9YNzqgi4tm0vGcUhJEAZ4L/UxA=;
+	s=arc-20240116; t=1755523518; c=relaxed/simple;
+	bh=z7MuMhBOjbRQ2ggUE3CtE1PMbMqxaqjV9biErAMkXCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWgJ4c5+b0KXldz6dLitaQUCUVIqsRxtECxIJH5gTYaXzEFhIJCBZ8vOut8aw3S1ljWafUVebF4w2Rlf3QJ9MF/SqHk0dDibpzSEs+kwXTtPfYD3PRuiMYv2BFolCdyaYaHAlcj87meyRIDdrvc7MJJRf+skndSgf2CMfKFd6KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0oIsuk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC27C4CEF1;
-	Mon, 18 Aug 2025 13:00:08 +0000 (UTC)
+	 MIME-Version; b=EPVGtbQ62FAoTqivbie1Nq3HoFtXzJ3MKHhIQYKZ1JEPesTsnliouczt+LNjTfjKby3zbQqvvmHpt2AolWBJ9xiL+h6Dsnn7xrBCo/DSIfqVkLvzrb5CAcH9cRng3OzV7vvpvF0uq9WsblcHr6LfoMoy9b36iu+UGy+SOnvn6po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TantPckm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E026DC4CEEB;
+	Mon, 18 Aug 2025 13:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522009;
-	bh=th5Scw5NFJWxmy1EL9YNzqgi4tm0vGcUhJEAZ4L/UxA=;
+	s=korg; t=1755523518;
+	bh=z7MuMhBOjbRQ2ggUE3CtE1PMbMqxaqjV9biErAMkXCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0oIsuk+iTqSO2TeoErSSn0JGqF7ciUB+c94QL5+dnj6vTuD5o9h5lPO9yii8s+Uf
-	 Gx7SAyTB4IGNnRvwI95O+CZWnluziOJimr7xf8WcINu9+58ooGsszrJ0yQZAAhw4I+
-	 WjwqS732dBHWTLVe5C8XKALFDuLUYCCdKi226SmA=
+	b=TantPckmPR1oTp5ONa/NopS0194tEAIr3M6u6h1q8QZzECAVV/WRLD1U2+t6L8C52
+	 +xqQSz0XSg/cM/GSKRYUSKbhlGj6t78dPtYL8wJ7+5r6r8V2PvTu5qIZXY6JljlCFK
+	 QOKRTo6Nn63lbg50QgG1AHXcl9XgHbeL0p/XS6TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Lucy Thrun <lucy.thrun@digital-rabbithole.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/444] ALSA: hda/ca0132: Fix buffer overflow in add_tuning_control
-Date: Mon, 18 Aug 2025 14:43:01 +0200
-Message-ID: <20250818124454.713238322@linuxfoundation.org>
+Subject: [PATCH 6.15 196/515] Bluetooth: hci_sock: Reset cookie to zero in hci_sock_free_cookie()
+Date: Mon, 18 Aug 2025 14:43:02 +0200
+Message-ID: <20250818124505.916446700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit a409c60111e6bb98fcabab2aeaa069daa9434ca0 ]
+[ Upstream commit 4d7936e8a5b1fa803f4a631d2da4a80fa4f0f37f ]
 
-The 'sprintf' call in 'add_tuning_control' may exceed the 44-byte
-buffer if either string argument is too long. This triggers a compiler
-warning.
-Replaced 'sprintf' with 'snprintf' to limit string lengths to prevent
-overflow.
+Reset cookie value to 0 instead of 0xffffffff in hci_sock_free_cookie()
+since:
+0         :  means cookie has not been assigned yet
+0xffffffff:  means cookie assignment failure
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506100642.95jpuMY1-lkp@intel.com/
-Signed-off-by: Lucy Thrun <lucy.thrun@digital-rabbithole.de>
-Link: https://patch.msgid.link/20250610175012.918-3-lucy.thrun@digital-rabbithole.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Also fix generating cookie failure with usage shown below:
+hci_sock_gen_cookie(sk)   // generate cookie
+hci_sock_free_cookie(sk)  // free cookie
+hci_sock_gen_cookie(sk)   // Can't generate cookie any more
+
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_ca0132.c | 2 +-
+ net/bluetooth/hci_sock.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index 77432e06f3e3..a2f57d7424bb 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -4410,7 +4410,7 @@ static int add_tuning_control(struct hda_codec *codec,
- 	}
- 	knew.private_value =
- 		HDA_COMPOSE_AMP_VAL(nid, 1, 0, type);
--	sprintf(namestr, "%s %s Volume", name, dirstr[dir]);
-+	snprintf(namestr, sizeof(namestr), "%s %s Volume", name, dirstr[dir]);
- 	return snd_hda_ctl_add(codec, nid, snd_ctl_new1(&knew, codec));
- }
+diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
+index 022b86797acd..4ad5296d7934 100644
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -118,7 +118,7 @@ static void hci_sock_free_cookie(struct sock *sk)
+ 	int id = hci_pi(sk)->cookie;
  
+ 	if (id) {
+-		hci_pi(sk)->cookie = 0xffffffff;
++		hci_pi(sk)->cookie = 0;
+ 		ida_free(&sock_cookie_ida, id);
+ 	}
+ }
 -- 
 2.39.5
 
