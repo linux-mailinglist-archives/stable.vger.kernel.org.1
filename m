@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A28B2A876
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B40B2A64D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79D072A27DE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A6C73B9578
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105741E8836;
-	Mon, 18 Aug 2025 13:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D2F32A3E7;
+	Mon, 18 Aug 2025 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avHhlJdb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJToLrVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C160919E82A;
-	Mon, 18 Aug 2025 13:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537ED32A3DB;
+	Mon, 18 Aug 2025 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525332; cv=none; b=auEHts9Xo/EYBTNq/kJR9YcBPOS4W8ZCh+ymGTNnHcOMQiH2CoD4ucZQX6XXPV7xD0iDVHK9M30hOuJ817SS+5Prws+2paS3GMn5yH0OIycsWcd5ZoCq8wIR9SIKgEzMArMEUhGA9jg9r0C8cPxUV8+Trd1X2jlV/ICAh3ThCJw=
+	t=1755523544; cv=none; b=cnG+BpbDu/FywFXRjcbgVB/53OwSffU1Ms9QiKmi9i6PiBK9NzIWgZTzYb2dTvlvwRMGB8mToC4oylYstP3RoLPD0igTT9vo+W5LLlaBRIMmTrZRdOjgyulDZLXRjxXhOe9DFzLGGqaSFgmIslxJZedes81gUvQpF/HnTa/FZRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525332; c=relaxed/simple;
-	bh=7DkWEq+YwDPgM5mhwtHlutbG9rCMD1ORf1Y9Jj2iYJM=;
+	s=arc-20240116; t=1755523544; c=relaxed/simple;
+	bh=EaaWmzqwZdPQuzrTcL/NQG6BuCkQEb3Vcqlo1Jf/BSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CsnW5vnmHlptIXyxvdk+TU7b9gT5AFd9ofRQYi51mOCQGB2U7Xn0fX21+sgExMbJ006W6yc43KmN1HgTAJDWMxC3v1v1jEr0RQWFgs4OoLsBqSICrNAB6XP/biBwa3OqZ2rG7oj55KoyHwaO6bG6XZQ0f32XlqKOWsdwQZBHGeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avHhlJdb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4177CC4CEEB;
-	Mon, 18 Aug 2025 13:55:32 +0000 (UTC)
+	 MIME-Version; b=Ub+dmgwPYe2AUW2bl26f50ZiXH3sJ3M24Lsh7DOKJUM+bXeW+PdkyDZagiwSKOFN8nqjfIVmRMq/f7h24Xrbj3textYvxExvWKAWOTzuwWb6DaAGdDDSL9F0qve9lTtoEayAcs1zISJ2AXEdg9Vkpsw3R4kvjeDc4AjcW+zd7sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJToLrVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7885C4CEEB;
+	Mon, 18 Aug 2025 13:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525332;
-	bh=7DkWEq+YwDPgM5mhwtHlutbG9rCMD1ORf1Y9Jj2iYJM=;
+	s=korg; t=1755523544;
+	bh=EaaWmzqwZdPQuzrTcL/NQG6BuCkQEb3Vcqlo1Jf/BSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avHhlJdb50NoLazqK7OPZKN8bwjI0FPkKFr2w9kdb4IWn7RcOB+TqByn9rMAAT2L6
-	 dNe2QCart37p5k+tR3fSmpNNuF0hBpbgLceNcusjw/d5/D0PwJywDvzCm7Szbj6iJw
-	 ftWuwtHCKSa8Biv6+Bh0Rz+qPYbK7RN6a4pYH2Qg=
+	b=WJToLrVOq41FaLlh/0wxguJxs1Gu7TFtU7nDsOVtRfaPdXZqBepBcAKt8gvadgWzC
+	 JoG/T7DnRui4UaNG71Qndl+vCUTPjT/Eh6zsHDe8JN5Kx+V7DUI2yMmSW1r1dmLYMW
+	 CliviD0aYjHm1j3TGTx8EamlG/yIs5GZMxc2ppW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Xinxin Wan <xinxin.wan@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	"John Warthog9 Hawley" <warthog9@kernel.org>,
+	Dhaval Giani <dhaval.giani@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 203/570] ASoC: codecs: rt5640: Retry DEVICE_ID verification
+Subject: [PATCH 6.15 204/515] ktest.pl: Prevent recursion of default variable options
 Date: Mon, 18 Aug 2025 14:43:10 +0200
-Message-ID: <20250818124513.631343117@linuxfoundation.org>
+Message-ID: <20250818124506.223659647@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinxin Wan <xinxin.wan@intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
+[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
 
-To be more resilient to codec-detection failures when the hardware
-powers on slowly, add retry mechanism to the device verification check.
-Similar pattern is found throughout a number of Realtek codecs. Our
-tests show that 60ms delay is sufficient to address readiness issues on
-rt5640 chip.
+If a default variable contains itself, do not recurse on it.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For example:
+
+  ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+The above works because the temp variable ADD_CONFIG (is a temp because it
+is created with ":=") is already defined, it will be substituted in the
+variable option. But if it gets commented out:
+
+  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
+  DEFAULTS
+  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+
+Then the above will go into a recursive loop where ${ADD_CONFIG} will
+get replaced with the current definition of ADD_CONFIG which contains the
+${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
+after 100 attempts of recursion and fail.
+
+When replacing a variable with the default variable, if the default
+variable contains itself, do not replace it.
+
+Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
+Cc: Dhaval Giani <dhaval.giani@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/ktest/ktest.pl | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 21a18012b4c0..55881a5669e2 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -3013,6 +3013,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
- 	}
- 
- 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	if (val != RT5640_DEVICE_ID) {
-+		usleep_range(60000, 100000);
-+		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	}
-+
- 	if (val != RT5640_DEVICE_ID) {
- 		dev_err(&i2c->dev,
- 			"Device with ID register %#x is not rt5640/39\n", val);
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index a5f7fdd0c1fb..e1d31e2aa948 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -1371,7 +1371,10 @@ sub __eval_option {
+ 	# If a variable contains itself, use the default var
+ 	if (($var eq $name) && defined($opt{$var})) {
+ 	    $o = $opt{$var};
+-	    $retval = "$retval$o";
++	    # Only append if the default doesn't contain itself
++	    if ($o !~ m/\$\{$var\}/) {
++		$retval = "$retval$o";
++	    }
+ 	} elsif (defined($opt{$o})) {
+ 	    $o = $opt{$o};
+ 	    $retval = "$retval$o";
 -- 
 2.39.5
 
