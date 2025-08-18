@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46EE8B2A8A2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A68FB2A345
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58DEA5A2E8E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:57:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C3F33B036F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC4E32145C;
-	Mon, 18 Aug 2025 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5662C32039D;
+	Mon, 18 Aug 2025 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgIh6qyQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQ+XpsWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1B3321430;
-	Mon, 18 Aug 2025 13:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1012032038F;
+	Mon, 18 Aug 2025 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525397; cv=none; b=UaLUVGIhpFbSJ5iQBtpfFHGNG/LVAucu7vkewT9a5Gg+22K9Rvb2k3vGdzHnTUUfm8+ZxJm/zV2V0cOW8v0KCly59Zd40yPTMHvV/hkw2W0MHIINlMY6mKUCpITgBW+2t8NICtUYzXtPtLZ4gGPIBZ4mcB5FwqLw4AdvCpsS0iA=
+	t=1755522098; cv=none; b=l2JKsV2/tjEp8JcWH/Hv2Lsdr/Z7/yXSDN2itV1QDbfy7N1qY+BRE9KGriWCjR32MXhrsg9Z3Wt9rgsQj1jnrAp/rMI2b9pMZjh+sbsQtQdo8r488WMAJpiDUi878hcuXjIyxm9rFLz7gAW4L+fYpJbngr0O7Z6YSUk1b7KJrU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525397; c=relaxed/simple;
-	bh=JGQVTEuUq4eTq69OKA86Q/3afcWXcguLBCEyeH6LkxY=;
+	s=arc-20240116; t=1755522098; c=relaxed/simple;
+	bh=PmEIP233efkHNNG6kCqMJ7Y/No224JHLKaX1rFvEilg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ks7NlM2H+TCtiKnJg1fTum7GwToqKmpI1rRYZcZky57FZGnh665FA2NbjqECPbIdVI7dd397Vs0mSkvyjcmZoEOk1fm4KrD6wfFvCu85O3PkABHwFqLc5cF1Mh1bl7Ex/++sU3uyShSZstsZzGJOPXwaGo5smZrq2Y49avQvWeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgIh6qyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA80C4CEEB;
-	Mon, 18 Aug 2025 13:56:36 +0000 (UTC)
+	 MIME-Version; b=Q77xQr8FFwMJLCQnHYz2/FI2EdCmT4s9kYaxL25Mv59Qz+hE9RwjkYqVd9KFTjLxXQmG51soAHIfjtXitXr63bWk/fIjDhABlK0XOIFAVLD84fcRsUU42zZ8cLrTqZtTg4VqP+sKcp8qE6vWiE/LNOHhEMN4I3kPPsHk/yvfYcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQ+XpsWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EC2C116C6;
+	Mon, 18 Aug 2025 13:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525397;
-	bh=JGQVTEuUq4eTq69OKA86Q/3afcWXcguLBCEyeH6LkxY=;
+	s=korg; t=1755522097;
+	bh=PmEIP233efkHNNG6kCqMJ7Y/No224JHLKaX1rFvEilg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PgIh6qyQDp/xtE1UaRvDYfPnDwJu4DdKHrT+gC9xQSiVKpUYqgupOAk1YVrusZr7o
-	 7h2YC1akhvS6hhgQK40e/NGFwtDIJxVOAcGp7wMvBozRtZCwHwNeTI60SmR+eKvMo2
-	 UiQZc8GpJj0VbTu67jfuq3j87XRsIsZ0tONVBHSU=
+	b=AQ+XpsWtQZVSOOCs9oe2tDsM4LfIFDJaXzMwD+vvK/ZadrztVSMZ9v3eO8sPAQ93Z
+	 4Wg+B9/5PofKFv1CYG1hlnmDopResjCe06aAt2kVOnl67M61p77TdK/aFcmzHsOTmF
+	 ingnpUMjzgCn2YjC7SoxedfPzvykAOtIC6SrpSTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avraham Stern <avraham.stern@intel.com>,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Alessio Belle <alessio.belle@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 251/570] wifi: iwlwifi: mld: fix scan request validation
-Date: Mon, 18 Aug 2025 14:43:58 +0200
-Message-ID: <20250818124515.492245134@linuxfoundation.org>
+Subject: [PATCH 6.12 213/444] drm/imagination: Clear runtime PM errors while resetting the GPU
+Date: Mon, 18 Aug 2025 14:43:59 +0200
+Message-ID: <20250818124456.834199585@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Alessio Belle <alessio.belle@imgtec.com>
 
-[ Upstream commit d1f5f881ac2c5dc185a88c7bfe47d2b3ecbbc501 ]
+[ Upstream commit 551507e0d0bf32ce1d7d27533c4b98307380804c ]
 
-The scan request validation function uses bitwise and instead
-of logical and. Fix it.
+The runtime PM might be left in error state if one of the callbacks
+returned an error, e.g. if the (auto)suspend callback failed following
+a firmware crash.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250710212632.ec7d665f56a4.I416816b491fafa5d3efdf0a4be78356eedf2bd95@changeid
+When that happens, any further attempt to acquire or release a power
+reference will then also fail, making it impossible to do anything else
+with the GPU. The driver logic will eventually reach the reset code.
+
+In pvr_power_reset(), replace pvr_power_get() with a new API
+pvr_power_get_clear() which also attempts to clear any runtime PM error
+state if acquiring a power reference is not possible.
+
+Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://lore.kernel.org/r/20250624-clear-rpm-errors-gpu-reset-v1-1-b8ff2ae55aac@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/imagination/pvr_power.c | 59 ++++++++++++++++++++++++-
+ 1 file changed, 58 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.c b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-index 3fce7cd2d512..33e7e4d1ab90 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.c
-@@ -359,7 +359,7 @@ iwl_mld_scan_fits(struct iwl_mld *mld, int n_ssids,
- 		  struct ieee80211_scan_ies *ies, int n_channels)
- {
- 	return ((n_ssids <= PROBE_OPTION_MAX) &&
--		(n_channels <= mld->fw->ucode_capa.n_scan_channels) &
-+		(n_channels <= mld->fw->ucode_capa.n_scan_channels) &&
- 		(ies->common_ie_len + ies->len[NL80211_BAND_2GHZ] +
- 		 ies->len[NL80211_BAND_5GHZ] + ies->len[NL80211_BAND_6GHZ] <=
- 		 iwl_mld_scan_max_template_size()));
+diff --git a/drivers/gpu/drm/imagination/pvr_power.c b/drivers/gpu/drm/imagination/pvr_power.c
+index 850b318605da..d97613c6a0a9 100644
+--- a/drivers/gpu/drm/imagination/pvr_power.c
++++ b/drivers/gpu/drm/imagination/pvr_power.c
+@@ -317,6 +317,63 @@ pvr_power_device_idle(struct device *dev)
+ 	return pvr_power_is_idle(pvr_dev) ? 0 : -EBUSY;
+ }
+ 
++static int
++pvr_power_clear_error(struct pvr_device *pvr_dev)
++{
++	struct device *dev = from_pvr_device(pvr_dev)->dev;
++	int err;
++
++	/* Ensure the device state is known and nothing is happening past this point */
++	pm_runtime_disable(dev);
++
++	/* Attempt to clear the runtime PM error by setting the current state again */
++	if (pm_runtime_status_suspended(dev))
++		err = pm_runtime_set_suspended(dev);
++	else
++		err = pm_runtime_set_active(dev);
++
++	if (err) {
++		drm_err(from_pvr_device(pvr_dev),
++			"%s: Failed to clear runtime PM error (new error %d)\n",
++			__func__, err);
++	}
++
++	pm_runtime_enable(dev);
++
++	return err;
++}
++
++/**
++ * pvr_power_get_clear() - Acquire a power reference, correcting any errors
++ * @pvr_dev: Device pointer
++ *
++ * Attempt to acquire a power reference on the device. If the runtime PM
++ * is in error state, attempt to clear the error and retry.
++ *
++ * Returns:
++ *  * 0 on success, or
++ *  * Any error code returned by pvr_power_get() or the runtime PM API.
++ */
++static int
++pvr_power_get_clear(struct pvr_device *pvr_dev)
++{
++	int err;
++
++	err = pvr_power_get(pvr_dev);
++	if (err == 0)
++		return err;
++
++	drm_warn(from_pvr_device(pvr_dev),
++		 "%s: pvr_power_get returned error %d, attempting recovery\n",
++		 __func__, err);
++
++	err = pvr_power_clear_error(pvr_dev);
++	if (err)
++		return err;
++
++	return pvr_power_get(pvr_dev);
++}
++
+ /**
+  * pvr_power_reset() - Reset the GPU
+  * @pvr_dev: Device pointer
+@@ -341,7 +398,7 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
+ 	 * Take a power reference during the reset. This should prevent any interference with the
+ 	 * power state during reset.
+ 	 */
+-	WARN_ON(pvr_power_get(pvr_dev));
++	WARN_ON(pvr_power_get_clear(pvr_dev));
+ 
+ 	down_write(&pvr_dev->reset_sem);
+ 
 -- 
 2.39.5
 
