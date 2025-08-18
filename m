@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA8A0B2A39E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958FAB2A93E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FB5B18922BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF054687DB3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CCD31CA72;
-	Mon, 18 Aug 2025 13:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DB8322744;
+	Mon, 18 Aug 2025 13:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3WTVMpb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjoyOvOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFF3258ED7;
-	Mon, 18 Aug 2025 13:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A881D88D7;
+	Mon, 18 Aug 2025 13:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522349; cv=none; b=BvXbGNvd6Zq823uFdjjeNVZGNaB27avZWZMGVY2xYt+MbBA4Gq4BvIzSkH7hFNsGpxBoZrKUSI8KAci0vfq3l3c8oZ4Bf3sSZPxIQyYgBaQIJQBGgSU6gUs3SlI72HZhLKuiWQOzUnaVPqOBJGBKUQjF7DoWF0LUzcqozBENtbY=
+	t=1755525554; cv=none; b=E0P3/LYIK4Pg2ztcZnInxqgkps1tNNx90+iXcS0/VknlBprJHthB5uGgaGfPi5X6w7ZdqlZ9LLD7g2PBCtNxVS8UQJ5CfF0ERSQ9ZcqPeWtH7QFLCR/qK/aSiDuFJ0NajCaZqdVRCfi0CQgptRB0h3Suom66piyZvV5nHLW/Vds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522349; c=relaxed/simple;
-	bh=FQz3ce+8Rrdwgayoc4R165FiGXJJe2Ozy1Pv5OxlNgI=;
+	s=arc-20240116; t=1755525554; c=relaxed/simple;
+	bh=DQQCjDj0Y0izkGtaeppQjbo6L3LH6AjgohxE692+TZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAZHuVfgE0VsJrRRCY3zHEqFOepfZTkI0Iod7uNBh36BAVqkldCdTV5+ebIcLt5HFy1Vv8MZEK/8tzGY2nRLUZm0tGKKj4CSBAtNdbdlDAHngM9fYPSehKzW5FZKU+UfRWSukeN24SLxlDsQRMDKPuBLw/MVlOwvO8bjKj4e7tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3WTVMpb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9E2C4CEEB;
-	Mon, 18 Aug 2025 13:05:48 +0000 (UTC)
+	 MIME-Version; b=KadMSFzBSnIFQQmk5254JTUSRIC9Y9wjfNVIXX1j2jW/x/x58bTalcbnXjBGbL9Rna+lGfKtKsOANDzh64tEfn3HViTHuiF+Yv3tAVby7t2/ioR3tAzvYV64rfrcDU63VN3KYchEUjUTpNhtZrrLkk81f+5pCW4E51n+u4lG6XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjoyOvOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD4EC4CEEB;
+	Mon, 18 Aug 2025 13:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522348;
-	bh=FQz3ce+8Rrdwgayoc4R165FiGXJJe2Ozy1Pv5OxlNgI=;
+	s=korg; t=1755525553;
+	bh=DQQCjDj0Y0izkGtaeppQjbo6L3LH6AjgohxE692+TZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3WTVMpb8cPi0vW3OjVxqSJZcDk0F+Q0OmMQ7+gA2zGsf13GiCPKxkDzopJOXc+u0
-	 6NU/UJ9e/AMI2rB3f/78f1Xuyu/5iEvS8//1jA1X9lw+ipoc7VGJ0vgMVXp+NfIQBu
-	 ovAEuxRHXpar/PR/Sr0xJTbDFgMOrSg95aOZijoA=
+	b=GjoyOvOuL0t/ukBJUbYA6e8K8l9+X5mbERAyaOobBMxmgnB65WYSG6VBYliQSRBxw
+	 99kwdu52EC6t/o0cQtnlK8ZNZZJx9wKi/IQTu+uWfebN4gP+vYDb+uC+h3t1gqhzjQ
+	 4KiLgf9sb1MRUQuufy/fDFx7ue8Ej+q/c+6iVMW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Joe Damato <joe@dama.to>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 257/444] ionic: clean dbpage in de-init
-Date: Mon, 18 Aug 2025 14:44:43 +0200
-Message-ID: <20250818124458.469910171@linuxfoundation.org>
+Subject: [PATCH 6.16 297/570] wifi: ath12k: Add memset and update default rate value in wmi tx completion
+Date: Mon, 18 Aug 2025 14:44:44 +0200
+Message-ID: <20250818124517.292144773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-[ Upstream commit c9080abea1e69b8b1408ec7dec0acdfdc577a3e2 ]
+[ Upstream commit 9903c0986f782dfc511d7638b6f15fb6e8600cd3 ]
 
-Since the kern_dbpage gets set up in ionic_lif_init() and that
-function's error path will clean it if needed, the kern_dbpage
-on teardown should be cleaned in ionic_lif_deinit(), not in
-ionic_lif_free().  As it is currently we get a double call
-to iounmap() on kern_dbpage if the PCI ionic fails setting up
-the lif.  One example of this is when firmware isn't responding
-to AdminQ requests and ionic's first AdminQ call fails to
-setup the NotifyQ.
+When both AP/STA and monitor interfaces are enabled, ieee80211_tx_status()
+is invoked from two paths: the TX completion handler for data frames
+and the WMI TX completion handler for management frames.
+In the data path, the skb->cb is properly zeroed using memset, but in
+the WMI path, this step is missing.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Joe Damato <joe@dama.to>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+As a result, mac80211 encountered uninitialized (junk) values in
+skb->cb when generating the radiotap header for monitor mode, leading
+to invalid radiotap lengths.
+
+Hence, explicitly zero the status field in the skb->cb using memset
+in WMI TX completion path to ensure consistent and correct behavior
+during WMI tx completion path.
+
+Additionally, set info->status.rates[0].idx = -1 to indicate that
+no valid rate information is available, avoiding misinterpretation of
+garbage values.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250603063512.1887652-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 3d3f936779f7..d6bea7152805 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3526,10 +3526,6 @@ void ionic_lif_free(struct ionic_lif *lif)
- 	lif->info = NULL;
- 	lif->info_pa = 0;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 745d017c5aa8..1d0d4a668946 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -6140,6 +6140,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
--	/* unmap doorbell page */
--	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
--	lif->kern_dbpage = NULL;
--
- 	mutex_destroy(&lif->config_lock);
- 	mutex_destroy(&lif->queue_lock);
- 
-@@ -3555,6 +3551,9 @@ void ionic_lif_deinit(struct ionic_lif *lif)
- 	ionic_lif_qcq_deinit(lif, lif->notifyqcq);
- 	ionic_lif_qcq_deinit(lif, lif->adminqcq);
- 
-+	ionic_bus_unmap_dbpage(lif->ionic, lif->kern_dbpage);
-+	lif->kern_dbpage = NULL;
+ 	info = IEEE80211_SKB_CB(msdu);
++	memset(&info->status, 0, sizeof(info->status));
 +
- 	ionic_lif_reset(lif);
- }
++	/* skip tx rate update from ieee80211_status*/
++	info->status.rates[0].idx = -1;
++
+ 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
  
 -- 
 2.39.5
