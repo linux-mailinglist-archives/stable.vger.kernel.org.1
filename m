@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE324B2A327
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315CCB2A8B2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42D2318A6965
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2525A5872E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDF631A055;
-	Mon, 18 Aug 2025 12:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442172882A9;
+	Mon, 18 Aug 2025 13:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0NJwkwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwjdBrda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE503218CF;
-	Mon, 18 Aug 2025 12:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0307D22AE7A;
+	Mon, 18 Aug 2025 13:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521936; cv=none; b=UnpYwMYFVl917I9GAjn0NAuve71TH6nYvNqppmEl3xBTzfiPnfbbO0fx+Lw7N0RfZ9GtZQApjt+64jOw61XMpWl49C3NdUg1IZ+6ZLGoJ+cqgf3RXr5wmbf5rcvj+wBdOqe+xRRaXZlWfpjxlk5JmdMolOet8fOWH+3RaFqYBU8=
+	t=1755525360; cv=none; b=akzNR4tYSKNpFfsh2b141lp/shPgzSL3nVCFPX3LjJFezj8Od/ZUaoBrH8L2NJJFkA1WHrhr2U79KuNYyMltis0RYUf2N8zY4UjW0RGLWIwfbbG8agZuUW/SvgmOW6nwhgVicSv6XxNb97EfWRQPlusGU+TsfQZn2a1O/hyN9Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521936; c=relaxed/simple;
-	bh=VyNd+b8enbetXtH+Ptoud44JhXNJP8ZpjBkjDlUhPks=;
+	s=arc-20240116; t=1755525360; c=relaxed/simple;
+	bh=gPDqd5oQgQ5XSQOgJVKsFMaWWHf3lR2AD4nnko9MHvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=piMM4WA8DpJSRUL3/YoEkxr4Z4CXzhEBWSWLqhjlHNBZrP+41D5COb80p9kbx3XlWZDf1T+RoC7DYMoTZccTzGvqt13SfLoDA5Duzq9KzEu41fuRmAA1jfuE81oW1jGeyx7a2nE7yN2HykycrkK3hxb/bgxm68XIp7hyLJQRReU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0NJwkwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5454C4CEEB;
-	Mon, 18 Aug 2025 12:58:55 +0000 (UTC)
+	 MIME-Version; b=QhP1T32gwMv1HVOH19xuxrhuUEOBs7QZaS2BkPsElMgxldrlliC75+eVQ5p31vVSvt4BF1hricDxP/YlX8aeDgw2COFl6zwUyEvhVmJd2V7CxXFfBi+6cORPlxtOxGR4l7VTIjdBgNWrWVmLWLiWsvqAo9zTqOBSutsbObM5suE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwjdBrda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD402C4CEEB;
+	Mon, 18 Aug 2025 13:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521936;
-	bh=VyNd+b8enbetXtH+Ptoud44JhXNJP8ZpjBkjDlUhPks=;
+	s=korg; t=1755525359;
+	bh=gPDqd5oQgQ5XSQOgJVKsFMaWWHf3lR2AD4nnko9MHvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0NJwkwqREfxoh0dsxRHGpIvqWhjbfaIJzO6lyQWGXy+qtINeu9Dp6BV9CKdJHZPW
-	 PGqPNpK+FCqQl+SNRm9ubcSU1L+haWJcZxm6pFo+2ywwiiqnUCWVC00mJ3kWlqqUZJ
-	 Ze3EnrGkltPRPXvXlR2ATo7RAhFxWHtkXs+q+8Ag=
+	b=lwjdBrdaYQNeF0/xZV/A8fsRtmrtPgaf7GZa5xqBcEXMlzdBzO+kCMAymI21Y6iJW
+	 SWzE0lkRxE0SgGkYXACFt5dCvav+aZAbdfCUpEpz7UbWM6LE0xiUi1w0j2K7BWd3R+
+	 PcjAnPKJwvIU7xwu42PZXCozFBxjG7tMbr0wN758=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 166/444] Bluetooth: hci_sock: Reset cookie to zero in hci_sock_free_cookie()
+Subject: [PATCH 6.16 205/570] netfilter: nft_set_pipapo: prefer kvmalloc for scratch maps
 Date: Mon, 18 Aug 2025 14:43:12 +0200
-Message-ID: <20250818124455.116007533@linuxfoundation.org>
+Message-ID: <20250818124513.705444216@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 4d7936e8a5b1fa803f4a631d2da4a80fa4f0f37f ]
+[ Upstream commit 897eefee2eb73ec6c119a0ca357d7b4a3e92c5ef ]
 
-Reset cookie value to 0 instead of 0xffffffff in hci_sock_free_cookie()
-since:
-0         :  means cookie has not been assigned yet
-0xffffffff:  means cookie assignment failure
+The scratchmap size depends on the number of elements in the set.
+For huge sets, each scratch map can easily require very large
+allocations, e.g. for 100k entries each scratch map will require
+close to 64kbyte of memory.
 
-Also fix generating cookie failure with usage shown below:
-hci_sock_gen_cookie(sk)   // generate cookie
-hci_sock_free_cookie(sk)  // free cookie
-hci_sock_gen_cookie(sk)   // Can't generate cookie any more
-
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
-index 022b86797acd..4ad5296d7934 100644
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -118,7 +118,7 @@ static void hci_sock_free_cookie(struct sock *sk)
- 	int id = hci_pi(sk)->cookie;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index c5855069bdab..9e4e25f2458f 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1219,7 +1219,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
  
- 	if (id) {
--		hci_pi(sk)->cookie = 0xffffffff;
-+		hci_pi(sk)->cookie = 0;
- 		ida_free(&sock_cookie_ida, id);
- 	}
+ 	mem = s;
+ 	mem -= s->align_off;
+-	kfree(mem);
++	kvfree(mem);
  }
+ 
+ /**
+@@ -1240,10 +1240,9 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+ 		void *scratch_aligned;
+ 		u32 align_off;
+ #endif
+-		scratch = kzalloc_node(struct_size(scratch, map,
+-						   bsize_max * 2) +
+-				       NFT_PIPAPO_ALIGN_HEADROOM,
+-				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
++		scratch = kvzalloc_node(struct_size(scratch, map, bsize_max * 2) +
++					NFT_PIPAPO_ALIGN_HEADROOM,
++					GFP_KERNEL_ACCOUNT, cpu_to_node(i));
+ 		if (!scratch) {
+ 			/* On failure, there's no need to undo previous
+ 			 * allocations: this means that some scratch maps have
 -- 
 2.39.5
 
