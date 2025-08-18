@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-171391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B96CB2AA2B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE54B2A3E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 043731B651D2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16DC1B253CA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62C530F52C;
-	Mon, 18 Aug 2025 14:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73F831E105;
+	Mon, 18 Aug 2025 13:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWFCtXcm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMrUbrlg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45D121507C;
-	Mon, 18 Aug 2025 14:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E0331B11A;
+	Mon, 18 Aug 2025 13:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525762; cv=none; b=YX8SWfRAXcjDtQQ2RaUTlYRjn6V/srPXKj7FTdE6YwsewwEo7bHaW7LKA2wPU6S53fierokuav/Xq98nuCHVHj7MYQRT2qhjXH/jiibBT+2dg0v0xKutITVNC2HMjWTuOT0QMUdAu5bXCMqdq++f34vV1x4Jvg5fFvnHNTttiIE=
+	t=1755522455; cv=none; b=MIihfEbYK76yQo3SLZCjg89ZyG2sEVILfnsI7SzU/vpVUqLJyFeZ3fIFrMuF28Cjd+QjnqYQGWKj9NH5PxX9Yd75gXjmE6cmjcLw+V9qgIhHvhgIPhs1JBLwD40vw16lXDYUrQ6stXRwLuuTa954MqhmiLaTIl5PiPRmW7Bdpzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525762; c=relaxed/simple;
-	bh=G1BxYiOkXPjzoG/fAx5re8sBJC2K4iDM0EH+O5fS4AU=;
+	s=arc-20240116; t=1755522455; c=relaxed/simple;
+	bh=VfXCT785GWFOwBJ9u2FbGsgg7N6Biir7UWuEBaKBg2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJaVERhckcClsVl6eKF0r2I6SP5ecj2ke+QNOd8xPYi7i7dUkj2qGJwpITDGSz8MCs/QavoapBj8gwWKBdbijmFKT4GB5DgdTVKBIlKCVHW1qOZ8/sp4pwmcMBVlRZskhUaaurlO/2sa4HsBh9sGmbnbfnELO/RYdrn5HamtHWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWFCtXcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12138C4CEEB;
-	Mon, 18 Aug 2025 14:02:41 +0000 (UTC)
+	 MIME-Version; b=iEZ092uoXBrVLZdETJWLTpwXA29ZZ93sJaFo/SaZGz0TJrE9MDc+sJs5TYl5XIXo8zAZfHHFRnnyYi7oEfN7iZvPOUJMm36yY1hhQsVwHv6doOx4FYaqaew/b0nyaaFAKmw1lvv5AUseDuwLzSUC60v91lHwDDQeICbma+5FtRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMrUbrlg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81A2C4CEEB;
+	Mon, 18 Aug 2025 13:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525762;
-	bh=G1BxYiOkXPjzoG/fAx5re8sBJC2K4iDM0EH+O5fS4AU=;
+	s=korg; t=1755522455;
+	bh=VfXCT785GWFOwBJ9u2FbGsgg7N6Biir7UWuEBaKBg2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWFCtXcmXUv770zLQXMqSl7SN7DQhPoDBnoWOuxaLnanMtCw4JcJrbvo8Inin9NRd
-	 xUfBZd5eldjfd96IeCrO7855iWrg44OOfxqQIJb+C4CY5xu5r1iNWFoHgPhU3yC5Hq
-	 /v9Z4HtXvBuOt1mwPhr2V0cpKTSkXwuNCg1Tap60=
+	b=NMrUbrlgSCVgqnfTJHnrGefT50zOTzlNAmAHLM4Yu5JerVQsadDleNOts9fmLVifO
+	 ezMJXO6P7gnIWxw+DcwcbuId6S4rK3/2wx+rzQlUAN9GxCEgLxhKoeGNrg6UdhiYu/
+	 365r26uWe84q+5KOZMbeN537FERCKFhqvYQBzxpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Plattner <aplattner@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	chenchangcheng <chenchangcheng@kylinos.cn>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 359/570] watchdog: sbsa: Adjust keepalive timeout to avoid MediaTek WS0 race condition
+Subject: [PATCH 6.12 320/444] media: uvcvideo: Fix bandwidth issue for Alcor camera
 Date: Mon, 18 Aug 2025 14:45:46 +0200
-Message-ID: <20250818124519.685314124@linuxfoundation.org>
+Message-ID: <20250818124500.942722959@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Plattner <aplattner@nvidia.com>
+From: chenchangcheng <chenchangcheng@kylinos.cn>
 
-[ Upstream commit 48defdf6b083f74a44e1f742db284960d3444aec ]
+[ Upstream commit 9764401bf6f8a20eb11c2e78470f20fee91a9ea7 ]
 
-The MediaTek implementation of the sbsa_gwdt watchdog has a race
-condition where a write to SBSA_GWDT_WRR is ignored if it occurs while
-the hardware is processing a timeout refresh that asserts WS0.
+Some broken device return wrong dwMaxPayloadTransferSize fields as
+follows:
 
-Detect this based on the hardware implementer and adjust
-wdd->min_hw_heartbeat_ms to avoid the race by forcing the keepalive ping
-to be one second later.
+[  218.632537] uvcvideo: Device requested 2752512 B/frame bandwidth.
+[  218.632598] uvcvideo: No fast enough alt setting for requested bandwidth.
 
-Signed-off-by: Aaron Plattner <aplattner@nvidia.com>
-Acked-by: Timur Tabi <ttabi@nvidia.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250721230640.2244915-1-aplattner@nvidia.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+When dwMaxPayloadTransferSize is greater than maxpsize, it will prevent
+the camera from starting. So use the bandwidth of maxpsize.
+
+Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250510061803.811433-1-ccc194101@163.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/sbsa_gwdt.c | 50 +++++++++++++++++++++++++++++++++---
- 1 file changed, 47 insertions(+), 3 deletions(-)
+ drivers/media/usb/uvc/uvc_video.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/watchdog/sbsa_gwdt.c b/drivers/watchdog/sbsa_gwdt.c
-index 5f23913ce3b4..6ce1bfb39064 100644
---- a/drivers/watchdog/sbsa_gwdt.c
-+++ b/drivers/watchdog/sbsa_gwdt.c
-@@ -75,11 +75,17 @@
- #define SBSA_GWDT_VERSION_MASK  0xF
- #define SBSA_GWDT_VERSION_SHIFT 16
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index eab7b8f55730..17ec298ee4f7 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -258,6 +258,15 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
  
-+#define SBSA_GWDT_IMPL_MASK	0x7FF
-+#define SBSA_GWDT_IMPL_SHIFT	0
-+#define SBSA_GWDT_IMPL_MEDIATEK	0x426
+ 		ctrl->dwMaxPayloadTransferSize = bandwidth;
+ 	}
 +
- /**
-  * struct sbsa_gwdt - Internal representation of the SBSA GWDT
-  * @wdd:		kernel watchdog_device structure
-  * @clk:		store the System Counter clock frequency, in Hz.
-  * @version:            store the architecture version
-+ * @need_ws0_race_workaround:
-+ *			indicate whether to adjust wdd->timeout to avoid a race with WS0
-  * @refresh_base:	Virtual address of the watchdog refresh frame
-  * @control_base:	Virtual address of the watchdog control frame
-  */
-@@ -87,6 +93,7 @@ struct sbsa_gwdt {
- 	struct watchdog_device	wdd;
- 	u32			clk;
- 	int			version;
-+	bool			need_ws0_race_workaround;
- 	void __iomem		*refresh_base;
- 	void __iomem		*control_base;
- };
-@@ -161,6 +168,31 @@ static int sbsa_gwdt_set_timeout(struct watchdog_device *wdd,
- 		 */
- 		sbsa_gwdt_reg_write(((u64)gwdt->clk / 2) * timeout, gwdt);
- 
-+	/*
-+	 * Some watchdog hardware has a race condition where it will ignore
-+	 * sbsa_gwdt_keepalive() if it is called at the exact moment that a
-+	 * timeout occurs and WS0 is being asserted. Unfortunately, the default
-+	 * behavior of the watchdog core is very likely to trigger this race
-+	 * when action=0 because it programs WOR to be half of the desired
-+	 * timeout, and watchdog_next_keepalive() chooses the exact same time to
-+	 * send keepalive pings.
-+	 *
-+	 * This triggers a race where sbsa_gwdt_keepalive() can be called right
-+	 * as WS0 is being asserted, and affected hardware will ignore that
-+	 * write and continue to assert WS0. After another (timeout / 2)
-+	 * seconds, the same race happens again. If the driver wins then the
-+	 * explicit refresh will reset WS0 to false but if the hardware wins,
-+	 * then WS1 is asserted and the system resets.
-+	 *
-+	 * Avoid the problem by scheduling keepalive heartbeats one second later
-+	 * than the WOR timeout.
-+	 *
-+	 * This workaround might not be needed in a future revision of the
-+	 * hardware.
-+	 */
-+	if (gwdt->need_ws0_race_workaround)
-+		wdd->min_hw_heartbeat_ms = timeout * 500 + 1000;
-+
- 	return 0;
- }
- 
-@@ -202,12 +234,15 @@ static int sbsa_gwdt_keepalive(struct watchdog_device *wdd)
- static void sbsa_gwdt_get_version(struct watchdog_device *wdd)
- {
- 	struct sbsa_gwdt *gwdt = watchdog_get_drvdata(wdd);
--	int ver;
-+	int iidr, ver, impl;
- 
--	ver = readl(gwdt->control_base + SBSA_GWDT_W_IIDR);
--	ver = (ver >> SBSA_GWDT_VERSION_SHIFT) & SBSA_GWDT_VERSION_MASK;
-+	iidr = readl(gwdt->control_base + SBSA_GWDT_W_IIDR);
-+	ver = (iidr >> SBSA_GWDT_VERSION_SHIFT) & SBSA_GWDT_VERSION_MASK;
-+	impl = (iidr >> SBSA_GWDT_IMPL_SHIFT) & SBSA_GWDT_IMPL_MASK;
- 
- 	gwdt->version = ver;
-+	gwdt->need_ws0_race_workaround =
-+		!action && (impl == SBSA_GWDT_IMPL_MEDIATEK);
- }
- 
- static int sbsa_gwdt_start(struct watchdog_device *wdd)
-@@ -299,6 +334,15 @@ static int sbsa_gwdt_probe(struct platform_device *pdev)
- 	else
- 		wdd->max_hw_heartbeat_ms = GENMASK_ULL(47, 0) / gwdt->clk * 1000;
- 
-+	if (gwdt->need_ws0_race_workaround) {
-+		/*
-+		 * A timeout of 3 seconds means that WOR will be set to 1.5
-+		 * seconds and the heartbeat will be scheduled every 2.5
-+		 * seconds.
-+		 */
-+		wdd->min_timeout = 3;
++	if (stream->intf->num_altsetting > 1 &&
++	    ctrl->dwMaxPayloadTransferSize > stream->maxpsize) {
++		dev_warn_ratelimited(&stream->intf->dev,
++				     "UVC non compliance: the max payload transmission size (%u) exceeds the size of the ep max packet (%u). Using the max size.\n",
++				     ctrl->dwMaxPayloadTransferSize,
++				     stream->maxpsize);
++		ctrl->dwMaxPayloadTransferSize = stream->maxpsize;
 +	}
-+
- 	status = readl(cf_base + SBSA_GWDT_WCS);
- 	if (status & SBSA_GWDT_WCS_WS1) {
- 		dev_warn(dev, "System reset by WDT.\n");
+ }
+ 
+ static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
 -- 
 2.39.5
 
