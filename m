@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB912B2A22D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:52:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA13DB2A7E2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3EEF3A0503
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:52:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFF7588014
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C189C3203AC;
-	Mon, 18 Aug 2025 12:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D4D335BCB;
+	Mon, 18 Aug 2025 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2qq5efu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpUnoLHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4034032039C;
-	Mon, 18 Aug 2025 12:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2A335BA3;
+	Mon, 18 Aug 2025 13:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521466; cv=none; b=GGWQKA5XDuzUAiZOBnH6LDE1VKANSPoz07hq6z4fBgEgIZhKr72dfKd6WU+PJpwLhIum7/SNY6bVNXjx26XEuLvBfJd8me4up6IBzGqvXrT8DYnrztVCybABSj0JgZ+re1BOGaM32Vh+WJf+xWvK3jTeWcI91l5dqSVsNzAaIJ8=
+	t=1755524905; cv=none; b=PlubFnpGuWvmCQEtwXiuYIXeDrJNfx/xO+lZ6iGjhpn9r6resxtbynYlqD13jL8+R/tFrKnnsEQBG4jX62hCHi19I2gn8p8+wTPpA1q5g37gl7y8GQyJi/NO4iqs4N9wTL3CcNbA28BdUVyLQlwt7xpFlVVlSFv0XHg5PRGrBkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521466; c=relaxed/simple;
-	bh=00/TVWgUtX5ldseYGsMq20pDZm57L0ipJr+yveWm1zY=;
+	s=arc-20240116; t=1755524905; c=relaxed/simple;
+	bh=7l2YmgdZzMKz9Ikult+SzNwdm/OL2tUYjcL1SagTgkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B7sTc3KeYwiC2jLPf99H8TUx7Jex1xd7LdBVsRzTZaCtP7xVZSvgAGa88G+QJeJuvxM49pES02Clp+5Fc5c8lImRsEgNacJl/pZYaSM/Hl7hXiUsqlg8EBkuseKQE9Hl42i8V0OXvY7eCCDaqMwCRMghCkMlsn00kaMMITJoKKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2qq5efu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EF7C4CEF1;
-	Mon, 18 Aug 2025 12:51:05 +0000 (UTC)
+	 MIME-Version; b=bTngAH87pQkvLpl9bSWZXIEygJAEDSig/OmH2EvX3yHDka07z3OX0nxJnqTa8my4zWd5f3tsk6Rn0pBUd+BU4v8dZdz9/9GD514Lk/jkwzGdArGR0GcVNYhP93oM8mdOuhMNgwM8GFuiJEBAjrEW7WplSSx6iKrEFdpbj4Vcn5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpUnoLHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4488BC4CEEB;
+	Mon, 18 Aug 2025 13:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521465;
-	bh=00/TVWgUtX5ldseYGsMq20pDZm57L0ipJr+yveWm1zY=;
+	s=korg; t=1755524905;
+	bh=7l2YmgdZzMKz9Ikult+SzNwdm/OL2tUYjcL1SagTgkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2qq5efudZ6zwKTokWHcQ+gQWfuVkxMXw+dGvDnpH0TAqZqiGs2Om0BxVtQOPgZ0Z
-	 D4CnRMrS/SZeSVX6Via7DbLhUQluuk2G4gWppFDW2LZXEDB0me0KUqOpB5MkwlqAiW
-	 sgMGfuW5qkUGswuuyGxB6Ie2s8MXpbn0Sbc9PSB4=
+	b=FpUnoLHPm6r/aR3W8AOAnkCpMAsMrBAky9aQRN1X/3NnqiqVy32R26xiiwj03H/sM
+	 Chn7w6U+XAQ6RlaKumeC5zZsodGaOM2oNuyXo9ivX8Y2Fq8lQYKII29TP8tnK2AMO/
+	 +f5sU5JMUQhPCDBKQq966JUiZYI5Bhuh6GLQunSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 028/444] LoongArch: Dont use %pK through printk() in unwinder
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 067/570] net: hibmcge: fix rtnl deadlock issue
 Date: Mon, 18 Aug 2025 14:40:54 +0200
-Message-ID: <20250818124449.986230575@linuxfoundation.org>
+Message-ID: <20250818124508.394288263@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +61,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Jijie Shao <shaojijie@huawei.com>
 
-commit 2362e8124ed21445c6886806e5deaee717629ddd upstream.
+[ Upstream commit c875503a9b9082928d7d3fc60b5400d16fbfae4e ]
 
-In the past %pK was preferable to %p as it would not leak raw pointer
-values into the kernel log.
+Currently, the hibmcge netdev acquires the rtnl_lock in
+pci_error_handlers.reset_prepare() and releases it in
+pci_error_handlers.reset_done().
 
-Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-the regular %p has been improved to avoid this issue.
+However, in the PCI framework:
+pci_reset_bus - __pci_reset_slot - pci_slot_save_and_disable_locked -
+ pci_dev_save_and_disable - err_handler->reset_prepare(dev);
 
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping locks in atomic contexts.
+In pci_slot_save_and_disable_locked():
+	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+		if (!dev->slot || dev->slot!= slot)
+			continue;
+		pci_dev_save_and_disable(dev);
+		if (dev->subordinate)
+			pci_bus_save_and_disable_locked(dev->subordinate);
+	}
 
-Switch to the regular pointer formatting which is safer and easier to
-reason about.
+This will iterate through all devices under the current bus and execute
+err_handler->reset_prepare(), causing two devices of the hibmcge driver
+to sequentially request the rtnl_lock, leading to a deadlock.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since the driver now executes netif_device_detach()
+before the reset process, it will not concurrently with
+other netdev APIs, so there is no need to hold the rtnl_lock now.
+
+Therefore, this patch removes the rtnl_lock during the reset process and
+adjusts the position of HBG_NIC_STATE_RESETTING to ensure
+that multiple resets are not executed concurrently.
+
+Fixes: 3f5a61f6d504f ("net: hibmcge: Add reset supported in this module")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/unwind_orc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/arch/loongarch/kernel/unwind_orc.c
-+++ b/arch/loongarch/kernel/unwind_orc.c
-@@ -507,7 +507,7 @@ bool unwind_next_frame(struct unwind_sta
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+index ff3295b60a69..dee1e8681157 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+@@ -53,9 +53,11 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
+ {
+ 	int ret;
  
- 	state->pc = bt_address(pc);
- 	if (!state->pc) {
--		pr_err("cannot find unwind pc at %pK\n", (void *)pc);
-+		pr_err("cannot find unwind pc at %p\n", (void *)pc);
- 		goto err;
+-	ASSERT_RTNL();
++	if (test_and_set_bit(HBG_NIC_STATE_RESETTING, &priv->state))
++		return -EBUSY;
+ 
+ 	if (netif_running(priv->netdev)) {
++		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 		dev_warn(&priv->pdev->dev,
+ 			 "failed to reset because port is up\n");
+ 		return -EBUSY;
+@@ -64,7 +66,6 @@ static int hbg_reset_prepare(struct hbg_priv *priv, enum hbg_reset_type type)
+ 	netif_device_detach(priv->netdev);
+ 
+ 	priv->reset_type = type;
+-	set_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 	clear_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
+ 	ret = hbg_hw_event_notify(priv, HBG_HW_EVENT_RESET);
+ 	if (ret) {
+@@ -83,28 +84,25 @@ static int hbg_reset_done(struct hbg_priv *priv, enum hbg_reset_type type)
+ 	    type != priv->reset_type)
+ 		return 0;
+ 
+-	ASSERT_RTNL();
+-
+-	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 	ret = hbg_rebuild(priv);
+ 	if (ret) {
+ 		set_bit(HBG_NIC_STATE_RESET_FAIL, &priv->state);
++		clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 		dev_err(&priv->pdev->dev, "failed to rebuild after reset\n");
+ 		return ret;
  	}
  
+ 	netif_device_attach(priv->netdev);
++	clear_bit(HBG_NIC_STATE_RESETTING, &priv->state);
+ 
+ 	dev_info(&priv->pdev->dev, "reset done\n");
+ 	return ret;
+ }
+ 
+-/* must be protected by rtnl lock */
+ int hbg_reset(struct hbg_priv *priv)
+ {
+ 	int ret;
+ 
+-	ASSERT_RTNL();
+ 	ret = hbg_reset_prepare(priv, HBG_RESET_TYPE_FUNCTION);
+ 	if (ret)
+ 		return ret;
+@@ -169,7 +167,6 @@ static void hbg_pci_err_reset_prepare(struct pci_dev *pdev)
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct hbg_priv *priv = netdev_priv(netdev);
+ 
+-	rtnl_lock();
+ 	hbg_reset_prepare(priv, HBG_RESET_TYPE_FLR);
+ }
+ 
+@@ -179,7 +176,6 @@ static void hbg_pci_err_reset_done(struct pci_dev *pdev)
+ 	struct hbg_priv *priv = netdev_priv(netdev);
+ 
+ 	hbg_reset_done(priv, HBG_RESET_TYPE_FLR);
+-	rtnl_unlock();
+ }
+ 
+ static const struct pci_error_handlers hbg_pci_err_handler = {
+-- 
+2.50.1
+
 
 
 
