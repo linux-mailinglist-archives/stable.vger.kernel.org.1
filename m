@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BD0B2A462
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195E5B2A71A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B51418A7DB2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1BBD6864F7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB6F31AF14;
-	Mon, 18 Aug 2025 13:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47638322559;
+	Mon, 18 Aug 2025 13:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQPVHDOm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVuF50++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F462765D9;
-	Mon, 18 Aug 2025 13:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05723322558;
+	Mon, 18 Aug 2025 13:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522808; cv=none; b=dJviCOzcu4Z5mXrpb6vozGLuWI1UK8CbGxhRkZzHsCAYVt6iJX0a5VYqVoBLRdHZ/0CUPpW0O7wqzkg/uhDFKaay8oSz8EJCgoeoLqFexyYz5W28C9qEOv4Pj2H3iuWGgM20Aoz9BqT/NZu3ZF7lpnf5Kpm6hPobmkIGOe+WD7g=
+	t=1755524443; cv=none; b=ZtQ91YDcJuVQ+FVVPuTP2WSr892CgQRTIhAve14N6RfeJFDXO9KWHxgv45G1nGOev3FFzo6b7T1RWSMYybsRPrRBQCGbLfuy8euHK2sRZcqDyhdparCKUDY8bQ1cgSpF8Omo/scLVuP3Ee86FIP2f78FmfeJLdCM7yrs5xXynZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522808; c=relaxed/simple;
-	bh=QpuBbwPa0wk1G/SdyTQoc8NmHazaYfC845h8qbW8Qx8=;
+	s=arc-20240116; t=1755524443; c=relaxed/simple;
+	bh=pjv6hl4NrdofHEDKSvKVYO4FlhT+9hqxLFcBLpw+nnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q8mwm5AfaKYumfpANy7lTDaBV9Ok1TRbJB6aJ6gF54oG5u1vhjGQtsvUa2BiOZ5upH2q5LmzpeN7upOAfI0qLdI413L6JVzKX+kQn60o1q/Wzh2qhv+vQMsKgsDeOwk0N+kUlLhQCtNsmy4C19Y0+YJZJYQO1XY0LoHNKaT249o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQPVHDOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305EAC4CEEB;
-	Mon, 18 Aug 2025 13:13:27 +0000 (UTC)
+	 MIME-Version; b=du0Brg2JwCQTlEjCqX/MvOpZei22+C6sM2IU7URrdmLfX+VUmRdOen8nOpy8yO9KS4HSHWTjc+WEtAIHODpmlMxfwCTYfUodoNFA1OxVKnwH2n8s2lG7JenTwDSvPj9jc+NCr/ucKu1mOaq4v612zCiUp6UrriGg7T8CXVPkUEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVuF50++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67759C4CEF1;
+	Mon, 18 Aug 2025 13:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522808;
-	bh=QpuBbwPa0wk1G/SdyTQoc8NmHazaYfC845h8qbW8Qx8=;
+	s=korg; t=1755524442;
+	bh=pjv6hl4NrdofHEDKSvKVYO4FlhT+9hqxLFcBLpw+nnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQPVHDOmd0anDsBRQWNruu1AHUvwSuiqq40Oxb3OXYxtJ5SvYzdOMHiRe/IG6kivV
-	 6T6jGIZcVKIgaJ6/VhBU8bPtT3s7vl8j9RVtl9qeWL93uho5wa+1s7ibXqxGizse8k
-	 JRF4dXWFX07SCJfL4uxQS3aqqL66tdr8J3TuMSLM=
+	b=fVuF50++H0DD2DbDL2ElT0VhfPEnjgCKwGdxZJibXU262LCdp09aSmpf5cYvNoV5O
+	 C1+yHfvQAUf2ikBZSVotIUl6ed72PR965xVqPs2xB0HIy7Tavw7ydsNkEakUOT+WDE
+	 VgE337KHMWLV+PzQeSRUgjlTouN6owxSYt1jHSxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Tom Vincent <linux@tlvince.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 426/444] mfd: cros_ec: Separate charge-control probing from USB-PD
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 466/515] btrfs: qgroup: set quota enabled bit if quota disable fails flushing reservations
 Date: Mon, 18 Aug 2025 14:47:32 +0200
-Message-ID: <20250818124504.924446596@linuxfoundation.org>
+Message-ID: <20250818124516.357137712@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit e40fc1160d491c3bcaf8e940ae0dde0a7c5e8e14 upstream.
+commit e41c75ca3189341e76e6af64b857c05b68a1d7db upstream.
 
-The charge-control subsystem in the ChromeOS EC is not strictly tied to
-its USB-PD subsystem.
+Before waiting for the rescan worker to finish and flushing reservations,
+we clear the BTRFS_FS_QUOTA_ENABLED flag from fs_info. If we fail flushing
+reservations we leave with the flag not set which is not correct since
+quotas are still enabled - we must set back the flag on error paths, such
+as when we fail to start a transaction, except for error paths that abort
+a transaction. The reservation flushing happens very early before we do
+any operation that actually disables quotas and before we start a
+transaction, so set back BTRFS_FS_QUOTA_ENABLED if it fails.
 
-Since commit 7613bc0d116a ("mfd: cros_ec: Don't load charger with UCSI")
-the presence of EC_FEATURE_UCSI_PPM would inhibit the probing of the
-charge-control driver.
-
-Furthermore recent versions of the EC firmware in Framework laptops
-hard-disable EC_FEATURE_USB_PD to avoid probing cros-usbpd-charger,
-which then also breaks cros-charge-control.
-
-Instead use the dedicated EC_FEATURE_CHARGER.
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/FrameworkComputer/EmbeddedController/commit/1d7bcf1d50137c8c01969eb65880bc83e424597e
-Fixes: 555b5fcdb844 ("mfd: cros_ec: Register charge control subdevice")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Tested-by: Tom Vincent <linux@tlvince.com>
-Link: https://lore.kernel.org/r/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: af0e2aab3b70 ("btrfs: qgroup: flush reservations during quota disable")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/cros_ec_dev.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/btrfs/qgroup.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/mfd/cros_ec_dev.c
-+++ b/drivers/mfd/cros_ec_dev.c
-@@ -87,7 +87,6 @@ static const struct mfd_cell cros_ec_sen
- };
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1354,11 +1354,14 @@ int btrfs_quota_disable(struct btrfs_fs_
  
- static const struct mfd_cell cros_usbpd_charger_cells[] = {
--	{ .name = "cros-charge-control", },
- 	{ .name = "cros-usbpd-charger", },
- 	{ .name = "cros-usbpd-logger", },
- };
-@@ -108,6 +107,10 @@ static const struct mfd_cell cros_ec_key
- 	{ .name = "cros-keyboard-leds", },
- };
+ 	/*
+ 	 * We have nothing held here and no trans handle, just return the error
+-	 * if there is one.
++	 * if there is one and set back the quota enabled bit since we didn't
++	 * actually disable quotas.
+ 	 */
+ 	ret = flush_reservations(fs_info);
+-	if (ret)
++	if (ret) {
++		set_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags);
+ 		return ret;
++	}
  
-+static const struct mfd_cell cros_ec_charge_control_cells[] = {
-+	{ .name = "cros-charge-control", },
-+};
-+
- static const struct cros_feature_to_cells cros_subdevices[] = {
- 	{
- 		.id		= EC_FEATURE_CEC,
-@@ -144,6 +147,11 @@ static const struct cros_feature_to_cell
- 		.mfd_cells	= cros_ec_keyboard_leds_cells,
- 		.num_cells	= ARRAY_SIZE(cros_ec_keyboard_leds_cells),
- 	},
-+	{
-+		.id		= EC_FEATURE_CHARGER,
-+		.mfd_cells	= cros_ec_charge_control_cells,
-+		.num_cells	= ARRAY_SIZE(cros_ec_charge_control_cells),
-+	},
- };
- 
- static const struct mfd_cell cros_ec_platform_cells[] = {
+ 	/*
+ 	 * 1 For the root item
 
 
 
