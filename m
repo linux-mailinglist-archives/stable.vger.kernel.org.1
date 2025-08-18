@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A5BB2A849
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7608B2A366
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2F425A155D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8ECB566406
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC66335BC6;
-	Mon, 18 Aug 2025 13:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B33733F3;
+	Mon, 18 Aug 2025 12:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSlqmIdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFty7qok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B001335BA7;
-	Mon, 18 Aug 2025 13:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B47258ED7;
+	Mon, 18 Aug 2025 12:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525120; cv=none; b=nkONAlxd4DuRW9WNIAhDEZ78dyQXj/sRaLjQbGQy1EQG7u5Bg4Sp7SbZuJxNESco5gspqhr3nUrnmyKBf3sNt/KTCM1d443g0+hV71xaXqaCbMqjkOvs4LXHoiHla04Ry1cvUWjvE6WYPjSDi0g3uwB4eDPYJRmFwRYsVmxsG44=
+	t=1755521795; cv=none; b=OgIV4sQH/YaWv32Vzx+xDye0I+oS3JYn4GOMXY4Ucsf2TLvePxD3nc202GbHkOJlKQOljDtWpX01QpP0feo417Uue/PR5MgYHc536C3RcdifaoboWcS6gSDID6PruRvjjWUiK5o7jMO3uVKXFFJ6kWLFa1mjOUaSO8zIfTFvmNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525120; c=relaxed/simple;
-	bh=gLSkRiMgEqStu03dKxTQ6d17A5IZSAJcW8s9UVuR9Iw=;
+	s=arc-20240116; t=1755521795; c=relaxed/simple;
+	bh=tnTtb+VaSmikiX39VpYKC9pANqTvREJ0tpUSsaVTxmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SggYDkQ40vEM+ANLyaQkaUNZEDlXC1XLZOP8+hDG3kWMbaNouc+pblhCDyvVQofhZRrxegpiJFkMSFQpipd/pI2eqVpsvkYMHr1Z+CgjAPsFnLYu5E4oGP9kvmRqu4JGARKlscDq/hGcBqeVuQXTlgEU037m0c46pJHQaRtw/eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSlqmIdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E67C4CEEB;
-	Mon, 18 Aug 2025 13:51:59 +0000 (UTC)
+	 MIME-Version; b=ernJQu7b0HYxfJC65UziUi2fEGDQ2Wa5Lxv9d9owuZbLE3xlIfeULHb37AxX245FvGq4PNhuINTQoSj1x3BfvLAotihHK5m1t3dZ6KcSKIzqVhp+8hnNDVeQmGo66tE8WA530e+6HFKsTw2H6DWx2uPl2zTYN7aip2WHH/9h9Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFty7qok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C467C4CEEB;
+	Mon, 18 Aug 2025 12:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525120;
-	bh=gLSkRiMgEqStu03dKxTQ6d17A5IZSAJcW8s9UVuR9Iw=;
+	s=korg; t=1755521795;
+	bh=tnTtb+VaSmikiX39VpYKC9pANqTvREJ0tpUSsaVTxmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSlqmIdosID5I7TKD+fcGbX1AsJIOSDgcM2QlFfRoFn1YAsWHFCWZsIP0q2IfrwWd
-	 ZCxJjywXcMeArh315HxuQ7RCfia5R80d+gBDB56RVk1WCcHsWPT3UmmQmMKByxY7oB
-	 oXIgU3KuyIJyKwIdphMu6rMkR8XbxLhytQRDfGq4=
+	b=bFty7qokVWbIh/zFxqrGto7CXnzRgHs4Hs61aNcgLLy2yNlO8ym0SnQNhH3wbPcT8
+	 SQNAqDlSbQlfrMn6qGYKiEiKD/M/zKVRR7VlVLF4YE/gbWUFy7C2G0Y/Fl2hDLV/rJ
+	 4S0SzRTpY8k6H0v1USrvjytYHCXn/HCPK8NAB5pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GalaxySnail <me@glxys.nl>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 163/570] ALSA: hda: add MODULE_FIRMWARE for cs35l41/cs35l56
-Date: Mon, 18 Aug 2025 14:42:30 +0200
-Message-ID: <20250818124512.085596549@linuxfoundation.org>
+Subject: [PATCH 6.12 125/444] firmware: arm_scmi: power_control: Ensure SCMI_SYSPOWER_IDLE is set early during resume
+Date: Mon, 18 Aug 2025 14:42:31 +0200
+Message-ID: <20250818124453.600927095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GalaxySnail <me@glxys.nl>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 6eda9429501508196001845998bb8c73307d311a ]
+[ Upstream commit 9a0658d3991e6c82df87584b253454842f22f965 ]
 
-add firmware information in the .modinfo section, so that userspace
-tools can find out firmware required by cs35l41/cs35l56 kernel module
+Fix a race condition where a second suspend notification from another
+SCMI agent wakes the system before SCMI_SYSPOWER_IDLE is set, leading
+to ignored suspend requests. This is due to interrupts triggering early
+execution of `scmi_userspace_notifier()` before the SCMI state is updated.
 
-Signed-off-by: GalaxySnail <me@glxys.nl>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250624101716.2365302-2-me@glxys.nl
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+To resolve this, set SCMI_SYSPOWER_IDLE earlier in the device resume
+path, prior to `thaw_processes()`. This ensures the SCMI state is
+correct when the notifier runs, allowing the system to suspend again
+as expected.
+
+On some platforms using SCMI, SCP cannot distinguish between CPU idle
+and suspend since both result in cluster power-off. By explicitly setting
+the idle state early, the Linux SCMI agent can correctly re-suspend in
+response to external notifications.
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Message-Id: <20250704-scmi-pm-v2-2-9316cec2f9cc@nxp.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l41_hda.c | 2 ++
- sound/pci/hda/cs35l56_hda.c | 4 ++++
- 2 files changed, 6 insertions(+)
+ .../firmware/arm_scmi/scmi_power_control.c    | 22 ++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
-index d5bc81099d0d..17cdce91fdbf 100644
---- a/sound/pci/hda/cs35l41_hda.c
-+++ b/sound/pci/hda/cs35l41_hda.c
-@@ -2085,3 +2085,5 @@ MODULE_IMPORT_NS("SND_SOC_CS_AMP_LIB");
- MODULE_AUTHOR("Lucas Tanure, Cirrus Logic Inc, <tanureal@opensource.cirrus.com>");
- MODULE_LICENSE("GPL");
- MODULE_IMPORT_NS("FW_CS_DSP");
-+MODULE_FIRMWARE("cirrus/cs35l41-*.wmfw");
-+MODULE_FIRMWARE("cirrus/cs35l41-*.bin");
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index 886c53184fec..f48077f5ca45 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -1176,3 +1176,7 @@ MODULE_IMPORT_NS("SND_SOC_CS_AMP_LIB");
- MODULE_AUTHOR("Richard Fitzgerald <rf@opensource.cirrus.com>");
- MODULE_AUTHOR("Simon Trimmer <simont@opensource.cirrus.com>");
- MODULE_LICENSE("GPL");
-+MODULE_FIRMWARE("cirrus/cs35l54-*.wmfw");
-+MODULE_FIRMWARE("cirrus/cs35l54-*.bin");
-+MODULE_FIRMWARE("cirrus/cs35l56-*.wmfw");
-+MODULE_FIRMWARE("cirrus/cs35l56-*.bin");
+diff --git a/drivers/firmware/arm_scmi/scmi_power_control.c b/drivers/firmware/arm_scmi/scmi_power_control.c
+index 21f467a92942..ab0cee0d4bec 100644
+--- a/drivers/firmware/arm_scmi/scmi_power_control.c
++++ b/drivers/firmware/arm_scmi/scmi_power_control.c
+@@ -46,6 +46,7 @@
+ #include <linux/math.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/pm.h>
+ #include <linux/printk.h>
+ #include <linux/reboot.h>
+ #include <linux/scmi_protocol.h>
+@@ -324,12 +325,7 @@ static int scmi_userspace_notifier(struct notifier_block *nb,
+ 
+ static void scmi_suspend_work_func(struct work_struct *work)
+ {
+-	struct scmi_syspower_conf *sc =
+-		container_of(work, struct scmi_syspower_conf, suspend_work);
+-
+ 	pm_suspend(PM_SUSPEND_MEM);
+-
+-	sc->state = SCMI_SYSPOWER_IDLE;
+ }
+ 
+ static int scmi_syspower_probe(struct scmi_device *sdev)
+@@ -354,6 +350,7 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
+ 	sc->required_transition = SCMI_SYSTEM_MAX;
+ 	sc->userspace_nb.notifier_call = &scmi_userspace_notifier;
+ 	sc->dev = &sdev->dev;
++	dev_set_drvdata(&sdev->dev, sc);
+ 
+ 	INIT_WORK(&sc->suspend_work, scmi_suspend_work_func);
+ 
+@@ -363,6 +360,18 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
+ 						       NULL, &sc->userspace_nb);
+ }
+ 
++static int scmi_system_power_resume(struct device *dev)
++{
++	struct scmi_syspower_conf *sc = dev_get_drvdata(dev);
++
++	sc->state = SCMI_SYSPOWER_IDLE;
++	return 0;
++}
++
++static const struct dev_pm_ops scmi_system_power_pmops = {
++	SET_SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
++};
++
+ static const struct scmi_device_id scmi_id_table[] = {
+ 	{ SCMI_PROTOCOL_SYSTEM, "syspower" },
+ 	{ },
+@@ -370,6 +379,9 @@ static const struct scmi_device_id scmi_id_table[] = {
+ MODULE_DEVICE_TABLE(scmi, scmi_id_table);
+ 
+ static struct scmi_driver scmi_system_power_driver = {
++	.driver	= {
++		.pm = &scmi_system_power_pmops,
++	},
+ 	.name = "scmi-system-power",
+ 	.probe = scmi_syspower_probe,
+ 	.id_table = scmi_id_table,
 -- 
 2.39.5
 
