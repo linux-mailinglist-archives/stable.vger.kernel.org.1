@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26F78B2A406
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B3CB2A737
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BC126275AA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0D91B644A2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601CB3203AA;
-	Mon, 18 Aug 2025 13:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA871E48A;
+	Mon, 18 Aug 2025 13:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQn+ymlP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXfQK5z+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD62218AAB;
-	Mon, 18 Aug 2025 13:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E183D8BEC;
+	Mon, 18 Aug 2025 13:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522592; cv=none; b=XdETbzj/nEtwnzZ5+cpkZxowvCTnsHP4B37pFb5sIiHNDiYFSy2jnDFfeKCCglomKXsfvny7O9aUc+vdhpjotoJ3m39jKaF1qss7OxAzUlw1j0wYRmdGql/s4h2PnhtsMzTEhBoM6sKk/870hI4Dw/WhRWPaCVqjCmud1kTy/IU=
+	t=1755524103; cv=none; b=lX+cL0aWduTemAgrAsqQkd8Jf2vp7I974i3ptuQ5AZFuArmku/M23ch9iVAtBdSOJXBDb0vtdhvOmmJF3J+6LgY2tc3Q1dzIrVS1VPtb4Hig3ALIPqpBCjKuz6x7nCuVJ5ot3/+5TrVMDT7tDEglfwseX2+nwhCQQnp8wY/JD7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522592; c=relaxed/simple;
-	bh=NSI7JfUzi5WYGWH9wefcI5LRmlhot4ewcNLaPfVA23k=;
+	s=arc-20240116; t=1755524103; c=relaxed/simple;
+	bh=kZ31hKJr7WIrkvpvbD1v7wbjS9/3FDu9uQKCuhfG2K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tN7tcFeuivVlZn63Hcs+mW9oofeYNwz/MoV/GsgDSrN3tF/lj22QJvcWXfnX/qpA0NuDD7tAqVGZ7pmVvTfDW9C5hLFBckCvOwDqReww0zRnkRWNfo4E84FGHaC1W3M6C8m7rLTYwxxcDkws6YT8rC8qGdNRYFODbk4oPmQnQCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQn+ymlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865E9C4CEEB;
-	Mon, 18 Aug 2025 13:09:51 +0000 (UTC)
+	 MIME-Version; b=GOF6bkqAZsmjk09mowQvvTlFic/zqzVqxnaz6l0CgJhYkZ6SkYviySjXKOX6t2nu9Ze+sRhR8KOcs0BaCV8M1MtFzJ1ACq3uwpPEcoMOJv1XlT3I2Um4Oi/DB3/RMS2HlRtkf4/qYcZUPmJrZcpbDFN9OMmgT3VV8IR9Z7B3M/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXfQK5z+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF41C4CEEB;
+	Mon, 18 Aug 2025 13:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522592;
-	bh=NSI7JfUzi5WYGWH9wefcI5LRmlhot4ewcNLaPfVA23k=;
+	s=korg; t=1755524102;
+	bh=kZ31hKJr7WIrkvpvbD1v7wbjS9/3FDu9uQKCuhfG2K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQn+ymlPKHBScCBYv6+W/L+yB1lUn/Pp9MbCfM6LfSuNHsMb52JPeDbZr5Qa+04sA
-	 aft/CQE1kcIAJ4CheySYVALLWoPuTUktmf2P41cPLWw9JG3zWMlzE3lG1zWzgOIohz
-	 FLnCrDlIEP0wzyjTMQ+nxp3kIT6Fc/JCuI4ix4ZM=
+	b=oXfQK5z+66VguyK31saTwmjVhi/eMNBcBCf3uIvbZOf62PuE+IexfeturkqvpYzwE
+	 x3d++gU18cZj11GOuLsk5/7KORg8IQHK14R1sQmzuGqCUTn2sWnya/ElhHwd2LC01z
+	 uD29n6SYOr1XgQMtEezuqrBN6svlbgofjEULUqo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Li Chen <chenl311@chinatelecom.cn>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 329/444] i3c: add missing include to internal header
+Subject: [PATCH 6.15 369/515] HID: rate-limit hid_warn to prevent log flooding
 Date: Mon, 18 Aug 2025 14:45:55 +0200
-Message-ID: <20250818124501.270014202@linuxfoundation.org>
+Message-ID: <20250818124512.611542110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Li Chen <chenl311@chinatelecom.cn>
 
-[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
+[ Upstream commit 4051ead99888f101be92c7ce90d2de09aac6fd1c ]
 
-LKP found a random config which failed to build because IO accessors
-were not defined:
+Syzkaller can create many uhid devices that trigger
+repeated warnings like:
 
-   In file included from drivers/i3c/master.c:21:
-   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
->> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
+  "hid-generic xxxx: unknown main item tag 0x0"
 
-Add the proper header to where the IO accessors are used.
+These messages can flood the system log, especially if a crash occurs
+(e.g., with a slow UART console, leading to soft lockups). To mitigate
+this, convert `hid_warn()` to use `dev_warn_ratelimited()`.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This helps reduce log noise and improves system stability under fuzzing
+or faulty device scenarios.
+
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/internals.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-core.c | 4 ++--
+ include/linux/hid.h    | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 433f6088b7ce..ce04aa4f269e 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -9,6 +9,7 @@
- #define I3C_INTERNALS_H
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 9ebbaf8cc131..bd4b4cc785f7 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -663,9 +663,9 @@ static int hid_parser_main(struct hid_parser *parser, struct hid_item *item)
+ 	default:
+ 		if (item->tag >= HID_MAIN_ITEM_TAG_RESERVED_MIN &&
+ 			item->tag <= HID_MAIN_ITEM_TAG_RESERVED_MAX)
+-			hid_warn(parser->device, "reserved main item tag 0x%x\n", item->tag);
++			hid_warn_ratelimited(parser->device, "reserved main item tag 0x%x\n", item->tag);
+ 		else
+-			hid_warn(parser->device, "unknown main item tag 0x%x\n", item->tag);
++			hid_warn_ratelimited(parser->device, "unknown main item tag 0x%x\n", item->tag);
+ 		ret = 0;
+ 	}
  
- #include <linux/i3c/master.h>
-+#include <linux/io.h>
- 
- void i3c_bus_normaluse_lock(struct i3c_bus *bus);
- void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index daae1d6d11a7..ada27535a195 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1233,6 +1233,8 @@ void hid_quirks_exit(__u16 bus);
+ 	dev_notice(&(hid)->dev, fmt, ##__VA_ARGS__)
+ #define hid_warn(hid, fmt, ...)				\
+ 	dev_warn(&(hid)->dev, fmt, ##__VA_ARGS__)
++#define hid_warn_ratelimited(hid, fmt, ...)				\
++	dev_warn_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
+ #define hid_info(hid, fmt, ...)				\
+ 	dev_info(&(hid)->dev, fmt, ##__VA_ARGS__)
+ #define hid_dbg(hid, fmt, ...)				\
 -- 
 2.39.5
 
