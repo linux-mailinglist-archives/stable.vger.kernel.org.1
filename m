@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207E7B2A360
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE52CB2A68C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FFF07B40E9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:06:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189626243E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7CC32274C;
-	Mon, 18 Aug 2025 13:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAC3322A05;
+	Mon, 18 Aug 2025 13:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fthDjQtx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2ec2hO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD554322746;
-	Mon, 18 Aug 2025 13:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D22D322767;
+	Mon, 18 Aug 2025 13:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522414; cv=none; b=H5CuYjn64mcwG5HR3hAoWFRYF22bFIj2JA/X8q2SAWxGxvv5bpLiXE7jL/mjcM2XwAmz4fPerhNWHiXfQ04nz+xvw9TC3xZqWc+3kHUuCHZjInPigCl37ZKQEM6R/AgeC8yGxmzglnW79mFB/f3aZxuEpjdFJQGFziVu6zDhUBs=
+	t=1755524040; cv=none; b=k2/h8n6LaiXR4GneRl1erndLpReQ1GhGAkcmS97G5mdAIh+MT6/gfWN9RIsx58twXSL7mE9mi4hZ2FVAnY65bfTmGdoMF7YlvJp1gCjvNrj+liZbUl3lZBxPBy3l2ZK89/H0Ns0gvYAa1dRtaowH6gJEpYJCE63P+oKnpNAXaGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522414; c=relaxed/simple;
-	bh=u28pbMEeVseTvunkxDEnF5uHqqVQI4XJ4J3c8HHkupg=;
+	s=arc-20240116; t=1755524040; c=relaxed/simple;
+	bh=EHpLu3OInsDTBRwKd/p6jQ+tPx32WKX63UEAnD65QC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unicTnWhW0x7e9cgDues27mUKKsRGdLM4f8+5K2aB98mkwX3rWkRvruTNiHHYeNsUVbnHVFgJ+/xMTxeL86uVP2BkX9KwGwQiuzkb6eayJSriEpjP+tN2pobmuQivZkabXP1OquOAAE3XgEHDO/0AMn0SSZi9Obsz6rDOVQt9T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fthDjQtx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1D9C4CEF1;
-	Mon, 18 Aug 2025 13:06:53 +0000 (UTC)
+	 MIME-Version; b=ROIOX/6GOlzuYYV1acXtXB+cWLkHFyzPvPtJ5nYTf3JNkpCrGEP4jJF7pyYz69hAZfIzX7cOKPYuz9X7l1n7LbuhXathZ3Em7EU03FBNZ7fafCypjfsBLcDy2F1a3KSdSc2EE+aAkUomXP+A2lGKm6ZQLuAKvyDhrTsyJfgpsPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2ec2hO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF15C4CEEB;
+	Mon, 18 Aug 2025 13:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522414;
-	bh=u28pbMEeVseTvunkxDEnF5uHqqVQI4XJ4J3c8HHkupg=;
+	s=korg; t=1755524040;
+	bh=EHpLu3OInsDTBRwKd/p6jQ+tPx32WKX63UEAnD65QC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fthDjQtxR0ZVzjd/8EplAJtVt2yrRWNQe0szrVZfLp0Nu4xvXb0tgY0huYSpq8TfQ
-	 KU8s4szE42OSLQJiqv1qrR2N1UwlXHE9CPL0Z7WPkz3jw8ol5sOPodiEKWCGMoMdXe
-	 BZHyG5rUit1ykvgxy6hK2PnYOVPqkMLTQYLUJ1AU=
+	b=I2ec2hO16Hy55MnIzFD2ZHWSjDcK/wUlb6EjtGdtKqZQY2ymPinRTgrPjkxgswWLd
+	 u9Zeg8r9nKT+dVNTngaqhucJw4bpEvskzBLs+lLNI+Z4PvimCP5MKPj0xsLwhiG2Z4
+	 kBQZ+GZI5xz6Xb4aQVhHQgOFudThPrJgZBfLOnfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	jackysliu <1972843537@qq.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 309/444] power: supply: qcom_battmgr: Add lithium-polymer entry
+Subject: [PATCH 6.15 349/515] scsi: bfa: Double-free fix
 Date: Mon, 18 Aug 2025 14:45:35 +0200
-Message-ID: <20250818124500.537149218@linuxfoundation.org>
+Message-ID: <20250818124511.863651129@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: jackysliu <1972843537@qq.com>
 
-[ Upstream commit 202ac22b8e2e015e6c196fd8113f3d2a62dd1afc ]
+[ Upstream commit add4c4850363d7c1b72e8fce9ccb21fdd2cf5dc9 ]
 
-On some Dell XPS 13 (9345) variants, the battery used is lithium-polymer
-based. Currently, this is reported as unknown technology due to the entry
-missing.
+When the bfad_im_probe() function fails during initialization, the memory
+pointed to by bfad->im is freed without setting bfad->im to NULL.
 
-[ 4083.135325] Unknown battery technology 'LIP'
+Subsequently, during driver uninstallation, when the state machine enters
+the bfad_sm_stopping state and calls the bfad_im_probe_undo() function,
+it attempts to free the memory pointed to by bfad->im again, thereby
+triggering a double-free vulnerability.
 
-Add another check for lithium-polymer in the technology parsing callback
-and return that instead of unknown.
+Set bfad->im to NULL if probing fails.
 
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250523-psy-qcom-battmgr-add-lipo-entry-v1-1-938c20a43a25@linaro.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: jackysliu <1972843537@qq.com>
+Link: https://lore.kernel.org/r/tencent_3BB950D6D2D470976F55FC879206DE0B9A09@qq.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/qcom_battmgr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/bfa/bfad_im.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
-index f0a64c00ddaa..c2037b58fbcd 100644
---- a/drivers/power/supply/qcom_battmgr.c
-+++ b/drivers/power/supply/qcom_battmgr.c
-@@ -980,6 +980,8 @@ static unsigned int qcom_battmgr_sc8280xp_parse_technology(const char *chemistry
- {
- 	if (!strncmp(chemistry, "LIO", BATTMGR_CHEMISTRY_LEN))
- 		return POWER_SUPPLY_TECHNOLOGY_LION;
-+	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN))
-+		return POWER_SUPPLY_TECHNOLOGY_LIPO;
+diff --git a/drivers/scsi/bfa/bfad_im.c b/drivers/scsi/bfa/bfad_im.c
+index a719a18f0fbc..f56e008ee52b 100644
+--- a/drivers/scsi/bfa/bfad_im.c
++++ b/drivers/scsi/bfa/bfad_im.c
+@@ -706,6 +706,7 @@ bfad_im_probe(struct bfad_s *bfad)
  
- 	pr_err("Unknown battery technology '%s'\n", chemistry);
- 	return POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+ 	if (bfad_thread_workq(bfad) != BFA_STATUS_OK) {
+ 		kfree(im);
++		bfad->im = NULL;
+ 		return BFA_STATUS_FAILED;
+ 	}
+ 
 -- 
 2.39.5
 
