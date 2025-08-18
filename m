@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-170082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B6CB2A28B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF94B2A533
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0183D178B74
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:51:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36725566282
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5696C31E0F7;
-	Mon, 18 Aug 2025 12:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1094D32A3D8;
+	Mon, 18 Aug 2025 13:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQGl/4iF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RyjQauH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139D530DD0F;
-	Mon, 18 Aug 2025 12:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C91326D46;
+	Mon, 18 Aug 2025 13:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521456; cv=none; b=CurdKiUvRQwsq41tQq68A/ZdAkvju1xH9A4Y805lcKFVvwULZ28NNMv9UOyw20XODgBlnpSSav3YgHWdzWH7peJU9Ay57hMYaqg2zqg5AS+2Pht8u5lG2S7pWn3YTgvFZqzoFR/hy7sVhsAsD7Z0QMkwGGKmfn+UhmuTB70cXVc=
+	t=1755523086; cv=none; b=QjXWpe3w2U6X16ZCOzWqowXk9ZUVwhNRa/onpkgyxWdtWgYFdSTmOUy3oBK7JuWeFnVsMGB9rIy2cB+08MS11qOpN58ESoDqOtVq3jbka4wXV5OXNOkQG/sDeqmiAQSb81e9OqX0B9OpOK/oB8gpnrHWs1LU/w7wtHO6ea3GqmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521456; c=relaxed/simple;
-	bh=WpZHaYHRS2dlsfI25FBAho8MJU810PL0OruKd8tZvTE=;
+	s=arc-20240116; t=1755523086; c=relaxed/simple;
+	bh=OeVsqiK2wlIehRaqqakWdikQCnkeRxqkEZOrEWl85FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NN4PUSfkJEQ5tMPUTNEZvtcIy6Wf2xbBIjnNmbXBVlUpJhWUtcQu/ppKhwvvleFUrsa1NtG5mocE9zWIAnt4MeQ4C1MRQtUAmfonkfkf9euYTfWODwRyFijjFE/vwz8Sn4XxWkrYU/T+QfS5KnY0L4w8JD/MvlJ01KGGvXpSPS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQGl/4iF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A69C4CEEB;
-	Mon, 18 Aug 2025 12:50:55 +0000 (UTC)
+	 MIME-Version; b=ITMuobNV9JkwQFEFH55L9jAVDDojPOsayNuPYpV4cXg0724pS8ix1DUCyWI+sYsSsk3ctSi3pQJovgCiGKkD/hjnpe5p/zJB2kUPz8l8kJQ7q76gBvst7zkxDGnajoejJLodJjCxsObORj8DZa6GEIFFIn8VfvAQlPq6J1Be9T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RyjQauH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46FCC4CEEB;
+	Mon, 18 Aug 2025 13:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521456;
-	bh=WpZHaYHRS2dlsfI25FBAho8MJU810PL0OruKd8tZvTE=;
+	s=korg; t=1755523086;
+	bh=OeVsqiK2wlIehRaqqakWdikQCnkeRxqkEZOrEWl85FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQGl/4iFGSv+z/7qmF2QqUfMqXYB2aZCeXORccYKXHQ0GF+z9U7z078Z1JYXMucgC
-	 VQlD/XBQYtxnfVKAey4eaLlXbFHvywZn4xv+p4BV2p9zxAutUM1b4E+NnRjEy/v9+C
-	 +EX1sAJf7DMt+Qv1Cx42RChHUbjXlKTJnDmEK0pA=
+	b=0RyjQauHUhX/PCjlliNC8TfL4w9cXnVVijm8HwDEiaXh9yhMM1ftxxVUrgaXnMo/E
+	 bD/F9tMOQL8I65ae5qQxff2sUdXXOq6ySgYZv6qSUrzTj129HmuP1800UPWusCmFdA
+	 KI1GY4zi3Bh1VU6b2t2lDeHIt4nPHLfQEAweu8Ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 6.12 025/444] NFS: Fix the setting of capabilities when automounting a new filesystem
-Date: Mon, 18 Aug 2025 14:40:51 +0200
-Message-ID: <20250818124449.878944622@linuxfoundation.org>
+	syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com,
+	syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 066/515] sctp: linearize cloned gso packets in sctp_rcv
+Date: Mon, 18 Aug 2025 14:40:52 +0200
+Message-ID: <20250818124500.941943610@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,169 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit b01f21cacde9f2878492cf318fee61bf4ccad323 upstream.
+[ Upstream commit fd60d8a086191fe33c2d719732d2482052fa6805 ]
 
-Capabilities cannot be inherited when we cross into a new filesystem.
-They need to be reset to the minimal defaults, and then probed for
-again.
+A cloned head skb still shares these frag skbs in fraglist with the
+original head skb. It's not safe to access these frag skbs.
 
-Fixes: 54ceac451598 ("NFS: Share NFS superblocks per-protocol per-server per-FSID")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+syzbot reported two use-of-uninitialized-memory bugs caused by this:
+
+  BUG: KMSAN: uninit-value in sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_assoc_bh_rcv+0x1a7/0xc50 net/sctp/associola.c:998
+   sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x397/0xdb0 net/sctp/input.c:331
+   sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1122
+   __release_sock+0x1da/0x330 net/core/sock.c:3106
+   release_sock+0x6b/0x250 net/core/sock.c:3660
+   sctp_wait_for_connect+0x487/0x820 net/sctp/socket.c:9360
+   sctp_sendmsg_to_asoc+0x1ec1/0x1f00 net/sctp/socket.c:1885
+   sctp_sendmsg+0x32b9/0x4a80 net/sctp/socket.c:2031
+   inet_sendmsg+0x25a/0x280 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:718 [inline]
+
+and
+
+  BUG: KMSAN: uninit-value in sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_inq_push+0x2a3/0x350 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x3c7/0xda0 net/sctp/input.c:331
+   sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
+   __release_sock+0x1d3/0x330 net/core/sock.c:3213
+   release_sock+0x6b/0x270 net/core/sock.c:3767
+   sctp_wait_for_connect+0x458/0x820 net/sctp/socket.c:9367
+   sctp_sendmsg_to_asoc+0x223a/0x2260 net/sctp/socket.c:1886
+   sctp_sendmsg+0x3910/0x49f0 net/sctp/socket.c:2032
+   inet_sendmsg+0x269/0x2a0 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:712 [inline]
+
+This patch fixes it by linearizing cloned gso packets in sctp_rcv().
+
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Reported-by: syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com
+Reported-by: syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/dd7dc337b99876d4132d0961f776913719f7d225.1754595611.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c     |   44 ++++++++++++++++++++++++++++++++++++++++++--
- fs/nfs/internal.h   |    2 +-
- fs/nfs/nfs4client.c |   20 +-------------------
- fs/nfs/nfs4proc.c   |    2 +-
- 4 files changed, 45 insertions(+), 23 deletions(-)
+ net/sctp/input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -676,6 +676,44 @@ struct nfs_client *nfs_init_client(struc
- }
- EXPORT_SYMBOL_GPL(nfs_init_client);
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index 0c0d2757f6f8..6fcdcaeed40e 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -117,7 +117,7 @@ int sctp_rcv(struct sk_buff *skb)
+ 	 * it's better to just linearize it otherwise crc computing
+ 	 * takes longer.
+ 	 */
+-	if ((!is_gso && skb_linearize(skb)) ||
++	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
+ 	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
+ 		goto discard_it;
  
-+static void nfs4_server_set_init_caps(struct nfs_server *server)
-+{
-+#if IS_ENABLED(CONFIG_NFS_V4)
-+	/* Set the basic capabilities */
-+	server->caps = server->nfs_client->cl_mvops->init_caps;
-+	if (server->flags & NFS_MOUNT_NORDIRPLUS)
-+		server->caps &= ~NFS_CAP_READDIRPLUS;
-+	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
-+		server->caps &= ~NFS_CAP_READ_PLUS;
-+
-+	/*
-+	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
-+	 * authentication.
-+	 */
-+	if (nfs4_disable_idmapping &&
-+	    server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
-+		server->caps |= NFS_CAP_UIDGID_NOMAP;
-+#endif
-+}
-+
-+void nfs_server_set_init_caps(struct nfs_server *server)
-+{
-+	switch (server->nfs_client->rpc_ops->version) {
-+	case 2:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		break;
-+	case 3:
-+		server->caps = NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
-+		if (!(server->flags & NFS_MOUNT_NORDIRPLUS))
-+			server->caps |= NFS_CAP_READDIRPLUS;
-+		break;
-+	default:
-+		nfs4_server_set_init_caps(server);
-+		break;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(nfs_server_set_init_caps);
-+
- /*
-  * Create a version 2 or 3 client
-  */
-@@ -717,7 +755,6 @@ static int nfs_init_server(struct nfs_se
- 	/* Initialise the client representation from the mount data */
- 	server->flags = ctx->flags;
- 	server->options = ctx->options;
--	server->caps |= NFS_CAP_HARDLINKS | NFS_CAP_SYMLINKS;
- 
- 	switch (clp->rpc_ops->version) {
- 	case 2:
-@@ -753,6 +790,8 @@ static int nfs_init_server(struct nfs_se
- 	if (error < 0)
- 		goto error;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* Preserve the values of mount_server-related mount options */
- 	if (ctx->mount_server.addrlen) {
- 		memcpy(&server->mountd_address, &ctx->mount_server.address,
-@@ -927,7 +966,6 @@ void nfs_server_copy_userdata(struct nfs
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
- 	target->acdirmax = source->acdirmax;
--	target->caps = source->caps;
- 	target->options = source->options;
- 	target->auth_info = source->auth_info;
- 	target->port = source->port;
-@@ -1161,6 +1199,8 @@ struct nfs_server *nfs_clone_server(stru
- 	if (error < 0)
- 		goto out_free_server;
- 
-+	nfs_server_set_init_caps(server);
-+
- 	/* probe the filesystem info for this server filesystem */
- 	error = nfs_probe_server(server, fh);
- 	if (error < 0)
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -231,7 +231,7 @@ extern struct nfs_client *
- nfs4_find_client_sessionid(struct net *, const struct sockaddr *,
- 				struct nfs4_sessionid *, u32);
- extern struct nfs_server *nfs_create_server(struct fs_context *);
--extern void nfs4_server_set_init_caps(struct nfs_server *);
-+extern void nfs_server_set_init_caps(struct nfs_server *);
- extern struct nfs_server *nfs4_create_server(struct fs_context *);
- extern struct nfs_server *nfs4_create_referral_server(struct fs_context *);
- extern int nfs4_update_server(struct nfs_server *server, const char *hostname,
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1081,24 +1081,6 @@ static void nfs4_session_limit_xasize(st
- #endif
- }
- 
--void nfs4_server_set_init_caps(struct nfs_server *server)
--{
--	/* Set the basic capabilities */
--	server->caps |= server->nfs_client->cl_mvops->init_caps;
--	if (server->flags & NFS_MOUNT_NORDIRPLUS)
--			server->caps &= ~NFS_CAP_READDIRPLUS;
--	if (server->nfs_client->cl_proto == XPRT_TRANSPORT_RDMA)
--		server->caps &= ~NFS_CAP_READ_PLUS;
--
--	/*
--	 * Don't use NFS uid/gid mapping if we're using AUTH_SYS or lower
--	 * authentication.
--	 */
--	if (nfs4_disable_idmapping &&
--			server->client->cl_auth->au_flavor == RPC_AUTH_UNIX)
--		server->caps |= NFS_CAP_UIDGID_NOMAP;
--}
--
- static int nfs4_server_common_setup(struct nfs_server *server,
- 		struct nfs_fh *mntfh, bool auth_probe)
- {
-@@ -1113,7 +1095,7 @@ static int nfs4_server_common_setup(stru
- 	if (error < 0)
- 		goto out;
- 
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
- 
- 	/* Probe the root fh to retrieve its FSID and filehandle */
- 	error = nfs4_get_rootfh(server, mntfh, auth_probe);
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4064,7 +4064,7 @@ int nfs4_server_capabilities(struct nfs_
- 	};
- 	int err;
- 
--	nfs4_server_set_init_caps(server);
-+	nfs_server_set_init_caps(server);
- 	do {
- 		err = nfs4_handle_exception(server,
- 				_nfs4_server_capabilities(server, fhandle),
+-- 
+2.50.1
+
 
 
 
