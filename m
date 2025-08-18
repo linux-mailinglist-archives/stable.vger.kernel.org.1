@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-169940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3459B29DCF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:28:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED1EB29DDE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A18B196471E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DABD2A49D0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319B630F53A;
-	Mon, 18 Aug 2025 09:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708B830DEC8;
+	Mon, 18 Aug 2025 09:28:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8612430EF9C
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B6530C366
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755509120; cv=none; b=RXdDfCT9HopKIUgNSXRz12LaFO7w8XrM5MDnbyBGkIif9TltLSiYQQLHoOjUbd2AFna5uFUTMxALKKWc0cmfBcTBz6f6DbB4eXKkbAHR2gcourAehXWRc4I7LI3spmcSPZvvVeOa0SRRfSvlfm1sT/kA43r+HVsrBqcd43rck40=
+	t=1755509300; cv=none; b=iWKYMyYhs1mK4j+kBugg4fvs4ErLDNUEhhTpidZrAC4MJ8q7KPkfJOkFuN4Fm5qXF3jfsAny1UzFgts1XMyobcx+i6q/AZ4LKa+oqM6JnlF/zCZ/2wnExH2f3YjLJMWQpMtTOocn8NEpQbHmUbiDlIBFPS7SjEwT89PtyPJYF9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755509120; c=relaxed/simple;
-	bh=0HMfgsC4jFQW6qhuB5RULVJukoMoLBlHTiXRFu0GaPQ=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=okeooI98agUqBdvLYepy2UmnC9RQDVgwBD6zZipsZxJnoY+uMpyd5HK907hPB6rAPxOsRViAJe/9RZdFVeihHGUH4vCmAYKJCSpc0LuVreYQwr8twgga1mjf2MLk1eeDt37GWcB5vDOsKz9zYvBoeV6A3KlNNH/Gji7d+7hhoOs=
+	s=arc-20240116; t=1755509300; c=relaxed/simple;
+	bh=wkxXxM55u6xiafcEX1i5/qPwViPKndBguofdjqgnuic=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=EyTJoUrio1CxxxYx9zsf5tPwEsw8RLvQnU9Nh0f9427CQiWLZMqeVYGA9oxAzCeUZgwO3gc4nnnTrgswAyfsdIetmqSoQYpQbnLPY+8maZqXMljL0/Cx0A8+hVkHxyixFWOVnGnWE8/XEOfBCfCx5amt/rrCZSUX0ODNP69S0XM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
-Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
-	by 156.147.23.51 with ESMTP; 18 Aug 2025 18:25:08 +0900
-X-Original-SENDERIP: 156.147.1.127
+Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
+	by 156.147.23.51 with ESMTP; 18 Aug 2025 18:28:16 +0900
+X-Original-SENDERIP: 156.147.1.121
 X-Original-MAILFROM: chanho.min@lge.com
 Received: from unknown (HELO localhost.localdomain) (10.178.31.96)
-	by 156.147.1.127 with ESMTP; 18 Aug 2025 18:25:08 +0900
+	by 156.147.1.121 with ESMTP; 18 Aug 2025 18:28:16 +0900
 X-Original-SENDERIP: 10.178.31.96
 X-Original-MAILFROM: chanho.min@lge.com
 From: Chanho Min <chanho.min@lge.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>
-Cc: netdev@vger.kernel.org,
+To: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@netapp.com>
+Cc: linux-nfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	gunho.lee@lge.com,
 	stable@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Chanho Min <chanho.min@lge.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH] ipv6: mcast: extend RCU protection in igmp6_send()
-Date: Mon, 18 Aug 2025 18:24:53 +0900
-Message-Id: <20250818092453.38281-1-chanho.min@lge.com>
+	Chanho Min <chanho.min@lge.com>
+Subject: [PATCH] NFS: Fix up commit deadlocks
+Date: Mon, 18 Aug 2025 18:28:05 +0900
+Message-Id: <20250818092805.38743-1-chanho.min@lge.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,108 +55,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-From: Eric Dumazet <edumazet@google.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 087c1faa594fa07a66933d750c0b2610aa1a2946 ]
+[ Upstream commit 133a48abf6ecc535d7eddc6da1c3e4c972445882 ]
 
-igmp6_send() can be called without RTNL or RCU being held.
-
-Extend RCU protection so that we can safely fetch the net pointer
-and avoid a potential UAF.
-
-Note that we no longer can use sock_alloc_send_skb() because
-ipv6.igmp_sk uses GFP_KERNEL allocations which can sleep.
-
-Instead use alloc_skb() and charge the net->ipv6.igmp_sk
-socket under RCU protection.
+If O_DIRECT bumps the commit_info rpcs_out field, then that could lead
+to fsync() hangs. The fix is to ensure that O_DIRECT calls
+nfs_commit_end().
 
 Cc: stable@vger.kernel.org # 5.4
-Fixes: b8ad0cbc58f7 ("[NETNS][IPV6] mcast - handle several network namespace")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250207135841.1948589-9-edumazet@google.com
-[ chanho: Backports to v5.4.y. v5.4.y does not include
-commit b4a11b2033b7(net: fix IPSTATS_MIB_OUTPKGS increment in OutForwDatagrams),
-so IPSTATS_MIB_OUTREQUESTS was changed to IPSTATS_MIB_OUTPKGS defined as
-'OutRequests'. ]
+Fixes: 723c921e7dfc ("sched/wait, fs/nfs: Convert wait_on_atomic_t() usage to the new wait_var_event() API")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+[ chanho: Backports to v5.4.y ]
 Signed-off-by: Chanho Min <chanho.min@lge.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/mcast.c | 32 +++++++++++++++-----------------
- 1 file changed, 15 insertions(+), 17 deletions(-)
+ fs/nfs/direct.c        | 2 +-
+ fs/nfs/write.c         | 9 ++++++---
+ include/linux/nfs_fs.h | 1 +
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 7d0a6a7c9d283..c2dc70a69be94 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -1977,21 +1977,21 @@ static void mld_send_cr(struct inet6_dev *idev)
- 
- static void igmp6_send(struct in6_addr *addr, struct net_device *dev, int type)
- {
--	struct net *net = dev_net(dev);
--	struct sock *sk = net->ipv6.igmp_sk;
-+	const struct in6_addr *snd_addr, *saddr;
-+	int err, len, payload_len, full_len;
-+	struct in6_addr addr_buf;
- 	struct inet6_dev *idev;
- 	struct sk_buff *skb;
- 	struct mld_msg *hdr;
--	const struct in6_addr *snd_addr, *saddr;
--	struct in6_addr addr_buf;
- 	int hlen = LL_RESERVED_SPACE(dev);
- 	int tlen = dev->needed_tailroom;
--	int err, len, payload_len, full_len;
- 	u8 ra[8] = { IPPROTO_ICMPV6, 0,
- 		     IPV6_TLV_ROUTERALERT, 2, 0, 0,
- 		     IPV6_TLV_PADN, 0 };
--	struct flowi6 fl6;
- 	struct dst_entry *dst;
-+	struct flowi6 fl6;
-+	struct net *net;
-+	struct sock *sk;
- 
- 	if (type == ICMPV6_MGM_REDUCTION)
- 		snd_addr = &in6addr_linklocal_allrouters;
-@@ -2002,20 +2002,21 @@ static void igmp6_send(struct in6_addr *addr, struct net_device *dev, int type)
- 	payload_len = len + sizeof(ra);
- 	full_len = sizeof(struct ipv6hdr) + payload_len;
- 
--	rcu_read_lock();
--	IP6_UPD_PO_STATS(net, __in6_dev_get(dev),
--		      IPSTATS_MIB_OUT, full_len);
--	rcu_read_unlock();
-+	skb = alloc_skb(hlen + tlen + full_len, GFP_KERNEL);
- 
--	skb = sock_alloc_send_skb(sk, hlen + tlen + full_len, 1, &err);
-+	rcu_read_lock();
- 
-+	net = dev_net_rcu(dev);
-+	idev = __in6_dev_get(dev);
-+	IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTPKTS);
- 	if (!skb) {
--		rcu_read_lock();
--		IP6_INC_STATS(net, __in6_dev_get(dev),
--			      IPSTATS_MIB_OUTDISCARDS);
-+		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
- 		rcu_read_unlock();
- 		return;
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 0682037f972be..32dc176ea1aba 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -700,7 +700,7 @@ static void nfs_direct_commit_complete(struct nfs_commit_data *data)
+ 		nfs_unlock_and_release_request(req);
  	}
-+	sk = net->ipv6.igmp_sk;
-+	skb_set_owner_w(skb, sk);
-+
- 	skb->priority = TC_PRIO_CONTROL;
- 	skb_reserve(skb, hlen);
  
-@@ -2040,9 +2041,6 @@ static void igmp6_send(struct in6_addr *addr, struct net_device *dev, int type)
- 					 IPPROTO_ICMPV6,
- 					 csum_partial(hdr, len, 0));
+-	if (atomic_dec_and_test(&cinfo.mds->rpcs_out))
++	if (nfs_commit_end(cinfo.mds))
+ 		nfs_direct_write_complete(dreq);
+ }
  
--	rcu_read_lock();
--	idev = __in6_dev_get(skb->dev);
--
- 	icmpv6_flow_init(sk, &fl6, type,
- 			 &ipv6_hdr(skb)->saddr, &ipv6_hdr(skb)->daddr,
- 			 skb->dev->ifindex);
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 10ce264a64567..c9895316fc070 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -1658,10 +1658,13 @@ static void nfs_commit_begin(struct nfs_mds_commit_info *cinfo)
+ 	atomic_inc(&cinfo->rpcs_out);
+ }
+ 
+-static void nfs_commit_end(struct nfs_mds_commit_info *cinfo)
++bool nfs_commit_end(struct nfs_mds_commit_info *cinfo)
+ {
+-	if (atomic_dec_and_test(&cinfo->rpcs_out))
++	if (atomic_dec_and_test(&cinfo->rpcs_out)) {
+ 		wake_up_var(&cinfo->rpcs_out);
++		return true;
++	}
++	return false;
+ }
+ 
+ void nfs_commitdata_release(struct nfs_commit_data *data)
+@@ -1756,6 +1759,7 @@ void nfs_init_commit(struct nfs_commit_data *data,
+ 	data->res.fattr   = &data->fattr;
+ 	data->res.verf    = &data->verf;
+ 	nfs_fattr_init(&data->fattr);
++	nfs_commit_begin(cinfo->mds);
+ }
+ EXPORT_SYMBOL_GPL(nfs_init_commit);
+ 
+@@ -1801,7 +1805,6 @@ nfs_commit_list(struct inode *inode, struct list_head *head, int how,
+ 
+ 	/* Set up the argument struct */
+ 	nfs_init_commit(data, head, NULL, cinfo);
+-	atomic_inc(&cinfo->mds->rpcs_out);
+ 	return nfs_initiate_commit(NFS_CLIENT(inode), data, NFS_PROTO(inode),
+ 				   data->mds_ops, how, 0);
+ }
+diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
+index 49cf5c855cbe5..a96b116cc9224 100644
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -549,6 +549,7 @@ extern int nfs_wb_page_cancel(struct inode *inode, struct page* page);
+ extern int  nfs_commit_inode(struct inode *, int);
+ extern struct nfs_commit_data *nfs_commitdata_alloc(bool never_fail);
+ extern void nfs_commit_free(struct nfs_commit_data *data);
++bool nfs_commit_end(struct nfs_mds_commit_info *cinfo);
+ 
+ static inline int
+ nfs_have_writebacks(struct inode *inode)
 
