@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-170548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B257B2A538
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44524B2A810
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8111BA2B5F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ECAC1B62FA7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29598321F53;
-	Mon, 18 Aug 2025 13:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7482B27B32F;
+	Mon, 18 Aug 2025 13:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6QfSAtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8WjF/hx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4FB321F3F;
-	Mon, 18 Aug 2025 13:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216CD234984;
+	Mon, 18 Aug 2025 13:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522995; cv=none; b=oIFi8dKo1ZE7TkPhBd4QO9XrEZm9tsjguks+kc+MSlf5887DAAJtfs/sGWGX94zAxKRJX+jkUBmBan3JQgyeJ3M8OSEJZ0Qiz3HgsvJiSFy6heb/a6+jYE+nTVwx9RTqhM1H7LopNbgMIBC6FKJqi3hrdJGi5U5WIeSlzgdqqaA=
+	t=1755524708; cv=none; b=UtivTNDUT+d41CLvCrDxt42G/ysVQ7VMoz+6bfPQWxsImilKDyHCAA0UT+2ITxf59hwtf+gNg52h9ABrM7OKayXCvNmWnOx/QSHlGsJtugSAbkVXN2/JkK3L4KzCzObCkrAdWKt1srnwj72cu7Vf/HzBwQY/YI1zgA3cQa2d8G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522995; c=relaxed/simple;
-	bh=Lp9gMmFyVKyqtKDLrjQxYvuYOn71KF7TqodKFGr6JL0=;
+	s=arc-20240116; t=1755524708; c=relaxed/simple;
+	bh=qX0UV+6I1+IcFNAN/l29pzOrtmN4SdVMGhRdyoTg4Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBMDav40f1SXIB/6QWFBkT8szEDKZlSC3L7o0LLOcipu8zC/wfeAvbPlNXKoYdUdtNMwuolO5Yr8sqsqgCKt+uNVN0yN7EiD2BdOHQO8C6GSGOmf1ZNzsqWoUzzMFJSQrb6qldAPVJxCOc7eoQklk/iB5tuRDb9mlrYCvUlnd2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6QfSAtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56266C4CEEB;
-	Mon, 18 Aug 2025 13:16:35 +0000 (UTC)
+	 MIME-Version; b=dQM5+APlvD7F8lWzj78c9IDjfKU0vXdQkA9kDDuGrZ6D4lLAHDiXOb72h8yzQpRasJ1A4KQZYz/5bts6FtBOLbzBsa0YfKu+13RJgl+8G/FYCaA1OTUFyIbXKLvfE+93btPl0uOLIXWDuq4IOY5dJ9jp1naDFAFwRlI8v3d872M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8WjF/hx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F378C4CEEB;
+	Mon, 18 Aug 2025 13:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522995;
-	bh=Lp9gMmFyVKyqtKDLrjQxYvuYOn71KF7TqodKFGr6JL0=;
+	s=korg; t=1755524708;
+	bh=qX0UV+6I1+IcFNAN/l29pzOrtmN4SdVMGhRdyoTg4Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6QfSAtrd72W0zgX1rSxUDyf8iuvY/ZTZkdBbaRAq3lF/QCJpFGwaXoAG0yqAkeOB
-	 +0UhGnreYUK5Df8dt8vjfMrsrFQql001BkZmRnnyyS47TOMyPhQT8DH9zbxSRehxEP
-	 /GBu3CcTKoULZsAxGM54FCjBeGHEFV+CzjCTu1x8=
+	b=m8WjF/hxU5bf941vAlinB0GDiEMbn2Sd+263OAvLpbDH3jRRxRZAv+0vl2i3owo63
+	 wGPLkzGXRlnU/SIfWxMTwAEx1eNe82hE6MeKiTyokwSY28cncwuFjle/iNddqdTGmi
+	 77wDHgu1zU3i6z66uQWlF9RLpCnH74OuMdZO6bpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <siyanteng@cqsoftware.com.cn>,
-	Wentao Guan <guanwentao@uniontech.com>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.15 038/515] LoongArch: vDSO: Remove -nostdlib complier flag
-Date: Mon, 18 Aug 2025 14:40:24 +0200
-Message-ID: <20250818124459.907453955@linuxfoundation.org>
+Subject: [PATCH 6.16 038/570] LoongArch: Make relocate_new_kernel_size be a .quad value
+Date: Mon, 18 Aug 2025 14:40:25 +0200
+Message-ID: <20250818124507.281496392@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit d35ec48fa6c8fe0cfa4a03155109fec7677911d4 upstream.
+commit a1a81b5477196ca1290b367404a461e046e647d5 upstream.
 
-Since $(LD) is directly used, hence -nostdlib is unneeded, MIPS has
-removed this, we should remove it too.
+Now relocate_new_kernel_size is a .long value, which means 32bit, so its
+high 32bit is undefined. This causes memcpy((void *)reboot_code_buffer,
+relocate_new_kernel, relocate_new_kernel_size) in machine_kexec_prepare()
+access out of range memories in some cases, and then end up with an ADE
+exception.
 
-bdbf2038fbf4 ("MIPS: VDSO: remove -nostdlib compiler flag").
-
-In fact, other architectures also use $(LD) now.
-
-fe00e50b2db8 ("ARM: 8858/1: vdso: use $(LD) instead of $(CC) to link VDSO")
-691efbedc60d ("arm64: vdso: use $(LD) instead of $(CC) to link VDSO")
-2ff906994b6c ("MIPS: VDSO: Use $(LD) instead of $(CC) to link VDSO")
-2b2a25845d53 ("s390/vdso: Use $(LD) instead of $(CC) to link vDSO")
+So make relocate_new_kernel_size be a .quad value, which means 64bit, to
+avoid such errors.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Yanteng Si <siyanteng@cqsoftware.com.cn>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/vdso/Makefile |    2 +-
+ arch/loongarch/kernel/relocate_kernel.S |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -36,7 +36,7 @@ endif
+--- a/arch/loongarch/kernel/relocate_kernel.S
++++ b/arch/loongarch/kernel/relocate_kernel.S
+@@ -109,4 +109,4 @@ SYM_CODE_END(kexec_smp_wait)
+ relocate_new_kernel_end:
  
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -nostdlib -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
- 
- #
- # Shared build commands.
+ 	.section ".data"
+-SYM_DATA(relocate_new_kernel_size, .long relocate_new_kernel_end - relocate_new_kernel)
++SYM_DATA(relocate_new_kernel_size, .quad relocate_new_kernel_end - relocate_new_kernel)
 
 
 
