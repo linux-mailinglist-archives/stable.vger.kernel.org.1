@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-170352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35775B2A347
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FF7B2A6A1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 288B47B822B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D483682A29
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2461D31E0ED;
-	Mon, 18 Aug 2025 13:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788FD22A7E0;
+	Mon, 18 Aug 2025 13:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyiVI29z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xx1jjE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D300231A055;
-	Mon, 18 Aug 2025 13:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354E7321448;
+	Mon, 18 Aug 2025 13:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522358; cv=none; b=dvI6i/coNMTaj6a7SZWK1s1SytK+cc5o+1G8MfWzi8OVzhCy1x1MBevyuOdz09cMhQFUGJtUqCM/eD0LqIxpmIdJRhIyq8GNvjCBuJdYaHmy2+adwWseJs0sFNsgc9fUpLCJyDamw9GXgWnah3Lt/lSe00ISOnind1ON8uQ4c8k=
+	t=1755523879; cv=none; b=ZngwC7c7BL229RFquDd+fLTTnT677sATgUFAvxr7PZakYBkwgrXciYRdU3zvBk1VvnDEIlijEDLrJlvGfsWZjvHdH65uS9WDOSGm6F8ikwLVb/NdZ5sDxwIDQWUal/GnVPXnSaBgdIV9IDy5u3vU5ItVSi4TJlBvV0a3eOwGEK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522358; c=relaxed/simple;
-	bh=UH1qH1R9EjhEHl6lAZFQ9M6Lwso8OMvkER494l3GpWM=;
+	s=arc-20240116; t=1755523879; c=relaxed/simple;
+	bh=qeitXLSkXM0Gmsbwk2euZtGr69W/vfmRfRqNu3Zs4uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YY3izt8xHjXOxnkWEDEOfVZucGmahEKxPupiCXpPCwR3iNrs4HezMafPBrRlv4DaeRIq0PXEDzhiQV9nG7u53RowHVMWmS6N7xH+WAdOPEgryeerdNCsxK4dU77R7B8onV81XwtH1TXqLEFUL6Enl8IjWKxBu4VZJUx2/PKF5eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyiVI29z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA4FC4CEF1;
-	Mon, 18 Aug 2025 13:05:58 +0000 (UTC)
+	 MIME-Version; b=Np/m41pt8vC+6B5Z28spFkcHdNTOp42IUfZqMPwIdm5wK+DlmIn40LaM85t9tBNXhkiliagjfdKH9LDo+hsrreYGlIDHCs4HtDWMUZWPraYCGuPokE7WCLE2q2mpf65oxZ2cz0tfdUx5+DnbeV+fVIGy4GYvihM4Ax25kEyxl5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xx1jjE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4922FC4CEEB;
+	Mon, 18 Aug 2025 13:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522358;
-	bh=UH1qH1R9EjhEHl6lAZFQ9M6Lwso8OMvkER494l3GpWM=;
+	s=korg; t=1755523878;
+	bh=qeitXLSkXM0Gmsbwk2euZtGr69W/vfmRfRqNu3Zs4uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyiVI29zTuJQqGxzqWugyfcGD2vJsmdKWD7JPymYY5mLV79tb2wMp9PVVb7CSc1jJ
-	 aZQnsRy8uuXH++0qtxl/agV6rX8Jr78y8G6LqL44Y2Wy3XKS6ibG+Fw/UR7vyTxlMB
-	 AIbDM2nmClqD5qs1SYb38gRfNzjzsL28I3jN/Yok=
+	b=0xx1jjE+LE3aPzOm0zBFiHkBYNowqLVgN0VLGHn+X6YuNRtwl0oQIjv7kk6/YdU8d
+	 L1NGy9XK5S3CmPOmYoeEVVOZf6ztSRGiawiixx1YLr+RwaewbQ/ng9AKU45lCzhUSl
+	 iVptxog3giIaFNw2f+lgVW2jtJJYURklALOoncwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Alex Lazar <alazar@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 260/444] drm: renesas: rz-du: mipi_dsi: Add min check for VCLK range
-Date: Mon, 18 Aug 2025 14:44:46 +0200
-Message-ID: <20250818124458.579187834@linuxfoundation.org>
+Subject: [PATCH 6.15 301/515] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
+Date: Mon, 18 Aug 2025 14:44:47 +0200
+Message-ID: <20250818124510.017330341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit e37a95d01d5acce211da8446fefbd8684c67f516 ]
+[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
 
-The VCLK range for Renesas RZ/G2L SoC is 5.803 MHz to 148.5 MHz. Add a
-minimum clock check in the mode_valid callback to ensure that the clock
-value does not fall below the valid range.
+When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
+helpers use BUG() unconditionally.
 
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250609225630.502888-2-prabhakar.mahadev-lad.rj@bp.renesas.com
+This code should not be reached, as callers of these functions should
+always check for is_vlan_dev() first, but the usage of BUG() is not
+recommended, replace it with WARN_ON() instead.
+
+Reviewed-by: Alex Lazar <alazar@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/if_vlan.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-index 10febea473cd..6cec796dd463 100644
---- a/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-+++ b/drivers/gpu/drm/renesas/rz-du/rzg2l_mipi_dsi.c
-@@ -585,6 +585,9 @@ rzg2l_mipi_dsi_bridge_mode_valid(struct drm_bridge *bridge,
- 	if (mode->clock > 148500)
- 		return MODE_CLOCK_HIGH;
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index 618a973ff8ee..b9f699799cf6 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -259,19 +259,19 @@ vlan_for_each(struct net_device *dev,
  
-+	if (mode->clock < 5803)
-+		return MODE_CLOCK_LOW;
-+
- 	return MODE_OK;
+ static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return NULL;
+ }
+ 
+ static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
+ }
+ 
+ static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
+ {
+-	BUG();
++	WARN_ON_ONCE(1);
+ 	return 0;
  }
  
 -- 
