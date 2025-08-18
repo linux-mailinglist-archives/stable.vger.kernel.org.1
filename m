@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96F9B2A7DD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BF8B2A590
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 120C75A091A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D34716FECC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD87261B97;
-	Mon, 18 Aug 2025 13:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697AC340DBB;
+	Mon, 18 Aug 2025 13:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/2Syavt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbkQRAyr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87474335BAA;
-	Mon, 18 Aug 2025 13:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D37340DA0;
+	Mon, 18 Aug 2025 13:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524998; cv=none; b=CpDNfB/2R5I+MXNJChFdNUOWsEV5cf0rsc6BWbSs442O5NslM6T5VxoSwd3VPpb89rd6PQlCMkq6xSMyNSzVTfDWWYTzlCYW3nHD0gmmtFFWXcSBvCgtdRDoDpcvmDkJpWIXlN8oaMmXQYQD4h9Cj58G2SYGxUBi9UO9rulH82k=
+	t=1755523293; cv=none; b=oWEjw4ZC7Jb0SmsUWC/dvFeujsCk4hjmrIOrB5XGs7ZF9W0yXeRN86D5Jk0xjav3szECjlpn3Qe6EFDMptcgqgXK2Jvbz+T5Y95moXQm6vuQjysIsEexyMrlIpxK3y7gtsZlftOnA5nYdno3seMFfI0ZYJ6tmpPJoVsDswyQsCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524998; c=relaxed/simple;
-	bh=DF/wXXxk4HS2CJ0746B5dqldqu/gwCuO4zh+uyULRTo=;
+	s=arc-20240116; t=1755523293; c=relaxed/simple;
+	bh=7N5mlooCat4rAHy1oqWRWGvA0NxVi4WFnxP6Hx9VUzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=my0NXTex4YkSyWdYMHrRwgeYglSwF0Wj9nquifcdQRe3y8UR+pIt1E7/0WJkvTucwNeiRVtRQ9I+DpSbO9aoo9kqEiUE49FiOdk11EC3EjVF0M+zcgKxXRyxQ4QzC9dHhIeWnDV5v8+6lW8b622xxPf5FtjetdFnT6jB5uKHr88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/2Syavt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CEDC4CEEB;
-	Mon, 18 Aug 2025 13:49:57 +0000 (UTC)
+	 MIME-Version; b=T3y7CD2GyjAbKAb/yLH4rWg5/TGjjPv0dDGylgqQy5S+JfgJejHolTyvTZ3ZsfZQcf6uPMj9DRq55dAan9gsduA/3/3Ea5/vk1wELmAWRVpg5VZX/ok9n/l9Zl6Ho8fk+lKyUe6qCWAa+Ms2cdWP7hQtYn9gUYSu+qHzphO4MC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbkQRAyr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAD0C4CEF1;
+	Mon, 18 Aug 2025 13:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524998;
-	bh=DF/wXXxk4HS2CJ0746B5dqldqu/gwCuO4zh+uyULRTo=;
+	s=korg; t=1755523292;
+	bh=7N5mlooCat4rAHy1oqWRWGvA0NxVi4WFnxP6Hx9VUzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/2Syavte40qrFU08TXrmZs+ajF/GaP7Bi1RbS7GUlNNAk9c04QL8Y3I3HLhOlERA
-	 wyRg/UzRp0MNLviIsai2SbHV2ccjBVWznPz7ZkPkOGoQ3FP306oFX9D/PayKm5zHr7
-	 2IwvRELXw91PpbAiyEjtLoxw8oRLmay3IVTSXOpc=
+	b=nbkQRAyrj65TUezB4Y7c89jUkwLYln4VqEnByVn9kkw2FN7YrfGw4RGxWLYbzXfVG
+	 qElmIG31hRfev7AlTVRI8Na8WNLUvNvrTVPYP2bpz70CRq304ExWNvJyiYd06VQgd4
+	 Gr8fLb5WxZDP0DULiv4yyK/0+yDs9Z6xHmcqJVQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
+	Tiffany Yang <ynaffit@google.com>,
+	Carlos Llamas <cmllamas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 126/570] selftests/kexec: fix test_kexec_jump build
+Subject: [PATCH 6.15 127/515] binder: Fix selftest page indexing
 Date: Mon, 18 Aug 2025 14:41:53 +0200
-Message-ID: <20250818124510.681001101@linuxfoundation.org>
+Message-ID: <20250818124503.289973063@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Tiffany Yang <ynaffit@google.com>
 
-[ Upstream commit 661e9cd196598c7d2502260ebbe60970546cca35 ]
+[ Upstream commit bea3e7bfa2957d986683543cbf57092715f9a91b ]
 
-The test_kexec_jump program builds correctly when invoked from the top-level
-selftests/Makefile, which explicitly sets the OUTPUT variable. However,
-building directly in tools/testing/selftests/kexec fails with:
+The binder allocator selftest was only checking the last page of buffers
+that ended on a page boundary. Correct the page indexing to account for
+buffers that are not page-aligned.
 
-  make: *** No rule to make target '/test_kexec_jump', needed by 'test_kexec_jump.sh'.  Stop.
-
-This failure occurs because the Makefile rule relies on $(OUTPUT), which is
-undefined in direct builds.
-
-Fix this by listing test_kexec_jump in TEST_GEN_PROGS, the standard way to
-declare generated test binaries in the kselftest framework. This ensures the
-binary is built regardless of invocation context and properly removed by
-make clean.
-
-Link: https://lore.kernel.org/r/20250702171704.22559-2-moonhee.lee.ca@gmail.com
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Tiffany Yang <ynaffit@google.com>
+Acked-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20250714185321.2417234-2-ynaffit@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kexec/Makefile | 2 +-
+ drivers/android/binder_alloc_selftest.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kexec/Makefile b/tools/testing/selftests/kexec/Makefile
-index e3000ccb9a5d..874cfdd3b75b 100644
---- a/tools/testing/selftests/kexec/Makefile
-+++ b/tools/testing/selftests/kexec/Makefile
-@@ -12,7 +12,7 @@ include ../../../scripts/Makefile.arch
+diff --git a/drivers/android/binder_alloc_selftest.c b/drivers/android/binder_alloc_selftest.c
+index c88735c54848..486af3ec3c02 100644
+--- a/drivers/android/binder_alloc_selftest.c
++++ b/drivers/android/binder_alloc_selftest.c
+@@ -142,12 +142,12 @@ static void binder_selftest_free_buf(struct binder_alloc *alloc,
+ 	for (i = 0; i < BUFFER_NUM; i++)
+ 		binder_alloc_free_buf(alloc, buffers[seq[i]]);
  
- ifeq ($(IS_64_BIT)$(ARCH_PROCESSED),1x86)
- TEST_PROGS += test_kexec_jump.sh
--test_kexec_jump.sh: $(OUTPUT)/test_kexec_jump
-+TEST_GEN_PROGS := test_kexec_jump
- endif
- 
- include ../lib.mk
+-	for (i = 0; i < end / PAGE_SIZE; i++) {
+ 		/**
+ 		 * Error message on a free page can be false positive
+ 		 * if binder shrinker ran during binder_alloc_free_buf
+ 		 * calls above.
+ 		 */
++	for (i = 0; i <= (end - 1) / PAGE_SIZE; i++) {
+ 		if (list_empty(page_to_lru(alloc->pages[i]))) {
+ 			pr_err_size_seq(sizes, seq);
+ 			pr_err("expect lru but is %s at page index %d\n",
 -- 
 2.39.5
 
