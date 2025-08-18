@@ -1,166 +1,203 @@
-Return-Path: <stable+bounces-170053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94679B2A15A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2E1B2A145
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2A5E176C18
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:10:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6F1C3AA0DD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033BA30EF72;
-	Mon, 18 Aug 2025 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0DD2E2296;
+	Mon, 18 Aug 2025 12:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYHdHAqv"
 X-Original-To: stable@vger.kernel.org
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1801B26F290
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 12:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.160.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBA6326D6E
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 12:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755519023; cv=none; b=dmIk6YIByl6MTOBiDMOdmSm6K28XpHSx6PndsmAV2JQW1Sl/C2oBgN7trck46wpyRvSpUxGteE2UiuXXERi7XPeW+H25OzJ1ihbS5+0e6uGmcQAgLVXWbkn2vDhF5Bk6EUtqTztBxbEtkrV3C0SuxIVQs6z0oI+VnhvmSZ7SMxE=
+	t=1755519151; cv=none; b=CZSMGIeSJqWdtk1m4ckLwgbkdSMROM9AW7V+h5JxISB+YGMyQ6eumtIcHEQSYRp6gpyeBqC0WNe+HGfCoR31FTE8V/w9uXIvFwU3AqvqBtaQtTNywG0rkQ5kdxAqwQfwXVa3WBDT3eN7RRgtkhRNEY6Sy+hWmiC7BV46mtdI/PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755519023; c=relaxed/simple;
-	bh=x5jZycg2Y5OguqF5Sy9BGuKgQ2q/tjlrtDVmZW6pIIw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FKq1K8ZD7YvdZ0CmUCzfMNRK0v6Xl2JSoINQU/8RqYi0BswSdq62eR7MrI4ekddb4cN2vMJrm5jYzYr1QUX+5C3W0gOukyeLc3FND8k7Lx90e6tYGxaldKYfMak1auVD2mP3fZJ8u3Ft0xVTVYMu9Fp4lXX+KcRzfFWzl314Aoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com; spf=pass smtp.mailfrom=honor.com; arc=none smtp.client-ip=81.70.160.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=honor.com
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4c5BNm5SjpzYm1CG;
-	Mon, 18 Aug 2025 20:10:00 +0800 (CST)
-Received: from a011.hihonor.com (10.68.31.243) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
- 2025 20:10:11 +0800
-Received: from localhost.localdomain (10.144.23.14) by a011.hihonor.com
- (10.68.31.243) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
- 2025 20:10:11 +0800
-From: wangzijie <wangzijie1@honor.com>
-To: <wangzijie1@honor.com>
-CC: <stable@vger.kernel.org>, Lars Wendler <polynomial-c@gmx.de>
-Subject: [PATCH RESEND v2] proc: fix missing pde_set_flags() for net proc files
-Date: Mon, 18 Aug 2025 20:10:09 +0800
-Message-ID: <20250818121009.957696-1-wangzijie1@honor.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1755519151; c=relaxed/simple;
+	bh=2JES4btbAYyT7P3yb682sVwX54CwRVaq90KZxQrL++o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cXTxU7zzYva6h4oJBbdjmXirLelvxSwKpKhlN2+Ve3bIN5E5R/S+DgMwYJSM+AyLHSknQq1kqZ7sduo5KnLrAB8oKCU+dcVTtYqjohn29I0TuoRVn+2drH4CFtJ0UoKHJl5mCsRanAj2CufRn4z0S8skR4C8TQZQ/NOLjtGOZy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYHdHAqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCD8C4CEEB;
+	Mon, 18 Aug 2025 12:12:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755519151;
+	bh=2JES4btbAYyT7P3yb682sVwX54CwRVaq90KZxQrL++o=;
+	h=Subject:To:Cc:From:Date:From;
+	b=PYHdHAqvHKb/+RfseIh3BtB0Nxj4QrpqiJfpWijerCCVFWFd6+dCOkaVGVodWmlfB
+	 1HZYnFLgew9NXYWfeQYVlO8iVgByrwz//nXHIlnLBndMKPEwdAk32j9jDL3GDJer7E
+	 athCcFs/gTe/g7uoqaLwZHfpgYOKd66Sn7Ph+2NU=
+Subject: FAILED: patch "[PATCH] iommu/vt-d: Make iotlb_sync_map a static property of" failed to apply to 6.16-stable tree
+To: baolu.lu@linux.intel.com,jgg@nvidia.com,will@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 18 Aug 2025 14:12:22 +0200
+Message-ID: <2025081822-quill-yeah-a207@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: w002.hihonor.com (10.68.28.120) To a011.hihonor.com
- (10.68.31.243)
 
-To avoid potential UAF issues during module removal races, we use pde_set_flags()
-to save proc_ops flags in PDE itself before proc_register(), and then use
-pde_has_proc_*() helpers instead of directly dereferencing pde->proc_ops->*.
 
-However, the pde_set_flags() call was missing when creating net related proc files.
-This omission caused incorrect behavior which FMODE_LSEEK was being cleared
-inappropriately in proc_reg_open() for net proc files. Lars reported it in this link[1].
+The patch below does not apply to the 6.16-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fix this by ensuring pde_set_flags() is called when register proc entry, and add
-NULL check for proc_ops in pde_set_flags().
+To reproduce the conflict and resubmit, you may use the following commands:
 
-[1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
+git checkout FETCH_HEAD
+git cherry-pick -x cee686775f9cd4eae31f3c1f7ec24b2048082667
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081822-quill-yeah-a207@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
-Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
-Cc: stable@vger.kernel.org
-Reported-by: Lars Wendler <polynomial-c@gmx.de>
-Signed-off-by: wangzijie <wangzijie1@honor.com>
----
- fs/proc/generic.c | 36 +++++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 17 deletions(-)
+Possible dependencies:
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 76e800e38..003031839 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -367,6 +367,23 @@ static const struct inode_operations proc_dir_inode_operations = {
- 	.setattr	= proc_notify_change,
- };
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From cee686775f9cd4eae31f3c1f7ec24b2048082667 Mon Sep 17 00:00:00 2001
+From: Lu Baolu <baolu.lu@linux.intel.com>
+Date: Mon, 21 Jul 2025 13:16:57 +0800
+Subject: [PATCH] iommu/vt-d: Make iotlb_sync_map a static property of
+ dmar_domain
+
+Commit 12724ce3fe1a ("iommu/vt-d: Optimize iotlb_sync_map for
+non-caching/non-RWBF modes") dynamically set iotlb_sync_map. This causes
+synchronization issues due to lack of locking on map and attach paths,
+racing iommufd userspace operations.
+
+Invalidation changes must precede device attachment to ensure all flushes
+complete before hardware walks page tables, preventing coherence issues.
+
+Make domain->iotlb_sync_map static, set once during domain allocation. If
+an IOMMU requires iotlb_sync_map but the domain lacks it, attach is
+rejected. This won't reduce domain sharing: RWBF and shadowing page table
+caching are legacy uses with legacy hardware. Mixed configs (some IOMMUs
+in caching mode, others not) are unlikely in real-world scenarios.
+
+Fixes: 12724ce3fe1a ("iommu/vt-d: Optimize iotlb_sync_map for non-caching/non-RWBF modes")
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20250721051657.1695788-1-baolu.lu@linux.intel.com
+Signed-off-by: Will Deacon <will@kernel.org>
+
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 3e774e3bb735..d1791b50f791 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -57,6 +57,8 @@
+ static void __init check_tylersburg_isoch(void);
+ static int rwbf_quirk;
  
-+static void pde_set_flags(struct proc_dir_entry *pde)
-+{
-+	if (!pde->proc_ops)
-+		return;
++#define rwbf_required(iommu)	(rwbf_quirk || cap_rwbf((iommu)->cap))
 +
-+	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
-+		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (pde->proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (pde->proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
-+	if (pde->proc_ops->proc_lseek)
-+		pde->flags |= PROC_ENTRY_proc_lseek;
-+}
-+
- /* returns the registered entry, or frees dp and returns NULL on failure */
- struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 		struct proc_dir_entry *dp)
-@@ -374,6 +391,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 	if (proc_alloc_inum(&dp->low_ino))
- 		goto out_free_entry;
- 
-+	pde_set_flags(dp);
-+
- 	write_lock(&proc_subdir_lock);
- 	dp->parent = dir;
- 	if (pde_subdir_insert(dir, dp) == false) {
-@@ -561,20 +580,6 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
- 	return p;
+ /*
+  * set to 1 to panic kernel if can't successfully enable VT-d
+  * (used when kernel is launched w/ TXT)
+@@ -1780,18 +1782,6 @@ static int domain_setup_first_level(struct intel_iommu *iommu,
+ 					  __pa(pgd), flags, old);
  }
  
--static void pde_set_flags(struct proc_dir_entry *pde)
+-static bool domain_need_iotlb_sync_map(struct dmar_domain *domain,
+-				       struct intel_iommu *iommu)
 -{
--	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
--		pde->flags |= PROC_ENTRY_PERMANENT;
--	if (pde->proc_ops->proc_read_iter)
--		pde->flags |= PROC_ENTRY_proc_read_iter;
--#ifdef CONFIG_COMPAT
--	if (pde->proc_ops->proc_compat_ioctl)
--		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
--#endif
--	if (pde->proc_ops->proc_lseek)
--		pde->flags |= PROC_ENTRY_proc_lseek;
+-	if (cap_caching_mode(iommu->cap) && intel_domain_is_ss_paging(domain))
+-		return true;
+-
+-	if (rwbf_quirk || cap_rwbf(iommu->cap))
+-		return true;
+-
+-	return false;
 -}
 -
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
- 		struct proc_dir_entry *parent,
- 		const struct proc_ops *proc_ops, void *data)
-@@ -585,7 +590,6 @@ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
- 	if (!p)
- 		return NULL;
- 	p->proc_ops = proc_ops;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
+ static int dmar_domain_attach_device(struct dmar_domain *domain,
+ 				     struct device *dev)
+ {
+@@ -1831,8 +1821,6 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
+ 	if (ret)
+ 		goto out_block_translation;
+ 
+-	domain->iotlb_sync_map |= domain_need_iotlb_sync_map(domain, iommu);
+-
+ 	return 0;
+ 
+ out_block_translation:
+@@ -3352,6 +3340,14 @@ intel_iommu_domain_alloc_first_stage(struct device *dev,
+ 		return ERR_CAST(dmar_domain);
+ 
+ 	dmar_domain->domain.ops = &intel_fs_paging_domain_ops;
++	/*
++	 * iotlb sync for map is only needed for legacy implementations that
++	 * explicitly require flushing internal write buffers to ensure memory
++	 * coherence.
++	 */
++	if (rwbf_required(iommu))
++		dmar_domain->iotlb_sync_map = true;
++
+ 	return &dmar_domain->domain;
  }
- EXPORT_SYMBOL(proc_create_data);
-@@ -636,7 +640,6 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
+ 
+@@ -3386,6 +3382,14 @@ intel_iommu_domain_alloc_second_stage(struct device *dev,
+ 	if (flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING)
+ 		dmar_domain->domain.dirty_ops = &intel_dirty_ops;
+ 
++	/*
++	 * Besides the internal write buffer flush, the caching mode used for
++	 * legacy nested translation (which utilizes shadowing page tables)
++	 * also requires iotlb sync on map.
++	 */
++	if (rwbf_required(iommu) || cap_caching_mode(iommu->cap))
++		dmar_domain->iotlb_sync_map = true;
++
+ 	return &dmar_domain->domain;
  }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -667,7 +670,6 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
+ 
+@@ -3446,6 +3450,11 @@ static int paging_domain_compatible_first_stage(struct dmar_domain *dmar_domain,
+ 	if (!cap_fl1gp_support(iommu->cap) &&
+ 	    (dmar_domain->domain.pgsize_bitmap & SZ_1G))
+ 		return -EINVAL;
++
++	/* iotlb sync on map requirement */
++	if ((rwbf_required(iommu)) && !dmar_domain->iotlb_sync_map)
++		return -EINVAL;
++
+ 	return 0;
  }
- EXPORT_SYMBOL(proc_create_single_data);
--- 
-2.25.1
+ 
+@@ -3469,6 +3478,12 @@ paging_domain_compatible_second_stage(struct dmar_domain *dmar_domain,
+ 		return -EINVAL;
+ 	if (!(sslps & BIT(1)) && (dmar_domain->domain.pgsize_bitmap & SZ_1G))
+ 		return -EINVAL;
++
++	/* iotlb sync on map requirement */
++	if ((rwbf_required(iommu) || cap_caching_mode(iommu->cap)) &&
++	    !dmar_domain->iotlb_sync_map)
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
 
 
