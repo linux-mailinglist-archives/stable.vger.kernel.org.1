@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE8FB2A9F1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2266CB2A70B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BCB68689C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0298A189BA65
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A7F322A23;
-	Mon, 18 Aug 2025 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8B932274B;
+	Mon, 18 Aug 2025 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FoxYd+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUS5tYX+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F43340DAD;
-	Mon, 18 Aug 2025 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154D632255F;
+	Mon, 18 Aug 2025 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525790; cv=none; b=EkwkJMHHOXHRU/B0ONsrwJh9Cv7x9SdzxSC95KeDIfj6ZDiexC6xWyFodMOfAU7cMXEOkWDkq4NNRTezFLLHhgCAfi3SjksEmOZ+YootStrklVX1QjwjZUy9yVRD+OZ0piuFSpVB5VxpQE7eSaWhI+08W8kX3cA3YVaMZLgQaYc=
+	t=1755524207; cv=none; b=tUvOBgbmSESgaxqniZzx8eSKhpwtf3ciRYv19oO4dpVWpYeIgtgbqyaxOeK0pXgmDEug1coFafEkXKREulVkpzs17ykk7pIHDSj+Phcr8B0owZPLWn5pxgVgHuOSufEQIr3fWJhpp1UF2+pAzIU5LVoEYqsnnr1CGVcLHlhstlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525790; c=relaxed/simple;
-	bh=N5JCx3rmLYo7CqZEyf7dK6x2o90aI1M8XE4R4OuAAe8=;
+	s=arc-20240116; t=1755524207; c=relaxed/simple;
+	bh=vVQwxcDLyko1d0q+IrDGSdXI4mcgyKCXxj7ugz/bUBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdNMFbybYmPz6l3PehJ+Muza3KorO+e36uZNz9oUTu0ROE1JbSoKg4mLOcRV9dhqFPN1+OREusS+phzcAHNHbRqM43AHOQNoNzcxt36+ULwGb5dVnSm93wuAnIYx7tlTGihlDfN2aEm7EqqaP9zS5g3DwOrZ5InYXKkIEJ4TpnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FoxYd+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34E1C4CEEB;
-	Mon, 18 Aug 2025 14:03:09 +0000 (UTC)
+	 MIME-Version; b=b1XK60+dXLNWCRdBbJz79BSEHpnsyG2Q0D1DQS+BiKdxjQ3JEBnybrRpcWcpF5xYoH7qjjM6UiX9jcOCGviGMZgo3ez1WpY5v9q5QGgeD80CuPKJunQSoZipSS8jgR/ixEn/yqsf5zqz1d8Jmzwc70SNxbJSrQKtaucgXPma9Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUS5tYX+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943ECC4CEEB;
+	Mon, 18 Aug 2025 13:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525790;
-	bh=N5JCx3rmLYo7CqZEyf7dK6x2o90aI1M8XE4R4OuAAe8=;
+	s=korg; t=1755524207;
+	bh=vVQwxcDLyko1d0q+IrDGSdXI4mcgyKCXxj7ugz/bUBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FoxYd+dPvub9Eg6A5NX+n5GH1lnt6hezn1e/htQKpny8YGAIs7xMvQ+4yLu2R0sA
-	 0IJbBNnjIskJBTZ9jCJSHkXGcm/QtsmEa/1OQbLzcIOKc+sgkhEh3BUqofdGBMZZYk
-	 Ttvpjx/jPnlnU9HQwuYydBAHqAyN+QgAjAbaBkV4=
+	b=jUS5tYX+tbBCnofrtYdSpYoxLMojm7kTAknj4SrXFznD8hsks1h2y0v6HzaiMClxS
+	 F0tvWgADjrH7aYOxasafNqg5LrOnajcJNbXqW/rzJwQoAr83/SejGHm7O4TVbhviSE
+	 2TcQuEJhK1OSQuhbdYO11FUbbb5bmqwEmjunBiZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Lee Jones <lee@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 367/570] mfd: axp20x: Set explicit ID for AXP313 regulator
+Subject: [PATCH 6.15 368/515] power: supply: qcom_battmgr: Add lithium-polymer entry
 Date: Mon, 18 Aug 2025 14:45:54 +0200
-Message-ID: <20250818124519.997666624@linuxfoundation.org>
+Message-ID: <20250818124512.575239499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 88828c7e940dd45d139ad4a39d702b23840a37c5 ]
+[ Upstream commit 202ac22b8e2e015e6c196fd8113f3d2a62dd1afc ]
 
-On newer boards featuring the A523 SoC, the AXP323 (related to the
-AXP313) is paired with the AXP717 and serves as a secondary PMIC
-providing additional regulator outputs. However the MFD cells are all
-registered with PLATFORM_DEVID_NONE, which causes the regulator cells
-to conflict with each other.
+On some Dell XPS 13 (9345) variants, the battery used is lithium-polymer
+based. Currently, this is reported as unknown technology due to the entry
+missing.
 
-Commit e37ec3218870 ("mfd: axp20x: Allow multiple regulators") attempted
-to fix this by switching to PLATFORM_DEVID_AUTO so that the device names
-would all be different, however that broke IIO channel mapping, which is
-also tied to the device names. As a result the change was later reverted.
+[ 4083.135325] Unknown battery technology 'LIP'
 
-Instead, here we attempt to make sure the AXP313/AXP323 regulator cell
-does not conflict by explicitly giving it an ID number. This was
-previously done for the AXP809+AXP806 pair used with the A80 SoC.
+Add another check for lithium-polymer in the technology parsing callback
+and return that instead of unknown.
 
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20250619173207.3367126-1-wens@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250523-psy-qcom-battmgr-add-lipo-entry-v1-1-938c20a43a25@linaro.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/axp20x.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/power/supply/qcom_battmgr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-index e9914e8a29a3..25c639b348cd 100644
---- a/drivers/mfd/axp20x.c
-+++ b/drivers/mfd/axp20x.c
-@@ -1053,7 +1053,8 @@ static const struct mfd_cell axp152_cells[] = {
- };
+diff --git a/drivers/power/supply/qcom_battmgr.c b/drivers/power/supply/qcom_battmgr.c
+index fe27676fbc7c..2d50830610e9 100644
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -981,6 +981,8 @@ static unsigned int qcom_battmgr_sc8280xp_parse_technology(const char *chemistry
+ {
+ 	if (!strncmp(chemistry, "LIO", BATTMGR_CHEMISTRY_LEN))
+ 		return POWER_SUPPLY_TECHNOLOGY_LION;
++	if (!strncmp(chemistry, "LIP", BATTMGR_CHEMISTRY_LEN))
++		return POWER_SUPPLY_TECHNOLOGY_LIPO;
  
- static struct mfd_cell axp313a_cells[] = {
--	MFD_CELL_NAME("axp20x-regulator"),
-+	/* AXP323 is sometimes paired with AXP717 as sub-PMIC */
-+	MFD_CELL_BASIC("axp20x-regulator", NULL, NULL, 0, 1),
- 	MFD_CELL_RES("axp313a-pek", axp313a_pek_resources),
- };
- 
+ 	pr_err("Unknown battery technology '%s'\n", chemistry);
+ 	return POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
 -- 
 2.39.5
 
