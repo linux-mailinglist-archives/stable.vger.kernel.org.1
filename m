@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A40BB2A829
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:56 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6149AB2A257
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BDAD58609D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 437334E2DDB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53BF335BAF;
-	Mon, 18 Aug 2025 13:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26674320CD7;
+	Mon, 18 Aug 2025 12:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVbwpsnx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3igx91c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726C6335BA3;
-	Mon, 18 Aug 2025 13:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98F831E0FF;
+	Mon, 18 Aug 2025 12:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525107; cv=none; b=nqGkupakeCqRRnRbg2Wg/2yMZIGOv9BlkjnFMpOgYzwLPh9+GCmTm+9S7Z0Oyb+vjdgwQ6rgrUCqxoqLMop46ijVTiXc0FkkSktdOne/jarqMKHwKBvXMePgbiEKPlYcr3ATcH55RaZF0nZfZF6GNjo1op6QJTJoEwHGX2TqZ1U=
+	t=1755521688; cv=none; b=cBbK0n7ay4iVrklU+EwLsuX64QQxWYsRIQf7bQNiQ2GgPw9qHDlM1zAI6h2/nt6qm6tVx2S4alAtcasFUmWf1s220bRcpZp5J+0LtRFvkRUAAq3+POyLXuyfwZZwNUtQLIdHht6HRCnT5Kk96pD2gloGiOYdW8bqFHHQTK18VS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525107; c=relaxed/simple;
-	bh=5GoJNdhXZCO5RuSFrK7VDQ/b2hYla3lfsLrhh0YbLII=;
+	s=arc-20240116; t=1755521688; c=relaxed/simple;
+	bh=P2giNBy2zk3lP1SCkS26DTdXo6plYPw+eIAJJQX76mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7MJ5bCdez5HGR9jlZnwYWc/s0UU/FC9AGvsh4wNv5+6wjI7THBitjT1k3XxzrAeIrXWx+6qVYyGckHuHl3/a0go6OrxerJ8uaWG/ThBcEbTyJhXzHgIte9UPvxFHR6z9awAYy1YA73rT5/sWwDG8YQIwAfVHASdAdQ8wQJoZlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVbwpsnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEF7C4CEEB;
-	Mon, 18 Aug 2025 13:51:46 +0000 (UTC)
+	 MIME-Version; b=YugASrD4QLH2RzMz87VZWnGNf5ajhvZt5pk2jUEzZC+Eb8JBFvtIYdKHg36jLrr1t9ZLlFIhh6GeuJ07AnTH/P0CpEbQOV66Mla8F7aHxR64KS12fV5aQa1bMxMO1+/AB84elKbbvAf9AA/xQ8zib5XLsaBJNd5Gzu1DLr7qmA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3igx91c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3084C4CEEB;
+	Mon, 18 Aug 2025 12:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525107;
-	bh=5GoJNdhXZCO5RuSFrK7VDQ/b2hYla3lfsLrhh0YbLII=;
+	s=korg; t=1755521688;
+	bh=P2giNBy2zk3lP1SCkS26DTdXo6plYPw+eIAJJQX76mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVbwpsnx7G2QPcUpEZl8XJZRc0ySJczZ8cpy8RPOJwk5qCj7vxWezZhs9quvHq7i0
-	 mhcV4l0HSmn6VFgxiUoY7mdPgLiAZfb4s76Gp91NDgFZ6ifqgPbB0h8ibGaYz3pxw4
-	 oS5CqK1y/sBKwbiSrXxoOmXG6iG4zzxhHMGC9+uw=
+	b=c3igx91cGcqg5rKvR5RKO44XnzN8OJ9qJyroIQaexIkEF1Ca82HMQBbfcHi2rGGLm
+	 XiVpZjprRYUrJWVndub8Dr3KzwppTAzSDmY972f2zWfYH0/w2UgTHKdmR8I38NwD9N
+	 UAYhLQlxszirHk7MxatGt+fs9btsc1BaDxNV7wpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 133/570] usb: xhci: Avoid showing warnings for dying controller
+Subject: [PATCH 6.12 094/444] tracefs: Add d_delete to remove negative dentries
 Date: Mon, 18 Aug 2025 14:42:00 +0200
-Message-ID: <20250818124510.947888586@linuxfoundation.org>
+Message-ID: <20250818124452.472397005@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 65fc0fc137b5da3ee1f4ca4f61050fcb203d7582 ]
+[ Upstream commit d9b13cdad80dc11d74408cf201939a946e9303a6 ]
 
-When a USB4 dock is unplugged from a system it won't respond to ring
-events. The PCI core handles the surprise removal event and notifies
-all PCI drivers. The XHCI PCI driver sets a flag that the device is
-being removed, and when the device stops responding a flag is also
-added to indicate it's dying.
+If a lookup in tracefs is done on a file that does not exist, it leaves a
+dentry hanging around until memory pressure removes it. But eventfs
+dentries should hang around as when their ref count goes to zero, it
+requires more work to recreate it. For the rest of the tracefs dentries,
+they hang around as their dentry is used as a descriptor for the tracing
+system. But if a file lookup happens for a file in tracefs that does not
+exist, it should be deleted.
 
-When that flag is set don't bother to show warnings about a missing
-controller.
+Add a .d_delete callback that checks if dentry->fsdata is set or not. Only
+eventfs dentries set fsdata so if it has content it should not be deleted
+and should hang around in the cache.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/tracefs/inode.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 8a819e853288..47151ca527bf 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -121,7 +121,8 @@ int xhci_halt(struct xhci_hcd *xhci)
- 	ret = xhci_handshake(&xhci->op_regs->status,
- 			STS_HALT, STS_HALT, XHCI_MAX_HALT_USEC);
- 	if (ret) {
--		xhci_warn(xhci, "Host halt failed, %d\n", ret);
-+		if (!(xhci->xhc_state & XHCI_STATE_DYING))
-+			xhci_warn(xhci, "Host halt failed, %d\n", ret);
- 		return ret;
- 	}
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index cfc614c638da..9f15d606dfde 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -464,9 +464,20 @@ static int tracefs_d_revalidate(struct dentry *dentry, unsigned int flags)
+ 	return !(ei && ei->is_freed);
+ }
  
-@@ -180,7 +181,8 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
- 	state = readl(&xhci->op_regs->status);
++static int tracefs_d_delete(const struct dentry *dentry)
++{
++	/*
++	 * We want to keep eventfs dentries around but not tracefs
++	 * ones. eventfs dentries have content in d_fsdata.
++	 * Use d_fsdata to determine if it's a eventfs dentry or not.
++	 */
++	return dentry->d_fsdata == NULL;
++}
++
+ static const struct dentry_operations tracefs_dentry_operations = {
+ 	.d_revalidate = tracefs_d_revalidate,
+ 	.d_release = tracefs_d_release,
++	.d_delete = tracefs_d_delete,
+ };
  
- 	if (state == ~(u32)0) {
--		xhci_warn(xhci, "Host not accessible, reset failed.\n");
-+		if (!(xhci->xhc_state & XHCI_STATE_DYING))
-+			xhci_warn(xhci, "Host not accessible, reset failed.\n");
- 		return -ENODEV;
- 	}
- 
+ static int tracefs_fill_super(struct super_block *sb, struct fs_context *fc)
 -- 
 2.39.5
 
