@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F54B2A34A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9B9B2A620
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0805E623D86
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22F553A9144
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C391731E108;
-	Mon, 18 Aug 2025 13:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DEA3375AF;
+	Mon, 18 Aug 2025 13:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3+wWr0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/Qdqtz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECD331E0F8;
-	Mon, 18 Aug 2025 13:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6103375A8;
+	Mon, 18 Aug 2025 13:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522114; cv=none; b=iN4gSRT+ZRMwNWIHh4U91o2b91URETWXvQ9QIsFNJxUciWO5xft/OFJ7iLFi9F7y0u/qksjf2nNHpji7T704u7sm0hWK+YX7t/XXNtjjQKPGrcrE9SBMCHydOjHqjoXDSr/fnZ3jo75JDbjQHGqAb6xJZHq/dQdCEoKpTsTTmzY=
+	t=1755523735; cv=none; b=JikKH/0DNWXusiJkHdyHiu8Dld6YiOJdbad0Xz9s2RdMegvVeIHyyawt4nGL5C9UKNrgTK/8pJeE5AnYO2B/Jm6NJGmYY7rf07WgHCKDUQD/DhunzYFjABZ+bEdoHZ+QOZEw/UkKZf0j4/IKwJkFCjcW3MgYwkGaLC9I7cYOSR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522114; c=relaxed/simple;
-	bh=9kxBc5HJRVpe35Nuw6rCCF8aZnHwasBNFE1tYbruvVg=;
+	s=arc-20240116; t=1755523735; c=relaxed/simple;
+	bh=ZD9g4MewnSA1/AcwVK3UjvlGakWm1Dz0VA/JGnXxh7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfTgaAPn6UPvTCCV7eSrgpmag5IMxn7WZZQoAOklvrp011RJfko/icewqRgNB2qQKR3k0AjWlfJQ/0z6kEq4MNkB468pm6rOtYytg3kVFUct3tZCdT/gi+PZeb4n4EpQYqvVr5zRsv59KlLQF/tbyTHFqSR7RVGrrggpic7BQbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3+wWr0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BF8C113D0;
-	Mon, 18 Aug 2025 13:01:53 +0000 (UTC)
+	 MIME-Version; b=tE2wml2x+l6d7bmdOuKwR09bnwd79VOUNPJsw8XO96r98Y+2V4JccXNk97HMuqJ7pQzcvhAFL2+OPpfaWzX2lGAWPrw8My62Yihzi/dUU3FzKWzI8Di22Qb0QLKtOHwJQMHUNh2Ih+qjHfSfu52qRSyErzif8JrQZ56iLopBueg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/Qdqtz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B643C4CEF1;
+	Mon, 18 Aug 2025 13:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522114;
-	bh=9kxBc5HJRVpe35Nuw6rCCF8aZnHwasBNFE1tYbruvVg=;
+	s=korg; t=1755523735;
+	bh=ZD9g4MewnSA1/AcwVK3UjvlGakWm1Dz0VA/JGnXxh7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3+wWr0NA3XhR+Yaa8vPca1H8PimczP+0K2rGqqeHyZySHwjnIiU3XdLZ8JPNAGw0
-	 BVibTkrwEMHcMEQcWu4mi34ncsnE7qzE7tn3sEpapgTDraGAXAgi2xyMiB0ePckPUM
-	 ibIeRFN2zmD2h9i6KYLmBuPQX4MNtNJ58veeZkIU=
+	b=x/Qdqtz8CnOmekk4dasOE+StpgFwL2ncQMYJrozpCaB8maQe5kz898p+go1/tfRAq
+	 oiY/jvyX4PWJBikg+x2JpOGYkFEZOwMA5pwak9+RU123P8RtaRRvUp+NqWxy+2M2yF
+	 l8EeM87wsec6N86xqM+tjDi3wKot8RlA/tOZyUec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Syed Hassan <syed.hassan@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/444] drm/amd/display: limit clear_update_flags to dcn32 and above
+Subject: [PATCH 6.15 226/515] wifi: cfg80211: Fix interface type validation
 Date: Mon, 18 Aug 2025 14:43:32 +0200
-Message-ID: <20250818124455.846336247@linuxfoundation.org>
+Message-ID: <20250818124507.068543527@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit f354556e29f40ef44fa8b13dc914817db3537e20 ]
+[ Upstream commit 14450be2332a49445106403492a367412b8c23f4 ]
 
-[why]
-dc has some code out of sync:
-dc_commit_updates_for_stream handles v1/v2/v3,
-but dc_update_planes_and_stream makes v1 asic to use v2.
+Fix a condition that verified valid values of interface types.
 
-as a reression fix: limit clear_update_flags to dcn32 or newer asic.
-need to follow up that v1 asic using v2 issue.
-
-Reviewed-by: Syed Hassan <syed.hassan@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709233537.7ad199ca5939.I0ac1ff74798bf59a87a57f2e18f2153c308b119b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/net/cfg80211.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index a99d3e2256f1..b87f3e2d5117 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -5121,8 +5121,7 @@ bool dc_update_planes_and_stream(struct dc *dc,
- 	else
- 		ret = update_planes_and_stream_v2(dc, srf_updates,
- 			surface_count, stream, stream_update);
--
--	if (ret)
-+	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
- 		clear_update_flags(srf_updates, surface_count, stream);
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 75f2e5782887..71db571617ba 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -633,7 +633,7 @@ ieee80211_get_sband_iftype_data(const struct ieee80211_supported_band *sband,
+ 	const struct ieee80211_sband_iftype_data *data;
+ 	int i;
  
- 	return ret;
-@@ -5153,7 +5152,7 @@ void dc_commit_updates_for_stream(struct dc *dc,
- 		ret = update_planes_and_stream_v1(dc, srf_updates, surface_count, stream,
- 				stream_update, state);
+-	if (WARN_ON(iftype >= NL80211_IFTYPE_MAX))
++	if (WARN_ON(iftype >= NUM_NL80211_IFTYPES))
+ 		return NULL;
  
--	if (ret)
-+	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
- 		clear_update_flags(srf_updates, surface_count, stream);
- }
- 
+ 	if (iftype == NL80211_IFTYPE_AP_VLAN)
 -- 
 2.39.5
 
