@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-171574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0FDB2AAE0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B7CB2AAC9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 874A61BA83CB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6C6B1BC0FB3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62FE83570BD;
-	Mon, 18 Aug 2025 14:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D3C3570C6;
+	Mon, 18 Aug 2025 14:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVtCpla0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIeCrnNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB9B3570B7;
-	Mon, 18 Aug 2025 14:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521FA3570C3;
+	Mon, 18 Aug 2025 14:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526389; cv=none; b=jKkinXgLiq14QB+EBC2hVscS3S2PXB4fRVT8Qqg50YM6CXLdBnUbL1YFIbcSor4jVIAH0DrW0i7I+NvlxUNSdrYLrbxVvQRZmlykeiBI1MZz4POH0fp6V9F0EwefioyRk/3Pvrn9EVOWY/dKJOD5rTkCpAmwTlRBPGO5SxVbqQI=
+	t=1755526392; cv=none; b=r3pAH9DEfuIOLcCMk8m9tXKiu61qq2MDnjRO/vBSZT3o/QrEqmE5S8Q33uvbFfRf3kzv8V6nKs4LB7jytrO8NByrG7NDp+X2/cWBT9fg8e787qgVX2ODtAAIXfLc69Tj3WeDZYjAa/5QYAsU9hfflLu05VSSznsm9JLL5TQMzjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526389; c=relaxed/simple;
-	bh=JTqC9v0vnpCH7GxvQmJvPc3etaIzGXadZ12jX90cBJU=;
+	s=arc-20240116; t=1755526392; c=relaxed/simple;
+	bh=NfornXTN+sgLFkl4FiTjtMy5ZcrPOer0bOPFLGTgJgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1sykY3g336pXWZsvKxET7LRypO3nl22Rn54D9UvbZw27y7ud+3wCHFaIh5QQ6wpXZmA7Z9KU8JVbjwkK+qkA+gAfwUquH2NKJYmZGvjZB6ihE7CghxcJBv2XrdgMFs86HjnsZQ2reX6To/sF0h4u97caF+ln21IjeKv7kGz8Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVtCpla0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A58C4CEEB;
-	Mon, 18 Aug 2025 14:13:08 +0000 (UTC)
+	 MIME-Version; b=G3Ss4uHQPzIftyzo/LQZgDarFVXFeerEYMRR6q6devQrHPcHyinc/b+udcbEYcoFtxIVb0I3OKq/d6OQt7jUOURckis6J9Xfjdut19639XOfJNg2QheOQma++ZyN8F1EYq5SCAHAfpFOEAdP0kmoOZ3cbAEiKAqEzZDvGreAI0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIeCrnNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B507AC4CEEB;
+	Mon, 18 Aug 2025 14:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526388;
-	bh=JTqC9v0vnpCH7GxvQmJvPc3etaIzGXadZ12jX90cBJU=;
+	s=korg; t=1755526392;
+	bh=NfornXTN+sgLFkl4FiTjtMy5ZcrPOer0bOPFLGTgJgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVtCpla0l9olErDQgDOXzhBR6OfmuJZbd4Qvrei7UZ50yu57JPslXjZVmUVzv2r9x
-	 JG4e0boIY9mfD0M62SpqBjzpnWkggSZn44rR9j4XHZrFNO0x+z44BO5SkuOh/rD/m8
-	 cKjCwm1PV5BtdIPFicio3NjH53/JVyq1O76FDc7M=
+	b=aIeCrnNC0aX3eah4pXrc2FG3d3Oz91C1ijXeDRLXfcCnbvJ/8ctYKexCek/DwDIT3
+	 ffREkdWjaSELr12lkTKaPjvdiQ0g8wficSg12muBVktBq0IH7idWPoPna0dXGV5dDS
+	 He9D56ZUXWc44Iuz4YkwMSY02QY+hFVAMoXD3gdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 6.16 541/570] parisc: Makefile: fix a typo in palo.conf
-Date: Mon, 18 Aug 2025 14:48:48 +0200
-Message-ID: <20250818124526.720115167@linuxfoundation.org>
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.16 542/570] mm, slab: restore NUMA policy support for large kmalloc
+Date: Mon, 18 Aug 2025 14:48:49 +0200
+Message-ID: <20250818124526.757169614@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -68,36 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
+commit e2d18cbf178775ad377ad88ee55e6e183c38d262 upstream.
 
-Correct "objree" to "objtree". "objree" is not defined.
+The slab allocator observes the task's NUMA policy in various places
+such as allocating slab pages. Large kmalloc() allocations used to do
+that too, until an unintended change by c4cab557521a ("mm/slab_common:
+cleanup kmalloc_large()") resulted in ignoring mempolicy and just
+preferring the local node. Restore the NUMA policy support.
 
-Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.3+
+Fixes: c4cab557521a ("mm/slab_common: cleanup kmalloc_large()")
+Cc: <stable@vger.kernel.org>
+Acked-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slub.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -139,7 +139,7 @@ palo lifimage: vmlinuz
- 	fi
- 	@if test ! -f "$(PALOCONF)"; then \
- 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
--		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
-+		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
- 		echo 'You should check it and re-run "make palo".'; \
- 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
- 		false; \
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4269,7 +4269,12 @@ static void *___kmalloc_large_node(size_
+ 		flags = kmalloc_fix_flags(flags);
+ 
+ 	flags |= __GFP_COMP;
+-	folio = (struct folio *)alloc_pages_node_noprof(node, flags, order);
++
++	if (node == NUMA_NO_NODE)
++		folio = (struct folio *)alloc_pages_noprof(flags, order);
++	else
++		folio = (struct folio *)__alloc_pages_noprof(flags, order, node, NULL);
++
+ 	if (folio) {
+ 		ptr = folio_address(folio);
+ 		lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B,
 
 
 
