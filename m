@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315CCB2A8B2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3639B2A636
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2525A5872E6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90348681B68
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442172882A9;
-	Mon, 18 Aug 2025 13:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A2A32A3FD;
+	Mon, 18 Aug 2025 13:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwjdBrda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nR5UgN+0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0307D22AE7A;
-	Mon, 18 Aug 2025 13:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8391832A3FA;
+	Mon, 18 Aug 2025 13:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525360; cv=none; b=akzNR4tYSKNpFfsh2b141lp/shPgzSL3nVCFPX3LjJFezj8Od/ZUaoBrH8L2NJJFkA1WHrhr2U79KuNYyMltis0RYUf2N8zY4UjW0RGLWIwfbbG8agZuUW/SvgmOW6nwhgVicSv6XxNb97EfWRQPlusGU+TsfQZn2a1O/hyN9Ys=
+	t=1755523557; cv=none; b=RQACU8C/wWQjQ6O2qo7kXgWOPGpSh653nTUpq6SDIhL7EG8NxtUdkx7GzXIDk5UnNG9Pz0337q5Fo5KitUYjOeymlKECChGG4dxItZ95AXg8nzLVXEpp6oT2o1U5oMtZ+gArO9Vks5RZ+LF7GXwdaDZ5ETPFcTpVboSJOyxld+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525360; c=relaxed/simple;
-	bh=gPDqd5oQgQ5XSQOgJVKsFMaWWHf3lR2AD4nnko9MHvM=;
+	s=arc-20240116; t=1755523557; c=relaxed/simple;
+	bh=WmPOM6Bn9HYhpLuUdfvNEw8Q215xf2u7IcNkTwlkZxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhP1T32gwMv1HVOH19xuxrhuUEOBs7QZaS2BkPsElMgxldrlliC75+eVQ5p31vVSvt4BF1hricDxP/YlX8aeDgw2COFl6zwUyEvhVmJd2V7CxXFfBi+6cORPlxtOxGR4l7VTIjdBgNWrWVmLWLiWsvqAo9zTqOBSutsbObM5suE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwjdBrda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD402C4CEEB;
-	Mon, 18 Aug 2025 13:55:58 +0000 (UTC)
+	 MIME-Version; b=YhX/N2nEZ7ZpUmpOkxwiC4d5GOqamf3WbD0IimAmEGAlI8jM4UyMUR8L+4rbu9VjN2m/afuHCyEnBQJaj5QpRSPVcmhTMOpo7I21cLpMuLl8OB3ZkGX7mNiYkuvY9F+b23ZJ7R/LIVlGTDjiQPnz36UnfGWjA0C5FBfusjtmuOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nR5UgN+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97707C4CEEB;
+	Mon, 18 Aug 2025 13:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525359;
-	bh=gPDqd5oQgQ5XSQOgJVKsFMaWWHf3lR2AD4nnko9MHvM=;
+	s=korg; t=1755523557;
+	bh=WmPOM6Bn9HYhpLuUdfvNEw8Q215xf2u7IcNkTwlkZxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwjdBrdaYQNeF0/xZV/A8fsRtmrtPgaf7GZa5xqBcEXMlzdBzO+kCMAymI21Y6iJW
-	 SWzE0lkRxE0SgGkYXACFt5dCvav+aZAbdfCUpEpz7UbWM6LE0xiUi1w0j2K7BWd3R+
-	 PcjAnPKJwvIU7xwu42PZXCozFBxjG7tMbr0wN758=
+	b=nR5UgN+0LZOEysL1vFBV3D8lP9xUWsLlPvxdpzsFC2L6iWYOHcGB4sWLT2Vb87JWT
+	 IRZA995S/RU6nGbfPwpQFFKMzPjJhfpdDu3ZoHrTubLH5VUijTMX7QKFbeCUmfNVah
+	 c/R9SCTlEumxNJUHK+BtJtFVM+pY9OTFO6DGX5oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 205/570] netfilter: nft_set_pipapo: prefer kvmalloc for scratch maps
-Date: Mon, 18 Aug 2025 14:43:12 +0200
-Message-ID: <20250818124513.705444216@linuxfoundation.org>
+Subject: [PATCH 6.15 207/515] s390/time: Use monotonic clock in get_cycles()
+Date: Mon, 18 Aug 2025 14:43:13 +0200
+Message-ID: <20250818124506.334166182@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 897eefee2eb73ec6c119a0ca357d7b4a3e92c5ef ]
+[ Upstream commit 09e7e29d2b49ba84bcefb3dc1657726d2de5bb24 ]
 
-The scratchmap size depends on the number of elements in the set.
-For huge sets, each scratch map can easily require very large
-allocations, e.g. for 100k entries each scratch map will require
-close to 64kbyte of memory.
+Otherwise the code might not work correctly when the clock
+is changed.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/s390/include/asm/timex.h | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index c5855069bdab..9e4e25f2458f 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1219,7 +1219,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
+diff --git a/arch/s390/include/asm/timex.h b/arch/s390/include/asm/timex.h
+index bed8d0b5a282..59dfb8780f62 100644
+--- a/arch/s390/include/asm/timex.h
++++ b/arch/s390/include/asm/timex.h
+@@ -196,13 +196,6 @@ static inline unsigned long get_tod_clock_fast(void)
+ 	asm volatile("stckf %0" : "=Q" (clk) : : "cc");
+ 	return clk;
+ }
+-
+-static inline cycles_t get_cycles(void)
+-{
+-	return (cycles_t) get_tod_clock() >> 2;
+-}
+-#define get_cycles get_cycles
+-
+ int get_phys_clock(unsigned long *clock);
+ void init_cpu_timer(void);
  
- 	mem = s;
- 	mem -= s->align_off;
--	kfree(mem);
-+	kvfree(mem);
+@@ -230,6 +223,12 @@ static inline unsigned long get_tod_clock_monotonic(void)
+ 	return tod;
  }
  
++static inline cycles_t get_cycles(void)
++{
++	return (cycles_t)get_tod_clock_monotonic() >> 2;
++}
++#define get_cycles get_cycles
++
  /**
-@@ -1240,10 +1240,9 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
- 		void *scratch_aligned;
- 		u32 align_off;
- #endif
--		scratch = kzalloc_node(struct_size(scratch, map,
--						   bsize_max * 2) +
--				       NFT_PIPAPO_ALIGN_HEADROOM,
--				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
-+		scratch = kvzalloc_node(struct_size(scratch, map, bsize_max * 2) +
-+					NFT_PIPAPO_ALIGN_HEADROOM,
-+					GFP_KERNEL_ACCOUNT, cpu_to_node(i));
- 		if (!scratch) {
- 			/* On failure, there's no need to undo previous
- 			 * allocations: this means that some scratch maps have
+  * tod_to_ns - convert a TOD format value to nanoseconds
+  * @todval: to be converted TOD format value
 -- 
 2.39.5
 
