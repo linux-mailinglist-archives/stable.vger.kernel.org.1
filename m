@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384BEB2A770
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DF3B2A47B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4BA1BA22B5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C617E17D851
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9B322540;
-	Mon, 18 Aug 2025 13:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7F729E112;
+	Mon, 18 Aug 2025 13:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="178rxHzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzHt7T+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE0D322534;
-	Mon, 18 Aug 2025 13:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDEC310627;
+	Mon, 18 Aug 2025 13:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524420; cv=none; b=Mfypue6KvM69KQg5UCTsghyrhA+tUx25dnd3uga8NwhehjepJ4U+JtINrCzRx5uVP2PQeh9eRruukiGhQWXaaSLtMnmZ2OOQXGuEdPlfs8YUkSl2HHFUaz6h1Qmfh6MyIgOcyRc7runXjzFSC1LtXtq9lpiYYJ0wAd6LX32/nCc=
+	t=1755522839; cv=none; b=gbjAb8IU2qJ5NQ7NWvRMWA8xJgHiM/266VifQr85yHKDdHrMFd1tgyBqOLw4nLx7tmYbdPee52ak3OnJZZ0j/tRMkQKJnZbJqyyyebFmKymWkiWJsl/nMg0gXNUqxb5nWddXkTcmV3GjOnnyyqWfywgikrTT8jUHBZKkJnciRQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524420; c=relaxed/simple;
-	bh=bD0N63tNPwIqy/WsL5bvow8+UiWZPqduMlfbqLRQQHA=;
+	s=arc-20240116; t=1755522839; c=relaxed/simple;
+	bh=2l+ELbEUxr1G/E0Zlrd/UOgzk7j+CN0PHEyJj2XQ19I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEvW2szvgqDqRKJVt50jEiQkixHaUYW2qUcpfFl1FEFbfwD/JxbsKuwqKcz5YHjO6r2kk2LgBYwulzrukHRT51vFvtUhPdugwACSipGlDgj7nCwn2EdckqgqRFEfnPcaV5ZTOB6WojFZlP33Lc7cdUdgE0lgGfru9jyjg4seGco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=178rxHzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91C4C4CEEB;
-	Mon, 18 Aug 2025 13:40:18 +0000 (UTC)
+	 MIME-Version; b=QC44j7nylv053v+8dT3ll5N8WAU/mrQ/2iatTjBdeomdaNnJ/vSxHsqdgA5QLEpX+M9pMYVnYR5rPLw6c0ITndlGcQKurpdZRu4uMhoh0SAL9Dwl1xmeU9bJYpe0mEOiMa3m1XGzUNv7nXe3H4H3rmzJA66dCpqrzvtR2NofsTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzHt7T+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE89C4CEEB;
+	Mon, 18 Aug 2025 13:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524419;
-	bh=bD0N63tNPwIqy/WsL5bvow8+UiWZPqduMlfbqLRQQHA=;
+	s=korg; t=1755522839;
+	bh=2l+ELbEUxr1G/E0Zlrd/UOgzk7j+CN0PHEyJj2XQ19I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=178rxHzFLxX6xAwQcjoVs8lMW31d2tx4o29R1hDPeiqi2xE3ZLpsXbdk3ELKAa8SY
-	 YxJqO3adB6C1AhI3oPhSmWDkXM3k9icsYTdOCtYOpHF6vd8boGF7Tmd5impO3gyZZh
-	 Jc9Y/OUD/IN6ikvtMyemV+NVSREo1QiIQei/4lY0=
+	b=WzHt7T+LUXcPdoMkhe4HcritGO7KkvNPnSxPd07UVHWbNlbf3ACpaIPW5Jl/Z0oYN
+	 AUFj+lmZfCTeWqEL9WIhUCItAnByEkht6c6iNFKYx2c4o3J8XSeU+52tIsf2zHLVkT
+	 0mXvXLBJ7YamY152ubbtPIFjAME8LkxxRhG3/0eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 434/515] ASoC: fsl_sai: replace regmap_write with regmap_update_bits
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 394/444] btrfs: qgroup: set quota enabled bit if quota disable fails flushing reservations
 Date: Mon, 18 Aug 2025 14:47:00 +0200
-Message-ID: <20250818124515.133638997@linuxfoundation.org>
+Message-ID: <20250818124503.690670817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 0e270f32975fd21874185ba53653630dd40bf560 ]
+commit e41c75ca3189341e76e6af64b857c05b68a1d7db upstream.
 
-Use the regmap_write() for software reset in fsl_sai_config_disable would
-cause the FSL_SAI_CSR_BCE bit to be cleared. Refer to
-commit 197c53c8ecb34 ("ASoC: fsl_sai: Don't disable bitclock for i.MX8MP")
-FSL_SAI_CSR_BCE should not be cleared. So need to use regmap_update_bits()
-instead of regmap_write() for these bit operations.
+Before waiting for the rescan worker to finish and flushing reservations,
+we clear the BTRFS_FS_QUOTA_ENABLED flag from fs_info. If we fail flushing
+reservations we leave with the flag not set which is not correct since
+quotas are still enabled - we must set back the flag on error paths, such
+as when we fail to start a transaction, except for error paths that abort
+a transaction. The reservation flushing happens very early before we do
+any operation that actually disables quotas and before we start a
+transaction, so set back BTRFS_FS_QUOTA_ENABLED if it fails.
 
-Fixes: dc78f7e59169d ("ASoC: fsl_sai: Force a software reset when starting in consumer mode")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250807020318.2143219-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: af0e2aab3b70 ("btrfs: qgroup: flush reservations during quota disable")
+CC: stable@vger.kernel.org # 6.12+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ fs/btrfs/qgroup.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index f244e3679975..01944860a264 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -777,9 +777,9 @@ static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
- 	 * are running concurrently.
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1373,11 +1373,14 @@ int btrfs_quota_disable(struct btrfs_fs_
+ 
+ 	/*
+ 	 * We have nothing held here and no trans handle, just return the error
+-	 * if there is one.
++	 * if there is one and set back the quota enabled bit since we didn't
++	 * actually disable quotas.
  	 */
- 	/* Software Reset */
--	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	/* Clear SR bit to finish the reset */
--	regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR, 0);
- }
+ 	ret = flush_reservations(fs_info);
+-	if (ret)
++	if (ret) {
++		set_bit(BTRFS_FS_QUOTA_ENABLED, &fs_info->flags);
+ 		return ret;
++	}
  
- static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
-@@ -898,11 +898,11 @@ static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
- 	unsigned int ofs = sai->soc_data->reg_offset;
- 
- 	/* Software Reset for both Tx and Rx */
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	/* Clear SR bit to finish the reset */
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
- 
- 	regmap_update_bits(sai->regmap, FSL_SAI_TCR1(ofs),
- 			   FSL_SAI_CR1_RFW_MASK(sai->soc_data->fifo_depth),
-@@ -1790,11 +1790,11 @@ static int fsl_sai_runtime_resume(struct device *dev)
- 
- 	regcache_cache_only(sai->regmap, false);
- 	regcache_mark_dirty(sai->regmap);
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, FSL_SAI_CSR_SR);
- 	usleep_range(1000, 2000);
--	regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--	regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs), FSL_SAI_CSR_SR, 0);
-+	regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs), FSL_SAI_CSR_SR, 0);
- 
- 	ret = regcache_sync(sai->regmap);
- 	if (ret)
--- 
-2.50.1
-
+ 	/*
+ 	 * 1 For the root item
 
 
 
