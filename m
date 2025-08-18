@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-171508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6BFB2AA10
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4198B2A7BA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A840F6842F5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1DF81B603B5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA9F32A3DA;
-	Mon, 18 Aug 2025 14:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F1D335BA3;
+	Mon, 18 Aug 2025 13:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWCY+zCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hz6SS91e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9914183CC3;
-	Mon, 18 Aug 2025 14:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E10335BA9;
+	Mon, 18 Aug 2025 13:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526162; cv=none; b=uXux7ifworZcLL3UacFATKm9bY6v+v1VwuE7fdq57NhbjtPjKByg3hSnO2rhWzmLNxQ009lsWhjdDhRL79Xv3e58d2TBoJrX0RkMje7GUhwFyRpwBsdHUkT1rEceuS/eJQCw40pHPZliAKvoWHw2reJX28fgyEQ5pZOZtfoL+nU=
+	t=1755524449; cv=none; b=gKYmZkIaMMa/n1VIVnVYfAsE4Cea90SnAmGIy/aQ/3693NP66pwcSxu28ra/SuuYPlLt3O0OShUSaUGI9nx/bCITCw7iYulxFjkhScYd6vr2HveeBbplxAiaq9vr2spI2+FQsB6QDQaFtHW0or9eFdYcCMk4i1fZyeYmxGYn4yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526162; c=relaxed/simple;
-	bh=llBPYvrJVMHqxbgs/dt0+8SW6yKH1iKHKvv9EjN44M8=;
+	s=arc-20240116; t=1755524449; c=relaxed/simple;
+	bh=5j3P3ARjQdShndfwsPn0wkAHTuNR5vkix9dkEdnZTNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lD2wotUOo4vmzWGgliLvhC6OTx2IFFQJdV+5CqP+1/joPEltyebEw+avWo3hQw9LJXtXxL+vcGNSmmp6M5b5cYK3VY7P+EcDeIwk/Vz87ECj5VaZXPpqrcdYT7xA+Gfo4CKm5WqjPHAY1sEtkm5ceyyicWHW6XPAF/ZexITgt68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWCY+zCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E611C4CEEB;
-	Mon, 18 Aug 2025 14:09:21 +0000 (UTC)
+	 MIME-Version; b=F+8BsE4iSyKR0iO227KYfD1CBJFEBAcVaaaCcVWHFTgftZ43FKkxodBZeMuY00TVCP0r/nMHo/vLy0sEiw7iAS2R38PhgaKGWjUjRjd4WbFyXHJR4l0UhSrO3/VyrrCZSkY9PegwmrewqQ8bVXWDd6qLATvi67fIFrwG/2LY/ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hz6SS91e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1772AC116B1;
+	Mon, 18 Aug 2025 13:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526162;
-	bh=llBPYvrJVMHqxbgs/dt0+8SW6yKH1iKHKvv9EjN44M8=;
+	s=korg; t=1755524449;
+	bh=5j3P3ARjQdShndfwsPn0wkAHTuNR5vkix9dkEdnZTNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWCY+zCn8J7NWh22T+sNXD+U4KiibnkGP4kU1OO6nhdh+CYojimFeMzzUhUNw8c4j
-	 utAfqxdyyI0LJOy8JPX6fL9W3PiyZP+lpu0xJ3EBdBU6r+u7zREu0g36M8jX5N879h
-	 6z1GFIeo4zQeZG+Qhg8BmsWxD7ZdDAFkAsp+ksq0=
+	b=hz6SS91e0+RwknVYNvNXDXPRO7Ay1caDW0TI99CC0b6GCN3maKS96aq7s6RVm+wvc
+	 U9zzORED9DRnMaejPJhIi9e3W5kw8m4lWjagVML+Av36gfF6jAfcOZoyoHQRw5CKxq
+	 f3EMTO1NMlt6ost9Cb4m30Gc9WDsNmw6XS1IdIzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinod Govindapillai <vinod.govindapillai@intel.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 475/570] drm/i915/fbc: fix the implementation of wa_18038517565
+	Peter Jung <ptr1337@cachyos.org>,
+	burneddi <burneddi@protonmail.com>,
+	Russell Haley <yumpusamongus@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 476/515] btrfs: fix log tree replay failure due to file with 0 links and extents
 Date: Mon, 18 Aug 2025 14:47:42 +0200
-Message-ID: <20250818124524.186837280@linuxfoundation.org>
+Message-ID: <20250818124516.745497562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +63,154 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinod Govindapillai <vinod.govindapillai@intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit fd56b9c9507f32b16159f9a922e1af5628254567 ]
+commit 0a32e4f0025a74c70dcab4478e9b29c22f5ecf2f upstream.
 
-As per the wa_18038517565, we need to disable FBC compressor
-clock gating before enabling FBC and enable after disabling
-FBC. Placing the enabling of clock gating in the fbc deactivate
-function can make the above wa logic go wrong in case of
-frontbuffer rendering FBC mechanism. FBC deactivate can get
-called during fb invalidate and then the corresponding FBC
-activate can get called without properly disabling the clock
-gating and can result in compression stalled. So move the
-enable clock gating at the end of one FBC session after FBC
-is completely disabled for a pipe.
+If we log a new inode (not persisted in a past transaction) that has 0
+links and extents, then log another inode with an higher inode number, we
+end up with failing to replay the log tree with -EINVAL. The steps for
+this are:
 
-Bspec: 74212, 72197, 69741, 65555
-Fixes: 010363c46189 ("drm/i915/display: implement wa_18038517565")
-Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Link: https://lore.kernel.org/r/20250729124648.288497-1-vinod.govindapillai@intel.com
-(cherry picked from commit 82dde0407ab126f8413fd6c51429e5057ced5ba2)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) create new file A
+2) write some data to file A
+3) open an fd on file A
+4) unlink file A
+5) fsync file A using the previously open fd
+6) create file B (has higher inode number than file A)
+7) fsync file B
+8) power fail before current transaction commits
+
+Now when attempting to mount the fs, the log replay will fail with
+-ENOENT at replay_one_extent() when attempting to replay the first
+extent of file A. The failure comes when trying to open the inode for
+file A in the subvolume tree, since it doesn't exist.
+
+Before commit 5f61b961599a ("btrfs: fix inode lookup error handling
+during log replay"), the returned error was -EIO instead of -ENOENT,
+since we converted any errors when attempting to read an inode during
+log replay to -EIO.
+
+The reason for this is that the log replay procedure fails to ignore
+the current inode when we are at the stage LOG_WALK_REPLAY_ALL, our
+current inode has 0 links and last inode we processed in the previous
+stage has a non 0 link count. In other words, the issue is that at
+replay_one_extent() we only update wc->ignore_cur_inode if the current
+replay stage is LOG_WALK_REPLAY_INODES.
+
+Fix this by updating wc->ignore_cur_inode whenever we find an inode item
+regardless of the current replay stage. This is a simple solution and easy
+to backport, but later we can do other alternatives like avoid logging
+extents or inode items other than the inode item for inodes with a link
+count of 0.
+
+The problem with the wc->ignore_cur_inode logic has been around since
+commit f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync
+of a tmpfile") but it only became frequent to hit since the more recent
+commit 5e85262e542d ("btrfs: fix fsync of files with no hard links not
+persisting deletion"), because we stopped skipping inodes with a link
+count of 0 when logging, while before the problem would only be triggered
+if trying to replay a log tree created with an older kernel which has a
+logged inode with 0 links.
+
+A test case for fstests will be submitted soon.
+
+Reported-by: Peter Jung <ptr1337@cachyos.org>
+Link: https://lore.kernel.org/linux-btrfs/fce139db-4458-4788-bb97-c29acf6cb1df@cachyos.org/
+Reported-by: burneddi <burneddi@protonmail.com>
+Link: https://lore.kernel.org/linux-btrfs/lh4W-Lwc0Mbk-QvBhhQyZxf6VbM3E8VtIvU3fPIQgweP_Q1n7wtlUZQc33sYlCKYd-o6rryJQfhHaNAOWWRKxpAXhM8NZPojzsJPyHMf2qY=@protonmail.com/#t
+Reported-by: Russell Haley <yumpusamongus@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/598ecc75-eb80-41b3-83c2-f2317fbb9864@gmail.com/
+Fixes: f2d72f42d5fa ("Btrfs: fix warning when replaying log after fsync of a tmpfile")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_fbc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/btrfs/tree-log.c |   48 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_fbc.c b/drivers/gpu/drm/i915/display/intel_fbc.c
-index bed2bba20b55..6ddbc682ec1c 100644
---- a/drivers/gpu/drm/i915/display/intel_fbc.c
-+++ b/drivers/gpu/drm/i915/display/intel_fbc.c
-@@ -550,10 +550,6 @@ static void ilk_fbc_deactivate(struct intel_fbc *fbc)
- 	if (dpfc_ctl & DPFC_CTL_EN) {
- 		dpfc_ctl &= ~DPFC_CTL_EN;
- 		intel_de_write(display, ILK_DPFC_CONTROL(fbc->id), dpfc_ctl);
--
--		/* wa_18038517565 Enable DPFC clock gating after FBC disable */
--		if (display->platform.dg2 || DISPLAY_VER(display) >= 14)
--			fbc_compressor_clkgate_disable_wa(fbc, false);
- 	}
- }
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -321,8 +321,7 @@ struct walk_control {
  
-@@ -1708,6 +1704,10 @@ static void __intel_fbc_disable(struct intel_fbc *fbc)
+ 	/*
+ 	 * Ignore any items from the inode currently being processed. Needs
+-	 * to be set every time we find a BTRFS_INODE_ITEM_KEY and we are in
+-	 * the LOG_WALK_REPLAY_INODES stage.
++	 * to be set every time we find a BTRFS_INODE_ITEM_KEY.
+ 	 */
+ 	bool ignore_cur_inode;
  
- 	__intel_fbc_cleanup_cfb(fbc);
+@@ -2431,23 +2430,30 @@ static int replay_one_buffer(struct btrf
  
-+	/* wa_18038517565 Enable DPFC clock gating after FBC disable */
-+	if (display->platform.dg2 || DISPLAY_VER(display) >= 14)
-+		fbc_compressor_clkgate_disable_wa(fbc, false);
+ 	nritems = btrfs_header_nritems(eb);
+ 	for (i = 0; i < nritems; i++) {
+-		btrfs_item_key_to_cpu(eb, &key, i);
++		struct btrfs_inode_item *inode_item;
+ 
+-		/* inode keys are done during the first stage */
+-		if (key.type == BTRFS_INODE_ITEM_KEY &&
+-		    wc->stage == LOG_WALK_REPLAY_INODES) {
+-			struct btrfs_inode_item *inode_item;
+-			u32 mode;
++		btrfs_item_key_to_cpu(eb, &key, i);
+ 
+-			inode_item = btrfs_item_ptr(eb, i,
+-					    struct btrfs_inode_item);
++		if (key.type == BTRFS_INODE_ITEM_KEY) {
++			inode_item = btrfs_item_ptr(eb, i, struct btrfs_inode_item);
+ 			/*
+-			 * If we have a tmpfile (O_TMPFILE) that got fsync'ed
+-			 * and never got linked before the fsync, skip it, as
+-			 * replaying it is pointless since it would be deleted
+-			 * later. We skip logging tmpfiles, but it's always
+-			 * possible we are replaying a log created with a kernel
+-			 * that used to log tmpfiles.
++			 * An inode with no links is either:
++			 *
++			 * 1) A tmpfile (O_TMPFILE) that got fsync'ed and never
++			 *    got linked before the fsync, skip it, as replaying
++			 *    it is pointless since it would be deleted later.
++			 *    We skip logging tmpfiles, but it's always possible
++			 *    we are replaying a log created with a kernel that
++			 *    used to log tmpfiles;
++			 *
++			 * 2) A non-tmpfile which got its last link deleted
++			 *    while holding an open fd on it and later got
++			 *    fsynced through that fd. We always log the
++			 *    parent inodes when inode->last_unlink_trans is
++			 *    set to the current transaction, so ignore all the
++			 *    inode items for this inode. We will delete the
++			 *    inode when processing the parent directory with
++			 *    replay_dir_deletes().
+ 			 */
+ 			if (btrfs_inode_nlink(eb, inode_item) == 0) {
+ 				wc->ignore_cur_inode = true;
+@@ -2455,8 +2461,14 @@ static int replay_one_buffer(struct btrf
+ 			} else {
+ 				wc->ignore_cur_inode = false;
+ 			}
+-			ret = replay_xattr_deletes(wc->trans, root, log,
+-						   path, key.objectid);
++		}
 +
- 	fbc->state.plane = NULL;
- 	fbc->flip_pending = false;
- 	fbc->busy_bits = 0;
--- 
-2.50.1
-
++		/* Inode keys are done during the first stage. */
++		if (key.type == BTRFS_INODE_ITEM_KEY &&
++		    wc->stage == LOG_WALK_REPLAY_INODES) {
++			u32 mode;
++
++			ret = replay_xattr_deletes(wc->trans, root, log, path, key.objectid);
+ 			if (ret)
+ 				break;
+ 			mode = btrfs_inode_mode(eb, inode_item);
 
 
 
