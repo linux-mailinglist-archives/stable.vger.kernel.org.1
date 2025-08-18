@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0E4B2A36E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9C2B2A630
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5522D189C524
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE787623A74
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884AA21C9FD;
-	Mon, 18 Aug 2025 13:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD91258EFB;
+	Mon, 18 Aug 2025 13:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nc6VZ4MI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEQ+56bU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4625A12DDA1;
-	Mon, 18 Aug 2025 13:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2CD1F4192;
+	Mon, 18 Aug 2025 13:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522203; cv=none; b=EH+QqWSGA+Doth9W9p1kcb4sfyoqQfGRzqVmdqOxk8HGz8XcQwcX/18X6lUaXh/mCucpke9sxY//Vd8nD089SiRzrOByZ50AGuaierW9sne5l9/+1wvYFZ5ccQpOjHvzJOr1QDgX932+BUp02Jld81+Jxr99z0gx8FfRDHSZKAQ=
+	t=1755523836; cv=none; b=mDPPn/A6NPrnEM+cEQLvaAMnHWqqz51fL95iqTi4Fc/8WH0/qNibzOIKcIkVV44evFg2CEgWlESkpDZt4fgJ/eZaAKTFEL54KyAZ6CmCyqfVw8lmslKXb3GWLLGhAzhrto6IKixBZ7NhqrHrjhK1iauGCQW+NGw1dsBpfWLVVLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522203; c=relaxed/simple;
-	bh=zfVkHlX24kQHYBm1IvE6p26OBGFEAqmJedXN9A/XdM0=;
+	s=arc-20240116; t=1755523836; c=relaxed/simple;
+	bh=Jk7+M5MRyrHLHigBmDCYdsBsCdJD4Tqk0NLvgaZ9QZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWBXTy33Dic9tJ54W5HPyUzqFZO0rIrephg6O57Sr3r8iRu8nvEy4snVzvPPxo5nGGUT5GXDPMKrbEKdMI9RO7LzuDLaaI/I6QHYuLJeBX4BuN4oxJiuaC+y9kijW88w7Ac9I9COhf6acTiZMYWOWBrDOuS1brfjaX4Qj5aZfsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nc6VZ4MI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB15FC4CEEB;
-	Mon, 18 Aug 2025 13:03:22 +0000 (UTC)
+	 MIME-Version; b=tJveunUltpJ30j9QrTneU5RSKthuFDabIDkMvvtMTd/AiD9O+T49Vnxhux8EBUoODUhAuIChFXRR/C/AoXTl0qaoiiAZwMyyUMtD/h7dRubjQCDXZ8BXHdgoTTT86GtnJvJBXuhkmjfwcRjggiEfZIIwdi8dNfaxmgq40UxXmqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEQ+56bU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BE1C4CEEB;
+	Mon, 18 Aug 2025 13:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522203;
-	bh=zfVkHlX24kQHYBm1IvE6p26OBGFEAqmJedXN9A/XdM0=;
+	s=korg; t=1755523836;
+	bh=Jk7+M5MRyrHLHigBmDCYdsBsCdJD4Tqk0NLvgaZ9QZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nc6VZ4MIOX1IayYPYtYU6923AU6fFxaPHSREsJ75rhENMsh6YtBJPiTMdyfRSBIjx
-	 Aloe3OE9roT7DM9LFKfwfL7TybP1dlzv/879TcYcOANpQDj4iX5VS7qRB80ZmEKrJ7
-	 lbWkRNnLzn/5DFNwbGiVcuwstL9hvClRqmQbE+Dc=
+	b=IEQ+56bUgE0VTTQAVK87L6mpWx9rHlvgPv6RghnhgvwQo8Vm8HSnOXxgbKhS7oV75
+	 9Qv58GdiTkQuHRU34P8yu7L4G8NRcFaD2rBS4k9n47mFEccuK8+WWjAKQA3D8X3yT6
+	 8a4xKd2JPwxM1Mt7Nur2Hoh27hz5LuYtOle94OMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lazar <alazar@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>,
+	Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/444] net: vlan: Replace BUG() with WARN_ON_ONCE() in vlan_dev_* stubs
+Subject: [PATCH 6.15 286/515] wifi: mac80211: update radar_required in channel context after channel switch
 Date: Mon, 18 Aug 2025 14:44:32 +0200
-Message-ID: <20250818124458.052180340@linuxfoundation.org>
+Message-ID: <20250818124509.428222866@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
 
-[ Upstream commit 60a8b1a5d0824afda869f18dc0ecfe72f8dfda42 ]
+[ Upstream commit 140c6a61d83cbd85adba769b5ef8d61acfa5b392 ]
 
-When CONFIG_VLAN_8021Q=n, a set of stub helpers are used, three of these
-helpers use BUG() unconditionally.
+Currently, when a non-DFS channel is brought up and the bandwidth is
+expanded from 80 MHz to 160 MHz, where the primary 80 MHz is non-DFS
+and the secondary 80 MHz consists of DFS channels, radar detection
+fails if radar occurs in the secondary 80 MHz.
 
-This code should not be reached, as callers of these functions should
-always check for is_vlan_dev() first, but the usage of BUG() is not
-recommended, replace it with WARN_ON() instead.
+When the channel is switched from 80 MHz to 160 MHz, with the primary
+80 MHz being non-DFS and the secondary 80 MHz consisting of DFS
+channels, the radar required flag in the channel switch parameters
+is set to true. However, when using a reserved channel context,
+it is not updated in sdata, which disables radar detection in the
+secondary 80 MHz DFS channels.
 
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250616132626.1749331-3-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Update the radar required flag in sdata to fix this issue when using
+a reserved channel context.
+
+Signed-off-by: Ramya Gnanasekar <ramya.gnanasekar@oss.qualcomm.com>
+Signed-off-by: Ramasamy Kaliappan <ramasamy.kaliappan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250608140324.1687117-1-ramasamy.kaliappan@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_vlan.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mac80211/chan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index 4354f6ad8887..9551dba15cc2 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -258,19 +258,19 @@ vlan_for_each(struct net_device *dev,
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index 3aaf5abf1acc..e0fdeaafc489 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -1381,6 +1381,7 @@ ieee80211_link_use_reserved_reassign(struct ieee80211_link_data *link)
+ 		goto out;
+ 	}
  
- static inline struct net_device *vlan_dev_real_dev(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return NULL;
- }
- 
- static inline u16 vlan_dev_vlan_id(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
- }
- 
- static inline __be16 vlan_dev_vlan_proto(const struct net_device *dev)
- {
--	BUG();
-+	WARN_ON_ONCE(1);
- 	return 0;
- }
++	link->radar_required = link->reserved_radar_required;
+ 	list_move(&link->assigned_chanctx_list, &new_ctx->assigned_links);
+ 	rcu_assign_pointer(link_conf->chanctx_conf, &new_ctx->conf);
  
 -- 
 2.39.5
