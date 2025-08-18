@@ -1,110 +1,146 @@
-Return-Path: <stable+bounces-169911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3D1B29703
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 04:26:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB65B29732
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:02:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D601F5E0436
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 02:25:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 167D818983D9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 03:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34164253B58;
-	Mon, 18 Aug 2025 02:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F88425C83A;
+	Mon, 18 Aug 2025 03:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="a7CRpque"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396902472B1
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 02:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A4224C06A;
+	Mon, 18 Aug 2025 03:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755483892; cv=none; b=pSEHFyDZvVqpiIiSZRvSSDp41KvAzqELpgA81EUo8C0+4WiBnNnGpru3o8vUxBOZyks74hfn3yxTj3hOWXXCBZUVRcOkbM8L0X+4QIuCN/btElmC0/QqFH79BquPT9Mt0vBt89R8OR4x+urFbUMJdyei1ONk2vLBMzDc+IKBfe0=
+	t=1755486138; cv=none; b=Sm26jsfkjOeqFzfFgKHn7f97ja9fz45mXDvVb2nb2hHR9dQXHwrsJephmk0Eb61FLIYFds+L2UiUUAs3cjUicLywpg/2OS1ZmH4I4zoQpiU39OVZzREvKZBdNYWKzu9LPCAMI5rsVcEmZlBIc9kziz0E6maHmKJvmVc4z/KabrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755483892; c=relaxed/simple;
-	bh=h1/oODU4WsYOo1tCfWWOLJdyleSNN7nXAkQtmf2z2xI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=E5k3MxCl0Xrms9rHY5jPwBA1Xy2ELcapP8k/fecRibwq6DAH4D7bl4ZnF/FVyKFHA68b03UsubEA5kE7K448jd0gFbaY4jjjPyolpTuG9Ct1vUfrJWDBgCKdMtWtrQ0yF9BR5y7PnWpgjAvArQH4zDolNrR2LoKDeSAZN5FUCLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4c4xJL1VT8zdcLg;
-	Mon, 18 Aug 2025 10:20:18 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2D6EE1402C8;
-	Mon, 18 Aug 2025 10:24:40 +0800 (CST)
-Received: from [10.67.111.31] (10.67.111.31) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
- 2025 10:24:39 +0800
-Message-ID: <2285c764-e6b3-4cb4-ae12-0bfaa1e67358@huawei.com>
-Date: Mon, 18 Aug 2025 10:24:38 +0800
+	s=arc-20240116; t=1755486138; c=relaxed/simple;
+	bh=dLR43dYiEJZSodPCTTeC4DftLRxQv/YFZN7dIWXdzQ8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NYNI16aIhnp/njI3m4wplurLKY6ijHiFW8f3Nb+IYqe2SE3SDvuRbE3pZ1rtSxnxIbvidX2fFVF/vm7RGb9N/wob2EXqF9RgNi9L1LuhfnBK/adkrPy74eiSSmXslbfLuWXftedM0dcXdS5oY/JFAd5XrVuRUwAc16zzkm1kUO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=a7CRpque; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: b7ee14a27bdf11f0b33aeb1e7f16c2b6-20250818
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=0+vjVtEU7kNIlyL8VETxpczT/vmL9S8nShv9BwKQngw=;
+	b=a7CRpqueaXSMCFVL1W6H1Lp5HwWf5WMEUTMdI49ZdEirtt2hzw9ja9H57emUd0kWkrbn4/bxrVBHC9SW3WgjS1HgAttLHL2ZV103tLGBJGDagx5NGcBXKcqE9YSuYvnTv2Do3npFHmbCjL85W38brmu2B/ZQh03CSQf0AsB1OPI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.3,REQID:f51e2914-38f4-4b21-9ad7-e82728ae1ce4,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:f1326cf,CLOUDID:a7c2516d-c2f4-47a6-876f-59a53e9ecc6e,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
+	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
+	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: b7ee14a27bdf11f0b33aeb1e7f16c2b6-20250818
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 146130983; Mon, 18 Aug 2025 11:02:04 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Mon, 18 Aug 2025 11:02:01 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Mon, 18 Aug 2025 11:02:01 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>, Tal Inbar
+	<inbartdev@gmail.com>
+Subject: [PATCH] wifi: mt76: mt7925: skip EHT MLD TLV on non-MLD and pass conn_state for sta_cmd
+Date: Mon, 18 Aug 2025 11:02:01 +0800
+Message-ID: <20250818030201.997940-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: Fix possible deadlock in console_trylock_spinning
-To: Catalin Marinas <catalin.marinas@arm.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, <stable@vger.kernel.org>,
-	<linux-mm@kvack.org>, Waiman Long <llong@redhat.com>, Breno Leitao
-	<leitao@debian.org>, John Ogness <john.ogness@linutronix.de>, Lu Jialin
-	<lujialin4@huawei.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20250813085310.2260586-1-gubowen5@huawei.com>
- <20250813155616.d7e5a832ce7cda7764942d10@linux-foundation.org>
- <f3e631dc-245a-4efe-98e5-cbe94464daec@huawei.com> <aJ3f05Dqzx0OouJa@arm.com>
-Content-Language: en-US
-From: Gu Bowen <gubowen5@huawei.com>
-In-Reply-To: <aJ3f05Dqzx0OouJa@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemh100007.china.huawei.com (7.202.181.92)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
+Return early in mt7925_mcu_sta_eht_mld_tlv() for non-MLD vifs to avoid bogus
+MLD TLVs, and pass the proper connection state to sta_basic TLV.
 
-On 8/14/2025 9:08 PM, Catalin Marinas wrote:
-> On Thu, Aug 14, 2025 at 10:33:56AM +0800, Gu Bowen wrote:
->> On 8/14/2025 6:56 AM, Andrew Morton wrote:
->>> I'm not sure which kernel version this was against, but kmemleak.c has
->>> changed quite a lot.
->>>
->>> Could we please see a patch against a latest kernel version?  Linus
->>> mainline will suit.
->>>
->>> Thanks.
->>
->> I discovered this issue in kernel version 5.10. Afterwards, I reviewed the
->> code of the mainline version and found that this deadlock path no longer
->> exists due to the refactoring of console_lock in v6.2-rc1. For details on
->> the refactoring, you can refer to this link :
->> https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/.
->> Therefore, theoretically, this issue existed before the refactoring of
->> console_lock.
-> 
-> Oh, so you can no longer hit this issue with mainline. This wasn't
-> mentioned (or I missed it) in the commit log.
-> 
-> So this would be a stable-only fix that does not have a correspondent
-> upstream. Adding Greg for his opinion.
-> 
+Cc: stable@vger.kernel.org
+Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd")
+Reported-by: Tal Inbar <inbartdev@gmail.com>
+Tested-by: Tal Inbar <inbartdev@gmail.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-I have discovered that I made a mistake, this fix patch should be merged 
-into the mainline. Since we have identified two types of deadlocks, the 
-AA deadlock [1] and the ABBA deadlock[2], the latter's deadlock path no 
-longer exists in the mainline due to the 40 patches that refactored 
-console_lock. However, the AA deadlock issue persists, so I believe this 
-fix should be applied to the mainline.
-
-[1] 
-https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
-[2] https://lore.kernel.org/all/20250730094914.566582-1-gubowen5@huawei.com/
-
-Best Regards,
-Guber
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 01fee93c0aa9..de8c88cb8081 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2089,13 +2089,13 @@ mt7925_mcu_sta_eht_mld_tlv(struct sk_buff *skb,
+ 	struct tlv *tlv;
+ 	u16 eml_cap;
+ 
++	if (!ieee80211_vif_is_mld(vif))
++		return;
++
+ 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_EHT_MLD, sizeof(*eht_mld));
+ 	eht_mld = (struct sta_rec_eht_mld *)tlv;
+ 	eht_mld->mld_type = 0xff;
+ 
+-	if (!ieee80211_vif_is_mld(vif))
+-		return;
+-
+ 	ext_capa = cfg80211_get_iftype_ext_capa(wiphy,
+ 						ieee80211_vif_type_p2p(vif));
+ 	if (!ext_capa)
+@@ -2167,6 +2167,7 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+ 	struct mt76_dev *dev = phy->dev;
+ 	struct mt792x_bss_conf *mconf;
+ 	struct sk_buff *skb;
++	int conn_state;
+ 
+ 	mconf = mt792x_vif_to_link(mvif, info->wcid->link_id);
+ 
+@@ -2175,10 +2176,13 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+ 	if (IS_ERR(skb))
+ 		return PTR_ERR(skb);
+ 
++	conn_state = info->enable ? CONN_STATE_PORT_SECURE :
++				    CONN_STATE_DISCONNECT;
++
+ 	if (info->enable && info->link_sta) {
+ 		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->link_conf,
+ 					      info->link_sta,
+-					      info->enable, info->newly);
++					      conn_state, info->newly);
+ 		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta);
+ 		mt7925_mcu_sta_ht_tlv(skb, info->link_sta);
+ 		mt7925_mcu_sta_vht_tlv(skb, info->link_sta);
+-- 
+2.34.1
 
 
