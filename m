@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA186B2A2D1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3198DB2A92B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A56194E2FDC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954F05A611C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC6D3074AE;
-	Mon, 18 Aug 2025 13:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38A3322A22;
+	Mon, 18 Aug 2025 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UKzzWIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vdg4tjt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1EC21C9FD;
-	Mon, 18 Aug 2025 13:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF2F322779;
+	Mon, 18 Aug 2025 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522176; cv=none; b=EUk1EQxQNz4E65qhjDM3PFvf7WnnvBj3kkPsA4hNyFzS2Tjxo/nsnciTr9uxzgUctr/gKsG/pdLtB3BQ9xP0DfHocyzEdPVhSPdRVK5Zo9EQA7TR5At6pfjqIHEXXlJFphEmOVZ7a5XdOJBMmtzA0SZnvpYx2dP7cITlCZf1e48=
+	t=1755525590; cv=none; b=Z+vZXghPAe9mQhxWqQg1MZ2ssp+kBBdI+1e/Ju2GZWH4PPw/Kp1x5fQoITfDzV0edjTEp4t+h6VrInBrrBqlNJE6vTMqU0ezVZ62MO34KYVsxK//yWW2VUP/L/ChUnxFKNzVaz2Anfh5Xaq3YJMHiU9r/Jti6+Il5wblZqPtx8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522176; c=relaxed/simple;
-	bh=hC6gALGHFbnYEDMLE3Logo0BibtMbH/swzHWfUoZClU=;
+	s=arc-20240116; t=1755525590; c=relaxed/simple;
+	bh=gKeu5ptb65IaJm2ykD6Cdq/GiZxiWCZg8+1hGayUp1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZFgYvCm3T4ZduXAgNT0SVJy8jGSX0Fbk8KJ8I/jGY87S/49gQkKHuelGIqc2SYtaf8r6biE85eGH/24addXn1mfcOOGCpm4mqyBTrfKZLcwNLwnbkmP/4VTBnp5PeGJLHLbVyu6lZ+QjAa6TpfitBlSh6ghkKWbSlOrSgASrg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UKzzWIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE16DC4CEEB;
-	Mon, 18 Aug 2025 13:02:55 +0000 (UTC)
+	 MIME-Version; b=Bm2hcdHVGz9rfd5v4PaJPiysJFZpfYR81O24uT67wU0uV2Iq/SD9R0ouEXjBKPVYmBwD0fERcJxqlbqiLr16kFiE4DRQlIlenzV6Xy1fMWgfmOCp6cTt+1koKnzE4AV+2EAwwZ5XaqiZMZmgwr+BwjVaYTf+WuY762tY7rYyt6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vdg4tjt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DD7C116C6;
+	Mon, 18 Aug 2025 13:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522176;
-	bh=hC6gALGHFbnYEDMLE3Logo0BibtMbH/swzHWfUoZClU=;
+	s=korg; t=1755525590;
+	bh=gKeu5ptb65IaJm2ykD6Cdq/GiZxiWCZg8+1hGayUp1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UKzzWIN3j90p2q5jOnzBEkuXW9J1PZScmIrAxZgy7yjktvmRShhbwHooFGY3Bju+
-	 SIjSWnacZFkjEC8Z0NeCRu0FEaiPA22ldouC89m7NKuQ7j4xloF2qKFncwTptnEmgg
-	 ajVvY9v6U1tE6+bmTh7TMcZs8Iv8h1GAmsQZa7Rg=
+	b=Vdg4tjt4N+lc3I95yGKlwyfAZMQKOMhev2Uz6oXwOHzYrl1lhsK7u/yUcLz5YDBEk
+	 KPdCBeWxgGsbHr1QqblhqF3dlQXIoSYn9oIl64VYQ2ixE5bdInPWKz+mfUzgMd/nKW
+	 Hln2JAcnmsApAur4AHGgppE/ETKzor4cFEw5wd5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 238/444] powerpc: floppy: Add missing checks after DMA map
+Subject: [PATCH 6.16 277/570] wifi: rtw89: Disable deep power saving for USB/SDIO
 Date: Mon, 18 Aug 2025 14:44:24 +0200
-Message-ID: <20250818124457.754192738@linuxfoundation.org>
+Message-ID: <20250818124516.523142199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit cf183c1730f2634245da35e9b5d53381b787d112 ]
+[ Upstream commit a3b871a0f7c083c2a632a31da8bc3de554ae8550 ]
 
-The DMA map functions can fail and should be tested for errors.
+Disable deep power saving for USB and SDIO because rtw89_mac_send_rpwm()
+is called in atomic context and accessing hardware registers results in
+"scheduling while atomic" errors.
 
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250620075602.12575-1-fourier.thomas@gmail.com
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/0f49eceb-0de0-47e2-ba36-3c6a0dddd17d@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/floppy.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
-index f8ce178b43b7..34abf8bea2cc 100644
---- a/arch/powerpc/include/asm/floppy.h
-+++ b/arch/powerpc/include/asm/floppy.h
-@@ -144,9 +144,12 @@ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
- 		bus_addr = 0;
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index c886dd2a73b4..894ab7ab94cc 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2839,6 +2839,9 @@ static enum rtw89_ps_mode rtw89_update_ps_mode(struct rtw89_dev *rtwdev)
+ {
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
  
--	if (!bus_addr)	/* need to map it */
-+	if (!bus_addr) {	/* need to map it */
- 		bus_addr = dma_map_single(&isa_bridge_pcidev->dev, addr, size,
- 					  dir);
-+		if (dma_mapping_error(&isa_bridge_pcidev->dev, bus_addr))
-+			return -ENOMEM;
-+	}
- 
- 	/* remember this one as prev */
- 	prev_addr = addr;
++	if (rtwdev->hci.type != RTW89_HCI_TYPE_PCIE)
++		return RTW89_PS_MODE_NONE;
++
+ 	if (rtw89_disable_ps_mode || !chip->ps_mode_supported ||
+ 	    RTW89_CHK_FW_FEATURE(NO_DEEP_PS, &rtwdev->fw))
+ 		return RTW89_PS_MODE_NONE;
 -- 
 2.39.5
 
