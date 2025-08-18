@@ -1,138 +1,130 @@
-Return-Path: <stable+bounces-171616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3487BB2AC13
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88854B2AC2C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8061E18A3630
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7179A1963ECF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D0B239591;
-	Mon, 18 Aug 2025 14:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986DD248F7C;
+	Mon, 18 Aug 2025 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="BpuaEkcQ"
+	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="Vip3LMPz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gentwo.org (gentwo.org [62.72.0.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6558F1FF7D7
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 14:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD8324A04D
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 15:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.72.0.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755529149; cv=none; b=bVsxJ2jjS7Owuom7jhAxG6RSx7BiKMbQ91FmRuTFwvKlcoj9OStjxIQRB+myj0fx0zVcKKWhYZOR2cYINPxN7/iRCbrNZSHosFRtFeL52uBGwdpBoy0yaQf7/IaalMq70eLosDN8IOOKDTYnjPH2edZqFc5uDZes4lvHelWUfQo=
+	t=1755529659; cv=none; b=MSV0ZIe1sNiVb8Nal/ltLZcS/+yNfASn6VDFLBP87qS3J+VfqK9BDsCaW3A4W0hCOBeLQnwxibQJXhbzOyMCCtF65eHqAGBtvYjOrdobMZBtBND9RzPbk1r7z8ha+X14QZrqcX5Z3sTStIp0MdCn0T9hJhbMTq0mNshyEk0Fwnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755529149; c=relaxed/simple;
-	bh=x3x2Axm/vg84U6A/QXRSVurUbA2OgAMZC8U9+0QEYwU=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=Ig/pG7/Smjm3f0ibAjmse8jiAX1q1oRoeTd2Fh0bROUZzt+z/VA8rv0/OKnTlCrfp+OXJv5bO60rKe/uGb6uVidVaVE4Je9Hs4ZbeCa+cd2C2NsMF/NhhVF2WuqeX1OMmNqtP/QlQMJVHN3BBRQEqqiYo9/HUwRf+KpzecOWigA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=BpuaEkcQ; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-244580523a0so36902025ad.1
-        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 07:59:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1755529147; x=1756133947; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=imihs9UdVJ+cu8dbhC8IcPh+Tx1B+im9KIGEWng20gg=;
-        b=BpuaEkcQ+uFTtAvOTRmAQeNrQ3qToCe7+sNmbAEfkv03KHK+rbafQOgR05RJ7UigDk
-         UI6iWpkdPZeREVdWp8YPHrUDMwnQnbB9AtQ+4iiAPuJcrFf+DZ6CChG+Lry/twD/jZAN
-         kuRvE5gSdmzbylxGtryc6z4xRKbZhjRTrO4ww2F0zekPssI0s7j0/O2k7JCmeOifwm7R
-         w4rIgg2zl807MwHlwUiprX8h8tiWqVbtTcTfkhgsR8yjfyQmXCC8mJMsLfJiUWs01C1t
-         qDRxXzS+qTIyRcjRwULqQUQ+ZnUY1D7tLIzLzFMqPeYb3p3odic3MnWfWsYCCr23UqAu
-         FIOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755529147; x=1756133947;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=imihs9UdVJ+cu8dbhC8IcPh+Tx1B+im9KIGEWng20gg=;
-        b=vFkmTB7iPz4mqGLoAJHo7goaJRcG3yxvzdmu8Bcd4gpP9zySSJ+atVbBPF/VCc3s8U
-         nRDKY8F+UCEU3ibeOpfOrOLtffRw+rXt5T9zikzPFW5qvzQiqs2xPa1nYKGZGAbd2akU
-         I2hSL887/613XjLIUo8cN137ABUcghJpiGkbwb6XCALH0REPbCZseoZlnkQgkOHgYdFH
-         a4uRKmwyEeD6nZTghNaZ0EJfKcuq15mfuJ4ZUKhcL9qazlp62dtlnNbKeKZO/UWNhsCc
-         h4v4vYFuaDyhbalqc5XURxmPdN9yKglkHfBmZco0kVHyPy3/ztEVHPMac4s+cm1pHGnF
-         LqYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtU1KFTRgiUer1y7S3d+oozITQlw7wx4Zutd/t0BOdzWIWmzYZKL4GeK+aVREEei84+r+wDik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKSO1QrwpOQhL/f3JsFW9l2tdZ0fnNc/32LekUulqxwicL8Hde
-	fWIwQi/V/0SNxTpZpl+nrErhPjq4xTdBgf5lEFGQzHGJtg4Oihp6QHnq6I2WI33TTpImmRp2gkq
-	jslLy
-X-Gm-Gg: ASbGncsHsU9nsN95y7HXFCTF1kgztWZpq86Pu09F3kle/rd8zg6lz3QAshl5COSfYhH
-	yJeggOaM4gPVx/AETvyWIKc6tRdKQkWdfR/72pkt+bmOazXv1wbGiwMG61aC1jrhgnmbNSieIHP
-	3A4oM5jRth4V5EuuNvdNMfk9Do0tnWpu3ezlf85UOfz+D4gRvG8rTRYeJVgAWK4RkempQePIBID
-	4LJjQWS2Mpx8dJIX9e2rfSbMegODXVu/I0f/Tnzo23SON8wm3eFAx6uMH0I+V7ONBAbzbEXrsjq
-	FZsKFCN+iS2+fE0fMCb4hPrJC3WODdAF2N6l7X0rZ/JAwz9RVwIkR1+k+OBIuNf96vE6TobXC5G
-	Vn7Wlr5hxZzUwnD/nAeyxuT21kts=
-X-Google-Smtp-Source: AGHT+IFGfsQFUqTsmYKdx37zAeKh/Nwqwb6+bAIVlwj5hdxkOCI8/wmkGgVkaubdMjpNuyeOJCUc5g==
-X-Received: by 2002:a17:903:1967:b0:242:a0b0:3c12 with SMTP id d9443c01a7336-2446d9c534amr164418595ad.52.1755529147575;
-        Mon, 18 Aug 2025 07:59:07 -0700 (PDT)
-Received: from 16ad3c994827 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2446cb0dba2sm82938645ad.68.2025.08.18.07.59.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Aug 2025 07:59:06 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1755529659; c=relaxed/simple;
+	bh=W7nLbXxI/v458LuT10vK9EQ738FG7J9ZcOr2AYygDPA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ozfRl8CM0SYYlrRY14GyC5LMclY5fCdzAfsBazQhhb/1TU4pbZgnm+POa6OUDFCRrUVX0GuEeTzsWgNexJeeDE91ElgqLtd+ZbyJZiQ0BGBEV9Hmcvm92MsnDjG7drzlzDdq+/OC5ORmPcvfvdZdaFbjeJ+TJXkRMTQwfCsG7v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=Vip3LMPz; arc=none smtp.client-ip=62.72.0.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1755529650;
+	bh=W7nLbXxI/v458LuT10vK9EQ738FG7J9ZcOr2AYygDPA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=Vip3LMPztiG2UYNXFw24DnqBP+rUB1YIa2i63kixXVxl4YIRaV0+53cOYwh/P23Fn
+	 gp5fWWlkzSeduMhhcwq4uwRLSDnHeyGz7UZhWYjs/uX33YNJYSHDe/0AXoKp1BguNN
+	 xiiuSr/Gd3BvamYOV+Vo6+k+lIezyM2tW2R+gGAE=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id 7F2B3401EF; Mon, 18 Aug 2025 08:07:30 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id 7C56D4010D;
+	Mon, 18 Aug 2025 08:07:30 -0700 (PDT)
+Date: Mon, 18 Aug 2025 08:07:30 -0700 (PDT)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: gregkh@linuxfoundation.org
+cc: vbabka@suse.cz, harry.yoo@oracle.com, roman.gushchin@linux.dev, 
+    stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] mm, slab: restore NUMA policy support
+ for large kmalloc" failed to apply to 6.1-stable tree
+In-Reply-To: <2025081818-skilled-timid-4660@gregkh>
+Message-ID: <f423079b-6994-a2aa-8bcf-248f39e739b7@gentwo.org>
+References: <2025081818-skilled-timid-4660@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-6.6.y: (build) call to undeclared
- function
- 'BIT_U32'; ISO C99 and later do not su...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Mon, 18 Aug 2025 14:59:06 -0000
-Message-ID: <175552914619.59.17895621905537693562@16ad3c994827>
+Content-Type: text/plain; charset=US-ASCII
 
+The breakage was introduced in 6.1 So maybe the fix is not needed?
 
+On Mon, 18 Aug 2025, gregkh@linuxfoundation.org wrote:
 
-
-
-Hello,
-
-New build issue found on stable-rc/linux-6.6.y:
-
----
- call to undeclared function 'BIT_U32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration] in drivers/net/can/ti_hecc.o (drivers/net/can/ti_hecc.c) [logspec:kbuild,kbuild.compiler.error]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:8ace23e7f8ec64c36de1851f3a96cbd024dbc75a
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  243d4807be1704fef446934001535d37afafd8d7
-
-
-
-Log excerpt:
-=====================================================
-drivers/net/can/ti_hecc.c:386:14: error: call to undeclared function 'BIT_U32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-  386 |         mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
-      |                     ^
-1 error generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:68a3271d233e484a3f9ea12f
-
-
-#kernelci issue maestro:8ace23e7f8ec64c36de1851f3a96cbd024dbc75a
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+>
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following commands:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x e2d18cbf178775ad377ad88ee55e6e183c38d262
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081818-skilled-timid-4660@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+>
+> Possible dependencies:
+>
+>
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> >From e2d18cbf178775ad377ad88ee55e6e183c38d262 Mon Sep 17 00:00:00 2001
+> From: Vlastimil Babka <vbabka@suse.cz>
+> Date: Mon, 2 Jun 2025 13:02:12 +0200
+> Subject: [PATCH] mm, slab: restore NUMA policy support for large kmalloc
+>
+> The slab allocator observes the task's NUMA policy in various places
+> such as allocating slab pages. Large kmalloc() allocations used to do
+> that too, until an unintended change by c4cab557521a ("mm/slab_common:
+> cleanup kmalloc_large()") resulted in ignoring mempolicy and just
+> preferring the local node. Restore the NUMA policy support.
+>
+> Fixes: c4cab557521a ("mm/slab_common: cleanup kmalloc_large()")
+> Cc: <stable@vger.kernel.org>
+> Acked-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+> Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 31e11ef256f9..06d64a5fb1bf 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4269,7 +4269,12 @@ static void *___kmalloc_large_node(size_t size, gfp_t flags, int node)
+>  		flags = kmalloc_fix_flags(flags);
+>
+>  	flags |= __GFP_COMP;
+> -	folio = (struct folio *)alloc_pages_node_noprof(node, flags, order);
+> +
+> +	if (node == NUMA_NO_NODE)
+> +		folio = (struct folio *)alloc_pages_noprof(flags, order);
+> +	else
+> +		folio = (struct folio *)__alloc_pages_noprof(flags, order, node, NULL);
+> +
+>  	if (folio) {
+>  		ptr = folio_address(folio);
+>  		lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B,
+>
 
