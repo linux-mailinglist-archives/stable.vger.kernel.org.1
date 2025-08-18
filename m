@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B17B2AA00
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:26:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B417DB2A447
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 423771BA519A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C496716C525
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8205D345751;
-	Mon, 18 Aug 2025 14:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E529A3218CB;
+	Mon, 18 Aug 2025 13:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1Acp2MK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWkGQhDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E5734574B;
-	Mon, 18 Aug 2025 14:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30E531E115;
+	Mon, 18 Aug 2025 13:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525873; cv=none; b=k5AzIw5gBmSAdamt4t/b+0saZXk/fxl9aywWjHtCD++p2vCmENUxdjWzG2I+XPr+IGcuuQ4ACPYhJnfM5i0qI1gIb4Wl1aq+4+4ITtjFXXpJO/fUVpN0dJyhmpxKFITSLR0dbEhCls+CYAM1UVY9PiuPOaVsxvlmWdTHOSiECUU=
+	t=1755522564; cv=none; b=pBlFjZ6RALXo3vyZodx1xkEX6Lif6OmK5D1EJkpdJ2fjdLm4wBH/KKZdfOjxGIGftUtRNycXppl4VSjxwrYp+YjsQ7Bu0lD/JY0wDQB2ioFkI8l7JyTSCJAqScEBmgccBrkXogwrMQZbehnd6dIigW7G96Q6f3MhHXoX2XTXorQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525873; c=relaxed/simple;
-	bh=bDQ3oBWhN6N+cAvQ/5XSeTms1UF2BozMpcT4ACM4Cv0=;
+	s=arc-20240116; t=1755522564; c=relaxed/simple;
+	bh=An/tl0ufFxKFD/DSojtNNrn3NAZSGcWZa6jthQKH6nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lo9VmuvSosY+H6iav/KJ9oPYbxbvYvszl8Ky68acYgQET3XUZJqvSHXuciTrew7VlpCm65dDRtHGRu64WBfgyffgeNnmNaSgJF1PTaalS/I2EFWWXMrTM9wF/yVlcwqpDRT6vAA6XFXPORQAJ4TWdRc4L0nRKL+xJPHic5KRs24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1Acp2MK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50A9C4CEEB;
-	Mon, 18 Aug 2025 14:04:32 +0000 (UTC)
+	 MIME-Version; b=ps0KgZ7kk6NrF4CdqRSCYTUQIRinXiHDDUFtczwMaO2jblLcmLxmSZ1MZMRpKbRsAILmSfEYAARV5LSt6Y8Q2aQxsunXayK35nH83WSfbe9sPj1v0voB9CIMubWluam2/XXyT9GyPyw+/kbjVbTn2tArjeX74m9dXmwDgHHU7PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWkGQhDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1371DC4CEEB;
+	Mon, 18 Aug 2025 13:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525873;
-	bh=bDQ3oBWhN6N+cAvQ/5XSeTms1UF2BozMpcT4ACM4Cv0=;
+	s=korg; t=1755522564;
+	bh=An/tl0ufFxKFD/DSojtNNrn3NAZSGcWZa6jthQKH6nM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1Acp2MKvFFJiXkEOIPwAZqUJzHhVbtJoVVeAhrpcxNeyexkjmVupNXMgXJ4F1GDl
-	 GqvcZcu+kfLBSQtPo+zI6QSzooA8TVPMkRpRQYGLptz6vqRpeRdTbBLI6oIUUgTNVf
-	 ushEei1dBRKtAEEwIWYQI5ZP9uB8gZLJHqfT1W6o=
+	b=uWkGQhDYWw0GunqdATFooTQmnA/uY+rmQYjFhBIwZardtGAiWV95Dz5iLSMmKqbT+
+	 rR43KjEFQziSXpHiO/puQVZIyJ7tcA+10sSaTAvW+3iQ/RjZlB2WfVDiI0s3pEkz2C
+	 7yxxXOQRJT0cRfvam6DnHQRVgzMljCLoBuJUCt7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	kernel test robot <lkp@intel.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 392/570] media: v4l2-common: Reduce warnings about missing V4L2_CID_LINK_FREQ control
+Subject: [PATCH 6.12 353/444] ipmi: Fix strcpy source and destination the same
 Date: Mon, 18 Aug 2025 14:46:19 +0200
-Message-ID: <20250818124520.959415765@linuxfoundation.org>
+Message-ID: <20250818124502.153663737@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,154 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Corey Minyard <corey@minyard.net>
 
-[ Upstream commit 5a0abb8909b9dcf347fce1d201ac6686ac33fd64 ]
+[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
 
-When operating a pipeline with a missing V4L2_CID_LINK_FREQ control this
-two line warning is printed each time the pipeline is started. Reduce
-this excessive logging by only warning once for the missing control.
+The source and destination of some strcpy operations was the same.
+Split out the part of the operations that needed to be done for those
+particular calls so the unnecessary copy wasn't done.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-common.c b/drivers/media/v4l2-core/v4l2-common.c
-index bd160a8c9efe..e1fc8fe43b74 100644
---- a/drivers/media/v4l2-core/v4l2-common.c
-+++ b/drivers/media/v4l2-core/v4l2-common.c
-@@ -505,10 +505,10 @@ s64 __v4l2_get_link_freq_ctrl(struct v4l2_ctrl_handler *handler,
+diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
+index 335eea80054e..37ab5806b1a4 100644
+--- a/drivers/char/ipmi/ipmi_watchdog.c
++++ b/drivers/char/ipmi/ipmi_watchdog.c
+@@ -1189,14 +1189,8 @@ static struct ipmi_smi_watcher smi_watcher = {
+ 	.smi_gone = ipmi_smi_gone
+ };
  
- 		freq = div_u64(v4l2_ctrl_g_ctrl_int64(ctrl) * mul, div);
+-static int action_op(const char *inval, char *outval)
++static int action_op_set_val(const char *inval)
+ {
+-	if (outval)
+-		strcpy(outval, action);
+-
+-	if (!inval)
+-		return 0;
+-
+ 	if (strcmp(inval, "reset") == 0)
+ 		action_val = WDOG_TIMEOUT_RESET;
+ 	else if (strcmp(inval, "none") == 0)
+@@ -1207,18 +1201,26 @@ static int action_op(const char *inval, char *outval)
+ 		action_val = WDOG_TIMEOUT_POWER_DOWN;
+ 	else
+ 		return -EINVAL;
+-	strcpy(action, inval);
+ 	return 0;
+ }
  
--		pr_warn("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
--			__func__);
--		pr_warn("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
--			__func__);
-+		pr_warn_once("%s: Link frequency estimated using pixel rate: result might be inaccurate\n",
-+			     __func__);
-+		pr_warn_once("%s: Consider implementing support for V4L2_CID_LINK_FREQ in the transmitter driver\n",
-+			     __func__);
+-static int preaction_op(const char *inval, char *outval)
++static int action_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preaction);
++		strcpy(outval, action);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = action_op_set_val(inval);
++	if (!rv)
++		strcpy(action, inval);
++	return rv;
++}
+ 
++static int preaction_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "pre_none") == 0)
+ 		preaction_val = WDOG_PRETIMEOUT_NONE;
+ 	else if (strcmp(inval, "pre_smi") == 0)
+@@ -1231,18 +1233,26 @@ static int preaction_op(const char *inval, char *outval)
+ 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preaction, inval);
+ 	return 0;
+ }
+ 
+-static int preop_op(const char *inval, char *outval)
++static int preaction_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preop);
++		strcpy(outval, preaction);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = preaction_op_set_val(inval);
++	if (!rv)
++		strcpy(preaction, inval);
++	return 0;
++}
+ 
++static int preop_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "preop_none") == 0)
+ 		preop_val = WDOG_PREOP_NONE;
+ 	else if (strcmp(inval, "preop_panic") == 0)
+@@ -1251,7 +1261,22 @@ static int preop_op(const char *inval, char *outval)
+ 		preop_val = WDOG_PREOP_GIVE_DATA;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preop, inval);
++	return 0;
++}
++
++static int preop_op(const char *inval, char *outval)
++{
++	int rv;
++
++	if (outval)
++		strcpy(outval, preop);
++
++	if (!inval)
++		return 0;
++
++	rv = preop_op_set_val(inval);
++	if (!rv)
++		strcpy(preop, inval);
+ 	return 0;
+ }
+ 
+@@ -1288,18 +1313,18 @@ static int __init ipmi_wdog_init(void)
+ {
+ 	int rv;
+ 
+-	if (action_op(action, NULL)) {
++	if (action_op_set_val(action)) {
+ 		action_op("reset", NULL);
+ 		pr_info("Unknown action '%s', defaulting to reset\n", action);
  	}
  
- 	return freq > 0 ? freq : -EINVAL;
+-	if (preaction_op(preaction, NULL)) {
++	if (preaction_op_set_val(preaction)) {
+ 		preaction_op("pre_none", NULL);
+ 		pr_info("Unknown preaction '%s', defaulting to none\n",
+ 			preaction);
+ 	}
+ 
+-	if (preop_op(preop, NULL)) {
++	if (preop_op_set_val(preop)) {
+ 		preop_op("preop_none", NULL);
+ 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
+ 	}
 -- 
 2.39.5
 
