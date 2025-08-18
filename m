@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12A7B2A69E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BF91B2A9AE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B206C682DB5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CA981BA4BDD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A179322A34;
-	Mon, 18 Aug 2025 13:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3527B33A03F;
+	Mon, 18 Aug 2025 14:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7xKsV/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0SBUrEe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C845C1DDA14;
-	Mon, 18 Aug 2025 13:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28D833A035;
+	Mon, 18 Aug 2025 14:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524063; cv=none; b=V3ZnH/oonV1qPanaPc5zhIDzsKK7jrdZAGvMUB8v/97QXW4CzO4nBBmEPPLnOZdggJoryovq+7kjb+iVAGrU4eycRtOOgDBhuEZSFlTGAYERgIW7yc6IZ17OqVghRktGO0c8EPjWj1DuZl/qvtavN4yd+Oosq2vIuauybWLWbHo=
+	t=1755525743; cv=none; b=ZFLLJ+c8ywKWS3CjPhIZ5jkIb3Q9y5TSUGpxRLfyZfmal4oGLCGhq88X+2+yQl2izzpBakkv2JasZTnZ1D7gyWJMCByf/b/mpLDc450fgLXmFQ5dlshn2fg6BGGWDNeAh7hAqYXuXjfdJ6ighDZEBpn9nE6KA/zd50S+AvhyiMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524063; c=relaxed/simple;
-	bh=yQvYl4zfVAXZSAD/zldYZRTkIVr3v1aziX8oVE0M5/Q=;
+	s=arc-20240116; t=1755525743; c=relaxed/simple;
+	bh=6sy5G3JEz3BDjX+/3/3gKptXbv9Q0brxJmxKRsMfEl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2iMM9Ea2aD5AZ3avMlACyyGHgjz1vMbCU8+pjPR/ucvrtVWQTDgJ3h+qCdcwEfOOH0li6/X7knRkAIR8mlmdvfGJ+S2Ynoa4HPo+slygZIuMpLx7YJpIaMdfqZnTAOPc8MRsQAS3Ec6conumMlgXzbFQVSVpi2PigwIyiNZkQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7xKsV/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384BAC4CEF1;
-	Mon, 18 Aug 2025 13:34:22 +0000 (UTC)
+	 MIME-Version; b=RRrsVHOOnzlAelCEG72YtPnRII1H9p+n5Rc0SNYCJTPB9RABjD6PQcf1RJAHRYOy/BILlbeKcWIRgJ/pBxhJuQQCV9jT1QWbM4IY9Pz7aiGTav2n3AGX/eGqhKJebbADvN346e5aMwXTg5YLtKyvaCfM938TNwJyzWunGYt2q20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0SBUrEe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EBBC4CEEB;
+	Mon, 18 Aug 2025 14:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524063;
-	bh=yQvYl4zfVAXZSAD/zldYZRTkIVr3v1aziX8oVE0M5/Q=;
+	s=korg; t=1755525742;
+	bh=6sy5G3JEz3BDjX+/3/3gKptXbv9Q0brxJmxKRsMfEl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7xKsV/J011tY/HlJV2loc86XZixoZlyek6BRysRn67BM/PuEdSqLmEIIZmvt8R3l
-	 NOW9fOTlWKlkDr9ZupF7O8mi2BtOcyOdmTfFGFSG2Ee3tI5H5DW4RnIHE42maKbXYe
-	 QiQEuMg4ONHkPJrBTXu1FhITBVFH5iCr5JQMXs44=
+	b=m0SBUrEeS56FmdLqmxVe4FsOl7ofmYa/uTwQCnKQyvuXjgqTx7js4GaR6+WTmxRB8
+	 L/dZbQ/e78kNiq/+ZVEASP+b9szAvR+9VHUhHYBdH0xpDV5VDsT5NO2bCGUUwLwgfd
+	 aPshdY3uX+ppmZtGiW0gHa3Ut6c8Sf7yyAX4nvfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Mueller <smueller@chronox.de>,
-	Markus Theil <theil.markus@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 355/515] crypto: jitter - fix intermediary handling
+Subject: [PATCH 6.16 354/570] vsock/virtio: Resize receive buffers so that each SKB fits in a 4K page
 Date: Mon, 18 Aug 2025 14:45:41 +0200
-Message-ID: <20250818124512.084555021@linuxfoundation.org>
+Message-ID: <20250818124519.498236707@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Theil <theil.markus@gmail.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 735b72568c73875269a6b73ab9543a70f6ac8a9f ]
+[ Upstream commit 03a92f036a04fed2b00d69f5f46f1a486e70dc5c ]
 
-The intermediary value was included in the wrong
-hash state. While there, adapt to user-space by
-setting the timestamp to 0 if stuck and inserting
-the values nevertheless.
+When allocating receive buffers for the vsock virtio RX virtqueue, an
+SKB is allocated with a 4140 data payload (the 44-byte packet header +
+VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE). Even when factoring in the SKB
+overhead, the resulting 8KiB allocation thanks to the rounding in
+kmalloc_reserve() is wasteful (~3700 unusable bytes) and results in a
+higher-order page allocation on systems with 4KiB pages just for the
+sake of a few hundred bytes of packet data.
 
-Acked-by: Stephan Mueller <smueller@chronox.de>
-Signed-off-by: Markus Theil <theil.markus@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Limit the vsock virtio RX buffers to 4KiB per SKB, resulting in much
+better memory utilisation and removing the need to allocate higher-order
+pages entirely.
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-5-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/jitterentropy-kcapi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/linux/virtio_vsock.h     | 7 ++++++-
+ net/vmw_vsock/virtio_transport.c | 2 +-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
-index c24d4ff2b4a8..1266eb790708 100644
---- a/crypto/jitterentropy-kcapi.c
-+++ b/crypto/jitterentropy-kcapi.c
-@@ -144,7 +144,7 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * Inject the data from the previous loop into the pool. This data is
- 	 * not considered to contain any entropy, but it stirs the pool a bit.
- 	 */
--	ret = crypto_shash_update(desc, intermediary, sizeof(intermediary));
-+	ret = crypto_shash_update(hash_state_desc, intermediary, sizeof(intermediary));
- 	if (ret)
- 		goto err;
+diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+index 36fb3edfa403..6c00687539cf 100644
+--- a/include/linux/virtio_vsock.h
++++ b/include/linux/virtio_vsock.h
+@@ -111,7 +111,12 @@ static inline size_t virtio_vsock_skb_len(struct sk_buff *skb)
+ 	return (size_t)(skb_end_pointer(skb) - skb->head);
+ }
  
-@@ -157,11 +157,12 @@ int jent_hash_time(void *hash_state, __u64 time, u8 *addtl,
- 	 * conditioning operation to have an identical amount of input data
- 	 * according to section 3.1.5.
- 	 */
--	if (!stuck) {
--		ret = crypto_shash_update(hash_state_desc, (u8 *)&time,
--					  sizeof(__u64));
-+	if (stuck) {
-+		time = 0;
- 	}
+-#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	(1024 * 4)
++/* Dimension the RX SKB so that the entire thing fits exactly into
++ * a single 4KiB page. This avoids wasting memory due to alloc_skb()
++ * rounding up to the next page order and also means that we
++ * don't leave higher-order pages sitting around in the RX queue.
++ */
++#define VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE	SKB_WITH_OVERHEAD(1024 * 4)
+ #define VIRTIO_VSOCK_MAX_BUF_SIZE		0xFFFFFFFFUL
+ #define VIRTIO_VSOCK_MAX_PKT_BUF_SIZE		(1024 * 64)
  
-+	ret = crypto_shash_update(hash_state_desc, (u8 *)&time, sizeof(__u64));
-+
- err:
- 	shash_desc_zero(desc);
- 	memzero_explicit(intermediary, sizeof(intermediary));
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index f0e48e6911fc..f01f9e878106 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -307,7 +307,7 @@ virtio_transport_cancel_pkt(struct vsock_sock *vsk)
+ 
+ static void virtio_vsock_rx_fill(struct virtio_vsock *vsock)
+ {
+-	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM;
++	int total_len = VIRTIO_VSOCK_DEFAULT_RX_BUF_SIZE;
+ 	struct scatterlist pkt, *p;
+ 	struct virtqueue *vq;
+ 	struct sk_buff *skb;
 -- 
 2.39.5
 
