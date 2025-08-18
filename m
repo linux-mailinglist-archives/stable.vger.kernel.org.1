@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCB9B2A783
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC6DB2A610
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63E0D7B3BAD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E1A1B646EA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE693335BC4;
-	Mon, 18 Aug 2025 13:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDD3321F39;
+	Mon, 18 Aug 2025 13:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLnoazMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcAVdmnU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A172335BBF;
-	Mon, 18 Aug 2025 13:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB5D226D0F;
+	Mon, 18 Aug 2025 13:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525117; cv=none; b=qhlb/xC5IxwrOoHiw6oL4+2+DoVn7HyHiNui/13AgiOZOnuhFbzTJ7CkZmojJ9XexaHmAqc8x9NMUP7S03slmxpXt+2n+rf7qi5L2+TckcyI0fVfr5AmS+FfPHW/lYuBQrLNlTLLSJNCfcF89EicyL29RO+y/2cNwhWCcNTFDFE=
+	t=1755523409; cv=none; b=IzQmqRhKYlCV0AvtXEVXD+uJ/m8aXfd09f8I0hRHzDUcU5j9xjLcfWAoK9jtUYZcDhsqsR5TN9+6yq11Ur6OP/YjfIHbI8p2sgF97mk1e46EUQ3uLLEA0mqGhNBG528amw7BFVYqKpdEnKSEoyCA5Of69spN8T2UQ5h6SeAt6nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525117; c=relaxed/simple;
-	bh=/C/m5yF9Q9WWA/xeLn+PT6O7+aIYTOxQ/9orc5RUu7I=;
+	s=arc-20240116; t=1755523409; c=relaxed/simple;
+	bh=zAaeIzqESXGl0H/7BvN7T8FpyXJ29iTWup050jOypVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLr4IuIWl2zU7MR63zzgHMMa1zTXdLqvpyKQ/bzgz6aUpHUGERLTFlokkeSQSn7O0nVK59nwdG9MdP2fIz/CItW4IucZCbtepIn7VcUjcYIjRGYDZcbYj0CtwDKwJWWmLSW2Pxtx4DN4vkI4HIdy3120v/DiO7pIO1ynCW8mlzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLnoazMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2428C4CEF1;
-	Mon, 18 Aug 2025 13:51:56 +0000 (UTC)
+	 MIME-Version; b=jiPb5vBesLBWjX/26DqsZWVciDYb4HEiqBLqMXNDT36VzdiSF35Km0mgC+ELXDaWTEkl7BCJsyT0NdJbAiElei88YhEZbmMFURI2DO7I8EmZpXpLaUWFrNBDhMnR+SprCEOUI5AYWG4yoBw9r2LhG35bCLlo6XZNsGnziKWxVs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcAVdmnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2A9C4CEEB;
+	Mon, 18 Aug 2025 13:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525117;
-	bh=/C/m5yF9Q9WWA/xeLn+PT6O7+aIYTOxQ/9orc5RUu7I=;
+	s=korg; t=1755523409;
+	bh=zAaeIzqESXGl0H/7BvN7T8FpyXJ29iTWup050jOypVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLnoazMcz0RJ17ztqsv5416qFvSBQLE/1B7LSJ0RvIv2zHx8DLPUJP5MEKc3WnUam
-	 9nIORKqPLZBULoLFnBTmNApVH+n/ViUcf+w9AMGpymkAKX/IS2pt1bfzysSeBLnE9H
-	 HtKhEZ6uotJOqpKapFPf/az/T4Dz5Pg/n6M5ZC9k=
+	b=HcAVdmnUWCsUX90AzcQuYTnO/nuvlxZFOO3NEHRPgoA+q9jmiZaOaR3V4gN6UGEzz
+	 ixnfS0RpGSj9xJOKz7/1I2Iqri8pVfYm6a0wDBZLNy48percfeIey/PfkCVbMVTGbS
+	 /8O4zLX3kpsvM+uEfzqeBf35i4HiChY0dQSCioIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
+	Hans de Goede <hansg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 162/570] firmware: tegra: Fix IVC dependency problems
+Subject: [PATCH 6.15 163/515] mei: bus: Check for still connected devices in mei_cl_bus_dev_release()
 Date: Mon, 18 Aug 2025 14:42:29 +0200
-Message-ID: <20250818124512.048598129@linuxfoundation.org>
+Message-ID: <20250818124504.655461566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <treding@nvidia.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 78eb18020a88a4eed15f5af7700ed570642ff8f1 ]
+[ Upstream commit 35e8a426b16adbecae7a4e0e3c00fc8d0273db53 ]
 
-The IVC code is library code that other drivers need to select if they
-need that library. However, if the symbol is user-selectable this can
-lead to conflicts.
+mei_cl_bus_dev_release() also frees the mei-client (struct mei_cl)
+belonging to the device being released.
 
-Fix this by making the symbol only selectable for COMPILE_TEST and add
-a select TEGRA_IVC to TEGRA_BPMP, which is currently the only user.
+If there are bugs like the just fixed bug in the ACE/CSI2 mei drivers,
+the mei-client being freed might still be part of the mei_device's
+file_list and iterating over this list after the freeing will then trigger
+a use-afer-free bug.
 
-Link: https://lore.kernel.org/r/20250506133118.1011777-10-thierry.reding@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Add a check to mei_cl_bus_dev_release() to make sure that the to-be-freed
+mei-client is not on the mei_device's file_list.
+
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lore.kernel.org/r/20250623085052.12347-11-hansg@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/tegra/Kconfig | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/misc/mei/bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/firmware/tegra/Kconfig b/drivers/firmware/tegra/Kconfig
-index cde1ab8bd9d1..91f2320c0d0f 100644
---- a/drivers/firmware/tegra/Kconfig
-+++ b/drivers/firmware/tegra/Kconfig
-@@ -2,7 +2,7 @@
- menu "Tegra firmware driver"
+diff --git a/drivers/misc/mei/bus.c b/drivers/misc/mei/bus.c
+index 67176caf5416..1958c043ac14 100644
+--- a/drivers/misc/mei/bus.c
++++ b/drivers/misc/mei/bus.c
+@@ -1301,10 +1301,16 @@ static void mei_dev_bus_put(struct mei_device *bus)
+ static void mei_cl_bus_dev_release(struct device *dev)
+ {
+ 	struct mei_cl_device *cldev = to_mei_cl_device(dev);
++	struct mei_device *mdev = cldev->cl->dev;
++	struct mei_cl *cl;
  
- config TEGRA_IVC
--	bool "Tegra IVC protocol"
-+	bool "Tegra IVC protocol" if COMPILE_TEST
- 	depends on ARCH_TEGRA
- 	help
- 	  IVC (Inter-VM Communication) protocol is part of the IPC
-@@ -13,8 +13,9 @@ config TEGRA_IVC
- 
- config TEGRA_BPMP
- 	bool "Tegra BPMP driver"
--	depends on ARCH_TEGRA && TEGRA_HSP_MBOX && TEGRA_IVC
-+	depends on ARCH_TEGRA && TEGRA_HSP_MBOX
- 	depends on !CPU_BIG_ENDIAN
-+	select TEGRA_IVC
- 	help
- 	  BPMP (Boot and Power Management Processor) is designed to off-loading
- 	  the PM functions which include clock/DVFS/thermal/power from the CPU.
+ 	mei_cl_flush_queues(cldev->cl, NULL);
+ 	mei_me_cl_put(cldev->me_cl);
+ 	mei_dev_bus_put(cldev->bus);
++
++	list_for_each_entry(cl, &mdev->file_list, link)
++		WARN_ON(cl == cldev->cl);
++
+ 	kfree(cldev->cl);
+ 	kfree(cldev);
+ }
 -- 
 2.39.5
 
