@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-171343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EE4B2A955
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B6CB2A37C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D714F6E6020
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:08:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CB695E13D2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4F12264B1;
-	Mon, 18 Aug 2025 14:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA6831CA57;
+	Mon, 18 Aug 2025 13:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nv/hfWDt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+QJntGM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278C532A3C7;
-	Mon, 18 Aug 2025 14:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10AE218AAB;
+	Mon, 18 Aug 2025 13:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525605; cv=none; b=o8Wcp85X6UiJ2FIVQD1sE7/BuAqZZNNxMNIEhaXUM9tI1GnjoJTKURukC8T8xJr5Wiz1Fm6047P8m7ohgRY893VDUCYe4FAenRR5ku8knjSM30Y1cjnvq+jVFsWp/rQC2feg8xQp/p+TNhAcBAmxCyVtJWx396udPThgc+K8b7M=
+	t=1755522267; cv=none; b=nuV8S1JjZyeXgjh5GmVIwyncS20DEViQqGePHsAl0Q7ltT0jKwnCPj7hWbV/S2s0lf0/bSMwi/pXtXKbGdm6O33w5MUkD/88z4uSf2CFE4TfwbkQQ9S/Rl1xYwGt/mvceAkN38UCcOZp5EYUduTk5Ov2e81JAPHCDKjzIDM6hok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525605; c=relaxed/simple;
-	bh=eqJxLxPdTGfBpAJ1Ubk2X7wKLXaAyPhBcQ+n2GCiwnM=;
+	s=arc-20240116; t=1755522267; c=relaxed/simple;
+	bh=fKAjy5YlPLC/80BxTAIjibigXh7h6ej+Xrvj1m10Vgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDGWrKrV/RrhMOpFTeSXxSrCjctQz7bu2RNTb4bHswQ9nizWRIRPoqgXXhxcwT2b2jP0OSd3MELIZOvi0LiWEX5uU8bQ0qsgMRBkY6a+77EqPjvbTf4CcWFC8mFo/dXW8wt8BiLu3XjipEFTawVN6do8aYt1PsSukLRVHqWfOvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nv/hfWDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A198C4CEEB;
-	Mon, 18 Aug 2025 14:00:03 +0000 (UTC)
+	 MIME-Version; b=SHnJ4zDwzkZN1cKC3yj5Q35ud4xNbRrZMTcRNLPaq6AtV9G1VvZXmuws6iGRhIn4NUPxX8+NZXNlsS50lpnqqnN+1FepmTVJoLm9sEaoSf81Pm8iMNKWgvtnARORWRd3L94u7rVjehCcf+/zosAmMHLEgjAUThC9oYmRoFXF5C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+QJntGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB4BC113D0;
+	Mon, 18 Aug 2025 13:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525604;
-	bh=eqJxLxPdTGfBpAJ1Ubk2X7wKLXaAyPhBcQ+n2GCiwnM=;
+	s=korg; t=1755522266;
+	bh=fKAjy5YlPLC/80BxTAIjibigXh7h6ej+Xrvj1m10Vgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nv/hfWDtoImOkE9Jbv7bc89mVtv5lOJeBgX4Bc1do2wmWC9fWLC4QmhrPWSvuyk3F
-	 lvYtdk/hbMSRPuxYcuyZ68OMHBNVy2RizXVwmVp0z/aGt59af/VUO6kVilI0AvYYFd
-	 sN8xtR/sg3hWfleZj1hHb+OTgqcJ/drXSIm5o3K0=
+	b=e+QJntGMN0MPuZKFVsuMKUtoLPV0G/deNE0XZ4zfZlGzeWLz6Zpn6DqnJ9Wqv5eOe
+	 9Qj1PDj+0QemAp1vfsTHzat9p1E+49lOQlr4TnC0U+P0NmaFJpRu8YE8gPAZbCJRsy
+	 769bpHcob7jUqhz7aHp68AazzU8ZWH4bTjir+J4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 305/570] wifi: iwlwifi: mld: fix last_mlo_scan_time type
+Subject: [PATCH 6.12 266/444] drm/amd/display: Update DMCUB loading sequence for DCN3.5
 Date: Mon, 18 Aug 2025 14:44:52 +0200
-Message-ID: <20250818124517.615442883@linuxfoundation.org>
+Message-ID: <20250818124458.807381249@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit f26281c1b727b90ec18ae90044d5f429d2250e82 ]
+[ Upstream commit d42b2331e158fa6bcdc89e4c8c470dc5da20be1f ]
 
-This should be u64, otherwise it rolls over quickly on 32-bit
-systems.
+[Why]
+New sequence from HW for reset and firmware reloading has been
+provided that aims to stabilize the reload sequence in the case the
+firmware is hung or has outstanding requests.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250611222325.5381030253cd.I4e3a7bca5b52fc826e26311055286421508c4d1b@changeid
+[How]
+Update the sequence to remove the DMUIF reset and the redundant
+writes in the release.
+
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/scan.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn35.c    | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/scan.h b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-index 3ae940d55065..4044cac3f086 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/scan.h
-@@ -130,7 +130,7 @@ struct iwl_mld_scan {
- 	void *cmd;
- 	unsigned long last_6ghz_passive_jiffies;
- 	unsigned long last_start_time_jiffies;
--	unsigned long last_mlo_scan_time;
-+	u64 last_mlo_scan_time;
- };
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
+index 4581eb479451..01e83c6ce701 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
+@@ -92,19 +92,15 @@ void dmub_dcn35_reset(struct dmub_srv *dmub)
+ 	uint32_t in_reset, is_enabled, scratch, i, pwait_mode;
  
- #endif /* __iwl_mld_scan_h__ */
+ 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
++	REG_GET(DMCUB_CNTL, DMCUB_ENABLE, &is_enabled);
+ 
+-	if (in_reset == 0) {
++	if (in_reset == 0 && is_enabled != 0) {
+ 		cmd.bits.status = 1;
+ 		cmd.bits.command_code = DMUB_GPINT__STOP_FW;
+ 		cmd.bits.param = 0;
+ 
+ 		dmub->hw_funcs.set_gpint(dmub, cmd);
+ 
+-		/**
+-		 * Timeout covers both the ACK and the wait
+-		 * for remaining work to finish.
+-		 */
+-
+ 		for (i = 0; i < timeout; ++i) {
+ 			if (dmub->hw_funcs.is_gpint_acked(dmub, cmd))
+ 				break;
+@@ -130,11 +126,9 @@ void dmub_dcn35_reset(struct dmub_srv *dmub)
+ 		/* Force reset in case we timed out, DMCUB is likely hung. */
+ 	}
+ 
+-	REG_GET(DMCUB_CNTL, DMCUB_ENABLE, &is_enabled);
+-
+ 	if (is_enabled) {
+ 		REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
+-		REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
++		udelay(1);
+ 		REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
+ 	}
+ 
+@@ -160,11 +154,7 @@ void dmub_dcn35_reset_release(struct dmub_srv *dmub)
+ 		     LONO_SOCCLK_GATE_DISABLE, 1,
+ 		     LONO_DMCUBCLK_GATE_DISABLE, 1);
+ 
+-	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
+-	udelay(1);
+ 	REG_UPDATE_2(DMCUB_CNTL, DMCUB_ENABLE, 1, DMCUB_TRACEPORT_EN, 1);
+-	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
+-	udelay(1);
+ 	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 0);
+ 	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 0);
+ }
 -- 
 2.39.5
 
