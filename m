@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E23B2A276
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE26B2A5DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EF9864E2E4D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC2858315B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B6231A05E;
-	Mon, 18 Aug 2025 12:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBE232145A;
+	Mon, 18 Aug 2025 13:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZYBZkp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHuWhe+N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDEC3218B8;
-	Mon, 18 Aug 2025 12:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DC42135CE;
+	Mon, 18 Aug 2025 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521832; cv=none; b=TFr3IiJ4qRt1fKc8Dm4e2jWIxhhg/FTfHqhmnY2UQqNSK9RDZsANeHepwwy+A3+ggLv1zkA9bZOej8K5C2WmOMDPYPI5vqJv3Ptpdz+CoLhO4r8hd7/kjWVT/ek5yQ0LWT/xmhDtLL9zmIXVQmcW0hlIXcDbpxs8aaertVivVn4=
+	t=1755523453; cv=none; b=U9USMRIMPk5GCo2sxzQbAxzvOJ8AsqeDBUKm/brZZaG+nKVEKV/832XFMk9WWvgE9TiZzrplnh1uWTQEHTt3pSqmjgwqLiKDSoB07iFkPJgaxBegUMpALrA6jw96yDgTkGVUBP4UFLLTYKVxtKcqerLNW6HpoNkS5/IQxVJ7OcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521832; c=relaxed/simple;
-	bh=iVLcUCYjoR5woagI9IKC/kY2S+jZCM0BV+Fd3vJIkCo=;
+	s=arc-20240116; t=1755523453; c=relaxed/simple;
+	bh=Ur1GPGPUUFptq29bIkqrIMJ4f2dY0n+Ymgt20vREVDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3Ga01V1mmbpYQAm50om8Zj13Gy136dYzW0AvgZZYj/no0ud2UTtCSJLToLG8Y5GfSGUJARx1wY2t5WXZIkrueRtaF9F0hqhTDfkeApw+dS94EIcJbOjUvr/j3ZDDQjewQZL5N8gAviAxiibeKUnDwafY9XZIazDiasUBfb9u/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZYBZkp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2E9C4CEEB;
-	Mon, 18 Aug 2025 12:57:11 +0000 (UTC)
+	 MIME-Version; b=TKWBrFMLLYO7JiweClk60xs/760D+eDFqpfP0Zuv5rbLOuEGutOzkQ5IMHavh0rMsZre3PtN4/3D5iEbY8OVPkjphd4znMIVwlDCpcM+dt0l1/d7uG2j5ffbYlF6KmWBfj/6BxWOvGMveeYPDPbmECvGT3nxAODgiCSjvsv1Xy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHuWhe+N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72128C4CEEB;
+	Mon, 18 Aug 2025 13:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521832;
-	bh=iVLcUCYjoR5woagI9IKC/kY2S+jZCM0BV+Fd3vJIkCo=;
+	s=korg; t=1755523452;
+	bh=Ur1GPGPUUFptq29bIkqrIMJ4f2dY0n+Ymgt20vREVDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZYBZkp651B7+cMFGAarJw6Y9UtZiVRUa+pHBTFX093XN7g0PyTAStXa6EqQU4app
-	 DgMgZmZfArQSpaENtrTCM1sLpSHpO8DKvggRVxUVfyQoPbOvweql9Frhpqu5+fR2v+
-	 Yc+NvslfIZg0juWQxO6Qu5mHwo1/6K8FBwpPA5xk=
+	b=LHuWhe+Npi9E6MpcrwLUNnW820S8Z5v7X5+ZZUbeJ9eLmNy40Zte5puJCGbxQAO90
+	 ZLwMmCoDieLtsd6x57J9oRx8p4UrgB24g8PL3HZifGrt9hai57KhF/EHmkiQ9TzddC
+	 WVeypEChIkmjXHTZLWCQCeReHXEwXJnTTZ3fjVes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Tomasz Michalec <tmichalec@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/444] reset: brcmstb: Enable reset drivers for ARCH_BCM2835
+Subject: [PATCH 6.15 175/515] usb: typec: intel_pmc_mux: Defer probe if SCU IPC isnt present
 Date: Mon, 18 Aug 2025 14:42:41 +0200
-Message-ID: <20250818124453.972177765@linuxfoundation.org>
+Message-ID: <20250818124505.099319096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-[ Upstream commit 1d99f92f71b6b4b2eee776562c991428490f71ef ]
+[ Upstream commit df9a825f330e76c72d1985bc9bdc4b8981e3d15f ]
 
-The BRCMSTB and BRCMSTB_RESCAL reset drivers are also
-used in the BCM2712, AKA the RPi5. The RPi platforms
-have typically used the ARCH_BCM2835, and the PCIe
-support for this SoC can use this config which depends
-on these drivers so enable building them when just that
-arch option is enabled to ensure the platform works as
-expected.
+If pmc_usb_probe is called before SCU IPC is registered, pmc_usb_probe
+will fail.
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20250630175301.846082-1-pbrobinson@gmail.com
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Return -EPROBE_DEFER when pmc_usb_probe doesn't get SCU IPC device, so
+the probe function can be called again after SCU IPC is initialized.
+
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250610154058.1859812-1-tmichalec@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/Kconfig | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/typec/mux/intel_pmc_mux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/reset/Kconfig b/drivers/reset/Kconfig
-index 5484a65f66b9..1cf577e3223b 100644
---- a/drivers/reset/Kconfig
-+++ b/drivers/reset/Kconfig
-@@ -51,8 +51,8 @@ config RESET_BERLIN
+diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
+index 65dda9183e6f..1698428654ab 100644
+--- a/drivers/usb/typec/mux/intel_pmc_mux.c
++++ b/drivers/usb/typec/mux/intel_pmc_mux.c
+@@ -754,7 +754,7 @@ static int pmc_usb_probe(struct platform_device *pdev)
  
- config RESET_BRCMSTB
- 	tristate "Broadcom STB reset controller"
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the reset controller driver for Broadcom STB SoCs using
- 	  a SUN_TOP_CTRL_SW_INIT style controller.
-@@ -60,11 +60,11 @@ config RESET_BRCMSTB
- config RESET_BRCMSTB_RESCAL
- 	tristate "Broadcom STB RESCAL reset controller"
- 	depends on HAS_IOMEM
--	depends on ARCH_BRCMSTB || COMPILE_TEST
--	default ARCH_BRCMSTB
-+	depends on ARCH_BRCMSTB || ARCH_BCM2835 || COMPILE_TEST
-+	default ARCH_BRCMSTB || ARCH_BCM2835
- 	help
- 	  This enables the RESCAL reset controller for SATA, PCIe0, or PCIe1 on
--	  BCM7216.
-+	  BCM7216 or the BCM2712.
+ 	pmc->ipc = devm_intel_scu_ipc_dev_get(&pdev->dev);
+ 	if (!pmc->ipc)
+-		return -ENODEV;
++		return -EPROBE_DEFER;
  
- config RESET_EYEQ
- 	bool "Mobileye EyeQ reset controller"
+ 	pmc->dev = &pdev->dev;
+ 
 -- 
 2.39.5
 
