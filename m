@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-171003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36411B2A771
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B46B2AA68
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9748682184
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450355A3DCE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6422236FC;
-	Mon, 18 Aug 2025 13:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F834334706;
+	Mon, 18 Aug 2025 14:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUxgVJEv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxMXsq38"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1949A335BC9;
-	Mon, 18 Aug 2025 13:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A46F334700;
+	Mon, 18 Aug 2025 14:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524497; cv=none; b=jBT7sSgzNOcYLSU/WBpeg9i6r3GaocJN8IXF8+IfEUO5sUSlkLEpuC9CQTA1fRBrAqzNrmUicYd2OiRFIGYCpUhXGjLUJ3x7jm4QjyoH4Giq5bCHYk57//694OXbGg84K2XeKafAnRrtY1FLwlHZxHxvU2sfoG+GQpKPrPn4CeA=
+	t=1755526210; cv=none; b=HiA8zclahzk58zy4xKV308/bpi8ijwv6nDBblHuk5K9nigzxkzXeP8dD0bhCVQ+LZbvSw8Rqy6dB7k542cWyMAil+c6MZoBAOwsAeXPCC70F7XW7ajlZJwcGVRNuZzUeZreENFKMlNxyCFYORB5xC23prOGwl35X0at+xOPJrSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524497; c=relaxed/simple;
-	bh=QuSSMCgsxAUCl5PEdMAuJJ5GcRatTrrwQto518NibxE=;
+	s=arc-20240116; t=1755526210; c=relaxed/simple;
+	bh=edy7oyT8Usr9ZC61e72XcdVnnUeiqRb3j/KTKiEMoj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4NzbiZz6XASZZ9IYJhELDbnWTnCCqIhPbLnCCY9DqeRwGAk6ceTc5jFF17NwR6a2FS4sIEq4oBv5kOA7gBOAq3JMmDvJQ6UpROhiKU1H7575tH0cRCO6tSLdTP0GCB+grTb7vWN9WSXxAXQvoP+W1j6kJgynjyRx99wJ1FsFeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUxgVJEv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912E0C4AF0B;
-	Mon, 18 Aug 2025 13:41:36 +0000 (UTC)
+	 MIME-Version; b=AqT1faK/W+uH/gh8oIiMUVHnT9k3X+0rm0LTH5Akk3ZE73Hb/R48G88BJpj1iB0fnCt2B9z2MEAdgL3jZMOsFrDY5S9698aRM9UIPYXBGEXilxGY+w7+SOJBXUTYu+6XH/bEuyAc8s/Zs3zrnJEA0DvgKXEbL+GyW9niwCmKcfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxMXsq38; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C102C4CEEB;
+	Mon, 18 Aug 2025 14:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524497;
-	bh=QuSSMCgsxAUCl5PEdMAuJJ5GcRatTrrwQto518NibxE=;
+	s=korg; t=1755526210;
+	bh=edy7oyT8Usr9ZC61e72XcdVnnUeiqRb3j/KTKiEMoj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUxgVJEvreywUAQf7KsciaLUIKIqTxUThF9gTIrXfD7Z4jrYtK+BA2wIMMOvJ+VXH
-	 Q89m0m1COlocaEh40aLjxrJHGUEGQtxXWg8iL0km25FH1DhYB4NnplZ99q8jN5bctd
-	 Kt5gdOITTiCGcHGFnflAm+WsVrb+ZUK1Fu58YJCI=
+	b=UxMXsq38U9A8OkXHSrXE+IOYRVcVSNsJvIIK4VLDDWGM/tu96PeCpn9bDmYre7qFk
+	 Pnz01o/CMo3ZPONy2CDTuQy35q4dtZnCgDVp4jhnLP8oR4JjI9CtNDZQ0RDzqo1Ad8
+	 +eUVJussHqrHza6MSMGqzwZmiGHP2txThBWfgktI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.15 490/515] mm, slab: restore NUMA policy support for large kmalloc
-Date: Mon, 18 Aug 2025 14:47:56 +0200
-Message-ID: <20250818124517.299406357@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 490/570] samples/damon/mtier: support boot time enable setup
+Date: Mon, 18 Aug 2025 14:47:57 +0200
+Message-ID: <20250818124524.753272322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: SeongJae Park <sj@kernel.org>
 
-commit e2d18cbf178775ad377ad88ee55e6e183c38d262 upstream.
+commit 964314344eab7bc43e38a32be281c5ea0609773b upstream.
 
-The slab allocator observes the task's NUMA policy in various places
-such as allocating slab pages. Large kmalloc() allocations used to do
-that too, until an unintended change by c4cab557521a ("mm/slab_common:
-cleanup kmalloc_large()") resulted in ignoring mempolicy and just
-preferring the local node. Restore the NUMA policy support.
+If 'enable' parameter of the 'mtier' DAMON sample module is set at boot
+time via the kernel command line, memory allocation is tried before the
+slab is initialized.  As a result kernel NULL pointer dereference BUG can
+happen.  Fix it by checking the initialization status.
 
-Fixes: c4cab557521a ("mm/slab_common: cleanup kmalloc_large()")
+Link: https://lkml.kernel.org/r/20250706193207.39810-4-sj@kernel.org
+Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
-Acked-by: Christoph Lameter (Ampere) <cl@gentwo.org>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ samples/damon/mtier.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4268,7 +4268,12 @@ static void *___kmalloc_large_node(size_
- 		flags = kmalloc_fix_flags(flags);
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -151,6 +151,8 @@ static void damon_sample_mtier_stop(void
+ 	damon_destroy_ctx(ctxs[1]);
+ }
  
- 	flags |= __GFP_COMP;
--	folio = (struct folio *)alloc_pages_node_noprof(node, flags, order);
++static bool init_called;
 +
-+	if (node == NUMA_NO_NODE)
-+		folio = (struct folio *)alloc_pages_noprof(flags, order);
-+	else
-+		folio = (struct folio *)__alloc_pages_noprof(flags, order, node, NULL);
+ static int damon_sample_mtier_enable_store(
+ 		const char *val, const struct kernel_param *kp)
+ {
+@@ -176,6 +178,14 @@ static int damon_sample_mtier_enable_sto
+ 
+ static int __init damon_sample_mtier_init(void)
+ {
++	int err = 0;
 +
- 	if (folio) {
- 		ptr = folio_address(folio);
- 		lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B,
++	init_called = true;
++	if (enable) {
++		err = damon_sample_mtier_start();
++		if (err)
++			enable = false;
++	}
+ 	return 0;
+ }
+ 
 
 
 
