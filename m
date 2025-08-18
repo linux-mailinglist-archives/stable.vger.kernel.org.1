@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-171184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC88CB2A836
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:45 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761F6B2A534
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648F23BAE22
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 39E554E33F4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A13335BBA;
-	Mon, 18 Aug 2025 13:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1FD322540;
+	Mon, 18 Aug 2025 13:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s590NBcU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRvaWGLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7360335BA7;
-	Mon, 18 Aug 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796FB27A93D;
+	Mon, 18 Aug 2025 13:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525090; cv=none; b=U9aCXn5KNGW+ERmgAPQChC0tsfWKSvbM3l3iPSXLFQ41pNYwA0MeQNmzFM2UtsLnNeX5IRTIVjSJbVwKtvGkkfjaiJnfEWO6Os3ZUed334x2OZ9w4aCkqVfTBLw7c8yeckJejbYNfaGM68pwATqL+4mo0HJ+tyf0ap/OJt7najQ=
+	t=1755523499; cv=none; b=DF/z09Xo8eQozX2Ux2eSm01P5w4qsUXmo3TlMxcLmOsaZgYyOGHSRdR/YLOUUCV25v/IZiJ9Gm5/Vf64B07KpUkF7IV3oj+TdVeqIUZcwAiLcDVXv8uFQPZ7yOhfJXFC2eKq90DUnqdH6WjwBnt/wMU62bRVIgDH7N5wxD13Wrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525090; c=relaxed/simple;
-	bh=GXlIX/rbyezxORdhc4CaxRTEYbgdlkoIRbIh/YaxhaE=;
+	s=arc-20240116; t=1755523499; c=relaxed/simple;
+	bh=1ZWWTshUupryZdCWmTIjDVO8ghpzGqpx6TptzbZXBTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/0D/23W1ctZwvhi0JDk820BGC0mK7X+dPd5kVmIGbwec18ryh7phvkS0PWwnG7UgR1eQmDv6rZ8+ScXzbgPMtSXjqrYqANyC6vuIssP7mZm2td/lMXTO3Y73VBBeZeElEfhXLLESnkDkdwAXBRen1rZ8kTr2yueDJeGXWWa51Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s590NBcU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438DDC4CEEB;
-	Mon, 18 Aug 2025 13:51:30 +0000 (UTC)
+	 MIME-Version; b=b0Z38j8VUpX813+9nklvxGncvBlzghXYR6IU7AJOwNwQlrXyWjOgGg+ui5DaZqChgn2p1GvZLneb00ZJuGRenlszYR3GLnpK3t/dOcL4K9jp3wW7a/uYIjavPRAADA++751xBQ08+uN7ypTacq0UL+xD7wLZBbukL5ycfNu7PcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRvaWGLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C889C4CEEB;
+	Mon, 18 Aug 2025 13:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525090;
-	bh=GXlIX/rbyezxORdhc4CaxRTEYbgdlkoIRbIh/YaxhaE=;
+	s=korg; t=1755523499;
+	bh=1ZWWTshUupryZdCWmTIjDVO8ghpzGqpx6TptzbZXBTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s590NBcUa2zmBQmauSUK09PLz1/RtbQy7CUjT02Ffsrj5mUjUgUWphqpzWAyRscvj
-	 aXrjO/NZSzWroNC157BhLTLnjw+FoEnPawaxZnzywljDOEOsoZ3ja1KGYn1sp5bSoW
-	 ACTxVvEY2ebvpI1p8W4xWiMAAgAU9uWC77OohdJw=
+	b=kRvaWGLofw+k2E+p41FpOq/PrddqKJqQDEcXd+9K1JFv804gQT8GsW9AtlMNPD1cU
+	 Qq5bWIKmWjaGWgjAEmkK53t8PazA3nCKtPFcl9xh58/JZ+JzU1uWLHWv5oxaGcUwpv
+	 hTVg6IEufRjQeNLK8kiOgaaqXaVOmcFOtMVU2/h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 155/570] gpio: tps65912: check the return value of regmap_update_bits()
-Date: Mon, 18 Aug 2025 14:42:22 +0200
-Message-ID: <20250818124511.785162019@linuxfoundation.org>
+Subject: [PATCH 6.15 157/515] irqchip/renesas-rzv2h: Enable SKIP_SET_WAKE and MASK_ON_SUSPEND
+Date: Mon, 18 Aug 2025 14:42:23 +0200
+Message-ID: <20250818124504.430453142@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit a0b2a6bbff8c26aafdecd320f38f52c341d5cafa ]
+[ Upstream commit de2942828e7670526289f098df7e50b112e8ff1e ]
 
-regmap_update_bits() can fail, check its return value like we do
-elsewhere in the driver.
+The interrupt controller found on RZ/G3E doesn't provide any facility to
+configure the wakeup sources. That's the reason why the driver lacks the
+irq_set_wake() callback for the interrupt chip.
 
-Link: https://lore.kernel.org/r/20250707-gpiochip-set-rv-gpio-round4-v1-2-35668aaaf6d2@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+But this prevent to properly enter power management states like "suspend to
+idle".
+
+Enable the flags IRQCHIP_SKIP_SET_WAKE and IRQCHIP_MASK_ON_SUSPEND so the
+interrupt suspend logic can handle the chip correctly.
+
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/all/20250701105923.52151-1-biju.das.jz@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tps65912.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-renesas-rzv2h.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tps65912.c b/drivers/gpio/gpio-tps65912.c
-index fab771cb6a87..bac757c191c2 100644
---- a/drivers/gpio/gpio-tps65912.c
-+++ b/drivers/gpio/gpio-tps65912.c
-@@ -49,10 +49,13 @@ static int tps65912_gpio_direction_output(struct gpio_chip *gc,
- 					  unsigned offset, int value)
- {
- 	struct tps65912_gpio *gpio = gpiochip_get_data(gc);
-+	int ret;
+diff --git a/drivers/irqchip/irq-renesas-rzv2h.c b/drivers/irqchip/irq-renesas-rzv2h.c
+index 0f0fd7d4dfdf..f1f7869b49cb 100644
+--- a/drivers/irqchip/irq-renesas-rzv2h.c
++++ b/drivers/irqchip/irq-renesas-rzv2h.c
+@@ -394,7 +394,9 @@ static const struct irq_chip rzv2h_icu_chip = {
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_set_type		= rzv2h_icu_set_type,
+ 	.irq_set_affinity	= irq_chip_set_affinity_parent,
+-	.flags			= IRQCHIP_SET_TYPE_MASKED,
++	.flags			= IRQCHIP_MASK_ON_SUSPEND |
++				  IRQCHIP_SET_TYPE_MASKED |
++				  IRQCHIP_SKIP_SET_WAKE,
+ };
  
- 	/* Set the initial value */
--	regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
--			   GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	ret = regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
-+				 GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	if (ret)
-+		return ret;
- 
- 	return regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
- 				  GPIO_CFG_MASK, GPIO_CFG_MASK);
+ static int rzv2h_icu_alloc(struct irq_domain *domain, unsigned int virq, unsigned int nr_irqs,
 -- 
 2.39.5
 
