@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF797B2A336
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E35B2A568
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0214A5667A2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FD747B2AC0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3719A31CA61;
-	Mon, 18 Aug 2025 12:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E5F321F2F;
+	Mon, 18 Aug 2025 13:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7ZF41XP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bU2mFXmA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83DE3218B8;
-	Mon, 18 Aug 2025 12:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46EC320CD7;
+	Mon, 18 Aug 2025 13:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521813; cv=none; b=BX4xjGLQh2rO3SOjg3nDySPzsTiBpo67PVIYV1GQk/pyHVDmSRHLVv7zREejZXknoL39hKdtosa33V7nYskGtRykG2Do4IB50qwV9+XW1dmL4FXgQMNPYnvlCdvbSzw8ViKYZvovWQebAs9XazsoXvOcMz2Nw1T8/O8s9mjONCE=
+	t=1755523433; cv=none; b=GsfBgxYu3KB8p+ziphwn4ZaXSPdGVBe3NtWhUCN6SvbmJMq7NDae3bJMP1ZME983VuJYcLcg4ZSjJj/3DlqyKoRpvosstsq3WU+gP9HjtMll+r9uVsHNv2Wtlg/3RsOI4/mzKCAoo2KLhypt/25tRL+7RYvL+9ultdOpa6KXXIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521813; c=relaxed/simple;
-	bh=DdPO/lEilgQ3Qbc1zhriTREw1ESSQ+4LwzfzoZrWcqM=;
+	s=arc-20240116; t=1755523433; c=relaxed/simple;
+	bh=hjOI1TVhJVe7FAlJ3NYiR7oEKPa5Yb0eTXjTcQOCVhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/vq7hsCrzECHV5rH6bxHW+wVPCLWzbWIGiRQ4yrBvdn/8UsYpjWpQeEt7k8fEEWIycqm9+YwoB3anBtzhFx9wYdjuIHaxqB1L5qCuPv0aZd2jUlMrpFSSxtenP/3fZKJ8qu44FuOq7IyHeoxxcQp+75XYUftpqWkb0y4eQY21w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7ZF41XP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEB3C4CEEB;
-	Mon, 18 Aug 2025 12:56:52 +0000 (UTC)
+	 MIME-Version; b=Cpn1PWdriEykCkr+V3OIzupreoqCEorGfNQZwRss71skpjr8egT/qjMwJsck4vPqGFVMET2Vta8OCPwnsbPruYz8CNa14NZkwMSvPdrnfp+enzLa3bfDiX1hdwWfhe5Y/XuUwGLKZjSjEHu8N67GfyLRXsYG7P3VJhQku1PTyCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bU2mFXmA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B98C4CEEB;
+	Mon, 18 Aug 2025 13:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521812;
-	bh=DdPO/lEilgQ3Qbc1zhriTREw1ESSQ+4LwzfzoZrWcqM=;
+	s=korg; t=1755523432;
+	bh=hjOI1TVhJVe7FAlJ3NYiR7oEKPa5Yb0eTXjTcQOCVhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7ZF41XPfOVViXb6JfCynuXqFEZkdwwzS5GcOZjg6pIl1AsXhysZ0FHyTYfoHJuXP
-	 2v5II9W2efl9LQgmIrRy9ZzSmX0lA/WgadjIMfyHZbi+q0Rj3R2eUmFvLXBewRwWZz
-	 WMBIbCsxxf8B0jOD6e3wiv2hCzey6WPQI8xzGGi0=
+	b=bU2mFXmA8bzGpEq2OMjHp1Ldav8GBQNEQNI8QL3AA7b5nNHOIbCcx2DI+659fyYt7
+	 +sy+x+2rVxD9A57RcrpSNfrin9MCtHHZgmG7kkzUeJj7omjQolFU10Yyy8Ze5Nfxsk
+	 EfXsG0tkoPHrsHaKgszkBpEZZsRI3p+CBJJS1PO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kochetkov <al.kochet@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/444] ARM: rockchip: fix kernel hang during smp initialization
+Subject: [PATCH 6.15 152/515] thermal: sysfs: Return ENODATA instead of EAGAIN for reads
 Date: Mon, 18 Aug 2025 14:42:18 +0200
-Message-ID: <20250818124453.130978158@linuxfoundation.org>
+Message-ID: <20250818124504.234626017@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Kochetkov <al.kochet@gmail.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 7cdb433bb44cdc87dc5260cdf15bf03cc1cd1814 ]
+[ Upstream commit 1a4aabc27e95674837f2e25f4ef340c0469e6203 ]
 
-In order to bring up secondary CPUs main CPU write trampoline
-code to SRAM. The trampoline code is written while secondary
-CPUs are powered on (at least that true for RK3188 CPU).
-Sometimes that leads to kernel hang. Probably because secondary
-CPU execute trampoline code while kernel doesn't expect.
+According to POSIX spec, EAGAIN returned by read with O_NONBLOCK set
+means the read would block. Hence, the common implementation in
+nonblocking model will poll the file when the nonblocking read returns
+EAGAIN. However, when the target file is thermal zone, this mechanism
+will totally malfunction because thermal zone doesn't implement sysfs
+notification and thus the poll will never return.
 
-The patch moves SRAM initialization step to the point where all
-secondary CPUs are powered down.
+For example, the read in Golang implemnts such method and sometimes
+hangs at reading some thermal zones via sysfs.
 
-That fixes rarely hangs on RK3188:
-[    0.091568] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.091996] rockchip_smp_prepare_cpus: ncores 4
+Change to return -ENODATA instead of -EAGAIN to userspace.
 
-Signed-off-by: Alexander Kochetkov <al.kochet@gmail.com>
-Link: https://lore.kernel.org/r/20250703140453.1273027-1-al.kochet@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://patch.msgid.link/20250620-temp-v3-1-6becc6aeb66c@chromium.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-rockchip/platsmp.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/thermal/thermal_sysfs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-rockchip/platsmp.c b/arch/arm/mach-rockchip/platsmp.c
-index 36915a073c23..f432d22bfed8 100644
---- a/arch/arm/mach-rockchip/platsmp.c
-+++ b/arch/arm/mach-rockchip/platsmp.c
-@@ -279,11 +279,6 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 	}
+diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
+index 24b9055a0b6c..d80612506a33 100644
+--- a/drivers/thermal/thermal_sysfs.c
++++ b/drivers/thermal/thermal_sysfs.c
+@@ -40,10 +40,13 @@ temp_show(struct device *dev, struct device_attribute *attr, char *buf)
  
- 	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
--		if (rockchip_smp_prepare_sram(node)) {
--			of_node_put(node);
--			return;
--		}
--
- 		/* enable the SCU power domain */
- 		pmu_set_power_domain(PMU_PWRDN_SCU, true);
+ 	ret = thermal_zone_get_temp(tz, &temperature);
  
-@@ -316,11 +311,19 @@ static void __init rockchip_smp_prepare_cpus(unsigned int max_cpus)
- 		asm ("mrc p15, 1, %0, c9, c0, 2\n" : "=r" (l2ctlr));
- 		ncores = ((l2ctlr >> 24) & 0x3) + 1;
- 	}
--	of_node_put(node);
+-	if (ret)
+-		return ret;
++	if (!ret)
++		return sprintf(buf, "%d\n", temperature);
  
- 	/* Make sure that all cores except the first are really off */
- 	for (i = 1; i < ncores; i++)
- 		pmu_set_power_domain(0 + i, false);
+-	return sprintf(buf, "%d\n", temperature);
++	if (ret == -EAGAIN)
++		return -ENODATA;
 +
-+	if (read_cpuid_part() == ARM_CPU_PART_CORTEX_A9) {
-+		if (rockchip_smp_prepare_sram(node)) {
-+			of_node_put(node);
-+			return;
-+		}
-+	}
-+
-+	of_node_put(node);
++	return ret;
  }
  
- static void __init rk3036_smp_prepare_cpus(unsigned int max_cpus)
+ static ssize_t
 -- 
 2.39.5
 
