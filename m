@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F30B2A54E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A45BB2A238
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 857805E0061
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E9107A76DF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20554322542;
-	Mon, 18 Aug 2025 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C9931B11A;
+	Mon, 18 Aug 2025 12:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouH1bhFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Frtdg1MW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DD332277F;
-	Mon, 18 Aug 2025 13:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F78227B355;
+	Mon, 18 Aug 2025 12:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523078; cv=none; b=Byioa0pVYdu5CDxZ9KKXh546kTxwTKf7WD9QRDVbg3r7Sivrg/+xWGaQj5CRKHqXi+eTy3I+qRwB+JR4IYHFNtgJM5dgO0WBqtO1oWZ9lWAoH9frimC06L797jcOst5eK3YHrmLfm89LORLCtr267A0IYXQe1diOmy1cexWq8II=
+	t=1755521512; cv=none; b=kpnPRXwYaWdy+CNZXdKkVQmGLHnhQ0k8Hqlq19Tw4mny3kXLMi16KOW5OGERFQ+dxwqtMq5vpK0xL75I1oEZLEBB6A+F3tWrN1ISKh8FKofj7zAKzdqvOEaEhTl2509lXvfarbiKAUT8ph+D4aMPNDc+HcwKbZUovsMxXd3z8kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523078; c=relaxed/simple;
-	bh=hO03T6sJTdesA/pPy+V8lJJYI1Y/htMfkdIr5iJFPuA=;
+	s=arc-20240116; t=1755521512; c=relaxed/simple;
+	bh=r4pY5sJzbDikd7A2nUDdeJGkPpIZzDpvTN6qp8HdCFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nosx8yQC7Ea+iLrOnkjAZNn4XcqSHIHTnnN0c0Zey2JLX9wRvxL7MpZtYIkhQ5yB4qQ1xBN8KcPLLMRIIEw99rD5nr4NiGBBqusEf9/HlvyCTd8L7jWMpEc9ckk/0xGZ/sZF4mE/mWe5/tCw9zGUqConYOwlivGcx0ayHz8wMsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouH1bhFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BABC4CEF1;
-	Mon, 18 Aug 2025 13:17:58 +0000 (UTC)
+	 MIME-Version; b=FWBT1WEDP/M6MHBBCZhnHDWTW7BH+wGjpGU526dhBVa4ZqU+RQIFIuAHTkcsEIV8HvP4HYADTrY5FxHD4V28hzAVW+77edMj23Q5UHIGgJEBivaE5SaljHGQItc01ApQFN96tsDOMxX0n3uPVdK3uoMo8zFmFNjklRNM9tvf8gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Frtdg1MW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C562C4CEEB;
+	Mon, 18 Aug 2025 12:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523078;
-	bh=hO03T6sJTdesA/pPy+V8lJJYI1Y/htMfkdIr5iJFPuA=;
+	s=korg; t=1755521511;
+	bh=r4pY5sJzbDikd7A2nUDdeJGkPpIZzDpvTN6qp8HdCFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouH1bhFP9h5a9KJ8ywMEeP8JRGxhu1adWbioU33zVjZzkTMwRo9B4yO0aNU092ga4
-	 MjalSD8W499haLj32dQy0tWp951dZavuL1xgw4G0tKasJsb4mr+J4rVzRh0oEXBH70
-	 JiMsNMMqhMj3uDeoeCnJKFFsR/35lKFWEi8BAYlU=
+	b=Frtdg1MW0473QEwECBqrCUBdc6i+TkAURylnozQzXuRnv95Fdl/Fhct12qK0TCoc/
+	 0jrhtJ6x5ZkZE4y9HU9BtbR2mvO99853V6Cclht9wszvAEtEEwGtw7lSxHWbVM19V4
+	 gK1DQgZ1h2MtupC0hzxGhBdkM0KhladtwVw08JSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.15 047/515] ACPI: processor: perflib: Fix initial _PPC limit application
-Date: Mon, 18 Aug 2025 14:40:33 +0200
-Message-ID: <20250818124500.232391465@linuxfoundation.org>
+	Harald Mommer <harald.mommer@oss.qualcomm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.12 008/444] gpio: virtio: Fix config space reading.
+Date: Mon, 18 Aug 2025 14:40:34 +0200
+Message-ID: <20250818124449.217330621@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Harald Mommer <harald.mommer@oss.qualcomm.com>
 
-commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
+commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
 
-If the BIOS sets a _PPC frequency limit upfront, it will fail to take
-effect due to a call ordering issue.  Namely, freq_qos_update_request()
-is called before freq_qos_add_request() for the given request causing
-the constraint update to be ignored.  The call sequence in question is
-as follows:
+Quote from the virtio specification chapter 4.2.2.2:
 
-cpufreq_policy_online()
-  acpi_cpufreq_cpu_init()
-    acpi_processor_register_performance()
-      acpi_processor_get_performance_info()
-        acpi_processor_get_platform_limit()
-         freq_qos_update_request(&perflib_req) <- inactive QoS request
-  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
-                               CPUFREQ_CREATE_POLICY)
-    acpi_processor_notifier()
-      acpi_processor_ppc_init()
-        freq_qos_add_request(&perflib_req) <- QoS request activation
+"For the device-specific configuration space, the driver MUST use 8 bit
+wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
+for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
+64 bit wide fields."
 
-Address this by adding an acpi_processor_get_platform_limit() call
-to acpi_processor_ppc_init(), after the perflib_req activation via
-freq_qos_add_request(), which causes the initial _PPC limit to be
-picked up as appropriate.  However, also ensure that the _PPC limit
-will not be picked up in the cases when the cpufreq driver does not
-call acpi_processor_register_performance() by adding a pr->performance
-check to the related_cpus loop in acpi_processor_ppc_init().
-
-Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
-[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
-[ rjw: Subject and changelog adjustments ]
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-virtio.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -172,11 +172,14 @@ void acpi_processor_ppc_init(struct cpuf
+--- a/drivers/gpio/gpio-virtio.c
++++ b/drivers/gpio/gpio-virtio.c
+@@ -539,7 +539,6 @@ static const char **virtio_gpio_get_name
+ 
+ static int virtio_gpio_probe(struct virtio_device *vdev)
  {
- 	unsigned int cpu;
+-	struct virtio_gpio_config config;
+ 	struct device *dev = &vdev->dev;
+ 	struct virtio_gpio *vgpio;
+ 	u32 gpio_names_size;
+@@ -551,9 +550,11 @@ static int virtio_gpio_probe(struct virt
+ 		return -ENOMEM;
  
-+	if (ignore_ppc == 1)
-+		return;
-+
- 	for_each_cpu(cpu, policy->related_cpus) {
- 		struct acpi_processor *pr = per_cpu(processors, cpu);
- 		int ret;
- 
--		if (!pr)
-+		if (!pr || !pr->performance)
- 			continue;
- 
- 		/*
-@@ -192,6 +195,11 @@ void acpi_processor_ppc_init(struct cpuf
- 		if (ret < 0)
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
-+
-+		ret = acpi_processor_get_platform_limit(pr);
-+		if (ret)
-+			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
-+			       cpu, ret);
- 	}
- }
- 
+ 	/* Read configuration */
+-	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
+-	gpio_names_size = le32_to_cpu(config.gpio_names_size);
+-	ngpio = le16_to_cpu(config.ngpio);
++	gpio_names_size =
++		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
++					      gpio_names_size));
++	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
++					       ngpio));
+ 	if (!ngpio) {
+ 		dev_err(dev, "Number of GPIOs can't be zero\n");
+ 		return -EINVAL;
 
 
 
