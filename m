@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9C8B2A51A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF16B2A8B1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 56EE34E339E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3292F1BA4738
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548FC320399;
-	Mon, 18 Aug 2025 13:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E2D335BCB;
+	Mon, 18 Aug 2025 13:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxfiQkMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U11G1b/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1099231AF10;
-	Mon, 18 Aug 2025 13:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D73335BAF;
+	Mon, 18 Aug 2025 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523430; cv=none; b=g31ZKxlsOXHdULsb2/T5OUEN06tHi9oWwCMODEcRYK0WTmvFARN5lk1Qiev4YP89GkbjLabkZtvgY2GK3d3qGFyfvaUvTp79e3GKwFjpsBASbiRaan8O5CmGw4G90XffpNzJwfa+7YsZG8+cU5Oj5f06QkaOPwm7jPRN280SMp8=
+	t=1755525239; cv=none; b=Xui7ZC5Ugcq/kya371EOoGNK+kaFr5kzAJ805PFUBpgHt0ZlcvCoKHMYP3FcoMaS3W5dDrye5rJkBhBUnS7ow/gbhX1v1pIJHPEegA8eymn5608pDqTYqswDxMUpA4o9dDZD+6k/e7CpQ7qqvSVRf5FC5e+ZhQ1dpK2uPGEF+P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523430; c=relaxed/simple;
-	bh=vxJVWoL4cpE9QG+J1i9ZeFkeXIiaukKXIw+NbA6vwQ4=;
+	s=arc-20240116; t=1755525239; c=relaxed/simple;
+	bh=VQg9kOpW/R3vungOZ3Ca2uu/KLjCD1MbCPONwhNPwSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m46wkWvs4Llq/+bUKfV0L5yxHyaFgSh+m78NUvmRfQ2aSKVIWlUFW8i/VK0+KNANwI3vvhncYT52AY+NcFRVf/BZnOv+pTy1uZow93gcn1HtuYt91blF9hAk3KkFoZ32r4Pb8gD6uUAy8+hwXnnl5Ptcuv5aLx/LVKaiMvr27f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxfiQkMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0D9C116D0;
-	Mon, 18 Aug 2025 13:23:48 +0000 (UTC)
+	 MIME-Version; b=f9Ml4MN7Vcm6Gar4eRLXnXm1GxHBoo/Q9DiDrMZWiNyVTIfhrSIp43wzUXq1InBBhOA7SXEEQV6X0Pb2A/hbVZ5Cq/MjDB/GlzPCejp1c7KA851RpPOAaWlhMMtuSdLCUVDRij32dlgcd8voAKgPLFmVfLzeoIMnCpftecaIlVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U11G1b/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ABDC4CEEB;
+	Mon, 18 Aug 2025 13:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523429;
-	bh=vxJVWoL4cpE9QG+J1i9ZeFkeXIiaukKXIw+NbA6vwQ4=;
+	s=korg; t=1755525238;
+	bh=VQg9kOpW/R3vungOZ3Ca2uu/KLjCD1MbCPONwhNPwSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxfiQkMpp6iGTWhareIwQIad5cANiOvss/Pol7yDmNsWBpiTvyIIbukNDJiX5IzcX
-	 TO3+abl/V0ha0IlNPIrEpn6nJ4CUEanNGGzpgWFKYzy2gptyH7twWx5BA4zck5OQSu
-	 Ku8xOxA9pxfNngot6jVnkclBCfVwLTS2eynwm3As=
+	b=U11G1b/qNb2+uyfnQl743GcYnG+2kn7/mz/U0PPLLHEpun+gYSf5PAXQhwXFZblz4
+	 226dJKvaMT0DlCplePPhUhZ2nwnFrNxdYTV047jcx9ULLkqrqV9Bfj9PP6s8tBD+JR
+	 tEsbxmflFXa+hl/VS+FkBe0gGHDJA5DtKKO9kq9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 169/515] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
-Date: Mon, 18 Aug 2025 14:42:35 +0200
-Message-ID: <20250818124504.876542198@linuxfoundation.org>
+Subject: [PATCH 6.16 169/570] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+Date: Mon, 18 Aug 2025 14:42:36 +0200
+Message-ID: <20250818124512.309134125@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
+[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
 
-We currently log parse failures for ELD data and some disconnection events
-as errors without rate limiting. These log messages can be triggered very
-frequently in some situations, especially ELD parsing when there is nothing
-connected to a HDMI port which will generate:
+When a GHES (Generic Hardware Error Source) triggers a panic, add the
+TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
+kernel as tainted due to a machine check event, improving diagnostics
+and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
+indicate lockdep remains valid.
 
-hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
+At large scale deployment, this helps to quickly determine panics that
+are coming due to hardware failures.
 
-While there's doubtless work that could be done on reducing the number of
-connection notification callbacks it's possible these may be legitimately
-generated by poor quality physical connections so let's use rate limiting
-to mitigate the log spam for the parse errors and lower the severity for
-disconnect logging to debug level.
-
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/acpi/apei/ghes.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
-index 1139a2754ca3..056d98154682 100644
---- a/sound/soc/codecs/hdac_hdmi.c
-+++ b/sound/soc/codecs/hdac_hdmi.c
-@@ -1232,7 +1232,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 						>> DRM_ELD_VER_SHIFT;
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 281a0a2f6730..bda33a0f0a01 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -1099,6 +1099,8 @@ static void __ghes_panic(struct ghes *ghes,
  
- 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
--		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: Unknown ELD version %d\n", ver);
- 		return -EINVAL;
- 	}
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
  
-@@ -1240,7 +1241,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
++	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
++
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
  
- 	if (mnl > ELD_MAX_MNL) {
--		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: MNL Invalid %d\n", mnl);
- 		return -EINVAL;
- 	}
- 
-@@ -1299,8 +1301,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
- 
- 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
- 
--		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
--						__func__, pin->nid, port->id);
-+		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
-+			__func__, pin->nid, port->id);
- 
- 		/*
- 		 * PCMs are not registered during device probe, so don't
+ 	if (!panic_timeout)
 -- 
 2.39.5
 
