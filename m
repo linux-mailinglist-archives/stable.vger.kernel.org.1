@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59E1B2AAB0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:34:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73BFAB2A457
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E66A1BC2596
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9E8189725B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BB432A3E9;
-	Mon, 18 Aug 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94823203B4;
+	Mon, 18 Aug 2025 13:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqIaYMWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybe62KtS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC9E32A3EB;
-	Mon, 18 Aug 2025 14:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986DF31E0F1;
+	Mon, 18 Aug 2025 13:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526180; cv=none; b=Iiv4SjgzOmZHTMeWja0b8XS84hVjCssqG+1Y/rq52rkbImNZUooFl/qmGvvEzM+F4evt/q+zqSlIuRXiayNiyRgyJq2Znw0+m54vhcm+YFp0FztwBAqTXD38DddwfV5ynar7FmTcFgXbtVEmMWX/evYJnMTy8MJ/vzLVesSHFUw=
+	t=1755522748; cv=none; b=GS4sHDEWEzWMUeMF5udRRaqYSiTXE5AV/6eIW9kM+raH9GXNsz93rsobPWX/GoTLWM0B17bUcbV8LHhrPqd5jU9NkOkGKzYA3N2nQgXFu19C07g5l56v+n445w8rNL15VS6TBzYHTVh8WqjBLprRRMqaOngRCTFXvZoLbPMjr4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526180; c=relaxed/simple;
-	bh=kh7bsuNwWpxRz+nZbYYaWn2JTsEooSWYwkLEmbn9Kv4=;
+	s=arc-20240116; t=1755522748; c=relaxed/simple;
+	bh=cX37G8KRYr1DRylmtUWgV43L22Q3TWBw61Ce08lCrzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZPVB9KF5HfStZB6PtecTlDNlrf5VmQd0YK90AfU7VUTofNLX6VMndO8TvCczNfRqL+qCQoTFJftWha7lwzRR7r1r071nnWcqTqLzDYinQjDuNFP4yYba9s+XZ8VULSLEcR6FP/9g3Q0c+WxGQgAamwmCNlhiENM8SMMDtDNLKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqIaYMWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA12AC4CEEB;
-	Mon, 18 Aug 2025 14:09:39 +0000 (UTC)
+	 MIME-Version; b=BNLESO4ZiasmOuFcPiw3GL1GsLB82CFvJX6yzTJcbcyehlAE2AxtoV1GNyMDZ4xe5Z2FJLc9zc3dxAoNuanMRMd60VZ2pWMnwSBGVBtmjNirrKQ7w071k73FfEFEa9cUvrWnEbfGgTN3w412EwWe1ZAhqrCXm75/mJWlAeAlN6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybe62KtS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C84C4CEEB;
+	Mon, 18 Aug 2025 13:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526180;
-	bh=kh7bsuNwWpxRz+nZbYYaWn2JTsEooSWYwkLEmbn9Kv4=;
+	s=korg; t=1755522748;
+	bh=cX37G8KRYr1DRylmtUWgV43L22Q3TWBw61Ce08lCrzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqIaYMWfuSj0J+wg36gL86QOHDGM32Q45Nsm85sksvU2jpGfo0SXWFCanBX4Y5HH0
-	 V2xiozglYYnMqS5HzEqD1wzt7pDA/8Yb8RUyPizq7DNqKywvV2VlyTSAB2c+T+O65j
-	 uQ6fRihwAZQJX+gnbRhe6dXQqf4POU11pJEYPRsE=
+	b=ybe62KtS7mmiwC4vZb4LCkNo31fB5vjtbsdRzpCWZjg+xF06z8YqBo3GsItpIo5iW
+	 lSj2yyhlqjomiGOcjBCzrFOBLiMKe7FSdCBPUTmMjDsCQNicGyo6dvPQvByjNXo3zl
+	 2qmsiUx0fLCZXDuGTuxUt9OdPePlkERrYzkge8xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 449/570] kheaders: rebuild kheaders_data.tar.xz when a file is modified within a minute
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 410/444] hv_netvsc: Fix panic during namespace deletion with VF
 Date: Mon, 18 Aug 2025 14:47:16 +0200
-Message-ID: <20250818124523.111195781@linuxfoundation.org>
+Message-ID: <20250818124504.299622299@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,251 +61,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 626c54af35764b0b8a4ed5c446458ba6ddfe9cc8 ]
+commit 33caa208dba6fa639e8a92fd0c8320b652e5550c upstream.
 
-When a header file is changed, kernel/gen_kheaders.sh may fail to update
-kernel/kheaders_data.tar.xz.
+The existing code move the VF NIC to new namespace when NETDEV_REGISTER is
+received on netvsc NIC. During deletion of the namespace,
+default_device_exit_batch() >> default_device_exit_net() is called. When
+netvsc NIC is moved back and registered to the default namespace, it
+automatically brings VF NIC back to the default namespace. This will cause
+the default_device_exit_net() >> for_each_netdev_safe loop unable to detect
+the list end, and hit NULL ptr:
 
-[steps to reproduce]
+[  231.449420] mana 7870:00:00.0 enP30832s1: Moved VF to namespace with: eth0
+[  231.449656] BUG: kernel NULL pointer dereference, address: 0000000000000010
+[  231.450246] #PF: supervisor read access in kernel mode
+[  231.450579] #PF: error_code(0x0000) - not-present page
+[  231.450916] PGD 17b8a8067 P4D 0
+[  231.451163] Oops: Oops: 0000 [#1] SMP NOPTI
+[  231.451450] CPU: 82 UID: 0 PID: 1394 Comm: kworker/u768:1 Not tainted 6.16.0-rc4+ #3 VOLUNTARY
+[  231.452042] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/21/2024
+[  231.452692] Workqueue: netns cleanup_net
+[  231.452947] RIP: 0010:default_device_exit_batch+0x16c/0x3f0
+[  231.453326] Code: c0 0c f5 b3 e8 d5 db fe ff 48 85 c0 74 15 48 c7 c2 f8 fd ca b2 be 10 00 00 00 48 8d 7d c0 e8 7b 77 25 00 49 8b 86 28 01 00 00 <48> 8b 50 10 4c 8b 2a 4c 8d 62 f0 49 83 ed 10 4c 39 e0 0f 84 d6 00
+[  231.454294] RSP: 0018:ff75fc7c9bf9fd00 EFLAGS: 00010246
+[  231.454610] RAX: 0000000000000000 RBX: 0000000000000002 RCX: 61c8864680b583eb
+[  231.455094] RDX: ff1fa9f71462d800 RSI: ff75fc7c9bf9fd38 RDI: 0000000030766564
+[  231.455686] RBP: ff75fc7c9bf9fd78 R08: 0000000000000000 R09: 0000000000000000
+[  231.456126] R10: 0000000000000001 R11: 0000000000000004 R12: ff1fa9f70088e340
+[  231.456621] R13: ff1fa9f70088e340 R14: ffffffffb3f50c20 R15: ff1fa9f7103e6340
+[  231.457161] FS:  0000000000000000(0000) GS:ff1faa6783a08000(0000) knlGS:0000000000000000
+[  231.457707] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  231.458031] CR2: 0000000000000010 CR3: 0000000179ab2006 CR4: 0000000000b73ef0
+[  231.458434] Call Trace:
+[  231.458600]  <TASK>
+[  231.458777]  ops_undo_list+0x100/0x220
+[  231.459015]  cleanup_net+0x1b8/0x300
+[  231.459285]  process_one_work+0x184/0x340
 
-[1] Build kernel/kheaders_data.tar.xz
+To fix it, move the ns change to a workqueue, and take rtnl_lock to avoid
+changing the netdev list when default_device_exit_net() is using it.
 
-  $ make -j$(nproc) kernel/kheaders.o
-    DESCEND objtool
-    INSTALL libsubcmd_headers
-    CALL    scripts/checksyscalls.sh
-    CHK     kernel/kheaders_data.tar.xz
-    GEN     kernel/kheaders_data.tar.xz
-    CC      kernel/kheaders.o
-
-[2] Modify a header without changing the file size
-
-  $ sed -i s/0xdeadbeef/0xfeedbeef/ include/linux/elfnote.h
-
-[3] Rebuild kernel/kheaders_data.tar.xz
-
-  $ make -j$(nproc) kernel/kheaders.o
-    DESCEND objtool
-    INSTALL libsubcmd_headers
-    CALL    scripts/checksyscalls.sh
-    CHK     kernel/kheaders_data.tar.xz
-
-kernel/kheaders_data.tar.xz is not updated if steps [1] - [3] are run
-within the same minute.
-
-The headers_md5 variable stores the MD5 hash of the 'ls -l' output
-for all header files. This hash value is used to determine whether
-kheaders_data.tar.xz needs to be rebuilt. However, 'ls -l' prints the
-modification times with minute-level granularity. If a file is modified
-within the same minute and its size remains the same, the MD5 hash does
-not change.
-
-To reliably detect file modifications, this commit rewrites
-kernel/gen_kheaders.sh to output header dependencies to
-kernel/.kheaders_data.tar.xz.cmd. Then, Make compares the timestamps
-and reruns kernel/gen_kheaders.sh when necessary. This is the standard
-mechanism used by Make and Kbuild.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4c262801ea60 ("hv_netvsc: Fix VF namespace also in synthetic NIC NETDEV_REGISTER event")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1754511711-11188-1-git-send-email-haiyangz@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/.gitignore      |  2 +
- kernel/Makefile        | 47 ++++++++++++++++++---
- kernel/gen_kheaders.sh | 94 ++++++++++--------------------------------
- 3 files changed, 66 insertions(+), 77 deletions(-)
+ drivers/net/hyperv/hyperv_net.h |    3 +++
+ drivers/net/hyperv/netvsc_drv.c |   29 ++++++++++++++++++++++++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/.gitignore b/kernel/.gitignore
-index c6b299a6b786..a501bfc80694 100644
---- a/kernel/.gitignore
-+++ b/kernel/.gitignore
-@@ -1,3 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
- /config_data
- /kheaders.md5
-+/kheaders-objlist
-+/kheaders-srclist
-diff --git a/kernel/Makefile b/kernel/Makefile
-index 32e80dd626af..9a9ff405ea89 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -158,11 +158,48 @@ filechk_cat = cat $<
- $(obj)/config_data: $(KCONFIG_CONFIG) FORCE
- 	$(call filechk,cat)
+--- a/drivers/net/hyperv/hyperv_net.h
++++ b/drivers/net/hyperv/hyperv_net.h
+@@ -1061,6 +1061,7 @@ struct net_device_context {
+ 	struct net_device __rcu *vf_netdev;
+ 	struct netvsc_vf_pcpu_stats __percpu *vf_stats;
+ 	struct delayed_work vf_takeover;
++	struct delayed_work vfns_work;
  
-+# kheaders_data.tar.xz
- $(obj)/kheaders.o: $(obj)/kheaders_data.tar.xz
+ 	/* 1: allocated, serial number is valid. 0: not allocated */
+ 	u32 vf_alloc;
+@@ -1075,6 +1076,8 @@ struct net_device_context {
+ 	struct netvsc_device_info *saved_netvsc_dev_info;
+ };
  
--quiet_cmd_genikh = CHK     $(obj)/kheaders_data.tar.xz
--      cmd_genikh = $(CONFIG_SHELL) $(srctree)/kernel/gen_kheaders.sh $@
--$(obj)/kheaders_data.tar.xz: FORCE
--	$(call cmd,genikh)
-+quiet_cmd_kheaders_data = GEN     $@
-+      cmd_kheaders_data = "$<" "$@" "$(obj)/kheaders-srclist" "$(obj)/kheaders-objlist"
-+      cmd_kheaders_data_dep = cat $(depfile) >> $(dot-target).cmd; rm -f $(depfile)
++void netvsc_vfns_work(struct work_struct *w);
++
+ /* Azure hosts don't support non-TCP port numbers in hashing for fragmented
+  * packets. We can use ethtool to change UDP hash level when necessary.
+  */
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2516,6 +2516,7 @@ static int netvsc_probe(struct hv_device
+ 	spin_lock_init(&net_device_ctx->lock);
+ 	INIT_LIST_HEAD(&net_device_ctx->reconfig_events);
+ 	INIT_DELAYED_WORK(&net_device_ctx->vf_takeover, netvsc_vf_setup);
++	INIT_DELAYED_WORK(&net_device_ctx->vfns_work, netvsc_vfns_work);
  
--clean-files := kheaders_data.tar.xz kheaders.md5
-+define rule_kheaders_data
-+	$(call cmd_and_savecmd,kheaders_data)
-+	$(call cmd,kheaders_data_dep)
-+endef
+ 	net_device_ctx->vf_stats
+ 		= netdev_alloc_pcpu_stats(struct netvsc_vf_pcpu_stats);
+@@ -2658,6 +2659,8 @@ static void netvsc_remove(struct hv_devi
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+ 
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
 +
-+targets += kheaders_data.tar.xz
-+$(obj)/kheaders_data.tar.xz: $(src)/gen_kheaders.sh $(obj)/kheaders-srclist $(obj)/kheaders-objlist $(obj)/kheaders.md5 FORCE
-+	$(call if_changed_rule,kheaders_data)
-+
-+# generated headers in objtree
-+#
-+# include/generated/utsversion.h is ignored because it is generated
-+# after gen_kheaders.sh is executed. (utsversion.h is unneeded for kheaders)
-+filechk_kheaders_objlist = \
-+	for d in include "arch/$(SRCARCH)/include"; do \
-+		find "$${d}/generated" ! -path "include/generated/utsversion.h" -a -name "*.h" -print; \
-+	done
-+
-+$(obj)/kheaders-objlist: FORCE
-+	$(call filechk,kheaders_objlist)
-+
-+# non-generated headers in srctree
-+filechk_kheaders_srclist = \
-+	for d in include "arch/$(SRCARCH)/include"; do \
-+		find "$(srctree)/$${d}" -path "$(srctree)/$${d}/generated" -prune -o -name "*.h" -print; \
-+	done
-+
-+$(obj)/kheaders-srclist: FORCE
-+	$(call filechk,kheaders_srclist)
-+
-+# Some files are symlinks. If symlinks are changed, kheaders_data.tar.xz should
-+# be rebuilt.
-+filechk_kheaders_md5sum = xargs -r -a $< stat -c %N | md5sum
-+
-+$(obj)/kheaders.md5: $(obj)/kheaders-srclist FORCE
-+	$(call filechk,kheaders_md5sum)
-+
-+clean-files := kheaders.md5 kheaders-srclist kheaders-objlist
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index c9e5dc068e85..0ff7beabb21a 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -4,79 +4,33 @@
- # This script generates an archive consisting of kernel headers
- # for CONFIG_IKHEADERS.
- set -e
--sfile="$(readlink -f "$0")"
--outdir="$(pwd)"
- tarfile=$1
--tmpdir=$outdir/${tarfile%/*}/.tmp_dir
--
--dir_list="
--include/
--arch/$SRCARCH/include/
--"
--
--# Support incremental builds by skipping archive generation
--# if timestamps of files being archived are not changed.
--
--# This block is useful for debugging the incremental builds.
--# Uncomment it for debugging.
--# if [ ! -f /tmp/iter ]; then iter=1; echo 1 > /tmp/iter;
--# else iter=$(($(cat /tmp/iter) + 1)); echo $iter > /tmp/iter; fi
--# find $all_dirs -name "*.h" | xargs ls -l > /tmp/ls-$iter
--
--all_dirs=
--if [ "$building_out_of_srctree" ]; then
--	for d in $dir_list; do
--		all_dirs="$all_dirs $srctree/$d"
--	done
--fi
--all_dirs="$all_dirs $dir_list"
--
--# include/generated/utsversion.h is ignored because it is generated after this
--# script is executed. (utsversion.h is unneeded for kheaders)
--#
--# When Kconfig regenerates include/generated/autoconf.h, its timestamp is
--# updated, but the contents might be still the same. When any CONFIG option is
--# changed, Kconfig touches the corresponding timestamp file include/config/*.
--# Hence, the md5sum detects the configuration change anyway. We do not need to
--# check include/generated/autoconf.h explicitly.
--#
--# Ignore them for md5 calculation to avoid pointless regeneration.
--headers_md5="$(find $all_dirs -name "*.h" -a			\
--		! -path include/generated/utsversion.h -a	\
--		! -path include/generated/autoconf.h		|
--		xargs ls -l | md5sum | cut -d ' ' -f1)"
--
--# Any changes to this script will also cause a rebuild of the archive.
--this_file_md5="$(ls -l $sfile | md5sum | cut -d ' ' -f1)"
--if [ -f $tarfile ]; then tarfile_md5="$(md5sum $tarfile | cut -d ' ' -f1)"; fi
--if [ -f kernel/kheaders.md5 ] &&
--	[ "$(head -n 1 kernel/kheaders.md5)" = "$headers_md5" ] &&
--	[ "$(head -n 2 kernel/kheaders.md5 | tail -n 1)" = "$this_file_md5" ] &&
--	[ "$(tail -n 1 kernel/kheaders.md5)" = "$tarfile_md5" ]; then
--		exit
--fi
--
--echo "  GEN     $tarfile"
-+srclist=$2
-+objlist=$3
-+
-+dir=$(dirname "${tarfile}")
-+tmpdir=${dir}/.tmp_dir
-+depfile=${dir}/.$(basename "${tarfile}").d
-+
-+# generate dependency list.
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev) {
+ 		cancel_work_sync(&nvdev->subchan_work);
+@@ -2699,6 +2702,7 @@ static int netvsc_suspend(struct hv_devi
+ 	cancel_delayed_work_sync(&ndev_ctx->dwork);
+ 
+ 	rtnl_lock();
++	cancel_delayed_work_sync(&ndev_ctx->vfns_work);
+ 
+ 	nvdev = rtnl_dereference(ndev_ctx->nvdev);
+ 	if (nvdev == NULL) {
+@@ -2792,6 +2796,27 @@ static void netvsc_event_set_vf_ns(struc
+ 	}
+ }
+ 
++void netvsc_vfns_work(struct work_struct *w)
 +{
-+	echo
-+	echo "deps_${tarfile} := \\"
-+	sed 's:\(.*\):  \1 \\:' "${srclist}"
-+	sed -n '/^include\/generated\/autoconf\.h$/!s:\(.*\):  \1 \\:p' "${objlist}"
-+	echo
-+	echo "${tarfile}: \$(deps_${tarfile})"
-+	echo
-+	echo "\$(deps_${tarfile}):"
++	struct net_device_context *ndev_ctx =
++		container_of(w, struct net_device_context, vfns_work.work);
++	struct net_device *ndev;
 +
-+} > "${depfile}"
++	if (!rtnl_trylock()) {
++		schedule_delayed_work(&ndev_ctx->vfns_work, 1);
++		return;
++	}
++
++	ndev = hv_get_drvdata(ndev_ctx->device_ctx);
++	if (!ndev)
++		goto out;
++
++	netvsc_event_set_vf_ns(ndev);
++
++out:
++	rtnl_unlock();
++}
++
+ /*
+  * On Hyper-V, every VF interface is matched with a corresponding
+  * synthetic interface. The synthetic interface is presented first
+@@ -2802,10 +2827,12 @@ static int netvsc_netdev_event(struct no
+ 			       unsigned long event, void *ptr)
+ {
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
++	struct net_device_context *ndev_ctx;
+ 	int ret = 0;
  
- rm -rf "${tmpdir}"
- mkdir "${tmpdir}"
+ 	if (event_dev->netdev_ops == &device_ops && event == NETDEV_REGISTER) {
+-		netvsc_event_set_vf_ns(event_dev);
++		ndev_ctx = netdev_priv(event_dev);
++		schedule_delayed_work(&ndev_ctx->vfns_work, 0);
+ 		return NOTIFY_DONE;
+ 	}
  
--if [ "$building_out_of_srctree" ]; then
--	(
--		cd $srctree
--		for f in $dir_list
--			do find "$f" -name "*.h";
--		done | tar -c -f - -T - | tar -xf - -C "${tmpdir}"
--	)
--fi
--
--for f in $dir_list;
--	do find "$f" -name "*.h";
--done | tar -c -f - -T - | tar -xf - -C "${tmpdir}"
--
--# Always exclude include/generated/utsversion.h
--# Otherwise, the contents of the tarball may vary depending on the build steps.
--rm -f "${tmpdir}/include/generated/utsversion.h"
-+# shellcheck disable=SC2154 # srctree is passed as an env variable
-+sed "s:^${srctree}/::" "${srclist}" | tar -c -f - -C "${srctree}" -T - | tar -xf - -C "${tmpdir}"
-+tar -c -f - -T "${objlist}" | tar -xf - -C "${tmpdir}"
- 
- # Remove comments except SDPX lines
- # Use a temporary file to store directory contents to prevent find/xargs from
-@@ -92,8 +46,4 @@ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
-     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C "${tmpdir}/" . > /dev/null
- 
--echo $headers_md5 > kernel/kheaders.md5
--echo "$this_file_md5" >> kernel/kheaders.md5
--echo "$(md5sum $tarfile | cut -d ' ' -f1)" >> kernel/kheaders.md5
--
- rm -rf "${tmpdir}"
--- 
-2.39.5
-
 
 
 
