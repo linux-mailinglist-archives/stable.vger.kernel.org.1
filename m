@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC4BB2A962
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41E7B2A439
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F272B6219E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05E51626988
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F633321F54;
-	Mon, 18 Aug 2025 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1BF31E0F7;
+	Mon, 18 Aug 2025 13:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgGPumj5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9Mx8lz0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FD2271A6D;
-	Mon, 18 Aug 2025 14:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F861E3DCD;
+	Mon, 18 Aug 2025 13:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526017; cv=none; b=uZTiSkGQdiwpR/sLx9Kauh9We3sWUptZVdF+2wf32CGAAuXoxRPTv0igbywtzmuNhnRt5THAhS3lbt5L1QvhBEg4s9PwWLADFXanaSVUk5o5yY/3TVFXV6NjJQ8fRnXZJ9rFyiVe4Rb9dsyQayXl+d3iS+BoZbotsQAgQhTlDnE=
+	t=1755522725; cv=none; b=RhYdr9nXtmLX2KFohra6KaxzPxCeP7L7Eel+I7On0LdcIyz+JUo7IKazCOStwFkGe7iDyUtcq62EPV5XiGg1Uu0YpvDisbIz0dhCRyz9obBrzqbteZ/MIKZNJkjDRBMPw1o3woX2m/OtuoU1IQQ6YIpEwgOfBsdvedKVMjhWgY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526017; c=relaxed/simple;
-	bh=Oc+YRWlrBPxYILG7Lgka80pTZS1q9T/hdyCu5bFGJdo=;
+	s=arc-20240116; t=1755522725; c=relaxed/simple;
+	bh=nSQfhENvk2JHtBLaoiXsan8eqlHeet8c6MBjd11z9yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lylltcdk4cKPsZVGNVNR/2SXELSuKBO8rAkFRwLx4rY1QzwmHauvRs25Nb1Hiz167fsSumN6Y/AKslICD2Ij+0a4i8LPZYyTt1PrDpI55MDGrIPz1w3taOdf9eC+JB5Av+gki/mEVvFXtdZN836SfQ/uFoblzkR77AKNvLJrpd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgGPumj5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A33C4CEEB;
-	Mon, 18 Aug 2025 14:06:57 +0000 (UTC)
+	 MIME-Version; b=OXVXgHiZYMPjFZDE8xvDrf3PYqc1IKk2aKio2DQZ9xhwlXlb0z4Jmvd9HZMGFMmpi3WwSYvGKNOAdbu9S9b6QxhPXGBq1g2j5WdTVOtf8B7eu0g8dBTxiZ7+uY1kW/A+/CljbSrMtYJ2+c25Sa7PEAmkv9QjwCfxmSgo3PjUp4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9Mx8lz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10593C4CEEB;
+	Mon, 18 Aug 2025 13:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526017;
-	bh=Oc+YRWlrBPxYILG7Lgka80pTZS1q9T/hdyCu5bFGJdo=;
+	s=korg; t=1755522725;
+	bh=nSQfhENvk2JHtBLaoiXsan8eqlHeet8c6MBjd11z9yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgGPumj5/Tc/m1I/QdgPcGynOjAN3kesFWHqqH37d7HO26SJwCZB4XB61XqsMzQKs
-	 646rkKysggoqgsHfB6z9JdpB154hDE3tv2FXAW1k+MqeXgoGfJ1ibfmfD0ZjP0WW8s
-	 znOV2gw8n648bJ2J9jnh8cTH6VEmcoVzTfFvnxVo=
+	b=T9Mx8lz0kSlAK3I+KmYas+8Rs9DJhv33p+uY115iw0YORwHW0ZRBcCAQMg00JT9Rf
+	 liqmdyjQxyG4WFGj2fOFtRfeE8NgjywMNdttKV1wlP7zoEXwyLv89LgO1hL+D4kShr
+	 hiC41mlyenr9gd25ntC87pGxxdbu++fZiQDfa8uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"fangzhong.zhou" <myth5@myth5.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 434/570] i2c: Force DLL0945 touchpad i2c freq to 100khz
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 395/444] btrfs: dont ignore inode missing when replaying log tree
 Date: Mon, 18 Aug 2025 14:47:01 +0200
-Message-ID: <20250818124522.548502914@linuxfoundation.org>
+Message-ID: <20250818124503.728841447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fangzhong.zhou <myth5@myth5.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 0b7c9528facdb5a73ad78fea86d2e95a6c48dbc4 ]
+commit 7ebf381a69421a88265d3c49cd0f007ba7336c9d upstream.
 
-This patch fixes an issue where the touchpad cursor movement becomes
-slow on the Dell Precision 5560. Force the touchpad freq to 100khz
-as a workaround.
+During log replay, at add_inode_ref(), we return -ENOENT if our current
+inode isn't found on the subvolume tree or if a parent directory isn't
+found. The error comes from btrfs_iget_logging() <- btrfs_iget() <-
+btrfs_read_locked_inode().
 
-Tested on Dell Precision 5560 with 6.14 to 6.14.6. Cursor movement
-is now smooth and responsive.
+The single caller of add_inode_ref(), replay_one_buffer(), ignores an
+-ENOENT error because it expects that error to mean only that a parent
+directory wasn't found and that is ok.
 
-Signed-off-by: fangzhong.zhou <myth5@myth5.com>
-[wsa: kept sorting and removed unnecessary parts from commit msg]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before commit 5f61b961599a ("btrfs: fix inode lookup error handling during
+log replay") we were converting any error when getting a parent directory
+to -ENOENT and any error when getting the current inode to -EIO, so our
+caller would fail log replay in case we can't find the current inode.
+After that commit however in case the current inode is not found we return
+-ENOENT to the caller and therefore it ignores the critical fact that the
+current inode was not found in the subvolume tree.
+
+Fix this by converting -ENOENT to 0 when we don't find a parent directory,
+returning -ENOENT when we don't find the current inode and making the
+caller, replay_one_buffer(), not ignore -ENOENT anymore.
+
+Fixes: 5f61b961599a ("btrfs: fix inode lookup error handling during log replay")
+CC: stable@vger.kernel.org # 6.16
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core-acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/tree-log.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index d2499f302b50..f43067f6797e 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -370,6 +370,7 @@ static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
- 	 * the device works without issues on Windows at what is expected to be
- 	 * a 400KHz frequency. The root cause of the issue is not known.
- 	 */
-+	{ "DLL0945", 0 },
- 	{ "ELAN06FA", 0 },
- 	{}
- };
--- 
-2.39.5
-
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1396,6 +1396,8 @@ static noinline int add_inode_ref(struct
+ 	dir = btrfs_iget_logging(parent_objectid, root);
+ 	if (IS_ERR(dir)) {
+ 		ret = PTR_ERR(dir);
++		if (ret == -ENOENT)
++			ret = 0;
+ 		dir = NULL;
+ 		goto out;
+ 	}
+@@ -1420,6 +1422,15 @@ static noinline int add_inode_ref(struct
+ 				if (IS_ERR(dir)) {
+ 					ret = PTR_ERR(dir);
+ 					dir = NULL;
++					/*
++					 * A new parent dir may have not been
++					 * logged and not exist in the subvolume
++					 * tree, see the comment above before
++					 * the loop when getting the first
++					 * parent dir.
++					 */
++					if (ret == -ENOENT)
++						ret = 0;
+ 					goto out;
+ 				}
+ 			}
+@@ -2532,9 +2543,8 @@ static int replay_one_buffer(struct btrf
+ 			   key.type == BTRFS_INODE_EXTREF_KEY) {
+ 			ret = add_inode_ref(wc->trans, root, log, path,
+ 					    eb, i, &key);
+-			if (ret && ret != -ENOENT)
++			if (ret)
+ 				break;
+-			ret = 0;
+ 		} else if (key.type == BTRFS_EXTENT_DATA_KEY) {
+ 			ret = replay_one_extent(wc->trans, root, path,
+ 						eb, i, &key);
 
 
 
