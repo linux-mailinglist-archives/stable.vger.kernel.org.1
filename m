@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-171375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6451DB2A9A6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8AFB2A308
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A771E588074
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 807F17B4F18
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FD03375DE;
-	Mon, 18 Aug 2025 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7447B31E0FD;
+	Mon, 18 Aug 2025 13:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyVl+IL8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIbdinPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBFF3375D7;
-	Mon, 18 Aug 2025 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AC831E0ED;
+	Mon, 18 Aug 2025 13:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525709; cv=none; b=flJEg1e58RSuUq1y2ndnr1GUxcPFLhVg7fiyVqyFApP1R0MF3+AOz5/Idqwbkw4o7lzKglUDJ4cubDdohQ6c3nJb3eCXNn1p8SCdA0YgRGDQLgn6pJ5ksw5OviyCFAr0Ipu3Pkp9bYFfifWPy7Di/g/aFsIWEvvsBaXC1mZnkFo=
+	t=1755522287; cv=none; b=lnUa6YD0/BZ2fNZhPtywrfb8kFWNM5JjU0A8jZBX36eQd1cXG1qEu0B2xEoPUFJN1sxH33UyG4SKNWhFYSjf/xaYYNXgTSgfvcousQHFNuPoHFvYGxc2CMrclzSQ+MvBmJJ++E4bKBXquVO4q22rchELgHLdTP26sfDOG9OrluI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525709; c=relaxed/simple;
-	bh=TDEfV52WJ9dhGoOfUiAYkQFSvYTe+T7wEbOOkVumnZc=;
+	s=arc-20240116; t=1755522287; c=relaxed/simple;
+	bh=EXZNpPvGW7F9TUxGHXUqEGYn7RBg9ns5fsu5nMHi4dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqD6d//4Q0pj309MWYKfPo1dbxvk9jdJaOojk+PREAN6vkJyKwLPdCnfzmtsZIzHbbFTNh8v0pUDZNjjJ85CGeerttoaQOuGtUgMDtA0hYsJr/PiM1vd/VV235iUqX41mfogdyB69KxmzjVrDgi8K8kcajsyMh55g0GcsYiy8D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyVl+IL8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BACC4CEEB;
-	Mon, 18 Aug 2025 14:01:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f+LS1OdTOu7tcNphLdT8DF9PojsTHwchgsq8nJDjsbnO/2/7hhLM459OS+oE7C96PFk4fWxfSxcH8AScF0dkb0DbqNrLMe3kUATmzbTmVurwTAabUdf6gnDnZxSidLQaJ/9bdN9PDupabfgb2yG4StZu0uqA6/kIr8OfzN/hsIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIbdinPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C5CC4CEEB;
+	Mon, 18 Aug 2025 13:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525709;
-	bh=TDEfV52WJ9dhGoOfUiAYkQFSvYTe+T7wEbOOkVumnZc=;
+	s=korg; t=1755522287;
+	bh=EXZNpPvGW7F9TUxGHXUqEGYn7RBg9ns5fsu5nMHi4dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyVl+IL8xkba7hFRc5wq/49myfsW4rM96hiuDizmLcu1A6Go+rIK28rMZUBcDsBvF
-	 MBF4FMxOKIZGGzVPZ7OAn2gCdX9+y06Xq4IWbb8+/nEJg+yARl7Rv8p4XYpklYcalm
-	 WDwWiSLsN8RDSc9KLmPEZkqjJDjXTPC5KnsSuGIM=
+	b=WIbdinPOl/xOWhwkv9A8oRIzkhxymXUK0inVpiOFZShCRiUD9yoecQUZUb+bC0dys
+	 x3Fh+zFk21XbSYCGUeAYChd06VmctcjC1ST7+7HcpgCvjQoX9G3V+m44HgvPTv3qf2
+	 7xTJ431MtjTkPo2mANhMsUiP36TyKkz7mhCIlPzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Lei Yang <leiyang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 311/570] drm/amd/display: Initialize mode_select to 0
+Subject: [PATCH 6.12 272/444] vhost: fail early when __vhost_add_used() fails
 Date: Mon, 18 Aug 2025 14:44:58 +0200
-Message-ID: <20250818124517.849719928@linuxfoundation.org>
+Message-ID: <20250818124459.175014273@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Jason Wang <jasowang@redhat.com>
 
-[ Upstream commit 592ddac93f8c02e13f19175745465f8c4d0f56cd ]
+[ Upstream commit b4ba1207d45adaafa2982c035898b36af2d3e518 ]
 
-[WHAT]
-mode_select was supposed to be initialized in mpc_read_gamut_remap but
-is not set in default case. This can cause indeterminate
-behaviors.
+This patch fails vhost_add_used_n() early when __vhost_add_used()
+fails to make sure used idx is not updated with stale used ring
+information.
 
-This is reported as an UNINIT error by Coverity.
-
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20250714084755.11921-2-jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/mpc/dcn401/dcn401_mpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/vhost.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/mpc/dcn401/dcn401_mpc.c b/drivers/gpu/drm/amd/display/dc/mpc/dcn401/dcn401_mpc.c
-index 98cf0cbd59ba..591af5a3d3e3 100644
---- a/drivers/gpu/drm/amd/display/dc/mpc/dcn401/dcn401_mpc.c
-+++ b/drivers/gpu/drm/amd/display/dc/mpc/dcn401/dcn401_mpc.c
-@@ -561,7 +561,7 @@ void mpc401_get_gamut_remap(struct mpc *mpc,
- 	struct mpc_grph_gamut_adjustment *adjust)
- {
- 	uint16_t arr_reg_val[12] = {0};
--	uint32_t mode_select;
-+	uint32_t mode_select = MPCC_GAMUT_REMAP_MODE_SELECT_0;
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 79b0b7cd2860..71604668e53f 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2971,6 +2971,9 @@ int vhost_add_used_n(struct vhost_virtqueue *vq, struct vring_used_elem *heads,
+ 	}
+ 	r = __vhost_add_used_n(vq, heads, count);
  
- 	read_gamut_remap(mpc, mpcc_id, arr_reg_val, adjust->mpcc_gamut_remap_block_id, &mode_select);
- 
++	if (r < 0)
++		return r;
++
+ 	/* Make sure buffer is written before we update index. */
+ 	smp_wmb();
+ 	if (vhost_put_used_idx(vq)) {
 -- 
 2.39.5
 
