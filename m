@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9E4B2A7E9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 536BAB2A2A6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EC836820C5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E6833A38D8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328432192F4;
-	Mon, 18 Aug 2025 13:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7431E109;
+	Mon, 18 Aug 2025 12:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JihSws2g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5sK5IXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16C61A5B92;
-	Mon, 18 Aug 2025 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C401E51FE;
+	Mon, 18 Aug 2025 12:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525111; cv=none; b=NC9E0EXgIZKRDleIHlx8MHX2WdHHDN8M9oGohoqiWMijSmgZTqyat05+6Pm5Wge1bmyw1UoPwIEWkWs6P9QS4TSzb4woRa1sAR1RRHndIucf1KAT0g3lS/RFXoH1fV29hLVE+96gLB6Gh2uNSi1bwdGC/d6CaD0Vq12QyC3YFM4=
+	t=1755521782; cv=none; b=LduVTsf7F9e5viLhUOEKrFk2sTeTgBncUH9GOHYWH9O9PSWiSSA1e7wWSRn55jK+ST5FbGcaYqZLSOPNd6/qPMPbPWrFWUXr6BBg3RWJR8U3mPna77yw1yLZP2X/1aQNvB9y6Lsj3qJblkt8MY22E0qn9+06RCtHVs9PTEaJ9ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525111; c=relaxed/simple;
-	bh=3OPRIrsP/0e16xIv6gDVxcSz+2PZsp4qQ1jU9MmavUw=;
+	s=arc-20240116; t=1755521782; c=relaxed/simple;
+	bh=i586I4XE0WushWhzx1G9Crt4ttb0NoHiOFOk4ZtTHx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YM+8KNbVpaxymZti33IU1eYC9QCYwjsgFp2HgaaSvmhtahwEKZ5AfciR0L/iZEkQ84uUdCMp98V7IiFntZIBlNpFZ3ClRDCRefJluRUEsUcgjGGVa8Pv0uPJa9f8vIEItHdxrj1ZM2dDiRcCBL4A85QGG6EDjjqTn/Yme4klLzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JihSws2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E83C4CEF1;
-	Mon, 18 Aug 2025 13:51:49 +0000 (UTC)
+	 MIME-Version; b=pL38n9ES14/x2wjqP/9Pc+1u72cGQ2ab00tCfCd6BR2JHN+XLzmQcL7zLasPfN8+inbD8hoj+ml/G2hsRh019rpSegUtyKAge+UfpTkV2a6etrhdwK23FKB40yNdgfTclvXMTC6RUJmPF23RrrscEn3X2RMYi+Vb0ZGmn249DOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5sK5IXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8B5C4CEEB;
+	Mon, 18 Aug 2025 12:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525110;
-	bh=3OPRIrsP/0e16xIv6gDVxcSz+2PZsp4qQ1jU9MmavUw=;
+	s=korg; t=1755521781;
+	bh=i586I4XE0WushWhzx1G9Crt4ttb0NoHiOFOk4ZtTHx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JihSws2gp30G4Kspx32bBTGP2sJGfRhgDWQSbUWVmbl0idszKHGDkVBCA+MTOZQXx
-	 do4D/apMgz9fYl9KLr2tB5DUUI8p9x0d0cjpAO+C9K3VnNQOl80Bkm8IzEk26qtqWH
-	 wGEs4VNRSGbRs4PeO4CyvD7aPikOo4B4Um+aQYtE=
+	b=C5sK5IXNNmQ+xELa2ZjKbDvqOlXQc7hdV7aOmpAuCxSj6GCmjkGq07R+qf7QuUVyL
+	 3IeHJ3qpU3b/Zz0odu5XbNhKm9PuDIvTZKUFX3wFQ3vWMHzScE6gbci7AXhUDsdhfi
+	 YwM72vZOrksE8S0sECRsCNfzEkf5UKCptrFZq6pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Qiyu <qiyuzhu2@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 160/570] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Subject: [PATCH 6.12 121/444] ARM: tegra: Use I/O memcpy to write to IRAM
 Date: Mon, 18 Aug 2025 14:42:27 +0200
-Message-ID: <20250818124511.974094640@linuxfoundation.org>
+Message-ID: <20250818124453.456266972@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Qiyu <qiyuzhu2@amd.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
+[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") introduced non-essential printing "Failed to find
-VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
-something wrong is going on while it is not the case.
+Kasan crashes the kernel trying to check boundaries when using the
+normal memcpy.
 
-According to the PRM Spec Section 4.1.2 [1], both static data buffer
-address and ACPI parameter buffer address may be NULL if they are not
-needed, so there is no need to print out the "Failed to find VA ... "
-in those cases.
-
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
-Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
-[ rjw: Edits in new comments, subject and changelog ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ arch/arm/mach-tegra/reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index e549914a636c..be033bbb126a 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- 		}
- 	}
+diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
+index d5c805adf7a8..ea706fac6358 100644
+--- a/arch/arm/mach-tegra/reset.c
++++ b/arch/arm/mach-tegra/reset.c
+@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
+ 	BUG_ON(is_enabled);
+ 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
  
--	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
--
- 	return 0;
- }
+-	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
++	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
+ 			tegra_cpu_reset_handler_size);
  
-@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+		/*
-+		 * Print a warning message if handler_addr is zero which is not expected to
-+		 * ever happen.
-+		 */
-+		if (unlikely(!th->handler_addr))
-+			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->handler_address);
- 
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+		/*
-+		 * According to the PRM specification, static_data_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
-+			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->static_data_buffer_address);
- 
- 		th->acpi_param_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
- 
-+		/*
-+		 * According to the PRM specification, acpi_param_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
-+			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->acpi_param_buffer_address);
-+
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
+ 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
 -- 
 2.39.5
 
