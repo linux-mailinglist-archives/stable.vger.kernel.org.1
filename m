@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88614B2A7C7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18862B2A2B5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6831BA33E2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B8BD560302
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91399321455;
-	Mon, 18 Aug 2025 13:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1392280035;
+	Mon, 18 Aug 2025 12:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khdq+iB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtbvTbuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAE227B358;
-	Mon, 18 Aug 2025 13:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E86D31E0ED;
+	Mon, 18 Aug 2025 12:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524720; cv=none; b=qNlUIqsVt9dWVWlPIRskuGf7EVpKv2SOOGJfrUDM7EbhWeYNov0f7Nv0WmBpdvuIQQyagoJWZVQm4U3dvhOhcPo3+zB3QSQDGCc9OxDKvMIGK4QEt27vMMbam30ZXmgGPL1aWc5ph1XkX7H1m/U4/x/PCoFQaJWN+/iJueYxD5Q=
+	t=1755521528; cv=none; b=uVEUeIh8qjZ3TKninLV/upn/OiigRBydRduNEyBCrG0pfUnyFV+JFYhgkQbTc0VcgHT6oIABGc32OByMsHbG4piB73uj+vtlA71QlJleT/1ILVBpga6E6B+ogP//CpPxBYF5lMuErgurFbo1EGQiCYIJRWMV38XTEIqsVqPSxho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524720; c=relaxed/simple;
-	bh=tCJfr12E8YbT4lzX2X+oHH986zAMYbwX0cyJIKEpobo=;
+	s=arc-20240116; t=1755521528; c=relaxed/simple;
+	bh=wWJwqylklMevDmtbMYDMzneU2dQs7hprHYhzXl6h+Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KfytFLEi+5+G+ca5GsDit+bgF8TkD3Kc+lYBUAO/h089EyMasnTZrDMUB8RVvwAXmion0b6HMSC8+CirMH3Va9biyftGHJLiHEJOZHvphpvj5h3RezQjd+mago34bVe33rWDkx0kT0S0EE/WJZlEAxz4TrzLVgChTcTu75HjZh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khdq+iB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CD4C113D0;
-	Mon, 18 Aug 2025 13:45:19 +0000 (UTC)
+	 MIME-Version; b=K25vhEz2caYsAY2AvdoxDpFHiK28anonnJGmpIz6WKQ8j5czuHS78JHy066WsPt3tLyNuE8AnBAg5DPq4TaDFEPHPXvuG3APQCE8X7XdpxpSa8DMXbt7dex+HkgRxja023A4lR/dwWYo853AtG1+Y0e9+5BQCtLWs0xHh4iqHOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtbvTbuL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF588C4CEEB;
+	Mon, 18 Aug 2025 12:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524720;
-	bh=tCJfr12E8YbT4lzX2X+oHH986zAMYbwX0cyJIKEpobo=;
+	s=korg; t=1755521528;
+	bh=wWJwqylklMevDmtbMYDMzneU2dQs7hprHYhzXl6h+Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khdq+iB2QVJQmHqNw2D6pXZrzllpMi9gJ4t6IEoLEFAr1XqZIaAxNdSkp0uL39LP0
-	 O0FesRpsnbG+SFFb0VD5z59rjl4/V2RaiVQTppxgoGiIZAjCdHNPELV9H6K39ir81T
-	 pcW2K3m0w6wvkvy27ADkyUTOrKOHrotQWctwmiq4=
+	b=MtbvTbuLi5ibOcHatRQ5mOiRed8fsx3UwhXjOlaKvCDMhA/RQ+tGXek0epxx9B23X
+	 ZEezMH4banNQ2iUQCdWLHF9tJe3QdkKf2PGXBQ8eOb35m0b8jFg/l9grrXijR7+X+t
+	 aePVFKtY80uJDC9ODnBXrmabVZod+/Ca5U4+8Aeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.16 042/570] clk: samsung: exynos850: fix a comment
+	Takashi Iwai <tiwai@suse.de>,
+	Youngjun Lee <yjjuny.lee@samsung.com>
+Subject: [PATCH 6.12 003/444] ALSA: usb-audio: Validate UAC3 cluster segment descriptors
 Date: Mon, 18 Aug 2025 14:40:29 +0200
-Message-ID: <20250818124507.433988237@linuxfoundation.org>
+Message-ID: <20250818124449.013637433@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +59,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 320e7efce30e2613c2c7877acc46a8e71192cdcd upstream.
+commit ecfd41166b72b67d3bdeb88d224ff445f6163869 upstream.
 
-The code below the updated comment is for CMU_CPUCL1, not CMU_CPUCL0.
+UAC3 class segment descriptors need to be verified whether their sizes
+match with the declared lengths and whether they fit with the
+allocated buffer sizes, too.  Otherwise malicious firmware may lead to
+the unexpected OOB accesses.
 
-Fixes: dedf87341ad6 ("clk: samsung: exynos850: Add CMU_CPUCL0 and CMU_CPUCL1")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250603-samsung-clk-fixes-v1-3-49daf1ff4592@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 11785ef53228 ("ALSA: usb-audio: Initial Power Domain support")
+Reported-and-tested-by: Youngjun Lee <yjjuny.lee@samsung.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250814081245.8902-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-exynos850.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/stream.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/samsung/clk-exynos850.c
-+++ b/drivers/clk/samsung/clk-exynos850.c
-@@ -1360,7 +1360,7 @@ static const unsigned long cpucl1_clk_re
- 	CLK_CON_GAT_GATE_CLK_CPUCL1_CPU,
- };
+--- a/sound/usb/stream.c
++++ b/sound/usb/stream.c
+@@ -341,20 +341,28 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
  
--/* List of parent clocks for Muxes in CMU_CPUCL0 */
-+/* List of parent clocks for Muxes in CMU_CPUCL1 */
- PNAME(mout_pll_cpucl1_p)		 = { "oscclk", "fout_cpucl1_pll" };
- PNAME(mout_cpucl1_switch_user_p)	 = { "oscclk", "dout_cpucl1_switch" };
- PNAME(mout_cpucl1_dbg_user_p)		 = { "oscclk", "dout_cpucl1_dbg" };
+ 	len = le16_to_cpu(cluster->wLength);
+ 	c = 0;
+-	p += sizeof(struct uac3_cluster_header_descriptor);
++	p += sizeof(*cluster);
++	len -= sizeof(*cluster);
+ 
+-	while (((p - (void *)cluster) < len) && (c < channels)) {
++	while (len > 0 && (c < channels)) {
+ 		struct uac3_cluster_segment_descriptor *cs_desc = p;
+ 		u16 cs_len;
+ 		u8 cs_type;
+ 
++		if (len < sizeof(*p))
++			break;
+ 		cs_len = le16_to_cpu(cs_desc->wLength);
++		if (len < cs_len)
++			break;
+ 		cs_type = cs_desc->bSegmentType;
+ 
+ 		if (cs_type == UAC3_CHANNEL_INFORMATION) {
+ 			struct uac3_cluster_information_segment_descriptor *is = p;
+ 			unsigned char map;
+ 
++			if (cs_len < sizeof(*is))
++				break;
++
+ 			/*
+ 			 * TODO: this conversion is not complete, update it
+ 			 * after adding UAC3 values to asound.h
+@@ -456,6 +464,7 @@ snd_pcm_chmap_elem *convert_chmap_v3(str
+ 			chmap->map[c++] = map;
+ 		}
+ 		p += cs_len;
++		len -= cs_len;
+ 	}
+ 
+ 	if (channels < c)
+@@ -880,7 +889,7 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 	u64 badd_formats = 0;
+ 	unsigned int num_channels;
+ 	struct audioformat *fp;
+-	u16 cluster_id, wLength;
++	u16 cluster_id, wLength, cluster_wLength;
+ 	int clock = 0;
+ 	int err;
+ 
+@@ -1008,6 +1017,16 @@ snd_usb_get_audioformat_uac3(struct snd_
+ 			iface_no, altno);
+ 		kfree(cluster);
+ 		return ERR_PTR(-EIO);
++	}
++
++	cluster_wLength = le16_to_cpu(cluster->wLength);
++	if (cluster_wLength < sizeof(*cluster) ||
++	    cluster_wLength > wLength) {
++		dev_err(&dev->dev,
++			"%u:%d : invalid Cluster Descriptor size\n",
++			iface_no, altno);
++		kfree(cluster);
++		return ERR_PTR(-EIO);
+ 	}
+ 
+ 	num_channels = cluster->bNrChannels;
 
 
 
