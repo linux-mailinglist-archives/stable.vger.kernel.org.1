@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-171553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E41B2AA30
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36411B2A771
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFBDB1BC2A40
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9748682184
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD3E33769E;
-	Mon, 18 Aug 2025 14:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6422236FC;
+	Mon, 18 Aug 2025 13:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOxWXz5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUxgVJEv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C3733769A;
-	Mon, 18 Aug 2025 14:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1949A335BC9;
+	Mon, 18 Aug 2025 13:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526322; cv=none; b=oHZ3pVgVrTa27COq1PC+E65GRqUft8mxWkya8shny/1ZZpbEWe8u5s3uD9MBdLq2CH7c77jjYZTVtC/toSgg56ek+e4W72jr1s3PbfdVO1Cf1c9tIq3k/KetUsQso5/hSMdHIV6G5/2CvyNiyxpfz/L0qoVNzLeQemiXJH/Ppug=
+	t=1755524497; cv=none; b=jBT7sSgzNOcYLSU/WBpeg9i6r3GaocJN8IXF8+IfEUO5sUSlkLEpuC9CQTA1fRBrAqzNrmUicYd2OiRFIGYCpUhXGjLUJ3x7jm4QjyoH4Giq5bCHYk57//694OXbGg84K2XeKafAnRrtY1FLwlHZxHxvU2sfoG+GQpKPrPn4CeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526322; c=relaxed/simple;
-	bh=rsVn11esHPP0gQ8fas8gbdHr8gasH5Pv9Ifu2XWpok0=;
+	s=arc-20240116; t=1755524497; c=relaxed/simple;
+	bh=QuSSMCgsxAUCl5PEdMAuJJ5GcRatTrrwQto518NibxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJSZpn209f3whgn84PfO3Gp7iLZ+ZApflfUkowW56bnno56MXhxYPa6aSuCd24FnrHcmOA8LD1lIeFxx+ZOG0JqfCk6AzmGES4B3TweBH8yAK2186b4JREwbedPYPbX/reUYrdKbpmV6VVSWWx50kDB5VA9L0UKhjcxUAT4eWLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOxWXz5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E29C4CEEB;
-	Mon, 18 Aug 2025 14:12:01 +0000 (UTC)
+	 MIME-Version; b=d4NzbiZz6XASZZ9IYJhELDbnWTnCCqIhPbLnCCY9DqeRwGAk6ceTc5jFF17NwR6a2FS4sIEq4oBv5kOA7gBOAq3JMmDvJQ6UpROhiKU1H7575tH0cRCO6tSLdTP0GCB+grTb7vWN9WSXxAXQvoP+W1j6kJgynjyRx99wJ1FsFeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUxgVJEv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912E0C4AF0B;
+	Mon, 18 Aug 2025 13:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526322;
-	bh=rsVn11esHPP0gQ8fas8gbdHr8gasH5Pv9Ifu2XWpok0=;
+	s=korg; t=1755524497;
+	bh=QuSSMCgsxAUCl5PEdMAuJJ5GcRatTrrwQto518NibxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOxWXz5ZRDNqFiMJHb//UPF1X54Gnt1Grqc0Cf8kMxutir0W83V+mmSoEnL6h6qeJ
-	 xptCLEEh2tEAPzCLdnogm5MyKP6ADu/Rv1dWEtCc7KuNkAMm58Vd727Jw8ruBPsy5a
-	 vATUVvZq4vOUfcZFQkouIfqAvd07RjowER0HUM5c=
+	b=GUxgVJEvreywUAQf7KsciaLUIKIqTxUThF9gTIrXfD7Z4jrYtK+BA2wIMMOvJ+VXH
+	 Q89m0m1COlocaEh40aLjxrJHGUEGQtxXWg8iL0km25FH1DhYB4NnplZ99q8jN5bctd
+	 Kt5gdOITTiCGcHGFnflAm+WsVrb+ZUK1Fu58YJCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 489/570] samples/damon/wsse: fix boot time enable handling
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.15 490/515] mm, slab: restore NUMA policy support for large kmalloc
 Date: Mon, 18 Aug 2025 14:47:56 +0200
-Message-ID: <20250818124524.716489015@linuxfoundation.org>
+Message-ID: <20250818124517.299406357@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-commit 0ed1165c37277822b519f519d0982d36efc30006 upstream.
+commit e2d18cbf178775ad377ad88ee55e6e183c38d262 upstream.
 
-Patch series "mm/damon: fix misc bugs in DAMON modules".
+The slab allocator observes the task's NUMA policy in various places
+such as allocating slab pages. Large kmalloc() allocations used to do
+that too, until an unintended change by c4cab557521a ("mm/slab_common:
+cleanup kmalloc_large()") resulted in ignoring mempolicy and just
+preferring the local node. Restore the NUMA policy support.
 
->From manual code review, I found below bugs in DAMON modules.
-
-DAMON sample modules crash if those are enabled at boot time, via kernel
-command line.  A similar issue was found and fixed on DAMON non-sample
-modules in the past, but we didn't check that for sample modules.
-
-DAMON non-sample modules are not setting 'enabled' parameters accordingly
-when real enabling is failed.  Honggyu found and fixed[1] this type of
-bugs in DAMON sample modules, and my inspection was motivated by the great
-work.  Kudos to Honggyu.
-
-Finally, DAMON_RECLIAM is mistakenly losing scheme internal status due to
-misuse of damon_commit_ctx().  DAMON_LRU_SORT has a similar misuse, but
-fortunately it is not causing real status loss.
-
-Fix the bugs.  Since these are similar patterns of bugs that were found in
-the past, it would be better to add tests or refactor the code, in future.
-
-
-This patch (of 6):
-
-If 'enable' parameter of the 'wsse' DAMON sample module is set at boot
-time via the kernel command line, memory allocation is tried before the
-slab is initialized.  As a result kernel NULL pointer dereference BUG can
-happen.  Fix it by checking the initialization status.
-
-Link: https://lkml.kernel.org/r/20250706193207.39810-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20250706193207.39810-2-sj@kernel.org
-Link: https://lore.kernel.org/20250702000205.1921-1-honggyu.kim@sk.com [1]
-Fixes: b757c6cfc696 ("samples/damon/wsse: start and stop DAMON as the user requests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Fixes: c4cab557521a ("mm/slab_common: cleanup kmalloc_large()")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/damon/wsse.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ mm/slub.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/samples/damon/wsse.c
-+++ b/samples/damon/wsse.c
-@@ -89,6 +89,8 @@ static void damon_sample_wsse_stop(void)
- 		put_pid(target_pidp);
- }
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4268,7 +4268,12 @@ static void *___kmalloc_large_node(size_
+ 		flags = kmalloc_fix_flags(flags);
  
-+static bool init_called;
+ 	flags |= __GFP_COMP;
+-	folio = (struct folio *)alloc_pages_node_noprof(node, flags, order);
 +
- static int damon_sample_wsse_enable_store(
- 		const char *val, const struct kernel_param *kp)
- {
-@@ -114,7 +116,15 @@ static int damon_sample_wsse_enable_stor
- 
- static int __init damon_sample_wsse_init(void)
- {
--	return 0;
-+	int err = 0;
++	if (node == NUMA_NO_NODE)
++		folio = (struct folio *)alloc_pages_noprof(flags, order);
++	else
++		folio = (struct folio *)__alloc_pages_noprof(flags, order, node, NULL);
 +
-+	init_called = true;
-+	if (enable) {
-+		err = damon_sample_wsse_start();
-+		if (err)
-+			enable = false;
-+	}
-+	return err;
- }
- 
- module_init(damon_sample_wsse_init);
+ 	if (folio) {
+ 		ptr = folio_address(folio);
+ 		lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B,
 
 
 
