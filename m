@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA28B2A94F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:30 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462F8B2A597
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E438681460
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3F9164E3697
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B8932276C;
-	Mon, 18 Aug 2025 13:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB85C321F35;
+	Mon, 18 Aug 2025 13:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dUS+LaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1FR8xCf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4583322755;
-	Mon, 18 Aug 2025 13:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9863131AF15;
+	Mon, 18 Aug 2025 13:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525572; cv=none; b=jbYpWLz7fCJcScttmcqdeyjKtTs0Cetn2kEWcY1GKJEIKQB2ebraN2L/X5fQg6/rT3aUGOHxykcYharaDjQX4Rg8nNRxRWA9uccASF8s6+Y/yAwlxqURZbqlnEkiFVlEn8WMah1dOOfvaOZRph81EvkDKf1EtzQvYPa22HPhmwQ=
+	t=1755523888; cv=none; b=HQI2SWCYAx4fPZ+uf51iOmypwLDgGGxDCEuDYetc3DN69crl86GmHmg2HRQl+4wm+go7csU0ZI2siKILhkNZydWys/UL7nPARIV1PEqSolMit/qnzYhqzWyFt/qginp0isydmIeRyXGbKXWvNEVsm3PJucTeRZefK69+HSNI94M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525572; c=relaxed/simple;
-	bh=FbTiKJiypmt8kf9Fx7tky3tt5jEVfoAsx9AjmjSVnoY=;
+	s=arc-20240116; t=1755523888; c=relaxed/simple;
+	bh=CCxUmdaizfa9kV827qYskSGsdCphnOTGyC8eS0EjjbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7werR3up80idxeN3HLUFOoAAyz1gY5kSeB0WSA/ihyxXHKR8KQa8Tr8CxhGet41ENE9aAqPSmD/A+uzN0DnfSyf0ZebHxt5luhWHbchz8WlPAmRxTaIVdwdpX1bePwCuAvzNoyitXYeIO0im1e8fdeUypYWdp0AbPXpqGH/vZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dUS+LaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE86C4CEEB;
-	Mon, 18 Aug 2025 13:59:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IYvCguqhGse6AAhQ17a8IlwtNmxc7UzE8iLbl03g92esNwkcUfjYSc4LXeqAF6GCzwzzvkj8lxd0XICunq0Mq1Xw0MBx8IJtWYG45d/clbEWPGZsBC1lLd4wjOi7ENe022jAYXJnGU4c0mG5xOKDuwvPCzI4OW+Expjws2UtKBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1FR8xCf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A83C4CEEB;
+	Mon, 18 Aug 2025 13:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525572;
-	bh=FbTiKJiypmt8kf9Fx7tky3tt5jEVfoAsx9AjmjSVnoY=;
+	s=korg; t=1755523888;
+	bh=CCxUmdaizfa9kV827qYskSGsdCphnOTGyC8eS0EjjbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dUS+LaGzGNa2iCUXbHRgbkPfJ68Qii1tNRBbRTQ0ioOFkqPQiJP5IQnupOONiKWF
-	 esLNGV8my+bXSF2uEFB7sROi3zjSlfrs+jZK+mCoAUvcyga7uobE9Hn/UcXtxBQ41Y
-	 actu6o5ZAazOSI4iv8HwlDrYZLgkmVUmeF24+d+o=
+	b=U1FR8xCfsLdF4p4NNBXZED4Pht+nxrH4eBL1vfkTxx7SpjD/MsUeHnbYaQmKNI2IH
+	 aglgiqye5bHPlbVcmbc22GkTbiNXCm2JIBjWVAoeQXs/y2OmzdNZxi/APuLzGsQEIz
+	 WdnljAl9jskWl5tb5VwDxnAMMcYzWhVkzs2l0EPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 302/570] wifi: iwlwifi: dvm: fix potential overflow in rs_fill_link_cmd()
-Date: Mon, 18 Aug 2025 14:44:49 +0200
-Message-ID: <20250818124517.494855358@linuxfoundation.org>
+Subject: [PATCH 6.15 304/515] net: dsa: b53: fix b53_imp_vlan_setup for BCM5325
+Date: Mon, 18 Aug 2025 14:44:50 +0200
+Message-ID: <20250818124510.140703945@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit e3ad987e9dc7d1e12e3f2f1e623f0e174cd0ca78 ]
+[ Upstream commit c00df1018791185ea398f78af415a2a0aaa0c79c ]
 
-The 'index' variable in the rs_fill_link_cmd() function can reach
-LINK_QUAL_MAX_RETRY_NUM during the execution of the inner loop. This
-variable is used as an index for the lq_cmd->rs_table array, which has a
-size of LINK_QUAL_MAX_RETRY_NUM, without proper validation.
+CPU port should be B53_CPU_PORT instead of B53_CPU_PORT_25 for
+B53_PVLAN_PORT_MASK register.
 
-Modify the condition of the inner loop to ensure that the 'index' variable
-does not exceed LINK_QUAL_MAX_RETRY_NUM - 1, thereby preventing any
-potential overflow issues.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Link: https://patch.msgid.link/20240313101755.269209-1-rand.sec96@gmail.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-14-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-index 8879e668ef0d..ed964103281e 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -2899,7 +2899,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
- 		/* Repeat initial/next rate.
- 		 * For legacy IWL_NUMBER_TRY == 1, this loop will not execute.
- 		 * For HT IWL_HT_NUMBER_TRY == 3, this executes twice. */
--		while (repeat_rate > 0 && (index < LINK_QUAL_MAX_RETRY_NUM)) {
-+		while (repeat_rate > 0 && index < (LINK_QUAL_MAX_RETRY_NUM - 1)) {
- 			if (is_legacy(tbl_type.lq_type)) {
- 				if (ant_toggle_cnt < NUM_TRY_BEFORE_ANT_TOGGLE)
- 					ant_toggle_cnt++;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 184946e8cee9..55e1844a5e9c 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -529,6 +529,10 @@ void b53_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
+ 	unsigned int i;
+ 	u16 pvlan;
+ 
++	/* BCM5325 CPU port is at 8 */
++	if ((is5325(dev) || is5365(dev)) && cpu_port == B53_CPU_PORT_25)
++		cpu_port = B53_CPU_PORT;
++
+ 	/* Enable the IMP port to be in the same VLAN as the other ports
+ 	 * on a per-port basis such that we only have Port i and IMP in
+ 	 * the same VLAN.
 -- 
 2.39.5
 
