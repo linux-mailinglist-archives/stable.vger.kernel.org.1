@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DA5B2A87F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB221B2A611
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D341720CE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87CC16858FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0492E2287;
-	Mon, 18 Aug 2025 13:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDCD335BD4;
+	Mon, 18 Aug 2025 13:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2laN63Vy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNK12WKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB692206AF;
-	Mon, 18 Aug 2025 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393A6335BCA;
+	Mon, 18 Aug 2025 13:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525304; cv=none; b=B9Jy72/KgR+n1BlZCCqoHtT7wkkG1Ygd8PV2iS5Qo6ZPk4xjDmL6Cvs4c1+8YcGt3gkxs4DaY4Fz7gH3VOiEWDz3LpdM9mZqoErCTfS2Fjxcpt97OXK58H4otH/pH1rJ1WrUrqCWiYYhHo/LniiICbWwj77WD5yDVr8vLOyUCIg=
+	t=1755523659; cv=none; b=VtMvPLfypbPkTJpPJv6fylQsmpxe3/ECwP4rGsU8gybCqHqNibpU4mdRgRA/lnTY/SOLPFscTAcsH+7INRfeoNK/eAQlpNv0d6v/eAYpCbVupW4PC8YyTPsoXLolT0o2cKeO8w9ghE+QMD6rXoVjKoGNDkRqF0u4vHrDrw14QoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525304; c=relaxed/simple;
-	bh=8/M4K48cwk7BnnBFL7p9/1sJ0KyZgez5BwiTI901APQ=;
+	s=arc-20240116; t=1755523659; c=relaxed/simple;
+	bh=R6QZMF/V7qdaKNmAbTuFWfOR+T9LSRzbat9wsEI4mCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhdC94z/6ni/ngEJwoufJJ2cvmPLxU68zHXM1HFM6z+/0xMwwEqi9fiHLbVY/ArcISFhzNmE+g1p34Hi30DQEbVuOn0XhQwP5LmQVos2lE6Qi6w7GXI1MzNeOLjREa5AW+/czIHCe3QeZ+0YbRC3qd/Dms5ceYbg25HDkSc2jGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2laN63Vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FECBC4CEEB;
-	Mon, 18 Aug 2025 13:55:04 +0000 (UTC)
+	 MIME-Version; b=I42sw1Jx867GIbffba1bR35+HXRusjUIDB1xC69XJeaaGrSbBYuUdP/6OclkhoUor+CUeVirPpGwwVkoiwmPOaG5DP3QBnmN7qhQWteV4fIJhuV6ySfpmHwJ4Rdb9ilC78dNq9ZePeHMgy6pmPA3HG5fXjIQRige3bCw87X78gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNK12WKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AB7C4CEF1;
+	Mon, 18 Aug 2025 13:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525304;
-	bh=8/M4K48cwk7BnnBFL7p9/1sJ0KyZgez5BwiTI901APQ=;
+	s=korg; t=1755523659;
+	bh=R6QZMF/V7qdaKNmAbTuFWfOR+T9LSRzbat9wsEI4mCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2laN63VypY5YoHUSzwXzwWkW69gT7vzqR8dV34S+s99ZZXm6VYR6Y9I/ycUqvkvlH
-	 gVmNaXYPoU/V29Z6m3yF4xpYzOnNFptlaZzukF+qEdWbdWuos74Cn9Q6H8BKvBGEgF
-	 nMZHFsDC+vn1YMPaWkKbVDCAG2mdV6Hy4P+E2kvQ=
+	b=LNK12WKUHQN1FxaqV8uVjQRIEhtDaJfevgDljBPDM0QM2nxWWFnCPs2sLgWbFPN4X
+	 vybTktP1SkZa/Ax8E7cc9qAxyelbLD5TO4WZq/Qc7TnyF+xUM6rfeZSpgrMpmzF6xL
+	 FnzKlp/i816TgxEqnzK4o5b4CnnduNqAl1hQwi8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 221/570] wifi: cfg80211: reject HTC bit for management frames
+Subject: [PATCH 6.15 222/515] can: ti_hecc: fix -Woverflow compiler warning
 Date: Mon, 18 Aug 2025 14:43:28 +0200
-Message-ID: <20250818124514.320576148@linuxfoundation.org>
+Message-ID: <20250818124506.912539860@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
+[ Upstream commit 7cae4d04717b002cffe41169da3f239c845a0723 ]
 
-Management frames sent by userspace should never have the
-order/HTC bit set, reject that. It could also cause some
-confusion with the length of the buffer and the header so
-the validation might end up wrong.
+Fix below default (W=0) warning:
 
-Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  drivers/net/can/ti_hecc.c: In function 'ti_hecc_start':
+  drivers/net/can/ti_hecc.c:386:20: warning: conversion from 'long unsigned int' to 'u32' {aka 'unsigned int'} changes value from '18446744073709551599' to '4294967279' [-Woverflow]
+    386 |         mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
+        |                    ^
+
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250715-can-compile-test-v2-1-f7fd566db86f@wanadoo.fr
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/mlme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/can/ti_hecc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 05d44a443518..fd88a32d43d6 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -850,7 +850,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
+diff --git a/drivers/net/can/ti_hecc.c b/drivers/net/can/ti_hecc.c
+index 644e8b8eb91e..e6d6661a908a 100644
+--- a/drivers/net/can/ti_hecc.c
++++ b/drivers/net/can/ti_hecc.c
+@@ -383,7 +383,7 @@ static void ti_hecc_start(struct net_device *ndev)
+ 	 * overflows instead of the hardware silently dropping the
+ 	 * messages.
+ 	 */
+-	mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
++	mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
+ 	hecc_write(priv, HECC_CANOPC, mbx_mask);
  
- 	mgmt = (const struct ieee80211_mgmt *)params->buf;
- 
--	if (!ieee80211_is_mgmt(mgmt->frame_control))
-+	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
-+	    ieee80211_has_order(mgmt->frame_control))
- 		return -EINVAL;
- 
- 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
+ 	/* Enable interrupts */
 -- 
 2.39.5
 
