@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-171520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43307B2AA12
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12869B2A73C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB5E1BA53E5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211DD5859C9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5559D334709;
-	Mon, 18 Aug 2025 14:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C126813C8E8;
+	Mon, 18 Aug 2025 13:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2MTOGJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFQblKfq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DFA31CA76;
-	Mon, 18 Aug 2025 14:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE9B335BCB;
+	Mon, 18 Aug 2025 13:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526207; cv=none; b=YpIsuY/eaGNsxklJMIjoK7U+MJYgP+AX8RnQt2fBThzgmJ+i+u2gFfuQR8Slctk3/w2ViLXzw19mezbexRzSCJVR9JSJXQFrbsI+8+SSPL3G3d5fohA+zFUOnAWbunEfZp24HOP52nw7rNo2GJAKWrsje4LDcd/R4kBnvVf4Asw=
+	t=1755524471; cv=none; b=mKdINca0jRwYLh3TGHjFQGSFPVTqCgA3Fl0ZDmwUAm/Se3awqbidPG1yF2KH1w1hufd+a46Nj4WOaHYjXfJ7vcopEhJ3G3XvDu0SQTSOz1olzXst0bB4vQxpV0gtCx5L9BPKbOBWDj1G9wPSVUU1vWSv3QbrpSfnP/9qYai2bAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526207; c=relaxed/simple;
-	bh=RvluxLZkhl6ZseRoNS4h9aG9wVV/H6f9OQfLj5fFgqo=;
+	s=arc-20240116; t=1755524471; c=relaxed/simple;
+	bh=Ww8B96CE4oNz/6Up3c5VntK52MemCqumPkpupiHmc/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6YtOHvVc9RnJ2o4c0E7arBrD8RklLOf7sQUd99Lf9EVn3JsiHDCU5KX1rxl885uOyvoZms+0o0pVH+iW1GxrDuUguXRrU9hq7kfN/lnGuGO4BEa1sVOjs86kyglnRvqFPrCmRIgV0o/spHQhXYOmLDzxX1aoKndJVu0L5DJskY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2MTOGJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7B6C4CEEB;
-	Mon, 18 Aug 2025 14:10:05 +0000 (UTC)
+	 MIME-Version; b=TsvNYfjNKYrXuIxnB/MIlJkrQFBFCDYjZpnqXEQtPZ8cGEfqiHTZ5Ewa4Of91QbYLzWyUiYQW8Wl5KNu5dMHFCFCn1SFuTI8Pb/dode6sr0QHLWtg5DDVtAFnjcT+burvnE7BkI+9rshVhkrEHHW7zoP388aiaI4mJELgtrP8jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFQblKfq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A361C4CEF1;
+	Mon, 18 Aug 2025 13:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526206;
-	bh=RvluxLZkhl6ZseRoNS4h9aG9wVV/H6f9OQfLj5fFgqo=;
+	s=korg; t=1755524471;
+	bh=Ww8B96CE4oNz/6Up3c5VntK52MemCqumPkpupiHmc/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2MTOGJmFOUKvffHnC5Ewc+1cM3Ei/zJpY32y87+FMoBHMIVzkIg9sJPLhA9K8diz
-	 SiHfLZLS5t6yRjbRxviQbVcMUGaYlgGeeU3pAY7hCwWEGNkN0Y1CjcfHI0qFkkDhwH
-	 gILXuQACo405+v5CmE84g/RxKWLNgkxczdCfsV2c=
+	b=TFQblKfqpLGPFjekFX6lvWGAksMcyidvukKwaLOfnfSnKaBYVPBkR8xEtqLyP2deO
+	 d6qwropvs2hthoF0b7DUmMz/ZEf83gwawgDcMOgA96GefcN+DhPqBYS9zJHEOcmNHh
+	 NHXMOyCz0l2dQHIgwtoZEU2iOaVFIcfQQDvagHjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YiPeng Chai <YiPeng.Chai@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 481/570] drm/amdgpu: fix vram reservation issue
-Date: Mon, 18 Aug 2025 14:47:48 +0200
-Message-ID: <20250818124524.412933034@linuxfoundation.org>
+	Suren Baghdasaryan <surenb@google.com>,
+	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
+	Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 483/515] userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a migration entry
+Date: Mon, 18 Aug 2025 14:47:49 +0200
+Message-ID: <20250818124517.018652504@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YiPeng Chai <YiPeng.Chai@amd.com>
+From: Suren Baghdasaryan <surenb@google.com>
 
-[ Upstream commit 10ef476aad1c848449934e7bec2ab2374333c7b6 ]
+commit aba6faec0103ed8f169be8dce2ead41fcb689446 upstream.
 
-The vram block allocation flag must be cleared
-before making vram reservation, otherwise reserving
-addresses within the currently freed memory range
-will always fail.
+When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
+obtaining a folio and accessing it even though the entry is swp_entry_t.
+Add the missing check and let split_huge_pmd() handle migration entries.
+While at it also remove unnecessary folio check.
 
-Fixes: c9cad937c0c5 ("drm/amdgpu: add drm buddy support to amdgpu")
-Signed-off-by: YiPeng Chai <YiPeng.Chai@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d38eaf27de1b8584f42d6fb3f717b7ec44b3a7a1)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[surenb@google.com: remove extra folio check, per David]
+  Link: https://lkml.kernel.org/r/20250807200418.1963585-1-surenb@google.com
+Link: https://lkml.kernel.org/r/20250806220022.926763-1-surenb@google.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/userfaultfd.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 07c936e90d8e..78f9e86ccc09 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -648,9 +648,8 @@ static void amdgpu_vram_mgr_del(struct ttm_resource_manager *man,
- 	list_for_each_entry(block, &vres->blocks, link)
- 		vis_usage += amdgpu_vram_mgr_vis_size(adev, block);
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1829,13 +1829,16 @@ ssize_t move_pages(struct userfaultfd_ct
+ 			/* Check if we can move the pmd without splitting it. */
+ 			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
+ 			    !pmd_none(dst_pmdval)) {
+-				struct folio *folio = pmd_folio(*src_pmd);
++				/* Can be a migration entry */
++				if (pmd_present(*src_pmd)) {
++					struct folio *folio = pmd_folio(*src_pmd);
  
--	amdgpu_vram_mgr_do_reserve(man);
--
- 	drm_buddy_free_list(mm, &vres->blocks, vres->flags);
-+	amdgpu_vram_mgr_do_reserve(man);
- 	mutex_unlock(&mgr->lock);
+-				if (!folio || (!is_huge_zero_folio(folio) &&
+-					       !PageAnonExclusive(&folio->page))) {
+-					spin_unlock(ptl);
+-					err = -EBUSY;
+-					break;
++					if (!is_huge_zero_folio(folio) &&
++					    !PageAnonExclusive(&folio->page)) {
++						spin_unlock(ptl);
++						err = -EBUSY;
++						break;
++					}
+ 				}
  
- 	atomic64_sub(vis_usage, &mgr->vis_usage);
--- 
-2.50.1
-
+ 				spin_unlock(ptl);
 
 
 
