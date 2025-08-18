@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-171431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD507B2A9BF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2901B2A40E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92D9C1BC15F3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CAF618A109E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597A8350853;
-	Mon, 18 Aug 2025 14:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A6C21B199;
+	Mon, 18 Aug 2025 13:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azhGRPnH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDdEcD33"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183CA350847;
-	Mon, 18 Aug 2025 14:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45D53218C2;
+	Mon, 18 Aug 2025 13:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525900; cv=none; b=Cw8C0c31PpCA7va2nWPAe5/e8Z5yCXv9WldctkHjdQphSorbjHZym2HXSAJ07HZyGGYFuMD73UZXCe6EhwQKK7k0cOph4YnsO+9vdqk2hwNZI6P8NiDJu9TPCaW9DscqtZpNjzhYr/zNujT1haI9wFO9OvKK2CmzX0LXrblQsac=
+	t=1755522612; cv=none; b=YnZlOXW5dT2ePD3E9Cj+zclVx/0sSKpOjJDAR8gVnTZKfNEFUUfqrcqRhZqP1fNOc1JpVoevnvQ2YZ/xZz0wBgi0ELEhlSr5YPLQDD3I0AdDPm/PmrNoVh52BZBXdKqhUoFfd+UMpX4KhZwKptX7KcomGBumu3ziRBqgEA6PMFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525900; c=relaxed/simple;
-	bh=SXgv9ja0pSBliALUJv/ohwNBp8kEGpaB40o93jtDHP8=;
+	s=arc-20240116; t=1755522612; c=relaxed/simple;
+	bh=dE4sytdHcp7yQnPreS6mmG5UQrLts0e2Mm4W6thv+KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdbjawRx4+oTsikhTstqj/c75Wp15A2mq9aI3rBZYvJSPQhEqgeVJqHeGa8jHZg8TkmxYR8MODZuW+60BdK8fbqsd8XfXHrF4o2pRZ9XxNQz5gmqyUvdkFYalP+rvEb4lqgLueMLxNcQYNQqdGco4s1ql971aUOCuy+80QX133U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azhGRPnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B31DC4CEEB;
-	Mon, 18 Aug 2025 14:04:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nIuV5SQeufMGEMxmjsDN52A3T0rN2/gBjttJ33w7+XT26G9rvnWCsBNGNITo0QaPNPqCLyPNOqmNrS4DvHgPXVZ611PpPOncDcSSOhXEQZRrl6j+iqZHkYroswCi0RS2JTcVdTqxHArjvy3OuQO1F+DlfRhDw+SKVl0Iwl9IWAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDdEcD33; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF4FC4CEF1;
+	Mon, 18 Aug 2025 13:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525900;
-	bh=SXgv9ja0pSBliALUJv/ohwNBp8kEGpaB40o93jtDHP8=;
+	s=korg; t=1755522612;
+	bh=dE4sytdHcp7yQnPreS6mmG5UQrLts0e2Mm4W6thv+KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azhGRPnHzmp36JuZsGBOm1mGmKyUhYPOnjQSE6ViHc+UzslLvLZwWZ7l6gdQg80Tf
-	 Zo/F94gplu3FTyWcGM5mxdHFODdyiQp+k3ylbf3L5uhs/9vPWj0pLy+zgfqPgDMHYs
-	 nUd+Dx87iKZCDXusS3V0Y314RmaZ4+RdMhl0NUY4=
+	b=tDdEcD33v/b3oBRhNfG3OJLx/FycpQzDBAQBm1UwBQkRii0rLszdKatrWEeWTqm0S
+	 DPOIh+L8GcI3qcMhK537g79AcAKkt1P0IHq+1i+kleJCJ3ov1KiYw9VzAoLt2dj2Fb
+	 bBlAVzq60FVYq3sSe7VHxLB+8ZiEjIh7cJgvDXDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Buday Csaba <buday.csaba@prolan.hu>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 399/570] crypto: caam - Support iMX8QXP and variants thereof
+Subject: [PATCH 6.12 360/444] net: phy: smsc: add proper reset flags for LAN8710A
 Date: Mon, 18 Aug 2025 14:46:26 +0200
-Message-ID: <20250818124521.226415642@linuxfoundation.org>
+Message-ID: <20250818124502.407349883@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Buday Csaba <buday.csaba@prolan.hu>
 
-[ Upstream commit ac8aff0035fa58e53b39bd565ad6422a90ccdc87 ]
+[ Upstream commit 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d ]
 
-The iMX8QXP (and variants such as the QX, DX, DXP) all identify as iMX8QXP.
+According to the LAN8710A datasheet (Rev. B, section 3.8.5.1), a hardware
+reset is required after power-on, and the reference clock (REF_CLK) must be
+established before asserting reset.
 
-They have the exact same restrictions as the supported iMX8QM introduced
-at commit 61bb8db6f682 ("crypto: caam - Add support for i.MX8QM")
-
-Loosen the check a little bit with a wildcard to also match the iMX8QXP
-and its variants.
-
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
+Cc: Csókás Bence <csokas.bence@prolan.hu>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250728152916.46249-2-csokas.bence@prolan.hu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/smsc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/caam/ctrl.c b/drivers/crypto/caam/ctrl.c
-index 38ff931059b4..9cd5e3d54d9d 100644
---- a/drivers/crypto/caam/ctrl.c
-+++ b/drivers/crypto/caam/ctrl.c
-@@ -573,7 +573,7 @@ static const struct soc_device_attribute caam_imx_soc_table[] = {
- 	{ .soc_id = "i.MX7*",  .data = &caam_imx7_data },
- 	{ .soc_id = "i.MX8M*", .data = &caam_imx7_data },
- 	{ .soc_id = "i.MX8ULP", .data = &caam_imx8ulp_data },
--	{ .soc_id = "i.MX8QM", .data = &caam_imx8ulp_data },
-+	{ .soc_id = "i.MX8Q*", .data = &caam_imx8ulp_data },
- 	{ .soc_id = "VF*",     .data = &caam_vf610_data },
- 	{ .family = "Freescale i.MX" },
- 	{ /* sentinel */ }
+diff --git a/drivers/net/phy/smsc.c b/drivers/net/phy/smsc.c
+index 6a43f6d6e85c..de66b621eb99 100644
+--- a/drivers/net/phy/smsc.c
++++ b/drivers/net/phy/smsc.c
+@@ -784,6 +784,7 @@ static struct phy_driver smsc_phy_driver[] = {
+ 
+ 	/* PHY_BASIC_FEATURES */
+ 
++	.flags		= PHY_RST_AFTER_CLK_EN,
+ 	.probe		= smsc_phy_probe,
+ 
+ 	/* basic functions */
 -- 
 2.39.5
 
