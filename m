@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E6AB2A645
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA39B2A937
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EE85563DAA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 741852A7651
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88970322DA3;
-	Mon, 18 Aug 2025 13:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44A232A3D9;
+	Mon, 18 Aug 2025 14:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg71h+k6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhVMKdGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDD8322DC1;
-	Mon, 18 Aug 2025 13:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6197D322A39;
+	Mon, 18 Aug 2025 14:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523779; cv=none; b=CaaJdFGCSLqlu3PTUBSmDFfYGRSBAZeuADlIJb5OT3PdZ3/Z7LR/tZMGTlSeDTrxRTctgjYfrOOR4Comx83rtIkivcDJ3N3YoVEXTV2edptSwYVvL1OO+e32GKg2jlacEOhudZpCWUwAOqDMheGLxHTUYvvYW7vbKTUVSacIc1s=
+	t=1755525601; cv=none; b=gmyAtm2fJJz+/T8Dzm7MRUx1V+otZFscBC8a0oNgNK59SbPq3XfnzSoScYyMwPICTUTHLSTq8wjN0VAkLqqrfzym1nPSEgGBPVMyizCeRlNaV+rEdQTdAdjLdtEW5t9BxqbLacf/vR1ndkxVv5UE6s51zqTfu0SYMIfYd7NuHYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523779; c=relaxed/simple;
-	bh=EBLesDQTGe6H8spJM36++r/jfqafoaJ0yCNdrQRe9TM=;
+	s=arc-20240116; t=1755525601; c=relaxed/simple;
+	bh=+vWya3Av459s1sXEHvtnMRVBAU09U7UsTkHT9ZsZ+Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCzOKLvGIMXHMf23z1ssH0JnTvvehzWo4eLLAbXibR/LQSJqqWofLzbigf00x/kxMgYoRThEsdEQOjEgX9+ChAkiOs/AWXiGogXa9BUxNiPRqznm7nZTsF4L/wYsT9gPVn/b64brOHyeOJwVGpOpnJ69kd8JmmKk9nz79EC9KeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg71h+k6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC62C4CEEB;
-	Mon, 18 Aug 2025 13:29:35 +0000 (UTC)
+	 MIME-Version; b=S+3t3DQDNaXfL7bKcqOr5ya5dZGdZSmcSc9jYbfQe11qAuLpNlO4x8nQlEM4ONZ4xbV6aMfiMn3+h75Dq8tgqNLN2SNY3QVKIcNixehWaKqBcoh/NlVrhehHnn+S25R6t/LqnxSSJ7luKRyBnDMp7TsmR688joq6j8gPrpw+NGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhVMKdGr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C97AC4CEEB;
+	Mon, 18 Aug 2025 13:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523775;
-	bh=EBLesDQTGe6H8spJM36++r/jfqafoaJ0yCNdrQRe9TM=;
+	s=korg; t=1755525601;
+	bh=+vWya3Av459s1sXEHvtnMRVBAU09U7UsTkHT9ZsZ+Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hg71h+k6m3B6Obsb4EsNqeX0f9gRhJr+4EfrMaNzCDCrzQA+eld1RJv2XACJGcrS+
-	 ZkLm3uLN553Nvs+m/7dZc+BCPdSFvv38bKPjRwi8s/V/m8P6DBGNVkiERTimJjyCBe
-	 Lh8skmCs/4v6lmLOLVNo5etdZYNOOUaPkP6ckSTM=
+	b=HhVMKdGrakC93KmaaQ01XV7qoKOgrqcm9ejRKk6sp+UUm5b+dCNJe4gw5OOVyN2Wi
+	 byxSw5ngt1iSbQXSJd+AHcUU1bGM2qblCi3kYRJuhrdsg9LmbXfIiSL04Q78pxDw12
+	 NASYqQVQpB46XW1RiCmOWc21CENanY/twVRDSaX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Rebmann <jre@pengutronix.de>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 270/515] net: fec: allow disable coalescing
-Date: Mon, 18 Aug 2025 14:44:16 +0200
-Message-ID: <20250818124508.816316989@linuxfoundation.org>
+Subject: [PATCH 6.16 270/570] drm/fbdev-client: Skip DRM clients if modesetting is absent
+Date: Mon, 18 Aug 2025 14:44:17 +0200
+Message-ID: <20250818124516.248759190@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Rebmann <jre@pengutronix.de>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit b7ad21258f9e9a7f58b19595d5ceed2cde3bed68 ]
+[ Upstream commit cce91f29c088ba902dd2abfc9c3216ba9a2fb2fe ]
 
-In the current implementation, IP coalescing is always enabled and
-cannot be disabled.
+Recent generations of Tegra have moved the display components outside of
+host1x, leading to a device that has no CRTCs attached and hence doesn't
+support any of the modesetting functionality. When this is detected, the
+driver clears the DRIVER_MODESET and DRIVER_ATOMIC flags for the device.
 
-As setting maximum frames to 0 or 1, or setting delay to zero implies
-immediate delivery of single packets/IRQs, disable coalescing in
-hardware in these cases.
+Unfortunately, this causes the following errors during boot:
 
-This also guarantees that coalescing is never enabled with ICFT or ICTT
-set to zero, a configuration that could lead to unpredictable behaviour
-according to i.MX8MP reference manual.
+    [      15.418958] ERR KERN drm drm: [drm] *ERROR* Failed to register client: -95
+    [      15.425311] WARNING KERN drm drm: [drm] Failed to set up DRM client; error -95
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250626-fec_deactivate_coalescing-v2-1-0b217f2e80da@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+These originate from the fbdev client checking for the presence of the
+DRIVER_MODESET flag and returning -EOPNOTSUPP. However, if a driver does
+not support DRIVER_MODESET this is entirely expected and the error isn't
+helpful.
+
+Prevent this misleading error message by setting up the DRM clients only
+if modesetting is enabled.
+
+Changes in v2:
+- use DRIVER_MODESET check to avoid registering any clients
+
+Reported-by: Jonathan Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250613122838.2082334-1-thierry.reding@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 34 +++++++++++------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/clients/drm_client_setup.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 17e9bddb9ddd..651b73163b6e 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3124,27 +3124,25 @@ static int fec_enet_us_to_itr_clock(struct net_device *ndev, int us)
- static void fec_enet_itr_coal_set(struct net_device *ndev)
+diff --git a/drivers/gpu/drm/clients/drm_client_setup.c b/drivers/gpu/drm/clients/drm_client_setup.c
+index e17265039ca8..e460ad354de2 100644
+--- a/drivers/gpu/drm/clients/drm_client_setup.c
++++ b/drivers/gpu/drm/clients/drm_client_setup.c
+@@ -2,6 +2,7 @@
+ 
+ #include <drm/clients/drm_client_setup.h>
+ #include <drm/drm_device.h>
++#include <drm/drm_drv.h>
+ #include <drm/drm_fourcc.h>
+ #include <drm/drm_print.h>
+ 
+@@ -31,6 +32,10 @@ MODULE_PARM_DESC(active,
+  */
+ void drm_client_setup(struct drm_device *dev, const struct drm_format_info *format)
  {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	int rx_itr, tx_itr;
-+	u32 rx_itr = 0, tx_itr = 0;
-+	int rx_ictt, tx_ictt;
- 
--	/* Must be greater than zero to avoid unpredictable behavior */
--	if (!fep->rx_time_itr || !fep->rx_pkts_itr ||
--	    !fep->tx_time_itr || !fep->tx_pkts_itr)
--		return;
--
--	/* Select enet system clock as Interrupt Coalescing
--	 * timer Clock Source
--	 */
--	rx_itr = FEC_ITR_CLK_SEL;
--	tx_itr = FEC_ITR_CLK_SEL;
-+	rx_ictt = fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr);
-+	tx_ictt = fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr);
- 
--	/* set ICFT and ICTT */
--	rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
--	rx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->rx_time_itr));
--	tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
--	tx_itr |= FEC_ITR_ICTT(fec_enet_us_to_itr_clock(ndev, fep->tx_time_itr));
-+	if (rx_ictt > 0 && fep->rx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		rx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		rx_itr |= FEC_ITR_ICFT(fep->rx_pkts_itr);
-+		rx_itr |= FEC_ITR_ICTT(rx_ictt);
++	if (!drm_core_check_feature(dev, DRIVER_MODESET)) {
++		drm_dbg(dev, "driver does not support mode-setting, skipping DRM clients\n");
++		return;
 +	}
  
--	rx_itr |= FEC_ITR_EN;
--	tx_itr |= FEC_ITR_EN;
-+	if (tx_ictt > 0 && fep->tx_pkts_itr > 1) {
-+		/* Enable with enet system clock as Interrupt Coalescing timer Clock Source */
-+		tx_itr = FEC_ITR_EN | FEC_ITR_CLK_SEL;
-+		tx_itr |= FEC_ITR_ICFT(fep->tx_pkts_itr);
-+		tx_itr |= FEC_ITR_ICTT(tx_ictt);
-+	}
- 
- 	writel(tx_itr, fep->hwp + FEC_TXIC0);
- 	writel(rx_itr, fep->hwp + FEC_RXIC0);
+ #ifdef CONFIG_DRM_FBDEV_EMULATION
+ 	if (!strcmp(drm_client_default, "fbdev")) {
 -- 
 2.39.5
 
