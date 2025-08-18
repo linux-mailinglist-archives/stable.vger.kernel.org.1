@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85870B2A650
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C43FB2A834
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83287583F71
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66BD67AF327
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C37224B06;
-	Mon, 18 Aug 2025 13:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB463375D9;
+	Mon, 18 Aug 2025 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjRFOPAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKwJDTJ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77C020C461;
-	Mon, 18 Aug 2025 13:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0854B3375D1;
+	Mon, 18 Aug 2025 13:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523826; cv=none; b=BRrDvuBJCKoE6BNmb+lvfM4NasbZfZvBfuUYyGWX8f936lodmySiAF5KMaAfdtjc7E8jvMrB7tPT+6H6uy18jkn2csdSpNMLuVWpEASiW0YTq28C0z07dbKUU8wvVPArRqhR8tzQdqz/F8FYPSDcpjTOpR28ff2m5u+RoSr29Rg=
+	t=1755525418; cv=none; b=eumdnSrKegzuIBO1RWwIpVFgPIxmjd0AsPhw9rM7Crnu6ZPKU7DahURki/eX4+CgwJHSef9ksOL4EKuxVV/cdNCropnnEla22hq0txsit+5aWYTRp34bDzURcV91OHQa4Ik+OsPLmD+yFHq3naHsuCMC2/9SRs92oTI9AqOL5/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523826; c=relaxed/simple;
-	bh=mHbhihw2gsa4LdV+qJYcKvZLrJLxqzq4v1v/YIASBPA=;
+	s=arc-20240116; t=1755525418; c=relaxed/simple;
+	bh=r851sF/IXQ6nv1XShxIeoNNXQsYjrb/Ebi9qNlT0NEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brovADzm3mUt7v8WfwpYm7iU0Ty0O6uTK4L1YMn58wkqEoP73GBAS6x0sQXWbvJG1BXb7ucs3HRX6MIRR4UJNyqLMm1LJQxHaoPhXwDP9C/qPi4MFLv/1PB7uswLCiCB3cfg2GVNS0dLTapng5AyIXLRZ+wc5ns/taR4efoxqo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjRFOPAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA3CC4CEEB;
-	Mon, 18 Aug 2025 13:30:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EYamvgAXfBIcF+enwrxyMkjeU29dR7/UMslWihkdg119GbF8JUzEXowjhxg2LJq7ZcvETjDO+yRotIBCX8Pz1iI3+htUKo1QTPYjaajk55MrwD3hvc2X+8vcZCyMlLnvttSQc1/r1qQywUxNu4NnZuKhVIqEMzKUGAkRv92pd78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKwJDTJ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B9FC113D0;
+	Mon, 18 Aug 2025 13:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523826;
-	bh=mHbhihw2gsa4LdV+qJYcKvZLrJLxqzq4v1v/YIASBPA=;
+	s=korg; t=1755525417;
+	bh=r851sF/IXQ6nv1XShxIeoNNXQsYjrb/Ebi9qNlT0NEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZjRFOPAvXALRbDvQ9UjH/CvBeNL8jLjZhROflfkT2lkv9dIjCoEoimyXP76lsKysm
-	 TovOfwaZMLemkUfg6QSDe9vudIVX0l+1LnVHW4RHP/CB9wbDsmKe/yyEgDR3g8LyDl
-	 J+wFK5hSKdEQQJcq40qRwhYVjkE+op+H+ovptVZM=
+	b=TKwJDTJ/IFl9NE3YbGdeG+fCxDGnjlXanIZegEunA6JkYZZ/JcWhMh9HF7k0ih5py
+	 a6/bbtKoxXsHEkQvfv9PNJvfst0NeeRTMvtNcYgc862+GPXkukYK831+nko8DIkPLr
+	 XVy34+/GTBDv8F0njsAxeGPGGPntwFmpifhVmIgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Philipp Stanner <phasta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 257/515] drm/imagination: Clear runtime PM errors while resetting the GPU
+Subject: [PATCH 6.16 256/570] drm/sched: Avoid memory leaks with cancel_job() callback
 Date: Mon, 18 Aug 2025 14:44:03 +0200
-Message-ID: <20250818124508.306751041@linuxfoundation.org>
+Message-ID: <20250818124515.684210604@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,114 +61,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-[ Upstream commit 551507e0d0bf32ce1d7d27533c4b98307380804c ]
+[ Upstream commit bf8bbaefaa6ae0a07971ea57b3208df60e8ad0a4 ]
 
-The runtime PM might be left in error state if one of the callbacks
-returned an error, e.g. if the (auto)suspend callback failed following
-a firmware crash.
+Since its inception, the GPU scheduler can leak memory if the driver
+calls drm_sched_fini() while there are still jobs in flight.
 
-When that happens, any further attempt to acquire or release a power
-reference will then also fail, making it impossible to do anything else
-with the GPU. The driver logic will eventually reach the reset code.
+The simplest way to solve this in a backwards compatible manner is by
+adding a new callback, drm_sched_backend_ops.cancel_job(), which
+instructs the driver to signal the hardware fence associated with the
+job. Afterwards, the scheduler can safely use the established free_job()
+callback for freeing the job.
 
-In pvr_power_reset(), replace pvr_power_get() with a new API
-pvr_power_get_clear() which also attempts to clear any runtime PM error
-state if acquiring a power reference is not possible.
+Implement the new backend_ops callback cancel_job().
 
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://lore.kernel.org/r/20250624-clear-rpm-errors-gpu-reset-v1-1-b8ff2ae55aac@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Link: https://lore.kernel.org/dri-devel/20250418113211.69956-1-tvrtko.ursulin@igalia.com/
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20250710125412.128476-4-phasta@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_power.c | 59 ++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/scheduler/sched_main.c | 34 ++++++++++++++++----------
+ include/drm/gpu_scheduler.h            | 18 ++++++++++++++
+ 2 files changed, 39 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_power.c b/drivers/gpu/drm/imagination/pvr_power.c
-index 850b318605da..d97613c6a0a9 100644
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -317,6 +317,63 @@ pvr_power_device_idle(struct device *dev)
- 	return pvr_power_is_idle(pvr_dev) ? 0 : -EBUSY;
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index 829579c41c6b..3ac5e6acce04 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -1348,6 +1348,18 @@ int drm_sched_init(struct drm_gpu_scheduler *sched, const struct drm_sched_init_
  }
+ EXPORT_SYMBOL(drm_sched_init);
  
-+static int
-+pvr_power_clear_error(struct pvr_device *pvr_dev)
++static void drm_sched_cancel_remaining_jobs(struct drm_gpu_scheduler *sched)
 +{
-+	struct device *dev = from_pvr_device(pvr_dev)->dev;
-+	int err;
++	struct drm_sched_job *job, *tmp;
 +
-+	/* Ensure the device state is known and nothing is happening past this point */
-+	pm_runtime_disable(dev);
-+
-+	/* Attempt to clear the runtime PM error by setting the current state again */
-+	if (pm_runtime_status_suspended(dev))
-+		err = pm_runtime_set_suspended(dev);
-+	else
-+		err = pm_runtime_set_active(dev);
-+
-+	if (err) {
-+		drm_err(from_pvr_device(pvr_dev),
-+			"%s: Failed to clear runtime PM error (new error %d)\n",
-+			__func__, err);
++	/* All other accessors are stopped. No locking necessary. */
++	list_for_each_entry_safe_reverse(job, tmp, &sched->pending_list, list) {
++		sched->ops->cancel_job(job);
++		list_del(&job->list);
++		sched->ops->free_job(job);
 +	}
-+
-+	pm_runtime_enable(dev);
-+
-+	return err;
-+}
-+
-+/**
-+ * pvr_power_get_clear() - Acquire a power reference, correcting any errors
-+ * @pvr_dev: Device pointer
-+ *
-+ * Attempt to acquire a power reference on the device. If the runtime PM
-+ * is in error state, attempt to clear the error and retry.
-+ *
-+ * Returns:
-+ *  * 0 on success, or
-+ *  * Any error code returned by pvr_power_get() or the runtime PM API.
-+ */
-+static int
-+pvr_power_get_clear(struct pvr_device *pvr_dev)
-+{
-+	int err;
-+
-+	err = pvr_power_get(pvr_dev);
-+	if (err == 0)
-+		return err;
-+
-+	drm_warn(from_pvr_device(pvr_dev),
-+		 "%s: pvr_power_get returned error %d, attempting recovery\n",
-+		 __func__, err);
-+
-+	err = pvr_power_clear_error(pvr_dev);
-+	if (err)
-+		return err;
-+
-+	return pvr_power_get(pvr_dev);
 +}
 +
  /**
-  * pvr_power_reset() - Reset the GPU
-  * @pvr_dev: Device pointer
-@@ -341,7 +398,7 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
- 	 * Take a power reference during the reset. This should prevent any interference with the
- 	 * power state during reset.
+  * drm_sched_fini - Destroy a gpu scheduler
+  *
+@@ -1355,19 +1367,11 @@ EXPORT_SYMBOL(drm_sched_init);
+  *
+  * Tears down and cleans up the scheduler.
+  *
+- * This stops submission of new jobs to the hardware through
+- * drm_sched_backend_ops.run_job(). Consequently, drm_sched_backend_ops.free_job()
+- * will not be called for all jobs still in drm_gpu_scheduler.pending_list.
+- * There is no solution for this currently. Thus, it is up to the driver to make
+- * sure that:
+- *
+- *  a) drm_sched_fini() is only called after for all submitted jobs
+- *     drm_sched_backend_ops.free_job() has been called or that
+- *  b) the jobs for which drm_sched_backend_ops.free_job() has not been called
+- *     after drm_sched_fini() ran are freed manually.
+- *
+- * FIXME: Take care of the above problem and prevent this function from leaking
+- * the jobs in drm_gpu_scheduler.pending_list under any circumstances.
++ * This stops submission of new jobs to the hardware through &struct
++ * drm_sched_backend_ops.run_job. If &struct drm_sched_backend_ops.cancel_job
++ * is implemented, all jobs will be canceled through it and afterwards cleaned
++ * up through &struct drm_sched_backend_ops.free_job. If cancel_job is not
++ * implemented, memory could leak.
+  */
+ void drm_sched_fini(struct drm_gpu_scheduler *sched)
+ {
+@@ -1397,6 +1401,10 @@ void drm_sched_fini(struct drm_gpu_scheduler *sched)
+ 	/* Confirm no work left behind accessing device structures */
+ 	cancel_delayed_work_sync(&sched->work_tdr);
+ 
++	/* Avoid memory leaks if supported by the driver. */
++	if (sched->ops->cancel_job)
++		drm_sched_cancel_remaining_jobs(sched);
++
+ 	if (sched->own_submit_wq)
+ 		destroy_workqueue(sched->submit_wq);
+ 	sched->ready = false;
+diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
+index 1a7e377d4cbb..1eed74c7f2f7 100644
+--- a/include/drm/gpu_scheduler.h
++++ b/include/drm/gpu_scheduler.h
+@@ -508,6 +508,24 @@ struct drm_sched_backend_ops {
+          * and it's time to clean it up.
  	 */
--	WARN_ON(pvr_power_get(pvr_dev));
-+	WARN_ON(pvr_power_get_clear(pvr_dev));
+ 	void (*free_job)(struct drm_sched_job *sched_job);
++
++	/**
++	 * @cancel_job: Used by the scheduler to guarantee remaining jobs' fences
++	 * get signaled in drm_sched_fini().
++	 *
++	 * Used by the scheduler to cancel all jobs that have not been executed
++	 * with &struct drm_sched_backend_ops.run_job by the time
++	 * drm_sched_fini() gets invoked.
++	 *
++	 * Drivers need to signal the passed job's hardware fence with an
++	 * appropriate error code (e.g., -ECANCELED) in this callback. They
++	 * must not free the job.
++	 *
++	 * The scheduler will only call this callback once it stopped calling
++	 * all other callbacks forever, with the exception of &struct
++	 * drm_sched_backend_ops.free_job.
++	 */
++	void (*cancel_job)(struct drm_sched_job *sched_job);
+ };
  
- 	down_write(&pvr_dev->reset_sem);
- 
+ /**
 -- 
 2.39.5
 
