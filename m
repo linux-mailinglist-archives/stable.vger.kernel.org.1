@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F42B2A2A0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155E2B2A8AD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 327A04E2ED3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0147C1B62A3B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719A03218D1;
-	Mon, 18 Aug 2025 12:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920BF335BC1;
+	Mon, 18 Aug 2025 13:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFcPnkts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eq3FULrX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305603218C0;
-	Mon, 18 Aug 2025 12:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDC0335BBF;
+	Mon, 18 Aug 2025 13:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521964; cv=none; b=rYCgTEXm5+nb2zWIPowBngECOhAok/7LOJ7oTyS2pvdCpwu8kjeiQopAOpXlFFCtMyioLxxCyWPf7WHOuDDSyAb7mENmVfKgVfG5Y5eF5+pxims/spE5neqh82rUBTtQBQSk+bNziCPFEsy6sWmQX23YxtzBLa3/dnMZxErg4TI=
+	t=1755525275; cv=none; b=RvWSnGC0MWoMvyUMvFOhJFHAsl6Lk9G7abEajS1RIb9i2MlIf7N/AWoRqBivStGNV76S/hZc/FIGEuOKnT5k5CyUvHoZ/mFcek14Pie3HWINVeIx/7o70upt4yZcgJiwpLQzSpLIeif8FsV0ipUOmYV4LX6b3ukEW2aZor3d2MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521964; c=relaxed/simple;
-	bh=6lHMabOeILzdLoul0Np0PKd3FUdOBOQ4iryq/+QP5+o=;
+	s=arc-20240116; t=1755525275; c=relaxed/simple;
+	bh=+SM4+PgOoyHNgpS3pSqOjEtVnvF6K2rDyG9TkU33TNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oW2TwdvYFf/9WzNpSakJ/SDHj+jhrpIeE9F+OOw3SYTGTV1Ti3Bg3lABNq8s727XIhhkKsgSJlartyk/y6rL3A6p/4WoJEF98aapWrpZ744AETaJ+w39e5JYyyBKDh6KZvl8y5SrCoYILH+NOiFWwa6mHYOEFqW8s7r4Kzvr2kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFcPnkts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9153AC4CEEB;
-	Mon, 18 Aug 2025 12:59:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N85OtjWTv1KQL4fzbPqUNB4u46z3aB7/YQLgOlw9wwZ93RN6HLh4nFeMnJQpObYorZsKjeEjvc4QHhGN0WxslyQwVSB6llZhBF7AqvhxvMfGeyb+k3XuSzgSECIWM8wmstaA0CX0Zsav3mUPq4hr9Z+1s/uVgyVtTQiBaWgKN4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eq3FULrX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7653C4CEEB;
+	Mon, 18 Aug 2025 13:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521964;
-	bh=6lHMabOeILzdLoul0Np0PKd3FUdOBOQ4iryq/+QP5+o=;
+	s=korg; t=1755525275;
+	bh=+SM4+PgOoyHNgpS3pSqOjEtVnvF6K2rDyG9TkU33TNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFcPnktsA3fcec1uZmsqwdUP39Of3z+yUtKS0JQquXfEUgqisjEDqhY24bu8KIUPQ
-	 6APlOsVFykwLgtc+CUQutRzR7sXYtir03to3tC8n81cIWhOXAAJli13EyI+Oo041Dr
-	 OKGWW5+RtFGw+qFBzO0ia5UZpFX9OQktLZsZQtQk=
+	b=Eq3FULrXijNQO/yPtu4Gwp6Lei6TCcZwnnxhSWjN9z2gcJS26AWSl3rlKTCBolbMK
+	 hFdXt/FcJpsrk2u9a+58pIheB/mQPR0/RqCjfCMu2qkjXDbVmEfc9XTIz+vKGZCLzu
+	 EhQX1BL1jwOIjlFh/+ak/cN/SjZOyw2agZoCPZno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	shdeb <shdeb3000000@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 174/444] be2net: Use correct byte order and format string for TCP seq and ack_seq
+Subject: [PATCH 6.16 213/570] Bluetooth: btusb: Add support for variant of RTL8851BE (USB ID 13d3:3601)
 Date: Mon, 18 Aug 2025 14:43:20 +0200
-Message-ID: <20250818124455.406942563@linuxfoundation.org>
+Message-ID: <20250818124514.006648342@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Uwe Kleine-König <ukleinek@debian.org>
 
-[ Upstream commit 4701ee5044fb3992f1c910630a9673c2dc600ce5 ]
+[ Upstream commit 65b0dca6f9f2c912a77a6ad6cf56f60a895a496b ]
 
-The TCP header fields seq and ack_seq are 32-bit values in network
-byte order as (__be32). these fields were earlier printed using
-ntohs(), which converts only 16-bit values and produces incorrect
-results for 32-bit fields. This patch is changeing the conversion
-to ntohl(), ensuring correct interpretation of these sequence numbers.
+Teach the btusb driver to recognize another variant of the RTL8851BE
+bluetooth radio.
 
-Notably, the format specifier is updated from %d to %u to reflect the
-unsigned nature of these fields.
+/sys/kernel/debug/usb/devices reports for that device:
 
-improves the accuracy of debug log messages for TCP sequence and
-acknowledgment numbers during TX timeouts.
+	T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+	D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+	P:  Vendor=13d3 ProdID=3601 Rev= 0.00
+	S:  Manufacturer=Realtek
+	S:  Product=Bluetooth Radio
+	S:  SerialNumber=00e04c000001
+	C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+	I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+	E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+	E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+	I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+	E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+	I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+	E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+	I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+	E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+	I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+	E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+	I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+	E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+	I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+	E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+	I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+	E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+	E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250717193552.3648791-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: shdeb <shdeb3000000@gmail.com>
+Link: https://bugs.debian.org/1106386
+Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btusb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_main.c b/drivers/net/ethernet/emulex/benet/be_main.c
-index 3d2e21592119..490af6659429 100644
---- a/drivers/net/ethernet/emulex/benet/be_main.c
-+++ b/drivers/net/ethernet/emulex/benet/be_main.c
-@@ -1465,10 +1465,10 @@ static void be_tx_timeout(struct net_device *netdev, unsigned int txqueue)
- 						 ntohs(tcphdr->source));
- 					dev_info(dev, "TCP dest port %d\n",
- 						 ntohs(tcphdr->dest));
--					dev_info(dev, "TCP sequence num %d\n",
--						 ntohs(tcphdr->seq));
--					dev_info(dev, "TCP ack_seq %d\n",
--						 ntohs(tcphdr->ack_seq));
-+					dev_info(dev, "TCP sequence num %u\n",
-+						 ntohl(tcphdr->seq));
-+					dev_info(dev, "TCP ack_seq %u\n",
-+						 ntohl(tcphdr->ack_seq));
- 				} else if (ip_hdr(skb)->protocol ==
- 					   IPPROTO_UDP) {
- 					udphdr = udp_hdr(skb);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index e608355f8349..9efdd111baf5 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -515,6 +515,7 @@ static const struct usb_device_id quirks_table[] = {
+ 	/* Realtek 8851BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0xb850), .driver_info = BTUSB_REALTEK },
+ 	{ USB_DEVICE(0x13d3, 0x3600), .driver_info = BTUSB_REALTEK },
++	{ USB_DEVICE(0x13d3, 0x3601), .driver_info = BTUSB_REALTEK },
+ 
+ 	/* Realtek 8851BU Bluetooth devices */
+ 	{ USB_DEVICE(0x3625, 0x010b), .driver_info = BTUSB_REALTEK |
 -- 
 2.39.5
 
