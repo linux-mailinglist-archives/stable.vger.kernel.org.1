@@ -1,81 +1,79 @@
-Return-Path: <stable+bounces-171618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7028B2AC6B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:18:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9CDEB2ACA4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 17:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 656807AE327
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E3501778E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE9621ABDB;
-	Mon, 18 Aug 2025 15:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED333253F11;
+	Mon, 18 Aug 2025 15:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="nIY1hIpM"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="nHdLBnj4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ACF233140
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 15:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7C021C166
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 15:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755530275; cv=none; b=OcqY+gQU8gvnKLSSewL39mUbGvnaIjqhBSFsX/f9rz9fMvC0yeLOOWwNLVzW5siOu/4bk5YWk7SMRx3UY7KAAWBSKUIRVQjV1VAjhMTYS/vdqdkOLiujzpylqFrNNp+sD/cBe1xxyKfQV2R7KaA+WQtaABQgjHPM4/3wZDYEMjA=
+	t=1755530487; cv=none; b=hd3JEME7BWQ3lo3x+Dt3nvwOGOq86J72Et1bVoO5bALlBCQfNlGtdpUMoP2G8Q9K6r7g23hv5FLoHWvGscEO92HcXhmrTgvunKNeWzdFPrP8JKmXRc3o9XWwV4+JcAr+BPgKnHxtXIX2fo5d8lT61YDsK5QSBej5xLIBkjqRRA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755530275; c=relaxed/simple;
-	bh=RO14iBAw61nrFjI/7h8B8uMHRgnycra6niqzc3j3C3A=;
+	s=arc-20240116; t=1755530487; c=relaxed/simple;
+	bh=chnjCnUulJVXJeofNVEbCWcnHv2U3R93Uqor7BM8Upo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ANicX6QZw9xzP5IQd2IB2xzSAesXjrRE3DQq9T0O7NQ21HBFjXY1gXkMMphOFtOhPWYvSh+OPTv80/XglHpUlrFeWfJ1ZaDqOBpTgW5gD+xYMcdLqhrU6A3/E3rFkmZ6pRKNoR3naY0ekXdt0IMQnLBg5J6xHXDSoX7EkWCdMX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=nIY1hIpM; arc=none smtp.client-ip=209.85.166.46
+	 In-Reply-To:Content-Type; b=TVnWcN/gpoDeUlFwguWJ/P22qLyof05wa89RXU23IU37bmdWuCWxa0AVwYO2u/DmP9M+5qLoZf2zh/JvWMWhgoikYHdSoZ82gxHvsyU2+Txb4YRANxpFNFZTqStqy0usQv2338lN+TpI6AAy1qKYMHktTVqrg5oX5gUD5I3qS94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=nHdLBnj4; arc=none smtp.client-ip=209.85.167.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-884328c9473so51019039f.0
-        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 08:17:51 -0700 (PDT)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-435de937578so2188283b6e.0
+        for <stable@vger.kernel.org>; Mon, 18 Aug 2025 08:21:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1755530270; x=1756135070; darn=vger.kernel.org;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1755530484; x=1756135284; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMT4eDK36qr+C4BysxeOv7rVGcyn/FbLH8SqiJK3J3Y=;
-        b=nIY1hIpMF0z0GwYcA3mgdgYRAnOQGL1UN+PQNHJVx7obRSp3a3QfTDnao/FulItUpa
-         X6jLSV6f12mc0dqIizP6uQ0NFvFnqVQi13kuzBwy9RgU5EE3CoscIcVHKhWooYaA8aoL
-         iMETajL9r6ucmKmH4TiNXnjYK96t931v7EwaGTEuRCVMj8v7rigxXGw6rJQxvGnmBJkQ
-         bQFan4w9YAAmShwBMv0X2TZCwBKHbOX8XsYZkUh0WXkg5a4jKLK2NVO1oF+xEPUpt9sm
-         S7YjxH1l+rSzwpUez0qn/KawoKVizQGCIrIJ/96GYNxIz8t67uEhK9sjF6lGUvs4rQIk
-         qG3Q==
+        bh=gnpAge3MeO+sxXs3j5vEy0JWYcKuYAO5R3PYGJvwXv8=;
+        b=nHdLBnj4d1wqJ1htsEClv50ikD3sYirSBCfd3FWfP9QI1qPSCgLdEDBspYPi2zreHo
+         ahxg/l+vPHI7t19uboLv1tvhQRIfSVNTRE46bjhofYEX9/ggDbgG/FZzYznAUoqyDuTB
+         54zv1fk2uBrjAfi5LNXSDxu1vEo3LCE1YjKQhaTjZy32x4hGwgQtrbPtUOqpc8Ip9EAu
+         OIJJP+WqEHQ3ui4PU2kBgR6HqHAcu4u+f8jh1hxr3bv1GzXIZGmelvZj949FCmjW/j27
+         xkjorYRIAAjI7D4N7evkxjxD7w6O5ffslJpkUdkd0GfuZp6wITqVFaaVZuH3y25nSWc4
+         LqWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755530270; x=1756135070;
+        d=1e100.net; s=20230601; t=1755530484; x=1756135284;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZMT4eDK36qr+C4BysxeOv7rVGcyn/FbLH8SqiJK3J3Y=;
-        b=MLDkuYcBgXAgihthSntz9JfL02SvrroL01KJCpvve/k1Oow0WEKAnKzMr47IMXFKZF
-         qowRcjZo87DCdF7O1l/vn/pV7nEc2P/Sz4X+2/BaQf9Tagj7o2hW+/6YntkD1Mwbqv8K
-         BHIeLv7aL833HZ25BPNfsCLaQt+u7zL3hRq5oXkqlhJcaZMYvhmRez1Nxw4EAGZUNTiq
-         DkJNtlC/VGX/cKjN/112vEWhwM9tlNXuZKTIiWzjhLoHXw5b4VcOq3IRhuFhQILhihHR
-         MWM34vHRjkWFeZCz6P1Wr2l31XMfCbSnHGll+Pgrv+MbTKI/JOTN8wWFDK3qAAg7bsMF
-         T6Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCV9+GaoBuHG6oz9cQnC8t56WoBWj/ucQGB+/zC9wBHqk6Ku7APk2NSciLEMValmUM/O7DlbSgE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXbi5gdR1WMgwQfEhVBOgwz44ve41oRJEXeJ97NsXiNIsF+3XF
-	ajyqTBBYjSs4/Gd2TPVnKWqfMSTvjkXIezozKGqeXD0H6zlxnwxV2/Htea91g8aCW8JHrXQU3e5
-	Shk+n
-X-Gm-Gg: ASbGncvU7OS6eI4KuKerVTyQjvo2+t7Sttsweuk1LfSlcBPqeaA8Zptf8UjwO+wAbqY
-	y4JoRUSHDocN1PD04YzNbcQw1vgRpsdRf7jcAODEMDC5k5SdeQW7j16KL1J/zzZLk81k8DvYKuP
-	MbGVltydOxySo66i9ksN+H7iv07k6tPq/7pBi/7xaVfCtlGt+67kjMyBa0teSGvjgXYCVV6t6iT
-	RqST0DLtzBNgILyIWECTk0DihZEQv0h1uw4wNjU33RAXuULYMZdIWbXXUMkTsCz7soSnK0TLfuB
-	FZumTwpYS4bY/si1MbYy7jKPY2u3VoQ04d9H8Oh8fapFCpdAs9E5fMRGSNcOdlnFbtLnrwbI+hf
-	pJKFsHxVwAgcRWr4VAcEN0V5DmUJIbPWkbS56AneA
-X-Google-Smtp-Source: AGHT+IHXhYoPQ+AzHhxPiTBYDpiMlSq6Ai+VMYTtgAToM2mqkxDWzo7lEsQPU8lTyHTAO80RLCCUUg==
-X-Received: by 2002:a5d:928f:0:b0:884:b65:c3f1 with SMTP id ca18e2360f4ac-88434489c0bmr2511116139f.5.1755530270298;
-        Mon, 18 Aug 2025 08:17:50 -0700 (PDT)
+        bh=gnpAge3MeO+sxXs3j5vEy0JWYcKuYAO5R3PYGJvwXv8=;
+        b=U6dgnbaNVPA88dGs5oWlOLiyWN2hCijEokyTvHW/RVpTo6VbNNJrN1TupISZ0zNioB
+         l9j9W9envt+NrNOVkKv38UhHCeK8zS5gpCa5r/nQzFRGsxhSwY/xS6c4OPaWFvJpRKpb
+         gsLWyIg5kXUpYuXSUvWC5dojsemcb0DJhu+nKgjkGk2YgtGuTN2vSzwtoIMuS3x0GuD/
+         AwU5J72ijvlAV09TJM+xFyABapK+ExIhaIDJk0pTSjt09EbLl/dZQJzKvX5Dh2YbKZNC
+         Dk3H7r5ylQdJGqGd/1hY/ertorDnE6RmlV7I6l6da8lRVllwQPyVKuO6hciVjDq+/1Yn
+         aTMg==
+X-Gm-Message-State: AOJu0YzRYpp9xoXdrwKVJVdVWmw1MzlVji9fnZ8+zX7uLNKimx91Hplo
+	8tGhX2Q0S4Va2vUyVYx8BLbSBSXiaO+kWRSsAxYZuXUKPBbcar35R5Wsw2h4TRs5R4U=
+X-Gm-Gg: ASbGnctAZ2aAsqGcCe70PyRrdkUgve6jKolrW0LzJQPs7GVo2bsF6vN276pS1Vq/sNH
+	Ah3WYKCQds99r+4f0QI0bMJ1gvvKN8D/3LKYxRxgjxrwhs7saWoMe58btQ7py03/ORnLIr5QcyK
+	4h7ZDzEIyEKFRBkPDbZWGktNx/ab2+aAJ4raDqYe/vpsQSrNk0G5rhRxfk5S4NpCY2XVkFHxYNE
+	vPS4/u4t4J2b3+dSQJFkBo3X6ornqxZFFTPro/nY/gTP9iPE7i7lgkYt3EvAbhVsy08xHyRTubP
+	+5ggWJBhKjJr9A6VjLAHnOBKW24vZsj3lQYzolWQdG9w+lFlB0BH5si1PFGNnd4okRHzBpVHtHl
+	lNZ+jMZtqnYqksxFxqduUQVTHvKXF1A==
+X-Google-Smtp-Source: AGHT+IE7Dk8fBBTfe3q979ovlDCK4Bkl75RIl/DwLMq+2yFBqWbBdeXefa8WYswRHb49PnKjRs5Ieg==
+X-Received: by 2002:a05:6808:d52:b0:434:82b:f10e with SMTP id 5614622812f47-435ec486741mr8356364b6e.22.1755530483840;
+        Mon, 18 Aug 2025 08:21:23 -0700 (PDT)
 Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50c9477f29bsm2503118173.12.2025.08.18.08.17.49
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50c949f68eesm2578183173.77.2025.08.18.08.21.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Aug 2025 08:17:49 -0700 (PDT)
-Message-ID: <edb34177-6e3c-446b-8689-287b69b0ef08@kernel.dk>
-Date: Mon, 18 Aug 2025 09:17:49 -0600
+        Mon, 18 Aug 2025 08:21:23 -0700 (PDT)
+Message-ID: <e27afbbb-7d13-4381-963b-8dbd1e2d06bf@kernel.dk>
+Date: Mon, 18 Aug 2025 09:21:22 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,55 +81,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/net: commit partial buffers on
- retry" failed to apply to 6.6-stable tree
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: superman.xpt@gmail.com, stable@vger.kernel.org
-References: <2025081549-shorter-borrower-941d@gregkh>
- <15e7ab1a-46d9-4d3d-b48e-3e10e570829e@kernel.dk>
- <2025081558-scion-joylessly-a7b6@gregkh>
+Subject: Re: FAILED: patch "[PATCH] io_uring/zcrx: account area memory" failed
+ to apply to 6.15-stable tree
+To: gregkh@linuxfoundation.org, asml.silence@gmail.com
+Cc: stable@vger.kernel.org
+References: <2025081527-unflawed-matrimony-2057@gregkh>
 Content-Language: en-US
 From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2025081558-scion-joylessly-a7b6@gregkh>
+In-Reply-To: <2025081527-unflawed-matrimony-2057@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/15/25 9:57 AM, Greg KH wrote:
-> On Fri, Aug 15, 2025 at 09:46:53AM -0600, Jens Axboe wrote:
->> On 8/15/25 9:26 AM, gregkh@linuxfoundation.org wrote:
->>>
->>> The patch below does not apply to the 6.6-stable tree.
->>> If someone wants it applied there, or to any other stable or longterm
->>> tree, then please email the backport, including the original git commit
->>> id to <stable@vger.kernel.org>.
->>>
->>> To reproduce the conflict and resubmit, you may use the following commands:
->>>
->>> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
->>> git checkout FETCH_HEAD
->>> git cherry-pick -x 41b70df5b38bc80967d2e0ed55cc3c3896bba781
->>> # <resolve conflicts, build, test, etc.>
->>> git commit -s
->>> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081549-shorter-borrower-941d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
->>
->> Here's one for 6.6-stable.
->>
->> -- 
->> Jens Axboe
+On 8/15/25 9:26 AM, gregkh@linuxfoundation.org wrote:
 > 
->> From c16cb4e2a4b1a487ca7feae5931dfb22ac495b76 Mon Sep 17 00:00:00 2001
->> From: Jens Axboe <axboe@kernel.dk>
->> Date: Tue, 12 Aug 2025 08:30:11 -0600
->> Subject: [PATCH] io_uring/net: commit partial buffers on retry
->>
->> Commit a6dfda7da5c65b282c1663326be16e57aec3d1bd upstream.
+> The patch below does not apply to the 6.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 > 
-> Nit, wrong git id :(
+> To reproduce the conflict and resubmit, you may use the following commands:
 > 
-> I'll go fix it, thanks.
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 262ab205180d2ba3ab6110899a4dbe439c51dfaa
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081527-unflawed-matrimony-2057@gregkh' --subject-prefix 'PATCH 6.15.y' HEAD^..
 
-Oops sorry about that, guess I took it from the other my other backport
-rather than upstream.
+Pavel, you fixing this one up and sending it in?
 
 -- 
 Jens Axboe
