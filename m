@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E20B2A635
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0318B2A373
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 497C41B62FC1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21756248E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC04224AF0;
-	Mon, 18 Aug 2025 13:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A4231E11C;
+	Mon, 18 Aug 2025 13:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTkCmKpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zq3UHSlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47637258EEE;
-	Mon, 18 Aug 2025 13:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CAF31CA6E;
+	Mon, 18 Aug 2025 13:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523859; cv=none; b=sowjmMDWSPmRHoxmOMuIRgfrlEgzw4G+GPF60TbqBd+zZLRIXbkclsBHyrhkh6qdK4CeRWCOUbv8tHAK1xJlJTc+QD8+Sa0X+w+x9dcFKwmhYWVjc5+iglUhtvRAO1IKXlyVKSySLP45AEQJB4c48G/lsDjSbq5t/uOsckOY30s=
+	t=1755522233; cv=none; b=LGN4+o5KBQeFeN2A6nGt5MhZ3+rbV0uNdHpxaYASp99m5hpGrnEPSmDVyoGPAPCUMj4Vbe9ThqSNd9IGixXtX84fuesJbzPJFYns0DNyHU4nbNIRTrM1AYXgyiwqMY6IBtPe85GEZcBOFQJGd4kd3N6m9EwkIJl88jNgMSAM6zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523859; c=relaxed/simple;
-	bh=SNcX2MRleXjGwRl9y/KFccud+iLQCMyrscpV5bEKz14=;
+	s=arc-20240116; t=1755522233; c=relaxed/simple;
+	bh=I/2zz5wvr252p60Tr0N//cHCsxdBjcC/PWZ+nCCCtqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2afNSQRkHDKNmf0uVYm95qk5Bsw/zckGa762lUiF9JXBRt+uib7+ca/6n8fjmEapPnLKFHNG60QaMASYl+EiJKk6XAx17/IA1xe4Ufeft+fz1Lzt9jGVyN6m7H9syOc4JozKFIu7aUEwOcgkJhPICXWJSejrxl0SIuQk7ywrP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTkCmKpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA01DC4CEEB;
-	Mon, 18 Aug 2025 13:30:58 +0000 (UTC)
+	 MIME-Version; b=HBdN6mr9BYaeKV6WcprKVuKyLG4Bg+e+SLe6k7WIcy+AqMsT74y/caV2+2DLh8iGTxQju84/Dh8EwyrTfk7EkJ2yyhFNFWwz1F5kkQachlpsKe5HZ9zx1n+ZPl3W2NcpJ9pdPdzh7q7ZANzkqqNcfzVYPsooZs39a+gJV+rb3V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zq3UHSlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A03C4CEEB;
+	Mon, 18 Aug 2025 13:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523859;
-	bh=SNcX2MRleXjGwRl9y/KFccud+iLQCMyrscpV5bEKz14=;
+	s=korg; t=1755522233;
+	bh=I/2zz5wvr252p60Tr0N//cHCsxdBjcC/PWZ+nCCCtqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTkCmKpCR7pmhwKH4MP3fK8cEkp6QhWNkunXsFYAbKIZOSE+q3Yao6BmSDnk5fpy6
-	 3WSm2KDdG4BoilvgTD6VtqeFPkK84TBGHllqDkaHiQUDRskpPNeiyd8sT1iMIGPyJc
-	 3Hg5QFRzQOSOxTPLOo8e7HtZvgl/s9/3hZtRcWNY=
+	b=zq3UHSlr4+gbyY+yAUw7aDgj1+eYl6A9MIMpAaNsJbXA5w3j6vKizywv4VgRhdqgy
+	 uJmzIgur45KXnzmf5/j9Y+5DSQd+jG7YxRZal2hqcTWjocqcdF8FCtnAhEYjYKxVhN
+	 6DgvvVKQTA59zexA3pdja7DK1pQ2m6H2APS3E+Bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
+	Li Chen <chenl311@chinatelecom.cn>,
+	Hanjun Guo <guohanjun@huawei.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 262/515] kselftest/arm64: Specify SVE data when testing VL set in sve-ptrace
+Subject: [PATCH 6.12 222/444] ACPI: Suppress misleading SPCR console message when SPCR table is absent
 Date: Mon, 18 Aug 2025 14:44:08 +0200
-Message-ID: <20250818124508.509208377@linuxfoundation.org>
+Message-ID: <20250818124457.168346613@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Li Chen <chenl311@chinatelecom.cn>
 
-[ Upstream commit 9e8ebfe677f9101bbfe1f75d548a5aec581e8213 ]
+[ Upstream commit bad3fa2fb9206f4dcec6ddef094ec2fbf6e8dcb2 ]
 
-Since f916dd32a943 ("arm64/fpsimd: ptrace: Mandate SVE payload for
-streaming-mode state") we reject attempts to write to the streaming mode
-regset even if there is no register data supplied, causing the tests for
-setting vector lengths and setting SVE_VL_INHERIT in sve-ptrace to
-spuriously fail. Set the flag to avoid the issue, we still support not
-supplying register data.
+The kernel currently alway prints:
+"Use ACPI SPCR as default console: No/Yes "
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-3-998fcfa6f240@kernel.org
+even on systems that lack an SPCR table. This can
+mislead users into thinking the SPCR table exists
+on the machines without SPCR.
+
+With this change, the "Yes" is only printed if
+the SPCR table is present, parsed and !param_acpi_nospcr.
+This avoids user confusion on SPCR-less systems.
+
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/20250620131309.126555-3-me@linux.beauty
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/fp/sve-ptrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/acpi.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-index c499d5789dd5..16320aeaff85 100644
---- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
-+++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-@@ -170,7 +170,7 @@ static void ptrace_set_get_inherit(pid_t child, const struct vec_type *type)
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
- 	sve.vl = sve_vl_from_vq(SVE_VQ_MIN);
--	sve.flags = SVE_PT_VL_INHERIT;
-+	sve.flags = SVE_PT_VL_INHERIT | SVE_PT_REGS_SVE;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
- 		ksft_test_result_fail("Failed to set %s SVE_PT_VL_INHERIT\n",
-@@ -235,6 +235,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
- 	/* Set the VL by doing a set with no register payload */
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
-+	sve.flags = SVE_PT_REGS_SVE;
- 	sve.vl = vl;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
+diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+index e6f66491fbe9..862bb1cba4f0 100644
+--- a/arch/arm64/kernel/acpi.c
++++ b/arch/arm64/kernel/acpi.c
+@@ -197,6 +197,8 @@ static int __init acpi_fadt_sanity_check(void)
+  */
+ void __init acpi_boot_table_init(void)
+ {
++	int ret;
++
+ 	/*
+ 	 * Enable ACPI instead of device tree unless
+ 	 * - ACPI has been disabled explicitly (acpi=off), or
+@@ -250,10 +252,12 @@ void __init acpi_boot_table_init(void)
+ 		 * behaviour, use acpi=nospcr to disable console in ACPI SPCR
+ 		 * table as default serial console.
+ 		 */
+-		acpi_parse_spcr(earlycon_acpi_spcr_enable,
++		ret = acpi_parse_spcr(earlycon_acpi_spcr_enable,
+ 			!param_acpi_nospcr);
+-		pr_info("Use ACPI SPCR as default console: %s\n",
+-				param_acpi_nospcr ? "No" : "Yes");
++		if (!ret || param_acpi_nospcr || !IS_ENABLED(CONFIG_ACPI_SPCR_TABLE))
++			pr_info("Use ACPI SPCR as default console: No\n");
++		else
++			pr_info("Use ACPI SPCR as default console: Yes\n");
+ 
+ 		if (IS_ENABLED(CONFIG_ACPI_BGRT))
+ 			acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
 -- 
 2.39.5
 
