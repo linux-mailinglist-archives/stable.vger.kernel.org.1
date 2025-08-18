@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-171365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3539EB2A9A9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9E2B2A37F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46E965A2DB9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C56DD6216AF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5307C34AAE3;
-	Mon, 18 Aug 2025 14:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DA13218CA;
+	Mon, 18 Aug 2025 13:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ok9CkTiB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYWFUEqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7303376B4;
-	Mon, 18 Aug 2025 14:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051B1218AAB;
+	Mon, 18 Aug 2025 13:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525679; cv=none; b=Xyzyx2s5sQ3UAigXl36ng7rGGEWRN4c6JIp7oHWnFzpfkMg8Ipo2zAdNT28JRFXX1OfgwHZQ5Hw8StTMjj0q0rU56wGx3+AuppUOX4FyaAiXGjeiWbdImfyHnRPyB57RftO/uJeIP1d0GJf/IDH1X2tCuzvPJRdisbO19PpBIrg=
+	t=1755522277; cv=none; b=vGdIvEtdo9KUZHNiK04atxLzzGMNGK9muVkziF3U7k0pRjnfUEccGvSn+05AGy0UEa8jVN9S2eVcz9COIAZfsiBQkHddgzDUagY8m3dCAu9PQQ6BgIpe84ISXuvIeVeCg4L3oDO7M/c8aPtgVZbcbHX1WRdxwZ7g/sFmZSSkrI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525679; c=relaxed/simple;
-	bh=c0LYctQsIWwpoj/0WkpOzosEcyduuoMoqyTeA+JLqd0=;
+	s=arc-20240116; t=1755522277; c=relaxed/simple;
+	bh=JxhvUy1otdYHP84+h2fhnIF2EVbGx174ymEyNsM05Wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCSxJWIC9EgqScybXRj2BRKTcFnK9pAzZTN+nEgJA2sm+Vds4kS82f8GkwfkhQ9lD6O+UZftvfg4BJgK3nOn4y/cQrVkICavik+s4FYxcxRvysIJieQXwYQ1pr1rzhrQQ0kYLeIe9MuEwIeh9vHLTB3jegckIb1kQa27fa5o6Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ok9CkTiB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E80C4CEF1;
-	Mon, 18 Aug 2025 14:01:18 +0000 (UTC)
+	 MIME-Version; b=fON2KHtr8+UFZHlXbrxc/rvxtl6KdJKriOKjHAjhqMNY+ut0y9N/NUaiG+kzDtHoygkggsKJclaZfgx1Lv5XSPwnlZPDTXOvOy5w3a1zHEh8zbdzC7qgKu541M0DJbaPwInyrMCfkC7qseP+cHk9zbfpT+m6eM/cHdobVmAltKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYWFUEqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6972DC4CEEB;
+	Mon, 18 Aug 2025 13:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525678;
-	bh=c0LYctQsIWwpoj/0WkpOzosEcyduuoMoqyTeA+JLqd0=;
+	s=korg; t=1755522276;
+	bh=JxhvUy1otdYHP84+h2fhnIF2EVbGx174ymEyNsM05Wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ok9CkTiBIOdiJN1tasl6KThNzR0I5cyWxn/lJJXx6rcjODbqBol5m713eAScoTA1o
-	 S+aYbp+jyF680P6i+HKS1ut8/W4huHIGp6uQ7W37vDHfMW4kRdTblaqR5I4H1lL1me
-	 Bafbzh819758Q5Y7GLGQH6ToRRuNtQfw5zYzpwpk=
+	b=LYWFUEqnhAT8qb7KKNvzWThmh7X+a9Q97TLeaK5R7tfP7vUWnTkwy1Flx66qJyFSl
+	 DxQsiFK+oivgm0kX8YMVoj35qrAkT1g25Uk+0oynja+UlkCN070DlQ07/hoCMLsK1W
+	 0whjX/78M8pevrhVRNojuZRcR1CMEiDEsJnUFnzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Xiongfeng Wang <wangxiongfeng2@huawei.com>,
+	Qi Xi <xiqi2@huawei.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 307/570] wifi: iwlwifi: pcie: reinit device properly during TOP reset
-Date: Mon, 18 Aug 2025 14:44:54 +0200
-Message-ID: <20250818124517.702130313@linuxfoundation.org>
+Subject: [PATCH 6.12 269/444] rcu: Fix rcu_read_unlock() deadloop due to IRQ work
+Date: Mon, 18 Aug 2025 14:44:55 +0200
+Message-ID: <20250818124458.914310816@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +66,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Joel Fernandes <joelagnelf@nvidia.com>
 
-[ Upstream commit eda36f5195d6c078e20331f1dfcf688bd6567c2b ]
+[ Upstream commit b41642c87716bbd09797b1e4ea7d904f06c39b7b ]
 
-During TOP reset a full _iwl_trans_pcie_start_hw() is needed so
-the device is properly initialized for operation. Fix that.
+During rcu_read_unlock_special(), if this happens during irq_exit(), we
+can lockup if an IPI is issued. This is because the IPI itself triggers
+the irq_exit() path causing a recursive lock up.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250609211928.903444f8e8e8.I7f70600339abb9d658f97924aef22faf1af00a3c@changeid
+This is precisely what Xiongfeng found when invoking a BPF program on
+the trace_tick_stop() tracepoint As shown in the trace below. Fix by
+managing the irq_work state correctly.
+
+irq_exit()
+  __irq_exit_rcu()
+    /* in_hardirq() returns false after this */
+    preempt_count_sub(HARDIRQ_OFFSET)
+    tick_irq_exit()
+      tick_nohz_irq_exit()
+	    tick_nohz_stop_sched_tick()
+	      trace_tick_stop()  /* a bpf prog is hooked on this trace point */
+		   __bpf_trace_tick_stop()
+		      bpf_trace_run2()
+			    rcu_read_unlock_special()
+                              /* will send a IPI to itself */
+			      irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
+
+A simple reproducer can also be obtained by doing the following in
+tick_irq_exit(). It will hang on boot without the patch:
+
+  static inline void tick_irq_exit(void)
+  {
+ +	rcu_read_lock();
+ +	WRITE_ONCE(current->rcu_read_unlock_special.b.need_qs, true);
+ +	rcu_read_unlock();
+ +
+
+Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
+Closes: https://lore.kernel.org/all/9acd5f9f-6732-7701-6880-4b51190aa070@huawei.com/
+Tested-by: Qi Xi <xiqi2@huawei.com>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Reviewed-by: "Paul E. McKenney" <paulmck@kernel.org>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+[neeraj: Apply Frederic's suggested fix for PREEMPT_RT]
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/internal.h   | 1 +
- drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 5 +++++
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c      | 2 +-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ kernel/rcu/tree.h        | 13 ++++++++++++-
+ kernel/rcu/tree_plugin.h | 37 ++++++++++++++++++++++++++-----------
+ 2 files changed, 38 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index 3b7c12fc4f9e..df4eaaa7efd2 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -1074,6 +1074,7 @@ void iwl_pcie_rx_allocator_work(struct work_struct *data);
+diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
+index 1bba2225e744..f99677bf97ca 100644
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -174,6 +174,17 @@ struct rcu_snap_record {
+ 	unsigned long   jiffies;	/* Track jiffies value */
+ };
  
- /* common trans ops for all generations transports */
- void iwl_trans_pcie_op_mode_enter(struct iwl_trans *trans);
-+int _iwl_trans_pcie_start_hw(struct iwl_trans *trans);
- int iwl_trans_pcie_start_hw(struct iwl_trans *trans);
- void iwl_trans_pcie_op_mode_leave(struct iwl_trans *trans);
- void iwl_trans_pcie_write8(struct iwl_trans *trans, u32 ofs, u8 val);
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-index 5a9c3b7976a1..c7ada07a7075 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-@@ -612,6 +612,11 @@ int iwl_trans_pcie_gen2_start_fw(struct iwl_trans *trans,
- 		msleep(10);
- 		IWL_INFO(trans, "TOP reset successful, reinit now\n");
- 		/* now load the firmware again properly */
-+		ret = _iwl_trans_pcie_start_hw(trans);
-+		if (ret) {
-+			IWL_ERR(trans, "failed to start HW after TOP reset\n");
-+			goto out;
-+		}
- 		trans_pcie->prph_scratch->ctrl_cfg.control.control_flags &=
- 			~cpu_to_le32(IWL_PRPH_SCRATCH_TOP_RESET);
- 		top_reset_done = true;
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index cc4d289b110d..07a9255c9868 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1845,7 +1845,7 @@ static int iwl_pcie_gen2_force_power_gating(struct iwl_trans *trans)
- 	return iwl_trans_pcie_sw_reset(trans, true);
++/*
++ * An IRQ work (deferred_qs_iw) is used by RCU to get the scheduler's attention.
++ * to report quiescent states at the soonest possible time.
++ * The request can be in one of the following states:
++ * - DEFER_QS_IDLE: An IRQ work is yet to be scheduled.
++ * - DEFER_QS_PENDING: An IRQ work was scheduled but either not yet run, or it
++ *                     ran and we still haven't reported a quiescent state.
++ */
++#define DEFER_QS_IDLE		0
++#define DEFER_QS_PENDING	1
++
+ /* Per-CPU data for read-copy update. */
+ struct rcu_data {
+ 	/* 1) quiescent-state and grace-period handling : */
+@@ -191,7 +202,7 @@ struct rcu_data {
+ 					/*  during and after the last grace */
+ 					/* period it is aware of. */
+ 	struct irq_work defer_qs_iw;	/* Obtain later scheduler attention. */
+-	bool defer_qs_iw_pending;	/* Scheduler attention pending? */
++	int defer_qs_iw_pending;	/* Scheduler attention pending? */
+ 	struct work_struct strict_work;	/* Schedule readers for strict GPs. */
+ 
+ 	/* 2) batch handling */
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 27ab715569f2..edcf534fe082 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -485,13 +485,16 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
+ 	struct rcu_node *rnp;
+ 	union rcu_special special;
+ 
++	rdp = this_cpu_ptr(&rcu_data);
++	if (rdp->defer_qs_iw_pending == DEFER_QS_PENDING)
++		rdp->defer_qs_iw_pending = DEFER_QS_IDLE;
++
+ 	/*
+ 	 * If RCU core is waiting for this CPU to exit its critical section,
+ 	 * report the fact that it has exited.  Because irqs are disabled,
+ 	 * t->rcu_read_unlock_special cannot change.
+ 	 */
+ 	special = t->rcu_read_unlock_special;
+-	rdp = this_cpu_ptr(&rcu_data);
+ 	if (!special.s && !rdp->cpu_no_qs.b.exp) {
+ 		local_irq_restore(flags);
+ 		return;
+@@ -628,7 +631,23 @@ static void rcu_preempt_deferred_qs_handler(struct irq_work *iwp)
+ 
+ 	rdp = container_of(iwp, struct rcu_data, defer_qs_iw);
+ 	local_irq_save(flags);
+-	rdp->defer_qs_iw_pending = false;
++
++	/*
++	 * If the IRQ work handler happens to run in the middle of RCU read-side
++	 * critical section, it could be ineffective in getting the scheduler's
++	 * attention to report a deferred quiescent state (the whole point of the
++	 * IRQ work). For this reason, requeue the IRQ work.
++	 *
++	 * Basically, we want to avoid following situation:
++	 * 1. rcu_read_unlock() queues IRQ work (state -> DEFER_QS_PENDING)
++	 * 2. CPU enters new rcu_read_lock()
++	 * 3. IRQ work runs but cannot report QS due to rcu_preempt_depth() > 0
++	 * 4. rcu_read_unlock() does not re-queue work (state still PENDING)
++	 * 5. Deferred QS reporting does not happen.
++	 */
++	if (rcu_preempt_depth() > 0)
++		WRITE_ONCE(rdp->defer_qs_iw_pending, DEFER_QS_IDLE);
++
+ 	local_irq_restore(flags);
  }
  
--static int _iwl_trans_pcie_start_hw(struct iwl_trans *trans)
-+int _iwl_trans_pcie_start_hw(struct iwl_trans *trans)
- {
- 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
- 	int err;
+@@ -675,17 +694,13 @@ static void rcu_read_unlock_special(struct task_struct *t)
+ 			set_tsk_need_resched(current);
+ 			set_preempt_need_resched();
+ 			if (IS_ENABLED(CONFIG_IRQ_WORK) && irqs_were_disabled &&
+-			    expboost && !rdp->defer_qs_iw_pending && cpu_online(rdp->cpu)) {
++			    expboost && rdp->defer_qs_iw_pending != DEFER_QS_PENDING &&
++			    cpu_online(rdp->cpu)) {
+ 				// Get scheduler to re-evaluate and call hooks.
+ 				// If !IRQ_WORK, FQS scan will eventually IPI.
+-				if (IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD) &&
+-				    IS_ENABLED(CONFIG_PREEMPT_RT))
+-					rdp->defer_qs_iw = IRQ_WORK_INIT_HARD(
+-								rcu_preempt_deferred_qs_handler);
+-				else
+-					init_irq_work(&rdp->defer_qs_iw,
+-						      rcu_preempt_deferred_qs_handler);
+-				rdp->defer_qs_iw_pending = true;
++				rdp->defer_qs_iw =
++					IRQ_WORK_INIT_HARD(rcu_preempt_deferred_qs_handler);
++				rdp->defer_qs_iw_pending = DEFER_QS_PENDING;
+ 				irq_work_queue_on(&rdp->defer_qs_iw, rdp->cpu);
+ 			}
+ 		}
 -- 
 2.39.5
 
