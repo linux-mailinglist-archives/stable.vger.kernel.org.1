@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-170470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133E1B2A44C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 703E1B2A6F2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39A0418A6247
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D61F22A5A6A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B80310627;
-	Mon, 18 Aug 2025 13:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1288320381;
+	Mon, 18 Aug 2025 13:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9vVADOF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhID4EVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5467E218AAB;
-	Mon, 18 Aug 2025 13:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B90C21FF5D;
+	Mon, 18 Aug 2025 13:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522738; cv=none; b=jlxnB6CNdCnhnLYtc6jS5sjETW3U0CIs8jlC9DgwbiEblyhjH/C7G94vLPXAywc8btPvtFldXAN06Hsx2REeoqOshC7lD5ZPZPirSF9L7s2Md1+jRvKcqV+22hhqKNIW25D0XwY6efKaTeLU+IHHMqbTp8FffZpWpdPqj1wzX6M=
+	t=1755524354; cv=none; b=QY5D79n/2XGJeTIp+kt/W7pRdrZHmp+WFQKhwkFhtzQoS8dVRGSoJiOj9r12A3o7AzW6E/1uFUfVGmUJB0nLk1LM4XcgfJUxkZVF8L6Branbp12HW4NB8O2VRtbpXBOyTuaKyi5zNVsPKl4zsdlktvXRfgwFDNBt1OaHBwayszI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522738; c=relaxed/simple;
-	bh=cMrIbo5OxA/MupwW7lWCcta2FbOpL5Koe5GJ1tjkukY=;
+	s=arc-20240116; t=1755524354; c=relaxed/simple;
+	bh=wCM+W3PCx6jIoUtwzyQYHTU5UA3w+YzMoNPyk5KcRn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMzfAZpC4n3owkiDzNOR/n9pbqLXkwCvnL91ZDx3QnutrHicz+tZ/JbPCQGUamWMgQY4sWCL7pRlsOzjFOpkIZL1Ug3lpFrsDP0BQlOZJcxTqDPxIg6l2BnwnIzeavUKuajUv2XUsLpVQABfGx2Y4PjO+AVRjUAFT18PcJimUv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9vVADOF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8C6C4CEEB;
-	Mon, 18 Aug 2025 13:12:17 +0000 (UTC)
+	 MIME-Version; b=UUz9QNjg/lRFz5xaopPCfzLmUv7XmSZOhkJATOpO4B+qcXV4wnv2LORt6HsVlnC0+5PfRhtsL7vZHyLj/r2Gl7D3OL0181blWlJDlAq5ZEz5DmPqxu5/saSt2GFzXcalXf+j9VyEXXY+JHztdkgg9nEIJ4gCBM1v1Z5Aq7Z3zJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhID4EVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8B1C4CEF1;
+	Mon, 18 Aug 2025 13:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522738;
-	bh=cMrIbo5OxA/MupwW7lWCcta2FbOpL5Koe5GJ1tjkukY=;
+	s=korg; t=1755524354;
+	bh=wCM+W3PCx6jIoUtwzyQYHTU5UA3w+YzMoNPyk5KcRn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9vVADOF8r0YmJOfqFMTHeZf8v+hQFXT94FaA7ioi9ukDc5lb9Ylmrliy+Pg+7Qcy
-	 kol/yiloLKBZUYdSHh1D4wdU7ju058sQveHQHyHSrpiTpIH7u1bOWvKfJ9W1KsnY5A
-	 gcTOyU/rv9558dCFNfmHgFLFRpuU3apPlCVXgGZ4=
+	b=ZhID4EVsuHayqsoBldks2t/uqjjIDz7CruCx+9yfRlkgkRULpZRq/bLMFGV3CzbDm
+	 icQmDHqdzYaM4AfCJZhLQJ5QFl5SqEywO1qr6zTIwb5cmEuvdVnZswtUzxca0Mm/Yz
+	 DTiruqC8WMoeOhpOEv+8yWL/oUkfMi5AaoikCbLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 407/444] userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a migration entry
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.15 447/515] cifs: reset iface weights when we cannot find a candidate
 Date: Mon, 18 Aug 2025 14:47:13 +0200
-Message-ID: <20250818124504.190106181@linuxfoundation.org>
+Message-ID: <20250818124515.632440947@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit aba6faec0103ed8f169be8dce2ead41fcb689446 upstream.
+commit 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 upstream.
 
-When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
-obtaining a folio and accessing it even though the entry is swp_entry_t.
-Add the missing check and let split_huge_pmd() handle migration entries.
-While at it also remove unnecessary folio check.
+We now do a weighted selection of server interfaces when allocating
+new channels. The weights are decided based on the speed advertised.
+The fulfilled weight for an interface is a counter that is used to
+track the interface selection. It should be reset back to zero once
+all interfaces fulfilling their weight.
 
-[surenb@google.com: remove extra folio check, per David]
-  Link: https://lkml.kernel.org/r/20250807200418.1963585-1-surenb@google.com
-Link: https://lkml.kernel.org/r/20250806220022.926763-1-surenb@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
+In cifs_chan_update_iface, this reset logic was missing. As a result
+when the server interface list changes, the client may not be able
+to find a new candidate for other channels after all interfaces have
+been fulfilled.
+
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/userfaultfd.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/smb/client/sess.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1800,13 +1800,16 @@ ssize_t move_pages(struct userfaultfd_ct
- 			/* Check if we can move the pmd without splitting it. */
- 			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
- 			    !pmd_none(dst_pmdval)) {
--				struct folio *folio = pmd_folio(*src_pmd);
-+				/* Can be a migration entry */
-+				if (pmd_present(*src_pmd)) {
-+					struct folio *folio = pmd_folio(*src_pmd);
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -332,6 +332,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 	struct cifs_server_iface *old_iface = NULL;
+ 	struct cifs_server_iface *last_iface = NULL;
+ 	struct sockaddr_storage ss;
++	int retry = 0;
  
--				if (!folio || (!is_huge_zero_folio(folio) &&
--					       !PageAnonExclusive(&folio->page))) {
--					spin_unlock(ptl);
--					err = -EBUSY;
--					break;
-+					if (!is_huge_zero_folio(folio) &&
-+					    !PageAnonExclusive(&folio->page)) {
-+						spin_unlock(ptl);
-+						err = -EBUSY;
-+						break;
-+					}
- 				}
+ 	spin_lock(&ses->chan_lock);
+ 	chan_index = cifs_ses_get_chan_index(ses, server);
+@@ -360,6 +361,7 @@ cifs_chan_update_iface(struct cifs_ses *
+ 		return;
+ 	}
  
- 				spin_unlock(ptl);
++try_again:
+ 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
+ 				     iface_head);
+ 	iface_min_speed = last_iface->speed;
+@@ -397,6 +399,13 @@ cifs_chan_update_iface(struct cifs_ses *
+ 	}
+ 
+ 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
++		list_for_each_entry(iface, &ses->iface_list, iface_head)
++			iface->weight_fulfilled = 0;
++
++		/* see if it can be satisfied in second attempt */
++		if (!retry++)
++			goto try_again;
++
+ 		iface = NULL;
+ 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	}
 
 
 
