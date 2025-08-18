@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAAEB2A57E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8606AB2A7C9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5375581A71
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 838B768367F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DEA3322752;
-	Mon, 18 Aug 2025 13:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E13320CAB;
+	Mon, 18 Aug 2025 13:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oNC+1Y/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysgUimNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1AA335BD8;
-	Mon, 18 Aug 2025 13:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3082192F4;
+	Mon, 18 Aug 2025 13:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523261; cv=none; b=UgLm7zVJWH5As/RR0x78tKiqhdKmcaHSjEKDK2mDMGs6GAlbdQdIJkG8qAXIPe6eXdkTrQhrgDU2Hh1s7tgtc2MP5RSBLnSNIv5DBnBQ9LArQI+V8fYXVetCi6QiN0NJ8bYa0QPj9PXuqOR5VQyi2uFzxreNfESNterKil7+HGo=
+	t=1755524863; cv=none; b=i056rWlWcO5rhXBEvAB1yLetPJXAFJfmZei3lvmU8ZqB5rdJhv5yeFDzl3gKdCo0SBmAcdq5nXIEP9yKDg/4xdYg6IcpdgEN5d5KTC1eo6lpyVaWKQL1fBS+LKIcTZM0JxKu1dfkgjxwpJnh9VjUrdpDBqJ2UVfFFvmfT/OGrZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523261; c=relaxed/simple;
-	bh=L/YdTlTrngD96KqCmNGXSlO3ZsWr+8Rsx2sXRws2kDM=;
+	s=arc-20240116; t=1755524863; c=relaxed/simple;
+	bh=1IV3pEBcg7xaKGcTIuUjQ86LVWucN+Cx0HRi3cCo95s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PBbx5MBijqspibMr/0Vr991uhPkGUVnhsY7LY+0n5ugbQ+gFrwCESD1Sek5RG9h/TO+oVjP9IAGGatTh405icNFo1GMurivBb07S28dMinhp4AAPWpb6X50pwFoawd9h+BwHc+zf7rzB85ur+px+FOVQgBPCbMZIVVn0ip43IIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oNC+1Y/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C699BC4CEEB;
-	Mon, 18 Aug 2025 13:21:00 +0000 (UTC)
+	 MIME-Version; b=UfmTwt8RHo1ieVN2g9bwzOie0hTt+aj/lRLccg6Oo3leFPfHZ9K7vc7lVkwZ9fEzLvvzDJl7QspxYjyuGY+uIminx1mI2c3pA2CiZI9i0koyvxvaoxZrIsRpgQXPf/HqpeiFQn+wWv4hzmIPdRys6AMuWhXDuxz/Mg9LGb/KBGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysgUimNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144A9C4CEEB;
+	Mon, 18 Aug 2025 13:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523261;
-	bh=L/YdTlTrngD96KqCmNGXSlO3ZsWr+8Rsx2sXRws2kDM=;
+	s=korg; t=1755524863;
+	bh=1IV3pEBcg7xaKGcTIuUjQ86LVWucN+Cx0HRi3cCo95s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oNC+1Y/gUSJ0V6H8G8d4Dbps3pyqJinw8s/ZyDuvu39JV3mBQSt/9gYSaYFYW9q1/
-	 jTAV5F9PQk0lxye2/LuL4OXj4pblkbSwn68J2297GetT7oRhaDYWh9kM3zg7cu/QCb
-	 +YURmyxe+1bO0YhghLF8eK0miD9cKHW688pTJG7k=
+	b=ysgUimNn236iMDEAFeUIE3m0y5c8fT9FwxXwN7qS/FL7/58pl0Bfp17MQltJT0DW2
+	 KBoh7VY28R0KI7FB098RmYQQJmP/+6Sj2etfs74YfRwJvCgZESayNnEJ7EXbngIXK9
+	 DQ5+ZxYT6mKx8Djul6RRWx5WBTeB0KT1gMDl4Jrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 086/515] firmware: arm_ffa: Change initcall level of ffa_init() to rootfs_initcall
-Date: Mon, 18 Aug 2025 14:41:12 +0200
-Message-ID: <20250818124501.682474377@linuxfoundation.org>
+Subject: [PATCH 6.16 086/570] netfilter: nf_tables: reject duplicate device on updates
+Date: Mon, 18 Aug 2025 14:41:13 +0200
+Message-ID: <20250818124509.129065089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +60,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 0e0546eabcd6c19765a8dbf5b5db3723e7b0ea75 ]
+[ Upstream commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 ]
 
-The Linux IMA (Integrity Measurement Architecture) subsystem used for
-secure boot, file integrity, or remote attestation cannot be a loadable
-module for few reasons listed below:
+A chain/flowtable update with duplicated devices in the same batch is
+possible. Unfortunately, netdev event path only removes the first
+device that is found, leaving unregistered the hook of the duplicated
+device.
 
- o Boot-Time Integrity: IMA’s main role is to measure and appraise files
- before they are used. This includes measuring critical system files during
- early boot (e.g., init, init scripts, login binaries). If IMA were a
- module, it would be loaded too late to cover those.
+Check if a duplicated device exists in the transaction batch, bail out
+with EEXIST in such case.
 
- o TPM Dependency: IMA integrates tightly with the TPM to record
- measurements into PCRs. The TPM must be initialized early (ideally before
- init_ima()), which aligns with IMA being built-in.
+WARNING is hit when unregistering the hook:
 
- o Security Model: IMA is part of a Trusted Computing Base (TCB). Making it
- a module would weaken the security model, as a potentially compromised
- system could delay or tamper with its initialization.
+ [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
+ [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
+ [...]
+ [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
 
-IMA must be built-in to ensure it starts measuring from the earliest
-possible point in boot which inturn implies TPM must be initialised and
-ready to use before IMA.
-
-To enable integration of tpm_event_log with the IMA subsystem, the TPM
-drivers (tpm_crb and tpm_crb_ffa) also needs to be built-in. However with
-FF-A driver also being initialised at device initcall level, it can lead to
-an initialization order issue where:
- - crb_acpi_driver_init() may run before tpm_crb_ffa_driver()_init and
-   ffa_init()
- - As a result, probing the TPM device via CRB over FFA is deferred
- - ima_init() (called as a late initcall) runs before deferred probe
-   completes, IMA fails to find the TPM and logs the below error:
-
-   |  ima: No TPM chip found, activating TPM-bypass!
-
-Eventually it fails to generate boot_aggregate with PCR values.
-
-Because of the above stated dependency, the ffa driver needs to initialised
-before tpm_crb_ffa module to ensure IMA finds the TPM successfully when
-present.
-
-[ jarkko: reformatted some of the paragraphs because they were going past
-  the 75 character boundary. ]
-
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 37eb2e6c2f9f..65bf1685350a 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -2059,7 +2059,7 @@ static int __init ffa_init(void)
- 	kfree(drv_info);
- 	return ret;
- }
--module_init(ffa_init);
-+rootfs_initcall(ffa_init);
- 
- static void __exit ffa_exit(void)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 064f18792d98..46ca725d6538 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -2790,6 +2790,7 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 	struct nft_chain *chain = ctx->chain;
+ 	struct nft_chain_hook hook = {};
+ 	struct nft_stats __percpu *stats = NULL;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *h, *next;
+ 	struct nf_hook_ops *ops;
+ 	struct nft_trans *trans;
+@@ -2832,6 +2833,20 @@ static int nf_tables_updchain(struct nft_ctx *ctx, u8 genmask, u8 policy,
+ 				if (nft_hook_list_find(&basechain->hook_list, h)) {
+ 					list_del(&h->list);
+ 					nft_netdev_hook_free(h);
++					continue;
++				}
++
++				nft_net = nft_pernet(ctx->net);
++				list_for_each_entry(trans, &nft_net->commit_list, list) {
++					if (trans->msg_type != NFT_MSG_NEWCHAIN ||
++					    trans->table != ctx->table ||
++					    !nft_trans_chain_update(trans))
++						continue;
++
++					if (nft_hook_list_find(&nft_trans_chain_hooks(trans), h)) {
++						nft_chain_release_hook(&hook);
++						return -EEXIST;
++					}
+ 				}
+ 			}
+ 		} else {
+@@ -9033,6 +9048,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
  {
+ 	const struct nlattr * const *nla = ctx->nla;
+ 	struct nft_flowtable_hook flowtable_hook;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *hook, *next;
+ 	struct nf_hook_ops *ops;
+ 	struct nft_trans *trans;
+@@ -9049,6 +9065,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
+ 			list_del(&hook->list);
+ 			nft_netdev_hook_free(hook);
++			continue;
++		}
++
++		nft_net = nft_pernet(ctx->net);
++		list_for_each_entry(trans, &nft_net->commit_list, list) {
++			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
++			    trans->table != ctx->table ||
++			    !nft_trans_flowtable_update(trans))
++				continue;
++
++			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
++				err = -EEXIST;
++				goto err_flowtable_update_hook;
++			}
+ 		}
+ 	}
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
