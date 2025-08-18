@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA2DB2A71B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:11 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B02B2A3B7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4839A561629
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9D4654E3047
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E18322549;
-	Mon, 18 Aug 2025 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97A831CA7D;
+	Mon, 18 Aug 2025 13:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKEIZzwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nO4ggDN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E3931E115;
-	Mon, 18 Aug 2025 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0474310627;
+	Mon, 18 Aug 2025 13:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524426; cv=none; b=EcrhUURq6v41maNCV3gnC2nUU5PkCAwLOr1Jt/+ZlC6KhloEud5eH+O/iUX3YAafpSTpavawnp+Xa9jxjgEWePZ5+eiX/ljiLdM6lS/SsDTIdBi0WVQUbBYwOqr8LdG+SmqX9e7H5ed+nMxqlmVdEJX+xu4S7Gny8BOp978xHTs=
+	t=1755522798; cv=none; b=IOaueglz8tiDUQ4G/R39PuS3+nAlW6HPWG8joUu4CJVtOH9xEj19pw9tzgutNYyb4X3/1dPH5NjKQ4+qQC6pmg3PE20iBv8y1oQ6ZUwAzfVY/PmZ1o0tSD3Mc1Tu9ALeNQDEJ02Wz0rDiMtoLNe4ayN1VAJzjqgZMD1tUOeirfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524426; c=relaxed/simple;
-	bh=TT4xYXKjbpC4G5eQyN4DiM+eqCKB2NUEkjMFHHOcALk=;
+	s=arc-20240116; t=1755522798; c=relaxed/simple;
+	bh=wphpMCl0toptSqKkD0lSEPVQlV5A+AYXwy1xLH7lEpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K0ncNoYcezA7oPIMlMoK6QHajeDr1UlLhb1KrYHQqW7s5r8wYYwEkCWKBZloFARZH6AJM64k7zZwTuwTZX8rExZiHF6N9kTOAKFTYkS7f8CkAxINnxkB0BkjAOiV2XkcYhIsCrMEdByz+mI2/nk1p6Zl2OLS6VMeslPCABs6lM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKEIZzwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2C3C113D0;
-	Mon, 18 Aug 2025 13:40:25 +0000 (UTC)
+	 MIME-Version; b=ZRbW8mJkGc/GzAgRlgz9rpzkxJXaiSxECBjthB66FN15UuQzb9KJQeaYvpEoSlnQ5ya81gEa2Gu6UORRcxs4JV1FDs3+GfLjc8dWtnpxg2byHrh6Z1Qo/yeKKvLFAw+kNA/wvZiPd+C4PZweliZJGVFO/J7dC2J1ofOx1N8HtR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nO4ggDN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C2CC4CEEB;
+	Mon, 18 Aug 2025 13:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524426;
-	bh=TT4xYXKjbpC4G5eQyN4DiM+eqCKB2NUEkjMFHHOcALk=;
+	s=korg; t=1755522798;
+	bh=wphpMCl0toptSqKkD0lSEPVQlV5A+AYXwy1xLH7lEpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zKEIZzwuzTu3s6MfdZfSM8h1iBu8L+i8sz2mn5+ncCql+QjRLKvV9CwzgQWWosCsJ
-	 JrJw1fJ+wK9tgfcm7Lr7mZv4LHh8HitasqZvrA2KcWXfbIdCZ3OoAPTFi930W6SXCd
-	 b1p4krK3iG5IHS99s+3DfnUFeibbUK5m2h2Y5KY4=
+	b=nO4ggDN/0qNt5IV+e/ZISye72z1kCSvBrEjFyTYEMPydpEfBnzTG4GjzHrnXRIFQh
+	 rTj0LyUzaCRJOnBNX6z0OY5x5K41g5V9Q4jrWM8sO0vl+ejP3wmka8m0IC/XW9hiBO
+	 ZjSTP33q94yyGA+foY+uCumn2b2TgfRHvB1bu72c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janna Martl <janna.martl109@gmail.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 436/515] drm/i915/psr: Do not trigger Frame Change events from frontbuffer flush
-Date: Mon, 18 Aug 2025 14:47:02 +0200
-Message-ID: <20250818124515.211960856@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 397/444] btrfs: populate otime when logging an inode item
+Date: Mon, 18 Aug 2025 14:47:03 +0200
+Message-ID: <20250818124503.805652904@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 184889dfe0568528fd6d14bba864dd57ed45bbf2 ]
+commit 1ef94169db0958d6de39f9ea6e063ce887342e2d upstream.
 
-We want to get rid of triggering "Frame Change" events from
-frontbuffer flush calls. We are about to move using TRANS_PUSH
-register for this on LunarLake and onwards. Touching TRANS_PUSH
-register from fronbuffer flush would be problematic as it's written by
-DSB as well.
+[TEST FAILURE WITH EXPERIMENTAL FEATURES]
+When running test case generic/508, the test case will fail with the new
+btrfs shutdown support:
 
-Fix this by using intel_psr_exit when flush or invalidate is done on
-LunarLake and onwards. This is not possible on AlderLake and
-MeteorLake due to HW bug in PSR2 disable.
+generic/508       - output mismatch (see /home/adam/xfstests/results//generic/508.out.bad)
+#    --- tests/generic/508.out	2022-05-11 11:25:30.806666664 +0930
+#    +++ /home/adam/xfstests/results//generic/508.out.bad	2025-07-02 14:53:22.401824212 +0930
+#    @@ -1,2 +1,6 @@
+#     QA output created by 508
+#     Silence is golden
+#    +Before:
+#    +After : stat.btime = Thu Jan  1 09:30:00 1970
+#    +Before:
+#    +After : stat.btime = Wed Jul  2 14:53:22 2025
+#    ...
+#    (Run 'diff -u /home/adam/xfstests/tests/generic/508.out /home/adam/xfstests/results//generic/508.out.bad'  to see the entire diff)
+Ran: generic/508
+Failures: generic/508
+Failed 1 of 1 tests
 
-This patch is also fixing problems with cursor plane where cursor is
-disappearing or duplicate cursor is seen on the screen.
+Please note that the test case requires shutdown support, thus the test
+case will be skipped using the current upstream kernel, as it doesn't
+have shutdown ioctl support.
 
-v2: Commit message updated
+[CAUSE]
+The direct cause the 0 time stamp in the log tree:
 
-Bspec: 68927, 68934, 66624
-Reported-by: Janna Martl <janna.martl109@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5522
-Fixes: 411ad63877bb ("drm/i915/psr: Use SFF_CTL on invalidate/flush for LunarLake onwards")
-Tested-by: Janna Martl <janna.martl109@gmail.com>
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://lore.kernel.org/r/20250801062905.564453-1-jouni.hogander@intel.com
-(cherry picked from commit 46fb38cb20c0d185a6391ab524b23e0e0219c41f)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+leaf 30507008 items 2 free space 16057 generation 9 owner TREE_LOG
+leaf 30507008 flags 0x1(WRITTEN) backref revision 1
+checksum stored e522548d
+checksum calced e522548d
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 9 transid 9 size 0 nbytes 0
+		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+		sequence 1 flags 0x0(none)
+		atime 1751432947.492000000 (2025-07-02 14:39:07)
+		ctime 1751432947.492000000 (2025-07-02 14:39:07)
+		mtime 1751432947.492000000 (2025-07-02 14:39:07)
+		otime 0.0 (1970-01-01 09:30:00) <<<
+
+But the old fs tree has all the correct time stamp:
+
+btrfs-progs v6.12
+fs tree key (FS_TREE ROOT_ITEM 0)
+leaf 30425088 items 2 free space 16061 generation 5 owner FS_TREE
+leaf 30425088 flags 0x1(WRITTEN) backref revision 1
+checksum stored 48f6c57e
+checksum calced 48f6c57e
+fs uuid 57d45451-481e-43e4-aa93-289ad707a3a0
+chunk uuid d52bd3fd-5163-4337-98a7-7986993ad398
+	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+		generation 3 transid 0 size 0 nbytes 16384
+		block group 0 mode 40755 links 1 uid 0 gid 0 rdev 0
+		sequence 0 flags 0x0(none)
+		atime 1751432947.0 (2025-07-02 14:39:07)
+		ctime 1751432947.0 (2025-07-02 14:39:07)
+		mtime 1751432947.0 (2025-07-02 14:39:07)
+		otime 1751432947.0 (2025-07-02 14:39:07) <<<
+
+The root cause is that fill_inode_item() in tree-log.c is only
+populating a/c/m time, not the otime (or btime in statx output).
+
+Part of the reason is that, the vfs inode only has a/c/m time, no native
+btime support yet.
+
+[FIX]
+Thankfully btrfs has its otime stored in btrfs_inode::i_otime_sec and
+btrfs_inode::i_otime_nsec.
+
+So what we really need is just fill the otime time stamp in
+fill_inode_item() of tree-log.c
+
+There is another fill_inode_item() in inode.c, which is doing the proper
+otime population.
+
+Fixes: 94edf4ae43a5 ("Btrfs: don't bother committing delayed inode updates when fsyncing")
+CC: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/btrfs/tree-log.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 4e938bad808c..ccefdcb833dd 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -3171,7 +3171,9 @@ static void intel_psr_configure_full_frame_update(struct intel_dp *intel_dp)
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -4235,6 +4235,9 @@ static void fill_inode_item(struct btrfs
+ 	btrfs_set_token_timespec_nsec(&token, &item->ctime,
+ 				      inode_get_ctime_nsec(inode));
  
- static void _psr_invalidate_handle(struct intel_dp *intel_dp)
- {
--	if (intel_dp->psr.psr2_sel_fetch_enabled) {
-+	struct intel_display *display = to_intel_display(intel_dp);
++	btrfs_set_timespec_sec(leaf, &item->otime, BTRFS_I(inode)->i_otime_sec);
++	btrfs_set_timespec_nsec(leaf, &item->otime, BTRFS_I(inode)->i_otime_nsec);
 +
-+	if (DISPLAY_VER(display) < 20 && intel_dp->psr.psr2_sel_fetch_enabled) {
- 		if (!intel_dp->psr.psr2_sel_fetch_cff_enabled) {
- 			intel_dp->psr.psr2_sel_fetch_cff_enabled = true;
- 			intel_psr_configure_full_frame_update(intel_dp);
-@@ -3259,7 +3261,7 @@ static void _psr_flush_handle(struct intel_dp *intel_dp)
- 	struct intel_display *display = to_intel_display(intel_dp);
- 	struct drm_i915_private *dev_priv = to_i915(display->drm);
- 
--	if (intel_dp->psr.psr2_sel_fetch_enabled) {
-+	if (DISPLAY_VER(display) < 20 && intel_dp->psr.psr2_sel_fetch_enabled) {
- 		if (intel_dp->psr.psr2_sel_fetch_cff_enabled) {
- 			/* can we turn CFF off? */
- 			if (intel_dp->psr.busy_frontbuffer_bits == 0)
-@@ -3276,11 +3278,13 @@ static void _psr_flush_handle(struct intel_dp *intel_dp)
- 		 * existing SU configuration
- 		 */
- 		intel_psr_configure_full_frame_update(intel_dp);
--	}
- 
--	intel_psr_force_update(intel_dp);
-+		intel_psr_force_update(intel_dp);
-+	} else {
-+		intel_psr_exit(intel_dp);
-+	}
- 
--	if (!intel_dp->psr.psr2_sel_fetch_enabled && !intel_dp->psr.active &&
-+	if ((!intel_dp->psr.psr2_sel_fetch_enabled || DISPLAY_VER(display) >= 20) &&
- 	    !intel_dp->psr.busy_frontbuffer_bits)
- 		queue_work(dev_priv->unordered_wq, &intel_dp->psr.work);
- }
--- 
-2.50.1
-
+ 	/*
+ 	 * We do not need to set the nbytes field, in fact during a fast fsync
+ 	 * its value may not even be correct, since a fast fsync does not wait
 
 
 
