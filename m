@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47739B2A37D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DA6B2A665
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7548B3A4EFD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F8AD58231B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E2031CA5F;
-	Mon, 18 Aug 2025 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1A8320CCE;
+	Mon, 18 Aug 2025 13:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtT4tg0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJqxm+EP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A397E286D5E;
-	Mon, 18 Aug 2025 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD344321F4C;
+	Mon, 18 Aug 2025 13:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522270; cv=none; b=EfR2JE+c0E7AQwcpHRY0KnsNE+1NnYJB4FauWk1FxYN+fcyb9UvoQ0w8g957kcYZMFTQZHBwbef4qHFpGpe32xf6HNfflBE3vgqcWuMAldmXRfc2Yy4zOLUOHe/iAk5sxDXt4kMQGBJw4Nyf2V8vqsz8XrGApLnyXWSq1rMCZOU=
+	t=1755523899; cv=none; b=g2uw1vmMT9DdrIqb/nMW/pXxuj/WR0dqPU89VqcGTMKy8x8K/W2fXKJEHt4l4xm5ZD0vLLJANSPFaXzRxr4guoiKw7oYjnmiqjn7IkWSuWNs6fJ0atC082YXfCbtBP3vsq45gBwKZvuhgfxyg1Q9vFvei7jDvqbj48n/FZWPnAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522270; c=relaxed/simple;
-	bh=RJnjOX2YKVcAL4GVU0EqHwK0pEXv+VunDCq0hWQDM3Q=;
+	s=arc-20240116; t=1755523899; c=relaxed/simple;
+	bh=HH025KR3pGHb3vnGNsnSP24NZcODR093oVwvk4KOK5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgA3ePO5LbPVn0/YQ/UD2iL40j9KsWFdUyhj8GFIrz3D6hDMymlwmjFp+Z9RUYi+pzKj6CcR/tP9yJsgZSztnLsFxgkWMzbcxZfYqpINTxNQWi8h/ccTiUXH4EylIaDt6dMWAIPckTV2ohV4W3+bnNb1kUsPKbLw7YIEt8VyZ5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtT4tg0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD10BC4CEF1;
-	Mon, 18 Aug 2025 13:04:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VCT+uRYPLRBdHlFJdYc4yuauxAvmWKKxWfusyn7Tto/dy1Th+Gh/3whrYW4m/miFWmpaM779t+8th5nLdjHF0mmccAAEsa75wilh2AyjJNqy1M8q5lvnJ1y8bOZZM3wEkX0/osVIZcZcVN273ShQAUgdi9mYdWKpQDMRIWaIwNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJqxm+EP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F236C4CEF1;
+	Mon, 18 Aug 2025 13:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522270;
-	bh=RJnjOX2YKVcAL4GVU0EqHwK0pEXv+VunDCq0hWQDM3Q=;
+	s=korg; t=1755523898;
+	bh=HH025KR3pGHb3vnGNsnSP24NZcODR093oVwvk4KOK5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtT4tg0OrzOPlQrJzUlGBhUFzxGw5byKzG0j1Bthm3puD4pObdeYbUVzzFyD+Jd3s
-	 h6/XMP9OrlAokOFGKG3WAWPFYTb1oyVCuyFOU4qrTt9RNr/XIrz/aFyoTeQZiMIgnL
-	 D2E2JBivvRCmHhmqPOLABDcM30stVboCVcfV2EvI=
+	b=sJqxm+EPgCr3uMhk3e+/OSGqVG147ufuLl+iqQnHv6essHrFM1F3WPAiahHgfj59f
+	 ETnH3mlWzcppFuHSAiPU+eAguWAooEbhNZCVcw/RIihpdV2iuHTNqXhua91BfAFJky
+	 sERAjVzAyudpxpg3Np+jb/zZQxE2U20iAakrl/+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 267/444] drm/amd/display: Avoid trying AUX transactions on disconnected ports
+Subject: [PATCH 6.15 307/515] net: dsa: b53: prevent SWITCH_CTRL access on BCM5325
 Date: Mon, 18 Aug 2025 14:44:53 +0200
-Message-ID: <20250818124458.844180952@linuxfoundation.org>
+Message-ID: <20250818124510.256111237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit deb24e64c8881c462b29e2c69afd9e6669058be5 ]
+[ Upstream commit 22ccaaca43440e90a3b68d2183045b42247dc4be ]
 
-[Why & How]
-Observe that we try to access DPCD 0x600h of disconnected DP ports.
-In order not to wasting time on retrying these ports, call
-dpcd_write_rx_power_ctrl() after checking its connection status.
+BCM5325 doesn't implement SWITCH_CTRL register so we should avoid reading
+or writing it.
 
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-8-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index aa2800129767..9d740659521a 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -140,7 +140,8 @@ void link_blank_dp_stream(struct dc_link *link, bool hw_init)
- 				}
- 		}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 990d21fad939..bb0a5fd6a372 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -361,11 +361,12 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
  
--		if ((!link->wa_flags.dp_keep_receiver_powered) || hw_init)
-+		if (((!link->wa_flags.dp_keep_receiver_powered) || hw_init) &&
-+			(link->type != dc_connection_none))
- 			dpcd_write_rx_power_ctrl(link, false);
- 	}
- }
+ 	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, mgmt);
+ 
+-	/* Include IMP port in dumb forwarding mode
+-	 */
+-	b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
+-	mgmt |= B53_MII_DUMB_FWDG_EN;
+-	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
++	if (!is5325(dev)) {
++		/* Include IMP port in dumb forwarding mode */
++		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
++		mgmt |= B53_MII_DUMB_FWDG_EN;
++		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
++	}
+ 
+ 	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
+ 	 * frames should be flooded or not.
 -- 
 2.39.5
 
