@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-171506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75317B2AAD7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:37:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 053E6B2A487
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1D9E684F77
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 023AB17DA4E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF0A32A3C7;
-	Mon, 18 Aug 2025 14:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B6332274B;
+	Mon, 18 Aug 2025 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZOr8yDa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IW/HXzqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0807A183CC3;
-	Mon, 18 Aug 2025 14:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79E3322744;
+	Mon, 18 Aug 2025 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526156; cv=none; b=OenkqdJ6LZSVmpVN9cIfR4wzq/rrMXdSAFmkvzMNmODXqd81eAySd48i3x3cfrYxGUkoHAuWjJQ1KRIaPx4Q4flK6NMw53uX195xnU9TqGrvfUgmOJ4K1i6VN84ZfpupuKcv1nvgW6Um9s9TsNblPudkQsQCjxz6L1EBrSdjLaI=
+	t=1755522880; cv=none; b=X/IP+P0zRRpYar22F4RyOCtHe+opbeRIcdutqskGKrHgs2pkT3Hl4zwYZrGuxCn8Y8QCIO7mhvYc5mk91yaBTPKFJIkISZSzVr8Hi8AhMiaVVkX3beGa3NWuRJ0/VzdIpk7RPTL00KnW3vPB49NhEdxeAtmzUjQHSh1AQWbS98I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526156; c=relaxed/simple;
-	bh=uHinza1r+FpZd8ytjP/XxB+mSOCXk6ERC6D6cWYInzk=;
+	s=arc-20240116; t=1755522880; c=relaxed/simple;
+	bh=qKDZbkQXCT8PVIkrn/kv8NQM+sc+hNNijKVvwYXUYhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rr+hOzzFx2YMeL7+dh1CZJXWXJyGz+MmC6jpFsYo7LkMuPKX7impdPnSjQOvR6i45mljlf+ZxGD0tczvijr8YBwmJtkL7u582aviCPyHC5V7SxcznqKP3sLIeoojGYtcHoF7dGkOyIN4XxHd7tWncPXMiXmuvmhnI8JKJSsEJW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZOr8yDa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB37C4CEEB;
-	Mon, 18 Aug 2025 14:09:15 +0000 (UTC)
+	 MIME-Version; b=pcLu2suPmctHZMyXGkpb4dD1X+KjSfOIqiqpBN0Wtm+jdYwk2EKblBkj+O2SXNuwDARBsy8g48zJAUFtA0C3wykc7K9yofdUEnXMd34JdKxhq1fnE8WeZ4U85IOGY/BevEPHB7AxIf7IRKxZK04dqMQasv44MG386xJsP1moG9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IW/HXzqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC7CC4CEF1;
+	Mon, 18 Aug 2025 13:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526155;
-	bh=uHinza1r+FpZd8ytjP/XxB+mSOCXk6ERC6D6cWYInzk=;
+	s=korg; t=1755522880;
+	bh=qKDZbkQXCT8PVIkrn/kv8NQM+sc+hNNijKVvwYXUYhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZOr8yDaUHvgYX8ah4JQBs//GDwRmbVQs3+++Z5Hm1qpdF79/A6K/gzcniX1ETLB6
-	 NcHb+i78dAijQ8rjaMPrINM3xKDP5s3427lPKZlZeV0f6jW7FhDIj2evPzOh/boGDw
-	 F9uqduLCEj+9WJunRsGYfhP3+XRaER7FExGRIMGE=
+	b=IW/HXzqod7xVNYOEPyWU1pAtg+uNjPwCwqX/FnWRsDYGF9rFEwa/V7tRH4kdQbvAK
+	 Fc8nmYAKZSL0AvaxyVOiTVp2RW/NB7A0iWqYvKYwHzpm9K78jf7EDm5fWOKBih1Llf
+	 3bXkK2efOLRKMOTzrQQVum56CsK/QpmY+BbkG3GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 474/570] cifs: Fix collect_sample() to handle any iterator type
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 435/444] rust: kbuild: clean output before running `rustdoc`
 Date: Mon, 18 Aug 2025 14:47:41 +0200
-Message-ID: <20250818124524.148858735@linuxfoundation.org>
+Message-ID: <20250818124505.273219506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,135 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit b63335fb3d32579c5ff0b7038b9cc23688fff528 ]
+commit 252fea131e15aba2cd487119d1a8f546471199e2 upstream.
 
-collect_sample() is used to gather samples of the data in a Write op for
-analysis to try and determine if the compression algorithm is likely to
-achieve anything more quickly than actually running the compression
-algorithm.
+`rustdoc` can get confused when generating documentation into a folder
+that contains generated files from other `rustdoc` versions.
 
-However, collect_sample() assumes that the data it is going to be sampling
-is stored in an ITER_XARRAY-type iterator (which it now should never be)
-and doesn't actually check that it is before accessing the underlying
-xarray directly.
+For instance, running something like:
 
-Fix this by replacing the code with a loop that just uses the standard
-iterator functions to sample every other 2KiB block, skipping the
-intervening ones.  It's not quite the same as the previous algorithm as it
-doesn't necessarily align to the pages within an ordinary write from the
-pagecache.
+    rustup default 1.78.0
+    make LLVM=1 rustdoc
+    rustup default 1.88.0
+    make LLVM=1 rustdoc
 
-Note that the btrfs code from which this was derived samples the inode's
-pagecache directly rather than the iterator - but that doesn't necessarily
-work for network filesystems if O_DIRECT is in operation.
+may generate errors like:
 
-Fixes: 94ae8c3fee94 ("smb: client: compress: LZ77 code improvements cleanup")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-cc: Enzo Matsumiya <ematsumiya@suse.de>
-cc: Shyam Prasad N <sprasad@microsoft.com>
-cc: Tom Talpey <tom@talpey.com>
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    error: couldn't generate documentation: invalid template: last line expected to start with a comment
+      |
+      = note: failed to create or modify "./Documentation/output/rust/rustdoc/src-files.js"
+
+Thus just always clean the output folder before generating the
+documentation -- we are anyway regenerating it every time the `rustdoc`
+target gets called, at least for the time being.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Reported-by: Daniel Almeida <daniel.almeida@collabora.com>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/527201113
+Reviewed-by: Tamir Duberstein <tamird@kernel.org>
+Link: https://lore.kernel.org/r/20250726133435.2460085-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/compress.c | 71 ++++++++++++----------------------------
- 1 file changed, 21 insertions(+), 50 deletions(-)
+ rust/Makefile |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/compress.c b/fs/smb/client/compress.c
-index 766b4de13da7..db709f5cd2e1 100644
---- a/fs/smb/client/compress.c
-+++ b/fs/smb/client/compress.c
-@@ -155,58 +155,29 @@ static int cmp_bkt(const void *_a, const void *_b)
- }
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -92,14 +92,14 @@ rustdoc: rustdoc-core rustdoc-macros rus
+ rustdoc-macros: private rustdoc_host = yes
+ rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
+     --extern proc_macro
+-rustdoc-macros: $(src)/macros/lib.rs FORCE
++rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean FORCE
+ 	+$(call if_changed,rustdoc)
  
- /*
-- * TODO:
-- * Support other iter types, if required.
-- * Only ITER_XARRAY is supported for now.
-+ * Collect some 2K samples with 2K gaps between.
-  */
--static int collect_sample(const struct iov_iter *iter, ssize_t max, u8 *sample)
-+static int collect_sample(const struct iov_iter *source, ssize_t max, u8 *sample)
- {
--	struct folio *folios[16], *folio;
--	unsigned int nr, i, j, npages;
--	loff_t start = iter->xarray_start + iter->iov_offset;
--	pgoff_t last, index = start / PAGE_SIZE;
--	size_t len, off, foff;
--	void *p;
--	int s = 0;
--
--	last = (start + max - 1) / PAGE_SIZE;
--	do {
--		nr = xa_extract(iter->xarray, (void **)folios, index, last, ARRAY_SIZE(folios),
--				XA_PRESENT);
--		if (nr == 0)
--			return -EIO;
--
--		for (i = 0; i < nr; i++) {
--			folio = folios[i];
--			npages = folio_nr_pages(folio);
--			foff = start - folio_pos(folio);
--			off = foff % PAGE_SIZE;
--
--			for (j = foff / PAGE_SIZE; j < npages; j++) {
--				size_t len2;
--
--				len = min_t(size_t, max, PAGE_SIZE - off);
--				len2 = min_t(size_t, len, SZ_2K);
--
--				p = kmap_local_page(folio_page(folio, j));
--				memcpy(&sample[s], p, len2);
--				kunmap_local(p);
--
--				s += len2;
--
--				if (len2 < SZ_2K || s >= max - SZ_2K)
--					return s;
--
--				max -= len;
--				if (max <= 0)
--					return s;
--
--				start += len;
--				off = 0;
--				index++;
--			}
--		}
--	} while (nr == ARRAY_SIZE(folios));
-+	struct iov_iter iter = *source;
-+	size_t s = 0;
-+
-+	while (iov_iter_count(&iter) >= SZ_2K) {
-+		size_t part = umin(umin(iov_iter_count(&iter), SZ_2K), max);
-+		size_t n;
-+
-+		n = copy_from_iter(sample + s, part, &iter);
-+		if (n != part)
-+			return -EFAULT;
-+
-+		s += n;
-+		max -= n;
-+
-+		if (iov_iter_count(&iter) < PAGE_SIZE - SZ_2K)
-+			break;
-+
-+		iov_iter_advance(&iter, SZ_2K);
-+	}
+ # Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` should
+ # not be needed -- see https://github.com/rust-lang/rust/pull/128307.
+ rustdoc-core: private skip_flags = --edition=2021 -Wrustdoc::unescaped_backticks
+ rustdoc-core: private rustc_target_flags = --edition=$(core-edition) $(core-cfgs)
+-rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
++rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
+ 	+$(call if_changed,rustdoc)
  
- 	return s;
- }
--- 
-2.50.1
-
+ rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
+@@ -116,6 +116,9 @@ rustdoc-kernel: $(src)/kernel/lib.rs rus
+     $(obj)/bindings.o FORCE
+ 	+$(call if_changed,rustdoc)
+ 
++rustdoc-clean: FORCE
++	$(Q)rm -rf $(rustdoc_output)
++
+ quiet_cmd_rustc_test_library = RUSTC TL $<
+       cmd_rustc_test_library = \
+ 	OBJTREE=$(abspath $(objtree)) \
 
 
 
