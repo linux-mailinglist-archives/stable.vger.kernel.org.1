@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5FDB2A6B8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45F5B2A942
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 115916863AF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4C106E5C77
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B07321433;
-	Mon, 18 Aug 2025 13:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AFA322756;
+	Mon, 18 Aug 2025 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4gfUcc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJjWYyWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D313922A7E0;
-	Mon, 18 Aug 2025 13:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F52B261B9B;
+	Mon, 18 Aug 2025 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523875; cv=none; b=AA5PWAG+IB6ZHXWjttaUMHB32CiRNaF/DfvDA6amx1SQVeH9Yw9jNherYPCnNmntJpVHe5KA4vlrYi7C9SItMswm/89Rd9ICVVY98Uj5qlo70eJVt+anga0SqBGnI9u//8gVKNgcPH/uXOEzwRJ2/KBU6IYWA/AlDb2AQb5DS7Q=
+	t=1755525560; cv=none; b=ZaFz037GOLvUHeMnnPqgopQBN0FmQ12O5+gx9b0FFO+EmkH4wK6o4RXV+EhX76YV0rj3KKpPuqX2tGzqj+QTua7lV0IpWUFvFcrZwm1/sIWrhO2w2oKosff1TmGmhetj8+rz/s34ZnhjqblQUdKut7XaoIfbBFhld19/oj81RLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523875; c=relaxed/simple;
-	bh=Xq4gue0Y2oPL+3JOkfK/P0pkgBKwQIYGCDfw/trTQWo=;
+	s=arc-20240116; t=1755525560; c=relaxed/simple;
+	bh=3S7P2I2Y+g4rNUTCxeN+xRAy32x6tyCoupIdhwRNMR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqqjGKJxYXR9al1l7cjG+s1fHra1UrKGF3iJaPWoYxiANr+IXoerm0jDT03XpiGZ+9uo7lXaWtLv3DozGpl5/q5FAUGL3EdITb8z+5E/+QgpQ45pT0KP2MHAVqeIgQ9lVA8Zk0UfguBkJ7tPjirPSp+lOu7KfbnSx6tPH7+/m7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4gfUcc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC1AC4CEEB;
-	Mon, 18 Aug 2025 13:31:15 +0000 (UTC)
+	 MIME-Version; b=OCv/AbwrRh6m2pyqi8MTaOrmz4EfOUICH4+sL0xR7kazSL/D+50FnhvqZflFtoNheIviE4Umjg+Z2jBp0jy65EAdNgKqXRMBHM4wZ9P9c5Cr8rkjd8NDtDXFcR8el/CVQT0o8YWQdOszWdFk5PIYSfrtS4VfFTB4V7490ouaEV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJjWYyWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBEEC4CEEB;
+	Mon, 18 Aug 2025 13:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523875;
-	bh=Xq4gue0Y2oPL+3JOkfK/P0pkgBKwQIYGCDfw/trTQWo=;
+	s=korg; t=1755525559;
+	bh=3S7P2I2Y+g4rNUTCxeN+xRAy32x6tyCoupIdhwRNMR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4gfUcc4gTdCn8iCapBF6cfkToIkGyFeObru3zjOd4vg4Y8TbToMl+gkmFZCNk3R2
-	 aSHsJvdF3bqYVMXSB3qcIXdWD/JnwZGwjfTD6qJsQNOo3fT6hwwd9B8HaBgOXGl34K
-	 tvjDi3v1CQFS4JJIq6evv77Z/0ZZF/qMMs+A0mMA=
+	b=oJjWYyWW9J3sScx+odYahCfRmrGRxVrDq1TUw6IhbiL2//uhDSjmE9NGR8c5dwO9B
+	 yjJTzpl5fIFPLT4gZdwuTqi22Jgb6KlqDebYW/IqFQ7ur0FPqM0A/jdi45F7heJbCR
+	 JhHjobiGznOWMcEna1y5xxK8xVDY97dUtR3PTUd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hari Chandrakanthan <quic_haric@quicinc.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 300/515] net: vlan: Make is_vlan_dev() a stub when VLAN is not configured
+Subject: [PATCH 6.16 299/570] wifi: ath12k: Fix station association with MBSSID Non-TX BSS
 Date: Mon, 18 Aug 2025 14:44:46 +0200
-Message-ID: <20250818124509.978724144@linuxfoundation.org>
+Message-ID: <20250818124517.369228344@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Hari Chandrakanthan <quic_haric@quicinc.com>
 
-[ Upstream commit 2de1ba0887e5d3bf02d7c212f380039b34e10aa3 ]
+[ Upstream commit 70eeacc1a92a444f4b5777ab19e1c378a5edc8dd ]
 
-Add a stub implementation of is_vlan_dev() that returns false when
-VLAN support is not compiled in (CONFIG_VLAN_8021Q=n).
+ath12k station is unable to associate with non-transmitting BSSes
+in a Multiple BSS set because the user-space does not receive
+information about the non-transmitting BSSes from mac80211's
+scan results.
 
-This allows us to compile-out VLAN-dependent dead code when it is not
-needed.
+The ath12k driver does not advertise its MBSSID capability to mac80211,
+resulting in wiphy->support_mbssid not being set. Consequently, the
+information about non-transmitting BSS is not parsed from received
+Beacon/Probe response frames and is therefore not included in the
+scan results.
 
-This also resolves the following compilation error when:
-* CONFIG_VLAN_8021Q=n
-* CONFIG_OBJTOOL=y
-* CONFIG_OBJTOOL_WERROR=y
+Fix this by advertising the MBSSID capability of ath12k driver to
+mac80211.
 
-drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.o: error: objtool: parse_mirred.isra.0+0x370: mlx5e_tc_act_vlan_add_push_action() missing __noreturn in .c/.h or NORETURN() in noreturns.h
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
 
-The error occurs because objtool cannot determine that unreachable BUG()
-(which doesn't return) calls in VLAN code paths are actually dead code
-when VLAN support is disabled.
-
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20250616132626.1749331-2-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250530035615.3178480-2-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_vlan.h | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index 38456b42cdb5..618a973ff8ee 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -79,11 +79,6 @@ static inline struct vlan_ethhdr *skb_vlan_eth_hdr(const struct sk_buff *skb)
- /* found in socket.c */
- extern void vlan_ioctl_set(int (*hook)(struct net *, void __user *));
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 13f44239abde..a885dd168a37 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -12522,6 +12522,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
  
--static inline bool is_vlan_dev(const struct net_device *dev)
--{
--        return dev->priv_flags & IFF_802_1Q_VLAN;
--}
--
- #define skb_vlan_tag_present(__skb)	(!!(__skb)->vlan_all)
- #define skb_vlan_tag_get(__skb)		((__skb)->vlan_tci)
- #define skb_vlan_tag_get_id(__skb)	((__skb)->vlan_tci & VLAN_VID_MASK)
-@@ -200,6 +195,11 @@ struct vlan_dev_priv {
- #endif
- };
+ 	wiphy->mbssid_max_interfaces = mbssid_max_interfaces;
+ 	wiphy->ema_max_profile_periodicity = TARGET_EMA_MAX_PROFILE_PERIOD;
++	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
  
-+static inline bool is_vlan_dev(const struct net_device *dev)
-+{
-+	return dev->priv_flags & IFF_802_1Q_VLAN;
-+}
-+
- static inline struct vlan_dev_priv *vlan_dev_priv(const struct net_device *dev)
- {
- 	return netdev_priv(dev);
-@@ -237,6 +237,11 @@ extern void vlan_vids_del_by_dev(struct net_device *dev,
- extern bool vlan_uses_dev(const struct net_device *dev);
- 
- #else
-+static inline bool is_vlan_dev(const struct net_device *dev)
-+{
-+	return false;
-+}
-+
- static inline struct net_device *
- __vlan_find_dev_deep_rcu(struct net_device *real_dev,
- 		     __be16 vlan_proto, u16 vlan_id)
+ 	if (is_6ghz) {
+ 		wiphy_ext_feature_set(wiphy,
 -- 
 2.39.5
 
