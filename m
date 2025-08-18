@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55385B2A8BE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:08:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57868B2A325
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D00C58391D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EB6518A6CBA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2B831AF3A;
-	Mon, 18 Aug 2025 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246DE27E074;
+	Mon, 18 Aug 2025 12:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yf7pivxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEW9GHed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A37531B100;
-	Mon, 18 Aug 2025 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F893218B1;
+	Mon, 18 Aug 2025 12:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525372; cv=none; b=h6QHhsIVqFfmXUX8epSQ6u/ztkE4PIP5gkRWq3WQs074opdeXJ8BrX9FbXP///eKvpq4oFMfzqyWqe+B4FYr/T+sY9bqNUuZ7W487esTqMIg7ejng+gSZbA4FB2W8jV1dyRAn8prT6RwXwYDeEGzb2DY8ClYbFX7aSB4p82cFe4=
+	t=1755521950; cv=none; b=TUIKvEgUavppHAZWYavrRXs2o0apaZqmvR2+ityFU8+Os1JymZBAyG0BqjAiuROse30txvoMfSjXPn99IKtK7rWRV2klNbMJFb4AnRQs86xmcCZUv+uaThW6m7q6AG8q/suoRx1XiXuvhVaf5U/lzO+Lx2yvYY8ve89FE/uJ8mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525372; c=relaxed/simple;
-	bh=/e9LzIx9uZAmpDlAo7zqXJM8UHjZu35SAZ4mzRSmfEY=;
+	s=arc-20240116; t=1755521950; c=relaxed/simple;
+	bh=u9M0Fm8q/ylUNI+VR55equpJsQzDMF3RzbOhOnSdjXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SX07gO4gCXRIccltsyt+ZwEAmKwPVjAYU2LD/S7UopS/oQ5o6DIF6eKLBKDp34Dk76SXiWFkOMwPtYBcg2W2IifMFrhr0Qea4C4OLKY/fCgtp3+MrsiT+qGU7+v16nDETOZ6T9KGDSsuZ9bQczLvtw3YUKuC/4t+8T6BDPx1arA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yf7pivxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101A3C4CEEB;
-	Mon, 18 Aug 2025 13:56:11 +0000 (UTC)
+	 MIME-Version; b=dWJP3jqGhdTACOEro5QJvpbw89rTV0Lv9NPy6JlcfCyEKx7woRvlGZukTrNTZeRp4IQ8Bl8NY1setai9vCRo3WOBmNpl+wKBtArkSmc2dNyzvUM8fZhdTPA3RciyuHRYUpeTW155fJhp0W4ZBKvIW98WpXKOhKXWr837/qMrdgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEW9GHed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45072C4CEEB;
+	Mon, 18 Aug 2025 12:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525372;
-	bh=/e9LzIx9uZAmpDlAo7zqXJM8UHjZu35SAZ4mzRSmfEY=;
+	s=korg; t=1755521950;
+	bh=u9M0Fm8q/ylUNI+VR55equpJsQzDMF3RzbOhOnSdjXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yf7pivxYMx4eE1vKEY2H8W+TNmihFbkrHtvGJDs43hitaUZyZCpfWBkhiSD/l7NEs
-	 fhsTYVCJiZZsAh8uGfSYea/no7tJt7upbwxbueSw4PQkqfi4COPMZ7wioAV8KBSQBm
-	 cmwmWGb/36d2jCoJVlXxTPAFP1RH7kk7vopXJw/Q=
+	b=GEW9GHedWlaHa4ow+71VDeU14kze+DyPFR5jfU+fTB4rVVcEVRm6vN30pejmR4LYu
+	 W6wZon1QQLUK1InvCeF85Pi6HxpbuQx6LCWUrD3DETo2YCroTyAW9XmVapjAr/na56
+	 pIPyBs2SAWv8q6b6sldamKBS+E9D41z6i6OBadTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Hutchings <benh@debian.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 209/570] bootconfig: Fix unaligned access when building footer
+Subject: [PATCH 6.12 170/444] wifi: ath12k: Correct tid cleanup when tid setup fails
 Date: Mon, 18 Aug 2025 14:43:16 +0200
-Message-ID: <20250818124513.854983152@linuxfoundation.org>
+Message-ID: <20250818124455.259714187@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-[ Upstream commit 6ed5e20466c79e3b3350bae39f678f73cf564b4e ]
+[ Upstream commit 4a2bf707270f897ab8077baee8ed5842a5321686 ]
 
-Currently we add padding between the bootconfig text and footer to
-ensure that the footer is aligned within the initramfs image.
-However, because only the bootconfig data is held in memory, not the
-full initramfs image, the footer may not be naturally aligned in
-memory.
+Currently, if any error occurs during ath12k_dp_rx_peer_tid_setup(),
+the tid value is already incremented, even though the corresponding
+TID is not actually allocated. Proceed to
+ath12k_dp_rx_peer_tid_delete() starting from unallocated tid,
+which might leads to freeing unallocated TID and cause potential
+crash or out-of-bounds access.
 
-This can result in an alignment fault (SIGBUS) when writing the footer
-on some architectures, such as sparc.
+Hence, fix by correctly decrementing tid before cleanup to match only
+the successfully allocated TIDs.
 
-Build the footer in a struct on the stack before adding it to the
-buffer.
+Also, remove tid-- from failure case of ath12k_dp_rx_peer_frag_setup(),
+as decrementing the tid before cleanup in loop will take care of this.
 
-References: https://buildd.debian.org/status/fetch.php?pkg=linux&arch=sparc64&ver=6.16%7Erc7-1%7Eexp1&stamp=1753209801&raw=0
-Link: https://lore.kernel.org/all/aIC-NTw-cdm9ZGFw@decadent.org.uk/
+Compile tested only.
 
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250721061749.886732-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bootconfig/main.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 8a48cc2536f5..dce2d6ffcca5 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -11,6 +11,7 @@
- #include <string.h>
- #include <errno.h>
- #include <endian.h>
-+#include <assert.h>
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index 217eb57663f0..cfb17f16b081 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -96,7 +96,7 @@ int ath12k_dp_peer_setup(struct ath12k *ar, int vdev_id, const u8 *addr)
+ 		return -ENOENT;
+ 	}
  
- #include <linux/bootconfig.h>
+-	for (; tid >= 0; tid--)
++	for (tid--; tid >= 0; tid--)
+ 		ath12k_dp_rx_peer_tid_delete(ar, peer, tid);
  
-@@ -359,7 +360,12 @@ static int delete_xbc(const char *path)
- 
- static int apply_xbc(const char *path, const char *xbc_path)
- {
--	char *buf, *data, *p;
-+	struct {
-+		uint32_t size;
-+		uint32_t csum;
-+		char magic[BOOTCONFIG_MAGIC_LEN];
-+	} footer;
-+	char *buf, *data;
- 	size_t total_size;
- 	struct stat stat;
- 	const char *msg;
-@@ -430,17 +436,13 @@ static int apply_xbc(const char *path, const char *xbc_path)
- 	size += pad;
- 
- 	/* Add a footer */
--	p = data + size;
--	*(uint32_t *)p = htole32(size);
--	p += sizeof(uint32_t);
-+	footer.size = htole32(size);
-+	footer.csum = htole32(csum);
-+	memcpy(footer.magic, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
-+	static_assert(sizeof(footer) == BOOTCONFIG_FOOTER_SIZE);
-+	memcpy(data + size, &footer, BOOTCONFIG_FOOTER_SIZE);
- 
--	*(uint32_t *)p = htole32(csum);
--	p += sizeof(uint32_t);
--
--	memcpy(p, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
--	p += BOOTCONFIG_MAGIC_LEN;
--
--	total_size = p - data;
-+	total_size = size + BOOTCONFIG_FOOTER_SIZE;
- 
- 	ret = write(fd, data, total_size);
- 	if (ret < total_size) {
+ 	spin_unlock_bh(&ab->base_lock);
 -- 
 2.39.5
 
