@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA785B2A484
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0F9B2A673
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E6E17D703
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A749A4E387E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA96320CDD;
-	Mon, 18 Aug 2025 13:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7587B319847;
+	Mon, 18 Aug 2025 13:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmYG6K3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8+rZ6E0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEAC320CD4;
-	Mon, 18 Aug 2025 13:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EC530C37D;
+	Mon, 18 Aug 2025 13:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522873; cv=none; b=VvixhVoRs1XqXHJL1mAvqOj/Y2E4z1AWi46Xqkfa0UNGWSOgbp6aK4VtG9vGySbn50aF32B79LVcojK12Gctj7UTZuOKiiZIjht4eVmr04MB4boaQmIRXHmXh/h2YnLfd5znZ2nQtqXI97c6+K965fRB94YcafWzq8QmJagIQ+0=
+	t=1755524543; cv=none; b=Fjr4mMi7CgIJ2BjWwrwfS6OWD4kWfTEskB5uNKH/uXF7DEpVbVf5KSzasPqPIV4Kk/Yzg772cDmSq3an9ShGwaszc4LUsbAiE+5S7DWrM+lFq6tJrHLX83fh2gp8PTyz9P7f8ojiDLbT1ILRv8gY7AbRaCxohULren/TRzmAK7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522873; c=relaxed/simple;
-	bh=yNkNat653nSpSkrmPusKxp3CCqnsACxc0fMQe5z1h54=;
+	s=arc-20240116; t=1755524543; c=relaxed/simple;
+	bh=nOMz0oUsC5FS8HGxH0jH0CuEdMR5BHk3ZZxqTyc4DVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZciEkCgJL+ov4urihSDkk/mJXX+CNXkt9yhTh1gpbF5XtFsMsLYFq65uqcMnmfQhrSAgO5BWP6/c6uqL0pZJDnNYhFp04Bjqyvdr1Y0SSLhsOoZ3UnNsGBnnjko+MXFAZTNf9OH3ioMMM8+9q1QwXRADSAjtH/f5ve/c47BROQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmYG6K3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3BDC4CEF1;
-	Mon, 18 Aug 2025 13:14:32 +0000 (UTC)
+	 MIME-Version; b=iOHlQJxFBR0RdghHqyQ+HiOhJRr9I4Ye40HKtBlwhOvpF7+F5nFQ4uAlmcGFN9VXJbxKxBxwrzYe7KOlU9pwb9U7CI9FXAzObBLfzYlvGza59gWE/fhZy9kBNiRDOu2DheIsYXM9TMx5DynEKkDTllyA1UutKyPniWWhsDOoCXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8+rZ6E0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD3CC4CEF1;
+	Mon, 18 Aug 2025 13:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522873;
-	bh=yNkNat653nSpSkrmPusKxp3CCqnsACxc0fMQe5z1h54=;
+	s=korg; t=1755524543;
+	bh=nOMz0oUsC5FS8HGxH0jH0CuEdMR5BHk3ZZxqTyc4DVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmYG6K3BPZwOSMSPAlp/S/bGGHHQejZBTmePPlxBGYk/Zq5xVXqV0iMbVfNfrViXU
-	 G/uTsLY9qKTXW9n4LAX7FdV/YaPlA6KnsUbEXHJsShtfNGEhze6VYyG/0dEP8xQWh0
-	 1u4Y4FgxJ4MuWGFKnsx1ZYRKAdx1Bge4Pj3m8OMU=
+	b=Q8+rZ6E0TWZcFPrHS3lgyX6S/g4tXcwHHXUgivS0OCu6i4HlWNlAliVlsCuaLNmMO
+	 1xjcz2pCmJpoXiVZ0POUfdUL0+nx/HSXnl93p/r6zJq3903r8bMIDZBtckrX4hlndf
+	 HalUvz5Qi+IJMCvqxJermOf6lzw9oJNBH3Buz+bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hrushikesh Salunke <h-salunke@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 433/444] arm64: dts: ti: k3-j722s-evm: Fix USB2.0_MUX_SEL to select Type-C
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 473/515] btrfs: dont skip remaining extrefs if dir not found during log replay
 Date: Mon, 18 Aug 2025 14:47:39 +0200
-Message-ID: <20250818124505.192287798@linuxfoundation.org>
+Message-ID: <20250818124516.629531986@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hrushikesh Salunke <h-salunke@ti.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit bc8d9e6b5821c40ab5dd3a81e096cb114939de50 ]
+commit 24e066ded45b8147b79c7455ac43a5bff7b5f378 upstream.
 
-J722S SOC has two usb controllers USB0 and USB1. USB0 is brought out on
-the EVM as a stacked USB connector which has one Type-A and one Type-C
-port. These Type-A and Type-C ports are connected to MUX so only
-one of them can be enabled at a time.
+During log replay, at add_inode_ref(), if we have an extref item that
+contains multiple extrefs and one of them points to a directory that does
+not exist in the subvolume tree, we are supposed to ignore it and process
+the remaining extrefs encoded in the extref item, since each extref can
+point to a different parent inode. However when that happens we just
+return from the function and ignore the remaining extrefs.
 
-Commit under Fixes, tries to enable the USB0 instance of USB to
-interface with the Type-C port via the USB hub, by configuring the
-USB2.0_MUX_SEL to GPIO_ACTIVE_HIGH. But it is observed on J722S-EVM
-that Type-A port is enabled instead of Type-C port.
+The problem has been around since extrefs were introduced, in commit
+f186373fef00 ("btrfs: extended inode refs"), but it's hard to hit in
+practice because getting extref items encoding multiple extref requires
+getting a hash collision when computing the offset of the extref's
+key. The offset if computed like this:
 
-Fix this by setting USB2.0_MUX_SEL to GPIO_ACTIVE_LOW to enable Type-C
-port.
+  key.offset = btrfs_extref_hash(dir_ino, name->name, name->len);
 
-Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
-Signed-off-by: Hrushikesh Salunke <h-salunke@ti.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/20250116125726.2549489-1-h-salunke@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Stable-dep-of: 65ba2a6e77e9 ("arm64: dts: ti: k3-j722s-evm: Fix USB gpio-hog level for Type-C")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+and btrfs_extref_hash() is just a wrapper around crc32c().
+
+Fix this by moving to next iteration of the loop when we don't find
+the parent directory that an extref points to.
+
+Fixes: f186373fef00 ("btrfs: extended inode refs")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/tree-log.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
-@@ -495,7 +495,7 @@
- 		p05-hog {
- 			/* P05 - USB2.0_MUX_SEL */
- 			gpio-hog;
--			gpios = <5 GPIO_ACTIVE_HIGH>;
-+			gpios = <5 GPIO_ACTIVE_LOW>;
- 			output-high;
- 		};
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -1397,6 +1397,8 @@ static noinline int add_inode_ref(struct
+ 		if (log_ref_ver) {
+ 			ret = extref_get_fields(eb, ref_ptr, &name,
+ 						&ref_index, &parent_objectid);
++			if (ret)
++				goto out;
+ 			/*
+ 			 * parent object can change from one array
+ 			 * item to another.
+@@ -1413,16 +1415,23 @@ static noinline int add_inode_ref(struct
+ 					 * the loop when getting the first
+ 					 * parent dir.
+ 					 */
+-					if (ret == -ENOENT)
++					if (ret == -ENOENT) {
++						/*
++						 * The next extref may refer to
++						 * another parent dir that
++						 * exists, so continue.
++						 */
+ 						ret = 0;
++						goto next;
++					}
+ 					goto out;
+ 				}
+ 			}
+ 		} else {
+ 			ret = ref_get_fields(eb, ref_ptr, &name, &ref_index);
++			if (ret)
++				goto out;
+ 		}
+-		if (ret)
+-			goto out;
  
+ 		ret = inode_in_dir(root, path, btrfs_ino(dir), btrfs_ino(inode),
+ 				   ref_index, &name);
+@@ -1456,10 +1465,11 @@ static noinline int add_inode_ref(struct
+ 		}
+ 		/* Else, ret == 1, we already have a perfect match, we're done. */
+ 
++next:
+ 		ref_ptr = (unsigned long)(ref_ptr + ref_struct_size) + name.len;
+ 		kfree(name.name);
+ 		name.name = NULL;
+-		if (log_ref_ver) {
++		if (log_ref_ver && dir) {
+ 			iput(&dir->vfs_inode);
+ 			dir = NULL;
+ 		}
 
 
 
