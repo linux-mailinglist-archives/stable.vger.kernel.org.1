@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D24B2A591
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD353B2A7C6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62FA91B62508
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11B1658572B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33D7335BD7;
-	Mon, 18 Aug 2025 13:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED17335BCD;
+	Mon, 18 Aug 2025 13:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jft772lZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCyKw7Sz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B2F335BAA;
-	Mon, 18 Aug 2025 13:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A1E335BAD;
+	Mon, 18 Aug 2025 13:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523240; cv=none; b=OAC8xjV0fu7JgfjDtmwyJRPZVJyFrs/U0/IcMtOrQBPsiF09wX+qMbvXm00D6XXSW7uEihFJrFSTZ9+ELNMwQgfIW7eeZh78g6mc5jUWwHKsEdLqiMzFTs/VA08XpBcKlRBl0Wa6Z0o4O8P/OsNLwhFUbiIPN5opOkAffA6Fiu0=
+	t=1755524938; cv=none; b=foTWs1G4k2VVZizytOGdwXIpLfQ+xN1lvV5r4MfsFPsSU+GFOjPbTjBGf/R6moHcSL2T5cX7k+h2kWuBYMUwWe3qlt4FIX0Fxy71e50QFbxoa/Nxwz7CGsIk/eDiTTDkqtTR5eezNrH/ZePFNAoJuBtSLWtWWMcUtaFuDehqfto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523240; c=relaxed/simple;
-	bh=UJb9uOq31XLmRSg9tviD5cak5LxhCjveAW2cCbEICCY=;
+	s=arc-20240116; t=1755524938; c=relaxed/simple;
+	bh=iCiQqCxRVwebSnCb+irh3UxMsxxDfpimynne1PFep/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLczMtR5RshWT6MP0f1xiTd+KXoh1uKCdSyFj/6jJhTdpUmcLUjLNWKac7/UfwRdF399QzGJ1EvVDsBqWdCMCXP2cJGNRVYjLgGdmZNXJ97jfjNiZKjjXrFUoTMt6l/GO6Blz+M+wfeezxVINmOnMOmsUMJFgx8W7a1MvW+hcqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jft772lZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9169C4CEEB;
-	Mon, 18 Aug 2025 13:20:39 +0000 (UTC)
+	 MIME-Version; b=JLocXEmx/7yO7K34LzQzUKpGfh90HV6tBh+0jJEf1JECy7+3mrmAzQSO4/oszUUulRN0xnPNPkLkZqlRS9L6vrJPUpDNQIQ3h5ygKXYOWCw+HANOwTEqTe8zzdSc7qcC158ki8GV7PFDFd81PI3B2zegfuNGPzjRhjZAEeWebWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCyKw7Sz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5DAC4CEEB;
+	Mon, 18 Aug 2025 13:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523240;
-	bh=UJb9uOq31XLmRSg9tviD5cak5LxhCjveAW2cCbEICCY=;
+	s=korg; t=1755524938;
+	bh=iCiQqCxRVwebSnCb+irh3UxMsxxDfpimynne1PFep/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jft772lZH9VqHbtrZ4NIbUzEh6ka2wUTzbXnJ96rluCxY7a27knzaovy4uxnJPV5k
-	 re/5kk3RkzyRaeIv747z/XTspCKde1TyZDWd18fEprUymDuzDypBdUkJkZIk0HhvKU
-	 oYuaWDWuK5pVxJz0+Axqj/V/olv1ctMrrSCb1R+s=
+	b=GCyKw7SzxeW52PuDblbC9qPZMR6dfAc0cJOh/zO3UMrAUnLh5dBYwcK/9Crzf+Nue
+	 epc2vWyio1cKk4jg7m2GKmwcDtKi83qrcwHfCzcBG5z5B7uOn3jmcOJoANu1kgYY7m
+	 1u3I4nIdCAcNNcXNLpKpvNOQQl+5bIusMH6c4f+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 111/515] tracefs: Add d_delete to remove negative dentries
+Subject: [PATCH 6.16 110/570] hfs: fix not erasing deleted b-tree node issue
 Date: Mon, 18 Aug 2025 14:41:37 +0200
-Message-ID: <20250818124502.629492095@linuxfoundation.org>
+Message-ID: <20250818124510.042369517@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit d9b13cdad80dc11d74408cf201939a946e9303a6 ]
+[ Upstream commit d3ed6d6981f4756f145766753c872482bc3b28d3 ]
 
-If a lookup in tracefs is done on a file that does not exist, it leaves a
-dentry hanging around until memory pressure removes it. But eventfs
-dentries should hang around as when their ref count goes to zero, it
-requires more work to recreate it. For the rest of the tracefs dentries,
-they hang around as their dentry is used as a descriptor for the tracing
-system. But if a file lookup happens for a file in tracefs that does not
-exist, it should be deleted.
+The generic/001 test of xfstests suite fails and corrupts
+the HFS volume:
 
-Add a .d_delete callback that checks if dentry->fsdata is set or not. Only
-eventfs dentries set fsdata so if it has content it should not be deleted
-and should hang around in the cache.
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2>
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+generic/001 32s ... _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
+(see /home/slavad/XFSTESTS-2/xfstests-dev/results//generic/001.full for details)
+
+Ran: generic/001
+Failures: generic/001
+Failed 1 of 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+   Unused node is not erased (node = 2)
+   Unused node is not erased (node = 4)
+<skipped>
+   Unused node is not erased (node = 253)
+   Unused node is not erased (node = 254)
+   Unused node is not erased (node = 255)
+   Unused node is not erased (node = 256)
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+   Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+                  CBTStat = 0x0004 CatStat = 0x00000000
+** The volume untitled was found corrupt and needs to be repaired.
+	volume type is HFS
+	primary MDB is at block 2 0x02
+	alternate MDB is at block 20971518 0x13ffffe
+	primary VHB is at block 0 0x00
+	alternate VHB is at block 0 0x00
+	sector size = 512 0x200
+	VolumeObject flags = 0x19
+	total sectors for volume = 20971520 0x1400000
+	total sectors for embedded volume = 0 0x00
+
+This patch adds logic of clearing the deleted b-tree node.
+
+sudo ./check generic/001
+FSTYP         -- hfs
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.15.0-rc2+ #3 SMP PREEMPT_DYNAMIC Fri Apr 25 17:13:00 PDT 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/001 9s ...  32s
+Ran: generic/001
+Passed all 1 tests
+
+fsck.hfs -d -n ./test-image.bin
+** ./test-image.bin (NO WRITE)
+	Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+   Executing fsck_hfs (version 540.1-Linux).
+** Checking HFS volume.
+   The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking catalog hierarchy.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled appears to be OK.
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20250430001211.1912533-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/inode.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/hfs/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index cb1af30b49f5..2c4a0c0202f6 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -465,9 +465,20 @@ static int tracefs_d_revalidate(struct inode *inode, const struct qstr *name,
- 	return !(ei && ei->is_freed);
- }
- 
-+static int tracefs_d_delete(const struct dentry *dentry)
-+{
-+	/*
-+	 * We want to keep eventfs dentries around but not tracefs
-+	 * ones. eventfs dentries have content in d_fsdata.
-+	 * Use d_fsdata to determine if it's a eventfs dentry or not.
-+	 */
-+	return dentry->d_fsdata == NULL;
-+}
-+
- static const struct dentry_operations tracefs_dentry_operations = {
- 	.d_revalidate = tracefs_d_revalidate,
- 	.d_release = tracefs_d_release,
-+	.d_delete = tracefs_d_delete,
- };
- 
- static int tracefs_fill_super(struct super_block *sb, struct fs_context *fc)
+diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
+index 1dac5d9c055f..e8cd1a31f247 100644
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -574,6 +574,7 @@ void hfs_bnode_put(struct hfs_bnode *node)
+ 		if (test_bit(HFS_BNODE_DELETED, &node->flags)) {
+ 			hfs_bnode_unhash(node);
+ 			spin_unlock(&tree->hash_lock);
++			hfs_bnode_clear(node, 0, tree->node_size);
+ 			hfs_bmap_free(node);
+ 			hfs_bnode_free(node);
+ 			return;
 -- 
 2.39.5
 
