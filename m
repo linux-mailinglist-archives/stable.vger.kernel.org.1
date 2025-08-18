@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7270EB2A3B1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498B0B2A9EE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 963D23AC7F0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F040C6E72D6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A02731E100;
-	Mon, 18 Aug 2025 13:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09328343D63;
+	Mon, 18 Aug 2025 14:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xl5selWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="askemrNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1699B31E0E4;
-	Mon, 18 Aug 2025 13:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6C934E1B9;
+	Mon, 18 Aug 2025 14:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522395; cv=none; b=JzcLi8rlw7bb/owXeW/2v1TF2pdy3fnwrd0z57Eua4hi9M8Ve/Nq2BpDQPqa8odiFG2viH4b91AilMopI/rmIpYbRptpfAtRhkXIQ13pHTkGrFhQsFOSGGvb568hyFM/mHP8+1tcrW53+I8J4wPVxetSOuWdEWX8LaG+/mOd96I=
+	t=1755525817; cv=none; b=Zap6O87ITlCw7ihMOMF6MZUfyUimmOuzF0je0fPt/VLaZfQ8MSWeM6enXdnfq1V2b2qnUi3vKB7qqFIRkEt/wqmzo0I3biDN/BiZy3otXheM8tQiRT/giT0jNHVeWIsS4HJXKTFb1vKmMavO4nB+CDtNSdkb1pHMSXMWaUSBdnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522395; c=relaxed/simple;
-	bh=4enUIFvZi57Jct/gBmCHtKridHENcXyGBG+10HKCp+I=;
+	s=arc-20240116; t=1755525817; c=relaxed/simple;
+	bh=e56MxLzooYjlLaC8sISHTB8dPdz5Ai5lSMaP4Q/lVjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MB0ehK7ODUZjy9G+6FedBf6wM9FMFKlscc/N0U2kKVTPnIXyQ6hp7Ayubc2s7vW9Qr2+ZnRVyC+gm4dv9BuK+wfoMVTstWhDDr0TefksloOJAngmCBRpiMxVfIJPPGqQtOOCOitKf9vXHKLMQwGyQrcSduDmSFSuRPJ7Oix3NG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xl5selWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5D6C4CEEB;
-	Mon, 18 Aug 2025 13:06:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FPUXs5zCQyqxMQVDt3l2CrBPzYC8koYeZhFe45AEtve6FoH33nZgYLE8Y6iRNOl+A2ff/+1LpgRXBwkpmsEeuMlixz9YI3wgtWZx7jpUIGXifb7MRt/soXoTwMSqcLmDpKwtNA9GAdhjp/US8ig+SxJdB3CqQpuc6dXkcPbTy08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=askemrNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2ACBC4CEEB;
+	Mon, 18 Aug 2025 14:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522395;
-	bh=4enUIFvZi57Jct/gBmCHtKridHENcXyGBG+10HKCp+I=;
+	s=korg; t=1755525817;
+	bh=e56MxLzooYjlLaC8sISHTB8dPdz5Ai5lSMaP4Q/lVjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xl5selWN2AvKfMChJ5M/RNhQq5o9GhHI8EINDeqKoWOX0jW6arVUEwHn66pEQsEOR
-	 rqdnvr/3xqnJiB7l17XKNBqLbm4sDviu48IZnaT+4I2NM6NhjKe0H5oxrbR67+WeH8
-	 jf0mh9y70Foi3uNzXyL4ZikJhfAXXfwRdGiOhSVg=
+	b=askemrNSXY22ymvyIPRGX/Fov6w/xEbY65ngNa5al4DOzhoNslUGsCkFIElk3yGKL
+	 0lbBSjv+CKlkv3xXDnyrhlAXbPHVWcP62FAXbKjksUYOXWG8ubPzwdA0T7YQazZi/R
+	 PAAYL9iDVG9Sz1Klgf6SJkY4Rr7CyUVgmvQwtkiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Emily Deng <Emily.Deng@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/444] dmaengine: stm32-dma: configure next sg only if there are more than 2 sgs
+Subject: [PATCH 6.16 343/570] drm/ttm: Should to return the evict error
 Date: Mon, 18 Aug 2025 14:45:30 +0200
-Message-ID: <20250818124500.345207709@linuxfoundation.org>
+Message-ID: <20250818124519.075150941@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Emily Deng <Emily.Deng@amd.com>
 
-[ Upstream commit e19bdbaa31082b43dab1d936e20efcebc30aa73d ]
+[ Upstream commit 4e16a9a00239db5d819197b9a00f70665951bf50 ]
 
-DMA operates in Double Buffer Mode (DBM) when the transfer is cyclic and
-there are at least two periods.
-When DBM is enabled, the DMA toggles between two memory targets (SxM0AR and
-SxM1AR), indicated by the SxSCR.CT bit (Current Target).
-There is no need to update the next memory address if two periods are
-configured, as SxM0AR and SxM1AR are already properly set up before the
-transfer begins in the stm32_dma_start_transfer() function.
-This avoids unnecessary updates to SxM0AR/SxM1AR, thereby preventing
-potential Transfer Errors. Specifically, when the channel is enabled,
-SxM0AR and SxM1AR can only be written if SxSCR.CT=1 and SxSCR.CT=0,
-respectively. Otherwise, a Transfer Error interrupt is triggered, and the
-stream is automatically disabled.
+For the evict fail case, the evict error should be returned.
 
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://lore.kernel.org/r/20250624-stm32_dma_dbm_fix-v1-1-337c40d6c93e@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+v2: Consider ENOENT case.
+
+v3: Abort directly when the eviction failed for some reason (except for -ENOENT)
+ and not wait for the move to finish
+
+Signed-off-by: Emily Deng <Emily.Deng@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250603091154.3472646-1-Emily.Deng@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/stm32/stm32-dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/ttm/ttm_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/dma/stm32/stm32-dma.c b/drivers/dma/stm32/stm32-dma.c
-index 917f8e922373..0e39f99bce8b 100644
---- a/drivers/dma/stm32/stm32-dma.c
-+++ b/drivers/dma/stm32/stm32-dma.c
-@@ -744,7 +744,7 @@ static void stm32_dma_handle_chan_done(struct stm32_dma_chan *chan, u32 scr)
- 		/* cyclic while CIRC/DBM disable => post resume reconfiguration needed */
- 		if (!(scr & (STM32_DMA_SCR_CIRC | STM32_DMA_SCR_DBM)))
- 			stm32_dma_post_resume_reconfigure(chan);
--		else if (scr & STM32_DMA_SCR_DBM)
-+		else if (scr & STM32_DMA_SCR_DBM && chan->desc->num_sgs > 2)
- 			stm32_dma_configure_next_sg(chan);
- 	} else {
- 		chan->busy = false;
+diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+index 769b0ca9be47..006202fcd3c2 100644
+--- a/drivers/gpu/drm/ttm/ttm_resource.c
++++ b/drivers/gpu/drm/ttm/ttm_resource.c
+@@ -557,6 +557,9 @@ int ttm_resource_manager_evict_all(struct ttm_device *bdev,
+ 		cond_resched();
+ 	} while (!ret);
+ 
++	if (ret && ret != -ENOENT)
++		return ret;
++
+ 	spin_lock(&man->move_lock);
+ 	fence = dma_fence_get(man->move);
+ 	spin_unlock(&man->move_lock);
 -- 
 2.39.5
 
