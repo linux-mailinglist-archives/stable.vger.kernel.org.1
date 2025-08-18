@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FC0B2A2B6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F074BB2A7D0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE58C1898ABF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7097E1BA392A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5184A320CBF;
-	Mon, 18 Aug 2025 12:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF86335BAF;
+	Mon, 18 Aug 2025 13:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pEPuZGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqkxIWsW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F348D31CA55;
-	Mon, 18 Aug 2025 12:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0EE335BBF;
+	Mon, 18 Aug 2025 13:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521568; cv=none; b=Gf/xRDbnGNSiK8Nf8pIjNaykjo5qaCtClL30CBRpdVOrWk+EZBFqOO9frps1ktbo6lQ9tuoI5x3EK1JlQP/jY34PT7ETuVdLu5ZQ9xgPwdgq42+5F1eyOUrEkWq85hfkoPEGg/wvtPY6TWH1UIhDsR6rolVd9a4Of/3DnDUDMHQ=
+	t=1755524847; cv=none; b=BMdbA0prLLzAafCHS8uqTpXZJLE/gd7s/2ExiWQ2fjblHXtLr5W4YVCiabD0SLzSbTd2Fqog+IfjRctJIiRKOzlnPnABcMAJmjYBJ88UtcVlIaHAQyT6LYaeHS053xUCjdx3kbg5yiZWf+ckbTDFFuPnM1wN/5nPyXOOHPkhdy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521568; c=relaxed/simple;
-	bh=62qe0qcQcmYhPJtMTpGxC9eDsJ3B0rdi+k3VMZcaWwg=;
+	s=arc-20240116; t=1755524847; c=relaxed/simple;
+	bh=F9Zj81wK5AVLOv6gfAtl+aRAB3wjE3ppiW56u0J99XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4PLsRIr9SXBRwHTX5wzwDdxYT2+evZDuvjTs6ZsrcxD1VT9snAjrhhSjbvYi+OsbGiuVle3uruZeNKr/L3FLPJ/UHHIiJFqPW82Ae3cJAjCNmrIMR6zYgPdeZYnltFcfltNbdAQ8ZExYnZl94+mAN1OcQ5+MLNtXTzcUYnYyRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pEPuZGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2767BC4CEF1;
-	Mon, 18 Aug 2025 12:52:46 +0000 (UTC)
+	 MIME-Version; b=Q6uZhsfn4dkBlSGJY2+ikUoTEIjPS6bdv7zAPk2AHVwkB3cjDQVbkRhM4OLwXflBxUNVXYabibcqJz6Msm5YmBC0TO7KxwwF2nfvGUbyK/UmOhlSno6Ix5obQq08VtaauYR7xM8DFoBq8+M/E0G2GRqXmB2Il5qWdJSoYxafB/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqkxIWsW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C05C4CEEB;
+	Mon, 18 Aug 2025 13:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521567;
-	bh=62qe0qcQcmYhPJtMTpGxC9eDsJ3B0rdi+k3VMZcaWwg=;
+	s=korg; t=1755524847;
+	bh=F9Zj81wK5AVLOv6gfAtl+aRAB3wjE3ppiW56u0J99XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pEPuZGs2knUVwwLr38Rjg6y6j1LdFn9s1lka1MEE5EzaqFW5u/cCr2a0TYZVBIdk
-	 HYR7KNTEfPGoE7Bkd+g9YEoNUwf5S3IfKjuoSy/IHJ55wTysefFDyTtsv5dO91Orrm
-	 FzPRzqk02X/68I3KEAz6rHzrImipBKl5NSuvm7uk=
+	b=WqkxIWsWTiXMdHBu1i2nsRzNKmFrRzZ4dJeZHTxeeEGhuHd9z4VH/SyUBoDjSSx7M
+	 seDy7ULbgnvYhTQ1mr28zXE+uF1uU7c2xx/7SLZdNp4B5mJHy1dEEdIv6w3y0zx8vW
+	 lykUs+hawURSTi7L1EDsQK/CX4yBXIaH2zhanROA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Huang Ying <ying.huang@linux.alibaba.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 042/444] mm/memory-tier: fix abstract distance calculation overflow
+	Yao Zi <ziyao@disroot.org>,
+	Drew Fustini <fustini@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 081/570] net: stmmac: thead: Get and enable APB clock on initialization
 Date: Mon, 18 Aug 2025 14:41:08 +0200
-Message-ID: <20250818124450.514152513@linuxfoundation.org>
+Message-ID: <20250818124508.938977787@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Yao Zi <ziyao@disroot.org>
 
-commit cce35103135c7ffc7bebc32ebfc74fe1f2c3cb5d upstream.
+[ Upstream commit 4cc339ce482ba78589a2d5cbe1c84b735d263383 ]
 
-In mt_perf_to_adistance(), the calculation of abstract distance (adist)
-involves multiplying several int values including
-MEMTIER_ADISTANCE_DRAM.
+It's necessary to adjust the MAC TX clock when the linkspeed changes,
+but it's noted such adjustment always fails on TH1520 SoC, and reading
+back from APB glue registers that control clock generation results in
+garbage, causing broken link.
 
-*adist = MEMTIER_ADISTANCE_DRAM *
-		(perf->read_latency + perf->write_latency) /
-		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
-		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
-		(perf->read_bandwidth + perf->write_bandwidth);
+With some testing, it's found a clock must be ungated for access to APB
+glue registers. Without any consumer, the clock is automatically
+disabled during late kernel startup. Let's get and enable it if it's
+described in devicetree.
 
-Since these values can be large, the multiplication may exceed the
-maximum value of an int (INT_MAX) and overflow (Our platform did),
-leading to an incorrect adist.
+For backward compatibility with older devicetrees, probing won't fail if
+the APB clock isn't found. In this case, we emit a warning since the
+link will break if the speed changes.
 
-User-visible impact:
-The memory tiering subsystem will misinterpret slow memory (like CXL)
-as faster than DRAM, causing inappropriate demotion of pages from
-CXL (slow memory) to DRAM (fast memory).
-
-For example, we will see the following demotion chains from the dmesg, where
-Node0,1 are DRAM, and Node2,3 are CXL node:
- Demotion targets for Node 0: null
- Demotion targets for Node 1: null
- Demotion targets for Node 2: preferred: 0-1, fallback: 0-1
- Demotion targets for Node 3: preferred: 0-1, fallback: 0-1
-
-Change MEMTIER_ADISTANCE_DRAM to be a long constant by writing it with
-the 'L' suffix.  This prevents the overflow because the multiplication
-will then be done in the long type which has a larger range.
-
-Link: https://lkml.kernel.org/r/20250611023439.2845785-1-lizhijian@fujitsu.com
-Link: https://lkml.kernel.org/r/20250610062751.2365436-1-lizhijian@fujitsu.com
-Fixes: 3718c02dbd4c ("acpi, hmat: calculate abstract distance with HMAT")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Acked-by: Balbir Singh <balbirs@nvidia.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33a1a01e3afa ("net: stmmac: Add glue layer for T-HEAD TH1520 SoC")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Tested-by: Drew Fustini <fustini@kernel.org>
+Reviewed-by: Drew Fustini <fustini@kernel.org>
+Link: https://patch.msgid.link/20250808093655.48074-4-ziyao@disroot.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/memory-tiers.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -18,7 +18,7 @@
-  * adistance value (slightly faster) than default DRAM adistance to be part of
-  * the same memory tier.
-  */
--#define MEMTIER_ADISTANCE_DRAM	((4 * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
-+#define MEMTIER_ADISTANCE_DRAM	((4L * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
+index c72ee759aae5..f2946bea0bc2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
+@@ -211,6 +211,7 @@ static int thead_dwmac_probe(struct platform_device *pdev)
+ 	struct stmmac_resources stmmac_res;
+ 	struct plat_stmmacenet_data *plat;
+ 	struct thead_dwmac *dwmac;
++	struct clk *apb_clk;
+ 	void __iomem *apb;
+ 	int ret;
  
- struct memory_tier;
- struct memory_dev_type {
+@@ -224,6 +225,19 @@ static int thead_dwmac_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(plat),
+ 				     "dt configuration failed\n");
+ 
++	/*
++	 * The APB clock is essential for accessing glue registers. However,
++	 * old devicetrees don't describe it correctly. We continue to probe
++	 * and emit a warning if it isn't present.
++	 */
++	apb_clk = devm_clk_get_enabled(&pdev->dev, "apb");
++	if (PTR_ERR(apb_clk) == -ENOENT)
++		dev_warn(&pdev->dev,
++			 "cannot get apb clock, link may break after speed changes\n");
++	else if (IS_ERR(apb_clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(apb_clk),
++				     "failed to get apb clock\n");
++
+ 	dwmac = devm_kzalloc(&pdev->dev, sizeof(*dwmac), GFP_KERNEL);
+ 	if (!dwmac)
+ 		return -ENOMEM;
+-- 
+2.50.1
+
 
 
 
