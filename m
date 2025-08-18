@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07687B2A38E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38084B2A5E7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DBAB567767
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B82258059C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7073218C0;
-	Mon, 18 Aug 2025 12:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEE7322756;
+	Mon, 18 Aug 2025 13:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhubXloJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfEKUVqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD6E258EC8;
-	Mon, 18 Aug 2025 12:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A98C30F52C;
+	Mon, 18 Aug 2025 13:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521916; cv=none; b=Jl+dzLzP8HY59yk5nSEX4YCzH/XJOVDK1592+O/Z6PoXyyKFxoVTpplW0fiydL2NHIM/HG1oRWVdN8L2CL5VZpHo0anow3VFzzOcDiMCJzWWG52NxI6DJ13ONNcwCzJRQ9UaX2zNbiY4pLm0TOYuzTpuHUDiQafYpXnSdmEs9ls=
+	t=1755523534; cv=none; b=BAbseStZdENMAKQ448n1MpnWjXoyo7kyrZb25Id6gtx0DAWhfbcDUNh1sZcIzTgWgFMmkctAhcmBqJEgDKGgYTfbwa+5YeW5Jt8+045HkNuZ0r53xUdje/8XNGsgY3aqMGKlyW89OEqjkKfi+9lPe+zXqyQejbk2/UHp1tfhKu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521916; c=relaxed/simple;
-	bh=QO2g3DyUd2bDzpOROtJ/lnP/pE1+seiD/zuSCru0vQI=;
+	s=arc-20240116; t=1755523534; c=relaxed/simple;
+	bh=E9/au9TPWFUsp3ZG+avTBXTC1cdwuTyPYmGjDA6PaEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7CyIO5sSbyw+8i5FNrAGHnWKlHDa/5aEsuqipzitwIduy9ZsxW4zPaYSWFf7iiNaB+cOFP834eR410Nhci9X7y3J0KQTzbV1dGQgXQXDsd3MlEFjIOKuk5cHscCUGCKmmFaZ6QWL9ASXJ+yrZo1kYh8U2AXv5dmGL/ba6htvs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhubXloJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC97C4CEEB;
-	Mon, 18 Aug 2025 12:58:35 +0000 (UTC)
+	 MIME-Version; b=MmMqAT1vkhfqMtZUqz2iTvVxy+2vwWp7QCwz+HgYyrQmdvc5ptt44HUFDo6aZK1rhOq9sRlJur6+7wst6S85zO+OXbrv6FJAyh307TxpdbpGOOgJG9KUApVh9eXN2UkTKWHw1GLolhka4Dh/I6xO10pCMHmaSMtzBv/Q60OLRh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfEKUVqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD231C4CEEB;
+	Mon, 18 Aug 2025 13:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521916;
-	bh=QO2g3DyUd2bDzpOROtJ/lnP/pE1+seiD/zuSCru0vQI=;
+	s=korg; t=1755523534;
+	bh=E9/au9TPWFUsp3ZG+avTBXTC1cdwuTyPYmGjDA6PaEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhubXloJQnSKdr7Fp5QWyrca7SWikw/Zi4jmTTwbsrS3k5ORHdNk1Dz4H87q+w1Ar
-	 UNoaYO3ZQQJgns80z5/5qP/RZ9uxC4hKfqI7CTEVyTt8/1M7OyNacJJAygi/JM9hi9
-	 GXVAhyqBgWitMkEszN1Kqxi9iVrlNsnZl/O0QCy4=
+	b=MfEKUVqOZv1IIdqTWq4cRzlgQC7xjR3lWJIt07qCrlPbIxX4stp5UxuKWYYm+qgcp
+	 KIGSCxkWGcjQcU7luR74kU3xj5WIoNWWFZ8cKGHgo2F8nBzj29cHPX8LpAX/9KX4IF
+	 q4n80j0vMTNXN9SRxPqPq7LOOFqARSmL9K024MdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/444] netfilter: nft_set_pipapo: prefer kvmalloc for scratch maps
+Subject: [PATCH 6.15 201/515] wifi: iwlwifi: mvm: avoid outdated reorder buffer head_sn
 Date: Mon, 18 Aug 2025 14:43:07 +0200
-Message-ID: <20250818124454.929293717@linuxfoundation.org>
+Message-ID: <20250818124506.101744566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 897eefee2eb73ec6c119a0ca357d7b4a3e92c5ef ]
+[ Upstream commit 422850b29e05e67c9145895bfe559940caa0caa8 ]
 
-The scratchmap size depends on the number of elements in the set.
-For huge sets, each scratch map can easily require very large
-allocations, e.g. for 100k entries each scratch map will require
-close to 64kbyte of memory.
+If no frames are received on a queue for a while, the reorder buffer
+head_sn may be an old one. When the next frame that is received on
+that queue and buffered is a subframe of an AMSDU but not the last
+subframe, it will not update the buffer's head_sn. When the frame
+release notification arrives, it will not release the buffered frame
+because it will look like the notification's NSSN is lower than the
+buffer's head_sn (because of a wraparound).
+Fix it by updating the head_sn when the first frame is buffered.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250723094230.795ec0cb8817.I9ec9a3508e7935e8d1833ea3e086066fdefee644@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index c5855069bdab..9e4e25f2458f 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1219,7 +1219,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 14ea89f931bb..ff59a322fbcb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -854,10 +854,15 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
+ 	 * already ahead and it will be dropped.
+ 	 * If the last sub-frame is not on this queue - we will get frame
+ 	 * release notification with up to date NSSN.
++	 * If this is the first frame that is stored in the buffer, the head_sn
++	 * may be outdated. Update it based on the last NSSN to make sure it
++	 * will be released when the frame release notification arrives.
+ 	 */
+ 	if (!amsdu || last_subframe)
+ 		iwl_mvm_release_frames(mvm, sta, napi, baid_data,
+ 				       buffer, nssn);
++	else if (buffer->num_stored == 1)
++		buffer->head_sn = nssn;
  
- 	mem = s;
- 	mem -= s->align_off;
--	kfree(mem);
-+	kvfree(mem);
- }
- 
- /**
-@@ -1240,10 +1240,9 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
- 		void *scratch_aligned;
- 		u32 align_off;
- #endif
--		scratch = kzalloc_node(struct_size(scratch, map,
--						   bsize_max * 2) +
--				       NFT_PIPAPO_ALIGN_HEADROOM,
--				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
-+		scratch = kvzalloc_node(struct_size(scratch, map, bsize_max * 2) +
-+					NFT_PIPAPO_ALIGN_HEADROOM,
-+					GFP_KERNEL_ACCOUNT, cpu_to_node(i));
- 		if (!scratch) {
- 			/* On failure, there's no need to undo previous
- 			 * allocations: this means that some scratch maps have
+ 	spin_unlock_bh(&buffer->lock);
+ 	return true;
 -- 
 2.39.5
 
