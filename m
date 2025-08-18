@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DE0B2A81E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5133B2A2A8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E71661B61C69
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6BD33A3D37
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908CE335BBE;
-	Mon, 18 Aug 2025 13:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43CC31E0F6;
+	Mon, 18 Aug 2025 12:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Coz2//+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nG0A+uT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE3F335BA3;
-	Mon, 18 Aug 2025 13:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F15E31E0FF;
+	Mon, 18 Aug 2025 12:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525114; cv=none; b=YyjKQ/wQZZLusiOIYQiCbu/MOzbvx16jrMDGS4O7YiPQjH0zL9Jj3I82M7jC6Bxe7pt/Xsp6THQY3zVZb1VFjHmUsct1/zknXyUSI5f3pvvX4W4tjubWHh9aFtyEM5Cevs3deQRbjBc2T1u+8EL2Tp4zLQMo5GiIicS4wEpEwlo=
+	t=1755521785; cv=none; b=Cu8sInqyG7vWvbkhLWZWYjY+y6djLOp8CKidfYafkYZTGrBy1acu9B9n2Bl9nA8f2Qv/j7kWJLquN34w3SEqkmFZDcq/Rmkgusc/wUZuZZxUok7/GxRknwPQZj3RS5SlDdtXWq7aZuaUj3Qo081MBfyGVlgvZe5UwMw1IsBLlO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525114; c=relaxed/simple;
-	bh=BDsIDIv4vqp3O7fz/NawRuifzLAy9V1hoxn1XGBemiA=;
+	s=arc-20240116; t=1755521785; c=relaxed/simple;
+	bh=GVAxfwnTCTzyTs/iSEYJVIxcbSdZZEo94EYhdME4HgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsB9YPiHnvqhBgzWB/y+JQg19iZDeJTqp9zotq0OKKc0PsCvRh8k74X6jQtA4/gSQIK6yEAYGtcZlPSVsuZua2GjDWZbAXkAJSsA+2yqNQq+Ie6VgDeAAWrx4yRWU6mIxurdSY6+c0o5/S5Uxv8qAAznj/lrVQIL4MuWUDs7bfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Coz2//+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90C9C4CEEB;
-	Mon, 18 Aug 2025 13:51:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KSzAzfPESG6ccp+R1iLpRQ1CgpbX1ZTMJVwzYm4x3xumUChkXmlf6dR4dmMWyYI0eTWnfhBySI6Vsu5lreHUI3A0qSLj2sY7N0vnxQt2ErKk8FcRn1uLEdt0Y0us/wpvdby2EPvDkCbPiJ/UT9YyPu+melHmDinynotbJxkSj/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nG0A+uT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB247C4CEEB;
+	Mon, 18 Aug 2025 12:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525114;
-	bh=BDsIDIv4vqp3O7fz/NawRuifzLAy9V1hoxn1XGBemiA=;
+	s=korg; t=1755521785;
+	bh=GVAxfwnTCTzyTs/iSEYJVIxcbSdZZEo94EYhdME4HgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Coz2//+494/ZHxBalsKIBLxbZH9sWdJ0Kyw2SjMZUwPl6mmQO48DlkwuXHkAhI24i
-	 IgE9xP5Tl67cAlvmnoUBONNE9iJHeLg951t4svPDlCGVfbTH8agllIqZBMBPDSa4SE
-	 A3w22ID6qqlu1gR+sAAFg9HccJJRowa99NsQOh9E=
+	b=0nG0A+uTM6cnSsDyxTI6+ER1TKNQx0HZZartecP/nAiBSpmsiL0aywMU5PJFjZdIp
+	 12ovjh74JKURcCXL4f6AJ8W1hHAPGF5IXRrmIIovlqfCeize9TJPy4kbqb1Lk50EuH
+	 xUCe3P0Z9EXWxWXAbKE2HU887SEbsLVXXrAkh7dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 161/570] firmware: arm_scmi: power_control: Ensure SCMI_SYSPOWER_IDLE is set early during resume
+Subject: [PATCH 6.12 122/444] tools/build: Fix s390(x) cross-compilation with clang
 Date: Mon, 18 Aug 2025 14:42:28 +0200
-Message-ID: <20250818124512.011626069@linuxfoundation.org>
+Message-ID: <20250818124453.491395420@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 9a0658d3991e6c82df87584b253454842f22f965 ]
+[ Upstream commit a40f0cdce78be8a559ee8a85c908049c65a410b2 ]
 
-Fix a race condition where a second suspend notification from another
-SCMI agent wakes the system before SCMI_SYSPOWER_IDLE is set, leading
-to ignored suspend requests. This is due to interrupts triggering early
-execution of `scmi_userspace_notifier()` before the SCMI state is updated.
+The heuristic to derive a clang target triple from a GCC one does not work
+for s390. GCC uses "s390-linux" while clang expects "s390x-linux" or
+"powerz-linux".
 
-To resolve this, set SCMI_SYSPOWER_IDLE earlier in the device resume
-path, prior to `thaw_processes()`. This ensures the SCMI state is
-correct when the notifier runs, allowing the system to suspend again
-as expected.
+Add an explicit override.
 
-On some platforms using SCMI, SCP cannot distinguish between CPU idle
-and suspend since both result in cluster power-off. By explicitly setting
-the idle state early, the Linux SCMI agent can correctly re-suspend in
-response to external notifications.
-
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Message-Id: <20250704-scmi-pm-v2-2-9316cec2f9cc@nxp.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/r/20250620-tools-cross-s390-v2-1-ecda886e00e5@linutronix.de
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../firmware/arm_scmi/scmi_power_control.c    | 22 ++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ tools/scripts/Makefile.include | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/scmi_power_control.c b/drivers/firmware/arm_scmi/scmi_power_control.c
-index 21f467a92942..ab0cee0d4bec 100644
---- a/drivers/firmware/arm_scmi/scmi_power_control.c
-+++ b/drivers/firmware/arm_scmi/scmi_power_control.c
-@@ -46,6 +46,7 @@
- #include <linux/math.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/pm.h>
- #include <linux/printk.h>
- #include <linux/reboot.h>
- #include <linux/scmi_protocol.h>
-@@ -324,12 +325,7 @@ static int scmi_userspace_notifier(struct notifier_block *nb,
- 
- static void scmi_suspend_work_func(struct work_struct *work)
- {
--	struct scmi_syspower_conf *sc =
--		container_of(work, struct scmi_syspower_conf, suspend_work);
--
- 	pm_suspend(PM_SUSPEND_MEM);
--
--	sc->state = SCMI_SYSPOWER_IDLE;
- }
- 
- static int scmi_syspower_probe(struct scmi_device *sdev)
-@@ -354,6 +350,7 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
- 	sc->required_transition = SCMI_SYSTEM_MAX;
- 	sc->userspace_nb.notifier_call = &scmi_userspace_notifier;
- 	sc->dev = &sdev->dev;
-+	dev_set_drvdata(&sdev->dev, sc);
- 
- 	INIT_WORK(&sc->suspend_work, scmi_suspend_work_func);
- 
-@@ -363,6 +360,18 @@ static int scmi_syspower_probe(struct scmi_device *sdev)
- 						       NULL, &sc->userspace_nb);
- }
- 
-+static int scmi_system_power_resume(struct device *dev)
-+{
-+	struct scmi_syspower_conf *sc = dev_get_drvdata(dev);
-+
-+	sc->state = SCMI_SYSPOWER_IDLE;
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops scmi_system_power_pmops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(NULL, scmi_system_power_resume)
-+};
-+
- static const struct scmi_device_id scmi_id_table[] = {
- 	{ SCMI_PROTOCOL_SYSTEM, "syspower" },
- 	{ },
-@@ -370,6 +379,9 @@ static const struct scmi_device_id scmi_id_table[] = {
- MODULE_DEVICE_TABLE(scmi, scmi_id_table);
- 
- static struct scmi_driver scmi_system_power_driver = {
-+	.driver	= {
-+		.pm = &scmi_system_power_pmops,
-+	},
- 	.name = "scmi-system-power",
- 	.probe = scmi_syspower_probe,
- 	.id_table = scmi_id_table,
+diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
+index 0aa4005017c7..5f2afd95de43 100644
+--- a/tools/scripts/Makefile.include
++++ b/tools/scripts/Makefile.include
+@@ -98,7 +98,9 @@ else ifneq ($(CROSS_COMPILE),)
+ # Allow userspace to override CLANG_CROSS_FLAGS to specify their own
+ # sysroots and flags or to avoid the GCC call in pure Clang builds.
+ ifeq ($(CLANG_CROSS_FLAGS),)
+-CLANG_CROSS_FLAGS := --target=$(notdir $(CROSS_COMPILE:%-=%))
++CLANG_TARGET := $(notdir $(CROSS_COMPILE:%-=%))
++CLANG_TARGET := $(subst s390-linux,s390x-linux,$(CLANG_TARGET))
++CLANG_CROSS_FLAGS := --target=$(CLANG_TARGET)
+ GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE)gcc 2>/dev/null))
+ ifneq ($(GCC_TOOLCHAIN_DIR),)
+ CLANG_CROSS_FLAGS += --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
 -- 
 2.39.5
 
