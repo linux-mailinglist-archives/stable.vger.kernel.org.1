@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-170425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E768B2A409
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABE93B2A929
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF0AE18A0C1F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19099B607D2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1329331E0F0;
-	Mon, 18 Aug 2025 13:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2354E34E1BE;
+	Mon, 18 Aug 2025 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQuUwIb0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2Lqnc7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C592F3218C2;
-	Mon, 18 Aug 2025 13:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D373034E1B9;
+	Mon, 18 Aug 2025 14:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522595; cv=none; b=TiNCpPst6qkpK7anEs7/34b8ZeFppaL7XMI3U+TqG5qHkoBnXvivND8iC3ZRMu4BUhQA2B3u/KkUVSfZp5oZb5aFujOlO0ekX3ag6ctk0kdrCYRraiHVzOaKiSaOMqkmx6aPbmj3+1vRDK8d90XyL1zYF5tgBxN4G7v0odlhJwM=
+	t=1755525800; cv=none; b=WHJcqtFhNG28kMcL54fEv7O1VMwGhLFMI0SmcxukZo5eeMiKaDTAw9kQg/+B0o3a9Y7Dr9I3SBloftBvg8jvPAa89viN0jevkqvpZlOWOEJD3EsFbWJxmS7xKE1KrYjt/bJ12bFYixOA4+NYGVL6Iw7WHT4FmTSqR/kXr0CWcZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522595; c=relaxed/simple;
-	bh=H4e2lzp0us3Ya3BW5lDlYF+YwfWc9vTN43hXv7U3X6Y=;
+	s=arc-20240116; t=1755525800; c=relaxed/simple;
+	bh=2ONLAm6AGhXzFU3twLXvnR05pFUnaayMFyz2bNpuDiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIkXuu5Zw07GaoF2L706k8dTPbLWe0VQDe7ake/SVdsuP9uWmkmTTF5rUkZNIBL/36CqhdexGwWMfMIbx82SQw4uUakGqIoFwne8e0FbOZZfRiLUz2L93pOW/hiNDOy2GJf/SAAKkJsC9E+AqElWa1jmqT3nsW2zY8/0Baykizo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQuUwIb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000D6C4CEEB;
-	Mon, 18 Aug 2025 13:09:54 +0000 (UTC)
+	 MIME-Version; b=jTvqVB9cGSKcKBp1v+ZdEf8PEB+kCQ3I8D6vjcY99xS/89HfU1bFKNqHYxlOGqQVz6WY7MD7aBTjMf0hv2V8LojL2isrAh5JooM9wLYSGgKv2g7s+szJJ/PQWsBul2ifEQj6PB8db2Gt34qLUns+h4CJFxYyQsoIs8uYJjwGzEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2Lqnc7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D415DC4CEF1;
+	Mon, 18 Aug 2025 14:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522595;
-	bh=H4e2lzp0us3Ya3BW5lDlYF+YwfWc9vTN43hXv7U3X6Y=;
+	s=korg; t=1755525800;
+	bh=2ONLAm6AGhXzFU3twLXvnR05pFUnaayMFyz2bNpuDiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQuUwIb04No7P1XNQtq8GjXtc/sQ4eXTseBNiXWnfa9VtHa8nr504KkNj3ba8GYq8
-	 RMpkfGkd7ggZQqALxQppuFj7rKX1hIjUNm1PGEqSbRmBklvxExtCM6zDVdEvDc65vw
-	 Td6nEWrcbV1VXJLZBK427PY43s/sgBETFfVV4qmo=
+	b=p2Lqnc7biwRt60T4ypHfofk8RZzKEYJYUiKH6CnrWJUwIsyF/LmMdo6gePGFHONhX
+	 scglMr+f6Q/hLrHcWj6DwbjSMQ1FZOECpuEwVtx90vuwUne+auZAHW3fN94gea6/Rs
+	 7WmE22xVCgFboMggcnzwQ5HnJnvW10sTlZDKMG8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Valmantas Paliksa <walmis@gmail.com>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 330/444] rtc: ds1307: handle oscillator stop flag (OSF) for ds1341
+Subject: [PATCH 6.16 369/570] phy: rockchip-pcie: Enable all four lanes if required
 Date: Mon, 18 Aug 2025 14:45:56 +0200
-Message-ID: <20250818124501.306278296@linuxfoundation.org>
+Message-ID: <20250818124520.070799132@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Valmantas Paliksa <walmis@gmail.com>
 
-[ Upstream commit 523923cfd5d622b8f4ba893fdaf29fa6adeb8c3e ]
+[ Upstream commit c3fe7071e196e25789ecf90dbc9e8491a98884d7 ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+Current code enables only Lane 0 because pwr_cnt will be incremented on
+first call to the function. Let's reorder the enablement code to enable
+all 4 lanes through GRF.
 
-This change expands the oscillator stop flag (OSF) handling that has
-already been implemented for some chips to the ds1341 chip (DS1341 and
-DS1342 share a datasheet). This handling manages the validity of the RTC
-data in .read_time and .set_time based on the OSF.
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-3-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Valmantas Paliksa <walmis@gmail.com>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/16b610aab34e069fd31d9f57260c10df2a968f80.1751322015.git.geraldogabriel@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/phy/rockchip/phy-rockchip-pcie.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index c8a666de9cbe..c6d388bb4a19 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -279,6 +279,13 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
- 		if (tmp & DS1340_BIT_OSF)
- 			return -EINVAL;
- 		break;
-+	case ds_1341:
-+		ret = regmap_read(ds1307->regmap, DS1337_REG_STATUS, &tmp);
-+		if (ret)
-+			return ret;
-+		if (tmp & DS1337_BIT_OSF)
-+			return -EINVAL;
-+		break;
- 	case ds_1388:
- 		ret = regmap_read(ds1307->regmap, DS1388_REG_FLAG, &tmp);
- 		if (ret)
-@@ -377,6 +384,10 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
- 		regmap_update_bits(ds1307->regmap, DS1340_REG_FLAG,
- 				   DS1340_BIT_OSF, 0);
- 		break;
-+	case ds_1341:
-+		regmap_update_bits(ds1307->regmap, DS1337_REG_STATUS,
-+				   DS1337_BIT_OSF, 0);
-+		break;
- 	case ds_1388:
- 		regmap_update_bits(ds1307->regmap, DS1388_REG_FLAG,
- 				   DS1388_BIT_OSF, 0);
+diff --git a/drivers/phy/rockchip/phy-rockchip-pcie.c b/drivers/phy/rockchip/phy-rockchip-pcie.c
+index 63e88abc66c6..4e2dfd01adf2 100644
+--- a/drivers/phy/rockchip/phy-rockchip-pcie.c
++++ b/drivers/phy/rockchip/phy-rockchip-pcie.c
+@@ -159,6 +159,12 @@ static int rockchip_pcie_phy_power_on(struct phy *phy)
+ 
+ 	guard(mutex)(&rk_phy->pcie_mutex);
+ 
++	regmap_write(rk_phy->reg_base,
++		     rk_phy->phy_data->pcie_laneoff,
++		     HIWORD_UPDATE(!PHY_LANE_IDLE_OFF,
++				   PHY_LANE_IDLE_MASK,
++				   PHY_LANE_IDLE_A_SHIFT + inst->index));
++
+ 	if (rk_phy->pwr_cnt++) {
+ 		return 0;
+ 	}
+@@ -175,12 +181,6 @@ static int rockchip_pcie_phy_power_on(struct phy *phy)
+ 				   PHY_CFG_ADDR_MASK,
+ 				   PHY_CFG_ADDR_SHIFT));
+ 
+-	regmap_write(rk_phy->reg_base,
+-		     rk_phy->phy_data->pcie_laneoff,
+-		     HIWORD_UPDATE(!PHY_LANE_IDLE_OFF,
+-				   PHY_LANE_IDLE_MASK,
+-				   PHY_LANE_IDLE_A_SHIFT + inst->index));
+-
+ 	/*
+ 	 * No documented timeout value for phy operation below,
+ 	 * so we make it large enough here. And we use loop-break
 -- 
 2.39.5
 
