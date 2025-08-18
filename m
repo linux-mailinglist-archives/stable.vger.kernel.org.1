@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-171124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11904B2A7FA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B8DB2A55D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F16E81B649AE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82928580F87
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EA8335BA7;
-	Mon, 18 Aug 2025 13:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C2B322A0E;
+	Mon, 18 Aug 2025 13:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iJC3r4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9YMFH4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14362335BBE;
-	Mon, 18 Aug 2025 13:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CE6322A04;
+	Mon, 18 Aug 2025 13:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524893; cv=none; b=pDbJc4aNlr72iemVqVf2pxOeAGoFV2zHpOoGTq4aYwp/GE7Bb0o+mVyJGfFViMU123rCwyow4qIrMpFKdHNy8BCiHiVWzQfoTV6Ga9u/1MDWxmBhuZ/yQ2GOPF9kfMg4Ruew9WdJYPx8bsSSJ2cNKB2PU/N2lHcksJmwf73Tcd0=
+	t=1755523179; cv=none; b=m/vGqLDKsHQ0wg1GiIC6BX1m4kB2OpXXJoeBP68Earn0mXiSn7R19MeNiA0LGJrdFsjnXj8rdqhXU4WXrBr+5Fgnwu85+zVf0CJObtIKO/jJhzcvqQMw0CNxLlb2Pzrm0fNX+eUJDI5ADasB7oey5dFmwFAMxxQ5q1n8mgKwksE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524893; c=relaxed/simple;
-	bh=56yToKEZmdeNDTUq80JiyZp0O9Hq6rJjShZ4vf5ybjc=;
+	s=arc-20240116; t=1755523179; c=relaxed/simple;
+	bh=u2Ut93P6jWGTfO0v33phqPE4Ns5GzmNtxJLGPXcliV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTYtnutTUOy/Ha6rtI4kswCks/dfIOysHbFqEDzlioQwQKhuNMt7UEJD4ItGrmkajfjpO/dHSQBB99r0b/dYY6gjl/NybVfQHBYBCbEcIG8X1T6N7ngNOsp93hmgphlCm2V22C12hViT3uBW2nOy9+ZDuTKJBLnJU9PzQcDnyOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iJC3r4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C61C4CEEB;
-	Mon, 18 Aug 2025 13:48:12 +0000 (UTC)
+	 MIME-Version; b=Oc4FBpsr21wuBHHVdgfev814EmL7nZWs0PqFZGZqrT43AYpIIkmWL3m1cDAtb1A+vXV4sG4Awswo0ztTEGqq2DGgn8BAVQeit5bXG/ZEEWCb+sVCE4l4zq9nyJKcxyv5GClq6Z/nxsFSbxVv1FDIp4P0dxaJ+2iOI3MJi5H5XNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9YMFH4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EA7C4CEEB;
+	Mon, 18 Aug 2025 13:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524893;
-	bh=56yToKEZmdeNDTUq80JiyZp0O9Hq6rJjShZ4vf5ybjc=;
+	s=korg; t=1755523179;
+	bh=u2Ut93P6jWGTfO0v33phqPE4Ns5GzmNtxJLGPXcliV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1iJC3r4y0QigbdvNJuCLMwkU+OdoY3NpI3u+CcxD4GCWC50RAxNWNygCBA5RHQmPj
-	 qFhLG0wI1VNOAHONd4+d1KIuOkPi/fSFDKDKkjfThyJRG74/RC/pJ0GJxVmL7j4xwo
-	 EoiEuh2AZKev3A75OwE1oIPCZRNnkFp6fjhjXxF4=
+	b=T9YMFH4WTJ2KSng0y3Zsruju0k7mYbzRQQTvYbKBJlwj+kM/iWlx70nr+9qE4zQkS
+	 KPDhPG2dUjYDx7MyI4wNp/z/N4f20dl1t2LJt6XpmIty4Dj+NouZQdpgaNsRRLSFrX
+	 sP4JlWI4k1WO9/F/ymgLLBgRlsly2I0qqR7QsYfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
+	syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 094/570] arm64: Handle KCOV __init vs inline mismatches
+Subject: [PATCH 6.15 095/515] loop: Avoid updating block size under exclusive owner
 Date: Mon, 18 Aug 2025 14:41:21 +0200
-Message-ID: <20250818124509.437789506@linuxfoundation.org>
+Message-ID: <20250818124502.041014354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 65c430906efffee9bd7551d474f01a6b1197df90 ]
+[ Upstream commit 7e49538288e523427beedd26993d446afef1a6fb ]
 
-GCC appears to have kind of fragile inlining heuristics, in the
-sense that it can change whether or not it inlines something based on
-optimizations. It looks like the kcov instrumentation being added (or in
-this case, removed) from a function changes the optimization results,
-and some functions marked "inline" are _not_ inlined. In that case,
-we end up with __init code calling a function not marked __init, and we
-get the build warnings I'm trying to eliminate in the coming patch that
-adds __no_sanitize_coverage to __init functions:
+Syzbot came up with a reproducer where a loop device block size is
+changed underneath a mounted filesystem. This causes a mismatch between
+the block device block size and the block size stored in the superblock
+causing confusion in various places such as fs/buffer.c. The particular
+issue triggered by syzbot was a warning in __getblk_slow() due to
+requested buffer size not matching block device block size.
 
-WARNING: modpost: vmlinux: section mismatch in reference: acpi_get_enable_method+0x1c (section: .text.unlikely) -> acpi_psci_present (section: .init.text)
+Fix the problem by getting exclusive hold of the loop device to change
+its block size. This fails if somebody (such as filesystem) has already
+an exclusive ownership of the block device and thus prevents modifying
+the loop device under some exclusive owner which doesn't expect it.
 
-This problem is somewhat fragile (though using either __always_inline
-or __init will deterministically solve it), but we've tripped over
-this before with GCC and the solution has usually been to just use
-__always_inline and move on.
-
-For arm64 this requires forcing one ACPI function to be inlined with
-__always_inline.
-
-Link: https://lore.kernel.org/r/20250724055029.3623499-1-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Reported-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Tested-by: syzbot+01ef7a8da81a975e1ccd@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/20250711163202.19623-2-jack@suse.cz
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/acpi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/loop.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index a407f9cd549e..c07a58b96329 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -150,7 +150,7 @@ acpi_set_mailbox_entry(int cpu, struct acpi_madt_generic_interrupt *processor)
- {}
- #endif
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 399905687757..8220521b9984 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1432,17 +1432,34 @@ static int loop_set_dio(struct loop_device *lo, unsigned long arg)
+ 	return 0;
+ }
  
--static inline const char *acpi_get_enable_method(int cpu)
-+static __always_inline const char *acpi_get_enable_method(int cpu)
+-static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
++static int loop_set_block_size(struct loop_device *lo, blk_mode_t mode,
++			       struct block_device *bdev, unsigned long arg)
  {
- 	if (acpi_psci_present())
- 		return "psci";
+ 	struct queue_limits lim;
+ 	unsigned int memflags;
+ 	int err = 0;
+ 
+-	if (lo->lo_state != Lo_bound)
+-		return -ENXIO;
++	/*
++	 * If we don't hold exclusive handle for the device, upgrade to it
++	 * here to avoid changing device under exclusive owner.
++	 */
++	if (!(mode & BLK_OPEN_EXCL)) {
++		err = bd_prepare_to_claim(bdev, loop_set_block_size, NULL);
++		if (err)
++			return err;
++	}
++
++	err = mutex_lock_killable(&lo->lo_mutex);
++	if (err)
++		goto abort_claim;
++
++	if (lo->lo_state != Lo_bound) {
++		err = -ENXIO;
++		goto unlock;
++	}
+ 
+ 	if (lo->lo_queue->limits.logical_block_size == arg)
+-		return 0;
++		goto unlock;
+ 
+ 	sync_blockdev(lo->lo_device);
+ 	invalidate_bdev(lo->lo_device);
+@@ -1455,6 +1472,11 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
+ 	loop_update_dio(lo);
+ 	blk_mq_unfreeze_queue(lo->lo_queue, memflags);
+ 
++unlock:
++	mutex_unlock(&lo->lo_mutex);
++abort_claim:
++	if (!(mode & BLK_OPEN_EXCL))
++		bd_abort_claiming(bdev, loop_set_block_size);
+ 	return err;
+ }
+ 
+@@ -1473,9 +1495,6 @@ static int lo_simple_ioctl(struct loop_device *lo, unsigned int cmd,
+ 	case LOOP_SET_DIRECT_IO:
+ 		err = loop_set_dio(lo, arg);
+ 		break;
+-	case LOOP_SET_BLOCK_SIZE:
+-		err = loop_set_block_size(lo, arg);
+-		break;
+ 	default:
+ 		err = -EINVAL;
+ 	}
+@@ -1530,9 +1549,12 @@ static int lo_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 		break;
+ 	case LOOP_GET_STATUS64:
+ 		return loop_get_status64(lo, argp);
++	case LOOP_SET_BLOCK_SIZE:
++		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
++			return -EPERM;
++		return loop_set_block_size(lo, mode, bdev, arg);
+ 	case LOOP_SET_CAPACITY:
+ 	case LOOP_SET_DIRECT_IO:
+-	case LOOP_SET_BLOCK_SIZE:
+ 		if (!(mode & BLK_OPEN_WRITE) && !capable(CAP_SYS_ADMIN))
+ 			return -EPERM;
+ 		fallthrough;
 -- 
 2.39.5
 
