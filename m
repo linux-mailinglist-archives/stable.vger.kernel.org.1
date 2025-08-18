@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BE1B2A88B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6BBB2A31D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E5747ACE6A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:04:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9DA03A8620
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCB346A14;
-	Mon, 18 Aug 2025 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E13318144;
+	Mon, 18 Aug 2025 13:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UT3rAmqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIGMIrMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D98A346A10;
-	Mon, 18 Aug 2025 13:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EB712DDA1;
+	Mon, 18 Aug 2025 13:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525469; cv=none; b=J71RzoYiErvSXPepA3m5bDNgp7BUuHF2P4hjXWurRlKHvcpccBpBfwt07LUAzqTFMQqjOLFpdW4h23fRzXWPipqitHfAzp8+FDZR8e3dJn9b+ypbaWIVWXScMlUQ3L4ro+vMEjPPQQhSNkU7z9ppAzYm5Wp4AbYilFwfwV12oxo=
+	t=1755522059; cv=none; b=Z98BYudbLIJR9TBpuQ1A01XI1/cXS+paN1BoIXKrvDteblnML8ucfa/RcrDalt+86WHeDDJo45Pn5S8nOiLWkHC/gfTKVdKY5W639neo2eYQXIHiYjYFWIfiCRojc1Xkg41RL2KeMKYNpn6d7cqnMsaRe5j2W+b5WTW0yUl2VZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525469; c=relaxed/simple;
-	bh=TeG7PFwNcuvBpKF2KOUQ4mEk/yvWJCpaMrwu39PTcUw=;
+	s=arc-20240116; t=1755522059; c=relaxed/simple;
+	bh=gGYQxuBor/9Sav/5spXqDo++qfUsDVFMZZmFqM4gEvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVocgkNJyJV9t3KkrMk/VSaElqVi7pHT3TsYwGlrkhiLYeU9nwp3hmX9GbtqcI47OuCAiGGyMew/4M8M6Y1f7j/S/oNrQmP7Uyps6aN4MFdAMBCnemDpcL2pVkb9XMxnknW35KxAq5SDOVwZsTsaLrNJwAwyf3ihDMDEoY3EYu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UT3rAmqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AF5C4CEEB;
-	Mon, 18 Aug 2025 13:57:48 +0000 (UTC)
+	 MIME-Version; b=MHP6SupCDpMDH2CcxS6rEZbadbJAkVNSLUkvAEnQm9jw1hcxRvwCUv0bsOg63UjAbo8AXmY9r3CHyj9lxEYX3W/jscQ8lv6Cmz2FHoi8eXGcPai57i/9GioAtIRGqD0qVa7NWYvwCFZhjvixObOVGGtSZcdq0nTWK2bxqffRLYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIGMIrMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4E9C4CEEB;
+	Mon, 18 Aug 2025 13:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525469;
-	bh=TeG7PFwNcuvBpKF2KOUQ4mEk/yvWJCpaMrwu39PTcUw=;
+	s=korg; t=1755522059;
+	bh=gGYQxuBor/9Sav/5spXqDo++qfUsDVFMZZmFqM4gEvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UT3rAmqmsE5u3WgMQvWY5q6SeqQ42gZR8YlIrFvpCtd4Yis7CATACls0a4NycQgTo
-	 6QGc1prO99Mn8Mli49WXn434meXsTWuZLIJK6ufemttD00pafMOGm0FDxngSEnJQDC
-	 bwvUOmE1HS+5vsgyfXhvEej0lQgGqfHv38IZc42E=
+	b=RIGMIrMnrEetGzfa1h5njtW/fR9oOSMhYmObukBgA+zXaHJ/46zn1Nk7v66Rz3uhH
+	 oqmXuHskpkaIJq22zF7kMLeUIArn3Ee42nSjvLUhQx6/bCAwaMhi0Yt8y9kvKWWinV
+	 4S0e3n4bbSylYWaRW9o8xa5lmRQzIHWXwelsi7Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Chris Mason <clm@fb.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 241/570] wifi: mac80211: handle WLAN_HT_ACTION_NOTIFY_CHANWIDTH async
+Subject: [PATCH 6.12 202/444] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
 Date: Mon, 18 Aug 2025 14:43:48 +0200
-Message-ID: <20250818124515.103707882@linuxfoundation.org>
+Message-ID: <20250818124456.434747042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,216 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Chris Mason <clm@fb.com>
 
-[ Upstream commit 93370f2d37f50757a810da409efc0223c342527e ]
+[ Upstream commit 155213a2aed42c85361bf4f5c817f5cb68951c3b ]
 
-If this action frame, with the value of IEEE80211_HT_CHANWIDTH_ANY,
-arrives right after a beacon that changed the operational bandwidth from
-20 MHz to 40 MHz, then updating the rate control bandwidth to 40 can
-race with updating the chanctx width (that happens in the beacon
-proccesing) back to 40 MHz:
+schbench (https://github.com/masoncl/schbench.git) is showing a
+regression from previous production kernels that bisected down to:
 
-cpu0					cpu1
+sched/fair: Remove sysctl_sched_migration_cost condition (c5b0a7eefc)
 
-ieee80211_rx_mgmt_beacon
-ieee80211_config_bw
-ieee80211_link_change_chanreq
-(*)ieee80211_link_update_chanreq
-					ieee80211_rx_h_action
-					(**)ieee80211_sta_cur_vht_bw
-(***) ieee80211_recalc_chanctx_chantype
+The schbench command line was:
 
-in (**), the maximum between the capability width and the bss width is
-returned. But the bss width was just updated to 40 in (*),
-so the action frame handling code will increase the width of the rate
-control before the chanctx was increased (in ***), leading to a FW error
-(at least in iwlwifi driver. But this is wrong regardless).
+schbench -L -m 4 -M auto -t 256 -n 0 -r 0 -s 0
 
-Fix this by simply handling the action frame async, so it won't race
-with the beacon proccessing.
+This creates 4 message threads pinned to CPUs 0-3, and 256x4 worker
+threads spread across the rest of the CPUs.  Neither the worker threads
+or the message threads do any work, they just wake each other up and go
+back to sleep as soon as possible.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218632
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709233537.bb9dc6f36c35.I39782d6077424e075974c3bee4277761494a1527@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The end result is the first 4 CPUs are pegged waking up those 1024
+workers, and the rest of the CPUs are constantly banging in and out of
+idle.  If I take a v6.9 Linus kernel and revert that one commit,
+performance goes from 3.4M RPS to 5.4M RPS.
+
+schedstat shows there are ~100x  more new idle balance operations, and
+profiling shows the worker threads are spending ~20% of their CPU time
+on new idle balance.  schedstats also shows that almost all of these new
+idle balance attemps are failing to find busy groups.
+
+The fix used here is to crank up the cost of the newidle balance whenever it
+fails.  Since we don't want sd->max_newidle_lb_cost to grow out of
+control, this also changes update_newidle_cost() to use
+sysctl_sched_migration_cost as the upper limit on max_newidle_lb_cost.
+
+Signed-off-by: Chris Mason <clm@fb.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ht.c          | 40 +++++++++++++++++++++++++++++++++++++-
- net/mac80211/ieee80211_i.h |  6 ++++++
- net/mac80211/iface.c       | 29 +++++++++++++++++++++++++++
- net/mac80211/rx.c          | 35 ++++++---------------------------
- 4 files changed, 80 insertions(+), 30 deletions(-)
+ kernel/sched/fair.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
-index 32390d8a9d75..1c82a28b03de 100644
---- a/net/mac80211/ht.c
-+++ b/net/mac80211/ht.c
-@@ -9,7 +9,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2007-2010, Intel Corporation
-  * Copyright 2017	Intel Deutschland GmbH
-- * Copyright(c) 2020-2024 Intel Corporation
-+ * Copyright(c) 2020-2025 Intel Corporation
-  */
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7280ed04c96c..af61769b1d50 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12220,8 +12220,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+ 		 * next wakeup on the CPU.
++		 *
++		 * sched_balance_newidle() bumps the cost whenever newidle
++		 * balance fails, and we don't want things to grow out of
++		 * control.  Use the sysctl_sched_migration_cost as the upper
++		 * limit, plus a litle extra to avoid off by ones.
+ 		 */
+-		sd->max_newidle_lb_cost = cost;
++		sd->max_newidle_lb_cost =
++			min(cost, sysctl_sched_migration_cost + 200);
+ 		sd->last_decay_max_lb_cost = jiffies;
+ 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
+ 		/*
+@@ -12926,10 +12932,17 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
  
- #include <linux/ieee80211.h>
-@@ -603,3 +603,41 @@ void ieee80211_request_smps(struct ieee80211_vif *vif, unsigned int link_id,
- }
- /* this might change ... don't want non-open drivers using it */
- EXPORT_SYMBOL_GPL(ieee80211_request_smps);
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
 +
-+void ieee80211_ht_handle_chanwidth_notif(struct ieee80211_local *local,
-+					 struct ieee80211_sub_if_data *sdata,
-+					 struct sta_info *sta,
-+					 struct link_sta_info *link_sta,
-+					 u8 chanwidth, enum nl80211_band band)
-+{
-+	enum ieee80211_sta_rx_bandwidth max_bw, new_bw;
-+	struct ieee80211_supported_band *sband;
-+	struct sta_opmode_info sta_opmode = {};
++			/*
++			 * Failing newidle means it is not effective;
++			 * bump the cost so we end up doing less of it.
++			 */
++			if (!pulled_task)
++				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
 +
-+	lockdep_assert_wiphy(local->hw.wiphy);
-+
-+	if (chanwidth == IEEE80211_HT_CHANWIDTH_20MHZ)
-+		max_bw = IEEE80211_STA_RX_BW_20;
-+	else
-+		max_bw = ieee80211_sta_cap_rx_bw(link_sta);
-+
-+	/* set cur_max_bandwidth and recalc sta bw */
-+	link_sta->cur_max_bandwidth = max_bw;
-+	new_bw = ieee80211_sta_cur_vht_bw(link_sta);
-+
-+	if (link_sta->pub->bandwidth == new_bw)
-+		return;
-+
-+	link_sta->pub->bandwidth = new_bw;
-+	sband = local->hw.wiphy->bands[band];
-+	sta_opmode.bw =
-+		ieee80211_sta_rx_bw_to_chan_width(link_sta);
-+	sta_opmode.changed = STA_OPMODE_MAX_BW_CHANGED;
-+
-+	rate_control_rate_update(local, sband, link_sta,
-+				 IEEE80211_RC_BW_CHANGED);
-+	cfg80211_sta_opmode_change_notify(sdata->dev,
-+					  sta->addr,
-+					  &sta_opmode,
-+					  GFP_KERNEL);
-+}
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index f71d9eeb8abc..61439e6efdb7 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2220,6 +2220,12 @@ u8 ieee80211_mcs_to_chains(const struct ieee80211_mcs_info *mcs);
- enum nl80211_smps_mode
- ieee80211_smps_mode_to_smps_mode(enum ieee80211_smps_mode smps);
- 
-+void ieee80211_ht_handle_chanwidth_notif(struct ieee80211_local *local,
-+					 struct ieee80211_sub_if_data *sdata,
-+					 struct sta_info *sta,
-+					 struct link_sta_info *link_sta,
-+					 u8 chanwidth, enum nl80211_band band);
-+
- /* VHT */
- void
- ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index c01634fdba78..851d399fca13 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -1556,6 +1556,35 @@ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
- 				break;
- 			}
++			update_newidle_cost(sd, domain_cost);
  		}
-+	} else if (ieee80211_is_action(mgmt->frame_control) &&
-+		   mgmt->u.action.category == WLAN_CATEGORY_HT) {
-+		switch (mgmt->u.action.u.ht_smps.action) {
-+		case WLAN_HT_ACTION_NOTIFY_CHANWIDTH: {
-+			u8 chanwidth = mgmt->u.action.u.ht_notify_cw.chanwidth;
-+			struct ieee80211_rx_status *status;
-+			struct link_sta_info *link_sta;
-+			struct sta_info *sta;
-+
-+			sta = sta_info_get_bss(sdata, mgmt->sa);
-+			if (!sta)
-+				break;
-+
-+			status = IEEE80211_SKB_RXCB(skb);
-+			if (!status->link_valid)
-+				link_sta = &sta->deflink;
-+			else
-+				link_sta = rcu_dereference_protected(sta->link[status->link_id],
-+							lockdep_is_held(&local->hw.wiphy->mtx));
-+			if (link_sta)
-+				ieee80211_ht_handle_chanwidth_notif(local, sdata, sta,
-+								    link_sta, chanwidth,
-+								    status->band);
-+			break;
-+		}
-+		default:
-+			WARN_ON(1);
-+			break;
-+		}
- 	} else if (ieee80211_is_action(mgmt->frame_control) &&
- 		   mgmt->u.action.category == WLAN_CATEGORY_VHT) {
- 		switch (mgmt->u.action.u.vht_group_notif.action_code) {
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index e73431549ce7..8ec06cf0a9f0 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3576,41 +3576,18 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
- 			goto handled;
- 		}
- 		case WLAN_HT_ACTION_NOTIFY_CHANWIDTH: {
--			struct ieee80211_supported_band *sband;
- 			u8 chanwidth = mgmt->u.action.u.ht_notify_cw.chanwidth;
--			enum ieee80211_sta_rx_bandwidth max_bw, new_bw;
--			struct sta_opmode_info sta_opmode = {};
-+
-+			if (chanwidth != IEEE80211_HT_CHANWIDTH_20MHZ &&
-+			    chanwidth != IEEE80211_HT_CHANWIDTH_ANY)
-+				goto invalid;
  
- 			/* If it doesn't support 40 MHz it can't change ... */
- 			if (!(rx->link_sta->pub->ht_cap.cap &
--					IEEE80211_HT_CAP_SUP_WIDTH_20_40))
--				goto handled;
--
--			if (chanwidth == IEEE80211_HT_CHANWIDTH_20MHZ)
--				max_bw = IEEE80211_STA_RX_BW_20;
--			else
--				max_bw = ieee80211_sta_cap_rx_bw(rx->link_sta);
--
--			/* set cur_max_bandwidth and recalc sta bw */
--			rx->link_sta->cur_max_bandwidth = max_bw;
--			new_bw = ieee80211_sta_cur_vht_bw(rx->link_sta);
--
--			if (rx->link_sta->pub->bandwidth == new_bw)
-+				IEEE80211_HT_CAP_SUP_WIDTH_20_40))
- 				goto handled;
- 
--			rx->link_sta->pub->bandwidth = new_bw;
--			sband = rx->local->hw.wiphy->bands[status->band];
--			sta_opmode.bw =
--				ieee80211_sta_rx_bw_to_chan_width(rx->link_sta);
--			sta_opmode.changed = STA_OPMODE_MAX_BW_CHANGED;
--
--			rate_control_rate_update(local, sband, rx->link_sta,
--						 IEEE80211_RC_BW_CHANGED);
--			cfg80211_sta_opmode_change_notify(sdata->dev,
--							  rx->sta->addr,
--							  &sta_opmode,
--							  GFP_ATOMIC);
--			goto handled;
-+			goto queue;
- 		}
- 		default:
- 			goto invalid;
+ 		/*
 -- 
 2.39.5
 
