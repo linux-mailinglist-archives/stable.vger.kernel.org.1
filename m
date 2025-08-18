@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDA2B2A729
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A63B2A483
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EF46622D6B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BE1A1899964
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E00B335BCD;
-	Mon, 18 Aug 2025 13:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73A83203B6;
+	Mon, 18 Aug 2025 13:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1xaXOHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKopikGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B436335BA9;
-	Mon, 18 Aug 2025 13:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6546E2727E2;
+	Mon, 18 Aug 2025 13:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524465; cv=none; b=iUiCpUBhocLA12Jd3fegrdiHx+9UaCj85RT257HZyUEJa4uGgMGre1mBZfXcEBs87/GP8EfHu8KvYCUnWhXNxclD69EuewJe6OKqRsqAu4w8ZhniWubt7jj8BMpAqUE7UFjAfVtSiIBRbpXowQAWA5lu/n0BmC2pxvO+Xbmiv64=
+	t=1755522852; cv=none; b=Gi4apKZ9Mnc37Zo8L0nSEs+7MUnA++Y3ebzAviItFa4Z0V8U/WnJuJ/vinECyMCGHkPJ1lOVN2Df9SsUQfzYBIOBz1CwuEgnOmWke3IpU9npevVkxIAAIRhL0xuA1nc6YtI6Hnb3b9ZOnuBbrjeuUiXKg1T1SLNDd8YxtW3xMWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524465; c=relaxed/simple;
-	bh=JiEthMY691SrQP5qtQ66ydWvNa6Nrk8TFsNjgSeffHs=;
+	s=arc-20240116; t=1755522852; c=relaxed/simple;
+	bh=KxCBCsXWXguVc7TMlFUeOLyeO4Hp2tqV6uxmwYIlDNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsgLknDqg4DDy+XWaTO0KqhSn6xZG6A+ewBQCRdkqP0oK/teiqVuSsywkkqJHcp1dKH//zZX2VpoNsvQ6ZF+3JWkF/XqX+CH4s3OR4CJXTf8lxHk3W52C1FwmbtQksyLgUOvxwVUWxr9o29L/tSgrCr8qIKNu+Nf9Nz+TRn7xCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1xaXOHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A95CC19421;
-	Mon, 18 Aug 2025 13:41:04 +0000 (UTC)
+	 MIME-Version; b=X4k488rLGy+fhb0lcUHJS4ckWQ2AzcjRqGOnUk4ptSa2LieiF/2mYkW5PXjdYO8IytUKvgZdRUYrczKVC6wmZVUn2iT741W6yQaUAazehSMF0HL8S0lPWgjUgqCNzW5PU6lI+kw0ghytnYBGgW4FEVTghu4F5LdBaIhgOIVkPmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKopikGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A77C4CEEB;
+	Mon, 18 Aug 2025 13:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524465;
-	bh=JiEthMY691SrQP5qtQ66ydWvNa6Nrk8TFsNjgSeffHs=;
+	s=korg; t=1755522852;
+	bh=KxCBCsXWXguVc7TMlFUeOLyeO4Hp2tqV6uxmwYIlDNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1xaXOHuWju0I1mjWtjTspOjOF/4QWzvXAtWODn2SRo86GMUoBeipvWlHvwwWR58I
-	 KNJzMBgK49XgNpaBzg2RchC1dWlgWUan9255aQpV7nX2Rbw1LRom/XMaJxfDfK0fUu
-	 LoiFwWbggSkBrBO+Rd1uLwiwD4u6nxm/78jAWB0A=
+	b=tKopikGeROZpKqY6hOkZdPMpu80e9XWC9cn5BU14zCIUJjZAqFgbVfAalCznZcMdM
+	 uBWso5T83jWFrYC+g+wH1ESIw/szT1ZHjjeOrJVf0TAwhZK/rDNi9V8Nk0/8GV/AX5
+	 /8Ma4dRl9OqKLqPII3H7DAhZhyy/h5AVwpvw8ah0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 481/515] btrfs: do not allow relocation of partially dropped subvolumes
+	syzbot+9921e319bd6168140b40@syzkaller.appspotmail.com,
+	syzbot+fa3a12519f0d3fd4ec16@syzkaller.appspotmail.com,
+	Yu Kuai <yukuai3@huawei.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Xiao Ni <xni@redhat.com>
+Subject: [PATCH 6.12 441/444] md: fix create on open mddev lifetime regression
 Date: Mon, 18 Aug 2025 14:47:47 +0200
-Message-ID: <20250818124516.939165068@linuxfoundation.org>
+Message-ID: <20250818124505.496997091@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 4289b494ac553e74e86fed1c66b2bf9530bc1082 upstream.
+commit 1df1fc845d221eb646539836dbf509eb96b41afd upstream.
 
-[BUG]
-There is an internal report that balance triggered transaction abort,
-with the following call trace:
+Commit 9e59d609763f ("md: call del_gendisk in control path") moves
+setting MD_DELETED from __mddev_put() to do_md_stop(), however, for the
+case create on open, mddev can be freed without do_md_stop():
 
-  item 85 key (594509824 169 0) itemoff 12599 itemsize 33
-          extent refs 1 gen 197740 flags 2
-          ref#0: tree block backref root 7
-  item 86 key (594558976 169 0) itemoff 12566 itemsize 33
-          extent refs 1 gen 197522 flags 2
-          ref#0: tree block backref root 7
- ...
- BTRFS error (device loop0): extent item not found for insert, bytenr 594526208 num_bytes 16384 parent 449921024 root_objectid 934 owner 1 offset 0
- BTRFS error (device loop0): failed to run delayed ref for logical 594526208 num_bytes 16384 type 182 action 1 ref_mod 1: -117
- ------------[ cut here ]------------
- BTRFS: Transaction aborted (error -117)
- WARNING: CPU: 1 PID: 6963 at ../fs/btrfs/extent-tree.c:2168 btrfs_run_delayed_refs+0xfa/0x110 [btrfs]
+1) open
 
-And btrfs check doesn't report anything wrong related to the extent
-tree.
+md_probe
+ md_alloc_and_put
+  md_alloc
+   mddev_alloc
+   atomic_set(&mddev->active, 1);
+   mddev->hold_active = UNTIL_IOCTL
+  mddev_put
+   atomic_dec_and_test(&mddev->active)
+    if (mddev->hold_active)
+    -> active is 0, hold_active is set
+md_open
+ mddev_get
+  atomic_inc(&mddev->active);
 
-[CAUSE]
-The cause is a little complex, firstly the extent tree indeed doesn't
-have the backref for 594526208.
+2) ioctl that is not STOP_ARRAY, for example, GET_ARRAY_INFO:
 
-The extent tree only have the following two backrefs around that bytenr
-on-disk:
+md_ioctl
+ mddev->hold_active = 0
 
-        item 65 key (594509824 METADATA_ITEM 0) itemoff 13880 itemsize 33
-                refs 1 gen 197740 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
-        item 66 key (594558976 METADATA_ITEM 0) itemoff 13847 itemsize 33
-                refs 1 gen 197522 flags TREE_BLOCK
-                tree block skinny level 0
-                (176 0x7) tree block backref root CSUM_TREE
+3) close
 
-But the such missing backref item is not an corruption on disk, as the
-offending delayed ref belongs to subvolume 934, and that subvolume is
-being dropped:
+md_release
+ mddev_put(mddev);
+  atomic_dec_and_lock(&mddev->active, &all_mddevs_lock)
+  __mddev_put
+  -> hold_active is cleared, mddev will be freed
+  queue_work(md_misc_wq, &mddev->del_work)
 
-        item 0 key (934 ROOT_ITEM 198229) itemoff 15844 itemsize 439
-                generation 198229 root_dirid 256 bytenr 10741039104 byte_limit 0 bytes_used 345571328
-                last_snapshot 198229 flags 0x1000000000001(RDONLY) refs 0
-                drop_progress key (206324 EXTENT_DATA 2711650304) drop_level 2
-                level 2 generation_v2 198229
-
-And that offending tree block 594526208 is inside the dropped range of
-that subvolume.  That explains why there is no backref item for that
-bytenr and why btrfs check is not reporting anything wrong.
-
-But this also shows another problem, as btrfs will do all the orphan
-subvolume cleanup at a read-write mount.
-
-So half-dropped subvolume should not exist after an RW mount, and
-balance itself is also exclusive to subvolume cleanup, meaning we
-shouldn't hit a subvolume half-dropped during relocation.
-
-The root cause is, there is no orphan item for this subvolume.
-In fact there are 5 subvolumes from around 2021 that have the same
+Now that MD_DELETED is not set, before mddev is freed by
+mddev_delayed_delete(), md_open can still succeed and break mddev
+lifetime, causing mddev->kobj refcount underflow or mddev uaf
 problem.
 
-It looks like the original report has some older kernels running, and
-caused those zombie subvolumes.
+Fix this problem by setting MD_DELETED before queuing del_work.
 
-Thankfully upstream commit 8d488a8c7ba2 ("btrfs: fix subvolume/snapshot
-deletion not triggered on mount") has long fixed the bug.
-
-[ENHANCEMENT]
-For repairing such old fs, btrfs-progs will be enhanced.
-
-Considering how delayed the problem will show up (at run delayed ref
-time) and at that time we have to abort transaction already, it is too
-late.
-
-Instead here we reject any half-dropped subvolume for reloc tree at the
-earliest time, preventing confusion and extra time wasted on debugging
-similar bugs.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: syzbot+9921e319bd6168140b40@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68894408.a00a0220.26d0e1.0012.GAE@google.com/
+Reported-by: syzbot+fa3a12519f0d3fd4ec16@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68894408.a00a0220.26d0e1.0013.GAE@google.com/
+Fixes: 9e59d609763f ("md: call del_gendisk in control path")
+Link: https://lore.kernel.org/linux-raid/20250730073321.2583158-1-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Xiao Ni <xni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/relocation.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/md/md.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -593,6 +593,25 @@ static struct btrfs_root *create_reloc_r
- 	if (btrfs_root_id(root) == objectid) {
- 		u64 commit_root_gen;
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -620,6 +620,12 @@ static void __mddev_put(struct mddev *md
+ 		return;
  
-+		/*
-+		 * Relocation will wait for cleaner thread, and any half-dropped
-+		 * subvolume will be fully cleaned up at mount time.
-+		 * So here we shouldn't hit a subvolume with non-zero drop_progress.
-+		 *
-+		 * If this isn't the case, error out since it can make us attempt to
-+		 * drop references for extents that were already dropped before.
-+		 */
-+		if (unlikely(btrfs_disk_key_objectid(&root->root_item.drop_progress))) {
-+			struct btrfs_key cpu_key;
-+
-+			btrfs_disk_key_to_cpu(&cpu_key, &root->root_item.drop_progress);
-+			btrfs_err(fs_info,
-+	"cannot relocate partially dropped subvolume %llu, drop progress key (%llu %u %llu)",
-+				  objectid, cpu_key.objectid, cpu_key.type, cpu_key.offset);
-+			ret = -EUCLEAN;
-+			goto fail;
-+		}
-+
- 		/* called by btrfs_init_reloc_root */
- 		ret = btrfs_copy_root(trans, root, root->commit_root, &eb,
- 				      BTRFS_TREE_RELOC_OBJECTID);
+ 	/*
++	 * If array is freed by stopping array, MD_DELETED is set by
++	 * do_md_stop(), MD_DELETED is still set here in case mddev is freed
++	 * directly by closing a mddev that is created by create_on_open.
++	 */
++	set_bit(MD_DELETED, &mddev->flags);
++	/*
+ 	 * Call queue_work inside the spinlock so that flush_workqueue() after
+ 	 * mddev_find will succeed in waiting for the work to be done.
+ 	 */
 
 
 
