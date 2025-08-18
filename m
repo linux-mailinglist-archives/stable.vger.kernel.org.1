@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757A1B2A8A4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB61B2A389
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4C55A24D3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE2E5622A5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B04220F3F;
-	Mon, 18 Aug 2025 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21661218AAB;
+	Mon, 18 Aug 2025 13:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wbcIOIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T602whUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4180421CC55;
-	Mon, 18 Aug 2025 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A8331CA51;
+	Mon, 18 Aug 2025 13:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525301; cv=none; b=ReAATEeD30y9bW31P8Ks7BEi9CNSIWM0Qo6Bf/N0C6BK5O8iP0eeJGzAGGeWJNeD5DBG+YvT+0Jpcc7BjDCSvHb17tS/ojwpJQIR/k/cEbZuaRJh0DRpsLbVozQuS7Ltp5WRN2gCPzonfjuSJZCbiYfuO4RwWsPHkOVEL/+JXIk=
+	t=1755522130; cv=none; b=e35Mw0sd2Xy0UTgrK+r+AVNWBa6gWQZtoCi5N3TbXYApqduF9hvjcUFdgmJl+pXAOdR820Q+sXixUFrTm0mCi6Ea25ggITvaSuy3rAwn8/1Ae8V44oDrIh/noPfrzpU2wDNUanZP5xF3FUxliJoqCe5KRP0l5Syajzv6iU7iB6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525301; c=relaxed/simple;
-	bh=VgvhDJkbIGBvN1XbakODLUSQkBAM0WYQydN+eNT9vyQ=;
+	s=arc-20240116; t=1755522130; c=relaxed/simple;
+	bh=VN382YUXGIHrORcccBu3kqOGaJ+qafhfiwhcuVuV59U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5bmrxu4HCiijxqf6Rc2fRDS/L9xSpjt4xTu1W98VU1Ih3iNYJHZvPbV7Vb5Q06DIkVzSu9yGjcTbh3T46o+bnHfVeszQCDL5Cu50m3wXfHWuCLB1tKrxwX/hH1jBbqucYVXmEe9L0Bb1uyx0Jx5XGxjXsrOOlqKpJmxErJar2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wbcIOIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9F9C4CEEB;
-	Mon, 18 Aug 2025 13:55:00 +0000 (UTC)
+	 MIME-Version; b=BDy6omBjlNQQ5rfLIb/X3aiIRUhMusjfG84Qe7wMk5ccwd6Wq9pn5zTEGdKxgW6svInVu23AD7gER57lm6MCEv6hVL+ACR5sMci3vGZZoBcNtKI4QpkJ7I42jRvoyKy+PrqZmFxk/5L064z10pElNxu5MbOvfkYsoidhh+A0KZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T602whUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B22EC4CEEB;
+	Mon, 18 Aug 2025 13:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525301;
-	bh=VgvhDJkbIGBvN1XbakODLUSQkBAM0WYQydN+eNT9vyQ=;
+	s=korg; t=1755522130;
+	bh=VN382YUXGIHrORcccBu3kqOGaJ+qafhfiwhcuVuV59U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2wbcIOIeibGcy/pwI5QEhPiivq92YtJxdCpVKMYI+ijXaMUFBHY2M/1TWISMb8kOP
-	 lLRcddiuS9hwmGqnSiSeU79lXePWErA+fxu+T8JieKGN/pw84AaIRfwNFUT3JhOzcK
-	 KKi+IKw4AwcyPtXEoMURPguszJ/hQrJTI6yFvxO8=
+	b=T602whUCMSsgzF54t2iirH0UrWoyV6CANrRV7jYaJh2WD0lw1e0IDLekSauTeB4uy
+	 w7DyXxnK+QMNpGkQI0EUH7RJb6c/Wq/a+xJNZEw3F+uPLrBmTeiBvGggxo5GRwgWYv
+	 8gyM3d5Glb82YnObQvw6GgKfMnzjByolSvxE4sTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"John Warthog9 Hawley" <warthog9@kernel.org>,
-	Dhaval Giani <dhaval.giani@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 220/570] ktest.pl: Prevent recursion of default variable options
+Subject: [PATCH 6.12 181/444] net/mlx5e: Properly access RCU protected qdisc_sleeping variable
 Date: Mon, 18 Aug 2025 14:43:27 +0200
-Message-ID: <20250818124514.281694463@linuxfoundation.org>
+Message-ID: <20250818124455.661629068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 61f7e318e99d3b398670518dd3f4f8510d1800fc ]
+[ Upstream commit 2a601b2d35623065d31ebaf697b07502d54878c9 ]
 
-If a default variable contains itself, do not recurse on it.
+qdisc_sleeping variable is declared as "struct Qdisc __rcu" and
+as such needs proper annotation while accessing it.
 
-For example:
+Without rtnl_dereference(), the following error is generated by sparse:
 
-  ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40: warning:
+  incorrect type in initializer (different address spaces)
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    expected
+  struct Qdisc *qdisc
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:377:40:    got struct
+  Qdisc [noderef] __rcu *qdisc_sleeping
 
-The above works because the temp variable ADD_CONFIG (is a temp because it
-is created with ":=") is already defined, it will be substituted in the
-variable option. But if it gets commented out:
-
-  # ADD_CONFIG := ${CONFIG_DIR}/temp_config
-  DEFAULTS
-  ADD_CONFIG = ${CONFIG_DIR}/default_config ${ADD_CONFIG}
-
-Then the above will go into a recursive loop where ${ADD_CONFIG} will
-get replaced with the current definition of ADD_CONFIG which contains the
-${ADD_CONFIG} and that will also try to get converted. ktest.pl will error
-after 100 attempts of recursion and fail.
-
-When replacing a variable with the default variable, if the default
-variable contains itself, do not replace it.
-
-Cc: "John Warthog9 Hawley" <warthog9@kernel.org>
-Cc: Dhaval Giani <dhaval.giani@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/20250718202053.732189428@kernel.org
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1752675472-201445-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/qos.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index a5f7fdd0c1fb..e1d31e2aa948 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -1371,7 +1371,10 @@ sub __eval_option {
- 	# If a variable contains itself, use the default var
- 	if (($var eq $name) && defined($opt{$var})) {
- 	    $o = $opt{$var};
--	    $retval = "$retval$o";
-+	    # Only append if the default doesn't contain itself
-+	    if ($o !~ m/\$\{$var\}/) {
-+		$retval = "$retval$o";
-+	    }
- 	} elsif (defined($opt{$o})) {
- 	    $o = $opt{$o};
- 	    $retval = "$retval$o";
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+index f0744a45db92..4e461cb03b83 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/qos.c
+@@ -374,7 +374,7 @@ void mlx5e_reactivate_qos_sq(struct mlx5e_priv *priv, u16 qid, struct netdev_que
+ void mlx5e_reset_qdisc(struct net_device *dev, u16 qid)
+ {
+ 	struct netdev_queue *dev_queue = netdev_get_tx_queue(dev, qid);
+-	struct Qdisc *qdisc = dev_queue->qdisc_sleeping;
++	struct Qdisc *qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
+ 
+ 	if (!qdisc)
+ 		return;
 -- 
 2.39.5
 
