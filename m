@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C885B2A74E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 078EAB2A906
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:14:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC728627B3A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEC4F7B617F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41735230D0D;
-	Mon, 18 Aug 2025 13:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B8033A006;
+	Mon, 18 Aug 2025 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsB33i9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eiivx/f6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A9231AF3A;
-	Mon, 18 Aug 2025 13:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A9E31B11A;
+	Mon, 18 Aug 2025 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524201; cv=none; b=AnackRVc7EoWW7DdhzbGEyQDFVCEKrpn630XpQ2I5iL7cjzfbVxj8HT09emKGxZtGImfGfOvEe+oGZTkIqjovl5XX2wizWJCMqpdWpY89xsxYJwCulMDK7kEl0fklhZxA1g0phzlRKgjvCzKGYJDs127zsaX9nZ5lW/WSOE4QB4=
+	t=1755525787; cv=none; b=KH+Ue+9CN03pl3ljDWuUrdUdWgk0eN8xvh+mpnIvZkaBSoxpAEx9FMQy9vpoA4f8DmXojviocpSfzYGPbbaVor1iuzYKB45wFJrCB8vGc1dJCegQ1qTGuQkCcfBES98zOMR4DJY6TLquFgldTQ3rgMz/P0lNG/rnfI8gjDfyt0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524201; c=relaxed/simple;
-	bh=r1UDslhF8xuuo2lItpJKZhVS3ilvGYFqMuUkZwR4vP0=;
+	s=arc-20240116; t=1755525787; c=relaxed/simple;
+	bh=XUJnb3FDMe7bLh9ictAtreLNox21ZQB1xXMyCoqfYEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFWhSszQuhdionPZSt2hMFLiRSlXZOR32agnS1dig2zrJGNZ3nTn9hij0w0ucWQ7HW3NRBmkYvODSEN+l5To17nFH40JVSqrecjGuTYBMl9Ldj3KC9B9yMTJh5EftKZP4+vrog1cxBHL8oWCOmuJxI/QuwtKGfvtlHBOPG71cOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsB33i9L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C07C4CEEB;
-	Mon, 18 Aug 2025 13:36:40 +0000 (UTC)
+	 MIME-Version; b=CZg0cVWgNlGaJjluChZYY7AfWVR1XhLpBK+KSFECV48PLOuw70ZKksDB/0W02Gn7tu8/OpfEGCCYT9lzxiwmQBXWP7dX3VxouTRO+rutujf0OXX1QmIQYPfgDV0F8x6jUPHcDfTU7YMTP10+w5Yvmpp2tXOh8AYd4jY+Qm8soBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eiivx/f6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DAAC4CEEB;
+	Mon, 18 Aug 2025 14:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524200;
-	bh=r1UDslhF8xuuo2lItpJKZhVS3ilvGYFqMuUkZwR4vP0=;
+	s=korg; t=1755525787;
+	bh=XUJnb3FDMe7bLh9ictAtreLNox21ZQB1xXMyCoqfYEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PsB33i9Ln0yFcDB6ZZ9Ft8eqjpwJur0qN0X5cnX8nW8/zrY51qV4Iz/F6UQZe7iot
-	 LTa1boLPFAjHXVAusZ7H2WEFrTXVzwki0Let0UPKv1+Iii4K+1jsnJldTs6QpG4kXU
-	 pCjR8gLHAcEqN28ZpOY/c8/cwR3GYAsPACxhWGiQ=
+	b=Eiivx/f6esROpfiZhRpv05nTpPwa3ASEnRcTyswcKEM9ZFcFdRUXx34bx7hq6OdiX
+	 7o8w47/8a0TpC4HWzOSRa+kbGTP2deXEegVrnivgiav0nGs/HqUDbZv5lvuY2cjRdd
+	 jPbXIdnJOShuAkm1ifBTaRqXBDSlWHR0z2n3EK7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 366/515] scsi: lpfc: Ensure HBA_SETUP flag is used only for SLI4 in dev_loss_tmo_callbk
-Date: Mon, 18 Aug 2025 14:45:52 +0200
-Message-ID: <20250818124512.498070636@linuxfoundation.org>
+Subject: [PATCH 6.16 366/570] sphinx: kernel_abi: fix performance regression with O=<dir>
+Date: Mon, 18 Aug 2025 14:45:53 +0200
+Message-ID: <20250818124519.960459256@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 1cced5779e7a3ff7ec025fc47c76a7bd3bb38877 ]
+[ Upstream commit 2b16b71a05a7f056221751b906c13f8809656b1f ]
 
-For SLI3, the HBA_SETUP flag is never set so the lpfc_dev_loss_tmo_callbk
-always early returns.  Add a phba->sli_rev check for SLI4 mode so that
-the SLI3 path can flow through the original dev_loss_tmo worker thread
-design to lpfc_dev_loss_tmo_handler instead of early return.
+The logic there which adds a dependency note to Sphinx cache
+is not taking into account that the build dir may not be
+the source dir. This causes a performance regression:
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250618192138.124116-9-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+$ time make O=/tmp/foo SPHINXDIRS=admin-guide htmldocs
+
+	[OUTDATED]
+	Added: set()
+	Changed: {'abi-obsolete', 'abi-removed', 'abi-stable-files', 'abi-obsolete-files', 'abi-stable', 'abi', 'abi-removed-files', 'abi-testing-files', 'abi-testing', 'gpio/index', 'gpio/obsolete'}
+	Removed: set()
+	All docs count: 385
+	Found docs count: 385
+
+	real    0m11,324s
+	user    0m15,783s
+	sys     0m1,164s
+
+To get the root cause of the problem (ABI files reported as changed),
+I used this changeset:
+
+#	diff --git a/Documentation/conf.py b/Documentation/conf.py
+#	index e8766e689c1b..ab486623bd8b 100644
+#	--- a/Documentation/conf.py
+#	+++ b/Documentation/conf.py
+#	@@ -571,3 +571,16 @@ def setup(app):
+#	     """Patterns need to be updated at init time on older Sphinx versions"""
+#
+#	     app.connect('config-inited', update_patterns)
+#	+    app.connect('env-get-outdated', on_outdated)
+#	+
+#	+def on_outdated(app, env, added, changed, removed):
+#	+    """Track cache outdated due to added/changed/removed files"""
+#	+    print("\n[OUTDATED]")
+#	+    print(f"Added: {added}")
+#	+    print(f"Changed: {changed}")
+#	+    print(f"Removed: {removed}")
+#	+    print(f"All docs count: {len(env.all_docs)}")
+#	+    print(f"Found docs count: {len(env.found_docs)}")
+#	+
+#	+    # Just return what we have
+#	+    return added | changed | removed
+
+Reported-by: Akira Yokosawa <akiyks@gmail.com>
+Closes: https://lore.kernel.org/linux-doc/c174f7c5-ec21-4eae-b1c3-f643cca90d9d@gmail.com/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Tested-by: Akira Yokosawa <akiyks@gmail.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/e25673d87357457bc54ee863e97ff8f75956580d.1752752211.git.mchehab+huawei@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/sphinx/kernel_abi.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index c256c3edd663..97263b8e1bf8 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -183,7 +183,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+diff --git a/Documentation/sphinx/kernel_abi.py b/Documentation/sphinx/kernel_abi.py
+index db6f0380de94..4c4375201b9e 100644
+--- a/Documentation/sphinx/kernel_abi.py
++++ b/Documentation/sphinx/kernel_abi.py
+@@ -146,8 +146,10 @@ class KernelCmd(Directive):
+                 n += 1
  
- 	/* Don't schedule a worker thread event if the vport is going down. */
- 	if (test_bit(FC_UNLOADING, &vport->load_flag) ||
--	    !test_bit(HBA_SETUP, &phba->hba_flag)) {
-+	    (phba->sli_rev == LPFC_SLI_REV4 &&
-+	    !test_bit(HBA_SETUP, &phba->hba_flag))) {
+             if f != old_f:
+-                # Add the file to Sphinx build dependencies
+-                env.note_dependency(os.path.abspath(f))
++                # Add the file to Sphinx build dependencies if the file exists
++                fname = os.path.join(srctree, f)
++                if os.path.isfile(fname):
++                    env.note_dependency(fname)
  
- 		spin_lock_irqsave(&ndlp->lock, iflags);
- 		ndlp->rport = NULL;
+                 old_f = f
+ 
 -- 
 2.39.5
 
