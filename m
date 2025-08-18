@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E3FB2A633
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90227B2A3B5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48E2B7AA8FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12B7E563D9E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52944335BBE;
-	Mon, 18 Aug 2025 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722D531E11B;
+	Mon, 18 Aug 2025 13:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OckEcrXb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws0kecRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1164C335BA1;
-	Mon, 18 Aug 2025 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302DE31CA5B;
+	Mon, 18 Aug 2025 13:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523980; cv=none; b=jU2u1aEXjLU9rcGKfpKwTJJYwAEjdVTZwWua3U7U5xXSLGEmYHFve44PwygFjyUztHgCSKbv1TwjUvafu9BTTyWLO3rbQ0cvU8vnrsopxH2YrMY9OdYR/BVwutHJLxKKY9eyLa2q4wS1E/QtOjTcyTpZcAnCTJlI1wbyBHWJwB4=
+	t=1755522220; cv=none; b=JoWM8W0vHSH8E5pgHu5Gau0HJJT5J6aoYeTkCE/Wuzk8CboEdrcGbvhKg9oPATqn39YQoEBQWi72frQyX0Hi2RFfzFC7c6OlYhy5lZACVZs3Q7JsvzcY2DV2tf/JFfEUbDWsoKbjNw08g60StKA/hgcZYNVzZNpb/xaJpCqdKo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523980; c=relaxed/simple;
-	bh=ZXtMayDGtzxU2wtDl391l/ZnqiEw6qUumHAK0rwDGvo=;
+	s=arc-20240116; t=1755522220; c=relaxed/simple;
+	bh=N2HcmzkmbczfQNgHUweHntGUvyPs+McS0umDHdntPHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i0Qdxqq8zUTrzbLiPjZWDvW0z60JhXzBP9JV/6d0Z4dVAqadcLnCi+90zF1WZ989XM6UIEYlKmx5iZFOQTGN/RVKA00yzm/0Jss0q7jdilJwn/GXtqvLd0q9CoRlGTor5/51bYjiLgYh8JbsYduGMoeRr9Gdx5IdUhwpJzoXGzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OckEcrXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732B1C4CEEB;
-	Mon, 18 Aug 2025 13:32:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SdYO2XCOwMJGIOFFdegC7DKsZSbNGdIi+JBHLb7yzdNHlVum38+J/0QxVLuQvqXzO/ASOeWuDLertp2SGvWVve7Z6MtAuBxLUkBtPpoVlgrxWgbV6mTXK/TD3CymgHXTAn2Gip3C3UUd6Ej5uU0rb2+xBjgS8nppF7mNyQvEgEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws0kecRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E986C4CEF1;
+	Mon, 18 Aug 2025 13:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523979;
-	bh=ZXtMayDGtzxU2wtDl391l/ZnqiEw6qUumHAK0rwDGvo=;
+	s=korg; t=1755522219;
+	bh=N2HcmzkmbczfQNgHUweHntGUvyPs+McS0umDHdntPHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OckEcrXb6qYjn6XMuGrcZiOKAwpGfc+zGpG+fwOJtKXdLDNY+mdFNc6zYkTOIaETl
-	 HAKMQ3wk76PeesOnGiUY/y2aa9oaNGIAJELTLq6X/rYETfhpZwsiCF8ZtS5y3KlzsY
-	 GioEQmKc6HG+wLObPGTfmWX6jrGyfzzQznjcOXUk=
+	b=ws0kecRrgxAUz6w/qeIzNp0DXhHgy00HQ0YtY0n+VnJjltXvcLPUKQ/EnTiLVFmH5
+	 I8kXPsuO5zcGyQS8mak+26zpK/57r3uvMbFiRkeVLsz+2AK+TZqVJQrmm+oIYMhFBQ
+	 3N09WYS28UlKGQkVyqUgPB5egr7friGyg6oRPXDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 289/515] wifi: ath12k: Enable REO queue lookup table feature on QCN9274 hw2.0
-Date: Mon, 18 Aug 2025 14:44:35 +0200
-Message-ID: <20250818124509.537565841@linuxfoundation.org>
+Subject: [PATCH 6.12 250/444] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
+Date: Mon, 18 Aug 2025 14:44:36 +0200
+Message-ID: <20250818124458.197395738@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit b79742b84e16e41c4a09f3126436f39f36e75c06 ]
+[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
 
-The commit 89ac53e96217 ("wifi: ath12k: Enable REO queue lookup table
-feature on QCN9274") originally intended to enable the reoq_lut_support
-hardware parameter flag for both QCN9274 hw1.0 and hw2.0. However,
-it enabled it only for QCN9274 hw1.0.
+BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
+avoid reading or writing it.
+PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
+and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
 
-Hence, enable REO queue lookup table feature on QCN9274 hw2.0.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250609-qcn9274-reoq-v1-1-a92c91abc9b9@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index a5fa3b6a831a..e0e766a0b6d6 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1090,7 +1090,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.download_calib = true,
- 		.supports_suspend = false,
- 		.tcl_ring_retry = true,
--		.reoq_lut_support = false,
-+		.reoq_lut_support = true,
- 		.supports_shadow_regs = false,
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index fef265521e8a..0085adecaf2d 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1269,6 +1269,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1293,6 +1295,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	if (port == dev->imp_port) {
+ 		off = B53_PORT_OVERRIDE_CTRL;
+ 		val = PORT_OVERRIDE_EN;
++	} else if (is5325(dev)) {
++		return;
+ 	} else {
+ 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
+ 		val = GMII_PO_EN;
+@@ -1323,10 +1327,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 		return;
+ 	}
  
- 		.num_tcl_banks = 48,
+-	if (rx_pause)
+-		reg |= PORT_OVERRIDE_RX_FLOW;
+-	if (tx_pause)
+-		reg |= PORT_OVERRIDE_TX_FLOW;
++	if (rx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_RX_FLOW;
++	}
++
++	if (tx_pause) {
++		if (is5325(dev))
++			reg |= PORT_OVERRIDE_LP_FLOW_25;
++		else
++			reg |= PORT_OVERRIDE_TX_FLOW;
++	}
+ 
+ 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index d8900aa433e5..719c2ac94a4f 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -95,6 +95,7 @@
+ #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
+ #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
++#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
+ #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
+ #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
 -- 
 2.39.5
 
