@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-170167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26BDB2A30A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D1CB2A5FC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B451B17693C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B447C580509
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DD731B102;
-	Mon, 18 Aug 2025 12:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A3E322776;
+	Mon, 18 Aug 2025 13:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uk2jmUQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I79Dh0s3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EBF27B355;
-	Mon, 18 Aug 2025 12:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0B631E0F8;
+	Mon, 18 Aug 2025 13:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521748; cv=none; b=iHkZmvSQbXx7+oOSGMZvYsrb/Qg5yjhf3dM15HT5cmrAmfB7crRYGZg3+Enu3FlWj95Hz51365upKjFHHpnantAsUp3VP6vZwH2vxHRAbh7WRxKKiEa91GnLSjsvmUcqf4Xh4n8GpRU+t4lDjPn5yfK+dy4AG8DSocy1iTAJINs=
+	t=1755523509; cv=none; b=RWke9mZxuCVOk10SV3/u50mY9Y5dKDJQ+vlX0tVLWf/EFNpt2uBpdbPIxjA7EBV3FLupVcFyeib5tuS0AG0YJ0jeq5fmBoFNBn8jA/6iPsYQ/ofx9VaIoNNXE5FExH6VQM3NKs1epTpbO18WYcOLSWcjeJV+l7VcBsubpYSKqEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521748; c=relaxed/simple;
-	bh=1XSmO+/e3Z7Iw+aBDKI30Q3uagmr9SytoQBPcWJjz10=;
+	s=arc-20240116; t=1755523509; c=relaxed/simple;
+	bh=kOSOChCC8tM5OJQERktW+HN6oZRRawpsJ+Rkj9bt1i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r96LkzIzauE++Slp5O++IISR0BDI13KM5ZlJZfa3MkdxFbnbpns6X/4r2dgoeLJoNrJf66IoFHf6T9yrgYK7j/XRv4TN7XjN4XKWrcBVQdrc84oH/4ugf2+i5U88GE72EnErXvmfQ6NOBcmDTEKvVXdwYLFion5wZou1tIn6Rqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uk2jmUQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E77CC4CEEB;
-	Mon, 18 Aug 2025 12:55:46 +0000 (UTC)
+	 MIME-Version; b=be84PIBx3V39Nuj5L2yvuUYMY97W4Pxo8g9r2gRT1+fq6eSWVKuPYEhpNoyN1tSA92X0NmiJlsYZdK0LWHrv5LSuKbW8BKvNsObUPabdpKd92g1HsVEAfuQX+axxCGytlGJ27R+1Qxe36if0gnUcd+MpAKq7YCw46Iq+KwpVV4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I79Dh0s3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE832C4CEEB;
+	Mon, 18 Aug 2025 13:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521747;
-	bh=1XSmO+/e3Z7Iw+aBDKI30Q3uagmr9SytoQBPcWJjz10=;
+	s=korg; t=1755523509;
+	bh=kOSOChCC8tM5OJQERktW+HN6oZRRawpsJ+Rkj9bt1i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uk2jmUQOZSdiAWNtvPrVL0cC4Yj7mGkUu8ebzOeHUfjzMJqd19lcBQKKLf5KgVGuF
-	 roORo6HGWjmTNM89eYq3NBjSNUj2WNYyiyI85wKlcXlFsk5zV7SF9D4LaV+qBVirh7
-	 VxBIX4R8B3y9/NaqLbood2gYzZy04NDXc27qUwcE=
+	b=I79Dh0s37tl9KRFvgfjcDbf/V04nT55yQhEXsTW0IU7ZLP4/VNCGPRT/QEchIgsAO
+	 pZuem7YzqsQxsTSohiayJ/9ULDwx0BUeYkDI+TJ4/9sozioPetJgMUEm7fSVHR7SLd
+	 2fm8dvars3yvVet0l5a71cxAEKXB754YNodrIJ2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	GalaxySnail <me@glxys.nl>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/444] gpio: wcd934x: check the return value of regmap_update_bits()
-Date: Mon, 18 Aug 2025 14:42:15 +0200
-Message-ID: <20250818124453.024796176@linuxfoundation.org>
+Subject: [PATCH 6.15 150/515] ALSA: hda: add MODULE_FIRMWARE for cs35l41/cs35l56
+Date: Mon, 18 Aug 2025 14:42:16 +0200
+Message-ID: <20250818124504.157767210@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: GalaxySnail <me@glxys.nl>
 
-[ Upstream commit ff0f0d7c6587e38c308be9905e36f86e98fb9c1f ]
+[ Upstream commit 6eda9429501508196001845998bb8c73307d311a ]
 
-regmap_update_bits() can fail so check its return value in
-wcd_gpio_direction_output() for consistency with the rest of the code
-and propagate any errors.
+add firmware information in the .modinfo section, so that userspace
+tools can find out firmware required by cs35l41/cs35l56 kernel module
 
-Link: https://lore.kernel.org/r/20250709-gpiochip-set-rv-gpio-remaining-v1-2-b8950f69618d@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: GalaxySnail <me@glxys.nl>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250624101716.2365302-2-me@glxys.nl
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-wcd934x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/pci/hda/cs35l41_hda.c | 2 ++
+ sound/pci/hda/cs35l56_hda.c | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/gpio/gpio-wcd934x.c b/drivers/gpio/gpio-wcd934x.c
-index 2bba27b13947..cfa7b0a50c8e 100644
---- a/drivers/gpio/gpio-wcd934x.c
-+++ b/drivers/gpio/gpio-wcd934x.c
-@@ -46,9 +46,12 @@ static int wcd_gpio_direction_output(struct gpio_chip *chip, unsigned int pin,
- 				     int val)
- {
- 	struct wcd_gpio_data *data = gpiochip_get_data(chip);
-+	int ret;
- 
--	regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
--			   WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
-+	ret = regmap_update_bits(data->map, WCD_REG_DIR_CTL_OFFSET,
-+				 WCD_PIN_MASK(pin), WCD_PIN_MASK(pin));
-+	if (ret)
-+		return ret;
- 
- 	return regmap_update_bits(data->map, WCD_REG_VAL_CTL_OFFSET,
- 				  WCD_PIN_MASK(pin),
+diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
+index 5dc021976c79..4397630496fd 100644
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -2060,3 +2060,5 @@ MODULE_IMPORT_NS("SND_SOC_CS_AMP_LIB");
+ MODULE_AUTHOR("Lucas Tanure, Cirrus Logic Inc, <tanureal@opensource.cirrus.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_IMPORT_NS("FW_CS_DSP");
++MODULE_FIRMWARE("cirrus/cs35l41-*.wmfw");
++MODULE_FIRMWARE("cirrus/cs35l41-*.bin");
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index c9c8ec8d2474..7e92ad955e78 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -1178,3 +1178,7 @@ MODULE_IMPORT_NS("SND_SOC_CS_AMP_LIB");
+ MODULE_AUTHOR("Richard Fitzgerald <rf@opensource.cirrus.com>");
+ MODULE_AUTHOR("Simon Trimmer <simont@opensource.cirrus.com>");
+ MODULE_LICENSE("GPL");
++MODULE_FIRMWARE("cirrus/cs35l54-*.wmfw");
++MODULE_FIRMWARE("cirrus/cs35l54-*.bin");
++MODULE_FIRMWARE("cirrus/cs35l56-*.wmfw");
++MODULE_FIRMWARE("cirrus/cs35l56-*.bin");
 -- 
 2.39.5
 
