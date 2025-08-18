@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC03DB2A2AA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:00:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A5BB2A849
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6FB3A47BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2F425A155D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073FE31CA57;
-	Mon, 18 Aug 2025 12:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC66335BC6;
+	Mon, 18 Aug 2025 13:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wA4dC9Tb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSlqmIdo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FA91E51FE;
-	Mon, 18 Aug 2025 12:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B001335BA7;
+	Mon, 18 Aug 2025 13:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521791; cv=none; b=I91hiFNJ55/s81z7xZuJvVdPiBeE3XDR4Lyi6VjUN57LncjD9reCIE5V1g4s88t/LFs9Z27rNlxNz9zQuI9Lkx97zGN9ov/4++8E9sfq7Y5I63a2UoV6x/8JtOjPvndpkZtSsZ/BRCG6905ssURnVvdyBDH9sF1hGrJVTDIqsWc=
+	t=1755525120; cv=none; b=nkONAlxd4DuRW9WNIAhDEZ78dyQXj/sRaLjQbGQy1EQG7u5Bg4Sp7SbZuJxNESco5gspqhr3nUrnmyKBf3sNt/KTCM1d443g0+hV71xaXqaCbMqjkOvs4LXHoiHla04Ry1cvUWjvE6WYPjSDi0g3uwB4eDPYJRmFwRYsVmxsG44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521791; c=relaxed/simple;
-	bh=JPPS+405WT3bFbPB7m6hrtZJroK0dukfba2jatEQIX4=;
+	s=arc-20240116; t=1755525120; c=relaxed/simple;
+	bh=gLSkRiMgEqStu03dKxTQ6d17A5IZSAJcW8s9UVuR9Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRroT/JhAmfPG0VYnu1OcRR2q5IuzvNptzVEs48jLyP0KTKq0nd+mNgADQPNvBdlU8q92JQtC4/78ErQZRaLYb4Q4QLvDzQhbvZ4VU9Pze92vZlsuN0Gsp7o6QJFrcEuKKx9hupTKhY37wCaS3wjK75OMPQIzuTOnXwIoOZ438k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wA4dC9Tb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA6BC4CEEB;
-	Mon, 18 Aug 2025 12:56:31 +0000 (UTC)
+	 MIME-Version; b=SggYDkQ40vEM+ANLyaQkaUNZEDlXC1XLZOP8+hDG3kWMbaNouc+pblhCDyvVQofhZRrxegpiJFkMSFQpipd/pI2eqVpsvkYMHr1Z+CgjAPsFnLYu5E4oGP9kvmRqu4JGARKlscDq/hGcBqeVuQXTlgEU037m0c46pJHQaRtw/eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSlqmIdo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E67C4CEEB;
+	Mon, 18 Aug 2025 13:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521791;
-	bh=JPPS+405WT3bFbPB7m6hrtZJroK0dukfba2jatEQIX4=;
+	s=korg; t=1755525120;
+	bh=gLSkRiMgEqStu03dKxTQ6d17A5IZSAJcW8s9UVuR9Iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wA4dC9Tb+3fb1+c9oh2qT0EePGAiknF+1zBuDwJOlBrxBDcDOeNWXUzPpkL1+d0rU
-	 lNdLEExWBsJcYtJkymHMK1eLTro9djJ9rKl1heK9eKRwbp1KgYL+aMIGdPqtBjnfao
-	 dqtllLCQLHM8Vizzyn0xgFBc0GGiVqhzdzkc/rCM=
+	b=VSlqmIdosID5I7TKD+fcGbX1AsJIOSDgcM2QlFfRoFn1YAsWHFCWZsIP0q2IfrwWd
+	 ZCxJjywXcMeArh315HxuQ7RCfia5R80d+gBDB56RVk1WCcHsWPT3UmmQmMKByxY7oB
+	 oXIgU3KuyIJyKwIdphMu6rMkR8XbxLhytQRDfGq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Qiyu <qiyuzhu2@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	GalaxySnail <me@glxys.nl>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 124/444] ACPI: PRM: Reduce unnecessary printing to avoid user confusion
+Subject: [PATCH 6.16 163/570] ALSA: hda: add MODULE_FIRMWARE for cs35l41/cs35l56
 Date: Mon, 18 Aug 2025 14:42:30 +0200
-Message-ID: <20250818124453.563712151@linuxfoundation.org>
+Message-ID: <20250818124512.085596549@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Qiyu <qiyuzhu2@amd.com>
+From: GalaxySnail <me@glxys.nl>
 
-[ Upstream commit 3db5648c4d608b5483470efc1da9780b081242dd ]
+[ Upstream commit 6eda9429501508196001845998bb8c73307d311a ]
 
-Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-handler and context") introduced non-essential printing "Failed to find
-VA for GUID: xxxx, PA: 0x0" which may confuse users to think that
-something wrong is going on while it is not the case.
+add firmware information in the .modinfo section, so that userspace
+tools can find out firmware required by cs35l41/cs35l56 kernel module
 
-According to the PRM Spec Section 4.1.2 [1], both static data buffer
-address and ACPI parameter buffer address may be NULL if they are not
-needed, so there is no need to print out the "Failed to find VA ... "
-in those cases.
-
-Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-Signed-off-by: Zhu Qiyu <qiyuzhu2@amd.com>
-Link: https://patch.msgid.link/20250704014104.82524-1-qiyuzhu2@amd.com
-[ rjw: Edits in new comments, subject and changelog ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: GalaxySnail <me@glxys.nl>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250624101716.2365302-2-me@glxys.nl
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/prmt.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ sound/pci/hda/cs35l41_hda.c | 2 ++
+ sound/pci/hda/cs35l56_hda.c | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index e549914a636c..be033bbb126a 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -85,8 +85,6 @@ static u64 efi_pa_va_lookup(efi_guid_t *guid, u64 pa)
- 		}
- 	}
- 
--	pr_warn("Failed to find VA for GUID: %pUL, PA: 0x%llx", guid, pa);
--
- 	return 0;
- }
- 
-@@ -154,13 +152,37 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
-+		/*
-+		 * Print a warning message if handler_addr is zero which is not expected to
-+		 * ever happen.
-+		 */
-+		if (unlikely(!th->handler_addr))
-+			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->handler_address);
- 
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
-+		/*
-+		 * According to the PRM specification, static_data_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->static_data_buffer_addr && handler_info->static_data_buffer_address))
-+			pr_warn("Failed to find VA of static data buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->static_data_buffer_address);
- 
- 		th->acpi_param_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->acpi_param_buffer_address);
- 
-+		/*
-+		 * According to the PRM specification, acpi_param_buffer_address can be zero,
-+		 * so avoid printing a warning message in that case.  Otherwise, if the
-+		 * return value of efi_pa_va_lookup() is zero, print the message.
-+		 */
-+		if (unlikely(!th->acpi_param_buffer_addr && handler_info->acpi_param_buffer_address))
-+			pr_warn("Failed to find VA of acpi param buffer for GUID: %pUL, PA: 0x%llx",
-+				&th->guid, handler_info->acpi_param_buffer_address);
-+
- 	} while (++cur_handler < tm->handler_count && (handler_info = get_next_handler(handler_info)));
- 
- 	return 0;
+diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
+index d5bc81099d0d..17cdce91fdbf 100644
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -2085,3 +2085,5 @@ MODULE_IMPORT_NS("SND_SOC_CS_AMP_LIB");
+ MODULE_AUTHOR("Lucas Tanure, Cirrus Logic Inc, <tanureal@opensource.cirrus.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_IMPORT_NS("FW_CS_DSP");
++MODULE_FIRMWARE("cirrus/cs35l41-*.wmfw");
++MODULE_FIRMWARE("cirrus/cs35l41-*.bin");
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index 886c53184fec..f48077f5ca45 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -1176,3 +1176,7 @@ MODULE_IMPORT_NS("SND_SOC_CS_AMP_LIB");
+ MODULE_AUTHOR("Richard Fitzgerald <rf@opensource.cirrus.com>");
+ MODULE_AUTHOR("Simon Trimmer <simont@opensource.cirrus.com>");
+ MODULE_LICENSE("GPL");
++MODULE_FIRMWARE("cirrus/cs35l54-*.wmfw");
++MODULE_FIRMWARE("cirrus/cs35l54-*.bin");
++MODULE_FIRMWARE("cirrus/cs35l56-*.wmfw");
++MODULE_FIRMWARE("cirrus/cs35l56-*.bin");
 -- 
 2.39.5
 
