@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7572EB2A2FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F8BB2A76A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 996155E13D2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F34D4E3637
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF2631CA48;
-	Mon, 18 Aug 2025 13:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1626C335BC6;
+	Mon, 18 Aug 2025 13:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ek+ML6NZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqlObIUg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0440431AF15;
-	Mon, 18 Aug 2025 13:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE5E335BA3;
+	Mon, 18 Aug 2025 13:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522013; cv=none; b=X5iKMS+IhjMBVcg9aPugZZSRCTpP0Mc9VIX0Ae4spcmCmO5hW3uRs9mit8+0nALe/cn5CXEZUuCiaKr4jKzDAl7NR7eW0BbgMEkO8DQgmdkfSGdeUMT295ylC81nYG3NxnZ0UNR781Y26BrPkXJdP4Z5EC+tLTouPHmfuxtGflU=
+	t=1755525187; cv=none; b=gNaO7C9S3jpfvPlu9g8NlfVN8VK1sDvW8nwvDpbWGKLFHXu/ihzaMTPZP4AByBhRUGWwEj9jYCTOruUn9nDWX0Kq9RBHQEIfWVy5RR+ZztJoxTQTUPD0ztVlarANfmOIcOF4QLzUrxiA7bV81C8sPl+UMxXVtgzSAE127vxKXy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522013; c=relaxed/simple;
-	bh=z1HExUjLeqQKYXwL8T9qsNVMcpVND6/Is/GDzHcMv5I=;
+	s=arc-20240116; t=1755525187; c=relaxed/simple;
+	bh=Y/ZXRiTvniIpVl8biIJzOffmwQJVG/2oZBd2EEUTNQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVUw0OF04OX76QL4q6013e4Ku5DdRDxfJkqE69c11b6pj67PWFEfGv/NBgIp5ubupZmc7rvD2a/ifdYScyzqPwGt62TDHFSYczCFxSm9EhQJ0xLCvJNgLwF7MjLmOS1YutKpRe96BFLQSgOIb4+Ay8GBdI/7XlIHAMMVoXrmIAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ek+ML6NZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396B2C4CEEB;
-	Mon, 18 Aug 2025 13:00:12 +0000 (UTC)
+	 MIME-Version; b=luaQWY5bZES8iHev47T3vdFq9O+vfAoAPVR5b09czgOb/5UN80xQVGCA4FFQptOa8MizkF9zVRZWB1C2eZyhqRNcRElNYF98QrRKM//O2Id02huJlSLhHycFwtJDWsc7X9+T+I7CAEDS3MdmA9X/9kzYpqnWD8c4hjpDYi7b/1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqlObIUg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47832C4CEEB;
+	Mon, 18 Aug 2025 13:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522012;
-	bh=z1HExUjLeqQKYXwL8T9qsNVMcpVND6/Is/GDzHcMv5I=;
+	s=korg; t=1755525187;
+	bh=Y/ZXRiTvniIpVl8biIJzOffmwQJVG/2oZBd2EEUTNQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ek+ML6NZo/NzOp1pj/1YxZ+75Kfv0WW5a/5UwyUuCVAiZLartm9be/2woDIJ6gNmL
-	 PL43zqWMjRqXYkBetkJXDhMF2DrHiKHxrqsmt7zxGpV6b3C6f/pCqY/M3xtoXd7DUC
-	 I3oWcM4HlvIUQwx3w3zie4TPzOzpDvh0e8XLseVA=
+	b=IqlObIUgu4gP8wYXqW/lo89QlrQknE1zULqEkJfQ4TGx1wlwfCx/nSLnnH4wOOCOX
+	 4ZLuyXpQI9tzJQ0sH9LIjH8cAKpM5A64WNJMf3gjCUJwrAQDJ5n/DAu6+MNuet91aH
+	 w2Vc+omYEIW5psoFQBdFEuImesDcrfGxbqB8YvYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Tilahun <jtilahun@astranis.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/444] tty: serial: fix print format specifiers
+Subject: [PATCH 6.16 185/570] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
 Date: Mon, 18 Aug 2025 14:42:52 +0200
-Message-ID: <20250818124454.387316391@linuxfoundation.org>
+Message-ID: <20250818124512.939074250@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,204 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Tilahun <jtilahun@astranis.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 33a2515abd45c64911955ff1da179589db54f99f ]
+[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
 
-The serial info sometimes produces negative TX/RX counts. E.g.:
+We currently log parse failures for ELD data and some disconnection events
+as errors without rate limiting. These log messages can be triggered very
+frequently in some situations, especially ELD parsing when there is nothing
+connected to a HDMI port which will generate:
 
-3: uart:FSL_LPUART mmio:0x02970000 irq:46 tx:-1595870545 rx:339619
-RTS|CTS|DTR|DSR|CD
+hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
 
-It appears that the print format specifiers don't match with the types of
-the respective variables. E.g.: All of the fields in struct uart_icount
-are u32, but the format specifier used is %d, even though u32 is unsigned
-and %d is for signed integers. Update drivers/tty/serial/serial_core.c
-to use the proper format specifiers. Reference
-https://docs.kernel.org/core-api/printk-formats.html as the documentation
-for what format specifiers are the proper ones to use for a given C type.
+While there's doubtless work that could be done on reducing the number of
+connection notification callbacks it's possible these may be legitimately
+generated by poor quality physical connections so let's use rate limiting
+to mitigate the log spam for the parse errors and lower the severity for
+disconnect logging to debug level.
 
-Signed-off-by: Joseph Tilahun <jtilahun@astranis.com>
-Link: https://lore.kernel.org/r/20250610065653.3750067-1-jtilahun@astranis.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c | 44 ++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index d94d73e45fb6..440303566b14 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1353,28 +1353,28 @@ static void uart_sanitize_serial_rs485_delays(struct uart_port *port,
- 	if (!port->rs485_supported.delay_rts_before_send) {
- 		if (rs485->delay_rts_before_send) {
- 			dev_warn_ratelimited(port->dev,
--				"%s (%d): RTS delay before sending not supported\n",
-+				"%s (%u): RTS delay before sending not supported\n",
- 				port->name, port->line);
- 		}
- 		rs485->delay_rts_before_send = 0;
- 	} else if (rs485->delay_rts_before_send > RS485_MAX_RTS_DELAY) {
- 		rs485->delay_rts_before_send = RS485_MAX_RTS_DELAY;
- 		dev_warn_ratelimited(port->dev,
--			"%s (%d): RTS delay before sending clamped to %u ms\n",
-+			"%s (%u): RTS delay before sending clamped to %u ms\n",
- 			port->name, port->line, rs485->delay_rts_before_send);
+diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
+index 1139a2754ca3..056d98154682 100644
+--- a/sound/soc/codecs/hdac_hdmi.c
++++ b/sound/soc/codecs/hdac_hdmi.c
+@@ -1232,7 +1232,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 						>> DRM_ELD_VER_SHIFT;
+ 
+ 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
+-		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: Unknown ELD version %d\n", ver);
+ 		return -EINVAL;
  	}
  
- 	if (!port->rs485_supported.delay_rts_after_send) {
- 		if (rs485->delay_rts_after_send) {
- 			dev_warn_ratelimited(port->dev,
--				"%s (%d): RTS delay after sending not supported\n",
-+				"%s (%u): RTS delay after sending not supported\n",
- 				port->name, port->line);
- 		}
- 		rs485->delay_rts_after_send = 0;
- 	} else if (rs485->delay_rts_after_send > RS485_MAX_RTS_DELAY) {
- 		rs485->delay_rts_after_send = RS485_MAX_RTS_DELAY;
- 		dev_warn_ratelimited(port->dev,
--			"%s (%d): RTS delay after sending clamped to %u ms\n",
-+			"%s (%u): RTS delay after sending clamped to %u ms\n",
- 			port->name, port->line, rs485->delay_rts_after_send);
- 	}
- }
-@@ -1404,14 +1404,14 @@ static void uart_sanitize_serial_rs485(struct uart_port *port, struct serial_rs4
- 			rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+@@ -1240,7 +1241,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
  
- 			dev_warn_ratelimited(port->dev,
--				"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
-+				"%s (%u): invalid RTS setting, using RTS_ON_SEND instead\n",
- 				port->name, port->line);
- 		} else {
- 			rs485->flags |= SER_RS485_RTS_AFTER_SEND;
- 			rs485->flags &= ~SER_RS485_RTS_ON_SEND;
- 
- 			dev_warn_ratelimited(port->dev,
--				"%s (%d): invalid RTS setting, using RTS_AFTER_SEND instead\n",
-+				"%s (%u): invalid RTS setting, using RTS_AFTER_SEND instead\n",
- 				port->name, port->line);
- 		}
- 	}
-@@ -1850,7 +1850,7 @@ static void uart_wait_until_sent(struct tty_struct *tty, int timeout)
- 
- 	expire = jiffies + timeout;
- 
--	pr_debug("uart_wait_until_sent(%d), jiffies=%lu, expire=%lu...\n",
-+	pr_debug("uart_wait_until_sent(%u), jiffies=%lu, expire=%lu...\n",
- 		port->line, jiffies, expire);
- 
- 	/*
-@@ -2046,7 +2046,7 @@ static void uart_line_info(struct seq_file *m, struct uart_driver *drv, int i)
- 		return;
- 
- 	mmio = uport->iotype >= UPIO_MEM;
--	seq_printf(m, "%d: uart:%s %s%08llX irq:%d",
-+	seq_printf(m, "%u: uart:%s %s%08llX irq:%u",
- 			uport->line, uart_type(uport),
- 			mmio ? "mmio:0x" : "port:",
- 			mmio ? (unsigned long long)uport->mapbase
-@@ -2068,18 +2068,18 @@ static void uart_line_info(struct seq_file *m, struct uart_driver *drv, int i)
- 		if (pm_state != UART_PM_STATE_ON)
- 			uart_change_pm(state, pm_state);
- 
--		seq_printf(m, " tx:%d rx:%d",
-+		seq_printf(m, " tx:%u rx:%u",
- 				uport->icount.tx, uport->icount.rx);
- 		if (uport->icount.frame)
--			seq_printf(m, " fe:%d",	uport->icount.frame);
-+			seq_printf(m, " fe:%u",	uport->icount.frame);
- 		if (uport->icount.parity)
--			seq_printf(m, " pe:%d",	uport->icount.parity);
-+			seq_printf(m, " pe:%u",	uport->icount.parity);
- 		if (uport->icount.brk)
--			seq_printf(m, " brk:%d", uport->icount.brk);
-+			seq_printf(m, " brk:%u", uport->icount.brk);
- 		if (uport->icount.overrun)
--			seq_printf(m, " oe:%d", uport->icount.overrun);
-+			seq_printf(m, " oe:%u", uport->icount.overrun);
- 		if (uport->icount.buf_overrun)
--			seq_printf(m, " bo:%d", uport->icount.buf_overrun);
-+			seq_printf(m, " bo:%u", uport->icount.buf_overrun);
- 
- #define INFOBIT(bit, str) \
- 	if (uport->mctrl & (bit)) \
-@@ -2571,7 +2571,7 @@ uart_report_port(struct uart_driver *drv, struct uart_port *port)
- 		break;
+ 	if (mnl > ELD_MAX_MNL) {
+-		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: MNL Invalid %d\n", mnl);
+ 		return -EINVAL;
  	}
  
--	pr_info("%s%s%s at %s (irq = %d, base_baud = %d) is a %s\n",
-+	pr_info("%s%s%s at %s (irq = %u, base_baud = %u) is a %s\n",
- 	       port->dev ? dev_name(port->dev) : "",
- 	       port->dev ? ": " : "",
- 	       port->name,
-@@ -2579,7 +2579,7 @@ uart_report_port(struct uart_driver *drv, struct uart_port *port)
+@@ -1299,8 +1301,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
  
- 	/* The magic multiplier feature is a bit obscure, so report it too.  */
- 	if (port->flags & UPF_MAGIC_MULTIPLIER)
--		pr_info("%s%s%s extra baud rates supported: %d, %d",
-+		pr_info("%s%s%s extra baud rates supported: %u, %u",
- 			port->dev ? dev_name(port->dev) : "",
- 			port->dev ? ": " : "",
- 			port->name,
-@@ -2978,7 +2978,7 @@ static ssize_t close_delay_show(struct device *dev,
- 	struct tty_port *port = dev_get_drvdata(dev);
+ 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
  
- 	uart_get_info(port, &tmp);
--	return sprintf(buf, "%d\n", tmp.close_delay);
-+	return sprintf(buf, "%u\n", tmp.close_delay);
- }
+-		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
+-						__func__, pin->nid, port->id);
++		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
++			__func__, pin->nid, port->id);
  
- static ssize_t closing_wait_show(struct device *dev,
-@@ -2988,7 +2988,7 @@ static ssize_t closing_wait_show(struct device *dev,
- 	struct tty_port *port = dev_get_drvdata(dev);
- 
- 	uart_get_info(port, &tmp);
--	return sprintf(buf, "%d\n", tmp.closing_wait);
-+	return sprintf(buf, "%u\n", tmp.closing_wait);
- }
- 
- static ssize_t custom_divisor_show(struct device *dev,
-@@ -3008,7 +3008,7 @@ static ssize_t io_type_show(struct device *dev,
- 	struct tty_port *port = dev_get_drvdata(dev);
- 
- 	uart_get_info(port, &tmp);
--	return sprintf(buf, "%d\n", tmp.io_type);
-+	return sprintf(buf, "%u\n", tmp.io_type);
- }
- 
- static ssize_t iomem_base_show(struct device *dev,
-@@ -3028,7 +3028,7 @@ static ssize_t iomem_reg_shift_show(struct device *dev,
- 	struct tty_port *port = dev_get_drvdata(dev);
- 
- 	uart_get_info(port, &tmp);
--	return sprintf(buf, "%d\n", tmp.iomem_reg_shift);
-+	return sprintf(buf, "%u\n", tmp.iomem_reg_shift);
- }
- 
- static ssize_t console_show(struct device *dev,
-@@ -3168,7 +3168,7 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
- 	state->pm_state = UART_PM_STATE_UNDEFINED;
- 	uart_port_set_cons(uport, drv->cons);
- 	uport->minor = drv->tty_driver->minor_start + uport->line;
--	uport->name = kasprintf(GFP_KERNEL, "%s%d", drv->dev_name,
-+	uport->name = kasprintf(GFP_KERNEL, "%s%u", drv->dev_name,
- 				drv->tty_driver->name_base + uport->line);
- 	if (!uport->name) {
- 		ret = -ENOMEM;
-@@ -3211,7 +3211,7 @@ static int serial_core_add_one_port(struct uart_driver *drv, struct uart_port *u
- 		device_set_wakeup_capable(tty_dev, 1);
- 	} else {
- 		uport->flags |= UPF_DEAD;
--		dev_err(uport->dev, "Cannot register tty device on line %d\n",
-+		dev_err(uport->dev, "Cannot register tty device on line %u\n",
- 		       uport->line);
- 	}
- 
+ 		/*
+ 		 * PCMs are not registered during device probe, so don't
 -- 
 2.39.5
 
