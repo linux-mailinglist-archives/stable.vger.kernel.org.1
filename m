@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-171161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F9AB2A7F8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F91B2A512
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AF1E1B63C9F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 908EC7BF5FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFF3335BCB;
-	Mon, 18 Aug 2025 13:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F29D335BA3;
+	Mon, 18 Aug 2025 13:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtzhkUEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuKr+wOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5791335BC1;
-	Mon, 18 Aug 2025 13:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE43335BAA;
+	Mon, 18 Aug 2025 13:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525015; cv=none; b=tnRBQhaf6sxGNrFllF16cI9QR6mVBsCDI0hBaQO41+eIuPWZ1isdQtOzDxPQm/+nUOH+Dnjo8YXBA9MBPxej2VXC4j38EGLvsYQvdLSO30jNYlMTZsGEHY/16H6wLzL7FRb8O0rBi7mEZb3I2QhNGVT5llCGAAWpmHbNxeWoA9k=
+	t=1755523206; cv=none; b=TEm4CMjN+08WaQ+bXURKFqfl5h7Sx5YF2mvIMt5NH7SkJR7ruslNyfIwwKf8LZ9LV8rz2cCrHefaTvO70SdrjSKqDpaAxRt2lgAQQkX3GoAnVNiLd9GnInki2UQK8T4gSVY68SEf63aVxPFM6cOoBA35gy+0gDB0T+D9SfWH7Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525015; c=relaxed/simple;
-	bh=yRTT4jR2ZNnsB2h5yrETfw7me3LaomgCBMYBAYBp9No=;
+	s=arc-20240116; t=1755523206; c=relaxed/simple;
+	bh=0iuCLH+F3y47IYrC3dcopIgemH7mCXqqg7spMBtOrEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdqL35aK/zXtg9+1JaaNgaNdrPmYkBzQv1Uoai26CN0sCSYOnnWFybU9v5XFInhpmlXj61inx+Ib0hlsEcdPd/8Lyg1NT/RTCLqQORLQslgJ2OdDG17hUqh2L2uCay7aKySfVzzqwVi0sTK6OwvVgWZY9pkGbhM7On9ELjvxfKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtzhkUEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6885AC4CEF1;
-	Mon, 18 Aug 2025 13:50:14 +0000 (UTC)
+	 MIME-Version; b=DJgV8VHJA70RfdOA2n9hH9+lPtGXDQ39jANncK+qlBEpS1kV/rBmzXGaIVLHIKrok8f0JzFI7hOKxuzNdHruVepEoux/mb3uu1ZDhH/hk/UJZVM9/GieH5xgEJT18pQQphtqTvcKNaTKjaQyyMaZdJJY+aQQO88WMr90eHVt4+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuKr+wOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81125C4CEEB;
+	Mon, 18 Aug 2025 13:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525014;
-	bh=yRTT4jR2ZNnsB2h5yrETfw7me3LaomgCBMYBAYBp9No=;
+	s=korg; t=1755523206;
+	bh=0iuCLH+F3y47IYrC3dcopIgemH7mCXqqg7spMBtOrEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtzhkUEjeR/erdlodjYmM++U0BYmkcDF+IgtahiV64suEQ4W7damZhcGWWTWw6tb0
-	 VYyQW9aAMPKoXn2lprefESZ7Ttlskqb0uDJUOUjppNC77qj8jNPG+PCUIRvo20IRwd
-	 x/EEkJXaqWRmCZv28gM6ON5a2yFRJtuH5xUb+EqY=
+	b=QuKr+wOE05hR/ubnrsR3flMX02CsK2Xb7vbQX2XW12uUI7DmbDeZ3Gejew3AoIMu/
+	 fRYzO+FyvfzYth3gZ3eEQsTb10ZF/6W0Gxg1Kbq2jgzOs61SujzyCV3mu8zW3wzovT
+	 Ir7LKo7BJcResH9yqDOqJG9jg2qhGy8pxu5C5ivA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 101/570] dm-stripe: limit chunk_sectors to the stripe size
+Subject: [PATCH 6.15 102/515] ata: libata-sata: Disallow changing LPM state if not supported
 Date: Mon, 18 Aug 2025 14:41:28 +0200
-Message-ID: <20250818124509.702782717@linuxfoundation.org>
+Message-ID: <20250818124502.298940831@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 5fb9d4341b782a80eefa0dc1664d131ac3c8885d ]
+[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
 
-Same as done for raid0, set chunk_sectors limit to appropriately set the
-atomic write size limit.
+Modify ata_scsi_lpm_store() to return an error if a user attempts to set
+a link power management policy for a port that does not support LPM,
+that is, ports flagged with ATA_FLAG_NO_LPM.
 
-Setting chunk_sectors limit in this way overrides the stacked limit
-already calculated based on the bottom device limits. This is ok, as
-when any bios are sent to the bottom devices, the block layer will still
-respect the bottom device chunk_sectors.
-
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20250711105258.3135198-6-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-stripe.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/libata-sata.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/md/dm-stripe.c b/drivers/md/dm-stripe.c
-index a7dc04bd55e5..5bbbdf8fc1bd 100644
---- a/drivers/md/dm-stripe.c
-+++ b/drivers/md/dm-stripe.c
-@@ -458,6 +458,7 @@ static void stripe_io_hints(struct dm_target *ti,
- 	struct stripe_c *sc = ti->private;
- 	unsigned int chunk_size = sc->chunk_size << SECTOR_SHIFT;
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index 2e4463d3a356..00b7123192e7 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -924,6 +924,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
  
-+	limits->chunk_sectors = sc->chunk_size;
- 	limits->io_min = chunk_size;
- 	limits->io_opt = chunk_size * sc->stripes;
- }
+ 	spin_lock_irqsave(ap->lock, flags);
+ 
++	if (ap->flags & ATA_FLAG_NO_LPM) {
++		count = -EOPNOTSUPP;
++		goto out_unlock;
++	}
++
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		ata_for_each_dev(dev, &ap->link, ENABLED) {
+ 			if (dev->quirks & ATA_QUIRK_NOLPM) {
 -- 
 2.39.5
 
