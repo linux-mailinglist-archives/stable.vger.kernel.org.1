@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E37DB2A5ED
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:18 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA186B2A2D1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27A6AB604CE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A56194E2FDC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D749D3218B8;
-	Mon, 18 Aug 2025 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC6D3074AE;
+	Mon, 18 Aug 2025 13:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ca9gynEQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UKzzWIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957482E22AF;
-	Mon, 18 Aug 2025 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1EC21C9FD;
+	Mon, 18 Aug 2025 13:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523806; cv=none; b=RY7aMlytF7JKGERglNoiClQ9O2tvfZXgA1wh2ZDnE0pZpp9fJMuiJMTYMIHI4zQDs8RdVWDQPt9RjpLab2gwZRXnMMUnDpdibqYXGEOI65M8EEQ91pbRBhuMarrTzi16R3KVKWR4CBrsM0qCmCscdQ0MYT8VQyXhYtKcj1iDL5k=
+	t=1755522176; cv=none; b=EUk1EQxQNz4E65qhjDM3PFvf7WnnvBj3kkPsA4hNyFzS2Tjxo/nsnciTr9uxzgUctr/gKsG/pdLtB3BQ9xP0DfHocyzEdPVhSPdRVK5Zo9EQA7TR5At6pfjqIHEXXlJFphEmOVZ7a5XdOJBMmtzA0SZnvpYx2dP7cITlCZf1e48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523806; c=relaxed/simple;
-	bh=y89Jl75u+36RaOzpcenKCTlL3rWAYU00a+/crcMQJuE=;
+	s=arc-20240116; t=1755522176; c=relaxed/simple;
+	bh=hC6gALGHFbnYEDMLE3Logo0BibtMbH/swzHWfUoZClU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkPd5xMSwa0CSOzzRtwOBMvS/4wCVLAAqb7prDYrMTD/6JBo9YtHdTg67FX3TGadde3/KJ5Ee9PnwgrUXDOQyIpRU11+zZc3P4xg6dBCAdTpz0sHpfJAnacpDqQ2XBv0YsnWKOt4d7Iu1vwCp0yb9alHwreKaT/7Gl1I4tWH1ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ca9gynEQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A31CC4CEEB;
-	Mon, 18 Aug 2025 13:30:05 +0000 (UTC)
+	 MIME-Version; b=VZFgYvCm3T4ZduXAgNT0SVJy8jGSX0Fbk8KJ8I/jGY87S/49gQkKHuelGIqc2SYtaf8r6biE85eGH/24addXn1mfcOOGCpm4mqyBTrfKZLcwNLwnbkmP/4VTBnp5PeGJLHLbVyu6lZ+QjAa6TpfitBlSh6ghkKWbSlOrSgASrg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UKzzWIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE16DC4CEEB;
+	Mon, 18 Aug 2025 13:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523806;
-	bh=y89Jl75u+36RaOzpcenKCTlL3rWAYU00a+/crcMQJuE=;
+	s=korg; t=1755522176;
+	bh=hC6gALGHFbnYEDMLE3Logo0BibtMbH/swzHWfUoZClU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ca9gynEQzzfcyJnmFwc2cS5GS+IJ9FA+ljEirOiqzw5uzZSM1S6flj9iyT1TIncQb
-	 rbNp7DSjZvXIfJzV7xhWTasNVLee4botr+e0bKdPtEzq9TjpZB0SUoRT+OmJDeAkIl
-	 i7GFx+Ag3KpukiKIdH/oNUPJMfZBc9ENAl/y5Am4=
+	b=2UKzzWIN3j90p2q5jOnzBEkuXW9J1PZScmIrAxZgy7yjktvmRShhbwHooFGY3Bju+
+	 SIjSWnacZFkjEC8Z0NeCRu0FEaiPA22ldouC89m7NKuQ7j4xloF2qKFncwTptnEmgg
+	 ajVvY9v6U1tE6+bmTh7TMcZs8Iv8h1GAmsQZa7Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 278/515] lib: packing: Include necessary headers
+Subject: [PATCH 6.12 238/444] powerpc: floppy: Add missing checks after DMA map
 Date: Mon, 18 Aug 2025 14:44:24 +0200
-Message-ID: <20250818124509.128692910@linuxfoundation.org>
+Message-ID: <20250818124457.754192738@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathan.lynch@amd.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 8bd0af3154b2206ce19f8b1410339f7a2a56d0c3 ]
+[ Upstream commit cf183c1730f2634245da35e9b5d53381b787d112 ]
 
-packing.h uses ARRAY_SIZE(), BUILD_BUG_ON_MSG(), min(), max(), and
-sizeof_field() without including the headers where they are defined,
-potentially causing build failures.
+The DMA map functions can fail and should be tested for errors.
 
-Fix this in packing.h and sort the result.
-
-Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250624-packing-includes-v1-1-c23c81fab508@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250620075602.12575-1-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/packing.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/floppy.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/packing.h b/include/linux/packing.h
-index 0589d70bbe04..20ae4d452c7b 100644
---- a/include/linux/packing.h
-+++ b/include/linux/packing.h
-@@ -5,8 +5,12 @@
- #ifndef _LINUX_PACKING_H
- #define _LINUX_PACKING_H
+diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
+index f8ce178b43b7..34abf8bea2cc 100644
+--- a/arch/powerpc/include/asm/floppy.h
++++ b/arch/powerpc/include/asm/floppy.h
+@@ -144,9 +144,12 @@ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
+ 		bus_addr = 0;
+ 	}
  
--#include <linux/types.h>
-+#include <linux/array_size.h>
- #include <linux/bitops.h>
-+#include <linux/build_bug.h>
-+#include <linux/minmax.h>
-+#include <linux/stddef.h>
-+#include <linux/types.h>
+-	if (!bus_addr)	/* need to map it */
++	if (!bus_addr) {	/* need to map it */
+ 		bus_addr = dma_map_single(&isa_bridge_pcidev->dev, addr, size,
+ 					  dir);
++		if (dma_mapping_error(&isa_bridge_pcidev->dev, bus_addr))
++			return -ENOMEM;
++	}
  
- #define GEN_PACKED_FIELD_STRUCT(__type) \
- 	struct packed_field_ ## __type { \
+ 	/* remember this one as prev */
+ 	prev_addr = addr;
 -- 
 2.39.5
 
