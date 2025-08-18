@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE5EB2A6C3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AF9B2A45E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22B527BA6CB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF11F1B60FFF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C20319847;
-	Mon, 18 Aug 2025 13:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C4831E0E4;
+	Mon, 18 Aug 2025 13:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPvb/aUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuXBw20O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D8430F52C;
-	Mon, 18 Aug 2025 13:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728B0258EFB;
+	Mon, 18 Aug 2025 13:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524413; cv=none; b=BiCYMP26KwPfbYU6xHAeJL/1TO/7X/htKN56dKE5VEcBVQiteH+Ty1HMOw05uFbLrqoGXPACzFOimQ7mk10fTyRSoURNYUvbqpFv4roTbVRpwAgcTzc3zsH5OGcwHiKoPVGDaqT7fSLNfebCjGjJUaJ5Wd45dj6S8nGtKqFyYHA=
+	t=1755522795; cv=none; b=FFydx5LUfRYcnkNtpNniNxveAIDYHpKyQuylXujowSQAaRQ9KIIuz6dT4YY2vEFiJrBSrYJhgXxxG2mAOjykWmhhm38Vy6DxwYRwzkHqRLgvZeO7uZAOLmWcxYbzuHlzqq+dOlDBTz+xgsmTtUT6ATd3ugbj9dl3ASWBAcm0lBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524413; c=relaxed/simple;
-	bh=bJnaTynGnAkzZc/I+dxjW9O0aKT3bWqHjS4cU28Zp48=;
+	s=arc-20240116; t=1755522795; c=relaxed/simple;
+	bh=Au/IuEnBF0NOzWXS76XTTToioWt7lF+E+nlfhdSs6KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjN9t0ssSNgfgFAvjrZofCnaRo7UpCsMuib2tPEyfaLjqGK9jJnHycqMALgZUsC+BtECoTyY3hKVJgAe04a/dA74BNczDir8if6+f2Sk+mQ4gXHpTx1TssbBmi/FOQFdws9SbD4BXyqaCxsrbUsEaM/PYtrI9HUGptfPm6gxRcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPvb/aUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D28C4CEEB;
-	Mon, 18 Aug 2025 13:40:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LXPq14704PlsDerfuK3SpMjiXdpgT0C1FJB/I+H+4X2ZlWz/5IUrYz4YhRJsCyBDlZVE4z/gwQnz2sk8WPKODtu7/udm+0ayeLaEOBSnTDeZoDE+5y/sQh3oBFyvWnQEGlHfJe3c1ERr7xJAQTvX2PjugD4XDxI/sFk9E9aJGa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuXBw20O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9A2C4CEEB;
+	Mon, 18 Aug 2025 13:13:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524412;
-	bh=bJnaTynGnAkzZc/I+dxjW9O0aKT3bWqHjS4cU28Zp48=;
+	s=korg; t=1755522795;
+	bh=Au/IuEnBF0NOzWXS76XTTToioWt7lF+E+nlfhdSs6KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPvb/aURBhGdL44SUQazuXLDkeUPKRRPrX2D7IuXkE/LXrYOrejqYSaEqwYXAUPkb
-	 QOxI6qSZqKlt2XUjWctGBj9swIC4Bm9t6Rliw/VaGBpPzBbbhiioY7oh0eOOIpSsC5
-	 H7cUui2uRksrnw1awP3EE0WQ0Ga8CdofwBZPcqQs=
+	b=CuXBw20ONJ3v3ocv7xa9hhNK0oxNaxaITWiD7idvwj6mzUFKaz6isrfE7a6TUiBWX
+	 t41GOUSOrsdyp4FIel7orkLmkV5KDw6DPxTQe1yHzdsglrrzN9YXSJQ5jAtfBCfKw/
+	 GgUzzAW2uBBEEEqhZHaKYRXzaLmwh0an32r/6vqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 463/515] btrfs: abort transaction during log replay if walk_log_tree() failed
+	Mikhail Lobanov <m.lobanov@rosa.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
+Subject: [PATCH 6.12 423/444] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
 Date: Mon, 18 Aug 2025 14:47:29 +0200
-Message-ID: <20250818124516.244233250@linuxfoundation.org>
+Message-ID: <20250818124504.803178253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-commit 2a5898c4aac67494c2f0f7fe38373c95c371c930 upstream.
+commit 16ee3ea8faef8ff042acc15867a6c458c573de61 upstream.
 
-If we failed walking a log tree during replay, we have a missing
-transaction abort to prevent committing a transaction where we didn't
-fully replay all the changes from a log tree and therefore can leave the
-respective subvolume tree in some inconsistent state. So add the missing
-transaction abort.
+When userspace sets supported rates for a new station via
+NL80211_CMD_NEW_STATION, it might send a list that's empty
+or contains only invalid values. Currently, we process these
+values in sta_link_apply_parameters() without checking the result of
+ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+A similar issue was addressed for NL80211_CMD_SET_BSS in commit
+ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
+This patch applies the same approach in sta_link_apply_parameters()
+for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
+rate by inspecting the result of ieee80211_parse_bitrates().
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -7276,11 +7276,14 @@ again:
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1879,12 +1879,12 @@ static int sta_link_apply_parameters(str
+ 	}
  
- 		wc.replay_dest->log_root = log;
- 		ret = btrfs_record_root_in_trans(trans, wc.replay_dest);
--		if (ret)
-+		if (ret) {
- 			/* The loop needs to continue due to the root refs */
- 			btrfs_abort_transaction(trans, ret);
--		else
-+		} else {
- 			ret = walk_log_tree(trans, log, &wc);
-+			if (ret)
-+				btrfs_abort_transaction(trans, ret);
-+		}
+ 	if (params->supported_rates &&
+-	    params->supported_rates_len) {
+-		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
+-					 sband, params->supported_rates,
+-					 params->supported_rates_len,
+-					 &link_sta->pub->supp_rates[sband->band]);
+-	}
++	    params->supported_rates_len &&
++	    !ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
++				      sband, params->supported_rates,
++				      params->supported_rates_len,
++				      &link_sta->pub->supp_rates[sband->band]))
++		return -EINVAL;
  
- 		if (!ret && wc.stage == LOG_WALK_REPLAY_ALL) {
- 			ret = fixup_inode_link_counts(trans, wc.replay_dest,
+ 	if (params->ht_capa)
+ 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
 
 
 
