@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C847B2A7AF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE80B2A643
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C3457A93BD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02F4C1B66331
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A949225413;
-	Mon, 18 Aug 2025 13:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D72322A05;
+	Mon, 18 Aug 2025 13:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKGu39gR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQRSN9kP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8FA335BC5;
-	Mon, 18 Aug 2025 13:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D972531A04F;
+	Mon, 18 Aug 2025 13:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525291; cv=none; b=g10qNkSV4UqZYKREiWqfZO0RxDJ2UYx7uhpV15QqmCXN3weiA9RQl5qDdgUylCkYZ2CuOGd+muv8TTU4YWPAhmBULKri9JctLPZrQxVyT4fJ9EN8DxLD/8rc0nqw8yJZaqqEb+ch2so/URqghdxoKrRQf8jYdJpmxaCK5BRzOoM=
+	t=1755523597; cv=none; b=BCkYlFA3do6zoWDhQj56rRMBF5t3xPwIU2E9nKeW0QPLSGx4tuXOH112+sUdQ8AfsVlX+m/sApMi0n4X+UWheMnuq2arYJz2Y69v0p0C7050biRvnNgssHlWfPTf8JQPUHjHI+CdQuNPcxizH+Ruu9FxRzmifqG4qk4NsB7VUDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525291; c=relaxed/simple;
-	bh=4pqBOxNAHZ12MKFRx9GccNWTV8ha71Q4SLPYYh9io3I=;
+	s=arc-20240116; t=1755523597; c=relaxed/simple;
+	bh=Ds88bNaeRLL9NNMKjUvrFw2r3fuC5zBDhFLHknBJ1eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFb9EN4TQJALRwMN+5yBU+KgzwvXVXwEJ8uplKKZHsubfAjqKkypBk24c+uj/WWpknJ+kV0evmhNUpM3B+n0WYfNNfRfRUiGYCxNd6Nk2oev8VCURc/27w5mmONA9mown/tyxVSoE8woYH+la2wJTpZds6aWLhVFQfUZ2zTRrVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKGu39gR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26B9C4CEF1;
-	Mon, 18 Aug 2025 13:54:50 +0000 (UTC)
+	 MIME-Version; b=D4140E8Uwfaz3ShMN1JcSVr16WZ8pxoMCIB7nd/c3pwRuEBFhHd4CnRm4Cwh9+5KluxC79G6Tu2CGp/fQutDGyea2GHo2JO9udbMwy+GXnvLkl9IGPNhKA+lDtLefZcAIxyXI5MziudVIhvrMAlYyPifDUqjri8PKYr8ntnfviQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQRSN9kP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6264EC4CEEB;
+	Mon, 18 Aug 2025 13:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525291;
-	bh=4pqBOxNAHZ12MKFRx9GccNWTV8ha71Q4SLPYYh9io3I=;
+	s=korg; t=1755523597;
+	bh=Ds88bNaeRLL9NNMKjUvrFw2r3fuC5zBDhFLHknBJ1eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKGu39gRt0JhyE/tK/puyKS9epilz61ngOGMyrw1K8HHHYfB95b9pYejI/QpSZLld
-	 v5/Y8ff/FUHev6t9P4JF7KgVaHWT5f++v1xp1c4Qo57XlXjZ4N3ySn4vIOuwyn5etq
-	 sL1luVO0xCoapiAZNfSvLBzj71H5GaanVmEGSQ8I=
+	b=SQRSN9kP7lUB22MRrth2Nhlz+Nykm6NNZY1D/gQ+UHEHW+OZOJgDLmMwLHGpP0c4T
+	 Uuo+AkuFnmEPAin6q97Ums3QO/GkM3omlXzlKQti+V9E98UujXW31kKb6hJYHGR0VJ
+	 LHWy6wmSQinE7VqafJ7RQMo2SuhCgnwSzIBU7htE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Umio Yasuno <coelacanth_dream@protonmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 218/570] net: usb: cdc-ncm: check for filtering capability
+Subject: [PATCH 6.15 219/515] drm/amd/pm: fix null pointer access
 Date: Mon, 18 Aug 2025 14:43:25 +0200
-Message-ID: <20250818124514.196147589@linuxfoundation.org>
+Message-ID: <20250818124506.800200029@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Umio Yasuno <coelacanth_dream@protonmail.com>
 
-[ Upstream commit 61c3e8940f2d8b5bfeaeec4bedc2f3e7d873abb3 ]
+[ Upstream commit d524d40e3a6152a3ea1125af729f8cd8ca65efde ]
 
-If the decice does not support filtering, filtering
-must not be used and all packets delivered for the
-upper layers to sort.
+Writing a string without delimiters (' ', '\n', '\0') to the under
+gpu_od/fan_ctrl sysfs or pp_power_profile_mode for the CUSTOM profile
+will result in a null pointer dereference.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20250717120649.2090929-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4401
+Signed-off-by: Umio Yasuno <coelacanth_dream@protonmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/cdc_ncm.c   | 20 ++++++++++++++++----
- include/linux/usb/cdc_ncm.h |  1 +
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 34e82f1e37d9..ea0e5e276cd6 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -892,6 +892,10 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+index 922def51685b..21da5123d95e 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -1398,6 +1398,8 @@ static ssize_t amdgpu_set_pp_power_profile_mode(struct device *dev,
+ 			if (ret)
+ 				return -EINVAL;
+ 			parameter_size++;
++			if (!tmp_str)
++				break;
+ 			while (isspace(*tmp_str))
+ 				tmp_str++;
  		}
+@@ -3618,6 +3620,9 @@ static int parse_input_od_command_lines(const char *buf,
+ 			return -EINVAL;
+ 		parameter_size++;
+ 
++		if (!tmp_str)
++			break;
++
+ 		while (isspace(*tmp_str))
+ 			tmp_str++;
  	}
- 
-+	if (ctx->func_desc)
-+		ctx->filtering_supported = !!(ctx->func_desc->bmNetworkCapabilities
-+			& USB_CDC_NCM_NCAP_ETH_FILTER);
-+
- 	iface_no = ctx->data->cur_altsetting->desc.bInterfaceNumber;
- 
- 	/* Device-specific flags */
-@@ -1898,6 +1902,14 @@ static void cdc_ncm_status(struct usbnet *dev, struct urb *urb)
- 	}
- }
- 
-+static void cdc_ncm_update_filter(struct usbnet *dev)
-+{
-+	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
-+
-+	if (ctx->filtering_supported)
-+		usbnet_cdc_update_filter(dev);
-+}
-+
- static const struct driver_info cdc_ncm_info = {
- 	.description = "CDC NCM (NO ZLP)",
- 	.flags = FLAG_POINTTOPOINT | FLAG_NO_SETINT | FLAG_MULTI_PACKET
-@@ -1908,7 +1920,7 @@ static const struct driver_info cdc_ncm_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP  */
-@@ -1922,7 +1934,7 @@ static const struct driver_info cdc_ncm_zlp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as cdc_ncm_info, but with FLAG_SEND_ZLP */
-@@ -1964,7 +1976,7 @@ static const struct driver_info wwan_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- /* Same as wwan_info, but with FLAG_NOARP  */
-@@ -1978,7 +1990,7 @@ static const struct driver_info wwan_noarp_info = {
- 	.status = cdc_ncm_status,
- 	.rx_fixup = cdc_ncm_rx_fixup,
- 	.tx_fixup = cdc_ncm_tx_fixup,
--	.set_rx_mode = usbnet_cdc_update_filter,
-+	.set_rx_mode = cdc_ncm_update_filter,
- };
- 
- static const struct usb_device_id cdc_devs[] = {
-diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
-index 2d207cb4837d..4ac082a63173 100644
---- a/include/linux/usb/cdc_ncm.h
-+++ b/include/linux/usb/cdc_ncm.h
-@@ -119,6 +119,7 @@ struct cdc_ncm_ctx {
- 	u32 timer_interval;
- 	u32 max_ndp_size;
- 	u8 is_ndp16;
-+	u8 filtering_supported;
- 	union {
- 		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
- 		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
 -- 
 2.39.5
 
