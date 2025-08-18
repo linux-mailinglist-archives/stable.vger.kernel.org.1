@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D442B2A879
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5880EB2A5D3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C687E6239F6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0DD1B63FC9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43C6335BBB;
-	Mon, 18 Aug 2025 13:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C218C31AF00;
+	Mon, 18 Aug 2025 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFqnZB3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjoOQW93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EBC335BA7;
-	Mon, 18 Aug 2025 13:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4C928C014;
+	Mon, 18 Aug 2025 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525045; cv=none; b=l5Ja2bspjcdvKsK/hlLEg6upOjxGOatzL85kVEW8foYwpQUNXqtJYt3fxcHj736HkBkFpWkA20E6XDYYf7809mnidONtA9S2BnHbbUz5W5RRQmGwX50aen+pOt+NoW7WjTr28cj07N7yBtv2YF2xihM9OGt6jPaYx9MWKzKRqFA=
+	t=1755523347; cv=none; b=pLYZKLjrXMkK9vNlJcGZyTzj6gZkUYcxIoLsV0Myt3Go0hZSS7yYHCW+3yQD0txnhpLkAaLBN43KC/8WfzdzjLlus+YZdh7H56vcLdNLZOuXZbMQY+cagh01J4vz9q+YtRtPLFmtEj1a18maiw+ghcQp057aVRJqpqewFHTKAqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525045; c=relaxed/simple;
-	bh=OIi9tMV8SlqSnaBK7J9yKdJTgWFKOa42QhU7+cLXXTg=;
+	s=arc-20240116; t=1755523347; c=relaxed/simple;
+	bh=PO4pzC17v64Rh0zgmXrTkNVMJTl3Veu3ZQo890K25cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOidArUatvGR30c2oQkylhMHSSgviljlA5oDbAeTvHjuRHnhqEVRlkFymIVVONXyhAL83iAAhATGbzgIxtf318b71jKuqY0c9h0LO+s8oo7SX8iLf1WXv7Gsn7cJ34/z3M8VVBBngSkaG82KgVGBJJ71DhaneYjqCBzpJnCXLr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFqnZB3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84008C4CEEB;
-	Mon, 18 Aug 2025 13:50:44 +0000 (UTC)
+	 MIME-Version; b=QTlVi9JtiSnpxDIs4BE+o+9sk/nklsjJuIDvs/nZB4aTOmJIHv70FchoJXHe/Ddt7LvRlq9m8+w1ficxMvVIgb7wNlXG/qhwc6OBF7MsYDQ4wrmEv9Yi1L5ePY7msrnz8dwi0xVYa/2RfHqiRp6NEgVqXOmKgrpU6fJixGXQILU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjoOQW93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E45BC4CEEB;
+	Mon, 18 Aug 2025 13:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525045;
-	bh=OIi9tMV8SlqSnaBK7J9yKdJTgWFKOa42QhU7+cLXXTg=;
+	s=korg; t=1755523347;
+	bh=PO4pzC17v64Rh0zgmXrTkNVMJTl3Veu3ZQo890K25cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFqnZB3Mri0cwizChbhrSjLWU64fQSq9o4eiYNQ84rgyOEd/FvG5DYP1VCss1Ac0F
-	 P24qYJach+nFbp8d/5cL2ssyw9BsyhLuyKE1ERkc+/FwTN9mJJd4lhCHz8Tur7gV2y
-	 iKKc0hEB8wBApfXHpFwkbHJpJLTJq0mlQ4t4ZgN8=
+	b=yjoOQW93B4Bo5ut6jMql2njhoKwBxcirFkYRbmzOUcjvRfM7pwnX+X3Jj9wekUB9C
+	 +c7O/9jQxUrhsRC8cUTLQgbFXZ9JYXvkh+705WV/mezSU39hMJEb8NNwOs0NJ6fiWr
+	 XgbxxBkuVHVvMdbGVCl/BCgOsz/aD0aGzZj1rRMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jameson Thies <jthies@google.com>,
-	Benson Leung <bleung@chromium.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 142/570] usb: typec: ucsi: Add poll_cci operation to cros_ec_ucsi
+Subject: [PATCH 6.15 143/515] mfd: tps6594: Add TI TPS652G1 support
 Date: Mon, 18 Aug 2025 14:42:09 +0200
-Message-ID: <20250818124511.294586838@linuxfoundation.org>
+Message-ID: <20250818124503.895473535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,256 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jameson Thies <jthies@google.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit 300386d117a98961fc1d612d1f1a61997d731b8a ]
+[ Upstream commit 626bb0a45584d544d84eab909795ccb355062bcc ]
 
-cros_ec_ucsi fails to allocate a UCSI instance in it's probe function
-because it does not define all operations checked by ucsi_create.
-Update cros_ec_ucsi operations to use the same function for read_cci
-and poll_cci.
+The TPS652G1 is a stripped down version of the TPS65224. From a software
+point of view, it lacks any voltage monitoring, the watchdog, the ESM
+and the ADC.
 
-Signed-off-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20250711202033.2201305-1-jthies@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Link: https://lore.kernel.org/r/20250613114518.1772109-2-mwalle@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/cros_ec_ucsi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mfd/tps6594-core.c  | 88 ++++++++++++++++++++++++++++++++++---
+ drivers/mfd/tps6594-i2c.c   | 10 ++++-
+ drivers/mfd/tps6594-spi.c   | 10 ++++-
+ include/linux/mfd/tps6594.h |  1 +
+ 4 files changed, 99 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/cros_ec_ucsi.c b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
-index 4ec1c6d22310..eed2a7d0ebc6 100644
---- a/drivers/usb/typec/ucsi/cros_ec_ucsi.c
-+++ b/drivers/usb/typec/ucsi/cros_ec_ucsi.c
-@@ -137,6 +137,7 @@ static int cros_ucsi_sync_control(struct ucsi *ucsi, u64 cmd, u32 *cci,
- static const struct ucsi_operations cros_ucsi_ops = {
- 	.read_version = cros_ucsi_read_version,
- 	.read_cci = cros_ucsi_read_cci,
-+	.poll_cci = cros_ucsi_read_cci,
- 	.read_message_in = cros_ucsi_read_message_in,
- 	.async_control = cros_ucsi_async_control,
- 	.sync_control = cros_ucsi_sync_control,
+diff --git a/drivers/mfd/tps6594-core.c b/drivers/mfd/tps6594-core.c
+index a7223e873cd1..c16c37e36617 100644
+--- a/drivers/mfd/tps6594-core.c
++++ b/drivers/mfd/tps6594-core.c
+@@ -1,6 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * Core functions for TI TPS65224/TPS6594/TPS6593/LP8764 PMICs
++ * Core functions for following TI PMICs:
++ *  - LP8764
++ *  - TPS65224
++ *  - TPS652G1
++ *  - TPS6593
++ *  - TPS6594
+  *
+  * Copyright (C) 2023 BayLibre Incorporated - https://www.baylibre.com/
+  */
+@@ -414,6 +419,61 @@ static const unsigned int tps65224_irq_reg[] = {
+ 	TPS6594_REG_INT_FSM_ERR,
+ };
+ 
++/* TPS652G1 Resources */
++
++static const struct mfd_cell tps652g1_common_cells[] = {
++	MFD_CELL_RES("tps6594-pfsm", tps65224_pfsm_resources),
++	MFD_CELL_RES("tps6594-pinctrl", tps65224_pinctrl_resources),
++	MFD_CELL_NAME("tps6594-regulator"),
++};
++
++static const struct regmap_irq tps652g1_irqs[] = {
++	/* INT_GPIO register */
++	REGMAP_IRQ_REG(TPS65224_IRQ_GPIO1, 2, TPS65224_BIT_GPIO1_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_GPIO2, 2, TPS65224_BIT_GPIO2_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_GPIO3, 2, TPS65224_BIT_GPIO3_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_GPIO4, 2, TPS65224_BIT_GPIO4_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_GPIO5, 2, TPS65224_BIT_GPIO5_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_GPIO6, 2, TPS65224_BIT_GPIO6_INT),
++
++	/* INT_STARTUP register */
++	REGMAP_IRQ_REG(TPS65224_IRQ_VSENSE, 3, TPS65224_BIT_VSENSE_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_ENABLE, 3, TPS6594_BIT_ENABLE_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_PB_SHORT, 3, TPS65224_BIT_PB_SHORT_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_FSD, 3, TPS6594_BIT_FSD_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_SOFT_REBOOT, 3, TPS6594_BIT_SOFT_REBOOT_INT),
++
++	/* INT_MISC register */
++	REGMAP_IRQ_REG(TPS65224_IRQ_BIST_PASS, 4, TPS6594_BIT_BIST_PASS_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_EXT_CLK, 4, TPS6594_BIT_EXT_CLK_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_REG_UNLOCK, 4, TPS65224_BIT_REG_UNLOCK_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_TWARN, 4, TPS6594_BIT_TWARN_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_PB_LONG, 4, TPS65224_BIT_PB_LONG_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_PB_FALL, 4, TPS65224_BIT_PB_FALL_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_PB_RISE, 4, TPS65224_BIT_PB_RISE_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_ADC_CONV_READY, 4, TPS65224_BIT_ADC_CONV_READY_INT),
++
++	/* INT_MODERATE_ERR register */
++	REGMAP_IRQ_REG(TPS65224_IRQ_TSD_ORD, 5, TPS6594_BIT_TSD_ORD_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_BIST_FAIL, 5, TPS6594_BIT_BIST_FAIL_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_REG_CRC_ERR, 5, TPS6594_BIT_REG_CRC_ERR_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_RECOV_CNT, 5, TPS6594_BIT_RECOV_CNT_INT),
++
++	/* INT_SEVERE_ERR register */
++	REGMAP_IRQ_REG(TPS65224_IRQ_TSD_IMM, 6, TPS6594_BIT_TSD_IMM_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_VCCA_OVP, 6, TPS6594_BIT_VCCA_OVP_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_PFSM_ERR, 6, TPS6594_BIT_PFSM_ERR_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_BG_XMON, 6, TPS65224_BIT_BG_XMON_INT),
++
++	/* INT_FSM_ERR register */
++	REGMAP_IRQ_REG(TPS65224_IRQ_IMM_SHUTDOWN, 7, TPS6594_BIT_IMM_SHUTDOWN_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_ORD_SHUTDOWN, 7, TPS6594_BIT_ORD_SHUTDOWN_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_MCU_PWR_ERR, 7, TPS6594_BIT_MCU_PWR_ERR_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_SOC_PWR_ERR, 7, TPS6594_BIT_SOC_PWR_ERR_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_COMM_ERR, 7, TPS6594_BIT_COMM_ERR_INT),
++	REGMAP_IRQ_REG(TPS65224_IRQ_I2C2_ERR, 7, TPS65224_BIT_I2C2_ERR_INT),
++};
++
+ static inline unsigned int tps6594_get_irq_reg(struct regmap_irq_chip_data *data,
+ 					       unsigned int base, int index)
+ {
+@@ -443,7 +503,7 @@ static int tps6594_handle_post_irq(void *irq_drv_data)
+ 	 * a new interrupt.
+ 	 */
+ 	if (tps->use_crc) {
+-		if (tps->chip_id == TPS65224) {
++		if (tps->chip_id == TPS65224 || tps->chip_id == TPS652G1) {
+ 			regmap_reg = TPS6594_REG_INT_FSM_ERR;
+ 			mask_val = TPS6594_BIT_COMM_ERR_INT;
+ 		} else {
+@@ -481,6 +541,18 @@ static struct regmap_irq_chip tps65224_irq_chip = {
+ 	.handle_post_irq = tps6594_handle_post_irq,
+ };
+ 
++static struct regmap_irq_chip tps652g1_irq_chip = {
++	.ack_base = TPS6594_REG_INT_BUCK,
++	.ack_invert = 1,
++	.clear_ack = 1,
++	.init_ack_masked = 1,
++	.num_regs = ARRAY_SIZE(tps65224_irq_reg),
++	.irqs = tps652g1_irqs,
++	.num_irqs = ARRAY_SIZE(tps652g1_irqs),
++	.get_irq_reg = tps65224_get_irq_reg,
++	.handle_post_irq = tps6594_handle_post_irq,
++};
++
+ static const struct regmap_range tps6594_volatile_ranges[] = {
+ 	regmap_reg_range(TPS6594_REG_INT_TOP, TPS6594_REG_STAT_READBACK_ERR),
+ 	regmap_reg_range(TPS6594_REG_RTC_STATUS, TPS6594_REG_RTC_STATUS),
+@@ -507,7 +579,7 @@ static int tps6594_check_crc_mode(struct tps6594 *tps, bool primary_pmic)
+ 	int ret;
+ 	unsigned int regmap_reg, mask_val;
+ 
+-	if (tps->chip_id == TPS65224) {
++	if (tps->chip_id == TPS65224 || tps->chip_id == TPS652G1) {
+ 		regmap_reg = TPS6594_REG_CONFIG_2;
+ 		mask_val = TPS65224_BIT_I2C1_SPI_CRC_EN;
+ 	} else {
+@@ -537,7 +609,7 @@ static int tps6594_set_crc_feature(struct tps6594 *tps)
+ 	int ret;
+ 	unsigned int regmap_reg, mask_val;
+ 
+-	if (tps->chip_id == TPS65224) {
++	if (tps->chip_id == TPS65224 || tps->chip_id == TPS652G1) {
+ 		regmap_reg = TPS6594_REG_CONFIG_2;
+ 		mask_val = TPS65224_BIT_I2C1_SPI_CRC_EN;
+ 	} else {
+@@ -628,6 +700,10 @@ int tps6594_device_init(struct tps6594 *tps, bool enable_crc)
+ 		irq_chip = &tps65224_irq_chip;
+ 		n_cells = ARRAY_SIZE(tps65224_common_cells);
+ 		cells = tps65224_common_cells;
++	} else if (tps->chip_id == TPS652G1) {
++		irq_chip = &tps652g1_irq_chip;
++		n_cells = ARRAY_SIZE(tps652g1_common_cells);
++		cells = tps652g1_common_cells;
+ 	} else {
+ 		irq_chip = &tps6594_irq_chip;
+ 		n_cells = ARRAY_SIZE(tps6594_common_cells);
+@@ -651,8 +727,8 @@ int tps6594_device_init(struct tps6594 *tps, bool enable_crc)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to add common child devices\n");
+ 
+-	/* No RTC for LP8764 and TPS65224 */
+-	if (tps->chip_id != LP8764 && tps->chip_id != TPS65224) {
++	/* No RTC for LP8764, TPS65224 and TPS652G1 */
++	if (tps->chip_id != LP8764 && tps->chip_id != TPS65224 && tps->chip_id != TPS652G1) {
+ 		ret = devm_mfd_add_devices(dev, PLATFORM_DEVID_AUTO, tps6594_rtc_cells,
+ 					   ARRAY_SIZE(tps6594_rtc_cells), NULL, 0,
+ 					   regmap_irq_get_domain(tps->irq_data));
+diff --git a/drivers/mfd/tps6594-i2c.c b/drivers/mfd/tps6594-i2c.c
+index 4ab91c34d9fb..7ff7516286fd 100644
+--- a/drivers/mfd/tps6594-i2c.c
++++ b/drivers/mfd/tps6594-i2c.c
+@@ -1,6 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * I2C access driver for TI TPS65224/TPS6594/TPS6593/LP8764 PMICs
++ * I2C access driver for the following TI PMICs:
++ *  - LP8764
++ *  - TPS65224
++ *  - TPS652G1
++ *  - TPS6593
++ *  - TPS6594
+  *
+  * Copyright (C) 2023 BayLibre Incorporated - https://www.baylibre.com/
+  */
+@@ -197,6 +202,7 @@ static const struct of_device_id tps6594_i2c_of_match_table[] = {
+ 	{ .compatible = "ti,tps6593-q1", .data = (void *)TPS6593, },
+ 	{ .compatible = "ti,lp8764-q1",  .data = (void *)LP8764,  },
+ 	{ .compatible = "ti,tps65224-q1", .data = (void *)TPS65224, },
++	{ .compatible = "ti,tps652g1", .data = (void *)TPS652G1, },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, tps6594_i2c_of_match_table);
+@@ -222,7 +228,7 @@ static int tps6594_i2c_probe(struct i2c_client *client)
+ 		return dev_err_probe(dev, -EINVAL, "Failed to find matching chip ID\n");
+ 	tps->chip_id = (unsigned long)match->data;
+ 
+-	if (tps->chip_id == TPS65224)
++	if (tps->chip_id == TPS65224 || tps->chip_id == TPS652G1)
+ 		tps6594_i2c_regmap_config.volatile_table = &tps65224_volatile_table;
+ 
+ 	tps->regmap = devm_regmap_init(dev, NULL, client, &tps6594_i2c_regmap_config);
+diff --git a/drivers/mfd/tps6594-spi.c b/drivers/mfd/tps6594-spi.c
+index 6ebccb79f0cc..944b7313a1d9 100644
+--- a/drivers/mfd/tps6594-spi.c
++++ b/drivers/mfd/tps6594-spi.c
+@@ -1,6 +1,11 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * SPI access driver for TI TPS65224/TPS6594/TPS6593/LP8764 PMICs
++ * SPI access driver for the following TI PMICs:
++ *  - LP8764
++ *  - TPS65224
++ *  - TPS652G1
++ *  - TPS6593
++ *  - TPS6594
+  *
+  * Copyright (C) 2023 BayLibre Incorporated - https://www.baylibre.com/
+  */
+@@ -82,6 +87,7 @@ static const struct of_device_id tps6594_spi_of_match_table[] = {
+ 	{ .compatible = "ti,tps6593-q1", .data = (void *)TPS6593, },
+ 	{ .compatible = "ti,lp8764-q1",  .data = (void *)LP8764,  },
+ 	{ .compatible = "ti,tps65224-q1", .data = (void *)TPS65224, },
++	{ .compatible = "ti,tps652g1", .data = (void *)TPS652G1, },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, tps6594_spi_of_match_table);
+@@ -107,7 +113,7 @@ static int tps6594_spi_probe(struct spi_device *spi)
+ 		return dev_err_probe(dev, -EINVAL, "Failed to find matching chip ID\n");
+ 	tps->chip_id = (unsigned long)match->data;
+ 
+-	if (tps->chip_id == TPS65224)
++	if (tps->chip_id == TPS65224 || tps->chip_id == TPS652G1)
+ 		tps6594_spi_regmap_config.volatile_table = &tps65224_volatile_table;
+ 
+ 	tps->regmap = devm_regmap_init(dev, NULL, spi, &tps6594_spi_regmap_config);
+diff --git a/include/linux/mfd/tps6594.h b/include/linux/mfd/tps6594.h
+index 16543fd4d83e..021db8875963 100644
+--- a/include/linux/mfd/tps6594.h
++++ b/include/linux/mfd/tps6594.h
+@@ -19,6 +19,7 @@ enum pmic_id {
+ 	TPS6593,
+ 	LP8764,
+ 	TPS65224,
++	TPS652G1,
+ };
+ 
+ /* Macro to get page index from register address */
 -- 
 2.39.5
 
