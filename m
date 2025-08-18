@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7209DB2A656
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43405B2A3C0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 837247BF8F7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:36:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9C251896CC4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935AF322774;
-	Mon, 18 Aug 2025 13:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0650B31E0F5;
+	Mon, 18 Aug 2025 13:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1fzFT5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkDadlu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FAF321452;
-	Mon, 18 Aug 2025 13:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92CE28C849;
+	Mon, 18 Aug 2025 13:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524033; cv=none; b=IffLpaE56JGNh7K0Blc9J9hOaq7UAYqcf4H5/aKQzXzR/ZvMjuIuHvv/aBMG3BDnEJgQsuaJJVb6tCsSlQWo/290OP2+h+jVk8X0nvXa5G9uAO9yCyROqOgG+vwfHtIpQByj0Mq8N+CfbQ+eEYerCMiiKG91pq002ft8ulz+8ng=
+	t=1755522404; cv=none; b=OjjYqzUdRneoA1MrsWCxSf4xp3JH+3eESOREEZUucXJ+tgD2q1xJ+CeQMuTCExBH5skaFwm7y/g3PjWVeRelOibTVur0cWs7/AH8I/f07nmfUDzATZ2HDAAkOD8jRO9bkYDuvnmGdSdQFGu0nn9MmGwCndj7eJu9eOA6u9HMTc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524033; c=relaxed/simple;
-	bh=y4bJGbdX5PVr3Mu0ZLdcXND54pr12xMl35DRZzLa8ns=;
+	s=arc-20240116; t=1755522404; c=relaxed/simple;
+	bh=AqnVlF6baDgnK7xfAJ+734kbPOaJl3rvBUWbNSp2sBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ae2wVoEA3iuFJWN15zDvogPECQZA6tbgnrHKJ/iBkAdnzWENKpiN1HCIltCqtr2wDwrbhj/nu27qPEfU94O9Iz2gRMywm0iQZkf/ckyQmo6Aii+XSAq5J0/babCYIQFLAow+2pTsfR9KTPxdM1n60Gxl4luuirNuBZnrkGPk/mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1fzFT5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8F7C4CEEB;
-	Mon, 18 Aug 2025 13:33:52 +0000 (UTC)
+	 MIME-Version; b=l5Wh87Jh2TQjVD9Dccv+94KPvG//x9z+ci+toj0zhoj9WmH/uFYdn6Jui3Avvvj2i8fhLeYr+FzjzSTEWr+I/l51TWhKKDzxGd7GwtrfEtM1OEAyS8u9GGm1QYNiOQ5XHQS9V59sx6WMJcI9BfOqHmXNd3LObiN6SuYqUCxrMLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkDadlu6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E46EC4CEEB;
+	Mon, 18 Aug 2025 13:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524033;
-	bh=y4bJGbdX5PVr3Mu0ZLdcXND54pr12xMl35DRZzLa8ns=;
+	s=korg; t=1755522404;
+	bh=AqnVlF6baDgnK7xfAJ+734kbPOaJl3rvBUWbNSp2sBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W1fzFT5i9z/n5GaALxQy6UVeh7vZAVoQL7sfZUvTBfUu0xYcbvdb0S37y3UN6N10q
-	 wkCCIWYBDregI70EVVoC5LzbovZjcNXEwGaXpBAzKvHUeOqSQc0rdx2SNPivUw/8Bi
-	 B1O9nvKPC3PZ7rwDKDT00ncfW9l4MvBWqdSl87Vg=
+	b=UkDadlu6BL5qyvziAIJ9xyWVMiwRq3oRBM9tPvPkrReZypo7sDw7X11b60Np2N1Tq
+	 9okl6hioMtWLKicbSM0CWEgTSe66xYiDPEFH8KoKRJ3vAIzhRmCYV1U2cQ7mgOqKnC
+	 NkswojOpNDOoqmPAaL9H/prLV5zyHZ7887+xMRgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 347/515] MIPS: vpe-mt: add missing prototypes for vpe_{alloc,start,stop,free}
+Subject: [PATCH 6.12 307/444] scsi: lpfc: Ensure HBA_SETUP flag is used only for SLI4 in dev_loss_tmo_callbk
 Date: Mon, 18 Aug 2025 14:45:33 +0200
-Message-ID: <20250818124511.791826704@linuxfoundation.org>
+Message-ID: <20250818124500.464284630@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 844615dd0f2d95c018ec66b943e08af22b62aff3 ]
+[ Upstream commit 1cced5779e7a3ff7ec025fc47c76a7bd3bb38877 ]
 
-These functions are exported but their prototypes are not defined.
-This patch adds the missing function prototypes to fix the following
-compilation warnings:
+For SLI3, the HBA_SETUP flag is never set so the lpfc_dev_loss_tmo_callbk
+always early returns.  Add a phba->sli_rev check for SLI4 mode so that
+the SLI3 path can flow through the original dev_loss_tmo worker thread
+design to lpfc_dev_loss_tmo_handler instead of early return.
 
-arch/mips/kernel/vpe-mt.c:180:7: error: no previous prototype for 'vpe_alloc' [-Werror=missing-prototypes]
-  180 | void *vpe_alloc(void)
-      |       ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:198:5: error: no previous prototype for 'vpe_start' [-Werror=missing-prototypes]
-  198 | int vpe_start(void *vpe, unsigned long start)
-      |     ^~~~~~~~~
-arch/mips/kernel/vpe-mt.c:208:5: error: no previous prototype for 'vpe_stop' [-Werror=missing-prototypes]
-  208 | int vpe_stop(void *vpe)
-      |     ^~~~~~~~
-arch/mips/kernel/vpe-mt.c:229:5: error: no previous prototype for 'vpe_free' [-Werror=missing-prototypes]
-  229 | int vpe_free(void *vpe)
-      |     ^~~~~~~~
-
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250618192138.124116-9-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/vpe.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/vpe.h b/arch/mips/include/asm/vpe.h
-index 61fd4d0aeda4..c0769dc4b853 100644
---- a/arch/mips/include/asm/vpe.h
-+++ b/arch/mips/include/asm/vpe.h
-@@ -119,4 +119,12 @@ void cleanup_tc(struct tc *tc);
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index b5dd17eecf82..3ba515c1fe3a 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -177,7 +177,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
  
- int __init vpe_module_init(void);
- void __exit vpe_module_exit(void);
-+
-+#ifdef CONFIG_MIPS_VPE_LOADER_MT
-+void *vpe_alloc(void);
-+int vpe_start(void *vpe, unsigned long start);
-+int vpe_stop(void *vpe);
-+int vpe_free(void *vpe);
-+#endif /* CONFIG_MIPS_VPE_LOADER_MT */
-+
- #endif /* _ASM_VPE_H */
+ 	/* Don't schedule a worker thread event if the vport is going down. */
+ 	if (test_bit(FC_UNLOADING, &vport->load_flag) ||
+-	    !test_bit(HBA_SETUP, &phba->hba_flag)) {
++	    (phba->sli_rev == LPFC_SLI_REV4 &&
++	    !test_bit(HBA_SETUP, &phba->hba_flag))) {
+ 
+ 		spin_lock_irqsave(&ndlp->lock, iflags);
+ 		ndlp->rport = NULL;
 -- 
 2.39.5
 
