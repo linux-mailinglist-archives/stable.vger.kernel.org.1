@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87394B2A371
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA760B2A9A3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8205E0895
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82FE6E3F31
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02482286D5E;
-	Mon, 18 Aug 2025 13:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B70321F59;
+	Mon, 18 Aug 2025 13:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QB4kIFFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNQEXhAJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD7231CA57;
-	Mon, 18 Aug 2025 13:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233A9234984;
+	Mon, 18 Aug 2025 13:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522226; cv=none; b=NuaJheFIw8md3hTmn8YX3gYTSQMJ+3xbfpSLiq4Ad24EPSsLnWRhvAz8FgRdJ9pRcyGaRrm13nngetYrRZ+k/FWgH9etDxl+MZgj8ilrC/b8jC5ij74hapzKrZbnyQLGK6tPoXXQTePXYtVCbcEXjr+YcB//mK7IYL7VhaPZ6zc=
+	t=1755525534; cv=none; b=q4SoLDR8s6Js1g8rnhosDPt0G7TPEbiS2wwtcmnnc0CTEQx6V6ny7HnX3ibQLMm+sYQGSFMZ+1hfc2B7JjW7QyW3clwMzPpcZMZKr3wyAcIzbf7HodltPkzynMRkKIkRH11tjftG95Qw2khSoaS+QwLig9WGZAEijyEJVuIbG1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522226; c=relaxed/simple;
-	bh=b6ySoLbHyXeaFwffZ5oJHhagoKKrqosoOQpVr56z1pY=;
+	s=arc-20240116; t=1755525534; c=relaxed/simple;
+	bh=4Z31ADIbIiDxIbhgmB3MjIKsjh4DUeGSu/b5YGaA5Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EWQPER2IHsE0Oa5dzlABQThI3YOcpwq4oFdGAWTPLAma1TbOxmHJjBDw9QqBBJxfxZORPFdWVHaVzybOrY5/eTXxFA580oEwcwSUCYpB1O8ilT4vxXp0KHu737Oe8dSHJ3EtNuTWXvNwpxE9CveHqb1N5HypEvMPLq3Mza5SpFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QB4kIFFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D114AC4CEEB;
-	Mon, 18 Aug 2025 13:03:45 +0000 (UTC)
+	 MIME-Version; b=jmfWta6vLHr4BFSqhUvvSLzGBra7w3Ps/AuVgRRfLtGS9B8f4lMO+/jqJoylT+5cDG50wGaSX5PGrx6osdm/8AtH3ZOshFiOKY0OGmko9eVndviNudmuSlBPzhE6ohJ0I2M2mu6X4mOcRDatiU5xHihUQngN+cD43Vf0Ff4DKO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNQEXhAJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C940C4CEEB;
+	Mon, 18 Aug 2025 13:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522226;
-	bh=b6ySoLbHyXeaFwffZ5oJHhagoKKrqosoOQpVr56z1pY=;
+	s=korg; t=1755525533;
+	bh=4Z31ADIbIiDxIbhgmB3MjIKsjh4DUeGSu/b5YGaA5Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QB4kIFFtJ2sh3p0qTxhLQGAHkLgGO/zjP/Uau2G2JTh2qRdKVoSdmguQuOvZrJz4V
-	 UI0J23wPldF5sLa60DoziJFdr2bp5OGsAmLXU6tHp00vZpPqNGUsullluJZ7NdAnt3
-	 aDejVDeEDZufDMFUIEnJoaS1AvLAM3tHBRtcdWvw=
+	b=zNQEXhAJpMhaZyLsw5gSy56GizJcDljUAOdHdrcCAs4zUo/AgzpA2+NqpPrK6aQLm
+	 LjxSx4RsXSQjPwIGoMxLNCzsSLVFmYWyhMOZUNDTADHtzqF8WZn325lj0EjjJIST4H
+	 MjiEQ9N1SnPHcy5Kv9AyCQBMIINHYp6AYrnpJR6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xiang Liu <xiang.liu@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 252/444] net: dsa: b53: prevent SWITCH_CTRL access on BCM5325
+Subject: [PATCH 6.16 291/570] drm/amdgpu: Use correct severity for BP threshold exceed event
 Date: Mon, 18 Aug 2025 14:44:38 +0200
-Message-ID: <20250818124458.271649943@linuxfoundation.org>
+Message-ID: <20250818124517.059816293@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Xiang Liu <xiang.liu@amd.com>
 
-[ Upstream commit 22ccaaca43440e90a3b68d2183045b42247dc4be ]
+[ Upstream commit 4a33ca3f6ee9a013a423a867426704e9c9d785bd ]
 
-BCM5325 doesn't implement SWITCH_CTRL register so we should avoid reading
-or writing it.
+The severity of CPER for BP threshold exceed event should be set as
+CPER_SEV_FATAL to match the OOB implementation.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-8-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Xiang Liu <xiang.liu@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 1ee2e5e9a5b2..aacdfc64d3b6 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -359,11 +359,12 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+index 5a234eadae8b..15dde1f50328 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cper.c
+@@ -212,7 +212,7 @@ int amdgpu_cper_entry_fill_bad_page_threshold_section(struct amdgpu_device *adev
+ 		   NONSTD_SEC_OFFSET(hdr->sec_cnt, idx));
  
- 	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_MODE, mgmt);
+ 	amdgpu_cper_entry_fill_section_desc(adev, section_desc, true, false,
+-					    CPER_SEV_NUM, RUNTIME, NONSTD_SEC_LEN,
++					    CPER_SEV_FATAL, RUNTIME, NONSTD_SEC_LEN,
+ 					    NONSTD_SEC_OFFSET(hdr->sec_cnt, idx));
  
--	/* Include IMP port in dumb forwarding mode
--	 */
--	b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
--	mgmt |= B53_MII_DUMB_FWDG_EN;
--	b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
-+	if (!is5325(dev)) {
-+		/* Include IMP port in dumb forwarding mode */
-+		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
-+		mgmt |= B53_MII_DUMB_FWDG_EN;
-+		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
-+	}
+ 	section->hdr.valid_bits.err_info_cnt = 1;
+@@ -326,7 +326,9 @@ int amdgpu_cper_generate_bp_threshold_record(struct amdgpu_device *adev)
+ 		return -ENOMEM;
+ 	}
  
- 	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
- 	 * frames should be flooded or not.
+-	amdgpu_cper_entry_fill_hdr(adev, bp_threshold, AMDGPU_CPER_TYPE_BP_THRESHOLD, CPER_SEV_NUM);
++	amdgpu_cper_entry_fill_hdr(adev, bp_threshold,
++				   AMDGPU_CPER_TYPE_BP_THRESHOLD,
++				   CPER_SEV_FATAL);
+ 	ret = amdgpu_cper_entry_fill_bad_page_threshold_section(adev, bp_threshold, 0);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 
