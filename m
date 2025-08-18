@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57354B2A6BF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E774B2A3AF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A4BD684EA5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730A61B60BDF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6A4335BD4;
-	Mon, 18 Aug 2025 13:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CC931CA76;
+	Mon, 18 Aug 2025 13:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsLiMf8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKTsMzxY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA01335BD3;
-	Mon, 18 Aug 2025 13:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B8931CA59;
+	Mon, 18 Aug 2025 13:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523996; cv=none; b=Y++X1Hg+sqUykqLQyzQ5CV8Kwx7R8JJea825YaH+z6XulD4tUYf7zRcHiO+51Xdp21hzF6uXniuqygs8LlrQ90Y/RhU9Ylqz2z7nLK6LuBs5rYeTf0Nj21SaU19KIsxsmpIFWfrw+sTLir4aOWXyipBEqA9V/aUi83NUjzh2M7g=
+	t=1755522376; cv=none; b=PA9KMmFU0I36nwFlPop9dkKXSiiRF56Kexvq/XtuA7wHvacmug9v3lvrILK9ZkplpD4uwZK2YSY3oghqgdv3JbLweO4rb14EY4iSTYiuMsEe/XYkUepD7GcquNYTIeij0j9GmsDmuSbFN6l0C4O6mkZXYviYOxhIdtsUWV1Rnto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523996; c=relaxed/simple;
-	bh=rBvNH53nbDQvh1cbU84nVJmnvOJNLk3Oxrj/ONm+LO8=;
+	s=arc-20240116; t=1755522376; c=relaxed/simple;
+	bh=JL0Ghvykjh6YAyWt/ZWSDaYwNZNSeAZwqDcsySjfTZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMPw7VQAf8JSdViOD0UA4AaHB4Eyt+y7NaostNcWAYRStA0zgz+WX8RzEtk/G1l3FAkon/iNdsKTg50gPbqkAjN0CbcypRsIPW+bWIfOS5ueQ8bZWrb0CZY+iyzT/vXsPEmLQu4pYFFafh9nF4Q3nHAQT0VpB8bMJTjFOXtV6g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsLiMf8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AE6C4CEEB;
-	Mon, 18 Aug 2025 13:33:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VCs7YLbu9RIo67U6eHkitBJu41yoUq81D4OayQeC+WZTdnJVACXRhRWg4cEJakjH6gAFQYJjMVXiexzTzXNERwr0HhYdH+91iYfuGUglPjfEnCCr8GHWSi7IM/vgNw6a3Jl+kzo98mb0JCj9K/XMDEX1fR0RE4gGo2gufllolgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKTsMzxY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC65DC4CEEB;
+	Mon, 18 Aug 2025 13:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523996;
-	bh=rBvNH53nbDQvh1cbU84nVJmnvOJNLk3Oxrj/ONm+LO8=;
+	s=korg; t=1755522375;
+	bh=JL0Ghvykjh6YAyWt/ZWSDaYwNZNSeAZwqDcsySjfTZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsLiMf8uIv4OSuH7YYhblbnZTNApXVDwwM0bIzZ5BiTc108zLQzxtAhpnyqBdEajx
-	 O4pvVsB/bmV7bu1frUOzOx8bfnlPf52BjabTkvyy8gtX7oeh6Hn5KRIFOOjk3CT/It
-	 uCeBXny+ij9RvLkkhT9fgLsQrVvFQKpPEukhTgMY=
+	b=qKTsMzxYUbVSLakwb4ZdLF0CouwN2wxZAMFtsW1poCkaEReooI0buLQuCcKO6xK4Q
+	 hr3nWSGy9z76k1K7dO6X1anABsxKRyGdWbTm5i3jUZbjI8QZPJaN3ilPL5CtFuYmSO
+	 IcpxIs+HLe7g2Yy18dyEweaS0v1yR5IIaPwuFQQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	David Gow <davidgow@google.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 337/515] clk: tegra: periph: Fix error handling and resolve unsigned compare warning
-Date: Mon, 18 Aug 2025 14:45:23 +0200
-Message-ID: <20250818124511.407291625@linuxfoundation.org>
+Subject: [PATCH 6.12 298/444] MIPS: Dont crash in stack_top() for tasks without ABI or vDSO
+Date: Mon, 18 Aug 2025 14:45:24 +0200
+Message-ID: <20250818124500.127773624@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 2dc2ca9000eea2eb749f658196204cb84d4306f7 ]
+[ Upstream commit e9f4a6b3421e936c3ee9d74710243897d74dbaa2 ]
 
-./drivers/clk/tegra/clk-periph.c:59:5-9: WARNING:
-	Unsigned expression compared with zero: rate < 0
+Not all tasks have an ABI associated or vDSO mapped,
+for example kthreads never do.
+If such a task ever ends up calling stack_top(), it will derefence the
+NULL ABI pointer and crash.
 
-The unsigned long 'rate' variable caused:
-- Incorrect handling of negative errors
-- Compile warning: "Unsigned expression compared with zero"
+This can for example happen when using kunit:
 
-Fix by changing to long type and adding req->rate cast.
+    mips_stack_top+0x28/0xc0
+    arch_pick_mmap_layout+0x190/0x220
+    kunit_vm_mmap_init+0xf8/0x138
+    __kunit_add_resource+0x40/0xa8
+    kunit_vm_mmap+0x88/0xd8
+    usercopy_test_init+0xb8/0x240
+    kunit_try_run_case+0x5c/0x1a8
+    kunit_generic_run_threadfn_adapter+0x28/0x50
+    kthread+0x118/0x240
+    ret_from_kernel_thread+0x14/0x1c
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://lore.kernel.org/r/79c7f01e29876c612e90d6d0157fb1572ca8b3fb.1752046270.git.xiaopei01@kylinos.cn
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Only dereference the ABI point if it is set.
+
+The GIC page is also included as it is specific to the vDSO.
+Also move the randomization adjustment into the same conditional.
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-periph.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kernel/process.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-index 0626650a7011..c9fc52a36fce 100644
---- a/drivers/clk/tegra/clk-periph.c
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -51,7 +51,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	struct tegra_clk_periph *periph = to_clk_periph(hw);
- 	const struct clk_ops *div_ops = periph->div_ops;
- 	struct clk_hw *div_hw = &periph->divider.hw;
--	unsigned long rate;
-+	long rate;
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index b630604c577f..02aa6a04a21d 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -690,18 +690,20 @@ unsigned long mips_stack_top(void)
+ 	}
  
- 	__clk_hw_set_clk(div_hw, hw);
+ 	/* Space for the VDSO, data page & GIC user page */
+-	top -= PAGE_ALIGN(current->thread.abi->vdso->size);
+-	top -= PAGE_SIZE;
+-	top -= mips_gic_present() ? PAGE_SIZE : 0;
++	if (current->thread.abi) {
++		top -= PAGE_ALIGN(current->thread.abi->vdso->size);
++		top -= PAGE_SIZE;
++		top -= mips_gic_present() ? PAGE_SIZE : 0;
++
++		/* Space to randomize the VDSO base */
++		if (current->flags & PF_RANDOMIZE)
++			top -= VDSO_RANDOMIZE_SIZE;
++	}
  
-@@ -59,7 +59,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	if (rate < 0)
- 		return rate;
+ 	/* Space for cache colour alignment */
+ 	if (cpu_has_dc_aliases)
+ 		top -= shm_align_mask + 1;
  
--	req->rate = rate;
-+	req->rate = (unsigned long)rate;
- 	return 0;
+-	/* Space to randomize the VDSO base */
+-	if (current->flags & PF_RANDOMIZE)
+-		top -= VDSO_RANDOMIZE_SIZE;
+-
+ 	return top;
  }
  
 -- 
