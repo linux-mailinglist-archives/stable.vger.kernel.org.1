@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61DCB2A503
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F8AB2A78D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09EFD4E64B6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA2158385B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A7334572E;
-	Mon, 18 Aug 2025 13:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326AC31B13C;
+	Mon, 18 Aug 2025 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hE/vspl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1feJa7OZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CCC345729;
-	Mon, 18 Aug 2025 13:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D4C31B13B;
+	Mon, 18 Aug 2025 13:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522967; cv=none; b=ix3J2FoaYvxzE69CQzMo64yodOXZ04j57pypz6eKhD7BxM91oTgrzXWPYNJFSBZ0hakP1ntbDiKc+AJOIAOZR8tae1RNdfpn3G+bH6qCWxGv4Fogca2Z+mCbufem5NMulDwU9fa8IxXQf6uxT24VycvIwl6EF+F+SDbosskqzXw=
+	t=1755524768; cv=none; b=UWrcZL7qPEDx7+LYSp19Y8AfCZqwK/0lK561ApDPCx62dxbzrepcddwGHg59u79V193EFaRi/MShXEjbrEx/qlNHmYQUfkVKHsZNFRA43qU/blI8efislMk7N1oX1CavYaUCLz7fJYY5a/KaBBEp35TGVNFTEBnlos1f88noxRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522967; c=relaxed/simple;
-	bh=XmNEorMnkkrYe1owlgn1KbRjkc+Fzy2Ou3Sb4kO22c8=;
+	s=arc-20240116; t=1755524768; c=relaxed/simple;
+	bh=WJx7BVUZ17acs3MJE6HvY7NNofjUIrp4wJDPlTTXroQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bx9N1a0Fxok/l5RWL4fFhdGsrW4Qwip83vhEu0aUUk4nlvQEdvZcACJHCVYihJy5TJLJbyPgicnuJiyuaiQwDtda9GW9TukgNXaYTcKpQwuhxUOEXQ2tsr1NvEHncqZsEc9T2i9vYeoxLnnQVsA/lbDvA5z1Dhjm0RnAvVwzSio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hE/vspl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8CFC116C6;
-	Mon, 18 Aug 2025 13:16:06 +0000 (UTC)
+	 MIME-Version; b=EO1gTZVfvC81G/lQn+YfLruZZ6CGhgvp54BKafBOwdOGEUmUgIba4Bo+A05jbrEEGY6QWhXfXGavhbslIJy4vGqvoTAVry9OF6QzJJXmK4qodywPAkQste5eD/EBK6C4Feabd/EdOGp76AXbIfOsvh6UEhQQRJoB1EJjQRsXays=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1feJa7OZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D993C4CEEB;
+	Mon, 18 Aug 2025 13:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522966;
-	bh=XmNEorMnkkrYe1owlgn1KbRjkc+Fzy2Ou3Sb4kO22c8=;
+	s=korg; t=1755524767;
+	bh=WJx7BVUZ17acs3MJE6HvY7NNofjUIrp4wJDPlTTXroQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2hE/vsplyJxJMim1gd2pVFEcTe/nSPT5D7mo1xlrI+EcW/3zI1IRbj+Q5S0dijlBn
-	 Xtpyll15dru4GKFNxlhD+YoAvD8uM9SLJ2RHL4mI8AwUluDW3SjUleSXGqSGS1hsw1
-	 PgB0wFndCeJtHwRBHhOn4/BOCznN2Mi5I9EqAtLA=
+	b=1feJa7OZSpvQbCjyHiVa5J/r1djQkXWli53kzUzz+A9TmgHLQoXQnxZzhKpIzhGyu
+	 PoePd6/b+wUQX4LBdINDhip9LFLGsDvRHoNZYl8fgMB5q/QwuSN9M6Wl9GPl0v4zgs
+	 vz31N8gYMHnF/+Mb7LASdNonm5cLPIzawwNiWjh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Amir Goldstein <amir73il@gmail.com>,
-	stable@kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.15 029/515] fhandle: raise FILEID_IS_DIR in handle_type
-Date: Mon, 18 Aug 2025 14:40:15 +0200
-Message-ID: <20250818124459.579233360@linuxfoundation.org>
+	Xu Yang <xu.yang_2@nxp.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.16 029/570] net: usb: asix_devices: add phy_mask for ax88772 mdio bus
+Date: Mon, 18 Aug 2025 14:40:16 +0200
+Message-ID: <20250818124506.941029659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit cc678bf7aa9e2e6c2356fd7f955513c1bd7d4c97 upstream.
+commit 4faff70959d51078f9ee8372f8cff0d7045e4114 upstream.
 
-Currently FILEID_IS_DIR is raised in fh_flags which is wrong.
-Raise it in handle->handle_type were it's supposed to be.
+Without setting phy_mask for ax88772 mdio bus, current driver may create
+at most 32 mdio phy devices with phy address range from 0x00 ~ 0x1f.
+DLink DUB-E100 H/W Ver B1 is such a device. However, only one main phy
+device will bind to net phy driver. This is creating issue during system
+suspend/resume since phy_polling_mode() in phy_state_machine() will
+directly deference member of phydev->drv for non-main phy devices. Then
+NULL pointer dereference issue will occur. Due to only external phy or
+internal phy is necessary, add phy_mask for ax88772 mdio bus to workarnoud
+the issue.
 
-Link: https://lore.kernel.org/20250624-work-pidfs-fhandle-v2-1-d02a04858fe3@kernel.org
-Fixes: c374196b2b9f ("fs: name_to_handle_at() support for "explicit connectable" file handles")
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Closes: https://lore.kernel.org/netdev/20250806082931.3289134-1-xu.yang_2@nxp.com
+Fixes: e532a096be0e ("net: usb: asix: ax88772: add phylib support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20250811092931.860333-1-xu.yang_2@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fhandle.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/asix_devices.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/fhandle.c
-+++ b/fs/fhandle.c
-@@ -88,7 +88,7 @@ static long do_sys_name_to_handle(const
- 		if (fh_flags & EXPORT_FH_CONNECTABLE) {
- 			handle->handle_type |= FILEID_IS_CONNECTABLE;
- 			if (d_is_dir(path->dentry))
--				fh_flags |= FILEID_IS_DIR;
-+				handle->handle_type |= FILEID_IS_DIR;
- 		}
- 		retval = 0;
- 	}
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbn
+ 	priv->mdio->read = &asix_mdio_bus_read;
+ 	priv->mdio->write = &asix_mdio_bus_write;
+ 	priv->mdio->name = "Asix MDIO Bus";
++	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
+ 	/* mii bus name is usb-<usb bus number>-<usb device number> */
+ 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
+ 		 dev->udev->bus->busnum, dev->udev->devnum);
 
 
 
