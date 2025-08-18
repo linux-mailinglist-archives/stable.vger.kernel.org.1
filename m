@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C83AB2A3DD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86F7B2A8E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48434580252
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7EE06E29C8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20C320126A;
-	Mon, 18 Aug 2025 13:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385BE322A38;
+	Mon, 18 Aug 2025 13:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJfJmssO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvA+5xN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC7C31B13B;
-	Mon, 18 Aug 2025 13:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7679322A2E;
+	Mon, 18 Aug 2025 13:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522104; cv=none; b=t26rxHILMleD6Z6UXRVp9+xvtwnxlDbXtTTh3CHI8vjaiRKXjUdT+7kn9i4PKf7PWiNChrKHSjeox6SF7aco659jzB4KelNUp3EN1E6/gzBcAV0lwPvek59xvtqt6TDg2vftZU2FE/tIKe/9/GPx/3AlR5UyIq7lS2QHtLqLks8=
+	t=1755525408; cv=none; b=I75/XZ3tdVzslXs+z34hiBxa9UDc1Ky0LesXvAvyv1P5jhtBcvomDFoIeNFWRwvMtyvo/tee+4rtB8i1i6IdqUqoMP0e8WWFjEr6P8go9oWTq+TYTP8CvkHnHCkFZV44foX09wVtlsi4ptrXbeVoNafMQG9cuyZs0ekp567MoQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522104; c=relaxed/simple;
-	bh=nAYuPWWwwXJKJ9xQUh5n11kPEBBSteWyAsdpxM7DDTY=;
+	s=arc-20240116; t=1755525408; c=relaxed/simple;
+	bh=wJ9+JRbHGxbHXNqOiYWFfehqdxvC6lkslto//RFFs/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXcB/78wmgQl19aa3QH1UPmjRLd2JvD2rYp8TP3tSr+HG10N5CZV5qk6CTlFygtIpy7OTE+57VuqcPngmw4JOfBQoo00qsYV/so35kSQCVnw51FDltUo0q9MwYToP87txUQtAEd4fCvuoCq84waQP/QYaVYBYWvjz4vwFwKWhew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJfJmssO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22FAC4CEEB;
-	Mon, 18 Aug 2025 13:01:43 +0000 (UTC)
+	 MIME-Version; b=K3QnT/GjIq1nnEPrYgYQrNCnBXgwXjBtHERLut5EYdlzbKfJpDyWjwUZyiN6M8bAo0bYwEcWSFF+FRxLvzjbK0I6mz81sBz2e3X9j0QiNBK/YoTlI0ujKs3JO/XgA0XJFTDBkvqOeOfp7r83IHLLcUnNFqcO+4nueAbRIkk0yvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvA+5xN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF38C113D0;
+	Mon, 18 Aug 2025 13:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522104;
-	bh=nAYuPWWwwXJKJ9xQUh5n11kPEBBSteWyAsdpxM7DDTY=;
+	s=korg; t=1755525407;
+	bh=wJ9+JRbHGxbHXNqOiYWFfehqdxvC6lkslto//RFFs/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJfJmssOjKK5iEtRIONa18RFXOrn+aCywvLAbjVKjUUKPRDoB3dzftQsY+ZrsWnQG
-	 vo+v8xatg4XFIE653QzrSo8HeRYuBXwP4f8Jr93ElZYmzJrMnW9VfbwVJTLHbkpoCH
-	 YZRxfApfEFiOejuPCVke6dcMZr1ojK6YqkGr1q4w=
+	b=cvA+5xN4Z/DrdZkdSW0gfuUJpC02OOPquXFz2xKj/yKXlvRxmAwzhYQMT1qXgM2Gm
+	 Gl4j0I/jg6ET4EObAub832AzgRvb2FAau3QBsuYbVX2PrNrxME1vINX11lgvTVqMbn
+	 zKIsCOX16Uwpd/7aAkP05RAqvpmvU8JDsDr3Bf5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Bauer <mail@david-bauer.net>,
-	Felix Fietkau <nbd@nbd.name>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/444] wifi: mt76: mt7915: mcu: re-init MCU before loading FW patch
+Subject: [PATCH 6.16 254/570] wifi: iwlwifi: handle non-overlapping API ranges
 Date: Mon, 18 Aug 2025 14:44:01 +0200
-Message-ID: <20250818124456.908824631@linuxfoundation.org>
+Message-ID: <20250818124515.603637700@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit ac9c50c79eaef5fca0f165e45d0c5880606db53e ]
+[ Upstream commit 6fdd41b25fb4154bcde7a38ca1c98e072fa1177c ]
 
-Restart the MCU and release the patch semaphore before loading the MCU
-patch firmware from the host.
+The option to set an api_version_min/max also to the RF was added.
+In the case that both the MAC and the RF has a range defined, we take
+the narrower range of both.
 
-This fixes failures upon error recovery in case the semaphore was
-previously taken and never released by the host.
+This doesn't work for non-overlapping ranges. In this case, we should
+just take the lower range of both.
 
-This happens from time to time upon triggering a full-chip error
-recovery. Under this circumstance, the hardware restart fails and the
-radio is rendered inoperational.
-
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Link: https://patch.msgid.link/20250402004528.1036715-3-mail@david-bauer.net
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250709200543.1628666-2-miriam.rachel.korenblit@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 25 +++++++++++--------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 87d0dd040001..3398c25cb03c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2071,16 +2071,21 @@ static int mt7915_load_firmware(struct mt7915_dev *dev)
- {
- 	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 9504a0cb8b13..557a97144f90 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -298,13 +298,17 @@ static void iwl_get_ucode_api_versions(struct iwl_trans *trans,
+ 	const struct iwl_family_base_params *base = trans->mac_cfg->base;
+ 	const struct iwl_rf_cfg *cfg = trans->cfg;
  
--	/* make sure fw is download state */
--	if (mt7915_firmware_state(dev, false)) {
--		/* restart firmware once */
--		mt76_connac_mcu_restart(&dev->mt76);
--		ret = mt7915_firmware_state(dev, false);
--		if (ret) {
--			dev_err(dev->mt76.dev,
--				"Firmware is not ready for download\n");
--			return ret;
--		}
-+	/* Release Semaphore if taken by previous failed attempt */
-+	ret = mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
-+	if (ret != PATCH_REL_SEM_SUCCESS) {
-+		dev_err(dev->mt76.dev, "Could not release semaphore\n");
-+		/* Continue anyways */
-+	}
-+
-+	/* Always restart MCU firmware */
-+	mt76_connac_mcu_restart(&dev->mt76);
-+
-+	/* Check if MCU is ready */
-+	ret = mt7915_firmware_state(dev, false);
-+	if (ret) {
-+		dev_err(dev->mt76.dev, "Firmware did not enter download state\n");
-+		return ret;
+-	if (!base->ucode_api_max) {
++	/* if the MAC doesn't have range or if its range it higher than the RF's */
++	if (!base->ucode_api_max ||
++	    (cfg->ucode_api_max && base->ucode_api_min > cfg->ucode_api_max)) {
+ 		*api_min = cfg->ucode_api_min;
+ 		*api_max = cfg->ucode_api_max;
+ 		return;
  	}
  
- 	ret = mt76_connac2_load_patch(&dev->mt76, fw_name_var(dev, ROM_PATCH));
+-	if (!cfg->ucode_api_max) {
++	/* if the RF doesn't have range or if its range it higher than the MAC's */
++	if (!cfg->ucode_api_max ||
++	    (base->ucode_api_max && cfg->ucode_api_min > base->ucode_api_max)) {
+ 		*api_min = base->ucode_api_min;
+ 		*api_max = base->ucode_api_max;
+ 		return;
 -- 
 2.39.5
 
