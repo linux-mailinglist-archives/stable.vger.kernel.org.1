@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-171159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74E0B2A833
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350E3B2A2DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90066E253C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C505654AC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44214335BCD;
-	Mon, 18 Aug 2025 13:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D90031E119;
+	Mon, 18 Aug 2025 12:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8NKMPwt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP5PoTRM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26DE335BAA;
-	Mon, 18 Aug 2025 13:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A36F31A04F;
+	Mon, 18 Aug 2025 12:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525009; cv=none; b=uhe01DommgIRICaYO0gWPVUCQBDMBegq1ruy3H8KFvkRTc5mbFE3QIMBEKsK9PtXRA6qsP3iowVybINN/cvlEIVGnXRvfJUmuyTVRsZvDYLfOlUjwf32u4xPWkAkSCC+ephShi7mgb3KHEesK0f2vgjf0IcChNzIW70ErzdIUlk=
+	t=1755521675; cv=none; b=gFTsc9DzpbXG1rbyMbv1DIYx6MxfHSt5ykMLV+DRSrGHoHD1dQe6R/XANh99Fz8L6F4uLg5gqmqRgG+uO/x6LS1hPLM2KRFIhMC0bjL6RapDesGdgdsIMvyr9VSOq68nOWihtQBROWvo2SUkerSvKdNbyeo7yzwrZj6V283PgNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525009; c=relaxed/simple;
-	bh=Zk8BlyGHNydMvYfGu79HbTb4UCKV592wKQSXLydrNzs=;
+	s=arc-20240116; t=1755521675; c=relaxed/simple;
+	bh=K43SHj670n83h8SEMtykGxV7MWOWuluL052pp70zP70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ne2ZPFOs9AVlewoSjtp4zDv9VpitF8kVCkhNQRYW7ggpYh4udo3cWnveyAHmXJ7Z1R0kbxwe1gFJPO4zrlzkc+jFiypMzQU2AVM1ZiAYqIgMmIh99w2fEp5atL9AUw2GDBA6TSlOBeC2FcEiAjijCIjoMwi+UyK58qTjQTpiubM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8NKMPwt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1719AC4CEEB;
-	Mon, 18 Aug 2025 13:50:07 +0000 (UTC)
+	 MIME-Version; b=ip+NplKnW5Qze4jEdQimn2plLI4j55tnkV9JIR8ZGKaGYRnvi2X3nPR18pd+FqMu+LI6lhReh3iadvLF5Khyv1Q/ognQ9JXYrJWcxop1SVMuckhwgRE+R2QPVNS891nqW8YB4W77cBLHiEoQbdx7hmH4bURK5sYZFH/1z6JNzTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP5PoTRM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3070C4CEEB;
+	Mon, 18 Aug 2025 12:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525008;
-	bh=Zk8BlyGHNydMvYfGu79HbTb4UCKV592wKQSXLydrNzs=;
+	s=korg; t=1755521675;
+	bh=K43SHj670n83h8SEMtykGxV7MWOWuluL052pp70zP70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8NKMPwtyHIbLT7d5JA4//FKOtewup5hai2qp44Q4Yg6oN228C0zuv68UJ66M1kb4
-	 CQ69/acvW58WFtqMBdgUYnYBB1eg73qpLbe1+B2zjyB99zcVKYWZwK4qv8yzdwdPKy
-	 tC5FC9+ik1/GZZu12Mvd8LznKAl+bRnxUWxCHRns=
+	b=CP5PoTRMGLw3WYFO9QQmUygruWPBrq0Rqpw5yTe9Ccxf0f3guQliaXn1rloW3x4pQ
+	 sVS6lQW8021jXIOlTS/rjtZqDSrX0VjwzayRLApHascA9YKv2AR+W5A2nvyL3sDPdc
+	 SvMAe2o1V08ynmEVekYJUa/aKHz1rbn0squ/CXNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cynthia Huang <cynthia@andestech.com>,
-	Ben Zong-You Xie <ben717@andestech.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 129/570] selftests/futex: Define SYS_futex on 32-bit architectures with 64-bit time_t
+Subject: [PATCH 6.12 090/444] pidfs: raise SB_I_NODEV and SB_I_NOEXEC
 Date: Mon, 18 Aug 2025 14:41:56 +0200
-Message-ID: <20250818124510.792303122@linuxfoundation.org>
+Message-ID: <20250818124452.320129466@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cynthia Huang <cynthia@andestech.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 04850819c65c8242072818655d4341e70ae998b5 ]
+[ Upstream commit 1a1ad73aa1a66787f05f7f10f686b74bab77be72 ]
 
-The kernel does not provide sys_futex() on 32-bit architectures that do not
-support 32-bit time representations, such as riscv32.
+Similar to commit 1ed95281c0c7 ("anon_inode: raise SB_I_NODEV and SB_I_NOEXEC"):
+it shouldn't be possible to execute pidfds via
+execveat(fd_anon_inode, "", NULL, NULL, AT_EMPTY_PATH)
+so raise SB_I_NOEXEC so that no one gets any creative ideas.
 
-As a result, glibc cannot define SYS_futex, causing compilation failures in
-tests that rely on this syscall. Define SYS_futex as SYS_futex_time64 in
-such cases to ensure successful compilation and compatibility.
+Also raise SB_I_NODEV as we don't expect or support any devices on pidfs.
 
-Signed-off-by: Cynthia Huang <cynthia@andestech.com>
-Signed-off-by: Ben Zong-You Xie <ben717@andestech.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250710103630.3156130-1-ben717@andestech.com
+Link: https://lore.kernel.org/20250618-work-pidfs-persistent-v2-1-98f3456fd552@kernel.org
+Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/futex/include/futextest.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/pidfs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testing/selftests/futex/include/futextest.h
-index ddbcfc9b7bac..7a5fd1d5355e 100644
---- a/tools/testing/selftests/futex/include/futextest.h
-+++ b/tools/testing/selftests/futex/include/futextest.h
-@@ -47,6 +47,17 @@ typedef volatile u_int32_t futex_t;
- 					 FUTEX_PRIVATE_FLAG)
- #endif
+diff --git a/fs/pidfs.c b/fs/pidfs.c
+index 52b7e4f76732..5a8d8eb8df23 100644
+--- a/fs/pidfs.c
++++ b/fs/pidfs.c
+@@ -382,6 +382,8 @@ static int pidfs_init_fs_context(struct fs_context *fc)
+ 	if (!ctx)
+ 		return -ENOMEM;
  
-+/*
-+ * SYS_futex is expected from system C library, in glibc some 32-bit
-+ * architectures (e.g. RV32) are using 64-bit time_t, therefore it doesn't have
-+ * SYS_futex defined but just SYS_futex_time64. Define SYS_futex as
-+ * SYS_futex_time64 in this situation to ensure the compilation and the
-+ * compatibility.
-+ */
-+#if !defined(SYS_futex) && defined(SYS_futex_time64)
-+#define SYS_futex SYS_futex_time64
-+#endif
-+
- /**
-  * futex() - SYS_futex syscall wrapper
-  * @uaddr:	address of first futex
++	fc->s_iflags |= SB_I_NOEXEC;
++	fc->s_iflags |= SB_I_NODEV;
+ 	ctx->ops = &pidfs_sops;
+ 	ctx->dops = &pidfs_dentry_operations;
+ 	fc->s_fs_info = (void *)&pidfs_stashed_ops;
 -- 
 2.39.5
 
