@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1E9B2A573
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB3E4B2A2B9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA61F623A3D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08321898FD9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D05B320CB4;
-	Mon, 18 Aug 2025 13:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E406A32144D;
+	Mon, 18 Aug 2025 12:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnTV5neE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow8k9Be0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD03933A00C;
-	Mon, 18 Aug 2025 13:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A017B320CC0;
+	Mon, 18 Aug 2025 12:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523200; cv=none; b=ovLnClFWmuilf4oxEZDkqJqjAGc42diREOp9ed9kPEDAln5VP7UJxgAcQi0ypTWnYSwjx27S2ArFJbxb2Nmu4MTYDH6cm+kgwZyktcmoPJGFUfBZNAXVlA+yoE8k76FE3sI0JLwkkfsLPszOcYvfvf/OP8Bvh/Gl3uatuE1xrlI=
+	t=1755521574; cv=none; b=thjtq7TCfvMF60FUd3v4Lulz8ovM7nPAK3KQ8DSegW1uVRZBbRRbB30Cmx2ZfC+zoOsiSlO0p16ZFSQKAY+M0Us6IB+dRx0hx7VgaT3Mf6T3DaGe0pOV5sFTxp7KSdWerADbdb8dFCKRjjmhGtSyXPVdIZPZ4+jEMITkSFJJmHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523200; c=relaxed/simple;
-	bh=7QhmFEF2esKbmomH4UCkb6abT+ReG6Jn0jmiyvflsi8=;
+	s=arc-20240116; t=1755521574; c=relaxed/simple;
+	bh=1lWSP3kPALO9X+K0TF9Eh0f2AU0cRVu+kotkqsNeNjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZo2spCFJm9ajrb8r5X2kcrUpfYFckuWSKUUiwL+7vBmel1BNB+5zNBXv9EZYvFb/F0FTB/7PjhbeTf2xH1eH1g3iv3SxkC8YVyusgTlM10dse66s9y28Q6QIDXHeOkq7Z2kzDxeoqJCsNF5cb2Rxrz+c2r/g3eWNnRNZX4AjIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnTV5neE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F1CC116D0;
-	Mon, 18 Aug 2025 13:19:58 +0000 (UTC)
+	 MIME-Version; b=bmyaph96Pmxa/dVVayPSJhM34D9dQwOyPKVwY1B2VmzpBsBSNtd7tam1LBNu0auUJ/3cr5+Kht6iqpibH+0hmzlHbltb20KACwl16OE4v1by5J9GSk56eSXYrrheDPoEcTqUuut4JUPRNdpENbe2ItztSuOwc9DZGDIU1umIf6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow8k9Be0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F17C4CEEB;
+	Mon, 18 Aug 2025 12:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523199;
-	bh=7QhmFEF2esKbmomH4UCkb6abT+ReG6Jn0jmiyvflsi8=;
+	s=korg; t=1755521574;
+	bh=1lWSP3kPALO9X+K0TF9Eh0f2AU0cRVu+kotkqsNeNjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnTV5neEJNz7wMyIDwUaZb6wFZxNkkr7yo1aaOrIg4V24oPsF3JQDjRWRdb9AeO6c
-	 YkEb6NiWF/YolD/p6GTLCUGSAguTjPXeBbkJSWyRxlqKaapRo5Ys0PPx4T5g+fE6Ne
-	 QVpvi+6adE4LpEg1Av80vwZPq+9qnqy6DkTJJqHA=
+	b=Ow8k9Be01LoLqgOpmT/xlcHBS9FSn8BI+eejOeGOOMXw1frxxn+AXyIetbz6AJYyJ
+	 cghQYYg9FHJZFzCaPMbGtbAWZHrYSoHHDbeqaj8SYmz+3uKIDNlNF+8RET0g2P6vjv
+	 8J8938/3jqdcTJqnQg+anGXqxTMakQkHLKz9Az60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>,
+	syzbot+7cfb66a237c4a5fb22ad@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 100/515] ata: ahci: Disallow LPM policy control if not supported
-Date: Mon, 18 Aug 2025 14:41:26 +0200
-Message-ID: <20250818124502.224669207@linuxfoundation.org>
+Subject: [PATCH 6.12 061/444] ptp: prevent possible ABBA deadlock in ptp_clock_freerun()
+Date: Mon, 18 Aug 2025 14:41:27 +0200
+Message-ID: <20250818124451.234586648@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 65b2c92f69d3df81422d27e5be012e357e733241 ]
+[ Upstream commit 2efe41234dbd0a83fdb7cd38226c2f70039a2cd3 ]
 
-Commit fa997b0576c9 ("ata: ahci: Do not enable LPM if no LPM states are
-supported by the HBA") introduced an early return in
-ahci_update_initial_lpm_policy() to ensure that the target_lpm_policy
-of ports belonging to a host that does not support the Partial, Slumber
-and DevSleep power states is unchanged and remains set to
-ATA_LPM_UNKNOWN and thus prevents the execution of
-ata_eh_link_set_lpm().
+syzbot reported the following ABBA deadlock:
 
-However, a user or a system daemon (e.g. systemd-udevd) may still
-attempt changing the LPM policy through the sysfs
-link_power_management_policy of the host.
+       CPU0                           CPU1
+       ----                           ----
+  n_vclocks_store()
+    lock(&ptp->n_vclocks_mux) [1]
+        (physical clock)
+                                     pc_clock_adjtime()
+                                       lock(&clk->rwsem) [2]
+                                        (physical clock)
+                                       ...
+                                       ptp_clock_freerun()
+                                         ptp_vclock_in_use()
+                                           lock(&ptp->n_vclocks_mux) [3]
+                                              (physical clock)
+    ptp_clock_unregister()
+      posix_clock_unregister()
+        lock(&clk->rwsem) [4]
+          (virtual clock)
 
-Improve this to prevent sysfs LPM policy changes by setting the flag
-ATA_FLAG_NO_LPM for the port of such host, and initialize the port
-target_lpm_policy to ATA_LPM_MAX_POWER to guarantee that no unsupported
-low power state is being used on the port and its link.
+Since ptp virtual clock is registered only under ptp physical clock, both
+ptp_clock and posix_clock must be physical clocks for ptp_vclock_in_use()
+to lock &ptp->n_vclocks_mux and check ptp->n_vclocks.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20250701125321.69496-9-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+However, when unregistering vclocks in n_vclocks_store(), the locking
+ptp->n_vclocks_mux is a physical clock lock, but clk->rwsem of
+ptp_clock_unregister() called through device_for_each_child_reverse()
+is a virtual clock lock.
+
+Therefore, clk->rwsem used in CPU0 and clk->rwsem used in CPU1 are
+different locks, but in lockdep, a false positive occurs because the
+possibility of deadlock is determined through lock-class.
+
+To solve this, lock subclass annotation must be added to the posix_clock
+rwsem of the vclock.
+
+Reported-by: syzbot+7cfb66a237c4a5fb22ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7cfb66a237c4a5fb22ad
+Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250728062649.469882-1-aha310510@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ptp/ptp_private.h | 5 +++++
+ drivers/ptp/ptp_vclock.c  | 7 +++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 931da4749e80..f52ae776d990 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1788,7 +1788,10 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
- 	if ((ap->host->flags & ATA_HOST_NO_PART) &&
- 	    (ap->host->flags & ATA_HOST_NO_SSC) &&
- 	    (ap->host->flags & ATA_HOST_NO_DEVSLP)) {
--		ata_port_dbg(ap, "no LPM states supported, not enabling LPM\n");
-+		ata_port_dbg(ap,
-+			"No LPM states supported, forcing LPM max_power\n");
-+		ap->flags |= ATA_FLAG_NO_LPM;
-+		ap->target_lpm_policy = ATA_LPM_MAX_POWER;
- 		return;
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index a6aad743c282..b352df4cd3f9 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -24,6 +24,11 @@
+ #define PTP_DEFAULT_MAX_VCLOCKS 20
+ #define PTP_MAX_CHANNELS 2048
+ 
++enum {
++	PTP_LOCK_PHYSICAL = 0,
++	PTP_LOCK_VIRTUAL,
++};
++
+ struct timestamp_event_queue {
+ 	struct ptp_extts_event buf[PTP_MAX_TIMESTAMPS];
+ 	int head;
+diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
+index 7febfdcbde8b..8ed4b8598924 100644
+--- a/drivers/ptp/ptp_vclock.c
++++ b/drivers/ptp/ptp_vclock.c
+@@ -154,6 +154,11 @@ static long ptp_vclock_refresh(struct ptp_clock_info *ptp)
+ 	return PTP_VCLOCK_REFRESH_INTERVAL;
+ }
+ 
++static void ptp_vclock_set_subclass(struct ptp_clock *ptp)
++{
++	lockdep_set_subclass(&ptp->clock.rwsem, PTP_LOCK_VIRTUAL);
++}
++
+ static const struct ptp_clock_info ptp_vclock_info = {
+ 	.owner		= THIS_MODULE,
+ 	.name		= "ptp virtual clock",
+@@ -213,6 +218,8 @@ struct ptp_vclock *ptp_vclock_register(struct ptp_clock *pclock)
+ 		return NULL;
  	}
  
++	ptp_vclock_set_subclass(vclock->clock);
++
+ 	timecounter_init(&vclock->tc, &vclock->cc, 0);
+ 	ptp_schedule_worker(vclock->clock, PTP_VCLOCK_REFRESH_INTERVAL);
+ 
 -- 
-2.39.5
+2.50.1
 
 
 
