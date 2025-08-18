@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFC0B2A549
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6C8B2A70A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 229F168395A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B1597BBD94
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EDF320CC6;
-	Mon, 18 Aug 2025 13:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACF2321F5B;
+	Mon, 18 Aug 2025 13:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMB9Owy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puJnN1w2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E1322A7E0;
-	Mon, 18 Aug 2025 13:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77242258EF3;
+	Mon, 18 Aug 2025 13:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523027; cv=none; b=SNrlGfFOyTOZFuP8JrLXPhY0AfeWh4QinLYZR3aaJojniUmVT8LWX7nBKxPYwTNK0/sD8ANZgc+o6I+F0AYtOMLVsze4LNr4UVT8pjc2Vc+zFDWjJbRb1bkxn5cpf1aW3A2IKFVjYGVTTHCxk4EZOhqOZJ7ZTZVaFBrLkoPYUI8=
+	t=1755524627; cv=none; b=LQ4of4o9OKK1QGLMpk3VhRH4eOEoR2TVzGmofUXbHztStR7sSfawvAJvXnb2drWij0hbd+A/Dfy5SX1tVlAEH8L2Mzr5U/oObyklnCSu3r0g/vImazHSEqxAR94i2AdjpcS7ImWvu0AFen6UeLUX5XqzcSIh24B7Pb7p2H40GSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523027; c=relaxed/simple;
-	bh=uVnDRzCg7lSEW9JZ/9lUEYlXNCDcCv6A1uTXlTfGns4=;
+	s=arc-20240116; t=1755524627; c=relaxed/simple;
+	bh=UeYjVeFX7Hvecu0D5ZBOzxQWzPPg8h2lCVSYfY0Oa/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SaXTm+3wluyqjuSwyM5jBIPf05hv37rNcjmum/M1hnWRxmF687Sq5fHGWS/EdPSEv5WlkOaXKIQB85biBIxlhljZNnr30LtmZ325tfho5I1u10wdEB6lJ7iO9EXk/32RPckeyXxBJOZ9D+T2b18BAiJsaGjEILBSgLmEYMJG03c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMB9Owy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A097C4CEEB;
-	Mon, 18 Aug 2025 13:17:07 +0000 (UTC)
+	 MIME-Version; b=YUMIRq8QoQCZkPMfHdstu3epIQm9wxctO9QmkskWoOHGHA/NCX5ztYELMPyQQyzJC80U6A3VvhAiFJLYh/NS8pRPpH3RXAx7tV2D7xmlU0gRiPOlDxO7XYHTSCOiXHpJNCR9y+E8Twdx/BA/95YUJdsOSejJWw6i4K4krloHQ08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puJnN1w2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B237BC4CEEB;
+	Mon, 18 Aug 2025 13:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523027;
-	bh=uVnDRzCg7lSEW9JZ/9lUEYlXNCDcCv6A1uTXlTfGns4=;
+	s=korg; t=1755524627;
+	bh=UeYjVeFX7Hvecu0D5ZBOzxQWzPPg8h2lCVSYfY0Oa/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMB9Owy99niSI7nc1tqc2kkmg/S/naQy7Xl33b71OrLQb5AJM15/k1/DHWEpgKe2C
-	 bSjf2B94PCWpFbzp3ZrwA+FAiIzLKFYwaESP5LE7LvSaV2u5ULFHcyf4bKTNQJcVRr
-	 StVCd7AEf+BjHUI4go9mMzG+wTActRCcDfJL3FUg=
+	b=puJnN1w2CCKd2FGQnn3iWmfSk/C33mBuuVmgoMyJPx9OR8dsLIeeujhjsTI5Si3M0
+	 HbSZwm83Pnj4M9Kd/omsSHu3i2ABnz39734uPmk5HqTcHcGs6V/vfwe9uBwG5V22bt
+	 0YIT0QlVS/I3CBuID56CPohNWe3bPxVjIYQIC0cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.15 015/515] Revert "gpio: mlxbf3: only get IRQ for device instance 0"
+	Dongcheng Yan <dongcheng.yan@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.16 014/570] media: i2c: set lt6911uxes reset_gpio to GPIOD_OUT_LOW
 Date: Mon, 18 Aug 2025 14:40:01 +0200
-Message-ID: <20250818124458.901797602@linuxfoundation.org>
+Message-ID: <20250818124506.335087080@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Dongcheng Yan <dongcheng.yan@intel.com>
 
-commit 56bdf7270ff4f870e2d4bfacdc00161e766dba2d upstream.
+commit 3c607baf68639d6bfe1a336523c4c9597f4b512a upstream.
 
-This reverts commit 10af0273a35ab4513ca1546644b8c853044da134.
+reset_gpio needs to be an output and set to GPIOD_OUT_LOW, to ensure
+lt6911uxe is in reset state during probe.
 
-While this change was merged, it is not the preferred solution.
-During review of a similar change to the gpio-mlxbf2 driver, the
-use of "platform_get_irq_optional" was identified as the preferred
-solution, so let's use it for gpio-mlxbf3 driver as well.
+This issue was found on the onboard lt6911uxe, where the reset_pin was
+not reset, causing the lt6911uxe to fail to probe.
 
+Fixes: e49563c3be09d4 ("media: i2c: add lt6911uxe hdmi bridge driver")
 Cc: stable@vger.kernel.org
-Fixes: 10af0273a35a ("gpio: mlxbf3: only get IRQ for device instance 0")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/8d2b630c71b3742f2c74242cf7d602706a6108e6.1754928650.git.davthompson@nvidia.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mlxbf3.c |   54 +++++++++++++++------------------------------
- 1 file changed, 19 insertions(+), 35 deletions(-)
+ drivers/media/i2c/lt6911uxe.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-mlxbf3.c
-+++ b/drivers/gpio/gpio-mlxbf3.c
-@@ -190,9 +190,7 @@ static int mlxbf3_gpio_probe(struct plat
- 	struct mlxbf3_gpio_context *gs;
- 	struct gpio_irq_chip *girq;
- 	struct gpio_chip *gc;
--	char *colon_ptr;
- 	int ret, irq;
--	long num;
+--- a/drivers/media/i2c/lt6911uxe.c
++++ b/drivers/media/i2c/lt6911uxe.c
+@@ -600,7 +600,7 @@ static int lt6911uxe_probe(struct i2c_cl
  
- 	gs = devm_kzalloc(dev, sizeof(*gs), GFP_KERNEL);
- 	if (!gs)
-@@ -229,39 +227,25 @@ static int mlxbf3_gpio_probe(struct plat
- 	gc->owner = THIS_MODULE;
- 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
+ 	v4l2_i2c_subdev_init(&lt6911uxe->sd, client, &lt6911uxe_subdev_ops);
  
--	colon_ptr = strchr(dev_name(dev), ':');
--	if (!colon_ptr) {
--		dev_err(dev, "invalid device name format\n");
--		return -EINVAL;
--	}
--
--	ret = kstrtol(++colon_ptr, 16, &num);
--	if (ret) {
--		dev_err(dev, "invalid device instance\n");
--		return ret;
--	}
--
--	if (!num) {
--		irq = platform_get_irq(pdev, 0);
--		if (irq >= 0) {
--			girq = &gs->gc.irq;
--			gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
--			girq->default_type = IRQ_TYPE_NONE;
--			/* This will let us handle the parent IRQ in the driver */
--			girq->num_parents = 0;
--			girq->parents = NULL;
--			girq->parent_handler = NULL;
--			girq->handler = handle_bad_irq;
--
--			/*
--			 * Directly request the irq here instead of passing
--			 * a flow-handler because the irq is shared.
--			 */
--			ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
--					       IRQF_SHARED, dev_name(dev), gs);
--			if (ret)
--				return dev_err_probe(dev, ret, "failed to request IRQ");
--		}
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq >= 0) {
-+		girq = &gs->gc.irq;
-+		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
-+		girq->default_type = IRQ_TYPE_NONE;
-+		/* This will let us handle the parent IRQ in the driver */
-+		girq->num_parents = 0;
-+		girq->parents = NULL;
-+		girq->parent_handler = NULL;
-+		girq->handler = handle_bad_irq;
-+
-+		/*
-+		 * Directly request the irq here instead of passing
-+		 * a flow-handler because the irq is shared.
-+		 */
-+		ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
-+				       IRQF_SHARED, dev_name(dev), gs);
-+		if (ret)
-+			return dev_err_probe(dev, ret, "failed to request IRQ");
- 	}
- 
- 	platform_set_drvdata(pdev, gs);
+-	lt6911uxe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_IN);
++	lt6911uxe->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(lt6911uxe->reset_gpio))
+ 		return dev_err_probe(dev, PTR_ERR(lt6911uxe->reset_gpio),
+ 				     "failed to get reset gpio\n");
 
 
 
