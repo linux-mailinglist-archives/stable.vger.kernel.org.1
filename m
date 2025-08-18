@@ -1,186 +1,204 @@
-Return-Path: <stable+bounces-170006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7378B29FCB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4358FB29FD7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9D5D2A3FFB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:57:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D8017A308C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 10:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E582261B6E;
-	Mon, 18 Aug 2025 10:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8274261B8C;
+	Mon, 18 Aug 2025 10:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apKEh6y7"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KDtMuP0O"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1FD261B6A
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1056261B62
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755514672; cv=none; b=TPJLQ7OZU1qDagg2s/DSo3/NbYzuARd+srEXYXtRzFykpJRJ0v6gG3IuRxCIK7n1rai8JClbbfAaZq2CWHgaZ0PmovvYH524Eer2gakKsYBO8JEHGeCGAAtdNTwPt1zwnVx4orz59T5YlWu9H8NeAB6q6BZl/5sfO+zKybhCYpE=
+	t=1755514768; cv=none; b=ZlXuFrVJdM3W7UtE1hH0MPVuiAjCiXVfkDN8AgCM/D3jS/rwuaW3XGNiJhvkFLSPorg91uy9Y8K3q/QOi2uFaDWec/yEkfGF3IYi5c6IPGNQc1sWJK2RLhrtaGbKLZ7XcVXCvMtAmWHE7W6VvFm3Mhmg4Y1lq/KJg+8YgHape/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755514672; c=relaxed/simple;
-	bh=do9FgkLzD0jy+Otr/Mm9Kp7MCYnobV6u70Z/6+jmeME=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BQcT8c52a3YJlljHx+GPgIALBDKkypnhTn8jBscmFOGTejOsnatm0e3gAhPi/EKBcl349f1beQev4kya8kevnpup0yYonX3o96vULSF71sq8MSudsGk3TZlexTvfFTozq661iZWt8l4Aa+duDJvAesQfizGIn3wOmQjqShfX8Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apKEh6y7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46212C4CEEB;
-	Mon, 18 Aug 2025 10:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755514671;
-	bh=do9FgkLzD0jy+Otr/Mm9Kp7MCYnobV6u70Z/6+jmeME=;
-	h=Subject:To:Cc:From:Date:From;
-	b=apKEh6y7mrkzto/Vp3BcVMaeabvN4hRMS7hFsqbxF+MBCSoWYi+AlGxtrHzNcmQYF
-	 8A8iAUpn5hQNYRN5Q82r540SOWG68nMHyjjbFMwvk56ubvaTwTtESFSCCyYbZ5Wjey
-	 4fS7QApFOwYlijIX6hr5QgDqoDtWNUmeRXn0VBWU=
-Subject: FAILED: patch "[PATCH] btrfs: send: use fallocate for hole punching with send stream" failed to apply to 6.1-stable tree
-To: fdmanana@suse.com,boris@bur.io,dsterba@suse.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 12:57:48 +0200
-Message-ID: <2025081848-kilobyte-skirmish-7ccd@gregkh>
+	s=arc-20240116; t=1755514768; c=relaxed/simple;
+	bh=TWI4NDV7omZnoybzWvZw4G7KXwDtlIFuMmatVEKdooU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pfRgtNsXd7ed6TGE8RYfkLfz62ybAMegkfteomAUoKsyBbl+k8gBNqIg+7MRVqT5VSQ7tocCSm90KTEPjVgaMhAmaV9HFj4K0Whd6xb+iybz/N/4151jMtrjPXPXtxZ6iTEwOkOWWEAcRr7tF2Cic1ktX7aRsv0EiP/f1uCeSlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KDtMuP0O; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57I7VApt026395
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=lYQqNeoRMH/Jf573LZ3mZJ5yNeY8aFkKqVi
+	voDveUck=; b=KDtMuP0Or4TnxGnW+uXqSnD8SVHyQK1ai3x1jySqQvbuH/BIPgO
+	zkwTpiofaxFbp2LnIjDuFKq64G+B4VbDOvr1SSFyNLXipOqtwf+sWfdyIk0eWgB5
+	MCol3U/2XiNrTwdwnu579MdT9Ev2yEuBYdzdE9NRRPX/geWehGFuuBWug6AJAulP
+	aq/QmNMeYaZ/w/COnKQp6KQCC+bE6GE+6wXdKsbwKDkfuB0910f2Njpo4JVW0itj
+	FwLfP/OcS1zF/Goa778koEhELMPYWe43W7BZ0ZSSBtaBspJM96gIm7V+qJDd2BZM
+	wHwzP62AB/4bxH3YjN6q+AWfnvh0n5vGd5Q==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48kyunrkna-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:25 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 57IAxM80022860
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:22 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 48jk2krdkc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:22 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57IAxMC7022857
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 10:59:22 GMT
+Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-anupkulk-hyd.qualcomm.com [10.147.252.186])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 57IAxMJM022856
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Aug 2025 10:59:22 +0000
+Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 4405423)
+	id 036695CB; Mon, 18 Aug 2025 16:29:20 +0530 (+0530)
+From: Anup Kulkarni <quic_anupkulk@quicinc.com>
+To: kernel@oss.qualcomm.com, periph.upstream.reviewers@quicinc.com
+Cc: quic_msavaliy@quicinc.com, quic_vdadhani@quicinc.com,
+        Anup Kulkarni <quic_anupkulk@quicinc.com>, stable@vger.kernel.org
+Subject: [PATCH v4] tty: serial: qcom_geni_serial: Improve error handling for RS485 mode
+Date: Mon, 18 Aug 2025 16:29:18 +0530
+Message-Id: <20250818105918.1012694-1-quic_anupkulk@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: lvoLeqBqA001LEBZsmuqglJVDzw-Pdp4
+X-Authority-Analysis: v=2.4 cv=N6UpF39B c=1 sm=1 tr=0 ts=68a3078d cx=c_pps
+ a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=bGVla3ei2X7EtWq2w9IA:9
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODE4MDA3MSBTYWx0ZWRfX3fVHJ8XxDcOC
+ GBaWEfsMd14cyG/5/dxDj02xBnUpUSpIuflDYEqk3yA7Qmo/06XBG72Kjd6WEV5KT9xG12glCLK
+ RqDM6nzPH+zNYqG1HyDTuAls1azASdFPFUqhVH+QtLZJE4a6WE9q8gRbCI9yP0v5EX3Sgh9129+
+ tlm3bvVEufRQa7Kq7Q9gf+2VZaevRzGDDi8Ha2u5N2FmOdDcIeWiXcsnI2EKwtHoS3QAJlM0ZZV
+ R3JQWvN06IoLAMNrf8vIWWZj1y3AjoWDbr/vB8cF/Oc4A+Od3ts4x/dc68INy4cg/NVt6nyh+O+
+ lXJltxO+Z4UJs7gBkqrJKmq28GP7it/C038w/dos62us7a5sA1wOIMuIwbqlY+6nixdmDh4/XgL
+ gP7PP13F
+X-Proofpoint-ORIG-GUID: lvoLeqBqA001LEBZsmuqglJVDzw-Pdp4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-18_04,2025-08-14_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 clxscore=1011 malwarescore=0 impostorscore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508180071
 
+Fix  error handling issues of  `uart_get_rs485_mode()` function by
+reordering resources_init() to occur after uart_get_rs485_mode. Remove
+multiple goto paths and use dev_err_probe to simplify error paths.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Fixes: 4fcc287f3c69 ("serial: qcom-geni: Enable support for half-duplex mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anup Kulkarni <quic_anupkulk@quicinc.com>
+---
+v3->v4
+- Added Fixes and Cc tag.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+v2->v3
+- Reordered the function resources_init.
+- Removed goto.
+- Added dev_err_probe.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 005b0a0c24e1628313e951516b675109a92cacfe
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081848-kilobyte-skirmish-7ccd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+v1->v2
+- Updated commit message.
+---
+ drivers/tty/serial/qcom_geni_serial.c | 38 ++++++++++-----------------
+ 1 file changed, 14 insertions(+), 24 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 005b0a0c24e1628313e951516b675109a92cacfe Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Fri, 18 Jul 2025 13:07:29 +0100
-Subject: [PATCH] btrfs: send: use fallocate for hole punching with send stream
- v2
-
-Currently holes are sent as writes full of zeroes, which results in
-unnecessarily using disk space at the receiving end and increasing the
-stream size.
-
-In some cases we avoid sending writes of zeroes, like during a full
-send operation where we just skip writes for holes.
-
-But for some cases we fill previous holes with writes of zeroes too, like
-in this scenario:
-
-1) We have a file with a hole in the range [2M, 3M), we snapshot the
-   subvolume and do a full send. The range [2M, 3M) stays as a hole at
-   the receiver since we skip sending write commands full of zeroes;
-
-2) We punch a hole for the range [3M, 4M) in our file, so that now it
-   has a 2M hole in the range [2M, 4M), and snapshot the subvolume.
-   Now if we do an incremental send, we will send write commands full
-   of zeroes for the range [2M, 4M), removing the hole for [2M, 3M) at
-   the receiver.
-
-We could improve cases such as this last one by doing additional
-comparisons of file extent items (or their absence) between the parent
-and send snapshots, but that's a lot of code to add plus additional CPU
-and IO costs.
-
-Since the send stream v2 already has a fallocate command and btrfs-progs
-implements a callback to execute fallocate since the send stream v2
-support was added to it, update the kernel to use fallocate for punching
-holes for V2+ streams.
-
-Test coverage is provided by btrfs/284 which is a version of btrfs/007
-that exercises send stream v2 instead of v1, using fsstress with random
-operations and fssum to verify file contents.
-
-Link: https://github.com/kdave/btrfs-progs/issues/1001
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 09822e766e41..7664025a5af4 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -4,6 +4,7 @@
-  */
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 32ec632fd080..be998dd45968 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1882,15 +1882,9 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	port->se.dev = &pdev->dev;
+ 	port->se.wrapper = dev_get_drvdata(pdev->dev.parent);
  
- #include <linux/bsearch.h>
-+#include <linux/falloc.h>
- #include <linux/fs.h>
- #include <linux/file.h>
- #include <linux/sort.h>
-@@ -5405,6 +5406,30 @@ static int send_update_extent(struct send_ctx *sctx,
- 	return ret;
- }
+-	ret = port->dev_data->resources_init(uport);
+-	if (ret)
+-		return ret;
+-
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		ret = -EINVAL;
+-		goto error;
+-	}
++	if (!res)
++		return -EINVAL;
  
-+static int send_fallocate(struct send_ctx *sctx, u32 mode, u64 offset, u64 len)
-+{
-+	struct fs_path *path;
-+	int ret;
-+
-+	path = get_cur_inode_path(sctx);
-+	if (IS_ERR(path))
-+		return PTR_ERR(path);
-+
-+	ret = begin_cmd(sctx, BTRFS_SEND_C_FALLOCATE);
-+	if (ret < 0)
-+		return ret;
-+
-+	TLV_PUT_PATH(sctx, BTRFS_SEND_A_PATH, path);
-+	TLV_PUT_U32(sctx, BTRFS_SEND_A_FALLOCATE_MODE, mode);
-+	TLV_PUT_U64(sctx, BTRFS_SEND_A_FILE_OFFSET, offset);
-+	TLV_PUT_U64(sctx, BTRFS_SEND_A_SIZE, len);
-+
-+	ret = send_cmd(sctx);
-+
-+tlv_put_failure:
-+	return ret;
-+}
-+
- static int send_hole(struct send_ctx *sctx, u64 end)
- {
- 	struct fs_path *p = NULL;
-@@ -5412,6 +5437,14 @@ static int send_hole(struct send_ctx *sctx, u64 end)
- 	u64 offset = sctx->cur_inode_last_extent;
- 	int ret = 0;
+ 	uport->mapbase = res->start;
  
-+	/*
-+	 * Starting with send stream v2 we have fallocate and can use it to
-+	 * punch holes instead of sending writes full of zeroes.
-+	 */
-+	if (proto_cmd_ok(sctx, BTRFS_SEND_C_FALLOCATE))
-+		return send_fallocate(sctx, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+				      offset, end - offset);
+@@ -1903,25 +1897,19 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	if (!data->console) {
+ 		port->rx_buf = devm_kzalloc(uport->dev,
+ 					    DMA_RX_BUF_SIZE, GFP_KERNEL);
+-		if (!port->rx_buf) {
+-			ret = -ENOMEM;
+-			goto error;
+-		}
++		if (!port->rx_buf)
++			return -ENOMEM;
+ 	}
+ 
+ 	port->name = devm_kasprintf(uport->dev, GFP_KERNEL,
+ 			"qcom_geni_serial_%s%d",
+ 			uart_console(uport) ? "console" : "uart", uport->line);
+-	if (!port->name) {
+-		ret = -ENOMEM;
+-		goto error;
+-	}
++	if (!port->name)
++		return -ENOMEM;
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto error;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	uport->irq = irq;
+ 	uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_QCOM_GENI_CONSOLE);
+@@ -1942,12 +1930,14 @@ static int qcom_geni_serial_probe(struct platform_device *pdev)
+ 	irq_set_status_flags(uport->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(uport->dev, uport->irq, qcom_geni_serial_isr,
+ 			IRQF_TRIGGER_HIGH, port->name, uport);
+-	if (ret) {
+-		dev_err(uport->dev, "Failed to get IRQ ret %d\n", ret);
+-		goto error;
+-	}
++	if (ret)
++		return dev_err_probe(uport->dev, ret, "Failed to get IRQ\n");
+ 
+ 	ret = uart_get_rs485_mode(uport);
++	if (ret)
++		return dev_err_probe(uport->dev, ret, "Failed to get rs485 mode\n");
 +
- 	/*
- 	 * A hole that starts at EOF or beyond it. Since we do not yet support
- 	 * fallocate (for extent preallocation and hole punching), sending a
++	ret = port->dev_data->resources_init(uport);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.34.1
 
 
