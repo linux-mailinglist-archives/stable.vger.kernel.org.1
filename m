@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-170985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4460B2A7A1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185F3B2A96E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495721B662EE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 022337B3A76
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E864331E115;
-	Mon, 18 Aug 2025 13:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB8B321F42;
+	Mon, 18 Aug 2025 14:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qF1nDCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chElIdsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B3B335BA7;
-	Mon, 18 Aug 2025 13:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29588321F33;
+	Mon, 18 Aug 2025 14:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524439; cv=none; b=LBrP6UrV9bHr29+mrNrzNxd0H/KAoAt7eMMA2l0yPqKT0IZlc4AQ2DXfGYZiCNQu13JMJcUslvCO1gO2XQjvVlz6Sbag1aLZ7/e+7ELdQPpf41/VUwdQd+L1gVxfFV2a1vZ6yK62zEYxvLc6DJa557KeJa6bvP5xbvWaD2VLWDQ=
+	t=1755526004; cv=none; b=JER6Khki+DnpjIzrEmJRlfSUY0sWxoTsiWJO2o01PY83dOgAut6dqGGy4zvLJDxJPEXaRBHjnqSAc1fVo3qx2rXJg5TU9ad8XwFzJQLHYUJFhUd8NYZs4R4B0v7cntT+k4Kf+HWKRlGDYquaVlzNyzsoPZA/qUvbfHbGxknp/5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524439; c=relaxed/simple;
-	bh=+C1ajYRSVNJXUtTG6LE/lOFcpeaXazyIfzkHojELsGo=;
+	s=arc-20240116; t=1755526004; c=relaxed/simple;
+	bh=vYMjhFDzNcDDfKocDVIrKEagR9FSmb/9gC+IiFESwg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jY+ZsvLYeRtOEzDtOKmaL7kkXdMF6bXdJBDdUfsfNLYc1Oq/9xuFFHyrGnMR2yumDJduvH2Vw4sfhMgjEz4iq8CsjsMRDXQqgiFFzcRHZiK9xelf7VomGrwhqn+d/z8E+dW1K/B5Egg3A28Wy0ncQvbcgSnYtYA8RI4Be9Yx/Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qF1nDCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192ACC4CEEB;
-	Mon, 18 Aug 2025 13:40:38 +0000 (UTC)
+	 MIME-Version; b=PwKBjHmL+yYxc//n7JBnLzUZ1P2zWvAfvSjPGzv5RUB9ChECyCxB3oxwn/M7DfKblUPg7xreh/J5PWUsRO9NmzNJsFup/enPmGSi6Nyz0fyjVZ1FB6H7gFFRBQ3XSFjg90LzdFRnQbVMewDVUOk/KGOjXXanGMpeMcKQ0OLDEeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chElIdsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0ECBC4CEEB;
+	Mon, 18 Aug 2025 14:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524439;
-	bh=+C1ajYRSVNJXUtTG6LE/lOFcpeaXazyIfzkHojELsGo=;
+	s=korg; t=1755526004;
+	bh=vYMjhFDzNcDDfKocDVIrKEagR9FSmb/9gC+IiFESwg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qF1nDCYUXlFkRW5tubXM1Ro4dXjkMnwK3ARuLW8Q8ElpdCvLXUPDAyhnQQEYwae2
-	 T7hQxk31y6UFFc44/7OvfHVuwZSoOWx1Rf5Pd/OldCiuYNDDoYQnOUVsmSxjR/poTn
-	 sX9ptMLEtWGTZv1mq6pq+IWiNIdkjmy8DtgthwaE=
+	b=chElIdsJVwwbo92Xq9hpR8Ww70dsIRFJ7J+P6EM5LflmEQUSUqjcsKCSySy0BwZ2X
+	 6a7/FLmG5+TKJuPuzdOlZo6Q7XUzjZ85xvr2aCfMC/XAt2BERektRjVqVdz5H0Qi8B
+	 4LSNP3Cwpqg97lqAgMiKDBqnF40wA7IBA+BhKXTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Evtushenko <koevtushenko@yandex.com>,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 430/515] pNFS: Handle RPC size limit for layoutcommits
-Date: Mon, 18 Aug 2025 14:46:56 +0200
-Message-ID: <20250818124514.976998559@linuxfoundation.org>
+Subject: [PATCH 6.16 430/570] dm-mpath: dont print the "loaded" message if registering fails
+Date: Mon, 18 Aug 2025 14:46:57 +0200
+Message-ID: <20250818124522.400456634@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit d897d81671bc4615c80f4f3bd5e6b218f59df50c ]
+[ Upstream commit 6e11952a6abc4641dc8ae63f01b318b31b44e8db ]
 
-When there are too many block extents for a layoutcommit, they may not
-all fit into the maximum-sized RPC. This patch allows the generic pnfs
-code to properly handle -ENOSPC returned by the block/scsi layout driver
-and trigger additional layoutcommits if necessary.
+If dm_register_path_selector, don't print the "version X loaded" message.
 
-Co-developed-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Konstantin Evtushenko <koevtushenko@yandex.com>
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250630183537.196479-5-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/md/dm-ps-historical-service-time.c | 4 +++-
+ drivers/md/dm-ps-queue-length.c            | 4 +++-
+ drivers/md/dm-ps-round-robin.c             | 4 +++-
+ drivers/md/dm-ps-service-time.c            | 4 +++-
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 1a7ec68bde15..3fd0971bf16f 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -3340,6 +3340,7 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	struct nfs_inode *nfsi = NFS_I(inode);
- 	loff_t end_pos;
- 	int status;
-+	bool mark_as_dirty = false;
+diff --git a/drivers/md/dm-ps-historical-service-time.c b/drivers/md/dm-ps-historical-service-time.c
+index b49e10d76d03..2c8626a83de4 100644
+--- a/drivers/md/dm-ps-historical-service-time.c
++++ b/drivers/md/dm-ps-historical-service-time.c
+@@ -541,8 +541,10 @@ static int __init dm_hst_init(void)
+ {
+ 	int r = dm_register_path_selector(&hst_ps);
  
- 	if (!pnfs_layoutcommit_outstanding(inode))
- 		return 0;
-@@ -3391,19 +3392,23 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	if (ld->prepare_layoutcommit) {
- 		status = ld->prepare_layoutcommit(&data->args);
- 		if (status) {
--			put_cred(data->cred);
-+			if (status != -ENOSPC)
-+				put_cred(data->cred);
- 			spin_lock(&inode->i_lock);
- 			set_bit(NFS_INO_LAYOUTCOMMIT, &nfsi->flags);
- 			if (end_pos > nfsi->layout->plh_lwb)
- 				nfsi->layout->plh_lwb = end_pos;
--			goto out_unlock;
-+			if (status != -ENOSPC)
-+				goto out_unlock;
-+			spin_unlock(&inode->i_lock);
-+			mark_as_dirty = true;
- 		}
- 	}
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
  
+ 	DMINFO("version " HST_VERSION " loaded");
  
- 	status = nfs4_proc_layoutcommit(data, sync);
- out:
--	if (status)
-+	if (status || mark_as_dirty)
- 		mark_inode_dirty_sync(inode);
- 	dprintk("<-- %s status %d\n", __func__, status);
- 	return status;
+diff --git a/drivers/md/dm-ps-queue-length.c b/drivers/md/dm-ps-queue-length.c
+index e305f05ad1e5..eb543e6431e0 100644
+--- a/drivers/md/dm-ps-queue-length.c
++++ b/drivers/md/dm-ps-queue-length.c
+@@ -260,8 +260,10 @@ static int __init dm_ql_init(void)
+ {
+ 	int r = dm_register_path_selector(&ql_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " QL_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-round-robin.c b/drivers/md/dm-ps-round-robin.c
+index d1745b123dc1..66a15ac0c22c 100644
+--- a/drivers/md/dm-ps-round-robin.c
++++ b/drivers/md/dm-ps-round-robin.c
+@@ -220,8 +220,10 @@ static int __init dm_rr_init(void)
+ {
+ 	int r = dm_register_path_selector(&rr_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " RR_VERSION " loaded");
+ 
+diff --git a/drivers/md/dm-ps-service-time.c b/drivers/md/dm-ps-service-time.c
+index 969d31c40272..f8c43aecdb27 100644
+--- a/drivers/md/dm-ps-service-time.c
++++ b/drivers/md/dm-ps-service-time.c
+@@ -341,8 +341,10 @@ static int __init dm_st_init(void)
+ {
+ 	int r = dm_register_path_selector(&st_ps);
+ 
+-	if (r < 0)
++	if (r < 0) {
+ 		DMERR("register failed %d", r);
++		return r;
++	}
+ 
+ 	DMINFO("version " ST_VERSION " loaded");
+ 
 -- 
 2.39.5
 
