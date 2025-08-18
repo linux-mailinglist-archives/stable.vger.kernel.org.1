@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-171273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D087BB2A888
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3405B2A8FE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0FB55A2C0C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D0655A37A2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D7827BF84;
-	Mon, 18 Aug 2025 13:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B902334702;
+	Mon, 18 Aug 2025 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3/oSfQF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpVTc4Zh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D9A1E8836;
-	Mon, 18 Aug 2025 13:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA8233472B;
+	Mon, 18 Aug 2025 13:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525379; cv=none; b=Y8dYLvc2fExHD3flWa9vm3+MXuav6Dx0hB9R7wT0spKPmPofKo8pkHiji6m60AjmTzNZfYm7LeaTeG2b8kLzip3R+WWLgOd+A/WnMysvW5++taDfDZ1EkVihRPrbmMH3syDFTaLnfR2+lejjgtQY8wFhljSOtWDgCNMsdFHzu5A=
+	t=1755525414; cv=none; b=BaedFlVOlEaPzOuLWVJ5J8P8bR3MhUT6JNhL64buJjfHTT6kr6UPXbT/Fw1a/SIp7rk3VHTwOr7iAPCD/ttZglbHPFSB1HNv1v02n0k8fl4C7giNl1gP410qpAuQhd0As0BamquRt0Zq1F7IUpsg5ZGisFTeflPSrJro9vL7pyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525379; c=relaxed/simple;
-	bh=vp4/3FEQfUUymALL8XAtQhmEwbpeUjkOdXk8RUQrEaU=;
+	s=arc-20240116; t=1755525414; c=relaxed/simple;
+	bh=tBb5AIKA0NtBGSMHidLGZuJNGyuY4jvcvnfrnR5qVWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bI1uRyApGHrmvbFDsxw5h1M/BTDsLV/1Do22aY7Ppme4aMwpGOmLqT0vrEOSJEQSHDpFuBsLoMjEhW9hFn1r3PVSUFbAuWCQ5Rlo9XoGECTKBsJePIXo/6da5j+vJlAOFiJLClgL7awnn/bOQg4fmq/FanTbZwus0tcwWRYYd0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3/oSfQF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCD3C4CEF1;
-	Mon, 18 Aug 2025 13:56:18 +0000 (UTC)
+	 MIME-Version; b=KIlGa5S3T2ZETOVfsyCOA+HWf/JuvcS2Wu+gYNfxcGRaek3EGVmsTSzIsaRhSr36A06HxbXZB06AbElzrAWOE8xEBxOchsCVMgNqHVlZ2n9OE8CP2R7NT2TF9VhXsag8EIpqtTpmWCv3KB2eC64DCe54WVwVdFYaawo59EAe5vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpVTc4Zh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D17C116D0;
+	Mon, 18 Aug 2025 13:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525378;
-	bh=vp4/3FEQfUUymALL8XAtQhmEwbpeUjkOdXk8RUQrEaU=;
+	s=korg; t=1755525414;
+	bh=tBb5AIKA0NtBGSMHidLGZuJNGyuY4jvcvnfrnR5qVWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3/oSfQF1zRZRpuCt8SIuTZPyQjj4lRaac0hZ9hkUrV+9cOOrYopXktUl1yfXiGss
-	 NPgxsc73pJymQqvhMqSUyYviQXBXdG6rPm7X+QvRdw56yaJE9EGwy2AUayJZI0fsSW
-	 Uygrf/cOfI01vnd2DQ51mLrjveErRPEYo0UjEh/k=
+	b=RpVTc4ZhQgUmz4fzF1QfN93429+kge93ViTWRFogTTIQmmIWQoPTPtfMUo60OJ78S
+	 bj1OnaCBQyHIrxbj135P+MQyvb0I3o1tbyJd77T2b53df/ozo5lE8TTfrO7ZD4nN7n
+	 wJnUgUM3y0u7K6W0QVh6uPMRear7QBy7WDqqrM4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Syed Hassan <syed.hassan@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 237/570] drm/amd/display: limit clear_update_flags to dcn32 and above
-Date: Mon, 18 Aug 2025 14:43:44 +0200
-Message-ID: <20250818124514.954341918@linuxfoundation.org>
+Subject: [PATCH 6.16 238/570] can: ti_hecc: fix -Woverflow compiler warning
+Date: Mon, 18 Aug 2025 14:43:45 +0200
+Message-ID: <20250818124514.991251388@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
 References: <20250818124505.781598737@linuxfoundation.org>
@@ -68,50 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit f354556e29f40ef44fa8b13dc914817db3537e20 ]
+[ Upstream commit 7cae4d04717b002cffe41169da3f239c845a0723 ]
 
-[why]
-dc has some code out of sync:
-dc_commit_updates_for_stream handles v1/v2/v3,
-but dc_update_planes_and_stream makes v1 asic to use v2.
+Fix below default (W=0) warning:
 
-as a reression fix: limit clear_update_flags to dcn32 or newer asic.
-need to follow up that v1 asic using v2 issue.
+  drivers/net/can/ti_hecc.c: In function 'ti_hecc_start':
+  drivers/net/can/ti_hecc.c:386:20: warning: conversion from 'long unsigned int' to 'u32' {aka 'unsigned int'} changes value from '18446744073709551599' to '4294967279' [-Woverflow]
+    386 |         mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
+        |                    ^
 
-Reviewed-by: Syed Hassan <syed.hassan@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250715-can-compile-test-v2-1-f7fd566db86f@wanadoo.fr
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/can/ti_hecc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index b34b5b52236d..3dd7e2b6d530 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -5439,8 +5439,7 @@ bool dc_update_planes_and_stream(struct dc *dc,
- 	else
- 		ret = update_planes_and_stream_v2(dc, srf_updates,
- 			surface_count, stream, stream_update);
--
--	if (ret)
-+	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
- 		clear_update_flags(srf_updates, surface_count, stream);
+diff --git a/drivers/net/can/ti_hecc.c b/drivers/net/can/ti_hecc.c
+index 644e8b8eb91e..e6d6661a908a 100644
+--- a/drivers/net/can/ti_hecc.c
++++ b/drivers/net/can/ti_hecc.c
+@@ -383,7 +383,7 @@ static void ti_hecc_start(struct net_device *ndev)
+ 	 * overflows instead of the hardware silently dropping the
+ 	 * messages.
+ 	 */
+-	mbx_mask = ~BIT(HECC_RX_LAST_MBOX);
++	mbx_mask = ~BIT_U32(HECC_RX_LAST_MBOX);
+ 	hecc_write(priv, HECC_CANOPC, mbx_mask);
  
- 	return ret;
-@@ -5471,7 +5470,7 @@ void dc_commit_updates_for_stream(struct dc *dc,
- 		ret = update_planes_and_stream_v1(dc, srf_updates, surface_count, stream,
- 				stream_update, state);
- 
--	if (ret)
-+	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
- 		clear_update_flags(srf_updates, surface_count, stream);
- }
- 
+ 	/* Enable interrupts */
 -- 
 2.39.5
 
