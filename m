@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEF3B2A959
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DE1B2A648
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33A19587A5A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EB2E68614B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D16322A03;
-	Mon, 18 Aug 2025 13:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05548226D18;
+	Mon, 18 Aug 2025 13:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfuCC2L5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ikf1wvCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D90322772;
-	Mon, 18 Aug 2025 13:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B832821507C;
+	Mon, 18 Aug 2025 13:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525583; cv=none; b=BUph//J236uZFYRVr99W2+adzr7IwMqByt8hTuCR7fISi+Pd+Op1rJsB+SzaJQCI17sYftsixCMpYF4YcpVkVapaPi2uz4Exalq4DIYobauKPj4aEZcoD1h7GO91WZ9FPH5NJ8VP8soIzc+5U3c9LB5lle5vWTb2WDqo8fRHans=
+	t=1755523799; cv=none; b=IcskhU7WMrCtL+1S4KxdIOieTWuow+4EP9/1A8OebDy/SBlNgzVmuCCKL9XSs9ucIDcdJBcMsh/PCuKZ2+VoTLDqCLlnImDcCoY6U7/Si4TRzLBoxnkfjJV5VfIu3lxFfOcc0znNPfPAS6+8UXqP06DigTKoz2+TSjI0STdL4eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525583; c=relaxed/simple;
-	bh=dSktRgOhDM1bGyPsY+0siaybHu9K6TyiX0B+Nvqtx/c=;
+	s=arc-20240116; t=1755523799; c=relaxed/simple;
+	bh=RuwrOT0s5W9S6yGWwzzZiw4ZGs5pSteB3H2jixirMGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0PSoNTXP1C4yerb4nz6Vem2HGzNZ/PzuTYYJ6J37gEHEmYDiuOOL9/ugIx7cIPgivi8rg6IdA4YOQVjlDRr+u0Y+A12uKn4B3asUJfPCVqcAniQ4aIR2jSR/oQCoY/fCautg1NWymQMdXtcfOvRw0xeIQ0IcLNUasGST0bFB/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfuCC2L5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5943AC4CEEB;
-	Mon, 18 Aug 2025 13:59:42 +0000 (UTC)
+	 MIME-Version; b=bUPjWOUcd6q/q2clMDPS9MJ/uT5oIitwsX7EorEKgogzMYX4Ik71pRDa4pqjyteHqVF1RWlZgwoUa8d6no1bnrPtsJi+EIslvAxGk0ACXlU2wZfsaS5w6OuiR6ctXgs5eDmMF5EEyJ7/4P7hAJNHJVy+oxG5IPuNY40xNX5+fso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ikf1wvCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FE6C4CEEB;
+	Mon, 18 Aug 2025 13:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525582;
-	bh=dSktRgOhDM1bGyPsY+0siaybHu9K6TyiX0B+Nvqtx/c=;
+	s=korg; t=1755523799;
+	bh=RuwrOT0s5W9S6yGWwzzZiw4ZGs5pSteB3H2jixirMGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfuCC2L5XJz2Y8q2MYz++diTlIG0RPF3VeUZFnSyIZDlCxfJxHxHEAVFXSlfnT/Ba
-	 wLHyM/iTBQzXPQGgJXNWeyhsIZ9ZKaknbPEBc6UuciBEx7E/T+fDxd0MqJVSXejWjg
-	 6FMVCrza37EUO3DTfLNiMXzas+0L+ETMYMzTzqTY=
+	b=Ikf1wvCR7P8Y7WA0LYGbHncMxvY8CLjIuYUdaXlCYGo0TRX9+D4JHoO0Fsd4HKM++
+	 X+e4AxuNKaI5nuckEvbsKKZxa9W7uo8dwA8QVPVxbqZqjHImYZam2uRQ8cDXr9sDeG
+	 VQpp5ooP47Q/kD5SN8JfRW5Vh4Ud2E8unBqKUFtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 275/570] drm/imagination: Clear runtime PM errors while resetting the GPU
+Subject: [PATCH 6.15 276/515] wifi: ath12k: Add memset and update default rate value in wmi tx completion
 Date: Mon, 18 Aug 2025 14:44:22 +0200
-Message-ID: <20250818124516.447090365@linuxfoundation.org>
+Message-ID: <20250818124509.054815198@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-[ Upstream commit 551507e0d0bf32ce1d7d27533c4b98307380804c ]
+[ Upstream commit 9903c0986f782dfc511d7638b6f15fb6e8600cd3 ]
 
-The runtime PM might be left in error state if one of the callbacks
-returned an error, e.g. if the (auto)suspend callback failed following
-a firmware crash.
+When both AP/STA and monitor interfaces are enabled, ieee80211_tx_status()
+is invoked from two paths: the TX completion handler for data frames
+and the WMI TX completion handler for management frames.
+In the data path, the skb->cb is properly zeroed using memset, but in
+the WMI path, this step is missing.
 
-When that happens, any further attempt to acquire or release a power
-reference will then also fail, making it impossible to do anything else
-with the GPU. The driver logic will eventually reach the reset code.
+As a result, mac80211 encountered uninitialized (junk) values in
+skb->cb when generating the radiotap header for monitor mode, leading
+to invalid radiotap lengths.
 
-In pvr_power_reset(), replace pvr_power_get() with a new API
-pvr_power_get_clear() which also attempts to clear any runtime PM error
-state if acquiring a power reference is not possible.
+Hence, explicitly zero the status field in the skb->cb using memset
+in WMI TX completion path to ensure consistent and correct behavior
+during WMI tx completion path.
 
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://lore.kernel.org/r/20250624-clear-rpm-errors-gpu-reset-v1-1-b8ff2ae55aac@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Additionally, set info->status.rates[0].idx = -1 to indicate that
+no valid rate information is available, avoiding misinterpretation of
+garbage values.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250603063512.1887652-1-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_power.c | 59 ++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_power.c b/drivers/gpu/drm/imagination/pvr_power.c
-index 3e349d039fc0..187a07e0bd9a 100644
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -340,6 +340,63 @@ pvr_power_device_idle(struct device *dev)
- 	return pvr_power_is_idle(pvr_dev) ? 0 : -EBUSY;
- }
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 9ebe4b573f7e..3a39a1be3f7c 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5465,6 +5465,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
-+static int
-+pvr_power_clear_error(struct pvr_device *pvr_dev)
-+{
-+	struct device *dev = from_pvr_device(pvr_dev)->dev;
-+	int err;
+ 	info = IEEE80211_SKB_CB(msdu);
++	memset(&info->status, 0, sizeof(info->status));
 +
-+	/* Ensure the device state is known and nothing is happening past this point */
-+	pm_runtime_disable(dev);
++	/* skip tx rate update from ieee80211_status*/
++	info->status.rates[0].idx = -1;
 +
-+	/* Attempt to clear the runtime PM error by setting the current state again */
-+	if (pm_runtime_status_suspended(dev))
-+		err = pm_runtime_set_suspended(dev);
-+	else
-+		err = pm_runtime_set_active(dev);
-+
-+	if (err) {
-+		drm_err(from_pvr_device(pvr_dev),
-+			"%s: Failed to clear runtime PM error (new error %d)\n",
-+			__func__, err);
-+	}
-+
-+	pm_runtime_enable(dev);
-+
-+	return err;
-+}
-+
-+/**
-+ * pvr_power_get_clear() - Acquire a power reference, correcting any errors
-+ * @pvr_dev: Device pointer
-+ *
-+ * Attempt to acquire a power reference on the device. If the runtime PM
-+ * is in error state, attempt to clear the error and retry.
-+ *
-+ * Returns:
-+ *  * 0 on success, or
-+ *  * Any error code returned by pvr_power_get() or the runtime PM API.
-+ */
-+static int
-+pvr_power_get_clear(struct pvr_device *pvr_dev)
-+{
-+	int err;
-+
-+	err = pvr_power_get(pvr_dev);
-+	if (err == 0)
-+		return err;
-+
-+	drm_warn(from_pvr_device(pvr_dev),
-+		 "%s: pvr_power_get returned error %d, attempting recovery\n",
-+		 __func__, err);
-+
-+	err = pvr_power_clear_error(pvr_dev);
-+	if (err)
-+		return err;
-+
-+	return pvr_power_get(pvr_dev);
-+}
-+
- /**
-  * pvr_power_reset() - Reset the GPU
-  * @pvr_dev: Device pointer
-@@ -364,7 +421,7 @@ pvr_power_reset(struct pvr_device *pvr_dev, bool hard_reset)
- 	 * Take a power reference during the reset. This should prevent any interference with the
- 	 * power state during reset.
- 	 */
--	WARN_ON(pvr_power_get(pvr_dev));
-+	WARN_ON(pvr_power_get_clear(pvr_dev));
- 
- 	down_write(&pvr_dev->reset_sem);
+ 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
  
 -- 
 2.39.5
