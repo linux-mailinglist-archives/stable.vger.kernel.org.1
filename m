@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4836DB2A93D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:17:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DF5B2A5DC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E2481B6592B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8CEE7B341C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B34E318137;
-	Mon, 18 Aug 2025 13:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72EA22C339;
+	Mon, 18 Aug 2025 13:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ya8hmn0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHO3ME/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC91C315781;
-	Mon, 18 Aug 2025 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7446F2222A0;
+	Mon, 18 Aug 2025 13:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525493; cv=none; b=eTnLyeD0zCf8rn0pIQ/qSduhl3ixNjlC9UIIASWR24Hxt8qpbvnh7z3vdyDL8KLUz/g9XBhZOJ0+2dRvoLFa8D3YAv3GpQAGZPfXyhq9vt+DxHPGiH6rKldR0wHA/v+ZxFr8w8ZICp11+vYmp9HK6bvrEN4kenHePLtT02evKaU=
+	t=1755523820; cv=none; b=kVBAnvgFUUMUGlAcR/NZFVVAjXGu/mnFpX3naoBjnmykzUvZ5heuvK7NsRrfHYpKwK/ZKuTd5FpNIf9Hkzh7p8VXjJgBHT5riAx3PsC27xvKfBrb2yFMtoziaZIUFceCifEDkyx3XPmsgtgGvdF350TNTFFq4vKRE9Yap9ChMJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525493; c=relaxed/simple;
-	bh=R8F5W5q2yBUzsKf/72txLbM2kmKUMDyj/zgsJtBMs0Q=;
+	s=arc-20240116; t=1755523820; c=relaxed/simple;
+	bh=63Qy0577ctdlcktXy6qu+XHIY/7ps69Tkwlm1Nri4fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5D1S5fhOwgtEkRrqLdyeinlPBiUTgSF5khf5eV7jlW/ixsnzQjM/07AgIPbuqUalXoJkPpo1f/ScgAqdEKgHe7siPjBVyoAzjE51Ed6GkRwjtfPW+cDEPL85K3lEScDRcbfwaPnM7j/j9N7t3kHfHrYeUDWEkWxjQk9otW9r14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ya8hmn0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADDEC4CEEB;
-	Mon, 18 Aug 2025 13:58:11 +0000 (UTC)
+	 MIME-Version; b=upXaZZvr5Tv3//fq8oe+v1Sa3Ys0DlrysC46N+cMvYoTpw1Mps/Of5Qv0DhDdu0UcC5l82vGJGnkfcq2oOBL0CC/L8brqGZ6yrHfUXltNkN3e2PnhPqbht8a2G3HbTxAxEhQ1tkhDHku9HEUA3/70qsaXZvxiRxyDCJTTjEyTK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHO3ME/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3E1C4CEEB;
+	Mon, 18 Aug 2025 13:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525492;
-	bh=R8F5W5q2yBUzsKf/72txLbM2kmKUMDyj/zgsJtBMs0Q=;
+	s=korg; t=1755523820;
+	bh=63Qy0577ctdlcktXy6qu+XHIY/7ps69Tkwlm1Nri4fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ya8hmn0Dya44E1bLte/WXXu0NecGBlZr1u+eimvIx7ja03OAvrFyTLrCb/uHHfsQk
-	 nwuxUFzZFEaNc9/LP0hYF54uv+dNzGc6jNh6Lt8nBNUqv8E08oIqzQiFh8RBTupa+7
-	 C/0zDZD4Y/G0trnf2K9j3+kXLyS2VhkCp2/+wfUc=
+	b=QHO3ME/YHZB4yncB9uUMc4A3K0hqdBr8BD8CeEU4z9i0ogpXsJYM++TzyOwAWUGgU
+	 hKeph607CN4aOpO9tCtqVy9bvImnmUMwFIIJo4uErNsaKzp6VQjfqxSEb9U+r5R5Pj
+	 zokYLC/q9jsmmpC5RJwngLK6mhzRTUW+MElErHCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 280/570] kselftest/arm64: Specify SVE data when testing VL set in sve-ptrace
-Date: Mon, 18 Aug 2025 14:44:27 +0200
-Message-ID: <20250818124516.634867524@linuxfoundation.org>
+Subject: [PATCH 6.15 282/515] wifi: iwlwifi: fw: Fix possible memory leak in iwl_fw_dbg_collect
+Date: Mon, 18 Aug 2025 14:44:28 +0200
+Message-ID: <20250818124509.277842899@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit 9e8ebfe677f9101bbfe1f75d548a5aec581e8213 ]
+[ Upstream commit cc8d9cbf269dab363c768bfa9312265bc807fca5 ]
 
-Since f916dd32a943 ("arm64/fpsimd: ptrace: Mandate SVE payload for
-streaming-mode state") we reject attempts to write to the streaming mode
-regset even if there is no register data supplied, causing the tests for
-setting vector lengths and setting SVE_VL_INHERIT in sve-ptrace to
-spuriously fail. Set the flag to avoid the issue, we still support not
-supplying register data.
+Ensure descriptor is freed on error to avoid memory leak.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250609-kselftest-arm64-ssve-fixups-v2-3-998fcfa6f240@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250611222325.8158d15ec866.Ifa3e422c302397111f20a16da7509e6574bc19e3@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/fp/sve-ptrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/arm64/fp/sve-ptrace.c b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-index c499d5789dd5..16320aeaff85 100644
---- a/tools/testing/selftests/arm64/fp/sve-ptrace.c
-+++ b/tools/testing/selftests/arm64/fp/sve-ptrace.c
-@@ -170,7 +170,7 @@ static void ptrace_set_get_inherit(pid_t child, const struct vec_type *type)
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
- 	sve.vl = sve_vl_from_vq(SVE_VQ_MIN);
--	sve.flags = SVE_PT_VL_INHERIT;
-+	sve.flags = SVE_PT_VL_INHERIT | SVE_PT_REGS_SVE;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
- 		ksft_test_result_fail("Failed to set %s SVE_PT_VL_INHERIT\n",
-@@ -235,6 +235,7 @@ static void ptrace_set_get_vl(pid_t child, const struct vec_type *type,
- 	/* Set the VL by doing a set with no register payload */
- 	memset(&sve, 0, sizeof(sve));
- 	sve.size = sizeof(sve);
-+	sve.flags = SVE_PT_REGS_SVE;
- 	sve.vl = vl;
- 	ret = set_sve(child, type, &sve);
- 	if (ret != 0) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 03f639fbf9b6..3df15ff3e9d2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -3006,6 +3006,7 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	struct iwl_fw_dump_desc *desc;
+ 	unsigned int delay = 0;
+ 	bool monitor_only = false;
++	int ret;
+ 
+ 	if (trigger) {
+ 		u16 occurrences = le16_to_cpu(trigger->occurrences) - 1;
+@@ -3036,7 +3037,11 @@ int iwl_fw_dbg_collect(struct iwl_fw_runtime *fwrt,
+ 	desc->trig_desc.type = cpu_to_le32(trig);
+ 	memcpy(desc->trig_desc.data, str, len);
+ 
+-	return iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	ret = iwl_fw_dbg_collect_desc(fwrt, desc, monitor_only, delay);
++	if (ret)
++		kfree(desc);
++
++	return ret;
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_dbg_collect);
+ 
 -- 
 2.39.5
 
