@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F648B2A6AA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD9EB2A961
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848E41894DCA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9BC81BA6D6B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203F2322DDF;
-	Mon, 18 Aug 2025 13:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57902183CC3;
+	Mon, 18 Aug 2025 14:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3Q56eeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ob7GPyVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15843203BA;
-	Mon, 18 Aug 2025 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F1932A3EC;
+	Mon, 18 Aug 2025 14:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523947; cv=none; b=rJKW4dmeSo3jK8ffFLMXb2KX5Gh0Ne97HC2hPmUUKETueEKGLRX8P0XwKTxG+UAgFGzFoR4j4Vz6aggagqQnkH+6+8ocE0d1hEnRuBMz7d9o4t6KhF+swcwyKA0YzeLKol1S1TNRybagHRqdbgr4lAcWJ4Nszq0QtK/Hh8aiaz0=
+	t=1755525628; cv=none; b=buvJOlAt0lHmV5O7tNqcawesWQtIqWSi8EUy7IdJFocbDLkojYFsHlV9t5Zqgdiqt2nCcVqMzQFgu5VVIWlPoZCINGf9z0kpKHFrTaO+u63aJLpCsCp/SjYCdF42sB4pB/aumw7sQvI21N3r//JoBnqZCLfTAj1z7bKJq/sUQAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523947; c=relaxed/simple;
-	bh=6x1/9d9oEy8dU1gvI+iCk/q3eeGLr9Ra3tFtfT8Gn18=;
+	s=arc-20240116; t=1755525628; c=relaxed/simple;
+	bh=74aO6F4zPGDKg189gv8qcNC4v95tnwMun0f+q0bVUUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apTUg7a8TX8NfghVAEqk0s6zSgyeihfsr36R/eWMiU0L9b1jABIDjCFcYLlpX9o2NqScL4Ac0UM5TYK82mLlBp0EK5+qSlhnOcnvq1Diig2GcC9OcqCsuO3O5k7SvqVr21KAg03lJ4gP/rTyiUinel2Gl19lGqNRa1WmUkVJ8Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3Q56eeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59343C4CEEB;
-	Mon, 18 Aug 2025 13:32:27 +0000 (UTC)
+	 MIME-Version; b=OM3/6xct0vA0DOnlMf3tg2b3sZpQceafVi2Ag2o7t30OSxM2FR+dgQfpg+7kCnje7/RveJzH8pr9uzz5h0AEOaarhWC8gPfMH7mNiJNgZWRcCG5O4/S+CKwzxfisfU6/AVje8XVmH15CtNdGRUo6ugfHdEGMXTUU1rmj2rCqyr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ob7GPyVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E773C4CEEB;
+	Mon, 18 Aug 2025 14:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523947;
-	bh=6x1/9d9oEy8dU1gvI+iCk/q3eeGLr9Ra3tFtfT8Gn18=;
+	s=korg; t=1755525628;
+	bh=74aO6F4zPGDKg189gv8qcNC4v95tnwMun0f+q0bVUUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3Q56eebnThrn019J/Bz0nlEN6E2zBowrTtd0ZykSZhmhx597LHwLzKDveflFw2Up
-	 nazW8tyRO5XFQxuveC/V50jxSADX8DUZwroZ5nGmv8CqQNHbWHYP3WWhpeIsrmu78f
-	 RTqzjCLDZfyov5JvUKmHbIFKtVXH7el9bk6pbKEk=
+	b=ob7GPyVYj9wqQzlV2sacyy5020c7B5DSBjDQfBlfeKql4jbm9IIhQTv1F6c4MSgo4
+	 /M72TTYx6j6bpYPULX7CQkx2fpqQCsh5ir4VLGChh2KmIhWsKzbLVsdxWylkjyoyXO
+	 qKMWe+rOR8LSGpiVdsyzfd03lkqiLZZuK+9CgE4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Alexei Safin <a.safin@rosa.ru>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 320/515] selftests/bpf: Fix a user_ringbuf failure with arm64 64KB page size
-Date: Mon, 18 Aug 2025 14:45:06 +0200
-Message-ID: <20250818124510.748576046@linuxfoundation.org>
+Subject: [PATCH 6.16 320/570] wifi: iwlegacy: Check rate_idx range after addition
+Date: Mon, 18 Aug 2025 14:45:07 +0200
+Message-ID: <20250818124518.186726938@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Stanislaw Gruszka <stf_xl@wp.pl>
 
-[ Upstream commit bbc7bd658ddc662083639b9e9a280b90225ecd9a ]
+[ Upstream commit 0de19d5ae0b2c5b18b88c5c7f0442f707a207409 ]
 
-The ringbuf max_entries must be PAGE_ALIGNED. See kernel function
-ringbuf_map_alloc(). So for arm64 64KB page size, adjust max_entries
-properly.
+Limit rate_idx to IL_LAST_OFDM_RATE for 5GHz band for thinkable case
+the index is incorrect.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250607013626.1553001-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reported-by: Alexei Safin <a.safin@rosa.ru>
+Signed-off-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Reviewed-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20250525144524.GA172583@wp.pl
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/user_ringbuf.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlegacy/4965-mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-index d424e7ecbd12..9fd3ae987321 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_ringbuf.c
-@@ -21,8 +21,7 @@
- #include "../progs/test_user_ringbuf.h"
- 
- static const long c_sample_size = sizeof(struct sample) + BPF_RINGBUF_HDR_SZ;
--static const long c_ringbuf_size = 1 << 12; /* 1 small page */
--static const long c_max_entries = c_ringbuf_size / c_sample_size;
-+static long c_ringbuf_size, c_max_entries;
- 
- static void drain_current_samples(void)
- {
-@@ -424,7 +423,9 @@ static void test_user_ringbuf_loop(void)
- 	uint32_t remaining_samples = total_samples;
- 	int err;
- 
--	BUILD_BUG_ON(total_samples <= c_max_entries);
-+	if (!ASSERT_LT(c_max_entries, total_samples, "compare_c_max_entries"))
-+		return;
-+
- 	err = load_skel_create_user_ringbuf(&skel, &ringbuf);
- 	if (err)
- 		return;
-@@ -686,6 +687,9 @@ void test_user_ringbuf(void)
- {
- 	int i;
- 
-+	c_ringbuf_size = getpagesize(); /* 1 page */
-+	c_max_entries = c_ringbuf_size / c_sample_size;
-+
- 	for (i = 0; i < ARRAY_SIZE(success_tests); i++) {
- 		if (!test__start_subtest(success_tests[i].test_name))
- 			continue;
+diff --git a/drivers/net/wireless/intel/iwlegacy/4965-mac.c b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+index 8e58e97a148f..e9e007b48645 100644
+--- a/drivers/net/wireless/intel/iwlegacy/4965-mac.c
++++ b/drivers/net/wireless/intel/iwlegacy/4965-mac.c
+@@ -1575,8 +1575,11 @@ il4965_tx_cmd_build_rate(struct il_priv *il,
+ 	    || rate_idx > RATE_COUNT_LEGACY)
+ 		rate_idx = rate_lowest_index(&il->bands[info->band], sta);
+ 	/* For 5 GHZ band, remap mac80211 rate indices into driver indices */
+-	if (info->band == NL80211_BAND_5GHZ)
++	if (info->band == NL80211_BAND_5GHZ) {
+ 		rate_idx += IL_FIRST_OFDM_RATE;
++		if (rate_idx > IL_LAST_OFDM_RATE)
++			rate_idx = IL_LAST_OFDM_RATE;
++	}
+ 	/* Get PLCP rate for tx_cmd->rate_n_flags */
+ 	rate_plcp = il_rates[rate_idx].plcp;
+ 	/* Zero out flags for this packet */
 -- 
 2.39.5
 
