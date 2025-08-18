@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AF0B2A870
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64369B2A33F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FC2582C28
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE6E35665ED
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CE4335BCB;
-	Mon, 18 Aug 2025 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6E431AF24;
+	Mon, 18 Aug 2025 12:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CC3dWYPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiIBX8aP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7654335BCA;
-	Mon, 18 Aug 2025 13:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B3331A063;
+	Mon, 18 Aug 2025 12:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525218; cv=none; b=ZQ4SJKKtPlT+itdtFqR9wD3VtH1lvtR6G1akSa7q0C9KSNh7TJgmMN+sngC+F2mZOhLJL9iVZgRCxuLeaYbxkMr2zDhOuViR4rso7iHWBN5Ahpov3t8RqRqQmF3K6/ysk/K49xuge4bwVMJDB6hVheVtWPtjEfs/El0mKpKRJgQ=
+	t=1755521809; cv=none; b=XTpXdLmOmojocWxBaxqFXTrQF1LJZpd937mNqMkLgccHhfKecCkPwRchePuATrzHwDwPo3pt9CzJJPzj3oJYK2x1PidH0iWcUGxIUqWmhKz8kbbSVLtpukOZ9UwErNFSk84KjfWJrOf6r5ElZs3R+dumwwBniFfQABUYeVnvf9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525218; c=relaxed/simple;
-	bh=zA/r/6vbuQGSw1IzuAjlV/gpLkWLx6zCMFvcJ0+MnCg=;
+	s=arc-20240116; t=1755521809; c=relaxed/simple;
+	bh=yGotZOEQOsewFDW/iBIK9J19ohJiDKVGKTSX82UYL1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPGQ8bA786LgmZEz+AVkQOWk8DTwqu+AqS4oIRfQdfWlyrZGG4rqMKv4d7Xx2L2w7VOPCQ9GOeEaRyUW6xVn5VNoNo1jFU0nJ6lMNjuNaZm9lXhz4566JV+KiMgsOCWOIWr5Dfv6ZQYNEOG9I6o18urw0Mw5as1iwhaM7mfastY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CC3dWYPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F8CC4CEEB;
-	Mon, 18 Aug 2025 13:53:38 +0000 (UTC)
+	 MIME-Version; b=rH/zR2rHqRuXgToCKPp14c8JGtaWYuH6oRmROVbXzDrRkxYBNw9LKqPumvMdcBSqLJW4TY113lhGSWzxmMp9ln1QVgOritJheNZJBEYPewWyNSZ+KVClJHqHn4aG5787IT59uXXsJ3tNmEbs+j5ucjSSpG+kOyrU9/eIino4kHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiIBX8aP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E296BC4AF09;
+	Mon, 18 Aug 2025 12:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525218;
-	bh=zA/r/6vbuQGSw1IzuAjlV/gpLkWLx6zCMFvcJ0+MnCg=;
+	s=korg; t=1755521809;
+	bh=yGotZOEQOsewFDW/iBIK9J19ohJiDKVGKTSX82UYL1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CC3dWYPj5hR0Qmwj/F2uKVAQvDHU1hYVH4MlI6TF2HPZF6EFBEjyKMcD/+k9Lu6im
-	 EqyyEAFjFiv9KsJTcAC8nhBlIFiCEORAPzjqyYHyL06Q2f19nlWQO9x0SySRHpRCJq
-	 LGYc7vg+kXUbCo+SGLUlWuFEUmKB9gFP1UGXQid8=
+	b=KiIBX8aP/C83P3q/3EUtTelz0JWiMjjP3hDDYv7UM5krpEwxJOuyAc5ziLEeEpBhM
+	 Gae2Muu+pge5iXKPShNu/VyPuErmX6wiVSOdYgleGf9RVHafyxFZfOjR4ThwhP++XA
+	 cywYKjajpl3qg3vukor6n/m3+IgBqCeHqVh9DxDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <quic_sartgarg@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	tuhaowen <tuhaowen@uniontech.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 168/570] mmc: sdhci-msm: Ensure SD card power isnt ON when card removed
+Subject: [PATCH 6.12 129/444] PM: sleep: console: Fix the black screen issue
 Date: Mon, 18 Aug 2025 14:42:35 +0200
-Message-ID: <20250818124512.273366142@linuxfoundation.org>
+Message-ID: <20250818124453.755025120@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <quic_sartgarg@quicinc.com>
+From: tuhaowen <tuhaowen@uniontech.com>
 
-[ Upstream commit db58532188ebf51d52b1d7693d9e94c76b926e9f ]
+[ Upstream commit 4266e8fa56d3d982bf451d382a410b9db432015c ]
 
-Many mobile phones feature multi-card tray designs, where the same
-tray is used for both SD and SIM cards. If the SD card is placed
-at the outermost location in the tray, the SIM card may come in
-contact with SD card power-supply while removing the tray, possibly
-resulting in SIM damage.
+When the computer enters sleep status without a monitor
+connected, the system switches the console to the virtual
+terminal tty63(SUSPEND_CONSOLE).
 
-To prevent that, make sure the SD card is really inserted by reading
-the Card Detect pin state. If it's not, turn off the power in
-sdhci_msm_check_power_status() and also set the BUS_FAIL power state
-on the controller as part of pwr_irq handling for BUS_ON request.
+If a monitor is subsequently connected before waking up,
+the system skips the required VT restoration process
+during wake-up, leaving the console on tty63 instead of
+switching back to tty1.
 
-Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250701100659.3310386-1-quic_sartgarg@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+To fix this issue, a global flag vt_switch_done is introduced
+to record whether the system has successfully switched to
+the suspend console via vt_move_to_console() during suspend.
+
+If the switch was completed, vt_switch_done is set to 1.
+Later during resume, this flag is checked to ensure that
+the original console is restored properly by calling
+vt_move_to_console(orig_fgconsole, 0).
+
+This prevents scenarios where the resume logic skips console
+restoration due to incorrect detection of the console state,
+especially when a monitor is reconnected before waking up.
+
+Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
+Link: https://patch.msgid.link/20250611032345.29962-1-tuhaowen@uniontech.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/power/console.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 66c0d1ba2a33..bc6ca49652f8 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -1564,6 +1564,7 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	struct mmc_host *mmc = host->mmc;
- 	bool done = false;
- 	u32 val = SWITCHABLE_SIGNALING_VOLTAGE;
- 	const struct sdhci_msm_offset *msm_offset =
-@@ -1621,6 +1622,12 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
- 				 "%s: pwr_irq for req: (%d) timed out\n",
- 				 mmc_hostname(host->mmc), req_type);
- 	}
-+
-+	if ((req_type & REQ_BUS_ON) && mmc->card && !mmc->ops->get_cd(mmc)) {
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+		host->pwr = 0;
-+	}
-+
- 	pr_debug("%s: %s: request %d done\n", mmc_hostname(host->mmc),
- 			__func__, req_type);
- }
-@@ -1679,6 +1686,13 @@ static void sdhci_msm_handle_pwr_irq(struct sdhci_host *host, int irq)
- 		udelay(10);
- 	}
+diff --git a/kernel/power/console.c b/kernel/power/console.c
+index fcdf0e14a47d..19c48aa5355d 100644
+--- a/kernel/power/console.c
++++ b/kernel/power/console.c
+@@ -16,6 +16,7 @@
+ #define SUSPEND_CONSOLE	(MAX_NR_CONSOLES-1)
  
-+	if ((irq_status & CORE_PWRCTL_BUS_ON) && mmc->card &&
-+	    !mmc->ops->get_cd(mmc)) {
-+		msm_host_writel(msm_host, CORE_PWRCTL_BUS_FAIL, host,
-+				msm_offset->core_pwrctl_ctl);
-+		return;
-+	}
+ static int orig_fgconsole, orig_kmsg;
++static bool vt_switch_done;
+ 
+ static DEFINE_MUTEX(vt_switch_mutex);
+ 
+@@ -136,17 +137,21 @@ void pm_prepare_console(void)
+ 	if (orig_fgconsole < 0)
+ 		return;
+ 
++	vt_switch_done = true;
 +
- 	/* Handle BUS ON/OFF*/
- 	if (irq_status & CORE_PWRCTL_BUS_ON) {
- 		pwr_state = REQ_BUS_ON;
+ 	orig_kmsg = vt_kmsg_redirect(SUSPEND_CONSOLE);
+ 	return;
+ }
+ 
+ void pm_restore_console(void)
+ {
+-	if (!pm_vt_switch())
++	if (!pm_vt_switch() && !vt_switch_done)
+ 		return;
+ 
+ 	if (orig_fgconsole >= 0) {
+ 		vt_move_to_console(orig_fgconsole, 0);
+ 		vt_kmsg_redirect(orig_kmsg);
+ 	}
++
++	vt_switch_done = false;
+ }
 -- 
 2.39.5
 
