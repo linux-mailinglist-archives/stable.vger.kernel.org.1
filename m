@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840B7B2A686
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D44B2A956
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EDBA7B5723
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 543CCB6040A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9DA31E11F;
-	Mon, 18 Aug 2025 13:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC201321F46;
+	Mon, 18 Aug 2025 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssQudQBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnZw84Py"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496922206AF;
-	Mon, 18 Aug 2025 13:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B553218C0;
+	Mon, 18 Aug 2025 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524364; cv=none; b=ggWpSpD9DODGyuvm19O3o8YtvJo4ufoAwPmsOet6HVedwogQVRwCQoxHawV4QoTiypNT0yo578sQxArO9XirobAINxk+mQGJRx1EN5rPyYkQlkZUwpXmjKTAeAeA4hvZXmXZ9s/+DD//VU0Tdf99ZniACBv2/AnIiLWgAfU7FO8=
+	t=1755526007; cv=none; b=bSyzfBqhgnhKt5bVAswGmxqpHVkrTle7UBYZo3K7DoWVvStPVLxT3SAGtsfjgFiUQ5Vg0zaS7KfRWcoQUqT7l3pwvSCaOWylTcirXAdQ8gTtk7+VlfdP+z1l+lanOWAcMm8zFPTfYXcilCe7NpM1++0WqHGpwXWh76i9JOLsBok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524364; c=relaxed/simple;
-	bh=lzIFBCYwgHAJWAkkuCmnj73iRgY44SEDyiuUCa1oprg=;
+	s=arc-20240116; t=1755526007; c=relaxed/simple;
+	bh=aTqbBptv9qMbItI48qahctAfL8NCuIWyphwqOi6azv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBXsEub6oN34HSBQowKPXY3ClmnLq576/d2Yw39yLzvFyCGKZZXhiI2Izi/YOZ1mTpbqZDyraliXqxkjHiRCQlb8EB+FABKEFHVwTRnjSNr/0FW1aIHgWHkNQ+RghGgJ/4j5UIKoQhclRu257w2eR83D6Cx/FBSW02Tc2jxsan8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssQudQBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AF1C4CEF1;
-	Mon, 18 Aug 2025 13:39:23 +0000 (UTC)
+	 MIME-Version; b=qudyov+glFyJljOnYwgIUbZVselzyBuI0aUi8voDECHsF0PvPtlxgV4nFFtZ3Yi7t2n2eSfAmM9DuFQWKnEI+jeNb6Q8CDeQ+cJc0NedlqfmtcdF4iHbI+uuWJYqIH2CyPL18yB0UHajmPCQmQRPFaRzywFDXqSo9xgUx9xqejU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnZw84Py; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ECBC4CEEB;
+	Mon, 18 Aug 2025 14:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524364;
-	bh=lzIFBCYwgHAJWAkkuCmnj73iRgY44SEDyiuUCa1oprg=;
+	s=korg; t=1755526007;
+	bh=aTqbBptv9qMbItI48qahctAfL8NCuIWyphwqOi6azv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ssQudQBuwPkIXfshJfBEtpWZLR11eIqqdsCLuTMuw3SD4854PygeQ7UZjc/lf+h8+
-	 EcEanLNAcwuNjvtoqtugZHONxR9mPssIO/A4F3dMCe0MB2xUBZKhZ1I+IZaHexfo+U
-	 86s6uPcE2wp9HSSWFS7M3wbV4CbM9g1SIGsHK7HU=
+	b=xnZw84PyAqxyKqAirzxfhQqaAcnwIISCWZyBof2V8dqp3+uDJppZZneqrYxjMi2ju
+	 OkHDcQK3bo/96pU3xgzwMXu3fA6csk4h1oyrmRfCTz3+mRDU5zLZaD7x30j2le7e/5
+	 XmSoIyCxpwnKc+lyvs5kqUh9lItvJbbLp7XPm3Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meagan Lloyd <meaganlloyd@linux.microsoft.com>,
-	Tyler Hicks <code@tyhicks.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 432/515] rtc: ds1307: remove clear of oscillator stop flag (OSF) in probe
+Subject: [PATCH 6.16 431/570] dm-table: fix checking for rq stackable devices
 Date: Mon, 18 Aug 2025 14:46:58 +0200
-Message-ID: <20250818124515.056927774@linuxfoundation.org>
+Message-ID: <20250818124522.436893533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 48458654659c9c2e149c211d86637f1592470da5 ]
+[ Upstream commit 8ca719b81987be690f197e82fdb030580c0a07f3 ]
 
-In using CONFIG_RTC_HCTOSYS, rtc_hctosys() will sync the RTC time to the
-kernel time as long as rtc_read_time() succeeds. In some power loss
-situations, our supercapacitor-backed DS1342 RTC comes up with either an
-unpredictable future time or the default 01/01/00 from the datasheet.
-The oscillator stop flag (OSF) is set in these scenarios due to the
-power loss and can be used to determine the validity of the RTC data.
+Due to the semantics of iterate_devices(), the current code allows a
+request-based dm table as long as it includes one request-stackable
+device. It is supposed to only allow tables where there are no
+non-request-stackable devices.
 
-Some chip types in the ds1307 driver already have OSF handling to
-determine whether .read_time provides valid RTC data or returns -EINVAL.
-
-This change removes the clear of the OSF in .probe as the OSF needs to
-be preserved to expand the OSF handling to the ds1341 chip type (note
-that DS1341 and DS1342 share a datasheet).
-
-Signed-off-by: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
-Reviewed-by: Tyler Hicks <code@tyhicks.com>
-Acked-by: Rodolfo Giometti <giometti@enneenne.com>
-Link: https://lore.kernel.org/r/1749665656-30108-2-git-send-email-meaganlloyd@linux.microsoft.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-ds1307.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/md/dm-table.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
-index c6d388bb4a19..1960d1bd851c 100644
---- a/drivers/rtc/rtc-ds1307.c
-+++ b/drivers/rtc/rtc-ds1307.c
-@@ -1824,10 +1824,8 @@ static int ds1307_probe(struct i2c_client *client)
- 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
- 			     regs[0]);
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index 24a857ff6d0b..79ba4bacd0f9 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -899,17 +899,17 @@ static bool dm_table_supports_dax(struct dm_table *t,
+ 	return true;
+ }
  
--		/* oscillator fault?  clear flag, and warn */
-+		/* oscillator fault? warn */
- 		if (regs[1] & DS1337_BIT_OSF) {
--			regmap_write(ds1307->regmap, DS1337_REG_STATUS,
--				     regs[1] & ~DS1337_BIT_OSF);
- 			dev_warn(ds1307->dev, "SET TIME!\n");
- 		}
- 		break;
+-static int device_is_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
+-				  sector_t start, sector_t len, void *data)
++static int device_is_not_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
++				      sector_t start, sector_t len, void *data)
+ {
+ 	struct block_device *bdev = dev->bdev;
+ 	struct request_queue *q = bdev_get_queue(bdev);
+ 
+ 	/* request-based cannot stack on partitions! */
+ 	if (bdev_is_partition(bdev))
+-		return false;
++		return true;
+ 
+-	return queue_is_mq(q);
++	return !queue_is_mq(q);
+ }
+ 
+ static int dm_table_determine_type(struct dm_table *t)
+@@ -1005,7 +1005,7 @@ static int dm_table_determine_type(struct dm_table *t)
+ 
+ 	/* Non-request-stackable devices can't be used for request-based dm */
+ 	if (!ti->type->iterate_devices ||
+-	    !ti->type->iterate_devices(ti, device_is_rq_stackable, NULL)) {
++	    ti->type->iterate_devices(ti, device_is_not_rq_stackable, NULL)) {
+ 		DMERR("table load rejected: including non-request-stackable devices");
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.5
 
