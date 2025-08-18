@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D3AEB2A9FF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:26:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33583B2A3BF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21B85A47CA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:13:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B01C718A8052
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D0E343D6D;
-	Mon, 18 Aug 2025 14:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6F82E22A6;
+	Mon, 18 Aug 2025 13:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2+2fA7w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdrgA+gb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB87343D6A;
-	Mon, 18 Aug 2025 14:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A603218D5;
+	Mon, 18 Aug 2025 13:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525825; cv=none; b=e9LnVSw433qi3J03REhgk/uj2AgzzLsFpFt/zXmtSBBT5xITh3kPOYT1gVpQoM8SATtd3Yca0UY7D8EVrkIw83oUS5DzFpunAwRXu2gvPIDXD+MAJlQjDsJrTUIEo/kZSwgLpf/UbHffFVazoFxeRwg98oSZ5NOsZxCRKdQZuDc=
+	t=1755522402; cv=none; b=gs7FpW2HEZi2IW3wPrZ5SH16mbUJ0SHbdm2UD6/KoSH7UHhwFqmVpZAMngJHVStfBiTK4awmL9WU4MvY2JzTNbQnlG4ll5WkCs30qTgUNvfhg47IuRkb+COe9Sn29YkW04El8ZHI546rPjExWGWNqKyuewyi45pIteOH4tqetG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525825; c=relaxed/simple;
-	bh=CeioV78zDemNVaQQwmovLEV8fL7CAoKWk9xJopeiXJ4=;
+	s=arc-20240116; t=1755522402; c=relaxed/simple;
+	bh=JZqMwyPx3XfjLCW7aVWpbUw8KPFzI8vUdrIhCjJZWkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPEEY8n2KPDTmh0ljpKxyfkmK9Ae5iH7uRo0bbKQjEw0nAhKwXwciOVAxYCLkxN5kQycskB6Uqar1Mler7RASsuuj/kFKHDW8922WYza8ilBpklVZzx5NdE7Zc86wjNVSmnyr0L30dY3FfOnKmLoeE03ji9uNS3hBWdETuPK3bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2+2fA7w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33571C4CEEB;
-	Mon, 18 Aug 2025 14:03:44 +0000 (UTC)
+	 MIME-Version; b=noRY3HnOMpLxhEDQ+jc/+VR/ZFJgTR8vcR2fkZdRa/kT57Ex0OxaPQ3t67Jhu59KdHKr78gQhZVX6KyPDS6OKpjItDAlMgKWTTOohw6eS5pbkvLywuqqH+Bz/w8mSjRRbmzZfAzEsL+Ixy7bC+HrxeNqHXt1VOacnMGPH4gsXTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdrgA+gb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1C1C4CEF1;
+	Mon, 18 Aug 2025 13:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525825;
-	bh=CeioV78zDemNVaQQwmovLEV8fL7CAoKWk9xJopeiXJ4=;
+	s=korg; t=1755522401;
+	bh=JZqMwyPx3XfjLCW7aVWpbUw8KPFzI8vUdrIhCjJZWkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2+2fA7w7KO+nwwvOqJ80j4+OUKeBtAXnewvqKqCER/zhAwlakhhhWp4Oa57wL+LA
-	 E3SlVlpscQasjsgp6inAa0Sn9dBpyF0kmu9vrNBB+IhwndNXOs0+7LL6rt2X0It2t2
-	 qp26Bpm7CHqlnMzMKOltPpLc5zgmGi2A6Zi2qgmQ=
+	b=XdrgA+gbOly77CkvC6Jt1u+VpLLQmIkiFVrdx/yqCbSXGNwmHxo1+fO7RDsXWXhZl
+	 eLe1RBLk18raRgieo/SeYIZmlgzX4D7yQjF0P67goO5jOcJm1JynMq6FPgIDfFFSgC
+	 p4NhdZVqi5HEdeOBgXwr8ZSgnarysGTf7r1egYGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Chung Chen <damon.chen@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 345/570] wifi: rtw89: 8852c: increase beacon loss to 6 seconds
+Subject: [PATCH 6.12 306/444] RDMA/core: reduce stack using in nldev_stat_get_doit()
 Date: Mon, 18 Aug 2025 14:45:32 +0200
-Message-ID: <20250818124519.151232183@linuxfoundation.org>
+Message-ID: <20250818124500.427512657@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Chung Chen <damon.chen@realtek.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4bcef86b13316511bb336a26140fc4130c3a65a2 ]
+[ Upstream commit 43163f4c30f94d2103c948a247cdf2cda5068ca7 ]
 
-Intermittent beacon loss from a specific AP causes the connection
-to be lost. Increasing the beacon loss count can make the
-connection more stable.
+In the s390 defconfig, gcc-10 and earlier end up inlining three functions
+into nldev_stat_get_doit(), and each of them uses some 600 bytes of stack.
 
-Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250606020302.16873-2-pkshih@realtek.com
+The result is a function with an overly large stack frame and a warning:
+
+drivers/infiniband/core/nldev.c:2466:1: error: the frame size of 1720 bytes is larger than 1280 bytes [-Werror=frame-larger-than=]
+
+Mark the three functions noinline_for_stack to prevent this, ensuring
+that only one copy of the nlattr array is on the stack of each function.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250620113335.3776965-1-arnd@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/core/nldev.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index f270d5e2140d..68a937710c69 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -838,6 +838,7 @@ static const struct __fw_feat_cfg fw_feat_tbl[] = {
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 40, 0, CRASH_TRIGGER),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 56, 10, BEACON_FILTER),
- 	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 80, 0, WOW_REASON_V1),
-+	__CFG_FW_FEAT(RTL8852C, ge, 0, 27, 128, 0, BEACON_LOSS_COUNT_V1),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 30, 0, CRASH_TRIGGER),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 11, 0, MACID_PAUSE_SLEEP),
- 	__CFG_FW_FEAT(RTL8922A, ge, 0, 34, 35, 0, SCAN_OFFLOAD),
+diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
+index f12189986303..fef11a80647c 100644
+--- a/drivers/infiniband/core/nldev.c
++++ b/drivers/infiniband/core/nldev.c
+@@ -1468,10 +1468,11 @@ static const struct nldev_fill_res_entry fill_entries[RDMA_RESTRACK_MAX] = {
+ 
+ };
+ 
+-static int res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
+-			       struct netlink_ext_ack *extack,
+-			       enum rdma_restrack_type res_type,
+-			       res_fill_func_t fill_func)
++static noinline_for_stack int
++res_get_common_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
++		    struct netlink_ext_ack *extack,
++		    enum rdma_restrack_type res_type,
++		    res_fill_func_t fill_func)
+ {
+ 	const struct nldev_fill_res_entry *fe = &fill_entries[res_type];
+ 	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
+@@ -2256,10 +2257,10 @@ static int nldev_stat_del_doit(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	return ret;
+ }
+ 
+-static int stat_get_doit_default_counter(struct sk_buff *skb,
+-					 struct nlmsghdr *nlh,
+-					 struct netlink_ext_ack *extack,
+-					 struct nlattr *tb[])
++static noinline_for_stack int
++stat_get_doit_default_counter(struct sk_buff *skb, struct nlmsghdr *nlh,
++			      struct netlink_ext_ack *extack,
++			      struct nlattr *tb[])
+ {
+ 	struct rdma_hw_stats *stats;
+ 	struct nlattr *table_attr;
+@@ -2349,8 +2350,9 @@ static int stat_get_doit_default_counter(struct sk_buff *skb,
+ 	return ret;
+ }
+ 
+-static int stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
+-			    struct netlink_ext_ack *extack, struct nlattr *tb[])
++static noinline_for_stack int
++stat_get_doit_qp(struct sk_buff *skb, struct nlmsghdr *nlh,
++		 struct netlink_ext_ack *extack, struct nlattr *tb[])
+ 
+ {
+ 	static enum rdma_nl_counter_mode mode;
 -- 
 2.39.5
 
