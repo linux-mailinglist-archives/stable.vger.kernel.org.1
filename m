@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75176B2A2A1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4A9B2A52E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9015F1B208AD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97E107BD085
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8833231E0E6;
-	Mon, 18 Aug 2025 12:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26F92C234A;
+	Mon, 18 Aug 2025 13:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fayDygjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3Yzu3ov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4247231CA6D;
-	Mon, 18 Aug 2025 12:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A65322760;
+	Mon, 18 Aug 2025 13:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521522; cv=none; b=E+c8Mo4l3JVWQi1ggy5LVeCV8tE3fWrTjC7UaRy+nNXrQFU1xV3fUBcTDmPH4sz3jUCuY6QTP4kxO0KiVFMo838bewm4OmkJ5BDLWG4XUGgDkArlmXx4E+UxRTBJVLXdibkFyhTSNmcenBmShORxkj6K/883q15FuUiYUEdM/RM=
+	t=1755523143; cv=none; b=YX05pIOo5VYjzd+1RCYZ4ayxDKaZ1M0AdakcU8YEJqDSKYlzhehdhbvUf7oMbd4mZhw5OG0eBmnscsl8Cee18COXffkU1yUckBblGB9NmS8quyy/azqaxoFH5HBDg8ojQ/mDAdp1hHXokKEKua/FjPXHBVW9IKOpjRLp2DakKH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521522; c=relaxed/simple;
-	bh=nSAmPPZr8kEn90V/6+yCnZVJfANzJ4QMQu2ksKczATE=;
+	s=arc-20240116; t=1755523143; c=relaxed/simple;
+	bh=kqG2unEDCEbhmLpjzdyzbOPfgUrQF1vfzZI+HlnEOwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qt8GGnQMM2Q9R2W6F/ReoRx7Iur9Nh39oT3l73xJjSNU3HdPzKdsUKrWtuDvv6xm86yj6C4ZeViG1De0PA1eZyfR0v146hKNABkOUQ3uWYgs+KNPK+GoG/s9TVPeRY+P2St4HDFuij2eQwi+sQ3pMqg7hPebkCwMRfPHOl6AKH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fayDygjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C18C4CEEB;
-	Mon, 18 Aug 2025 12:52:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OocMzd6PAR3/29i6pKYrPv7fAjuwsU6SQFI7cFSfGtG7q3W9RJ8Hn5dEGBeh8OFya0oNdarWFH/9u14ZmE4xLLuX/YwVxxhodehMiwmDMOwzXgAQuGPAKbfq75+Lc9Zb5jy3wjnALAlH4EZCjHD2XCAuoWlwka6fuKu/kItoTYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3Yzu3ov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A964AC4CEEB;
+	Mon, 18 Aug 2025 13:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521522;
-	bh=nSAmPPZr8kEn90V/6+yCnZVJfANzJ4QMQu2ksKczATE=;
+	s=korg; t=1755523143;
+	bh=kqG2unEDCEbhmLpjzdyzbOPfgUrQF1vfzZI+HlnEOwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fayDygjRWXJQ1iv3tMT9y6w33+2tzYk35cfIt63TooNUq5TKmijEno1U/+Ynmu4fc
-	 /aJVKScO9HSnE6ELr3k7CCT3ms8C9QKyg7n7agxVokESuYaoAvxH8qaA5CBZGlL/sO
-	 iSv5WHgXdFVlM1nIgH29vbGKpgyTWEEqObAkuTCI=
+	b=f3Yzu3ov7htQjTq+yGxoyFWNRYxZj+45baF8gOM2Bct6nXBcyOVMCMiRb9fd9XVOA
+	 AoCdArYEupdISJqL7dodPTcxHcWahdpz9KSvA3uul6ZmePIrE8ihoCT1VGll/KYbWK
+	 BpBbSI9DSt5W2PGj7LwDqSbe3oTyd+vr+XAHhpRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12 011/444] gpio: mlxbf3: use platform_get_irq_optional()
-Date: Mon, 18 Aug 2025 14:40:37 +0200
-Message-ID: <20250818124449.327796147@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Tom Vincent <linux@tlvince.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.15 052/515] mfd: cros_ec: Separate charge-control probing from USB-PD
+Date: Mon, 18 Aug 2025 14:40:38 +0200
+Message-ID: <20250818124500.423251226@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 810bd9066fb1871b8a9528f31f2fdbf2a8b73bf2 upstream.
+commit e40fc1160d491c3bcaf8e940ae0dde0a7c5e8e14 upstream.
 
-The gpio-mlxbf3 driver interfaces with two GPIO controllers,
-device instance 0 and 1. There is a single IRQ resource shared
-between the two controllers, and it is found in the ACPI table for
-device instance 0. The driver should not use platform_get_irq(),
-otherwise this error is logged when probing instance 1:
-    mlxbf3_gpio MLNXBF33:01: error -ENXIO: IRQ index 0 not found
+The charge-control subsystem in the ChromeOS EC is not strictly tied to
+its USB-PD subsystem.
+
+Since commit 7613bc0d116a ("mfd: cros_ec: Don't load charger with UCSI")
+the presence of EC_FEATURE_UCSI_PPM would inhibit the probing of the
+charge-control driver.
+
+Furthermore recent versions of the EC firmware in Framework laptops
+hard-disable EC_FEATURE_USB_PD to avoid probing cros-usbpd-charger,
+which then also breaks cros-charge-control.
+
+Instead use the dedicated EC_FEATURE_CHARGER.
 
 Cc: stable@vger.kernel.org
-Fixes: cd33f216d241 ("gpio: mlxbf3: Add gpio driver support")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/ce70b98a201ce82b9df9aa80ac7a5eeaa2268e52.1754928650.git.davthompson@nvidia.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://github.com/FrameworkComputer/EmbeddedController/commit/1d7bcf1d50137c8c01969eb65880bc83e424597e
+Fixes: 555b5fcdb844 ("mfd: cros_ec: Register charge control subdevice")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Tested-by: Tom Vincent <linux@tlvince.com>
+Link: https://lore.kernel.org/r/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mlxbf3.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/cros_ec_dev.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-mlxbf3.c
-+++ b/drivers/gpio/gpio-mlxbf3.c
-@@ -227,7 +227,7 @@ static int mlxbf3_gpio_probe(struct plat
- 	gc->owner = THIS_MODULE;
- 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
+--- a/drivers/mfd/cros_ec_dev.c
++++ b/drivers/mfd/cros_ec_dev.c
+@@ -87,7 +87,6 @@ static const struct mfd_cell cros_ec_sen
+ };
  
--	irq = platform_get_irq(pdev, 0);
-+	irq = platform_get_irq_optional(pdev, 0);
- 	if (irq >= 0) {
- 		girq = &gs->gc.irq;
- 		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
+ static const struct mfd_cell cros_usbpd_charger_cells[] = {
+-	{ .name = "cros-charge-control", },
+ 	{ .name = "cros-usbpd-charger", },
+ 	{ .name = "cros-usbpd-logger", },
+ };
+@@ -112,6 +111,10 @@ static const struct mfd_cell cros_ec_ucs
+ 	{ .name = "cros_ec_ucsi", },
+ };
+ 
++static const struct mfd_cell cros_ec_charge_control_cells[] = {
++	{ .name = "cros-charge-control", },
++};
++
+ static const struct cros_feature_to_cells cros_subdevices[] = {
+ 	{
+ 		.id		= EC_FEATURE_CEC,
+@@ -148,6 +151,11 @@ static const struct cros_feature_to_cell
+ 		.mfd_cells	= cros_ec_keyboard_leds_cells,
+ 		.num_cells	= ARRAY_SIZE(cros_ec_keyboard_leds_cells),
+ 	},
++	{
++		.id		= EC_FEATURE_CHARGER,
++		.mfd_cells	= cros_ec_charge_control_cells,
++		.num_cells	= ARRAY_SIZE(cros_ec_charge_control_cells),
++	},
+ };
+ 
+ static const struct mfd_cell cros_ec_platform_cells[] = {
 
 
 
