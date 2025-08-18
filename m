@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FC7B2A60A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:40:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC88CB2A836
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D130C1B653F0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 648F23BAE22
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454C032255F;
-	Mon, 18 Aug 2025 13:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A13335BBA;
+	Mon, 18 Aug 2025 13:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvF1T7Ci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s590NBcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0124D322556;
-	Mon, 18 Aug 2025 13:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7360335BA7;
+	Mon, 18 Aug 2025 13:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523496; cv=none; b=DloNpNW/PDTZQmI3Lk4R52SwvQEi6juxHcVeAtkEqn4YxQUrTzVf6+vn2TT5JeUuU2vzuteeE2sH+dh3phA50IVLhjV8quyVeY6NEarLYvKsgszrra/Kna/xHDljq42okzl885H7TBT3o6ho8bg2w5G2EKDg5CQDX2knoCFYg3Y=
+	t=1755525090; cv=none; b=U9aCXn5KNGW+ERmgAPQChC0tsfWKSvbM3l3iPSXLFQ41pNYwA0MeQNmzFM2UtsLnNeX5IRTIVjSJbVwKtvGkkfjaiJnfEWO6Os3ZUed334x2OZ9w4aCkqVfTBLw7c8yeckJejbYNfaGM68pwATqL+4mo0HJ+tyf0ap/OJt7najQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523496; c=relaxed/simple;
-	bh=a8PU34bVY4axGSCJowJxtYZJQNfkrrsmnMiE98ExQjA=;
+	s=arc-20240116; t=1755525090; c=relaxed/simple;
+	bh=GXlIX/rbyezxORdhc4CaxRTEYbgdlkoIRbIh/YaxhaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJ38LI0pFzpPePDS3jeRkEP/PNVEjEW9SaMHOkVRtbPuVFr5rfoc2CjI0gXZgkHaa5vDFJh3GH6oHeYFssbUmSk26G0bNAZOfEP88GX7wUh4SinvLjcd0e9w931clJneBky4lYxT4Lyxgwxccl5PZRYgzJJl2ovNRXrK701J/Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvF1T7Ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7039EC4CEEB;
-	Mon, 18 Aug 2025 13:24:55 +0000 (UTC)
+	 MIME-Version; b=B/0D/23W1ctZwvhi0JDk820BGC0mK7X+dPd5kVmIGbwec18ryh7phvkS0PWwnG7UgR1eQmDv6rZ8+ScXzbgPMtSXjqrYqANyC6vuIssP7mZm2td/lMXTO3Y73VBBeZeElEfhXLLESnkDkdwAXBRen1rZ8kTr2yueDJeGXWWa51Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s590NBcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438DDC4CEEB;
+	Mon, 18 Aug 2025 13:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523495;
-	bh=a8PU34bVY4axGSCJowJxtYZJQNfkrrsmnMiE98ExQjA=;
+	s=korg; t=1755525090;
+	bh=GXlIX/rbyezxORdhc4CaxRTEYbgdlkoIRbIh/YaxhaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvF1T7CiTHFXSHjNPLQra2mM32yR+QHOQ0ifxiD5BX59tT4L24cQzPF6kmQSmWg93
-	 PAt+pYfzCBcA6eftk6HWxNI/iz3JyseGEGWjnQz93x3xgBEayc5e4W9yPLqJqPVfuR
-	 Gjzo8u8sATitoO5hiTvOvTY1++p1/tXhK06nVzQY=
+	b=s590NBcUa2zmBQmauSUK09PLz1/RtbQy7CUjT02Ffsrj5mUjUgUWphqpzWAyRscvj
+	 aXrjO/NZSzWroNC157BhLTLnjw+FoEnPawaxZnzywljDOEOsoZ3ja1KGYn1sp5bSoW
+	 ACTxVvEY2ebvpI1p8W4xWiMAAgAU9uWC77OohdJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 156/515] ACPI: APEI: GHES: add TAINT_MACHINE_CHECK on GHES panic path
+Subject: [PATCH 6.16 155/570] gpio: tps65912: check the return value of regmap_update_bits()
 Date: Mon, 18 Aug 2025 14:42:22 +0200
-Message-ID: <20250818124504.393001732@linuxfoundation.org>
+Message-ID: <20250818124511.785162019@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 4734c8b46b901cff2feda8b82abc710b65dc31c1 ]
+[ Upstream commit a0b2a6bbff8c26aafdecd320f38f52c341d5cafa ]
 
-When a GHES (Generic Hardware Error Source) triggers a panic, add the
-TAINT_MACHINE_CHECK taint flag to the kernel. This explicitly marks the
-kernel as tainted due to a machine check event, improving diagnostics
-and post-mortem analysis. The taint is set with LOCKDEP_STILL_OK to
-indicate lockdep remains valid.
+regmap_update_bits() can fail, check its return value like we do
+elsewhere in the driver.
 
-At large scale deployment, this helps to quickly determine panics that
-are coming due to hardware failures.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20250702-add_tain-v1-1-9187b10914b9@debian.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20250707-gpiochip-set-rv-gpio-round4-v1-2-35668aaaf6d2@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-tps65912.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index fe9bd27367ee..ce9b8e8a5d09 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1099,6 +1099,8 @@ static void __ghes_panic(struct ghes *ghes,
+diff --git a/drivers/gpio/gpio-tps65912.c b/drivers/gpio/gpio-tps65912.c
+index fab771cb6a87..bac757c191c2 100644
+--- a/drivers/gpio/gpio-tps65912.c
++++ b/drivers/gpio/gpio-tps65912.c
+@@ -49,10 +49,13 @@ static int tps65912_gpio_direction_output(struct gpio_chip *gc,
+ 					  unsigned offset, int value)
+ {
+ 	struct tps65912_gpio *gpio = gpiochip_get_data(gc);
++	int ret;
  
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
+ 	/* Set the initial value */
+-	regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
+-			   GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
++	ret = regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
++				 GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
++	if (ret)
++		return ret;
  
-+	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_STILL_OK);
-+
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
- 	if (!panic_timeout)
+ 	return regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
+ 				  GPIO_CFG_MASK, GPIO_CFG_MASK);
 -- 
 2.39.5
 
