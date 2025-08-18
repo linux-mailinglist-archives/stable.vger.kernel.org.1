@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3D4B2A299
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:59:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A28B2A876
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B9FD7B049F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79D072A27DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBCF31A04A;
-	Mon, 18 Aug 2025 12:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105741E8836;
+	Mon, 18 Aug 2025 13:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6lU9qd9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avHhlJdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF2F26FD9D;
-	Mon, 18 Aug 2025 12:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C160919E82A;
+	Mon, 18 Aug 2025 13:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521926; cv=none; b=u3K/Auebdu+2xShReR9Cc8fZo/x81M8WtsENdX6gMyI4fotc0oOkhgmTj+/arTKe1UV8hxT05yKqJqmKsZ2gkcCOrPv62zD8i8xqsQAIu5dlu2kd5xgZx1ba/5nKNUbp2CiQLZlsAR+bDJZXFlIyIndzHbs6L09X70UiFq/aihQ=
+	t=1755525332; cv=none; b=auEHts9Xo/EYBTNq/kJR9YcBPOS4W8ZCh+ymGTNnHcOMQiH2CoD4ucZQX6XXPV7xD0iDVHK9M30hOuJ817SS+5Prws+2paS3GMn5yH0OIycsWcd5ZoCq8wIR9SIKgEzMArMEUhGA9jg9r0C8cPxUV8+Trd1X2jlV/ICAh3ThCJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521926; c=relaxed/simple;
-	bh=A/CvHRfITogCSDPhhUr09v1TyJfE1Jm9crk6r3gCCnU=;
+	s=arc-20240116; t=1755525332; c=relaxed/simple;
+	bh=7DkWEq+YwDPgM5mhwtHlutbG9rCMD1ORf1Y9Jj2iYJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cHoSI/EJioA4MKtw4c5CSxjkRXn6SKNG08vbtZEoPjH2zEziZc3czHIekbD3uz/foJxKe0Zd4bfH64ElOJ7LaBWotjtSqkFFoar9By805i2k8buNSQeQY1eavsMe/NvyEomIz4QhlhJt9wq50PjYCteBIquyKgo9VFk6OjlfSjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6lU9qd9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B58C4CEEB;
-	Mon, 18 Aug 2025 12:58:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CsnW5vnmHlptIXyxvdk+TU7b9gT5AFd9ofRQYi51mOCQGB2U7Xn0fX21+sgExMbJ006W6yc43KmN1HgTAJDWMxC3v1v1jEr0RQWFgs4OoLsBqSICrNAB6XP/biBwa3OqZ2rG7oj55KoyHwaO6bG6XZQ0f32XlqKOWsdwQZBHGeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avHhlJdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4177CC4CEEB;
+	Mon, 18 Aug 2025 13:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521926;
-	bh=A/CvHRfITogCSDPhhUr09v1TyJfE1Jm9crk6r3gCCnU=;
+	s=korg; t=1755525332;
+	bh=7DkWEq+YwDPgM5mhwtHlutbG9rCMD1ORf1Y9Jj2iYJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6lU9qd9/zZBHMNsk2PWR1nKrCI5wZ2Oxdekww1E2AuTxUaMNF4OfFlQQnhadWH7b
-	 VjDAHkhEOmx6oyrgk9JWCjywz2plIBorTdiO6YYBAB/O5DbybkwSOuOYu8RKStoIsE
-	 XTPBsy7N7FcIVvJyNHPtGjowjqlG3TLq3GqYSBgs=
+	b=avHhlJdb50NoLazqK7OPZKN8bwjI0FPkKFr2w9kdb4IWn7RcOB+TqByn9rMAAT2L6
+	 dNe2QCart37p5k+tR3fSmpNNuF0hBpbgLceNcusjw/d5/D0PwJywDvzCm7Szbj6iJw
+	 ftWuwtHCKSa8Biv6+Bh0Rz+qPYbK7RN6a4pYH2Qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Hutchings <benh@debian.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Xinxin Wan <xinxin.wan@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/444] bootconfig: Fix unaligned access when building footer
+Subject: [PATCH 6.16 203/570] ASoC: codecs: rt5640: Retry DEVICE_ID verification
 Date: Mon, 18 Aug 2025 14:43:10 +0200
-Message-ID: <20250818124455.045136639@linuxfoundation.org>
+Message-ID: <20250818124513.631343117@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Xinxin Wan <xinxin.wan@intel.com>
 
-[ Upstream commit 6ed5e20466c79e3b3350bae39f678f73cf564b4e ]
+[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
 
-Currently we add padding between the bootconfig text and footer to
-ensure that the footer is aligned within the initramfs image.
-However, because only the bootconfig data is held in memory, not the
-full initramfs image, the footer may not be naturally aligned in
-memory.
+To be more resilient to codec-detection failures when the hardware
+powers on slowly, add retry mechanism to the device verification check.
+Similar pattern is found throughout a number of Realtek codecs. Our
+tests show that 60ms delay is sufficient to address readiness issues on
+rt5640 chip.
 
-This can result in an alignment fault (SIGBUS) when writing the footer
-on some architectures, such as sparc.
-
-Build the footer in a struct on the stack before adding it to the
-buffer.
-
-References: https://buildd.debian.org/status/fetch.php?pkg=linux&arch=sparc64&ver=6.16%7Erc7-1%7Eexp1&stamp=1753209801&raw=0
-Link: https://lore.kernel.org/all/aIC-NTw-cdm9ZGFw@decadent.org.uk/
-
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bootconfig/main.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ sound/soc/codecs/rt5640.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 8a48cc2536f5..dce2d6ffcca5 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -11,6 +11,7 @@
- #include <string.h>
- #include <errno.h>
- #include <endian.h>
-+#include <assert.h>
+diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
+index 21a18012b4c0..55881a5669e2 100644
+--- a/sound/soc/codecs/rt5640.c
++++ b/sound/soc/codecs/rt5640.c
+@@ -3013,6 +3013,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
+ 	}
  
- #include <linux/bootconfig.h>
- 
-@@ -359,7 +360,12 @@ static int delete_xbc(const char *path)
- 
- static int apply_xbc(const char *path, const char *xbc_path)
- {
--	char *buf, *data, *p;
-+	struct {
-+		uint32_t size;
-+		uint32_t csum;
-+		char magic[BOOTCONFIG_MAGIC_LEN];
-+	} footer;
-+	char *buf, *data;
- 	size_t total_size;
- 	struct stat stat;
- 	const char *msg;
-@@ -430,17 +436,13 @@ static int apply_xbc(const char *path, const char *xbc_path)
- 	size += pad;
- 
- 	/* Add a footer */
--	p = data + size;
--	*(uint32_t *)p = htole32(size);
--	p += sizeof(uint32_t);
-+	footer.size = htole32(size);
-+	footer.csum = htole32(csum);
-+	memcpy(footer.magic, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
-+	static_assert(sizeof(footer) == BOOTCONFIG_FOOTER_SIZE);
-+	memcpy(data + size, &footer, BOOTCONFIG_FOOTER_SIZE);
- 
--	*(uint32_t *)p = htole32(csum);
--	p += sizeof(uint32_t);
--
--	memcpy(p, BOOTCONFIG_MAGIC, BOOTCONFIG_MAGIC_LEN);
--	p += BOOTCONFIG_MAGIC_LEN;
--
--	total_size = p - data;
-+	total_size = size + BOOTCONFIG_FOOTER_SIZE;
- 
- 	ret = write(fd, data, total_size);
- 	if (ret < total_size) {
+ 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
++	if (val != RT5640_DEVICE_ID) {
++		usleep_range(60000, 100000);
++		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
++	}
++
+ 	if (val != RT5640_DEVICE_ID) {
+ 		dev_err(&i2c->dev,
+ 			"Device with ID register %#x is not rt5640/39\n", val);
 -- 
 2.39.5
 
