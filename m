@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DC7B2A92D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08ADAB2A350
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F1366E3F8B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8CE3BA2DD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B114346A04;
-	Mon, 18 Aug 2025 13:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141F831CA48;
+	Mon, 18 Aug 2025 13:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAMA+cgT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zqss/JsD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292E0346A00;
-	Mon, 18 Aug 2025 13:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F7B31A063;
+	Mon, 18 Aug 2025 13:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525463; cv=none; b=u9VmNhpnzmQFaQqtsGmkX3RfUb4ccXzyZbFQqfhZFjyXcB95MAq1PT28NNhntKSr62sfHwNXHhfOsLOaoS5EajPDmzhOA6fru06pRRx60zArUN0CVgoZmCTIoksOlsnG1p+IPyXsJrDowVLDs8zpfZ86dcA1X+oXTlmT0ydhg2g=
+	t=1755522146; cv=none; b=DE/8DcAjNRocfv4LiLTWZjBXExZSvpE5t73mJIgkV/8dEdi23MFqsyuDsg+T+x545SMzfb5ypwlgDYFXkoCA6BfsNeeVm5/KpcvLAdQwbD5L8+Ymca4r5p1FsvRCrw36TTjkk+cSEvERdSD+Idvt9DaiJ1aNzu4mCVkA7qb3uTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525463; c=relaxed/simple;
-	bh=Y6pu/6uw+s7f9QjsYXFMiP3iifAPed5jhCA03SpkjNc=;
+	s=arc-20240116; t=1755522146; c=relaxed/simple;
+	bh=K1q8zbASKbzp6qgD1Gga6aFmwi9Go7dSZ/FeS/4dI+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Azqw96b+AxCxT9f+w8chI0euaQfCYRft3nUIr4vQVmLlrnzsrUDUg1DGkAJcKHtKYefALJBITDY3MQOsRbyyAvz+Tf9NNy1qeOiiLdmU8Pgc3qScdMyLT/+tLlZftX/o9bV6wrR5hx1uus6R6KnsM6HC7zMcp/IbsHFSiYUBPZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAMA+cgT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CDEC4CEEB;
-	Mon, 18 Aug 2025 13:57:41 +0000 (UTC)
+	 MIME-Version; b=hUsJEth8KOzW4SN36d5jtVyCtUZVh6nam7nuUC5ztNJGYMQeJghpe4XCxXwTs3/AGVk/BAq2nPchvKJGflWWHWajeAj8BgPfgAr6HinCxImot2WCRDI/4COvrrYcKrF4btTPQjOcTCuZdxYahlIkt5bAb+vQcwmVhl1XfoPDUxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zqss/JsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA28AC4CEEB;
+	Mon, 18 Aug 2025 13:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525462;
-	bh=Y6pu/6uw+s7f9QjsYXFMiP3iifAPed5jhCA03SpkjNc=;
+	s=korg; t=1755522146;
+	bh=K1q8zbASKbzp6qgD1Gga6aFmwi9Go7dSZ/FeS/4dI+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAMA+cgTqOTJAVXntlEXh1m1zx5Xoc1PML4WaFeoxRnI4MBVUkOKhKC2pe8nDIuZf
-	 ZwDSKVhbva8Vd72JjOE0UCKR9haphrQ3HWVBnKW1fVKJafOLkRLfT1qTcfsX5f9GbU
-	 BP2oN2MRsmqLlF6CFlTjudxLNx4Hb7MuEIlDeW04=
+	b=Zqss/JsDMbyFrmh+M/kv19EoHe/DhKYG1Kb/LLAPFGibMUsSKssavbDCWQ0XLqJQI
+	 dWdoZT+xIZUG4MsrP81u/sJvfOp8XeL5edP1yvlfow4Zs10vo1IuKd/z31A1aJrcoa
+	 IkGtEHzQPWgQ9RrZ8y4CsdrdX8pbyHHYd6PJVY+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Rand Deeb <rand.sec96@gmail.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 269/570] wifi: mt76: fix vif link allocation
+Subject: [PATCH 6.12 230/444] wifi: iwlwifi: dvm: fix potential overflow in rs_fill_link_cmd()
 Date: Mon, 18 Aug 2025 14:44:16 +0200
-Message-ID: <20250818124516.210877163@linuxfoundation.org>
+Message-ID: <20250818124457.465905666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-[ Upstream commit 53a5d72bdd70e262623b6009cc4754927b428bad ]
+[ Upstream commit e3ad987e9dc7d1e12e3f2f1e623f0e174cd0ca78 ]
 
-Reuse the vif deflink for link_id = 0 in order to avoid confusion with
-vif->bss_conf, which also gets a link id of 0.
+The 'index' variable in the rs_fill_link_cmd() function can reach
+LINK_QUAL_MAX_RETRY_NUM during the execution of the inner loop. This
+variable is used as an index for the lq_cmd->rs_table array, which has a
+size of LINK_QUAL_MAX_RETRY_NUM, without proper validation.
 
-Link: https://patch.msgid.link/20250704-mt7996-mlo-fixes-v1-1-356456c73f43@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Modify the condition of the inner loop to ensure that the 'index' variable
+does not exceed LINK_QUAL_MAX_RETRY_NUM - 1, thereby preventing any
+potential overflow issues.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Link: https://patch.msgid.link/20240313101755.269209-1-rand.sec96@gmail.com
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/channel.c | 4 ++--
- drivers/net/wireless/mediatek/mt76/mt76.h    | 5 ++++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
-index cc2d888e3f17..77b75792eb48 100644
---- a/drivers/net/wireless/mediatek/mt76/channel.c
-+++ b/drivers/net/wireless/mediatek/mt76/channel.c
-@@ -173,13 +173,13 @@ void mt76_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	if (!mlink)
- 		goto out;
- 
--	if (link_conf != &vif->bss_conf)
-+	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
- 		rcu_assign_pointer(mvif->link[link_id], NULL);
- 
- 	dev->drv->vif_link_remove(phy, vif, link_conf, mlink);
- 	mlink->ctx = NULL;
- 
--	if (link_conf != &vif->bss_conf)
-+	if (mlink != (struct mt76_vif_link *)vif->drv_priv)
- 		kfree_rcu(mlink, rcu_head);
- 
- out:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 74b75035d361..0ecf77fcbe3d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -1874,6 +1874,9 @@ mt76_vif_link(struct mt76_dev *dev, struct ieee80211_vif *vif, int link_id)
- 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
- 	struct mt76_vif_data *mvif = mlink->mvif;
- 
-+	if (!link_id)
-+		return mlink;
-+
- 	return mt76_dereference(mvif->link[link_id], dev);
- }
- 
-@@ -1884,7 +1887,7 @@ mt76_vif_conf_link(struct mt76_dev *dev, struct ieee80211_vif *vif,
- 	struct mt76_vif_link *mlink = (struct mt76_vif_link *)vif->drv_priv;
- 	struct mt76_vif_data *mvif = mlink->mvif;
- 
--	if (link_conf == &vif->bss_conf)
-+	if (link_conf == &vif->bss_conf || !link_conf->link_id)
- 		return mlink;
- 
- 	return mt76_dereference(mvif->link[link_conf->link_id], dev);
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+index 8879e668ef0d..ed964103281e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -2899,7 +2899,7 @@ static void rs_fill_link_cmd(struct iwl_priv *priv,
+ 		/* Repeat initial/next rate.
+ 		 * For legacy IWL_NUMBER_TRY == 1, this loop will not execute.
+ 		 * For HT IWL_HT_NUMBER_TRY == 3, this executes twice. */
+-		while (repeat_rate > 0 && (index < LINK_QUAL_MAX_RETRY_NUM)) {
++		while (repeat_rate > 0 && index < (LINK_QUAL_MAX_RETRY_NUM - 1)) {
+ 			if (is_legacy(tbl_type.lq_type)) {
+ 				if (ant_toggle_cnt < NUM_TRY_BEFORE_ANT_TOGGLE)
+ 					ant_toggle_cnt++;
 -- 
 2.39.5
 
