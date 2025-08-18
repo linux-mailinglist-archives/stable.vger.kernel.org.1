@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF758B2A518
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:07 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0DAB2A696
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81B83622182
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82F4D4E3983
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4122F320381;
-	Mon, 18 Aug 2025 13:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED8927B344;
+	Mon, 18 Aug 2025 13:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoU9T0wg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwnwgEmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E2C22A7E0;
-	Mon, 18 Aug 2025 13:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAE022A7E0;
+	Mon, 18 Aug 2025 13:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523031; cv=none; b=KxEmwyTdvGzAzC/wb7wNXyVHMAHNy4wxF9+Ot1AosdQt9oG5O/UHzbDIW/iNnsU6QcUmaHnoMdZz+BhVrpAeT+zohYWFlyInQn8mWUsNWApGAIaPtYm7Z1w06vKxWJCqg3xCgmhQbtrjjCqOMgS/shcSAx5fmmQSHBAQ0tT/qcA=
+	t=1755524630; cv=none; b=Re44+Gbx+SiuBPwrzTqO1arLihAeH4Tb5gn9ZcI9NVpNkknpPsQQLzuRPnDCTxknWGOAipL3MheD1p4zPIk2qHr+wf4R02UW68Qxv3BIHQC2GjmcpewAGT9+ibDQYLTM1M26UT1IyVfJbT3Bwn1plNxe43QKZE49skwpLRR9tE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523031; c=relaxed/simple;
-	bh=wm2z4ma9IjJSy3w6e8KasFdR/zWrVcWcEA2AfkQ9ouE=;
+	s=arc-20240116; t=1755524630; c=relaxed/simple;
+	bh=zl+mfDQbSSbzPfUbcJzfqqnN2e0hyGbc38L0B1V8BmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSGqR5iskaHlh6tEMzoAoGlcCNhSqMEvPffUUz4xQbIjwwIxbG58qNMokDCXk+PMOkG9udAzUjZLEcPi36bwDoEKPNPlNCWEPdTqDMqvhTXL/lk4ChU+9gqeCh12KNAGTKWPWqalkT9GCKdDrZgaBmmdGG0dInumF2HPNYQkA2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoU9T0wg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBA2C4CEEB;
-	Mon, 18 Aug 2025 13:17:10 +0000 (UTC)
+	 MIME-Version; b=Z+K2clpHZgsd3GxnWzLZlD4QGgpsPESzwPIdkcpQ7MIBUkvRzGzFF9lBcTcSRPERMMaZhit/af6Zs87XA3OTXj6ewXNr1+B6EQO1uKI7Zlnf+xcTaYcIw/WkXwZILto/niCLBoAM2VwQaIj6caK9t9pIoXP+nfglfXOj1Lq3k8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwnwgEmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27B0C4CEF1;
+	Mon, 18 Aug 2025 13:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523030;
-	bh=wm2z4ma9IjJSy3w6e8KasFdR/zWrVcWcEA2AfkQ9ouE=;
+	s=korg; t=1755524630;
+	bh=zl+mfDQbSSbzPfUbcJzfqqnN2e0hyGbc38L0B1V8BmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoU9T0wg+kOVwC6rnu1MJLBfq48bFx3mnPOvoE/4vbxHh/HrbcUNCOkdj0m1nsI4n
-	 AY+l8SYJlHVZSCHF7jG4u/TGd93GQ7EkET5Z7Fvy9WlTu7dYAtn8h8a9/Q015kHbeL
-	 zCJMLjfgpemHycELD0Hw9eCkZIwzsX6eN8Pd8/tc=
+	b=UwnwgEmFDQghqf0P60Xo/vX3VUooVxLClHT9bx+KeRdIDEza3cHiPFB6ZvZGrMBFR
+	 PlGfWs/PRYC89k1SotzXQM+03PcruAyNQLNnusSDCaqfHbNWDqYIBlnI0zttwni3rh
+	 H5wgF6V6p1ltGqVAFYSzEMMR1GShPb1k2vzzrBHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Thompson <davthompson@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.15 016/515] gpio: mlxbf3: use platform_get_irq_optional()
+Subject: [PATCH 6.16 015/570] gpio: mlxbf2: use platform_get_irq_optional()
 Date: Mon, 18 Aug 2025 14:40:02 +0200
-Message-ID: <20250818124458.937435428@linuxfoundation.org>
+Message-ID: <20250818124506.380269903@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: David Thompson <davthompson@nvidia.com>
 
-commit 810bd9066fb1871b8a9528f31f2fdbf2a8b73bf2 upstream.
+commit 63c7bc53a35e785accdc2ceab8f72d94501931ab upstream.
 
-The gpio-mlxbf3 driver interfaces with two GPIO controllers,
-device instance 0 and 1. There is a single IRQ resource shared
-between the two controllers, and it is found in the ACPI table for
-device instance 0. The driver should not use platform_get_irq(),
-otherwise this error is logged when probing instance 1:
-    mlxbf3_gpio MLNXBF33:01: error -ENXIO: IRQ index 0 not found
+The gpio-mlxbf2 driver interfaces with four GPIO controllers,
+device instances 0-3. There are two IRQ resources shared between
+the four controllers, and they are found in the ACPI table for
+instances 0 and 3. The driver should not use platform_get_irq(),
+otherwise this error is logged when probing instances 1 and 2:
+  mlxbf2_gpio MLNXBF22:01: error -ENXIO: IRQ index 0 not found
 
+Fixes: 2b725265cb08 ("gpio: mlxbf2: Introduce IRQ support")
 Cc: stable@vger.kernel.org
-Fixes: cd33f216d241 ("gpio: mlxbf3: Add gpio driver support")
 Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/ce70b98a201ce82b9df9aa80ac7a5eeaa2268e52.1754928650.git.davthompson@nvidia.com
+Reviewed-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/r/20250728144619.29894-1-davthompson@nvidia.com
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mlxbf3.c |    2 +-
+ drivers/gpio/gpio-mlxbf2.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-mlxbf3.c
-+++ b/drivers/gpio/gpio-mlxbf3.c
-@@ -227,7 +227,7 @@ static int mlxbf3_gpio_probe(struct plat
+--- a/drivers/gpio/gpio-mlxbf2.c
++++ b/drivers/gpio/gpio-mlxbf2.c
+@@ -397,7 +397,7 @@ mlxbf2_gpio_probe(struct platform_device
+ 	gc->ngpio = npins;
  	gc->owner = THIS_MODULE;
- 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
  
 -	irq = platform_get_irq(pdev, 0);
 +	irq = platform_get_irq_optional(pdev, 0);
  	if (irq >= 0) {
  		girq = &gs->gc.irq;
- 		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
+ 		gpio_irq_chip_set_chip(girq, &mlxbf2_gpio_irq_chip);
 
 
 
