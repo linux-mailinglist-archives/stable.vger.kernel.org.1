@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-170967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B867AB2A684
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61375B2A730
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5CC07B58A1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A0AC1B64DC9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F276320CD2;
-	Mon, 18 Aug 2025 13:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13319320CD8;
+	Mon, 18 Aug 2025 13:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ/5VJ+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuRCyxir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05A7320CA0;
-	Mon, 18 Aug 2025 13:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C377B320CCA;
+	Mon, 18 Aug 2025 13:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524381; cv=none; b=In3ny47UbZeIPAKfr0liKp7fFvRH2mcnPrwEX9bRMqyBuYFvh9reb21HrECvfmInI8R18EbXq/Jnxuvth1BxlwiVbsSbQCYA/HPT9J9fJvbjKjFlQzkG35jQ8lsTzkA3g0Hu27Fmzv4AdVL5c2FUzQ+RgDQSzvIzY8LahQhBO5g=
+	t=1755524383; cv=none; b=RA6vnZ9658UWSDc0lj8UcSiXf6Juqsx/pUn5H1llBwHLVGiL8bcr1qJj5/rNG9nYsNMkxfGpPsapES9z/Dthy08d2z7C9XVCyWnls5u9lri3mKALea9hXjG2V7VytdqVw8rEQTLmOHlbsZLHxErsCcBlQsAiL6oiEM15jdGBDLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524381; c=relaxed/simple;
-	bh=Vt62sD6yXxfkv8kfnW+SgvfEDRWYE092D9JAIH4+lOM=;
+	s=arc-20240116; t=1755524383; c=relaxed/simple;
+	bh=lD/Sdhhm70yXgoXMzZv71x9j1Px/P1srssI/I/oRx5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ze1LU1DKdkqEJFx/1CIJFjSLtnrPqQK69eFpmj2w1AqHKNxMrHsN9Mz7dGuM3ZHbDKJ93qXvHdp0Cpi2Qw29EMCI9ZO1N9KftUTKrKi+ethzUQx//pxDfARnKjbHt2P9fUL1AdXhnSen22IlVq9vhKweIUmnddXI9MxJsRsZulg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ/5VJ+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FA1C4CEEB;
-	Mon, 18 Aug 2025 13:39:40 +0000 (UTC)
+	 MIME-Version; b=tNtHIIY1HZdA6u00vfh0k4CuSl99r19jXsmYQ+d26p79Joe4IvWQe8oIY8Ophua5dLwcANElMv9bCWHoUOuZ0FTJViirX+ilsBdIiQBBOT27Wo9lMMj1V/w1JpbWMlFwBo8RGE8avw4tgvpEjAujEo3jjHmZNmIzSlocwjZIzm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuRCyxir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9C3C4CEF1;
+	Mon, 18 Aug 2025 13:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524380;
-	bh=Vt62sD6yXxfkv8kfnW+SgvfEDRWYE092D9JAIH4+lOM=;
+	s=korg; t=1755524383;
+	bh=lD/Sdhhm70yXgoXMzZv71x9j1Px/P1srssI/I/oRx5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJ/5VJ+fC6xGtS5wyNL9UIqjz47C+hKRZThCAvKC6tYOpEM9IrZkHmRyZBgudaBuG
-	 ++8f1jyNJQT/K6mpZvcQblVRShnH4IyVqet34Xa8DbOFqlY77ksAoBOzwziicRJ/hm
-	 7vd7d3T2iZ+DxVOSnOnTU+RHaVGrH+3KTaeMe13U=
+	b=OuRCyxirl4yMYT2OxwNnAwkSTHNnPPJVj+dcn8j5s9v1hls/mWOgy/6BdATkwlJMf
+	 7VSl9k+WwBuIrSCYwAoPG9Rxv7B6Y8P3m34n2jA6eKIPqpfea6b7RF9xKX8xxqTDYB
+	 Vcuyf6nGriiTovDIBkMbgCINpoa11fYAMNv8KTpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.15 454/515] ext4: initialize superblock fields in the kballoc-test.c kunit tests
-Date: Mon, 18 Aug 2025 14:47:20 +0200
-Message-ID: <20250818124515.897538978@linuxfoundation.org>
+	Xinyu Liu <katieeliu@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.15 455/515] usb: core: config: Prevent OOB read in SS endpoint companion parsing
+Date: Mon, 18 Aug 2025 14:47:21 +0200
+Message-ID: <20250818124515.935176046@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -66,68 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Xinyu Liu <katieeliu@tencent.com>
 
-commit 82e6381e23f1ea7a14f418215068aaa2ca046c84 upstream.
+commit cf16f408364efd8a68f39011a3b073c83a03612d upstream.
 
-Various changes in the "ext4: better scalability for ext4 block
-allocation" patch series have resulted in kunit test failures, most
-notably in the test_new_blocks_simple and the test_mb_mark_used tests.
-The root cause of these failures is that various in-memory ext4 data
-structures were not getting initialized, and while previous versions
-of the functions exercised by the unit tests didn't use these
-structure members, this was arguably a test bug.
+usb_parse_ss_endpoint_companion() checks descriptor type before length,
+enabling a potentially odd read outside of the buffer size.
 
-Since one of the patches in the block allocation scalability patches
-is a fix which is has a cc:stable tag, this commit also has a
-cc:stable tag.
+Fix this up by checking the size first before looking at any of the
+fields in the descriptor.
 
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250714130327.1830534-1-libaokun1@huawei.com
-Link: https://patch.msgid.link/20250725021550.3177573-1-yi.zhang@huaweicloud.com
-Link: https://patch.msgid.link/20250725021654.3188798-1-yi.zhang@huaweicloud.com
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/linux-ext4/b0635ad0-7ebf-4152-a69b-58e7e87d5085@roeck-us.net/
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Xinyu Liu <katieeliu@tencent.com>
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc-test.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/core/config.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/mballoc-test.c
-+++ b/fs/ext4/mballoc-test.c
-@@ -155,6 +155,7 @@ static struct super_block *mbt_ext4_allo
- 	bgl_lock_init(sbi->s_blockgroup_lock);
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -107,8 +107,14 @@ static void usb_parse_ss_endpoint_compan
+ 	 */
+ 	desc = (struct usb_ss_ep_comp_descriptor *) buffer;
  
- 	sbi->s_es = &fsb->es;
-+	sbi->s_sb = sb;
- 	sb->s_fs_info = sbi;
- 
- 	up_write(&sb->s_umount);
-@@ -802,6 +803,10 @@ static void test_mb_mark_used(struct kun
- 	KUNIT_ASSERT_EQ(test, ret, 0);
- 
- 	grp->bb_free = EXT4_CLUSTERS_PER_GROUP(sb);
-+	grp->bb_largest_free_order = -1;
-+	grp->bb_avg_fragment_size_order = -1;
-+	INIT_LIST_HEAD(&grp->bb_largest_free_order_node);
-+	INIT_LIST_HEAD(&grp->bb_avg_fragment_size_node);
- 	mbt_generate_test_ranges(sb, ranges, TEST_RANGE_COUNT);
- 	for (i = 0; i < TEST_RANGE_COUNT; i++)
- 		test_mb_mark_used_range(test, &e4b, ranges[i].start,
-@@ -875,6 +880,10 @@ static void test_mb_free_blocks(struct k
- 	ext4_unlock_group(sb, TEST_GOAL_GROUP);
- 
- 	grp->bb_free = 0;
-+	grp->bb_largest_free_order = -1;
-+	grp->bb_avg_fragment_size_order = -1;
-+	INIT_LIST_HEAD(&grp->bb_largest_free_order_node);
-+	INIT_LIST_HEAD(&grp->bb_avg_fragment_size_node);
- 	memset(bitmap, 0xff, sb->s_blocksize);
- 
- 	mbt_generate_test_ranges(sb, ranges, TEST_RANGE_COUNT);
+-	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP ||
+-			size < USB_DT_SS_EP_COMP_SIZE) {
++	if (size < USB_DT_SS_EP_COMP_SIZE) {
++		dev_notice(ddev,
++			   "invalid SuperSpeed endpoint companion descriptor "
++			   "of length %d, skipping\n", size);
++		return;
++	}
++
++	if (desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP) {
+ 		dev_notice(ddev, "No SuperSpeed endpoint companion for config %d "
+ 				" interface %d altsetting %d ep %d: "
+ 				"using minimum values\n",
 
 
 
