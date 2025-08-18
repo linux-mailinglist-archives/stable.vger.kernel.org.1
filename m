@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93D2B2A552
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C39BB2A785
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C7E11BA2B3E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40B55586F8B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47094321F4F;
-	Mon, 18 Aug 2025 13:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE98221F15;
+	Mon, 18 Aug 2025 13:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Epaip/Qy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCx9EC7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02037321F3F;
-	Mon, 18 Aug 2025 13:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD28721CC58;
+	Mon, 18 Aug 2025 13:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522993; cv=none; b=J/fTdLfiMub8n2OqCaSvOk4BffAl0/x4D0wSC8r7oAv4CuEQADjGwjItCyCYiRcevweEr0JjijfjSyN6NA+oR2wlPBCsn/nyRHX4Rois4misvrFdi2OGvUTbd33U5c7/tKFwxoSVTYDV2FNVvnHw5i7TGyDhuefzMiU88N0MzBE=
+	t=1755524701; cv=none; b=VYhzTQIOL2mgfa74S3/czNuIF8bnNj1xavpnHxpJ+GifBZddumPXHe57qqaMgjiwUxzp9H+V+SGyF23PWkTvlx2zEpJrdtHx7zsO9mSgBm/eESan5HqhO0qs3ckmBfHwtvvPkLnUVaCV1c5j/vQwbV0zCh7OW1zt6FRWzbt0ypk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522993; c=relaxed/simple;
-	bh=0wn2anTpkTTcfdEcN7WprMVZ7N9Vb3nng8snt5Y4w9I=;
+	s=arc-20240116; t=1755524701; c=relaxed/simple;
+	bh=m2pQDmKQBh7hNNOyptUkkjr40P8Uokhrc7t2jdI8mRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTLe878nxZ+/hL54sCqvcaf7u/4E5lKTiF1DtNRgLAawvlb8XtRrP1xDYvzgIV/LhpiVUEjLRX7/b9FBxd1TFjty924ihVNJYZ919qO8KlJBpLZDK/2Smbs1r+4Nyr8P3f8+eLC/KZfzWSkVbE5WEI6NaJBNFrW7o8uD5QZ4+C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Epaip/Qy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE9CC4CEEB;
-	Mon, 18 Aug 2025 13:16:31 +0000 (UTC)
+	 MIME-Version; b=Ld0TatO4iRabVgzoafFviRKVFYnLCkFs2FpXqug/W9qtbCyYoFYHthI08OUIWBIvjhu8GhGCiwb48JwRG3dh4vyLXFAwm9wxfViltqpa6/rvgjWL4F7t4+aMwoTtIsl+EIPXtU3bm4Y9utqFX8vLgav32GsA8DIUWAWaCZOE4+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCx9EC7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E30C4CEEB;
+	Mon, 18 Aug 2025 13:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522992;
-	bh=0wn2anTpkTTcfdEcN7WprMVZ7N9Vb3nng8snt5Y4w9I=;
+	s=korg; t=1755524701;
+	bh=m2pQDmKQBh7hNNOyptUkkjr40P8Uokhrc7t2jdI8mRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Epaip/QymuyDNzk2sX17ndkG/mjFfHljQlwzcWR29X2p17tb7F2OvBmvIMN4TARnQ
-	 2IiQ5kgAtCfuVkWdyPgzgrDofxCEdQWF/AA2yH0hTt3OvNMcc2t/5/zWOFNvFw27PO
-	 0it8WJ1CsF6E1jKTelkZVXfakc220KufvJuAmWeM=
+	b=cCx9EC7sOg2bIBIgJC9sCN97io6M/1LIu6hpxRZ4l2amaI0gc8jAN+0bSCtQq3ehe
+	 FClmJdTT3yesQ4+4xz80s3CRcZ0DzTyPPBwZgdL/69MtBvreDDXSu1mxztq6jWimwC
+	 cOfpAPyNIzhv+d2C/lqRfv+I98Y/LBb+evSvhuGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Yao Zi <ziyao@disroot.org>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Haoran Jiang <jianghaoran@kylinos.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.15 037/515] LoongArch: Avoid in-place string operation on FDT content
+Subject: [PATCH 6.16 036/570] LoongArch: BPF: Fix jump offset calculation in tailcall
 Date: Mon, 18 Aug 2025 14:40:23 +0200
-Message-ID: <20250818124459.869846713@linuxfoundation.org>
+Message-ID: <20250818124507.207555690@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Haoran Jiang <jianghaoran@kylinos.cn>
 
-commit 70a2365e18affc5ebdaab1ca6a0b3c4f3aac2ee8 upstream.
+commit cd39d9e6b7e4c58fa77783e7aedf7ada51d02ea3 upstream.
 
-In init_cpu_fullname(), a constant pointer to "model" property is
-retrieved. It's later modified by the strsep() function, which is
-illegal and corrupts kernel's FDT copy. This is shown by dmesg,
+The extra pass of bpf_int_jit_compile() skips JIT context initialization
+which essentially skips offset calculation leaving out_offset = -1, so
+the jmp_offset in emit_bpf_tail_call is calculated by
 
-	OF: fdt: not creating '/sys/firmware/fdt': CRC check failed
+"#define jmp_offset (out_offset - (cur_offset))"
 
-Create a mutable copy of the model property and do in-place operations
-on the mutable copy instead. loongson_sysconf.cpuname lives across the
-kernel lifetime, thus manually releasing isn't necessary.
+is a negative number, which is wrong. The final generated assembly are
+as follow.
 
-Also move the of_node_put() call for the root node after the usage of
-its property, since of_node_put() decreases the reference counter thus
-usage after the call is unsafe.
+54:	bgeu        	$a2, $t1, -8	    # 0x0000004c
+58:	addi.d      	$a6, $s5, -1
+5c:	bltz        	$a6, -16	    # 0x0000004c
+60:	alsl.d      	$t2, $a2, $a1, 0x3
+64:	ld.d        	$t2, $t2, 264
+68:	beq         	$t2, $zero, -28	    # 0x0000004c
+
+Before apply this patch, the follow test case will reveal soft lock issues.
+
+cd tools/testing/selftests/bpf/
+./test_progs --allow=tailcalls/tailcall_bpf2bpf_1
+
+dmesg:
+watchdog: BUG: soft lockup - CPU#2 stuck for 26s! [test_progs:25056]
 
 Cc: stable@vger.kernel.org
-Fixes: 44a01f1f726a ("LoongArch: Parsing CPU-related information from DTS")
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Yao Zi <ziyao@disroot.org>
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Reviewed-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Haoran Jiang <jianghaoran@kylinos.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/env.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/loongarch/net/bpf_jit.c |   21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
---- a/arch/loongarch/kernel/env.c
-+++ b/arch/loongarch/kernel/env.c
-@@ -39,16 +39,19 @@ void __init init_environ(void)
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -208,11 +208,9 @@ bool bpf_jit_supports_far_kfunc_call(voi
+ 	return true;
+ }
  
- static int __init init_cpu_fullname(void)
+-/* initialized on the first pass of build_body() */
+-static int out_offset = -1;
+-static int emit_bpf_tail_call(struct jit_ctx *ctx)
++static int emit_bpf_tail_call(struct jit_ctx *ctx, int insn)
  {
--	struct device_node *root;
- 	int cpu, ret;
--	char *model;
-+	char *cpuname;
-+	const char *model;
-+	struct device_node *root;
+-	int off;
++	int off, tc_ninsn = 0;
+ 	u8 tcc = tail_call_reg(ctx);
+ 	u8 a1 = LOONGARCH_GPR_A1;
+ 	u8 a2 = LOONGARCH_GPR_A2;
+@@ -222,7 +220,7 @@ static int emit_bpf_tail_call(struct jit
+ 	const int idx0 = ctx->idx;
  
- 	/* Parsing cpuname from DTS model property */
- 	root = of_find_node_by_path("/");
--	ret = of_property_read_string(root, "model", (const char **)&model);
-+	ret = of_property_read_string(root, "model", &model);
-+	if (ret == 0) {
-+		cpuname = kstrdup(model, GFP_KERNEL);
-+		loongson_sysconf.cpuname = strsep(&cpuname, " ");
-+	}
- 	of_node_put(root);
--	if (ret == 0)
--		loongson_sysconf.cpuname = strsep(&model, " ");
+ #define cur_offset (ctx->idx - idx0)
+-#define jmp_offset (out_offset - (cur_offset))
++#define jmp_offset (tc_ninsn - (cur_offset))
  
- 	if (loongson_sysconf.cpuname && !strncmp(loongson_sysconf.cpuname, "Loongson", 8)) {
- 		for (cpu = 0; cpu < NR_CPUS; cpu++)
+ 	/*
+ 	 * a0: &ctx
+@@ -232,6 +230,7 @@ static int emit_bpf_tail_call(struct jit
+ 	 * if (index >= array->map.max_entries)
+ 	 *	 goto out;
+ 	 */
++	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
+ 	off = offsetof(struct bpf_array, map.max_entries);
+ 	emit_insn(ctx, ldwu, t1, a1, off);
+ 	/* bgeu $a2, $t1, jmp_offset */
+@@ -263,15 +262,6 @@ static int emit_bpf_tail_call(struct jit
+ 	emit_insn(ctx, ldd, t3, t2, off);
+ 	__build_epilogue(ctx, true);
+ 
+-	/* out: */
+-	if (out_offset == -1)
+-		out_offset = cur_offset;
+-	if (cur_offset != out_offset) {
+-		pr_err_once("tail_call out_offset = %d, expected %d!\n",
+-			    cur_offset, out_offset);
+-		return -1;
+-	}
+-
+ 	return 0;
+ 
+ toofar:
+@@ -916,7 +906,7 @@ static int build_insn(const struct bpf_i
+ 	/* tail call */
+ 	case BPF_JMP | BPF_TAIL_CALL:
+ 		mark_tail_call(ctx);
+-		if (emit_bpf_tail_call(ctx) < 0)
++		if (emit_bpf_tail_call(ctx, i) < 0)
+ 			return -EINVAL;
+ 		break;
+ 
+@@ -1342,7 +1332,6 @@ out:
+ 	if (tmp_blinded)
+ 		bpf_jit_prog_release_other(prog, prog == orig_prog ? tmp : orig_prog);
+ 
+-	out_offset = -1;
+ 
+ 	return prog;
+ 
 
 
 
