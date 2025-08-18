@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6524DB2A349
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2F1B2A813
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36E57168217
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D57095823CA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE9E2FF15F;
-	Mon, 18 Aug 2025 12:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F8D335BC4;
+	Mon, 18 Aug 2025 13:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssF856nQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlrt97P3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F883218B8;
-	Mon, 18 Aug 2025 12:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BE11E48A;
+	Mon, 18 Aug 2025 13:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521717; cv=none; b=HhphhOuova3FheV+J2kYIRjp4K3PhwD3IEhSSscGklGhYUeZTKhDPLrWrGPXQBj2upfP2X+FCws3cVAQc9jwAQ5lVdyFBk02Z+5k/Jntj+Z8SIfjfQfdTZezjazQpbe4u2MN5Q/pUyK0SSnp/IugFYr2muiY9jqrQ/AdMJfyz8E=
+	t=1755525039; cv=none; b=GaUddjZY1cVGU53yz3+edIf/tGZdR9ut3PmkW5ULWJo48HR2ANJjL4Hv2CXu0i0UkHqU9VRkFrFuDrpBaDUxo5lLcDkVpH3LtPn1tOXEVbzbYfs6JtyCjruMpRS2FMIg9oFn8rQtgDq6xwfr+8dZYmu/Irv6OrGt5xGN1JhLBxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521717; c=relaxed/simple;
-	bh=EGfSmcdge7ZVqAfHNkQctYsWIsZSc/+rTuVdEdPkg1U=;
+	s=arc-20240116; t=1755525039; c=relaxed/simple;
+	bh=dOQpb9hK5rSz8nSyc/SZ33bA9DeSPz0x6fcazzv1Yv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dl+62eW54pnFXdeiXPQARyIdHlhMea6YzplLlTmwPTxYQwo13BCRqCYNZOKLMXLnvy2dGnB1XOL2YNzFb7vn0T9wSbdqdE1e8apB5wRH4ezKn3QOOW5lcIennP3OPhbRp95xJHe8rdPyXkT0fZ9BerYOZjATxTJa02ccPN2o+c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssF856nQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D69C4CEEB;
-	Mon, 18 Aug 2025 12:55:15 +0000 (UTC)
+	 MIME-Version; b=o1YhFvVIjfrFERi4WF0SNkloO+kVre09nrWETWtgqHtD0F/nHM6LB7Xnvn+Bgug8dovGdQk0XCvCesp0GAafbVGwtUsN26un25auPf3Z0QS3G4kmh2LXUPsinOU424mX492HCCIgvOkyOxpK/baH7B6qDYYvgIKyUxcdPAyxnco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlrt97P3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4302CC4CEEB;
+	Mon, 18 Aug 2025 13:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521716;
-	bh=EGfSmcdge7ZVqAfHNkQctYsWIsZSc/+rTuVdEdPkg1U=;
+	s=korg; t=1755525038;
+	bh=dOQpb9hK5rSz8nSyc/SZ33bA9DeSPz0x6fcazzv1Yv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ssF856nQI7luwuWPdG5+OaL4Ae/NVE8HBjNTYEPuU2ihaJPVEo2DLYnmBvIQUtcOe
-	 fiKD2eMXvLYXGc/PnN01kwBNsJUWack7RLcrs7LVZyKPq7XTjnTTIESUQf67WL4Hrl
-	 /H9zveObX8EdMJSsTXvfbQVQO3i320XCDMCU3eOQ=
+	b=nlrt97P35EvXLAAzcmI4B+0q3WT3H+e5W0+tcZPOptb7BFy9FpRL+QTxmudgxckeF
+	 3/gyM5wvDYAf4LrDU8cI8FAftNWA/J8cEXSFUhK/xmSMiuMIYMDWr/D6AmGonMaAm8
+	 PJQuusrZbqmFNpFkv7QalI9nlaeU5Ms6azGqZOZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Chen <shawn2000100@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Tiffany Yang <ynaffit@google.com>,
+	Carlos Llamas <cmllamas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/444] usb: xhci: Set avg_trb_len = 8 for EP0 during Address Device Command
+Subject: [PATCH 6.16 140/570] binder: Fix selftest page indexing
 Date: Mon, 18 Aug 2025 14:42:07 +0200
-Message-ID: <20250818124452.732274954@linuxfoundation.org>
+Message-ID: <20250818124511.212034346@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Chen <shawn2000100@gmail.com>
+From: Tiffany Yang <ynaffit@google.com>
 
-[ Upstream commit f72b9aa821a2bfe4b6dfec4be19f264d0673b008 ]
+[ Upstream commit bea3e7bfa2957d986683543cbf57092715f9a91b ]
 
-There is a subtle contradiction between sections of the xHCI 1.2 spec
-regarding the initialization of Input Endpoint Context fields. Section
-4.8.2 ("Endpoint Context Initialization") states that all fields should
-be initialized to 0. However, Section 6.2.3 ("Endpoint Context", p.453)
-specifies that the Average TRB Length (avg_trb_len) field shall be
-greater than 0, and explicitly notes (p.454): "Software shall set
-Average TRB Length to '8' for control endpoints."
+The binder allocator selftest was only checking the last page of buffers
+that ended on a page boundary. Correct the page indexing to account for
+buffers that are not page-aligned.
 
-Strictly setting all fields to 0 during initialization conflicts with
-the specific recommendation for control endpoints. In practice, setting
-avg_trb_len = 0 is not meaningful for the hardware/firmware, as the
-value is used for bandwidth calculation.
-
-Motivation: Our company is developing a custom Virtual xHC hardware
-platform that strictly follows the xHCI spec and its recommendations.
-During validation, we observed that enumeration fails and a parameter
-error (TRB Completion Code = 5) is reported if avg_trb_len for EP0 is
-not set to 8 as recommended by Section 6.2.3. This demonstrates the
-importance of assigning a meaningful, non-zero value to avg_trb_len,
-even in virtualized or emulated environments.
-
-This patch explicitly sets avg_trb_len to 8 for EP0 in
-xhci_setup_addressable_virt_dev(), as recommended in Section 6.2.3, to
-prevent potential issues with xHCI host controllers that enforce the
-spec strictly.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220033
-Signed-off-by: Jay Chen <shawn2000100@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250717073107.488599-4-mathias.nyman@linux.intel.com
+Signed-off-by: Tiffany Yang <ynaffit@google.com>
+Acked-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20250714185321.2417234-2-ynaffit@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/android/binder_alloc_selftest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 91178b8dbbf0..1111650757ea 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1172,6 +1172,8 @@ int xhci_setup_addressable_virt_dev(struct xhci_hcd *xhci, struct usb_device *ud
- 	ep0_ctx->deq = cpu_to_le64(dev->eps[0].ring->first_seg->dma |
- 				   dev->eps[0].ring->cycle_state);
+diff --git a/drivers/android/binder_alloc_selftest.c b/drivers/android/binder_alloc_selftest.c
+index c88735c54848..486af3ec3c02 100644
+--- a/drivers/android/binder_alloc_selftest.c
++++ b/drivers/android/binder_alloc_selftest.c
+@@ -142,12 +142,12 @@ static void binder_selftest_free_buf(struct binder_alloc *alloc,
+ 	for (i = 0; i < BUFFER_NUM; i++)
+ 		binder_alloc_free_buf(alloc, buffers[seq[i]]);
  
-+	ep0_ctx->tx_info = cpu_to_le32(EP_AVG_TRB_LENGTH(8));
-+
- 	trace_xhci_setup_addressable_virt_device(dev);
- 
- 	/* Steps 7 and 8 were done in xhci_alloc_virt_device() */
+-	for (i = 0; i < end / PAGE_SIZE; i++) {
+ 		/**
+ 		 * Error message on a free page can be false positive
+ 		 * if binder shrinker ran during binder_alloc_free_buf
+ 		 * calls above.
+ 		 */
++	for (i = 0; i <= (end - 1) / PAGE_SIZE; i++) {
+ 		if (list_empty(page_to_lru(alloc->pages[i]))) {
+ 			pr_err_size_seq(sizes, seq);
+ 			pr_err("expect lru but is %s at page index %d\n",
 -- 
 2.39.5
 
