@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F94B2A264
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D24B2A591
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBE662272A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:55:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62FA91B62508
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ED0258ED7;
-	Mon, 18 Aug 2025 12:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33D7335BD7;
+	Mon, 18 Aug 2025 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEbBALc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jft772lZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F6C21B199;
-	Mon, 18 Aug 2025 12:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B2F335BAA;
+	Mon, 18 Aug 2025 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521612; cv=none; b=XOJBbqsuHDFjYni6Iq47g/HBB4luBxn2eQIQm5A9RxuGgnH6nDalZ2eIvg35SCoZyh5ld4fYTLyS/ePPp3lFCCM/do1CL1gyHeMRs0DT3XKdJpJQi0MOV2mW+ZXAGLmGTrYJAT746l5HMZKnZiNPNvo/Y5W3qoh8c/UvPi3sWeA=
+	t=1755523240; cv=none; b=OAC8xjV0fu7JgfjDtmwyJRPZVJyFrs/U0/IcMtOrQBPsiF09wX+qMbvXm00D6XXSW7uEihFJrFSTZ9+ELNMwQgfIW7eeZh78g6mc5jUWwHKsEdLqiMzFTs/VA08XpBcKlRBl0Wa6Z0o4O8P/OsNLwhFUbiIPN5opOkAffA6Fiu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521612; c=relaxed/simple;
-	bh=/UiJAUstIym6qpUfdYHwzSLUbLpwSLCQESxjZBDcG34=;
+	s=arc-20240116; t=1755523240; c=relaxed/simple;
+	bh=UJb9uOq31XLmRSg9tviD5cak5LxhCjveAW2cCbEICCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dkt45Aw7gNPnLBCRcbbaYPY0f452W5ps62ndBnKCw5zv9Kd9HYot8G0THcUIt4KCu2bASgEv0Rj3eHnrS/WJHsxSgqi98fguia5NIAP5khj3TEO5bHRgqi10laXyjy1Df0ZOEep2j02wXEmShetIOE6RN5iFHPypSvPchgvttLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEbBALc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4C3C4CEEB;
-	Mon, 18 Aug 2025 12:53:31 +0000 (UTC)
+	 MIME-Version; b=mLczMtR5RshWT6MP0f1xiTd+KXoh1uKCdSyFj/6jJhTdpUmcLUjLNWKac7/UfwRdF399QzGJ1EvVDsBqWdCMCXP2cJGNRVYjLgGdmZNXJ97jfjNiZKjjXrFUoTMt6l/GO6Blz+M+wfeezxVINmOnMOmsUMJFgx8W7a1MvW+hcqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jft772lZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9169C4CEEB;
+	Mon, 18 Aug 2025 13:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521612;
-	bh=/UiJAUstIym6qpUfdYHwzSLUbLpwSLCQESxjZBDcG34=;
+	s=korg; t=1755523240;
+	bh=UJb9uOq31XLmRSg9tviD5cak5LxhCjveAW2cCbEICCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEbBALc9qOKsEr528Iho3meHPtSpNj8drK8T+KcSzOHLd1QFf5rzJQrp3s2oBa5W5
-	 3BlEDDczIiK9ZVaMW3KGSXvA/b5KR5CGVfJhp9wPbFj+qV8YVwiE1V8jxE5JURzy1P
-	 syD45UC5SNt2E7NPVv4CE2NXyq9nID6A/OOLDrYc=
+	b=jft772lZH9VqHbtrZ4NIbUzEh6ka2wUTzbXnJ96rluCxY7a27knzaovy4uxnJPV5k
+	 re/5kk3RkzyRaeIv747z/XTspCKde1TyZDWd18fEprUymDuzDypBdUkJkZIk0HhvKU
+	 oYuaWDWuK5pVxJz0+Axqj/V/olv1ctMrrSCb1R+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/444] smb/server: avoid deadlock when linking with ReplaceIfExists
+Subject: [PATCH 6.15 111/515] tracefs: Add d_delete to remove negative dentries
 Date: Mon, 18 Aug 2025 14:41:37 +0200
-Message-ID: <20250818124451.605651963@linuxfoundation.org>
+Message-ID: <20250818124502.629492095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit d5fc1400a34b4ea5e8f2ce296ea12bf8c8421694 ]
+[ Upstream commit d9b13cdad80dc11d74408cf201939a946e9303a6 ]
 
-If smb2_create_link() is called with ReplaceIfExists set and the name
-does exist then a deadlock will happen.
+If a lookup in tracefs is done on a file that does not exist, it leaves a
+dentry hanging around until memory pressure removes it. But eventfs
+dentries should hang around as when their ref count goes to zero, it
+requires more work to recreate it. For the rest of the tracefs dentries,
+they hang around as their dentry is used as a descriptor for the tracing
+system. But if a file lookup happens for a file in tracefs that does not
+exist, it should be deleted.
 
-ksmbd_vfs_kern_path_locked() will return with success and the parent
-directory will be locked.  ksmbd_vfs_remove_file() will then remove the
-file.  ksmbd_vfs_link() will then be called while the parent is still
-locked.  It will try to lock the same parent and will deadlock.
+Add a .d_delete callback that checks if dentry->fsdata is set or not. Only
+eventfs dentries set fsdata so if it has content it should not be deleted
+and should hang around in the cache.
 
-This patch moves the ksmbd_vfs_kern_path_unlock() call to *before*
-ksmbd_vfs_link() and then simplifies the code, removing the file_present
-flag variable.
-
-Signed-off-by: NeilBrown <neil@brown.name>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ fs/tracefs/inode.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 495a9faa298b..6dafc2fbac25 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6023,7 +6023,6 @@ static int smb2_create_link(struct ksmbd_work *work,
- {
- 	char *link_name = NULL, *target_name = NULL, *pathname = NULL;
- 	struct path path, parent_path;
--	bool file_present = false;
- 	int rc;
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index cb1af30b49f5..2c4a0c0202f6 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -465,9 +465,20 @@ static int tracefs_d_revalidate(struct inode *inode, const struct qstr *name,
+ 	return !(ei && ei->is_freed);
+ }
  
- 	if (buf_len < (u64)sizeof(struct smb2_file_link_info) +
-@@ -6056,11 +6055,8 @@ static int smb2_create_link(struct ksmbd_work *work,
- 	if (rc) {
- 		if (rc != -ENOENT)
- 			goto out;
--	} else
--		file_present = true;
--
--	if (file_info->ReplaceIfExists) {
--		if (file_present) {
-+	} else {
-+		if (file_info->ReplaceIfExists) {
- 			rc = ksmbd_vfs_remove_file(work, &path);
- 			if (rc) {
- 				rc = -EINVAL;
-@@ -6068,21 +6064,17 @@ static int smb2_create_link(struct ksmbd_work *work,
- 					    link_name);
- 				goto out;
- 			}
--		}
--	} else {
--		if (file_present) {
-+		} else {
- 			rc = -EEXIST;
- 			ksmbd_debug(SMB, "link already exists\n");
- 			goto out;
- 		}
-+		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
- 	}
--
- 	rc = ksmbd_vfs_link(work, target_name, link_name);
- 	if (rc)
- 		rc = -EINVAL;
- out:
--	if (file_present)
--		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
++static int tracefs_d_delete(const struct dentry *dentry)
++{
++	/*
++	 * We want to keep eventfs dentries around but not tracefs
++	 * ones. eventfs dentries have content in d_fsdata.
++	 * Use d_fsdata to determine if it's a eventfs dentry or not.
++	 */
++	return dentry->d_fsdata == NULL;
++}
++
+ static const struct dentry_operations tracefs_dentry_operations = {
+ 	.d_revalidate = tracefs_d_revalidate,
+ 	.d_release = tracefs_d_release,
++	.d_delete = tracefs_d_delete,
+ };
  
- 	if (!IS_ERR(link_name))
- 		kfree(link_name);
+ static int tracefs_fill_super(struct super_block *sb, struct fs_context *fc)
 -- 
 2.39.5
 
