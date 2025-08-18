@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-171393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D690B2AA2D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8F6B2A3E1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4456821D8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986701B61662
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0091340D9E;
-	Mon, 18 Aug 2025 14:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816EA31E116;
+	Mon, 18 Aug 2025 13:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8YhSBUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZOFgOPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6966931B11A;
-	Mon, 18 Aug 2025 14:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA1328C849;
+	Mon, 18 Aug 2025 13:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525769; cv=none; b=YsHoCgkdNfq1BC0km+bcdhu1votTLUiZlOmUgqlpP9OWA+0g8gbsIqU/DICXC101uwgCBwBYpksFJ0xBguWD6pYlvmfmd8Wjy/JSDCNJ69Lo0Y11Qjw7fEs21lxV9a7MT0Ui42xKmffejGD/J7/mHn71gL/zYZx1wGZh8x4c0ZI=
+	t=1755522462; cv=none; b=fOObVj3F60bY9lbu9tM5cZtbE1Rq8ySNc3+Dhf3AAKPlWKvbYeAtJn9/ttE+zjQtbonuvtYLtU0PmA8/08m5rLRnP8g1k8miba+wjnsZb+1tU4LluTQtyYjGowjcvSv/ivXKg2GeFCzaJ/xKv39A2A/a0FCtf8gibKjqOCq9eGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525769; c=relaxed/simple;
-	bh=puUNJUWtaMS8nlTCfzaD6pXcCM3R5WFslJLiAWGYbos=;
+	s=arc-20240116; t=1755522462; c=relaxed/simple;
+	bh=qB5lIvAgY9Rv/UY/WNouE03KzILJmpItghat6sjzLBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jbCUG/iKTidL+v+ikx0CqXAQ02iU9QZ2mg8yuOPEbDCVN/3Axa8LZTa+Zsa0uvkJU8daLDoA7n+JoRQ1gFRsMKRKWO6CeGvqRAPRzSVSGWZgn7+VG+JdKmfkXbcIT1tuxito6cZe+YhOPrSPu8P4uuUfdBy62Z7LFt3fFlt66tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8YhSBUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC51EC4CEEB;
-	Mon, 18 Aug 2025 14:02:48 +0000 (UTC)
+	 MIME-Version; b=h/oJJOLEVPeq3kPpABUWvLXnDbYwRAR8x02YxbJTwOvcvHcJTVAgjI02NFg+OjKoQtOFgOpbj4uitQct12pTdKdpnyfyFaYsQ/HhrG43zcwD975xxLM8vLfVs4FzQO0wMt3zfuN21JXutNMlo4nGNh+ZXd2ApvrGYqkGcpxOoJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZOFgOPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC93C4CEF1;
+	Mon, 18 Aug 2025 13:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525769;
-	bh=puUNJUWtaMS8nlTCfzaD6pXcCM3R5WFslJLiAWGYbos=;
+	s=korg; t=1755522461;
+	bh=qB5lIvAgY9Rv/UY/WNouE03KzILJmpItghat6sjzLBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8YhSBUfu8839JnZZtNFVOXdERzbAIVuxsZULN69Mk/PCrnH/UeWRBObcxVxEdJ6L
-	 EzuuMzO/jWNObtvG+Ndb1m5/0Mi6wN/fk7TeyKX9T9tTcC2lm5LrNUCgm5NbATMfYR
-	 toorcvltQbArTHvgaRdopH57uDKEv4nBDGCH8BzA=
+	b=iZOFgOPGCv2omhgFQbzjA+8B/cOJQdSe9XDUshpxc9in01wYEQUazFNORrWpDfDKu
+	 0Ie7ajgiOi9sCaGCmLmCbLi0Lh40RyxuFqhufcZGYp0+Lj+FpBSfclEArbxNWuofjo
+	 MUyJtneW4hsiDGj2mmEJWQ4TUut/YKAK37/GKlJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Pierguido Lambri <plambri@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 361/570] smb: client: fix session setup against servers that require SPN
+Subject: [PATCH 6.12 322/444] crypto: ccp - Add missing bootloader info reg for pspv6
 Date: Mon, 18 Aug 2025 14:45:48 +0200
-Message-ID: <20250818124519.762572033@linuxfoundation.org>
+Message-ID: <20250818124501.016378904@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,147 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 33cfdd726381828b9907a61c038a9f48b6690a31 ]
+[ Upstream commit aaeff14688d0254b39731d9bb303c79bfd610f7d ]
 
-Some servers might enforce the SPN to be set in the target info
-blob (AV pairs) when sending NTLMSSP_AUTH message.  In Windows Server,
-this could be enforced with SmbServerNameHardeningLevel set to 2.
+The bootloader info reg for pspv6 is the same as pspv4 and pspv5.
 
-Fix this by always appending SPN (cifs/<hostname>) to the existing
-list of target infos when setting up NTLMv2 response blob.
-
-Cc: linux-cifs@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>
-Reported-by: Pierguido Lambri <plambri@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsencrypt.c | 79 ++++++++++++++++++++++++++++---------
- 1 file changed, 61 insertions(+), 18 deletions(-)
+ drivers/crypto/ccp/sp-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
-index 6be850d2a346..3cc686246908 100644
---- a/fs/smb/client/cifsencrypt.c
-+++ b/fs/smb/client/cifsencrypt.c
-@@ -532,17 +532,67 @@ CalcNTLMv2_response(const struct cifs_ses *ses, char *ntlmv2_hash, struct shash_
- 	return rc;
- }
- 
-+/*
-+ * Set up NTLMv2 response blob with SPN (cifs/<hostname>) appended to the
-+ * existing list of AV pairs.
-+ */
-+static int set_auth_key_response(struct cifs_ses *ses)
-+{
-+	size_t baselen = CIFS_SESS_KEY_SIZE + sizeof(struct ntlmv2_resp);
-+	size_t len, spnlen, tilen = 0, num_avs = 2 /* SPN + EOL */;
-+	struct TCP_Server_Info *server = ses->server;
-+	char *spn __free(kfree) = NULL;
-+	struct ntlmssp2_name *av;
-+	char *rsp = NULL;
-+	int rc;
-+
-+	spnlen = strlen(server->hostname);
-+	len = sizeof("cifs/") + spnlen;
-+	spn = kmalloc(len, GFP_KERNEL);
-+	if (!spn) {
-+		rc = -ENOMEM;
-+		goto out;
-+	}
-+
-+	spnlen = scnprintf(spn, len, "cifs/%.*s",
-+			   (int)spnlen, server->hostname);
-+
-+	av_for_each_entry(ses, av)
-+		tilen += sizeof(*av) + AV_LEN(av);
-+
-+	len = baselen + tilen + spnlen * sizeof(__le16) + num_avs * sizeof(*av);
-+	rsp = kmalloc(len, GFP_KERNEL);
-+	if (!rsp) {
-+		rc = -ENOMEM;
-+		goto out;
-+	}
-+
-+	memcpy(rsp + baselen, ses->auth_key.response, tilen);
-+	av = (void *)(rsp + baselen + tilen);
-+	av->type = cpu_to_le16(NTLMSSP_AV_TARGET_NAME);
-+	av->length = cpu_to_le16(spnlen * sizeof(__le16));
-+	cifs_strtoUTF16((__le16 *)av->data, spn, spnlen, ses->local_nls);
-+	av = (void *)((__u8 *)av + sizeof(*av) + AV_LEN(av));
-+	av->type = cpu_to_le16(NTLMSSP_AV_EOL);
-+	av->length = 0;
-+
-+	rc = 0;
-+	ses->auth_key.len = len;
-+out:
-+	ses->auth_key.response = rsp;
-+	return rc;
-+}
-+
- int
- setup_ntlmv2_rsp(struct cifs_ses *ses, const struct nls_table *nls_cp)
- {
- 	struct shash_desc *hmacmd5 = NULL;
--	int rc;
--	int baselen;
--	unsigned int tilen;
-+	unsigned char *tiblob = NULL; /* target info blob */
- 	struct ntlmv2_resp *ntlmv2;
- 	char ntlmv2_hash[16];
--	unsigned char *tiblob = NULL; /* target info blob */
- 	__le64 rsp_timestamp;
-+	__u64 cc;
-+	int rc;
- 
- 	if (nls_cp == NULL) {
- 		cifs_dbg(VFS, "%s called with nls_cp==NULL\n", __func__);
-@@ -588,32 +638,25 @@ setup_ntlmv2_rsp(struct cifs_ses *ses, const struct nls_table *nls_cp)
- 	 * (as Windows 7 does)
- 	 */
- 	rsp_timestamp = find_timestamp(ses);
-+	get_random_bytes(&cc, sizeof(cc));
- 
--	baselen = CIFS_SESS_KEY_SIZE + sizeof(struct ntlmv2_resp);
--	tilen = ses->auth_key.len;
--	tiblob = ses->auth_key.response;
-+	cifs_server_lock(ses->server);
- 
--	ses->auth_key.response = kmalloc(baselen + tilen, GFP_KERNEL);
--	if (!ses->auth_key.response) {
--		rc = -ENOMEM;
-+	tiblob = ses->auth_key.response;
-+	rc = set_auth_key_response(ses);
-+	if (rc) {
- 		ses->auth_key.len = 0;
--		goto setup_ntlmv2_rsp_ret;
-+		goto unlock;
- 	}
--	ses->auth_key.len += baselen;
- 
- 	ntlmv2 = (struct ntlmv2_resp *)
- 			(ses->auth_key.response + CIFS_SESS_KEY_SIZE);
- 	ntlmv2->blob_signature = cpu_to_le32(0x00000101);
- 	ntlmv2->reserved = 0;
- 	ntlmv2->time = rsp_timestamp;
--
--	get_random_bytes(&ntlmv2->client_chal, sizeof(ntlmv2->client_chal));
-+	ntlmv2->client_chal = cc;
- 	ntlmv2->reserved2 = 0;
- 
--	memcpy(ses->auth_key.response + baselen, tiblob, tilen);
--
--	cifs_server_lock(ses->server);
--
- 	rc = cifs_alloc_hash("hmac(md5)", &hmacmd5);
- 	if (rc) {
- 		cifs_dbg(VFS, "Could not allocate HMAC-MD5, rc=%d\n", rc);
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index 2ebc878da160..224edaaa737b 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -451,6 +451,7 @@ static const struct psp_vdata pspv6 = {
+ 	.cmdresp_reg		= 0x10944,	/* C2PMSG_17 */
+ 	.cmdbuff_addr_lo_reg	= 0x10948,	/* C2PMSG_18 */
+ 	.cmdbuff_addr_hi_reg	= 0x1094c,	/* C2PMSG_19 */
++	.bootloader_info_reg	= 0x109ec,	/* C2PMSG_59 */
+ 	.feature_reg            = 0x109fc,	/* C2PMSG_63 */
+ 	.inten_reg              = 0x10510,	/* P2CMSG_INTEN */
+ 	.intsts_reg             = 0x10514,	/* P2CMSG_INTSTS */
 -- 
 2.39.5
 
