@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3925EB2A52F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539B8B2A21C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 935D2622119
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F063AE440
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941C732274C;
-	Mon, 18 Aug 2025 13:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FA52FF15F;
+	Mon, 18 Aug 2025 12:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6WBrK1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbX9hBGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519EC3218C0;
-	Mon, 18 Aug 2025 13:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ABC20126A;
+	Mon, 18 Aug 2025 12:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523056; cv=none; b=mAoJWk3hMFtTrrjRRwuutPeI+4lZ0Bwf43GVooYn9FZJvLPvRUEDHcoZRfOSk1Ckm/CMPS89wlhxdrXpvhVsFR8v/NVQpDwmzOx+zvcqgDDFUVc2sQr0IrIwurbKyJ0CH6k7r8ES+Idxrt0rTaltLnNoNgRD23ltoxvlC3phgks=
+	t=1755521428; cv=none; b=pb2YxmJnPdHnKgy3S4qIAvAv8lD85hjPLOa8BGPCiXNFnvbTfOxr5C3hNzXO2P8sczjfYmOKP2b7QVjx9FD90SVSwnPSFAiTHvu4L0sjXPAwi9hr6xo+YqjasO/H83iCToLZ9BBcAoXoDbPiITB1g+eGe5BhLJYK7bR4GOwmgZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523056; c=relaxed/simple;
-	bh=3QtItzwadrzmUAKoA8AeFwzMhLphp6316hvr3fOicts=;
+	s=arc-20240116; t=1755521428; c=relaxed/simple;
+	bh=xRQSvhcTRCr3MjZx+fM4bTY9qP1EuCDj6nmLGyOB2xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=euHAR/wCvF3C1qM5TBJDx5pR+MJRYhqZKMgQvIN1l6b8TXE+ig8wr2jX2LvHO72mxGlf/nTUUyOqjs8RWqYLcgJjJT+OX9UIu4BOGol7o9UCPL2wtwlWkdmBIrlVoDdvuUIsGuGN1lbw+1Tm+iHHJ9ny8U6wx7S6y2ceNL3hjNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6WBrK1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6990C4CEF1;
-	Mon, 18 Aug 2025 13:17:35 +0000 (UTC)
+	 MIME-Version; b=ZxHQXWIcbOvDEKGZRvaJvoMSZkrNFX2vWHD3tycWXFPIKBEG0ll8uV6LIXV0+w44OWeQ0uM2hPY/itIZvBFsXlJDruLLlFCqQsOLUAsEP/xqI1DeWsna4Jb0WYE4DIaxPBWGuReBlXnKyiPD6yAqPbUwAzVuAhZZPrRPfmWFcCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbX9hBGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA546C4CEEB;
+	Mon, 18 Aug 2025 12:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523056;
-	bh=3QtItzwadrzmUAKoA8AeFwzMhLphp6316hvr3fOicts=;
+	s=korg; t=1755521428;
+	bh=xRQSvhcTRCr3MjZx+fM4bTY9qP1EuCDj6nmLGyOB2xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6WBrK1X3ZsiAijxMh0hJ2BejAJLeFW6Vo0yf7WLkOzX7AACVaMlonktLvCB8cVX0
-	 KBNyj5L4gbtAt5t+cLl9Rze9VYkR7Ru5twZj4RNPS6Ul5gMmPPgccQ9yVp3GKtH6aM
-	 Z1njG0T24l8Uk35CcPgXzCMp0matFIVJzCVcRAuU=
+	b=YbX9hBGOZITtvsY2oBrqjmIuTiPzYRur/xHVB3KKTRP3qnvOwP+X7u+smNY8KlRTz
+	 DxuMusPoR3v3qjt0iYhMSjDuH3w9iDG2X1eM0XF1/lZbKNSBBKK49c7IFIWML64ll+
+	 iKQe4kUS1SqiLmHXrrdWlBWaLDEDAXKwUPao6tWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 058/515] udp: also consider secpath when evaluating ipsec use for checksumming
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 018/444] net: enetc: fix device and OF node leak at probe
 Date: Mon, 18 Aug 2025 14:40:44 +0200
-Message-ID: <20250818124500.651353349@linuxfoundation.org>
+Message-ID: <20250818124449.597388242@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 1118aaa3b35157777890fffab91d8c1da841b20b ]
+commit 70458f8a6b44daf3ad39f0d9b6d1097c8a7780ed upstream.
 
-Commit b40c5f4fde22 ("udp: disable inner UDP checksum offloads in
-IPsec case") tried to fix checksumming in UFO when the packets are
-going through IPsec, so that we can't rely on offloads because the UDP
-header and payload will be encrypted.
+Make sure to drop the references to the IERB OF node and platform device
+taken by of_parse_phandle() and of_find_device_by_node() during probe.
 
-But when doing a TCP test over VXLAN going through IPsec transport
-mode with GSO enabled (esp4_offload module loaded), I'm seeing broken
-UDP checksums on the encap after successful decryption.
-
-The skbs get to udp4_ufo_fragment/__skb_udp_tunnel_segment via
-__dev_queue_xmit -> validate_xmit_skb -> skb_gso_segment and at this
-point we've already dropped the dst (unless the device sets
-IFF_XMIT_DST_RELEASE, which is not common), so need_ipsec is false and
-we proceed with checksum offload.
-
-Make need_ipsec also check the secpath, which is not dropped on this
-callpath.
-
-Fixes: b40c5f4fde22 ("udp: disable inner UDP checksum offloads in IPsec case")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7d48e5fbf30 ("net: enetc: add a mini driver for the Integrated Endpoint Register Block")
+Cc: stable@vger.kernel.org	# 5.13
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-3-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/udp_offload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index a1aca6308677..4245522d4201 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -61,7 +61,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
- 	remcsum = !!(skb_shinfo(skb)->gso_type & SKB_GSO_TUNNEL_REMCSUM);
- 	skb->remcsum_offload = remcsum;
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -1182,19 +1182,29 @@ static int enetc_pf_register_with_ierb(s
+ {
+ 	struct platform_device *ierb_pdev;
+ 	struct device_node *ierb_node;
++	int ret;
  
--	need_ipsec = skb_dst(skb) && dst_xfrm(skb_dst(skb));
-+	need_ipsec = (skb_dst(skb) && dst_xfrm(skb_dst(skb))) || skb_sec_path(skb);
- 	/* Try to offload checksum if possible */
- 	offload_csum = !!(need_csum &&
- 			  !need_ipsec &&
--- 
-2.50.1
-
+ 	ierb_node = of_find_compatible_node(NULL, NULL,
+ 					    "fsl,ls1028a-enetc-ierb");
+-	if (!ierb_node || !of_device_is_available(ierb_node))
++	if (!ierb_node)
+ 		return -ENODEV;
+ 
++	if (!of_device_is_available(ierb_node)) {
++		of_node_put(ierb_node);
++		return -ENODEV;
++	}
++
+ 	ierb_pdev = of_find_device_by_node(ierb_node);
+ 	of_node_put(ierb_node);
+ 
+ 	if (!ierb_pdev)
+ 		return -EPROBE_DEFER;
+ 
+-	return enetc_ierb_register_pf(ierb_pdev, pdev);
++	ret = enetc_ierb_register_pf(ierb_pdev, pdev);
++
++	put_device(&ierb_pdev->dev);
++
++	return ret;
+ }
+ 
+ static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
 
 
 
