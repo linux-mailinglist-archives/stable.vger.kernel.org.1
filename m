@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095A8B2A535
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F97B2A841
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB80E4E34A0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 375E21B66029
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CEB27A93D;
-	Mon, 18 Aug 2025 13:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959F1335BA3;
+	Mon, 18 Aug 2025 13:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSMUMoQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXkCiUGw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B330831E115;
-	Mon, 18 Aug 2025 13:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528F4335BA7;
+	Mon, 18 Aug 2025 13:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523505; cv=none; b=r/PKvXPV7FzboK+qt/P7S4pF9o8xMHswjatOfWo0nS1tgYBB7byjGU4R+0nR+qpPODLusI4aG0pvlKICVoG6HbJgAXn1OOlZBkPzuohxfq6gN+61fT4FVjxLrhIrVL5BCJ9M1fGMJCL6YTUuStV9kDEjSo5k1+yTZCK1ZyV2jJQ=
+	t=1755525100; cv=none; b=QAFtoKJ29hj/YfaZmaM+RoIxEErcSADLDnAwim09OArt/9GURdbE5NdDQ3Lf3dv/APUokYvAGZgrSpbYQQMS/i5O7Y4PpaevMO80QaVgR3+UXW97pA3OrSUZjXINfjeUHky7QM0PE060zG9fnmHSHXquBvVVd7brYMSWYmW3SeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523505; c=relaxed/simple;
-	bh=VUVqEprVUvxw5i1w3KLvsXgE2aDsSAbJ/e26oYqM8vg=;
+	s=arc-20240116; t=1755525100; c=relaxed/simple;
+	bh=2IIopFkMQnsgPKS5pFbrSQrFmHTriIv47VLFJTNKmfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fw4BRMuHP2WbUpNtzJoDwZZ5bLgwsTFgBBRMQ6eXnW7Gqng5tXCgZb1dDqs8hPz2s0Gu2tQZOiae0kJ2SnYR070xq3Lc+0dLKNyr1wH6H6sviuwiwwPMbC3PuBISKOKIEKUBcT96PkVpqS+emselKHDygYzPU7y9R1TK8QMrbQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSMUMoQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21183C4CEEB;
-	Mon, 18 Aug 2025 13:25:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YOIHxTkez9sQjhK4QyXr/ZlM1oV+OZBJJbrBc0OBIi8CL4MGaMD8aoH++5uvsQhIEbP8/TYo5xSAuaKQbwqS7PCTY1+ny2jFPFtZC6BX7ohaDBHPIHVJRx9RCsUvXbKHWTegWrftj/6wpNQUpFXVV6evXBsCWk5E+qrD4R8ejwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXkCiUGw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE608C4CEEB;
+	Mon, 18 Aug 2025 13:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523505;
-	bh=VUVqEprVUvxw5i1w3KLvsXgE2aDsSAbJ/e26oYqM8vg=;
+	s=korg; t=1755525100;
+	bh=2IIopFkMQnsgPKS5pFbrSQrFmHTriIv47VLFJTNKmfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSMUMoQl0l5S4pNgrLm5rftw5/vZYiL9YxUWjRY282m8OPfb6LW/hVnpvootrR2OL
-	 Qs6AsYNZJtVNVDUH98x6/CAHROAind9m/Ptarms5JubsddbdIGU4UWY+jqluiXeVhU
-	 YqXxGCe0fJda3fBGndoXvndiqXo6rdR304Hle7/o=
+	b=dXkCiUGw+w2D9ddCwysssqlEVBzRTffng+diHF4JizUfpijdnX0bjpF0BMLR+Fc5N
+	 PLJTYvT+WvCSrjZ/1iKAWPq6SDS32yKxqL5e1CZCPN9ehj15EgZ/brKRn63lriArp5
+	 qkmc4dclVuPkNWIaWSXZOjH/DTbmWYaz67akcjuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliav Farber <farbere@amazon.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 159/515] pps: clients: gpio: fix interrupt handling order in remove path
+Subject: [PATCH 6.16 158/570] tools/build: Fix s390(x) cross-compilation with clang
 Date: Mon, 18 Aug 2025 14:42:25 +0200
-Message-ID: <20250818124504.505903853@linuxfoundation.org>
+Message-ID: <20250818124511.899621991@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliav Farber <farbere@amazon.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
+[ Upstream commit a40f0cdce78be8a559ee8a85c908049c65a410b2 ]
 
-The interrupt handler in pps_gpio_probe() is registered after calling
-pps_register_source() using devm_request_irq(). However, in the
-corresponding remove function, pps_unregister_source() is called before
-the IRQ is freed, since devm-managed resources are released after the
-remove function completes.
+The heuristic to derive a clang target triple from a GCC one does not work
+for s390. GCC uses "s390-linux" while clang expects "s390x-linux" or
+"powerz-linux".
 
-This creates a potential race condition where an interrupt may occur
-after the PPS source is unregistered but before the handler is removed,
-possibly leading to a kernel panic.
+Add an explicit override.
 
-To prevent this, switch from devm-managed IRQ registration to manual
-management by using request_irq() and calling free_irq() explicitly in
-the remove path before unregistering the PPS source. This ensures the
-interrupt handler is safely removed before deactivating the PPS source.
-
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/r/20250620-tools-cross-s390-v2-1-ecda886e00e5@linutronix.de
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pps/clients/pps-gpio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/scripts/Makefile.include | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-index 374ceefd6f2a..2866636b0554 100644
---- a/drivers/pps/clients/pps-gpio.c
-+++ b/drivers/pps/clients/pps-gpio.c
-@@ -210,8 +210,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
- 	}
- 
- 	/* register IRQ interrupt handler */
--	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
--			get_irqf_trigger_flags(data), data->info.name, data);
-+	ret = request_irq(data->irq, pps_gpio_irq_handler,
-+			  get_irqf_trigger_flags(data), data->info.name, data);
- 	if (ret) {
- 		pps_unregister_source(data->pps);
- 		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
-@@ -228,6 +228,7 @@ static void pps_gpio_remove(struct platform_device *pdev)
- {
- 	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
- 
-+	free_irq(data->irq, data);
- 	pps_unregister_source(data->pps);
- 	timer_delete_sync(&data->echo_timer);
- 	/* reset echo pin in any case */
+diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.include
+index 5158250988ce..ded48263dd5e 100644
+--- a/tools/scripts/Makefile.include
++++ b/tools/scripts/Makefile.include
+@@ -101,7 +101,9 @@ else ifneq ($(CROSS_COMPILE),)
+ # Allow userspace to override CLANG_CROSS_FLAGS to specify their own
+ # sysroots and flags or to avoid the GCC call in pure Clang builds.
+ ifeq ($(CLANG_CROSS_FLAGS),)
+-CLANG_CROSS_FLAGS := --target=$(notdir $(CROSS_COMPILE:%-=%))
++CLANG_TARGET := $(notdir $(CROSS_COMPILE:%-=%))
++CLANG_TARGET := $(subst s390-linux,s390x-linux,$(CLANG_TARGET))
++CLANG_CROSS_FLAGS := --target=$(CLANG_TARGET)
+ GCC_TOOLCHAIN_DIR := $(dir $(shell which $(CROSS_COMPILE)gcc 2>/dev/null))
+ ifneq ($(GCC_TOOLCHAIN_DIR),)
+ CLANG_CROSS_FLAGS += --prefix=$(GCC_TOOLCHAIN_DIR)$(notdir $(CROSS_COMPILE))
 -- 
 2.39.5
 
