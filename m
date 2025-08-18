@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C65B2AA49
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE255B2A7C1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 940C21BA38B9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1178E1B6733A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7294130C37D;
-	Mon, 18 Aug 2025 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4C8321442;
+	Mon, 18 Aug 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TykwtZQg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhs/+5HW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214B032253B;
-	Mon, 18 Aug 2025 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FE9321431;
+	Mon, 18 Aug 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526303; cv=none; b=fymRtOg6bHRj+RXsOiVRymW1/1EHf6E2o+Spg+MsbFKCJ2a0K2eW1n9QC2qTRUZo9DNyrkaGpGlSHRFX0ddyh1zZtev4IyqPO+24Rf1JbcxwOxd40u9GeYf13RaZl0U1fhPyJN4C5+XDgQd9h+zI4N2kF1ALvyGetf36/0RK0mI=
+	t=1755524576; cv=none; b=KTGDLV2cgj+H+PqqzrJKBPyXyHOZVJIpowHj70h4Ha6EwqoHp7psXc1RU7Vt70C6CNUeuMePinkuQKOhm3dPM4yJOrG738ZXXMbmE8bJ5Ir+yA5nNTKBD/Hb7u/vRQXJ73G5rsGBMJSoF7chk9YvzIUtco2+JrTdaXUeqxcyHy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526303; c=relaxed/simple;
-	bh=Oe5huPtc//1F25GPxDcZdu8XS3KQg7Y2LpXoEca92lE=;
+	s=arc-20240116; t=1755524576; c=relaxed/simple;
+	bh=PVBBPbPfsviA2S9VxMYCSPDe1Z5/s9MHWQyrTyfLx7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5VoPX96Aophwbt5W9ak5SdKcz41wztDYQYUi97Es6qplkF9cldh1vDYEwG9tsgJJQtNxeaIotCwswAIO66vHKZQny+DYdxqqGbGKIsuW+XX8ErMob9QvUv1g5togveh/cu8jO0hCVi61X8vWpL8GKiAkapzNB6J/1B3M3Or27E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TykwtZQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9844DC4CEEB;
-	Mon, 18 Aug 2025 14:11:42 +0000 (UTC)
+	 MIME-Version; b=iKdZuN/b4s0GXhATAKRyjAKHWgoK3LeNl6gbq4Ix3VHaMh3AcVX2iQOlpUn5XgLoD9s7ZpQhF6HE2JTSzWfedrJqdi9ak5XQh2Uh/qIPc0DjDx4QvfrNquLyYRrTZxIs4VAY0+2XwwA90BbfOJOOh5T9A3HDJgm0/EhQocM2DKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhs/+5HW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DC0C113D0;
+	Mon, 18 Aug 2025 13:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526303;
-	bh=Oe5huPtc//1F25GPxDcZdu8XS3KQg7Y2LpXoEca92lE=;
+	s=korg; t=1755524576;
+	bh=PVBBPbPfsviA2S9VxMYCSPDe1Z5/s9MHWQyrTyfLx7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TykwtZQg/n2j1V7+nG58ZYLuX/LHxZwz8rxeTRlv7I5pj5kLQWG8I7XW1ccmlrlWz
-	 oDGxym1SDfdNdCBdRG8H6eEbMtW4bNyB3nc/HVxCEwXgN+vEWBBqynZ0mFWhXxui8e
-	 qGKR9immK6eINevhjpFZyfBAKeM2dKP1IXdBeRHo=
+	b=nhs/+5HWYe4sJmP7sypYsIDanxeae4SSJoh1V18VkJApvfxm+jsqmebpobejKuRMz
+	 h4zpEnGIVRD/Jilx91y1wkWMgAGy7ACQ5Yzj88AhYVVdH6aq2AJmW2Kh4gBAHe2Sj/
+	 SY/l/XLN1wpAUFAy+O9CZT7cF8hL7FzHcCMzgR5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.16 514/570] btrfs: zoned: reserve data_reloc block group on mount
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 515/515] dm: split write BIOs on zone boundaries when zone append is not emulated
 Date: Mon, 18 Aug 2025 14:48:21 +0200
-Message-ID: <20250818124525.661333667@linuxfoundation.org>
+Message-ID: <20250818124518.263031939@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit 694ce5e143d67267ad26b04463e790a597500b00 upstream.
+commit 675f940576351bb049f5677615140b9d0a7712d0 upstream.
 
-Create a block group dedicated for data relocation on mount of a zoned
-filesystem.
+Commit 2df7168717b7 ("dm: Always split write BIOs to zoned device
+limits") updates the device-mapper driver to perform splits for the
+write BIOs. However, it did not address the cases where DM targets do
+not emulate zone append, such as in the cases of dm-linear or dm-flakey.
+For these targets, when the write BIOs span across zone boundaries, they
+trigger WARN_ON_ONCE(bio_straddles_zones(bio)) in
+blk_zone_wplug_handle_write(). This results in I/O errors. The errors
+are reproduced by running blktests test case zbd/004 using zoned
+dm-linear or dm-flakey devices.
 
-If there is already more than one empty DATA block group on mount, this
-one is picked for the data relocation block group, instead of a newly
-created one.
+To avoid the I/O errors, handle the write BIOs regardless whether DM
+targets emulate zone append or not, so that all write BIOs are split at
+zone boundaries. For that purpose, drop the check for zone append
+emulation in dm_zone_bio_needs_split(). Its argument 'md' is no longer
+used then drop it also.
 
-This is done to ensure, there is always space for performing garbage
-collection and the filesystem is not hitting ENOSPC under heavy overwrite
-workloads.
-
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 2df7168717b7 ("dm: Always split write BIOs to zoned device limits")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Link: https://lore.kernel.org/r/20250717103539.37279-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |    1 
- fs/btrfs/zoned.c   |   61 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/btrfs/zoned.h   |    3 ++
- 3 files changed, 65 insertions(+)
+ drivers/md/dm.c |   18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -3561,6 +3561,7 @@ int __cold open_ctree(struct super_block
- 		goto fail_sysfs;
- 	}
- 
-+	btrfs_zoned_reserve_data_reloc_bg(fs_info);
- 	btrfs_free_zone_cache(fs_info);
- 
- 	btrfs_check_active_zone_reservation(fs_info);
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -17,6 +17,7 @@
- #include "fs.h"
- #include "accessors.h"
- #include "bio.h"
-+#include "transaction.h"
- 
- /* Maximum number of zones to report per blkdev_report_zones() call */
- #define BTRFS_REPORT_NR_ZONES   4096
-@@ -2501,6 +2502,66 @@ void btrfs_clear_data_reloc_bg(struct bt
- 	spin_unlock(&fs_info->relocation_bg_lock);
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1790,8 +1790,7 @@ static void init_clone_info(struct clone
  }
  
-+void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info)
-+{
-+	struct btrfs_space_info *data_sinfo = fs_info->data_sinfo;
-+	struct btrfs_space_info *space_info = data_sinfo->sub_group[0];
-+	struct btrfs_trans_handle *trans;
-+	struct btrfs_block_group *bg;
-+	struct list_head *bg_list;
-+	u64 alloc_flags;
-+	bool initial = false;
-+	bool did_chunk_alloc = false;
-+	int index;
-+	int ret;
-+
-+	if (!btrfs_is_zoned(fs_info))
-+		return;
-+
-+	if (fs_info->data_reloc_bg)
-+		return;
-+
-+	if (sb_rdonly(fs_info->sb))
-+		return;
-+
-+	ASSERT(space_info->subgroup_id == BTRFS_SUB_GROUP_DATA_RELOC);
-+	alloc_flags = btrfs_get_alloc_profile(fs_info, space_info->flags);
-+	index = btrfs_bg_flags_to_raid_index(alloc_flags);
-+
-+	bg_list = &data_sinfo->block_groups[index];
-+again:
-+	list_for_each_entry(bg, bg_list, list) {
-+		if (bg->used > 0)
-+			continue;
-+
-+		if (!initial) {
-+			initial = true;
-+			continue;
-+		}
-+
-+		fs_info->data_reloc_bg = bg->start;
-+		set_bit(BLOCK_GROUP_FLAG_ZONED_DATA_RELOC, &bg->runtime_flags);
-+		btrfs_zone_activate(bg);
-+
-+		return;
-+	}
-+
-+	if (did_chunk_alloc)
-+		return;
-+
-+	trans = btrfs_join_transaction(fs_info->tree_root);
-+	if (IS_ERR(trans))
-+		return;
-+
-+	ret = btrfs_chunk_alloc(trans, space_info, alloc_flags, CHUNK_ALLOC_FORCE);
-+	btrfs_end_transaction(trans);
-+	if (ret == 1) {
-+		did_chunk_alloc = true;
-+		bg_list = &space_info->block_groups[index];
-+		goto again;
-+	}
-+}
-+
- void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info)
+ #ifdef CONFIG_BLK_DEV_ZONED
+-static inline bool dm_zone_bio_needs_split(struct mapped_device *md,
+-					   struct bio *bio)
++static inline bool dm_zone_bio_needs_split(struct bio *bio)
  {
- 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
---- a/fs/btrfs/zoned.h
-+++ b/fs/btrfs/zoned.h
-@@ -88,6 +88,7 @@ void btrfs_zone_finish_endio(struct btrf
- void btrfs_schedule_zone_finish_bg(struct btrfs_block_group *bg,
- 				   struct extent_buffer *eb);
- void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg);
-+void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info);
- void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info);
- bool btrfs_zoned_should_reclaim(const struct btrfs_fs_info *fs_info);
- void btrfs_zoned_release_data_reloc_bg(struct btrfs_fs_info *fs_info, u64 logical,
-@@ -241,6 +242,8 @@ static inline void btrfs_schedule_zone_f
+ 	/*
+ 	 * Special case the zone operations that cannot or should not be split.
+@@ -1807,13 +1806,11 @@ static inline bool dm_zone_bio_needs_spl
+ 	}
  
- static inline void btrfs_clear_data_reloc_bg(struct btrfs_block_group *bg) { }
+ 	/*
+-	 * Mapped devices that require zone append emulation will use the block
+-	 * layer zone write plugging. In such case, we must split any large BIO
+-	 * to the mapped device limits to avoid potential deadlocks with queue
+-	 * freeze operations.
++	 * When mapped devices use the block layer zone write plugging, we must
++	 * split any large BIO to the mapped device limits to not submit BIOs
++	 * that span zone boundaries and to avoid potential deadlocks with
++	 * queue freeze operations.
+ 	 */
+-	if (!dm_emulate_zone_append(md))
+-		return false;
+ 	return bio_needs_zone_write_plugging(bio) || bio_straddles_zones(bio);
+ }
  
-+static inline void btrfs_zoned_reserve_data_reloc_bg(struct btrfs_fs_info *fs_info) { }
-+
- static inline void btrfs_free_zone_cache(struct btrfs_fs_info *fs_info) { }
+@@ -1937,8 +1934,7 @@ static blk_status_t __send_zone_reset_al
+ }
  
- static inline bool btrfs_zoned_should_reclaim(const struct btrfs_fs_info *fs_info)
+ #else
+-static inline bool dm_zone_bio_needs_split(struct mapped_device *md,
+-					   struct bio *bio)
++static inline bool dm_zone_bio_needs_split(struct bio *bio)
+ {
+ 	return false;
+ }
+@@ -1965,7 +1961,7 @@ static void dm_split_and_process_bio(str
+ 
+ 	is_abnormal = is_abnormal_io(bio);
+ 	if (static_branch_unlikely(&zoned_enabled)) {
+-		need_split = is_abnormal || dm_zone_bio_needs_split(md, bio);
++		need_split = is_abnormal || dm_zone_bio_needs_split(bio);
+ 	} else {
+ 		need_split = is_abnormal;
+ 	}
 
 
 
