@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2B0B2A5CB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3751B2A81B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE7D628322
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43D0567E7C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CCC322DA0;
-	Mon, 18 Aug 2025 13:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8DB335BBF;
+	Mon, 18 Aug 2025 13:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtJdPF02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sl3tZHVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45B732277A;
-	Mon, 18 Aug 2025 13:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68283335BAF;
+	Mon, 18 Aug 2025 13:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523516; cv=none; b=j1gznxL0n8njXEvi+CUxlOBWvtk/AfAoCwec4zjW7zwe5ftplfweLNSp/Jf4EuT3xrc0/TY4rnVIYiXOdPuycO9NhQ9lRKXZKNFjOKvaSNnODjt5YZ1X4hTOyFtXR3fl7sWm11hPVmACBnLhUuEsvaUtfKOtbrMb7k9rURczlfw=
+	t=1755525215; cv=none; b=Tbh/YklbSN6tBsfd6fpChyv2rHRP/Vkq1nfPRibJj92rjAmRhR7FBe5wYQwzK8XngjrAHRlg2+3VOQ2Hb2lrHCkF/tttlVyzvpUk7AAIiRNQEGnMSkP6In3qhR2T6dfxSJBtorlNzCnNXB0BH7f1RaVpE06ACa2if/WHmbYjrcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523516; c=relaxed/simple;
-	bh=PInJDu7GrzGuzseIKv0d1OyWZDaG0f8f3q0LUyk25WM=;
+	s=arc-20240116; t=1755525215; c=relaxed/simple;
+	bh=sj6RwnaWB49B/YEtEW8HFGcqMPAU5EWSzsn6OjSLlCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/236uyWXCtmSV9C6jk/zrZGlAGOzhw0F1KMaTzNbPhtXtvu5Lh/T6Xo5GwUjzmGdDvtR8E6fNC+oifh0xOlmUw8W5pgoyYyOsWC0qu9RK70VPgSo+jh6aSUCifPhi8kI3Jo6R/D+WrLnCclEpRIsDvBJaVJU40SoQIuQ54BBKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtJdPF02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105DCC4CEEB;
-	Mon, 18 Aug 2025 13:25:14 +0000 (UTC)
+	 MIME-Version; b=Co/q5XN2BMwTdA+8lJitl4NNdKkOOTJntZT8s8ruNOok9mLIhRhyV/Yp5MdnKRNakXnvMEyD6uGSlKyXOXil2woFRg/EKOn6qqLVmFcN3AH2HMn4n5cbEJv91ZcIZ9Fw2WibfztLulK39WttP63vaeC9zcRW5USMWOJQk6G0F00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sl3tZHVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DD0C4CEEB;
+	Mon, 18 Aug 2025 13:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523515;
-	bh=PInJDu7GrzGuzseIKv0d1OyWZDaG0f8f3q0LUyk25WM=;
+	s=korg; t=1755525215;
+	bh=sj6RwnaWB49B/YEtEW8HFGcqMPAU5EWSzsn6OjSLlCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XtJdPF02OQg0wn4iYnTsrJbz5OPOukrHT25l6xpYC9n3bPQm7d/2Tz6oFwQMtKtUr
-	 fhJ3qLuVwpejimWudzJu2E/U+sfpieafqHNVRwdwU694UBkWm30zkXxi4qvu4QrHUB
-	 nyS9q+dCIP5S4pEtg3aF6ckcoBwXUm6nIApP4Ecs=
+	b=Sl3tZHVd/2rfvFT56y50kT4pGnhWgq5nz0b5GV6WEohcX4tzjBaJWXcFyr4DdaRsb
+	 Pc2se0JrfolgHD8Gb2nEn8oFtboJLwz7g+PDFtIkJgDoYHdYoraIbNwGEN+XzPuEfB
+	 HdEfvH0WYSuNUszV1a41DqQWvvrcINZ3nZ/KMtk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.li@amlogic.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 195/515] Bluetooth: hci_event: Add support for handling LE BIG Sync Lost event
+Subject: [PATCH 6.16 194/570] pm: cpupower: Fix the snapshot-order of tsc,mperf, clock in mperf_stop()
 Date: Mon, 18 Aug 2025 14:43:01 +0200
-Message-ID: <20250818124505.873374402@linuxfoundation.org>
+Message-ID: <20250818124513.273927184@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.li@amlogic.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit b2a5f2e1c127cb431df22e114998ff72eb4578c8 ]
+[ Upstream commit cda7ac8ce7de84cf32a3871ba5f318aa3b79381e ]
 
-When the BIS source stops, the controller sends an LE BIG Sync Lost
-event (subevent 0x1E). Currently, this event is not handled, causing
-the BIS stream to remain active in BlueZ and preventing recovery.
+In the function mperf_start(), mperf_monitor snapshots the time, tsc
+and finally the aperf,mperf MSRs. However, this order of snapshotting
+in is reversed in mperf_stop(). As a result, the C0 residency (which
+is computed as delta_mperf * 100 / delta_tsc) is under-reported on
+CPUs that is 100% busy.
 
-Signed-off-by: Yang Li <yang.li@amlogic.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix this by snapshotting time, tsc and then aperf,mperf in
+mperf_stop() in the same order as in mperf_start().
+
+Link: https://lore.kernel.org/r/20250612122355.19629-2-gautham.shenoy@amd.com
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h      |  6 +++++
- include/net/bluetooth/hci_core.h |  5 ++--
- net/bluetooth/hci_conn.c         |  3 ++-
- net/bluetooth/hci_event.c        | 39 +++++++++++++++++++++++++++++++-
- 4 files changed, 49 insertions(+), 4 deletions(-)
+ tools/power/cpupower/utils/idle_monitor/mperf_monitor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index ebe01eb28264..702b526541e6 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -2851,6 +2851,12 @@ struct hci_evt_le_big_sync_estabilished {
- 	__le16  bis[];
- } __packed;
+diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+index 73b6b10cbdd2..5ae02c3d5b64 100644
+--- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
++++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+@@ -240,9 +240,9 @@ static int mperf_stop(void)
+ 	int cpu;
  
-+#define HCI_EVT_LE_BIG_SYNC_LOST 0x1e
-+struct hci_evt_le_big_sync_lost {
-+	__u8    handle;
-+	__u8    reason;
-+} __packed;
-+
- #define HCI_EVT_LE_BIG_INFO_ADV_REPORT	0x22
- struct hci_evt_le_big_info_adv_report {
- 	__le16  sync_handle;
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 351a9057e70e..1d62f0cce195 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1348,7 +1348,8 @@ hci_conn_hash_lookup_big_sync_pend(struct hci_dev *hdev,
- }
+ 	for (cpu = 0; cpu < cpu_count; cpu++) {
+-		mperf_measure_stats(cpu);
+-		mperf_get_tsc(&tsc_at_measure_end[cpu]);
+ 		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
++		mperf_get_tsc(&tsc_at_measure_end[cpu]);
++		mperf_measure_stats(cpu);
+ 	}
  
- static inline struct hci_conn *
--hci_conn_hash_lookup_big_state(struct hci_dev *hdev, __u8 handle,  __u16 state)
-+hci_conn_hash_lookup_big_state(struct hci_dev *hdev, __u8 handle, __u16 state,
-+			       __u8 role)
- {
- 	struct hci_conn_hash *h = &hdev->conn_hash;
- 	struct hci_conn  *c;
-@@ -1356,7 +1357,7 @@ hci_conn_hash_lookup_big_state(struct hci_dev *hdev, __u8 handle,  __u16 state)
- 	rcu_read_lock();
- 
- 	list_for_each_entry_rcu(c, &h->list, list) {
--		if (c->type != BIS_LINK || c->state != state)
-+		if (c->type != BIS_LINK || c->state != state || c->role != role)
- 			continue;
- 
- 		if (handle == c->iso_qos.bcast.big) {
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index fccdb864af72..082cca18db2e 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2144,7 +2144,8 @@ struct hci_conn *hci_bind_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 	struct hci_link *link;
- 
- 	/* Look for any BIS that is open for rebinding */
--	conn = hci_conn_hash_lookup_big_state(hdev, qos->bcast.big, BT_OPEN);
-+	conn = hci_conn_hash_lookup_big_state(hdev, qos->bcast.big, BT_OPEN,
-+					      HCI_ROLE_MASTER);
- 	if (conn) {
- 		memcpy(qos, &conn->iso_qos, sizeof(*qos));
- 		conn->state = BT_CONNECTED;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index c1dd8d78701f..b83995898da0 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6880,7 +6880,8 @@ static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
- 
- 	/* Connect all BISes that are bound to the BIG */
- 	while ((conn = hci_conn_hash_lookup_big_state(hdev, ev->handle,
--						      BT_BOUND))) {
-+						      BT_BOUND,
-+						      HCI_ROLE_MASTER))) {
- 		if (ev->status) {
- 			hci_connect_cfm(conn, ev->status);
- 			hci_conn_del(conn);
-@@ -6996,6 +6997,37 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
- 	hci_dev_unlock(hdev);
- }
- 
-+static void hci_le_big_sync_lost_evt(struct hci_dev *hdev, void *data,
-+				     struct sk_buff *skb)
-+{
-+	struct hci_evt_le_big_sync_lost *ev = data;
-+	struct hci_conn *bis, *conn;
-+
-+	bt_dev_dbg(hdev, "big handle 0x%2.2x", ev->handle);
-+
-+	hci_dev_lock(hdev);
-+
-+	/* Delete the pa sync connection */
-+	bis = hci_conn_hash_lookup_pa_sync_big_handle(hdev, ev->handle);
-+	if (bis) {
-+		conn = hci_conn_hash_lookup_pa_sync_handle(hdev,
-+							   bis->sync_handle);
-+		if (conn)
-+			hci_conn_del(conn);
-+	}
-+
-+	/* Delete each bis connection */
-+	while ((bis = hci_conn_hash_lookup_big_state(hdev, ev->handle,
-+						     BT_CONNECTED,
-+						     HCI_ROLE_SLAVE))) {
-+		clear_bit(HCI_CONN_BIG_SYNC, &bis->flags);
-+		hci_disconn_cfm(bis, ev->reason);
-+		hci_conn_del(bis);
-+	}
-+
-+	hci_dev_unlock(hdev);
-+}
-+
- static void hci_le_big_info_adv_report_evt(struct hci_dev *hdev, void *data,
- 					   struct sk_buff *skb)
- {
-@@ -7119,6 +7151,11 @@ static const struct hci_le_ev {
- 		     hci_le_big_sync_established_evt,
- 		     sizeof(struct hci_evt_le_big_sync_estabilished),
- 		     HCI_MAX_EVENT_SIZE),
-+	/* [0x1e = HCI_EVT_LE_BIG_SYNC_LOST] */
-+	HCI_LE_EV_VL(HCI_EVT_LE_BIG_SYNC_LOST,
-+		     hci_le_big_sync_lost_evt,
-+		     sizeof(struct hci_evt_le_big_sync_lost),
-+		     HCI_MAX_EVENT_SIZE),
- 	/* [0x22 = HCI_EVT_LE_BIG_INFO_ADV_REPORT] */
- 	HCI_LE_EV_VL(HCI_EVT_LE_BIG_INFO_ADV_REPORT,
- 		     hci_le_big_info_adv_report_evt,
+ 	return 0;
 -- 
 2.39.5
 
