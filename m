@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-169956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B66BB29E81
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:55:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD8DB29E85
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 073663B038C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:55:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4792173375
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB7B30FF1D;
-	Mon, 18 Aug 2025 09:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E2A30FF1D;
+	Mon, 18 Aug 2025 09:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAEfW+do"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="en/DVWKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5985A278146
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4772530F81E
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755510926; cv=none; b=RpAVrUuNNKnKLc26Q7aHMWCqyGWbcE3OZMq6q0LPSwryAwVRi2MLtKPI5v3Lf20bnVX1VOvPfdArgh/alekiHaE7ZcTzxBPkh3gjHGGfkWirPAax0rZdBXigOLxKi+bhmmjxZK0/cMgerpHh75VxcSVUMgpZLYhq1Fit4gZ5ksk=
+	t=1755510949; cv=none; b=UOq/Y1vWr5joI0S+6nK6gqNHVb1EkY0pZvMGhMRJ3yL22royzVGgbtGmjPitOhjXqodnHMVG5+Ylp7Xa0sxbE71/zHxvlVBVmnnpIu7BwA18nzMebpX+XTsvZTAKkrBO62WuRm+/g7IWBCaDR+KEratiE4LN5Ve0/VqgLkO2khY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755510926; c=relaxed/simple;
-	bh=vvEy14uVPVFffGlUP39MaWtwTGReKBGn1RghIK2Ijko=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kyu8LVu9klL2pQ8gtbIL/odTh2lOmjWG1CyoGd80KnRtuqcSBLyeAurExUkCkJDCMVc3TA28QVF2LwhiaH6BcKPHlhvY+25s6Q/uYRWrfwV7bMcTh6V4JYeinkcz56034MDC9ga15kNjSC5O76dMOZ/6wACgZjb0zPnnjlNtGPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAEfW+do; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850C4C4CEEB;
-	Mon, 18 Aug 2025 09:55:25 +0000 (UTC)
+	s=arc-20240116; t=1755510949; c=relaxed/simple;
+	bh=x+EYW3a9qjYkUpSVZwUaBOkmWTCZ1Xs0nf74Thb9d2s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=budRl8ADsqUe5WTI7E02OFhq4pvf3LRvXup7Q5GRtQMTSTI2ZWbMrpvzvnzkt47ZbRBwRkQJDhB2c8pyAqk0T34bGkAjNaBsKkdBLQAxxBXIr+XJTxE84Cg+E4ljdicAj8I7WaJClueIrhJI80Yrc//I+LRvDLMEx+tBFyRll2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en/DVWKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87658C4CEF1;
+	Mon, 18 Aug 2025 09:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755510926;
-	bh=vvEy14uVPVFffGlUP39MaWtwTGReKBGn1RghIK2Ijko=;
+	s=korg; t=1755510949;
+	bh=x+EYW3a9qjYkUpSVZwUaBOkmWTCZ1Xs0nf74Thb9d2s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iAEfW+do5dtlJ17iFXVFl62WCyPjxc2pzvgDB3whjFg/38ICSMSDhHBDNrXUD5OmN
-	 Dr8LQOXVs8yXf4T17TXVDdj0LTSkZubGFQ7L86bp1YwX6nt8+m7JIx7FFagwWB2eg9
-	 h7fzonWQU/C3mHArFKxIY3ttEWqb9IVMiUfNFLZU=
-Subject: FAILED: patch "[PATCH] clk: imx: Fix an out-of-bounds access in" failed to apply to 6.12-stable tree
-To: xiaolei.wang@windriver.com,Frank.Li@nxp.com,sboyd@kernel.org
+	b=en/DVWKV3jdFkBYg60QQv3IEbFUSm5GbvRRzrp8LEbCk851C8DWE2Bz7FiCAcTJOm
+	 54V3STGrXyoFAanPnH+8V+TovxQHMuDlJYxjbnZR0L4u7GQmplYXvrZep+5H6EWFHT
+	 9rSyb+GFODTqwM3ktXuD3IZ51B3LInca5QL3qUug=
+Subject: FAILED: patch "[PATCH] cifs: reset iface weights when we cannot find a candidate" failed to apply to 6.1-stable tree
+To: sprasad@microsoft.com,stable@vger.kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Aug 2025 11:55:11 +0200
-Message-ID: <2025081811-monogram-chug-d06e@gregkh>
+Date: Mon, 18 Aug 2025 11:55:45 +0200
+Message-ID: <2025081845-cork-enable-a1e8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x b2be1327a6ed74fbf7e1ac0bc6ca57750f7ebe07
+git cherry-pick -x 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081811-monogram-chug-d06e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025081845-cork-enable-a1e8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,71 +77,60 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b2be1327a6ed74fbf7e1ac0bc6ca57750f7ebe07 Mon Sep 17 00:00:00 2001
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
-Date: Thu, 19 Jun 2025 14:21:08 +0800
-Subject: [PATCH] clk: imx: Fix an out-of-bounds access in
- dispmix_csr_clk_dev_data
+From 9d5eff7821f6d70f7d1b4d8a60680fba4de868a7 Mon Sep 17 00:00:00 2001
+From: Shyam Prasad N <sprasad@microsoft.com>
+Date: Thu, 17 Jul 2025 17:36:13 +0530
+Subject: [PATCH] cifs: reset iface weights when we cannot find a candidate
 
-When num_parents is 4, __clk_register() occurs an out-of-bounds
-when accessing parent_names member. Use ARRAY_SIZE() instead of
-hardcode number here.
+We now do a weighted selection of server interfaces when allocating
+new channels. The weights are decided based on the speed advertised.
+The fulfilled weight for an interface is a counter that is used to
+track the interface selection. It should be reset back to zero once
+all interfaces fulfilling their weight.
 
- BUG: KASAN: global-out-of-bounds in __clk_register+0x1844/0x20d8
- Read of size 8 at addr ffff800086988e78 by task kworker/u24:3/59
-  Hardware name: NXP i.MX95 19X19 board (DT)
-  Workqueue: events_unbound deferred_probe_work_func
-  Call trace:
-    dump_backtrace+0x94/0xec
-    show_stack+0x18/0x24
-    dump_stack_lvl+0x8c/0xcc
-    print_report+0x398/0x5fc
-    kasan_report+0xd4/0x114
-    __asan_report_load8_noabort+0x20/0x2c
-    __clk_register+0x1844/0x20d8
-    clk_hw_register+0x44/0x110
-    __clk_hw_register_mux+0x284/0x3a8
-    imx95_bc_probe+0x4f4/0xa70
+In cifs_chan_update_iface, this reset logic was missing. As a result
+when the server interface list changes, the client may not be able
+to find a new candidate for other channels after all interfaces have
+been fulfilled.
 
-Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Link: https://lore.kernel.org/r/20250619062108.2016511-1-xiaolei.wang@windriver.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
-index 25974947ad0c..cc2ee2be1819 100644
---- a/drivers/clk/imx/clk-imx95-blk-ctl.c
-+++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
-@@ -219,11 +219,15 @@ static const struct imx95_blk_ctl_dev_data lvds_csr_dev_data = {
- 	.clk_reg_offset = 0,
- };
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 330bc3d25bad..0a8c2fcc9ded 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -332,6 +332,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 	struct cifs_server_iface *old_iface = NULL;
+ 	struct cifs_server_iface *last_iface = NULL;
+ 	struct sockaddr_storage ss;
++	int retry = 0;
  
-+static const char * const disp_engine_parents[] = {
-+	"videopll1", "dsi_pll", "ldb_pll_div7"
-+};
+ 	spin_lock(&ses->chan_lock);
+ 	chan_index = cifs_ses_get_chan_index(ses, server);
+@@ -360,6 +361,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 		return;
+ 	}
+ 
++try_again:
+ 	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
+ 				     iface_head);
+ 	iface_min_speed = last_iface->speed;
+@@ -397,6 +399,13 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 	}
+ 
+ 	if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
++		list_for_each_entry(iface, &ses->iface_list, iface_head)
++			iface->weight_fulfilled = 0;
 +
- static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
- 	[IMX95_CLK_DISPMIX_ENG0_SEL] = {
- 		.name = "disp_engine0_sel",
--		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
--		.num_parents = 4,
-+		.parent_names = disp_engine_parents,
-+		.num_parents = ARRAY_SIZE(disp_engine_parents),
- 		.reg = 0,
- 		.bit_idx = 0,
- 		.bit_width = 2,
-@@ -232,8 +236,8 @@ static const struct imx95_blk_ctl_clk_dev_data dispmix_csr_clk_dev_data[] = {
- 	},
- 	[IMX95_CLK_DISPMIX_ENG1_SEL] = {
- 		.name = "disp_engine1_sel",
--		.parent_names = (const char *[]){"videopll1", "dsi_pll", "ldb_pll_div7", },
--		.num_parents = 4,
-+		.parent_names = disp_engine_parents,
-+		.num_parents = ARRAY_SIZE(disp_engine_parents),
- 		.reg = 0,
- 		.bit_idx = 2,
- 		.bit_width = 2,
++		/* see if it can be satisfied in second attempt */
++		if (!retry++)
++			goto try_again;
++
+ 		iface = NULL;
+ 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	}
 
 
