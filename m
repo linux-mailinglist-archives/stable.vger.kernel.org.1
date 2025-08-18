@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80719B2A6C2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7938AB2A3B2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D18C6837C9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 535937B3B48
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C57321F42;
-	Mon, 18 Aug 2025 13:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAEF31E0FD;
+	Mon, 18 Aug 2025 13:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnri0iFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYi29nkT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C1631E0F8;
-	Mon, 18 Aug 2025 13:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90B03218CA;
+	Mon, 18 Aug 2025 13:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524169; cv=none; b=Yi4Ne4x6xvYyQZ1Ujs/D4oYTaZ+5QfuFUq+gxrlogH+MDzwyBLGbQrHY4rUoMJ1FKY8gjXGtXUjifwz3W6fJmKQyzHHHQSUOuwmxaFNxwDlS4cWFuGqxdGJaqAa8kRS+8xXv4mGXIiqBBlznASHtBOV+c+BANHydKUjBOm19XbE=
+	t=1755522547; cv=none; b=j/JVxXKYurNRuEU9XnjinhhHSWO+BAC1tM+28xWoNy6r/pbQ2An6YDwlgiuG10dUS49a4d5TCG2nrbv1qp3Awc3Z7YWzw2hFok3np4ggMeTTo9VcLhXYYPKy39r2Ozv2H+M0/KVWFQGFXRum1l2tyTo1bdTLWoTtm8dxzvWknsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524169; c=relaxed/simple;
-	bh=IWUy97tXsIQ0PxhBhZqn58j50AxOUrHq3g09N+e+E8E=;
+	s=arc-20240116; t=1755522547; c=relaxed/simple;
+	bh=QXAn6BCsfEqmNf6JHSOpNlBgkY4WCMeqnTTfH4l2PLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQZDjS5CTkTHyyOm+XzG2PEMbbBQILDBTOiFU37ALB2wOMA9kiKXb1W5ur6thr9udj+CdtXGgI/g6BPZN59oFwAHJD74LXIvLkci2bKaVbtSBgn18cJTFTbhca53TNY/ZDhf6FTXWPAW+ob6z6IFlVMq59Wtd28A8dtEtTLdX9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnri0iFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8845C4CEEB;
-	Mon, 18 Aug 2025 13:36:08 +0000 (UTC)
+	 MIME-Version; b=QpiLPgEjaJmo/aP/Ipegd5pNfi5+YWDW+bk0PDDxLY9cJxNfzd5ehn0opQhd+ay+WjIM6VouvM4x4Liwg5WmEK/sLEsyiVtVU0pg/nTni0Tyzqp5Y+2HxUhL0jHYA5cZBerzd7a0BsDnGGgv746ybfD5KKL5clW0z4VpdoGRkXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYi29nkT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B29C4CEEB;
+	Mon, 18 Aug 2025 13:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524169;
-	bh=IWUy97tXsIQ0PxhBhZqn58j50AxOUrHq3g09N+e+E8E=;
+	s=korg; t=1755522547;
+	bh=QXAn6BCsfEqmNf6JHSOpNlBgkY4WCMeqnTTfH4l2PLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnri0iFms2iiY1kBchf8qaj4yDZAmSrkFL/3aKLK8D0wCtWNaYmnSHN03BR6H7hjJ
-	 G6NLpCylTOz3sqhhL8vX8DaRdt55fZfQ8p3MKTFcqrjZ+/JhGY6p5p2ZxBgbE4EanB
-	 2KXMtPzm8ZmtRUS+h54GaOF6o3EOKl3n4EH0SFm0=
+	b=kYi29nkTIYOTSc/1w80uy3ZSxd4aglcBLodAUikYsCqrXJr/PN0JfT+h6bISlvZ5K
+	 d52ekkK9KV0Edkk3u4avqOcRywYDIYH6/IzDNKt9NzPHIZVFmTi+mqhfMcDLXwTa7g
+	 TSVMC/inLMWYi+l3UOz50649axp10XE9awU87gI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Yishai Hadas <yishaih@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 388/515] soundwire: amd: cancel pending slave status handling workqueue during remove sequence
+Subject: [PATCH 6.12 348/444] vfio/mlx5: fix possible overflow in tracking max message size
 Date: Mon, 18 Aug 2025 14:46:14 +0200
-Message-ID: <20250818124513.356659304@linuxfoundation.org>
+Message-ID: <20250818124501.973455056@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit f93b697ed98e3c85d1973ea170d4f4e7a6b2b45d ]
+[ Upstream commit b3060198483bac43ec113c62ae3837076f61f5de ]
 
-During remove sequence, cancel the pending slave status update workqueue.
+MLX cap pg_track_log_max_msg_size consists of 5 bits, value of which is
+used as power of 2 for max_msg_size. This can lead to multiplication
+overflow between max_msg_size (u32) and integer constant, and afterwards
+incorrect value is being written to rq_size.
 
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20250530054447.1645807-4-Vijendar.Mukunda@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fix this issue by extending integer constant to u64 type.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
+Link: https://lore.kernel.org/r/20250701144017.2410-2-a.sadovnikov@ispras.ru
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/amd_manager.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/vfio/pci/mlx5/cmd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
-index 3b335d6eaa94..7ed9c8c0b4c8 100644
---- a/drivers/soundwire/amd_manager.c
-+++ b/drivers/soundwire/amd_manager.c
-@@ -1074,6 +1074,7 @@ static void amd_sdw_manager_remove(struct platform_device *pdev)
- 	int ret;
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index eb7387ee6ebd..e7d2251db626 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -1538,8 +1538,8 @@ int mlx5vf_start_page_tracker(struct vfio_device *vdev,
+ 	log_max_msg_size = MLX5_CAP_ADV_VIRTUALIZATION(mdev, pg_track_log_max_msg_size);
+ 	max_msg_size = (1ULL << log_max_msg_size);
+ 	/* The RQ must hold at least 4 WQEs/messages for successful QP creation */
+-	if (rq_size < 4 * max_msg_size)
+-		rq_size = 4 * max_msg_size;
++	if (rq_size < 4ULL * max_msg_size)
++		rq_size = 4ULL * max_msg_size;
  
- 	pm_runtime_disable(&pdev->dev);
-+	cancel_work_sync(&amd_manager->amd_sdw_work);
- 	amd_disable_sdw_interrupts(amd_manager);
- 	sdw_bus_master_delete(&amd_manager->bus);
- 	ret = amd_disable_sdw_manager(amd_manager);
+ 	memset(tracker, 0, sizeof(*tracker));
+ 	tracker->uar = mlx5_get_uars_page(mdev);
 -- 
 2.39.5
 
