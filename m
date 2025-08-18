@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-171363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EA9B2A946
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34142B2A6A5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F16055A31D4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:10:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9573B5803C0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9727C33473C;
-	Mon, 18 Aug 2025 14:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D49F322DAD;
+	Mon, 18 Aug 2025 13:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oz6TlHFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUGqYtxv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554BB2E2287;
-	Mon, 18 Aug 2025 14:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EDA2206AF;
+	Mon, 18 Aug 2025 13:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525672; cv=none; b=oZxW5C8J93yBSoJPxyUnq6c2Bvz0bk5zklZcyITj0xRbRR2fyzgCKGyrLjTAhs9UKT0gQd/+i8zhNRw3PbsD6sh/UCEvR6nsanjMMenHtrIqLu9dEdbL6zlsQFX0+ZqIUXf5O+2hrzggcSA+5us7nUvCBN8jzQvdCEDgml9Zti4=
+	t=1755524092; cv=none; b=mhbrq9fAHqiq/O84P0+vLBVQNPH1+aWPa1DPFkc8os/BvC70KRWysIK3nUcfuJDuiFqNAV5FYjywLC81rEhJyx6n3AK3Arn4e/1A5OLBoayZ53Ax19zaolYyagP1kfMtJ5LiFG5cuFl1q+TILh13MZYm+fAX7g+Luz4X0twkA+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525672; c=relaxed/simple;
-	bh=j6BYJ4EduVxev3KK3GzJGA30T7Na9lVbG6p6FGVwwqE=;
+	s=arc-20240116; t=1755524092; c=relaxed/simple;
+	bh=XGj9quBjVw+uok/kcuJrIehuBxpYrEuz5s1hDZkH7HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SxBd9NXrkQ67VL2j/TS8hLvRoyWrzBzz3e/a9xCJBNFLpA4eM2+r+sI6InZcwS5X1OAC+Gg8Mx+uHKi6UcCJsJqzrQxOIkQcZvPM4Y3f2VVGxBPvVgWjb2SJ94w+wR6k0SZk4D42Ghcyb/C+wthf3FMY8abmqAyzXqI4kvyej+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oz6TlHFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C61C4CEEB;
-	Mon, 18 Aug 2025 14:01:11 +0000 (UTC)
+	 MIME-Version; b=th3tz59ftOL+y6mkHLq5uBo/OuZ3FZaGi4ojz6QrJoTf6W3e8WDePwQSImachh1p8Ou20iEei+5Fzp0dHpDzEbId1b0EL2oQ4Wf9VkmeElD7UJZTQsy3fqXQbQ+fLzoP/zRXut5LEAzeRUBIFJw3+IikLcjRvvOat87vlwH22W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUGqYtxv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA59C4CEEB;
+	Mon, 18 Aug 2025 13:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525672;
-	bh=j6BYJ4EduVxev3KK3GzJGA30T7Na9lVbG6p6FGVwwqE=;
+	s=korg; t=1755524092;
+	bh=XGj9quBjVw+uok/kcuJrIehuBxpYrEuz5s1hDZkH7HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oz6TlHFvK7ccx5ryD1gYezEX7zc90Wm2/vXkyu47FluXJ8ofb7Gv8qFR3K25A6gvN
-	 HnMVieh6E3RxuP9pW6A6F5+/oGdwulehjhCMwxEXM/XXKBabBVgs962IBd967bd0XD
-	 5zSG8r06nG08j12bOK41ZuLOVjjQP1mdioOMasB0=
+	b=zUGqYtxv2ikimw+cvG8eREJ8o1Uq3fDOm81V88tqg3sLhPWcgn8t4zUOYhfEIbP28
+	 q7BLcOI3d7+OjSotDZ9CQ9xjxz9AhGqMUgBWzWDly2rmPUFZolbrohWxGnW/tF4f8H
+	 U1JYo3c+Xal2SiGIvzMSLVf14JbZaQ/5Gy4zt1kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Pierguido Lambri <plambri@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 332/570] net: dsa: b53: prevent GMII_PORT_OVERRIDE_CTRL access on BCM5325
+Subject: [PATCH 6.15 333/515] smb: client: fix session setup against servers that require SPN
 Date: Mon, 18 Aug 2025 14:45:19 +0200
-Message-ID: <20250818124518.641963115@linuxfoundation.org>
+Message-ID: <20250818124511.248546758@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +63,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 37883bbc45a8555d6eca88d3a9730504d2dac86c ]
+[ Upstream commit 33cfdd726381828b9907a61c038a9f48b6690a31 ]
 
-BCM5325 doesn't implement GMII_PORT_OVERRIDE_CTRL register so we should
-avoid reading or writing it.
-PORT_OVERRIDE_RX_FLOW and PORT_OVERRIDE_TX_FLOW aren't defined on BCM5325
-and we should use PORT_OVERRIDE_LP_FLOW_25 instead.
+Some servers might enforce the SPN to be set in the target info
+blob (AV pairs) when sending NTLMSSP_AUTH message.  In Windows Server,
+this could be enforced with SmbServerNameHardeningLevel set to 2.
 
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Link: https://patch.msgid.link/20250614080000.1884236-12-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by always appending SPN (cifs/<hostname>) to the existing
+list of target infos when setting up NTLMv2 response blob.
+
+Cc: linux-cifs@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>
+Reported-by: Pierguido Lambri <plambri@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 21 +++++++++++++++++----
- drivers/net/dsa/b53/b53_regs.h   |  1 +
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ fs/smb/client/cifsencrypt.c | 79 ++++++++++++++++++++++++++++---------
+ 1 file changed, 61 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 55e1844a5e9c..8abbcc588267 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1274,6 +1274,8 @@ static void b53_force_link(struct b53_device *dev, int port, int link)
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1298,6 +1300,8 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	if (port == dev->imp_port) {
- 		off = B53_PORT_OVERRIDE_CTRL;
- 		val = PORT_OVERRIDE_EN;
-+	} else if (is5325(dev)) {
-+		return;
- 	} else {
- 		off = B53_GMII_PORT_OVERRIDE_CTRL(port);
- 		val = GMII_PO_EN;
-@@ -1328,10 +1332,19 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
- 	}
+diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
+index 6be850d2a346..3cc686246908 100644
+--- a/fs/smb/client/cifsencrypt.c
++++ b/fs/smb/client/cifsencrypt.c
+@@ -532,17 +532,67 @@ CalcNTLMv2_response(const struct cifs_ses *ses, char *ntlmv2_hash, struct shash_
+ 	return rc;
+ }
  
--	if (rx_pause)
--		reg |= PORT_OVERRIDE_RX_FLOW;
--	if (tx_pause)
--		reg |= PORT_OVERRIDE_TX_FLOW;
-+	if (rx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_RX_FLOW;
++/*
++ * Set up NTLMv2 response blob with SPN (cifs/<hostname>) appended to the
++ * existing list of AV pairs.
++ */
++static int set_auth_key_response(struct cifs_ses *ses)
++{
++	size_t baselen = CIFS_SESS_KEY_SIZE + sizeof(struct ntlmv2_resp);
++	size_t len, spnlen, tilen = 0, num_avs = 2 /* SPN + EOL */;
++	struct TCP_Server_Info *server = ses->server;
++	char *spn __free(kfree) = NULL;
++	struct ntlmssp2_name *av;
++	char *rsp = NULL;
++	int rc;
++
++	spnlen = strlen(server->hostname);
++	len = sizeof("cifs/") + spnlen;
++	spn = kmalloc(len, GFP_KERNEL);
++	if (!spn) {
++		rc = -ENOMEM;
++		goto out;
 +	}
 +
-+	if (tx_pause) {
-+		if (is5325(dev))
-+			reg |= PORT_OVERRIDE_LP_FLOW_25;
-+		else
-+			reg |= PORT_OVERRIDE_TX_FLOW;
++	spnlen = scnprintf(spn, len, "cifs/%.*s",
++			   (int)spnlen, server->hostname);
++
++	av_for_each_entry(ses, av)
++		tilen += sizeof(*av) + AV_LEN(av);
++
++	len = baselen + tilen + spnlen * sizeof(__le16) + num_avs * sizeof(*av);
++	rsp = kmalloc(len, GFP_KERNEL);
++	if (!rsp) {
++		rc = -ENOMEM;
++		goto out;
 +	}
++
++	memcpy(rsp + baselen, ses->auth_key.response, tilen);
++	av = (void *)(rsp + baselen + tilen);
++	av->type = cpu_to_le16(NTLMSSP_AV_TARGET_NAME);
++	av->length = cpu_to_le16(spnlen * sizeof(__le16));
++	cifs_strtoUTF16((__le16 *)av->data, spn, spnlen, ses->local_nls);
++	av = (void *)((__u8 *)av + sizeof(*av) + AV_LEN(av));
++	av->type = cpu_to_le16(NTLMSSP_AV_EOL);
++	av->length = 0;
++
++	rc = 0;
++	ses->auth_key.len = len;
++out:
++	ses->auth_key.response = rsp;
++	return rc;
++}
++
+ int
+ setup_ntlmv2_rsp(struct cifs_ses *ses, const struct nls_table *nls_cp)
+ {
+ 	struct shash_desc *hmacmd5 = NULL;
+-	int rc;
+-	int baselen;
+-	unsigned int tilen;
++	unsigned char *tiblob = NULL; /* target info blob */
+ 	struct ntlmv2_resp *ntlmv2;
+ 	char ntlmv2_hash[16];
+-	unsigned char *tiblob = NULL; /* target info blob */
+ 	__le64 rsp_timestamp;
++	__u64 cc;
++	int rc;
  
- 	b53_write8(dev, B53_CTRL_PAGE, off, reg);
- }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index d31c8ad9a9b6..25d25bd1071f 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -95,6 +95,7 @@
- #define   PORT_OVERRIDE_SPEED_10M	(0 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_100M	(1 << PORT_OVERRIDE_SPEED_S)
- #define   PORT_OVERRIDE_SPEED_1000M	(2 << PORT_OVERRIDE_SPEED_S)
-+#define   PORT_OVERRIDE_LP_FLOW_25	BIT(3) /* BCM5325 only */
- #define   PORT_OVERRIDE_RV_MII_25	BIT(4) /* BCM5325 only */
- #define   PORT_OVERRIDE_RX_FLOW		BIT(4)
- #define   PORT_OVERRIDE_TX_FLOW		BIT(5)
+ 	if (nls_cp == NULL) {
+ 		cifs_dbg(VFS, "%s called with nls_cp==NULL\n", __func__);
+@@ -588,32 +638,25 @@ setup_ntlmv2_rsp(struct cifs_ses *ses, const struct nls_table *nls_cp)
+ 	 * (as Windows 7 does)
+ 	 */
+ 	rsp_timestamp = find_timestamp(ses);
++	get_random_bytes(&cc, sizeof(cc));
+ 
+-	baselen = CIFS_SESS_KEY_SIZE + sizeof(struct ntlmv2_resp);
+-	tilen = ses->auth_key.len;
+-	tiblob = ses->auth_key.response;
++	cifs_server_lock(ses->server);
+ 
+-	ses->auth_key.response = kmalloc(baselen + tilen, GFP_KERNEL);
+-	if (!ses->auth_key.response) {
+-		rc = -ENOMEM;
++	tiblob = ses->auth_key.response;
++	rc = set_auth_key_response(ses);
++	if (rc) {
+ 		ses->auth_key.len = 0;
+-		goto setup_ntlmv2_rsp_ret;
++		goto unlock;
+ 	}
+-	ses->auth_key.len += baselen;
+ 
+ 	ntlmv2 = (struct ntlmv2_resp *)
+ 			(ses->auth_key.response + CIFS_SESS_KEY_SIZE);
+ 	ntlmv2->blob_signature = cpu_to_le32(0x00000101);
+ 	ntlmv2->reserved = 0;
+ 	ntlmv2->time = rsp_timestamp;
+-
+-	get_random_bytes(&ntlmv2->client_chal, sizeof(ntlmv2->client_chal));
++	ntlmv2->client_chal = cc;
+ 	ntlmv2->reserved2 = 0;
+ 
+-	memcpy(ses->auth_key.response + baselen, tiblob, tilen);
+-
+-	cifs_server_lock(ses->server);
+-
+ 	rc = cifs_alloc_hash("hmac(md5)", &hmacmd5);
+ 	if (rc) {
+ 		cifs_dbg(VFS, "Could not allocate HMAC-MD5, rc=%d\n", rc);
 -- 
 2.39.5
 
