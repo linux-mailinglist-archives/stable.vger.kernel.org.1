@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FE4B2A301
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DA5B2A87F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7BAB62171D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D341720CE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9021F31A05E;
-	Mon, 18 Aug 2025 13:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0492E2287;
+	Mon, 18 Aug 2025 13:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+PefIO3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2laN63Vy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA8231B11A;
-	Mon, 18 Aug 2025 13:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB692206AF;
+	Mon, 18 Aug 2025 13:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522016; cv=none; b=UUCT/D+FI3CncMUl7KOakc9fzo0B/F3GMU73rDcWJi0vALiH9T4L5sJxoprXESaoZBJvk8Pr7GPfoHTQvqC02vIidyPrUeVYcdp2HiGFjqk9wDoyoXMnPIzrJRjVmtuuC0On8yKDNSReqk5eL0UKu4G1zFd1/thKIPlOdqk83zk=
+	t=1755525304; cv=none; b=B9Jy72/KgR+n1BlZCCqoHtT7wkkG1Ygd8PV2iS5Qo6ZPk4xjDmL6Cvs4c1+8YcGt3gkxs4DaY4Fz7gH3VOiEWDz3LpdM9mZqoErCTfS2Fjxcpt97OXK58H4otH/pH1rJ1WrUrqCWiYYhHo/LniiICbWwj77WD5yDVr8vLOyUCIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522016; c=relaxed/simple;
-	bh=zhlAspqD7v/gmaEy21QKF4vina0D4R/CRfazTnXZ9hM=;
+	s=arc-20240116; t=1755525304; c=relaxed/simple;
+	bh=8/M4K48cwk7BnnBFL7p9/1sJ0KyZgez5BwiTI901APQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVDi9Zs+2RfkzTANVdgnFUg/XeGBZ/AGH66dmlGmf0CF22hnDcOd1buO3aQ1NHYaWgL9lbn5bHWaPAMnANsE+4pCiJ0J4fR2Lk0rYfJdaYrlEw/JxZB8siUfKnCqQDaGG8xjh3Qp+WjZjy76EkTAcR9A4zo1PLikA6rS7cRxYcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+PefIO3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFED3C4CEEB;
-	Mon, 18 Aug 2025 13:00:15 +0000 (UTC)
+	 MIME-Version; b=bhdC94z/6ni/ngEJwoufJJ2cvmPLxU68zHXM1HFM6z+/0xMwwEqi9fiHLbVY/ArcISFhzNmE+g1p34Hi30DQEbVuOn0XhQwP5LmQVos2lE6Qi6w7GXI1MzNeOLjREa5AW+/czIHCe3QeZ+0YbRC3qd/Dms5ceYbg25HDkSc2jGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2laN63Vy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FECBC4CEEB;
+	Mon, 18 Aug 2025 13:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522016;
-	bh=zhlAspqD7v/gmaEy21QKF4vina0D4R/CRfazTnXZ9hM=;
+	s=korg; t=1755525304;
+	bh=8/M4K48cwk7BnnBFL7p9/1sJ0KyZgez5BwiTI901APQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+PefIO3Begvh1eEyivfHvKtYJrD1xDkAFkzDrMX9usO8ntdTIqLWHVYgQTw6q3gb
-	 NqXeVeEF9psfgiXDDzEao2FoRLglwwMG3HZtxO3RS357DdjOyd6zn5NXHGn23/tiF1
-	 FScuSfmqTe+9aMJ5RHWEiLvUtQSgpjj2Qw2fgVU4=
+	b=2laN63VypY5YoHUSzwXzwWkW69gT7vzqR8dV34S+s99ZZXm6VYR6Y9I/ycUqvkvlH
+	 gVmNaXYPoU/V29Z6m3yF4xpYzOnNFptlaZzukF+qEdWbdWuos74Cn9Q6H8BKvBGEgF
+	 nMZHFsDC+vn1YMPaWkKbVDCAG2mdV6Hy4P+E2kvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Ping CHNG <jchng@maxlinear.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/444] net: pcs: xpcs: mask readl() return value to 16 bits
+Subject: [PATCH 6.16 221/570] wifi: cfg80211: reject HTC bit for management frames
 Date: Mon, 18 Aug 2025 14:43:28 +0200
-Message-ID: <20250818124455.696882745@linuxfoundation.org>
+Message-ID: <20250818124514.320576148@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Ping CHNG <jchng@maxlinear.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 2b0ba7b5b010455c4e43ab557860f8b1089e7424 ]
+[ Upstream commit be06a8c7313943109fa870715356503c4c709cbc ]
 
-readl() returns 32-bit value but Clause 22/45 registers are 16-bit wide.
-Masking with 0xFFFF avoids using garbage upper bits.
+Management frames sent by userspace should never have the
+order/HTC bit set, reject that. It could also cause some
+confusion with the length of the buffer and the header so
+the validation might end up wrong.
 
-Signed-off-by: Jack Ping CHNG <jchng@maxlinear.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250716030349.3796806-1-jchng@maxlinear.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250718202307.97a0455f0f35.I1805355c7e331352df16611839bc8198c855a33f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pcs/pcs-xpcs-plat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/pcs/pcs-xpcs-plat.c b/drivers/net/pcs/pcs-xpcs-plat.c
-index 629315f1e57c..9dcaf7a66113 100644
---- a/drivers/net/pcs/pcs-xpcs-plat.c
-+++ b/drivers/net/pcs/pcs-xpcs-plat.c
-@@ -66,7 +66,7 @@ static int xpcs_mmio_read_reg_indirect(struct dw_xpcs_plat *pxpcs,
- 	switch (pxpcs->reg_width) {
- 	case 4:
- 		writel(page, pxpcs->reg_base + (DW_VR_CSR_VIEWPORT << 2));
--		ret = readl(pxpcs->reg_base + (ofs << 2));
-+		ret = readl(pxpcs->reg_base + (ofs << 2)) & 0xffff;
- 		break;
- 	default:
- 		writew(page, pxpcs->reg_base + (DW_VR_CSR_VIEWPORT << 1));
-@@ -124,7 +124,7 @@ static int xpcs_mmio_read_reg_direct(struct dw_xpcs_plat *pxpcs,
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 05d44a443518..fd88a32d43d6 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -850,7 +850,8 @@ int cfg80211_mlme_mgmt_tx(struct cfg80211_registered_device *rdev,
  
- 	switch (pxpcs->reg_width) {
- 	case 4:
--		ret = readl(pxpcs->reg_base + (csr << 2));
-+		ret = readl(pxpcs->reg_base + (csr << 2)) & 0xffff;
- 		break;
- 	default:
- 		ret = readw(pxpcs->reg_base + (csr << 1));
+ 	mgmt = (const struct ieee80211_mgmt *)params->buf;
+ 
+-	if (!ieee80211_is_mgmt(mgmt->frame_control))
++	if (!ieee80211_is_mgmt(mgmt->frame_control) ||
++	    ieee80211_has_order(mgmt->frame_control))
+ 		return -EINVAL;
+ 
+ 	stype = le16_to_cpu(mgmt->frame_control) & IEEE80211_FCTL_STYPE;
 -- 
 2.39.5
 
