@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-170515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4575FB2A48E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CB1B2AA2E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690775656FB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B4DE6E3E45
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5968320CBC;
-	Mon, 18 Aug 2025 13:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB91232A3DD;
+	Mon, 18 Aug 2025 14:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X61PAsk0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYgc9PSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AB631E0EB;
-	Mon, 18 Aug 2025 13:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671032C2340;
+	Mon, 18 Aug 2025 14:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522890; cv=none; b=DGH0uBPN6fJ+RCZ8U8pxUCbYJ5I84Dlpr2nyG7ZZdI9nP0UsA7IDNZsH4eaGNIf+FitiJxPArg4zMIdAtkNhiFxNchzpyBafSpnl6DM33hgwxnFHiCnvXGABN593iQspgwuoYnTQuzfGJusVn0T5/qhtZOwLCAKC6YqCn2cp9a4=
+	t=1755526170; cv=none; b=jpa1wRaPBrEFOwSWpxLXhKqda4dfCdNq07zW7FLzOAImmzfcf563holfPgG3lBt7+SoQl6YPbSUzkR/RCQQ2AUB3O0QxiKFtIl0E5hwyKwktoUEGrMFaR/iAJY01jzRcaNT07q7Aim02Cd2321QulCblpInvJpQAzc7QIgubOs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522890; c=relaxed/simple;
-	bh=W/4Zrd1hQb+Eac+L69A1ybUHlCd5otjsq/pQMzTIVr8=;
+	s=arc-20240116; t=1755526170; c=relaxed/simple;
+	bh=UqBH+/pjXY9kJh8/82fFDPBpwIw6dOMeMvrzpfekl+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Orz7tOrw5TtaCwsHPF1qHBavHnX/JzqjoyXn/GQRXhR26/IpC2FBZBYpwqncg+xVL5zlUCFsMPVzPu70BUoZKrkaO/17kYGXdVPSwe4JacOVxE+Ir/0rJh2cmE8czn+deFHzfukRV1MP1mddHBk+fc52h9OekIomI34h+MbPJto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X61PAsk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F99C4CEEB;
-	Mon, 18 Aug 2025 13:14:49 +0000 (UTC)
+	 MIME-Version; b=IC7LPXZPES7lPuM120YXQsniI9G1OLyNlbNmGgk+cOrT7VTGGho5HKFfBGvlzulh8dQ64p9fcJvHcH/LFZqhx7f6jye4nxQ93rOiNKUFCKXtZhQLTc8JIYIXaBczE+GlyNELzvXMwK2Yi5dDJjRPO1Pyw2vM4CRaVrctPqXhWqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYgc9PSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2A6C4CEEB;
+	Mon, 18 Aug 2025 14:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522890;
-	bh=W/4Zrd1hQb+Eac+L69A1ybUHlCd5otjsq/pQMzTIVr8=;
+	s=korg; t=1755526170;
+	bh=UqBH+/pjXY9kJh8/82fFDPBpwIw6dOMeMvrzpfekl+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X61PAsk0OqKxX87MgNbgkAAtmJLRpC486h9FaJkvm+uO4NeiXuSmPyvCk/VGAZb8/
-	 pDPkdqQrrfyc7Dc+iK7RuHLNu0Ld3thozwB9vtFYqkCjd19KEuAhayF9A+UKc2PrNo
-	 Ol/xdigHPOl8R8UV1D6hYMiK2yr/vJ0IafKwMxfc=
+	b=AYgc9PSLhHHB05NxddGFsvMCDhGuFPjfGScQMuUr04MvmJFvcsy/naScvi4UwZmn/
+	 o9wwLAYB/OsZHiJaK4CqJVSggMEHA1Mkrrusg/yPy13IWL8mkHWfSnxJMYNCgU32MU
+	 iZPnCE7giXPqhbXfh46LJ/Yj225wyaVRjpm5PJP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 438/444] io_uring/rw: cast rw->flags assignment to rwf_t
+	Matthew Auld <matthew.auld@intel.com>,
+	Maciej Patelczyk <maciej.patelczyk@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 477/570] drm/xe/migrate: prevent infinite recursion
 Date: Mon, 18 Aug 2025 14:47:44 +0200
-Message-ID: <20250818124505.388866341@linuxfoundation.org>
+Message-ID: <20250818124524.261074264@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +65,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 825aea662b492571877b32aeeae13689fd9fbee4 upstream.
+[ Upstream commit 9d7a1cbebbb691891671def57407ba2f8ee914e8 ]
 
-kernel test robot reports that a recent change of the sqe->rw_flags
-field throws a sparse warning on 32-bit archs:
+If the buf + offset is not aligned to XE_CAHELINE_BYTES we fallback to
+using a bounce buffer. However the bounce buffer here is allocated on
+the stack, and the only alignment requirement here is that it's
+naturally aligned to u8, and not XE_CACHELINE_BYTES. If the bounce
+buffer is also misaligned we then recurse back into the function again,
+however the new bounce buffer might also not be aligned, and might never
+be until we eventually blow through the stack, as we keep recursing.
 
->> io_uring/rw.c:291:19: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __kernel_rwf_t [usertype] flags @@     got unsigned int @@
-   io_uring/rw.c:291:19: sparse:     expected restricted __kernel_rwf_t [usertype] flags
-   io_uring/rw.c:291:19: sparse:     got unsigned int
+Instead of using the stack use kmalloc, which should respect the
+power-of-two alignment request here. Fixes a kernel panic when
+triggering this path through eudebug.
 
-Force cast it to rwf_t to silence that new sparse warning.
+v2 (Stuart):
+ - Add build bug check for power-of-two restriction
+ - s/EINVAL/ENOMEM/
 
-Fixes: cf73d9970ea4 ("io_uring: don't use int for ABI")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507032211.PwSNPNSP-lkp@intel.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 270172f64b11 ("drm/xe: Update xe_ttm_access_memory to use GPU for non-visible access")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Maciej Patelczyk <maciej.patelczyk@intel.com>
+Cc: Stuart Summers <stuart.summers@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://lore.kernel.org/r/20250731093807.207572-6-matthew.auld@intel.com
+(cherry picked from commit 38b34e928a08ba594c4bbf7118aa3aadacd62fff)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_migrate.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -282,7 +282,7 @@ static int io_prep_rw(struct io_kiocb *r
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index 07a5161c7d5b..c0e2656a14d2 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -1820,15 +1820,19 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
+ 	if (!IS_ALIGNED(len, XE_CACHELINE_BYTES) ||
+ 	    !IS_ALIGNED((unsigned long)buf + offset, XE_CACHELINE_BYTES)) {
+ 		int buf_offset = 0;
++		void *bounce;
++		int err;
++
++		BUILD_BUG_ON(!is_power_of_2(XE_CACHELINE_BYTES));
++		bounce = kmalloc(XE_CACHELINE_BYTES, GFP_KERNEL);
++		if (!bounce)
++			return -ENOMEM;
  
- 	rw->addr = READ_ONCE(sqe->addr);
- 	rw->len = READ_ONCE(sqe->len);
--	rw->flags = READ_ONCE(sqe->rw_flags);
-+	rw->flags = (__force rwf_t) READ_ONCE(sqe->rw_flags);
- 	return io_prep_rw_setup(req, ddir, do_import);
- }
+ 		/*
+ 		 * Less than ideal for large unaligned access but this should be
+ 		 * fairly rare, can fixup if this becomes common.
+ 		 */
+ 		do {
+-			u8 bounce[XE_CACHELINE_BYTES];
+-			void *ptr = (void *)bounce;
+-			int err;
+ 			int copy_bytes = min_t(int, bytes_left,
+ 					       XE_CACHELINE_BYTES -
+ 					       (offset & XE_CACHELINE_MASK));
+@@ -1837,22 +1841,22 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
+ 			err = xe_migrate_access_memory(m, bo,
+ 						       offset &
+ 						       ~XE_CACHELINE_MASK,
+-						       (void *)ptr,
+-						       sizeof(bounce), 0);
++						       bounce,
++						       XE_CACHELINE_BYTES, 0);
+ 			if (err)
+-				return err;
++				break;
  
+ 			if (write) {
+-				memcpy(ptr + ptr_offset, buf + buf_offset, copy_bytes);
++				memcpy(bounce + ptr_offset, buf + buf_offset, copy_bytes);
+ 
+ 				err = xe_migrate_access_memory(m, bo,
+ 							       offset & ~XE_CACHELINE_MASK,
+-							       (void *)ptr,
+-							       sizeof(bounce), write);
++							       bounce,
++							       XE_CACHELINE_BYTES, write);
+ 				if (err)
+-					return err;
++					break;
+ 			} else {
+-				memcpy(buf + buf_offset, ptr + ptr_offset,
++				memcpy(buf + buf_offset, bounce + ptr_offset,
+ 				       copy_bytes);
+ 			}
+ 
+@@ -1861,7 +1865,8 @@ int xe_migrate_access_memory(struct xe_migrate *m, struct xe_bo *bo,
+ 			offset += copy_bytes;
+ 		} while (bytes_left);
+ 
+-		return 0;
++		kfree(bounce);
++		return err;
+ 	}
+ 
+ 	dma_addr = xe_migrate_dma_map(xe, buf, len + page_offset, write);
+-- 
+2.50.1
+
 
 
 
