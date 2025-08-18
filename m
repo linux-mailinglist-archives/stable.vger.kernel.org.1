@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-171103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221E8B2A7FC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:51 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F79BB2A4C7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 125BD1B624C1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B98B4E31D4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F9427F4F5;
-	Mon, 18 Aug 2025 13:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF88F334724;
+	Mon, 18 Aug 2025 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqhSJdSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAz5NuWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C62335BAA;
-	Mon, 18 Aug 2025 13:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B50F2253AE;
+	Mon, 18 Aug 2025 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524825; cv=none; b=dCrSa/uOmAyJf3aYYOB7ijSqXs5i8wpKYkyDs/juzCB/vy0huk3N8xkcmwM+SKdSWz7gnnoTcF1Y8gKAB4yKKTpN7mgFM891L5HNQa6cuo7W1AC2NIzEprNGZ7NpDXrfl4b8QCzjelN8EUkpuVDe7DHStSEnXMqQCTNYo7Dgswc=
+	t=1755523126; cv=none; b=dWTfXZns/sss+vc0v0ko5ImMdsRJol5qjeP5nwCfiCoziTEnbYUqIGIliLqDIBZ4irI64+YP187yuDomSM0BPW9Y5FIYelbT/7w14EojA7CSLmoPun9sSX+k6D+U+7lQwyUn2qzyixuX4/ErdYBBPvuCIqheSt1OejgDJr9iVNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524825; c=relaxed/simple;
-	bh=lYYpiNXz9I5LSzHPXgRqW6Wrsjd3lehn00BzQPFF5LM=;
+	s=arc-20240116; t=1755523126; c=relaxed/simple;
+	bh=TvISiNH7RFqs9W+a0/7L7gGO81xCb7qpluJKew7lJ2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHcLvhtBXFfyvJ9X2aPeyZJ+DmxK6Z4tEIK+xshVLmxfEWor5VC6JDrDCPx7KZouPKGIwBoxrXEU5sjc7SAyuRRBhHVEqbfSEezOMwzVBZTnk0j0eXY1q5V0sVG6qbnW8mgjOFQZm5KqIJgvtHS1ztc9fh6aZYxTbLyKvO1r1BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqhSJdSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134D5C4CEEB;
-	Mon, 18 Aug 2025 13:47:04 +0000 (UTC)
+	 MIME-Version; b=KBz/44CQYetcEnpws7YvMZshLxtKAKgRxAbJsE+Gt18UfVshtWyIaJ8WOLbvXJNS/jX7cYYeOm+asOB/WIoZ3QxIbAPAzytLtD9/sKfpSx92JB3QCir4HcTtkY2Y0+JJwAsTw4iC539JnMtgQ3GjScQIxl4g9VWgqq3fPmhEba8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAz5NuWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D00C6C4CEEB;
+	Mon, 18 Aug 2025 13:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524825;
-	bh=lYYpiNXz9I5LSzHPXgRqW6Wrsjd3lehn00BzQPFF5LM=;
+	s=korg; t=1755523126;
+	bh=TvISiNH7RFqs9W+a0/7L7gGO81xCb7qpluJKew7lJ2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqhSJdSpDyXEnLacAxG9HMp0JmCo2QpV4/AcJOgaRM6k+tM0aUHIYW28bwXQiP7Qq
-	 SpoCnpeeChz7XKdezzbMT4/trNt3jARUnpE4Z986K2vaICPQjXuwi8Xwv1vJulOxl2
-	 uTtwISGWiQlNtwbgVyeuYM0Fd71G4kAWQBQgrA8s=
+	b=bAz5NuWJNfj2Vp7qkTAH7u9QJGKLr2ZCkeBE830hQ28Ihl7BLe/6E4D41WJlYU9AX
+	 LlSHM/6+FEjAYo2LRfYObBjSJ5SrxuUN/KzaSGorDWS9VbrDB7+uMpOKuvwEPH1IJp
+	 xzeynx3LnQxWZlzWHPDyK+Gou6W6p0PyTehT1XOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com,
+	syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com,
+	syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com,
+	Sven Stegemann <sven@stegemann.de>,
 	Jakub Kicinski <kuba@kernel.org>,
-	syzbot+e6300f66a999a6612477@syzkaller.appspotmail.com,
-	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 075/570] hamradio: ignore ops-locked netdevs
-Date: Mon, 18 Aug 2025 14:41:02 +0200
-Message-ID: <20250818124508.716021684@linuxfoundation.org>
+Subject: [PATCH 6.15 077/515] net: kcm: Fix race condition in kcm_unattach()
+Date: Mon, 18 Aug 2025 14:41:03 +0200
+Message-ID: <20250818124501.346670351@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Sven Stegemann <sven@stegemann.de>
 
-[ Upstream commit c64237960819aee1766d03f446ae6de94b1e3f73 ]
+[ Upstream commit 52565a935213cd6a8662ddb8efe5b4219343a25d ]
 
-Syzkaller managed to trigger lock dependency in xsk_notify via
-register_netdevice. As discussed in [0], using register_netdevice
-in the notifiers is problematic so skip adding hamradio for ops-locked
-devices.
+syzbot found a race condition when kcm_unattach(psock)
+and kcm_release(kcm) are executed at the same time.
 
-       xsk_notifier+0x89/0x230 net/xdp/xsk.c:1664
-       notifier_call_chain+0x1b6/0x3e0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
-       call_netdevice_notifiers net/core/dev.c:2281 [inline]
-       unregister_netdevice_many_notify+0x14d7/0x1ff0 net/core/dev.c:12156
-       unregister_netdevice_many net/core/dev.c:12219 [inline]
-       unregister_netdevice_queue+0x33c/0x380 net/core/dev.c:12063
-       register_netdevice+0x1689/0x1ae0 net/core/dev.c:11241
-       bpq_new_device drivers/net/hamradio/bpqether.c:481 [inline]
-       bpq_device_event+0x491/0x600 drivers/net/hamradio/bpqether.c:523
-       notifier_call_chain+0x1b6/0x3e0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
-       call_netdevice_notifiers net/core/dev.c:2281 [inline]
-       __dev_notify_flags+0x18d/0x2e0 net/core/dev.c:-1
-       netif_change_flags+0xe8/0x1a0 net/core/dev.c:9608
-       dev_change_flags+0x130/0x260 net/core/dev_api.c:68
-       devinet_ioctl+0xbb4/0x1b50 net/ipv4/devinet.c:1200
-       inet_ioctl+0x3c0/0x4c0 net/ipv4/af_inet.c:1001
+kcm_unattach() is missing a check of the flag
+kcm->tx_stopped before calling queue_work().
 
-0: https://lore.kernel.org/netdev/20250625140357.6203d0af@kernel.org/
-Fixes: 4c975fd70002 ("net: hold instance lock during NETDEV_REGISTER/UP")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: syzbot+e6300f66a999a6612477@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e6300f66a999a6612477
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20250806213726.1383379-2-sdf@fomichev.me
+If the kcm has a reserved psock, kcm_unattach() might get executed
+between cancel_work_sync() and unreserve_psock() in kcm_release(),
+requeuing kcm->tx_work right before kcm gets freed in kcm_done().
+
+Remove kcm->tx_stopped and replace it by the less
+error-prone disable_work_sync().
+
+Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
+Reported-by: syzbot+e62c9db591c30e174662@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e62c9db591c30e174662
+Reported-by: syzbot+d199b52665b6c3069b94@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d199b52665b6c3069b94
+Reported-by: syzbot+be6b1fdfeae512726b4e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=be6b1fdfeae512726b4e
+Signed-off-by: Sven Stegemann <sven@stegemann.de>
+Link: https://patch.msgid.link/20250812191810.27777-1-sven@stegemann.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hamradio/bpqether.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/kcm.h |  1 -
+ net/kcm/kcmsock.c | 10 ++--------
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/hamradio/bpqether.c b/drivers/net/hamradio/bpqether.c
-index 0e0fe32d2da4..045c5177262e 100644
---- a/drivers/net/hamradio/bpqether.c
-+++ b/drivers/net/hamradio/bpqether.c
-@@ -138,7 +138,7 @@ static inline struct net_device *bpq_get_ax25_dev(struct net_device *dev)
+diff --git a/include/net/kcm.h b/include/net/kcm.h
+index 441e993be634..d9c35e71ecea 100644
+--- a/include/net/kcm.h
++++ b/include/net/kcm.h
+@@ -71,7 +71,6 @@ struct kcm_sock {
+ 	struct list_head wait_psock_list;
+ 	struct sk_buff *seq_skb;
+ 	struct mutex tx_mutex;
+-	u32 tx_stopped : 1;
  
- static inline int dev_is_ethdev(struct net_device *dev)
- {
--	return dev->type == ARPHRD_ETHER && strncmp(dev->name, "dummy", 5);
-+	return dev->type == ARPHRD_ETHER && !netdev_need_ops_lock(dev);
- }
+ 	/* Don't use bit fields here, these are set under different locks */
+ 	bool tx_wait;
+diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
+index 24aec295a51c..8c0577cd764f 100644
+--- a/net/kcm/kcmsock.c
++++ b/net/kcm/kcmsock.c
+@@ -429,7 +429,7 @@ static void psock_write_space(struct sock *sk)
  
- /* ------------------------------------------------------------------------ */
+ 	/* Check if the socket is reserved so someone is waiting for sending. */
+ 	kcm = psock->tx_kcm;
+-	if (kcm && !unlikely(kcm->tx_stopped))
++	if (kcm)
+ 		queue_work(kcm_wq, &kcm->tx_work);
+ 
+ 	spin_unlock_bh(&mux->lock);
+@@ -1688,12 +1688,6 @@ static int kcm_release(struct socket *sock)
+ 	 */
+ 	__skb_queue_purge(&sk->sk_write_queue);
+ 
+-	/* Set tx_stopped. This is checked when psock is bound to a kcm and we
+-	 * get a writespace callback. This prevents further work being queued
+-	 * from the callback (unbinding the psock occurs after canceling work.
+-	 */
+-	kcm->tx_stopped = 1;
+-
+ 	release_sock(sk);
+ 
+ 	spin_lock_bh(&mux->lock);
+@@ -1709,7 +1703,7 @@ static int kcm_release(struct socket *sock)
+ 	/* Cancel work. After this point there should be no outside references
+ 	 * to the kcm socket.
+ 	 */
+-	cancel_work_sync(&kcm->tx_work);
++	disable_work_sync(&kcm->tx_work);
+ 
+ 	lock_sock(sk);
+ 	psock = kcm->tx_psock;
 -- 
 2.50.1
 
