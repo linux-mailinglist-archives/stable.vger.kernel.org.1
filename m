@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDD7B2A53C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D40B2A252
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AAA56259D1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 554D3189ABD9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2359A32144E;
-	Mon, 18 Aug 2025 13:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD611E51FE;
+	Mon, 18 Aug 2025 12:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVfqh+So"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMDkcKzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D655330DD34;
-	Mon, 18 Aug 2025 13:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4072258ED7;
+	Mon, 18 Aug 2025 12:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523046; cv=none; b=a3fyUjFQbe20XUg7UetOgMYtZHQGY/+Osi+s+l6VKbXvg00Db/rR/tCgxfnpjzw6t7b1CgGICdcy0/QA1W3TBRqKZ2XfeN2SXQPULI7PAy/fE1eZalCFN3mJaXcMZo9Nb4Tgrjt+NRko4glwUj0PJJmFSYHV7PY7WOBOZy0WSUo=
+	t=1755521418; cv=none; b=NCCfEmm35o59k/T07IBJRRfitexIkk62X43invLi+HM85mFvsRSigQd7YS+rEVS+a/1nEHTT+l1O6cf1dCD4Np8YyD4p/NyqkV5640dTLb0Sbhohyjn0/buaIdbNcUbPv1aOse/6nRTNupw2tTD5RuXSvW8g1SYvYEISho1AdTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523046; c=relaxed/simple;
-	bh=xLI0gX5JJe53qYyPd6fZ7pCVtgk4APXXTTq4QNbVkJk=;
+	s=arc-20240116; t=1755521418; c=relaxed/simple;
+	bh=QmNlPg6yYCzN+85V7MbH3tWRyB/Jk+TW0odXRZ7miIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FubR3lXNLmXQuwZvnLCXEKp0ZKcwHdwUdYhfRcHQAUMCAGuHnJ2W4eHCqq8iwTvFrJgl+WLc7rPZQol7sSPYaJ0mRx5PzXa5Xabw7Ch8Ngm0sLH5mgZjhaD2xzMCQ8spjafhWczsBiCZtBbt6qELjWSEDLXTV+DEMOLGgCSDSac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVfqh+So; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4634EC4CEEB;
-	Mon, 18 Aug 2025 13:17:26 +0000 (UTC)
+	 MIME-Version; b=uC0OPTLPq4HBJV3ldwzNs8rwQpfsGFTm5jzyVelirFuwOxiXbD92tm52y4TopQBWPiQa+pEJuhRedXUcr01Rt5zN1q4fzRMlXRJVA2P+5pELge+G8rG61UP1WGKI/bRtY60ZYsIQE7FqQRBd6vzgnELrXA9P+//aIPbNYd9qMn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMDkcKzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC186C4CEF1;
+	Mon, 18 Aug 2025 12:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523046;
-	bh=xLI0gX5JJe53qYyPd6fZ7pCVtgk4APXXTTq4QNbVkJk=;
+	s=korg; t=1755521418;
+	bh=QmNlPg6yYCzN+85V7MbH3tWRyB/Jk+TW0odXRZ7miIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVfqh+Soupis7vvQFJv8VmLOxbUfv8cUWSLDaDXWVDyVt5fX4dLoEmtSPk02ZO1qO
-	 3cnzGRjUmcMfSP61UuEqEp0Tf7M45ZyXNIGfEnG3p08TgDYunlC56XKSnaewkw4KWB
-	 JerrZPoo4YZQ2GFguVEIokbNJ9WKNZPcwLxqz55I=
+	b=ZMDkcKzn/c1noiaMSgF04RK1Fv03UCtNOcc4hKGCUJeoyvuprwyLGtSBjcFgNCjjF
+	 11m4r7A98tOSckqyPXWM6+D3AcjFWWhccj9/AH8FCM/72IZr2nmbzauP7PmVFv+KkD
+	 nwLvLiFm/bUl2IHw3MiANwK+Oh8bg3FwWQwzJP8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 055/515] habanalabs: fix UAF in export_dmabuf()
+	Florian Larysch <fl@n621.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 015/444] net: phy: micrel: fix KSZ8081/KSZ8091 cable test
 Date: Mon, 18 Aug 2025 14:40:41 +0200
-Message-ID: <20250818124500.535773250@linuxfoundation.org>
+Message-ID: <20250818124449.475074909@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Florian Larysch <fl@n621.de>
 
-[ Upstream commit 33927f3d0ecdcff06326d6e4edb6166aed42811c ]
+commit 49db61c27c4bbd24364086dc0892bd3e14c1502e upstream.
 
-As soon as we'd inserted a file reference into descriptor table, another
-thread could close it.  That's fine for the case when all we are doing is
-returning that descriptor to userland (it's a race, but it's a userland
-race and there's nothing the kernel can do about it).  However, if we
-follow fd_install() with any kind of access to objects that would be
-destroyed on close (be it the struct file itself or anything destroyed
-by its ->release()), we have a UAF.
+Commit 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814
+phy") introduced cable_test support for the LAN8814 that reuses parts of
+the KSZ886x logic and introduced the cable_diag_reg and pair_mask
+parameters to account for differences between those chips.
 
-dma_buf_fd() is a combination of reserving a descriptor and fd_install().
-habanalabs export_dmabuf() calls it and then proceeds to access the
-objects destroyed on close.  In particular, it grabs an extra reference to
-another struct file that will be dropped as part of ->release() for ours;
-that "will be" is actually "might have already been".
+However, it did not update the ksz8081_type struct, so those members are
+now 0, causing no pairs to be tested in ksz886x_cable_test_get_status
+and ksz886x_cable_test_wait_for_completion to poll the wrong register
+for the affected PHYs (Basic Control/Reset, which is 0 in normal
+operation) and exit immediately.
 
-Fix that by reserving descriptor before anything else and do fd_install()
-only when everything had been set up.  As a side benefit, we no longer
-have the failure exit with file already created, but reference to
-underlying file (as well as ->dmabuf_export_cnt, etc.) not grabbed yet;
-unlike dma_buf_fd(), fd_install() can't fail.
+Fix this by setting both struct members accordingly.
 
-Fixes: db1a8dd916aa ("habanalabs: add support for dma-buf exporter")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 21b688dabecb ("net: phy: micrel: Cable Diag feature for lan8814 phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Florian Larysch <fl@n621.de>
+Link: https://patch.msgid.link/20250723222250.13960-1-fl@n621.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/habanalabs/common/memory.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ drivers/net/phy/micrel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
-index 601fdbe70179..61472a381904 100644
---- a/drivers/accel/habanalabs/common/memory.c
-+++ b/drivers/accel/habanalabs/common/memory.c
-@@ -1829,9 +1829,6 @@ static void hl_release_dmabuf(struct dma_buf *dmabuf)
- 	struct hl_dmabuf_priv *hl_dmabuf = dmabuf->priv;
- 	struct hl_ctx *ctx;
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -470,6 +470,8 @@ static const struct kszphy_type ksz8051_
  
--	if (!hl_dmabuf)
--		return;
--
- 	ctx = hl_dmabuf->ctx;
- 
- 	if (hl_dmabuf->memhash_hnode)
-@@ -1859,7 +1856,12 @@ static int export_dmabuf(struct hl_ctx *ctx,
- {
- 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
- 	struct hl_device *hdev = ctx->hdev;
--	int rc, fd;
-+	CLASS(get_unused_fd, fd)(flags);
-+
-+	if (fd < 0) {
-+		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", fd);
-+		return fd;
-+	}
- 
- 	exp_info.ops = &habanalabs_dmabuf_ops;
- 	exp_info.size = total_size;
-@@ -1872,13 +1874,6 @@ static int export_dmabuf(struct hl_ctx *ctx,
- 		return PTR_ERR(hl_dmabuf->dmabuf);
- 	}
- 
--	fd = dma_buf_fd(hl_dmabuf->dmabuf, flags);
--	if (fd < 0) {
--		dev_err(hdev->dev, "failed to get a file descriptor for a dma-buf, %d\n", fd);
--		rc = fd;
--		goto err_dma_buf_put;
--	}
--
- 	hl_dmabuf->ctx = ctx;
- 	hl_ctx_get(hl_dmabuf->ctx);
- 	atomic_inc(&ctx->hdev->dmabuf_export_cnt);
-@@ -1890,13 +1885,9 @@ static int export_dmabuf(struct hl_ctx *ctx,
- 	get_file(ctx->hpriv->file_priv->filp);
- 
- 	*dmabuf_fd = fd;
-+	fd_install(take_fd(fd), hl_dmabuf->dmabuf->file);
- 
- 	return 0;
--
--err_dma_buf_put:
--	hl_dmabuf->dmabuf->priv = NULL;
--	dma_buf_put(hl_dmabuf->dmabuf);
--	return rc;
- }
- 
- static int validate_export_params_common(struct hl_device *hdev, u64 addr, u64 size, u64 offset)
--- 
-2.50.1
-
+ static const struct kszphy_type ksz8081_type = {
+ 	.led_mode_reg		= MII_KSZPHY_CTRL_2,
++	.cable_diag_reg		= KSZ8081_LMD,
++	.pair_mask		= KSZPHY_WIRE_PAIR_MASK,
+ 	.has_broadcast_disable	= true,
+ 	.has_nand_tree_disable	= true,
+ 	.has_rmii_ref_clk_sel	= true,
 
 
 
