@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-169917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12779B298BC
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:02:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD32B298DD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 07:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A3B93A32FB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:02:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9C0D7A5606
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 05:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525101FECD4;
-	Mon, 18 Aug 2025 05:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4724F26561D;
+	Mon, 18 Aug 2025 05:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MoUeQSbQ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PXxm8rsX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F81C1487E9;
-	Mon, 18 Aug 2025 05:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D5821770C
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 05:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755493321; cv=none; b=IsHC3DWMV3OAykZa02BDGsVzeVhkY0SjsZQBPa1ugpbg6AmiMr09v36mRS0A4ynpTORIZqdFhXuHlMT9Z9q63dcLdFHRWi+vn9lzkqLO2nwP9HwwhZUzzTrc8UrwGYHd2oT4ul0BXegKrXBdkmiKORmPc/DkECYcY72R+wDQyQo=
+	t=1755494656; cv=none; b=f8UUTXS+qbKFDHYzYDzD+Gm8HCvcd9F8ZhldQh07Y3hakcEO5VWtos+pCLQ752IucwCAmLjVl5Jm25oyUQu6zDE84bnJgVRajifjT2RQ22zIfaOBKu6ozIN71V9bT+7pTo1UtNG6PdmBNBgSdmEcvfJf7hxWn8VqI+FA/TTT1j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755493321; c=relaxed/simple;
-	bh=Wcbc1iPS4NjS4layzsj+dqbmw7Qj3X12tZY80+4grho=;
+	s=arc-20240116; t=1755494656; c=relaxed/simple;
+	bh=8wiTb8fNRCyJIgqWCW1b/sRAjqR2MPIo8lU+lkseZwo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VT6Ph1E9ae6dJgB+GqwFzjl78w3CbusqoP8IQfUpJnpIH4NnX3hWd7SHRmVzkpIxXRkKpSi/hSfCq3+xtdQ+MpiYPUQRecOc3h7VjtSoMtYGRuuV2MrnmrC+MRdfizqc0egsINUokfOi59kao2RxXhDL246aSFli+IMyp5m6VME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoUeQSbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B14C4CEEB;
-	Mon, 18 Aug 2025 05:01:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755493320;
-	bh=Wcbc1iPS4NjS4layzsj+dqbmw7Qj3X12tZY80+4grho=;
+	 In-Reply-To:Content-Type; b=Wgbbkf65RF8RFMg+nwYyr1UFs266nWu4rjPlGPApDYsAFv/V7FUyfHvhw/1kLLTxz2EUC9tQWVkKEGMVcPkZ88ZA0gWzaN7tmbJ1S+EBjkLBPyezS5QUFMBLtuWQ5oyN8OUdvcKix4H8wK8KoFX2Yo1kThQQUY+AGjwEz+rh8ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PXxm8rsX; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.95.64.75] (unknown [167.220.238.11])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 4955A2054677;
+	Sun, 17 Aug 2025 22:24:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4955A2054677
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1755494653;
+	bh=w32BJLaKNHTQrrElu97ALQTnN3hLaYFd8VqACkOW/7c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MoUeQSbQ53Zr43JPqGRI0UhV9O8Y2f+nP/yHcdpWT0ci5vns2Ct14CcDywbY5Gx1w
-	 +vBRbUSusuXsu3W+VFvge5/OQVIKn2GmSQMcxGWRc4Gc22qSlrvFzs08Fc11dZ8ntb
-	 yvtEMEPjlpB+fpFP4VvEUAHBi++AzPIf65JqM/46Ff8tVpYD6yJpHre6DR9Dvt8rFs
-	 WgqXxxxI7m3/spcuPsDDyjQJ5e+DB3EsVPPSqovwCFHswiVvnKFkrlRs29GsN2SVI/
-	 yD8YoxBtCsiMDjcFdGIwclhZNRwr7RnptyfBAU8AmDu9d47OtePGn1xGPragw4MpaQ
-	 rcodgMxv96H+Q==
-Message-ID: <f2ff00e6-a931-4c61-a43d-fb3e450f7ffd@kernel.org>
-Date: Mon, 18 Aug 2025 07:01:56 +0200
+	b=PXxm8rsXcylV2Dq1hm91H6anT1vqFiJM4T8mFAgoD0D2ty6CKE9vDNLiWXLgNuiVP
+	 aGKu66s6oJGc3TTFB+VYZS9PcMQx9UpVt1+P5zteza2qgoi2FGAKjegi85f/kZpJAp
+	 SAsUTHs/an7JrVn+NR4aFPAYc+itFaDk9WCNBNkA=
+Message-ID: <08158da3-82a0-4eb0-a805-87afe34e288a@linux.microsoft.com>
+Date: Mon, 18 Aug 2025 10:54:10 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,82 +49,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] proc: fix wrong behavior of FMODE_LSEEK clearing for net
- related proc file
-To: wangzijie <wangzijie1@honor.com>, akpm@linux-foundation.org,
- viro@zeniv.linux.org.uk, adobriyan@gmail.com, rick.p.edgecombe@intel.com,
- ast@kernel.org, kirill.shutemov@linux.intel.com
-Cc: polynomial-c@gmx.de, gregkh@linuxfoundation.org, stable@vger.kernel.org,
- regressions@lists.linux.dev
-References: <20250818040535.564611-1-wangzijie1@honor.com>
+Subject: Re: [PATCH 6.12 020/158] tools/hv: fcopy: Fix irregularities with
+ size of ring buffer
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ Saurabh Sengar <ssengar@linux.microsoft.com>, Long Li
+ <longli@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Naman Jain <namjain@linux.microsoft.com>
+References: <20250722134340.596340262@linuxfoundation.org>
+ <20250722134341.490321531@linuxfoundation.org>
+ <d9be2bb3-5f84-4182-91e8-ec1a4abd8f5f@linux.microsoft.com>
+ <2025072316-mop-manhood-b63e@gregkh>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20250818040535.564611-1-wangzijie1@honor.com>
+From: Naman Jain <namjain@linux.microsoft.com>
+In-Reply-To: <2025072316-mop-manhood-b63e@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi,
 
-On 18. 08. 25, 6:05, wangzijie wrote:
-> For avoiding pde->proc_ops->... dereference(which may cause UAF in rmmod race scene),
-> we call pde_set_flags() to save this kind of information in PDE itself before
-> proc_register() and call pde_has_proc_XXX() to replace pde->proc_ops->... dereference.
-> But there has omission of pde_set_flags() in net related proc file create, which cause
-> the wroing behavior of FMODE_LSEEK clearing in proc_reg_open() for net related proc file
-> after commit ff7ec8dc1b64("proc: use the same treatment to check proc_lseek as ones for
-> proc_read_iter et.al"). Lars reported it in this link[1]. So call pde_set_flags() when
-> create net related proc file to fix this bug.
 
-I wonder, why is pde_set_flags() not a part of proc_register()?
+On 7/23/2025 12:12 PM, Greg Kroah-Hartman wrote:
+> On Tue, Jul 22, 2025 at 08:29:07PM +0530, Naman Jain wrote:
+>>
+>>
+>> On 7/22/2025 7:13 PM, Greg Kroah-Hartman wrote:
+>>> 6.12-stable review patch.  If anyone has any objections, please let me know.
+>>>
+>>> ------------------
+>>>
+>>> From: Naman Jain <namjain@linux.microsoft.com>
+>>>
+>>> commit a4131a50d072b369bfed0b41e741c41fd8048641 upstream.
+>>>
+>>> Size of ring buffer, as defined in uio_hv_generic driver, is no longer
+>>> fixed to 16 KB. This creates a problem in fcopy, since this size was
+>>> hardcoded. With the change in place to make ring sysfs node actually
+>>> reflect the size of underlying ring buffer, it is safe to get the size
+>>> of ring sysfs file and use it for ring buffer size in fcopy daemon.
+>>> Fix the issue of disparity in ring buffer size, by making it dynamic
+>>> in fcopy uio daemon.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+>>> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+>>> Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+>>> Reviewed-by: Long Li <longli@microsoft.com>
+>>> Link: https://lore.kernel.org/r/20250711060846.9168-1-namjain@linux.microsoft.com
+>>> Signed-off-by: Wei Liu <wei.liu@kernel.org>
+>>> Message-ID: <20250711060846.9168-1-namjain@linux.microsoft.com>
+>>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>> ---
+>>
+>>
+>> Hello Greg,
+>> Please don't pick this change yet. I have shared the reason in the other
+>> thread:
+>> "Re: Patch "tools/hv: fcopy: Fix irregularities with size of ring buffer"
+>> has been added to the 6.12-stable tree"
+> 
+> Ok, I have dropped this from the 6.12.y tree now.
+> 
+> thanks,
+> 
+> greg k-h
 
-Could you also use some LLM to reformat the message into something 
-comprehensible?
+Hello Greg,
+Can you please consider picking this change for next release of 6.12 
+kernel. The dependent change [1] is now part of 6.12 kernel, so we need 
+this change to fix fcopy in 6.12 kernel.
 
-thanks,
--- 
-js
-suse labs
+[1]: Drivers: hv: Make the sysfs node size for the ring buffer dynamic
+
+Please let me know if you want me to send a patch for back-port separately.
+
+Regards,
+Naman
 
 
