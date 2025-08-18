@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12C6B2A442
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D690B2AA2D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F4A5665C2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4456821D8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0350731E10E;
-	Mon, 18 Aug 2025 13:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0091340D9E;
+	Mon, 18 Aug 2025 14:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCQo/6Yq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8YhSBUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EA131B102;
-	Mon, 18 Aug 2025 13:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6966931B11A;
+	Mon, 18 Aug 2025 14:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522458; cv=none; b=a0IUq/WDVKiwE31W1lcFL6AAH/XPhWebowE96CmreLX7gLOEvh5Ke9j53VCfS14zCFqY87O0bbKzVieT6zOQf6rCE/LKZswQntZpvkmXhYtIZR0WStfkVsnZJG6ggal7MTe1vIo5VBu11UoWtvMA+5z6ix6wB9vQvRaVUnN2COk=
+	t=1755525769; cv=none; b=YsHoCgkdNfq1BC0km+bcdhu1votTLUiZlOmUgqlpP9OWA+0g8gbsIqU/DICXC101uwgCBwBYpksFJ0xBguWD6pYlvmfmd8Wjy/JSDCNJ69Lo0Y11Qjw7fEs21lxV9a7MT0Ui42xKmffejGD/J7/mHn71gL/zYZx1wGZh8x4c0ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522458; c=relaxed/simple;
-	bh=3mUlfk0cVRiCUK8MirVrgaoq07WCZRPJcKCp0Eto4HA=;
+	s=arc-20240116; t=1755525769; c=relaxed/simple;
+	bh=puUNJUWtaMS8nlTCfzaD6pXcCM3R5WFslJLiAWGYbos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKER5uWFc9CZ51Ts8GIm8r8UTB46P5lydifv4IngrdEuaZti9IAhchTZeHgAuN9Y1vbXbx8pxaMCqiYrVcppwvJz6vRDQ8DF0HqaJIujia1akxesc3oGx0dnb44m+1juei/YFvbX1ePnp80ehH7vp2TnLlCMkpGnPeYaH4hg5uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCQo/6Yq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18ABFC4CEEB;
-	Mon, 18 Aug 2025 13:07:37 +0000 (UTC)
+	 MIME-Version; b=jbCUG/iKTidL+v+ikx0CqXAQ02iU9QZ2mg8yuOPEbDCVN/3Axa8LZTa+Zsa0uvkJU8daLDoA7n+JoRQ1gFRsMKRKWO6CeGvqRAPRzSVSGWZgn7+VG+JdKmfkXbcIT1tuxito6cZe+YhOPrSPu8P4uuUfdBy62Z7LFt3fFlt66tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8YhSBUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC51EC4CEEB;
+	Mon, 18 Aug 2025 14:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522458;
-	bh=3mUlfk0cVRiCUK8MirVrgaoq07WCZRPJcKCp0Eto4HA=;
+	s=korg; t=1755525769;
+	bh=puUNJUWtaMS8nlTCfzaD6pXcCM3R5WFslJLiAWGYbos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCQo/6YqYg0JmY0mXU57jPbHeM1TNQttEo0ThHH3F+APzsgnJQZPho6gsHvDx/dWf
-	 TiSAUImYJdvReNJ6XVT651wI2B66r6QAKO1wzjBR27+vkXeUrPjkHjFneMpDjxh2se
-	 k8+EdhDe08SRvM73uS6gtsZX0mz/S6AUZqLFQb1o=
+	b=W8YhSBUfu8839JnZZtNFVOXdERzbAIVuxsZULN69Mk/PCrnH/UeWRBObcxVxEdJ6L
+	 EzuuMzO/jWNObtvG+Ndb1m5/0Mi6wN/fk7TeyKX9T9tTcC2lm5LrNUCgm5NbATMfYR
+	 toorcvltQbArTHvgaRdopH57uDKEv4nBDGCH8BzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-cifs@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Pierguido Lambri <plambri@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 321/444] crypto: octeontx2 - add timeout for load_fvc completion poll
-Date: Mon, 18 Aug 2025 14:45:47 +0200
-Message-ID: <20250818124500.980609129@linuxfoundation.org>
+Subject: [PATCH 6.16 361/570] smb: client: fix session setup against servers that require SPN
+Date: Mon, 18 Aug 2025 14:45:48 +0200
+Message-ID: <20250818124519.762572033@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +65,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 2157e50f65d2030f07ea27ef7ac4cfba772e98ac ]
+[ Upstream commit 33cfdd726381828b9907a61c038a9f48b6690a31 ]
 
-Adds timeout to exit from possible infinite loop, which polls
-on CPT instruction(load_fvc) completion.
+Some servers might enforce the SPN to be set in the target info
+blob (AV pairs) when sending NTLMSSP_AUTH message.  In Windows Server,
+this could be enforced with SmbServerNameHardeningLevel set to 2.
 
-Signed-off-by: Srujana Challa <schalla@marvell.com>
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fix this by always appending SPN (cifs/<hostname>) to the existing
+list of target infos when setting up NTLMv2 response blob.
+
+Cc: linux-cifs@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>
+Reported-by: Pierguido Lambri <plambri@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/marvell/octeontx2/otx2_cptpf_ucode.c  | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/smb/client/cifsencrypt.c | 79 ++++++++++++++++++++++++++++---------
+ 1 file changed, 61 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-index 5c9484646172..357a7c6ac837 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_ucode.c
-@@ -1493,6 +1493,7 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
- 	dma_addr_t rptr_baddr;
- 	struct pci_dev *pdev;
- 	u32 len, compl_rlen;
-+	int timeout = 10000;
- 	int ret, etype;
- 	void *rptr;
+diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
+index 6be850d2a346..3cc686246908 100644
+--- a/fs/smb/client/cifsencrypt.c
++++ b/fs/smb/client/cifsencrypt.c
+@@ -532,17 +532,67 @@ CalcNTLMv2_response(const struct cifs_ses *ses, char *ntlmv2_hash, struct shash_
+ 	return rc;
+ }
  
-@@ -1555,16 +1556,27 @@ int otx2_cpt_discover_eng_capabilities(struct otx2_cptpf_dev *cptpf)
- 							 etype);
- 		otx2_cpt_fill_inst(&inst, &iq_cmd, rptr_baddr);
- 		lfs->ops->send_cmd(&inst, 1, &cptpf->lfs.lf[0]);
-+		timeout = 10000;
++/*
++ * Set up NTLMv2 response blob with SPN (cifs/<hostname>) appended to the
++ * existing list of AV pairs.
++ */
++static int set_auth_key_response(struct cifs_ses *ses)
++{
++	size_t baselen = CIFS_SESS_KEY_SIZE + sizeof(struct ntlmv2_resp);
++	size_t len, spnlen, tilen = 0, num_avs = 2 /* SPN + EOL */;
++	struct TCP_Server_Info *server = ses->server;
++	char *spn __free(kfree) = NULL;
++	struct ntlmssp2_name *av;
++	char *rsp = NULL;
++	int rc;
++
++	spnlen = strlen(server->hostname);
++	len = sizeof("cifs/") + spnlen;
++	spn = kmalloc(len, GFP_KERNEL);
++	if (!spn) {
++		rc = -ENOMEM;
++		goto out;
++	}
++
++	spnlen = scnprintf(spn, len, "cifs/%.*s",
++			   (int)spnlen, server->hostname);
++
++	av_for_each_entry(ses, av)
++		tilen += sizeof(*av) + AV_LEN(av);
++
++	len = baselen + tilen + spnlen * sizeof(__le16) + num_avs * sizeof(*av);
++	rsp = kmalloc(len, GFP_KERNEL);
++	if (!rsp) {
++		rc = -ENOMEM;
++		goto out;
++	}
++
++	memcpy(rsp + baselen, ses->auth_key.response, tilen);
++	av = (void *)(rsp + baselen + tilen);
++	av->type = cpu_to_le16(NTLMSSP_AV_TARGET_NAME);
++	av->length = cpu_to_le16(spnlen * sizeof(__le16));
++	cifs_strtoUTF16((__le16 *)av->data, spn, spnlen, ses->local_nls);
++	av = (void *)((__u8 *)av + sizeof(*av) + AV_LEN(av));
++	av->type = cpu_to_le16(NTLMSSP_AV_EOL);
++	av->length = 0;
++
++	rc = 0;
++	ses->auth_key.len = len;
++out:
++	ses->auth_key.response = rsp;
++	return rc;
++}
++
+ int
+ setup_ntlmv2_rsp(struct cifs_ses *ses, const struct nls_table *nls_cp)
+ {
+ 	struct shash_desc *hmacmd5 = NULL;
+-	int rc;
+-	int baselen;
+-	unsigned int tilen;
++	unsigned char *tiblob = NULL; /* target info blob */
+ 	struct ntlmv2_resp *ntlmv2;
+ 	char ntlmv2_hash[16];
+-	unsigned char *tiblob = NULL; /* target info blob */
+ 	__le64 rsp_timestamp;
++	__u64 cc;
++	int rc;
  
- 		while (lfs->ops->cpt_get_compcode(result) ==
--						OTX2_CPT_COMPLETION_CODE_INIT)
-+						OTX2_CPT_COMPLETION_CODE_INIT) {
- 			cpu_relax();
-+			udelay(1);
-+			timeout--;
-+			if (!timeout) {
-+				ret = -ENODEV;
-+				cptpf->is_eng_caps_discovered = false;
-+				dev_warn(&pdev->dev, "Timeout on CPT load_fvc completion poll\n");
-+				goto error_no_response;
-+			}
-+		}
+ 	if (nls_cp == NULL) {
+ 		cifs_dbg(VFS, "%s called with nls_cp==NULL\n", __func__);
+@@ -588,32 +638,25 @@ setup_ntlmv2_rsp(struct cifs_ses *ses, const struct nls_table *nls_cp)
+ 	 * (as Windows 7 does)
+ 	 */
+ 	rsp_timestamp = find_timestamp(ses);
++	get_random_bytes(&cc, sizeof(cc));
  
- 		cptpf->eng_caps[etype].u = be64_to_cpup(rptr);
+-	baselen = CIFS_SESS_KEY_SIZE + sizeof(struct ntlmv2_resp);
+-	tilen = ses->auth_key.len;
+-	tiblob = ses->auth_key.response;
++	cifs_server_lock(ses->server);
+ 
+-	ses->auth_key.response = kmalloc(baselen + tilen, GFP_KERNEL);
+-	if (!ses->auth_key.response) {
+-		rc = -ENOMEM;
++	tiblob = ses->auth_key.response;
++	rc = set_auth_key_response(ses);
++	if (rc) {
+ 		ses->auth_key.len = 0;
+-		goto setup_ntlmv2_rsp_ret;
++		goto unlock;
  	}
--	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
- 	cptpf->is_eng_caps_discovered = true;
+-	ses->auth_key.len += baselen;
  
-+error_no_response:
-+	dma_unmap_single(&pdev->dev, rptr_baddr, len, DMA_BIDIRECTIONAL);
- free_result:
- 	kfree(result);
- lf_cleanup:
+ 	ntlmv2 = (struct ntlmv2_resp *)
+ 			(ses->auth_key.response + CIFS_SESS_KEY_SIZE);
+ 	ntlmv2->blob_signature = cpu_to_le32(0x00000101);
+ 	ntlmv2->reserved = 0;
+ 	ntlmv2->time = rsp_timestamp;
+-
+-	get_random_bytes(&ntlmv2->client_chal, sizeof(ntlmv2->client_chal));
++	ntlmv2->client_chal = cc;
+ 	ntlmv2->reserved2 = 0;
+ 
+-	memcpy(ses->auth_key.response + baselen, tiblob, tilen);
+-
+-	cifs_server_lock(ses->server);
+-
+ 	rc = cifs_alloc_hash("hmac(md5)", &hmacmd5);
+ 	if (rc) {
+ 		cifs_dbg(VFS, "Could not allocate HMAC-MD5, rc=%d\n", rc);
 -- 
 2.39.5
 
