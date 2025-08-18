@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B4FB2A992
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:22:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A95B2A698
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4C035A2FF4
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6B90B61612
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F64735085A;
-	Mon, 18 Aug 2025 14:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D772D8DD4;
+	Mon, 18 Aug 2025 13:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eesUEA3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aU2riUvO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2161350843;
-	Mon, 18 Aug 2025 14:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146F4335BC9;
+	Mon, 18 Aug 2025 13:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525893; cv=none; b=C4jzUGyfrKWRFf/8n8ITO+VlLKovCGavskpPqROA65epqQ1JK/se/lsWTUE6xmhF7FDVbnmvlvPQvvLxXtxX8tiJHtigbjsJhJJVc3yBOZBFjCEaZVOj/xET7jRXwrNnMjCbwrvmndCDvpWUvXZvfuQ2aG75ITNeEQMtwfbgzhg=
+	t=1755524305; cv=none; b=Ksae9wR0RTQrQMkWQfTj/RfLupRFdJLAPpyH4wf45/VIrna4NTRAdZNSeZpu6Rjt8vA9QfQxMogaJnsS6RaibK5m+eluPIHtbAyiINIoudNDOc/LfnzmDKKXvPeLiKw15xapUv+Wg7OJoqboC2g5ZdFQM/pZWZvhSdgn3HKy9U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525893; c=relaxed/simple;
-	bh=rUPewmHaC7f7aJSlRxAZZcgf7Oekfcq0jQZNOubfueo=;
+	s=arc-20240116; t=1755524305; c=relaxed/simple;
+	bh=oDXC4fooYvilrNxrgvTDSzFKCofvrNCRnEbTURrl/lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OYfgSkRuGCaAjLKyWS/n1XlM4OCpz1vqdrwiEKRQkBwsb+3gafTcKvMcHaJaxyTkZsnV0V9vF5fCsjzY1rt8MmizTHVxq7ampFOY3SS2uBXEpu8RrLHlFelcd/dFvP4cjAvX0ylD+vAoCulgfkRkegCa6fd7nd6k+3TWPLpTNOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eesUEA3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE72C4CEEB;
-	Mon, 18 Aug 2025 14:04:52 +0000 (UTC)
+	 MIME-Version; b=qRdGPFr79Uoozy4H7t7MwG0/9beNw8HnFWtN17+lslx9srU4T60E6g0qZ/Wm909BCXYr6lRvGoAOeeGhrR5pKM3eBvZyDbypnACw6/cVpW2jH38bN/6B53cVrjsnLdlQxfWqNYcfYwcOZpm+oCX0HBYAXBorPC2CjngrxFJrw7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aU2riUvO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79482C116C6;
+	Mon, 18 Aug 2025 13:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525893;
-	bh=rUPewmHaC7f7aJSlRxAZZcgf7Oekfcq0jQZNOubfueo=;
+	s=korg; t=1755524305;
+	bh=oDXC4fooYvilrNxrgvTDSzFKCofvrNCRnEbTURrl/lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eesUEA3EhKZjh6vPIO/b6YX7JiNO+XJ1pPK/H7YO1JbejIB5THI9q0pnwfBKWZctt
-	 /e7z6gi9eJcPfU///TWAUWSAIHDh2aMb9tcNmCsPElKrS7/QhVCmKlNuy0hWRFq/BW
-	 WQL1DG67eQHw/Vw6SfY8fRHk7K+d4IBR3ptbEBVM=
+	b=aU2riUvOVg8ZCY0o419AYiFQzq8t6hDHDv/OskDcDcHVT/bUe0hbnE/OPhhVCiqHL
+	 +Tqvu3FmMS6ZYRCFg4xMpuatJZz8U4aCt6o8km0thed5ejY0Vn+a0RJ2DJAV7hK4sb
+	 W70xiOETa+x6jlFeQKV63hYrq/trI2UuWn89aEEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 397/570] scsi: lpfc: Ensure HBA_SETUP flag is used only for SLI4 in dev_loss_tmo_callbk
+Subject: [PATCH 6.15 398/515] dm-table: fix checking for rq stackable devices
 Date: Mon, 18 Aug 2025 14:46:24 +0200
-Message-ID: <20250818124521.151583989@linuxfoundation.org>
+Message-ID: <20250818124513.732421368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 1cced5779e7a3ff7ec025fc47c76a7bd3bb38877 ]
+[ Upstream commit 8ca719b81987be690f197e82fdb030580c0a07f3 ]
 
-For SLI3, the HBA_SETUP flag is never set so the lpfc_dev_loss_tmo_callbk
-always early returns.  Add a phba->sli_rev check for SLI4 mode so that
-the SLI3 path can flow through the original dev_loss_tmo worker thread
-design to lpfc_dev_loss_tmo_handler instead of early return.
+Due to the semantics of iterate_devices(), the current code allows a
+request-based dm table as long as it includes one request-stackable
+device. It is supposed to only allow tables where there are no
+non-request-stackable devices.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250618192138.124116-9-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/dm-table.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index b88e54a7e65c..3962f07c9140 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -183,7 +183,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index dd074c8ecbba..587a9833c1f6 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -900,17 +900,17 @@ static bool dm_table_supports_dax(struct dm_table *t,
+ 	return true;
+ }
  
- 	/* Don't schedule a worker thread event if the vport is going down. */
- 	if (test_bit(FC_UNLOADING, &vport->load_flag) ||
--	    !test_bit(HBA_SETUP, &phba->hba_flag)) {
-+	    (phba->sli_rev == LPFC_SLI_REV4 &&
-+	    !test_bit(HBA_SETUP, &phba->hba_flag))) {
+-static int device_is_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
+-				  sector_t start, sector_t len, void *data)
++static int device_is_not_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
++				      sector_t start, sector_t len, void *data)
+ {
+ 	struct block_device *bdev = dev->bdev;
+ 	struct request_queue *q = bdev_get_queue(bdev);
  
- 		spin_lock_irqsave(&ndlp->lock, iflags);
- 		ndlp->rport = NULL;
+ 	/* request-based cannot stack on partitions! */
+ 	if (bdev_is_partition(bdev))
+-		return false;
++		return true;
+ 
+-	return queue_is_mq(q);
++	return !queue_is_mq(q);
+ }
+ 
+ static int dm_table_determine_type(struct dm_table *t)
+@@ -1006,7 +1006,7 @@ static int dm_table_determine_type(struct dm_table *t)
+ 
+ 	/* Non-request-stackable devices can't be used for request-based dm */
+ 	if (!ti->type->iterate_devices ||
+-	    !ti->type->iterate_devices(ti, device_is_rq_stackable, NULL)) {
++	    ti->type->iterate_devices(ti, device_is_not_rq_stackable, NULL)) {
+ 		DMERR("table load rejected: including non-request-stackable devices");
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.5
 
