@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9670B2A96D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:20:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11A9B2A35D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA5786240D7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A41D1891811
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25957346A07;
-	Mon, 18 Aug 2025 13:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D12D31E10D;
+	Mon, 18 Aug 2025 13:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/OJmKY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ujn/gu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65F9346A02;
-	Mon, 18 Aug 2025 13:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE27B12DDA1;
+	Mon, 18 Aug 2025 13:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525455; cv=none; b=OWI2O7k7KN+8wXUpl+VkxPQyhJGPYRt3NyknHiMCiGhNK4SAx7IETQftzIv0mNjCV0YXnDf+COEoU9UECkAc5b/JF7zp7KkDTCi5bc3Au21nyuljGF758If3gJ73ahF9w0oUBQPvsZ4sMdBAlFgeFJQWy28bO27RAsoQiwRynDk=
+	t=1755522139; cv=none; b=jU5BLWriBk3DGXeCPePY8hxY9e1QGzOC44DJJiV7nMlGrtahMeDfpzxSFJ9sdXPtZbo2d02X0SOSoqnOFyLV9EfCQVd38OjMp414zOYAjo/fQ0eyY0S/5PA9gp+SywKCVRR3iquPeV/Y0NUteH5xQFneAn1e8G50dfNnWNQLs7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525455; c=relaxed/simple;
-	bh=GZM/CTtbD8MDceLxvUPjG4nKkG5stL6TTa3Y0r1A7qw=;
+	s=arc-20240116; t=1755522139; c=relaxed/simple;
+	bh=4NksRWzydX+qFfzTO6U2KHrilafzBXu0XzztneMctDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPQNzV1uWXYROvhPSOu5d4scvVLa/5u7lLjKXuq7JFWWKMn0Y4X8NN/sZHgor2y3CBUCcw5zDSE9ShEe94nTnd6v4X+vhya9H5U302EheGHbwotdMkNAbTzrFcF1wM04moT4Zu44GnUA+F6g+VdHa92ARXapk8p5GtyOIF56mWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/OJmKY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B58C4CEEB;
-	Mon, 18 Aug 2025 13:57:35 +0000 (UTC)
+	 MIME-Version; b=sUKvAxWCcAT8kiYbNbHH3ePoyyGMkLq1fxUquhlzpxDHIG3sllyZFggB+8XGlY1C6Yr83VijZvmgqDVYQbq6ibqD7HULx7nH0EV7FjdJz5E/uzTCxFkpzlf6aKy9q+TWZzwwFS5jX7KOaJGybu+C+AZY+Poaq4cbYJswhB/eWeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ujn/gu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E078C113D0;
+	Mon, 18 Aug 2025 13:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525455;
-	bh=GZM/CTtbD8MDceLxvUPjG4nKkG5stL6TTa3Y0r1A7qw=;
+	s=korg; t=1755522139;
+	bh=4NksRWzydX+qFfzTO6U2KHrilafzBXu0XzztneMctDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/OJmKY9pbtoO4r1bQGUa4hVUE10aUrPv/KOsFtq2qAkb/cBpefGFadRMrKWZvDmC
-	 P/03NarP6Q8iqj1Hh5i88ml/hm/nmrwZe98WrrBpfwFVmiCvg5eBh3bsXszCmbjquS
-	 jcRh6C7WZkAjwV3wS5cOE2iUbxcmXw2r4U1RXx3A=
+	b=0Ujn/gu4wUxYEHOTwKNY5h2+ePVaX53fEjj+rzaMlgrABZyl+6VaNnG9rLCP5l0Iu
+	 kKjje6pgpsm9iJ/HLgrUnvtt0Xak2RC25tQ5zBTFAJDfM0AvwfKI5tfA6r6Hf10S8X
+	 4zEVwsi0tfCtBVqRWGn5Xq419AwjYSMfzheONHoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 267/570] wifi: mac80211: fix rx link assignment for non-MLO stations
+Subject: [PATCH 6.12 228/444] wifi: ath12k: Fix station association with MBSSID Non-TX BSS
 Date: Mon, 18 Aug 2025 14:44:14 +0200
-Message-ID: <20250818124516.136851295@linuxfoundation.org>
+Message-ID: <20250818124457.392306009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Hari Chandrakanthan <quic_haric@quicinc.com>
 
-[ Upstream commit cc2b722132893164bcb3cee4f08ed056e126eb6c ]
+[ Upstream commit 70eeacc1a92a444f4b5777ab19e1c378a5edc8dd ]
 
-Currently, ieee80211_rx_data_set_sta() does not correctly handle the
-case where the interface supports multiple links (MLO), but the station
-does not (non-MLO). This can lead to incorrect link assignment or
-unexpected warnings when accessing link information.
+ath12k station is unable to associate with non-transmitting BSSes
+in a Multiple BSS set because the user-space does not receive
+information about the non-transmitting BSSes from mac80211's
+scan results.
 
-Hence, add a fix to check if the station lacks valid link support and
-use its default link ID for rx->link assignment. If the station
-unexpectedly has valid links, fall back to the default link.
+The ath12k driver does not advertise its MBSSID capability to mac80211,
+resulting in wiphy->support_mbssid not being set. Consequently, the
+information about non-transmitting BSS is not parsed from received
+Beacon/Probe response frames and is therefore not included in the
+scan results.
 
-This ensures correct link association and prevents potential issues
-in mixed MLO/non-MLO environments.
+Fix this by advertising the MBSSID capability of ath12k driver to
+mac80211.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
 
 Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Link: https://patch.msgid.link/20250630084119.3583593-1-quic_sarishar@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250530035615.3178480-2-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 8ec06cf0a9f0..7b801dd3f569 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4211,10 +4211,16 @@ static bool ieee80211_rx_data_set_sta(struct ieee80211_rx_data *rx,
- 		rx->link_sta = NULL;
- 	}
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 4ca684278c36..4b3fbec397ac 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -9218,6 +9218,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
  
--	if (link_id < 0)
--		rx->link = &rx->sdata->deflink;
--	else if (!ieee80211_rx_data_set_link(rx, link_id))
-+	if (link_id < 0) {
-+		if (ieee80211_vif_is_mld(&rx->sdata->vif) &&
-+		    sta && !sta->sta.valid_links)
-+			rx->link =
-+				rcu_dereference(rx->sdata->link[sta->deflink.link_id]);
-+		else
-+			rx->link = &rx->sdata->deflink;
-+	} else if (!ieee80211_rx_data_set_link(rx, link_id)) {
- 		return false;
-+	}
+ 	wiphy->mbssid_max_interfaces = mbssid_max_interfaces;
+ 	wiphy->ema_max_profile_periodicity = TARGET_EMA_MAX_PROFILE_PERIOD;
++	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
  
- 	return true;
- }
+ 	if (is_6ghz) {
+ 		wiphy_ext_feature_set(wiphy,
 -- 
 2.39.5
 
