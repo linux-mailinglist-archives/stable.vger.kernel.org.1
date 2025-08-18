@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-170255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78B3B2A31A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D087BB2A888
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8DE9622D21
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:00:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0FB55A2C0C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3197B12DDA1;
-	Mon, 18 Aug 2025 13:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D7827BF84;
+	Mon, 18 Aug 2025 13:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn8IM4Ch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3/oSfQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E172C1EFFB4;
-	Mon, 18 Aug 2025 13:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D9A1E8836;
+	Mon, 18 Aug 2025 13:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522043; cv=none; b=pGcCOboAiKg3Mm9FW7/o73VQ2wgEaMaPmXEbcPwDrjJjlG4jJ2MOuVBDrxhomOp1V2Mh3BHmjzfvkIZwblUR9fhgQLrfQvZZjL35QbpnM6PWqJhwEl0s2Jqt2mGoMsNbbE1NDdx6RNIKpGwiQaWo+VKgBFpmcKPgZ4Rq+l1M/vY=
+	t=1755525379; cv=none; b=Y8dYLvc2fExHD3flWa9vm3+MXuav6Dx0hB9R7wT0spKPmPofKo8pkHiji6m60AjmTzNZfYm7LeaTeG2b8kLzip3R+WWLgOd+A/WnMysvW5++taDfDZ1EkVihRPrbmMH3syDFTaLnfR2+lejjgtQY8wFhljSOtWDgCNMsdFHzu5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522043; c=relaxed/simple;
-	bh=NfaKOmXzhphGVuuYUqFpJXo1ioc2sf07y0TEUEbjaOU=;
+	s=arc-20240116; t=1755525379; c=relaxed/simple;
+	bh=vp4/3FEQfUUymALL8XAtQhmEwbpeUjkOdXk8RUQrEaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jYMx2A0GudqwlDmbFTjP1U2sPYo26uHGFphR/kyG4czzSxUlwgagpOCMqru+I+E4Yti2A3flDvv8MbKAxydRiAkIoXsEhPndjkbmVc/LHRg2lvcx/P4/PlVLWso6PQ80SLDYFKGhjnpkF4yfToOG/0YN7fi9kfXz/yAC8x+LzSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn8IM4Ch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA6FC4CEEB;
-	Mon, 18 Aug 2025 13:00:42 +0000 (UTC)
+	 MIME-Version; b=bI1uRyApGHrmvbFDsxw5h1M/BTDsLV/1Do22aY7Ppme4aMwpGOmLqT0vrEOSJEQSHDpFuBsLoMjEhW9hFn1r3PVSUFbAuWCQ5Rlo9XoGECTKBsJePIXo/6da5j+vJlAOFiJLClgL7awnn/bOQg4fmq/FanTbZwus0tcwWRYYd0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3/oSfQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCD3C4CEF1;
+	Mon, 18 Aug 2025 13:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522042;
-	bh=NfaKOmXzhphGVuuYUqFpJXo1ioc2sf07y0TEUEbjaOU=;
+	s=korg; t=1755525378;
+	bh=vp4/3FEQfUUymALL8XAtQhmEwbpeUjkOdXk8RUQrEaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fn8IM4Chijhg0qRQMWWjwUTZDmR0hrHIct3mYHzv46+Mev7V87leBUA7sDPeEAXrK
-	 j/QcpXKul6re5bMGT16RlRI0wAMbGgzbnkfgwG6Y2N/i4qSRH9tkkz8/XtJ/6t7ln/
-	 XBt/w5VrTP1QYkd1T3JbWpX1KNMGOXoZmRVObHoA=
+	b=O3/oSfQF1zRZRpuCt8SIuTZPyQjj4lRaac0hZ9hkUrV+9cOOrYopXktUl1yfXiGss
+	 NPgxsc73pJymQqvhMqSUyYviQXBXdG6rPm7X+QvRdw56yaJE9EGwy2AUayJZI0fsSW
+	 Uygrf/cOfI01vnd2DQ51mLrjveErRPEYo0UjEh/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nam Cao <namcao@linutronix.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Syed Hassan <syed.hassan@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/444] um: Re-evaluate thread flags repeatedly
+Subject: [PATCH 6.16 237/570] drm/amd/display: limit clear_update_flags to dcn32 and above
 Date: Mon, 18 Aug 2025 14:43:44 +0200
-Message-ID: <20250818124456.289572932@linuxfoundation.org>
+Message-ID: <20250818124514.954341918@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit b9e2f2246eb2b5617d53af7b5e4e1b8c916f26a8 ]
+[ Upstream commit f354556e29f40ef44fa8b13dc914817db3537e20 ]
 
-The thread flags may change during their processing.
-For example a task_work can queue a new signal to be sent.
-This signal should be delivered before returning to usespace again.
+[why]
+dc has some code out of sync:
+dc_commit_updates_for_stream handles v1/v2/v3,
+but dc_update_planes_and_stream makes v1 asic to use v2.
 
-Evaluate the flags repeatedly similar to other architectures.
+as a reression fix: limit clear_update_flags to dcn32 or newer asic.
+need to follow up that v1 asic using v2 issue.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Link: https://patch.msgid.link/20250704-uml-thread_flags-v1-1-0e293fd8d627@linutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/asm/thread_info.h |  4 ++++
- arch/um/kernel/process.c          | 20 ++++++++++++--------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/include/asm/thread_info.h b/arch/um/include/asm/thread_info.h
-index c7b4b49826a2..40d823f36c09 100644
---- a/arch/um/include/asm/thread_info.h
-+++ b/arch/um/include/asm/thread_info.h
-@@ -68,7 +68,11 @@ static inline struct thread_info *current_thread_info(void)
- #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
- #define _TIF_MEMDIE		(1 << TIF_MEMDIE)
- #define _TIF_SYSCALL_AUDIT	(1 << TIF_SYSCALL_AUDIT)
-+#define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
- #define _TIF_SECCOMP		(1 << TIF_SECCOMP)
- #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
- 
-+#define _TIF_WORK_MASK		(_TIF_NEED_RESCHED | _TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL | \
-+				 _TIF_NOTIFY_RESUME)
-+
- #endif
-diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
-index 9c6cf03ed02b..eaeeedd62930 100644
---- a/arch/um/kernel/process.c
-+++ b/arch/um/kernel/process.c
-@@ -81,14 +81,18 @@ struct task_struct *__switch_to(struct task_struct *from, struct task_struct *to
- void interrupt_end(void)
- {
- 	struct pt_regs *regs = &current->thread.regs;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index b34b5b52236d..3dd7e2b6d530 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -5439,8 +5439,7 @@ bool dc_update_planes_and_stream(struct dc *dc,
+ 	else
+ 		ret = update_planes_and_stream_v2(dc, srf_updates,
+ 			surface_count, stream, stream_update);
 -
--	if (need_resched())
--		schedule();
--	if (test_thread_flag(TIF_SIGPENDING) ||
--	    test_thread_flag(TIF_NOTIFY_SIGNAL))
--		do_signal(regs);
--	if (test_thread_flag(TIF_NOTIFY_RESUME))
--		resume_user_mode_work(regs);
-+	unsigned long thread_flags;
-+
-+	thread_flags = read_thread_flags();
-+	while (thread_flags & _TIF_WORK_MASK) {
-+		if (thread_flags & _TIF_NEED_RESCHED)
-+			schedule();
-+		if (thread_flags & (_TIF_SIGPENDING | _TIF_NOTIFY_SIGNAL))
-+			do_signal(regs);
-+		if (thread_flags & _TIF_NOTIFY_RESUME)
-+			resume_user_mode_work(regs);
-+		thread_flags = read_thread_flags();
-+	}
+-	if (ret)
++	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
+ 		clear_update_flags(srf_updates, surface_count, stream);
+ 
+ 	return ret;
+@@ -5471,7 +5470,7 @@ void dc_commit_updates_for_stream(struct dc *dc,
+ 		ret = update_planes_and_stream_v1(dc, srf_updates, surface_count, stream,
+ 				stream_update, state);
+ 
+-	if (ret)
++	if (ret && dc->ctx->dce_version >= DCN_VERSION_3_2)
+ 		clear_update_flags(srf_updates, surface_count, stream);
  }
  
- int get_current_pid(void)
 -- 
 2.39.5
 
