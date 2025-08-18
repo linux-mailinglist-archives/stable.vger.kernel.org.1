@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-170318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3C7B2A383
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA41CB2A353
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE2C1B279D8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32D33623FC8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CCF31E0F6;
-	Mon, 18 Aug 2025 13:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E110931E105;
+	Mon, 18 Aug 2025 13:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKAhDOlA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnhOjTrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3721B31B13E;
-	Mon, 18 Aug 2025 13:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9D612DDA1;
+	Mon, 18 Aug 2025 13:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522247; cv=none; b=j4W8okLFhQCSXfKRB5vMBGN34T0yOoRZ+pQqhmZHuFWlNHvPgmBHSUhi4gRFWEMHNzV2Ygn0I6UPjqWi+mudzOCLIBJ39Oct7YBwdnQip9jc7A83I4Fp4yoeIwBRFlec/n5cf6/+QVG74WQ7j7M10FY3IHdSRU5rPkcQIAqE9NM=
+	t=1755522136; cv=none; b=hu8a7ncxbznuopWld70q8i8j3EoCGoUZEbZiIOWSSg5KOFbxo5TuaBIpL1DMymfwlwXUjA0BIxpSYZXtYvJl/kbEkIwTqbYH90scJVUaRoJ3Cj1p6P5sqcq2iqzUjQUEOb0P6JExeQK77GBX384mhJ+oSsNHj1YeX6Y/Y8yosU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522247; c=relaxed/simple;
-	bh=JaRN3p6hXEWHlW3Zl446ezj7zUucyoD6/HbR3tFefQc=;
+	s=arc-20240116; t=1755522136; c=relaxed/simple;
+	bh=6lgOEv1Cj/z1XejdGpg6/bv6q9EFhvIQfC4hwZZDFs4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMq46mLCIplSQMSijTQLo7yyhcdfHb2t0ZQ5xPaQ71cqVDWPpQ41II7kHu1XZFbLt3e+2A4sZXf1gOPrQ/7wVdFWjoHzqscanEG8DDZ80Pc715sYug9Imk6P9GHb5ueme8OtUjKGIoGdN8mr/6pmuswa+DorseLdzstMgpsyA38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKAhDOlA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A444C4CEF1;
-	Mon, 18 Aug 2025 13:04:06 +0000 (UTC)
+	 MIME-Version; b=oCQU0qP7EtoxUO44Hlo7d+BMHF8O6Bzjj/nbYULpqhff/U4PllxIovlmk5VqFhngKgMjPjY1UHwjkT/UzX7KYufCY/rchQPDLIQR5T2U5sF+8OSBwnrulk5vjXv99ugJ1OUAUnKtSuYgN4OqMB1yNLkztC7q+wCDoTthvI38xXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnhOjTrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246B9C4CEEB;
+	Mon, 18 Aug 2025 13:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522247;
-	bh=JaRN3p6hXEWHlW3Zl446ezj7zUucyoD6/HbR3tFefQc=;
+	s=korg; t=1755522136;
+	bh=6lgOEv1Cj/z1XejdGpg6/bv6q9EFhvIQfC4hwZZDFs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKAhDOlAwtH+lecuDV3web4WrBk/0Tkm+v1lelkMIhGnttPai1K5pxe8TZXOtW2gD
-	 dBao5fTPGWZIXL0LiBC0kwT3zpAg51uh2ewEBInZnJzkw7Nr9LJg0xm3oX0b2riAqY
-	 hfxQvdEt1p5hjcvnTdsxkDkOhbyiGBBU/66T71Qg=
+	b=DnhOjTrBbbZ41gcE/VJNcIiADU41wsCndMdweKDDIKI/O5Tire3Dnm6jST0ExFcB3
+	 XbGEXWGTnyFS4z546EnLDfWbw+CXcXe9bARxqBQQ2imXU0tWevXevme4nptfWV9UtG
+	 0VMw1Z+zdT7YnLXvrwCwYfGS/TK/wC9gr3vBtfBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <kang.yang@oss.qualcomm.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/444] wifi: ath10k: shutdown driver when hardware is unreliable
-Date: Mon, 18 Aug 2025 14:44:12 +0200
-Message-ID: <20250818124457.319684929@linuxfoundation.org>
+Subject: [PATCH 6.12 227/444] wifi: ath12k: Add memset and update default rate value in wmi tx completion
+Date: Mon, 18 Aug 2025 14:44:13 +0200
+Message-ID: <20250818124457.357028452@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
 References: <20250818124448.879659024@linuxfoundation.org>
@@ -67,209 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kang Yang <kang.yang@oss.qualcomm.com>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-[ Upstream commit c256a94d1b1b15109740306f7f2a7c2173e12072 ]
+[ Upstream commit 9903c0986f782dfc511d7638b6f15fb6e8600cd3 ]
 
-In rare cases, ath10k may lose connection with the PCIe bus due to
-some unknown reasons, which could further lead to system crashes during
-resuming due to watchdog timeout:
+When both AP/STA and monitor interfaces are enabled, ieee80211_tx_status()
+is invoked from two paths: the TX completion handler for data frames
+and the WMI TX completion handler for management frames.
+In the data path, the skb->cb is properly zeroed using memset, but in
+the WMI path, this step is missing.
 
-ath10k_pci 0000:01:00.0: wmi command 20486 timeout, restarting hardware
-ath10k_pci 0000:01:00.0: already restarting
-ath10k_pci 0000:01:00.0: failed to stop WMI vdev 0: -11
-ath10k_pci 0000:01:00.0: failed to stop vdev 0: -11
-ieee80211 phy0: PM: **** DPM device timeout ****
-Call Trace:
- panic+0x125/0x315
- dpm_watchdog_set+0x54/0x54
- dpm_watchdog_handler+0x57/0x57
- call_timer_fn+0x31/0x13c
+As a result, mac80211 encountered uninitialized (junk) values in
+skb->cb when generating the radiotap header for monitor mode, leading
+to invalid radiotap lengths.
 
-At this point, all WMI commands will timeout and attempt to restart
-device. So set a threshold for consecutive restart failures. If the
-threshold is exceeded, consider the hardware is unreliable and all
-ath10k operations should be skipped to avoid system crash.
+Hence, explicitly zero the status field in the skb->cb using memset
+in WMI TX completion path to ensure consistent and correct behavior
+during WMI tx completion path.
 
-fail_cont_count and pending_recovery are atomic variables, and
-do not involve complex conditional logic. Therefore, even if recovery
-check and reconfig complete are executed concurrently, the recovery
-mechanism will not be broken.
+Additionally, set info->status.rates[0].idx = -1 to indicate that
+no valid rate information is available, avoiding misinterpretation of
+garbage values.
 
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00288-QCARMSWPZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250623022731.509-1-kang.yang@oss.qualcomm.com
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250603063512.1887652-1-quic_sarishar@quicinc.com
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/core.c | 48 +++++++++++++++++++++++---
- drivers/net/wireless/ath/ath10k/core.h | 11 ++++--
- drivers/net/wireless/ath/ath10k/mac.c  |  7 +++-
- drivers/net/wireless/ath/ath10k/wmi.c  |  6 ++++
- 4 files changed, 63 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index b3294287bce1..7b6812909ab3 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -2484,12 +2484,50 @@ static int ath10k_init_hw_params(struct ath10k *ar)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index d5892e17494f..5c5fc2b7642f 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5229,6 +5229,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+ 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
-+static bool ath10k_core_needs_recovery(struct ath10k *ar)
-+{
-+	long time_left;
+ 	info = IEEE80211_SKB_CB(msdu);
++	memset(&info->status, 0, sizeof(info->status));
 +
-+	/* Sometimes the recovery will fail and then the next all recovery fail,
-+	 * so avoid infinite recovery.
-+	 */
-+	if (atomic_read(&ar->fail_cont_count) >= ATH10K_RECOVERY_MAX_FAIL_COUNT) {
-+		ath10k_err(ar, "consecutive fail %d times, will shutdown driver!",
-+			   atomic_read(&ar->fail_cont_count));
-+		ar->state = ATH10K_STATE_WEDGED;
-+		return false;
-+	}
++	/* skip tx rate update from ieee80211_status*/
++	info->status.rates[0].idx = -1;
 +
-+	ath10k_dbg(ar, ATH10K_DBG_BOOT, "total recovery count: %d", ++ar->recovery_count);
-+
-+	if (atomic_read(&ar->pending_recovery)) {
-+		/* Sometimes it happened another recovery work before the previous one
-+		 * completed, then the second recovery work will destroy the previous
-+		 * one, thus below is to avoid that.
-+		 */
-+		time_left = wait_for_completion_timeout(&ar->driver_recovery,
-+							ATH10K_RECOVERY_TIMEOUT_HZ);
-+		if (time_left) {
-+			ath10k_warn(ar, "previous recovery succeeded, skip this!\n");
-+			return false;
-+		}
-+
-+		/* Record the continuous recovery fail count when recovery failed. */
-+		atomic_inc(&ar->fail_cont_count);
-+
-+		/* Avoid having multiple recoveries at the same time. */
-+		return false;
-+	}
-+
-+	atomic_inc(&ar->pending_recovery);
-+
-+	return true;
-+}
-+
- void ath10k_core_start_recovery(struct ath10k *ar)
- {
--	if (test_and_set_bit(ATH10K_FLAG_RESTARTING, &ar->dev_flags)) {
--		ath10k_warn(ar, "already restarting\n");
-+	if (!ath10k_core_needs_recovery(ar))
- 		return;
--	}
- 
- 	queue_work(ar->workqueue, &ar->restart_work);
- }
-@@ -2525,6 +2563,8 @@ static void ath10k_core_restart(struct work_struct *work)
- 	struct ath10k *ar = container_of(work, struct ath10k, restart_work);
- 	int ret;
- 
-+	reinit_completion(&ar->driver_recovery);
-+
- 	set_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags);
- 
- 	/* Place a barrier to make sure the compiler doesn't reorder
-@@ -2589,8 +2629,6 @@ static void ath10k_core_restart(struct work_struct *work)
- 	if (ret)
- 		ath10k_warn(ar, "failed to send firmware crash dump via devcoredump: %d",
- 			    ret);
--
--	complete(&ar->driver_recovery);
- }
- 
- static void ath10k_core_set_coverage_class_work(struct work_struct *work)
-diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wireless/ath/ath10k/core.h
-index 446dca74f06a..85e16c945b5c 100644
---- a/drivers/net/wireless/ath/ath10k/core.h
-+++ b/drivers/net/wireless/ath/ath10k/core.h
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-  * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #ifndef _CORE_H_
-@@ -87,6 +88,8 @@
- 				  IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVER)
- #define ATH10K_ITER_RESUME_FLAGS (IEEE80211_IFACE_ITER_RESUME_ALL |\
- 				  IEEE80211_IFACE_SKIP_SDATA_NOT_IN_DRIVER)
-+#define ATH10K_RECOVERY_TIMEOUT_HZ			(5 * HZ)
-+#define ATH10K_RECOVERY_MAX_FAIL_COUNT			4
- 
- struct ath10k;
- 
-@@ -865,9 +868,6 @@ enum ath10k_dev_flags {
- 	/* Per Station statistics service */
- 	ATH10K_FLAG_PEER_STATS,
- 
--	/* Indicates that ath10k device is during recovery process and not complete */
--	ATH10K_FLAG_RESTARTING,
--
- 	/* protected by conf_mutex */
- 	ATH10K_FLAG_NAPI_ENABLED,
- };
-@@ -1211,6 +1211,11 @@ struct ath10k {
- 	struct work_struct bundle_tx_work;
- 	struct work_struct tx_complete_work;
- 
-+	atomic_t pending_recovery;
-+	unsigned int recovery_count;
-+	/* continuous recovery fail count */
-+	atomic_t fail_cont_count;
-+
- 	/* cycle count is reported twice for each visited channel during scan.
- 	 * access protected by data_lock
- 	 */
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 6b467696bc98..6493731333ab 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -8125,7 +8125,12 @@ static void ath10k_reconfig_complete(struct ieee80211_hw *hw,
- 		ath10k_info(ar, "device successfully recovered\n");
- 		ar->state = ATH10K_STATE_ON;
- 		ieee80211_wake_queues(ar->hw);
--		clear_bit(ATH10K_FLAG_RESTARTING, &ar->dev_flags);
-+
-+		/* Clear recovery state. */
-+		complete(&ar->driver_recovery);
-+		atomic_set(&ar->fail_cont_count, 0);
-+		atomic_set(&ar->pending_recovery, 0);
-+
- 		if (ar->hw_params.hw_restart_disconnect) {
- 			list_for_each_entry(arvif, &ar->arvifs, list) {
- 				if (arvif->is_up && arvif->vdev_type == WMI_VDEV_TYPE_STA)
-diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
-index 5e061f7525a6..09066e6aca40 100644
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -4,6 +4,7 @@
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-  * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- 
- #include <linux/skbuff.h>
-@@ -1941,6 +1942,11 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
- 	}
- 
- 	wait_event_timeout(ar->wmi.tx_credits_wq, ({
-+		if (ar->state == ATH10K_STATE_WEDGED) {
-+			ret = -ESHUTDOWN;
-+			ath10k_dbg(ar, ATH10K_DBG_WMI,
-+				   "drop wmi command %d, hardware is wedged\n", cmd_id);
-+		}
- 		/* try to send pending beacons first. they take priority */
- 		ath10k_wmi_tx_beacons_nowait(ar);
+ 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
+ 		info->flags |= IEEE80211_TX_STAT_ACK;
  
 -- 
 2.39.5
