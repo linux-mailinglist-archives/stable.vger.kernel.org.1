@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-170209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E46B2A34E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 095A8B2A535
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F3C5173647
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DB80E4E34A0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB6B31CA58;
-	Mon, 18 Aug 2025 12:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CEB27A93D;
+	Mon, 18 Aug 2025 13:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHiM5s1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSMUMoQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD6931B13E;
-	Mon, 18 Aug 2025 12:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B330831E115;
+	Mon, 18 Aug 2025 13:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521888; cv=none; b=REtZU6C++/ezwo1xddaiWFaNmZCzrkUKkWu0UOWmGhHKKA85P+HTI+/0BcMfHtvOKI3NBEVkAm4rrp1y+DJ79aiMFuAUyCF0zYFyZ1u2rKYFStgJlJQvHqw+3j14Bz0x4FrrPqhAI8tYUtIAaBrhFlEUzEnXlqb8OpBOvPjZkwI=
+	t=1755523505; cv=none; b=r/PKvXPV7FzboK+qt/P7S4pF9o8xMHswjatOfWo0nS1tgYBB7byjGU4R+0nR+qpPODLusI4aG0pvlKICVoG6HbJgAXn1OOlZBkPzuohxfq6gN+61fT4FVjxLrhIrVL5BCJ9M1fGMJCL6YTUuStV9kDEjSo5k1+yTZCK1ZyV2jJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521888; c=relaxed/simple;
-	bh=2k70UraitaKesaZTrViFuHxApoKIqFrURY6QAxyUzsk=;
+	s=arc-20240116; t=1755523505; c=relaxed/simple;
+	bh=VUVqEprVUvxw5i1w3KLvsXgE2aDsSAbJ/e26oYqM8vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceeXhyvSg1FJQkVYWpEHUratTg9/LS9HJokS9x7/FVYU9cumF65wm/nqysLvn+mt0FZKkCWq8zk5pIzsr1JScYsAk5CK4AAg4VxxlmkTGwQBe3BAo1YIuleaRpoY6XxbrtJyEGZl5Sg9ziigfKDUwiEm+KZYSxP6JN5CeJ2Unbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHiM5s1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF41C4CEEB;
-	Mon, 18 Aug 2025 12:58:07 +0000 (UTC)
+	 MIME-Version; b=fw4BRMuHP2WbUpNtzJoDwZZ5bLgwsTFgBBRMQ6eXnW7Gqng5tXCgZb1dDqs8hPz2s0Gu2tQZOiae0kJ2SnYR070xq3Lc+0dLKNyr1wH6H6sviuwiwwPMbC3PuBISKOKIEKUBcT96PkVpqS+emselKHDygYzPU7y9R1TK8QMrbQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSMUMoQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21183C4CEEB;
+	Mon, 18 Aug 2025 13:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521888;
-	bh=2k70UraitaKesaZTrViFuHxApoKIqFrURY6QAxyUzsk=;
+	s=korg; t=1755523505;
+	bh=VUVqEprVUvxw5i1w3KLvsXgE2aDsSAbJ/e26oYqM8vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHiM5s1NLBzd9hySC4vV3MkvzCheq+QbmG5amHmdDLMbXUPbw9+n7DsqQ4d3Ttqqx
-	 wdOcf/UEcXKFYcoAFNKAViIPHNtpswysEm1x4uM6yi9TvEks/XBsgM1YiDtZv6RI3q
-	 KKwXLHjxm2jIrx1sCii8mJerfbWuFuonpBJzdjbM=
+	b=hSMUMoQl0l5S4pNgrLm5rftw5/vZYiL9YxUWjRY282m8OPfb6LW/hVnpvootrR2OL
+	 Qs6AsYNZJtVNVDUH98x6/CAHROAind9m/Ptarms5JubsddbdIGU4UWY+jqluiXeVhU
+	 YqXxGCe0fJda3fBGndoXvndiqXo6rdR304Hle7/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Eliav Farber <farbere@amazon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/444] gpio: tps65912: check the return value of regmap_update_bits()
+Subject: [PATCH 6.15 159/515] pps: clients: gpio: fix interrupt handling order in remove path
 Date: Mon, 18 Aug 2025 14:42:25 +0200
-Message-ID: <20250818124453.384235669@linuxfoundation.org>
+Message-ID: <20250818124504.505903853@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Eliav Farber <farbere@amazon.com>
 
-[ Upstream commit a0b2a6bbff8c26aafdecd320f38f52c341d5cafa ]
+[ Upstream commit 6bca1e955830808dc90e0506b2951b4256b81bbb ]
 
-regmap_update_bits() can fail, check its return value like we do
-elsewhere in the driver.
+The interrupt handler in pps_gpio_probe() is registered after calling
+pps_register_source() using devm_request_irq(). However, in the
+corresponding remove function, pps_unregister_source() is called before
+the IRQ is freed, since devm-managed resources are released after the
+remove function completes.
 
-Link: https://lore.kernel.org/r/20250707-gpiochip-set-rv-gpio-round4-v1-2-35668aaaf6d2@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This creates a potential race condition where an interrupt may occur
+after the PPS source is unregistered but before the handler is removed,
+possibly leading to a kernel panic.
+
+To prevent this, switch from devm-managed IRQ registration to manual
+management by using request_irq() and calling free_irq() explicitly in
+the remove path before unregistering the PPS source. This ensures the
+interrupt handler is safely removed before deactivating the PPS source.
+
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Link: https://lore.kernel.org/r/20250527053355.37185-1-farbere@amazon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tps65912.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pps/clients/pps-gpio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-tps65912.c b/drivers/gpio/gpio-tps65912.c
-index fab771cb6a87..bac757c191c2 100644
---- a/drivers/gpio/gpio-tps65912.c
-+++ b/drivers/gpio/gpio-tps65912.c
-@@ -49,10 +49,13 @@ static int tps65912_gpio_direction_output(struct gpio_chip *gc,
- 					  unsigned offset, int value)
+diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
+index 374ceefd6f2a..2866636b0554 100644
+--- a/drivers/pps/clients/pps-gpio.c
++++ b/drivers/pps/clients/pps-gpio.c
+@@ -210,8 +210,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	/* register IRQ interrupt handler */
+-	ret = devm_request_irq(dev, data->irq, pps_gpio_irq_handler,
+-			get_irqf_trigger_flags(data), data->info.name, data);
++	ret = request_irq(data->irq, pps_gpio_irq_handler,
++			  get_irqf_trigger_flags(data), data->info.name, data);
+ 	if (ret) {
+ 		pps_unregister_source(data->pps);
+ 		dev_err(dev, "failed to acquire IRQ %d\n", data->irq);
+@@ -228,6 +228,7 @@ static void pps_gpio_remove(struct platform_device *pdev)
  {
- 	struct tps65912_gpio *gpio = gpiochip_get_data(gc);
-+	int ret;
+ 	struct pps_gpio_device_data *data = platform_get_drvdata(pdev);
  
- 	/* Set the initial value */
--	regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
--			   GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	ret = regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
-+				 GPIO_SET_MASK, value ? GPIO_SET_MASK : 0);
-+	if (ret)
-+		return ret;
- 
- 	return regmap_update_bits(gpio->tps->regmap, TPS65912_GPIO1 + offset,
- 				  GPIO_CFG_MASK, GPIO_CFG_MASK);
++	free_irq(data->irq, data);
+ 	pps_unregister_source(data->pps);
+ 	timer_delete_sync(&data->echo_timer);
+ 	/* reset echo pin in any case */
 -- 
 2.39.5
 
