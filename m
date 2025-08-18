@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F8F6B2A3E1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:15:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70996B2A6A6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986701B61662
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:09:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9606684EFA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816EA31E116;
-	Mon, 18 Aug 2025 13:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DA7321F46;
+	Mon, 18 Aug 2025 13:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZOFgOPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXeH8aBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA1328C849;
-	Mon, 18 Aug 2025 13:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736E73218B5;
+	Mon, 18 Aug 2025 13:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522462; cv=none; b=fOObVj3F60bY9lbu9tM5cZtbE1Rq8ySNc3+Dhf3AAKPlWKvbYeAtJn9/ttE+zjQtbonuvtYLtU0PmA8/08m5rLRnP8g1k8miba+wjnsZb+1tU4LluTQtyYjGowjcvSv/ivXKg2GeFCzaJ/xKv39A2A/a0FCtf8gibKjqOCq9eGE=
+	t=1755524172; cv=none; b=EgMK7exq2dI2oMi6S0EepM9xdrFznQGQxTNXe0XG20ggY8AbBzFmOuWo4U5W1KbuYmi8y7/+AF2i3tdnS2uji210o01V8257cu+tNrmKRYFc2rxK0fi8mTeq02J7JoDQsJkEkHKYxzHM0xqeXFgd3NKeWUw/gSuoNs8GQvrn4X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522462; c=relaxed/simple;
-	bh=qB5lIvAgY9Rv/UY/WNouE03KzILJmpItghat6sjzLBM=;
+	s=arc-20240116; t=1755524172; c=relaxed/simple;
+	bh=z1c8VKcR1deaxIVL83XlYAnnGiQXxucv+U6ICGlOhIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/oJJOLEVPeq3kPpABUWvLXnDbYwRAR8x02YxbJTwOvcvHcJTVAgjI02NFg+OjKoQtOFgOpbj4uitQct12pTdKdpnyfyFaYsQ/HhrG43zcwD975xxLM8vLfVs4FzQO0wMt3zfuN21JXutNMlo4nGNh+ZXd2ApvrGYqkGcpxOoJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZOFgOPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC93C4CEF1;
-	Mon, 18 Aug 2025 13:07:41 +0000 (UTC)
+	 MIME-Version; b=r/ObyjgJi7+VjGeNDKW+KHTQBrMlCKKLcZcDT+H1yQ+52VjvzuYNTpIAsPMCOV1m1oywPQvYJ1itEp7Z3PgeK2vAjxICm8uB20+azP/HGSXP+0d3wwCFGgkR3ycpi55mtgN9w8RuzfzB8jJR1/Kf6OAQiTWPkRFPo7eKn35DlfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXeH8aBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB640C4CEF1;
+	Mon, 18 Aug 2025 13:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522461;
-	bh=qB5lIvAgY9Rv/UY/WNouE03KzILJmpItghat6sjzLBM=;
+	s=korg; t=1755524172;
+	bh=z1c8VKcR1deaxIVL83XlYAnnGiQXxucv+U6ICGlOhIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZOFgOPGCv2omhgFQbzjA+8B/cOJQdSe9XDUshpxc9in01wYEQUazFNORrWpDfDKu
-	 0Ie7ajgiOi9sCaGCmLmCbLi0Lh40RyxuFqhufcZGYp0+Lj+FpBSfclEArbxNWuofjo
-	 MUyJtneW4hsiDGj2mmEJWQ4TUut/YKAK37/GKlJI=
+	b=BXeH8aBlmmAk5gS5lObTPHoTLsd9PFbPJXgSrZAPZ6juJc4O7l45pS7PBe+NtBcG9
+	 KDE9MIyNtMnX9rSkcc802PbvNaff9b1zGP+VdV3DvLQkvhsbE0qCaFfPSPfJcgI6Hp
+	 cu6EJ8KGi8P+ubuJ2opAyGnnZDq9b5xar6NJH8N8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Johan Adolfsson <johan.adolfsson@axis.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 322/444] crypto: ccp - Add missing bootloader info reg for pspv6
+Subject: [PATCH 6.15 362/515] leds: leds-lp50xx: Handle reg to get correct multi_index
 Date: Mon, 18 Aug 2025 14:45:48 +0200
-Message-ID: <20250818124501.016378904@linuxfoundation.org>
+Message-ID: <20250818124512.343376421@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,36 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Johan Adolfsson <johan.adolfsson@axis.com>
 
-[ Upstream commit aaeff14688d0254b39731d9bb303c79bfd610f7d ]
+[ Upstream commit 2e84a5e5374232e6f356ce5c079a5658d7e4af2c ]
 
-The bootloader info reg for pspv6 is the same as pspv4 and pspv5.
+mc_subled used for multi_index needs well defined array indexes,
+to guarantee the desired result, use reg for that.
 
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+If devicetree child nodes is processed in random or reverse order
+you may end up with multi_index "blue green red" instead of the expected
+"red green blue".
+If user space apps uses multi_index to deduce how to control the leds
+they would most likely be broken without this patch if devicetree
+processing is reversed (which it appears to be).
+
+arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-fuji.dts has reg set
+but I don't see how it can have worked without this change.
+
+If reg is not set, an error is returned,
+If reg is out of range, an error is returned.
+reg within led child nodes starts with 0, to map to the iout in each bank.
+
+Signed-off-by: Johan Adolfsson <johan.adolfsson@axis.com>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://lore.kernel.org/r/20250617-led-fix-v7-1-cdbe8efc88fa@axis.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sp-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/leds/leds-lp50xx.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
-index 2ebc878da160..224edaaa737b 100644
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -451,6 +451,7 @@ static const struct psp_vdata pspv6 = {
- 	.cmdresp_reg		= 0x10944,	/* C2PMSG_17 */
- 	.cmdbuff_addr_lo_reg	= 0x10948,	/* C2PMSG_18 */
- 	.cmdbuff_addr_hi_reg	= 0x1094c,	/* C2PMSG_19 */
-+	.bootloader_info_reg	= 0x109ec,	/* C2PMSG_59 */
- 	.feature_reg            = 0x109fc,	/* C2PMSG_63 */
- 	.inten_reg              = 0x10510,	/* P2CMSG_INTEN */
- 	.intsts_reg             = 0x10514,	/* P2CMSG_INTSTS */
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 02cb1565a9fb..94f8ef6b482c 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -476,6 +476,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 			return -ENOMEM;
+ 
+ 		fwnode_for_each_child_node(child, led_node) {
++			int multi_index;
+ 			ret = fwnode_property_read_u32(led_node, "color",
+ 						       &color_id);
+ 			if (ret) {
+@@ -483,8 +484,16 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 				dev_err(priv->dev, "Cannot read color\n");
+ 				return ret;
+ 			}
++			ret = fwnode_property_read_u32(led_node, "reg", &multi_index);
++			if (ret != 0) {
++				dev_err(priv->dev, "reg must be set\n");
++				return -EINVAL;
++			} else if (multi_index >= LP50XX_LEDS_PER_MODULE) {
++				dev_err(priv->dev, "reg %i out of range\n", multi_index);
++				return -EINVAL;
++			}
+ 
+-			mc_led_info[num_colors].color_index = color_id;
++			mc_led_info[multi_index].color_index = color_id;
+ 			num_colors++;
+ 		}
+ 
 -- 
 2.39.5
 
