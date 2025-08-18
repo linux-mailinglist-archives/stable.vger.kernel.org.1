@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1792B2A830
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908C1B2A5D8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D70587092
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FA73627536
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6159B1E0DFE;
-	Mon, 18 Aug 2025 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2CE322DCE;
+	Mon, 18 Aug 2025 13:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TC7tZmpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3jf+7wz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1FF335BCD;
-	Mon, 18 Aug 2025 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C0320CDB;
+	Mon, 18 Aug 2025 13:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525232; cv=none; b=gsI8BAZkZywaq0Z3Yc3WVAQimFg0lKiFtLQmQhiN0XrmQ0rney84G5Doz4pMJ9OsqvQLxZ9nKgJE2aP4/c5WhyRtmnpq3qukiwfCjXoRaVR9GFVzGAF22ut6gu+7Ab9WJHvuRqHVqyXokuA9lxDHF4k53XXgaNJ9FEH4sSFZ4Bc=
+	t=1755523527; cv=none; b=pKqe2IY1vdSTPYVYRgfpR1YWgI355Yrx6h2vanqCrFI+3hPhL6KmYj2CYJQQabOwGtpdswIPCNBnDrR+oC5pPHCN3YWcQgiVdWmLXPBmQICs8j7v3qpl12JUWr1vqd6MI8zN7bXUXZsdXlPNYSbJU60yPQUVer5ty/U8564mKzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525232; c=relaxed/simple;
-	bh=qVVmoO7rfDnpKWMgQsEVVv4q2xk/lfs99L1GgDC7smc=;
+	s=arc-20240116; t=1755523527; c=relaxed/simple;
+	bh=WIVf0MCupzZqXQ59ACVwEDhqszKg9b2p66GjosaW90k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vx+tj6ZgmpH2IqWKG0lmuEKuuixSAJaspSOKgf3e7YmSv9eMUe/wYYE41ulF7xNtllo/YRsAifIAaY9mj/EKZ2cSYK966L82cPfyof0wU/S827HkBxquMOeoD/IjbnL5rm4KBQaGEbitrcP08mRicoqSDvw3wkVctT6/7hov9qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TC7tZmpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82944C4CEEB;
-	Mon, 18 Aug 2025 13:53:51 +0000 (UTC)
+	 MIME-Version; b=FR8FMXKh44MrP9tyH05qaEIiMncsN75st1vcAt+cMFGc6GPtQjh/ia/kmc04ic2FQfQ+Oxw7Wi1oeiBKk6m92ouCZdVgJrXmNtfBk6EqCCngBtKtSg7lntS5eb2KNl+XGLsnK+uTEmTIUunQ7g/6NxZligGx8BwppBYc4yIgr4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3jf+7wz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1D4C4CEEB;
+	Mon, 18 Aug 2025 13:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525232;
-	bh=qVVmoO7rfDnpKWMgQsEVVv4q2xk/lfs99L1GgDC7smc=;
+	s=korg; t=1755523527;
+	bh=WIVf0MCupzZqXQ59ACVwEDhqszKg9b2p66GjosaW90k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TC7tZmpXpcXd7R2RWxVV3+4eqTyaDTcip77MAUSLlwcQ1ZeQcc9cMvnVO4OyWZEyN
-	 54wPCGJNrfHT6IFFdRbNnJYK2BLWCoYamTDEXAZQdN2oGW/vCtdvvGT9ztQVKOKPVN
-	 hK36JP163Wh0djs00vx/+Rs2swVBDbHjCThMR3ow=
+	b=J3jf+7wzTHJU7d/aqyTOlTuQJ+GSOtThKDEsmkXR9Cw1l7M79hiQPIUaDr1b8Wepe
+	 zyAfB0YhSyS6OLuBsVmkbGoGskr7iw7qSeJUVVkv7frqYC50nGpnz4u6A+jwErXptr
+	 svEAis5wNGyfzs6l8u9Q4N7PIBm1ZrphN5MSMpbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Michalec <tmichalec@google.com>,
-	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 198/570] platform/chrome: cros_ec_typec: Defer probe on missing EC parent
+Subject: [PATCH 6.15 199/515] wifi: iwlwifi: mld: use spec link id and not FW link id
 Date: Mon, 18 Aug 2025 14:43:05 +0200
-Message-ID: <20250818124513.425280985@linuxfoundation.org>
+Message-ID: <20250818124506.027463344@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Michalec <tmichalec@google.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 8866f4e557eba43e991f99711515217a95f62d2e ]
+[ Upstream commit 170db5f873850a04a8eafd3401b2ea36adb20cea ]
 
-If cros_typec_probe is called before EC device is registered,
-cros_typec_probe will fail. It may happen when cros-ec-typec.ko is
-loaded before EC bus layer module (e.g. cros_ec_lpcs.ko,
-cros_ec_spi.ko).
+In missed beacon handling, we compare the FW link id to the
+bss_param_ch_cnt_link_id, which is a spec link id. Fix it.
 
-Return -EPROBE_DEFER when cros_typec_probe doesn't get EC device, so
-the probe function can be called again after EC device is registered.
-
-Signed-off-by: Tomasz Michalec <tmichalec@google.com>
-Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
-Link: https://lore.kernel.org/r/20250610153748.1858519-1-tmichalec@google.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: Somashekhar Puttagangaiah <somashekhar.puttagangaiah@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250723094230.2104f8cac836.I25ed77c2b87bde82a9153e2aa26e09b8a42f6ee3@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_typec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mld/link.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
-index 7678e3d05fd3..f437b594055c 100644
---- a/drivers/platform/chrome/cros_ec_typec.c
-+++ b/drivers/platform/chrome/cros_ec_typec.c
-@@ -1272,8 +1272,8 @@ static int cros_typec_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+index 82a4979a3af3..5f7628c65e3c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
+@@ -863,21 +863,23 @@ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
+ {
+ 	const struct iwl_missed_beacons_notif *notif = (const void *)pkt->data;
+ 	union iwl_dbg_tlv_tp_data tp_data = { .fw_pkt = pkt };
+-	u32 link_id = le32_to_cpu(notif->link_id);
++	u32 fw_link_id = le32_to_cpu(notif->link_id);
+ 	u32 missed_bcon = le32_to_cpu(notif->consec_missed_beacons);
+ 	u32 missed_bcon_since_rx =
+ 		le32_to_cpu(notif->consec_missed_beacons_since_last_rx);
+ 	u32 scnd_lnk_bcn_lost =
+ 		le32_to_cpu(notif->consec_missed_beacons_other_link);
+ 	struct ieee80211_bss_conf *link_conf =
+-		iwl_mld_fw_id_to_link_conf(mld, link_id);
++		iwl_mld_fw_id_to_link_conf(mld, fw_link_id);
+ 	u32 bss_param_ch_cnt_link_id;
+ 	struct ieee80211_vif *vif;
++	u8 link_id;
  
- 	typec->ec = dev_get_drvdata(pdev->dev.parent);
- 	if (!typec->ec) {
--		dev_err(dev, "couldn't find parent EC device\n");
--		return -ENODEV;
-+		dev_warn(dev, "couldn't find parent EC device\n");
-+		return -EPROBE_DEFER;
- 	}
+ 	if (WARN_ON(!link_conf))
+ 		return;
  
- 	platform_set_drvdata(pdev, typec);
+ 	vif = link_conf->vif;
++	link_id = link_conf->link_id;
+ 	bss_param_ch_cnt_link_id = link_conf->bss_param_ch_cnt_link_id;
+ 
+ 	IWL_DEBUG_INFO(mld,
+@@ -889,7 +891,7 @@ void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
+ 
+ 	mld->trans->dbg.dump_file_name_ext_valid = true;
+ 	snprintf(mld->trans->dbg.dump_file_name_ext, IWL_FW_INI_MAX_NAME,
+-		 "LinkId_%d_MacType_%d", link_id,
++		 "LinkId_%d_MacType_%d", fw_link_id,
+ 		 iwl_mld_mac80211_iftype_to_fw(vif));
+ 
+ 	iwl_dbg_tlv_time_point(&mld->fwrt,
 -- 
 2.39.5
 
