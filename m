@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65790B2A9F3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCEBB2A6FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:49:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625A01B6785B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7995686EE3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B6733A02A;
-	Mon, 18 Aug 2025 14:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451B62206B8;
+	Mon, 18 Aug 2025 13:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xh8nFUIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzg1pm2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A276533A00E;
-	Mon, 18 Aug 2025 14:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0237D3090C5;
+	Mon, 18 Aug 2025 13:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525732; cv=none; b=DTV27LYjpf8QACx+OvWYSIqUr8GR8QXnqOTS+q2doeZLg0dK5j8ZDi1KAGTqcH6iYjl9uZnUkgCdKLnIYkDaPTgORUUd54ce5MCcM8roVlKHoCVnWPS6k/hF0JJjDMO3NNN1JivcGi3cJi4w+7xZHScdgj/WrM+8lIe/40MLisM=
+	t=1755524054; cv=none; b=OzfrUiPdwBDxUEcgbgfDWD/qti7QJWuEPEuj0XWChxxAKLrXDhaUdNAmNiQev1Cut11n6+cH4E3RVZFdGIHuKhEcOsC3yehJtj7JzgY0SNksZ5imWb2CpRqFntM9IiojdMdZ0gzrlIqNTkzvOVfhzsMC8G8eX5b4obM4SgUG564=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525732; c=relaxed/simple;
-	bh=pM285kOwZDw/HGxAVKFukAxfkPms6/kiH4vbU74iilM=;
+	s=arc-20240116; t=1755524054; c=relaxed/simple;
+	bh=hhpNHVbwUwYECsZg58OM9ZUObS86nFEiTFskp9+tb/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JfQdHaoKkKCoXRzDGlShhOzH6smLK7JjLeBDpZi5sQiQSP7z0avTYshmwWE+CT6w/J/6Vuazg6tjMao8lou8XXUQOy2/zm/03vaWII+hS6AcIBaGHjezUctlCfghUHiiOmbDXC+lzPi5DPPdfZ7YFVIcHY/JQrVatrFkVSWB9Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xh8nFUIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11909C4CEEB;
-	Mon, 18 Aug 2025 14:02:11 +0000 (UTC)
+	 MIME-Version; b=Y5KA0+mYYd65BcTu9zjP6oOMD0wL1I+JIU1Qj/gkVxpAX7jB7fYl+cdwq7j9Crny+eiQpAEpCb+HQu698uFlIoJh02luUsR684xIGVsG3zwnVsiutLcYwgkntFpC9U2jprSHcCQc8eqy+wOUYnjnEc0VCAX0g3cZ887Dmt431X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzg1pm2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324E2C4CEEB;
+	Mon, 18 Aug 2025 13:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525732;
-	bh=pM285kOwZDw/HGxAVKFukAxfkPms6/kiH4vbU74iilM=;
+	s=korg; t=1755524053;
+	bh=hhpNHVbwUwYECsZg58OM9ZUObS86nFEiTFskp9+tb/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xh8nFUIvvpPla2UAlRk9PlpTG8iT6VSvx0/074U9MucJbmvidzeCb2m3+HGy05JMV
-	 xD/qfrgasSNv8rvxl4Wq15e+Tcx81JAccdnq0fRPxJVKXlzlAzifPgN+2ekqHVYiNK
-	 kttl8oer3WwDLVKiu6MvVmfqmDkvohiedaAvXrnc=
+	b=pzg1pm2+H2n92Gm1p5XPYiqoaTctiSqPxLyBIxp0QCVJ1+GvQxv6MT16V9uwt6sIA
+	 lHYAC5Omhypriig/Nv7od/6o4A9iHw3TDFY5HxEhZFRZg9Mhobni5l+BonY8fUtOiU
+	 YaYjie5WbL94EYYoddXjeIZqq8qNIcx0Jnxmf5pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 351/570] drm/ttm: Respect the shrinker core free target
-Date: Mon, 18 Aug 2025 14:45:38 +0200
-Message-ID: <20250818124519.384624998@linuxfoundation.org>
+Subject: [PATCH 6.15 353/515] media: hi556: Fix reset GPIO timings
+Date: Mon, 18 Aug 2025 14:45:39 +0200
+Message-ID: <20250818124512.009596474@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit eac21f8ebeb4f84d703cf41dc3f81d16fa9dc00a ]
+[ Upstream commit 99f2211a9d89fe34b3fa847fd7a4475171406cd0 ]
 
-Currently the TTM shrinker aborts shrinking as soon as it frees pages from
-any of the page order pools and by doing so it can fail to respect the
-freeing target which was configured by the shrinker core.
+probe() requests the reset GPIO to be set to high when getting it.
+Immeditately after this hi556_resume() is called and sets the GPIO low.
 
-We use the wording "can fail" because the number of freed pages will
-depend on the presence of pages in the pools and the order of the pools on
-the LRU list. For example if there are no free pages in the high order
-pools the shrinker core may require multiple passes over the TTM shrinker
-before it will free the default target of 128 pages (assuming there are
-free pages in the low order pools). This inefficiency can be compounded by
-the pool LRU where multiple further calls into the TTM shrinker are
-required to end up looking at the pool with pages.
+If the GPIO was low before requesting it this will result in the GPIO
+only very briefly spiking high and the sensor not being properly reset.
+The same problem also happens on back to back runtime suspend + resume.
 
-Improve this by never freeing less than the shrinker core has requested.
+Fix this by adding a sleep of 2 ms in hi556_resume() before setting
+the GPIO low (if there is a reset GPIO).
 
-At the same time we start reporting the number of scanned pages (freed in
-this case), which prevents the core shrinker from giving up on the TTM
-shrinker too soon and moving on.
+The final sleep is kept unconditional, because if there is e.g. no reset
+GPIO but a controllable clock then the sensor also needs some time after
+enabling the clock.
 
-v2:
- * Simplify loop logic. (Christian)
- * Improve commit message.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Link: https://lore.kernel.org/r/20250603112750.34997-2-tvrtko.ursulin@igalia.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_pool.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/i2c/hi556.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-index c2ea865be657..c060c90b89c0 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -1132,7 +1132,6 @@ void ttm_pool_fini(struct ttm_pool *pool)
- }
- EXPORT_SYMBOL(ttm_pool_fini);
+diff --git a/drivers/media/i2c/hi556.c b/drivers/media/i2c/hi556.c
+index aed258211b8a..d3cc65b67855 100644
+--- a/drivers/media/i2c/hi556.c
++++ b/drivers/media/i2c/hi556.c
+@@ -1321,7 +1321,12 @@ static int hi556_resume(struct device *dev)
+ 		return ret;
+ 	}
  
--/* As long as pages are available make sure to release at least one */
- static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
- 					    struct shrink_control *sc)
- {
-@@ -1140,9 +1139,12 @@ static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
- 
- 	do
- 		num_freed += ttm_pool_shrink();
--	while (!num_freed && atomic_long_read(&allocated_pages));
-+	while (num_freed < sc->nr_to_scan &&
-+	       atomic_long_read(&allocated_pages));
- 
--	return num_freed;
-+	sc->nr_scanned = num_freed;
+-	gpiod_set_value_cansleep(hi556->reset_gpio, 0);
++	if (hi556->reset_gpio) {
++		/* Assert reset for at least 2ms on back to back off-on */
++		usleep_range(2000, 2200);
++		gpiod_set_value_cansleep(hi556->reset_gpio, 0);
++	}
 +
-+	return num_freed ?: SHRINK_STOP;
+ 	usleep_range(5000, 5500);
+ 	return 0;
  }
- 
- /* Return the number of pages available or SHRINK_EMPTY if we have none */
 -- 
 2.39.5
 
