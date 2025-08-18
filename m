@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48198B2A750
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25AF4B2A492
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECE71B60441
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9232E624C71
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3876132145C;
-	Mon, 18 Aug 2025 13:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89AE31E0E4;
+	Mon, 18 Aug 2025 13:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMxz2xhG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcWCE3KZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE54021CC55;
-	Mon, 18 Aug 2025 13:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9733831CA60;
+	Mon, 18 Aug 2025 13:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524610; cv=none; b=UNCduROlUXnqRy2uPt25FGWCk9LjAvoOPL+X4YPc8XK485TImIe9DuKseuaF9Yq2ZKYrOCO1m93KPN9bbbQkqnG/WSP62Vvr/5owGxh5+dYebCuA+GWidT101xprDzygPsseeDI3D/QTR+qWKhIi2Gpbn6BQ9nYNC4s9ndOyvLw=
+	t=1755522900; cv=none; b=U7Yq332xhtR4DIv2rs9NH2m41XxgM3+N0GbfOkbb1uugDFwcQq4SfXHsuibePrmjyDmyOfqHekSlcudp75kaCDZfqfhVgNjnKJUxY95HRKrmav3fbOMjO36LXPl4v+Pn5L0zLHs4F3MGZeHnhu5wOLH3+LzxomYGRxE/sf8Kb1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524610; c=relaxed/simple;
-	bh=uBqSiWFj2r5/nIHhkAghlzJuM0XMHyeq2G2hsAv9xYI=;
+	s=arc-20240116; t=1755522900; c=relaxed/simple;
+	bh=8kix8Sc95lutV767cZoyDI8M5nKSSvc8AY9AtWYVLCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkAmign06A71EtKt3pn2LUqdxtO1OZyNKmNuuJ/0ZAopWGNkcS4teQUpsKmnmLPkdZnFDbmjogzM5rgajdZJTVAiyDhXnlRfth55MO4sHKWiXBFEikM5NdHUk586EqFnqpO+0XywIE5c8cRWnR3jWREt/McBcKQT2aufwJHDKzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMxz2xhG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8C9C4CEEB;
-	Mon, 18 Aug 2025 13:43:29 +0000 (UTC)
+	 MIME-Version; b=LvK6jcLTjztJOReBjYRivJHRiLJT6SkOE7cAUMiIDGTqOh85C7hPIbB7eBLtF7bbfFc0YNG6Eq8jDmwNL+gbhS8JtraaT0fPKMhPCu8xeOtoUa5Nl54WqWjGGb1+ne/wYTkMAGX7dQ2Xw+4aJTcCfroWvBxkjxj7qMmi7NeiIdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcWCE3KZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C85FC4CEEB;
+	Mon, 18 Aug 2025 13:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524610;
-	bh=uBqSiWFj2r5/nIHhkAghlzJuM0XMHyeq2G2hsAv9xYI=;
+	s=korg; t=1755522900;
+	bh=8kix8Sc95lutV767cZoyDI8M5nKSSvc8AY9AtWYVLCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMxz2xhG6V3seJFTEGxhDY6BqpSdFY6ByLUsqt2rIfExc7ktccJ/JZzOi3mLZP1X6
-	 PKAxKJHOYeh4roi55wDLhnzKSQsgVFVAz2Qlu1tsLF67JemxKE00fqyHDsx4AowE4U
-	 ML+RjvW0624Tcy6866C5lhBDQqICe2+Ea9ZmRh2w=
+	b=ZcWCE3KZqX62Hz20MX+GC6GbyKBJNUQO9bshLGYLZNJyyuKLx8PoYL10fyYrLiXv7
+	 XtgnHqocrTY2otFaZopaByjcQMg4tpZvfEdXlOvvV0Glo2cGq36dusV0EDQ4zeXWMA
+	 RPEYeAAKJ37sovki2B76M54IeAdTP+1CLRz2Wm7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pavel Begunkov <asml.silence@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 001/570] io_uring: dont use int for ABI
+Subject: [PATCH 6.15 002/515] io_uring: export io_[un]account_mem
 Date: Mon, 18 Aug 2025 14:39:48 +0200
-Message-ID: <20250818124505.845116922@linuxfoundation.org>
+Message-ID: <20250818124458.431817960@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit cf73d9970ea4f8cace5d8f02d2565a2723003112 upstream.
+commit 11fbada7184f9e19bcdfa2f6b15828a78b8897a6 upstream.
 
-__kernel_rwf_t is defined as int, the actual size of which is
-implementation defined. It won't go well if some compiler / archs
-ever defines it as i64, so replace it with __u32, hoping that
-there is no one using i16 for it.
+Export pinned memory accounting helpers, they'll be used by zcrx
+shortly.
 
 Cc: stable@vger.kernel.org
-Fixes: 2b188cc1bb857 ("Add io_uring IO interface")
+Fixes: cf96310c5f9a0 ("io_uring/zcrx: add io_zcrx_area")
 Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/47c666c4ee1df2018863af3a2028af18feef11ed.1751412511.git.asml.silence@gmail.com
+Link: https://lore.kernel.org/r/9a61e54bd89289b39570ae02fe620e12487439e4.1752699568.git.asml.silence@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/io_uring.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/rsrc.c |    4 ++--
+ io_uring/rsrc.h |    2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -50,7 +50,7 @@ struct io_uring_sqe {
- 	};
- 	__u32	len;		/* buffer size or number of iovecs */
- 	union {
--		__kernel_rwf_t	rw_flags;
-+		__u32		rw_flags;
- 		__u32		fsync_flags;
- 		__u16		poll_events;	/* compatibility */
- 		__u32		poll32_events;	/* word-reversed for BE */
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -55,7 +55,7 @@ int __io_account_mem(struct user_struct
+ 	return 0;
+ }
+ 
+-static void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
++void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
+ {
+ 	if (ctx->user)
+ 		__io_unaccount_mem(ctx->user, nr_pages);
+@@ -64,7 +64,7 @@ static void io_unaccount_mem(struct io_r
+ 		atomic64_sub(nr_pages, &ctx->mm_account->pinned_vm);
+ }
+ 
+-static int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
++int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
+ {
+ 	int ret;
+ 
+--- a/io_uring/rsrc.h
++++ b/io_uring/rsrc.h
+@@ -146,6 +146,8 @@ int io_files_update(struct io_kiocb *req
+ int io_files_update_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
+ 
+ int __io_account_mem(struct user_struct *user, unsigned long nr_pages);
++int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages);
++void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages);
+ 
+ static inline void __io_unaccount_mem(struct user_struct *user,
+ 				      unsigned long nr_pages)
 
 
 
