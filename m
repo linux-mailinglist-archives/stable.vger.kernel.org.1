@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-171154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00148B2A766
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AE5B2A2D5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:03:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C5987BE719
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:48:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107D1189B12F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B791235C01;
-	Mon, 18 Aug 2025 13:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F23031E0F8;
+	Mon, 18 Aug 2025 12:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gf3mqthp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkA78ccE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9BB335BAA;
-	Mon, 18 Aug 2025 13:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B323320392;
+	Mon, 18 Aug 2025 12:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524992; cv=none; b=NKhifwiTyg3OTDyG0qy4Ny610rfhXyPPtthuAr0Zvzux2+dLkieXf0bp8PndL2VKXF/NYelnJc0WqiEgngoosXqT1Iw1Sy5+kwXplwuq+oWL+KOX181zW4K/gRGkrCE7AA3c3cAk99AnCsfcMgBPtdATi3p73L7EjIx3LTsiHRg=
+	t=1755521662; cv=none; b=JC4E4QppgvCUc9KnJwxIpx+KkAY44zo1AJTanOnEOH6dpcKxcenc6wAfBtKghwS1vDmQxztI1hoOO+eksbDA6ppnjoFcUk70ZHBrD39WoNeT8dOEqH2QAp+6jfRmZd4dQYXoROGTxr3+739tD8KtQrKwYf/72wH5NkvHlFCtf3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524992; c=relaxed/simple;
-	bh=2ZaTOQA3oIkvM7ZY6AiqELhnFFg3+EdhhA+H4ivoXw0=;
+	s=arc-20240116; t=1755521662; c=relaxed/simple;
+	bh=ciPbUYlBRRi7nPFpPIAZcwtZcDr317tC9R1yIl9r+2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0po9BSBKSIOu2x/6QYy245qyBp9zDeh4iF5iCeQlalg/vo64TnzL+BZElco1KPHbJIlkmoMe6lcTLhXbZGhB3OiEqt+gdWzNcwZd8+8shKgWCpi0xp93GUHZMpB7H6up7xCaFaArxR/GcEHIhaIilAHwJTjNzzoBYiT/o73kvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gf3mqthp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DDFC4CEEB;
-	Mon, 18 Aug 2025 13:49:51 +0000 (UTC)
+	 MIME-Version; b=lF5EtsVZetUpcXD+zg0ZIMhXK7yasGzfbCN1ML1zEB/Te0n15mRWxOeGTrPxGIZK3z1D3upostvycf3Iao9kxi8H9wRKYA3+mM5ZZvj9nSfLhdmewXvTD2oRhTGZszu39fjXYBD97rReZjTALh6bUU5knd5q9y57YB+YTDyloRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkA78ccE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70848C4CEEB;
+	Mon, 18 Aug 2025 12:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524991;
-	bh=2ZaTOQA3oIkvM7ZY6AiqELhnFFg3+EdhhA+H4ivoXw0=;
+	s=korg; t=1755521662;
+	bh=ciPbUYlBRRi7nPFpPIAZcwtZcDr317tC9R1yIl9r+2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gf3mqthpnCH/9rTkHNMDX13bmZoJNTDx99R5mWIyJYcUSKg/Cdko5rwrZd84tNczt
-	 njChBj2JccBbQD9s9IWKSzHvyL28prMesgIyj5a2Dmd/TsWzAusON55Q3G/pPPVbEF
-	 9O4H0H1x5veqzr4jjxi1W7/ATEgu+jMijJ/H8aSo=
+	b=fkA78ccEUCm6iMpMEBsKsESUFuT5+NgfzLQQ/e77NM0au9GfSQr98DFqZiw3OVj0f
+	 3bqfXPCHr/zDd/cumAgnPxyrvilAJpJc+VkyYc4mteqGZik0824P+kD59llJl6Csnm
+	 j5AkVG0u7dnzWzQW13NjZPiu8y1df3/hMF60Gbio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 125/570] staging: gpib: Add init response codes for new ni-usb-hs+
+Subject: [PATCH 6.12 086/444] ata: libata-sata: Disallow changing LPM state if not supported
 Date: Mon, 18 Aug 2025 14:41:52 +0200
-Message-ID: <20250818124510.634461462@linuxfoundation.org>
+Message-ID: <20250818124452.175029642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit f50d5e0c1f80d004510bf77cb0e1759103585c00 ]
+[ Upstream commit 413e800cadbf67550d76c77c230b2ecd96bce83a ]
 
-A new version of a bona fide genuine NI-USB-HS+ adaptor
-sends new response codes to the initialization sequence.
+Modify ata_scsi_lpm_store() to return an error if a user attempts to set
+a link power management policy for a port that does not support LPM,
+that is, ports flagged with ATA_FLAG_NO_LPM.
 
-Add the checking for these response codes to suppress
-console warning messages.
-
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250722164810.2621-1-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20250701125321.69496-6-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/ni_usb/ni_usb_gpib.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/ata/libata-sata.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-index 7cf25c95787f..73ea72f34c0a 100644
---- a/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-+++ b/drivers/staging/gpib/ni_usb/ni_usb_gpib.c
-@@ -2079,10 +2079,10 @@ static int ni_usb_hs_wait_for_ready(struct ni_usb_priv *ni_priv)
- 		}
- 		if (buffer[++j] != 0x0) { // [6]
- 			ready = 1;
--			// NI-USB-HS+ sends 0xf here
-+			// NI-USB-HS+ sends 0xf or 0x19 here
- 			if (buffer[j] != 0x2 && buffer[j] != 0xe && buffer[j] != 0xf &&
--			    buffer[j] != 0x16)	{
--				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x2, 0xe, 0xf or 0x16\n",
-+			    buffer[j] != 0x16 && buffer[j] != 0x19) {
-+				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x2, 0xe, 0xf, 0x16 or 0x19\n",
- 					j, (int)buffer[j]);
- 				unexpected = 1;
- 			}
-@@ -2110,11 +2110,11 @@ static int ni_usb_hs_wait_for_ready(struct ni_usb_priv *ni_priv)
- 				j, (int)buffer[j]);
- 			unexpected = 1;
- 		}
--		if (buffer[++j] != 0x0) {
-+		if (buffer[++j] != 0x0) { // [10] MC usb-488 sends 0x7 here, new HS+ sends 0x59
- 			ready = 1;
--			if (buffer[j] != 0x96 && buffer[j] != 0x7 && buffer[j] != 0x6e) {
--// [10] MC usb-488 sends 0x7 here
--				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x96, 0x07 or 0x6e\n",
-+			if (buffer[j] != 0x96 && buffer[j] != 0x7 && buffer[j] != 0x6e &&
-+			    buffer[j] != 0x59) {
-+				dev_err(&usb_dev->dev, "unexpected data: buffer[%i]=0x%x, expected 0x96, 0x07, 0x6e or 0x59\n",
- 					j, (int)buffer[j]);
- 				unexpected = 1;
- 			}
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index a7442dc0bd8e..f1e8dbc2d564 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -924,6 +924,11 @@ static ssize_t ata_scsi_lpm_store(struct device *device,
+ 
+ 	spin_lock_irqsave(ap->lock, flags);
+ 
++	if (ap->flags & ATA_FLAG_NO_LPM) {
++		count = -EOPNOTSUPP;
++		goto out_unlock;
++	}
++
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		ata_for_each_dev(dev, &ap->link, ENABLED) {
+ 			if (dev->quirks & ATA_QUIRK_NOLPM) {
 -- 
 2.39.5
 
