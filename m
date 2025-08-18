@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADDBB2A741
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BF3B2A40B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B02271B65209
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 262F818A07D5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6BD27B358;
-	Mon, 18 Aug 2025 13:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B07831CA60;
+	Mon, 18 Aug 2025 13:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXEBxy8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToMpBaB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7A1A93D;
-	Mon, 18 Aug 2025 13:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED591318126;
+	Mon, 18 Aug 2025 13:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524109; cv=none; b=oSchZ2aQkFP/GaffowwHeUA4TmV/jqAcE7+6NopTQCZ4K9TGRcLcX4toTOL8vWlyVqj6Y8gpXf9bBPW6jmyD2FfDoZ616BX7WDX2+p/REcZp/Ttpaz2jlUe6Btwpu/A2P27nKeg+7huiEW/JNr7YlYVQAdBZ+ca1yMGzH0R7Rhg=
+	t=1755522599; cv=none; b=I+EXqtts1I0Ra5Bqwhx8YsMY58zlJZuSuC+Hccm3EK9zug9JrSNvyinUsdgjo1EIbYqgUmdD/1myE90VSMX3G7K4f/WO/20+KJFbvEgrNiQJps4UGFSShQEpFOf6paHZ+7J4eWRCdfVcf32VwRDRumQZKvcspWQDr/+44xcq95s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524109; c=relaxed/simple;
-	bh=ZwH6KIU7YdYMN/FHJ+cqSgRzcBfSD6YJdLvUX4GztpY=;
+	s=arc-20240116; t=1755522599; c=relaxed/simple;
+	bh=v7rLKxRfXL446stmEKcyOTrj965HoK+mRhf27+d1eI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSm+1ypm2n5pcgLcbXx7L1nUtsaRvL64vGnAcITu2PTVZabkWpezAwJUaKGWmRQwya0z1SMIr4+E7nhAq/QWMXtgqiE1AKmNnvttAI3IliAB4FXzfK0MPbI4+8PoHAwrnqcIHPBj/HMWx7kqLMePOiTkjM6gCRIDSY2wgH3236I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXEBxy8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92A6C4CEEB;
-	Mon, 18 Aug 2025 13:35:08 +0000 (UTC)
+	 MIME-Version; b=GzjBNiGMOWAp+bLhiD3yGcvdJyk2y2S/v0i6PXegOg3+Xr0jxgd5W/7IPX0fftFc9pUcOrKr/6QT6/iOjix7/Ihw3Pk+oHduKIdzIn+eyjBJnpZP49HV7Q1l7Nq1Do8eictIdKNVc5q7Um+MmX3Cz7JQazEM5TBPdQFlIrgBrAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToMpBaB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC11C4CEEB;
+	Mon, 18 Aug 2025 13:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524109;
-	bh=ZwH6KIU7YdYMN/FHJ+cqSgRzcBfSD6YJdLvUX4GztpY=;
+	s=korg; t=1755522598;
+	bh=v7rLKxRfXL446stmEKcyOTrj965HoK+mRhf27+d1eI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QXEBxy8DAn2agt/509uD2lytS7dwjaoztiaiID4VHgBmgfOx788I3rB+R2Km7vn2b
-	 EgYKAWuKIUNO87G0DyqtoEPCGt2BFbBsAx1NsxZ2WtJFEfBhtlAqKVhPWgITQNxw7k
-	 kSFUl6dg47qG42qxJcUN+qZWtSIEo+K8rjkkGQDM=
+	b=ToMpBaB2psmIskbH2S4OHVgkHTdtxdjWuOWcohTDqunUCeEjasLn58voWcernjYr/
+	 Vcr54LlGp2JIXAEd8XZczcEShmtiiAX1hJd1lrLDuye/FpfSMZglJvqkLSMsX20WvV
+	 VUHxholg3X2KuDrw+XpHJD/YKB4fR2FPv7/V+EiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francisco Gutierrez <frankramirez@google.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Gabriel Totev <gabriel.totev@zetier.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 371/515] scsi: pm80xx: Free allocated tags after failure
+Subject: [PATCH 6.12 331/444] apparmor: shift ouid when mediating hard links in userns
 Date: Mon, 18 Aug 2025 14:45:57 +0200
-Message-ID: <20250818124512.696726345@linuxfoundation.org>
+Message-ID: <20250818124501.348388958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francisco Gutierrez <frankramirez@google.com>
+From: Gabriel Totev <gabriel.totev@zetier.com>
 
-[ Upstream commit 258a0a19621793b811356fc9d1849f950629d669 ]
+[ Upstream commit c5bf96d20fd787e4909b755de4705d52f3458836 ]
 
-This change frees resources after an error is detected.
+When using AppArmor profiles inside an unprivileged container,
+the link operation observes an unshifted ouid.
+(tested with LXD and Incus)
 
-Signed-off-by: Francisco Gutierrez <frankramirez@google.com>
-Link: https://lore.kernel.org/r/20250617210443.989058-1-frankramirez@google.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+For example, root inside container and uid 1000000 outside, with
+`owner /root/link l,` profile entry for ln:
+
+/root$ touch chain && ln chain link
+==> dmesg
+apparmor="DENIED" operation="link" class="file"
+namespace="root//lxd-feet_<var-snap-lxd-common-lxd>" profile="linkit"
+name="/root/link" pid=1655 comm="ln" requested_mask="l" denied_mask="l"
+fsuid=1000000 ouid=0 [<== should be 1000000] target="/root/chain"
+
+Fix by mapping inode uid of old_dentry in aa_path_link() rather than
+using it directly, similarly to how it's mapped in __file_path_perm()
+later in the file.
+
+Signed-off-by: Gabriel Totev <gabriel.totev@zetier.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm80xx_hwi.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ security/apparmor/file.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
-index 5b373c53c036..c4074f062d93 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.c
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.c
-@@ -4677,8 +4677,12 @@ pm80xx_chip_phy_start_req(struct pm8001_hba_info *pm8001_ha, u8 phy_id)
- 		&pm8001_ha->phy[phy_id].dev_sas_addr, SAS_ADDR_SIZE);
- 	payload.sas_identify.phy_id = phy_id;
- 
--	return pm8001_mpi_build_cmd(pm8001_ha, 0, opcode, &payload,
-+	ret = pm8001_mpi_build_cmd(pm8001_ha, 0, opcode, &payload,
- 				    sizeof(payload), 0);
-+	if (ret < 0)
-+		pm8001_tag_free(pm8001_ha, tag);
-+
-+	return ret;
- }
- 
- /**
-@@ -4704,8 +4708,12 @@ static int pm80xx_chip_phy_stop_req(struct pm8001_hba_info *pm8001_ha,
- 	payload.tag = cpu_to_le32(tag);
- 	payload.phy_id = cpu_to_le32(phy_id);
- 
--	return pm8001_mpi_build_cmd(pm8001_ha, 0, opcode, &payload,
-+	ret = pm8001_mpi_build_cmd(pm8001_ha, 0, opcode, &payload,
- 				    sizeof(payload), 0);
-+	if (ret < 0)
-+		pm8001_tag_free(pm8001_ha, tag);
-+
-+	return ret;
- }
- 
- /*
+diff --git a/security/apparmor/file.c b/security/apparmor/file.c
+index d52a5b14dad4..62bc46e03758 100644
+--- a/security/apparmor/file.c
++++ b/security/apparmor/file.c
+@@ -423,9 +423,11 @@ int aa_path_link(const struct cred *subj_cred,
+ {
+ 	struct path link = { .mnt = new_dir->mnt, .dentry = new_dentry };
+ 	struct path target = { .mnt = new_dir->mnt, .dentry = old_dentry };
++	struct inode *inode = d_backing_inode(old_dentry);
++	vfsuid_t vfsuid = i_uid_into_vfsuid(mnt_idmap(target.mnt), inode);
+ 	struct path_cond cond = {
+-		d_backing_inode(old_dentry)->i_uid,
+-		d_backing_inode(old_dentry)->i_mode
++		.uid = vfsuid_into_kuid(vfsuid),
++		.mode = inode->i_mode,
+ 	};
+ 	char *buffer = NULL, *buffer2 = NULL;
+ 	struct aa_profile *profile;
 -- 
 2.39.5
 
