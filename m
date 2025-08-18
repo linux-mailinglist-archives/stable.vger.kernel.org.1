@@ -1,89 +1,183 @@
-Return-Path: <stable+bounces-170058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB87BB2A180
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:27:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26053B2A1D5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 734F45E6187
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:26:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B62961B61965
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8F7320398;
-	Mon, 18 Aug 2025 12:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4054027B323;
+	Mon, 18 Aug 2025 12:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQ5Mvvv4"
+	dkim=pass (1024-bit key) header.d=honor.com header.i=@honor.com header.b="V8apBO3p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F9232038A;
-	Mon, 18 Aug 2025 12:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C7827B359;
+	Mon, 18 Aug 2025 12:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.192.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755519924; cv=none; b=MRR77oSXiwfKHvkJu3a8S5aGB97lWOLjQbcZvbLybZ9qa+I0HbOUeLj13AQtrT4NmR5egw4IocRqSkzU3Oebor/Ii0c0nNiehMdQ92/4Si/gxE8hz93sJEhZakqxexwDHeP376jIiLIWwfIFod6B9k1a68GMBtZCbX3TkRj0M78=
+	t=1755520270; cv=none; b=uv5mptn3ZEzrrWUehzEFKalB6cqwv5OET7dSez8JMMwQBNqW6trq9MEoqGey2IE1kB8OrS0s6GsVecddOkDvKh86pZTHe45dqvcGERJH5yBB65xq3WYwLUSsJJmmlxC1Ex2zNLelbRSpOL5KV1BiPyFZ1ZM1Q+hf0+1ts+kqRoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755519924; c=relaxed/simple;
-	bh=iD6KeXUwjZMsgFo/1JAR0XHMdc17qr2DRiM+TxaZ1uQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=so/6HS3uw5ggP8Q1MgTvK5rvUTfGonvnaPJ2IyActGAlqbVHCiTM5o+4CQPoDbomDSs8E2sYCt8BbXvXBwjsNEIQHaLcjSdX766isRcN4FkjngVllG2zl0vOekGNp3tLWK1v5fmGmzg8LSnHprgehIMDvY2vws7hiFJA5wWtpnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQ5Mvvv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD88C4CEEB;
-	Mon, 18 Aug 2025 12:25:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755519924;
-	bh=iD6KeXUwjZMsgFo/1JAR0XHMdc17qr2DRiM+TxaZ1uQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uQ5Mvvv4fu0nC0YpmZgbfHu77T7H6ZmwX7iwmSNDtatMlKdVOjuyRM0UgVb1I0mCl
-	 Zay/DkvieMXj9TcmK+x3wQIlcpcZVPu4tYXaaClJR9zAV6g7pv7BsRfA/SnMhAIBtT
-	 YF79JC5gZXqumBvDreF5yQ/mmYejRZMOIzA68GMk=
-Date: Mon, 18 Aug 2025 14:25:21 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: =?utf-8?B?5Za15YWs5a2Q?= <miaogongzi0227@gmail.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [REGRESSION] IPv6 RA default router advertisement fails after
- kernel 6.12.42 updates
-Message-ID: <2025081831-viewable-vanquish-e8bc@gregkh>
-References: <CACBcRw+Fu1B+fXEFvhfsZFtPqa5G=AYSW0K3L2RBWh8YfkgUhg@mail.gmail.com>
+	s=arc-20240116; t=1755520270; c=relaxed/simple;
+	bh=4U2B/X3PRDwfwp26Gl11jaTCuX399Kk4OZWVEFIKFIo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FXo/22jWAY0xn402qUAQBAg34SSaKKnb4Yaby2SRJmvJKVus6LJz/ptJ24Hn/BkCgZDqsNHN8NwXRUIlrvhsmN6TeWi5a8YmyultmsL41p/8w/1MAj1/NVeFgOzuYm1PDiixfAQvL9sXIh+1uNioavGZHugS+Pt4S7wayCdEhIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com; spf=pass smtp.mailfrom=honor.com; dkim=pass (1024-bit key) header.d=honor.com header.i=@honor.com header.b=V8apBO3p; arc=none smtp.client-ip=81.70.192.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=honor.com
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=0Gm2+0Aa6dZlz65Fncjx6A1ibL2iyGuaPR5i1Xp2Ln0=;
+	b=V8apBO3pUxsnyYSwLu+8vq+IdZtxaSunARICmPjOEaDUsSrQvZR3EUEcWe/BYV6IDbczNHCJS
+	L0wO/XeEwVPYG/GVA3MoHsB8In9doPEupFD7awI97Dm0tShcVbBp3aEvXiXwSG11DF049qw4A3n
+	UMtxRhTjmZv4jH8hOhybQZc=
+Received: from w002.hihonor.com (unknown [10.68.28.120])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4c5Brv3MCGzYlTHY;
+	Mon, 18 Aug 2025 20:30:55 +0800 (CST)
+Received: from a011.hihonor.com (10.68.31.243) by w002.hihonor.com
+ (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
+ 2025 20:31:03 +0800
+Received: from localhost.localdomain (10.144.23.14) by a011.hihonor.com
+ (10.68.31.243) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
+ 2025 20:31:03 +0800
+From: wangzijie <wangzijie1@honor.com>
+To: <akpm@linux-foundation.org>, <viro@zeniv.linux.org.uk>,
+	<adobriyan@gmail.com>, <rick.p.edgecombe@intel.com>, <ast@kernel.org>,
+	<k.shutemov@gmail.com>, <jirislaby@kernel.org>,
+	<linux-fsdevel@vger.kernel.org>
+CC: <polynomial-c@gmx.de>, <gregkh@linuxfoundation.org>,
+	<stable@vger.kernel.org>, <regressions@lists.linux.dev>, wangzijie
+	<wangzijie1@honor.com>
+Subject: [PATCH RESEND v2] proc: fix missing pde_set_flags() for net proc files
+Date: Mon, 18 Aug 2025 20:31:02 +0800
+Message-ID: <20250818123102.959595-1-wangzijie1@honor.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACBcRw+Fu1B+fXEFvhfsZFtPqa5G=AYSW0K3L2RBWh8YfkgUhg@mail.gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: w011.hihonor.com (10.68.20.122) To a011.hihonor.com
+ (10.68.31.243)
 
-On Mon, Aug 18, 2025 at 08:03:00PM +0800, 喵公子 wrote:
-> Hi,
-> 
-> While testing Linux kernel 6.12.42 on OpenWrt, we observed a
-> regression in IPv6 Router Advertisement (RA) handling for the default
-> router.
-> 
-> Affected commits
-> 
-> The following commits appear related and may have introduced the issue:
-> 
-> ipv6: fix possible infinite loop in fib6_info_uses_dev()：
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12.42&id=db65739d406c72776fbdbbc334be827ef05880d2
-> 
-> ipv6: prevent infinite loop in rt6_nlmsg_size()：
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12.42&id=cd8d8bbd9ced4cc5d06d858f67d4aa87745e8f38
-> 
-> ipv6: annotate data-races around rt->fib6_nsiblings：
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12.42&id=0c58f74f8aa991c2a63bb58ff743e1ff3d584b62
+To avoid potential UAF issues during module removal races, we use pde_set_flags()
+to save proc_ops flags in PDE itself before proc_register(), and then use
+pde_has_proc_*() helpers instead of directly dereferencing pde->proc_ops->*.
 
-Does this also happen on the latest kernel releases?
+However, the pde_set_flags() call was missing when creating net related proc files.
+This omission caused incorrect behavior which FMODE_LSEEK was being cleared
+inappropriately in proc_reg_open() for net proc files. Lars reported it in this link[1].
 
-Also, please always include the developers/maintainers/mailing list of
-the subsystem where you find an issue with.  Otherwise you are not going
-to reach the developers who can help you out.
+Fix this by ensuring pde_set_flags() is called when register proc entry, and add
+NULL check for proc_ops in pde_set_flags().
 
-thanks,
+[1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
 
-greg k-h
+Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al)
+Cc: stable@vger.kernel.org
+Reported-by: Lars Wendler <polynomial-c@gmx.de>
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+---
+v2:
+- followed by Jiri's suggestion to refractor code and reformat commit message
+---
+ fs/proc/generic.c | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
+
+diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+index 76e800e38..003031839 100644
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -367,6 +367,23 @@ static const struct inode_operations proc_dir_inode_operations = {
+ 	.setattr	= proc_notify_change,
+ };
+ 
++static void pde_set_flags(struct proc_dir_entry *pde)
++{
++	if (!pde->proc_ops)
++		return;
++
++	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
++		pde->flags |= PROC_ENTRY_PERMANENT;
++	if (pde->proc_ops->proc_read_iter)
++		pde->flags |= PROC_ENTRY_proc_read_iter;
++#ifdef CONFIG_COMPAT
++	if (pde->proc_ops->proc_compat_ioctl)
++		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
++#endif
++	if (pde->proc_ops->proc_lseek)
++		pde->flags |= PROC_ENTRY_proc_lseek;
++}
++
+ /* returns the registered entry, or frees dp and returns NULL on failure */
+ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+ 		struct proc_dir_entry *dp)
+@@ -374,6 +391,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+ 	if (proc_alloc_inum(&dp->low_ino))
+ 		goto out_free_entry;
+ 
++	pde_set_flags(dp);
++
+ 	write_lock(&proc_subdir_lock);
+ 	dp->parent = dir;
+ 	if (pde_subdir_insert(dir, dp) == false) {
+@@ -561,20 +580,6 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
+ 	return p;
+ }
+ 
+-static void pde_set_flags(struct proc_dir_entry *pde)
+-{
+-	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+-		pde->flags |= PROC_ENTRY_PERMANENT;
+-	if (pde->proc_ops->proc_read_iter)
+-		pde->flags |= PROC_ENTRY_proc_read_iter;
+-#ifdef CONFIG_COMPAT
+-	if (pde->proc_ops->proc_compat_ioctl)
+-		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
+-#endif
+-	if (pde->proc_ops->proc_lseek)
+-		pde->flags |= PROC_ENTRY_proc_lseek;
+-}
+-
+ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+ 		struct proc_dir_entry *parent,
+ 		const struct proc_ops *proc_ops, void *data)
+@@ -585,7 +590,6 @@ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+ 	if (!p)
+ 		return NULL;
+ 	p->proc_ops = proc_ops;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_data);
+@@ -636,7 +640,6 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
+ 	p->proc_ops = &proc_seq_ops;
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_seq_private);
+@@ -667,7 +670,6 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
+ 		return NULL;
+ 	p->proc_ops = &proc_single_ops;
+ 	p->single_show = show;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_single_data);
+-- 
+2.25.1
+
 
