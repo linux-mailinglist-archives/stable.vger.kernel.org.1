@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F84B2A523
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39083B2A27F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63653177889
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F6F1787E6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD6E322543;
-	Mon, 18 Aug 2025 13:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2681431E0F4;
+	Mon, 18 Aug 2025 12:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDjtwN8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMFde/9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC95C322537;
-	Mon, 18 Aug 2025 13:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D519731E0EE;
+	Mon, 18 Aug 2025 12:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523075; cv=none; b=GEaGVA6GuQGrJ8WYDIedQmIEUC1/UJrBab8g+gGpQ61HgoumMDErn/hWoDDi0MO9PnsinPpRnm4bh6Pm2ZJdr6sccs9Lmc74c0yj+EO31l/ixxVZcCcGodJYGmZb+e/WFs13SWxLemgYo3fHlm/kt/+68+UplJcdA+dAlG9Tjac=
+	t=1755521453; cv=none; b=RD0jsns38qrAJrD6Inzewnqs3xzPXYanJtw1rCVpB0OAJNI9ogyGNOrZRVXTl6ikTPf5rxLMlcAqKKi7QCZYkEWGmX7lQnnd4dWRQKD+3ohFiFl79YYhRAyPNm0iEKGIiFs6rkhRldfuWAyp2CX1Inf5pKtZnccRFIiEuaDfqFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523075; c=relaxed/simple;
-	bh=rQ9dbT6fJgpgkr4l5vdIzqCqXujaniFa1OBdiDrW2KU=;
+	s=arc-20240116; t=1755521453; c=relaxed/simple;
+	bh=AANuWKGRQLHGmfXLN3YXsGI6HF0F9Ux8JEkEIxB03XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9e5d0uuFgs21tZ2epyhEVA/tynOm1/jHANrHANAQvBxSdrWomNKm8ieQ9NkbeiGEuMdVaAG7/7vEypRAE4asY7wqPPaZXUgK6ra8vjIUEXNLwohQ4zQtxCcpAETiGbdl3wHbRrDYIzISloHRGob/r4M/FFSyAVMgQTWx7hnI5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDjtwN8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F71C4CEF1;
-	Mon, 18 Aug 2025 13:17:54 +0000 (UTC)
+	 MIME-Version; b=aiRWZMSQLhou/IiUd0V5nRmU3sBCSIsoKr4LRph64S/Is2qHwRveqMB1fCS77LnmTqmXqQO86bKdBiky1HUuMtyWsYhkMMPeVrbZRwVU7x1ytaitZvaY7TNH2C2Kzfd0V19ydZDV27Z1li95V7lUP5zUPhN8T1ACBSs/5ru0CSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMFde/9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C2FC4CEEB;
+	Mon, 18 Aug 2025 12:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523075;
-	bh=rQ9dbT6fJgpgkr4l5vdIzqCqXujaniFa1OBdiDrW2KU=;
+	s=korg; t=1755521453;
+	bh=AANuWKGRQLHGmfXLN3YXsGI6HF0F9Ux8JEkEIxB03XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDjtwN8b5GS5FHi0RLHfVWCOYu4PafriinD0ea89JyzHVgzGgZSJ17qwsIpQZ0apK
-	 f7UEXKd3tJurO+agch+U482OzslBRsqC/D4lweZdiQ1LnJg3an0s/93rbIH5zYUZVg
-	 KdYhsziO3MX3+N2CmiCz/yYM2uxOgFhp3TTXVh9U=
+	b=QMFde/9wEKhN68dJ6nGXVl5rkcFN7wBPsg3xeWw2UGaEJRqD5EUr33R/4+F5aFK9c
+	 IRXShqM3oa5DC0bnakGgoMlY6vp3vQvGOgbaAd1qHtutKF8CSwRitsj1cd2n0bSSqF
+	 BJcn3sr/I4Oqu9v9/Vwz25BkvT74H3QJadIUbdCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 064/515] net: page_pool: allow enabling recycling late, fix false positive warning
+	Petro Pavlov <petro.pavlov@vastdata.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 024/444] NFSD: detect mismatch of file handle and delegation stateid in OPEN op
 Date: Mon, 18 Aug 2025 14:40:50 +0200
-Message-ID: <20250818124500.869312792@linuxfoundation.org>
+Message-ID: <20250818124449.837685135@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 64fdaa94bfe0cca3a0f4b2dd922486c5f59fe678 ]
+commit 9c65001c57164033ad08b654c8b5ae35512ddf4a upstream.
 
-Page pool can have pages "directly" (locklessly) recycled to it,
-if the NAPI that owns the page pool is scheduled to run on the same CPU.
-To make this safe we check that the NAPI is disabled while we destroy
-the page pool. In most cases NAPI and page pool lifetimes are tied
-together so this happens naturally.
+When the client sends an OPEN with claim type CLAIM_DELEG_CUR_FH or
+CLAIM_DELEGATION_CUR, the delegation stateid and the file handle
+must belong to the same file, otherwise return NFS4ERR_INVAL.
 
-The queue API expects the following order of calls:
- -> mem_alloc
-    alloc new pp
- -> stop
-    napi_disable
- -> start
-    napi_enable
- -> mem_free
-    free old pp
+Note that RFC8881, section 8.2.4, mandates the server to return
+NFS4ERR_BAD_STATEID if the selected table entry does not match the
+current filehandle. However returning NFS4ERR_BAD_STATEID in the
+OPEN causes the client to retry the operation and therefor get the
+client into a loop. To avoid this situation we return NFS4ERR_INVAL
+instead.
 
-Here we allocate the page pool in ->mem_alloc and free in ->mem_free.
-But the NAPIs are only stopped between ->stop and ->start. We created
-page_pool_disable_direct_recycling() to safely shut down the recycling
-in ->stop. This way the page_pool_destroy() call in ->mem_free doesn't
-have to worry about recycling any more.
-
-Unfortunately, the page_pool_disable_direct_recycling() is not enough
-to deal with failures which necessitate freeing the _new_ page pool.
-If we hit a failure in ->mem_alloc or ->stop the new page pool has
-to be freed while the NAPI is active (assuming driver attaches the
-page pool to an existing NAPI instance and doesn't reallocate NAPIs).
-
-Freeing the new page pool is technically safe because it hasn't been
-used for any packets, yet, so there can be no recycling. But the check
-in napi_assert_will_not_race() has no way of knowing that. We could
-check if page pool is empty but that'd make the check much less likely
-to trigger during development.
-
-Add page_pool_enable_direct_recycling(), pairing with
-page_pool_disable_direct_recycling(). It will allow us to create the new
-page pools in "disabled" state and only enable recycling when we know
-the reconfig operation will not fail.
-
-Coincidentally it will also let us re-enable the recycling for the old
-pool, if the reconfig failed:
-
- -> mem_alloc (new)
- -> stop (old)
-    # disables direct recycling for old
- -> start (new)
-    # fail!!
- -> start (old)
-    # go back to old pp but direct recycling is lost :(
- -> mem_free (new)
-
-The new helper is idempotent to make the life easier for drivers,
-which can operate in HDS mode and support zero-copy Rx.
-The driver can call the helper twice whether there are two pools
-or it has multiple references to a single pool.
-
-Fixes: 40eca00ae605 ("bnxt_en: unlink page pool when stopping Rx queue")
-Tested-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250805003654.2944974-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Petro Pavlov <petro.pavlov@vastdata.com>
+Fixes: c44c5eeb2c02 ("[PATCH] nfsd4: add open state code for CLAIM_DELEGATE_CUR")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c |  9 ++++++-
- include/net/page_pool/types.h             |  2 ++
- net/core/page_pool.c                      | 29 +++++++++++++++++++++++
- 3 files changed, 39 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d66519ce57af..8021d97f3f22 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3779,7 +3779,6 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
- 	if (BNXT_RX_PAGE_MODE(bp))
- 		pp.pool_size += bp->rx_ring_size;
- 	pp.nid = numa_node;
--	pp.napi = &rxr->bnapi->napi;
- 	pp.netdev = bp->dev;
- 	pp.dev = &bp->pdev->dev;
- 	pp.dma_dir = bp->rx_dir;
-@@ -3807,6 +3806,12 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
- 	return PTR_ERR(pool);
- }
- 
-+static void bnxt_enable_rx_page_pool(struct bnxt_rx_ring_info *rxr)
-+{
-+	page_pool_enable_direct_recycling(rxr->head_pool, &rxr->bnapi->napi);
-+	page_pool_enable_direct_recycling(rxr->page_pool, &rxr->bnapi->napi);
-+}
-+
- static int bnxt_alloc_rx_agg_bmap(struct bnxt *bp, struct bnxt_rx_ring_info *rxr)
- {
- 	u16 mem_size;
-@@ -3845,6 +3850,7 @@ static int bnxt_alloc_rx_rings(struct bnxt *bp)
- 		rc = bnxt_alloc_rx_page_pool(bp, rxr, cpu_node);
- 		if (rc)
- 			return rc;
-+		bnxt_enable_rx_page_pool(rxr);
- 
- 		rc = xdp_rxq_info_reg(&rxr->xdp_rxq, bp->dev, i, 0);
- 		if (rc < 0)
-@@ -15998,6 +16004,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
- 			goto err_reset;
- 	}
- 
-+	bnxt_enable_rx_page_pool(rxr);
- 	napi_enable_locked(&bnapi->napi);
- 	bnxt_db_nq_arm(bp, &cpr->cp_db, cpr->cp_raw_cons);
- 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 431b593de709..1509a536cb85 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -265,6 +265,8 @@ struct page_pool *page_pool_create_percpu(const struct page_pool_params *params,
- struct xdp_mem_info;
- 
- #ifdef CONFIG_PAGE_POOL
-+void page_pool_enable_direct_recycling(struct page_pool *pool,
-+				       struct napi_struct *napi);
- void page_pool_disable_direct_recycling(struct page_pool *pool);
- void page_pool_destroy(struct page_pool *pool);
- void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 3eabe78c93f4..ef870c21e854 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -1201,6 +1201,35 @@ void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
- 	pool->xdp_mem_id = mem->id;
- }
- 
-+/**
-+ * page_pool_enable_direct_recycling() - mark page pool as owned by NAPI
-+ * @pool: page pool to modify
-+ * @napi: NAPI instance to associate the page pool with
-+ *
-+ * Associate a page pool with a NAPI instance for lockless page recycling.
-+ * This is useful when a new page pool has to be added to a NAPI instance
-+ * without disabling that NAPI instance, to mark the point at which control
-+ * path "hands over" the page pool to the NAPI instance. In most cases driver
-+ * can simply set the @napi field in struct page_pool_params, and does not
-+ * have to call this helper.
-+ *
-+ * The function is idempotent, but does not implement any refcounting.
-+ * Single page_pool_disable_direct_recycling() will disable recycling,
-+ * no matter how many times enable was called.
-+ */
-+void page_pool_enable_direct_recycling(struct page_pool *pool,
-+				       struct napi_struct *napi)
-+{
-+	if (READ_ONCE(pool->p.napi) == napi)
-+		return;
-+	WARN_ON(!napi || pool->p.napi);
-+
-+	mutex_lock(&page_pools_lock);
-+	WRITE_ONCE(pool->p.napi, napi);
-+	mutex_unlock(&page_pools_lock);
-+}
-+EXPORT_SYMBOL(page_pool_enable_direct_recycling);
-+
- void page_pool_disable_direct_recycling(struct page_pool *pool)
- {
- 	/* Disable direct recycling based on pool->cpuid.
--- 
-2.50.1
-
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6150,6 +6150,20 @@ nfsd4_process_open2(struct svc_rqst *rqs
+ 		status = nfs4_check_deleg(cl, open, &dp);
+ 		if (status)
+ 			goto out;
++		if (dp && nfsd4_is_deleg_cur(open) &&
++				(dp->dl_stid.sc_file != fp)) {
++			/*
++			 * RFC8881 section 8.2.4 mandates the server to return
++			 * NFS4ERR_BAD_STATEID if the selected table entry does
++			 * not match the current filehandle. However returning
++			 * NFS4ERR_BAD_STATEID in the OPEN can cause the client
++			 * to repeatedly retry the operation with the same
++			 * stateid, since the stateid itself is valid. To avoid
++			 * this situation NFSD returns NFS4ERR_INVAL instead.
++			 */
++			status = nfserr_inval;
++			goto out;
++		}
+ 		stp = nfsd4_find_and_lock_existing_open(fp, open);
+ 	} else {
+ 		open->op_file = NULL;
 
 
 
