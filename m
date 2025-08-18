@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92728B2A420
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C554B2A738
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73E9E4E2A0F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C5441BA1943
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4875E31E0E6;
-	Mon, 18 Aug 2025 13:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198072E22A6;
+	Mon, 18 Aug 2025 13:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djcWy9SI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YF5QxNqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DCE31B10A;
-	Mon, 18 Aug 2025 13:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA28E335BA0;
+	Mon, 18 Aug 2025 13:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522665; cv=none; b=J5bjfXJ5cb1Nze0dbkTcl/WL36DVQ5C7zUplm2Hvm9kBlEVSLLE28YVD4/rZ8uZ5bCq8cPPDhcHZpM+J8GPNXuax7Cb3zKYOJXo7k46aXERk7E1gka5iPc6EjCFZXVqKhurpEBRJeJgHQxfMJ4ouZXxrb39Hwj6WQttRSKUfsCc=
+	t=1755524279; cv=none; b=U8657OWBxfLkUQEATVuKlIvg3A5QmHeTu8GOuhYiZM5Wrk4KxqVjdB8uQZAJlF/yl/NFvH+qNOjp805IyN4i7pv9rbQ5xsMPIyfSCqL3PCBQBVySWwOv72mBynkU3wy6YJdA245NpfuN2VB1tOUm+BVi0VTwuZk8SNSQ+VP8hbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522665; c=relaxed/simple;
-	bh=4H2hJEUe8dn4KWdACx/ZNW9bB8dQDJq2q0hff3iWzlk=;
+	s=arc-20240116; t=1755524279; c=relaxed/simple;
+	bh=rC1THRWytBpp0zgwclt4MmZFnUXwdLTXUa0TF9Tj2kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okpWi9DL+t04/6Qbkp0l61GGHavVy69877HaxaKZk8vth376f8rIjBwYXTAthyIytvg1sXdKZGKckXtRbtMk6RM6EgA5qVHcawg9xVqSeCVXJA64IKK4pX8ED3GJnHtXdYZY2+Hf9LN4HTirlk8DW/zZzqfLBGGTO5BZiskHPFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djcWy9SI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA82C4CEEB;
-	Mon, 18 Aug 2025 13:11:04 +0000 (UTC)
+	 MIME-Version; b=CfkGSgqgfEAFnbXbSSyxj20f/j5HcFLfpV5Mokz9Cb/1Erkk6+4wKKl7L7Y3oW8t6hqGMzxgBOlztOPTkubQbs1GAth3KOFK5F0n9TS71yUu8/yK8Gt/RNvnhT7MqDft+EzXTdLma00/rvZO17g0nnV2Pvi+nBZy40fc5sS7sas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YF5QxNqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39628C113D0;
+	Mon, 18 Aug 2025 13:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522664;
-	bh=4H2hJEUe8dn4KWdACx/ZNW9bB8dQDJq2q0hff3iWzlk=;
+	s=korg; t=1755524279;
+	bh=rC1THRWytBpp0zgwclt4MmZFnUXwdLTXUa0TF9Tj2kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djcWy9SI5RZ22RHNKLleb8CvMGZaarPdFY7BJfjswDqChJCOF/o177+H4PnLSvhDT
-	 ATpBNF1FV8SDb9RVIrePQ/2v0Yr1MfFAaX+x/AGzn95oFnaVGNVhms7dltT5NtelM+
-	 rPYk5iKn4WDnrC/dJwL2CbGZXOWU/+9+4nmHOJ7U=
+	b=YF5QxNqAc3DIM+D8nL59rVnW2A1MNmSIKwJIeNKRvgP958IuafEZq0fxX7e3S+8FJ
+	 bvPZ3uy7uzXGlbfsxcBoJPk988jfUO7WgEqEUlpvgRBaSqObN0ZjhV8oxvl7SZ88I5
+	 cRortlhhTIzdCyZYvwkXuH4HOeC/IkROi5tAM6PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 383/444] ext4: fix largest free orders lists corruption on mb_optimize_scan switch
+	Thomas Croft <thomasmcft@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 423/515] ALSA: hda/realtek: add LG gram 16Z90R-A to alc269 fixup table
 Date: Mon, 18 Aug 2025 14:46:49 +0200
-Message-ID: <20250818124503.260368815@linuxfoundation.org>
+Message-ID: <20250818124514.708189534@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Thomas Croft <thomasmcft@gmail.com>
 
-commit 7d345aa1fac4c2ec9584fbd6f389f2c2368671d5 upstream.
+[ Upstream commit dbe05428c4e54068a86e7e02405f3b30b1d2b3dd ]
 
-The grp->bb_largest_free_order is updated regardless of whether
-mb_optimize_scan is enabled. This can lead to inconsistencies between
-grp->bb_largest_free_order and the actual s_mb_largest_free_orders list
-index when mb_optimize_scan is repeatedly enabled and disabled via remount.
+Several months ago, Joshua Grisham submitted a patch [1]
+for several ALC298 based sound cards.
 
-For example, if mb_optimize_scan is initially enabled, largest free
-order is 3, and the group is in s_mb_largest_free_orders[3]. Then,
-mb_optimize_scan is disabled via remount, block allocations occur,
-updating largest free order to 2. Finally, mb_optimize_scan is re-enabled
-via remount, more block allocations update largest free order to 1.
+The entry for the LG gram 16 in the alc269_fixup_tbl only matches the
+Subsystem ID for the 16Z90R-Q and 16Z90R-K models [2]. My 16Z90R-A has a
+different Subsystem ID [3]. I'm not sure why these IDs differ, but I
+speculate it's due to the NVIDIA GPU included in the 16Z90R-A model that
+isn't present in the other models.
 
-At this point, the group would be removed from s_mb_largest_free_orders[3]
-under the protection of s_mb_largest_free_orders_locks[2]. This lock
-mismatch can lead to list corruption.
+I applied the patch to the latest Arch Linux kernel and the card was
+initialized as expected.
 
-To fix this, whenever grp->bb_largest_free_order changes, we now always
-attempt to remove the group from its old order list. However, we only
-insert the group into the new order list if `mb_optimize_scan` is enabled.
-This approach helps prevent lock inconsistencies and ensures the data in
-the order lists remains reliable.
+[1]: https://lore.kernel.org/linux-sound/20240909193000.838815-1-josh@joshuagrisham.com/
+[2]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0488
+[3]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0489
 
-Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-CC: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250714130327.1830534-12-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Croft <thomasmcft@gmail.com>
+Link: https://patch.msgid.link/20250804151457.134761-2-thomasmcft@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   33 ++++++++++++++-------------------
- 1 file changed, 14 insertions(+), 19 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1150,33 +1150,28 @@ static void
- mb_set_largest_free_order(struct super_block *sb, struct ext4_group_info *grp)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	int i;
-+	int new, old = grp->bb_largest_free_order;
- 
--	for (i = MB_NUM_ORDERS(sb) - 1; i >= 0; i--)
--		if (grp->bb_counters[i] > 0)
-+	for (new = MB_NUM_ORDERS(sb) - 1; new >= 0; new--)
-+		if (grp->bb_counters[new] > 0)
- 			break;
-+
- 	/* No need to move between order lists? */
--	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) ||
--	    i == grp->bb_largest_free_order) {
--		grp->bb_largest_free_order = i;
-+	if (new == old)
- 		return;
--	}
- 
--	if (grp->bb_largest_free_order >= 0) {
--		write_lock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+	if (old >= 0 && !list_empty(&grp->bb_largest_free_order_node)) {
-+		write_lock(&sbi->s_mb_largest_free_orders_locks[old]);
- 		list_del_init(&grp->bb_largest_free_order_node);
--		write_unlock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+		write_unlock(&sbi->s_mb_largest_free_orders_locks[old]);
- 	}
--	grp->bb_largest_free_order = i;
--	if (grp->bb_largest_free_order >= 0 && grp->bb_free) {
--		write_lock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+
-+	grp->bb_largest_free_order = new;
-+	if (test_opt2(sb, MB_OPTIMIZE_SCAN) && new >= 0 && grp->bb_free) {
-+		write_lock(&sbi->s_mb_largest_free_orders_locks[new]);
- 		list_add_tail(&grp->bb_largest_free_order_node,
--		      &sbi->s_mb_largest_free_orders[grp->bb_largest_free_order]);
--		write_unlock(&sbi->s_mb_largest_free_orders_locks[
--					      grp->bb_largest_free_order]);
-+			      &sbi->s_mb_largest_free_orders[new]);
-+		write_unlock(&sbi->s_mb_largest_free_orders_locks[new]);
- 	}
- }
- 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 71632790ca1d..1c421518570e 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11376,6 +11376,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1854, 0x0440, "LG CQ6", ALC256_FIXUP_HEADPHONE_AMP_VOL),
+ 	SND_PCI_QUIRK(0x1854, 0x0441, "LG CQ6 AIO", ALC256_FIXUP_HEADPHONE_AMP_VOL),
+ 	SND_PCI_QUIRK(0x1854, 0x0488, "LG gram 16 (16Z90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
++	SND_PCI_QUIRK(0x1854, 0x0489, "LG gram 16 (16Z90R-A)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x1854, 0x048a, "LG gram 17 (17ZD90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
+ 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+-- 
+2.39.5
+
 
 
 
