@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DA2B2A718
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E4AB2A9D2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0977B1BA1FA2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C9775A4940
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2E6321F25;
-	Mon, 18 Aug 2025 13:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DFB322A35;
+	Mon, 18 Aug 2025 14:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0yLCae5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiQWr9pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09557230D0D;
-	Mon, 18 Aug 2025 13:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14F5322A1A;
+	Mon, 18 Aug 2025 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524407; cv=none; b=iBUF6o2rBXtyZHsNImSuxIaoFb67CsXVQIOrn3VfBq7CoiTVNe0fc9OESmZLBK4MQwsPax5uQApfWow7YxatUSTifw6SUOXK5QrvUw3bq1xbcp32fkb3ePnfmOdy6GSBNnxYJZtePkbuu0k/aQs/M3mWH6HBynMZ/cIUXtqNFrI=
+	t=1755526104; cv=none; b=IyEGiAdqgZik6luZcRU6duFGf/EgUoZoa/rRms9y3udqnWPbRzky5e4dMaTvMH+82da6BS3Fq2i0QjUV/iMBy4Ld7TOSN783CUQa3oVwX7ClbKeKg4EbYSUCX37bgoyil7EbNK/CNOCAmceiUmdWc9Zt+KZqp+i7OVRC+RLj5nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524407; c=relaxed/simple;
-	bh=fOOidEfB2pUIxJp1Ix3wzyRnCW7aQ/uExEvPJ05+Z1E=;
+	s=arc-20240116; t=1755526104; c=relaxed/simple;
+	bh=NejPIpGfctKCodSnhHpFTXqEKhZj/FbqT2iiodajsDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyVXWRu4+WaoN0zKfPoCwS6sFCFp0UdFDtPjJ8iwOICAv4WnQJHmifYjDJYa8WOWa2ZLzORBLZ87Y1JiDioENuVweUHbHBYLM15vUafSyht4BYaaIk2Xi5zCvuaAGoS+6GNdZLrXVo1NGv52HPbbwi+75KKy7hviieqSUMmkVc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0yLCae5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D00C4CEEB;
-	Mon, 18 Aug 2025 13:40:05 +0000 (UTC)
+	 MIME-Version; b=plbNKY8IraxupWQUtACvNShEiBsqEpjzrqy+eQgutj6bwqWG3Qc8Z48l0/DOlP8joCGT8v9GnOEwkIoC+A2tcz2QtiH+L2BABYCUBBvblrbOzzJNp0aTRZfGAKdY4RqoSoCI09e0Bn2yYtbTpyph9RMcBhG7ZmD4tZ7sx7OGK3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiQWr9pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31914C4CEEB;
+	Mon, 18 Aug 2025 14:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524406;
-	bh=fOOidEfB2pUIxJp1Ix3wzyRnCW7aQ/uExEvPJ05+Z1E=;
+	s=korg; t=1755526104;
+	bh=NejPIpGfctKCodSnhHpFTXqEKhZj/FbqT2iiodajsDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0yLCae5HvuHIBzddfph25/0NjOhcqYEG463f0kWqm3h0zwcDxiKoKkivRQjYxyZY
-	 9kqr13JtJHR1fH2yd0osjw9uAxaYwqvdLaIOwjnKUU0oHR3VOgCKdZkbhX+XeBgiYQ
-	 mOVBP3GnJ0cBzXq65XfzEjoIPVMZPxdnw/tZuJsQ=
+	b=JiQWr9plCMEU8gY3TytBudJFI2AlgFWPuQ9H+nABj5MYk6pPZv4IXnZPfVHGdesn6
+	 Jq9ae6/iDaETCrlWrva3PQonPvXNx1T4uC0fkTIbkA08fSBwAUhVLf7xLe+w2LJlue
+	 2dghzp7wQ0gH25DG83cSOgA3LKjLPnIo7ODxFedg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.15 461/515] cdc-acm: fix race between initial clearing halt and open
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 460/570] regmap: irq: Free the regmap-irq mutex
 Date: Mon, 18 Aug 2025 14:47:27 +0200
-Message-ID: <20250818124516.166568480@linuxfoundation.org>
+Message-ID: <20250818124523.581582722@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 64690a90cd7c6db16d3af8616be1f4bf8d492850 upstream.
+[ Upstream commit 1da33858af6250184d2ef907494d698af03283de ]
 
-On the devices that need their endpoints to get an
-initial clear_halt, this needs to be done before
-the devices can be opened. That means it needs to be
-before the devices are registered.
+We do not currently free the mutex allocated by regmap-irq, do so.
 
-Fixes: 15bf722e6f6c0 ("cdc-acm: Add support of ATOL FPrint fiscal printers")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250717141259.2345605-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250731-regmap-irq-nesting-v1-1-98b4d1bf20f0@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-acm.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/base/regmap/regmap-irq.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1520,6 +1520,12 @@ skip_countries:
- 			goto err_remove_files;
+diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
+index d1585f073776..4aac12d38215 100644
+--- a/drivers/base/regmap/regmap-irq.c
++++ b/drivers/base/regmap/regmap-irq.c
+@@ -816,7 +816,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 						     d->mask_buf[i],
+ 						     chip->irq_drv_data);
+ 			if (ret)
+-				goto err_alloc;
++				goto err_mutex;
+ 		}
+ 
+ 		if (chip->mask_base && !chip->handle_mask_sync) {
+@@ -827,7 +827,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 			if (ret) {
+ 				dev_err(map->dev, "Failed to set masks in 0x%x: %d\n",
+ 					reg, ret);
+-				goto err_alloc;
++				goto err_mutex;
+ 			}
+ 		}
+ 
+@@ -838,7 +838,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 			if (ret) {
+ 				dev_err(map->dev, "Failed to set masks in 0x%x: %d\n",
+ 					reg, ret);
+-				goto err_alloc;
++				goto err_mutex;
+ 			}
+ 		}
+ 
+@@ -855,7 +855,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 			if (ret != 0) {
+ 				dev_err(map->dev, "Failed to read IRQ status: %d\n",
+ 					ret);
+-				goto err_alloc;
++				goto err_mutex;
+ 			}
+ 		}
+ 
+@@ -879,7 +879,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 			if (ret != 0) {
+ 				dev_err(map->dev, "Failed to ack 0x%x: %d\n",
+ 					reg, ret);
+-				goto err_alloc;
++				goto err_mutex;
+ 			}
+ 		}
  	}
- 
-+	if (quirks & CLEAR_HALT_CONDITIONS) {
-+		/* errors intentionally ignored */
-+		usb_clear_halt(usb_dev, acm->in);
-+		usb_clear_halt(usb_dev, acm->out);
-+	}
-+
- 	tty_dev = tty_port_register_device(&acm->port, acm_tty_driver, minor,
- 			&control_interface->dev);
- 	if (IS_ERR(tty_dev)) {
-@@ -1527,11 +1533,6 @@ skip_countries:
- 		goto err_release_data_interface;
+@@ -901,7 +901,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 			if (ret != 0) {
+ 				dev_err(map->dev, "Failed to set masks in 0x%x: %d\n",
+ 					reg, ret);
+-				goto err_alloc;
++				goto err_mutex;
+ 			}
+ 		}
  	}
+@@ -910,7 +910,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 	if (chip->status_is_level) {
+ 		ret = read_irq_data(d);
+ 		if (ret < 0)
+-			goto err_alloc;
++			goto err_mutex;
  
--	if (quirks & CLEAR_HALT_CONDITIONS) {
--		usb_clear_halt(usb_dev, acm->in);
--		usb_clear_halt(usb_dev, acm->out);
--	}
--
- 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
+ 		memcpy(d->prev_status_buf, d->status_buf,
+ 		       array_size(d->chip->num_regs, sizeof(d->prev_status_buf[0])));
+@@ -918,7 +918,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
  
- 	return 0;
+ 	ret = regmap_irq_create_domain(fwnode, irq_base, chip, d);
+ 	if (ret)
+-		goto err_alloc;
++		goto err_mutex;
+ 
+ 	ret = request_threaded_irq(irq, NULL, regmap_irq_thread,
+ 				   irq_flags | IRQF_ONESHOT,
+@@ -935,6 +935,8 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 
+ err_domain:
+ 	/* Should really dispose of the domain but... */
++err_mutex:
++	mutex_destroy(&d->lock);
+ err_alloc:
+ 	kfree(d->type_buf);
+ 	kfree(d->type_buf_def);
+@@ -1027,6 +1029,7 @@ void regmap_del_irq_chip(int irq, struct regmap_irq_chip_data *d)
+ 			kfree(d->config_buf[i]);
+ 		kfree(d->config_buf);
+ 	}
++	mutex_destroy(&d->lock);
+ 	kfree(d);
+ }
+ EXPORT_SYMBOL_GPL(regmap_del_irq_chip);
+-- 
+2.39.5
+
 
 
 
