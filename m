@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-170241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9551BB2A35C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A689B2A658
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70DFB17FC57
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCB736227FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143243218B8;
-	Mon, 18 Aug 2025 12:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA87B32276E;
+	Mon, 18 Aug 2025 13:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5eyk43B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjrC6/q5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C413321ABAA;
-	Mon, 18 Aug 2025 12:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E8B27B344;
+	Mon, 18 Aug 2025 13:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521994; cv=none; b=ktvMfOEt7snrvrb7q7rrnFK1lh8zzdpj5MLVA46E8HfaOFtkZGwg+OoNbm+lYy1HB+ajxKPqvDz3Fvvi2j7FIpGbJA8f5eWopReRpUTK98tA0D4hDq8YnTV4J1dagvqNq+gOFJFsvbDupjfK5VJDshybbhyMIt0tYnc3PnCvY50=
+	t=1755523607; cv=none; b=gxYH9i7FDCJQDtlrh154IO49z+GMHeb3jwp3dnodFC3s1J7f/X8O201kx81n1DhdqYdV1BX9YfutS3xNhkak8GBKNnujzWUR2CVhIab6UsDRbETam/SK+UgGZ1MlLXX2Eo40wJ/WrDFv2PusEAL0fiUo8NjtC6e31hrSPlrvAWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521994; c=relaxed/simple;
-	bh=HSPIJUW0ooJgOT69nhiq+/yD67ZJ/1Dh/ligV4A+z1I=;
+	s=arc-20240116; t=1755523607; c=relaxed/simple;
+	bh=6TFsKiz57AGcCKXtFb0LxM264oHs/Z7qG5ZfKeVKYzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E7hyZGxUUjGPTzVplIGbHQGnyOES51eFIcm4tRA3PTK+CYhh8Ey7uY5pIfbrv0Dnl32ujwmfqEJi7DvW9WPy9P5+JmxOZ0EXStkC4iv4D6PZtdWw6cS0ger2AgpO6m86nZvSrahU6sG/PdEe/Mc4Reg7yZqdlSdkdkauY6YkuKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5eyk43B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33011C4CEEB;
-	Mon, 18 Aug 2025 12:59:54 +0000 (UTC)
+	 MIME-Version; b=sZu4TVRI0f44t1zkQ00WvWIeTGKdMniekgNjgHAiwOOXXieQOO3EATiV0yDU+BXBE4UDaRdGfAOJeOcaEyMDi/jABxBn88LE+YuSHgGHqZp9pxHtlZ4ZHq3DGOYarXGorDDVqrwQQv7otEz5z7C5OfJ+uKNkGB50CCjmap0rNFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjrC6/q5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5EDC4CEEB;
+	Mon, 18 Aug 2025 13:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521994;
-	bh=HSPIJUW0ooJgOT69nhiq+/yD67ZJ/1Dh/ligV4A+z1I=;
+	s=korg; t=1755523607;
+	bh=6TFsKiz57AGcCKXtFb0LxM264oHs/Z7qG5ZfKeVKYzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5eyk43Buu7jBSxfyGvlF7PAUuGisKWZX61z4eqZUXxq2V5c4GVqG2zvQF0vpxNeG
-	 f29prwrU9L5BJY0UjrbFr3+BnCHhnSIoEZEwj9jsOVY5U0ly9GlvzBT9v7Y07kVj6y
-	 rJ53Xyi4YeWKSMWmFEqL03liK1vOHDtNBo091gAU=
+	b=MjrC6/q5Nupqdx7kkP7zA7EYv+uYDXuMCxXsXBlVb6Llf6pVBJ32NtIiyuwa81Yg6
+	 xmG9bFZDJDCnxyYkBcjRXE2NrP2WvnQ57IzKTiOYzYTfp8RjFQyXJh7NuNiwRimM6n
+	 kTP9DpvxG3TH5YKY1bkxyeB9BaKx9s5jhSBCKMug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	David Hildenbrand <david@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/444] imx8m-blk-ctrl: set ISI panic write hurry level
+Subject: [PATCH 6.15 191/515] powerpc/thp: tracing: Hide hugepage events under CONFIG_PPC_BOOK3S_64
 Date: Mon, 18 Aug 2025 14:42:57 +0200
-Message-ID: <20250818124454.569091428@linuxfoundation.org>
+Message-ID: <20250818124505.726248904@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +65,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Hałasa <khalasa@piap.pl>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit c01fba0b4869cada5403fffff416cd1675dba078 ]
+[ Upstream commit 43cf0e05089afe23dac74fa6e1e109d49f2903c4 ]
 
-Apparently, ISI needs cache settings similar to LCDIF.
-Otherwise we get artefacts in the image.
-Tested on i.MX8MP.
+The events hugepage_set_pmd, hugepage_set_pud, hugepage_update_pmd and
+hugepage_update_pud are only called when CONFIG_PPC_BOOK3S_64 is defined.
+As each event can take up to 5K regardless if they are used or not, it's
+best not to define them when they are not used. Add #ifdef around these
+events when they are not used.
 
-Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
-Link: https://lore.kernel.org/r/m3ldr69lsw.fsf@t19.piap.pl
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/20250612101259.0ad43e48@batman.local.home
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/imx8m-blk-ctrl.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/trace/events/thp.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-index ca942d7929c2..8b7b175f5896 100644
---- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
-@@ -665,6 +665,11 @@ static const struct imx8m_blk_ctrl_data imx8mn_disp_blk_ctl_dev_data = {
- #define  LCDIF_1_RD_HURRY	GENMASK(15, 13)
- #define  LCDIF_0_RD_HURRY	GENMASK(12, 10)
+diff --git a/include/trace/events/thp.h b/include/trace/events/thp.h
+index f50048af5fcc..c8fe879d5828 100644
+--- a/include/trace/events/thp.h
++++ b/include/trace/events/thp.h
+@@ -8,6 +8,7 @@
+ #include <linux/types.h>
+ #include <linux/tracepoint.h>
  
-+#define ISI_CACHE_CTRL		0x50
-+#define  ISI_V_WR_HURRY		GENMASK(28, 26)
-+#define  ISI_U_WR_HURRY		GENMASK(25, 23)
-+#define  ISI_Y_WR_HURRY		GENMASK(22, 20)
-+
- static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 				unsigned long action, void *data)
- {
-@@ -694,6 +699,11 @@ static int imx8mp_media_power_notifier(struct notifier_block *nb,
- 		regmap_set_bits(bc->regmap, LCDIF_ARCACHE_CTRL,
- 				FIELD_PREP(LCDIF_1_RD_HURRY, 7) |
- 				FIELD_PREP(LCDIF_0_RD_HURRY, 7));
-+		/* Same here for ISI */
-+		regmap_set_bits(bc->regmap, ISI_CACHE_CTRL,
-+				FIELD_PREP(ISI_V_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_U_WR_HURRY, 7) |
-+				FIELD_PREP(ISI_Y_WR_HURRY, 7));
- 	}
++#ifdef CONFIG_PPC_BOOK3S_64
+ DECLARE_EVENT_CLASS(hugepage_set,
  
- 	return NOTIFY_OK;
+ 	    TP_PROTO(unsigned long addr, unsigned long pte),
+@@ -66,6 +67,7 @@ DEFINE_EVENT(hugepage_update, hugepage_update_pud,
+ 	    TP_PROTO(unsigned long addr, unsigned long pud, unsigned long clr, unsigned long set),
+ 	    TP_ARGS(addr, pud, clr, set)
+ );
++#endif /* CONFIG_PPC_BOOK3S_64 */
+ 
+ DECLARE_EVENT_CLASS(migration_pmd,
+ 
 -- 
 2.39.5
 
