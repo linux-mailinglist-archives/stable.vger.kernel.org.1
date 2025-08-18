@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70945B2A328
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:06:48 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6517DB2A722
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAE2C172E39
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 862434E3B9F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2801C31CA72;
-	Mon, 18 Aug 2025 12:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6257D1F4177;
+	Mon, 18 Aug 2025 13:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2dhiNdN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wATDaiUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D969527B355;
-	Mon, 18 Aug 2025 12:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207FC335BCE;
+	Mon, 18 Aug 2025 13:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521767; cv=none; b=lSy6VImkhcIafchcbVS9m4kw2jd6C7rbbV+2GBK1A81FtnSLfHh84X+mI6Kr2VYwdIY14IY4U8LU8TYOXIUjBc0Z5drmeBg1gm/ewvOI6P9ygiwX5xAmsr6wMtVJU5/8pIc38RWkOwB+cEjDoMu0mW/VvenfVMgp8ktTGgKUYZo=
+	t=1755524985; cv=none; b=DNfDO1lZz4x0rP6YwI/2PVS0QWdFClrd1F6UBUzFIoyZNjaYB8AujsB00jlwg/Ejwd75ZUruNMd7q72KOIZX8QP1y24QFEyn9PvLUDXq0iuWWfZ/xrXaUg7OKjRzxNJraraUy0iUYDTedyXeqCznlPnlo/kIqon1rLchvmnHYp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521767; c=relaxed/simple;
-	bh=TNZ3LFm//iulHZCEqcOk3UDvVoDNf5bve8Qjf0JZ1kc=;
+	s=arc-20240116; t=1755524985; c=relaxed/simple;
+	bh=bgKk8q1IcX+r9pV15M8dJCaAMXKMBc3U/31ZPYpQ5HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMZbIqJqLm3JaDkL9o2no4m5angKo+K6za8rCsxCcOyVcPGyWDxNRDNEbkPhyP9M2zBxLjiQ4J04sqF1P3OH5DVfqRqyqtdsXpg4NQ3/x07m0ncBPE2h/oXzMmEiFTS8/MXYscJ078jbfjAjkhJGuzmCIswiadlKiQbpWf5JVFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2dhiNdN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E19C4CEF1;
-	Mon, 18 Aug 2025 12:56:07 +0000 (UTC)
+	 MIME-Version; b=YcA2FDRLwL3FABAdREqI0pqnU6jNG3a4mfRgM/Gz4qU7Pi2xnTcUGd4XSBVMkp85LE679ck08xCUjONb3zMXOtPep29yOi5EEXsWzkg+O6efug8jnMjTWhoMRjYcv2QW7nmFPF6HamvYDEkJcHQZrF5CgFKnX2c/GWN1Y/bAh0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wATDaiUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86074C4CEF1;
+	Mon, 18 Aug 2025 13:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521767;
-	bh=TNZ3LFm//iulHZCEqcOk3UDvVoDNf5bve8Qjf0JZ1kc=;
+	s=korg; t=1755524985;
+	bh=bgKk8q1IcX+r9pV15M8dJCaAMXKMBc3U/31ZPYpQ5HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2dhiNdN6QLaXJVuKr4qkpFDBXSDGxd/ZoPv4YtOjWYWq9Kz5btJFTnqnpOcM7oG2
-	 7tRRYk3NK+8fcsh4Xu+0Q5BlfRrX3YJ8FjAfbTnmh2H5tCz5etnEw/yLhqe15gvDhe
-	 y1zzLIbIem8Vr+5f302f3XMmVyOlJyBKsPbCDf9Y=
+	b=wATDaiUf702+Ry0ltQvK7ry8xDMFYdxJ6Meb/81Ds9cjMpoKOPuhhrLW9WTWHK/kG
+	 +NH1gquURqbpm9LukXHA3lYq2xrBdYWUHaYlBI4Noj9aw2GWaX4ArEwlbKm4fe5Vz6
+	 tvoUJpeq1WQfAJ5WG+IBl1ZvaZQAxAh1hgAnFOuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Niklas Cassel <cassel@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/444] ata: ahci: Disallow LPM policy control if not supported
+Subject: [PATCH 6.16 123/570] tracefs: Add d_delete to remove negative dentries
 Date: Mon, 18 Aug 2025 14:41:50 +0200
-Message-ID: <20250818124452.101442562@linuxfoundation.org>
+Message-ID: <20250818124510.561618689@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 65b2c92f69d3df81422d27e5be012e357e733241 ]
+[ Upstream commit d9b13cdad80dc11d74408cf201939a946e9303a6 ]
 
-Commit fa997b0576c9 ("ata: ahci: Do not enable LPM if no LPM states are
-supported by the HBA") introduced an early return in
-ahci_update_initial_lpm_policy() to ensure that the target_lpm_policy
-of ports belonging to a host that does not support the Partial, Slumber
-and DevSleep power states is unchanged and remains set to
-ATA_LPM_UNKNOWN and thus prevents the execution of
-ata_eh_link_set_lpm().
+If a lookup in tracefs is done on a file that does not exist, it leaves a
+dentry hanging around until memory pressure removes it. But eventfs
+dentries should hang around as when their ref count goes to zero, it
+requires more work to recreate it. For the rest of the tracefs dentries,
+they hang around as their dentry is used as a descriptor for the tracing
+system. But if a file lookup happens for a file in tracefs that does not
+exist, it should be deleted.
 
-However, a user or a system daemon (e.g. systemd-udevd) may still
-attempt changing the LPM policy through the sysfs
-link_power_management_policy of the host.
+Add a .d_delete callback that checks if dentry->fsdata is set or not. Only
+eventfs dentries set fsdata so if it has content it should not be deleted
+and should hang around in the cache.
 
-Improve this to prevent sysfs LPM policy changes by setting the flag
-ATA_FLAG_NO_LPM for the port of such host, and initialize the port
-target_lpm_policy to ATA_LPM_MAX_POWER to guarantee that no unsupported
-low power state is being used on the port and its link.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20250701125321.69496-9-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/tracefs/inode.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index a6a66d794763..61d34ca0d9f4 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1785,7 +1785,10 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
- 	if ((ap->host->flags & ATA_HOST_NO_PART) &&
- 	    (ap->host->flags & ATA_HOST_NO_SSC) &&
- 	    (ap->host->flags & ATA_HOST_NO_DEVSLP)) {
--		ata_port_dbg(ap, "no LPM states supported, not enabling LPM\n");
-+		ata_port_dbg(ap,
-+			"No LPM states supported, forcing LPM max_power\n");
-+		ap->flags |= ATA_FLAG_NO_LPM;
-+		ap->target_lpm_policy = ATA_LPM_MAX_POWER;
- 		return;
- 	}
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index a3fd3cc591bd..43f83fc9594f 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -465,9 +465,20 @@ static int tracefs_d_revalidate(struct inode *inode, const struct qstr *name,
+ 	return !(ei && ei->is_freed);
+ }
  
++static int tracefs_d_delete(const struct dentry *dentry)
++{
++	/*
++	 * We want to keep eventfs dentries around but not tracefs
++	 * ones. eventfs dentries have content in d_fsdata.
++	 * Use d_fsdata to determine if it's a eventfs dentry or not.
++	 */
++	return dentry->d_fsdata == NULL;
++}
++
+ static const struct dentry_operations tracefs_dentry_operations = {
+ 	.d_revalidate = tracefs_d_revalidate,
+ 	.d_release = tracefs_d_release,
++	.d_delete = tracefs_d_delete,
+ };
+ 
+ static int tracefs_fill_super(struct super_block *sb, struct fs_context *fc)
 -- 
 2.39.5
 
