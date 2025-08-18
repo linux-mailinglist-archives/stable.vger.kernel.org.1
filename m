@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EA2B2A9AA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE5EB2A6C3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E092F7BF0F6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22B527BA6CB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95F6322DBA;
-	Mon, 18 Aug 2025 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C20319847;
+	Mon, 18 Aug 2025 13:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vpvT5hH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPvb/aUR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8744E322DB1;
-	Mon, 18 Aug 2025 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D8430F52C;
+	Mon, 18 Aug 2025 13:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526111; cv=none; b=Tm6V10Gn/pyBR28afsKgs4L8LmJP6PfpMzKgQRtpJcnIn8W8Q+kweJOq5fqE3QSrW/C594rd1WKTLLivrU2YCcEiuXBc+fKCxcW9YTyQmSqdOqNOgxrYnmIU7DTBbeFzg8FNpTYZUD9LBJrDPXSl7gH3ZzX6ZlOdMQ4AUlk0y0c=
+	t=1755524413; cv=none; b=BiCYMP26KwPfbYU6xHAeJL/1TO/7X/htKN56dKE5VEcBVQiteH+Ty1HMOw05uFbLrqoGXPACzFOimQ7mk10fTyRSoURNYUvbqpFv4roTbVRpwAgcTzc3zsH5OGcwHiKoPVGDaqT7fSLNfebCjGjJUaJ5Wd45dj6S8nGtKqFyYHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526111; c=relaxed/simple;
-	bh=tRXIIvS5ewBfz5Xd1QvFYstojrk//nuqlZpramjux8Q=;
+	s=arc-20240116; t=1755524413; c=relaxed/simple;
+	bh=bJnaTynGnAkzZc/I+dxjW9O0aKT3bWqHjS4cU28Zp48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QVCDxIAR4rZa+hHeRrWTDCkmATBIhqSyBi1SFIx9oh7WgmKNWhoBUwdtcTgDkFK26cgNSI2oiqd+xZQnyuIG7LsN2v2VWlMNs7197fSRI8gbAznlJaOw56ozxMXcFOHfvwQbZVwGCPQLvU53aWBe6/fMv5MskvjD5qJvg4OhVXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vpvT5hH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB675C4CEEB;
-	Mon, 18 Aug 2025 14:08:30 +0000 (UTC)
+	 MIME-Version; b=mjN9t0ssSNgfgFAvjrZofCnaRo7UpCsMuib2tPEyfaLjqGK9jJnHycqMALgZUsC+BtECoTyY3hKVJgAe04a/dA74BNczDir8if6+f2Sk+mQ4gXHpTx1TssbBmi/FOQFdws9SbD4BXyqaCxsrbUsEaM/PYtrI9HUGptfPm6gxRcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPvb/aUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D28C4CEEB;
+	Mon, 18 Aug 2025 13:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526111;
-	bh=tRXIIvS5ewBfz5Xd1QvFYstojrk//nuqlZpramjux8Q=;
+	s=korg; t=1755524412;
+	bh=bJnaTynGnAkzZc/I+dxjW9O0aKT3bWqHjS4cU28Zp48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vpvT5hHHuHOl7+UD1Gr9yTOh/uY7o4GmpgDRZ175V9myv6B1ny5JkTc9RhgkgU4C
-	 PQS1YC5Gklu152qY+iuRrPE5ZY0HzcTUELQ3KHS0KjoFlqO7NPFuZctkH3yFIkXCkm
-	 EvFggo7VkACY1F/wj7+lRV+WvLQyJMbz1uC5TQ5M=
+	b=xPvb/aURBhGdL44SUQazuXLDkeUPKRRPrX2D7IuXkE/LXrYOrejqYSaEqwYXAUPkb
+	 QOxI6qSZqKlt2XUjWctGBj9swIC4Bm9t6Rliw/VaGBpPzBbbhiioY7oh0eOOIpSsC5
+	 H7cUui2uRksrnw1awP3EE0WQ0Ga8CdofwBZPcqQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 462/570] ASoC: Intel: avs: Fix uninitialized pointer error in probe()
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 463/515] btrfs: abort transaction during log replay if walk_log_tree() failed
 Date: Mon, 18 Aug 2025 14:47:29 +0200
-Message-ID: <20250818124523.661856463@linuxfoundation.org>
+Message-ID: <20250818124516.244233250@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 11f74f48c14c1f4fe16541900ea5944c42e30ccf ]
+commit 2a5898c4aac67494c2f0f7fe38373c95c371c930 upstream.
 
-If pcim_request_all_regions() fails, error path operates on
-uninitialized 'bus' pointer. Found out by Coverity static analyzer.
+If we failed walking a log tree during replay, we have a missing
+transaction abort to prevent committing a transaction where we didn't
+fully replay all the changes from a log tree and therefore can leave the
+respective subvolume tree in some inconsistent state. So add the missing
+transaction abort.
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250730124906.351798-1-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/avs/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/tree-log.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
-index ec1b3f55cb5c..d45e9279df27 100644
---- a/sound/soc/intel/avs/core.c
-+++ b/sound/soc/intel/avs/core.c
-@@ -446,6 +446,8 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 	adev = devm_kzalloc(dev, sizeof(*adev), GFP_KERNEL);
- 	if (!adev)
- 		return -ENOMEM;
-+	bus = &adev->base.core;
-+
- 	ret = avs_bus_init(adev, pci, id);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to init avs bus: %d\n", ret);
-@@ -456,7 +458,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
- 	if (ret < 0)
- 		return ret;
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -7276,11 +7276,14 @@ again:
  
--	bus = &adev->base.core;
- 	bus->addr = pci_resource_start(pci, 0);
- 	bus->remap_addr = pci_ioremap_bar(pci, 0);
- 	if (!bus->remap_addr) {
--- 
-2.39.5
-
+ 		wc.replay_dest->log_root = log;
+ 		ret = btrfs_record_root_in_trans(trans, wc.replay_dest);
+-		if (ret)
++		if (ret) {
+ 			/* The loop needs to continue due to the root refs */
+ 			btrfs_abort_transaction(trans, ret);
+-		else
++		} else {
+ 			ret = walk_log_tree(trans, log, &wc);
++			if (ret)
++				btrfs_abort_transaction(trans, ret);
++		}
+ 
+ 		if (!ret && wc.stage == LOG_WALK_REPLAY_ALL) {
+ 			ret = fixup_inode_link_counts(trans, wc.replay_dest,
 
 
 
