@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488ADB2A9C5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FA0B2A687
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D23680FDA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:09:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98C131BA0972
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8C12E22BA;
-	Mon, 18 Aug 2025 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10861335BBA;
+	Mon, 18 Aug 2025 13:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/gtsHpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA/woddT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082CF334728;
-	Mon, 18 Aug 2025 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E32335BA1;
+	Mon, 18 Aug 2025 13:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525645; cv=none; b=TxYMjVByG85/7CU5o7XXx5UKoKbY3sCyCUbJ6vVpxmmZsTzVYr1ibaojQPO9Gm516qm8xD2iFKqj60+Dep7Oyi10d0stEoaSHBIJ97w3rmSl+vQ6daUGKiHCIwE5HLNpSwM5klPpKmExBI26FPeqwN7/E9O6Wuifk0zaVF1omUs=
+	t=1755523983; cv=none; b=cVcU6ftqiCUPfN73XvO8CsKeAEraRdgYYxN0yy9lqc36VqxncYOh2/cqRiBuLm9oJrclxE/VBA26fbF8XC1q6GMu10q1asgH5b/9x+J/I8OToY6GM1ef7OcnWmMyi+Oc70dGL8vKk+HbgDffXX6yxt+kre+KJ6zVoFdtSmGYhgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525645; c=relaxed/simple;
-	bh=BQpt/CcAHXOIz8UMetjQBCU7y4iA+FbBfzfsZjxXKoU=;
+	s=arc-20240116; t=1755523983; c=relaxed/simple;
+	bh=mcsXzbOONBqTKwv/5+UAmj0RJF3fDHFhR1bAxT3NuzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNtwY2MIUlWH1OMToIibl29+VzRlEpkhoBkf4HfhxD08Fe+egmmb6b6f1//fNhsbW3BX5LyrepOvhCPJMYXlvo8sWZwz3plcElT6JF5+z6A7yC0Zjy3oxb8Gaehw1AzQSEDPTVkZLscFeaZ9TP+cTIDdWGd05jtgbKyoM/GzFEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/gtsHpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8053DC4CEEB;
-	Mon, 18 Aug 2025 14:00:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JA135OUUFZKRmg4YrK3pt4Bfb2XE8jYwryQuSnpGWqbxdJE/1sZ0H33yiZvvORESUB8iB3oUvNHbfACWji3z0DkGTH6Z9QB08XM8NnNz5Mgjt3nDhE21mfvdypufgN6fnEPDxZ6lLD8nQEnWsYQvd8CDCIq5HE99gccjsqin1G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA/woddT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7DBC4CEEB;
+	Mon, 18 Aug 2025 13:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525644;
-	bh=BQpt/CcAHXOIz8UMetjQBCU7y4iA+FbBfzfsZjxXKoU=;
+	s=korg; t=1755523983;
+	bh=mcsXzbOONBqTKwv/5+UAmj0RJF3fDHFhR1bAxT3NuzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/gtsHpjVXeBVdCL3KXvMjKbmsrfon79l6okWXEemM81+q/+83t+erXKOqwVP4oS8
-	 2gbobd+tz7w/w2JRfNU/qvjV94b8HxpkC4QRXiahlc0e68rJOR2BsFHYbJurE3IEBG
-	 QFtznCCWJIaBSoi7AvGBVS8/9Yvf4eCx4rfwRyHA=
+	b=iA/woddT2uU+pyl8Z4g96S9VdxgBbZXDXwELZQ5vDS4x5vDMTLxwEOOaetY71m4JE
+	 IhyQNBmz4ZmjniRJzLNWXDEjqhpsGCvSvnbwyuna6DfACS4J2lE2NFrClKf8ROATHw
+	 FS7qZZqJPsh0n0nkArmF/Uqn6qmBnVa8H5dWxy5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 324/570] drm/amd/display: Stop storing failures into adev->dm.cached_state
+Subject: [PATCH 6.15 325/515] net: dsa: b53: fix IP_MULTICAST_CTRL on BCM5325
 Date: Mon, 18 Aug 2025 14:45:11 +0200
-Message-ID: <20250818124518.338638023@linuxfoundation.org>
+Message-ID: <20250818124510.947873236@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 709a37ab9c63297da2194dc36f604537f9d2d417 ]
+[ Upstream commit 044d5ce2788b165798bfd173548e61bf7b6baf4d ]
 
-If drm_atomic_helper_suspend() has failed for any reason, it's stored
-in adev->dm.cached_state.  This isn't expected because the resume
-(or complete()) sequence will attempt to use the stored state to
-resume.
+BCM5325 doesn't implement B53_UC_FWD_EN, B53_MC_FWD_EN or B53_IPMC_FWD_EN.
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Link: https://lore.kernel.org/r/20250602014432.3538345-3-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Link: https://patch.msgid.link/20250614080000.1884236-9-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 25 +++++++++++++------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 18 +++++++++++-------
+ drivers/net/dsa/b53/b53_regs.h   |  1 +
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f58fa5da7fe5..5be8c0bf8880 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3060,6 +3060,19 @@ static void hpd_rx_irq_work_suspend(struct amdgpu_display_manager *dm)
- 	}
- }
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index bb0a5fd6a372..d15d912690c4 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -366,14 +366,18 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, &mgmt);
+ 		mgmt |= B53_MII_DUMB_FWDG_EN;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_SWITCH_CTRL, mgmt);
+-	}
  
-+static int dm_cache_state(struct amdgpu_device *adev)
-+{
-+	int r;
-+
-+	adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
-+	if (IS_ERR(adev->dm.cached_state)) {
-+		r = PTR_ERR(adev->dm.cached_state);
-+		adev->dm.cached_state = NULL;
+-	/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
+-	 * frames should be flooded or not.
+-	 */
+-	b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-	mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
+-	b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++		/* Look at B53_UC_FWD_EN and B53_MC_FWD_EN to decide whether
++		 * frames should be flooded or not.
++		 */
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
++	} else {
++		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
++		mgmt |= B53_IP_MCAST_25;
++		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
 +	}
-+
-+	return adev->dm.cached_state ? 0 : r;
-+}
-+
- static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
- {
- 	struct amdgpu_device *adev = ip_block->adev;
-@@ -3068,11 +3081,8 @@ static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
- 		return 0;
- 
- 	WARN_ON(adev->dm.cached_state);
--	adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
--	if (IS_ERR(adev->dm.cached_state))
--		return PTR_ERR(adev->dm.cached_state);
- 
--	return 0;
-+	return dm_cache_state(adev);
  }
  
- static int dm_suspend(struct amdgpu_ip_block *ip_block)
-@@ -3106,9 +3116,10 @@ static int dm_suspend(struct amdgpu_ip_block *ip_block)
- 	}
+ static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 25d25bd1071f..f2caf8fe5699 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -110,6 +110,7 @@
  
- 	if (!adev->dm.cached_state) {
--		adev->dm.cached_state = drm_atomic_helper_suspend(adev_to_drm(adev));
--		if (IS_ERR(adev->dm.cached_state))
--			return PTR_ERR(adev->dm.cached_state);
-+		int r = dm_cache_state(adev);
-+
-+		if (r)
-+			return r;
- 	}
- 
- 	s3_handle_hdmi_cec(adev_to_drm(adev), true);
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
++#define  B53_IP_MCAST_25		BIT(0)
+ #define  B53_IPMC_FWD_EN		BIT(1)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
 -- 
 2.39.5
 
