@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-171096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA09FB2A7AD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93D2B2A552
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A148580A68
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C7E11BA2B3E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC31E1E48A;
-	Mon, 18 Aug 2025 13:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47094321F4F;
+	Mon, 18 Aug 2025 13:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaYTsoqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Epaip/Qy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737A9220F3F;
-	Mon, 18 Aug 2025 13:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02037321F3F;
+	Mon, 18 Aug 2025 13:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524804; cv=none; b=aGZcxY1HmijpCC6rEYEPN3VjlJ4OfYKH14XBBvv2ctdafu86L80+yvfOq2Zqhx7jtslZciXP2lRkBsoh96rRj474bnZFJhz8eRkIbLgipigmRhoEwu+zrru79LCIMzz1BI8IAGgbHZfj15FQShs3vZGt47w4wzlO9y0YXJALK04=
+	t=1755522993; cv=none; b=J/fTdLfiMub8n2OqCaSvOk4BffAl0/x4D0wSC8r7oAv4CuEQADjGwjItCyCYiRcevweEr0JjijfjSyN6NA+oR2wlPBCsn/nyRHX4Rois4misvrFdi2OGvUTbd33U5c7/tKFwxoSVTYDV2FNVvnHw5i7TGyDhuefzMiU88N0MzBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524804; c=relaxed/simple;
-	bh=wH3gfVQrkgTIDYtnN5mtH4Y06Vptp5Yify6imisnLxw=;
+	s=arc-20240116; t=1755522993; c=relaxed/simple;
+	bh=0wn2anTpkTTcfdEcN7WprMVZ7N9Vb3nng8snt5Y4w9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rijP2N/jOHMoeE1wpmlwV0SEXDXna853iN6nfad7j/j/Qz3adZo6qhk4+w29mhPYdYK3VZ4kW+5r8HPkYIMhhwCDeNtmQQ1Vv3dJkr/R+I7p6NS26kfOFExIWQd12Q6LqvaFDipQMkSSJ8Z6DLgMwju33XEZaeWHMDhaUZfQanM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaYTsoqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C67CC4CEEB;
-	Mon, 18 Aug 2025 13:46:42 +0000 (UTC)
+	 MIME-Version; b=HTLe878nxZ+/hL54sCqvcaf7u/4E5lKTiF1DtNRgLAawvlb8XtRrP1xDYvzgIV/LhpiVUEjLRX7/b9FBxd1TFjty924ihVNJYZ919qO8KlJBpLZDK/2Smbs1r+4Nyr8P3f8+eLC/KZfzWSkVbE5WEI6NaJBNFrW7o8uD5QZ4+C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Epaip/Qy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE9CC4CEEB;
+	Mon, 18 Aug 2025 13:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524803;
-	bh=wH3gfVQrkgTIDYtnN5mtH4Y06Vptp5Yify6imisnLxw=;
+	s=korg; t=1755522992;
+	bh=0wn2anTpkTTcfdEcN7WprMVZ7N9Vb3nng8snt5Y4w9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uaYTsoqLaJWQGUM/NpTnLFWJC0XSx/ICrmP6Mah94cVXzXznWbwqbefaoi94pdema
-	 Xrcl3HX20uVhvz82Lep+Wf5KJf0hwHcLVRmZuo8jdNA2vF1p4nz343CI69lU1VfyNv
-	 YmudZJhsyYHu82vM6o8QEU1Ia3x8vlVBD8e76IrY=
+	b=Epaip/QymuyDNzk2sX17ndkG/mjFfHljQlwzcWR29X2p17tb7F2OvBmvIMN4TARnQ
+	 2IiQ5kgAtCfuVkWdyPgzgrDofxCEdQWF/AA2yH0hTt3OvNMcc2t/5/zWOFNvFw27PO
+	 0it8WJ1CsF6E1jKTelkZVXfakc220KufvJuAmWeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.16 035/570] PCI: Extend isolated function probing to LoongArch
-Date: Mon, 18 Aug 2025 14:40:22 +0200
-Message-ID: <20250818124507.164756302@linuxfoundation.org>
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Yao Zi <ziyao@disroot.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.15 037/515] LoongArch: Avoid in-place string operation on FDT content
+Date: Mon, 18 Aug 2025 14:40:23 +0200
+Message-ID: <20250818124459.869846713@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Yao Zi <ziyao@disroot.org>
 
-commit a02fd05661d73a8507dd70dd820e9b984490c545 upstream.
+commit 70a2365e18affc5ebdaab1ca6a0b3c4f3aac2ee8 upstream.
 
-Like s390 and the jailhouse hypervisor, LoongArch's PCI architecture allows
-passing isolated PCI functions to a guest OS instance. So it is possible
-that there is a multi-function device without function 0 for the host or
-guest.
+In init_cpu_fullname(), a constant pointer to "model" property is
+retrieved. It's later modified by the strsep() function, which is
+illegal and corrupts kernel's FDT copy. This is shown by dmesg,
 
-Allow probing such functions by adding a IS_ENABLED(CONFIG_LOONGARCH) case
-in the hypervisor_isolated_pci_functions() helper.
+	OF: fdt: not creating '/sys/firmware/fdt': CRC check failed
 
-This is similar to commit 189c6c33ff42 ("PCI: Extend isolated function
-probing to s390").
+Create a mutable copy of the model property and do in-place operations
+on the mutable copy instead. loongson_sysconf.cpuname lives across the
+kernel lifetime, thus manually releasing isn't necessary.
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Also move the of_node_put() call for the root node after the usage of
+its property, since of_node_put() decreases the reference counter thus
+usage after the call is unsafe.
+
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250624062927.4037734-1-chenhuacai@loongson.cn
+Fixes: 44a01f1f726a ("LoongArch: Parsing CPU-related information from DTS")
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hypervisor.h |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/loongarch/kernel/env.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/include/linux/hypervisor.h
-+++ b/include/linux/hypervisor.h
-@@ -37,6 +37,9 @@ static inline bool hypervisor_isolated_p
- 	if (IS_ENABLED(CONFIG_S390))
- 		return true;
+--- a/arch/loongarch/kernel/env.c
++++ b/arch/loongarch/kernel/env.c
+@@ -39,16 +39,19 @@ void __init init_environ(void)
  
-+	if (IS_ENABLED(CONFIG_LOONGARCH))
-+		return true;
-+
- 	return jailhouse_paravirt();
- }
+ static int __init init_cpu_fullname(void)
+ {
+-	struct device_node *root;
+ 	int cpu, ret;
+-	char *model;
++	char *cpuname;
++	const char *model;
++	struct device_node *root;
  
+ 	/* Parsing cpuname from DTS model property */
+ 	root = of_find_node_by_path("/");
+-	ret = of_property_read_string(root, "model", (const char **)&model);
++	ret = of_property_read_string(root, "model", &model);
++	if (ret == 0) {
++		cpuname = kstrdup(model, GFP_KERNEL);
++		loongson_sysconf.cpuname = strsep(&cpuname, " ");
++	}
+ 	of_node_put(root);
+-	if (ret == 0)
+-		loongson_sysconf.cpuname = strsep(&model, " ");
+ 
+ 	if (loongson_sysconf.cpuname && !strncmp(loongson_sysconf.cpuname, "Loongson", 8)) {
+ 		for (cpu = 0; cpu < NR_CPUS; cpu++)
 
 
 
