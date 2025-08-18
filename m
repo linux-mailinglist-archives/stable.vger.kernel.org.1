@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17304B2A401
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:16:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D569B2AA48
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C72718963BA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:10:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C8F41BA7306
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A37530F7F8;
-	Mon, 18 Aug 2025 13:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53193322C62;
+	Mon, 18 Aug 2025 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tWwSnNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/6L7MRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4727331E105;
-	Mon, 18 Aug 2025 13:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B1E345728;
+	Mon, 18 Aug 2025 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522561; cv=none; b=BOaQ7SMExw8c7/dCLx8CzTqT5NUC1FpZWkrJP9sRp7FHH/xmSfRVEqw3sVQexvIfKmK1G+jH5zELGzYGloFIqGIdwWgqXTHc2mnW/TI12Ni86D0EU7KgZkuCbMglLdDPwaWswJedCwd51pAFNVeaMy4gL5Iy4QXgzMbyovg8mDM=
+	t=1755525870; cv=none; b=ZMYAFLE0zaGrS8rUbPLvCgcTOb+ER2EI2hzvpzVbDgnXCBzIdhhFrNxSLNiTI3qsxIhVNH4W9FkbTlOTxYFFBw9oDU6Ru7DXdn8NOSJAWLJ2cvVyFC6Tz1N8Mg5tSyFTmB4JN8KyFy3gdhLy7te662sFePwQg8YRpTI7evC9y2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522561; c=relaxed/simple;
-	bh=37VEBKwsaaymO7I/fDHC7vW+5/0ycd7sZoCbxSsatqU=;
+	s=arc-20240116; t=1755525870; c=relaxed/simple;
+	bh=U5N/9v+dT/9+GJuq2ok7KJFztAOkV7X0VjR1yqgjxmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1odEoAW7+xehz2NuEnr/TCmgYOcUXbEzkcW+i88fr54s5df+f3xz+D7uiCW+fA6IAe1SG3n12pAvVJIYoRxd2Qi1hyqiZ1pvol8p0gptmjI+Ub+N3W8RcTuX1QhFIjWgJNTqZ5+bSvu43z86k6rb8FpLETBvUX7EkhHqnSuAdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tWwSnNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB27CC4CEEB;
-	Mon, 18 Aug 2025 13:09:20 +0000 (UTC)
+	 MIME-Version; b=ayFOC1O4/74PEnTZQs+ZGplNVMtS2wf5JnzMpJRl5oOR0ZqbsMODOzlPONHzgVXKHNr1fG4AOjIgJKrqHXyJ9xu7woetGzfoi8H9m3lX0xw//A6Ts3mBb3gneSC5wpvTK9JOP+w2Jex93dfQjGm35/qiLCe5GOhoFIvH5wocLyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/6L7MRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94491C4CEF1;
+	Mon, 18 Aug 2025 14:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522561;
-	bh=37VEBKwsaaymO7I/fDHC7vW+5/0ycd7sZoCbxSsatqU=;
+	s=korg; t=1755525869;
+	bh=U5N/9v+dT/9+GJuq2ok7KJFztAOkV7X0VjR1yqgjxmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tWwSnNCddwiBX5JFZ+4mqFtvvU5MbLs3m4xYrSktAkKjY3jbUWHIhzKaivmFbtaY
-	 0HUBMv225XIxnk9HL3JX06sWUt1A5/czbQZGJgUyBxOrBB9cL2af+67xMzWxjhltpQ
-	 +4QNX8mI2LFPEJwbZA2N57D7n0+rd6uZFHkDUoFc=
+	b=v/6L7MRrrIwUdUae8fjmj5LjnEt/m97orPzepNhrWRhavX4hxEXqQZnvxL3xiPgtQ
+	 PEtj7FP5iWWd4BVxdVfaoqb30bTdU5e1FLAYCFgoRMrRXBZwjLucJBw/AolqXxUseM
+	 HpfxQ7xbrmdwVOXFKfOxLAeooiHy+TcH7KbpKOXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yann E. MORIN" <yann.morin.1998@free.fr>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Cherniaev Andrei <dungeonlords789@naver.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 352/444] kconfig: lxdialog: fix space to (de)select options
+Subject: [PATCH 6.16 391/570] media: ipu-bridge: Add _HID for OV5670
 Date: Mon, 18 Aug 2025 14:46:18 +0200
-Message-ID: <20250818124502.116629905@linuxfoundation.org>
+Message-ID: <20250818124520.922323277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yann E. MORIN <yann.morin.1998@free.fr>
+From: Daniel Scally <dan.scally@ideasonboard.com>
 
-[ Upstream commit 694174f94ebeeb5ec5cc0e9de9b40c82057e1d95 ]
+[ Upstream commit 484f8bec3ddb453321ef0b8621c25de6ce3d0302 ]
 
-In case a menu has comment without letters/numbers (eg. characters
-matching the regexp '^[^[:alpha:][:digit:]]+$', for example - or *),
-hitting space will cycle through those comments, rather than
-selecting/deselecting the currently-highlighted option.
+The OV5670 is found on Dell 7212 tablets paired with an IPU3 ISP
+and needs to be connected by the ipu-bridge. Add it to the list
+of supported devices.
 
-This is the behaviour of hitting any letter/digit: jump to the next
-option which prompt starts with that letter. The only letters that
-do not behave as such are 'y' 'm' and 'n'. Prompts that start with
-one of those three letters are instead matched on the first letter
-that is not 'y', 'm' or 'n'.
-
-Fix that by treating 'space' as we treat y/m/n, ie. as an action key,
-not as shortcut to jump to  prompt.
-
-Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
-Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
-Signed-off-by: Cherniaev Andrei <dungeonlords789@naver.com>
-[masahiro: took from Buildroot, adjusted the commit subject]
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/lxdialog/menubox.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/intel/ipu-bridge.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/scripts/kconfig/lxdialog/menubox.c b/scripts/kconfig/lxdialog/menubox.c
-index 6e6244df0c56..d4c19b7beebb 100644
---- a/scripts/kconfig/lxdialog/menubox.c
-+++ b/scripts/kconfig/lxdialog/menubox.c
-@@ -264,7 +264,7 @@ int dialog_menu(const char *title, const char *prompt,
- 		if (key < 256 && isalpha(key))
- 			key = tolower(key);
- 
--		if (strchr("ynmh", key))
-+		if (strchr("ynmh ", key))
- 			i = max_choice;
- 		else {
- 			for (i = choice + 1; i < max_choice; i++) {
+diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
+index 83e682e1a4b7..73560c2c67c1 100644
+--- a/drivers/media/pci/intel/ipu-bridge.c
++++ b/drivers/media/pci/intel/ipu-bridge.c
+@@ -60,6 +60,8 @@ static const struct ipu_sensor_config ipu_supported_sensors[] = {
+ 	IPU_SENSOR_CONFIG("INT33BE", 1, 419200000),
+ 	/* Omnivision OV2740 */
+ 	IPU_SENSOR_CONFIG("INT3474", 1, 180000000),
++	/* Omnivision OV5670 */
++	IPU_SENSOR_CONFIG("INT3479", 1, 422400000),
+ 	/* Omnivision OV8865 */
+ 	IPU_SENSOR_CONFIG("INT347A", 1, 360000000),
+ 	/* Omnivision OV7251 */
 -- 
 2.39.5
 
