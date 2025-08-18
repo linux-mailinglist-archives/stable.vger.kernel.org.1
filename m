@@ -1,149 +1,166 @@
-Return-Path: <stable+bounces-169938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B273EB29CFD
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:01:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3459B29DCF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 11:28:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90491188D776
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 08:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A18B196471E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 09:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D150308F0D;
-	Mon, 18 Aug 2025 08:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319B630F53A;
+	Mon, 18 Aug 2025 09:25:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2A330AAB8
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 08:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8612430EF9C
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 09:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.147.23.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755507489; cv=none; b=Zmbd2BP0gErmTf2t0DuIfkWuV+f06U9YfRafkHpJZHJ2hZQt94uUaycx/fqlXN2EMu8Riayjvvy4uf0uLS3hBGBVmLEl58G0JFEOLf9lz0tPSojOsfl0SKW1cRuoSbx+xfB9isfj9Su1NzPOabFKsieTWVCdp7VOvkB51abxIFM=
+	t=1755509120; cv=none; b=RXdDfCT9HopKIUgNSXRz12LaFO7w8XrM5MDnbyBGkIif9TltLSiYQQLHoOjUbd2AFna5uFUTMxALKKWc0cmfBcTBz6f6DbB4eXKkbAHR2gcourAehXWRc4I7LI3spmcSPZvvVeOa0SRRfSvlfm1sT/kA43r+HVsrBqcd43rck40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755507489; c=relaxed/simple;
-	bh=tanzvi3OYzpmwbV2tx1UtYVkCIbB/H8PG5+jmpR4XZw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kbs6vFDgzl+IsWNqhgO5dZTlJwInX6dq9zYyBX5C+n1kL99N4pOClehVz31e8z0K7UOVMbNIingVFdbPa1vZEkORedDnpA/R0bOPuy29Dkn3aqNbFqyxTcujj8jrmxpYdDCaNkZrAPavap1Z/cgWHPBasDwdsOreubTJBTURGb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4c56662ft3zpbjR;
-	Mon, 18 Aug 2025 16:57:02 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id A34CE1401E9;
-	Mon, 18 Aug 2025 16:58:01 +0800 (CST)
-Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 18 Aug
- 2025 16:58:01 +0800
-From: Gu Bowen <gubowen5@huawei.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <linux-mm@kvack.org>, Waiman Long
-	<llong@redhat.com>, Breno Leitao <leitao@debian.org>, John Ogness
-	<john.ogness@linutronix.de>, Lu Jialin <lujialin4@huawei.com>, Gu Bowen
-	<gubowen5@huawei.com>
-Subject: [PATCH v4] mm: Fix possible deadlock in kmemleak
-Date: Mon, 18 Aug 2025 17:09:44 +0800
-Message-ID: <20250818090945.1003644-1-gubowen5@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1755509120; c=relaxed/simple;
+	bh=0HMfgsC4jFQW6qhuB5RULVJukoMoLBlHTiXRFu0GaPQ=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=okeooI98agUqBdvLYepy2UmnC9RQDVgwBD6zZipsZxJnoY+uMpyd5HK907hPB6rAPxOsRViAJe/9RZdFVeihHGUH4vCmAYKJCSpc0LuVreYQwr8twgga1mjf2MLk1eeDt37GWcB5vDOsKz9zYvBoeV6A3KlNNH/Gji7d+7hhoOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com; spf=pass smtp.mailfrom=lge.com; arc=none smtp.client-ip=156.147.23.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lge.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lge.com
+Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
+	by 156.147.23.51 with ESMTP; 18 Aug 2025 18:25:08 +0900
+X-Original-SENDERIP: 156.147.1.127
+X-Original-MAILFROM: chanho.min@lge.com
+Received: from unknown (HELO localhost.localdomain) (10.178.31.96)
+	by 156.147.1.127 with ESMTP; 18 Aug 2025 18:25:08 +0900
+X-Original-SENDERIP: 10.178.31.96
+X-Original-MAILFROM: chanho.min@lge.com
+From: Chanho Min <chanho.min@lge.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	gunho.lee@lge.com,
+	stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Chanho Min <chanho.min@lge.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH] ipv6: mcast: extend RCU protection in igmp6_send()
+Date: Mon, 18 Aug 2025 18:24:53 +0900
+Message-Id: <20250818092453.38281-1-chanho.min@lge.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemh100007.china.huawei.com (7.202.181.92)
 
-Our syztester report the lockdep WARNING [1], which was identified in
-stable kernel version 5.10. However, this deadlock path no longer exists
-due to the refactoring of console_lock in v6.2-rc1 [2]. Coincidentally,
-there are two types of deadlocks that we have found here. One is the ABBA
-deadlock, as mentioned above [1], and the other is the AA deadlock was
-reported by Breno [3]. The latter's deadlock issue persists.
+From: Eric Dumazet <edumazet@google.com>
 
-To solve this problem, switch to printk_safe mode before printing warning
-message, this will redirect all printk()-s to a special per-CPU buffer,
-which will be flushed later from a safe context (irq work), and this
-deadlock problem can be avoided. The proper API to use should be
-printk_deferred_enter()/printk_deferred_exit() [4].
+[ Upstream commit 087c1faa594fa07a66933d750c0b2610aa1a2946 ]
 
-[1]
-https://lore.kernel.org/all/20250730094914.566582-1-gubowen5@huawei.com/
-[2]
-https://lore.kernel.org/all/20221116162152.193147-1-john.ogness@linutronix.de/
-[3]
-https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t
-[4]
-https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/
-====================
+igmp6_send() can be called without RTNL or RCU being held.
 
-Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+Extend RCU protection so that we can safely fetch the net pointer
+and avoid a potential UAF.
+
+Note that we no longer can use sock_alloc_send_skb() because
+ipv6.igmp_sk uses GFP_KERNEL allocations which can sleep.
+
+Instead use alloc_skb() and charge the net->ipv6.igmp_sk
+socket under RCU protection.
+
+Cc: stable@vger.kernel.org # 5.4
+Fixes: b8ad0cbc58f7 ("[NETNS][IPV6] mcast - handle several network namespace")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250207135841.1948589-9-edumazet@google.com
+[ chanho: Backports to v5.4.y. v5.4.y does not include
+commit b4a11b2033b7(net: fix IPSTATS_MIB_OUTPKGS increment in OutForwDatagrams),
+so IPSTATS_MIB_OUTREQUESTS was changed to IPSTATS_MIB_OUTPKGS defined as
+'OutRequests'. ]
+Signed-off-by: Chanho Min <chanho.min@lge.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kmemleak.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ net/ipv6/mcast.c | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 84265983f239..26113b89d09b 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -437,9 +437,15 @@ static struct kmemleak_object *__lookup_object(unsigned long ptr, int alias,
- 		else if (untagged_objp == untagged_ptr || alias)
- 			return object;
- 		else {
-+			/*
-+			 * Printk deferring due to the kmemleak_lock held.
-+			 * This is done to avoid deadlock.
-+			 */
-+			printk_deferred_enter();
- 			kmemleak_warn("Found object by alias at 0x%08lx\n",
- 				      ptr);
- 			dump_object_info(object);
-+			printk_deferred_exit();
- 			break;
- 		}
+diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
+index 7d0a6a7c9d283..c2dc70a69be94 100644
+--- a/net/ipv6/mcast.c
++++ b/net/ipv6/mcast.c
+@@ -1977,21 +1977,21 @@ static void mld_send_cr(struct inet6_dev *idev)
+ 
+ static void igmp6_send(struct in6_addr *addr, struct net_device *dev, int type)
+ {
+-	struct net *net = dev_net(dev);
+-	struct sock *sk = net->ipv6.igmp_sk;
++	const struct in6_addr *snd_addr, *saddr;
++	int err, len, payload_len, full_len;
++	struct in6_addr addr_buf;
+ 	struct inet6_dev *idev;
+ 	struct sk_buff *skb;
+ 	struct mld_msg *hdr;
+-	const struct in6_addr *snd_addr, *saddr;
+-	struct in6_addr addr_buf;
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	int err, len, payload_len, full_len;
+ 	u8 ra[8] = { IPPROTO_ICMPV6, 0,
+ 		     IPV6_TLV_ROUTERALERT, 2, 0, 0,
+ 		     IPV6_TLV_PADN, 0 };
+-	struct flowi6 fl6;
+ 	struct dst_entry *dst;
++	struct flowi6 fl6;
++	struct net *net;
++	struct sock *sk;
+ 
+ 	if (type == ICMPV6_MGM_REDUCTION)
+ 		snd_addr = &in6addr_linklocal_allrouters;
+@@ -2002,20 +2002,21 @@ static void igmp6_send(struct in6_addr *addr, struct net_device *dev, int type)
+ 	payload_len = len + sizeof(ra);
+ 	full_len = sizeof(struct ipv6hdr) + payload_len;
+ 
+-	rcu_read_lock();
+-	IP6_UPD_PO_STATS(net, __in6_dev_get(dev),
+-		      IPSTATS_MIB_OUT, full_len);
+-	rcu_read_unlock();
++	skb = alloc_skb(hlen + tlen + full_len, GFP_KERNEL);
+ 
+-	skb = sock_alloc_send_skb(sk, hlen + tlen + full_len, 1, &err);
++	rcu_read_lock();
+ 
++	net = dev_net_rcu(dev);
++	idev = __in6_dev_get(dev);
++	IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTPKTS);
+ 	if (!skb) {
+-		rcu_read_lock();
+-		IP6_INC_STATS(net, __in6_dev_get(dev),
+-			      IPSTATS_MIB_OUTDISCARDS);
++		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
+ 		rcu_read_unlock();
+ 		return;
  	}
-@@ -736,6 +742,11 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
- 		else if (untagged_objp + parent->size <= untagged_ptr)
- 			link = &parent->rb_node.rb_right;
- 		else {
-+			/*
-+			 * Printk deferring due to the kmemleak_lock held.
-+			 * This is done to avoid deadlock.
-+			 */
-+			printk_deferred_enter();
- 			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
- 				      ptr);
- 			/*
-@@ -743,6 +754,7 @@ static int __link_object(struct kmemleak_object *object, unsigned long ptr,
- 			 * be freed while the kmemleak_lock is held.
- 			 */
- 			dump_object_info(parent);
-+			printk_deferred_exit();
- 			return -EEXIST;
- 		}
- 	}
-@@ -858,8 +870,14 @@ static void delete_object_part(unsigned long ptr, size_t size,
- 	object = __find_and_remove_object(ptr, 1, objflags);
- 	if (!object) {
- #ifdef DEBUG
-+		/*
-+		 * Printk deferring due to the kmemleak_lock held.
-+		 * This is done to avoid deadlock.
-+		 */
-+		printk_deferred_enter();
- 		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
- 			      ptr, size);
-+		printk_deferred_exit();
- #endif
- 		goto unlock;
- 	}
--- 
-2.43.0
-
++	sk = net->ipv6.igmp_sk;
++	skb_set_owner_w(skb, sk);
++
+ 	skb->priority = TC_PRIO_CONTROL;
+ 	skb_reserve(skb, hlen);
+ 
+@@ -2040,9 +2041,6 @@ static void igmp6_send(struct in6_addr *addr, struct net_device *dev, int type)
+ 					 IPPROTO_ICMPV6,
+ 					 csum_partial(hdr, len, 0));
+ 
+-	rcu_read_lock();
+-	idev = __in6_dev_get(skb->dev);
+-
+ 	icmpv6_flow_init(sk, &fl6, type,
+ 			 &ipv6_hdr(skb)->saddr, &ipv6_hdr(skb)->daddr,
+ 			 skb->dev->ifindex);
 
