@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6942AB2A75A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D663B2AA51
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8DD91B64ECF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35976E412C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3653320CC9;
-	Mon, 18 Aug 2025 13:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029C932A3DF;
+	Mon, 18 Aug 2025 14:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAneWf9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwOay5ye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686F2320CCA;
-	Mon, 18 Aug 2025 13:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45F332A3E6;
+	Mon, 18 Aug 2025 14:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524374; cv=none; b=dB5Aj82c19uUEt7gyixNOgapyyCJAXvWDkpIMpF0hmQ5ILFmp+7IFJNJOvhY7oL48VWOQ9l6kIeD3VFLeyDlUkuekaVQQK/J5USHolG0kRZCJzOcqYfQ7WCB0qPZXOEETzjwpg8J18s/3TZRI3n7xFF7vXUKHQOxsmeXuYmxxd4=
+	t=1755526187; cv=none; b=HaCHfxmdREBhgiYbaCPy/9wADWN+xnPRINTp6sj7Jdx6GUrPyPczGOuWJbRfhGlyLNapMZNEOeSpnZPMDIYuYU3fU3MzcMPiecST7+DTiPAl0L2//ZlvaRTT7P/JMuO28yCcx9sXeeREs6G1SntxXdMT8UolP7KU54EZBvMPeJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524374; c=relaxed/simple;
-	bh=nh5mwMDOEodwJLhqTLpfjbLs+Ir+ab8FN6YXC5M7c34=;
+	s=arc-20240116; t=1755526187; c=relaxed/simple;
+	bh=DuZfhSKsqRbNs/yDj+ZtO5vm8Z+BwEuxnY2ZhZmxekE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbRbq4+rb2hKstRYsHkk3jcEME6Y3fPZHhauUHBvvB8WiZih/TmgBzyUBQK1ViL+a3A51nFKzW+TgzVRXVUMaDRrQWhxmROQRMEFQbsIDOn5CQIdNuAbdfkmctmdWBmSj4Q4Q4hvofLRaYTs+ri6r4/CrZwfUeGvEXnud6QGxxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAneWf9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DC0C116D0;
-	Mon, 18 Aug 2025 13:39:33 +0000 (UTC)
+	 MIME-Version; b=lFuW4/XMpZFTztMnYdP1R0wZv8B9Fp3t9wOUYdFutwiVI2FHeKzI/rp46fNufB/FLJpfuqdG/yBFDJZ2D+cR6POQTCnsrAVFARQpUR/dbWZG76ZnjkyLXICFsXuRPOoptvRlJgWGtHdgJZFNTJJTwJttF7XfkIs0ncdlaQFqp6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwOay5ye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F055EC113D0;
+	Mon, 18 Aug 2025 14:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524374;
-	bh=nh5mwMDOEodwJLhqTLpfjbLs+Ir+ab8FN6YXC5M7c34=;
+	s=korg; t=1755526187;
+	bh=DuZfhSKsqRbNs/yDj+ZtO5vm8Z+BwEuxnY2ZhZmxekE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DAneWf9rIglMUsw1j1aIKqqqlsR6OEvFR+IWFr63zKKeEg2X20AZzWStkhgpgwPmc
-	 u8O6p7t+rBwu+CGBHQPSVKmzDbj+mmZEFdE+4dFL1DX4Ydi/P6B031Uz75GFubSuce
-	 MzRQynwvmtlrPCnzy6BO5CehWtF17xn59l2lwtzA=
+	b=rwOay5yeC14qTi9wZ7JRuoE9dP1e12k+bSEbzNC/3Q9LCFKVSi2A0QugAkbTOpee1
+	 10wroWfn3Bfxmmr5P9yvEfbh4Vi2nRiHHe1CHdkbMegaZ8SdB98978OjMNvos8QNK6
+	 0yhS2wdAsiAJeeIEA5cyZT1k1sHrkYHwN+PHWeG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.15 452/515] ext4: fix zombie groups in average fragment size lists
+	kernel test robot <lkp@intel.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 451/570] ipmi: Fix strcpy source and destination the same
 Date: Mon, 18 Aug 2025 14:47:18 +0200
-Message-ID: <20250818124515.820244347@linuxfoundation.org>
+Message-ID: <20250818124523.194821985@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 1c320d8e92925bb7615f83a7b6e3f402a5c2ca63 upstream.
+[ Upstream commit 8ffcb7560b4a15faf821df95e3ab532b2b020f8c ]
 
-Groups with no free blocks shouldn't be in any average fragment size list.
-However, when all blocks in a group are allocated(i.e., bb_fragments or
-bb_free is 0), we currently skip updating the average fragment size, which
-means the group isn't removed from its previous s_mb_avg_fragment_size[old]
-list.
+The source and destination of some strcpy operations was the same.
+Split out the part of the operations that needed to be done for those
+particular calls so the unnecessary copy wasn't done.
 
-This created "zombie" groups that were always skipped during traversal as
-they couldn't satisfy any block allocation requests, negatively impacting
-traversal efficiency.
-
-Therefore, when a group becomes completely full, bb_avg_fragment_size_order
-is now set to -1. If the old order was not -1, a removal operation is
-performed; if the new order is not -1, an insertion is performed.
-
-Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250714130327.1830534-11-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506140756.EFXXvIP4-lkp@intel.com/
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/char/ipmi/ipmi_watchdog.c | 59 ++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 17 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -841,30 +841,30 @@ static void
- mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+diff --git a/drivers/char/ipmi/ipmi_watchdog.c b/drivers/char/ipmi/ipmi_watchdog.c
+index ab759b492fdd..a013ddbf1466 100644
+--- a/drivers/char/ipmi/ipmi_watchdog.c
++++ b/drivers/char/ipmi/ipmi_watchdog.c
+@@ -1146,14 +1146,8 @@ static struct ipmi_smi_watcher smi_watcher = {
+ 	.smi_gone = ipmi_smi_gone
+ };
+ 
+-static int action_op(const char *inval, char *outval)
++static int action_op_set_val(const char *inval)
  {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
--	int new_order;
-+	int new, old;
- 
--	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
-+	if (!test_opt2(sb, MB_OPTIMIZE_SCAN))
- 		return;
- 
--	new_order = mb_avg_fragment_size_order(sb,
--					grp->bb_free / grp->bb_fragments);
--	if (new_order == grp->bb_avg_fragment_size_order)
-+	old = grp->bb_avg_fragment_size_order;
-+	new = grp->bb_fragments == 0 ? -1 :
-+	      mb_avg_fragment_size_order(sb, grp->bb_free / grp->bb_fragments);
-+	if (new == old)
- 		return;
- 
--	if (grp->bb_avg_fragment_size_order != -1) {
--		write_lock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
-+	if (old >= 0) {
-+		write_lock(&sbi->s_mb_avg_fragment_size_locks[old]);
- 		list_del(&grp->bb_avg_fragment_size_node);
--		write_unlock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
-+		write_unlock(&sbi->s_mb_avg_fragment_size_locks[old]);
-+	}
-+
-+	grp->bb_avg_fragment_size_order = new;
-+	if (new >= 0) {
-+		write_lock(&sbi->s_mb_avg_fragment_size_locks[new]);
-+		list_add_tail(&grp->bb_avg_fragment_size_node,
-+				&sbi->s_mb_avg_fragment_size[new]);
-+		write_unlock(&sbi->s_mb_avg_fragment_size_locks[new]);
- 	}
--	grp->bb_avg_fragment_size_order = new_order;
--	write_lock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
--	list_add_tail(&grp->bb_avg_fragment_size_node,
--		&sbi->s_mb_avg_fragment_size[grp->bb_avg_fragment_size_order]);
--	write_unlock(&sbi->s_mb_avg_fragment_size_locks[
--					grp->bb_avg_fragment_size_order]);
+-	if (outval)
+-		strcpy(outval, action);
+-
+-	if (!inval)
+-		return 0;
+-
+ 	if (strcmp(inval, "reset") == 0)
+ 		action_val = WDOG_TIMEOUT_RESET;
+ 	else if (strcmp(inval, "none") == 0)
+@@ -1164,18 +1158,26 @@ static int action_op(const char *inval, char *outval)
+ 		action_val = WDOG_TIMEOUT_POWER_DOWN;
+ 	else
+ 		return -EINVAL;
+-	strcpy(action, inval);
+ 	return 0;
  }
  
- /*
+-static int preaction_op(const char *inval, char *outval)
++static int action_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preaction);
++		strcpy(outval, action);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = action_op_set_val(inval);
++	if (!rv)
++		strcpy(action, inval);
++	return rv;
++}
+ 
++static int preaction_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "pre_none") == 0)
+ 		preaction_val = WDOG_PRETIMEOUT_NONE;
+ 	else if (strcmp(inval, "pre_smi") == 0)
+@@ -1188,18 +1190,26 @@ static int preaction_op(const char *inval, char *outval)
+ 		preaction_val = WDOG_PRETIMEOUT_MSG_INT;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preaction, inval);
+ 	return 0;
+ }
+ 
+-static int preop_op(const char *inval, char *outval)
++static int preaction_op(const char *inval, char *outval)
+ {
++	int rv;
++
+ 	if (outval)
+-		strcpy(outval, preop);
++		strcpy(outval, preaction);
+ 
+ 	if (!inval)
+ 		return 0;
++	rv = preaction_op_set_val(inval);
++	if (!rv)
++		strcpy(preaction, inval);
++	return 0;
++}
+ 
++static int preop_op_set_val(const char *inval)
++{
+ 	if (strcmp(inval, "preop_none") == 0)
+ 		preop_val = WDOG_PREOP_NONE;
+ 	else if (strcmp(inval, "preop_panic") == 0)
+@@ -1208,7 +1218,22 @@ static int preop_op(const char *inval, char *outval)
+ 		preop_val = WDOG_PREOP_GIVE_DATA;
+ 	else
+ 		return -EINVAL;
+-	strcpy(preop, inval);
++	return 0;
++}
++
++static int preop_op(const char *inval, char *outval)
++{
++	int rv;
++
++	if (outval)
++		strcpy(outval, preop);
++
++	if (!inval)
++		return 0;
++
++	rv = preop_op_set_val(inval);
++	if (!rv)
++		strcpy(preop, inval);
+ 	return 0;
+ }
+ 
+@@ -1245,18 +1270,18 @@ static int __init ipmi_wdog_init(void)
+ {
+ 	int rv;
+ 
+-	if (action_op(action, NULL)) {
++	if (action_op_set_val(action)) {
+ 		action_op("reset", NULL);
+ 		pr_info("Unknown action '%s', defaulting to reset\n", action);
+ 	}
+ 
+-	if (preaction_op(preaction, NULL)) {
++	if (preaction_op_set_val(preaction)) {
+ 		preaction_op("pre_none", NULL);
+ 		pr_info("Unknown preaction '%s', defaulting to none\n",
+ 			preaction);
+ 	}
+ 
+-	if (preop_op(preop, NULL)) {
++	if (preop_op_set_val(preop)) {
+ 		preop_op("preop_none", NULL);
+ 		pr_info("Unknown preop '%s', defaulting to none\n", preop);
+ 	}
+-- 
+2.39.5
+
 
 
 
