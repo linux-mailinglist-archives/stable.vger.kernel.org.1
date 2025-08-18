@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7F4B2A802
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C83AB2A3DD
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A69D7AB4A5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:57:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48434580252
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124B927F4C7;
-	Mon, 18 Aug 2025 13:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20C320126A;
+	Mon, 18 Aug 2025 13:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7JX62w7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJfJmssO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D36322779;
-	Mon, 18 Aug 2025 13:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC7C31B13B;
+	Mon, 18 Aug 2025 13:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525405; cv=none; b=ayMYsYBNRn0TYqR5dpQySZp68y+4nscWQR6l4p+srJ6CJFzzg+XuSJRWk3VuHo78y4d0TjNiZu5/aFA2U7w5zrnCh0yiwCqQVYFv1f3DQTybDyGjspMEXqHqoNqWjct92Bve+6DVtOlYJEYHiLDgyOjZ8GE5aVdCabPB7TSGU+o=
+	t=1755522104; cv=none; b=t26rxHILMleD6Z6UXRVp9+xvtwnxlDbXtTTh3CHI8vjaiRKXjUdT+7kn9i4PKf7PWiNChrKHSjeox6SF7aco659jzB4KelNUp3EN1E6/gzBcAV0lwPvek59xvtqt6TDg2vftZU2FE/tIKe/9/GPx/3AlR5UyIq7lS2QHtLqLks8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525405; c=relaxed/simple;
-	bh=FTC5sWYdBOTb5j1RKw4T2ZdFyLi5WHjpHTURKKtTlGw=;
+	s=arc-20240116; t=1755522104; c=relaxed/simple;
+	bh=nAYuPWWwwXJKJ9xQUh5n11kPEBBSteWyAsdpxM7DDTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/Drea1L5jX42r6XxhLZfpM4e/qPgW+48yNpqzbpgcKDfgRX59nyqatgcCb8lYPwwDOkX/nnouscGH4B8lWOVMcujtMrt9Hj1lGZMyRhBvK4Jv8yAWDkPnmkjlyjQG3mWcoPkL59XClipaUQPFK/ZqQUrQEO6AgQe1DsCWTM40E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7JX62w7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCAC5C4AF09;
-	Mon, 18 Aug 2025 13:56:43 +0000 (UTC)
+	 MIME-Version; b=PXcB/78wmgQl19aa3QH1UPmjRLd2JvD2rYp8TP3tSr+HG10N5CZV5qk6CTlFygtIpy7OTE+57VuqcPngmw4JOfBQoo00qsYV/so35kSQCVnw51FDltUo0q9MwYToP87txUQtAEd4fCvuoCq84waQP/QYaVYBYWvjz4vwFwKWhew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJfJmssO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22FAC4CEEB;
+	Mon, 18 Aug 2025 13:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525404;
-	bh=FTC5sWYdBOTb5j1RKw4T2ZdFyLi5WHjpHTURKKtTlGw=;
+	s=korg; t=1755522104;
+	bh=nAYuPWWwwXJKJ9xQUh5n11kPEBBSteWyAsdpxM7DDTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7JX62w7WM1qidM4Xa/gkgq9q4yw+Y/hfS3V2zKm5WRYcOpEhx3frTyI9gwtio9l0
-	 vAYgJTxvevlwq2O50c+GjOf6nUp/S6tRskPhRXT0UjkImSqUGPspyP0pyb/mEE80nd
-	 wHK2s3GNt+K+PTdq+TA+YRmXbGVyeX0877m2jkKY=
+	b=GJfJmssOjKK5iEtRIONa18RFXOrn+aCywvLAbjVKjUUKPRDoB3dzftQsY+ZrsWnQG
+	 vo+v8xatg4XFIE653QzrSo8HeRYuBXwP4f8Jr93ElZYmzJrMnW9VfbwVJTLHbkpoCH
+	 YZRxfApfEFiOejuPCVke6dcMZr1ojK6YqkGr1q4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avraham Stern <avraham.stern@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	David Bauer <mail@david-bauer.net>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 253/570] wifi: iwlwifi: mvm: fix scan request validation
-Date: Mon, 18 Aug 2025 14:44:00 +0200
-Message-ID: <20250818124515.565128814@linuxfoundation.org>
+Subject: [PATCH 6.12 215/444] wifi: mt76: mt7915: mcu: re-init MCU before loading FW patch
+Date: Mon, 18 Aug 2025 14:44:01 +0200
+Message-ID: <20250818124456.908824631@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: David Bauer <mail@david-bauer.net>
 
-[ Upstream commit 7c2f3ec7707188d8d5269ae2dce97d7be3e9f261 ]
+[ Upstream commit ac9c50c79eaef5fca0f165e45d0c5880606db53e ]
 
-The scan request validation function uses bitwise and instead
-of logical and. Fix it.
+Restart the MCU and release the patch semaphore before loading the MCU
+patch firmware from the host.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250709230308.3fbc1f27871b.I7a8ee91f463c1a2d9d8561c8232e196885d02c43@changeid
+This fixes failures upon error recovery in case the semaphore was
+previously taken and never released by the host.
+
+This happens from time to time upon triggering a full-chip error
+recovery. Under this circumstance, the hardware restart fails and the
+radio is rendered inoperational.
+
+Signed-off-by: David Bauer <mail@david-bauer.net>
+Link: https://patch.msgid.link/20250402004528.1036715-3-mail@david-bauer.net
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 25 +++++++++++--------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 60bd9c7e5f03..3dbda1e4a522 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -835,7 +835,7 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
- 				     int n_channels)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 87d0dd040001..3398c25cb03c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2071,16 +2071,21 @@ static int mt7915_load_firmware(struct mt7915_dev *dev)
  {
- 	return ((n_ssids <= PROBE_OPTION_MAX) &&
--		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
-+		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &&
- 		(ies->common_ie_len +
- 		 ies->len[NL80211_BAND_2GHZ] + ies->len[NL80211_BAND_5GHZ] +
- 		 ies->len[NL80211_BAND_6GHZ] <=
+ 	int ret;
+ 
+-	/* make sure fw is download state */
+-	if (mt7915_firmware_state(dev, false)) {
+-		/* restart firmware once */
+-		mt76_connac_mcu_restart(&dev->mt76);
+-		ret = mt7915_firmware_state(dev, false);
+-		if (ret) {
+-			dev_err(dev->mt76.dev,
+-				"Firmware is not ready for download\n");
+-			return ret;
+-		}
++	/* Release Semaphore if taken by previous failed attempt */
++	ret = mt76_connac_mcu_patch_sem_ctrl(&dev->mt76, false);
++	if (ret != PATCH_REL_SEM_SUCCESS) {
++		dev_err(dev->mt76.dev, "Could not release semaphore\n");
++		/* Continue anyways */
++	}
++
++	/* Always restart MCU firmware */
++	mt76_connac_mcu_restart(&dev->mt76);
++
++	/* Check if MCU is ready */
++	ret = mt7915_firmware_state(dev, false);
++	if (ret) {
++		dev_err(dev->mt76.dev, "Firmware did not enter download state\n");
++		return ret;
+ 	}
+ 
+ 	ret = mt76_connac2_load_patch(&dev->mt76, fw_name_var(dev, ROM_PATCH));
 -- 
 2.39.5
 
