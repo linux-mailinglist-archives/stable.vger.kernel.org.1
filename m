@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0318B2A373
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8E8B2A649
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B21756248E6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9523B5632D4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A4231E11C;
-	Mon, 18 Aug 2025 13:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385B9320CD1;
+	Mon, 18 Aug 2025 13:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zq3UHSlr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xzw0sGif"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CAF31CA6E;
-	Mon, 18 Aug 2025 13:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17D2258EEE;
+	Mon, 18 Aug 2025 13:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522233; cv=none; b=LGN4+o5KBQeFeN2A6nGt5MhZ3+rbV0uNdHpxaYASp99m5hpGrnEPSmDVyoGPAPCUMj4Vbe9ThqSNd9IGixXtX84fuesJbzPJFYns0DNyHU4nbNIRTrM1AYXgyiwqMY6IBtPe85GEZcBOFQJGd4kd3N6m9EwkIJl88jNgMSAM6zY=
+	t=1755523863; cv=none; b=gaaAw/N91DhVIl9P2Q7h8GAWHyevxKZaGgmWXoXC1PM6whWkGC02Lev7p8g5VyeMwK/3cOpOIEMVUsl4V8mR9gr9zXAbXCw2/ujkjjOEE49i0vOx0KBtOxgNZ9khdSpST1M+TGpaYXSYmMfGm7vXajmr15zQ7qtrG2yI6DY2gHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522233; c=relaxed/simple;
-	bh=I/2zz5wvr252p60Tr0N//cHCsxdBjcC/PWZ+nCCCtqQ=;
+	s=arc-20240116; t=1755523863; c=relaxed/simple;
+	bh=dQEZG3O6IxHgGmGMQVcCEggSVMcm53Os+ioi5HPOZcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBdN6mr9BYaeKV6WcprKVuKyLG4Bg+e+SLe6k7WIcy+AqMsT74y/caV2+2DLh8iGTxQju84/Dh8EwyrTfk7EkJ2yyhFNFWwz1F5kkQachlpsKe5HZ9zx1n+ZPl3W2NcpJ9pdPdzh7q7ZANzkqqNcfzVYPsooZs39a+gJV+rb3V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zq3UHSlr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A03C4CEEB;
-	Mon, 18 Aug 2025 13:03:52 +0000 (UTC)
+	 MIME-Version; b=sApxu6yLqnk8ZVJzuJEReHyb+uUH/OqnIEUqZo+L8dcOb64EaP6a7jUCkFEEs4pbhnOw8s0u3hcUc25nLD4McVND8WCr7Qs+puwygkNsR/TvkpXDOJwwIZgnYBtGeyD+XFAbjnnNwS4vyBUDwfWu9I5baBd2bC0SQkCSFUKo/bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xzw0sGif; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EC6C4CEEB;
+	Mon, 18 Aug 2025 13:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522233;
-	bh=I/2zz5wvr252p60Tr0N//cHCsxdBjcC/PWZ+nCCCtqQ=;
+	s=korg; t=1755523862;
+	bh=dQEZG3O6IxHgGmGMQVcCEggSVMcm53Os+ioi5HPOZcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zq3UHSlr4+gbyY+yAUw7aDgj1+eYl6A9MIMpAaNsJbXA5w3j6vKizywv4VgRhdqgy
-	 uJmzIgur45KXnzmf5/j9Y+5DSQd+jG7YxRZal2hqcTWjocqcdF8FCtnAhEYjYKxVhN
-	 6DgvvVKQTA59zexA3pdja7DK1pQ2m6H2APS3E+Bs=
+	b=Xzw0sGif9njqX+vbUqbjCtcYDtidGldZWGdrxTRfzY4xs1L3VIudHj1V/dHzuMdpv
+	 8l8kBfVZIUbOqIdA8QQfXJVp4wYm7Fph+C/Gsfb+7/bVN1aegP7F2JuWPAtPYTJD+/
+	 +kC7vbYGj8gOyP2Toe570T8Ko2EgfVLkM0zhuQ2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <chenl311@chinatelecom.cn>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 222/444] ACPI: Suppress misleading SPCR console message when SPCR table is absent
-Date: Mon, 18 Aug 2025 14:44:08 +0200
-Message-ID: <20250818124457.168346613@linuxfoundation.org>
+Subject: [PATCH 6.15 263/515] drm/xe/xe_query: Use separate iterator while filling GT list
+Date: Mon, 18 Aug 2025 14:44:09 +0200
+Message-ID: <20250818124508.546518497@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <chenl311@chinatelecom.cn>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit bad3fa2fb9206f4dcec6ddef094ec2fbf6e8dcb2 ]
+[ Upstream commit d4eb4a010262ea7801e576d1033b355910f2f7d4 ]
 
-The kernel currently alway prints:
-"Use ACPI SPCR as default console: No/Yes "
+The 'id' value updated by for_each_gt() is the uapi GT ID of the GTs
+being iterated over, and may skip over values if a GT is not present on
+the device.  Use a separate iterator for GT list array assignments to
+ensure that the array will be filled properly on future platforms where
+index in the GT query list may not match the uapi ID.
 
-even on systems that lack an SPCR table. This can
-mislead users into thinking the SPCR table exists
-on the machines without SPCR.
+v2:
+ - Include the missing increment of the iterator.  (Jonathan)
 
-With this change, the "Yes" is only printed if
-the SPCR table is present, parsed and !param_acpi_nospcr.
-This avoids user confusion on SPCR-less systems.
-
-Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://lore.kernel.org/r/20250620131309.126555-3-me@linux.beauty
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://lore.kernel.org/r/20250701201320.2514369-16-matthew.d.roper@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/acpi.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_query.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index e6f66491fbe9..862bb1cba4f0 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -197,6 +197,8 @@ static int __init acpi_fadt_sanity_check(void)
-  */
- void __init acpi_boot_table_init(void)
- {
-+	int ret;
-+
- 	/*
- 	 * Enable ACPI instead of device tree unless
- 	 * - ACPI has been disabled explicitly (acpi=off), or
-@@ -250,10 +252,12 @@ void __init acpi_boot_table_init(void)
- 		 * behaviour, use acpi=nospcr to disable console in ACPI SPCR
- 		 * table as default serial console.
- 		 */
--		acpi_parse_spcr(earlycon_acpi_spcr_enable,
-+		ret = acpi_parse_spcr(earlycon_acpi_spcr_enable,
- 			!param_acpi_nospcr);
--		pr_info("Use ACPI SPCR as default console: %s\n",
--				param_acpi_nospcr ? "No" : "Yes");
-+		if (!ret || param_acpi_nospcr || !IS_ENABLED(CONFIG_ACPI_SPCR_TABLE))
-+			pr_info("Use ACPI SPCR as default console: No\n");
-+		else
-+			pr_info("Use ACPI SPCR as default console: Yes\n");
+diff --git a/drivers/gpu/drm/xe/xe_query.c b/drivers/gpu/drm/xe/xe_query.c
+index 5e65830dad25..4552e9e82b99 100644
+--- a/drivers/gpu/drm/xe/xe_query.c
++++ b/drivers/gpu/drm/xe/xe_query.c
+@@ -368,6 +368,7 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 	struct drm_xe_query_gt_list __user *query_ptr =
+ 		u64_to_user_ptr(query->data);
+ 	struct drm_xe_query_gt_list *gt_list;
++	int iter = 0;
+ 	u8 id;
  
- 		if (IS_ENABLED(CONFIG_ACPI_BGRT))
- 			acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
+ 	if (query->size == 0) {
+@@ -385,12 +386,12 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 
+ 	for_each_gt(gt, xe, id) {
+ 		if (xe_gt_is_media_type(gt))
+-			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
++			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MEDIA;
+ 		else
+-			gt_list->gt_list[id].type = DRM_XE_QUERY_GT_TYPE_MAIN;
+-		gt_list->gt_list[id].tile_id = gt_to_tile(gt)->id;
+-		gt_list->gt_list[id].gt_id = gt->info.id;
+-		gt_list->gt_list[id].reference_clock = gt->info.reference_clock;
++			gt_list->gt_list[iter].type = DRM_XE_QUERY_GT_TYPE_MAIN;
++		gt_list->gt_list[iter].tile_id = gt_to_tile(gt)->id;
++		gt_list->gt_list[iter].gt_id = gt->info.id;
++		gt_list->gt_list[iter].reference_clock = gt->info.reference_clock;
+ 		/*
+ 		 * The mem_regions indexes in the mask below need to
+ 		 * directly identify the struct
+@@ -406,19 +407,21 @@ static int query_gt_list(struct xe_device *xe, struct drm_xe_device_query *query
+ 		 * assumption.
+ 		 */
+ 		if (!IS_DGFX(xe))
+-			gt_list->gt_list[id].near_mem_regions = 0x1;
++			gt_list->gt_list[iter].near_mem_regions = 0x1;
+ 		else
+-			gt_list->gt_list[id].near_mem_regions =
++			gt_list->gt_list[iter].near_mem_regions =
+ 				BIT(gt_to_tile(gt)->id) << 1;
+-		gt_list->gt_list[id].far_mem_regions = xe->info.mem_region_mask ^
+-			gt_list->gt_list[id].near_mem_regions;
++		gt_list->gt_list[iter].far_mem_regions = xe->info.mem_region_mask ^
++			gt_list->gt_list[iter].near_mem_regions;
+ 
+-		gt_list->gt_list[id].ip_ver_major =
++		gt_list->gt_list[iter].ip_ver_major =
+ 			REG_FIELD_GET(GMD_ID_ARCH_MASK, gt->info.gmdid);
+-		gt_list->gt_list[id].ip_ver_minor =
++		gt_list->gt_list[iter].ip_ver_minor =
+ 			REG_FIELD_GET(GMD_ID_RELEASE_MASK, gt->info.gmdid);
+-		gt_list->gt_list[id].ip_ver_rev =
++		gt_list->gt_list[iter].ip_ver_rev =
+ 			REG_FIELD_GET(GMD_ID_REVID, gt->info.gmdid);
++
++		iter++;
+ 	}
+ 
+ 	if (copy_to_user(query_ptr, gt_list, size)) {
 -- 
 2.39.5
 
