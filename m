@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-170487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AF9B2A45E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:20:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DB7B2A96B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF11F1B60FFF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E8F4B62E76
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C4831E0E4;
-	Mon, 18 Aug 2025 13:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F8B322DC7;
+	Mon, 18 Aug 2025 14:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuXBw20O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZQaNBoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728B0258EFB;
-	Mon, 18 Aug 2025 13:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABF7322DC9;
+	Mon, 18 Aug 2025 14:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522795; cv=none; b=FFydx5LUfRYcnkNtpNniNxveAIDYHpKyQuylXujowSQAaRQ9KIIuz6dT4YY2vEFiJrBSrYJhgXxxG2mAOjykWmhhm38Vy6DxwYRwzkHqRLgvZeO7uZAOLmWcxYbzuHlzqq+dOlDBTz+xgsmTtUT6ATd3ugbj9dl3ASWBAcm0lBE=
+	t=1755526115; cv=none; b=IfP155AzwczcukzUmfHG2uG8snwzeizKjg0vHiUMG4ZKucOBlATS5aWHS9jyNshpH6La9dTmvVpdsoBrDotGUwEwGkdwMQlItysgwlvMpy6kJvZJYD/jF+d09eGvKXgjnoAlkE5E+tMmA1MBqfSs1fVKFByiGBVvTbt+sWVjDfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522795; c=relaxed/simple;
-	bh=Au/IuEnBF0NOzWXS76XTTToioWt7lF+E+nlfhdSs6KU=;
+	s=arc-20240116; t=1755526115; c=relaxed/simple;
+	bh=YtatHZCb0uq0zmCeiOnsmDjB4P9LWuvEovp2onxXqBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LXPq14704PlsDerfuK3SpMjiXdpgT0C1FJB/I+H+4X2ZlWz/5IUrYz4YhRJsCyBDlZVE4z/gwQnz2sk8WPKODtu7/udm+0ayeLaEOBSnTDeZoDE+5y/sQh3oBFyvWnQEGlHfJe3c1ERr7xJAQTvX2PjugD4XDxI/sFk9E9aJGa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuXBw20O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9A2C4CEEB;
-	Mon, 18 Aug 2025 13:13:14 +0000 (UTC)
+	 MIME-Version; b=c+u74h9d7uyCtFA8UaFkrUzkeu6rYh/UuJrYoEeANCafNVCdfODM4fQ46yANqZr7VAHzsWTcF7i3l+94Ja3lxnnd0wHpZydpQPGK2kx1BXW5VZPSRK45Frr9HUNgdRoCHmeq7E2NY94AdJ5j2oxcuL60x19r8oZSLveJ7NL8YJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZQaNBoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5167C113D0;
+	Mon, 18 Aug 2025 14:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522795;
-	bh=Au/IuEnBF0NOzWXS76XTTToioWt7lF+E+nlfhdSs6KU=;
+	s=korg; t=1755526115;
+	bh=YtatHZCb0uq0zmCeiOnsmDjB4P9LWuvEovp2onxXqBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CuXBw20ONJ3v3ocv7xa9hhNK0oxNaxaITWiD7idvwj6mzUFKaz6isrfE7a6TUiBWX
-	 t41GOUSOrsdyp4FIel7orkLmkV5KDw6DPxTQe1yHzdsglrrzN9YXSJQ5jAtfBCfKw/
-	 GgUzzAW2uBBEEEqhZHaKYRXzaLmwh0an32r/6vqc=
+	b=YZQaNBoFxfzxfIJjJBcCMehG9xxvuIznHEF44tvJC69gMJLucn7Eoqyi7U3dfv74h
+	 c7tICLn4nydAzLb7oen3A8jvz0hcTEoMHGDfpl6fXFWBXNaqr7GY5PCsvsKe5WnnL2
+	 +lrPdRzU4b/RxYFdiyla5CMenV4YjQ+U8QBJ8xB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosa.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	=?UTF-8?q?Hanne-Lotta=20M=C3=A4enp=C3=A4=C3=A4?= <hannelotta@gmail.com>
-Subject: [PATCH 6.12 423/444] wifi: mac80211: check basic rates validity in sta_link_apply_parameters
-Date: Mon, 18 Aug 2025 14:47:29 +0200
-Message-ID: <20250818124504.803178253@linuxfoundation.org>
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 463/570] block: avoid possible overflow for chunk_sectors check in blk_stack_limits()
+Date: Mon, 18 Aug 2025 14:47:30 +0200
+Message-ID: <20250818124523.698942630@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosa.ru>
+From: John Garry <john.g.garry@oracle.com>
 
-commit 16ee3ea8faef8ff042acc15867a6c458c573de61 upstream.
+[ Upstream commit 448dfecc7ff807822ecd47a5c052acedca7d09e8 ]
 
-When userspace sets supported rates for a new station via
-NL80211_CMD_NEW_STATION, it might send a list that's empty
-or contains only invalid values. Currently, we process these
-values in sta_link_apply_parameters() without checking the result of
-ieee80211_parse_bitrates(), which can lead to an empty rates bitmap.
+In blk_stack_limits(), we check that the t->chunk_sectors value is a
+multiple of the t->physical_block_size value.
 
-A similar issue was addressed for NL80211_CMD_SET_BSS in commit
-ce04abc3fcc6 ("wifi: mac80211: check basic rates validity").
-This patch applies the same approach in sta_link_apply_parameters()
-for NL80211_CMD_NEW_STATION, ensuring there is at least one valid
-rate by inspecting the result of ieee80211_parse_bitrates().
+However, by finding the chunk_sectors value in bytes, we may overflow
+the unsigned int which holds chunk_sectors, so change the check to be
+based on sectors.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: b95eb7f0eee4 ("wifi: cfg80211/mac80211: separate link params from station params")
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
-Link: https://patch.msgid.link/20250317103139.17625-1-m.lobanov@rosa.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Hanne-Lotta Mäenpää <hannelotta@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250729091448.1691334-2-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ block/blk-settings.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1879,12 +1879,12 @@ static int sta_link_apply_parameters(str
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 1a82980d52e9..44dabc636a59 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -792,7 +792,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
  	}
  
- 	if (params->supported_rates &&
--	    params->supported_rates_len) {
--		ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
--					 sband, params->supported_rates,
--					 params->supported_rates_len,
--					 &link_sta->pub->supp_rates[sband->band]);
--	}
-+	    params->supported_rates_len &&
-+	    !ieee80211_parse_bitrates(link->conf->chanreq.oper.width,
-+				      sband, params->supported_rates,
-+				      params->supported_rates_len,
-+				      &link_sta->pub->supp_rates[sband->band]))
-+		return -EINVAL;
- 
- 	if (params->ht_capa)
- 		ieee80211_ht_cap_ie_to_sta_ht_cap(sdata, sband,
+ 	/* chunk_sectors a multiple of the physical block size? */
+-	if ((t->chunk_sectors << 9) & (t->physical_block_size - 1)) {
++	if (t->chunk_sectors % (t->physical_block_size >> SECTOR_SHIFT)) {
+ 		t->chunk_sectors = 0;
+ 		t->flags |= BLK_FLAG_MISALIGNED;
+ 		ret = -1;
+-- 
+2.39.5
+
 
 
 
