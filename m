@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912B9B2A77B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EA2B2A9AA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C74D1B67492
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E092F7BF0F6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6422C321F28;
-	Mon, 18 Aug 2025 13:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95F6322DBA;
+	Mon, 18 Aug 2025 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mshty43K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vpvT5hH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22710220696;
-	Mon, 18 Aug 2025 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8744E322DB1;
+	Mon, 18 Aug 2025 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524410; cv=none; b=DkP/2miPV8lsA+qZ0U9k6bhvlymOoVvFH/3wjAoOl+2s5w7PiKs4BEvmPXMxYw957Xif/mvLZbThQY2JKcPHDF4VTgm4ihyvf+MRbuPIcZTy8sucl4fMGzIpv8Ygn5+uDWLNU/ZYIIDPi1HxcVzIYoqbsKnxZ5OQxzMOIN1LgEs=
+	t=1755526111; cv=none; b=Tm6V10Gn/pyBR28afsKgs4L8LmJP6PfpMzKgQRtpJcnIn8W8Q+kweJOq5fqE3QSrW/C594rd1WKTLLivrU2YCcEiuXBc+fKCxcW9YTyQmSqdOqNOgxrYnmIU7DTBbeFzg8FNpTYZUD9LBJrDPXSl7gH3ZzX6ZlOdMQ4AUlk0y0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524410; c=relaxed/simple;
-	bh=j1yTaBjZRl7MjIvCmBs0nww/wVhm/3IPOOvWTiBYo28=;
+	s=arc-20240116; t=1755526111; c=relaxed/simple;
+	bh=tRXIIvS5ewBfz5Xd1QvFYstojrk//nuqlZpramjux8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIbN0CB3ZNlUhcMieG+pCTdDyT+FNUnYYmSXHKh1nOKqLYcIwJFBBRkpsBUz1aSZ0LoYGdpi7SLPUk9Yi73PUQe6FCG24H2hV9ZY39lRs/R0X6ojzJrxFfgU9Ju8ePSozfwv/vNrUMlQ8rJ8Fl9yEKVjG6AMdMqjmJWzgL+KCQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mshty43K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F268C116D0;
-	Mon, 18 Aug 2025 13:40:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QVCDxIAR4rZa+hHeRrWTDCkmATBIhqSyBi1SFIx9oh7WgmKNWhoBUwdtcTgDkFK26cgNSI2oiqd+xZQnyuIG7LsN2v2VWlMNs7197fSRI8gbAznlJaOw56ozxMXcFOHfvwQbZVwGCPQLvU53aWBe6/fMv5MskvjD5qJvg4OhVXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vpvT5hH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB675C4CEEB;
+	Mon, 18 Aug 2025 14:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524409;
-	bh=j1yTaBjZRl7MjIvCmBs0nww/wVhm/3IPOOvWTiBYo28=;
+	s=korg; t=1755526111;
+	bh=tRXIIvS5ewBfz5Xd1QvFYstojrk//nuqlZpramjux8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mshty43KQGmkS7+T885VdTqHqAHYXmVrsoqqalvVi2RZW3CMRUeooR7hZtm3MDtDG
-	 PLbYxy6JHAyGOxkelHF261XVggVcZmwfHTzFsdxExwXLTfa+aJYaG+gn6lO/JUu4+H
-	 EH+9m7awF8t0z2D70eILJ1bFCYUE3sv/8ni7N/8M=
+	b=1vpvT5hHHuHOl7+UD1Gr9yTOh/uY7o4GmpgDRZ175V9myv6B1ny5JkTc9RhgkgU4C
+	 PQS1YC5Gklu152qY+iuRrPE5ZY0HzcTUELQ3KHS0KjoFlqO7NPFuZctkH3yFIkXCkm
+	 EvFggo7VkACY1F/wj7+lRV+WvLQyJMbz1uC5TQ5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.15 462/515] btrfs: zoned: use filesystem size not disk size for reclaim decision
-Date: Mon, 18 Aug 2025 14:47:28 +0200
-Message-ID: <20250818124516.205664284@linuxfoundation.org>
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 462/570] ASoC: Intel: avs: Fix uninitialized pointer error in probe()
+Date: Mon, 18 Aug 2025 14:47:29 +0200
+Message-ID: <20250818124523.661856463@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-commit 55f7c65b2f69c7e4cb7aa7c1654a228ccf734fd8 upstream.
+[ Upstream commit 11f74f48c14c1f4fe16541900ea5944c42e30ccf ]
 
-When deciding if a zoned filesystem is reaching the threshold to reclaim
-data block groups, look at the size of the filesystem not to potentially
-total available size of all drives in the filesystem.
+If pcim_request_all_regions() fails, error path operates on
+uninitialized 'bus' pointer. Found out by Coverity static analyzer.
 
-Especially if a filesystem was created with mkfs' -b option, constraining
-it to only a portion of the block device, the numbers won't match and
-potentially garbage collection is kicking in too late.
-
-Fixes: 3687fcb0752a ("btrfs: zoned: make auto-reclaim less aggressive")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250730124906.351798-1-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/intel/avs/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2477,8 +2477,8 @@ bool btrfs_zoned_should_reclaim(const st
- {
- 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
- 	struct btrfs_device *device;
-+	u64 total = btrfs_super_total_bytes(fs_info->super_copy);
- 	u64 used = 0;
--	u64 total = 0;
- 	u64 factor;
+diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
+index ec1b3f55cb5c..d45e9279df27 100644
+--- a/sound/soc/intel/avs/core.c
++++ b/sound/soc/intel/avs/core.c
+@@ -446,6 +446,8 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
+ 	adev = devm_kzalloc(dev, sizeof(*adev), GFP_KERNEL);
+ 	if (!adev)
+ 		return -ENOMEM;
++	bus = &adev->base.core;
++
+ 	ret = avs_bus_init(adev, pci, id);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to init avs bus: %d\n", ret);
+@@ -456,7 +458,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
+ 	if (ret < 0)
+ 		return ret;
  
- 	ASSERT(btrfs_is_zoned(fs_info));
-@@ -2491,7 +2491,6 @@ bool btrfs_zoned_should_reclaim(const st
- 		if (!device->bdev)
- 			continue;
- 
--		total += device->disk_total_bytes;
- 		used += device->bytes_used;
- 	}
- 	mutex_unlock(&fs_devices->device_list_mutex);
+-	bus = &adev->base.core;
+ 	bus->addr = pci_resource_start(pci, 0);
+ 	bus->remap_addr = pci_ioremap_bar(pci, 0);
+ 	if (!bus->remap_addr) {
+-- 
+2.39.5
+
 
 
 
