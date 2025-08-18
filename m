@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9520CB2A824
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C86B2A5BC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227481BA25D0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FC5C1742BC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A05335BCB;
-	Mon, 18 Aug 2025 13:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1D021CC55;
+	Mon, 18 Aug 2025 13:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tk5kNfWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xukf4sGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB59F335BA7;
-	Mon, 18 Aug 2025 13:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEDD2264CA;
+	Mon, 18 Aug 2025 13:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525048; cv=none; b=VAzXSMHpyzIkf4mmv6jKnBYiQ+WTX4j9eGVQM2B3P51rlZdj6O13CAe3ZhcuuZAP/CI1XQF/DS+yvz3Hu+GRlKKfOxsjPN9JKEIUHGZdmKaG5sM9/FKLus/E2Q5dh2r0wXmKnn9tsZAkrTX0cxmgZniAgvIOJrZ82kQ04rAqeUg=
+	t=1755523353; cv=none; b=W6xXmZY0wBbzzsXJdZo4nsHV/yH6oJZygJeN/D6uyoLUEP0HYVtwYfWHv8JQFKJuAFxWu58jbhnnADp++qsfGp5ZjSnIKyG1ZcmQu/qKNZz9vIsj0ObKLCVZ+MXAzsinuR59ln5oX9qTzd3mkyRbQDJUwo/B4feLiGhl/m7A10w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525048; c=relaxed/simple;
-	bh=5EeRcbDGoeYqCCpK6qcQZgcaHs1KcR7xWiVMfBH89vI=;
+	s=arc-20240116; t=1755523353; c=relaxed/simple;
+	bh=l0ByJIU/rDDiK03sdHdffvvsauIe2BgWRDd4Ar8QcNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YM/c9KruuORUkBYFeR2GCicPZFhb6EVZcZ2pEo5rRsjM+fRM17acUa4yNLJ++quVLc0HGVsNnuWnbt3FQswCune9DnEZ251CZlK6CbCEMEy5REMUr3YxhLV13Eo+iu8oVDT/jagQTMzhI0mfEqSM4cu4pz71SrElKHykjIC7XPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tk5kNfWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2964C4CEEB;
-	Mon, 18 Aug 2025 13:50:47 +0000 (UTC)
+	 MIME-Version; b=aJfW3ReL4TWLDq7h44s0KKPuis1lnWF1T6aUb5vu8CmV2VRxKX6K5tUSnNP+t3XrQyWy+lUAAGQMErKM+FJ5nJU8mpq4jAZ5t4q2G+iPoDfD1eIUx9BsLOZPRR9o3J9dsIIzflqoBHk84JX0IksrgjGF3yR3a7ByLRTO7gb3hwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xukf4sGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F56C4CEEB;
+	Mon, 18 Aug 2025 13:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525048;
-	bh=5EeRcbDGoeYqCCpK6qcQZgcaHs1KcR7xWiVMfBH89vI=;
+	s=korg; t=1755523353;
+	bh=l0ByJIU/rDDiK03sdHdffvvsauIe2BgWRDd4Ar8QcNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tk5kNfWwGCj7V7yfQPKlZ4/kRcmw8Cnp7w3nRXDRXIuKZQqgrdvh+CA24clHn5zau
-	 pKleT2VdA6+nbsoAUonxZIwm5uIy9GIpdzNUE+bboIK1pjSgyaibFQ27Ao2Sc4x2Z1
-	 m+vWkD/P0fCqOmDK9u24wrByHdIJEmHBm/HGyAtM=
+	b=xukf4sGI5OJfMRfdFeHKtPr0Qxme33de4pL/iX8pqiAFlHey5Dq1QSVHzDpJKHz93
+	 QxVeqfDsdBMUPpKd23u0cI4OqbURTFU01NxqWcEF5xyWfBGD4TZ6XdkxwohFSU2VrM
+	 vg/ahE5WyNoCM0WUCmoweRKq+upE4TrbDeDYUDuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 143/570] usb: typec: tcpm/tcpci_maxim: fix irq wake usage
+Subject: [PATCH 6.15 144/515] ARM: tegra: Use I/O memcpy to write to IRAM
 Date: Mon, 18 Aug 2025 14:42:10 +0200
-Message-ID: <20250818124511.333255665@linuxfoundation.org>
+Message-ID: <20250818124503.933679894@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 31611223fb34a3e9320cdfc4f4395072a13ea78e ]
+[ Upstream commit 398e67e0f5ae04b29bcc9cbf342e339fe9d3f6f1 ]
 
-This driver calls enable_irq_wake() during probe() unconditionally, and
-never issues the required corresponding disable_irq_wake() to disable
-hardware interrupt wakeup signals.
+Kasan crashes the kernel trying to check boundaries when using the
+normal memcpy.
 
-Additionally, whether or not a device should wake-up the system is
-meant to be a policy decision based on sysfs (.../power/wakeup) in the
-first place.
-
-Update the driver to use the standard approach to enable/disable IRQ
-wake during the suspend/resume callbacks. This solves both issues
-described above.
-
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20250707-max77759-irq-wake-v1-1-d367f633e4bc@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://lore.kernel.org/r/20250522-mach-tegra-kasan-v1-1-419041b8addb@gmail.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim_core.c | 46 +++++++++++++++--------
- 1 file changed, 30 insertions(+), 16 deletions(-)
+ arch/arm/mach-tegra/reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-index b5a5ed40faea..ff3604be79da 100644
---- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-@@ -421,21 +421,6 @@ static irqreturn_t max_tcpci_isr(int irq, void *dev_id)
- 	return IRQ_WAKE_THREAD;
- }
+diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
+index d5c805adf7a8..ea706fac6358 100644
+--- a/arch/arm/mach-tegra/reset.c
++++ b/arch/arm/mach-tegra/reset.c
+@@ -63,7 +63,7 @@ static void __init tegra_cpu_reset_handler_enable(void)
+ 	BUG_ON(is_enabled);
+ 	BUG_ON(tegra_cpu_reset_handler_size > TEGRA_IRAM_RESET_HANDLER_SIZE);
  
--static int max_tcpci_init_alert(struct max_tcpci_chip *chip, struct i2c_client *client)
--{
--	int ret;
--
--	ret = devm_request_threaded_irq(chip->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
--					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
--					chip);
--
--	if (ret < 0)
--		return ret;
--
--	enable_irq_wake(client->irq);
--	return 0;
--}
--
- static int max_tcpci_start_toggling(struct tcpci *tcpci, struct tcpci_data *tdata,
- 				    enum typec_cc_status cc)
- {
-@@ -532,7 +517,9 @@ static int max_tcpci_probe(struct i2c_client *client)
+-	memcpy(iram_base, (void *)__tegra_cpu_reset_handler_start,
++	memcpy_toio(iram_base, (void *)__tegra_cpu_reset_handler_start,
+ 			tegra_cpu_reset_handler_size);
  
- 	chip->port = tcpci_get_tcpm_port(chip->tcpci);
- 
--	ret = max_tcpci_init_alert(chip, client);
-+	ret = devm_request_threaded_irq(&client->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
-+					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
-+					chip);
- 	if (ret < 0)
- 		return dev_err_probe(&client->dev, ret,
- 				     "IRQ initialization failed\n");
-@@ -544,6 +531,32 @@ static int max_tcpci_probe(struct i2c_client *client)
- 	return 0;
- }
- 
-+#ifdef CONFIG_PM_SLEEP
-+static int max_tcpci_resume(struct device *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	int ret = 0;
-+
-+	if (client->irq && device_may_wakeup(dev))
-+		ret = disable_irq_wake(client->irq);
-+
-+	return ret;
-+}
-+
-+static int max_tcpci_suspend(struct device *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	int ret = 0;
-+
-+	if (client->irq && device_may_wakeup(dev))
-+		ret = enable_irq_wake(client->irq);
-+
-+	return ret;
-+}
-+#endif /* CONFIG_PM_SLEEP */
-+
-+static SIMPLE_DEV_PM_OPS(max_tcpci_pm_ops, max_tcpci_suspend, max_tcpci_resume);
-+
- static const struct i2c_device_id max_tcpci_id[] = {
- 	{ "maxtcpc" },
- 	{ }
-@@ -562,6 +575,7 @@ static struct i2c_driver max_tcpci_i2c_driver = {
- 	.driver = {
- 		.name = "maxtcpc",
- 		.of_match_table = of_match_ptr(max_tcpci_of_match),
-+		.pm = &max_tcpci_pm_ops,
- 	},
- 	.probe = max_tcpci_probe,
- 	.id_table = max_tcpci_id,
+ 	err = call_firmware_op(set_cpu_boot_addr, 0, reset_address);
 -- 
 2.39.5
 
