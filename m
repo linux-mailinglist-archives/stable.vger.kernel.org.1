@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-171341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37696B2A92C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:16:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0790CB2A367
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91A615A0B72
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:08:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57FD41B263E0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE4A32A3C8;
-	Mon, 18 Aug 2025 13:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF7B31A055;
+	Mon, 18 Aug 2025 13:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="detJ8GU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkqBmgpo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC033326D73;
-	Mon, 18 Aug 2025 13:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B28220126A;
+	Mon, 18 Aug 2025 13:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525597; cv=none; b=CN6q89KQmJibtXI8pMkEV+zbIbaNvKgHgqCkDo7mHupA5BlUy0Llr8mEqqLIeE1IdcPR6PJfNv5kmHngIW3g0WtQVGu8xqhuBpscnUxdXIlhiA0w5EXKjQAHk1DP0jcrnjun4cNA+32d3eWPqqKhThVpZMlMnS41zJ325J9rrbY=
+	t=1755522183; cv=none; b=L4fLiTkhiYyOqXfXpENdoFnfsBsxVztz0zkHpiqA9jg2txoGJARxg18PgZRGvas9Nr6jxBaf+EH7BzKhSZGLtOJ3Hcqu3iZbftH0WuMlRK7IZLCACUYHDs1ZM2fUfhzIQA3SrA8xe6G2um5A+/9yhQhks3k5ulsKwf6ygxpZSbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525597; c=relaxed/simple;
-	bh=sLSfg0GIePL1Jv6P41vwC7PtmEpMWTF7km2HRWuSjng=;
+	s=arc-20240116; t=1755522183; c=relaxed/simple;
+	bh=cMle9pzfz21fhlZiqiEXE618EgQbz+p3q4ADfLhoEH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQA3HgL3k/Ip0Q6nJncnnuVAUdMW30waCKP7IDbnwaGZxmwCgY9xGmqLpWZ6hxsUnjGqNsPlY/fFFvh1+qAbneXqUEHss7rneNyqm8Yybl88G3XDD9UYoaG6vI4TJzLjQ6Gl1sK91q/+hOpbayEhUM61ymV3W/nkyS+HKxmm1iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=detJ8GU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3733C113D0;
-	Mon, 18 Aug 2025 13:59:56 +0000 (UTC)
+	 MIME-Version; b=fAG0+4x57HeQ7Q/sGD4yUO51j5Psapg5DjCbTkZUlrwyy7BE/5aXII8qjWG8hKE9zCIp8Ij7MFWzu3/uHu7kAEwcOlSt31kLNqphb7kz6Ndi7za4Rzucpo6XrfKW5Exe95vUs3+JsRjAjwbnrpsgZDrrsiRXlnLGxiQuQvgPZA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkqBmgpo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21EAC113D0;
+	Mon, 18 Aug 2025 13:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525597;
-	bh=sLSfg0GIePL1Jv6P41vwC7PtmEpMWTF7km2HRWuSjng=;
+	s=korg; t=1755522183;
+	bh=cMle9pzfz21fhlZiqiEXE618EgQbz+p3q4ADfLhoEH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=detJ8GU6QK6QJMMD7VHXALfjVRsfi4Kd4/ZakQZsTEcndd1uU6tRQgpHEf94a6O2f
-	 JlYC7LTkOTg3fM4GAUbSyXc//NF2O8ieaQy2UBaVC5YvjtbWY1GNgruXQsDtRbpq9y
-	 4cm074Bom6Cue4Bspi+dOwF0eqvIQAekAMUTImVs=
+	b=XkqBmgpoeVti0QFb2HjBqEwo5dqsyqUrksvqFZ3k6xYDVDZ8XEgfD4vRRJVZy6U1s
+	 bmZuOh5r8KROw9GhmPxAdYivnf1tcMEz6D1MVAVC1VsqhEod7ydSIl38BpAWZmgTTe
+	 MNIxhkSQronK6nBzT30AHfxiXRR6O5v/PtlbeMvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Bauer <mail@david-bauer.net>,
-	Felix Fietkau <nbd@nbd.name>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	Breno Leitao <leitao@debian.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Petr Mladek <pmladek@suse.com>,
+	Song Liu <song@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 279/570] wifi: mt76: mt7915: mcu: increase eeprom command timeout
+Subject: [PATCH 6.12 240/444] arm64: stacktrace: Check kretprobe_find_ret_addr() return value
 Date: Mon, 18 Aug 2025 14:44:26 +0200
-Message-ID: <20250818124516.597451296@linuxfoundation.org>
+Message-ID: <20250818124457.827064887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +69,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Bauer <mail@david-bauer.net>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit efd31873cdb3e5580fb76eeded6314856f52b06e ]
+[ Upstream commit beecfd6a88a675e20987e70ec532ba734b230fa4 ]
 
-Increase the timeout for MCU_EXT_CMD_EFUSE_BUFFER_MODE command.
+If kretprobe_find_ret_addr() fails to find the original return address,
+it returns 0. Check for this case so that a reliable stacktrace won't
+silently ignore it.
 
-Regular retries upon hardware-recovery have been observed. Increasing
-the timeout slightly remedies this problem.
-
-Signed-off-by: David Bauer <mail@david-bauer.net>
-Link: https://patch.msgid.link/20250402004528.1036715-2-mail@david-bauer.net
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrea della Porta <andrea.porta@suse.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Song Liu <song@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-and-tested-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20250521111000.2237470-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/kernel/stacktrace.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 4c7f193a1158..c1cfdbc2fe84 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -208,6 +208,9 @@ mt7915_mcu_set_timeout(struct mt76_dev *mdev, int cmd)
- 	case MCU_EXT_CMD_BSS_INFO_UPDATE:
- 		mdev->mcu.timeout = 2 * HZ;
- 		return;
-+	case MCU_EXT_CMD_EFUSE_BUFFER_MODE:
-+		mdev->mcu.timeout = 10 * HZ;
-+		return;
- 	default:
- 		break;
+diff --git a/arch/arm64/kernel/stacktrace.c b/arch/arm64/kernel/stacktrace.c
+index 2729faaee4b4..1d60a08a2184 100644
+--- a/arch/arm64/kernel/stacktrace.c
++++ b/arch/arm64/kernel/stacktrace.c
+@@ -123,6 +123,8 @@ kunwind_recover_return_address(struct kunwind_state *state)
+ 		orig_pc = kretprobe_find_ret_addr(state->task,
+ 						  (void *)state->common.fp,
+ 						  &state->kr_cur);
++		if (!orig_pc)
++			return -EINVAL;
+ 		state->common.pc = orig_pc;
  	}
+ #endif /* CONFIG_KRETPROBES */
 -- 
 2.39.5
 
