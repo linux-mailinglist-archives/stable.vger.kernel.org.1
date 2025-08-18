@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA15B2A37A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:10:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C16A7B2A65D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:43:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BEDA1B27E77
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8D117D9FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8482331E11B;
-	Mon, 18 Aug 2025 13:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8BF321F3B;
+	Mon, 18 Aug 2025 13:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvS3Rnzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/hpSU3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401243074AE;
-	Mon, 18 Aug 2025 13:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE19D31AF15;
+	Mon, 18 Aug 2025 13:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522257; cv=none; b=rznwVPYW+QR0j6H4L1Gmd5XSw5rI7+i/KdUp2Iusl/maTb/VSSC4g1QJ314ZSW+BnnM3i2z41B49feqIePOqKgSQiW+yEJpaaMdh0Gjwhjk8Woa3AQiPqW+1+UIYtXRHkcxIUWgfQREEN6pEEMKG2F+B2dJlLK6WPDSyS7zYT/A=
+	t=1755523885; cv=none; b=Qjt6W9njefs0hF7s05b/Kj1CW7rl0TRfkX2XKPXouFB8gYbhz804ILUy3gtd20u4+YB6Uq+oKsPuEtwjz+n+cee+I2RAvk+OFeJApfnU+ZkIJIMQj39IpRDpy2K+MiL/HXK1F0f9QkFbXGjKb3nvVcOySqJVsB//hNeWdpPAIbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522257; c=relaxed/simple;
-	bh=W6phNebxqOv6Pp0d3mkEZh16lGMIrqadZ7R63KzgFG0=;
+	s=arc-20240116; t=1755523885; c=relaxed/simple;
+	bh=8t3vKmsws5XNoARxh1ERSGZDyysWvPoZTm7myGDgXQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pD7c/4mXLaIzwlMTZjhrO40zxMkd3lYbT28eAJ+Ig1WmjpiVHtZpQGRqiHw5Xa7Anygii3bJKy2vEVhMjc42iXwAHNAIO4u4rpnz3FwDH1Vgz0pwHaTegLvsbLQztxgHJlXlCkiOveB9a5O3xEx1/2R5my6QkhfheKeBO1XoDt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvS3Rnzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A162CC4CEEB;
-	Mon, 18 Aug 2025 13:04:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=axpKF6rgsPt9+Uhd0aiQl4WEh4rxXyYplBeHwLV+9guH/RbnOba8AtR2ysrf6DorgwQhoKnxQHMSsCiTqwoQkUvWYE3V7LqeFe/zmr/jJuzKoTEnssMVC5c8wAI3EioSJZYNCL/20f9z5gziGlR2czgjsnHoowEakWiZlNTX1+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/hpSU3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1772C4CEEB;
+	Mon, 18 Aug 2025 13:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522257;
-	bh=W6phNebxqOv6Pp0d3mkEZh16lGMIrqadZ7R63KzgFG0=;
+	s=korg; t=1755523885;
+	bh=8t3vKmsws5XNoARxh1ERSGZDyysWvPoZTm7myGDgXQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvS3Rnzolr/rCe9YjgfFAh5WipK45o2tyx9MPUfAbBtv6hHAuTqbgzxWUzmEAUfR2
-	 WCATTRA+t6w1kNF+K/UidbY4RP7JXG6cret577sOMbG9YGbm5/bEoJKyJlf2k4z0Ks
-	 cA1WvkOIet1nNmLYan0usOC2HKvuHAHqqTIXG9h0=
+	b=R/hpSU3dHwL3nKN+PHu95upr51+PxioOed4TYeBzDRzqez5dcD3hB+Agl/OSaIvs1
+	 Ppvyj9rGXcDcAhCN4z0VznoMjJKCfKcS879bGmJfUdnZY96xAg5skF42udm/uCu7AP
+	 K2alwIIdqwPQPskV8biAqQRj7q4oelRIgFVXpMZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <isolodrai@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 263/444] bpf: Make reg_not_null() true for CONST_PTR_TO_MAP
+Subject: [PATCH 6.15 303/515] net: dsa: b53: ensure BCM5325 PHYs are enabled
 Date: Mon, 18 Aug 2025 14:44:49 +0200
-Message-ID: <20250818124458.686453061@linuxfoundation.org>
+Message-ID: <20250818124510.101966588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ihor Solodrai <isolodrai@meta.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit 5534e58f2e9bd72b253d033ee0af6e68eb8ac96b ]
+[ Upstream commit 966a83df36c6f27476ac3501771422e7852098bc ]
 
-When reg->type is CONST_PTR_TO_MAP, it can not be null. However the
-verifier explores the branches under rX == 0 in check_cond_jmp_op()
-even if reg->type is CONST_PTR_TO_MAP, because it was not checked for
-in reg_not_null().
+According to the datasheet, BCM5325 uses B53_PD_MODE_CTRL_25 register to
+disable clocking to individual PHYs.
+Only ports 1-4 can be enabled or disabled and the datasheet is explicit
+about not toggling BIT(0) since it disables the PLL power and the switch.
 
-Fix this by adding CONST_PTR_TO_MAP to the set of types that are
-considered non nullable in reg_not_null().
-
-An old "unpriv: cmp map pointer with zero" selftest fails with this
-change, because now early out correctly triggers in
-check_cond_jmp_op(), making the verification to pass.
-
-In practice verifier may allow pointer to null comparison in unpriv,
-since in many cases the relevant branch and comparison op are removed
-as dead code. So change the expected test result to __success_unpriv.
-
-Signed-off-by: Ihor Solodrai <isolodrai@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250609183024.359974-2-isolodrai@meta.com
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250614080000.1884236-15-noltari@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c                               | 3 ++-
- tools/testing/selftests/bpf/progs/verifier_unpriv.c | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 13 +++++++++++++
+ drivers/net/dsa/b53/b53_regs.h   |  5 ++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index b880dea7d858..24ae8f33e5d7 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -400,7 +400,8 @@ static bool reg_not_null(const struct bpf_reg_state *reg)
- 		type == PTR_TO_MAP_KEY ||
- 		type == PTR_TO_SOCK_COMMON ||
- 		(type == PTR_TO_BTF_ID && is_trusted_reg(reg)) ||
--		type == PTR_TO_MEM;
-+		type == PTR_TO_MEM ||
-+		type == CONST_PTR_TO_MAP;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index dc2f4adac9bc..184946e8cee9 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -615,6 +615,19 @@ int b53_setup_port(struct dsa_switch *ds, int port)
+ 	if (dsa_is_user_port(ds, port))
+ 		b53_set_eap_mode(dev, port, EAP_MODE_SIMPLIFIED);
+ 
++	if (is5325(dev) &&
++	    in_range(port, 1, 4)) {
++		u8 reg;
++
++		b53_read8(dev, B53_CTRL_PAGE, B53_PD_MODE_CTRL_25, &reg);
++		reg &= ~PD_MODE_POWER_DOWN_PORT(0);
++		if (dsa_is_unused_port(ds, port))
++			reg |= PD_MODE_POWER_DOWN_PORT(port);
++		else
++			reg &= ~PD_MODE_POWER_DOWN_PORT(port);
++		b53_write8(dev, B53_CTRL_PAGE, B53_PD_MODE_CTRL_25, reg);
++	}
++
+ 	return 0;
  }
+ EXPORT_SYMBOL(b53_setup_port);
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 1fbc5a204bc7..d31c8ad9a9b6 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -101,8 +101,11 @@
+ #define   PORT_OVERRIDE_SPEED_2000M	BIT(6) /* BCM5301X only, requires setting 1000M */
+ #define   PORT_OVERRIDE_EN		BIT(7) /* Use the register contents */
  
- static struct btf_record *reg_btf_record(const struct bpf_reg_state *reg)
-diff --git a/tools/testing/selftests/bpf/progs/verifier_unpriv.c b/tools/testing/selftests/bpf/progs/verifier_unpriv.c
-index 7ea535bfbacd..e4ef82a6ee38 100644
---- a/tools/testing/selftests/bpf/progs/verifier_unpriv.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_unpriv.c
-@@ -619,7 +619,7 @@ __naked void pass_pointer_to_tail_call(void)
+-/* Power-down mode control */
++/* Power-down mode control (8 bit) */
+ #define B53_PD_MODE_CTRL_25		0x0f
++#define  PD_MODE_PORT_MASK		0x1f
++/* Bit 0 also powers down the switch. */
++#define  PD_MODE_POWER_DOWN_PORT(i)	BIT(i)
  
- SEC("socket")
- __description("unpriv: cmp map pointer with zero")
--__success __failure_unpriv __msg_unpriv("R1 pointer comparison")
-+__success __success_unpriv
- __retval(0)
- __naked void cmp_map_pointer_with_zero(void)
- {
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
 -- 
 2.39.5
 
