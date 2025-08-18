@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A95B2A698
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04CEB2A438
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6B90B61612
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E10D73A7C0B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D772D8DD4;
-	Mon, 18 Aug 2025 13:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE75E31E10C;
+	Mon, 18 Aug 2025 13:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aU2riUvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnlFwyQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146F4335BC9;
-	Mon, 18 Aug 2025 13:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDB131E0E8;
+	Mon, 18 Aug 2025 13:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524305; cv=none; b=Ksae9wR0RTQrQMkWQfTj/RfLupRFdJLAPpyH4wf45/VIrna4NTRAdZNSeZpu6Rjt8vA9QfQxMogaJnsS6RaibK5m+eluPIHtbAyiINIoudNDOc/LfnzmDKKXvPeLiKw15xapUv+Wg7OJoqboC2g5ZdFQM/pZWZvhSdgn3HKy9U4=
+	t=1755522722; cv=none; b=A/oA2VdItt2mE/tCZiU7337rjzpbC6ReqrKzY1RT5zgo99EH1PjgibamfaUp5JPQs7WSfHzKOOcIoD9kKlJDVKA34Y11cAJ8vbbaDSrH9z8j35sT7Gq5oaX9kQWKr3AYKk3LGCc0N3RmusPdqDFGX8X+M2kW6A2QlLeCgyibkyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524305; c=relaxed/simple;
-	bh=oDXC4fooYvilrNxrgvTDSzFKCofvrNCRnEbTURrl/lU=;
+	s=arc-20240116; t=1755522722; c=relaxed/simple;
+	bh=qtPhC6OY6Z8ydd7J6DdzX9tpQnkikVkJE2fm3rjffOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRdGPFr79Uoozy4H7t7MwG0/9beNw8HnFWtN17+lslx9srU4T60E6g0qZ/Wm909BCXYr6lRvGoAOeeGhrR5pKM3eBvZyDbypnACw6/cVpW2jH38bN/6B53cVrjsnLdlQxfWqNYcfYwcOZpm+oCX0HBYAXBorPC2CjngrxFJrw7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aU2riUvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79482C116C6;
-	Mon, 18 Aug 2025 13:38:24 +0000 (UTC)
+	 MIME-Version; b=SM1cEZsiQkdcDSMeH4yTcfu5fnKBV7DaKfLd5jdw/yh32UJqifn0dHk+u3sjtcwenLNYPICOK8ttiosewUxBqMKpuNNBusuE7pLbz85E+mQKsRcpPJ0A0tF4rl2c8K42S6de4aIyIBDNcOO0FpFTC8RaZFxdzzRKwLEvQvtKiB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnlFwyQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF890C113D0;
+	Mon, 18 Aug 2025 13:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524305;
-	bh=oDXC4fooYvilrNxrgvTDSzFKCofvrNCRnEbTURrl/lU=;
+	s=korg; t=1755522722;
+	bh=qtPhC6OY6Z8ydd7J6DdzX9tpQnkikVkJE2fm3rjffOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aU2riUvOVg8ZCY0o419AYiFQzq8t6hDHDv/OskDcDcHVT/bUe0hbnE/OPhhVCiqHL
-	 +Tqvu3FmMS6ZYRCFg4xMpuatJZz8U4aCt6o8km0thed5ejY0Vn+a0RJ2DJAV7hK4sb
-	 W70xiOETa+x6jlFeQKV63hYrq/trI2UuWn89aEEM=
+	b=rnlFwyQRC80DS1WF/nbPKH/0g7MEeOEXX53Imh65RY0lsJuWS/5yXZTFs9HVuoL62
+	 yY3/EQCa4cDw7fjnaIbyF9zFZN3WnA4Z7gOEWOG0azWjWHr30hFLbbodtrdYIx24E4
+	 0HsyM0VMNdMPv3plqnvnajYb6zpv7A4/A16+j4v0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Thomas Croft <thomasmcft@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 398/515] dm-table: fix checking for rq stackable devices
-Date: Mon, 18 Aug 2025 14:46:24 +0200
-Message-ID: <20250818124513.732421368@linuxfoundation.org>
+Subject: [PATCH 6.12 359/444] ALSA: hda/realtek: add LG gram 16Z90R-A to alc269 fixup table
+Date: Mon, 18 Aug 2025 14:46:25 +0200
+Message-ID: <20250818124502.371558918@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Thomas Croft <thomasmcft@gmail.com>
 
-[ Upstream commit 8ca719b81987be690f197e82fdb030580c0a07f3 ]
+[ Upstream commit dbe05428c4e54068a86e7e02405f3b30b1d2b3dd ]
 
-Due to the semantics of iterate_devices(), the current code allows a
-request-based dm table as long as it includes one request-stackable
-device. It is supposed to only allow tables where there are no
-non-request-stackable devices.
+Several months ago, Joshua Grisham submitted a patch [1]
+for several ALC298 based sound cards.
 
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+The entry for the LG gram 16 in the alc269_fixup_tbl only matches the
+Subsystem ID for the 16Z90R-Q and 16Z90R-K models [2]. My 16Z90R-A has a
+different Subsystem ID [3]. I'm not sure why these IDs differ, but I
+speculate it's due to the NVIDIA GPU included in the 16Z90R-A model that
+isn't present in the other models.
+
+I applied the patch to the latest Arch Linux kernel and the card was
+initialized as expected.
+
+[1]: https://lore.kernel.org/linux-sound/20240909193000.838815-1-josh@joshuagrisham.com/
+[2]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0488
+[3]: https://linux-hardware.org/?id=pci:8086-51ca-1854-0489
+
+Signed-off-by: Thomas Croft <thomasmcft@gmail.com>
+Link: https://patch.msgid.link/20250804151457.134761-2-thomasmcft@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index dd074c8ecbba..587a9833c1f6 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -900,17 +900,17 @@ static bool dm_table_supports_dax(struct dm_table *t,
- 	return true;
- }
- 
--static int device_is_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
--				  sector_t start, sector_t len, void *data)
-+static int device_is_not_rq_stackable(struct dm_target *ti, struct dm_dev *dev,
-+				      sector_t start, sector_t len, void *data)
- {
- 	struct block_device *bdev = dev->bdev;
- 	struct request_queue *q = bdev_get_queue(bdev);
- 
- 	/* request-based cannot stack on partitions! */
- 	if (bdev_is_partition(bdev))
--		return false;
-+		return true;
- 
--	return queue_is_mq(q);
-+	return !queue_is_mq(q);
- }
- 
- static int dm_table_determine_type(struct dm_table *t)
-@@ -1006,7 +1006,7 @@ static int dm_table_determine_type(struct dm_table *t)
- 
- 	/* Non-request-stackable devices can't be used for request-based dm */
- 	if (!ti->type->iterate_devices ||
--	    !ti->type->iterate_devices(ti, device_is_rq_stackable, NULL)) {
-+	    ti->type->iterate_devices(ti, device_is_not_rq_stackable, NULL)) {
- 		DMERR("table load rejected: including non-request-stackable devices");
- 		return -EINVAL;
- 	}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 50b340876f09..840cde49935d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11302,6 +11302,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1854, 0x0440, "LG CQ6", ALC256_FIXUP_HEADPHONE_AMP_VOL),
+ 	SND_PCI_QUIRK(0x1854, 0x0441, "LG CQ6 AIO", ALC256_FIXUP_HEADPHONE_AMP_VOL),
+ 	SND_PCI_QUIRK(0x1854, 0x0488, "LG gram 16 (16Z90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
++	SND_PCI_QUIRK(0x1854, 0x0489, "LG gram 16 (16Z90R-A)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x1854, 0x048a, "LG gram 17 (17ZD90R)", ALC298_FIXUP_SAMSUNG_AMP_V2_4_AMPS),
+ 	SND_PCI_QUIRK(0x19e5, 0x3204, "Huawei MACH-WX9", ALC256_FIXUP_HUAWEI_MACH_WX9_PINS),
+ 	SND_PCI_QUIRK(0x19e5, 0x320f, "Huawei WRT-WX9 ", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
 -- 
 2.39.5
 
