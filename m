@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C250BB2AAB9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599BCB2A48D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84061BC23A1
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4DF11B616E3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092E9207A0B;
-	Mon, 18 Aug 2025 14:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A6831E11C;
+	Mon, 18 Aug 2025 13:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+NGhLKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNV18p+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3B8183CC3;
-	Mon, 18 Aug 2025 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA1A31E11F;
+	Mon, 18 Aug 2025 13:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526149; cv=none; b=KDOQjYu0Lxzg5/sb/zKKsSAd7LO1s8lFj5NQiYW+vBiQYyQX0c+mjXmUQ+L3yio3MonjnZNwFWfQuyAcAgQkUyju03j1ikoVsLmwYsk7Z9hDw5tU2h/DrbEyhcPb/qzFyrY+qo7zaQmXPy4JTV1Dq0UauO35kaCGmKQhLSKOT9Y=
+	t=1755522877; cv=none; b=k58nx7CYZQa/NiK86oo43P7qdDmiBy/MdKyEyrgPwOoBo68wufGflLUiQxkXn+cFRbpr6Cd3SdYI0W+KlsSfuUlQQqtK455oFUfQtCbTcvTiUllz4PqhXTQCIbsbBaskhscCuWp6Y/0n2xBDXHw8ZIT1on4x8XQH0F2QhIHXPiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526149; c=relaxed/simple;
-	bh=9ZgJvsKaVoqy3S0uTjnwONYurjj7B7ueIdheciTM04w=;
+	s=arc-20240116; t=1755522877; c=relaxed/simple;
+	bh=YLaWzliUs01LkrD8LTh9KwUnCjCNEEY5g7+PTPS2chY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaYyaHjxXq40bxxqiM1EQ+pEffQM6xTeFKfeVJmk6McHJND4TZ/5T2L7qo8kYxS48IU3qB/5Qv3wpYNuymIkkXJNeQDeMWXidAO/0knRf6NbqjHMBiW6sdVq7AHgdz8ekf5jSa5CK/yZxc8/dS3rAoUvIP+h0yVP5Y7z776W9MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+NGhLKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1213C4CEEB;
-	Mon, 18 Aug 2025 14:09:08 +0000 (UTC)
+	 MIME-Version; b=S9HnOI4TflsbQGgxQdzds+1WBYwBwVvkp5IzJ6LVSlI/lv+RsTi1s8rKq/EnJMLK60O3QcVddT816wvc/kG5Gzhkk2UJBbxlGEkXfldsWL1ZQP4IgKqNW1PgLI2yk5dqA1qjQL+5gN/KIaDRo1FNe9n5DZDL9iceqjM1u5kXNMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNV18p+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C385C4CEF1;
+	Mon, 18 Aug 2025 13:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526149;
-	bh=9ZgJvsKaVoqy3S0uTjnwONYurjj7B7ueIdheciTM04w=;
+	s=korg; t=1755522876;
+	bh=YLaWzliUs01LkrD8LTh9KwUnCjCNEEY5g7+PTPS2chY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+NGhLKrIiRFvUA2Zr+DVPldE2+pfEvTmYkSHGbd8LUgU/OvzCOJyLwmTqHrwxMcb
-	 r2frxH58KAgft2C/cIxWmG9cnWaFFM+5vnNXPoYXQNGo6dxaCwlEKXYnY34tSKsdaK
-	 F7A9rQEx4s42hWbFM8ItysKh1bvO90uHLkoC6TTM=
+	b=KNV18p+FDi80fpgztTNKYwJvAgJQEKRS0ta+Qj1brLTdxfNng/rMwg4tNsGvVluco
+	 8+yzHGpnKQ82TgDD7rhWGFZeWZxzBIna3mxfHeear0iXMF48TFUYIj3IXuzhk2y0or
+	 AmbzdpZNk8vzpSCBQIZAQTW/vr2rE5QexpBhydYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 472/570] ublk: check for unprivileged daemon on each I/O fetch
-Date: Mon, 18 Aug 2025 14:47:39 +0200
-Message-ID: <20250818124524.061576070@linuxfoundation.org>
+Subject: [PATCH 6.12 434/444] arm64: dts: ti: k3-j722s-evm: Fix USB gpio-hog level for Type-C
+Date: Mon, 18 Aug 2025 14:47:40 +0200
+Message-ID: <20250818124505.236415514@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Sander Mateos <csander@purestorage.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 5058a62875e1916e5133a1639f0207ea2148c0bc ]
+[ Upstream commit 65ba2a6e77e9e5c843a591055789050e77b5c65e ]
 
-Commit ab03a61c6614 ("ublk: have a per-io daemon instead of a per-queue
-daemon") allowed each ublk I/O to have an independent daemon task.
-However, nr_privileged_daemon is only computed based on whether the last
-I/O fetched in each ublk queue has an unprivileged daemon task.
-Fix this by checking whether every fetched I/O's daemon is privileged.
-Change nr_privileged_daemon from a count of queues to a boolean
-indicating whether any I/Os have an unprivileged daemon.
+According to the "GPIO Expander Map / Table" section of the J722S EVM
+Schematic within the Evaluation Module Design Files package [0], the
+GPIO Pin P05 located on the GPIO Expander 1 (I2C0/0x23) has to be pulled
+down to select the Type-C interface. Since commit under Fixes claims to
+enable the Type-C interface, update the property within "p05-hog" from
+"output-high" to "output-low", thereby switching from the Type-A
+interface to the Type-C interface.
 
-Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
-Fixes: ab03a61c6614 ("ublk: have a per-io daemon instead of a per-queue daemon")
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250808155216.296170-1-csander@purestorage.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[0]: https://www.ti.com/lit/zip/sprr495
+
+Cc: stable@vger.kernel.org
+Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20250623100657.4082031-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/ublk_drv.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 3e60558bf525..dabb468fa0b9 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -215,7 +215,7 @@ struct ublk_device {
+--- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+@@ -496,7 +496,7 @@
+ 			/* P05 - USB2.0_MUX_SEL */
+ 			gpio-hog;
+ 			gpios = <5 GPIO_ACTIVE_LOW>;
+-			output-high;
++			output-low;
+ 		};
  
- 	struct completion	completion;
- 	unsigned int		nr_queues_ready;
--	unsigned int		nr_privileged_daemon;
-+	bool 			unprivileged_daemons;
- 	struct mutex cancel_mutex;
- 	bool canceling;
- 	pid_t 	ublksrv_tgid;
-@@ -1532,7 +1532,7 @@ static void ublk_reset_ch_dev(struct ublk_device *ub)
- 	/* set to NULL, otherwise new tasks cannot mmap io_cmd_buf */
- 	ub->mm = NULL;
- 	ub->nr_queues_ready = 0;
--	ub->nr_privileged_daemon = 0;
-+	ub->unprivileged_daemons = false;
- 	ub->ublksrv_tgid = -1;
- }
- 
-@@ -1945,12 +1945,10 @@ static void ublk_mark_io_ready(struct ublk_device *ub, struct ublk_queue *ubq)
- 	__must_hold(&ub->mutex)
- {
- 	ubq->nr_io_ready++;
--	if (ublk_queue_ready(ubq)) {
-+	if (ublk_queue_ready(ubq))
- 		ub->nr_queues_ready++;
--
--		if (capable(CAP_SYS_ADMIN))
--			ub->nr_privileged_daemon++;
--	}
-+	if (!ub->unprivileged_daemons && !capable(CAP_SYS_ADMIN))
-+		ub->unprivileged_daemons = true;
- 
- 	if (ub->nr_queues_ready == ub->dev_info.nr_hw_queues) {
- 		/* now we are ready for handling ublk io request */
-@@ -2759,8 +2757,8 @@ static int ublk_ctrl_start_dev(struct ublk_device *ub,
- 
- 	ublk_apply_params(ub);
- 
--	/* don't probe partitions if any one ubq daemon is un-trusted */
--	if (ub->nr_privileged_daemon != ub->nr_queues_ready)
-+	/* don't probe partitions if any daemon task is un-trusted */
-+	if (ub->unprivileged_daemons)
- 		set_bit(GD_SUPPRESS_PART_SCAN, &disk->state);
- 
- 	ublk_get_device(ub);
--- 
-2.50.1
-
+ 		p01_hog: p01-hog {
 
 
 
