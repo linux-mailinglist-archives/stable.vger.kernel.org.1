@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA72B2A8FB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:13:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA83B2A634
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0CDB1BA79EF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:06:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D89B1685926
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1147F3469FD;
-	Mon, 18 Aug 2025 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE21335BD7;
+	Mon, 18 Aug 2025 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bM+lNbse"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUeFtkLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04D93469F4;
-	Mon, 18 Aug 2025 13:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98000335BB3;
+	Mon, 18 Aug 2025 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525449; cv=none; b=HV1sUL4Dr2KErUlVWDjYNg19nrKAKRhO6TADzsk8MWhSqfTgw1aMrnKqj4lzjm9m7ephoi26khYW38OjbT3GRMG8XSLgnOciOvIA7sStPcC05h+9uMtA/Elcw6XHpZuPqOPahib2V29eksAp4W+rht1pZFTyfyEu5DoCuPDXeiU=
+	t=1755523662; cv=none; b=jFWRiJK0hcI4JURrc4+3PKmPXp42jmDsqq1MT9uUXUUpqse/vP+FrUbqY5tpZqXfg4bWfgzTjk7LVEiK6t/Msp55z7C8ag8k+r5r+kOoEXIJkh7kAgjdeakHfg1E93mUTTWt4qX5nZH/rJhH5g4rN46dBA+J7cOj1cvvmj1Eflk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525449; c=relaxed/simple;
-	bh=GY1G0X4FJiJ39L01qwz6EZhCz6C5cgvF1QC+xbv2xSs=;
+	s=arc-20240116; t=1755523662; c=relaxed/simple;
+	bh=iN5JbU0gVcLXs/eAqDYgvriX5sc13ibbc579KDbZjvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+jU9Mg0f0p0rXCr9r+CkxSHv0J3/x+38qQJtf0gFJt4Pi3Qf8LDHsjzD6vVeUhr7/Z9x/FJuLawdszNxQO4E/OSpYJBTfzMcNpWtQSveUTrwShakQpcew5bCRJRpnp8ll6apeeypEBrO7n+2zeCjIjFhCJ9oGVxOqIsJ9cMKps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bM+lNbse; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F4FC4CEEB;
-	Mon, 18 Aug 2025 13:57:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T54fo466WVClBnb+AbuHoNKVhQ/AUC+869PRPkvDn7PC2UBSfuOGQGbB/LgkbqBnQQXDCjYxsr54SnS93bt51fAxbXgXHNkQJ1dFQthMiPoAGHdjMnQyoelC96dDolF7zan5VyzXV4U3TDobK0hFM9dnk7w2FjzIZpJnhsaZffs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUeFtkLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067ECC4CEEB;
+	Mon, 18 Aug 2025 13:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525449;
-	bh=GY1G0X4FJiJ39L01qwz6EZhCz6C5cgvF1QC+xbv2xSs=;
+	s=korg; t=1755523662;
+	bh=iN5JbU0gVcLXs/eAqDYgvriX5sc13ibbc579KDbZjvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bM+lNbsew0LBCKRBJu+8brtab/zkALE2HbRjrNW3X9b3nsJwYlakC+CD6042AtGT+
-	 yS1uw6Zjy+yYDaR7Xc8xAzOIuF5f6buVEhWkh9nraDeToFIQKvXpM2x8JYFx8I7jKB
-	 r3ZHhGC+QXQdZBo5bVsJTlqLa7N+CpxvWNnU1vD4=
+	b=CUeFtkLhtcY7BWP/6MCuIOMXSNywhCX1G4vNysmkJ1PQUj+/T1/tHGRee6I7HSviT
+	 m/yi8PKYDcDj+FUlhLGy2+YddIzqDQJwTKUfKYzp62b7q1t3czTCgb44U1EU0uEewa
+	 emrV5D7dfN+otN+mlLRVxnuO85MuQ3C+Z2XSZc3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Kamil=20Hor=C3=A1k=20-=202N?= <kamilh@axis.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 239/570] net: mctp: Prevent duplicate binds
+Subject: [PATCH 6.15 240/515] net: phy: bcm54811: PHY initialization
 Date: Mon, 18 Aug 2025 14:43:46 +0200
-Message-ID: <20250818124515.027612368@linuxfoundation.org>
+Message-ID: <20250818124507.626254756@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Kamil Horák - 2N <kamilh@axis.com>
 
-[ Upstream commit 3954502377ec05a1b37e2dc9bef0bacd4bbd71b2 ]
+[ Upstream commit 3117a11fff5af9e74f4946f07cb3ca083cbbdf4b ]
 
-Disallow bind() calls that have the same arguments as existing bound
-sockets.  Previously multiple sockets could bind() to the same
-type/local address, with an arbitrary socket receiving matched messages.
+Reset the bit 12 in PHY's LRE Control register upon initialization.
+According to the datasheet, this bit must be written to zero after
+every device reset.
 
-This is only a partial fix, a future commit will define precedence order
-for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
-together.
-
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Kamil Horák - 2N <kamilh@axis.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250708090140.61355-5-kamilh@axis.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/af_mctp.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/net/phy/broadcom.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 9b12ca97f412..9d5db3feedec 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -73,7 +73,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- 
- 	lock_sock(sk);
- 
--	/* TODO: allow rebind */
- 	if (sk_hashed(sk)) {
- 		rc = -EADDRINUSE;
- 		goto out_release;
-@@ -629,15 +628,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
- static int mctp_sk_hash(struct sock *sk)
+diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
+index 9b1de54fd483..f871f11d1921 100644
+--- a/drivers/net/phy/broadcom.c
++++ b/drivers/net/phy/broadcom.c
+@@ -655,7 +655,7 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
  {
- 	struct net *net = sock_net(sk);
-+	struct sock *existing;
-+	struct mctp_sock *msk;
-+	int rc;
-+
-+	msk = container_of(sk, struct mctp_sock, sk);
+ 	struct device_node *np = phydev->mdio.dev.of_node;
+ 	struct bcm54xx_phy_priv *priv = phydev->priv;
+-	int i, val, err;
++	int i, val, err, aneg;
  
- 	/* Bind lookup runs under RCU, remain live during that. */
- 	sock_set_flag(sk, SOCK_RCU_FREE);
+ 	for (i = 0; i < ARRAY_SIZE(bcm54811_linkmodes); i++)
+ 		linkmode_clear_bit(bcm54811_linkmodes[i], phydev->supported);
+@@ -676,9 +676,19 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
+ 		if (val < 0)
+ 			return val;
  
- 	mutex_lock(&net->mctp.bind_lock);
++		/* BCM54811 is not capable of LDS but the corresponding bit
++		 * in LRESR is set to 1 and marked "Ignore" in the datasheet.
++		 * So we must read the bcm54811 as unable to auto-negotiate
++		 * in BroadR-Reach mode.
++		 */
++		if (BRCM_PHY_MODEL(phydev) == PHY_ID_BCM54811)
++			aneg = 0;
++		else
++			aneg = val & LRESR_LDSABILITY;
 +
-+	/* Prevent duplicate binds. */
-+	sk_for_each(existing, &net->mctp.binds) {
-+		struct mctp_sock *mex =
-+			container_of(existing, struct mctp_sock, sk);
-+
-+		if (mex->bind_type == msk->bind_type &&
-+		    mex->bind_addr == msk->bind_addr &&
-+		    mex->bind_net == msk->bind_net) {
-+			rc = -EADDRINUSE;
-+			goto out;
-+		}
-+	}
-+
- 	sk_add_node_rcu(sk, &net->mctp.binds);
--	mutex_unlock(&net->mctp.bind_lock);
-+	rc = 0;
+ 		linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
+ 				 phydev->supported,
+-				 val & LRESR_LDSABILITY);
++				 aneg);
+ 		linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT1_Full_BIT,
+ 				 phydev->supported,
+ 				 val & LRESR_100_1PAIR);
+@@ -735,8 +745,15 @@ static int bcm54811_config_aneg(struct phy_device *phydev)
  
--	return 0;
-+out:
-+	mutex_unlock(&net->mctp.bind_lock);
-+	return rc;
- }
- 
- static void mctp_sk_unhash(struct sock *sk)
+ 	/* Aneg firstly. */
+ 	if (priv->brr_mode) {
+-		/* BCM54811 is only capable of autonegotiation in IEEE mode */
+-		phydev->autoneg = 0;
++		/* BCM54811 is only capable of autonegotiation in IEEE mode.
++		 * In BroadR-Reach mode, disable the Long Distance Signaling,
++		 * the BRR mode autoneg as supported in other Broadcom PHYs.
++		 * This bit is marked as "Reserved" and "Default 1, must be
++		 *  written to 0 after every device reset" in the datasheet.
++		 */
++		ret = phy_modify(phydev, MII_BCM54XX_LRECR, LRECR_LDSEN, 0);
++		if (ret < 0)
++			return ret;
+ 		ret = bcm_config_lre_aneg(phydev, false);
+ 	} else {
+ 		ret = genphy_config_aneg(phydev);
 -- 
 2.39.5
 
