@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-171214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F8BB2A76A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69ACCB2A5F5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F34D4E3637
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 312E0172A7D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1626C335BC6;
-	Mon, 18 Aug 2025 13:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1080431E0F8;
+	Mon, 18 Aug 2025 13:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqlObIUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gj5P6du8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE5E335BA3;
-	Mon, 18 Aug 2025 13:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EE431E115;
+	Mon, 18 Aug 2025 13:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525187; cv=none; b=gNaO7C9S3jpfvPlu9g8NlfVN8VK1sDvW8nwvDpbWGKLFHXu/ihzaMTPZP4AByBhRUGWwEj9jYCTOruUn9nDWX0Kq9RBHQEIfWVy5RR+ZztJoxTQTUPD0ztVlarANfmOIcOF4QLzUrxiA7bV81C8sPl+UMxXVtgzSAE127vxKXy8=
+	t=1755523512; cv=none; b=H2QsfOei+LKC87i2V+y+/uGDVKRAUE3WsfaYWA8r+cWUm0G78T8ror0O4qX93m1s2T+tbPamCg2q1X9YFDmi/+PqvLLuUzUXdGclzc8jK5/8TNyorTfFRSyZj0XZ1cogxBPPqRBZXTxkNkGdvNnvpdv6GUNXc13Ds2oyYq17GtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525187; c=relaxed/simple;
-	bh=Y/ZXRiTvniIpVl8biIJzOffmwQJVG/2oZBd2EEUTNQ8=;
+	s=arc-20240116; t=1755523512; c=relaxed/simple;
+	bh=3jPPzQQ8tKcnJStMw3L8T6sq/D6Ds2Vpv8oHHWp15kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=luaQWY5bZES8iHev47T3vdFq9O+vfAoAPVR5b09czgOb/5UN80xQVGCA4FFQptOa8MizkF9zVRZWB1C2eZyhqRNcRElNYF98QrRKM//O2Id02huJlSLhHycFwtJDWsc7X9+T+I7CAEDS3MdmA9X/9kzYpqnWD8c4hjpDYi7b/1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqlObIUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47832C4CEEB;
-	Mon, 18 Aug 2025 13:53:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lwLlfErXIxyFQIRt2KkDPSRjMuleW+NOMaWEnbybnMzD8k4rR6S81lgw+a618OYp0iHVINeJ/LQT9IQNUSaNtGEWq0g1bPJqQj5qL3xIdd9dUGOUsQd45OH4/khMQ42vIbEj2QJyzlK4NuFzEUaBLXqVxKoRk/RB2+ylM3/rXgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gj5P6du8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B688CC4CEF1;
+	Mon, 18 Aug 2025 13:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525187;
-	bh=Y/ZXRiTvniIpVl8biIJzOffmwQJVG/2oZBd2EEUTNQ8=;
+	s=korg; t=1755523512;
+	bh=3jPPzQQ8tKcnJStMw3L8T6sq/D6Ds2Vpv8oHHWp15kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqlObIUgu4gP8wYXqW/lo89QlrQknE1zULqEkJfQ4TGx1wlwfCx/nSLnnH4wOOCOX
-	 4ZLuyXpQI9tzJQ0sH9LIjH8cAKpM5A64WNJMf3gjCUJwrAQDJ5n/DAu6+MNuet91aH
-	 w2Vc+omYEIW5psoFQBdFEuImesDcrfGxbqB8YvYo=
+	b=Gj5P6du8qfnNzVH1ZjzXbs5PxsG/YnQvtuJb1oSueC0DSKNq5CwR8dk/EUP0NkC2D
+	 hSzDjqSvdza3g8kE++KSG1wKmi1VUYZseIebZsiUc1fOprtWLjZPPtc6dOPkbKS/pF
+	 POEjr22yZ3u+8ogEUDuT4UCv9isi/lcs69o3II3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 185/570] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
+Subject: [PATCH 6.15 186/515] iio: adc: ad7768-1: Ensure SYNC_IN pulse minimum timing requirement
 Date: Mon, 18 Aug 2025 14:42:52 +0200
-Message-ID: <20250818124512.939074250@linuxfoundation.org>
+Message-ID: <20250818124505.534540802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Jonathan Santos <Jonathan.Santos@analog.com>
 
-[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
+[ Upstream commit 7e54d932873d91a55d1b89b7389876d78aeeab32 ]
 
-We currently log parse failures for ELD data and some disconnection events
-as errors without rate limiting. These log messages can be triggered very
-frequently in some situations, especially ELD parsing when there is nothing
-connected to a HDMI port which will generate:
+The SYNC_IN pulse width must be at least 1.5 x Tmclk, corresponding to
+~2.5 µs at the lowest supported MCLK frequency. Add a 3 µs delay to
+ensure reliable synchronization timing even for the worst-case scenario.
 
-hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
-
-While there's doubtless work that could be done on reducing the number of
-connection notification callbacks it's possible these may be legitimately
-generated by poor quality physical connections so let's use rate limiting
-to mitigate the log spam for the parse errors and lower the severity for
-disconnect logging to debug level.
-
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/d3ee92a533cd1207cf5c5cc4d7bdbb5c6c267f68.1749063024.git.Jonathan.Santos@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
-index 1139a2754ca3..056d98154682 100644
---- a/sound/soc/codecs/hdac_hdmi.c
-+++ b/sound/soc/codecs/hdac_hdmi.c
-@@ -1232,7 +1232,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 						>> DRM_ELD_VER_SHIFT;
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 5e0be36af0c5..32063f54f364 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -202,6 +202,24 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
+ 	return spi_write(st->spi, st->data.d8, 2);
+ }
  
- 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
--		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: Unknown ELD version %d\n", ver);
- 		return -EINVAL;
- 	}
++static int ad7768_send_sync_pulse(struct ad7768_state *st)
++{
++	/*
++	 * The datasheet specifies a minimum SYNC_IN pulse width of 1.5 × Tmclk,
++	 * where Tmclk is the MCLK period. The supported MCLK frequencies range
++	 * from 0.6 MHz to 17 MHz, which corresponds to a minimum SYNC_IN pulse
++	 * width of approximately 2.5 µs in the worst-case scenario (0.6 MHz).
++	 *
++	 * Add a delay to ensure the pulse width is always sufficient to
++	 * trigger synchronization.
++	 */
++	gpiod_set_value_cansleep(st->gpio_sync_in, 1);
++	fsleep(3);
++	gpiod_set_value_cansleep(st->gpio_sync_in, 0);
++
++	return 0;
++}
++
+ static int ad7768_set_mode(struct ad7768_state *st,
+ 			   enum ad7768_conv_mode mode)
+ {
+@@ -289,10 +307,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
+ 		return ret;
  
-@@ -1240,7 +1241,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
+ 	/* A sync-in pulse is required every time the filter dec rate changes */
+-	gpiod_set_value(st->gpio_sync_in, 1);
+-	gpiod_set_value(st->gpio_sync_in, 0);
+-
+-	return 0;
++	return ad7768_send_sync_pulse(st);
+ }
  
- 	if (mnl > ELD_MAX_MNL) {
--		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: MNL Invalid %d\n", mnl);
- 		return -EINVAL;
- 	}
- 
-@@ -1299,8 +1301,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
- 
- 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
- 
--		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
--						__func__, pin->nid, port->id);
-+		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
-+			__func__, pin->nid, port->id);
- 
- 		/*
- 		 * PCMs are not registered during device probe, so don't
+ static int ad7768_set_freq(struct ad7768_state *st,
 -- 
 2.39.5
 
