@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CACB2AA64
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:31:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A15AB2A6A4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97211681F3A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0923F176EC9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E35350846;
-	Mon, 18 Aug 2025 14:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A28B261B9C;
+	Mon, 18 Aug 2025 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjGSWjx4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8VqEKgg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1059350843;
-	Mon, 18 Aug 2025 14:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EB3235C01;
+	Mon, 18 Aug 2025 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525879; cv=none; b=fQBkXKgBI95m9FtIEFV2PppsB9aPj3LtUSfmBE42Y/H/v/9C09rBOlKNPfdsib3cAaoSreeA16L1WAvdI2amMluobwfs8nHe7cREG5THfPu0Jfp3oYNkEO0KW8oZFL9TOEsgeBdXO6EQLtnc1gNgnnziCkE/BsszKny/VQ4gq1Y=
+	t=1755524129; cv=none; b=ir54zq4yZJkC62e5eYmNVJy8Ad8H3VnbpvvH0BkL9dhoYUEEJB3CARrIQx8+b919b3fD719M6/N11HicvCXz3OkEwCrJLHLqTZPN442L269eARYe84ikxEmMDU41Tlak61GN9QIO2s4HaUDdUpsvgFCqER937JUbVtg0x3MuuGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525879; c=relaxed/simple;
-	bh=dn6EIixy8iV2qMVI7r1/6jCnV7gt5spcBP34c+rNGJ8=;
+	s=arc-20240116; t=1755524129; c=relaxed/simple;
+	bh=V5fD5tce/8mLE6uFooP288AGo/b1MfPSaRuygRqHswo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8hY8TeJ/yT0+4hcjCuIt+HTNUc4YZcYyCe9exhZvHHKMRzP324O9JoLPbhTigdbhdJmeo2em+byk1mgrxry2ZJyKsGnnbA7JHRgzqH/it5Tke87PHJChVr2dMq1ulP1M1bXOGHQyA7To+Y06R6qknijMYzLS7sMiPKQNbqT0rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjGSWjx4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E8AC116C6;
-	Mon, 18 Aug 2025 14:04:38 +0000 (UTC)
+	 MIME-Version; b=qXMSsOCjWTF7AIEbj6zLdVzKNBo43zsW4zy5Fi+Ei+N3rG3qfeMS4NUOF9+P79P2m5pYH6eU+W2lJaf2kOikh/o9YxqEa1BmpA07m2Dt90aZhYuyJHh5+/HDd9tWPn079KMj7Vq4U9RkmqapxJZly7dwfXmC2hQHAXh7/p4GYcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8VqEKgg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC56C4CEEB;
+	Mon, 18 Aug 2025 13:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525879;
-	bh=dn6EIixy8iV2qMVI7r1/6jCnV7gt5spcBP34c+rNGJ8=;
+	s=korg; t=1755524129;
+	bh=V5fD5tce/8mLE6uFooP288AGo/b1MfPSaRuygRqHswo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjGSWjx4ARofhfBTiakmrVU5DUvYxWvTGlbax7i4HvC5Tv+5RL2OzACRCeIWDWF8c
-	 dESZz9Gm5PIh6eyOXH32WISnbzvVZQPDXl8LshNokzEqwAgIjr9G5xwpCkQRe0sJtE
-	 JcGGR7nD648fC7jdKHqvmXeWj1zP/Fg7QDYw+RJo=
+	b=i8VqEKggfsel1xGbF3q+3zz7y5Cs2Oa3/4VH3oTdpmIhgfh2AlLWi6qkPtHh00qHW
+	 UhN9PAcDWygVh3Md0wSLVMaH0mJq/Mdk8rdkr+E4U+Y88kMLqfFBo6Lft21ijhSpjn
+	 f3ws6PVj1Miuo91oTNA4iINKKAzTLV4ZS1khYe/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyan Fu <fuzy5@lenovo.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 376/570] watchdog: iTCO_wdt: Report error if timeout configuration fails
+Subject: [PATCH 6.15 377/515] media: tc358743: Increase FIFO trigger level to 374
 Date: Mon, 18 Aug 2025 14:46:03 +0200
-Message-ID: <20250818124520.340418145@linuxfoundation.org>
+Message-ID: <20250818124512.938540912@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyan Fu <fuzy5@lenovo.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 40efc43eb7ffb5a4e2f998c13b8cfb555e671b92 ]
+[ Upstream commit 86addd25314a1e77dbdcfddfeed0bab2f27da0e2 ]
 
-The driver probes with the invalid timeout value when
-'iTCO_wdt_set_timeout()' fails, as its return value is not checked. In
-this case, when executing "wdctl", we may get:
+The existing fixed value of 16 worked for UYVY 720P60 over
+2 lanes at 594MHz, or UYVY 1080P60 over 4 lanes. (RGB888
+1080P60 needs 6 lanes at 594MHz).
+It doesn't allow for lower resolutions to work as the FIFO
+underflows.
 
-Device:        /dev/watchdog0
-Timeout:       30 seconds
-Timeleft:      613 seconds
+374 is required for 1080P24 or 1080P30 UYVY over 2 lanes @
+972Mbit/s, but >374 means that the FIFO underflows on 1080P50
+UYVY over 2 lanes @ 972Mbit/s.
 
-The timeout value is the value of "heartbeat" or "WATCHDOG_TIMEOUT", and
-the timeleft value is calculated from the register value we actually read
-(0xffff) by masking with 0x3ff and converting ticks to seconds (* 6 / 10).
+Whilst it would be nice to compute it, the required information
+isn't published by Toshiba.
 
-Add error handling to return the failure code if 'iTCO_wdt_set_timeout()'
-fails, ensuring the driver probe fails and prevents invalid operation.
-
-Signed-off-by: Ziyan Fu <fuzy5@lenovo.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250704073518.7838-1-13281011316@163.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/iTCO_wdt.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/i2c/tc358743.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
-index 9ab769aa0244..4ab3405ef8e6 100644
---- a/drivers/watchdog/iTCO_wdt.c
-+++ b/drivers/watchdog/iTCO_wdt.c
-@@ -577,7 +577,11 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
- 	/* Check that the heartbeat value is within it's range;
- 	   if not reset to the default */
- 	if (iTCO_wdt_set_timeout(&p->wddev, heartbeat)) {
--		iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
-+		ret = iTCO_wdt_set_timeout(&p->wddev, WATCHDOG_TIMEOUT);
-+		if (ret != 0) {
-+			dev_err(dev, "Failed to set watchdog timeout (%d)\n", WATCHDOG_TIMEOUT);
-+			return ret;
-+		}
- 		dev_info(dev, "timeout value out of range, using %d\n",
- 			WATCHDOG_TIMEOUT);
- 		heartbeat = WATCHDOG_TIMEOUT;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index d4700d45c113..2c56832e0065 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -1979,8 +1979,19 @@ static int tc358743_probe_of(struct tc358743_state *state)
+ 	state->pdata.refclk_hz = clk_get_rate(refclk);
+ 	state->pdata.ddc5v_delay = DDC5V_DELAY_100_MS;
+ 	state->pdata.enable_hdcp = false;
+-	/* A FIFO level of 16 should be enough for 2-lane 720p60 at 594 MHz. */
+-	state->pdata.fifo_level = 16;
++	/*
++	 * Ideally the FIFO trigger level should be set based on the input and
++	 * output data rates, but the calculations required are buried in
++	 * Toshiba's register settings spreadsheet.
++	 * A value of 16 works with a 594Mbps data rate for 720p60 (using 2
++	 * lanes) and 1080p60 (using 4 lanes), but fails when the data rate
++	 * is increased, or a lower pixel clock is used that result in CSI
++	 * reading out faster than the data is arriving.
++	 *
++	 * A value of 374 works with both those modes at 594Mbps, and with most
++	 * modes on 972Mbps.
++	 */
++	state->pdata.fifo_level = 374;
+ 	/*
+ 	 * The PLL input clock is obtained by dividing refclk by pll_prd.
+ 	 * It must be between 6 MHz and 40 MHz, lower frequency is better.
 -- 
 2.39.5
 
