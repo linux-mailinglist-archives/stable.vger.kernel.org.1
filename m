@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2DDB2A357
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:08:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F09CB2A873
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7EF16174A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAE2B1BA01F7
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681B531CA59;
-	Mon, 18 Aug 2025 12:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50975335BAA;
+	Mon, 18 Aug 2025 13:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rl06iTFO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4Zjih+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231B131CA4A;
-	Mon, 18 Aug 2025 12:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2687335BAF;
+	Mon, 18 Aug 2025 13:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521861; cv=none; b=SF8vSfELqBTN8V5o/NV7pVdi/V1cJqRbtrnWEvCPCGK/nP2OiadEG4IyTtQQj16YAkuOUVQi+C2jLkf9n79vG+zpglGsovzD29hYGMS+T4ltpb5dIercM71aJhFrCI/G6XDXNuJrA8cpiBiA3y7L+xIYXhdK2Og+/y9JSGM2Fp4=
+	t=1755525175; cv=none; b=V8KBYISPQ2oMROY6609ozxSbek1TYr42pg3ezwUI4tDAvKMGquPWO4hiETvPa22dTpAG0PozgLZJEo0M8ya8mG9I4xqdPF4/sm9jxW4tFXacdC1y1Qa1K6OaVYUE/bCOB1b5S2CJn2DRakYlZ7cJKzTj7xGGHgMkg/40DWii7Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521861; c=relaxed/simple;
-	bh=CTujG0ad01nHDEO2/BgQ8vuhX2KFLLusEIOrXyeje9E=;
+	s=arc-20240116; t=1755525175; c=relaxed/simple;
+	bh=yrOI9y0Y1edkT3LDPA/lDKDRJyE5tk/PPh0CujrUU9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgZJo/XFJNvRSwVjgAKKyNAJJJUOLHr2K9Yej/Rv5YDaAKXYI6Ht89hxjLj9XNOKJQIgkeBE2EyE4G+TsBWaGi3qSDrtcJJahrVne4HcBckgsYmpeR2ja6bSLHGNikboYbYXgmJ1XdIQbDRf1LlSW0ASp2R8DBwgOVZforplCQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rl06iTFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9395DC116B1;
-	Mon, 18 Aug 2025 12:57:40 +0000 (UTC)
+	 MIME-Version; b=kjL640KNPF3kM64mN2/PACM1ORPPvO9L+ZmfyfmB0Hpa1zvyyJeotTZde8p9hcZ12SuvzyXgSMcwVaHhMaIjy2gnDkvXho8PE3gQewnDKs4d0qvtaKNk8Iy0cU3vJ/kNCWgDsOMD4CTk4UErp/i7DNSYDQmuX5LUNIsu2pe5BaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4Zjih+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A081C4CEEB;
+	Mon, 18 Aug 2025 13:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521861;
-	bh=CTujG0ad01nHDEO2/BgQ8vuhX2KFLLusEIOrXyeje9E=;
+	s=korg; t=1755525174;
+	bh=yrOI9y0Y1edkT3LDPA/lDKDRJyE5tk/PPh0CujrUU9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rl06iTFOoUPOHNzERi9LpjDnG+g96o5a4PJ2Gc0Qm7Ht+RIxz7EpjbuxK1JhxQBOf
-	 4OEh516fN17ohSxm42qjERTejgitGol2eu8y8Ca2gMUEl3Juv62WnhbNXc5goYLDNT
-	 7d4ILTCf0uv8IZklN8n3DkZlIvuIBf3CJtd1ZjWo=
+	b=s4Zjih+WDHecCjrlzrJ5gux8+5nTl9+w8dfHyzsKoypCAOZuWvHXqud3yUxYfCbAA
+	 Hj4yaxYLKhHmhPINa32b+fO6+zoodEVFeqlzdTTGQFyQqJws4FEYDCOHflbBXMDLuh
+	 WPB2NjLQ/39f2+r+0QrU8nBBKd3KndgmYj1mv0Dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 143/444] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
+Subject: [PATCH 6.16 182/570] ALSA: hda: Disable jack polling at shutdown
 Date: Mon, 18 Aug 2025 14:42:49 +0200
-Message-ID: <20250818124454.277955096@linuxfoundation.org>
+Message-ID: <20250818124512.819925419@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
+[ Upstream commit 1adcbdf54f76e1004bdf71df4eb1888c26e7ad06 ]
 
-We currently log parse failures for ELD data and some disconnection events
-as errors without rate limiting. These log messages can be triggered very
-frequently in some situations, especially ELD parsing when there is nothing
-connected to a HDMI port which will generate:
+Although the jack polling is canceled at shutdown in
+snd_hda_codec_shutdown(), it might be still re-triggered when the work
+is being processed at cancel_delayed_work_sync() call.  This may
+result in the unexpected hardware access that should have been already
+disabled.
 
-hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
+For assuring to stop the jack polling, clear codec->jackpoll_interval
+at shutdown.
 
-While there's doubtless work that could be done on reducing the number of
-connection notification callbacks it's possible these may be legitimately
-generated by poor quality physical connections so let's use rate limiting
-to mitigate the log spam for the parse errors and lower the severity for
-disconnect logging to debug level.
-
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Closes: https://lore.kernel.org/20250619020844.2974160-4-joakim.zhang@cixtech.com
+Tested-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250623131437.10670-2-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ sound/pci/hda/hda_codec.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
-index e1a7f0b0c0f3..33c7ba842eee 100644
---- a/sound/soc/codecs/hdac_hdmi.c
-+++ b/sound/soc/codecs/hdac_hdmi.c
-@@ -1233,7 +1233,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 						>> DRM_ELD_VER_SHIFT;
+diff --git a/sound/pci/hda/hda_codec.c b/sound/pci/hda/hda_codec.c
+index d205f13653bb..0398df0f159a 100644
+--- a/sound/pci/hda/hda_codec.c
++++ b/sound/pci/hda/hda_codec.c
+@@ -3006,6 +3006,7 @@ void snd_hda_codec_shutdown(struct hda_codec *codec)
+ 	if (!codec->core.registered)
+ 		return;
  
- 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
--		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: Unknown ELD version %d\n", ver);
- 		return -EINVAL;
- 	}
- 
-@@ -1241,7 +1242,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
- 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
- 
- 	if (mnl > ELD_MAX_MNL) {
--		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
-+		dev_err_ratelimited(&hdev->dev,
-+				    "HDMI: MNL Invalid %d\n", mnl);
- 		return -EINVAL;
- 	}
- 
-@@ -1300,8 +1302,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
- 
- 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
- 
--		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
--						__func__, pin->nid, port->id);
-+		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
-+			__func__, pin->nid, port->id);
- 
- 		/*
- 		 * PCMs are not registered during device probe, so don't
++	codec->jackpoll_interval = 0; /* don't poll any longer */
+ 	cancel_delayed_work_sync(&codec->jackpoll_work);
+ 	list_for_each_entry(cpcm, &codec->pcm_list_head, list)
+ 		snd_pcm_suspend_all(cpcm->pcm);
 -- 
 2.39.5
 
