@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-170835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3BBB2A67F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 766C0B2A38F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE56B17911C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:37:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 147AB6261DF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321FB322A0E;
-	Mon, 18 Aug 2025 13:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC6731CA61;
+	Mon, 18 Aug 2025 13:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auUOF0HN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EthgPfrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BBA322A08;
-	Mon, 18 Aug 2025 13:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFF730DD2C;
+	Mon, 18 Aug 2025 13:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523951; cv=none; b=hg5RUf4f4EogLw9nTuIQNrz8HjnkhrsLp2LmhSf2iPvZPwrMLlvQfLqbqwxiVWRvFs5Y4dZFNyceb/ICYrUgZ1+YinDp4SreEecMxQ5q+EHIi7W+HwpUhxxKc2KvnJCO0wzCqNpmy2VSqtahKtdZB4OgJ9+DPY1Xb6HT9X/9FG0=
+	t=1755522321; cv=none; b=fnzbmQgsilJTIxPCXRrBokSoGdm86qizcmnU0qbyhEtnFmusSGPSE19QKK2v8z/nnj89ivDjPwUPDcvAfpatJL7dDjw/b3Fph0i1Tky0oIzjNsEUseMJlSCyQUVnu489NcwFtSgeBRD9VcJgDS5Y9uVz53N9AtCCHNrLGSSoGgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523951; c=relaxed/simple;
-	bh=1TuK6x0rAd/hkXPzGz/30NEcffSPNXePTuhjVl7xraU=;
+	s=arc-20240116; t=1755522321; c=relaxed/simple;
+	bh=bUEIX4LfBnxM/ZEonUAAT+j/aJWnOMYd2JeaPsoUiL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QI0n0qE7X2SO4c5wVb+w9BF/qDkUka61e2lUdYUF3HCz2ztpWsSEmTLaACJumjfUCSDBVcWbeWP48+vIAUPt6ECyTUGH7cqZ4Lwi6DM+oaW4qHUZQwQmfz+ElWG3J7OKwhF95wg8BrEqQc+UnemtdLmpbAnQT3JYAM3/vC+zQPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auUOF0HN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B17CC4CEEB;
-	Mon, 18 Aug 2025 13:32:30 +0000 (UTC)
+	 MIME-Version; b=Pa9CumYhfptVXj1XzWpoK6BMmVzTXDEum/LNs9ZXVYSCtdMeaSeQM0DI7acyc7Dg8P7QTDpnoEC+aSdsJiVvZM9xc1mOxF4ynDZi2MWnibHU947gGpzNjY5SVK6wQw/Z1zLjKzgpkyLZWxHiPs9mTMbO0jiD6qoshxdE5fko9rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EthgPfrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BDBC19421;
+	Mon, 18 Aug 2025 13:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523950;
-	bh=1TuK6x0rAd/hkXPzGz/30NEcffSPNXePTuhjVl7xraU=;
+	s=korg; t=1755522321;
+	bh=bUEIX4LfBnxM/ZEonUAAT+j/aJWnOMYd2JeaPsoUiL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auUOF0HNBUqlXrA5YGT/221+DtPyxKXy747rTIhfda2iTRIDjsUcaw+Dx16Y72bbl
-	 gGz8cZrxVpGIuGclzmRYYhUDIE3iGbXU2ErfeD8mi7ya9OPGKRx2BlcDX0m4lFMIzX
-	 ejaWW8CLJkM8btw3OSjbO53wcySuFgoHZvynFBio=
+	b=EthgPfrtNHQsZDrhZINFKjUYWlrfoT8KUj5SHgobA7PgTKryd/kiG7xmxm35fE/He
+	 unFoBY9pDBypvWGikjt6jT5mY1Z7apth1GxIdOtX+OcS/h8LEo+1kAJ/oOUF1x++Jk
+	 MrPVwwGTzKMfeKXHHo3D2OjYuSSq6bB4I9gt8M3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Thierry Reding <treding@nvidia.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 321/515] drm/amd/display: Update DMCUB loading sequence for DCN3.5
+Subject: [PATCH 6.12 281/444] clk: tegra: periph: Fix error handling and resolve unsigned compare warning
 Date: Mon, 18 Aug 2025 14:45:07 +0200
-Message-ID: <20250818124510.790824625@linuxfoundation.org>
+Message-ID: <20250818124459.503148948@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit d42b2331e158fa6bcdc89e4c8c470dc5da20be1f ]
+[ Upstream commit 2dc2ca9000eea2eb749f658196204cb84d4306f7 ]
 
-[Why]
-New sequence from HW for reset and firmware reloading has been
-provided that aims to stabilize the reload sequence in the case the
-firmware is hung or has outstanding requests.
+./drivers/clk/tegra/clk-periph.c:59:5-9: WARNING:
+	Unsigned expression compared with zero: rate < 0
 
-[How]
-Update the sequence to remove the DMUIF reset and the redundant
-writes in the release.
+The unsigned long 'rate' variable caused:
+- Incorrect handling of negative errors
+- Compile warning: "Unsigned expression compared with zero"
 
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix by changing to long type and adding req->rate cast.
+
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://lore.kernel.org/r/79c7f01e29876c612e90d6d0157fb1572ca8b3fb.1752046270.git.xiaopei01@kylinos.cn
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dmub/src/dmub_dcn35.c    | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/clk/tegra/clk-periph.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
-index 72a0f078cd1a..2884977a3dd2 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn35.c
-@@ -92,19 +92,15 @@ void dmub_dcn35_reset(struct dmub_srv *dmub)
- 	uint32_t in_reset, is_enabled, scratch, i, pwait_mode;
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+index 0626650a7011..c9fc52a36fce 100644
+--- a/drivers/clk/tegra/clk-periph.c
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -51,7 +51,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
+ 	struct tegra_clk_periph *periph = to_clk_periph(hw);
+ 	const struct clk_ops *div_ops = periph->div_ops;
+ 	struct clk_hw *div_hw = &periph->divider.hw;
+-	unsigned long rate;
++	long rate;
  
- 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
-+	REG_GET(DMCUB_CNTL, DMCUB_ENABLE, &is_enabled);
+ 	__clk_hw_set_clk(div_hw, hw);
  
--	if (in_reset == 0) {
-+	if (in_reset == 0 && is_enabled != 0) {
- 		cmd.bits.status = 1;
- 		cmd.bits.command_code = DMUB_GPINT__STOP_FW;
- 		cmd.bits.param = 0;
+@@ -59,7 +59,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
+ 	if (rate < 0)
+ 		return rate;
  
- 		dmub->hw_funcs.set_gpint(dmub, cmd);
- 
--		/**
--		 * Timeout covers both the ACK and the wait
--		 * for remaining work to finish.
--		 */
--
- 		for (i = 0; i < timeout; ++i) {
- 			if (dmub->hw_funcs.is_gpint_acked(dmub, cmd))
- 				break;
-@@ -130,11 +126,9 @@ void dmub_dcn35_reset(struct dmub_srv *dmub)
- 		/* Force reset in case we timed out, DMCUB is likely hung. */
- 	}
- 
--	REG_GET(DMCUB_CNTL, DMCUB_ENABLE, &is_enabled);
--
- 	if (is_enabled) {
- 		REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
--		REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
-+		udelay(1);
- 		REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
- 	}
- 
-@@ -160,11 +154,7 @@ void dmub_dcn35_reset_release(struct dmub_srv *dmub)
- 		     LONO_SOCCLK_GATE_DISABLE, 1,
- 		     LONO_DMCUBCLK_GATE_DISABLE, 1);
- 
--	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
--	udelay(1);
- 	REG_UPDATE_2(DMCUB_CNTL, DMCUB_ENABLE, 1, DMCUB_TRACEPORT_EN, 1);
--	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
--	udelay(1);
- 	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 0);
- 	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 0);
+-	req->rate = rate;
++	req->rate = (unsigned long)rate;
+ 	return 0;
  }
+ 
 -- 
 2.39.5
 
