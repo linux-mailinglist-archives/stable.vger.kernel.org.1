@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-171079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A137B2A6C5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:47:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9ECB2A574
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 71B3F4E3A44
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D5C628043
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDCB2C235D;
-	Mon, 18 Aug 2025 13:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8632C235C;
+	Mon, 18 Aug 2025 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmF+y0g6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYk3KZzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2313090C5;
-	Mon, 18 Aug 2025 13:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09855334733;
+	Mon, 18 Aug 2025 13:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524748; cv=none; b=jKd9qXhKVUqN0gEPGiKOqQLhgqNcs3fGASW56x8cI7YuB6uYeErBgi2W1yghVBkDNElzArhUH0ZT3yY4WNM9stfBhVVhbbEgahBi6itvSWU4AJn7bRH2I75jemKFs/7G8k+uzC0/eLD2TLPKiIRIfmhLVM3wPcMlQCKuToZUUro=
+	t=1755523140; cv=none; b=tfcTp7qzVkeypLkGXE8tFikon62png232fwvqMs4RCgyaOfddwB4Ev7Dfx9YgmXb4x/juXMSHP/Q77485l9CFyThH84o/KKj+47znkJYrRpRabuPBE4C2H83nDz9MKGUzLX/0bYYZe3SoUVoA0MvjCxBNdHWmoIEaJsyD5Q3kDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524748; c=relaxed/simple;
-	bh=t0GHapbK5dS2q1niyIvCFURZCgmLdmn/9Vj+7sY3a6I=;
+	s=arc-20240116; t=1755523140; c=relaxed/simple;
+	bh=/CJwod2//hK1/021M/r9nN/mSpYXMpHDY0MsHal4yKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdNvy6yk0UoslQyhZIU82dET5I/3HtZRJkGXLNcMZy0qqiJ/ao3vpidmz0Vv37laSM6l/EhFYk6uQ+4gF2GAQ2Xhk3qdndDGD66URacZCEO0EtM99YtBEN3M76bnav/rytZeZWoTnPuhsVf1m6kmkPfS0Ptfe+UB9+AHC7Vb+mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmF+y0g6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4BEC4CEEB;
-	Mon, 18 Aug 2025 13:45:47 +0000 (UTC)
+	 MIME-Version; b=iV976Vx0RAfhLboq472Pm0jbjA+74cWq5a7D8SY77HfEryu4zGmu+VlWGaJvvr8ZrJJnM1K1PxHokSwbFPrhaxg51D7K6xMgl3G2pTUsezyL1Jtae0bdb41oSBdjJW4QT20L+N1Pr+TBm6rDlCf6ZldMoKwVXwRetOBJRHOl/0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYk3KZzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE0EC4CEEB;
+	Mon, 18 Aug 2025 13:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524748;
-	bh=t0GHapbK5dS2q1niyIvCFURZCgmLdmn/9Vj+7sY3a6I=;
+	s=korg; t=1755523139;
+	bh=/CJwod2//hK1/021M/r9nN/mSpYXMpHDY0MsHal4yKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmF+y0g6U8IaKAt8RJwDlyrKLvp4ZGRjJWwT38TsxAzcVoKH5RXnZ9Y9h6d8ySLFd
-	 42tTHmMXTvkz0kicK2JhP0BEgZNfyvu9We/9ADUOGdtVIoqwWLsKdWNjEv/UYtQi8e
-	 AZnklGtJsPLomchCVh2++DDQKHVniioPwtj1KEyA=
+	b=pYk3KZzKW3K7+AFHSGmJgmJORRsUcOo/XM8xTlYyeReILr1D+FBLacV71KxGSlaoO
+	 Fcj4lKw3TPbjfa6Z3hUMhTnQdXjXkrBk6hnqGwfDq+r8/XnhMwwNjvRMdb0P1Xuq4G
+	 P67hIfTnJ/REdXiaa+XCK9fwLEV+XsU0WG9YMP78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.16 050/570] ACPI: processor: perflib: Fix initial _PPC limit application
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Huang Ying <ying.huang@linux.alibaba.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 051/515] mm/memory-tier: fix abstract distance calculation overflow
 Date: Mon, 18 Aug 2025 14:40:37 +0200
-Message-ID: <20250818124507.741654000@linuxfoundation.org>
+Message-ID: <20250818124500.384756167@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-commit d33bd88ac0ebb49e7f7c8f29a8c7ee9eae85d765 upstream.
+commit cce35103135c7ffc7bebc32ebfc74fe1f2c3cb5d upstream.
 
-If the BIOS sets a _PPC frequency limit upfront, it will fail to take
-effect due to a call ordering issue.  Namely, freq_qos_update_request()
-is called before freq_qos_add_request() for the given request causing
-the constraint update to be ignored.  The call sequence in question is
-as follows:
+In mt_perf_to_adistance(), the calculation of abstract distance (adist)
+involves multiplying several int values including
+MEMTIER_ADISTANCE_DRAM.
 
-cpufreq_policy_online()
-  acpi_cpufreq_cpu_init()
-    acpi_processor_register_performance()
-      acpi_processor_get_performance_info()
-        acpi_processor_get_platform_limit()
-         freq_qos_update_request(&perflib_req) <- inactive QoS request
-  blocking_notifier_call_chain(&cpufreq_policy_notifier_list,
-                               CPUFREQ_CREATE_POLICY)
-    acpi_processor_notifier()
-      acpi_processor_ppc_init()
-        freq_qos_add_request(&perflib_req) <- QoS request activation
+*adist = MEMTIER_ADISTANCE_DRAM *
+		(perf->read_latency + perf->write_latency) /
+		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
+		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
+		(perf->read_bandwidth + perf->write_bandwidth);
 
-Address this by adding an acpi_processor_get_platform_limit() call
-to acpi_processor_ppc_init(), after the perflib_req activation via
-freq_qos_add_request(), which causes the initial _PPC limit to be
-picked up as appropriate.  However, also ensure that the _PPC limit
-will not be picked up in the cases when the cpufreq driver does not
-call acpi_processor_register_performance() by adding a pr->performance
-check to the related_cpus loop in acpi_processor_ppc_init().
+Since these values can be large, the multiplication may exceed the
+maximum value of an int (INT_MAX) and overflow (Our platform did),
+leading to an incorrect adist.
 
-Fixes: d15ce412737a ("ACPI: cpufreq: Switch to QoS requests instead of cpufreq notifier")
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://patch.msgid.link/20250721032606.3459369-1-lijiayi@kylinos.cn
-[ rjw: Consolidate pr-related checks in acpi_processor_ppc_init() ]
-[ rjw: Subject and changelog adjustments ]
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 2d8b39a62a5d ACPI: processor: Avoid NULL pointer dereferences at init time
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: 3000ce3c52f8 cpufreq: Use per-policy frequency QoS
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+: a1bb46c36ce3 ACPI: processor: Add QoS requests for all CPUs
-Cc: 5.4+ <stable@vger.kernel.org> # 5.4+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+User-visible impact:
+The memory tiering subsystem will misinterpret slow memory (like CXL)
+as faster than DRAM, causing inappropriate demotion of pages from
+CXL (slow memory) to DRAM (fast memory).
+
+For example, we will see the following demotion chains from the dmesg, where
+Node0,1 are DRAM, and Node2,3 are CXL node:
+ Demotion targets for Node 0: null
+ Demotion targets for Node 1: null
+ Demotion targets for Node 2: preferred: 0-1, fallback: 0-1
+ Demotion targets for Node 3: preferred: 0-1, fallback: 0-1
+
+Change MEMTIER_ADISTANCE_DRAM to be a long constant by writing it with
+the 'L' suffix.  This prevents the overflow because the multiplication
+will then be done in the long type which has a larger range.
+
+Link: https://lkml.kernel.org/r/20250611023439.2845785-1-lizhijian@fujitsu.com
+Link: https://lkml.kernel.org/r/20250610062751.2365436-1-lizhijian@fujitsu.com
+Fixes: 3718c02dbd4c ("acpi, hmat: calculate abstract distance with HMAT")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_perflib.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ include/linux/memory-tiers.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/processor_perflib.c
-+++ b/drivers/acpi/processor_perflib.c
-@@ -173,11 +173,14 @@ void acpi_processor_ppc_init(struct cpuf
- {
- 	unsigned int cpu;
+--- a/include/linux/memory-tiers.h
++++ b/include/linux/memory-tiers.h
+@@ -18,7 +18,7 @@
+  * adistance value (slightly faster) than default DRAM adistance to be part of
+  * the same memory tier.
+  */
+-#define MEMTIER_ADISTANCE_DRAM	((4 * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
++#define MEMTIER_ADISTANCE_DRAM	((4L * MEMTIER_CHUNK_SIZE) + (MEMTIER_CHUNK_SIZE >> 1))
  
-+	if (ignore_ppc == 1)
-+		return;
-+
- 	for_each_cpu(cpu, policy->related_cpus) {
- 		struct acpi_processor *pr = per_cpu(processors, cpu);
- 		int ret;
- 
--		if (!pr)
-+		if (!pr || !pr->performance)
- 			continue;
- 
- 		/*
-@@ -193,6 +196,11 @@ void acpi_processor_ppc_init(struct cpuf
- 		if (ret < 0)
- 			pr_err("Failed to add freq constraint for CPU%d (%d)\n",
- 			       cpu, ret);
-+
-+		ret = acpi_processor_get_platform_limit(pr);
-+		if (ret)
-+			pr_err("Failed to update freq constraint for CPU%d (%d)\n",
-+			       cpu, ret);
- 	}
- }
- 
+ struct memory_tier;
+ struct memory_dev_type {
 
 
 
