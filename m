@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-170161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC8FB2A291
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:58:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9520CB2A824
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3105621738
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:56:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227481BA25D0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449323218C2;
-	Mon, 18 Aug 2025 12:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A05335BCB;
+	Mon, 18 Aug 2025 13:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Htf/EgM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tk5kNfWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0060D310640;
-	Mon, 18 Aug 2025 12:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB59F335BA7;
+	Mon, 18 Aug 2025 13:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521727; cv=none; b=CzRtqKfTuk5BvMJPDzYsIYtfAm2hxNdshrzH3R72rsbeGX3RoF+JK5szsf5ZcEkmrD23b5+YvzcaiJVrinqEOT3OnHdOJ/0H/TsOFvturUlNUTwBi9eNBMjd9zFcKj0jpFilBaxTMAH6rhlA0Ea5hGx3SBQesJsoPMcBSjewz60=
+	t=1755525048; cv=none; b=VAzXSMHpyzIkf4mmv6jKnBYiQ+WTX4j9eGVQM2B3P51rlZdj6O13CAe3ZhcuuZAP/CI1XQF/DS+yvz3Hu+GRlKKfOxsjPN9JKEIUHGZdmKaG5sM9/FKLus/E2Q5dh2r0wXmKnn9tsZAkrTX0cxmgZniAgvIOJrZ82kQ04rAqeUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521727; c=relaxed/simple;
-	bh=A5GcRvSQIZn+344FMYLZlGCQOg5yPwlfsbJONMMAszw=;
+	s=arc-20240116; t=1755525048; c=relaxed/simple;
+	bh=5EeRcbDGoeYqCCpK6qcQZgcaHs1KcR7xWiVMfBH89vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZBzgj7Si7gPhRFc7H1an9Rd+Fr30ljmhxfgdOkus4KTNwVn8zrizzuE5R46b+tc9fIGpjX5wqZTCrq7LVDLEH9R7FSPWd0Z1V7xdAvbGvorUiCc4Z/cuvLQuDBCnFF5NZwVDxIuccXg+DeC/VlnffOYZGMQqHHvUIOX2cDGo5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Htf/EgM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186DDC4CEEB;
-	Mon, 18 Aug 2025 12:55:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YM/c9KruuORUkBYFeR2GCicPZFhb6EVZcZ2pEo5rRsjM+fRM17acUa4yNLJ++quVLc0HGVsNnuWnbt3FQswCune9DnEZ251CZlK6CbCEMEy5REMUr3YxhLV13Eo+iu8oVDT/jagQTMzhI0mfEqSM4cu4pz71SrElKHykjIC7XPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tk5kNfWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2964C4CEEB;
+	Mon, 18 Aug 2025 13:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521726;
-	bh=A5GcRvSQIZn+344FMYLZlGCQOg5yPwlfsbJONMMAszw=;
+	s=korg; t=1755525048;
+	bh=5EeRcbDGoeYqCCpK6qcQZgcaHs1KcR7xWiVMfBH89vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Htf/EgM71t/+THrI4Ii/x5oqDp04hY1WqUkwDxLM68GZqj/cVvT6lHyfq794z4l+H
-	 K5Ktth71Z9ykTJUSE/HCBW2pBwYdDaKCBf3+erAYenIvE5XODaVuLCFVLpf9SE+NCl
-	 spHxw8pRaSWiQLk2reF6yEBf9ZK3x+yLpy7DX1Ss=
+	b=tk5kNfWwGCj7V7yfQPKlZ4/kRcmw8Cnp7w3nRXDRXIuKZQqgrdvh+CA24clHn5zau
+	 pKleT2VdA6+nbsoAUonxZIwm5uIy9GIpdzNUE+bboIK1pjSgyaibFQ27Ao2Sc4x2Z1
+	 m+vWkD/P0fCqOmDK9u24wrByHdIJEmHBm/HGyAtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <maulik.shah@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/444] soc: qcom: rpmh-rsc: Add RSC version 4 support
+Subject: [PATCH 6.16 143/570] usb: typec: tcpm/tcpci_maxim: fix irq wake usage
 Date: Mon, 18 Aug 2025 14:42:10 +0200
-Message-ID: <20250818124452.840138073@linuxfoundation.org>
+Message-ID: <20250818124511.333255665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit 84684c57c9cd47b86c883a7170dd68222d97ef13 ]
+[ Upstream commit 31611223fb34a3e9320cdfc4f4395072a13ea78e ]
 
-Register offsets for v3 and v4 versions are backward compatible. Assign v3
-offsets for v4 and all higher versions to avoid end up using v2 offsets.
+This driver calls enable_irq_wake() during probe() unconditionally, and
+never issues the required corresponding disable_irq_wake() to disable
+hardware interrupt wakeup signals.
 
-Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250623-rsc_v4-v1-1-275b27bc5e3c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Additionally, whether or not a device should wake-up the system is
+meant to be a policy decision based on sysfs (.../power/wakeup) in the
+first place.
+
+Update the driver to use the standard approach to enable/disable IRQ
+wake during the suspend/resume callbacks. This solves both issues
+described above.
+
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://lore.kernel.org/r/20250707-max77759-irq-wake-v1-1-d367f633e4bc@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/rpmh-rsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpci_maxim_core.c | 46 +++++++++++++++--------
+ 1 file changed, 30 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index de86009ecd91..641f29a98cbd 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -1075,7 +1075,7 @@ static int rpmh_rsc_probe(struct platform_device *pdev)
- 	drv->ver.minor = rsc_id & (MINOR_VER_MASK << MINOR_VER_SHIFT);
- 	drv->ver.minor >>= MINOR_VER_SHIFT;
+diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+index b5a5ed40faea..ff3604be79da 100644
+--- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
++++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+@@ -421,21 +421,6 @@ static irqreturn_t max_tcpci_isr(int irq, void *dev_id)
+ 	return IRQ_WAKE_THREAD;
+ }
  
--	if (drv->ver.major == 3)
-+	if (drv->ver.major >= 3)
- 		drv->regs = rpmh_rsc_reg_offset_ver_3_0;
- 	else
- 		drv->regs = rpmh_rsc_reg_offset_ver_2_7;
+-static int max_tcpci_init_alert(struct max_tcpci_chip *chip, struct i2c_client *client)
+-{
+-	int ret;
+-
+-	ret = devm_request_threaded_irq(chip->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
+-					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
+-					chip);
+-
+-	if (ret < 0)
+-		return ret;
+-
+-	enable_irq_wake(client->irq);
+-	return 0;
+-}
+-
+ static int max_tcpci_start_toggling(struct tcpci *tcpci, struct tcpci_data *tdata,
+ 				    enum typec_cc_status cc)
+ {
+@@ -532,7 +517,9 @@ static int max_tcpci_probe(struct i2c_client *client)
+ 
+ 	chip->port = tcpci_get_tcpm_port(chip->tcpci);
+ 
+-	ret = max_tcpci_init_alert(chip, client);
++	ret = devm_request_threaded_irq(&client->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
++					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
++					chip);
+ 	if (ret < 0)
+ 		return dev_err_probe(&client->dev, ret,
+ 				     "IRQ initialization failed\n");
+@@ -544,6 +531,32 @@ static int max_tcpci_probe(struct i2c_client *client)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PM_SLEEP
++static int max_tcpci_resume(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	int ret = 0;
++
++	if (client->irq && device_may_wakeup(dev))
++		ret = disable_irq_wake(client->irq);
++
++	return ret;
++}
++
++static int max_tcpci_suspend(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	int ret = 0;
++
++	if (client->irq && device_may_wakeup(dev))
++		ret = enable_irq_wake(client->irq);
++
++	return ret;
++}
++#endif /* CONFIG_PM_SLEEP */
++
++static SIMPLE_DEV_PM_OPS(max_tcpci_pm_ops, max_tcpci_suspend, max_tcpci_resume);
++
+ static const struct i2c_device_id max_tcpci_id[] = {
+ 	{ "maxtcpc" },
+ 	{ }
+@@ -562,6 +575,7 @@ static struct i2c_driver max_tcpci_i2c_driver = {
+ 	.driver = {
+ 		.name = "maxtcpc",
+ 		.of_match_table = of_match_ptr(max_tcpci_of_match),
++		.pm = &max_tcpci_pm_ops,
+ 	},
+ 	.probe = max_tcpci_probe,
+ 	.id_table = max_tcpci_id,
 -- 
 2.39.5
 
