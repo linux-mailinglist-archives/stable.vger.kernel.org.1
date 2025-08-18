@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17593B2A9D6
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:24:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29DB9B2A726
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594D31BC1F54
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:18:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EA5B1B27580
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686EF322A12;
-	Mon, 18 Aug 2025 14:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECF3335BD7;
+	Mon, 18 Aug 2025 13:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIbtm4EQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me5H3xmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2551031E115;
-	Mon, 18 Aug 2025 14:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C67335BCF;
+	Mon, 18 Aug 2025 13:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526073; cv=none; b=nqzTT1Hp0rUQbefrbs6e9Pc8sNfPY3I5w3jlTnqRQ6Z2KvsM1AGAtURey70dTUWBZqLEx2cqzvBH4siTHARBtzm49JsLUEzSe2i+kUk8YoRQTHMTXUUg1vnkC0Bp9BxDjZYfvEtlr+5/lchLvQHrhUf/4l3La1B0Umo9ockObGQ=
+	t=1755524267; cv=none; b=NVlbyyke9Cyh+0dOND2u0udSyhuDXkMGW88QZdYnpAnqrgBSnKNB5deawlZYXrAdTl2cTBo2dORLtt74GPxrrW88pzw/fPdacYBrjDTQvtJyu9ZjLj2QabNEz2Me8dUGU5HtJz0LfYRhE1mjVcrZBWXxXq5vDC98b+UE58NgyQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526073; c=relaxed/simple;
-	bh=t0+H45UstwZlYFBSJ0+xHnWZjSw9ocq/8s+3lAbnV/w=;
+	s=arc-20240116; t=1755524267; c=relaxed/simple;
+	bh=O1mJkTu456w+PEHeDmEzLo+eF1sUyKdQdhU6uOQhKRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucxM+FjAKlfZ1I591sEoFdNrTZHzmtSH6LsBNgWx9Oqo0izLxpHu99TvEqFIcg7WNFKx5lBwVJwQ2PE1f+lZneIprixee3BAVn2srgGKk2q4wPegodVdsDvPe0lrxdvR+6KBrXBIJjfhk3NJzEtI83CLTBrnhqWtbaYsCMndWhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIbtm4EQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882B6C116D0;
-	Mon, 18 Aug 2025 14:07:52 +0000 (UTC)
+	 MIME-Version; b=e1q3JaJfLF/Sp3UmSkhdjpZF86+CScB0SIc8PbD3OyMwBBz7ID94SM2TxalLr/73QjUnvCpMfkmYThvTLBmQE7iakJexUT2xJP8M9vCqZuIYnSCe/s31qK8G6HQNmGcbopfPQywi6V6EL1k3q2bJRAWo7v4Dez8/dGNr19W3EDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me5H3xmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3A9C4CEEB;
+	Mon, 18 Aug 2025 13:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526073;
-	bh=t0+H45UstwZlYFBSJ0+xHnWZjSw9ocq/8s+3lAbnV/w=;
+	s=korg; t=1755524266;
+	bh=O1mJkTu456w+PEHeDmEzLo+eF1sUyKdQdhU6uOQhKRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIbtm4EQ62JlEDsCHf4pffEdtaWlaLEesW0yee9431i1AsFg/PEhXKzmaZBXzD+AY
-	 znfm8BEQhXM3sestRCyhmMfZQhNlluyyqxPjj/PhzJvWD525NgBf+ncoCb3/WRFMCf
-	 zYfpdC1jqn+VsxXGpaSAbtxT/qgFvdNP9iRh3jnc=
+	b=Me5H3xmL+uZhB0oEw/gN+jdRDZEA8fDarINTaQ2BPokyp4jI7duq1cZvR/vfLpLoS
+	 odPaBi7cr/3YxnZ4uKfw+lKFD0pqAPqFCaCTUylAH4H74xyrTSpgDKdyEHyuhD+oCJ
+	 OsAmYG/qQDb6mDE851DrP1Owth0Bd7Vwkjlnl1d4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Calvin Owens <calvin@wbinvd.org>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 418/570] crypto: ccp - Add missing bootloader info reg for pspv6
+Subject: [PATCH 6.15 419/515] tools/power turbostat: Fix build with musl
 Date: Mon, 18 Aug 2025 14:46:45 +0200
-Message-ID: <20250818124521.946576664@linuxfoundation.org>
+Message-ID: <20250818124514.560230916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,36 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Calvin Owens <calvin@wbinvd.org>
 
-[ Upstream commit aaeff14688d0254b39731d9bb303c79bfd610f7d ]
+[ Upstream commit 6ea0ec1b958a84aff9f03fb0ae4613a4d5bed3ea ]
 
-The bootloader info reg for pspv6 is the same as pspv4 and pspv5.
+turbostat.c: In function 'parse_int_file':
+    turbostat.c:5567:19: error: 'PATH_MAX' undeclared (first use in this function)
+     5567 |         char path[PATH_MAX];
+          |                   ^~~~~~~~
 
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+    turbostat.c: In function 'probe_graphics':
+    turbostat.c:6787:19: error: 'PATH_MAX' undeclared (first use in this function)
+     6787 |         char path[PATH_MAX];
+          |                   ^~~~~~~~
+
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Reviewed-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sp-pci.c | 1 +
+ tools/power/x86/turbostat/turbostat.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
-index e1be2072d680..e7bb803912a6 100644
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -453,6 +453,7 @@ static const struct psp_vdata pspv6 = {
- 	.cmdresp_reg		= 0x10944,	/* C2PMSG_17 */
- 	.cmdbuff_addr_lo_reg	= 0x10948,	/* C2PMSG_18 */
- 	.cmdbuff_addr_hi_reg	= 0x1094c,	/* C2PMSG_19 */
-+	.bootloader_info_reg	= 0x109ec,	/* C2PMSG_59 */
- 	.feature_reg            = 0x109fc,	/* C2PMSG_63 */
- 	.inten_reg              = 0x10510,	/* P2CMSG_INTEN */
- 	.intsts_reg             = 0x10514,	/* P2CMSG_INTSTS */
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 3e97b69b1dfb..2c77ec8df67d 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -67,6 +67,7 @@
+ #include <stdbool.h>
+ #include <assert.h>
+ #include <linux/kernel.h>
++#include <limits.h>
+ 
+ #define UNUSED(x) (void)(x)
+ 
 -- 
 2.39.5
 
