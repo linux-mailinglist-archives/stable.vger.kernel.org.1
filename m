@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-170613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7D1B2A59A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:36:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F9AB2A7F8
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9687A684317
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:27:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AF1E1B63C9F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248AB33A03B;
-	Mon, 18 Aug 2025 13:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFF3335BCB;
+	Mon, 18 Aug 2025 13:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu4kU0L5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtzhkUEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D517933A037;
-	Mon, 18 Aug 2025 13:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5791335BC1;
+	Mon, 18 Aug 2025 13:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523202; cv=none; b=QQAADlay5HHCEixcEoPlAjsF1FK86L+Q4bDR8f7RY0H3synmfy8hBYEhig5iHc7XRNbGtB9rXXs0nuE9v4B78NAdztYS+DaQ2+BKyl4LRsmRJ/9vdh1cfy+y7Bh/VWfz36QR/JhSiyhJPtBLBMkXEhKZDpoCJipvnXhfhTh5744=
+	t=1755525015; cv=none; b=tnRBQhaf6sxGNrFllF16cI9QR6mVBsCDI0hBaQO41+eIuPWZ1isdQtOzDxPQm/+nUOH+Dnjo8YXBA9MBPxej2VXC4j38EGLvsYQvdLSO30jNYlMTZsGEHY/16H6wLzL7FRb8O0rBi7mEZb3I2QhNGVT5llCGAAWpmHbNxeWoA9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523202; c=relaxed/simple;
-	bh=0U88I+qHDzwuIEEfBKcU51EZzNma8ad8F9nX3PClBwE=;
+	s=arc-20240116; t=1755525015; c=relaxed/simple;
+	bh=yRTT4jR2ZNnsB2h5yrETfw7me3LaomgCBMYBAYBp9No=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tV0P9mgB18cxDXkyMEzLWf+0eN6lihxE4f0pX4Xx7Il9ib8s757t1TkdnGN0qZzTwvWQIEJYatmNvA4VN+aGi3ZUPcLRE/RNDBVUjVCwzIMs6AYnPFvSLu5QiKaMmVHPSFamsYB2J5s7lP97nyW8je4X6zlNsmIJ1rUqQwiqs/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu4kU0L5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4278FC4CEF1;
-	Mon, 18 Aug 2025 13:20:02 +0000 (UTC)
+	 MIME-Version; b=DdqL35aK/zXtg9+1JaaNgaNdrPmYkBzQv1Uoai26CN0sCSYOnnWFybU9v5XFInhpmlXj61inx+Ib0hlsEcdPd/8Lyg1NT/RTCLqQORLQslgJ2OdDG17hUqh2L2uCay7aKySfVzzqwVi0sTK6OwvVgWZY9pkGbhM7On9ELjvxfKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtzhkUEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6885AC4CEF1;
+	Mon, 18 Aug 2025 13:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523202;
-	bh=0U88I+qHDzwuIEEfBKcU51EZzNma8ad8F9nX3PClBwE=;
+	s=korg; t=1755525014;
+	bh=yRTT4jR2ZNnsB2h5yrETfw7me3LaomgCBMYBAYBp9No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qu4kU0L56Jv2pl5tm+EnUixy0EQ//5jKqn1mwO23SpdYXZ5uiL4PdQgsClCV3ZRyT
-	 0yXbENCgk5sLBNWb4bljkdGHpQOk+vBJa8TgIxrYb4ag7oAoHq8uxP6fam0zpKZv8A
-	 rGHJbwA3ffiCbgX3owiqawF47dNzRDCEJiLSsFGM=
+	b=xtzhkUEjeR/erdlodjYmM++U0BYmkcDF+IgtahiV64suEQ4W7damZhcGWWTWw6tb0
+	 VYyQW9aAMPKoXn2lprefESZ7Ttlskqb0uDJUOUjppNC77qj8jNPG+PCUIRvo20IRwd
+	 x/EEkJXaqWRmCZv28gM6ON5a2yFRJtuH5xUb+EqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 101/515] ata: ahci: Disable DIPM if host lacks support
-Date: Mon, 18 Aug 2025 14:41:27 +0200
-Message-ID: <20250818124502.260887731@linuxfoundation.org>
+Subject: [PATCH 6.16 101/570] dm-stripe: limit chunk_sectors to the stripe size
+Date: Mon, 18 Aug 2025 14:41:28 +0200
+Message-ID: <20250818124509.702782717@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit f7870e8d345cdabfb94bcbdcba6a07e050f8705e ]
+[ Upstream commit 5fb9d4341b782a80eefa0dc1664d131ac3c8885d ]
 
-The AHCI specification version 1.3.1 section 8.3.1.4 (Software
-Requirements and Precedence) states that:
+Same as done for raid0, set chunk_sectors limit to appropriately set the
+atomic write size limit.
 
-If CAP.SSC or CAP.PSC is cleared to ‘0’, software should disable
-device-initiated power management by issuing the appropriate SET
-FEATURES command to the device.
+Setting chunk_sectors limit in this way overrides the stacked limit
+already calculated based on the bottom device limits. This is ok, as
+when any bios are sent to the bottom devices, the block layer will still
+respect the bottom device chunk_sectors.
 
-To satisfy this constraint and force ata_dev_configure to disable the
-device DIPM feature, modify ahci_update_initial_lpm_policy() to set the
-ATA_FLAG_NO_DIPM flag on ports that have a host with either the
-ATA_HOST_NO_PART flag set or the ATA_HOST_NO_SSC flag set.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de.>
-Link: https://lore.kernel.org/r/20250701125321.69496-7-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20250711105258.3135198-6-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/md/dm-stripe.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index f52ae776d990..f0c4e225172d 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1784,6 +1784,13 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
- 		return;
- 	}
+diff --git a/drivers/md/dm-stripe.c b/drivers/md/dm-stripe.c
+index a7dc04bd55e5..5bbbdf8fc1bd 100644
+--- a/drivers/md/dm-stripe.c
++++ b/drivers/md/dm-stripe.c
+@@ -458,6 +458,7 @@ static void stripe_io_hints(struct dm_target *ti,
+ 	struct stripe_c *sc = ti->private;
+ 	unsigned int chunk_size = sc->chunk_size << SECTOR_SHIFT;
  
-+	/* If no Partial or no Slumber, we cannot support DIPM. */
-+	if ((ap->host->flags & ATA_HOST_NO_PART) ||
-+	    (ap->host->flags & ATA_HOST_NO_SSC)) {
-+		ata_port_dbg(ap, "Host does not support DIPM\n");
-+		ap->flags |= ATA_FLAG_NO_DIPM;
-+	}
-+
- 	/* If no LPM states are supported by the HBA, do not bother with LPM */
- 	if ((ap->host->flags & ATA_HOST_NO_PART) &&
- 	    (ap->host->flags & ATA_HOST_NO_SSC) &&
++	limits->chunk_sectors = sc->chunk_size;
+ 	limits->io_min = chunk_size;
+ 	limits->io_opt = chunk_size * sc->stripes;
+ }
 -- 
 2.39.5
 
