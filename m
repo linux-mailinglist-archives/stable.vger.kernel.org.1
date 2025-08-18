@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-170538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44587B2A4F9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:28:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D5AB2A50D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F25B868077C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 955D15673DE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E019343D9C;
-	Mon, 18 Aug 2025 13:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4F2321F51;
+	Mon, 18 Aug 2025 13:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaHgP6tr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqApMmaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A494343D8C;
-	Mon, 18 Aug 2025 13:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2724D321F3F;
+	Mon, 18 Aug 2025 13:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522964; cv=none; b=DDC5oH/Oi8M6kZ1815IsqeUNis4woINLnZbpspjJfN3e5B40lNjxhxCHCaPFdGuxvy4EW5qd/w3JBI11q81E2C0eWzZByd9tqiqhuPq8sdPasoJAkF8K7rv/cLA3crIzx9oYVZ6fNzDrZ2WvHQNBwIKnzoMQMJ3a5hHVdAmwZhA=
+	t=1755522999; cv=none; b=hxLnAs9U0KKUm7zneG7k9cW3/mIznR70z/lsR7ZNAiE9FTZkFn3eEg+ZMjstRecVlDI6egFiri5ZLXZqifjDoUQQ17cQaQzK/XhUhqRLmP7EMn50eAOBXshq4lDAuyrA5YHMYiZFeJ/B8jfzIQpuUcnb9XIw0gzdGuYuItL+MXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522964; c=relaxed/simple;
-	bh=8HFpql/9+w2lzgKNexXTL7whGAWmAJpCnyT/l8B/Wz8=;
+	s=arc-20240116; t=1755522999; c=relaxed/simple;
+	bh=3B6yFXalwFkNmRGDSoq4pMTw9KdLSKYabEqh+egKYTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V68zc26aBS/3hYW+ArI7qlaDZXPGkE3cVJMy3gLExNZSpl2XesjFp5JIxSfbdAOUBiE9SXIHpUf3C+/T+vMGQ2pGtoRgKn/YYF+MTsZO4BjVovzEQs2fb8uzUZcE+nowWedOU36MK0XYFTkd5DaF2Wa2dw7TgnELtlbEiuLRNlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaHgP6tr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8266BC4CEEB;
-	Mon, 18 Aug 2025 13:16:03 +0000 (UTC)
+	 MIME-Version; b=ONaGWUgjFjzLt3lTkebDIKrBRvzPbDu0Lj0laDQS1GOOFMIp2DbFIUoel2K4qcWacs3GIXRa/8VwmjkEYYe07urOu5ca7VRFmGxfHXwgk1hUMBUl8LNDefsMdvm3rzpl88QL5u1MCHTnR7zb0S/1QfL7ATWKYiAQc1K0PBudscg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqApMmaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3721C4CEEB;
+	Mon, 18 Aug 2025 13:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522963;
-	bh=8HFpql/9+w2lzgKNexXTL7whGAWmAJpCnyT/l8B/Wz8=;
+	s=korg; t=1755522999;
+	bh=3B6yFXalwFkNmRGDSoq4pMTw9KdLSKYabEqh+egKYTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaHgP6tr4MLjynJ/KSTwkWujnfCxJN55xrtPn87OoQe0rS8Du69iBgc6j4YQCiFfP
-	 ArY3pokeGCXdPAiMyj0HiEnStUS5PeMbpV6QQRwcx5IXF4mtWCuKGRClCncqOpDph5
-	 W3eVsIdXqzjMnPSwezNixaZHuTJ3gFYH8gPcAmUY=
+	b=rqApMmaO0r6WIDhq9GCWEycs7uJJ854xoGflhW8A1H+mhbjWLCOoDtJwBOKXHc+12
+	 uM5MEPecVpcDdlcooxjf7379VXrcah1NhjlyMAb+rYMxiQpkFdToDeZjhyO8PGkWaL
+	 MeErn16KYxuNlqS9tOHUWN5o66XYepgln5Hp3tRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Mommer <harald.mommer@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.15 011/515] gpio: virtio: Fix config space reading.
-Date: Mon, 18 Aug 2025 14:39:57 +0200
-Message-ID: <20250818124458.759538788@linuxfoundation.org>
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.15 012/515] arm64: dts: ti: k3-j722s-evm: Fix USB gpio-hog level for Type-C
+Date: Mon, 18 Aug 2025 14:39:58 +0200
+Message-ID: <20250818124458.795979023@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
 References: <20250818124458.334548733@linuxfoundation.org>
@@ -66,53 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Harald Mommer <harald.mommer@oss.qualcomm.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 4740e1e2f320061c2f0dbadc0dd3dfb58df986d5 upstream.
+commit 65ba2a6e77e9e5c843a591055789050e77b5c65e upstream.
 
-Quote from the virtio specification chapter 4.2.2.2:
+According to the "GPIO Expander Map / Table" section of the J722S EVM
+Schematic within the Evaluation Module Design Files package [0], the
+GPIO Pin P05 located on the GPIO Expander 1 (I2C0/0x23) has to be pulled
+down to select the Type-C interface. Since commit under Fixes claims to
+enable the Type-C interface, update the property within "p05-hog" from
+"output-high" to "output-low", thereby switching from the Type-A
+interface to the Type-C interface.
 
-"For the device-specific configuration space, the driver MUST use 8 bit
-wide accesses for 8 bit wide fields, 16 bit wide and aligned accesses
-for 16 bit wide fields and 32 bit wide and aligned accesses for 32 and
-64 bit wide fields."
+[0]: https://www.ti.com/lit/zip/sprr495
 
-Signed-off-by: Harald Mommer <harald.mommer@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Fixes: 3a29355a22c0 ("gpio: Add virtio-gpio driver")
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://lore.kernel.org/r/20250724143718.5442-2-harald.mommer@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 485705df5d5f ("arm64: dts: ti: k3-j722s: Enable PCIe and USB support on J722S-EVM")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20250623100657.4082031-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-virtio.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j722s-evm.dts |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-virtio.c
-+++ b/drivers/gpio/gpio-virtio.c
-@@ -526,7 +526,6 @@ static const char **virtio_gpio_get_name
+--- a/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j722s-evm.dts
+@@ -598,7 +598,7 @@
+ 			/* P05 - USB2.0_MUX_SEL */
+ 			gpio-hog;
+ 			gpios = <5 GPIO_ACTIVE_LOW>;
+-			output-high;
++			output-low;
+ 		};
  
- static int virtio_gpio_probe(struct virtio_device *vdev)
- {
--	struct virtio_gpio_config config;
- 	struct device *dev = &vdev->dev;
- 	struct virtio_gpio *vgpio;
- 	struct irq_chip *gpio_irq_chip;
-@@ -539,9 +538,11 @@ static int virtio_gpio_probe(struct virt
- 		return -ENOMEM;
- 
- 	/* Read configuration */
--	virtio_cread_bytes(vdev, 0, &config, sizeof(config));
--	gpio_names_size = le32_to_cpu(config.gpio_names_size);
--	ngpio = le16_to_cpu(config.ngpio);
-+	gpio_names_size =
-+		virtio_cread32(vdev, offsetof(struct virtio_gpio_config,
-+					      gpio_names_size));
-+	ngpio =  virtio_cread16(vdev, offsetof(struct virtio_gpio_config,
-+					       ngpio));
- 	if (!ngpio) {
- 		dev_err(dev, "Number of GPIOs can't be zero\n");
- 		return -EINVAL;
+ 		p01_hog: p01-hog {
 
 
 
