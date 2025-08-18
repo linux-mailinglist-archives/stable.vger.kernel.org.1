@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A88B2A887
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC54B2A363
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 319CD7B7C4F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:04:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0309B1B25F13
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A999E346A0B;
-	Mon, 18 Aug 2025 13:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B56E31A055;
+	Mon, 18 Aug 2025 13:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5To0e18"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkAZDkVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACF13469F4;
-	Mon, 18 Aug 2025 13:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490DE1F462D;
+	Mon, 18 Aug 2025 13:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525459; cv=none; b=gE8OpKF1HoKF9xJbZuwtWCDZWsIxWpyUYEoy8Vw2UIsIeVrxsBdm7N90Cx7XVQdhlKJZ+c1iYLqPsENZMrCVc7REbgxm1mHuCmI9QmZ8bM+/OEftNwzW9frLSuHHa9GFkoEUEq05HwffnkgFfiq2MX28GGCGz63RK5Gxg4rkfnQ=
+	t=1755522143; cv=none; b=Vju6MOvl1sRZJFcQxgG/3sgMjPdxqAhE0mYmqZmAGkbLTFvZ7WagEAqJLarM6AjRWi4qFlDXyWkwNTwqwqDrkhm4VT3TbKUZFfS19CzVjdpM4UVZ+kKDyqVo5JpzcBH9RuxKfTkuw2cSyjBxUSfif3EsTLw5ElhFH/R6bCQPjWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525459; c=relaxed/simple;
-	bh=bAQnjD3O7VkdbalIPmlnYgtYshvZmruIoRZfx+vyHog=;
+	s=arc-20240116; t=1755522143; c=relaxed/simple;
+	bh=fWyefhSZHgPqDg3ygr+o1tqx7WGaIDpy67mzagh0rME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptYeF7gH+sk38Dzwaa+sP26tCjiV2cDmR/220V00QK8NHXqR28Mj4pd/ti14Jw5D1aGgqIbVsjfPtejbC8P7v9IEzK12dDSSEMHi0h6WXEQtm70YZyc0gOUe11upwiOLXfj4Y8CvvUFPzCRsvAeFqrQiUS22Hm3xwOYyvAqvSc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5To0e18; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A50C4CEEB;
-	Mon, 18 Aug 2025 13:57:38 +0000 (UTC)
+	 MIME-Version; b=UAZxws47M6SH0WMUY7SaZiXthV4+5IWSJrIi/o/jBwxW6iH4mJ5nLOg8P4TeWubtu9L1j66+iuB6TZVul0E1hogeqI3nwmTF4x77COE7OibtY1sZIV5PoiN5Q/mECQVZdMPeXJ7u8QXw3eombNVJUHTvsbTZQQ6uctgZgX1OgvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkAZDkVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7170C4CEEB;
+	Mon, 18 Aug 2025 13:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525459;
-	bh=bAQnjD3O7VkdbalIPmlnYgtYshvZmruIoRZfx+vyHog=;
+	s=korg; t=1755522143;
+	bh=fWyefhSZHgPqDg3ygr+o1tqx7WGaIDpy67mzagh0rME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5To0e18ixsS2CQcmG7sH2nQef6rhwdqBrDhiBGkZ4Lh7ZRhoQ3eFTzz1h8lrwCSq
-	 5ShBrWgWqt33YtMIB/9UPjRtjMFDtsVcM+hnREPoIWFvgSiot4XheYR9Xt2YmYudfp
-	 exM8N1DAyReH2+MLyESAOLjSfNxCtGg3Cc1BD4Io=
+	b=gkAZDkVX5E4hRYNvp4L8PSwnHNUXm5ZCxZqrXliCKA4nV1ota8+GVqfmdYTtgACIX
+	 b+6oQg8UeVHZBRzgITCtNCAWvBOXRhSA+Fk2TCvhmy1tE4HZkOZPsyI0ijWB6yS2xG
+	 eK9ANqeV6oqN44H6GQmO45Kio0UTW6B6MpA8/Ol8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Nathan Lynch <nathan.lynch@amd.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 268/570] wifi: mt76: mt7996: Fix mlink lookup in mt7996_tx_prepare_skb
+Subject: [PATCH 6.12 229/444] lib: packing: Include necessary headers
 Date: Mon, 18 Aug 2025 14:44:15 +0200
-Message-ID: <20250818124516.173722644@linuxfoundation.org>
+Message-ID: <20250818124457.429062123@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Nathan Lynch <nathan.lynch@amd.com>
 
-[ Upstream commit 59ea7af6f9ce218b86f9f46520819247c3a5f97b ]
+[ Upstream commit 8bd0af3154b2206ce19f8b1410339f7a2a56d0c3 ]
 
-Use proper link_id in mt7996_tx_prepare_skb routine for mlink lookup.
+packing.h uses ARRAY_SIZE(), BUILD_BUG_ON_MSG(), min(), max(), and
+sizeof_field() without including the headers where they are defined,
+potentially causing build failures.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250704-mt7996-mlo-fixes-v1-5-356456c73f43@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fix this in packing.h and sort the result.
+
+Signed-off-by: Nathan Lynch <nathan.lynch@amd.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250624-packing-includes-v1-1-c23c81fab508@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/packing.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 92148518f6a5..37b21ad828b9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1084,9 +1084,9 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 		if (wcid->offchannel)
- 			mlink = rcu_dereference(mvif->mt76.offchannel_link);
- 		if (!mlink)
--			mlink = &mvif->deflink.mt76;
-+			mlink = rcu_dereference(mvif->mt76.link[wcid->link_id]);
+diff --git a/include/linux/packing.h b/include/linux/packing.h
+index 8d6571feb95d..60117401c7ee 100644
+--- a/include/linux/packing.h
++++ b/include/linux/packing.h
+@@ -5,8 +5,12 @@
+ #ifndef _LINUX_PACKING_H
+ #define _LINUX_PACKING_H
  
--		txp->fw.bss_idx = mlink->idx;
-+		txp->fw.bss_idx = mlink ? mlink->idx : mvif->deflink.mt76.idx;
- 	}
+-#include <linux/types.h>
++#include <linux/array_size.h>
+ #include <linux/bitops.h>
++#include <linux/build_bug.h>
++#include <linux/minmax.h>
++#include <linux/stddef.h>
++#include <linux/types.h>
  
- 	txp->fw.token = cpu_to_le16(id);
+ #define QUIRK_MSB_ON_THE_RIGHT	BIT(0)
+ #define QUIRK_LITTLE_ENDIAN	BIT(1)
 -- 
 2.39.5
 
