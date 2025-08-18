@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE26B2A5DE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:38:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B5BB2A89D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC2858315B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177EA1B667A4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBE232145A;
-	Mon, 18 Aug 2025 13:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87DDD335BAF;
+	Mon, 18 Aug 2025 13:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHuWhe+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5A/7578"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DC42135CE;
-	Mon, 18 Aug 2025 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44473335BC1;
+	Mon, 18 Aug 2025 13:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523453; cv=none; b=U9USMRIMPk5GCo2sxzQbAxzvOJ8AsqeDBUKm/brZZaG+nKVEKV/832XFMk9WWvgE9TiZzrplnh1uWTQEHTt3pSqmjgwqLiKDSoB07iFkPJgaxBegUMpALrA6jw96yDgTkGVUBP4UFLLTYKVxtKcqerLNW6HpoNkS5/IQxVJ7OcU=
+	t=1755525255; cv=none; b=iQ4dFjY0iSBgor9fSPKkn/MIUuuwXAVEyBdb3k56aHXQdbEU2iUvewTyYbv5BC0evmzk6EkNoEtTmtdsbq8Skp/E2HWrxIHVPtaoSlVB9cHCpyfIkn20wBndPFEb/uuiKcBH+dRkTj99LK49w20Yn55LXj2cH1B5PdK6wRUdKHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523453; c=relaxed/simple;
-	bh=Ur1GPGPUUFptq29bIkqrIMJ4f2dY0n+Ymgt20vREVDw=;
+	s=arc-20240116; t=1755525255; c=relaxed/simple;
+	bh=db4yYUMWHkHmgx/Q6E9NBup9omtm/P1J82lKITws3pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKWBrFMLLYO7JiweClk60xs/760D+eDFqpfP0Zuv5rbLOuEGutOzkQ5IMHavh0rMsZre3PtN4/3D5iEbY8OVPkjphd4znMIVwlDCpcM+dt0l1/d7uG2j5ffbYlF6KmWBfj/6BxWOvGMveeYPDPbmECvGT3nxAODgiCSjvsv1Xy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHuWhe+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72128C4CEEB;
-	Mon, 18 Aug 2025 13:24:12 +0000 (UTC)
+	 MIME-Version; b=g2IfsFbFaTvZFq6QSuj5Nl3agwDLn7o5Bkex7Stn84pVL4U67/eNKmtMjJs56yDHrkX4JYf7YQywkn3VZQegYdZYXzErXC2PFdFYwjkvNF/3v+hse+NLfL+Q/2O9BggLvnldEnBf9ZgB+Ok2FAj5rsX/WoaDKIk8TgNM+V0pzFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5A/7578; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5972C4CEEB;
+	Mon, 18 Aug 2025 13:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523452;
-	bh=Ur1GPGPUUFptq29bIkqrIMJ4f2dY0n+Ymgt20vREVDw=;
+	s=korg; t=1755525255;
+	bh=db4yYUMWHkHmgx/Q6E9NBup9omtm/P1J82lKITws3pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHuWhe+Npi9E6MpcrwLUNnW820S8Z5v7X5+ZZUbeJ9eLmNy40Zte5puJCGbxQAO90
-	 ZLwMmCoDieLtsd6x57J9oRx8p4UrgB24g8PL3HZifGrt9hai57KhF/EHmkiQ9TzddC
-	 WVeypEChIkmjXHTZLWCQCeReHXEwXJnTTZ3fjVes=
+	b=W5A/7578pRQJhuZ1e1yOdGIIv9UjHZ17I+G1X1UApqJB575gUWtXpRhUIIYusKGWH
+	 /HiI3ocJRDMbMIUP0196gjZ3HU/YvEMdYCg512/tgKUlYfcd1379VydI/l+HNcrwT0
+	 PirL5iKxxBNzQhiWVLZZ6/W4rl9/1Qst1ZiW52C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Michalec <tmichalec@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 175/515] usb: typec: intel_pmc_mux: Defer probe if SCU IPC isnt present
+Subject: [PATCH 6.16 174/570] ASoC: SDCA: Add flag for unused IRQs
 Date: Mon, 18 Aug 2025 14:42:41 +0200
-Message-ID: <20250818124505.099319096@linuxfoundation.org>
+Message-ID: <20250818124512.500285261@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Michalec <tmichalec@google.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit df9a825f330e76c72d1985bc9bdc4b8981e3d15f ]
+[ Upstream commit 775f5729b47d8737f4f98e0141f61b3358245398 ]
 
-If pmc_usb_probe is called before SCU IPC is registered, pmc_usb_probe
-will fail.
+Zero is a valid SDCA IRQ interrupt position so add a special value to
+indicate that the IRQ is not used.
 
-Return -EPROBE_DEFER when pmc_usb_probe doesn't get SCU IPC device, so
-the probe function can be called again after SCU IPC is initialized.
-
-Signed-off-by: Tomasz Michalec <tmichalec@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250610154058.1859812-1-tmichalec@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Link: https://patch.msgid.link/20250624122844.2761627-6-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux/intel_pmc_mux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sound/sdca_function.h   | 2 ++
+ sound/soc/sdca/sdca_functions.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
-index 65dda9183e6f..1698428654ab 100644
---- a/drivers/usb/typec/mux/intel_pmc_mux.c
-+++ b/drivers/usb/typec/mux/intel_pmc_mux.c
-@@ -754,7 +754,7 @@ static int pmc_usb_probe(struct platform_device *pdev)
+diff --git a/include/sound/sdca_function.h b/include/sound/sdca_function.h
+index eaedb54a8322..b43bda42eeca 100644
+--- a/include/sound/sdca_function.h
++++ b/include/sound/sdca_function.h
+@@ -16,6 +16,8 @@ struct device;
+ struct sdca_entity;
+ struct sdca_function_desc;
  
- 	pmc->ipc = devm_intel_scu_ipc_dev_get(&pdev->dev);
- 	if (!pmc->ipc)
--		return -ENODEV;
-+		return -EPROBE_DEFER;
++#define SDCA_NO_INTERRUPT -1
++
+ /*
+  * The addressing space for SDCA relies on 7 bits for Entities, so a
+  * maximum of 128 Entities per function can be represented.
+diff --git a/sound/soc/sdca/sdca_functions.c b/sound/soc/sdca/sdca_functions.c
+index 28e9e6de6d5d..050f7338aca9 100644
+--- a/sound/soc/sdca/sdca_functions.c
++++ b/sound/soc/sdca/sdca_functions.c
+@@ -912,6 +912,8 @@ static int find_sdca_entity_control(struct device *dev, struct sdca_entity *enti
+ 				       &tmp);
+ 	if (!ret)
+ 		control->interrupt_position = tmp;
++	else
++		control->interrupt_position = SDCA_NO_INTERRUPT;
  
- 	pmc->dev = &pdev->dev;
- 
+ 	control->label = find_sdca_control_label(dev, entity, control);
+ 	if (!control->label)
 -- 
 2.39.5
 
