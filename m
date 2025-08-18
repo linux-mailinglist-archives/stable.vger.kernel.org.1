@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04D33B2A8F7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:13:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824EAB2A365
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7FE0586B51
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:02:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4140189973C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7824F340DB8;
-	Mon, 18 Aug 2025 13:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F68031CA5B;
+	Mon, 18 Aug 2025 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYujHtT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0avcn/C6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3477E30F52C;
-	Mon, 18 Aug 2025 13:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBEE308F30;
+	Mon, 18 Aug 2025 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525424; cv=none; b=NTOw/LzTk43GIeUmyhoRYYsj/Jk0KVcleOfkK58KUi5MzNXVERukhCs55Jfhl54QNChFS2GJlszIbr4kH7WbeGJwAAerFooBsdGReuSak+urSLJYZ09Abv7MdUCuQv/wwIGTS3R4QRkoe5gvzU+0+7rQOtUAS9WnSvWOn3dVZ9I=
+	t=1755522170; cv=none; b=rce3k/Os54rDaIGadUTrSCrHOP7cm6ef2vv8UfSYbkQ8c3xJokEIk6JVfC9BhNgvQkXSsoSxWameL9UvNw1/PFeS9nL+4S8itHcTF/Z6RvOleZazQ2cvE2qN+tIGp3XgFJNYfDSP+ntu4H6pjxCRwe6tlxc7ZgKK6ZQYiNErhpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525424; c=relaxed/simple;
-	bh=j0y7GH0CxLUvxze6UjznqpKiFAddU09sqvcHl+KXn68=;
+	s=arc-20240116; t=1755522170; c=relaxed/simple;
+	bh=c5SsaE3mdqVhovIvuh9C1Y7K9YJIT3fZyzTeNXMsiUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q55q9eL04qnnGXOtJH/M4m1AdCZoMK2STjGgm+Q/NjpiZ1dHDmiVdPuRXY+nKnoLFFu73hvbs2+bJEIEgUSabzZnxN54RrnBvfMvLRUHwXinjttp8PUMZ0qlu0lmIOgtQOW8J9ir254kZASM9GKlKih7vZ2LDBEM/IlLyQJ/DWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYujHtT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CD2C113D0;
-	Mon, 18 Aug 2025 13:57:03 +0000 (UTC)
+	 MIME-Version; b=oSIREzv5rDP8M2IciZHazhOkMOa3PMLoLCTxJtLGpOiZUg73KV7OZWtkGxLEen0MU1sIDKThB7XpxDO30+l2johcaieuM/NgZLVsdur2LhvP2dICZOMBaQGl8V85QJVLuXf6cpyXf67/DkqBC2yX7Ha2k1b9eLUBmgdoLCPsUSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0avcn/C6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EED8C4CEEB;
+	Mon, 18 Aug 2025 13:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525423;
-	bh=j0y7GH0CxLUvxze6UjznqpKiFAddU09sqvcHl+KXn68=;
+	s=korg; t=1755522170;
+	bh=c5SsaE3mdqVhovIvuh9C1Y7K9YJIT3fZyzTeNXMsiUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYujHtT6ZwUiF23LgJf5YIPls3/HegOy4NnEc1ckYTQT74yFz40it4w0dEH4kUmT2
-	 WnRB03RSvrAu0n15MjlSugxV1zfUUiL+o2M63l5XrjAep1hW3bqhvX+y7RNIDhdp2y
-	 WULVA/kPA5JX8gA18zZ9AEu//CeUUD1DLg9Kmpk8=
+	b=0avcn/C6JZhr0VhaXK/BpCwJPZb8R0Ztdq0eFt6wTu/av0t5E8dmCYT1KrgM8Az3H
+	 vo0g+dnM9SSDZ9817kYWv7jrwh1EagqIvsMpt63rdOqzmA/gYrZQ4ECSzh3aOs2muE
+	 7G/UeGcnXZ8x0JnCUay2AJ1uLeXxUTGaT5O1Qy9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kamil=20Hor=C3=A1k=20-=202N?= <kamilh@axis.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	zhangjianrong <zhangjianrong5@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 258/570] net: phy: bcm54811: PHY initialization
+Subject: [PATCH 6.12 219/444] net: thunderbolt: Fix the parameter passing of tb_xdomain_enable_paths()/tb_xdomain_disable_paths()
 Date: Mon, 18 Aug 2025 14:44:05 +0200
-Message-ID: <20250818124515.760835307@linuxfoundation.org>
+Message-ID: <20250818124457.054407570@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Horák - 2N <kamilh@axis.com>
+From: zhangjianrong <zhangjianrong5@huawei.com>
 
-[ Upstream commit 3117a11fff5af9e74f4946f07cb3ca083cbbdf4b ]
+[ Upstream commit 8ec31cb17cd355cea25cdb8496d9b3fbf1321647 ]
 
-Reset the bit 12 in PHY's LRE Control register upon initialization.
-According to the datasheet, this bit must be written to zero after
-every device reset.
+According to the description of tb_xdomain_enable_paths(), the third
+parameter represents the transmit ring and the fifth parameter represents
+the receive ring. tb_xdomain_disable_paths() is the same case.
 
-Signed-off-by: Kamil Horák - 2N <kamilh@axis.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250708090140.61355-5-kamilh@axis.com
+[Jakub] Mika says: it works now because both rings ->hop is the same
+
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250625051149.GD2824380@black.fi.intel.com
+Signed-off-by: zhangjianrong <zhangjianrong5@huawei.com>
+Link: https://patch.msgid.link/20250628094920.656658-1-zhangjianrong5@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/broadcom.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ drivers/net/thunderbolt/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index 9b1de54fd483..f871f11d1921 100644
---- a/drivers/net/phy/broadcom.c
-+++ b/drivers/net/phy/broadcom.c
-@@ -655,7 +655,7 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
- {
- 	struct device_node *np = phydev->mdio.dev.of_node;
- 	struct bcm54xx_phy_priv *priv = phydev->priv;
--	int i, val, err;
-+	int i, val, err, aneg;
+diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
+index 643cf67840b5..dcaa62377808 100644
+--- a/drivers/net/thunderbolt/main.c
++++ b/drivers/net/thunderbolt/main.c
+@@ -396,9 +396,9 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
  
- 	for (i = 0; i < ARRAY_SIZE(bcm54811_linkmodes); i++)
- 		linkmode_clear_bit(bcm54811_linkmodes[i], phydev->supported);
-@@ -676,9 +676,19 @@ static int bcm5481x_read_abilities(struct phy_device *phydev)
- 		if (val < 0)
- 			return val;
+ 		ret = tb_xdomain_disable_paths(net->xd,
+ 					       net->local_transmit_path,
+-					       net->rx_ring.ring->hop,
++					       net->tx_ring.ring->hop,
+ 					       net->remote_transmit_path,
+-					       net->tx_ring.ring->hop);
++					       net->rx_ring.ring->hop);
+ 		if (ret)
+ 			netdev_warn(net->dev, "failed to disable DMA paths\n");
  
-+		/* BCM54811 is not capable of LDS but the corresponding bit
-+		 * in LRESR is set to 1 and marked "Ignore" in the datasheet.
-+		 * So we must read the bcm54811 as unable to auto-negotiate
-+		 * in BroadR-Reach mode.
-+		 */
-+		if (BRCM_PHY_MODEL(phydev) == PHY_ID_BCM54811)
-+			aneg = 0;
-+		else
-+			aneg = val & LRESR_LDSABILITY;
-+
- 		linkmode_mod_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
- 				 phydev->supported,
--				 val & LRESR_LDSABILITY);
-+				 aneg);
- 		linkmode_mod_bit(ETHTOOL_LINK_MODE_100baseT1_Full_BIT,
- 				 phydev->supported,
- 				 val & LRESR_100_1PAIR);
-@@ -735,8 +745,15 @@ static int bcm54811_config_aneg(struct phy_device *phydev)
+@@ -662,9 +662,9 @@ static void tbnet_connected_work(struct work_struct *work)
+ 		goto err_free_rx_buffers;
  
- 	/* Aneg firstly. */
- 	if (priv->brr_mode) {
--		/* BCM54811 is only capable of autonegotiation in IEEE mode */
--		phydev->autoneg = 0;
-+		/* BCM54811 is only capable of autonegotiation in IEEE mode.
-+		 * In BroadR-Reach mode, disable the Long Distance Signaling,
-+		 * the BRR mode autoneg as supported in other Broadcom PHYs.
-+		 * This bit is marked as "Reserved" and "Default 1, must be
-+		 *  written to 0 after every device reset" in the datasheet.
-+		 */
-+		ret = phy_modify(phydev, MII_BCM54XX_LRECR, LRECR_LDSEN, 0);
-+		if (ret < 0)
-+			return ret;
- 		ret = bcm_config_lre_aneg(phydev, false);
- 	} else {
- 		ret = genphy_config_aneg(phydev);
+ 	ret = tb_xdomain_enable_paths(net->xd, net->local_transmit_path,
+-				      net->rx_ring.ring->hop,
++				      net->tx_ring.ring->hop,
+ 				      net->remote_transmit_path,
+-				      net->tx_ring.ring->hop);
++				      net->rx_ring.ring->hop);
+ 	if (ret) {
+ 		netdev_err(net->dev, "failed to enable DMA paths\n");
+ 		goto err_free_tx_buffers;
 -- 
 2.39.5
 
