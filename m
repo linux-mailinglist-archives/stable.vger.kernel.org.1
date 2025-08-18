@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-171639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B171EB2B157
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:15:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C31B2B16C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 21:19:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00CD11963086
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:12:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BDE3A4BD4
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 19:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7AF2045B6;
-	Mon, 18 Aug 2025 19:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEA73451B3;
+	Mon, 18 Aug 2025 19:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="duNr4ghQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/cz9r+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B224247291
-	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 19:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7833451AA
+	for <stable@vger.kernel.org>; Mon, 18 Aug 2025 19:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755544039; cv=none; b=iSPPfY0VDEG0kSVjlbNVUmVJsqEiG+yoHYS3zwUy9U8vlQ4/nqfdwh82z+dXC2SLmfLakDhZ3pkBbmtClYQFAcFpmI7DFOFQOR4iFcgEgiEFEw+Ez/q+sasPCnGiRvnjSq3BvYpVGZCRp2Ts0MmVygYkxK5tEg1w/93ptfsiAko=
+	t=1755544496; cv=none; b=HUjt6bD7ODu5l2VujmA3AquKIVquehkMY0Y3uGHiuMmOujdlw09D1/DtJpVgRVBW+pNO0L5Lnzkqg4o5v+JwigUerYlPHPmLB4OdjckZzKfxX1eMDi4eQrqCpNLdZhnPGvKqahkMSfOoi7juPoZhgWW+t2HtPYnEVXz09spakPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755544039; c=relaxed/simple;
-	bh=haY1zNBku6ED4wRobpYhv9y5a428/PSETfzBLmEvoBI=;
+	s=arc-20240116; t=1755544496; c=relaxed/simple;
+	bh=uOEhxqOUWi1lhposCqSA2yzaCWNLRQUm0gqgXo1mHY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMpMuZOpzhi2ZAVm1nKZ71500KuatFvvtbKpd7//aqq/Pjc4Tq/xG2RRYyFHtQJ8c/6fJEv2mhbB4Drm6af7fhoOeICPFfiz4hzGcBYn3TOoNf8N7lq1Lt+Dqj02QzlYcqrlFqdSVcv8+KI9Dnjtc6Rwl9jwiSiyDknFqNwaLAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=duNr4ghQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18130C4CEF1;
-	Mon, 18 Aug 2025 19:07:17 +0000 (UTC)
+	 MIME-Version; b=lIiEjOS/p+9aaSCUOBr92addGj32j2sRdOIlB7hqkT2Nu6yc7cX93k3IAfCRbqTMP/ngBnEVkAlPPxPsI2YSKXaeEgrXHxK5oQRIpL8i2UqW38LYmVFOaOSsq1589yLknkUJU0rqb4XcGb7vb6csLh6SDTpEj6NlFIU/oMaLLCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/cz9r+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79624C4CEEB;
+	Mon, 18 Aug 2025 19:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755544038;
-	bh=haY1zNBku6ED4wRobpYhv9y5a428/PSETfzBLmEvoBI=;
+	s=k20201202; t=1755544494;
+	bh=uOEhxqOUWi1lhposCqSA2yzaCWNLRQUm0gqgXo1mHY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duNr4ghQbZ7df/5OwIaldekQAp3qvz2/Ss409fWus7DG/WgsgstG9b3rFRqkJGeBD
-	 +MrPgZY9C1rfE3Pb/dZO4eAEgjqp+G6Op7s2u4vHwg4ZNtYggKUDWNh0gpPFcc8t23
-	 2lAQGZN/S5WyYqKvbRdTgkB7Xl5QJCzExHGZBJWVNGLGdltBqztbMBXnmTqNvFjYyp
-	 dppFQdhfwlmY3np1seLnfoHBc9x0YVw/bwVYD0yKGc1NFZS3GL68ucZhYz4CDbB2zk
-	 ygPVcqZWYHMlGqA+Qn/hh2Daux5olq2l/uKqC1KR5OgtWEj9J0+y7vwS3gsugGPaDI
-	 BgEslzGU+Lo5w==
+	b=N/cz9r+Fs0TTnW0Ge8FRRPCJs99JLukZNObGwsjJhGQtsQAeQcfJv4YWjkIY2UohG
+	 TMtZU7flt4s6m7sOkgH8Y8s5BpWPWptsC0ay84GNHnbaYDNRJ40boO2Gtc+xDRNNgq
+	 1PbMFkpSfoBtZuTw5rNMaZ9FVGSQsHp0mM2KdYxJSxC6hcqJmFdrDPthuL/+LCVQuY
+	 lP7IkoqZ+8vIXM5/V+svBv3sTLk/Rs2qLTrFvw/2NnXu9M413EPKntW5gm7zoY1lMC
+	 Fwad3CyPrS1HG2cLp1mNz7WF3nmevFxHkIGA0LcaA2tddsvjEgX6wA0Vk1wkQJ1qYi
+	 0XLM8TWy81Opg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
@@ -48,12 +48,12 @@ Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
 	stable <stable@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16.y] serial: 8250: fix panic due to PSLVERR
-Date: Mon, 18 Aug 2025 15:07:15 -0400
-Message-ID: <20250818190715.38052-1-sashal@kernel.org>
+Subject: [PATCH 6.15.y] serial: 8250: fix panic due to PSLVERR
+Date: Mon, 18 Aug 2025 15:14:51 -0400
+Message-ID: <20250818191451.40769-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025081844-wimp-jubilance-539e@gregkh>
-References: <2025081844-wimp-jubilance-539e@gregkh>
+In-Reply-To: <2025081845-enlarging-goldsmith-455a@gregkh>
+References: <2025081845-enlarging-goldsmith-455a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -106,10 +106,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 6d7b8c4667c9..db26cf5a5c02 100644
+index 8ac452cea36c..3b93b6e502b9 100644
 --- a/drivers/tty/serial/8250/8250_port.c
 +++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2376,9 +2376,8 @@ int serial8250_do_startup(struct uart_port *port)
+@@ -2380,9 +2380,8 @@ int serial8250_do_startup(struct uart_port *port)
  	/*
  	 * Now, initialize the UART
  	 */
