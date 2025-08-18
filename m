@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-171305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96762B2A88F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:06:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B798EB2A674
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:44:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81D7D7B5DA2
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:04:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEAFD1B6693E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F785346A1D;
-	Mon, 18 Aug 2025 13:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB33B31B100;
+	Mon, 18 Aug 2025 13:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXY5xEsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCBG9IEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07BB346A09;
-	Mon, 18 Aug 2025 13:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A3A31E0EB;
+	Mon, 18 Aug 2025 13:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525481; cv=none; b=rw2zxwJm6DJ1ps+VRG7SzDgHeCzSDc5wiFbt3Q/Jybs89RQtPM7d1gIKATxb0henZRSPRuAKJgwKHTMVZSNAdD9EMf6k+PjPAytOdcg4vUFbVBXBrz08bUapTS23z8KE2YqhT9ByypsDKGzoz8dO+JVlIWs7oMykoSGShHeqZOE=
+	t=1755523682; cv=none; b=NdtSjyuU7Qu+o5wRBhBwQk1uaM2dRm5Qr7Nz/RkeyNwXsZsxXT3Z5be1DZmWXaBd8VFmZNo0iRB5BrG5nrprn9wUJlzuK7ISPLcxmSTnzShaU541fQhWBsiFgezAO0fqcZhZxvbhB9vF8lM+otqxXS7PN6vaAnsRGXE+lDjs+JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525481; c=relaxed/simple;
-	bh=RnlAcsbWZhNkJ9uHqk9k+fjGjy88+LPQKKh8Kum7XbY=;
+	s=arc-20240116; t=1755523682; c=relaxed/simple;
+	bh=GTvZuw9X5Q7H1qVI1K2BZdP+u5lFfxil+zcgTjMC7M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pa6r9jWADzIcTYwVIHlgwv5mwVhvzLQD5Z8scy0mUxbazZnbGTna5sj/W6rSoiEetoVnZ03yD+H98YE09dj3gUWM+YY1cDIBmrsepq9Ao5IKKI0yAbUjoG+azDqG8fwHk1vvOgFcB4zq1JkGF87EmDXllDWdwXWAvD7BI5xfa/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXY5xEsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428E1C4CEEB;
-	Mon, 18 Aug 2025 13:58:01 +0000 (UTC)
+	 MIME-Version; b=mGDdHOf4OZxtLzh9yIZGViz+Q9b0LUFHZILPkEE30KYvo8dH+7//jmrWIXbWI1tsMprzmizJGmcnedj/1ufX7p3OEQJdiuaosdfBzpEALQqw7ic2p6kUnuCcpsOpf9HKcTJxkVmTDHeiUXSuiFZHULrQckrZI3lWOnaNEY/LoxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCBG9IEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFFEC4CEEB;
+	Mon, 18 Aug 2025 13:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525481;
-	bh=RnlAcsbWZhNkJ9uHqk9k+fjGjy88+LPQKKh8Kum7XbY=;
+	s=korg; t=1755523682;
+	bh=GTvZuw9X5Q7H1qVI1K2BZdP+u5lFfxil+zcgTjMC7M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXY5xEsAOOPvZxx6eNk3QE+tiTcFzpYKTHUXpDNduJnWDx14d6e8x1Ph3Bk9HTzWS
-	 jqfduR4o4saSnkuvy0SnLeOMqBNQM0XoCRCz8XIFj+lcylIOli30X5lo12PNf20tTa
-	 x7ToEfrn9siewkBVlAtJ7ek7efohR8Cli7/+F/no=
+	b=rCBG9IEYXfEUb1OEwoUocqIl2nwC6ls2JqZk6Zfi74VMxXxBUQGI+A4ShOALYD7Wh
+	 lcQWaKdz4s157m8YFfNcmOYE5DpcmQWdGwx9QJ6W1qh4Ll0e4KVQ5Cd6j+S0brgert
+	 /I6w9ri77cdNcBWGkdmLfBTIrlXWN3a9ZZJ0bvVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 245/570] net: thunderx: Fix format-truncation warning in bgx_acpi_match_id()
+Subject: [PATCH 6.15 246/515] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
 Date: Mon, 18 Aug 2025 14:43:52 +0200
-Message-ID: <20250818124515.257686476@linuxfoundation.org>
+Message-ID: <20250818124507.856150925@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 53d20606c40678d425cc03f0978c614dca51f25e ]
+[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
 
-The buffer bgx_sel used in snprintf() was too small to safely hold
-the formatted string "BGX%d" for all valid bgx_id values. This caused
-a -Wformat-truncation warning with `Werror` enabled during build.
+If the device configuration fails (if `dma_dev->device_config()`),
+`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
+leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
 
-Increase the buffer size from 5 to 7 and use `sizeof(bgx_sel)` in
-snprintf() to ensure safety and suppress the warning.
-
-Build warning:
-  CC      drivers/net/ethernet/cavium/thunder/thunder_bgx.o
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c: In function
-‘bgx_acpi_match_id’:
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:27: error: ‘%d’
-directive output may be truncated writing between 1 and 3 bytes into a
-region of size 2 [-Werror=format-truncation=]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                             ^~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:23: note:
-directive argument in the range [0, 255]
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-                         ^~~~~~~
-  drivers/net/ethernet/cavium/thunder/thunder_bgx.c:1434:2: note:
-‘snprintf’ output between 5 and 7 bytes into a destination of size 5
-    snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-
-compiler warning due to insufficient snprintf buffer size.
-
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250711140532.2463602-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index 3b7ad744b2dd..21495b5dce25 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1429,9 +1429,9 @@ static acpi_status bgx_acpi_match_id(acpi_handle handle, u32 lvl,
- {
- 	struct acpi_buffer string = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct bgx *bgx = context;
--	char bgx_sel[5];
-+	char bgx_sel[7];
+diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+index 9668b052cd4b..f251e0f68262 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
++++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
+ 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
  
--	snprintf(bgx_sel, 5, "BGX%d", bgx->bgx_id);
-+	snprintf(bgx_sel, sizeof(bgx_sel), "BGX%d", bgx->bgx_id);
- 	if (ACPI_FAILURE(acpi_get_name(handle, ACPI_SINGLE_NAME, &string))) {
- 		pr_warn("Invalid link device\n");
- 		return AE_OK;
+ 	/* Make DMA channel work with LPB FIFO data register */
+-	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
+-		ret = -EINVAL;
+-		goto err_dma_prep;
+-	}
++	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
++		return -EINVAL;
+ 
+ 	sg_init_table(&sg, 1);
+ 
 -- 
 2.39.5
 
