@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-170604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B735B2A56B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:33:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499FFB2A23E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8272A580F32
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:26:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A0D77ACBD5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BB7322A01;
-	Mon, 18 Aug 2025 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD023203B7;
+	Mon, 18 Aug 2025 12:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqcKb6vN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDVjyFd7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033F733A00D;
-	Mon, 18 Aug 2025 13:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3C4320392;
+	Mon, 18 Aug 2025 12:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523173; cv=none; b=KliO+6EZey3uJ/iwtB1NHDH5FftTgmUvdgJNfHVYTvGjXUnKOnexuMkBBvAjb81mp8Jr4DdrujlsZolFrVP99EALz7tlBU+qZV09Om2kdVEcScfcx3pltwSJZAEUkBjPPQwz6yg28LFSitx3CYkdBuRyb864j/6La1oRhTP42ao=
+	t=1755521544; cv=none; b=BXx62hGREhhlkJfM+sN088SKxArMUDCZ4rJ8rZ4kZyPhyEnCrF8QQBu5MNTHOTmL1OOADFOoBo94zq31+qVvT8lIxl+O9+PGdEWEkAvc68ujwi2JYUEWC1+ghZQYaqnFWby7X+oLurByftCUtQISaVfqZxfzOF6h8KHnrIp6JNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523173; c=relaxed/simple;
-	bh=uswr3zJUmJySD0X8S/orHX41BEN5BrY3BPkIQ1dEvlg=;
+	s=arc-20240116; t=1755521544; c=relaxed/simple;
+	bh=Qy5DktpLrhEMDS94UwQxvx6mCVxWiin/mTq53LaLVRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXo4LOeogG0C07XK6RSAouzhFcOQM3gGpacBDdV+08aw1CUcT83y03CDJhSysDJrfFGUQyyhlTX84yOQVHJiAHmeNtdUG0Gkb+f9ptdU+TE/hLNwbj9d1IlNqAtTymv/z6mFSgesjwkN7hJue1xqSKRdsr4JoURqHzqbxKArIMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqcKb6vN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E9FC4CEF1;
-	Mon, 18 Aug 2025 13:19:32 +0000 (UTC)
+	 MIME-Version; b=p3wUxnUC/sGoptzDFmZ/MmWmSm6gEte8vwkkK872hJSRS/lnV6vMQpTMjiAefIEDjzYP4XAT+TC38DfUwBFh5x64APrTzyt+KA41eqPw+tp5gPngph2ADkGKMKlMdkmJ68zqw2UIUx8OkZSVjdJmI8mh703nDJ10UBmFr6oF/JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDVjyFd7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA25DC4CEF1;
+	Mon, 18 Aug 2025 12:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523172;
-	bh=uswr3zJUmJySD0X8S/orHX41BEN5BrY3BPkIQ1dEvlg=;
+	s=korg; t=1755521544;
+	bh=Qy5DktpLrhEMDS94UwQxvx6mCVxWiin/mTq53LaLVRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DqcKb6vNgB4BwI5bdJUwYSEySUvsfWER6xmhAAx3eIa5T5TtnkunMKOqockU+am3a
-	 ad3CUqBQaeMlGPItpDmt9U5Etv6KineeqI+SGZ+lrS7TnfjMtV2u6VtN/4gGWPI2Zp
-	 NcNqUkh6Y8ygmpRSJGbxBRcTkYSxR6+G+vFhvoBY=
+	b=GDVjyFd7EhYmMSat20q7KWU7fPLPkWZc6P1+p9OyFFtfx7dskYCFyQTCvkuyr/lu3
+	 gddsMz2ZfBIlNJ4bRUjnMLLUCM+/XPc6AJSmzw48DuEIHRRhhqT+s+bRag3/MFv2KV
+	 l1ahYtLw1fwxV0lrcgEFXKI/sMY2hsS0RZfOPEoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Price <anprice@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Brahmajit Das <brahmajit.xyz@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	David Rientjes <rientjes@google.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Joern Engel <joern@logfs.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 093/515] gfs2: Set .migrate_folio in gfs2_{rgrp,meta}_aops
+Subject: [PATCH 6.12 053/444] mm/smaps: fix race between smaps_hugetlb_range and migration
 Date: Mon, 18 Aug 2025 14:41:19 +0200
-Message-ID: <20250818124501.962770518@linuxfoundation.org>
+Message-ID: <20250818124450.917571064@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +78,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Price <anprice@redhat.com>
+From: Jinjiang Tu <tujinjiang@huawei.com>
 
-[ Upstream commit 5c8f12cf1e64e0e8e6cb80b0c935389973e8be8d ]
+[ Upstream commit 45d19b4b6c2d422771c29b83462d84afcbb33f01 ]
 
-Clears up the warning added in 7ee3647243e5 ("migrate: Remove call to
-->writepage") that occurs in various xfstests, causing "something found
-in dmesg" failures.
+smaps_hugetlb_range() handles the pte without holdling ptl, and may be
+concurrenct with migration, leaing to BUG_ON in pfn_swap_entry_to_page().
+The race is as follows.
 
-[  341.136573] gfs2_meta_aops does not implement migrate_folio
-[  341.136953] WARNING: CPU: 1 PID: 36 at mm/migrate.c:944 move_to_new_folio+0x2f8/0x300
+smaps_hugetlb_range              migrate_pages
+  huge_ptep_get
+                                   remove_migration_ptes
+				   folio_unlock
+  pfn_swap_entry_folio
+    BUG_ON
 
-Signed-off-by: Andrew Price <anprice@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+To fix it, hold ptl lock in smaps_hugetlb_range().
+
+Link: https://lkml.kernel.org/r/20250724090958.455887-1-tujinjiang@huawei.com
+Link: https://lkml.kernel.org/r/20250724090958.455887-2-tujinjiang@huawei.com
+Fixes: 25ee01a2fca0 ("mm: hugetlb: proc: add hugetlb-related fields to /proc/PID/smaps")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Brahmajit Das <brahmajit.xyz@gmail.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Joern Engel <joern@logfs.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/meta_io.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/proc/task_mmu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/meta_io.c b/fs/gfs2/meta_io.c
-index 9dc8885c95d0..66ee10929736 100644
---- a/fs/gfs2/meta_io.c
-+++ b/fs/gfs2/meta_io.c
-@@ -103,6 +103,7 @@ const struct address_space_operations gfs2_meta_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 72a58681f031..2257bf52fb2a 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1007,10 +1007,13 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
+ {
+ 	struct mem_size_stats *mss = walk->private;
+ 	struct vm_area_struct *vma = walk->vma;
+-	pte_t ptent = huge_ptep_get(walk->mm, addr, pte);
+ 	struct folio *folio = NULL;
+ 	bool present = false;
++	spinlock_t *ptl;
++	pte_t ptent;
  
- const struct address_space_operations gfs2_rgrp_aops = {
-@@ -110,6 +111,7 @@ const struct address_space_operations gfs2_rgrp_aops = {
- 	.invalidate_folio = block_invalidate_folio,
- 	.writepages = gfs2_aspace_writepages,
- 	.release_folio = gfs2_release_folio,
-+	.migrate_folio = buffer_migrate_folio_norefs,
- };
- 
- /**
++	ptl = huge_pte_lock(hstate_vma(vma), walk->mm, pte);
++	ptent = huge_ptep_get(walk->mm, addr, pte);
+ 	if (pte_present(ptent)) {
+ 		folio = page_folio(pte_page(ptent));
+ 		present = true;
+@@ -1029,6 +1032,7 @@ static int smaps_hugetlb_range(pte_t *pte, unsigned long hmask,
+ 		else
+ 			mss->private_hugetlb += huge_page_size(hstate_vma(vma));
+ 	}
++	spin_unlock(ptl);
+ 	return 0;
+ }
+ #else
 -- 
-2.39.5
+2.50.1
 
 
 
