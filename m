@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-170995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12869B2A73C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E68B2A47F
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211DD5859C9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:43:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BDB5174DD6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C126813C8E8;
-	Mon, 18 Aug 2025 13:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37A43203BF;
+	Mon, 18 Aug 2025 13:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFQblKfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxKp0In0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE9B335BCB;
-	Mon, 18 Aug 2025 13:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CEF2727E2;
+	Mon, 18 Aug 2025 13:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524471; cv=none; b=mKdINca0jRwYLh3TGHjFQGSFPVTqCgA3Fl0ZDmwUAm/Se3awqbidPG1yF2KH1w1hufd+a46Nj4WOaHYjXfJ7vcopEhJ3G3XvDu0SQTSOz1olzXst0bB4vQxpV0gtCx5L9BPKbOBWDj1G9wPSVUU1vWSv3QbrpSfnP/9qYai2bAE=
+	t=1755522859; cv=none; b=A1Ag7lzVgmIbYYEvb1Sm/O33kmifuk7sEIQRr4MiFaiuygWenpVdoecg8nlXEAy/MT1h9BE6NP3Wx0jymqYnOIvM2PXHo+wwWudsBGs4o+qY+q2sU+vI5QES7mrxpMhsQT0WfMfr1flEaxEOB3gY+KfNp3LaG9Byn5lIr3IyFXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524471; c=relaxed/simple;
-	bh=Ww8B96CE4oNz/6Up3c5VntK52MemCqumPkpupiHmc/k=;
+	s=arc-20240116; t=1755522859; c=relaxed/simple;
+	bh=rNLECt/MDVR4LQhwjOtyx3dSNcruxxeLyZgo5S3FxoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsvNYfjNKYrXuIxnB/MIlJkrQFBFCDYjZpnqXEQtPZ8cGEfqiHTZ5Ewa4Of91QbYLzWyUiYQW8Wl5KNu5dMHFCFCn1SFuTI8Pb/dode6sr0QHLWtg5DDVtAFnjcT+burvnE7BkI+9rshVhkrEHHW7zoP388aiaI4mJELgtrP8jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFQblKfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A361C4CEF1;
-	Mon, 18 Aug 2025 13:41:10 +0000 (UTC)
+	 MIME-Version; b=OTVkuguHcNPXeZzuQx6StPLOPrVUY33zPTxyl4za2FSz82xgtZGA7JMP/gJC2Z79XljAO/SgKcysL/vOF3+Q9shsk8VxVdZnFUhyf7xtGU0gnlN4HLLM0LmsavXjjTQoOGG0GlahIWJ3fhxT8IxdWzQs+P2wNYHiD1nU4HqvLaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxKp0In0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BF8C4CEEB;
+	Mon, 18 Aug 2025 13:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524471;
-	bh=Ww8B96CE4oNz/6Up3c5VntK52MemCqumPkpupiHmc/k=;
+	s=korg; t=1755522859;
+	bh=rNLECt/MDVR4LQhwjOtyx3dSNcruxxeLyZgo5S3FxoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFQblKfqpLGPFjekFX6lvWGAksMcyidvukKwaLOfnfSnKaBYVPBkR8xEtqLyP2deO
-	 d6qwropvs2hthoF0b7DUmMz/ZEf83gwawgDcMOgA96GefcN+DhPqBYS9zJHEOcmNHh
-	 NHXMOyCz0l2dQHIgwtoZEU2iOaVFIcfQQDvagHjA=
+	b=rxKp0In0vNiFjPWLEA9tXDX9DN6h6jlyhsn/5GEHZfmxuOn81DefE/Tbn+iPIxjaB
+	 iRPc2vuoQbSfcWV/wHNeFRsEv8nXe08NbrC67bgmZ5pkhGItO2fdPXExjqQOvqAqhj
+	 buBigelDIaHG5Xq80SLKSSOT93W6x4HaAEWxKZLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 483/515] userfaultfd: fix a crash in UFFDIO_MOVE when PMD is a migration entry
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 443/444] dm: split write BIOs on zone boundaries when zone append is not emulated
 Date: Mon, 18 Aug 2025 14:47:49 +0200
-Message-ID: <20250818124517.018652504@linuxfoundation.org>
+Message-ID: <20250818124505.567768551@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit aba6faec0103ed8f169be8dce2ead41fcb689446 upstream.
+commit 675f940576351bb049f5677615140b9d0a7712d0 upstream.
 
-When UFFDIO_MOVE encounters a migration PMD entry, it proceeds with
-obtaining a folio and accessing it even though the entry is swp_entry_t.
-Add the missing check and let split_huge_pmd() handle migration entries.
-While at it also remove unnecessary folio check.
+Commit 2df7168717b7 ("dm: Always split write BIOs to zoned device
+limits") updates the device-mapper driver to perform splits for the
+write BIOs. However, it did not address the cases where DM targets do
+not emulate zone append, such as in the cases of dm-linear or dm-flakey.
+For these targets, when the write BIOs span across zone boundaries, they
+trigger WARN_ON_ONCE(bio_straddles_zones(bio)) in
+blk_zone_wplug_handle_write(). This results in I/O errors. The errors
+are reproduced by running blktests test case zbd/004 using zoned
+dm-linear or dm-flakey devices.
 
-[surenb@google.com: remove extra folio check, per David]
-  Link: https://lkml.kernel.org/r/20250807200418.1963585-1-surenb@google.com
-Link: https://lkml.kernel.org/r/20250806220022.926763-1-surenb@google.com
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: syzbot+b446dbe27035ef6bd6c2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68794b5c.a70a0220.693ce.0050.GAE@google.com/
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+To avoid the I/O errors, handle the write BIOs regardless whether DM
+targets emulate zone append or not, so that all write BIOs are split at
+zone boundaries. For that purpose, drop the check for zone append
+emulation in dm_zone_bio_needs_split(). Its argument 'md' is no longer
+used then drop it also.
+
+Fixes: 2df7168717b7 ("dm: Always split write BIOs to zoned device limits")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Link: https://lore.kernel.org/r/20250717103539.37279-1-shinichiro.kawasaki@wdc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/userfaultfd.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/md/dm.c |   18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1829,13 +1829,16 @@ ssize_t move_pages(struct userfaultfd_ct
- 			/* Check if we can move the pmd without splitting it. */
- 			if (move_splits_huge_pmd(dst_addr, src_addr, src_start + len) ||
- 			    !pmd_none(dst_pmdval)) {
--				struct folio *folio = pmd_folio(*src_pmd);
-+				/* Can be a migration entry */
-+				if (pmd_present(*src_pmd)) {
-+					struct folio *folio = pmd_folio(*src_pmd);
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1788,8 +1788,7 @@ static void init_clone_info(struct clone
+ }
  
--				if (!folio || (!is_huge_zero_folio(folio) &&
--					       !PageAnonExclusive(&folio->page))) {
--					spin_unlock(ptl);
--					err = -EBUSY;
--					break;
-+					if (!is_huge_zero_folio(folio) &&
-+					    !PageAnonExclusive(&folio->page)) {
-+						spin_unlock(ptl);
-+						err = -EBUSY;
-+						break;
-+					}
- 				}
+ #ifdef CONFIG_BLK_DEV_ZONED
+-static inline bool dm_zone_bio_needs_split(struct mapped_device *md,
+-					   struct bio *bio)
++static inline bool dm_zone_bio_needs_split(struct bio *bio)
+ {
+ 	/*
+ 	 * Special case the zone operations that cannot or should not be split.
+@@ -1805,13 +1804,11 @@ static inline bool dm_zone_bio_needs_spl
+ 	}
  
- 				spin_unlock(ptl);
+ 	/*
+-	 * Mapped devices that require zone append emulation will use the block
+-	 * layer zone write plugging. In such case, we must split any large BIO
+-	 * to the mapped device limits to avoid potential deadlocks with queue
+-	 * freeze operations.
++	 * When mapped devices use the block layer zone write plugging, we must
++	 * split any large BIO to the mapped device limits to not submit BIOs
++	 * that span zone boundaries and to avoid potential deadlocks with
++	 * queue freeze operations.
+ 	 */
+-	if (!dm_emulate_zone_append(md))
+-		return false;
+ 	return bio_needs_zone_write_plugging(bio) || bio_straddles_zones(bio);
+ }
+ 
+@@ -1935,8 +1932,7 @@ static blk_status_t __send_zone_reset_al
+ }
+ 
+ #else
+-static inline bool dm_zone_bio_needs_split(struct mapped_device *md,
+-					   struct bio *bio)
++static inline bool dm_zone_bio_needs_split(struct bio *bio)
+ {
+ 	return false;
+ }
+@@ -1963,7 +1959,7 @@ static void dm_split_and_process_bio(str
+ 
+ 	is_abnormal = is_abnormal_io(bio);
+ 	if (static_branch_unlikely(&zoned_enabled)) {
+-		need_split = is_abnormal || dm_zone_bio_needs_split(md, bio);
++		need_split = is_abnormal || dm_zone_bio_needs_split(bio);
+ 	} else {
+ 		need_split = is_abnormal;
+ 	}
 
 
 
