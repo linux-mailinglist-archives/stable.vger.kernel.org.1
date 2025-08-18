@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-171268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17CB5B2A89C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBBDB2A337
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6025A298F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD6BA169FCE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C22B27F727;
-	Mon, 18 Aug 2025 13:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED071E51FE;
+	Mon, 18 Aug 2025 12:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWz/LXcq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vu7+0DSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7C8225413;
-	Mon, 18 Aug 2025 13:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4D73218CA;
+	Mon, 18 Aug 2025 12:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525362; cv=none; b=cGjsu1e+KBSC4XmaYXZpE2aMK8uvIwL7+H4NXo3cI/nOFIdeY289pol7HEq5LMcgudr5ucDT6AhtIFsyGlms/r4WOO9u+uUeR5AtOLhdeZSduHSKzfOPEn2cgW6Np0Qf78MVpD01lOa2jjq0EbCZr+RmpqjogYj1TZ8RdvVKzig=
+	t=1755521943; cv=none; b=ASdf4avq1I++FQzL+IO+e+lxHtoLMguCSj75JMntE5HVFxvjOuw8AAI98GXzyCn/X8mNK5Zjsj+D0Y2CgjdCggtKmaWA+xjGifXA/flyU80CgBn/5Nggao/gdkcl9np1ji/j3MpJ5ViKXGeuieeoRbDXxHl+JRAVicjy2TESNZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525362; c=relaxed/simple;
-	bh=7u2iPHZQFr6eUPXAW/bKvYILCOjHZJ8UoD5D1kNEoxQ=;
+	s=arc-20240116; t=1755521943; c=relaxed/simple;
+	bh=NEVv0UcGAcFM2j24UzdD1pr+4v1t0o4afFo8+auhPrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2ljUlzZWdV10G9GZM4j/iWe7ojb54nJPISDY1fpu+CgmPciExWQLfX7Cf8tAHwSSfTHa8E1+VSt1G34ctssIMD8TPLuFCbvjPjFFj2ZYNlEAxDroCxJXmbRGYT6eqKa+2i8ECkYhDoZ4kE0muUgzY7XBvH+dTm0jp9EsNZDa6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWz/LXcq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D30C4CEEB;
-	Mon, 18 Aug 2025 13:56:02 +0000 (UTC)
+	 MIME-Version; b=hLWkyZ3x6Vztf/xgrDKglx7fgFuO5DwhDlP7BaedHtXlPTe2Li5AuNnwZZIx4wNb5081nYeMpgRzy75LuqvtPjoj0Py9TmfaC1GHfsf5alopaSU3A2UTaAYqnNBvfj0j9B1dZJ6ZdB05YjlWYIjSgDfohQ4IwGZiYODuWW6Q6ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vu7+0DSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92683C4CEEB;
+	Mon, 18 Aug 2025 12:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525362;
-	bh=7u2iPHZQFr6eUPXAW/bKvYILCOjHZJ8UoD5D1kNEoxQ=;
+	s=korg; t=1755521943;
+	bh=NEVv0UcGAcFM2j24UzdD1pr+4v1t0o4afFo8+auhPrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWz/LXcqdDtzOUZw+dhhbY6eousVQJVuunIcNhuPS1xGSoXAXz11TajMahYWrP/VN
-	 iUmfjzg5s/X2fxxSJ2MvXQ2rx7nrrDIaDTpFiW1U2WKpswQMifZwIAu5ymvLMRiwd5
-	 0zdqa0gB0iRnoY57qhryfSvLKpcnwtmxcMvfEG6c=
+	b=vu7+0DSfTicjuzdpDBRLo/xc2qWvKwAeclQMNG6ewYegWT2eGHHsveO/2WHRoLpx6
+	 +HnSgZDXa/9jXEUENG7DnqOOUnTAHNA4B9zIpHMCchT8jP02swOYl2UhJZ0LLodkuu
+	 sAmMvr5F77xZ2pFH+r8nk7kX+GYME9svxTVAd/9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 206/570] selftests: netfilter: Enable CONFIG_INET_SCTP_DIAG
-Date: Mon, 18 Aug 2025 14:43:13 +0200
-Message-ID: <20250818124513.743357024@linuxfoundation.org>
+Subject: [PATCH 6.12 168/444] wifi: iwlwifi: mvm: avoid outdated reorder buffer head_sn
+Date: Mon, 18 Aug 2025 14:43:14 +0200
+Message-ID: <20250818124455.188444004@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,35 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit ba71a6e58b38aa6f86865d4e18579cb014903692 ]
+[ Upstream commit 422850b29e05e67c9145895bfe559940caa0caa8 ]
 
-The config snippet specifies CONFIG_SCTP_DIAG. This was never an option.
+If no frames are received on a queue for a while, the reorder buffer
+head_sn may be an old one. When the next frame that is received on
+that queue and buffered is a subframe of an AMSDU but not the last
+subframe, it will not update the buffer's head_sn. When the frame
+release notification arrives, it will not release the buffered frame
+because it will look like the notification's NSSN is lower than the
+buffer's head_sn (because of a wraparound).
+Fix it by updating the head_sn when the first frame is buffered.
 
-Replace CONFIG_SCTP_DIAG with the intended CONFIG_INET_SCTP_DIAG.
-
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250723094230.795ec0cb8817.I9ec9a3508e7935e8d1833ea3e086066fdefee644@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/netfilter/config | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/net/netfilter/config b/tools/testing/selftests/net/netfilter/config
-index 363646f4fefe..142eb2b03643 100644
---- a/tools/testing/selftests/net/netfilter/config
-+++ b/tools/testing/selftests/net/netfilter/config
-@@ -92,4 +92,4 @@ CONFIG_XFRM_STATISTICS=y
- CONFIG_NET_PKTGEN=m
- CONFIG_TUN=m
- CONFIG_INET_DIAG=m
--CONFIG_SCTP_DIAG=m
-+CONFIG_INET_SCTP_DIAG=m
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 0b52d77f5783..64bd5d10765d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -854,10 +854,15 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
+ 	 * already ahead and it will be dropped.
+ 	 * If the last sub-frame is not on this queue - we will get frame
+ 	 * release notification with up to date NSSN.
++	 * If this is the first frame that is stored in the buffer, the head_sn
++	 * may be outdated. Update it based on the last NSSN to make sure it
++	 * will be released when the frame release notification arrives.
+ 	 */
+ 	if (!amsdu || last_subframe)
+ 		iwl_mvm_release_frames(mvm, sta, napi, baid_data,
+ 				       buffer, nssn);
++	else if (buffer->num_stored == 1)
++		buffer->head_sn = nssn;
+ 
+ 	spin_unlock_bh(&buffer->lock);
+ 	return true;
 -- 
 2.39.5
 
