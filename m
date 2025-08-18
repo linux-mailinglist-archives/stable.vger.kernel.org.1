@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C129EB2AA0E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:27:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C885B2A74E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D9A36863DA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC728627B3A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CBC340DA6;
-	Mon, 18 Aug 2025 14:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41735230D0D;
+	Mon, 18 Aug 2025 13:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgMiu2Rf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsB33i9L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B554F31CA48;
-	Mon, 18 Aug 2025 14:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A9231AF3A;
+	Mon, 18 Aug 2025 13:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525782; cv=none; b=JkaRvON4Mcs6sKE3Srl4VBDW+kLKoxiT7H0QZeSOUeljx1n3Rfwuvo5tbh4DKpMzs9LyuEEPdywgNsIzNFwlAiBm6S+asqbvVJjZoIe8+HT1sXYsiKvLRUanwedy0/kxGY1ysJDv7IHvOiXxFH5YbYplESaF3HIV4w7uVhwUkQA=
+	t=1755524201; cv=none; b=AnackRVc7EoWW7DdhzbGEyQDFVCEKrpn630XpQ2I5iL7cjzfbVxj8HT09emKGxZtGImfGfOvEe+oGZTkIqjovl5XX2wizWJCMqpdWpY89xsxYJwCulMDK7kEl0fklhZxA1g0phzlRKgjvCzKGYJDs127zsaX9nZ5lW/WSOE4QB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525782; c=relaxed/simple;
-	bh=lz/G244DMfhlgjI9bTfykN2ytYKlQDIZ3vdAqbAelHc=;
+	s=arc-20240116; t=1755524201; c=relaxed/simple;
+	bh=r1UDslhF8xuuo2lItpJKZhVS3ilvGYFqMuUkZwR4vP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+bl3lWEI9qO2vM2a3jy0sVSW4Qod1TEN7hmiXXFhnyjfpqZu+9HmWuUqg0Wjsu2igRW8OBp7ZswKqyg+uBR5FEVKjUZGVKB5B9emDyvFkfHQs5rghk0VaQx7kUGxk5Bd67kJquQwzakMRdV+u7LaglsO7/vS5COSkcWo2IJ87Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgMiu2Rf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCBECC4CEEB;
-	Mon, 18 Aug 2025 14:03:01 +0000 (UTC)
+	 MIME-Version; b=cFWhSszQuhdionPZSt2hMFLiRSlXZOR32agnS1dig2zrJGNZ3nTn9hij0w0ucWQ7HW3NRBmkYvODSEN+l5To17nFH40JVSqrecjGuTYBMl9Ldj3KC9B9yMTJh5EftKZP4+vrog1cxBHL8oWCOmuJxI/QuwtKGfvtlHBOPG71cOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsB33i9L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C07C4CEEB;
+	Mon, 18 Aug 2025 13:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525782;
-	bh=lz/G244DMfhlgjI9bTfykN2ytYKlQDIZ3vdAqbAelHc=;
+	s=korg; t=1755524200;
+	bh=r1UDslhF8xuuo2lItpJKZhVS3ilvGYFqMuUkZwR4vP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgMiu2RfkEX0cCD/iLqEPTt5wNDHB8tRhvRE9lmbxkvVyzPrEpugiA+OGe/2npmby
-	 xIyuE9LSjNlCfAAIgXlvbGj+g1WEoVgJKhrn0Or1DXRb2ikhOD0I/tSczbuRbSTvmp
-	 iHzb15TrIYL9fMARg9HVAOLs+LDwrOeBMuATnzFY=
+	b=PsB33i9Ln0yFcDB6ZZ9Ft8eqjpwJur0qN0X5cnX8nW8/zrY51qV4Iz/F6UQZe7iot
+	 LTa1boLPFAjHXVAusZ7H2WEFrTXVzwki0Let0UPKv1+Iii4K+1jsnJldTs6QpG4kXU
+	 pCjR8gLHAcEqN28ZpOY/c8/cwR3GYAsPACxhWGiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Thierry Reding <treding@nvidia.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 365/570] clk: tegra: periph: Fix error handling and resolve unsigned compare warning
+Subject: [PATCH 6.15 366/515] scsi: lpfc: Ensure HBA_SETUP flag is used only for SLI4 in dev_loss_tmo_callbk
 Date: Mon, 18 Aug 2025 14:45:52 +0200
-Message-ID: <20250818124519.923498428@linuxfoundation.org>
+Message-ID: <20250818124512.498070636@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 2dc2ca9000eea2eb749f658196204cb84d4306f7 ]
+[ Upstream commit 1cced5779e7a3ff7ec025fc47c76a7bd3bb38877 ]
 
-./drivers/clk/tegra/clk-periph.c:59:5-9: WARNING:
-	Unsigned expression compared with zero: rate < 0
+For SLI3, the HBA_SETUP flag is never set so the lpfc_dev_loss_tmo_callbk
+always early returns.  Add a phba->sli_rev check for SLI4 mode so that
+the SLI3 path can flow through the original dev_loss_tmo worker thread
+design to lpfc_dev_loss_tmo_handler instead of early return.
 
-The unsigned long 'rate' variable caused:
-- Incorrect handling of negative errors
-- Compile warning: "Unsigned expression compared with zero"
-
-Fix by changing to long type and adding req->rate cast.
-
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://lore.kernel.org/r/79c7f01e29876c612e90d6d0157fb1572ca8b3fb.1752046270.git.xiaopei01@kylinos.cn
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250618192138.124116-9-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-periph.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-index 0626650a7011..c9fc52a36fce 100644
---- a/drivers/clk/tegra/clk-periph.c
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -51,7 +51,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	struct tegra_clk_periph *periph = to_clk_periph(hw);
- 	const struct clk_ops *div_ops = periph->div_ops;
- 	struct clk_hw *div_hw = &periph->divider.hw;
--	unsigned long rate;
-+	long rate;
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index c256c3edd663..97263b8e1bf8 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -183,7 +183,8 @@ lpfc_dev_loss_tmo_callbk(struct fc_rport *rport)
  
- 	__clk_hw_set_clk(div_hw, hw);
+ 	/* Don't schedule a worker thread event if the vport is going down. */
+ 	if (test_bit(FC_UNLOADING, &vport->load_flag) ||
+-	    !test_bit(HBA_SETUP, &phba->hba_flag)) {
++	    (phba->sli_rev == LPFC_SLI_REV4 &&
++	    !test_bit(HBA_SETUP, &phba->hba_flag))) {
  
-@@ -59,7 +59,7 @@ static int clk_periph_determine_rate(struct clk_hw *hw,
- 	if (rate < 0)
- 		return rate;
- 
--	req->rate = rate;
-+	req->rate = (unsigned long)rate;
- 	return 0;
- }
- 
+ 		spin_lock_irqsave(&ndlp->lock, iflags);
+ 		ndlp->rport = NULL;
 -- 
 2.39.5
 
