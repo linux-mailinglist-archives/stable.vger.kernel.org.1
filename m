@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-171446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9BBB2A9A5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:23:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE1EB2A6BA
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC8AA686CC9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:15:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16AA584B6C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67416322C9D;
-	Mon, 18 Aug 2025 14:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CFD321431;
+	Mon, 18 Aug 2025 13:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGYQ4Op5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTpTKPBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26699350847;
-	Mon, 18 Aug 2025 14:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DED321430;
+	Mon, 18 Aug 2025 13:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525951; cv=none; b=U0mnlXaZdpDWZGVPC/XTZ7JPH/4IDrpCAjAXh1j7hY8MtuJ2suLbGyC1nZEvIUcsPZ547sXmdUSI4JndX1YF+CYilvYy2npktYLDrYznrnZ3PVIcE5vg3nLsZGZpt0X16z30FTr3mW90AVW3y0qAkfUHqgbLMj81zLwjgsoI/hU=
+	t=1755524152; cv=none; b=r6aJiONtTk7iLY+Xi95rzZlRZZXzx5Q85rCePmw4NFu1ZPrWf3DCHRPZudhNXl0zLbin9G9GFvXo+VzO7ivvrnnIPFXNuNS+lIvjd6Kf+te3bxXU/XJ3kFviCmgBDSe+2EAWd2156zb6p5KVzOgEEyzfP4V0SRtfGwm9JXPD5HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525951; c=relaxed/simple;
-	bh=5foh16Ac4icF+lh5+uSURLAnfZZKqvRVd/yassZaNyI=;
+	s=arc-20240116; t=1755524152; c=relaxed/simple;
+	bh=oyFcJ1RD1SVrURkgFtwot3TDe0wy+xvqcsvMDWKT/OY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUg7POhn8xR7GkoHc3iTUu7wDErsMKpesnHr2RLaBcyQ3xYbhzzKSmQzoY/TK0aP4M8+zYnDhntAREWiilLhJj8EpGfiRcgZKnyN1Xs2OlBFsxwup8WhWOmt9dqDkN/iNj8HfM/vzp+YaWBlvgRnw92RQjLCIrOpbkDcIWZzjYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGYQ4Op5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F328C4CEEB;
-	Mon, 18 Aug 2025 14:05:50 +0000 (UTC)
+	 MIME-Version; b=LXTv61jsqElrhs3WJ2YDBuFMJ7rKx7qJcBPtyIpqeUmw3PFwQtRvaWsh3dC/WM5RQHAbJbPHppA9BSqfbPO4k5Rw2agJGR0j53CYJyBcFjX05RWJj15y/qOrr8M2MJCE9xTerinBFUkhJjwwzUNPH5MO72OgBN7e57gcGzaqick=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTpTKPBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80A1C4CEF1;
+	Mon, 18 Aug 2025 13:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525951;
-	bh=5foh16Ac4icF+lh5+uSURLAnfZZKqvRVd/yassZaNyI=;
+	s=korg; t=1755524152;
+	bh=oyFcJ1RD1SVrURkgFtwot3TDe0wy+xvqcsvMDWKT/OY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGYQ4Op5vnSKb74kbmgJONweS72omyJweL6L/RQC+By3PL0I2IH/hwoL5zB7LaeVl
-	 qgkyNd4T+T0nyEVu5P4fsdV8MxHvSq2FnFcZH6lPUE4kOobD2fcAcTabT7W1uI1d0I
-	 eB3QXN9SPX5Hyr74y2dFi6ncpvMJhIVpecWvnZJ4=
+	b=tTpTKPBYAA6vbq/LWSXl2N4f5BzIcsisqd0/QU0QCZIcVtxuU1CyziqAC6nEleL5J
+	 77TsNHIJZwN3KFJkfj1U4PpL/2TFmeR0LyeSFRWyeovfmtqDEV79A+LfcPtSuLbjct
+	 VgWmGuiC77iPhxroSOZ5coe4yVZDXQAKpDEtYlHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	chenchangcheng <chenchangcheng@kylinos.cn>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 381/570] jfs: upper bound check of tree index in dbAllocAG
-Date: Mon, 18 Aug 2025 14:46:08 +0200
-Message-ID: <20250818124520.527205482@linuxfoundation.org>
+Subject: [PATCH 6.15 383/515] media: uvcvideo: Fix bandwidth issue for Alcor camera
+Date: Mon, 18 Aug 2025 14:46:09 +0200
+Message-ID: <20250818124513.160686270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: chenchangcheng <chenchangcheng@kylinos.cn>
 
-[ Upstream commit c214006856ff52a8ff17ed8da52d50601d54f9ce ]
+[ Upstream commit 9764401bf6f8a20eb11c2e78470f20fee91a9ea7 ]
 
-When computing the tree index in dbAllocAG, we never check if we are
-out of bounds realative to the size of the stree.
-This could happen in a scenario where the filesystem metadata are
-corrupted.
+Some broken device return wrong dwMaxPayloadTransferSize fields as
+follows:
 
-Reported-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cffd18309153948f3c3e
-Tested-by: syzbot+cffd18309153948f3c3e@syzkaller.appspotmail.com
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+[  218.632537] uvcvideo: Device requested 2752512 B/frame bandwidth.
+[  218.632598] uvcvideo: No fast enough alt setting for requested bandwidth.
+
+When dwMaxPayloadTransferSize is greater than maxpsize, it will prevent
+the camera from starting. So use the bandwidth of maxpsize.
+
+Signed-off-by: chenchangcheng <chenchangcheng@kylinos.cn>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250510061803.811433-1-ccc194101@163.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/usb/uvc/uvc_video.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 5a877261c3fe..cdfa699cd7c8 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1389,6 +1389,12 @@ dbAllocAG(struct bmap * bmp, int agno, s64 nblocks, int l2nb, s64 * results)
- 	    (1 << (L2LPERCTL - (bmp->db_agheight << 1))) / bmp->db_agwidth;
- 	ti = bmp->db_agstart + bmp->db_agwidth * (agno & (agperlev - 1));
+diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+index e3567aeb0007..11769a1832d2 100644
+--- a/drivers/media/usb/uvc/uvc_video.c
++++ b/drivers/media/usb/uvc/uvc_video.c
+@@ -262,6 +262,15 @@ static void uvc_fixup_video_ctrl(struct uvc_streaming *stream,
  
-+	if (ti < 0 || ti >= le32_to_cpu(dcp->nleafs)) {
-+		jfs_error(bmp->db_ipbmap->i_sb, "Corrupt dmapctl page\n");
-+		release_metapage(mp);
-+		return -EIO;
-+	}
+ 		ctrl->dwMaxPayloadTransferSize = bandwidth;
+ 	}
 +
- 	/* dmap control page trees fan-out by 4 and a single allocation
- 	 * group may be described by 1 or 2 subtrees within the ag level
- 	 * dmap control page, depending upon the ag size. examine the ag's
++	if (stream->intf->num_altsetting > 1 &&
++	    ctrl->dwMaxPayloadTransferSize > stream->maxpsize) {
++		dev_warn_ratelimited(&stream->intf->dev,
++				     "UVC non compliance: the max payload transmission size (%u) exceeds the size of the ep max packet (%u). Using the max size.\n",
++				     ctrl->dwMaxPayloadTransferSize,
++				     stream->maxpsize);
++		ctrl->dwMaxPayloadTransferSize = stream->maxpsize;
++	}
+ }
+ 
+ static size_t uvc_video_ctrl_size(struct uvc_streaming *stream)
 -- 
 2.39.5
 
