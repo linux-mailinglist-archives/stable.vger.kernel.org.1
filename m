@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329C3B2A854
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3961DB2A305
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064FA1BA467C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 150741899DAE
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2852C335BAF;
-	Mon, 18 Aug 2025 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED09B258ED7;
+	Mon, 18 Aug 2025 12:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plTUg2r4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcIffwjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1603335BA7;
-	Mon, 18 Aug 2025 13:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA60D3218D1;
+	Mon, 18 Aug 2025 12:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525078; cv=none; b=e8YgS684K2CgN+ck2CTp3eKIxHWQfbVhrddH953V5LeRDkrH2Gp4oUvDQru8drPaMfv0LEN4NMXgfDOnKkOvWZkyQ0woYB2S6E9qPXkOgKz+2t9tAeobIgVhdJtUv5eKydcU9fyViQYcHEDE9tyUhxCO6ck64NwhP8lgqY2QPlY=
+	t=1755521848; cv=none; b=NNn5nZKyuTayaL0g+/XCgrvSRcS75a//A+bybEKj3AA8vZ0Ffnxxf0PGiB8Bj1Js7cNM6HxaDZJ2f15mWkI9T2tlU7YcYKDfI0QVJnMxEZMrsBOTyTmVAjGBgp+BEk9iAfbytc2afeEGt5XwrOSV4oSRwFD5E4fPIrli3q9lpuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525078; c=relaxed/simple;
-	bh=B7ONYW15dckmzkpEUyEqCakKBo+ZfSRk87VBdzJXtTA=;
+	s=arc-20240116; t=1755521848; c=relaxed/simple;
+	bh=LuWrDhlOJzNhXAKuhLyAiCK+s6uG9fT4mWSl/4L4Hgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/9JIs1FBB5e3Jit3MFADTw2kDmNEK2puRp1qGoswPAojNLTocEjeigaocXMHY12dy/dM+p2QrnZwltRvVLCQMNiyNQG1UeBWRNOu8kKwnPS9BZN9JPW/ORDPlwVHrW3tJs6Pwu1HOLjJ+skHmMUkZSSHOXgLQ1IL4camKRqMQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plTUg2r4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFE3C4CEEB;
-	Mon, 18 Aug 2025 13:51:17 +0000 (UTC)
+	 MIME-Version; b=r+qsVc2UZzGjBXPaHRUmVH8B+K/79NY0zLUX5zvGz4d9Sa3px6JkgMBLielOgFlqXgPnxHY6RURD5hpiPyUkUVFp0pvsSezws/IqrSNfJV3ydQrsOccyQJoFoHBfbQQEaLWFXQpXSSV3IUE5yIokwttqN/AAkf4ovTF7yadCJ+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcIffwjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC3DC4CEEB;
+	Mon, 18 Aug 2025 12:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525078;
-	bh=B7ONYW15dckmzkpEUyEqCakKBo+ZfSRk87VBdzJXtTA=;
+	s=korg; t=1755521848;
+	bh=LuWrDhlOJzNhXAKuhLyAiCK+s6uG9fT4mWSl/4L4Hgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plTUg2r4S+0iW0wwsEU/szH+KdQ3g1r8y7w77Gbsc4X2gWCUXoLEXjplJBqwPwq+q
-	 Elu+ySEPbbSJIu+3U9x0hO5dVY3NcIlHh6muEGgS1KZv7PUNVL9ePCBSQWLYGH7aOZ
-	 Tieq+aTa9tYoJHACeUTBTxrg3EUCrjYsvrQHHxF0=
+	b=IcIffwjZ1Dr0WPxBnyj+Z+ZPU5RtxJ2LWD5Ez5kx7Grsec67hYPs/iyH6Rxe/jUlz
+	 v2qErm0aotAauIYAr/ObuKgh7uObydVPgaem4B72XADHeoT00Az46fjpb8ZhwnQdYH
+	 7bshpvFHf/J39XogVcwRew2A5tfYeaT5ufVPYmo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 151/570] ASoC: soc-dapm: set bias_level if snd_soc_dapm_set_bias_level() was successed
-Date: Mon, 18 Aug 2025 14:42:18 +0200
-Message-ID: <20250818124511.632615858@linuxfoundation.org>
+Subject: [PATCH 6.12 113/444] PM / devfreq: governor: Replace sscanf() with kstrtoul() in set_freq_store()
+Date: Mon, 18 Aug 2025 14:42:19 +0200
+Message-ID: <20250818124453.167067654@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Lifeng Zheng <zhenglifeng1@huawei.com>
 
-[ Upstream commit f40ecc2743652c0b0f19935f81baf57c601eb7f0 ]
+[ Upstream commit 914cc799b28f17d369d5b4db3b941957d18157e8 ]
 
-ASoC has 2 functions to set bias level.
-	(A) snd_soc_dapm_force_bias_level()
-	(B) snd_soc_dapm_set_bias_level()
+Replace sscanf() with kstrtoul() in set_freq_store() and check the result
+to avoid invalid input.
 
-snd_soc_dapm_force_bias_level() (A) will set dapm->bias_level (a) if
-successed.
-
-(A)	int snd_soc_dapm_force_bias_level(...)
-	{
-		...
-		if (ret == 0)
-(a)			dapm->bias_level = level;
-		...
-	}
-
-snd_soc_dapm_set_bias_level() (B) is also a function that sets bias_level.
-It will call snd_soc_dapm_force_bias_level() (A) inside, but doesn't
-set dapm->bias_level by itself. One note is that (A) might not be called.
-
-(B)	static int snd_soc_dapm_set_bias_level(...)
-	{
-		...
-		ret = snd_soc_card_set_bias_level(...);
-		...
-		if (dapm != &card->dapm)
-(A)			ret = snd_soc_dapm_force_bias_level(...);
-		...
-		ret = snd_soc_card_set_bias_level_post(...);
-		...
-	}
-
-dapm->bias_level will be set if (A) was called, but might not be set
-if (B) was called, even though it calles set_bias_level() function.
-
-We should set dapm->bias_level if we calls
-snd_soc_dapm_set_bias_level() (B), too.
-
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/87qzyn4g4h.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Link: https://lore.kernel.org/lkml/20250421030020.3108405-2-zhenglifeng1@huawei.com/
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dapm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/devfreq/governor_userspace.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
-index f26f9e9d7ce7..7d9c9e8839f6 100644
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -739,6 +739,10 @@ static int snd_soc_dapm_set_bias_level(struct snd_soc_dapm_context *dapm,
- out:
- 	trace_snd_soc_bias_level_done(dapm, level);
+diff --git a/drivers/devfreq/governor_userspace.c b/drivers/devfreq/governor_userspace.c
+index d1aa6806b683..175de0c0b50e 100644
+--- a/drivers/devfreq/governor_userspace.c
++++ b/drivers/devfreq/governor_userspace.c
+@@ -9,6 +9,7 @@
+ #include <linux/slab.h>
+ #include <linux/device.h>
+ #include <linux/devfreq.h>
++#include <linux/kstrtox.h>
+ #include <linux/pm.h>
+ #include <linux/mutex.h>
+ #include <linux/module.h>
+@@ -39,10 +40,13 @@ static ssize_t set_freq_store(struct device *dev, struct device_attribute *attr,
+ 	unsigned long wanted;
+ 	int err = 0;
  
-+	/* success */
-+	if (ret == 0)
-+		snd_soc_dapm_init_bias_level(dapm, level);
++	err = kstrtoul(buf, 0, &wanted);
++	if (err)
++		return err;
 +
- 	return ret;
- }
+ 	mutex_lock(&devfreq->lock);
+ 	data = devfreq->governor_data;
  
+-	sscanf(buf, "%lu", &wanted);
+ 	data->user_frequency = wanted;
+ 	data->valid = true;
+ 	err = update_devfreq(devfreq);
 -- 
 2.39.5
 
