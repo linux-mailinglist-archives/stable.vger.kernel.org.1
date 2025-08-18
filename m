@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-171048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5118EB2A7EB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:58:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03299B2A4A0
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 370F9687249
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:45:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5194762487C
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C58E31AF00;
-	Mon, 18 Aug 2025 13:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565A1320CCF;
+	Mon, 18 Aug 2025 13:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xy7oCgaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqlgQXfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599682C235C;
-	Mon, 18 Aug 2025 13:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135B13203A2;
+	Mon, 18 Aug 2025 13:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524647; cv=none; b=BJYJFZ0do0R9/bGFLUSd9ziIKTSnLW0CK19d10Sbbe/31v2EX1+o388V889Z2KVn73wkNJaPjLahBQRJLe3v2Ph5lWV7wG2TDg6m9XxJtM7Uduh1yGQ36Zv/ORqtfwl4iJ6W5hzSDEyhZZhCN/2j3+IbObEswnHjMAuaG7Aoew8=
+	t=1755522907; cv=none; b=uQSWm5+f+ApfqdS//HDrNJBpq9ndjLKxfJTkEFFhXLRuX3I5VakXBAFJddcfW1sAxGTmIjtANuiXR9GFXQwAK0c9TGTm7uAgNta1nF1qs+tA1GuhWbv+iafMHWHkH36cXBIlgw7zB1hKaDjLCuc0ZB4b9Q3RdZreFVTt7oHPVYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524647; c=relaxed/simple;
-	bh=r2J2CE8fVudcpHHr+W7BBYtXL6rI02kO8DG1Gg4F7go=;
+	s=arc-20240116; t=1755522907; c=relaxed/simple;
+	bh=FIxlp7rjKR/0q98z1pL6mdQwmbyAy1Y4IWPeOz67Eh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J986L1yRgb0Q0j/cHweGXOddDlLuM/ffNbzXNh9VqEN0Pv/mg5LbFYjX/x0j5YuZYnRNn8+ktD/ueY0r9KgBCidtDPGs/k0laepPyatgoaQXsMsDPmgOPyzR4PerINlbbCqyM0hMw465Av+nvHD2AuISVut1sk/4Y9rbgNy3YZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xy7oCgaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FEBC4CEEB;
-	Mon, 18 Aug 2025 13:44:06 +0000 (UTC)
+	 MIME-Version; b=YWzA/wBvABnzQ3Lchn8pP1lxeEjTy6uC1hk65HravyHLYkHdvGFxcgjh6qJg4Ycrhrb+A0UeGQc8tP29BY+0T9C7HwWndZ4B1MaaurqppvKu5nErYhzTvwgnBFxcleaomEchmlJrBRR5pdrt/sAqRMSGc6LpkYQcSyRbYezYdq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqlgQXfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31ECAC4CEEB;
+	Mon, 18 Aug 2025 13:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524647;
-	bh=r2J2CE8fVudcpHHr+W7BBYtXL6rI02kO8DG1Gg4F7go=;
+	s=korg; t=1755522906;
+	bh=FIxlp7rjKR/0q98z1pL6mdQwmbyAy1Y4IWPeOz67Eh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xy7oCgaMcxm8KkVhSkPDKkc21UBuY3zau8nOEy23PvmUfey19QE09KqE4wu0ygeB8
-	 CEARo9btuD0Zk0txt3rSP6p0WJXRgoh38eRHJtFzH+rYPIpaYV+aI5p/MhpWHFmq4K
-	 cHSSjvKNzefFRWhXWhs4kNC0S01WD7VGNNvmBNvI=
+	b=QqlgQXfX7BHTtdx6yDpD2LHI5T0dlMejSAqCKUf63GewXpv4mNrDBokvcVa2snoRJ
+	 eVkd4sv5oZFGS5CPOA1I6ZhKcRX/zZtjTBYB7ADc8c6yVd3q4uHztTPt4fJ35CKTMq
+	 ZJ5wOHoozqjfMS3vSqVCJ5qjZIQxRdcNsL9yheWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
+	pt x <superman.xpt@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.16 002/570] io_uring: export io_[un]account_mem
-Date: Mon, 18 Aug 2025 14:39:49 +0200
-Message-ID: <20250818124505.882099503@linuxfoundation.org>
+Subject: [PATCH 6.15 004/515] io_uring/net: commit partial buffers on retry
+Date: Mon, 18 Aug 2025 14:39:50 +0200
+Message-ID: <20250818124458.504484499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 11fbada7184f9e19bcdfa2f6b15828a78b8897a6 upstream.
+commit 41b70df5b38bc80967d2e0ed55cc3c3896bba781 upstream.
 
-Export pinned memory accounting helpers, they'll be used by zcrx
-shortly.
+Ring provided buffers are potentially only valid within the single
+execution context in which they were acquired. io_uring deals with this
+and invalidates them on retry. But on the networking side, if
+MSG_WAITALL is set, or if the socket is of the streaming type and too
+little was processed, then it will hang on to the buffer rather than
+recycle or commit it. This is problematic for two reasons:
+
+1) If someone unregisters the provided buffer ring before a later retry,
+   then the req->buf_list will no longer be valid.
+
+2) If multiple sockers are using the same buffer group, then multiple
+   receives can consume the same memory. This can cause data corruption
+   in the application, as either receive could land in the same
+   userspace buffer.
+
+Fix this by disallowing partial retries from pinning a provided buffer
+across multiple executions, if ring provided buffers are used.
 
 Cc: stable@vger.kernel.org
-Fixes: cf96310c5f9a0 ("io_uring/zcrx: add io_zcrx_area")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/9a61e54bd89289b39570ae02fe620e12487439e4.1752699568.git.asml.silence@gmail.com
+Reported-by: pt x <superman.xpt@gmail.com>
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rsrc.c |    4 ++--
- io_uring/rsrc.h |    2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ io_uring/net.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -55,7 +55,7 @@ int __io_account_mem(struct user_struct
- 	return 0;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -482,6 +482,15 @@ static int io_bundle_nbufs(struct io_asy
+ 	return nbufs;
  }
  
--static void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
-+void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
- {
- 	if (ctx->user)
- 		__io_unaccount_mem(ctx->user, nr_pages);
-@@ -64,7 +64,7 @@ static void io_unaccount_mem(struct io_r
- 		atomic64_sub(nr_pages, &ctx->mm_account->pinned_vm);
- }
++static int io_net_kbuf_recyle(struct io_kiocb *req,
++			      struct io_async_msghdr *kmsg, int len)
++{
++	req->flags |= REQ_F_BL_NO_RECYCLE;
++	if (req->flags & REQ_F_BUFFERS_COMMIT)
++		io_kbuf_commit(req, req->buf_list, len, io_bundle_nbufs(kmsg, len));
++	return IOU_RETRY;
++}
++
+ static inline bool io_send_finish(struct io_kiocb *req, int *ret,
+ 				  struct io_async_msghdr *kmsg,
+ 				  unsigned issue_flags)
+@@ -550,8 +559,7 @@ int io_sendmsg(struct io_kiocb *req, uns
+ 			kmsg->msg.msg_controllen = 0;
+ 			kmsg->msg.msg_control = NULL;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -661,8 +669,7 @@ retry_bundle:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1034,8 +1041,7 @@ retry_multishot:
+ 		}
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return IOU_RETRY;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1175,8 +1181,7 @@ retry_multishot:
+ 			sr->len -= ret;
+ 			sr->buf += ret;
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1461,8 +1466,7 @@ int io_send_zc(struct io_kiocb *req, uns
+ 			zc->len -= ret;
+ 			zc->buf += ret;
+ 			zc->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
+@@ -1532,8 +1536,7 @@ int io_sendmsg_zc(struct io_kiocb *req,
  
--static int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
-+int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages)
- {
- 	int ret;
- 
---- a/io_uring/rsrc.h
-+++ b/io_uring/rsrc.h
-@@ -120,6 +120,8 @@ int io_files_update(struct io_kiocb *req
- int io_files_update_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
- 
- int __io_account_mem(struct user_struct *user, unsigned long nr_pages);
-+int io_account_mem(struct io_ring_ctx *ctx, unsigned long nr_pages);
-+void io_unaccount_mem(struct io_ring_ctx *ctx, unsigned long nr_pages);
- 
- static inline void __io_unaccount_mem(struct user_struct *user,
- 				      unsigned long nr_pages)
+ 		if (ret > 0 && io_net_retry(sock, flags)) {
+ 			sr->done_io += ret;
+-			req->flags |= REQ_F_BL_NO_RECYCLE;
+-			return -EAGAIN;
++			return io_net_kbuf_recyle(req, kmsg, ret);
+ 		}
+ 		if (ret == -ERESTARTSYS)
+ 			ret = -EINTR;
 
 
 
