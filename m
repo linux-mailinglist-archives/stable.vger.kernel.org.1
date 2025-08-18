@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-170486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A19CB2A44D
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 912B9B2A77B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 874B36272C9
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C74D1B67492
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FDB31B100;
-	Mon, 18 Aug 2025 13:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6422C321F28;
+	Mon, 18 Aug 2025 13:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTtwQNQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mshty43K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A1730F7F8;
-	Mon, 18 Aug 2025 13:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22710220696;
+	Mon, 18 Aug 2025 13:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522792; cv=none; b=Nxz1+ZHCtb5Ao+8b1TPv6zdp62NhSXmXCjGSxi02SQW9mDkCknDjVY8/91oa0VPrZ0ZKdRLpM7qdBxdl6gz6jA3MvnLw+YMrRo56gtICyBEXfKh8E2gqwrR+h1yGqLBN71oWvod+ovhDDaKeNQn/m3Mz9o0H4Giqx0vFUAuFZzQ=
+	t=1755524410; cv=none; b=DkP/2miPV8lsA+qZ0U9k6bhvlymOoVvFH/3wjAoOl+2s5w7PiKs4BEvmPXMxYw957Xif/mvLZbThQY2JKcPHDF4VTgm4ihyvf+MRbuPIcZTy8sucl4fMGzIpv8Ygn5+uDWLNU/ZYIIDPi1HxcVzIYoqbsKnxZ5OQxzMOIN1LgEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522792; c=relaxed/simple;
-	bh=dDGCxXdkGuLbrl6hDZ5OyZI+p2JIr3VCjU9ySIG9ii4=;
+	s=arc-20240116; t=1755524410; c=relaxed/simple;
+	bh=j1yTaBjZRl7MjIvCmBs0nww/wVhm/3IPOOvWTiBYo28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCM0XOdutsIlU0hFPvnKQqjZBzLXPrLXqTDji4MCtBbZMw8bXwzDvlOljrEE7MMFZIvb/P8dLCI55Awj9SH6IrdvPkNMZAgqLl4KivvghbA8kdk/qLl5XSSU9ylJQVeRLqW10BchTGQPbmOmtnUNZjBRyTLjborzfJ0gHcwRNXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTtwQNQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C98C4CEEB;
-	Mon, 18 Aug 2025 13:13:11 +0000 (UTC)
+	 MIME-Version; b=SIbN0CB3ZNlUhcMieG+pCTdDyT+FNUnYYmSXHKh1nOKqLYcIwJFBBRkpsBUz1aSZ0LoYGdpi7SLPUk9Yi73PUQe6FCG24H2hV9ZY39lRs/R0X6ojzJrxFfgU9Ju8ePSozfwv/vNrUMlQ8rJ8Fl9yEKVjG6AMdMqjmJWzgL+KCQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mshty43K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F268C116D0;
+	Mon, 18 Aug 2025 13:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522792;
-	bh=dDGCxXdkGuLbrl6hDZ5OyZI+p2JIr3VCjU9ySIG9ii4=;
+	s=korg; t=1755524409;
+	bh=j1yTaBjZRl7MjIvCmBs0nww/wVhm/3IPOOvWTiBYo28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BTtwQNQWOqNVWimguVNhU3yLGpe8hLhDRm90OAe1pOi3xcU9aTlZ+PTLTXhNnHcGk
-	 +FvrGlPVLNFJd95ttrRN7+LUBypkb6fcrfhe4qavCPOu2od6/eij5gBUjLO1LC7zb1
-	 Csy/YHzrAfiRNdd1ahcMITNd4gWEZh/XOx0hTdPU=
+	b=Mshty43KQGmkS7+T885VdTqHqAHYXmVrsoqqalvVi2RZW3CMRUeooR7hZtm3MDtDG
+	 PLbYxy6JHAyGOxkelHF261XVggVcZmwfHTzFsdxExwXLTfa+aJYaG+gn6lO/JUu4+H
+	 EH+9m7awF8t0z2D70eILJ1bFCYUE3sv/8ni7N/8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya08@live.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 422/444] HID: magicmouse: avoid setting up battery timer when not needed
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.15 462/515] btrfs: zoned: use filesystem size not disk size for reclaim decision
 Date: Mon, 18 Aug 2025 14:47:28 +0200
-Message-ID: <20250818124504.767424309@linuxfoundation.org>
+Message-ID: <20250818124516.205664284@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-commit 9bdc30e35cbc1aa78ccf01040354209f1e11ca22 upstream.
+commit 55f7c65b2f69c7e4cb7aa7c1654a228ccf734fd8 upstream.
 
-Currently, the battery timer is set up for all devices using
-hid-magicmouse, irrespective of whether they actually need it or not.
+When deciding if a zoned filesystem is reaching the threshold to reclaim
+data block groups, look at the size of the filesystem not to potentially
+total available size of all drives in the filesystem.
 
-The current implementation requires the battery timer for Magic Mouse 2
-and Magic Trackpad 2 when connected via USB only. Add checks to ensure
-that the battery timer is only set up when they are connected via USB.
+Especially if a filesystem was created with mkfs' -b option, constraining
+it to only a portion of the block device, the numbers won't match and
+potentially garbage collection is kicking in too late.
 
-Fixes: 0b91b4e4dae6 ("HID: magicmouse: Report battery level over USB")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 3687fcb0752a ("btrfs: zoned: make auto-reclaim less aggressive")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
+ fs/btrfs/zoned.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
----
- drivers/hid/hid-magicmouse.c |   58 ++++++++++++++++++++++++++++---------------
- 1 file changed, 38 insertions(+), 20 deletions(-)
-
---- a/drivers/hid/hid-magicmouse.c
-+++ b/drivers/hid/hid-magicmouse.c
-@@ -775,16 +775,30 @@ static void magicmouse_enable_mt_work(st
- 		hid_err(msc->hdev, "unable to request touch data (%d)\n", ret);
- }
- 
-+static bool is_usb_magicmouse2(__u32 vendor, __u32 product)
-+{
-+	if (vendor != USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product == USB_DEVICE_ID_APPLE_MAGICMOUSE2;
-+}
-+
-+static bool is_usb_magictrackpad2(__u32 vendor, __u32 product)
-+{
-+	if (vendor != USB_VENDOR_ID_APPLE)
-+		return false;
-+	return product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
-+	       product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC;
-+}
-+
- static int magicmouse_fetch_battery(struct hid_device *hdev)
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2477,8 +2477,8 @@ bool btrfs_zoned_should_reclaim(const st
  {
- #ifdef CONFIG_HID_BATTERY_STRENGTH
- 	struct hid_report_enum *report_enum;
- 	struct hid_report *report;
+ 	struct btrfs_fs_devices *fs_devices = fs_info->fs_devices;
+ 	struct btrfs_device *device;
++	u64 total = btrfs_super_total_bytes(fs_info->super_copy);
+ 	u64 used = 0;
+-	u64 total = 0;
+ 	u64 factor;
  
--	if (!hdev->battery || hdev->vendor != USB_VENDOR_ID_APPLE ||
--	    (hdev->product != USB_DEVICE_ID_APPLE_MAGICMOUSE2 &&
--	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 &&
--	     hdev->product != USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC))
-+	if (!hdev->battery ||
-+	    (!is_usb_magicmouse2(hdev->vendor, hdev->product) &&
-+	     !is_usb_magictrackpad2(hdev->vendor, hdev->product)))
- 		return -1;
+ 	ASSERT(btrfs_is_zoned(fs_info));
+@@ -2491,7 +2491,6 @@ bool btrfs_zoned_should_reclaim(const st
+ 		if (!device->bdev)
+ 			continue;
  
- 	report_enum = &hdev->report_enum[hdev->battery_report_type];
-@@ -846,16 +860,17 @@ static int magicmouse_probe(struct hid_d
- 		return ret;
+-		total += device->disk_total_bytes;
+ 		used += device->bytes_used;
  	}
- 
--	timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
--	mod_timer(&msc->battery_timer,
--		  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
--	magicmouse_fetch_battery(hdev);
--
--	if (id->vendor == USB_VENDOR_ID_APPLE &&
--	    (id->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     ((id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
--	       id->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
--	      hdev->type != HID_TYPE_USBMOUSE)))
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product)) {
-+		timer_setup(&msc->battery_timer, magicmouse_battery_timer_tick, 0);
-+		mod_timer(&msc->battery_timer,
-+			  jiffies + msecs_to_jiffies(USB_BATTERY_TIMEOUT_MS));
-+		magicmouse_fetch_battery(hdev);
-+	}
-+
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    (is_usb_magictrackpad2(id->vendor, id->product) &&
-+	     hdev->type != HID_TYPE_USBMOUSE))
- 		return 0;
- 
- 	if (!msc->input) {
-@@ -911,7 +926,10 @@ static int magicmouse_probe(struct hid_d
- 
- 	return 0;
- err_stop_hw:
--	del_timer_sync(&msc->battery_timer);
-+	if (is_usb_magicmouse2(id->vendor, id->product) ||
-+	    is_usb_magictrackpad2(id->vendor, id->product))
-+		del_timer_sync(&msc->battery_timer);
-+
- 	hid_hw_stop(hdev);
- 	return ret;
- }
-@@ -922,7 +940,9 @@ static void magicmouse_remove(struct hid
- 
- 	if (msc) {
- 		cancel_delayed_work_sync(&msc->work);
--		del_timer_sync(&msc->battery_timer);
-+		if (is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+		    is_usb_magictrackpad2(hdev->vendor, hdev->product))
-+			del_timer_sync(&msc->battery_timer);
- 	}
- 
- 	hid_hw_stop(hdev);
-@@ -939,10 +959,8 @@ static const __u8 *magicmouse_report_fix
- 	 *   0x05, 0x01,       // Usage Page (Generic Desktop)        0
- 	 *   0x09, 0x02,       // Usage (Mouse)                       2
- 	 */
--	if (hdev->vendor == USB_VENDOR_ID_APPLE &&
--	    (hdev->product == USB_DEVICE_ID_APPLE_MAGICMOUSE2 ||
--	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2 ||
--	     hdev->product == USB_DEVICE_ID_APPLE_MAGICTRACKPAD2_USBC) &&
-+	if ((is_usb_magicmouse2(hdev->vendor, hdev->product) ||
-+	     is_usb_magictrackpad2(hdev->vendor, hdev->product)) &&
- 	    *rsize == 83 && rdesc[46] == 0x84 && rdesc[58] == 0x85) {
- 		hid_info(hdev,
- 			 "fixing up magicmouse battery report descriptor\n");
+ 	mutex_unlock(&fs_devices->device_list_mutex);
 
 
 
