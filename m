@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C6BB2A74A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:51:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DC1B2AA3D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 441971B27CF7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:44:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01FD16E6281
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:20:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B00331E115;
-	Mon, 18 Aug 2025 13:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F39B337681;
+	Mon, 18 Aug 2025 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6ulytOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu+2j4dG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576FB3101B1;
-	Mon, 18 Aug 2025 13:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFA435085C;
+	Mon, 18 Aug 2025 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524586; cv=none; b=M7hAW611QwyDnJQrliuLpyAnD9JCqIHofdV8uIcBhrVmnBUuJyA5SVKWrsn+EQnDKP+l7UMwT9+Ay8QCDq+WfwH3dubPbM5Aqy/wD2wBvQ3KDjNh54hAhS29dAbMWHJHGBQ2Obefem9+rUQwHD3lRIGgp9JC/MubqZihvbXjf94=
+	t=1755526258; cv=none; b=UypbDh38qdgQyIup28eUF5bcQFdiFuoBKe6NrMHHeFrCdGG/6sUhkqChfWrYRcX6lCaWN9UJzUBs4LDG/RwgK41qYsh5C6t7qv5AcP1lv4J0Kzi6ZgjMpgZC8i6Ox6sybVSc27dSIq2Ysp6rnIA0gH1k5E4IRXBfB7HbwfNwKtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524586; c=relaxed/simple;
-	bh=HS683v4aBdJBws3fn6IOWKxTliE1N+cKnCuKr3WRGJE=;
+	s=arc-20240116; t=1755526258; c=relaxed/simple;
+	bh=Prs1UNHqz2XGTg9H+4fOPpTMAacxeQgcG2vfCUHgpD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jbzHp6pMlASEUI3x+4b95bVGTFTNyCskcuGwST4nTvagKsyT8/w5xpNF/nP/ZEDoqHShKHhaxmzvjtyIX7juRapToVP2JF5P/ro2XLhPT/AEm8VYb02p9qLXi9HfdlmHnnWCxdCIvfSzGUsHQ24tiA/nHPspCzl9h59Tc1XfnBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6ulytOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EF3C116B1;
-	Mon, 18 Aug 2025 13:43:05 +0000 (UTC)
+	 MIME-Version; b=oiln1qoRAAQsaegJ6YiS27XnRyPqConuoBPc06SwhWm1l2AozHA8OQIXpjyypEX1ZN2mc6BC1tlobl8DvziFsV2MIbLPca9MGM3pBIYKMwtQ4FSTKIpu0yzcIvDyVl9VrJ3bTolUZojZt4aWfGf0FEUxn3/jU97QTR/w89KzO8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu+2j4dG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A097C4CEEB;
+	Mon, 18 Aug 2025 14:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524586;
-	bh=HS683v4aBdJBws3fn6IOWKxTliE1N+cKnCuKr3WRGJE=;
+	s=korg; t=1755526258;
+	bh=Prs1UNHqz2XGTg9H+4fOPpTMAacxeQgcG2vfCUHgpD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6ulytOZorZhww+RR0Fdd9mnmf5qWiKKrifrgjlegRjj8zVpg+2JbVhB5SJ9MS6AV
-	 iUpd22hRR1PwlImL5i2ph3s+rX6n84JQruI+T86cMKK8EWO5v++Mv8QWQnkpvMX3af
-	 LpnQ/K5U3Gt8n3eol4O6xphHWM7Z6F3TKHbL/tTE=
+	b=nu+2j4dG4g62eyasLz4guxgh9hDdHVnczv3IBwLcmKcMX+n863dUu5rXKYib2MXIx
+	 /lm9BFUx2xHMXBRYmXUpdJSzm6sQPqYxHH0lU779TgNC+eduj8kPinibHvFQiY1rwg
+	 8zDps5/IrxYjG5q84fTh07fWUlrxwMWPOGMaNzFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 503/515] KVM: VMX: Extract checking of guests DEBUGCTL into helper
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.16 502/570] ext4: fix zombie groups in average fragment size lists
 Date: Mon, 18 Aug 2025 14:48:09 +0200
-Message-ID: <20250818124517.809079748@linuxfoundation.org>
+Message-ID: <20250818124525.198071146@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 8a4351ac302cd8c19729ba2636acfd0467c22ae8 upstream.
+commit 1c320d8e92925bb7615f83a7b6e3f402a5c2ca63 upstream.
 
-Move VMX's logic to check DEBUGCTL values into a standalone helper so that
-the code can be used by nested VM-Enter to apply the same logic to the
-value being loaded from vmcs12.
+Groups with no free blocks shouldn't be in any average fragment size list.
+However, when all blocks in a group are allocated(i.e., bb_fragments or
+bb_free is 0), we currently skip updating the average fragment size, which
+means the group isn't removed from its previous s_mb_avg_fragment_size[old]
+list.
 
-KVM needs to explicitly check vmcs12->guest_ia32_debugctl on nested
-VM-Enter, as hardware may support features that KVM does not, i.e. relying
-on hardware to detect invalid guest state will result in false negatives.
-Unfortunately, that means applying KVM's funky suppression of BTF and LBR
-to vmcs12 so as not to break existing guests.
+This created "zombie" groups that were always skipped during traversal as
+they couldn't satisfy any block allocation requests, negatively impacting
+traversal efficiency.
 
-No functional change intended.
+Therefore, when a group becomes completely full, bb_avg_fragment_size_order
+is now set to -1. If the old order was not -1, a removal operation is
+performed; if the new order is not -1, an insertion is performed.
 
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Link: https://lore.kernel.org/r/20250610232010.162191-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 095686e6fcb4 ("KVM: nVMX: Check vmcs12->guest_ia32_debugctl on nested VM-Enter")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250714130327.1830534-11-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c |   29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ fs/ext4/mballoc.c |   34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2199,6 +2199,19 @@ static u64 vmx_get_supported_debugctl(st
- 	return debugctl;
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -841,30 +841,30 @@ static void
+ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	int new_order;
++	int new, old;
+ 
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
++	if (!test_opt2(sb, MB_OPTIMIZE_SCAN))
+ 		return;
+ 
+-	new_order = mb_avg_fragment_size_order(sb,
+-					grp->bb_free / grp->bb_fragments);
+-	if (new_order == grp->bb_avg_fragment_size_order)
++	old = grp->bb_avg_fragment_size_order;
++	new = grp->bb_fragments == 0 ? -1 :
++	      mb_avg_fragment_size_order(sb, grp->bb_free / grp->bb_fragments);
++	if (new == old)
+ 		return;
+ 
+-	if (grp->bb_avg_fragment_size_order != -1) {
+-		write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++	if (old >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[old]);
+ 		list_del(&grp->bb_avg_fragment_size_node);
+-		write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[old]);
++	}
++
++	grp->bb_avg_fragment_size_order = new;
++	if (new >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[new]);
++		list_add_tail(&grp->bb_avg_fragment_size_node,
++				&sbi->s_mb_avg_fragment_size[new]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[new]);
+ 	}
+-	grp->bb_avg_fragment_size_order = new_order;
+-	write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
+-	list_add_tail(&grp->bb_avg_fragment_size_node,
+-		&sbi->s_mb_avg_fragment_size[grp->bb_avg_fragment_size_order]);
+-	write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
  }
  
-+static bool vmx_is_valid_debugctl(struct kvm_vcpu *vcpu, u64 data,
-+				  bool host_initiated)
-+{
-+	u64 invalid;
-+
-+	invalid = data & ~vmx_get_supported_debugctl(vcpu, host_initiated);
-+	if (invalid & (DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR)) {
-+		kvm_pr_unimpl_wrmsr(vcpu, MSR_IA32_DEBUGCTLMSR, data);
-+		invalid &= ~(DEBUGCTLMSR_BTF | DEBUGCTLMSR_LBR);
-+	}
-+	return !invalid;
-+}
-+
  /*
-  * Writes msr value into the appropriate "register".
-  * Returns 0 on success, non-0 otherwise.
-@@ -2267,19 +2280,12 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, s
- 		}
- 		vmcs_writel(GUEST_SYSENTER_ESP, data);
- 		break;
--	case MSR_IA32_DEBUGCTLMSR: {
--		u64 invalid;
--
--		invalid = data & ~vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
--		if (invalid & (DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR)) {
--			kvm_pr_unimpl_wrmsr(vcpu, msr_index, data);
--			data &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
--			invalid &= ~(DEBUGCTLMSR_BTF|DEBUGCTLMSR_LBR);
--		}
--
--		if (invalid)
-+	case MSR_IA32_DEBUGCTLMSR:
-+		if (!vmx_is_valid_debugctl(vcpu, data, msr_info->host_initiated))
- 			return 1;
- 
-+		data &= vmx_get_supported_debugctl(vcpu, msr_info->host_initiated);
-+
- 		if (is_guest_mode(vcpu) && get_vmcs12(vcpu)->vm_exit_controls &
- 						VM_EXIT_SAVE_DEBUG_CONTROLS)
- 			get_vmcs12(vcpu)->guest_ia32_debugctl = data;
-@@ -2289,7 +2295,6 @@ int vmx_set_msr(struct kvm_vcpu *vcpu, s
- 		    (data & DEBUGCTLMSR_LBR))
- 			intel_pmu_create_guest_lbr_event(vcpu);
- 		return 0;
--	}
- 	case MSR_IA32_BNDCFGS:
- 		if (!kvm_mpx_supported() ||
- 		    (!msr_info->host_initiated &&
 
 
 
