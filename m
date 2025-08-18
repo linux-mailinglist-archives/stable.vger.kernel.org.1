@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-170114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406DCB2A256
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:56:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97479B2A7B5
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09AA6221FA
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:54:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A92583E15
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639B1320CBA;
-	Mon, 18 Aug 2025 12:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B15F216E23;
+	Mon, 18 Aug 2025 13:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahx3F3hq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oviv6fso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ED331E0FB;
-	Mon, 18 Aug 2025 12:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275AB1E48A;
+	Mon, 18 Aug 2025 13:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521561; cv=none; b=KaD/QCdIajPIJ5kznELerbak+5iVGa8ZGzFc65VyQI0NnW73N3+KII3CP6leSr1f4rXuGmra9VI5ZXWjnqUprp+Twy1QyUioUPGWPnCDG92WXI1TDodI2PMKoHc44IrJ2rGY1myDO1dmyTOxxIx/3vNR3leJUjT/ipceKMUb8gQ=
+	t=1755524922; cv=none; b=Zl6n1+ccU326tmWgaE3LnN40KTvuwOew14FdLNCXw88DKhbkG1K99PzQMlesJfPt7GOatnJc2XewvtnFgUtxfBmGPNzeL+ktTj14v62fAA0z59YfjboWn1/ILXqFAkTKy9ZWs/lOEfKgUvmSLGD4Zp20h0UM+318z6f4nN6IfSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521561; c=relaxed/simple;
-	bh=683vTj0DqQ7QLdL4a5RHXiGJeaPMRhLCirKSgOHvB+I=;
+	s=arc-20240116; t=1755524922; c=relaxed/simple;
+	bh=3B6x166sKIbyy311ID1Pr0C1qh23liM8l/mfD/OXhb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIZrAcPzxJ9OH+TIyf1eH7YQF1ynLRqMoBf3k/kGCZzHxUdIMNdi4LmzLVoMW21NZzwL1plC+cOCItTO1niQ71jJlGMGK37Z3TmkkyJgSQiOormPRrmCjBKcDNd+igPQEPxBog+S1aaQ1b9I4Axem+orRA/M+p+tnQnAoGm1fZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahx3F3hq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8629DC4CEEB;
-	Mon, 18 Aug 2025 12:52:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hqhoZnDZN8xtDyWUdwCwP7+PIBqxkcTnzfrjeuVoZvh25EBPUJElWPtJ57hG+L5Hkh6kGAYbfaEzSoiSTPLdSuhrVUllqeRExK+4fagTnNllQ3jahgYGfaMZP7YAzh16RXY1+G3HssPkmlYZoeoUrDNvZ1xpW4tQ7fo3nBj99so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oviv6fso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89812C4CEEB;
+	Mon, 18 Aug 2025 13:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521561;
-	bh=683vTj0DqQ7QLdL4a5RHXiGJeaPMRhLCirKSgOHvB+I=;
+	s=korg; t=1755524922;
+	bh=3B6x166sKIbyy311ID1Pr0C1qh23liM8l/mfD/OXhb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahx3F3hqvMpX+ctQhi29b3ucQsYAPPPfl4mItniI4u11pviho8oGqIb/CSXz5AeXQ
-	 0j+qpZvAQOQQPNfZFygPKoZWJFJQJKHl5PnbbvKS4ek2cOtZOZ3zm4kJBzNyLwllNX
-	 UlMGxUoCwIOr0Do2WlbhakHXHRJKX33/yfud5cCM=
+	b=Oviv6fso6uRJqsK4IhhHtjqsbxshNp1JIDEYtF9myT/7+OB63890SYxNPnr66zZsA
+	 y9tE+fHfhF0unwEE+tWBNRxpNyruiMA5grk+aJYvodRlDfWtRaqDhb7I8snHPpbkCY
+	 ZYP0NsoNm7U14Jp651Pz1Xi3g7ypgf5n1v6ZNZnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com,
-	syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/444] sctp: linearize cloned gso packets in sctp_rcv
+Subject: [PATCH 6.16 097/570] firmware: arm_ffa: Change initcall level of ffa_init() to rootfs_initcall
 Date: Mon, 18 Aug 2025 14:41:24 +0200
-Message-ID: <20250818124451.107975876@linuxfoundation.org>
+Message-ID: <20250818124509.551870471@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit fd60d8a086191fe33c2d719732d2482052fa6805 ]
+[ Upstream commit 0e0546eabcd6c19765a8dbf5b5db3723e7b0ea75 ]
 
-A cloned head skb still shares these frag skbs in fraglist with the
-original head skb. It's not safe to access these frag skbs.
+The Linux IMA (Integrity Measurement Architecture) subsystem used for
+secure boot, file integrity, or remote attestation cannot be a loadable
+module for few reasons listed below:
 
-syzbot reported two use-of-uninitialized-memory bugs caused by this:
+ o Boot-Time Integrity: IMA’s main role is to measure and appraise files
+ before they are used. This includes measuring critical system files during
+ early boot (e.g., init, init scripts, login binaries). If IMA were a
+ module, it would be loaded too late to cover those.
 
-  BUG: KMSAN: uninit-value in sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
-   sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
-   sctp_assoc_bh_rcv+0x1a7/0xc50 net/sctp/associola.c:998
-   sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
-   sctp_backlog_rcv+0x397/0xdb0 net/sctp/input.c:331
-   sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1122
-   __release_sock+0x1da/0x330 net/core/sock.c:3106
-   release_sock+0x6b/0x250 net/core/sock.c:3660
-   sctp_wait_for_connect+0x487/0x820 net/sctp/socket.c:9360
-   sctp_sendmsg_to_asoc+0x1ec1/0x1f00 net/sctp/socket.c:1885
-   sctp_sendmsg+0x32b9/0x4a80 net/sctp/socket.c:2031
-   inet_sendmsg+0x25a/0x280 net/ipv4/af_inet.c:851
-   sock_sendmsg_nosec net/socket.c:718 [inline]
+ o TPM Dependency: IMA integrates tightly with the TPM to record
+ measurements into PCRs. The TPM must be initialized early (ideally before
+ init_ima()), which aligns with IMA being built-in.
 
-and
+ o Security Model: IMA is part of a Trusted Computing Base (TCB). Making it
+ a module would weaken the security model, as a potentially compromised
+ system could delay or tamper with its initialization.
 
-  BUG: KMSAN: uninit-value in sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
-   sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
-   sctp_inq_push+0x2a3/0x350 net/sctp/inqueue.c:88
-   sctp_backlog_rcv+0x3c7/0xda0 net/sctp/input.c:331
-   sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
-   __release_sock+0x1d3/0x330 net/core/sock.c:3213
-   release_sock+0x6b/0x270 net/core/sock.c:3767
-   sctp_wait_for_connect+0x458/0x820 net/sctp/socket.c:9367
-   sctp_sendmsg_to_asoc+0x223a/0x2260 net/sctp/socket.c:1886
-   sctp_sendmsg+0x3910/0x49f0 net/sctp/socket.c:2032
-   inet_sendmsg+0x269/0x2a0 net/ipv4/af_inet.c:851
-   sock_sendmsg_nosec net/socket.c:712 [inline]
+IMA must be built-in to ensure it starts measuring from the earliest
+possible point in boot which inturn implies TPM must be initialised and
+ready to use before IMA.
 
-This patch fixes it by linearizing cloned gso packets in sctp_rcv().
+To enable integration of tpm_event_log with the IMA subsystem, the TPM
+drivers (tpm_crb and tpm_crb_ffa) also needs to be built-in. However with
+FF-A driver also being initialised at device initcall level, it can lead to
+an initialization order issue where:
+ - crb_acpi_driver_init() may run before tpm_crb_ffa_driver()_init and
+   ffa_init()
+ - As a result, probing the TPM device via CRB over FFA is deferred
+ - ima_init() (called as a late initcall) runs before deferred probe
+   completes, IMA fails to find the TPM and logs the below error:
 
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Reported-by: syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com
-Reported-by: syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/dd7dc337b99876d4132d0961f776913719f7d225.1754595611.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+   |  ima: No TPM chip found, activating TPM-bypass!
+
+Eventually it fails to generate boot_aggregate with PCR values.
+
+Because of the above stated dependency, the ffa driver needs to initialised
+before tpm_crb_ffa module to ensure IMA finds the TPM successfully when
+present.
+
+[ jarkko: reformatted some of the paragraphs because they were going past
+  the 75 character boundary. ]
+
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/input.c | 2 +-
+ drivers/firmware/arm_ffa/driver.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index a8a254a5008e..032a10d82302 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -117,7 +117,7 @@ int sctp_rcv(struct sk_buff *skb)
- 	 * it's better to just linearize it otherwise crc computing
- 	 * takes longer.
- 	 */
--	if ((!is_gso && skb_linearize(skb)) ||
-+	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
- 	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
- 		goto discard_it;
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 37eb2e6c2f9f..65bf1685350a 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -2059,7 +2059,7 @@ static int __init ffa_init(void)
+ 	kfree(drv_info);
+ 	return ret;
+ }
+-module_init(ffa_init);
++rootfs_initcall(ffa_init);
  
+ static void __exit ffa_exit(void)
+ {
 -- 
-2.50.1
+2.39.5
 
 
 
