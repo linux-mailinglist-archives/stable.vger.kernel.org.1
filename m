@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-170312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD17B2A3CB
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F67B2A8F1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385ED168C76
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398A55A43FB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E9831CA50;
-	Mon, 18 Aug 2025 13:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A15343D9D;
+	Mon, 18 Aug 2025 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKikqzIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/sCouS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1335D218AAB;
-	Mon, 18 Aug 2025 13:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECD6343D97;
+	Mon, 18 Aug 2025 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522230; cv=none; b=rjZ+nfUDUafuoItQLRUxKPijqfE0zEec4HpMJsduFA5PD7WcvYQUga65+6yyV4ZAV/XQK7FqeQ+dHvSENW+xeDWE11gaalQAyC0zO0Ssx+15u5ka2ejYRRMUMFU7ul42ICFxhP761tGHfeNkROCE9UtPiNbAlBa4fjtjWa3dK+4=
+	t=1755525430; cv=none; b=eypl/ZInmLmDL0yICCv0SwGJPkd+4PoV2apkV3a/CH6QAYsx0pgWTLeTnW9QwMUkfSxIaX/ehwkLIGcygAav0GsmHyNacryUcNjgRpsGwY4obT0Y9P/v7x0F9rJX6qwUapHKJ5A6lYeYsnbp3dS1qHsDsAJLZHd73CZ8L62MOWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522230; c=relaxed/simple;
-	bh=9Zv/WiEsGq4YCtKU4C7W3tdMn2rmwgew4Xh02x1/Z9Q=;
+	s=arc-20240116; t=1755525430; c=relaxed/simple;
+	bh=WDAZOQjTXLY0x/rQyzOgXATD60+P7kZDepZmUXs8Ujw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lS+Xr0iVYFJwLumgre7tL2zGw8BSTElHEguiQjCiG8MssmVykofBC5R8Ar0iNseeEsLGF773pbD2i1faggzNATvdO5tRVVujHTz/1p7yXnPdmmablW/CWK7QhLI1ODGzm8Ei7kBTUty3311O3RMNJ4O+QmEy2vb9lt6SrqC3+WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKikqzIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B87C4CEEB;
-	Mon, 18 Aug 2025 13:03:48 +0000 (UTC)
+	 MIME-Version; b=Qyiz02foMHexmPsmz1yfTEe7XI/OMHOvwJUaZpqx6plzI948rkDFypHh+Lauabi2BpT9mTbNmKVf2Yi0Oix4BqDFQyneT4YESZ0zzYlGDQSKj5yPyfNalvO7iXbj8+v194paCLQYZfdfRXFu4uwbnP4Z18Bek6n3H8fE3iOyisY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/sCouS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C57C4CEEB;
+	Mon, 18 Aug 2025 13:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522229;
-	bh=9Zv/WiEsGq4YCtKU4C7W3tdMn2rmwgew4Xh02x1/Z9Q=;
+	s=korg; t=1755525430;
+	bh=WDAZOQjTXLY0x/rQyzOgXATD60+P7kZDepZmUXs8Ujw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKikqzISmCaACOjAw1F2/AKMctVSd3n1riEBn7xvPXbVnmxEiOu//+8ezc11pTnN6
-	 Fa4vx7kQ7vjzQPcugHmayB48dXSFftOQ15Ms0yKNITdTwknkvHsrm7NxzF+5LmCX+c
-	 oGp/eFh4Axw/B1PqwpcKDM0FWJ3DV3o5uIV2faUw=
+	b=D/sCouS+KNNLE5G78hx5YshKdy1wcWTa3aG2ZBhdjm4q9s7Xgt7r9pGuOU2WGyS2d
+	 vZcHjh6hlKKwAnl492dx+Ed3ADR6XlSsiZCdLWKBw3nrh1xP+AyrTXUggnHi4oCC7g
+	 davciJnn9lPBnJr7YlGhuCRgmaeCXLSGZhq0mkMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Work <work.eric@gmail.com>,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mark Starovoitov <mstarovoitov@marvell.com>,
-	Dmitry Bogdanov <dbogdanov@marvell.com>,
-	Pavel Belous <pbelous@marvell.com>,
-	Nikita Danilov <ndanilov@marvell.com>
-Subject: [PATCH 6.12 221/444] net: atlantic: add set_power to fw_ops for atl2 to fix wol
+	Chris Mason <clm@fb.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 260/570] sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails
 Date: Mon, 18 Aug 2025 14:44:07 +0200
-Message-ID: <20250818124457.132950857@linuxfoundation.org>
+Message-ID: <20250818124515.838144158@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,115 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Work <work.eric@gmail.com>
+From: Chris Mason <clm@fb.com>
 
-[ Upstream commit fad9cf216597a71936ac87143d1618fbbcf97cbe ]
+[ Upstream commit 155213a2aed42c85361bf4f5c817f5cb68951c3b ]
 
-Aquantia AQC113(C) using ATL2FW doesn't properly prepare the NIC for
-enabling wake-on-lan. The FW operation `set_power` was only implemented
-for `hw_atl` and not `hw_atl2`. Implement the `set_power` functionality
-for `hw_atl2`.
+schbench (https://github.com/masoncl/schbench.git) is showing a
+regression from previous production kernels that bisected down to:
 
-Tested with both AQC113 and AQC113C devices. Confirmed you can shutdown
-the system and wake from S5 using magic packets. NIC was previously
-powered off when entering S5. If the NIC was configured for WOL by the
-Windows driver, loading the atlantic driver would disable WOL.
+sched/fair: Remove sysctl_sched_migration_cost condition (c5b0a7eefc)
 
-Partially cherry-picks changes from commit,
-https://github.com/Aquantia/AQtion/commit/37bd5cc
+The schbench command line was:
 
-Attributing original authors from Marvell for the referenced commit.
+schbench -L -m 4 -M auto -t 256 -n 0 -r 0 -s 0
 
-Closes: https://github.com/Aquantia/AQtion/issues/70
-Co-developed-by: Igor Russkikh <irusskikh@marvell.com>
-Co-developed-by: Mark Starovoitov <mstarovoitov@marvell.com>
-Co-developed-by: Dmitry Bogdanov <dbogdanov@marvell.com>
-Co-developed-by: Pavel Belous <pbelous@marvell.com>
-Co-developed-by: Nikita Danilov <ndanilov@marvell.com>
-Signed-off-by: Eric Work <work.eric@gmail.com>
-Reviewed-by: Igor Russkikh <irusskikh@marvell.com>
-Link: https://patch.msgid.link/20250629051535.5172-1-work.eric@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This creates 4 message threads pinned to CPUs 0-3, and 256x4 worker
+threads spread across the rest of the CPUs.  Neither the worker threads
+or the message threads do any work, they just wake each other up and go
+back to sleep as soon as possible.
+
+The end result is the first 4 CPUs are pegged waking up those 1024
+workers, and the rest of the CPUs are constantly banging in and out of
+idle.  If I take a v6.9 Linus kernel and revert that one commit,
+performance goes from 3.4M RPS to 5.4M RPS.
+
+schedstat shows there are ~100x  more new idle balance operations, and
+profiling shows the worker threads are spending ~20% of their CPU time
+on new idle balance.  schedstats also shows that almost all of these new
+idle balance attemps are failing to find busy groups.
+
+The fix used here is to crank up the cost of the newidle balance whenever it
+fails.  Since we don't want sd->max_newidle_lb_cost to grow out of
+control, this also changes update_newidle_cost() to use
+sysctl_sched_migration_cost as the upper limit on max_newidle_lb_cost.
+
+Signed-off-by: Chris Mason <clm@fb.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
+Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/aquantia/atlantic/aq_hw.h    |  2 +
- .../atlantic/hw_atl2/hw_atl2_utils_fw.c       | 39 +++++++++++++++++++
- 2 files changed, 41 insertions(+)
+ kernel/sched/fair.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
-index f010bda61c96..2cd0352a11f4 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
-@@ -113,6 +113,8 @@ struct aq_stats_s {
- #define AQ_HW_POWER_STATE_D0   0U
- #define AQ_HW_POWER_STATE_D3   3U
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7a14da5396fb..042ab0863ccc 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12174,8 +12174,14 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+ 		 * next wakeup on the CPU.
++		 *
++		 * sched_balance_newidle() bumps the cost whenever newidle
++		 * balance fails, and we don't want things to grow out of
++		 * control.  Use the sysctl_sched_migration_cost as the upper
++		 * limit, plus a litle extra to avoid off by ones.
+ 		 */
+-		sd->max_newidle_lb_cost = cost;
++		sd->max_newidle_lb_cost =
++			min(cost, sysctl_sched_migration_cost + 200);
+ 		sd->last_decay_max_lb_cost = jiffies;
+ 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
+ 		/*
+@@ -12867,10 +12873,17 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
  
-+#define	AQ_FW_WAKE_ON_LINK_RTPM BIT(10)
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
 +
- #define AQ_HW_FLAG_STARTED     0x00000004U
- #define AQ_HW_FLAG_STOPPING    0x00000008U
- #define AQ_HW_FLAG_RESETTING   0x00000010U
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
-index 52e2070a4a2f..7370e3f76b62 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2_utils_fw.c
-@@ -462,6 +462,44 @@ static int aq_a2_fw_get_mac_temp(struct aq_hw_s *self, int *temp)
- 	return aq_a2_fw_get_phy_temp(self, temp);
- }
++			/*
++			 * Failing newidle means it is not effective;
++			 * bump the cost so we end up doing less of it.
++			 */
++			if (!pulled_task)
++				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
++
++			update_newidle_cost(sd, domain_cost);
+ 		}
  
-+static int aq_a2_fw_set_wol_params(struct aq_hw_s *self, const u8 *mac, u32 wol)
-+{
-+	struct mac_address_aligned_s mac_address;
-+	struct link_control_s link_control;
-+	struct wake_on_lan_s wake_on_lan;
-+
-+	memcpy(mac_address.aligned.mac_address, mac, ETH_ALEN);
-+	hw_atl2_shared_buffer_write(self, mac_address, mac_address);
-+
-+	memset(&wake_on_lan, 0, sizeof(wake_on_lan));
-+
-+	if (wol & WAKE_MAGIC)
-+		wake_on_lan.wake_on_magic_packet = 1U;
-+
-+	if (wol & (WAKE_PHY | AQ_FW_WAKE_ON_LINK_RTPM))
-+		wake_on_lan.wake_on_link_up = 1U;
-+
-+	hw_atl2_shared_buffer_write(self, sleep_proxy, wake_on_lan);
-+
-+	hw_atl2_shared_buffer_get(self, link_control, link_control);
-+	link_control.mode = AQ_HOST_MODE_SLEEP_PROXY;
-+	hw_atl2_shared_buffer_write(self, link_control, link_control);
-+
-+	return hw_atl2_shared_buffer_finish_ack(self);
-+}
-+
-+static int aq_a2_fw_set_power(struct aq_hw_s *self, unsigned int power_state,
-+			      const u8 *mac)
-+{
-+	u32 wol = self->aq_nic_cfg->wol;
-+	int err = 0;
-+
-+	if (wol)
-+		err = aq_a2_fw_set_wol_params(self, mac, wol);
-+
-+	return err;
-+}
-+
- static int aq_a2_fw_set_eee_rate(struct aq_hw_s *self, u32 speed)
- {
- 	struct link_options_s link_options;
-@@ -605,6 +643,7 @@ const struct aq_fw_ops aq_a2_fw_ops = {
- 	.set_state          = aq_a2_fw_set_state,
- 	.update_link_status = aq_a2_fw_update_link_status,
- 	.update_stats       = aq_a2_fw_update_stats,
-+	.set_power          = aq_a2_fw_set_power,
- 	.get_mac_temp       = aq_a2_fw_get_mac_temp,
- 	.get_phy_temp       = aq_a2_fw_get_phy_temp,
- 	.set_eee_rate       = aq_a2_fw_set_eee_rate,
+ 		/*
 -- 
 2.39.5
 
