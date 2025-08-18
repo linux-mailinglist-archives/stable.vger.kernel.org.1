@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-171404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AC2B2A949
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29901B2A68A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D95187BDD96
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:12:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF8A6870DC
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7E331E0F8;
-	Mon, 18 Aug 2025 14:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2DC219A67;
+	Mon, 18 Aug 2025 13:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCnyRM6K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0N5SSgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A7D34E1A8;
-	Mon, 18 Aug 2025 14:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8EB8BEC;
+	Mon, 18 Aug 2025 13:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525807; cv=none; b=s+9NsJWShVVohSn7vZ0x54/epQKMWESAoIkgbwKyph5KOHSjH4KM9/Y1gkE0/tH6mksT6GK1hp3O7qS7kLNQoBYHjEPvCVYKu9cGr7Y2zXFOxfRFvwT0XU5/pDPspP7Ju9Td7QlRuuJ+n9UuT+Y3xcrGXx2bhv338smgil9ILNM=
+	t=1755524113; cv=none; b=BqCsN4DNhogyYah8pcvB3IKDeBIHFrDPFu1NDwPdZh6GtioNG8nG46LOXAuLh2vSkkga4fz3pNWQVOS0bOJ8HhvZX2c3xGUVDyGMzO77Vqu4LBWvcpxpJiewyVGtW+xTJNSMyCSLzHPP95JW5IL+GbEl1c/Q0D3wtArwgBlL11E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525807; c=relaxed/simple;
-	bh=uYhmn1CoT3N74GwgAS7RAyGGw8YG9ZE2qwyqXedRlf0=;
+	s=arc-20240116; t=1755524113; c=relaxed/simple;
+	bh=xHvAgBOrEDEUpSB0WZcIYnbpTv6md3LQ/SLbhl6kiBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4GGlAmqn1XgDZbu9yXAljfP35inLYTom3QMmKljnBdxa+ps/oQVA+D9+Ze55VUzgoM5u2tz0wScVsTzrY39wg/MzCEJ6O+DnCUe996ID6ypEtOwJA1tqOFcbljJfXWjee0g8Zoh5FqZnHCZtTrSGYvttwoh4YG9UyEn5vEVQ58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCnyRM6K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983ECC4CEEB;
-	Mon, 18 Aug 2025 14:03:26 +0000 (UTC)
+	 MIME-Version; b=KWqTkm5IERMH9M+ZcJ06HuU1qqOOYLFlMx9ZQmC58Uv1R87Xtho4tavC7inkYYam5wxXRv9HJLJMPHBSqkUUfyuQvnIPxcW2rCOLwsE3dUj1J0ClzHHxKBO9mzeOerivg/4ZLvz6HslymVB60BwCFHhVQPa4Qr5PLg1uD/6ovJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0N5SSgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E68DC4CEEB;
+	Mon, 18 Aug 2025 13:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525807;
-	bh=uYhmn1CoT3N74GwgAS7RAyGGw8YG9ZE2qwyqXedRlf0=;
+	s=korg; t=1755524112;
+	bh=xHvAgBOrEDEUpSB0WZcIYnbpTv6md3LQ/SLbhl6kiBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCnyRM6KXl8Gcyl75DM+XrYrvMMY0xV5LFew9dc7TJAy1RWzQptuGus1ZletionVD
-	 OR52K2FCp5Jaj/F/DOYxHbKW3A4qqxkZ11tyx32dD0inGhlntfG0i3uxOM1tDQlA+7
-	 DXtfREnq8F1x3MjnP0jpdQReE9cxlSKQmwvtiqfw=
+	b=I0N5SSgZ6UZxuvzzpWlOPFOKGmQB4U99xnuc7JSQcsKaB+9gVWYuptruCiG0rttfi
+	 hhT/XBHGPLwSsnbeZJep7xaIMjC0POEFdpwqf7XPB9BlaK52TVDOq1+198jgDd3eFB
+	 xP2FVtR/bovVKehovtPpRxifkn4Mbl/fFovKsXFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>,
-	Mike Marshall <hubcap@omnibond.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 371/570] fs/orangefs: use snprintf() instead of sprintf()
+Subject: [PATCH 6.15 372/515] scsi: mpi3mr: Correctly handle ATA device errors
 Date: Mon, 18 Aug 2025 14:45:58 +0200
-Message-ID: <20250818124520.145503477@linuxfoundation.org>
+Message-ID: <20250818124512.734889123@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit cdfa1304657d6f23be8fd2bb0516380a3c89034e ]
+[ Upstream commit 04caad5a7ba86e830d04750417a15bad8ac2613c ]
 
-sprintf() is discouraged for use with bounded destination buffers
-as it does not prevent buffer overflows when the formatted output
-exceeds the destination buffer size. snprintf() is a safer
-alternative as it limits the number of bytes written and ensures
-NUL-termination.
+With the ATA error model, an NCQ command failure always triggers an abort
+(termination) of all NCQ commands queued on the device. In such case, the
+SAT or the host must handle the failed command according to the command
+sense data and immediately retry all other NCQ commands that were aborted
+due to the failed NCQ command.
 
-Replace sprintf() with snprintf() for copying the debug string
-into a temporary buffer, using ORANGEFS_MAX_DEBUG_STRING_LEN as
-the maximum size to ensure safe formatting and prevent memory
-corruption in edge cases.
+For SAS HBAs controlled by the mpi3mr driver, NCQ command aborts are not
+handled by the HBA SAT and sent back to the host, with an ioc log
+information equal to 0x31080000 (IOC_LOGINFO_PREFIX_PL with the PL code
+PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR). The function
+mpi3mr_process_op_reply_desc() always forces a retry of commands
+terminated with the status MPI3_IOCSTATUS_SCSI_IOC_TERMINATED using the
+SCSI result DID_SOFT_ERROR, regardless of the ioc_loginfo for the
+command. This correctly forces the retry of collateral NCQ abort
+commands, but with the retry counter for the command being incremented.
+If a command to an ATA device is subject to too many retries due to other
+NCQ commands failing (e.g. read commands trying to access unreadable
+sectors), the collateral NCQ abort commands may be terminated with an
+error as they run out of retries. This violates the SAT specification and
+causes hard-to-debug command errors.
 
-EDIT: After this patch sat on linux-next for a few days, Dan
-Carpenter saw it and suggested that I use scnprintf instead of
-snprintf. I made the change and retested.
+Solve this issue by modifying the handling of the
+MPI3_IOCSTATUS_SCSI_IOC_TERMINATED status to check if a command is for an
+ATA device and if the command ioc_loginfo indicates an NCQ collateral
+abort. If that is the case, force the command retry using the SCSI result
+DID_IMM_RETRY to avoid incrementing the command retry count.
 
-Signed-off-by: Amir Mohammad Jahangirzad <a.jahangirzad@gmail.com>
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250606052747.742998-2-dlemoal@kernel.org
+Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index e8e3badbc2ec..1c375fb65018 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -396,7 +396,7 @@ static ssize_t orangefs_debug_read(struct file *file,
- 		goto out;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index c186b892150f..5ecea2c7584f 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -49,6 +49,13 @@ static void mpi3mr_send_event_ack(struct mpi3mr_ioc *mrioc, u8 event,
  
- 	mutex_lock(&orangefs_debug_lock);
--	sprintf_ret = sprintf(buf, "%s", (char *)file->private_data);
-+	sprintf_ret = scnprintf(buf, ORANGEFS_MAX_DEBUG_STRING_LEN, "%s", (char *)file->private_data);
- 	mutex_unlock(&orangefs_debug_lock);
+ #define MPI3_EVENT_WAIT_FOR_DEVICES_TO_REFRESH	(0xFFFE)
  
- 	read_ret = simple_read_from_buffer(ubuf, count, ppos, buf, sprintf_ret);
++/*
++ * SAS Log info code for a NCQ collateral abort after an NCQ error:
++ * IOC_LOGINFO_PREFIX_PL | PL_LOGINFO_CODE_SATA_NCQ_FAIL_ALL_CMDS_AFTR_ERR
++ * See: drivers/message/fusion/lsi/mpi_log_sas.h
++ */
++#define IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR	0x31080000
++
+ /**
+  * mpi3mr_host_tag_for_scmd - Get host tag for a scmd
+  * @mrioc: Adapter instance reference
+@@ -3397,7 +3404,18 @@ void mpi3mr_process_op_reply_desc(struct mpi3mr_ioc *mrioc,
+ 		scmd->result = DID_NO_CONNECT << 16;
+ 		break;
+ 	case MPI3_IOCSTATUS_SCSI_IOC_TERMINATED:
+-		scmd->result = DID_SOFT_ERROR << 16;
++		if (ioc_loginfo == IOC_LOGINFO_SATA_NCQ_FAIL_AFTER_ERR) {
++			/*
++			 * This is a ATA NCQ command aborted due to another NCQ
++			 * command failure. We must retry this command
++			 * immediately but without incrementing its retry
++			 * counter.
++			 */
++			WARN_ON_ONCE(xfer_count != 0);
++			scmd->result = DID_IMM_RETRY << 16;
++		} else {
++			scmd->result = DID_SOFT_ERROR << 16;
++		}
+ 		break;
+ 	case MPI3_IOCSTATUS_SCSI_TASK_TERMINATED:
+ 	case MPI3_IOCSTATUS_SCSI_EXT_TERMINATED:
 -- 
 2.39.5
 
