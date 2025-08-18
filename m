@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE17B2A53E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:31:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F6CB2A788
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109A56215C7
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7633E189D28E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA42320CD5;
-	Mon, 18 Aug 2025 13:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7024232253D;
+	Mon, 18 Aug 2025 13:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPL2EQdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USo96jxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D7E320CCA;
-	Mon, 18 Aug 2025 13:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2929E30DEC8;
+	Mon, 18 Aug 2025 13:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523037; cv=none; b=BWYD3W+rxvdFW4oMubFqk3jnKj1QZT4L6QQpBkZQkMviVBkIQI3HUkcTgJStjyyr2wdYAfv/pLtmII2u1FWbLKqSs+HGAE6EX3WbSBrJHjivMPsCenZmRtC64uKhcalo2AX2GccVkVVrWrKT3Jg7sZ81tguNMWnSKl6dFFKhNSM=
+	t=1755524637; cv=none; b=tBVi7U8aeiot8tJorL5zqoXa5OmM3s+dBxkl8IrOzX1Z1WZoZeokyq24edWUsOym+j2TdRWsfP6Z5trC/rLonOYG8HtHVEN9sm+PgilFThCQRXv33Wegxf1BOtYgYCIKEDHq12M5B9g8dAMQaQHOMORcovD2yOYCPMR1mBlDS7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523037; c=relaxed/simple;
-	bh=2daRLs5x9/tIqIymQsiPT+fPzHieUOBzVt5LctEAwfg=;
+	s=arc-20240116; t=1755524637; c=relaxed/simple;
+	bh=Wt6oXE7rNSLsPdVqn2QBFrZ5csCQq/SzkcIYaeF7bCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOhbi01pVObZJiPZEjNE/hMFrDIJ1HGlijIY5UA1Yyjuj4BMYWGm+iJtIDMj1mpdrxGQxV6Rj5/Pk36FHWdre+cG97Ot+QLO1m7G1n8XKhtT7TCxlNiHIx3DXO20N2bSpnvzh4kF95kfW8QlZQpUmKvql9HGwJdHtJ9aATLPf3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPL2EQdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB432C4CEF1;
-	Mon, 18 Aug 2025 13:17:16 +0000 (UTC)
+	 MIME-Version; b=EgOIFYiIA9swniR/2CglE4psaTGqW+XE8Txa+rZXLPxH0LES7DvjaGpme6BObt1IacIuih2L8CCiCT+8IuaVNxCyp15+ZLdIJhr78h+xVtRu5Z0YOP9AGZQ8TL58GR466/2K1Krzr8VstL0Nr7R/vNwNBkwTmTNAZOrTxiElh60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USo96jxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEA3C4CEEB;
+	Mon, 18 Aug 2025 13:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523037;
-	bh=2daRLs5x9/tIqIymQsiPT+fPzHieUOBzVt5LctEAwfg=;
+	s=korg; t=1755524637;
+	bh=Wt6oXE7rNSLsPdVqn2QBFrZ5csCQq/SzkcIYaeF7bCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPL2EQdoyvsfIgtt1h+ODkiLmaS+n3sPX+yJhREpRxr4LU8ZQCk6UDVDlQOtkMaj+
-	 CVhvgMN+GXzdxiSO/qiOSv/1DUT+mTmn8yeNYVT5m6NFi6KIBuX4+YdBzKftRWyrp/
-	 SC+jB0mga/irYPcvDS4UGU8EeFZ4u5v8I1brDUec=
+	b=USo96jxqYOudIBJ3DZLorGT17UKbzI03xibRUPBvilVX4P0u3q7tU8mEaoy7tWKTz
+	 6zRS6r7Z0UswCEdEfzpwUszgMdiTmIaVAQoCt7nKGc1aBnxYx8yLMQtjVre1g8rCht
+	 TKE9FekB9RMqLwJJO3q/4vxGbEydFmKumlvVVM9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.15 018/515] Revert "leds: trigger: netdev: Configure LED blink interval for HW offload"
+	David Thompson <davthompson@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.16 017/570] Revert "gpio: mlxbf3: only get IRQ for device instance 0"
 Date: Mon, 18 Aug 2025 14:40:04 +0200
-Message-ID: <20250818124459.175879011@linuxfoundation.org>
+Message-ID: <20250818124506.460902042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: David Thompson <davthompson@nvidia.com>
 
-commit 26f732791f2bcab18f59c61915bbe35225f30136 upstream.
+commit 56bdf7270ff4f870e2d4bfacdc00161e766dba2d upstream.
 
-This reverts commit c629c972b310af41e9e072febb6dae9a299edde6.
+This reverts commit 10af0273a35ab4513ca1546644b8c853044da134.
 
-While .led_blink_set() would previously put an LED into an unconditional
-permanently blinking state, the offending commit now uses same operation
-to (also?) set the blink timing of the netdev trigger when offloading.
+While this change was merged, it is not the preferred solution.
+During review of a similar change to the gpio-mlxbf2 driver, the
+use of "platform_get_irq_optional" was identified as the preferred
+solution, so let's use it for gpio-mlxbf3 driver as well.
 
-This breaks many if not all of the existing PHY drivers which offer
-offloading LED operations, as those drivers would just put the LED into
-blinking state after .led_blink_set() has been called.
-
-Unfortunately the change even made it into stable kernels for unknown
-reasons, so it should be reverted there as well.
-
-Fixes: c629c972b310a ("leds: trigger: netdev: Configure LED blink interval for HW offload")
-Link: https://lore.kernel.org/linux-leds/c6134e26-2e45-4121-aa15-58aaef327201@lunn.ch/T/#m9d6fe81bbcb273e59f12bbedbd633edd32118387
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/6dcc77ee1c9676891d6250d8994850f521426a0f.1752334655.git.daniel@makrotopia.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 10af0273a35a ("gpio: mlxbf3: only get IRQ for device instance 0")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/8d2b630c71b3742f2c74242cf7d602706a6108e6.1754928650.git.davthompson@nvidia.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/trigger/ledtrig-netdev.c |   16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/gpio/gpio-mlxbf3.c |   54 +++++++++++++++------------------------------
+ 1 file changed, 19 insertions(+), 35 deletions(-)
 
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -68,7 +68,6 @@ struct led_netdev_data {
- 	unsigned int last_activity;
+--- a/drivers/gpio/gpio-mlxbf3.c
++++ b/drivers/gpio/gpio-mlxbf3.c
+@@ -190,9 +190,7 @@ static int mlxbf3_gpio_probe(struct plat
+ 	struct mlxbf3_gpio_context *gs;
+ 	struct gpio_irq_chip *girq;
+ 	struct gpio_chip *gc;
+-	char *colon_ptr;
+ 	int ret, irq;
+-	long num;
  
- 	unsigned long mode;
--	unsigned long blink_delay;
- 	int link_speed;
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported_link_modes);
- 	u8 duplex;
-@@ -87,10 +86,6 @@ static void set_baseline_state(struct le
- 	/* Already validated, hw control is possible with the requested mode */
- 	if (trigger_data->hw_control) {
- 		led_cdev->hw_control_set(led_cdev, trigger_data->mode);
--		if (led_cdev->blink_set) {
--			led_cdev->blink_set(led_cdev, &trigger_data->blink_delay,
--					    &trigger_data->blink_delay);
+ 	gs = devm_kzalloc(dev, sizeof(*gs), GFP_KERNEL);
+ 	if (!gs)
+@@ -229,39 +227,25 @@ static int mlxbf3_gpio_probe(struct plat
+ 	gc->owner = THIS_MODULE;
+ 	gc->add_pin_ranges = mlxbf3_gpio_add_pin_ranges;
+ 
+-	colon_ptr = strchr(dev_name(dev), ':');
+-	if (!colon_ptr) {
+-		dev_err(dev, "invalid device name format\n");
+-		return -EINVAL;
+-	}
+-
+-	ret = kstrtol(++colon_ptr, 16, &num);
+-	if (ret) {
+-		dev_err(dev, "invalid device instance\n");
+-		return ret;
+-	}
+-
+-	if (!num) {
+-		irq = platform_get_irq(pdev, 0);
+-		if (irq >= 0) {
+-			girq = &gs->gc.irq;
+-			gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
+-			girq->default_type = IRQ_TYPE_NONE;
+-			/* This will let us handle the parent IRQ in the driver */
+-			girq->num_parents = 0;
+-			girq->parents = NULL;
+-			girq->parent_handler = NULL;
+-			girq->handler = handle_bad_irq;
+-
+-			/*
+-			 * Directly request the irq here instead of passing
+-			 * a flow-handler because the irq is shared.
+-			 */
+-			ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
+-					       IRQF_SHARED, dev_name(dev), gs);
+-			if (ret)
+-				return dev_err_probe(dev, ret, "failed to request IRQ");
 -		}
- 
- 		return;
- 	}
-@@ -459,11 +454,10 @@ static ssize_t interval_store(struct dev
- 			      size_t size)
- {
- 	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
--	struct led_classdev *led_cdev = trigger_data->led_cdev;
- 	unsigned long value;
- 	int ret;
- 
--	if (trigger_data->hw_control && !led_cdev->blink_set)
-+	if (trigger_data->hw_control)
- 		return -EINVAL;
- 
- 	ret = kstrtoul(buf, 0, &value);
-@@ -472,13 +466,9 @@ static ssize_t interval_store(struct dev
- 
- 	/* impose some basic bounds on the timer interval */
- 	if (value >= 5 && value <= 10000) {
--		if (trigger_data->hw_control) {
--			trigger_data->blink_delay = value;
--		} else {
--			cancel_delayed_work_sync(&trigger_data->work);
-+		cancel_delayed_work_sync(&trigger_data->work);
- 
--			atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
--		}
-+		atomic_set(&trigger_data->interval, msecs_to_jiffies(value));
- 		set_baseline_state(trigger_data);	/* resets timer */
++	irq = platform_get_irq(pdev, 0);
++	if (irq >= 0) {
++		girq = &gs->gc.irq;
++		gpio_irq_chip_set_chip(girq, &gpio_mlxbf3_irqchip);
++		girq->default_type = IRQ_TYPE_NONE;
++		/* This will let us handle the parent IRQ in the driver */
++		girq->num_parents = 0;
++		girq->parents = NULL;
++		girq->parent_handler = NULL;
++		girq->handler = handle_bad_irq;
++
++		/*
++		 * Directly request the irq here instead of passing
++		 * a flow-handler because the irq is shared.
++		 */
++		ret = devm_request_irq(dev, irq, mlxbf3_gpio_irq_handler,
++				       IRQF_SHARED, dev_name(dev), gs);
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to request IRQ");
  	}
  
+ 	platform_set_drvdata(pdev, gs);
 
 
 
