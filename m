@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-170185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64369B2A33F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:07:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9C8B2A51A
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE6E35665ED
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 56EE34E339E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6E431AF24;
-	Mon, 18 Aug 2025 12:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548FC320399;
+	Mon, 18 Aug 2025 13:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiIBX8aP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxfiQkMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B3331A063;
-	Mon, 18 Aug 2025 12:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1099231AF10;
+	Mon, 18 Aug 2025 13:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521809; cv=none; b=XTpXdLmOmojocWxBaxqFXTrQF1LJZpd937mNqMkLgccHhfKecCkPwRchePuATrzHwDwPo3pt9CzJJPzj3oJYK2x1PidH0iWcUGxIUqWmhKz8kbbSVLtpukOZ9UwErNFSk84KjfWJrOf6r5ElZs3R+dumwwBniFfQABUYeVnvf9c=
+	t=1755523430; cv=none; b=g31ZKxlsOXHdULsb2/T5OUEN06tHi9oWwCMODEcRYK0WTmvFARN5lk1Qiev4YP89GkbjLabkZtvgY2GK3d3qGFyfvaUvTp79e3GKwFjpsBASbiRaan8O5CmGw4G90XffpNzJwfa+7YsZG8+cU5Oj5f06QkaOPwm7jPRN280SMp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521809; c=relaxed/simple;
-	bh=yGotZOEQOsewFDW/iBIK9J19ohJiDKVGKTSX82UYL1k=;
+	s=arc-20240116; t=1755523430; c=relaxed/simple;
+	bh=vxJVWoL4cpE9QG+J1i9ZeFkeXIiaukKXIw+NbA6vwQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rH/zR2rHqRuXgToCKPp14c8JGtaWYuH6oRmROVbXzDrRkxYBNw9LKqPumvMdcBSqLJW4TY113lhGSWzxmMp9ln1QVgOritJheNZJBEYPewWyNSZ+KVClJHqHn4aG5787IT59uXXsJ3tNmEbs+j5ucjSSpG+kOyrU9/eIino4kHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiIBX8aP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E296BC4AF09;
-	Mon, 18 Aug 2025 12:56:48 +0000 (UTC)
+	 MIME-Version; b=m46wkWvs4Llq/+bUKfV0L5yxHyaFgSh+m78NUvmRfQ2aSKVIWlUFW8i/VK0+KNANwI3vvhncYT52AY+NcFRVf/BZnOv+pTy1uZow93gcn1HtuYt91blF9hAk3KkFoZ32r4Pb8gD6uUAy8+hwXnnl5Ptcuv5aLx/LVKaiMvr27f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxfiQkMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0D9C116D0;
+	Mon, 18 Aug 2025 13:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521809;
-	bh=yGotZOEQOsewFDW/iBIK9J19ohJiDKVGKTSX82UYL1k=;
+	s=korg; t=1755523429;
+	bh=vxJVWoL4cpE9QG+J1i9ZeFkeXIiaukKXIw+NbA6vwQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiIBX8aP/C83P3q/3EUtTelz0JWiMjjP3hDDYv7UM5krpEwxJOuyAc5ziLEeEpBhM
-	 Gae2Muu+pge5iXKPShNu/VyPuErmX6wiVSOdYgleGf9RVHafyxFZfOjR4ThwhP++XA
-	 cywYKjajpl3qg3vukor6n/m3+IgBqCeHqVh9DxDE=
+	b=mxfiQkMpp6iGTWhareIwQIad5cANiOvss/Pol7yDmNsWBpiTvyIIbukNDJiX5IzcX
+	 TO3+abl/V0ha0IlNPIrEpn6nJ4CUEanNGGzpgWFKYzy2gptyH7twWx5BA4zck5OQSu
+	 Ku8xOxA9pxfNngot6jVnkclBCfVwLTS2eynwm3As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	tuhaowen <tuhaowen@uniontech.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/444] PM: sleep: console: Fix the black screen issue
+Subject: [PATCH 6.15 169/515] ASoC: hdac_hdmi: Rate limit logging on connection and disconnection
 Date: Mon, 18 Aug 2025 14:42:35 +0200
-Message-ID: <20250818124453.755025120@linuxfoundation.org>
+Message-ID: <20250818124504.876542198@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: tuhaowen <tuhaowen@uniontech.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 4266e8fa56d3d982bf451d382a410b9db432015c ]
+[ Upstream commit c4ca928a6db1593802cd945f075a7e21dd0430c1 ]
 
-When the computer enters sleep status without a monitor
-connected, the system switches the console to the virtual
-terminal tty63(SUSPEND_CONSOLE).
+We currently log parse failures for ELD data and some disconnection events
+as errors without rate limiting. These log messages can be triggered very
+frequently in some situations, especially ELD parsing when there is nothing
+connected to a HDMI port which will generate:
 
-If a monitor is subsequently connected before waking up,
-the system skips the required VT restoration process
-during wake-up, leaving the console on tty63 instead of
-switching back to tty1.
+hdmi-audio-codec hdmi-audio-codec.1.auto: HDMI: Unknown ELD version 0
 
-To fix this issue, a global flag vt_switch_done is introduced
-to record whether the system has successfully switched to
-the suspend console via vt_move_to_console() during suspend.
+While there's doubtless work that could be done on reducing the number of
+connection notification callbacks it's possible these may be legitimately
+generated by poor quality physical connections so let's use rate limiting
+to mitigate the log spam for the parse errors and lower the severity for
+disconnect logging to debug level.
 
-If the switch was completed, vt_switch_done is set to 1.
-Later during resume, this flag is checked to ensure that
-the original console is restored properly by calling
-vt_move_to_console(orig_fgconsole, 0).
-
-This prevents scenarios where the resume logic skips console
-restoration due to incorrect detection of the console state,
-especially when a monitor is reconnected before waking up.
-
-Signed-off-by: tuhaowen <tuhaowen@uniontech.com>
-Link: https://patch.msgid.link/20250611032345.29962-1-tuhaowen@uniontech.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250613-asoc-hdmi-eld-logging-v1-1-76d64154d969@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/console.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/codecs/hdac_hdmi.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/power/console.c b/kernel/power/console.c
-index fcdf0e14a47d..19c48aa5355d 100644
---- a/kernel/power/console.c
-+++ b/kernel/power/console.c
-@@ -16,6 +16,7 @@
- #define SUSPEND_CONSOLE	(MAX_NR_CONSOLES-1)
+diff --git a/sound/soc/codecs/hdac_hdmi.c b/sound/soc/codecs/hdac_hdmi.c
+index 1139a2754ca3..056d98154682 100644
+--- a/sound/soc/codecs/hdac_hdmi.c
++++ b/sound/soc/codecs/hdac_hdmi.c
+@@ -1232,7 +1232,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 						>> DRM_ELD_VER_SHIFT;
  
- static int orig_fgconsole, orig_kmsg;
-+static bool vt_switch_done;
- 
- static DEFINE_MUTEX(vt_switch_mutex);
- 
-@@ -136,17 +137,21 @@ void pm_prepare_console(void)
- 	if (orig_fgconsole < 0)
- 		return;
- 
-+	vt_switch_done = true;
-+
- 	orig_kmsg = vt_kmsg_redirect(SUSPEND_CONSOLE);
- 	return;
- }
- 
- void pm_restore_console(void)
- {
--	if (!pm_vt_switch())
-+	if (!pm_vt_switch() && !vt_switch_done)
- 		return;
- 
- 	if (orig_fgconsole >= 0) {
- 		vt_move_to_console(orig_fgconsole, 0);
- 		vt_kmsg_redirect(orig_kmsg);
+ 	if (ver != ELD_VER_CEA_861D && ver != ELD_VER_PARTIAL) {
+-		dev_err(&hdev->dev, "HDMI: Unknown ELD version %d\n", ver);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: Unknown ELD version %d\n", ver);
+ 		return -EINVAL;
  	}
-+
-+	vt_switch_done = false;
- }
+ 
+@@ -1240,7 +1241,8 @@ static int hdac_hdmi_parse_eld(struct hdac_device *hdev,
+ 		DRM_ELD_MNL_MASK) >> DRM_ELD_MNL_SHIFT;
+ 
+ 	if (mnl > ELD_MAX_MNL) {
+-		dev_err(&hdev->dev, "HDMI: MNL Invalid %d\n", mnl);
++		dev_err_ratelimited(&hdev->dev,
++				    "HDMI: MNL Invalid %d\n", mnl);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1299,8 +1301,8 @@ static void hdac_hdmi_present_sense(struct hdac_hdmi_pin *pin,
+ 
+ 	if (!port->eld.monitor_present || !port->eld.eld_valid) {
+ 
+-		dev_err(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
+-						__func__, pin->nid, port->id);
++		dev_dbg(&hdev->dev, "%s: disconnect for pin:port %d:%d\n",
++			__func__, pin->nid, port->id);
+ 
+ 		/*
+ 		 * PCMs are not registered during device probe, so don't
 -- 
 2.39.5
 
