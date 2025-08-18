@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-171456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE8BB2A9DF
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:25:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45718B2A712
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1F90563B1C
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDD71687AD1
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A668320CD2;
-	Mon, 18 Aug 2025 14:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A336921CC59;
+	Mon, 18 Aug 2025 13:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="StT3nglP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZV12a7fh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AB3315781;
-	Mon, 18 Aug 2025 14:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C9719E82A;
+	Mon, 18 Aug 2025 13:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525984; cv=none; b=l81xroexv25jQyk81+/m/bFKVQX6mSwqVNxd90+Gl2C9FCysiEckcZJi2nEk6cIa2/HXyf5I64GGFWAZXccAt5cC4acacYGyKSWq1U7UIW4TKJwbcY9b38W1DMUoQ4R745NIWC+DDHWJGnhv2cnU+DY2rIYcNd8vq3OOkiGNTVY=
+	t=1755524292; cv=none; b=XArHBZNERP8zsk4OHMXCWEa1huerQ0dA95K0a4AbFjt9g1T7VdXetmbwwSHEQ+Y7n/V5U/VqZDQBb3xeyv4CbKtXI2rUGDGPVgJT6V68vsuwRpPv91a5VeKg7Fs5wkKEvMTtTQOlOYJ2QTgEQRTvairTV+raTyT2RYeVLTpGE3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525984; c=relaxed/simple;
-	bh=wwsJ/qVVqhJc7SQPptuhk+nOTlMPe/d17jPTMwTCh5A=;
+	s=arc-20240116; t=1755524292; c=relaxed/simple;
+	bh=Cd4RgV+2L3Nhi7dqGlCmJ+w2Ss71CuDYzmr21CzsIYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wr1jON39iAf2/cs2FgTCBxR/rbaptPMPPYJcjGZWnd50intxRMFjoj/h0dl2BKCf23skT/6sia6aIxEkido7JsoEn0spLU39KGdHwf6pmMY5Kv6WQykO5CPQEQdJ7eqfpPAr/59+T2oTd78jCPjSO5if3+4l4+ywdFmIoJahaI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StT3nglP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDAFC4CEEB;
-	Mon, 18 Aug 2025 14:06:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ym69Nh7UAQTu+fR9oN8M+A21ggKHO8Z7KU+1937yuOgTt+bInZymugOylnU+6L/ejrOTIMBgA+jD++7FE11kmZwEzejN3WPhtZauPYKfki2jY+AVIGaOUy9Wufask7gmsxjwR4RY6t8MLhF20woyvaTm+SBd7wH4KOkVDZH/nkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZV12a7fh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8B9C113D0;
+	Mon, 18 Aug 2025 13:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525984;
-	bh=wwsJ/qVVqhJc7SQPptuhk+nOTlMPe/d17jPTMwTCh5A=;
+	s=korg; t=1755524292;
+	bh=Cd4RgV+2L3Nhi7dqGlCmJ+w2Ss71CuDYzmr21CzsIYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StT3nglPd+N9PFHY/RAgPwVcRE+Tk/GpOXHPwQ6KsOE7H0f08yqFyh86x3YLgjzm7
-	 tBy4gvgepWOS8zKfln5+BxRUlNdKiAoTCq7CcqjDP7vD8nJaipbGvBcct7oj6a80Ue
-	 YD7l32VU9iRz9lLpl+vxtsFNa7GmcZHSYUGAdP1Q=
+	b=ZV12a7fh+r7VmqUUxFhtOl/qt7cdf1fDp5hbpxaVppiTfEkXXvznWEJhLhVGvpk10
+	 2uAoKFK8J0vhqz5ot0MenIicjUlljOJJo99ix/K/4YKOki06Fpuy3bNv1rKdoeJWRN
+	 rVvdsivbinEDDUA6Ic076dWe7ru0K4WzaHA9Z4tE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 425/570] i3c: add missing include to internal header
+Subject: [PATCH 6.15 426/515] ASoC: Intel: avs: Fix uninitialized pointer error in probe()
 Date: Mon, 18 Aug 2025 14:46:52 +0200
-Message-ID: <20250818124522.210758796@linuxfoundation.org>
+Message-ID: <20250818124514.821093558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 3b661ca549b9e5bb11d0bc97ada6110aac3282d2 ]
+[ Upstream commit 11f74f48c14c1f4fe16541900ea5944c42e30ccf ]
 
-LKP found a random config which failed to build because IO accessors
-were not defined:
+If pcim_request_all_regions() fails, error path operates on
+uninitialized 'bus' pointer. Found out by Coverity static analyzer.
 
-   In file included from drivers/i3c/master.c:21:
-   drivers/i3c/internals.h: In function 'i3c_writel_fifo':
->> drivers/i3c/internals.h:35:9: error: implicit declaration of function 'writesl' [-Werror=implicit-function-declaration]
-
-Add the proper header to where the IO accessors are used.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507150208.BZDzzJ5E-lkp@intel.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250717120046.9022-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250730124906.351798-1-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/internals.h | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/intel/avs/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/internals.h b/drivers/i3c/internals.h
-index 433f6088b7ce..ce04aa4f269e 100644
---- a/drivers/i3c/internals.h
-+++ b/drivers/i3c/internals.h
-@@ -9,6 +9,7 @@
- #define I3C_INTERNALS_H
+diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
+index cbbc656fcc3f..6ef49f10e19f 100644
+--- a/sound/soc/intel/avs/core.c
++++ b/sound/soc/intel/avs/core.c
+@@ -446,6 +446,8 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
+ 	adev = devm_kzalloc(dev, sizeof(*adev), GFP_KERNEL);
+ 	if (!adev)
+ 		return -ENOMEM;
++	bus = &adev->base.core;
++
+ 	ret = avs_bus_init(adev, pci, id);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to init avs bus: %d\n", ret);
+@@ -456,7 +458,6 @@ static int avs_pci_probe(struct pci_dev *pci, const struct pci_device_id *id)
+ 	if (ret < 0)
+ 		return ret;
  
- #include <linux/i3c/master.h>
-+#include <linux/io.h>
- 
- void i3c_bus_normaluse_lock(struct i3c_bus *bus);
- void i3c_bus_normaluse_unlock(struct i3c_bus *bus);
+-	bus = &adev->base.core;
+ 	bus->addr = pci_resource_start(pci, 0);
+ 	bus->remap_addr = pci_ioremap_bar(pci, 0);
+ 	if (!bus->remap_addr) {
 -- 
 2.39.5
 
