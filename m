@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D49B2A51B
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBF0B2A7AB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 305315659E8
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 368FD686F73
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD85632145A;
-	Mon, 18 Aug 2025 13:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3738B335BAF;
+	Mon, 18 Aug 2025 13:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YSeFaoO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o95Kh4Md"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2EC321443;
-	Mon, 18 Aug 2025 13:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B53335BAD;
+	Mon, 18 Aug 2025 13:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523053; cv=none; b=s4yeIRjKb2q37M2mKKYdwCwNa2+CsHOsEsYhPgIXlagdXKTdUTkzmuvBiQo9//iMqYQmy/4d2vuPr9lsnYMLZZTRpjF+i7jt3Ill4KE9dSPhWE/sW7d68Rkmz6SbeWDW/rODodQ0j5EMKlYr4S3z+nhHQ8Ti9we5Od1eEU4Sj0w=
+	t=1755524771; cv=none; b=WVLG1LWWj2lGotIue8WXMDSK/y31uy8a2u/O5DBmfsAXIfC7EGTHZ+jZwexc/hNFAdRmoWSTf6wwhIDCfzIUwDbk/huzObnjaUHrHWROqedbPxAzI4QORg1BlQP5NZRA3bfTwT40y6HHWPAnlaMg4XDeB+s1H8TBOcrmnSUpWW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523053; c=relaxed/simple;
-	bh=W5mB8yaVXdXgdKkoWSJG45k7L60Oj8SDmdzdldpK2PA=;
+	s=arc-20240116; t=1755524771; c=relaxed/simple;
+	bh=vJkVNzx1qVldU51b8ccLichFY1/riL3TZmWXzHFyYSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjQczjOdAU2/n0sCGnI1nVBm13krGH0vTs1ucFd5zvCRLA5p+e/B2D+Wj0lykxjt0GkAMIDcBdqdDaYW7I3V4uQxizzUbApF0lqzDdmCovTEgucUVmftfQReYT9T5KENQqV0vHEOhUvciP+1scAfc6GrOWKw6FTiHONIZFlQrfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YSeFaoO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DD0C4CEF1;
-	Mon, 18 Aug 2025 13:17:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KwE+QXuhjmoTp7lG3jrnBR5MFsBLOotgwZngv/jIOeNU+EzEiN0jbWxuBFKyUStf4gww3oKiVUF9wZ0XYuu5oBlNTmkBedkTtcMy4vALvBLn9vdpSIK02yykfChEqi4j/LZvfkR0nu9CUb8xN8y8fPcXydLpJ56Z7iil/h6zfkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o95Kh4Md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B469C4CEEB;
+	Mon, 18 Aug 2025 13:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523053;
-	bh=W5mB8yaVXdXgdKkoWSJG45k7L60Oj8SDmdzdldpK2PA=;
+	s=korg; t=1755524770;
+	bh=vJkVNzx1qVldU51b8ccLichFY1/riL3TZmWXzHFyYSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YSeFaoOShknYTdHBrQgZn4kObnEAYr57mimQ3xcm5KngaORYvjHxMDu/AcHV30dE
-	 szqmMuA0gJOH9Vp3L8m5Cvdi3abRDduuxS2sQLRArQjVZmPxLJq104k5L/7oiu91wY
-	 jDb62c1FsdrwAdv/uVO24N/LysSiz+hsIHTEtYRI=
+	b=o95Kh4MdP8E7JcwiL9KfmJ8bOSKj9UF8qkzAZs2JdWksoQ2eEXMGvN0VIdRBKcWDT
+	 nyoHP4WDgTDmlOVdVJEGfybCW1zzU46nBpPTP8cEcEyvzGR4sve+e35UAY5/8qUyml
+	 ZeGWlBu2aJpzSfoV4sj9xSv3b9iZcfU4kQaAdoTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 057/515] xfrm: restore GSO for SW crypto
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Tom Vincent <linux@tlvince.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.16 056/570] mfd: cros_ec: Separate charge-control probing from USB-PD
 Date: Mon, 18 Aug 2025 14:40:43 +0200
-Message-ID: <20250818124500.614131206@linuxfoundation.org>
+Message-ID: <20250818124507.970805260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 234d1eff5d4987024be9d40ac07b918a5ae8db1a ]
+commit e40fc1160d491c3bcaf8e940ae0dde0a7c5e8e14 upstream.
 
-Commit 49431af6c4ef incorrectly assumes that the GSO path is only used
-by HW offload, but it's also useful for SW crypto.
+The charge-control subsystem in the ChromeOS EC is not strictly tied to
+its USB-PD subsystem.
 
-This patch re-enables GSO for SW crypto. It's not an exact revert to
-preserve the other changes made to xfrm_dev_offload_ok afterwards, but
-it reverts all of its effects.
+Since commit 7613bc0d116a ("mfd: cros_ec: Don't load charger with UCSI")
+the presence of EC_FEATURE_UCSI_PPM would inhibit the probing of the
+charge-control driver.
 
-Fixes: 49431af6c4ef ("xfrm: rely on XFRM offload")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Furthermore recent versions of the EC firmware in Framework laptops
+hard-disable EC_FEATURE_USB_PD to avoid probing cros-usbpd-charger,
+which then also breaks cros-charge-control.
+
+Instead use the dedicated EC_FEATURE_CHARGER.
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/FrameworkComputer/EmbeddedController/commit/1d7bcf1d50137c8c01969eb65880bc83e424597e
+Fixes: 555b5fcdb844 ("mfd: cros_ec: Register charge control subdevice")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Tested-by: Tom Vincent <linux@tlvince.com>
+Link: https://lore.kernel.org/r/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_device.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/mfd/cros_ec_dev.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index a2d3a5f3b485..a6c289858401 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -415,10 +415,12 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	struct net_device *dev = x->xso.dev;
- 	bool check_tunnel_size;
+--- a/drivers/mfd/cros_ec_dev.c
++++ b/drivers/mfd/cros_ec_dev.c
+@@ -87,7 +87,6 @@ static const struct mfd_cell cros_ec_sen
+ };
  
--	if (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED)
-+	if (!x->type_offload ||
-+	    (x->xso.type == XFRM_DEV_OFFLOAD_UNSPECIFIED && x->encap))
- 		return false;
+ static const struct mfd_cell cros_usbpd_charger_cells[] = {
+-	{ .name = "cros-charge-control", },
+ 	{ .name = "cros-usbpd-charger", },
+ 	{ .name = "cros-usbpd-logger", },
+ };
+@@ -112,6 +111,10 @@ static const struct mfd_cell cros_ec_ucs
+ 	{ .name = "cros_ec_ucsi", },
+ };
  
--	if ((dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm) {
-+	if ((!dev || dev == xfrm_dst_path(dst)->dev) &&
-+	    !xdst->child->xfrm) {
- 		mtu = xfrm_state_mtu(x, xdst->child_mtu_cached);
- 		if (skb->len <= mtu)
- 			goto ok;
-@@ -430,6 +432,9 @@ bool xfrm_dev_offload_ok(struct sk_buff *skb, struct xfrm_state *x)
- 	return false;
- 
- ok:
-+	if (!dev)
-+		return true;
++static const struct mfd_cell cros_ec_charge_control_cells[] = {
++	{ .name = "cros-charge-control", },
++};
 +
- 	check_tunnel_size = x->xso.type == XFRM_DEV_OFFLOAD_PACKET &&
- 			    x->props.mode == XFRM_MODE_TUNNEL;
- 	switch (x->props.family) {
--- 
-2.50.1
-
+ static const struct cros_feature_to_cells cros_subdevices[] = {
+ 	{
+ 		.id		= EC_FEATURE_CEC,
+@@ -148,6 +151,11 @@ static const struct cros_feature_to_cell
+ 		.mfd_cells	= cros_ec_keyboard_leds_cells,
+ 		.num_cells	= ARRAY_SIZE(cros_ec_keyboard_leds_cells),
+ 	},
++	{
++		.id		= EC_FEATURE_CHARGER,
++		.mfd_cells	= cros_ec_charge_control_cells,
++		.num_cells	= ARRAY_SIZE(cros_ec_charge_control_cells),
++	},
+ };
+ 
+ static const struct mfd_cell cros_ec_platform_cells[] = {
 
 
 
