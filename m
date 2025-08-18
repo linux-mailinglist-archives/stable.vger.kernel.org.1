@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-170165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858C9B2A2ED
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:04:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A67B2A772
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FFD718A0AF3
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:57:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80B847A2008
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E610F31AF24;
-	Mon, 18 Aug 2025 12:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68D2335BCE;
+	Mon, 18 Aug 2025 13:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXzVQYFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em2t/8e2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25FA3218C0;
-	Mon, 18 Aug 2025 12:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95638335BBB;
+	Mon, 18 Aug 2025 13:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521740; cv=none; b=uPAPrctKQRTu9tRlpBOv1wtB1lK57OF1M1gxWwm9QrY8rkO8K/yD9JEugQDzbK8AVm1YOUX+S2Akfakw3G8K3fCKiMW6WQ/xPWn84HKRFlje2/oj0ysnRhOpAjj9aHaqvkekUhXmvY1QAlESL4V5YoiiEErBCe/XxeSAHWRzhCE=
+	t=1755525061; cv=none; b=PDYj9UOEKryG3kbM0vzyA9YZP4AIaOFxAGGxf50C1WIrzAig/7hzxMkNWxjpXw0L958ozqgZOXheaRL5wOIrvienqo347hsHHVHCgutfQo2RiNXF9bMMFqrQjWMItze0OIlFWBahOLcJVuERUFjgBKP1JAaNh3Gcw72xNMLdmQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521740; c=relaxed/simple;
-	bh=1O4BQQTp7WSNqMrKcNt61hIM85jImXKuv9f99J+kUxo=;
+	s=arc-20240116; t=1755525061; c=relaxed/simple;
+	bh=KOsfORvGshTI06uxeQelGdibS8Btebg/hpzZ0nANLNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ABpBYN997HmnNnoSefOnGeaKkHvOlw2SKWuM56fW1zY30asnlDFsC32bO9QS0JtNsfPn/eTrfGdw/ew4lNTRlfJKk/8PfmvElzp5wjMYFx4wRorD5cvC1yI/DB9A9kKDirdpQ/VvpSg4BcG4uhHVk6uPMeknm3A4Dz6nwDcl9bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXzVQYFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B613DC4CEEB;
-	Mon, 18 Aug 2025 12:55:39 +0000 (UTC)
+	 MIME-Version; b=KGNEX/sEICF3ySUr7OkJRyR6HOQ5trtCW0YhfY1myVf3FAZL0O/4K2InYXfDV2vc20aPO4dA38k2+orZ/lRKUf63uv9RpMLw6CyUpu/D/ip6nnGWVNlDK2kUxzjLHFXwG4qkjs9HP3AdkTI+lJsO6mNlmVTIw5twaum0y76pCHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em2t/8e2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091F8C4CEEB;
+	Mon, 18 Aug 2025 13:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521740;
-	bh=1O4BQQTp7WSNqMrKcNt61hIM85jImXKuv9f99J+kUxo=;
+	s=korg; t=1755525061;
+	bh=KOsfORvGshTI06uxeQelGdibS8Btebg/hpzZ0nANLNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXzVQYFpsO8wOR5+mYmAzLL92XEeNdxxsD2+VFvtqgQVpABGmhcATNBpfJ4ScgPEp
-	 YMXcbrW+cgN08HtLwYavLn282qtH0he8MW9HRJZscTzxQ4Qxj6VuD032DBzk0h5bLn
-	 Z0y2KBBAkcqHWvgahroThxQCkjV2f4i5yGfKYndw=
+	b=em2t/8e23ID2qyWulUVC1NPjD8GFGkoxXmE07rOiSCbfw/Im/QTn088jhVo9J8/9J
+	 dpmiWfkyS3sdoiCO/gKVSUA27qNYV/tPAKkHVRlefjSNx9f9ag8l8RmXSOqc9C5IA9
+	 vbQDPIHWeM32mzh0ByQ0SPAnjmhrt3k96QhEqKB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/444] usb: typec: tcpm/tcpci_maxim: fix irq wake usage
-Date: Mon, 18 Aug 2025 14:42:13 +0200
-Message-ID: <20250818124452.950807107@linuxfoundation.org>
+Subject: [PATCH 6.16 147/570] cpufreq: intel_pstate: Add Granite Rapids support in no-HWP mode
+Date: Mon, 18 Aug 2025 14:42:14 +0200
+Message-ID: <20250818124511.483760400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 31611223fb34a3e9320cdfc4f4395072a13ea78e ]
+[ Upstream commit fc64e0421598aaa87d61184f6777b52614a095be ]
 
-This driver calls enable_irq_wake() during probe() unconditionally, and
-never issues the required corresponding disable_irq_wake() to disable
-hardware interrupt wakeup signals.
+Users may disable HWP in firmware, in which case intel_pstate
+wouldn't load unless the CPU model is explicitly supported.
 
-Additionally, whether or not a device should wake-up the system is
-meant to be a policy decision based on sysfs (.../power/wakeup) in the
-first place.
-
-Update the driver to use the standard approach to enable/disable IRQ
-wake during the suspend/resume callbacks. This solves both issues
-described above.
-
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20250707-max77759-irq-wake-v1-1-d367f633e4bc@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Link: https://patch.msgid.link/20250623105601.3924-1-lirongqing@baidu.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim_core.c | 46 +++++++++++++++--------
- 1 file changed, 30 insertions(+), 16 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-index 648311f5e3cf..eeaf79e97261 100644
---- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-@@ -421,21 +421,6 @@ static irqreturn_t max_tcpci_isr(int irq, void *dev_id)
- 	return IRQ_WAKE_THREAD;
- }
- 
--static int max_tcpci_init_alert(struct max_tcpci_chip *chip, struct i2c_client *client)
--{
--	int ret;
--
--	ret = devm_request_threaded_irq(chip->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
--					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
--					chip);
--
--	if (ret < 0)
--		return ret;
--
--	enable_irq_wake(client->irq);
--	return 0;
--}
--
- static int max_tcpci_start_toggling(struct tcpci *tcpci, struct tcpci_data *tdata,
- 				    enum typec_cc_status cc)
- {
-@@ -532,7 +517,9 @@ static int max_tcpci_probe(struct i2c_client *client)
- 
- 	chip->port = tcpci_get_tcpm_port(chip->tcpci);
- 
--	ret = max_tcpci_init_alert(chip, client);
-+	ret = devm_request_threaded_irq(&client->dev, client->irq, max_tcpci_isr, max_tcpci_irq,
-+					(IRQF_TRIGGER_LOW | IRQF_ONESHOT), dev_name(chip->dev),
-+					chip);
- 	if (ret < 0)
- 		return dev_err_probe(&client->dev, ret,
- 				     "IRQ initialization failed\n");
-@@ -541,6 +528,32 @@ static int max_tcpci_probe(struct i2c_client *client)
- 	return 0;
- }
- 
-+#ifdef CONFIG_PM_SLEEP
-+static int max_tcpci_resume(struct device *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	int ret = 0;
-+
-+	if (client->irq && device_may_wakeup(dev))
-+		ret = disable_irq_wake(client->irq);
-+
-+	return ret;
-+}
-+
-+static int max_tcpci_suspend(struct device *dev)
-+{
-+	struct i2c_client *client = to_i2c_client(dev);
-+	int ret = 0;
-+
-+	if (client->irq && device_may_wakeup(dev))
-+		ret = enable_irq_wake(client->irq);
-+
-+	return ret;
-+}
-+#endif /* CONFIG_PM_SLEEP */
-+
-+static SIMPLE_DEV_PM_OPS(max_tcpci_pm_ops, max_tcpci_suspend, max_tcpci_resume);
-+
- static const struct i2c_device_id max_tcpci_id[] = {
- 	{ "maxtcpc" },
- 	{ }
-@@ -559,6 +572,7 @@ static struct i2c_driver max_tcpci_i2c_driver = {
- 	.driver = {
- 		.name = "maxtcpc",
- 		.of_match_table = of_match_ptr(max_tcpci_of_match),
-+		.pm = &max_tcpci_pm_ops,
- 	},
- 	.probe = max_tcpci_probe,
- 	.id_table = max_tcpci_id,
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 60326ab5475f..06a1c7dd081f 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2775,6 +2775,8 @@ static const struct x86_cpu_id intel_pstate_cpu_ids[] = {
+ 	X86_MATCH(INTEL_TIGERLAKE,		core_funcs),
+ 	X86_MATCH(INTEL_SAPPHIRERAPIDS_X,	core_funcs),
+ 	X86_MATCH(INTEL_EMERALDRAPIDS_X,	core_funcs),
++	X86_MATCH(INTEL_GRANITERAPIDS_D,	core_funcs),
++	X86_MATCH(INTEL_GRANITERAPIDS_X,	core_funcs),
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(x86cpu, intel_pstate_cpu_ids);
 -- 
 2.39.5
 
