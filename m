@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-170215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF2EB2A38A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1792B2A830
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2AB156755E
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D70587092
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D6931E0E9;
-	Mon, 18 Aug 2025 12:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6159B1E0DFE;
+	Mon, 18 Aug 2025 13:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0CzLzqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TC7tZmpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7694431CA55;
-	Mon, 18 Aug 2025 12:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1FF335BCD;
+	Mon, 18 Aug 2025 13:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755521910; cv=none; b=OIixas4Hwx+iFgzp3ZC/+qjdixB2Aghq6K9iGRVE9JF4WlEDOOTBcdY7kEp1kSTtdOnonOr+L4SYRIP8ZS4KNR7a4tmQ9wRZCMr/idipMWDghpjzOJVkVeZdBy4Rb9fDQYRPfP44UTgub1pI75cuyFj4R1fbwlGBDvAAbi6vw88=
+	t=1755525232; cv=none; b=gsI8BAZkZywaq0Z3Yc3WVAQimFg0lKiFtLQmQhiN0XrmQ0rney84G5Doz4pMJ9OsqvQLxZ9nKgJE2aP4/c5WhyRtmnpq3qukiwfCjXoRaVR9GFVzGAF22ut6gu+7Ab9WJHvuRqHVqyXokuA9lxDHF4k53XXgaNJ9FEH4sSFZ4Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755521910; c=relaxed/simple;
-	bh=3zjicOOn+OPQ0759qYOzlPx3BH73adc2QlQIRXFmEfI=;
+	s=arc-20240116; t=1755525232; c=relaxed/simple;
+	bh=qVVmoO7rfDnpKWMgQsEVVv4q2xk/lfs99L1GgDC7smc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ibiWs7MsxGgwJpETa01/GYKfS0pHrM0ZQNfSjxU5b5szOd1vLGGe8nQXxON1/WwQh2CIbyhnzaVBHQzSFRHtuedw/VuHEIe7GIro5B2RWDg/scmCli1HDVXLDSuAZ3myuhDwnf/g+UDjGjOVX/52mAE4bwvra8CIS8/ITtjK4hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0CzLzqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35706C4CEEB;
-	Mon, 18 Aug 2025 12:58:29 +0000 (UTC)
+	 MIME-Version; b=Vx+tj6ZgmpH2IqWKG0lmuEKuuixSAJaspSOKgf3e7YmSv9eMUe/wYYE41ulF7xNtllo/YRsAifIAaY9mj/EKZ2cSYK966L82cPfyof0wU/S827HkBxquMOeoD/IjbnL5rm4KBQaGEbitrcP08mRicoqSDvw3wkVctT6/7hov9qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TC7tZmpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82944C4CEEB;
+	Mon, 18 Aug 2025 13:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755521909;
-	bh=3zjicOOn+OPQ0759qYOzlPx3BH73adc2QlQIRXFmEfI=;
+	s=korg; t=1755525232;
+	bh=qVVmoO7rfDnpKWMgQsEVVv4q2xk/lfs99L1GgDC7smc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0CzLzqZAE6DXkgXnLtYik9IhefIwm9arhXfCgBfh2iKZRUuVkCikv9Yrl2QNcvcf
-	 LVt7PfkkAtji/FbrsI7LvCTMwtbYbgdueQqDwMZlbEgrASHzMENOLZAuYo6ufz/vZF
-	 IWU7wt+SbJJV/r2s3cVOULxh3lrwcl9E5oTY92RU=
+	b=TC7tZmpXpcXd7R2RWxVV3+4eqTyaDTcip77MAUSLlwcQ1ZeQcc9cMvnVO4OyWZEyN
+	 54wPCGJNrfHT6IFFdRbNnJYK2BLWCoYamTDEXAZQdN2oGW/vCtdvvGT9ztQVKOKPVN
+	 hK36JP163Wh0djs00vx/+Rs2swVBDbHjCThMR3ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Xinxin Wan <xinxin.wan@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Tomasz Michalec <tmichalec@google.com>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/444] ASoC: codecs: rt5640: Retry DEVICE_ID verification
+Subject: [PATCH 6.16 198/570] platform/chrome: cros_ec_typec: Defer probe on missing EC parent
 Date: Mon, 18 Aug 2025 14:43:05 +0200
-Message-ID: <20250818124454.858117474@linuxfoundation.org>
+Message-ID: <20250818124513.425280985@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xinxin Wan <xinxin.wan@intel.com>
+From: Tomasz Michalec <tmichalec@google.com>
 
-[ Upstream commit 19f971057b2d7b99c80530ec1052b45de236a8da ]
+[ Upstream commit 8866f4e557eba43e991f99711515217a95f62d2e ]
 
-To be more resilient to codec-detection failures when the hardware
-powers on slowly, add retry mechanism to the device verification check.
-Similar pattern is found throughout a number of Realtek codecs. Our
-tests show that 60ms delay is sufficient to address readiness issues on
-rt5640 chip.
+If cros_typec_probe is called before EC device is registered,
+cros_typec_probe will fail. It may happen when cros-ec-typec.ko is
+loaded before EC bus layer module (e.g. cros_ec_lpcs.ko,
+cros_ec_spi.ko).
 
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Xinxin Wan <xinxin.wan@intel.com>
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250530142120.2944095-3-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Return -EPROBE_DEFER when cros_typec_probe doesn't get EC device, so
+the probe function can be called again after EC device is registered.
+
+Signed-off-by: Tomasz Michalec <tmichalec@google.com>
+Reviewed-by: Abhishek Pandit-Subedi <abhishekpandit@chromium.org>
+Link: https://lore.kernel.org/r/20250610153748.1858519-1-tmichalec@google.com
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/platform/chrome/cros_ec_typec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 855139348edb..c366ae2275e8 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -3013,6 +3013,11 @@ static int rt5640_i2c_probe(struct i2c_client *i2c)
+diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
+index 7678e3d05fd3..f437b594055c 100644
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -1272,8 +1272,8 @@ static int cros_typec_probe(struct platform_device *pdev)
+ 
+ 	typec->ec = dev_get_drvdata(pdev->dev.parent);
+ 	if (!typec->ec) {
+-		dev_err(dev, "couldn't find parent EC device\n");
+-		return -ENODEV;
++		dev_warn(dev, "couldn't find parent EC device\n");
++		return -EPROBE_DEFER;
  	}
  
- 	regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	if (val != RT5640_DEVICE_ID) {
-+		usleep_range(60000, 100000);
-+		regmap_read(rt5640->regmap, RT5640_VENDOR_ID2, &val);
-+	}
-+
- 	if (val != RT5640_DEVICE_ID) {
- 		dev_err(&i2c->dev,
- 			"Device with ID register %#x is not rt5640/39\n", val);
+ 	platform_set_drvdata(pdev, typec);
 -- 
 2.39.5
 
