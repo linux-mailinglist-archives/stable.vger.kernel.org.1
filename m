@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-170477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21BEB2A446
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:19:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA2DB2A71B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C93463ADFC0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:13:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4839A561629
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B8131AF14;
-	Mon, 18 Aug 2025 13:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E18322549;
+	Mon, 18 Aug 2025 13:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/bzRsV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKEIZzwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383FD27A44A;
-	Mon, 18 Aug 2025 13:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E3931E115;
+	Mon, 18 Aug 2025 13:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522762; cv=none; b=YPDZqIJ6Q2QC5LVhzp5NvtnaEOoD+2DzVM2hFuj3FkyK+rFySo4WqPxzvQ2rnwzXE8dir4uMeqdPlWxMY+w+r6DrZCdbKg9zKsqzsZ3sIAD7AJGb2vfnvRfWLMJibw6nbUbvgCaRGYzE9CdFKsA/pX5T1jTqcqbDyBE/evtHeSs=
+	t=1755524426; cv=none; b=EcrhUURq6v41maNCV3gnC2nUU5PkCAwLOr1Jt/+ZlC6KhloEud5eH+O/iUX3YAafpSTpavawnp+Xa9jxjgEWePZ5+eiX/ljiLdM6lS/SsDTIdBi0WVQUbBYwOqr8LdG+SmqX9e7H5ed+nMxqlmVdEJX+xu4S7Gny8BOp978xHTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522762; c=relaxed/simple;
-	bh=XNwvBO41ujcDSFx/8F5o7hW1FT2lp71DuDA/Wo6NfLI=;
+	s=arc-20240116; t=1755524426; c=relaxed/simple;
+	bh=TT4xYXKjbpC4G5eQyN4DiM+eqCKB2NUEkjMFHHOcALk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7lOCjbwdVc8vk+ZSGPJE2IdKFsTtika5mpX8TiZDz6qvBvMPLRtjl8f/UyOHPi9xzfGIec7YmDvLVf1TxU0Eejp4SNgUgNoj5pT53mBWNcIJKj/BQuFmUT7UzYgb9GNqxqJHXZMDNLcuOfYupi787+6EuqQpqQXpRhGQIi0VDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/bzRsV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEB9C4CEEB;
-	Mon, 18 Aug 2025 13:12:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K0ncNoYcezA7oPIMlMoK6QHajeDr1UlLhb1KrYHQqW7s5r8wYYwEkCWKBZloFARZH6AJM64k7zZwTuwTZX8rExZiHF6N9kTOAKFTYkS7f8CkAxINnxkB0BkjAOiV2XkcYhIsCrMEdByz+mI2/nk1p6Zl2OLS6VMeslPCABs6lM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKEIZzwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2C3C113D0;
+	Mon, 18 Aug 2025 13:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522761;
-	bh=XNwvBO41ujcDSFx/8F5o7hW1FT2lp71DuDA/Wo6NfLI=;
+	s=korg; t=1755524426;
+	bh=TT4xYXKjbpC4G5eQyN4DiM+eqCKB2NUEkjMFHHOcALk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x/bzRsV0JzWf5yCxemSUK2mhp1tyFy7bM64KjMh+ukjwc3t/pKU8fvFuXKcIF59MC
-	 XPrXxJjHIgK8JDFySDCwKppgmq3WqAE1p7Aj4xtZBAUnBcoLbj+QAAH8OJjrFzO4VD
-	 WSIgBvHq2Gt9HZi6sXR4pdTJQGeYpMP4d/ds7Hwk=
+	b=zKEIZzwuzTu3s6MfdZfSM8h1iBu8L+i8sz2mn5+ncCql+QjRLKvV9CwzgQWWosCsJ
+	 JrJw1fJ+wK9tgfcm7Lr7mZv4LHh8HitasqZvrA2KcWXfbIdCZ3OoAPTFi930W6SXCd
+	 b1p4krK3iG5IHS99s+3DfnUFeibbUK5m2h2Y5KY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>
-Subject: [PATCH 6.12 396/444] btrfs: fix ssd_spread overallocation
+	Janna Martl <janna.martl109@gmail.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 436/515] drm/i915/psr: Do not trigger Frame Change events from frontbuffer flush
 Date: Mon, 18 Aug 2025 14:47:02 +0200
-Message-ID: <20250818124503.768639292@linuxfoundation.org>
+Message-ID: <20250818124515.211960856@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,141 +62,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-commit 807d9023e75fc20bfd6dd2ac0408ce4af53f1648 upstream.
+[ Upstream commit 184889dfe0568528fd6d14bba864dd57ed45bbf2 ]
 
-If the ssd_spread mount option is enabled, then we run the so called
-clustered allocator for data block groups. In practice, this results in
-creating a btrfs_free_cluster which caches a block_group and borrows its
-free extents for allocation.
+We want to get rid of triggering "Frame Change" events from
+frontbuffer flush calls. We are about to move using TRANS_PUSH
+register for this on LunarLake and onwards. Touching TRANS_PUSH
+register from fronbuffer flush would be problematic as it's written by
+DSB as well.
 
-Since the introduction of allocation size classes in 6.1, there has been
-a bug in the interaction between that feature and ssd_spread.
-find_free_extent() has a number of nested loops. The loop going over the
-allocation stages, stored in ffe_ctl->loop and managed by
-find_free_extent_update_loop(), the loop over the raid levels, and the
-loop over all the block_groups in a space_info. The size class feature
-relies on the block_group loop to ensure it gets a chance to see a
-block_group of a given size class.  However, the clustered allocator
-uses the cached cluster block_group and breaks that loop. Each call to
-do_allocation() will really just go back to the same cached block_group.
-Normally, this is OK, as the allocation either succeeds and we don't
-want to loop any more or it fails, and we clear the cluster and return
-its space to the block_group.
+Fix this by using intel_psr_exit when flush or invalidate is done on
+LunarLake and onwards. This is not possible on AlderLake and
+MeteorLake due to HW bug in PSR2 disable.
 
-But with size classes, the allocation can succeed, then later fail,
-outside of do_allocation() due to size class mismatch. That latter
-failure is not properly handled due to the highly complex multi loop
-logic. The result is a painful loop where we continue to allocate the
-same num_bytes from the cluster in a tight loop until it fails and
-releases the cluster and lets us try a new block_group. But by then, we
-have skipped great swaths of the available block_groups and are likely
-to fail to allocate, looping the outer loop. In pathological cases like
-the reproducer below, the cached block_group is often the very last one,
-in which case we don't perform this tight bg loop but instead rip
-through the ffe stages to LOOP_CHUNK_ALLOC and allocate a chunk, which
-is now the last one, and we enter the tight inner loop until an
-allocation failure. Then allocation succeeds on the final block_group
-and if the next allocation is a size mismatch, the exact same thing
-happens again.
+This patch is also fixing problems with cursor plane where cursor is
+disappearing or duplicate cursor is seen on the screen.
 
-Triggering this is as easy as mounting with -o ssd_spread and then
-running:
+v2: Commit message updated
 
-  mount -o ssd_spread $dev $mnt
-  dd if=/dev/zero of=$mnt/big bs=16M count=1 &>/dev/null
-  dd if=/dev/zero of=$mnt/med bs=4M count=1 &>/dev/null
-  sync
-
-if you do the two writes + sync in a loop, you can force btrfs to spin
-an excessive amount on semi-successful clustered allocations, before
-ultimately failing and advancing to the stage where we force a chunk
-allocation. This results in 2G of data allocated per iteration, despite
-only using ~20M of data. By using a small size classed extent, the inner
-loop takes longer and we can spin for longer.
-
-The simplest, shortest term fix to unbreak this is to make the clustered
-allocator size_class aware in the dumbest way, where it fails on size
-class mismatch. This may hinder the operation of the clustered
-allocator, but better hindered than completely broken and terribly
-overallocating.
-
-Further re-design improvements are also in the works.
-
-Fixes: 52bb7a2166af ("btrfs: introduce size class to block group allocator")
-CC: stable@vger.kernel.org # 6.1+
-Reported-by: David Sterba <dsterba@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bspec: 68927, 68934, 66624
+Reported-by: Janna Martl <janna.martl109@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5522
+Fixes: 411ad63877bb ("drm/i915/psr: Use SFF_CTL on invalidate/flush for LunarLake onwards")
+Tested-by: Janna Martl <janna.martl109@gmail.com>
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://lore.kernel.org/r/20250801062905.564453-1-jouni.hogander@intel.com
+(cherry picked from commit 46fb38cb20c0d185a6391ab524b23e0e0219c41f)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c |   33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -3654,6 +3654,21 @@ btrfs_release_block_group(struct btrfs_b
- 	btrfs_put_block_group(cache);
- }
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 4e938bad808c..ccefdcb833dd 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -3171,7 +3171,9 @@ static void intel_psr_configure_full_frame_update(struct intel_dp *intel_dp)
  
-+static bool find_free_extent_check_size_class(const struct find_free_extent_ctl *ffe_ctl,
-+					      const struct btrfs_block_group *bg)
-+{
-+	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
-+		return true;
-+	if (!btrfs_block_group_should_use_size_class(bg))
-+		return true;
-+	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
-+		return true;
-+	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
-+	    bg->size_class == BTRFS_BG_SZ_NONE)
-+		return true;
-+	return ffe_ctl->size_class == bg->size_class;
-+}
+ static void _psr_invalidate_handle(struct intel_dp *intel_dp)
+ {
+-	if (intel_dp->psr.psr2_sel_fetch_enabled) {
++	struct intel_display *display = to_intel_display(intel_dp);
 +
- /*
-  * Helper function for find_free_extent().
-  *
-@@ -3675,7 +3690,8 @@ static int find_free_extent_clustered(st
- 	if (!cluster_bg)
- 		goto refill_cluster;
- 	if (cluster_bg != bg && (cluster_bg->ro ||
--	    !block_group_bits(cluster_bg, ffe_ctl->flags)))
-+	    !block_group_bits(cluster_bg, ffe_ctl->flags) ||
-+	    !find_free_extent_check_size_class(ffe_ctl, cluster_bg)))
- 		goto release_cluster;
++	if (DISPLAY_VER(display) < 20 && intel_dp->psr.psr2_sel_fetch_enabled) {
+ 		if (!intel_dp->psr.psr2_sel_fetch_cff_enabled) {
+ 			intel_dp->psr.psr2_sel_fetch_cff_enabled = true;
+ 			intel_psr_configure_full_frame_update(intel_dp);
+@@ -3259,7 +3261,7 @@ static void _psr_flush_handle(struct intel_dp *intel_dp)
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 	struct drm_i915_private *dev_priv = to_i915(display->drm);
  
- 	offset = btrfs_alloc_from_cluster(cluster_bg, last_ptr,
-@@ -4231,21 +4247,6 @@ static int find_free_extent_update_loop(
- 	return -ENOSPC;
+-	if (intel_dp->psr.psr2_sel_fetch_enabled) {
++	if (DISPLAY_VER(display) < 20 && intel_dp->psr.psr2_sel_fetch_enabled) {
+ 		if (intel_dp->psr.psr2_sel_fetch_cff_enabled) {
+ 			/* can we turn CFF off? */
+ 			if (intel_dp->psr.busy_frontbuffer_bits == 0)
+@@ -3276,11 +3278,13 @@ static void _psr_flush_handle(struct intel_dp *intel_dp)
+ 		 * existing SU configuration
+ 		 */
+ 		intel_psr_configure_full_frame_update(intel_dp);
+-	}
+ 
+-	intel_psr_force_update(intel_dp);
++		intel_psr_force_update(intel_dp);
++	} else {
++		intel_psr_exit(intel_dp);
++	}
+ 
+-	if (!intel_dp->psr.psr2_sel_fetch_enabled && !intel_dp->psr.active &&
++	if ((!intel_dp->psr.psr2_sel_fetch_enabled || DISPLAY_VER(display) >= 20) &&
+ 	    !intel_dp->psr.busy_frontbuffer_bits)
+ 		queue_work(dev_priv->unordered_wq, &intel_dp->psr.work);
  }
- 
--static bool find_free_extent_check_size_class(struct find_free_extent_ctl *ffe_ctl,
--					      struct btrfs_block_group *bg)
--{
--	if (ffe_ctl->policy == BTRFS_EXTENT_ALLOC_ZONED)
--		return true;
--	if (!btrfs_block_group_should_use_size_class(bg))
--		return true;
--	if (ffe_ctl->loop >= LOOP_WRONG_SIZE_CLASS)
--		return true;
--	if (ffe_ctl->loop >= LOOP_UNSET_SIZE_CLASS &&
--	    bg->size_class == BTRFS_BG_SZ_NONE)
--		return true;
--	return ffe_ctl->size_class == bg->size_class;
--}
--
- static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
- 					struct find_free_extent_ctl *ffe_ctl,
- 					struct btrfs_space_info *space_info,
+-- 
+2.50.1
+
 
 
 
