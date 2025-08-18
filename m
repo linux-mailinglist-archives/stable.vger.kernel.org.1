@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-171321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3687EB2A968
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21236B2A3A6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50A9B6E3042
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:07:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7086618A66FF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD1E322554;
-	Mon, 18 Aug 2025 13:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D05320387;
+	Mon, 18 Aug 2025 13:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OugSTh7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPjBej5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4736832253D;
-	Mon, 18 Aug 2025 13:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE8531E11B;
+	Mon, 18 Aug 2025 13:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525537; cv=none; b=PD4IBJRDZWQGApTmK0DKq/UMVhmiqF1AfU/OQrAzPX4M0QRCWHvCgH+Ka5bNXcC3EQBtC2ciaaHdFBmtv/BCqDJ1zvX3Tli7slxvGyWu0VATdRhEXuTfz+XRMVJ/J1tlqYL+hai3FfvDRXVz7IMbhguTrXxEIaceO54ELJTn+Kc=
+	t=1755522369; cv=none; b=I1P+zxmAnE/R7AlhI44Pn3Vyykb/j60reR1e3el/EC8d/IJbeIGKBzyct+r3CCs/j3yAuLjjSQCB3ceaToDHrhiGSZ4WgDnN0G8ZFbjWiBcAgCv17Cuje/DrVCPwcTEIDADAg6P0b8IWpeNDnpXJnKufyoJX2pc2vskZEUduDy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525537; c=relaxed/simple;
-	bh=/YCvjB9cMdprqPllw/zqgG6uLkL1yw/Ve4wKzfEb0ZY=;
+	s=arc-20240116; t=1755522369; c=relaxed/simple;
+	bh=ArUQ9OAMWZ4dXCCG0v7cVsbNI7ZN1sYegbxJhlPPzxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZL2NRyzwXg3PmD24sOdNe9zMhJbDcecqpzdprgKpsgaCP5ZO20mgM7lp6BktRKQ2ZrRK+Ix4UosknfX3ldLUUHGAlt9K8yH4MbC7umoIEOvRKJamJf+rukBD1qDv/ddjgjFBMPEZbUW/M4y1o3vM/B1dnIwHyy9YV4YuV7NGjK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OugSTh7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749F7C4CEEB;
-	Mon, 18 Aug 2025 13:58:56 +0000 (UTC)
+	 MIME-Version; b=gc37JVtGGwt16yXALC7VBSeANF+dlDjPOwvIs7SUaCfjMtcBm1kFzvp/HHke+Jz0aB5au/PGVsE96J2dkOBwKtgi7jy6t5ZeJl/9DTAacOYyh+md5Itd8Vjj2w3SboRlrxmCr53JuYiL2OnMjZIxdp0QNo3SqiVc5EF6Ycdu+M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPjBej5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7929FC4CEEB;
+	Mon, 18 Aug 2025 13:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525536;
-	bh=/YCvjB9cMdprqPllw/zqgG6uLkL1yw/Ve4wKzfEb0ZY=;
+	s=korg; t=1755522368;
+	bh=ArUQ9OAMWZ4dXCCG0v7cVsbNI7ZN1sYegbxJhlPPzxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OugSTh7jmO9cgtFdgORH+GhATJ42g6rdvh1P/iU2tisvPV12NjE688EDwHCzzJjTu
-	 VM2RzDIRArLn5kU+j/AEpMRate0g5ANFmR2TPKloN/hQOoeV8Dl5YYBTHwhqgifTPm
-	 yw2CWrK0RQ+amfWngDhqHJiQNLz79Ni+jUg0vd50=
+	b=bPjBej5nPYECYOpx3BBFTSliRGSgYcWweh/Ux8JJz7TgwmsOKJj1bBKR5dWk3tptb
+	 O5suLzTXXthiBUrGuKJOmhzEY4ENqfDfPI1gS7VZsep/nZU49AKbPrG+hNDzdWBVuS
+	 AV/Uj51UUo6/B8ZdP8UOUGvn6zogbpDnP69lanhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nevenko Stupar <nevenko.stupar@amd.com>,
-	Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Quentin Monnet <qmo@kernel.org>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 292/570] drm/amd/display: Separate set_gsl from set_gsl_source_select
+Subject: [PATCH 6.12 253/444] bpftool: Fix JSON writer resource leak in version command
 Date: Mon, 18 Aug 2025 14:44:39 +0200
-Message-ID: <20250818124517.096981602@linuxfoundation.org>
+Message-ID: <20250818124458.307927958@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 660a467a5e7366cd6642de61f1aaeaf0d253ee68 ]
+[ Upstream commit 85cd83fed8267cde0dd1cea719808aad95ae4de7 ]
 
-[Why/How]
-Separate the checks for set_gsl and set_gsl_source_select, since
-source_select may not be implemented/necessary.
+When using `bpftool --version -j/-p`, the JSON writer object
+created in do_version() was not properly destroyed after use.
+This caused a memory leak each time the version command was
+executed with JSON output.
 
-Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
-Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix: 004b45c0e51a (tools: bpftool: provide JSON output for all possible commands)
+
+Suggested-by: Quentin Monnet <qmo@kernel.org>
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20250617132442.9998-1-chenyuan_fl@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tools/bpf/bpftool/main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index c277df12c817..a93282d6e5a4 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -283,14 +283,13 @@ void dcn20_setup_gsl_group_as_lock(
- 	}
+diff --git a/tools/bpf/bpftool/main.c b/tools/bpf/bpftool/main.c
+index 08d0ac543c67..a0536528dfde 100644
+--- a/tools/bpf/bpftool/main.c
++++ b/tools/bpf/bpftool/main.c
+@@ -534,9 +534,9 @@ int main(int argc, char **argv)
+ 		usage();
  
- 	/* at this point we want to program whether it's to enable or disable */
--	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL &&
--		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL) {
-+	if (pipe_ctx->stream_res.tg->funcs->set_gsl != NULL) {
- 		pipe_ctx->stream_res.tg->funcs->set_gsl(
- 			pipe_ctx->stream_res.tg,
- 			&gsl);
+ 	if (version_requested)
+-		return do_version(argc, argv);
 -
--		pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
--			pipe_ctx->stream_res.tg, group_idx,	enable ? 4 : 0);
-+		if (pipe_ctx->stream_res.tg->funcs->set_gsl_source_select != NULL)
-+			pipe_ctx->stream_res.tg->funcs->set_gsl_source_select(
-+				pipe_ctx->stream_res.tg, group_idx, enable ? 4 : 0);
- 	} else
- 		BREAK_TO_DEBUGGER();
- }
+-	ret = cmd_select(commands, argc, argv, do_help);
++		ret = do_version(argc, argv);
++	else
++		ret = cmd_select(commands, argc, argv, do_help);
+ 
+ 	if (json_output)
+ 		jsonw_destroy(&json_wtr);
 -- 
 2.39.5
 
