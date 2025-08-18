@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-170943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550D2B2A760
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BA0B2A427
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:17:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA46681CEE
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A562247B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052CD28C014;
-	Mon, 18 Aug 2025 13:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE8B21B199;
+	Mon, 18 Aug 2025 13:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TV7dxlE0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mq/5aQ3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F3B335BC9;
-	Mon, 18 Aug 2025 13:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA878BEC;
+	Mon, 18 Aug 2025 13:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755524301; cv=none; b=Dqd9xDK1g8EL4HKYubMmpDVPEOlSVqqCjbHrh/jwmsaeFxuj5FDCwG5NRFchLVRl2CPc3xhbR5tk4TB7wheLj231xoQT5hsrRBuWvyclvM/50A4sDTPFWv4AL/u4ZRdJOlD0dVCSmV4OAlRoL0yXb57o+hGOhkiToDrg6Anktno=
+	t=1755522687; cv=none; b=dsEfhUxb4Kw++moSGQGCyoCAR+nB/ChqSL73wAXsl2EfsDvg6ZfSrXF5/64L7jEeU1ih9L6WKD3pZz34TrnEBkDd6V4kxMygat7EI+z3BLiKOxLMHPtzFkv8rHmk8ocdTYXYsT0BE2SXPP/zNO0SZCU0ztb1PHI9BmlqvuV35KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755524301; c=relaxed/simple;
-	bh=jG4Y4LGrlyHjiiLspBSU8Pmm7pYQ6j9uHG2c3kwtGPQ=;
+	s=arc-20240116; t=1755522687; c=relaxed/simple;
+	bh=TXwvzAv8Hwi3ybp6dP9DUfbw0AF0X5wtMAFKGdpCjaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hy2rNI2jIUYRVuCxHXXDD6t6bVSM9UwC16c36Pz9mPlF79EDm/LZ2tQfFvzZeQWt739HxXxF3YMV4bNNKCmtbhMYFglIULFfsisl23PkZdkxjklrEgVEnYrPC4ld9bumzdQUMBAcbVNBov9KRt+cM17pr79pwYfhxGknX5QQoNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TV7dxlE0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D98CC4CEEB;
-	Mon, 18 Aug 2025 13:38:20 +0000 (UTC)
+	 MIME-Version; b=FMC8WO6GIqiT236hwszSIsagO3MArg7u1R9zn5I2VkdL3bgYPm+FjAgLAko/SqflSfVXTbPmJvUD1YHEDFF+DE38NSUCtpmDFSfQzyHLkVzQsI5xaPXDoNmWBgG8vyGagGmzulHUN7KGg1yWZtJu7iJkUWPVm8f+8f4CzmUhm/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mq/5aQ3J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1023C4CEEB;
+	Mon, 18 Aug 2025 13:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755524301;
-	bh=jG4Y4LGrlyHjiiLspBSU8Pmm7pYQ6j9uHG2c3kwtGPQ=;
+	s=korg; t=1755522687;
+	bh=TXwvzAv8Hwi3ybp6dP9DUfbw0AF0X5wtMAFKGdpCjaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TV7dxlE0J39qBkD63vYnD+RKVyWALlizBaQ6KquNMvDIy6jJejyXa6cN7NBClqxO5
-	 FCd5FGGPK/SvsBScf0lK6yF7ecyq8RJFyg/n6y7hN7ghZt2zn+vT7vigg7yANaWvKF
-	 iz1q0AHNiy+zLYpMgdjRe3N2f9ShNGZE6id1vL8M=
+	b=Mq/5aQ3J4V9E/pcTjmg/gxgjcfiQYBqgYa1ZSZgDwS6o/V1+M6KX1+FFr5tkzfTCi
+	 LYmD0BnAdR1mUoazaAhw9EKKWzDqSYqP1L2zGXBwXE2vAfK1S6bBuSDn/00g+GJ5b+
+	 E/KEGNXyC1OinlFhRoiLhU53RHBwszk+U4R52ZoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 429/515] pNFS: Fix disk addr range check in block/scsi layout
+	stable <stable@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.12 389/444] thunderbolt: Fix copy+paste error in match_service_id()
 Date: Mon, 18 Aug 2025 14:46:55 +0200
-Message-ID: <20250818124514.940504988@linuxfoundation.org>
+Message-ID: <20250818124503.484951701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 7db6e66663681abda54f81d5916db3a3b8b1a13d ]
+commit 5cc1f66cb23cccc704e3def27ad31ed479e934a5 upstream.
 
-At the end of the isect translation, disc_addr represents the physical
-disk offset. Thus, end calculated from disk_addr is also a physical disk
-offset. Therefore, range checking should be done using map->disk_offset,
-not map->start.
+The second instance of TBSVC_MATCH_PROTOCOL_VERSION seems to have been
+intended to be TBSVC_MATCH_PROTOCOL_REVISION.
 
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250702133226.212537-1-sergeybashirov@gmail.com
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d1ff70241a27 ("thunderbolt: Add support for XDomain discovery protocol")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://lore.kernel.org/r/20250721050136.30004-1-ebiggers@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/domain.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 47189476b553..5d6edafbed20 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -149,8 +149,8 @@ do_add_page_to_bio(struct bio *bio, int npg, enum req_op op, sector_t isect,
+--- a/drivers/thunderbolt/domain.c
++++ b/drivers/thunderbolt/domain.c
+@@ -36,7 +36,7 @@ static bool match_service_id(const struc
+ 			return false;
+ 	}
  
- 	/* limit length to what the device mapping allows */
- 	end = disk_addr + *len;
--	if (end >= map->start + map->len)
--		*len = map->start + map->len - disk_addr;
-+	if (end >= map->disk_offset + map->len)
-+		*len = map->disk_offset + map->len - disk_addr;
- 
- retry:
- 	if (!bio) {
--- 
-2.39.5
-
+-	if (id->match_flags & TBSVC_MATCH_PROTOCOL_VERSION) {
++	if (id->match_flags & TBSVC_MATCH_PROTOCOL_REVISION) {
+ 		if (id->protocol_revision != svc->prtcrevs)
+ 			return false;
+ 	}
 
 
 
