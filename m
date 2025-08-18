@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-170536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6741FB2A527
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:30:44 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAC7B2A6A9
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F2B21898C88
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:21:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2A544E394B
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A07342CBA;
-	Mon, 18 Aug 2025 13:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D3B335BCB;
+	Mon, 18 Aug 2025 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLmcPb23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO0pgc/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95467342CB0;
-	Mon, 18 Aug 2025 13:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17425335BA9;
+	Mon, 18 Aug 2025 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522957; cv=none; b=Wh6svwMbidBEBjWjfOr2GPCKC+N1KplH739ISJCtQoAgRHWKwcig+CJRWcMVhlSzQU4/QKn1L9+cKdWsC9/vEF4eHyPZVXXfV1uhgnN+o1ib2bq//yg6uH/f/8D53sJ7QRT2zghGVTRxeyvBgdgosJiDCBWBIqMhhscdh4hBrj0=
+	t=1755524698; cv=none; b=dpiYEfbEQ/8MBgjwpdvOT6XfaYxqcHVNxCTeca75I7EtnST8gZVIp5ruLEnlAaaYcMxLgMpQuf2qcF3flhz8ObJEEc7zVAlZC/AjQ3BFwD0F8eloYIZ0pxDio3UN3UP0fXXbwgdawjY8wLY/2ak+tCRPZvIlqOAQ+4x4ioVk3Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522957; c=relaxed/simple;
-	bh=TNjud2H7hOvjCA7R43tw3sF88Afn9AS6Ud59Ducxjk8=;
+	s=arc-20240116; t=1755524698; c=relaxed/simple;
+	bh=2/hBSFFlZz9tTcdqHSPWFdFp+bdAMB7Iv9JZeMW4fWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiG/RQZFP7K4Ojdu4m2P1VC4gfak/gromOx52RFKVu6Oh+4b/3nvromTO1mVsgMWNOFFZuf/Mspo9aBu3FXD4coJfaOq8kUVyFsc337X2Rond7WgyO4o767U8Yda0JwueH3IFeM2SS0Za217dwjnojAKX8yO0rnUNFE6jacz8jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLmcPb23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1876AC116C6;
-	Mon, 18 Aug 2025 13:15:56 +0000 (UTC)
+	 MIME-Version; b=V0GzJH8z5LiyR7cxlsXazKV4RkTb9AjsgfJZdVIuzMfcha9CQhd1B10GTmRTF/zZoea2s7ASXbfJGNkv5Br2hN3UPn2B6AfN+9fdQi6/74Pfu7g9T64ueC1Op9uCbNCQj7G7CZw4GuRd7r2EGsa8d1Ct/CTB3e9qdjMHtkonz3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO0pgc/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFE8C4CEEB;
+	Mon, 18 Aug 2025 13:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522957;
-	bh=TNjud2H7hOvjCA7R43tw3sF88Afn9AS6Ud59Ducxjk8=;
+	s=korg; t=1755524698;
+	bh=2/hBSFFlZz9tTcdqHSPWFdFp+bdAMB7Iv9JZeMW4fWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLmcPb230KRlJGhyklofY23xb+3y64JyMVsrIDbwdDdI11tedwmdLOqrlNfdWlDUP
-	 mUtLU2cczJEucYSNG50zfJODd9m/l34I3NqqwBh9tpXes3wxTmuBhRfl3p7yh7ce1H
-	 RT41z5YuL9Sq/Bd8H2sHP0k9MQdTwTsas+X0GFJQ=
+	b=MO0pgc/EJkyyYpwJjGMqo0jlWbTbuE5M7fkP27bU8reqAUASBroKkSuI30L0jayPX
+	 R51rYTvnKKK4O9wN8qkPsOwvnng3V0psnlLSwjpbSItuZYgVj6iTWTI0aDxkbrRmwT
+	 2eEgQqqwKJYoucGGpCVvLXRylZ1j0uwKg+VxbcJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.15 027/515] net: usb: asix_devices: add phy_mask for ax88772 mdio bus
-Date: Mon, 18 Aug 2025 14:40:13 +0200
-Message-ID: <20250818124459.507196950@linuxfoundation.org>
+	Roger Quadros <rogerq@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.16 027/570] net: ti: icss-iep: fix device and OF node leaks at probe
+Date: Mon, 18 Aug 2025 14:40:14 +0200
+Message-ID: <20250818124506.861621998@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 4faff70959d51078f9ee8372f8cff0d7045e4114 upstream.
+commit e05c54974a05ab19658433545d6ced88d9075cf0 upstream.
 
-Without setting phy_mask for ax88772 mdio bus, current driver may create
-at most 32 mdio phy devices with phy address range from 0x00 ~ 0x1f.
-DLink DUB-E100 H/W Ver B1 is such a device. However, only one main phy
-device will bind to net phy driver. This is creating issue during system
-suspend/resume since phy_polling_mode() in phy_state_machine() will
-directly deference member of phydev->drv for non-main phy devices. Then
-NULL pointer dereference issue will occur. Due to only external phy or
-internal phy is necessary, add phy_mask for ax88772 mdio bus to workarnoud
-the issue.
+Make sure to drop the references to the IEP OF node and device taken by
+of_parse_phandle() and of_find_device_by_node() when looking up IEP
+devices during probe.
 
-Closes: https://lore.kernel.org/netdev/20250806082931.3289134-1-xu.yang_2@nxp.com
-Fixes: e532a096be0e ("net: usb: asix: ax88772: add phylib support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/20250811092931.860333-1-xu.yang_2@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Drop the bogus additional reference taken on successful lookup so that
+the device is released correctly by icss_iep_put().
+
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Cc: stable@vger.kernel.org	# 6.6
+Cc: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250725171213.880-6-johan@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix_devices.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/icssg/icss_iep.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -676,6 +676,7 @@ static int ax88772_init_mdio(struct usbn
- 	priv->mdio->read = &asix_mdio_bus_read;
- 	priv->mdio->write = &asix_mdio_bus_write;
- 	priv->mdio->name = "Asix MDIO Bus";
-+	priv->mdio->phy_mask = ~(BIT(priv->phy_addr) | BIT(AX_EMBD_PHY_ADDR));
- 	/* mii bus name is usb-<usb bus number>-<usb device number> */
- 	snprintf(priv->mdio->id, MII_BUS_ID_SIZE, "usb-%03d:%03d",
- 		 dev->udev->bus->busnum, dev->udev->devnum);
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -685,11 +685,17 @@ struct icss_iep *icss_iep_get_idx(struct
+ 	struct platform_device *pdev;
+ 	struct device_node *iep_np;
+ 	struct icss_iep *iep;
++	int ret;
+ 
+ 	iep_np = of_parse_phandle(np, "ti,iep", idx);
+-	if (!iep_np || !of_device_is_available(iep_np))
++	if (!iep_np)
+ 		return ERR_PTR(-ENODEV);
+ 
++	if (!of_device_is_available(iep_np)) {
++		of_node_put(iep_np);
++		return ERR_PTR(-ENODEV);
++	}
++
+ 	pdev = of_find_device_by_node(iep_np);
+ 	of_node_put(iep_np);
+ 
+@@ -698,21 +704,28 @@ struct icss_iep *icss_iep_get_idx(struct
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	iep = platform_get_drvdata(pdev);
+-	if (!iep)
+-		return ERR_PTR(-EPROBE_DEFER);
++	if (!iep) {
++		ret = -EPROBE_DEFER;
++		goto err_put_pdev;
++	}
+ 
+ 	device_lock(iep->dev);
+ 	if (iep->client_np) {
+ 		device_unlock(iep->dev);
+ 		dev_err(iep->dev, "IEP is already acquired by %s",
+ 			iep->client_np->name);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 	iep->client_np = np;
+ 	device_unlock(iep->dev);
+-	get_device(iep->dev);
+ 
+ 	return iep;
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(icss_iep_get_idx);
+ 
 
 
 
