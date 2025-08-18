@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-171212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB9CB2A86F
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:05:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2D5B2A30E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFE5D1BA3064
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:53:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8E6C18A36C2
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 12:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01036335BC5;
-	Mon, 18 Aug 2025 13:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A8E2FF15F;
+	Mon, 18 Aug 2025 12:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEtfn0qj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkPtcM0v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E14335BBE;
-	Mon, 18 Aug 2025 13:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13573218C0;
+	Mon, 18 Aug 2025 12:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525181; cv=none; b=VCipSwpiaBLanvLxQAqWjEO6did30Yd17W+EfUqzZaupttv3Uue/7FlO2000G/xCnIVslfGLsPGIfU50uV5mqPXuLOzA8bEFcyd4+u8psvuF6kV/8cIBRWRtoXQokqI4NX8bb9phVjmCsnEWvD0CyxzQu0r6fpkm0J2ZyeD+KyA=
+	t=1755521867; cv=none; b=oI9DoeaYwHRWBhJOfHjrFbZB47CH37EsVbcWKXxwfVv+hYuLgF6zq6XRPSFKT5t12cOv4fE4k4r7aPNs/eloTOBECWB+rgRQ1ezTh+axQEK3XNne6QaicIKkcddUbzOM6cjH6ws4VETQO+bg3mnFxk8YN1ZqFZnPeTthRMGwQsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525181; c=relaxed/simple;
-	bh=iswyeFkY355NdISNPb+LD4vaCFf83HzKtnlgso6/Etc=;
+	s=arc-20240116; t=1755521867; c=relaxed/simple;
+	bh=dpKsfGfRx4aifuN/MP4ZYqbGRIsHsxxMuBM6hvkgh6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uH78tNNia9hfWIKU0kp4vs6YQa1kY0p4y8nGX9BEJSm4h42coGd0mtaBmBc0i2Llrs8cfPebTyLoBhVmFmRTwjThSy05ykV/FlyzFZTGvQrz5AdWnG5kZGD0YPrBN4+SbxYV7rgCzZ9/XL1/BrRb2s49f1PJux+tdMCuyt8QpZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEtfn0qj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65CCC4CEEB;
-	Mon, 18 Aug 2025 13:53:00 +0000 (UTC)
+	 MIME-Version; b=IpKZQGHREullCAwUv0t28IoTl4jRkED6U9h+vz0eV9G1OKHgKyc4W5Tf8xayTRqzjMr6vT0UfWvwCfC14zFJXZYqC/B2RnR+FnLpqNdyi2k4Ab88Ws9LxKUd6BUU6ktNUteJEwgODui6NjXmVGNECI+EFLX+4ViQa60S1VPgrqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkPtcM0v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E426AC4CEEB;
+	Mon, 18 Aug 2025 12:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525181;
-	bh=iswyeFkY355NdISNPb+LD4vaCFf83HzKtnlgso6/Etc=;
+	s=korg; t=1755521867;
+	bh=dpKsfGfRx4aifuN/MP4ZYqbGRIsHsxxMuBM6hvkgh6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEtfn0qjpytr1sW/XrjaWrg4vyy0BrUk1JEDUUh0VwbYeCQjjxJiX+ySdW4oEqU7z
-	 ux9JTCmE3iqAOYYpx47uoNGuEo049WcS9N/ppxuEKXAD3a2msTwW2vYTfqdAAFV85c
-	 wHFEBOirJmAqjGA/hU6DNLWyLVYSneqy1LnJAZC4=
+	b=KkPtcM0vKmByOPdWNkXFxw/Igkxb1uV/pBpK60WRrwit4CDqVIneJn3kv4rnoyOiQ
+	 19CATqr6wJ/jhlytY64qIdjz6b1TB+q1DaJpHzuujCP+qB99urr0VJELG/xz0XT7lC
+	 DNRgMhF0urOyDLHA52VXqXEn7DiSzeiAKm5qbkig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 184/570] x86/bugs: Avoid warning when overriding return thunk
+Subject: [PATCH 6.12 145/444] ASoC: SOF: topology: Parse the dapm_widget_tokens in case of DSPless mode
 Date: Mon, 18 Aug 2025 14:42:51 +0200
-Message-ID: <20250818124512.899707186@linuxfoundation.org>
+Message-ID: <20250818124454.351146116@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 9f85fdb9fc5a1bd308a10a0a7d7e34f2712ba58b ]
+[ Upstream commit 6b3cb7f4341cbf62d41ccf6ea906dbe66be8aa3d ]
 
-The purpose of the warning is to prevent an unexpected change to the return
-thunk mitigation. However, there are legitimate cases where the return
-thunk is intentionally set more than once. For example, ITS and SRSO both
-can set the return thunk after retbleed has set it. In both the cases
-retbleed is still mitigated.
+Parsing the dapm_widget_tokens is also needed for DSPless mode as it is
+setting the snd_soc_dapm_widget.no_wname_in_kcontrol_name flag for the
+kcontrol creation from DAPM widgets.
+Without that flag set, the following warnings might appear because of long
+control names:
+ALSA: Control name 'eqiir.2.1 Post Mixer Analog Playback IIR Eq bytes' truncated to 'eqiir.2.1 Post Mixer Analog Playback IIR Eq'
+ALSA: Control name 'eqfir.2.1 Post Mixer Analog Playback FIR Eq bytes' truncated to 'eqfir.2.1 Post Mixer Analog Playback FIR Eq'
+ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC bytes' truncated to 'drc.2.1 Post Mixer Analog Playback DRC byte'
+ALSA: Control name 'drc.2.1 Post Mixer Analog Playback DRC switch' truncated to 'drc.2.1 Post Mixer Analog Playback DRC swit'
+ALSA: Control name 'gain.15.1 Pre Mixer Deepbuffer HDA Analog Volume' truncated to 'gain.15.1 Pre Mixer Deepbuffer HDA Analog V'
 
-Replace the warning with an info about the active return thunk.
-
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250611-eibrs-fix-v4-3-5ff86cac6c61@linux.intel.com
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://patch.msgid.link/20250619102640.12068-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/soc/sof/topology.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index f2721801d8d4..d19972d5d729 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -115,10 +115,9 @@ void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
- 
- static void __init set_return_thunk(void *thunk)
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index f9708b8fd73b..0104257df930 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -2364,14 +2364,25 @@ static int sof_dspless_widget_ready(struct snd_soc_component *scomp, int index,
+ 				    struct snd_soc_dapm_widget *w,
+ 				    struct snd_soc_tplg_dapm_widget *tw)
  {
--	if (x86_return_thunk != __x86_return_thunk)
--		pr_warn("x86/bugs: return thunk changed\n");
--
- 	x86_return_thunk = thunk;
++	struct snd_soc_tplg_private *priv = &tw->priv;
++	int ret;
 +
-+	pr_info("active return thunk: %ps\n", thunk);
- }
++	/* for snd_soc_dapm_widget.no_wname_in_kcontrol_name */
++	ret = sof_parse_tokens(scomp, w, dapm_widget_tokens,
++			       ARRAY_SIZE(dapm_widget_tokens),
++			       priv->array, le32_to_cpu(priv->size));
++	if (ret < 0) {
++		dev_err(scomp->dev, "failed to parse dapm widget tokens for %s\n",
++			w->name);
++		return ret;
++	}
++
+ 	if (WIDGET_IS_DAI(w->id)) {
+ 		static const struct sof_topology_token dai_tokens[] = {
+ 			{SOF_TKN_DAI_TYPE, SND_SOC_TPLG_TUPLE_TYPE_STRING, get_token_dai_type, 0}};
+ 		struct snd_sof_dev *sdev = snd_soc_component_get_drvdata(scomp);
+-		struct snd_soc_tplg_private *priv = &tw->priv;
+ 		struct snd_sof_widget *swidget;
+ 		struct snd_sof_dai *sdai;
+-		int ret;
  
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ 		swidget = kzalloc(sizeof(*swidget), GFP_KERNEL);
+ 		if (!swidget)
 -- 
 2.39.5
 
