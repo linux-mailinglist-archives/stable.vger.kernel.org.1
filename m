@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-171483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB59DB2A960
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:19:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE314B2A757
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D03DF7BFDF0
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:16:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A9A684FAF
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEF9322A16;
-	Mon, 18 Aug 2025 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2CE13C8E8;
+	Mon, 18 Aug 2025 13:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J71ru1Gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIF+u78A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC51322A15;
-	Mon, 18 Aug 2025 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289CC335BA0;
+	Mon, 18 Aug 2025 13:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526076; cv=none; b=ojPcbjIWQqPSjxlb0tRyKPg09zAZRCLUVZdkDm8C86+pfOnZRzLow6hbleCMOe/3CPTgNMwsSgbNbPb/6Y4ZRCiYnqaMSXb2fmmvbyvcWFUnGJXM9uTKiN7aEqouU71aVAyG6jrT5iY5L9Csxaiq/ZMz9l2bAnlDfEDDEJu4Ou8=
+	t=1755524270; cv=none; b=DcTKOX8sKMqggfYLTTWb2xtDLthsFQoIkz+VkynfZoLa1A1I4dDD7+pwDryZVpoHeivA8/6KG4WP0AOblw+o68CHU36C0PJs/GhManzZZiQe5mSO+iJvBo8w3YvWdEbuzz629FZU2ktfRMgy+DBUO4KBr3yZ6xhIxH0taPb2br8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526076; c=relaxed/simple;
-	bh=NqyMA00Nqp6mO/FTtchFaRPZ8nVon/6a91ngrISuL8Y=;
+	s=arc-20240116; t=1755524270; c=relaxed/simple;
+	bh=cgOPrA4mmtjOi2QuE5/uVnbeHAPCqHiwpu3pzlMClKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sV19nmhaaXoiK2ctSNMRjNYms/5SVtgvpS0qjdcwjIobG9fzH7/ymH19ZqSNUpKYTnNRqm/plVkmGG7M5Afk3a7tjleTBYspNHErxckAhhpbhmw8gsQdm2i6dyC+3cS1dX6jVD5s1HH9IuchoB8HGanOuccnACCEEFB3PhZ4v7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J71ru1Gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3120C113D0;
-	Mon, 18 Aug 2025 14:07:55 +0000 (UTC)
+	 MIME-Version; b=pV73Y7HIAjgEk/IfbeV43Okh97KBkJVUrJ3DlEM7M3YStWJM28sUFe0lXk53esC3sPqVI+qNbJ/5Ni8NVamQYLsUiMpyzo5IYQ/ox7Rnatrpgukv5vJ6i904UmDftTmLIWoP/FH6drv1vCOPm1j6k0ZqRvN0Y5tZgfqkz3eGmZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIF+u78A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C818C116B1;
+	Mon, 18 Aug 2025 13:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526076;
-	bh=NqyMA00Nqp6mO/FTtchFaRPZ8nVon/6a91ngrISuL8Y=;
+	s=korg; t=1755524270;
+	bh=cgOPrA4mmtjOi2QuE5/uVnbeHAPCqHiwpu3pzlMClKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J71ru1GuKc0pksduCx+d0kWbLreRN6i2Z7+n+nu/a85MhG8IQPbY6avOHZK2NkJGe
-	 /sPfQ/ase5KOA5itQXyKQm53rYCwQEHYs7q9g1mV/ME2q16/SEoNh3Ykfs86tzoMFE
-	 ykdjK3w67rclOii8wWRAcFbMD2hF49FvKhuksj/4=
+	b=bIF+u78ANjHBalLX5mi8bBmHX9AVIxxBKpdAsri0Ufy85A5NyaInJ9sl7qDYiY3Zy
+	 YwFJQQLkwtUulHNaIWtXiA7P+cmCgHCJmNnSEOlFn4hQRerdRiyAHDYXv/+VbJ7ND5
+	 xnf6eBTZZegyxmG1GC/UaXF4sbSr8soXLhvzDBhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Calvin Owens <calvin@wbinvd.org>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 419/570] clk: renesas: rzg2l: Postpone updating priv->clks[]
+Subject: [PATCH 6.15 420/515] tools/power turbostat: Handle cap_get_proc() ENOSYS
 Date: Mon, 18 Aug 2025 14:46:46 +0200
-Message-ID: <20250818124521.985209348@linuxfoundation.org>
+Message-ID: <20250818124514.597344675@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Calvin Owens <calvin@wbinvd.org>
 
-[ Upstream commit 2f96afdffad4ef74e3c511207058c41c54a2d014 ]
+[ Upstream commit d34fe509f5f76d9dc36291242d67c6528027ebbd ]
 
-Since the sibling data is filled after the priv->clks[] array entry is
-populated, the first clock that is probed and has a sibling will
-temporarily behave as its own sibling until its actual sibling is
-populated. To avoid any issues, postpone updating priv->clks[] until after
-the sibling is populated.
+Kernels configured with CONFIG_MULTIUSER=n have no cap_get_proc().
+Check for ENOSYS to recognize this case, and continue on to
+attempt to access the requested MSRs (such as temperature).
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20250514090415.4098534-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index a8628f64a03b..c87ad5a972b7 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -1389,10 +1389,6 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
- 		goto fail;
- 	}
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 2c77ec8df67d..dd3c32ab9ec1 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -6527,8 +6527,16 @@ int check_for_cap_sys_rawio(void)
+ 	int ret = 0;
  
--	clk = clock->hw.clk;
--	dev_dbg(dev, "Module clock %pC at %lu Hz\n", clk, clk_get_rate(clk));
--	priv->clks[id] = clk;
--
- 	if (mod->is_coupled) {
- 		struct mstp_clock *sibling;
- 
-@@ -1404,6 +1400,10 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
- 		}
- 	}
- 
-+	clk = clock->hw.clk;
-+	dev_dbg(dev, "Module clock %pC at %lu Hz\n", clk, clk_get_rate(clk));
-+	priv->clks[id] = clk;
+ 	caps = cap_get_proc();
+-	if (caps == NULL)
++	if (caps == NULL) {
++		/*
++		 * CONFIG_MULTIUSER=n kernels have no cap_get_proc()
++		 * Allow them to continue and attempt to access MSRs
++		 */
++		if (errno == ENOSYS)
++			return 0;
 +
- 	return;
+ 		return 1;
++	}
  
- fail:
+ 	if (cap_get_flag(caps, CAP_SYS_RAWIO, CAP_EFFECTIVE, &cap_flag_value)) {
+ 		ret = 1;
 -- 
 2.39.5
 
