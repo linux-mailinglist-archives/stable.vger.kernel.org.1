@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-171256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2ABBB2A8C5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:09:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD4CB2A3A3
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40CAF5A282A
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:56:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7E6A5610CB
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CE5261B9B;
-	Mon, 18 Aug 2025 13:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5C731E0F4;
+	Mon, 18 Aug 2025 13:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2sKYegC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="claDIEjF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB0413C8E8;
-	Mon, 18 Aug 2025 13:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED04331CA50;
+	Mon, 18 Aug 2025 13:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755525323; cv=none; b=F9OAxhE1qzjNqQS6wFIqltsY4VMbYsTbo8CQWbfmvC632Vax/z9Gh1sxC+yfGvrDy3QcrYgTE0jEixszq60tzb1nAQ6nn5vpr9m1wGVUrbXSiVzQI02L7P6mMME/anVXYHyYBoryug8dcbYh5pW4T23/oPR6uz2vEpQp+yZjF2w=
+	t=1755522121; cv=none; b=EPLAIJQ0iFhgzRnq+beE7mt8mrwPz3N656mSNbm3/TSLIg1xL+hllItF3mpnImHtl6HT088PHB3c+Hs7cQ2rDqE6OnNVuia/1SgZK04jVYOufUL7WMgEJUx8253X4MDNlRIogDEdP3ODMZE9k92Q7rIGWldBAvdWBiEjBdLXIiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755525323; c=relaxed/simple;
-	bh=pSEluvsubI9+ypkGAm+0tAdG4XkukuDjBuUEKRT57zc=;
+	s=arc-20240116; t=1755522121; c=relaxed/simple;
+	bh=WJf33EXznp/MKytshuQKY+Gcl13g9gh7UtIvBOv4Ivo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AbFmgn9UIoFPPenfmOiV8umjLs1/E33mc6FntgGo7l9UXYpBOJz14qYQruDTxXGGEX2WAPnI9H2U6kHdl52xPLU5p52mBz13UrgU7jb5WOmAAr3EuVoMewwvu6gX+1nDM+4IiL9DP7DWRmVCM8BAtBUvLIs07nFUVGgwSFlof9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2sKYegC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56554C116C6;
-	Mon, 18 Aug 2025 13:55:22 +0000 (UTC)
+	 MIME-Version; b=BE8jeJ0Kuu4NVB0vLVQs3X0uFdvO3zUYDchKyCyPYtCx1B1D7WfBhZGNZzNz3PE8Zk1n8xyXQyzCXSV0xcj0H7xz6Q+wGFclHKzYpwQZ4Wd5MDZYv5GF7xf4FRMN/0JiSM0jOLJQ2y7DmO+djJcQcFmspkzZUXq86O88kyofX2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=claDIEjF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABCDC4CEEB;
+	Mon, 18 Aug 2025 13:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755525323;
-	bh=pSEluvsubI9+ypkGAm+0tAdG4XkukuDjBuUEKRT57zc=;
+	s=korg; t=1755522120;
+	bh=WJf33EXznp/MKytshuQKY+Gcl13g9gh7UtIvBOv4Ivo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D2sKYegCN8pTLbIaTIsOocDfPowXpe2L1x3xa/s0j17R54vrfuyE9WylHLDCUfbym
-	 AjZ+4raqlZ8AtXYli3+Rs0rQol14CuOxtSk+V9iHQrATbofDwDxEQXfnXuiP54qaRD
-	 cr4GdZoJjaCJEc9Df9z6S7FdeLUjiqjWYqgWKM5M=
+	b=claDIEjF7FSVJuPgyPITPz23RnQCJ1NnDdEZx2ORTJC9rwkse0PzykTDwA8/yciED
+	 C3gmrP2SoTAYE3xRysUvkDLJQpUv+sMp/gxFyh9Z6fwLuxxVcmDBtyWz+edndaimbL
+	 E80rrc4js3z/bxCeRZSbEOynxiwBY/7ojXtBco1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Croce <teknoraver@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 227/570] libbpf: Fix warning in calloc() usage
+Subject: [PATCH 6.12 188/444] net: mctp: Prevent duplicate binds
 Date: Mon, 18 Aug 2025 14:43:34 +0200
-Message-ID: <20250818124514.569615426@linuxfoundation.org>
+Message-ID: <20250818124455.918771068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matteo Croce <teknoraver@meta.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit 0ee30d937c147fc14c4b49535181d437cd2fde7a ]
+[ Upstream commit 3954502377ec05a1b37e2dc9bef0bacd4bbd71b2 ]
 
-When compiling libbpf with some compilers, this warning is triggered:
+Disallow bind() calls that have the same arguments as existing bound
+sockets.  Previously multiple sockets could bind() to the same
+type/local address, with an arbitrary socket receiving matched messages.
 
-libbpf.c: In function ‘bpf_object__gen_loader’:
-libbpf.c:9209:28: error: ‘calloc’ sizes specified with ‘sizeof’ in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
- 9209 |         gen = calloc(sizeof(*gen), 1);
-      |                            ^
-libbpf.c:9209:28: note: earlier argument should specify number of elements, later size of each element
+This is only a partial fix, a future commit will define precedence order
+for MCTP_ADDR_ANY versus specific EID bind(), which are allowed to exist
+together.
 
-Fix this by inverting the calloc() arguments.
-
-Signed-off-by: Matteo Croce <teknoraver@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20250717200337.49168-1-technoboy85@gmail.com
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250710-mctp-bind-v4-2-8ec2f6460c56@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mctp/af_mctp.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 6401dd3bd35f..8fe427960eee 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -9221,7 +9221,7 @@ int bpf_object__gen_loader(struct bpf_object *obj, struct gen_loader_opts *opts)
- 		return libbpf_err(-EFAULT);
- 	if (!OPTS_VALID(opts, gen_loader_opts))
- 		return libbpf_err(-EINVAL);
--	gen = calloc(sizeof(*gen), 1);
-+	gen = calloc(1, sizeof(*gen));
- 	if (!gen)
- 		return libbpf_err(-ENOMEM);
- 	gen->opts = opts;
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 57850d4dac5d..70aeebfc4182 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -73,7 +73,6 @@ static int mctp_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
+ 
+ 	lock_sock(sk);
+ 
+-	/* TODO: allow rebind */
+ 	if (sk_hashed(sk)) {
+ 		rc = -EADDRINUSE;
+ 		goto out_release;
+@@ -629,15 +628,36 @@ static void mctp_sk_close(struct sock *sk, long timeout)
+ static int mctp_sk_hash(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
++	struct sock *existing;
++	struct mctp_sock *msk;
++	int rc;
++
++	msk = container_of(sk, struct mctp_sock, sk);
+ 
+ 	/* Bind lookup runs under RCU, remain live during that. */
+ 	sock_set_flag(sk, SOCK_RCU_FREE);
+ 
+ 	mutex_lock(&net->mctp.bind_lock);
++
++	/* Prevent duplicate binds. */
++	sk_for_each(existing, &net->mctp.binds) {
++		struct mctp_sock *mex =
++			container_of(existing, struct mctp_sock, sk);
++
++		if (mex->bind_type == msk->bind_type &&
++		    mex->bind_addr == msk->bind_addr &&
++		    mex->bind_net == msk->bind_net) {
++			rc = -EADDRINUSE;
++			goto out;
++		}
++	}
++
+ 	sk_add_node_rcu(sk, &net->mctp.binds);
+-	mutex_unlock(&net->mctp.bind_lock);
++	rc = 0;
+ 
+-	return 0;
++out:
++	mutex_unlock(&net->mctp.bind_lock);
++	return rc;
+ }
+ 
+ static void mctp_sk_unhash(struct sock *sk)
 -- 
 2.39.5
 
