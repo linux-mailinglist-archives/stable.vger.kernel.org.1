@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-170777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD3BB2A577
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:34:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB97B2A94D
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5D834E3608
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:34:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4D5F5A52D6
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 14:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DD8333A00B;
-	Mon, 18 Aug 2025 13:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D853469F6;
+	Mon, 18 Aug 2025 13:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kf1oNU+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbJ237mC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE2B1DC997;
-	Mon, 18 Aug 2025 13:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBD53469E7;
+	Mon, 18 Aug 2025 13:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523759; cv=none; b=qtopwspLxSegKrGc/gvEVcTV0Q8o1jm9FisVcugRc3LtYvcg7ldRU4QdwPigoFxMaFdZhqiF9K26xaHSQJxG/DgIotcB6hI6mztwQ+9UYLyVadxo6ZfmNDQTZxfRj8E4Le2A3EvmLDoKdkvkzrv3RzkInT3fbf6SiJ0KZ4Vs9UM=
+	t=1755525443; cv=none; b=Wqu1oUH4uubsgL1n80KGixm3jETbog0QrSfZeGqmt2+DfcEXCirW19JXtHQKewFl0Y+jwKdZI3W2JXCzDpk9rk9AwMPsXM/I4Pk54dcWRLVWy1fDnTSk2XtFNLMmsA902gMgINYvi0f3/UmuEEetr4jIT1Ze/cArBxyXNKOsZE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523759; c=relaxed/simple;
-	bh=Glq7hmgM82MC2wMjDyXJT90dVGxTaPCH2yXSKU2etf8=;
+	s=arc-20240116; t=1755525443; c=relaxed/simple;
+	bh=fGmPVZkQMVrcPjgDVVtRvqpfxTBUqGghTQgZ1wQnieo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hpgzOLW6QxR2iQNKHAXDB2wvwWr3bjgWiQ9ZF350ybHirWh6auRdY2zE4grZP9d82p2trgOMTRSha1e/VPrkMXjkLBousbt4jB2upWZJEHk1azfvVcGkQmIxxlqlKEgko/uw55wtGbvZG2kNoN4WHvTvLziyNkq9W00iNRVfOKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kf1oNU+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB58C116B1;
-	Mon, 18 Aug 2025 13:29:18 +0000 (UTC)
+	 MIME-Version; b=pEDQ4eaJih9KlSHfz/ozV73jbL9BK9GfRcnp+dMDkJzjqAtBLw+3kRcwdgvvJ/kNpmJpIB06fZvIW1Zw8IaagV+UYqTD41UOgFre09z74jThi5g2C33vDdLpJDnXSqWuk1vPCGXwK6Q6NL+83nA0pLWlWMYlEIjRCVJx5dGmfzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbJ237mC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1201C113D0;
+	Mon, 18 Aug 2025 13:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523759;
-	bh=Glq7hmgM82MC2wMjDyXJT90dVGxTaPCH2yXSKU2etf8=;
+	s=korg; t=1755525443;
+	bh=fGmPVZkQMVrcPjgDVVtRvqpfxTBUqGghTQgZ1wQnieo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kf1oNU+uQevvsVsVQ+VYDqSOtiCI6Eh6QpxJiyIifrbAXhx7TBc2IlBKWwadSF377
-	 3VaOJgyKQnXxEVob8Q93Um8kONf+du7vy5vvMtcWLmtQ8ea0XMZtbyopDJQt+tHeBX
-	 0bGlK98xU5OV+7dMJUpuSCoveSUUCd8KHJC08ucM=
+	b=IbJ237mC9mi/5FOmQiWSi1sW5DjY/170sdPRFrWZpp7hmCwhR48lIpHHrwOF6IYO+
+	 8l4tfmQY/Hxtyq+zRGbYluaCqamHPJ1NCpH2dfE3M2e4ot83L4Vj2xeojL3/Rdo67L
+	 xdw+4TD/B8T3Y9wcQ22B3pRMjBCfTi9TOzzNuEi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	zhangjianrong <zhangjianrong5@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 265/515] net: thunderbolt: Fix the parameter passing of tb_xdomain_enable_paths()/tb_xdomain_disable_paths()
+Subject: [PATCH 6.16 264/570] (powerpc/512) Fix possible `dma_unmap_single()` on uninitialized pointer
 Date: Mon, 18 Aug 2025 14:44:11 +0200
-Message-ID: <20250818124508.624341741@linuxfoundation.org>
+Message-ID: <20250818124516.003413347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhangjianrong <zhangjianrong5@huawei.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 8ec31cb17cd355cea25cdb8496d9b3fbf1321647 ]
+[ Upstream commit 760b9b4f6de9a33ca56a05f950cabe82138d25bd ]
 
-According to the description of tb_xdomain_enable_paths(), the third
-parameter represents the transmit ring and the fifth parameter represents
-the receive ring. tb_xdomain_disable_paths() is the same case.
+If the device configuration fails (if `dma_dev->device_config()`),
+`sg_dma_address(&sg)` is not initialized and the jump to `err_dma_prep`
+leads to calling `dma_unmap_single()` on `sg_dma_address(&sg)`.
 
-[Jakub] Mika says: it works now because both rings ->hop is the same
-
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/20250625051149.GD2824380@black.fi.intel.com
-Signed-off-by: zhangjianrong <zhangjianrong5@huawei.com>
-Link: https://patch.msgid.link/20250628094920.656658-1-zhangjianrong5@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250610142918.169540-2-fourier.thomas@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/thunderbolt/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/512x/mpc512x_lpbfifo.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index 643cf67840b5..dcaa62377808 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -396,9 +396,9 @@ static void tbnet_tear_down(struct tbnet *net, bool send_logout)
+diff --git a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+index 9668b052cd4b..f251e0f68262 100644
+--- a/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
++++ b/arch/powerpc/platforms/512x/mpc512x_lpbfifo.c
+@@ -240,10 +240,8 @@ static int mpc512x_lpbfifo_kick(void)
+ 	dma_conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
  
- 		ret = tb_xdomain_disable_paths(net->xd,
- 					       net->local_transmit_path,
--					       net->rx_ring.ring->hop,
-+					       net->tx_ring.ring->hop,
- 					       net->remote_transmit_path,
--					       net->tx_ring.ring->hop);
-+					       net->rx_ring.ring->hop);
- 		if (ret)
- 			netdev_warn(net->dev, "failed to disable DMA paths\n");
+ 	/* Make DMA channel work with LPB FIFO data register */
+-	if (dma_dev->device_config(lpbfifo.chan, &dma_conf)) {
+-		ret = -EINVAL;
+-		goto err_dma_prep;
+-	}
++	if (dma_dev->device_config(lpbfifo.chan, &dma_conf))
++		return -EINVAL;
  
-@@ -662,9 +662,9 @@ static void tbnet_connected_work(struct work_struct *work)
- 		goto err_free_rx_buffers;
+ 	sg_init_table(&sg, 1);
  
- 	ret = tb_xdomain_enable_paths(net->xd, net->local_transmit_path,
--				      net->rx_ring.ring->hop,
-+				      net->tx_ring.ring->hop,
- 				      net->remote_transmit_path,
--				      net->tx_ring.ring->hop);
-+				      net->rx_ring.ring->hop);
- 	if (ret) {
- 		netdev_err(net->dev, "failed to enable DMA paths\n");
- 		goto err_free_tx_buffers;
 -- 
 2.39.5
 
