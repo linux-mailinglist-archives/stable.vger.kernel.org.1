@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-170581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-171099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4908BB2A4F5
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 15:28:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92290B2A832
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 16:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A299B7BD082
-	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:23:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D57336E141E
+	for <lists+stable@lfdr.de>; Mon, 18 Aug 2025 13:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30B732255C;
-	Mon, 18 Aug 2025 13:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A80225397;
+	Mon, 18 Aug 2025 13:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMcMiJJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSGvisLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61466220F38;
-	Mon, 18 Aug 2025 13:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F205335BAA;
+	Mon, 18 Aug 2025 13:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755523103; cv=none; b=sPI8Lta+47Dm+uWu9/HA4/VGm5GKVqw9oTRGmLNhF+RAZLpklrWFgNzXDAMP/PzoOMC/w3yPagHXJuuGfq9jKJKmoob/qnOkdjZHz/Lg6lDq5aCp3lX2/lSZEJkuf3SDdaJ2oOkwD4qLTUHV+DSkVBipupwvmyWRGn5DVUfGuyY=
+	t=1755524812; cv=none; b=V2uRGXL6sBImqlQVFc+zv3QB9fBA4uEHyMm9dcTHWYfdvTEe/wfgZKPyk8wcfVwBGuCzplPu6U4GWa56RjALCJaIVgVQ/JSCWcuZwg0cYLtp4wy8JBUtjOz68lJu1oa8W2Wi5AhXy0/HLSRZ0tJog25MPOwi6BHAsJVBXPu6ge8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755523103; c=relaxed/simple;
-	bh=PyNOPFAC7blmiTURzr9YOLa4snK8EgYIRiws/4BfMrw=;
+	s=arc-20240116; t=1755524812; c=relaxed/simple;
+	bh=+9scMvNloXksP/11cI7uCGc3v9+VfG25Apr6QKe47Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5nn2gfSVVpof5NHexzYgdYHX+alRscKDVyonJC69142ko+fg7UChEcdJqmv/oOTWlTlT/m710o4GnpDHm/TN8jL+5VgDmjSwE3mnQvaj32taYL0JBismUJAYQvW/UCwqqURrdQwfvpVbh8PU0KqZk4eJ9VPV07K6CzfIaes+cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMcMiJJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C647AC4CEEB;
-	Mon, 18 Aug 2025 13:18:22 +0000 (UTC)
+	 MIME-Version; b=n5gKLEEFjenh1PsGiBYtubmpQN9cNIkgdbkuw3YC1McBpe+XCstkgq6VbbHhjz7p8/+C0awgHhInyxYoJHHww2guP7EVCwdLztKvo7gmQFD7rUNzCi+rdLSX6yLN2u3YsGZFS5UsGvyz+/frKardQYshoL2BrJm/rHsuw0FXdVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSGvisLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E254C4CEEB;
+	Mon, 18 Aug 2025 13:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755523103;
-	bh=PyNOPFAC7blmiTURzr9YOLa4snK8EgYIRiws/4BfMrw=;
+	s=korg; t=1755524812;
+	bh=+9scMvNloXksP/11cI7uCGc3v9+VfG25Apr6QKe47Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMcMiJJbSRvkxwBbduQ6Iu7zVI1WpVAcwRMHc7RLAkyFrzeO62p8etsCsxEJixOJW
-	 u0Y2QiJV1pmNWSpk0JRaqZTFvKhOPLLdnAGnfTRXQkI46T1700cz5HmhqeH8UgqnD3
-	 RaMCaE8ncrtv6jcvUy6NN2RxbFiW8fZBAwiCH2f0=
+	b=aSGvisLNAgGAJGsrp5VeYjwegm3CRsk4dPybfsgXQA0fJ1+5CdxNlBr7ZSf26MyFM
+	 6P3rDLx4I1xpsSVHbDnqevP6xRhMS13NTvUieW0gM9DBT0Tas9WvM6HvvzcjXWHdls
+	 8ytngyjnBaky30g1Op5CqnXJLX01UqNNrZkXQyz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
+	David Wei <dw@davidwei.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 071/515] cpuidle: governors: menu: Avoid using invalid recent intervals data
-Date: Mon, 18 Aug 2025 14:40:57 +0200
-Message-ID: <20250818124501.123886939@linuxfoundation.org>
+Subject: [PATCH 6.16 071/570] net: page_pool: allow enabling recycling late, fix false positive warning
+Date: Mon, 18 Aug 2025 14:40:58 +0200
+Message-ID: <20250818124508.562074494@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
-References: <20250818124458.334548733@linuxfoundation.org>
+In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
+References: <20250818124505.781598737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fa3fa55de0d6177fdcaf6fc254f13cc8f33c3eed ]
+[ Upstream commit 64fdaa94bfe0cca3a0f4b2dd922486c5f59fe678 ]
 
-Marc has reported that commit 85975daeaa4d ("cpuidle: menu: Avoid
-discarding useful information") caused the number of wakeup interrupts
-to increase on an idle system [1], which was not expected to happen
-after merely allowing shallower idle states to be selected by the
-governor in some cases.
+Page pool can have pages "directly" (locklessly) recycled to it,
+if the NAPI that owns the page pool is scheduled to run on the same CPU.
+To make this safe we check that the NAPI is disabled while we destroy
+the page pool. In most cases NAPI and page pool lifetimes are tied
+together so this happens naturally.
 
-However, on the system in question, all of the idle states deeper than
-WFI are rejected by the driver due to a firmware issue [2].  This causes
-the governor to only consider the recent interval duriation data
-corresponding to attempts to enter WFI that are successful and the
-recent invervals table is filled with values lower than the scheduler
-tick period.  Consequently, the governor predicts an idle duration
-below the scheduler tick period length and avoids stopping the tick
-more often which leads to the observed symptom.
+The queue API expects the following order of calls:
+ -> mem_alloc
+    alloc new pp
+ -> stop
+    napi_disable
+ -> start
+    napi_enable
+ -> mem_free
+    free old pp
 
-Address it by modifying the governor to update the recent intervals
-table also when entering the previously selected idle state fails, so
-it knows that the short idle intervals might have been the minority
-had the selected idle states been actually entered every time.
+Here we allocate the page pool in ->mem_alloc and free in ->mem_free.
+But the NAPIs are only stopped between ->stop and ->start. We created
+page_pool_disable_direct_recycling() to safely shut down the recycling
+in ->stop. This way the page_pool_destroy() call in ->mem_free doesn't
+have to worry about recycling any more.
 
-Fixes: 85975daeaa4d ("cpuidle: menu: Avoid discarding useful information")
-Link: https://lore.kernel.org/linux-pm/86o6sv6n94.wl-maz@kernel.org/ [1]
-Link: https://lore.kernel.org/linux-pm/7ffcb716-9a1b-48c2-aaa4-469d0df7c792@arm.com/ [2]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Christian Loehle <christian.loehle@arm.com>
-Tested-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/2793874.mvXUDI8C0e@rafael.j.wysocki
+Unfortunately, the page_pool_disable_direct_recycling() is not enough
+to deal with failures which necessitate freeing the _new_ page pool.
+If we hit a failure in ->mem_alloc or ->stop the new page pool has
+to be freed while the NAPI is active (assuming driver attaches the
+page pool to an existing NAPI instance and doesn't reallocate NAPIs).
+
+Freeing the new page pool is technically safe because it hasn't been
+used for any packets, yet, so there can be no recycling. But the check
+in napi_assert_will_not_race() has no way of knowing that. We could
+check if page pool is empty but that'd make the check much less likely
+to trigger during development.
+
+Add page_pool_enable_direct_recycling(), pairing with
+page_pool_disable_direct_recycling(). It will allow us to create the new
+page pools in "disabled" state and only enable recycling when we know
+the reconfig operation will not fail.
+
+Coincidentally it will also let us re-enable the recycling for the old
+pool, if the reconfig failed:
+
+ -> mem_alloc (new)
+ -> stop (old)
+    # disables direct recycling for old
+ -> start (new)
+    # fail!!
+ -> start (old)
+    # go back to old pp but direct recycling is lost :(
+ -> mem_free (new)
+
+The new helper is idempotent to make the life easier for drivers,
+which can operate in HDS mode and support zero-copy Rx.
+The driver can call the helper twice whether there are two pools
+or it has multiple references to a single pool.
+
+Fixes: 40eca00ae605 ("bnxt_en: unlink page pool when stopping Rx queue")
+Tested-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250805003654.2944974-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/governors/menu.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c |  9 ++++++-
+ include/net/page_pool/types.h             |  2 ++
+ net/core/page_pool.c                      | 29 +++++++++++++++++++++++
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
-index 39aa0aea61c6..711517bd43a1 100644
---- a/drivers/cpuidle/governors/menu.c
-+++ b/drivers/cpuidle/governors/menu.c
-@@ -97,6 +97,14 @@ static inline int which_bucket(u64 duration_ns)
- 
- static DEFINE_PER_CPU(struct menu_device, menu_devices);
- 
-+static void menu_update_intervals(struct menu_device *data, unsigned int interval_us)
-+{
-+	/* Update the repeating-pattern data. */
-+	data->intervals[data->interval_ptr++] = interval_us;
-+	if (data->interval_ptr >= INTERVALS)
-+		data->interval_ptr = 0;
-+}
-+
- static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev);
- 
- /*
-@@ -222,6 +230,14 @@ static int menu_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 	if (data->needs_update) {
- 		menu_update(drv, dev);
- 		data->needs_update = 0;
-+	} else if (!dev->last_residency_ns) {
-+		/*
-+		 * This happens when the driver rejects the previously selected
-+		 * idle state and returns an error, so update the recent
-+		 * intervals table to prevent invalid information from being
-+		 * used going forward.
-+		 */
-+		menu_update_intervals(data, UINT_MAX);
- 	}
- 
- 	/* Find the shortest expected idle interval. */
-@@ -482,10 +498,7 @@ static void menu_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
- 
- 	data->correction_factor[data->bucket] = new_factor;
- 
--	/* update the repeating-pattern data */
--	data->intervals[data->interval_ptr++] = ktime_to_us(measured_ns);
--	if (data->interval_ptr >= INTERVALS)
--		data->interval_ptr = 0;
-+	menu_update_intervals(data, ktime_to_us(measured_ns));
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 243cb13cb01c..8d950b43846e 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -3810,7 +3810,6 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	if (BNXT_RX_PAGE_MODE(bp))
+ 		pp.pool_size += bp->rx_ring_size;
+ 	pp.nid = numa_node;
+-	pp.napi = &rxr->bnapi->napi;
+ 	pp.netdev = bp->dev;
+ 	pp.dev = &bp->pdev->dev;
+ 	pp.dma_dir = bp->rx_dir;
+@@ -3842,6 +3841,12 @@ static int bnxt_alloc_rx_page_pool(struct bnxt *bp,
+ 	return PTR_ERR(pool);
  }
  
- /**
++static void bnxt_enable_rx_page_pool(struct bnxt_rx_ring_info *rxr)
++{
++	page_pool_enable_direct_recycling(rxr->head_pool, &rxr->bnapi->napi);
++	page_pool_enable_direct_recycling(rxr->page_pool, &rxr->bnapi->napi);
++}
++
+ static int bnxt_alloc_rx_agg_bmap(struct bnxt *bp, struct bnxt_rx_ring_info *rxr)
+ {
+ 	u16 mem_size;
+@@ -3880,6 +3885,7 @@ static int bnxt_alloc_rx_rings(struct bnxt *bp)
+ 		rc = bnxt_alloc_rx_page_pool(bp, rxr, cpu_node);
+ 		if (rc)
+ 			return rc;
++		bnxt_enable_rx_page_pool(rxr);
+ 
+ 		rc = xdp_rxq_info_reg(&rxr->xdp_rxq, bp->dev, i, 0);
+ 		if (rc < 0)
+@@ -16042,6 +16048,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
+ 			goto err_reset;
+ 	}
+ 
++	bnxt_enable_rx_page_pool(rxr);
+ 	napi_enable_locked(&bnapi->napi);
+ 	bnxt_db_nq_arm(bp, &cpr->cp_db, cpr->cp_raw_cons);
+ 
+diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
+index 431b593de709..1509a536cb85 100644
+--- a/include/net/page_pool/types.h
++++ b/include/net/page_pool/types.h
+@@ -265,6 +265,8 @@ struct page_pool *page_pool_create_percpu(const struct page_pool_params *params,
+ struct xdp_mem_info;
+ 
+ #ifdef CONFIG_PAGE_POOL
++void page_pool_enable_direct_recycling(struct page_pool *pool,
++				       struct napi_struct *napi);
+ void page_pool_disable_direct_recycling(struct page_pool *pool);
+ void page_pool_destroy(struct page_pool *pool);
+ void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index ba7cf3e3c32f..368412baad26 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -1201,6 +1201,35 @@ void page_pool_use_xdp_mem(struct page_pool *pool, void (*disconnect)(void *),
+ 	pool->xdp_mem_id = mem->id;
+ }
+ 
++/**
++ * page_pool_enable_direct_recycling() - mark page pool as owned by NAPI
++ * @pool: page pool to modify
++ * @napi: NAPI instance to associate the page pool with
++ *
++ * Associate a page pool with a NAPI instance for lockless page recycling.
++ * This is useful when a new page pool has to be added to a NAPI instance
++ * without disabling that NAPI instance, to mark the point at which control
++ * path "hands over" the page pool to the NAPI instance. In most cases driver
++ * can simply set the @napi field in struct page_pool_params, and does not
++ * have to call this helper.
++ *
++ * The function is idempotent, but does not implement any refcounting.
++ * Single page_pool_disable_direct_recycling() will disable recycling,
++ * no matter how many times enable was called.
++ */
++void page_pool_enable_direct_recycling(struct page_pool *pool,
++				       struct napi_struct *napi)
++{
++	if (READ_ONCE(pool->p.napi) == napi)
++		return;
++	WARN_ON(!napi || pool->p.napi);
++
++	mutex_lock(&page_pools_lock);
++	WRITE_ONCE(pool->p.napi, napi);
++	mutex_unlock(&page_pools_lock);
++}
++EXPORT_SYMBOL(page_pool_enable_direct_recycling);
++
+ void page_pool_disable_direct_recycling(struct page_pool *pool)
+ {
+ 	/* Disable direct recycling based on pool->cpuid.
 -- 
 2.50.1
 
